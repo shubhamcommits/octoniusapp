@@ -18,11 +18,13 @@
       <rect  x="100"  y="100"  width="50" height="40" rx="0" ry="3"  style="stroke:gray;fill: #ffffff;stroke-opacity: .3"></rect>
       <rect  x="100"  y="100"  width="3" height="40" style="fill: #ffab00;"></rect>
       <defs>
-        <clipPath id="myCircle">
-           <circle cx="126" cy="120" r="18" fill="#FFFFFF" />
-        </clipPath>
-     </defs>
-     <image xlink:href="https://workplace.octonius.com/uploads/users/1606119053071_Screenshot 2020-11-23 at 13.09.57.png" clip-path="url(#myCircle)" />
+        <pattern id="image" x="100" y="100" height="100%" width="100%"
+                viewBox="100 100 200 200">
+          <image x="100" y="100" width="200" height="200" xlink:href="https://workplace.octonius.com/uploads/users/1606119053071_Screenshot 2020-11-23 at 13.09.57.png"></image>
+        </pattern>
+      </defs> 
+      <circle id="sd1" cx="123" cy="119" r="17" fill="url(#image)"/>
+      <line x1="145" x2="145" y1="115" y2="130" stroke="#9D9FA2" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="1,5"/>
     </g>
 
     <g>
@@ -30,13 +32,16 @@
       <rect  x="400"  y="140"  width="3" height="40" style="fill: #ffab00;"></rect>
       <text x="450" y="165" font-family="Nunito" font-size="12" fill="black">Task 1</text>
       <defs>
-        <clipPath id="myCircle1">
-           <circle cx="426" cy="160" r="18" fill="#FFFFFF" />
-        </clipPath>
-     </defs>
-     <image x="400" y="140" xlink:href="http://localhost:10000/uploads/groups/1607585036796ahmed-shah-feat.jpg" clip-path="url(#myCircle1)" />
+        <pattern id="image1" x="400" y="140" height="100%" width="100%"
+                viewBox="400 140 200 200">
+          <image x="400" y="140" width="200" height="200" xlink:href="https://workplace.octonius.com/uploads/users/1591265999752_cosmin ciobanu.jpg"></image>
+        </pattern>
+      </defs>
+      <circle id="sd1" cx="423" cy="159" r="17" fill="url(#image1)"/>
+      <line x1="545" x2="545" y1="155" y2="170" stroke="#9D9FA2" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="1,5"/>
+      
     </g>
-
+    
   </svg>
 
   </div>
