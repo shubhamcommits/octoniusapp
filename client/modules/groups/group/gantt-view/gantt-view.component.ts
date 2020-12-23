@@ -32,6 +32,9 @@ export class GanttViewComponent implements OnInit {
   //container height
   svg_height:any
 
+  //container height
+  current_date_index:any
+
   //Grid column width
   step=50;
 
@@ -203,15 +206,33 @@ export class GanttViewComponent implements OnInit {
     this.date.forEach((dt,index)=> {
      var a = new Date(dt.date);
      var b = new Date(date);
-     
      if(a.getTime() == b.getTime()){
-        console.log("amaasafs")
+        console.log("amaasafs",date)
         dateindex=index;
       }
+
     });
 
     return dateindex;;
   }
+
+  //Current date index
+  async get_current_date_index(){
+   
+    this.date.forEach((dt,index)=> {
+     var a = new Date(dt.date);
+     var c = new Date();
+
+     console.log("current Date",a.getDate()+a.getMonth()+a.getFullYear(), c.getDate()+c.getMonth()+c.getFullYear())
+     if(a.getDate()+a.getMonth()+a.getFullYear() == c.getDate()+c.getMonth()+c.getFullYear()){
+        console.log("cusdfsdfr",c);
+        this.current_date_index=index;
+      }
+    });
+
+  }
+
+
 
   //ADD INDEX
   async add_index(){
@@ -225,9 +246,11 @@ export class GanttViewComponent implements OnInit {
     console.log("this.tasks",this.tasks);
     await this.parsedTasks(this.tasks);
     this.datestoshow.start= await this.min_date(this.tasksdata);
-    this.datestoshow.end=await this.max_date(this.tasksdata)
+    this.datestoshow.end= await this.max_date(this.tasksdata)
     await this.generateNavDate();
     await this.add_index();
+    await this.get_current_date_index()
+    console.log("current_date_index",this.current_date_index);
     console.log("this.tasksdata",this.tasksdata);
     this.svg_height=100+this.tasksdata.length*60
     console.log("this.svg_height",this.svg_height);

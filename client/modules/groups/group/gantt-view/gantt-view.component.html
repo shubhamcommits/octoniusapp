@@ -4,14 +4,18 @@
   <div style="margin-top: 20px">
     <svg [attr.width]="svg_width" [attr.height]="svg_height" id="main-svg">
       <g>
-        <text x="25" y="30" font-family="Nunito" font-size="16" fill="#000000">{{date[0].month}}</text>
+        <text x="0" y="30" font-family="Nunito" font-size="16" fill="#000000">{{date[0].month}}</text>
       </g>
+      <line [attr.x1]="current_date_index*step+10" [attr.x2]="current_date_index*step+10" [attr.y1]="60" [attr.y2]="svg_height" stroke="#4A90E2" stroke-width="3.5" />
+      <rect  [attr.x]="current_date_index*step-5" y="40" width="30" [attr.height]="30" fill='#4A90E2' ></rect>
       <g *ngFor="let item of date; let i =index">
         <g *ngIf="item.day==1 ">
-          <text [attr.x]="(i*50+25)" y="30" font-family="Verdana" font-size="16" fill="black">{{item.month}}</text>
+          <text [attr.x]="(i*50)" y="30" font-family="Verdana" font-size="16" fill="black">{{item.month}}</text>
         </g>
         <rect  [attr.x]="i*50" y="40" width="50" [attr.height]="card_height" fill='none' ></rect>
-        <text [attr.x]="(i*50+10)" y="60" font-family="Nunito" font-size="16" fill="#000000">{{item.day}}</text>
+        <text [attr.x]="(i*50)" y="60" font-family="Nunito" font-size="16" fill="#000000">{{item.day}}</text>
+        <text *ngIf="i==current_date_index" [attr.x]="(i*50)" y="60" font-family="Nunito" font-size="16" fill="#ffffff">{{item.day}}</text>
+        <text *ngIf="item.day==1" [attr.x]="(i*50)" y="60" font-family="Nunito" font-size="16" fill="red">{{item.day}}</text>
       </g>
       <g *ngFor="let task of tasksdata; let i =index">
         <rect  [attr.x]="task.index_date*step"  [attr.y]="(60*i+100)"  [attr.width]="task.difference*step+step " [attr.height]="card_height" rx="0" ry="3"  style="stroke:gray;fill: #ffffff;stroke-opacity: .3"></rect>
