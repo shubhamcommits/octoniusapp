@@ -27,10 +27,10 @@ export class GanttViewComponent implements OnInit {
   months:any=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   
   //container Width
-  svg_width:any
+  svg_width:string
 
   //container height
-  svg_height:any
+  svg_height:string
 
   //container height
   current_date_index:any
@@ -43,6 +43,7 @@ export class GanttViewComponent implements OnInit {
 
 
   constructor() {}
+
 
   //Generate the dates for Nav
   async generateNavDate(){
@@ -57,7 +58,7 @@ export class GanttViewComponent implements OnInit {
     console.log("Difference_In_Days",Difference_In_Days);
 
     //Continer width
-    this.svg_width=Difference_In_Days*this.step;
+    this.svg_width=(Difference_In_Days*this.step)+'px';
 
     console.log("this.svg_width",this.svg_width);
 
@@ -252,7 +253,7 @@ export class GanttViewComponent implements OnInit {
     await this.get_current_date_index()
     console.log("current_date_index",this.current_date_index);
     console.log("this.tasksdata",this.tasksdata);
-    this.svg_height=100+this.tasksdata.length*60
+    this.svg_height=(100+this.tasksdata.length*60)+'px'
     console.log("this.svg_height",this.svg_height);
   }
 
