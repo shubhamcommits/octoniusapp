@@ -6,7 +6,7 @@
       <p [attr.width]="step" class="first_month">{{date[0].month}}</p>
       <div *ngFor="let item of date; let i =index" [ngStyle]="{'left':(i*50)+'px'}" class="date_div">
         <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">{{item.month}}</p>
-        <p [ngStyle]="{'color':item.day === 1 ? 'red':i === current_date_index?'white':'initial','background': i === current_date_index?'#4A90E2':'initial'}">{{item.day}}</p>
+        <p [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}" [ngClass]="i==current_date_index?'curretn_date':''">{{item.day}}</p>
       </div>
       <div *ngFor="let task of tasksdata; let i =index"   [ngStyle]="{'left':(task.index_date*step)+'px','top':(60*i+100)+'px','width':(task.difference*step+step)+'px','height':'40px'}" class="task_card" [ngClass]="task.custom_class">
         <div class="status_bar"></div>
@@ -14,8 +14,7 @@
         <span *ngIf="task.noOfParticipants" style="margin-left: -5px;"
         [attr.matBadge]="task.noOfParticipants" matBadgePosition="before" class="assigneeinfo"></span>
         <p *ngIf="task.difference>0" class="task_title_text" >{{task.name}}</p>
-        <i class="bi bi-three-dots-vertical"></i>
-        <i class="material-icons-outlined ml-2" style="cursor: pointer;color: #9D9FA2;position: absolute;top: 10px;right: 5px;">more_vert</i>
+        <i class="material-icons-outlined ml-2 menu_icon" >more_vert</i>
       </div>
     </div>
   </div>
