@@ -17,7 +17,7 @@
         <img [src]="task.image" onerror="this.src='assets/images/user.png'" class="feed-avatar">
         <span *ngIf="task.noOfParticipants" style="margin-left: -5px;"
         [attr.matBadge]="task.noOfParticipants" matBadgePosition="before" class="assigneeinfo"></span>
-        <p *ngIf="task.difference>0" class="task_title_text" >{{task.name}}</p>
+        <p *ngIf="task.difference>0" class="task_title_text" >{{task.difference===1 ? (task.name | truncatetext:2) : task.name}}</p>
         <i class="material-icons-outlined ml-2 menu_icon" >more_vert</i>
       </div>
     </div>
