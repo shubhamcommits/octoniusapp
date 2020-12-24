@@ -14,9 +14,7 @@
       class="task_card" [ngClass]="task.custom_class"
       >
         <div class="status_bar"></div>
-        <img [src]="task.image" onerror="this.src='assets/images/user.png'" class="feed-avatar">
-        <span *ngIf="task.noOfParticipants" style="margin-left: -5px;"
-        [attr.matBadge]="task.noOfParticipants" matBadgePosition="before" class="assigneeinfo"></span>
+        <app-assignee-avatar [post]="task.task" [userData]="userData" style="margin-right: 10px;position: absolute;top: 0px;"></app-assignee-avatar>
         <p *ngIf="task.difference>0" class="task_title_text" >{{task.difference===1 ? (task.name | truncatetext:2) : task.name}}</p>
         <i class="material-icons-outlined ml-2 menu_icon" >more_vert</i>
       </div>

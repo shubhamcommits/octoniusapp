@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class GanttViewComponent implements OnInit {
 
   @Input() tasks;
-
+  @Input() userData;
 
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
