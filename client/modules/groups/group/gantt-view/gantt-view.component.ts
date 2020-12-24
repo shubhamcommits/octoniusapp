@@ -64,8 +64,12 @@ export class GanttViewComponent implements OnInit {
         const date2=new Date(this.datestoshow.end)
         var Difference_In_Time = date2.getTime() - date1.getTime(); 
         var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
-        Difference_In_Days=Difference_In_Days+10;
-        console.log("Difference_In_Days",Difference_In_Days);
+        if(Difference_In_Days<26){
+          var lessdays=26-Difference_In_Days;
+          Difference_In_Days=Difference_In_Days+lessdays;
+          console.log("Difference_In_Days",Difference_In_Days);
+        }
+       
 
         //Continer width
         this.svg_width=(Difference_In_Days*this.step)+'px';
@@ -90,8 +94,11 @@ export class GanttViewComponent implements OnInit {
       const date2=new Date(this.datestoshow.end)
       var Difference_In_Time = date2.getTime() - date1.getTime(); 
       var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
-      Difference_In_Days=Difference_In_Days+10;
-      console.log("Difference_In_Days",Difference_In_Days);
+      if(Difference_In_Days<26){
+        var lessdays=26-Difference_In_Days;
+        Difference_In_Days=Difference_In_Days+lessdays;
+        console.log("Difference_In_Days",Difference_In_Days);
+      }
 
       //Continer width
       this.svg_width=(Difference_In_Days*this.step)+'px';
