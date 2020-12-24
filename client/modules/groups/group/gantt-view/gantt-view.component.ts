@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-gantt-view',
@@ -42,8 +43,17 @@ export class GanttViewComponent implements OnInit {
   card_height=40;
 
 
-  constructor() {}
+  constructor(private utilityService: UtilityService) {}
 
+  //open model
+
+  openFullscreenModal(postData: any,): void {
+    console.log('postData',postData)
+      const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id);
+      dialogRef.afterClosed().subscribe(result => {
+        console.log("result",result);
+      });
+  }
 
   //Generate the dates for Nav
   async generateNavDate(){
