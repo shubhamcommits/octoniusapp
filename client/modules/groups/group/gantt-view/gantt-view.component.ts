@@ -65,11 +65,11 @@ export class GanttViewComponent implements OnInit {
     //Populating the dates.
     for(var i=0; i<Difference_In_Days; i++){
       const cueerntDate = new Date(this.datestoshow.start);
-      console.log("cueerntDate",cueerntDate,this.datestoshow.start);
+      // console.log("cueerntDate",cueerntDate,this.datestoshow.start);
       const reqdate = new Date(this.datestoshow.start);
       reqdate.setDate(cueerntDate.getDate()+(i));
-      // console.log("reqdate",reqdate,i);
-      this.date.push({day:reqdate.getDate(),date:reqdate,month:this.months[reqdate.getMonth()]});
+      console.log("reqdate",);
+      this.date.push({day:reqdate.getDate(),date:reqdate,month:this.months[reqdate.getMonth()],isweekend:(reqdate.getDay()==0 || reqdate.getDay()==6 )?true:false});
     }
 
     console.log("calendar dates",this.date);
