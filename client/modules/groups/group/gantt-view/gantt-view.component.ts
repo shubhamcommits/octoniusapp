@@ -205,7 +205,7 @@ export class GanttViewComponent implements OnInit {
                   end:x.task.due_to,
                   progress:'0',
                   difference:Difference_In_Days,
-                  custom_class: x.task.status,
+                  custom_class: x.status,
                   image:(x?._assigned_to?.length>0)?this.baseUrl+'/'+x._assigned_to[0].profile_pic:undefined,
                   noOfParticipants:(x?._assigned_to?.length>1)?x?._assigned_to?.length-1:undefined,
                   dependencies:(x.task._parent_task)?x.task._parent_task._id:'',

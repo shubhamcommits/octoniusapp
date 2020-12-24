@@ -24,12 +24,13 @@
     top: 0px;
     left:0px;
     font-family:'Nunito';
-    font-size:16px
+    font-size:16px;
 }
 
 #main_container{
     position: relative;
-    background-color:#fafafafa
+    background-color:#fafafafa;
+    height:90vh;
 }
 .date_div{
     position:absolute;
@@ -43,7 +44,7 @@
     position:absolute;
     cursor: pointer;
     /* pure white */
-
+    height: 40px;
     background: #FFFFFF;
     /* border color */
 
@@ -53,11 +54,7 @@
     border-radius: 4px;
 }
 
-.status_bar{
-    background-color: #ffab00;
-    width: 5px;
-    height: 39px;
-}
+
 
 .task_title_text{
     position: absolute;
@@ -71,19 +68,19 @@
     color: #242D3A;
 }
 
-.to.do .status_bar {
-    background-color: #ffab00 !important;
-  
-}
+$pumpkin-orange: #ffab00;
+$turquoise: #0bc6a0;
+$dark-sky-blue: #4a90e2;
 
-.in.progress .status_bar {
-    background-color: #0bc6a0 !important;
+.status-todo {
+    border-left: 3px solid $pumpkin-orange;
 }
-
-.done .status_bar {
-    background-color: #4a90e2 !important;
+.status-inprogress {
+    border-left: 3px solid $turquoise;
 }
-
+.status-done {
+    border-left: 3px solid $dark-sky-blue;
+}
 .curretn_date{
     color: white !important;
     background: rgb(74, 144, 226);
