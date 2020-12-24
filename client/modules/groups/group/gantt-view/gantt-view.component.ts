@@ -57,32 +57,60 @@ export class GanttViewComponent implements OnInit {
 
   //Generate the dates for Nav
   async generateNavDate(){
-    
-    // Find duration between start and end date
-    console.log("from calendar",this.datestoshow);
-    const date1=new Date(this.datestoshow.start)
-    const date2=new Date(this.datestoshow.end)
-    var Difference_In_Time = date2.getTime() - date1.getTime(); 
-    var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
-    Difference_In_Days=Difference_In_Days+10;
-    console.log("Difference_In_Days",Difference_In_Days);
+    if(new Date(this.datestoshow.start).getTime() > new Date().getTime()){
+       // Find duration between start and end date
+        console.log("from calendar",this.datestoshow);
+        const date1=new Date()
+        const date2=new Date(this.datestoshow.end)
+        var Difference_In_Time = date2.getTime() - date1.getTime(); 
+        var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
+        Difference_In_Days=Difference_In_Days+10;
+        console.log("Difference_In_Days",Difference_In_Days);
 
-    //Continer width
-    this.svg_width=(Difference_In_Days*this.step)+'px';
+        //Continer width
+        this.svg_width=(Difference_In_Days*this.step)+'px';
 
-    console.log("this.svg_width",this.svg_width);
+        console.log("this.svg_width",this.svg_width);
 
-    //Populating the dates.
-    for(var i=0; i<Difference_In_Days; i++){
-      const cueerntDate = new Date(this.datestoshow.start);
-      // console.log("cueerntDate",cueerntDate,this.datestoshow.start);
-      const reqdate = new Date(this.datestoshow.start);
-      reqdate.setDate(cueerntDate.getDate()+(i));
-      console.log("reqdate",);
-      this.date.push({day:reqdate.getDate(),date:reqdate,month:this.months[reqdate.getMonth()],isweekend:(reqdate.getDay()==0 || reqdate.getDay()==6 )?true:false});
+        //Populating the dates.
+        for(var i=0; i<Difference_In_Days; i++){
+          const cueerntDate = new Date();
+          // console.log("cueerntDate",cueerntDate,this.datestoshow.start);
+          const reqdate = new Date();
+          reqdate.setDate(cueerntDate.getDate()+(i));
+          console.log("reqdate",);
+          this.date.push({day:reqdate.getDate(),date:reqdate,month:this.months[reqdate.getMonth()],isweekend:(reqdate.getDay()==0 || reqdate.getDay()==6 )?true:false});
+        }
+
+        console.log("calendar dates",this.date);
+    } else {
+      // Find duration between start and end date
+      console.log("from calendar",this.datestoshow);
+      const date1=new Date(this.datestoshow.start)
+      const date2=new Date(this.datestoshow.end)
+      var Difference_In_Time = date2.getTime() - date1.getTime(); 
+      var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
+      Difference_In_Days=Difference_In_Days+10;
+      console.log("Difference_In_Days",Difference_In_Days);
+
+      //Continer width
+      this.svg_width=(Difference_In_Days*this.step)+'px';
+
+      console.log("this.svg_width",this.svg_width);
+
+      //Populating the dates.
+      for(var i=0; i<Difference_In_Days; i++){
+        const cueerntDate = new Date(this.datestoshow.start);
+        // console.log("cueerntDate",cueerntDate,this.datestoshow.start);
+        const reqdate = new Date(this.datestoshow.start);
+        reqdate.setDate(cueerntDate.getDate()+(i));
+        console.log("reqdate",);
+        this.date.push({day:reqdate.getDate(),date:reqdate,month:this.months[reqdate.getMonth()],isweekend:(reqdate.getDay()==0 || reqdate.getDay()==6 )?true:false});
+      }
+
+      console.log("calendar dates",this.date);
     }
-
-    console.log("calendar dates",this.date);
+   
   }
 
   //Parsing the data
@@ -217,7 +245,8 @@ export class GanttViewComponent implements OnInit {
     this.date.forEach((dt,index)=> {
      var a = new Date(dt.date);
      var b = new Date(date);
-     if(a.getTime() == b.getTime()){
+    //  console.log("date time",a.getDate()+a.getMonth()+a.getFullYear() , b.getDate()+b.getMonth()+b.getFullYear());
+     if(a.getDate()+a.getMonth()+a.getFullYear() == b.getDate()+b.getMonth()+b.getFullYear()){
         console.log("amaasafs",date)
         dateindex=index;
       }
@@ -234,7 +263,7 @@ export class GanttViewComponent implements OnInit {
      var a = new Date(dt.date);
      var c = new Date();
 
-     console.log("current Date",a.getDate()+a.getMonth()+a.getFullYear(), c.getDate()+c.getMonth()+c.getFullYear())
+    //  console.log("current Date",a.getDate()+a.getMonth()+a.getFullYear(), c.getDate()+c.getMonth()+c.getFullYear())
      if(a.getDate()+a.getMonth()+a.getFullYear() == c.getDate()+c.getMonth()+c.getFullYear()){
         console.log("cusdfsdfr",c);
         this.current_date_index=index;
