@@ -1,0 +1,101 @@
+.feed-avatar {
+    //avatar image for in-feed display
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 5px 10px;
+    position: absolute;
+    top: 0px;
+    left: -3px;
+  }
+  .assigneeinfo{
+    position: absolute;
+    top: 0px;
+    .mat-badge-content{
+      background-color: #9D9FA1;
+    }
+  }
+.first_month{
+    position:absolute;
+    top: 0px;
+    left:0px;
+    font-family:'Nunito';
+    font-size:16px;
+}
+.vl{
+    border-left: 2px solid #4a90e2;
+    position: absolute;
+    top:47px;
+    height: 100%;
+}
+#main_container{
+    position: relative;
+    background-color:#fafafafa;
+    height:90vh;
+}
+.date_div{
+    position:absolute;
+    top: 30px;
+    font-family:'Nunito';
+    font-size:16px;
+    width: 50px;
+}
+.task_card{
+    position:absolute;
+    cursor: pointer;
+    /* pure white */
+    height: 40px;
+    background: #FFFFFF;
+    /* border color */
+    border: 1px solid #E4EDF8;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.11);
+    border-radius: 4px;
+}
+.task_title_text{
+    font-family: 'Nunito';
+    font-weight: 400;
+    font-size: 15px;
+    color: #242D3A;
+    width: 100%;
+    white-space: normal;
+}
+
+$pumpkin-orange: #ffab00;
+$turquoise: #0bc6a0;
+$dark-sky-blue: #4a90e2;
+
+.status-todo {
+    border-left: 3px solid $pumpkin-orange;
+}
+.status-inprogress {
+    border-left: 3px solid $turquoise;
+}
+.status-done {
+    border-left: 3px solid $dark-sky-blue;
+}
+.curretn_date{
+    color: white !important;
+    background: rgb(74, 144, 226);
+    width: 30px;
+    height: 30px;
+    top: -6px;
+    padding-left: 5px;
+    padding-top: 4px;
+    position: absolute;
+    border-radius: 4px;
+}
+.menu_icon{
+    position: absolute;
+    right: -7px;
+    top: 0%;
+    cursor: pointer;
+    /* muted text */
+    color: #9D9FA2;
+    /* Inside Auto Layout */
+    flex: none;
+    order: 3;
+    flex-grow: 0;
+    margin: 6px 0px;
+}
