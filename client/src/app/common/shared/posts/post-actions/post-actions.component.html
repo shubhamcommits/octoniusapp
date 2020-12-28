@@ -7,7 +7,7 @@
                 <p *ngFor="let liked_by of likedByUsers">{{ liked_by }}</p>
             </ng-template>
             <span class="stats" placement="right" [ngbTooltip]="likedContent"><b>{{post?._liked_by.length || 0 }}</b> Likes </span>
-            <span class="stats" *ngIf="!fullscreen" (click)="displayComments(true)"><b>{{ post?.comments_count || 0 }}</b> Comments</span>
+            <span class="stats" *ngIf="!fullscreen" (click)="displayComments(!showComments)"><b>{{ post?.comments_count || 0 }}</b> Comments</span>
 
             <ng-template #followContent>
                 <p *ngFor="let followed_by of followedByUsers">{{ followed_by }}</p>
@@ -46,7 +46,7 @@
 </div>
 
 <comment-section *ngIf="showCommentQuillEditor && userData && post" [userData]="userData" [editorId]="post._id" [postId]="post?._id"
-    [groupId]="post._group || post._group._id" (comment)="newComment($event)" (close)="hideCommentEditor($event)">
+    [groupId]="post._group || post._group._id" (comment)="newCommentReceived($event)" (close)="hideCommentEditor($event)">
 </comment-section>
 
 

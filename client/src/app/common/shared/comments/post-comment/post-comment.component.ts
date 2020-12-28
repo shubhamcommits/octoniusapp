@@ -63,9 +63,11 @@ export class PostCommentComponent implements OnInit {
   cloudFiles: any = [];
 
   async ngOnInit() {
-    await this.comment._liked_by.forEach(user => {
-      this.likedByUsers.push(user['first_name'] + ' ' + user['last_name']);
-    });
+    if (this.comment && this.comment._liked_by) {
+      await this.comment._liked_by.forEach(user => {
+        this.likedByUsers.push(user['first_name'] + ' ' + user['last_name']);
+      });
+    }
   }
 
   /**
