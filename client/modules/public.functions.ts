@@ -1060,13 +1060,13 @@ export class PublicFunctions {
                       const usersMatch =
                       trigger._user.filter((triggerUser) => {
                           return post._assigned_to.findIndex(assignee => {
-                              return assignee._id.toString() == triggerUser._id.toString()
+                              return (assignee._id || assignee).toString() == (triggerUser._id || triggerUser).toString()
                           }) != -1
                       });
                       retValue = (usersMatch && usersMatch.length > 0);
                       break;
                   case 'Custom Field':
-                      retValue = post.task.custom_fields[trigger.custom_field.name] == trigger.custom_field.value;
+                      retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
                       break;
                   case 'Section is':
                       retValue = trigger.section.toUpperCase() == post.task._column.title.toUpperCase();
@@ -1086,8 +1086,7 @@ export class PublicFunctions {
             }
           });
       }
-      return retValue
-
+      return retValue;
   }
 
   executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, userId: string, groupId: string) {
@@ -1098,44 +1097,26 @@ export class PublicFunctions {
                       const indexAction = post._assigned_to.findIndex(assignee => (assignee._id || assignee) == (userAction._id || userAction));
                       if (indexAction < 0) {
                         post._assigned_to.push(userAction);
-                        return await this.executedAutomationFlowsPropertiesFront(flows, userAction._id, groupId, post, userId);
                       }
                   });
+                  // return await this.executedAutomationFlowsPropertiesFront(flows, userAction._id, groupId, post, userId);
+                  return post;
               case 'Custom Field':
                   post.task.custom_fields[action.custom_field.name] = action.custom_field.value;
-                  return await this.executedAutomationFlowsPropertiesFront(flows, action.custom_field, groupId, post, userId);
+                  // return await this.executedAutomationFlowsPropertiesFront(flows, action.custom_field, groupId, post, userId);
+                  return post;
               case 'Move to':
                   post.task._column.title = action.section;
-                  return await this.executedAutomationFlowsPropertiesFront(flows, action.section, groupId, post, userId);
+                  // return await this.executedAutomationFlowsPropertiesFront(flows, action.section, groupId, post, userId);
+                  return post;
               case 'Change Status to':
                   post.task.status = action.status;
-                  return await this.executedAutomationFlowsPropertiesFront(flows, action.status, groupId, post, userId);
+                  // return await this.executedAutomationFlowsPropertiesFront(flows, action.status, groupId, post, userId);
+                  return post;
               default:
                   break;
           }
       });
       return post;
   }
-
-  /*
-  isTriggerValueMatch(triggerIndex: number, triggerTpe: string, triggers: any[], value: any) {
-
-      switch (triggerTpe) {
-          case 'Assigned to':
-              const userIndex = triggers[triggerIndex]._user.findIndex(userTrigger => (userTrigger._id == value || userTrigger == value));
-              return (userIndex > -1);
-          case 'Custom Field':
-              return (triggers[triggerIndex].custom_field.name.toUpperCase() == value.name.toUpperCase()
-                  && triggers[triggerIndex].custom_field.value.toUpperCase() == value.value.toUpperCase());
-          case 'Section is':
-              return triggers[triggerIndex].section.toUpperCase() == value.toUpperCase();
-          case 'Status is':
-              return triggers[triggerIndex].status.toUpperCase() == value.toUpperCase();
-          case 'Task is CREATED':
-              return true;
-          default:
-              return false;
-      }
-  }
-  */
 }

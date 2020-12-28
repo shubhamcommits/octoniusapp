@@ -1264,6 +1264,7 @@ export class PostController {
                 if (retValue) {
                     switch (trigger.name) {
                         case 'Assigned to':
+                            // const usersMatch = await trigger._user.filter(triggerUser => post._assigned_to.some(assignee => triggerUser._id == assignee['_id']))
                             const usersMatch = 
                                 trigger._user.filter((triggerUser) => {
                                     return post._assigned_to.findIndex(assignee => {
@@ -1273,7 +1274,7 @@ export class PostController {
                             retValue = (usersMatch && usersMatch.length > 0);
                             break;
                         case 'Custom Field':
-                            retValue = post.task.custom_fields[trigger.custom_field.name] == trigger.custom_field.value;
+                            retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
                             break;
                         case 'Section is':
                             retValue = trigger.section.toUpperCase() == post.task._column.title.toUpperCase();
@@ -1303,7 +1304,7 @@ export class PostController {
                     action._user.forEach(async userAction => {
                         let index = -1;
                         if (post._assigned_to) {
-                            index = post._assigned_to.findIndex(assignee => (assignee._id || assignee) == (userAction._id || userAction));
+                            index = post._assigned_to.findIndex(assignee => {return (assignee._id || assignee) == (userAction._id || userAction)});
 
                             if (index < 0) {
                                 post = await this.callAddAssigneeService(post._id, userAction, userId, groupId);
