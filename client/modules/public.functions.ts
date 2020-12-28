@@ -1051,18 +1051,19 @@ export class PublicFunctions {
   }
 
   doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger: boolean) {
-      let retValue = false;
+      let retValue = true;
       if (triggers && triggers.length > 1) {
           triggers.forEach(trigger => {
+            if (retValue) {
               switch (trigger.name) {
                   case 'Assigned to':
                       const usersMatch = trigger._user.filter((triggerUser) => {
                           for(var i=0; i < post._assigned_to.length; i++){
                             if(triggerUser._id == post._assigned_to[i]._id){
-                              return false;
+                              return true;
                             }
                           }
-                          return true;
+                          return false;
                       });
                       retValue = (usersMatch.length > 0);
                       break;
@@ -1081,9 +1082,10 @@ export class PublicFunctions {
                       }
                       break;
                   default:
-                      retValue = false;
+                      retValue = true;
                       break;
               }
+            }
           });
       }
       return retValue
