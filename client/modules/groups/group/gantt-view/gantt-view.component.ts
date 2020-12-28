@@ -19,13 +19,13 @@ export class GanttViewComponent implements OnInit {
   //task parsed data
   tasksdata: any = [];
   //date for calendar Nav
-  date: any = [];
+  dates: any = [];
   //Month
   months: any = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   //container Width
-  svg_width: string;
+  gantt_container_width: string;
   //container height
-  svg_height: string;
+  gantt_container_height: string;
   //container height
   current_date_index: any;
   //Grid column width
@@ -46,9 +46,9 @@ export class GanttViewComponent implements OnInit {
     var screenHeight = window.innerHeight - 100;
 
     if (ganttHeight > screenHeight) {
-      this.svg_height = ganttHeight + 'px';
+      this.gantt_container_height = ganttHeight + 'px';
     } else {
-      this.svg_height = screenHeight + 'px';
+      this.gantt_container_height = screenHeight + 'px';
     }
 
   }
@@ -61,15 +61,15 @@ export class GanttViewComponent implements OnInit {
       if (this.tasks[i]._id == updatedTask._id) {
         this.tasks[i] = updatedTask;
       } else if (this.tasks[i]._id == updatedTask?.task?._parent_task?._id) {
-        var Exist = false;
+        var isExist = false;
         this.tasks.forEach(task => {
 
           if (task._id == updatedTask._id) {
-            Exist = true;
+            isExist = true;
           }
         });
 
-        if (!Exist) {
+        if (!isExist) {
           this.tasks.push(updatedTask);
         }
       }
@@ -116,7 +116,7 @@ export class GanttViewComponent implements OnInit {
     await this.parsedTasks(this.tasks);
     this.datestoshow.start = await this.min_date(this.tasksdata);
     this.datestoshow.end = await this.max_date(this.tasksdata)
-    this.date = [];
+    this.dates = [];
     await this.generateNavDate();
     await this.add_index();
     await this.get_current_date_index()
@@ -124,9 +124,9 @@ export class GanttViewComponent implements OnInit {
     var screenHeight = window.innerHeight - 100;
 
     if (ganttHeight > screenHeight) {
-      this.svg_height = ganttHeight + 'px';
+      this.gantt_container_height = ganttHeight + 'px';
     } else {
-      this.svg_height = screenHeight + 'px';
+      this.gantt_container_height = screenHeight + 'px';
     }
   }
 
@@ -135,9 +135,9 @@ export class GanttViewComponent implements OnInit {
 
     if (new Date(this.datestoshow.start).getTime() > new Date().getTime()) {
       // Find duration between start and end date
-      const date1 = new Date();
-      const date2 = new Date(this.datestoshow.end);
-      var Difference_In_Time = date2.getTime() - date1.getTime();
+      const currentDate = new Date();
+      const endDate = new Date(this.datestoshow.end);
+      var Difference_In_Time = endDate.getTime() - currentDate.getTime();
       var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
 
       if (Difference_In_Days < 26) {
@@ -145,20 +145,20 @@ export class GanttViewComponent implements OnInit {
         Difference_In_Days = Difference_In_Days + lessdays;
       }
       //Continer width
-      this.svg_width = (Difference_In_Days * this.step) + 'px';
+      this.gantt_container_width = (Difference_In_Days * this.step) + 'px';
       //Populating the dates.
 
       for (var i = 0; i < Difference_In_Days; i++) {
         const cueerntDate = new Date();
         const reqdate = new Date();
         reqdate.setDate(cueerntDate.getDate() + (i));
-        this.date.push({ day: reqdate.getDate(), date: reqdate, month: this.months[reqdate.getMonth()], isweekend: (reqdate.getDay() == 0 || reqdate.getDay() == 6) ? true : false });
+        this.dates.push({ day: reqdate.getDate(), date: reqdate, month: this.months[reqdate.getMonth()], isweekend: (reqdate.getDay() == 0 || reqdate.getDay() == 6) ? true : false });
       }
     } else {
       // Find duration between start and end date
-      const date1 = new Date(this.datestoshow.start)
-      const date2 = new Date(this.datestoshow.end)
-      var Difference_In_Time = date2.getTime() - date1.getTime();
+      const currentDate = new Date(this.datestoshow.start)
+      const endDate = new Date(this.datestoshow.end)
+      var Difference_In_Time = endDate.getTime() - currentDate.getTime();
       var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
 
       if (Difference_In_Days < 26) {
@@ -166,14 +166,14 @@ export class GanttViewComponent implements OnInit {
         Difference_In_Days = Difference_In_Days + lessdays;
       }
       //Continer width
-      this.svg_width = (Difference_In_Days * this.step) + 'px';
+      this.gantt_container_width = (Difference_In_Days * this.step) + 'px';
       //Populating the dates.
 
       for (var i = 0; i < Difference_In_Days; i++) {
         const cueerntDate = new Date(this.datestoshow.start);
         const reqdate = new Date(this.datestoshow.start);
         reqdate.setDate(cueerntDate.getDate() + (i));
-        this.date.push({ day: reqdate.getDate(), date: reqdate, month: this.months[reqdate.getMonth()], isweekend: (reqdate.getDay() == 0 || reqdate.getDay() == 6) ? true : false });
+        this.dates.push({ day: reqdate.getDate(), date: reqdate, month: this.months[reqdate.getMonth()], isweekend: (reqdate.getDay() == 0 || reqdate.getDay() == 6) ? true : false });
       }
     }
 
@@ -294,7 +294,7 @@ export class GanttViewComponent implements OnInit {
   // Find Index of date
   find_index(date) {
     var dateindex;
-    this.date.forEach((dt, index) => {
+    this.dates.forEach((dt, index) => {
       var a = new Date(dt.date);
       var b = new Date(date);
 
@@ -307,7 +307,7 @@ export class GanttViewComponent implements OnInit {
 
   //Current date index
   async get_current_date_index() {
-    this.date.forEach((dt, index) => {
+    this.dates.forEach((dt, index) => {
       var a = new Date(dt.date);
       var c = new Date();
 
