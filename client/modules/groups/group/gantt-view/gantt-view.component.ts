@@ -45,14 +45,82 @@ export class GanttViewComponent implements OnInit {
 
   constructor(private utilityService: UtilityService) {}
 
-  //open model
+  //onupdate task
+  async updateTask(updatedTask:any){
+    console.log("updateTask",updatedTask,this.tasks);
+    for(var i=0;i<this.tasks.length;i++){
+      if(this.tasks[i]._id == updatedTask._id){
+        console.log("Am here equal");
+        this.tasks[i] = updatedTask;
+      }else if(this.tasks[i]._id == updatedTask?.task?._parent_task?._id){
+        console.log("Am here equal  parent");
+        var Exist=false;
+        this.tasks.forEach(task => {
+          if(task._id == updatedTask._id){
+            Exist=true;
+          }
+        });
+        if(!Exist){
+          this.tasks.push(updatedTask);
+        } 
+      }
+    }
+    console.log("After updateTask",this.tasks);
+    await this.refreshChart();
 
+  }
+
+  //onDeleteEvent
+  async onDeleteEvent(deletedTask:any){
+    console.log("onDeleteEvent",deletedTask,this.tasks);
+    for(var i=0;i<this.tasks.length;i++){
+      if(this.tasks[i]._id == deletedTask){
+        console.log("Am here equal");
+        this.tasks.splice(i,1);
+      }
+    }
+    console.log("after onDeleteEvent",this.tasks);
+    await this.refreshChart();
+  }
+  //open model
   openFullscreenModal(postData: any,): void {
     console.log('postData',postData)
       const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id);
-      dialogRef.afterClosed().subscribe(result => {
-        console.log("result",result);
+      
+      const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+        this.onDeleteEvent(data);
       });
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        this.updateTask(data);
+
+      });
+      const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
+        this.onDeleteEvent(data._id);
+      });
+      
+      dialogRef.afterClosed().subscribe(result => {
+        deleteEventSubs.unsubscribe();
+        closeEventSubs.unsubscribe();
+        parentAssignEventSubs.unsubscribe();
+      });
+  }
+
+  //refresh Chart
+  async refreshChart(){
+    // document.getElementById("main_container").innerHTML = "";
+    console.log("this.tasks",this.tasks);
+    await this.parsedTasks(this.tasks);
+    this.datestoshow.start= await this.min_date(this.tasksdata);
+    this.datestoshow.end= await this.max_date(this.tasksdata)
+    console.log("dates points",this.datestoshow.start,this.datestoshow.end)
+    this.date = [];
+    await this.generateNavDate();
+    await this.add_index();
+    await this.get_current_date_index()
+    console.log("current_date_index",this.current_date_index);
+    console.log("this.tasksdata",this.tasksdata);
+    this.svg_height=(100+this.tasksdata.length*60)+'px'
+    console.log("this.svg_height",this.svg_height);
   }
 
   //Generate the dates for Nav
@@ -70,13 +138,14 @@ export class GanttViewComponent implements OnInit {
           console.log("Difference_In_Days",Difference_In_Days);
         }
        
-
         //Continer width
         this.svg_width=(Difference_In_Days*this.step)+'px';
 
         console.log("this.svg_width",this.svg_width);
 
         //Populating the dates.
+       
+        console.log("calendar dates before",this.date);
         for(var i=0; i<Difference_In_Days; i++){
           const cueerntDate = new Date();
           // console.log("cueerntDate",cueerntDate,this.datestoshow.start);
@@ -190,6 +259,7 @@ export class GanttViewComponent implements OnInit {
           }
         }
       }
+      this.tasksdata=[];
       
       //Saving the only required fields of the task in tasksData array.
       SortedTask.map(x => {
@@ -205,7 +275,7 @@ export class GanttViewComponent implements OnInit {
                   end:x.task.due_to,
                   progress:'0',
                   difference:Difference_In_Days,
-                  custom_class: x.status,
+                  custom_class: x?.task.status,
                   image:(x?._assigned_to?.length>0)?this.baseUrl+'/'+x._assigned_to[0].profile_pic:undefined,
                   noOfParticipants:(x?._assigned_to?.length>1)?x?._assigned_to?.length-1:undefined,
                   dependencies:(x.task._parent_task)?x.task._parent_task._id:'',
@@ -221,8 +291,8 @@ export class GanttViewComponent implements OnInit {
 
   //Get the Min date
   async min_date(all_dates) {
-    var min_dt = all_dates[0].start,
-    min_dtObj = new Date(all_dates[0].start);
+    var min_dt = all_dates[0]?.start,
+    min_dtObj = new Date(all_dates[0]?.start);
     all_dates.forEach(function(dt, index) {
       if ( new Date( dt.start ) < min_dtObj) {
         min_dt = dt.start;
@@ -234,8 +304,8 @@ export class GanttViewComponent implements OnInit {
 
   //Get the Min date
   async max_date(all_dates) {
-    var max_dt = all_dates[0].end,
-    max_dtObj = new Date(all_dates[0].end);
+    var max_dt = all_dates[0]?.end,
+    max_dtObj = new Date(all_dates[0]?.end);
     all_dates.forEach(function(dt, index) {
       if ( new Date( dt.end ) > max_dtObj) {
         max_dt = dt.end;
