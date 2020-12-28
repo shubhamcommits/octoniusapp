@@ -368,7 +368,8 @@ export class GanttViewComponent implements OnInit {
     await this.add_index();
     await this.get_current_date_index()
     console.log("current_date_index",this.current_date_index);
-    console.log("this.tasksdata",this.tasksdata);    var ganttHeight=100+this.tasksdata.length*60;
+    console.log("this.tasksdata",this.tasksdata);
+    var ganttHeight=100+this.tasksdata.length*60;
     var screenHeight=window.innerHeight-100;
     console.log("Chart height",ganttHeight,screenHeight)
     if(ganttHeight>screenHeight){
