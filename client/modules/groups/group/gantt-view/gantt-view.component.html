@@ -3,7 +3,7 @@
     <!-- <scheduler [tasks]="tasks"></scheduler> -->
   <div style="margin-top: 20px;width: 100%;">
     <div id="main_container" >
-      <div class="vl" [ngStyle]="{'border-left': '3px solid rgb(74, 144, 226)','height': svg_height,'position': 'absolute','top':'47px','left':(current_date_index*step+15)+'px'}"></div>
+      <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div>
       <p [attr.width]="step" class="first_month">{{date[0]?.month}}</p>
       <div *ngFor="let item of date; let i =index" [ngStyle]="{'left':(i*50)+'px','height':svg_height,'background-color': item.isweekend?'#ececec':'initial'}" class="date_div">
         <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">{{item.month}}</p>
@@ -18,7 +18,7 @@
         : task.custom_class == 'done' ? 'task_card status-done' : 'task_card status-todo'
       "
       >
-        <app-assignee-avatar [post]="task.task" [userData]="userData" style="margin-right: 10px;position: absolute;top: 0px;"></app-assignee-avatar>
+        <app-assignee-avatar [post]="task.task" [userData]="userData"></app-assignee-avatar>
         <p *ngIf="task.difference>0" class="task_title_text" >{{task.difference===1 ? (task.name | truncatetext:2) : task.name}}</p>
         <i class="material-icons-outlined ml-2 menu_icon" >more_vert</i>
       </div>
@@ -26,34 +26,3 @@
   </div>
   </div>
 </div>
-
-
-<!-- <div [attr.width]="svg_width" [attr.height]="svg_height" id="main-svg">
-  <g>
-    <text x="0" y="30" font-family="Nunito" font-size="16" fill="#000000">{{date[0].month}}</text>
-  </g>
-  <line [attr.x1]="current_date_index*step+10" [attr.x2]="current_date_index*step+10" [attr.y1]="60" [attr.y2]="svg_height" stroke="#4A90E2" stroke-width="3.5" />
-  <rect  [attr.x]="current_date_index*step-5" y="40" width="30" [attr.height]="30" fill='#4A90E2' ></rect>
-  <g *ngFor="let item of date; let i =index">
-    <g *ngIf="item.day==1 ">
-      <text [attr.x]="(i*50)" y="30" font-family="Verdana" font-size="16" fill="black">{{item.month}}</text>
-    </g>
-    <rect  [attr.x]="i*50" y="40" width="50" [attr.height]="card_height" fill='none' ></rect>
-    <text [attr.x]="(i*50)" y="60" font-family="Nunito" font-size="16" fill="#000000">{{item.day}}</text>
-    <text *ngIf="i==current_date_index" [attr.x]="(i*50)" y="60" font-family="Nunito" font-size="16" fill="#ffffff">{{item.day}}</text>
-    <text *ngIf="item.day==1" [attr.x]="(i*50)" y="60" font-family="Nunito" font-size="16" fill="red">{{item.day}}</text>
-  </g>
-  <g *ngFor="let task of tasksdata; let i =index">
-    <rect  [attr.x]="task.index_date*step"  [attr.y]="(60*i+100)"  [attr.width]="task.difference*step+step " [attr.height]="card_height" rx="0" ry="3"  style="stroke:gray;fill: #ffffff;stroke-opacity: .3"></rect>
-    <rect  [attr.x]="task.index_date*step"  [attr.y]="(60*i+100)"  width="3" [attr.height]="card_height" style="fill: #ffab00;"></rect>
-    <text *ngIf="task.difference>0" [attr.x]="task.index_date*step+50" [attr.y]="(60*i+125)" font-family="Nunito" font-size="12" fill="#242D3A">{{task.name}}</text>
-    <defs>
-      <pattern id="image" [attr.x]="task.index_date*step" [attr.y]="(60*i+100)" height="100%" width="100%"
-      [attr.viewBox]="task.index_date*step+' '+(60*i+100)+' '+200+' '+200">
-        <image [attr.x]="task.index_date*step" [attr.y]="(60*i+100)" width="200" height="200" [attr.xlink:href]="task.image"></image>
-      </pattern>
-    </defs> 
-    <circle id="sd1" [attr.cx]="(task.index_date*step+23)" [attr.cy]="(60*i+100+19)" r="17" fill="url(#image)"/>
-    <line [attr.x1]="(task.index_date*step+45+task.difference*step)" [attr.x2]="(task.index_date*step+45+task.difference*step)" [attr.y1]="(60*i+100+15)" [attr.y2]="(60*i+100+30)" stroke="#9D9FA2" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="1,5"/>
-  </g>
-</svg> -->
