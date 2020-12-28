@@ -143,8 +143,11 @@ export class GanttViewComponent implements OnInit {
       if (Difference_In_Days < 26) {
         var lessdays = 26 - Difference_In_Days;
         Difference_In_Days = Difference_In_Days + lessdays;
+      } else {
+        Difference_In_Days = Difference_In_Days+2
       }
       //Continer width
+      
       this.gantt_container_width = (Difference_In_Days * this.step) + 'px';
       //Populating the dates.
 
@@ -164,6 +167,8 @@ export class GanttViewComponent implements OnInit {
       if (Difference_In_Days < 26) {
         var lessdays = 26 - Difference_In_Days;
         Difference_In_Days = Difference_In_Days + lessdays;
+      } else {
+        Difference_In_Days = Difference_In_Days+2
       }
       //Continer width
       this.gantt_container_width = (Difference_In_Days * this.step) + 'px';
@@ -297,8 +302,7 @@ export class GanttViewComponent implements OnInit {
     this.dates.forEach((dt, index) => {
       var a = new Date(dt.date);
       var b = new Date(date);
-
-      if (a.getDate() + a.getMonth() + a.getFullYear() == b.getDate() + b.getMonth() + b.getFullYear()) {
+      if (a.valueOf() == b.valueOf()) {
         dateindex = index;
       }
     });
