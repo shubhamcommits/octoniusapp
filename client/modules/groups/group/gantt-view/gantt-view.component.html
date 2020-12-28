@@ -1,37 +1,32 @@
 <div class="board">
   <div class="board-wrapper">
-    <!-- <scheduler [tasks]="tasks"></scheduler> -->
-  <div style="margin-top: 20px;width: 100%;">
-    <div id="main_container" >
-      <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div>
-      <p [attr.width]="step" class="first_month">{{date[0]?.month}}</p>
-      <div *ngFor="let item of date; let i =index" [ngStyle]="{'left':(i*50)+'px','height':svg_height,'background-color': item.isweekend?'#ececec':'initial'}" class="date_div">
-        <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">{{item.month}}</p>
-        <p [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}" [ngClass]="i==current_date_index?'curretn_date':''">{{item.day}}</p>
-      </div>
-      <div *ngFor="let task of tasksdata; let i =index"   
-      [ngStyle]="{'left':(task.index_date*step)+'px','top':(60*i+100)+'px','width':(task.difference*step+step)+'px'}" 
-      (click)="openFullscreenModal(task.task)"
-      [ngClass]="
+    <div style="margin-top: 20px;width: 100%;">
+      <div id="main_container">
+        <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div>
+        <p [attr.width]="step" class="first_month">{{date[0]?.month}}</p>
+        <div *ngFor="let item of date; let i =index" [ngStyle]="{'left':(i*50)+'px','height':svg_height,'background-color'
+          : item.isweekend?'#ececec':'initial'}" class="date_div">
+          <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">{{item.month}}
+          </p>
+          <p [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}" [ngClass]="i==current_date_index?'curretn_date':''">
+            {{item.day}}</p>
+        </div>
+        <div *ngFor="let task of tasksdata; let i =index" [ngStyle]="{'left':(task.index_date*step)+'px','top':(60*i+100)+'px','width'
+          :(task.difference*step+step)+'px'}" (click)="openFullscreenModal(task.task)" [ngClass]="
         task.custom_class == 'to do'? 'task_card status-todo' 
         : task.custom_class == 'in progress' ? 'task_card status-inprogress' 
         : task.custom_class == 'done' ? 'task_card status-done' : 'task_card status-todo'
-      "
-      >
-      <div class="media">
-
-        <app-assignee-avatar [post]="task.task" [userData]="userData"></app-assignee-avatar>
-        <div class="media-body">
-
-
-          <h5 *ngIf="task.difference>0" class="mt-2 task_title_text" >{{task.difference===1 ? (task.name | truncatetext:2) : task.name | truncatetext:20}}</h5>
-          
-          <i class="material-icons-outlined ml-2 menu_icon" >more_vert</i>
-        
-      </div>
-      </div>
+      ">
+          <div class="media">
+            <app-assignee-avatar [post]="task.task" [userData]="userData"></app-assignee-avatar>
+            <div class="media-body">
+              <h5 *ngIf="task.difference>0" class="mt-2 task_title_text">{{task.difference===1 ? (task.name |
+                truncatetext:2) : task.name | truncatetext:20}}</h5>
+              <i class="material-icons-outlined ml-2 menu_icon">more_vert</i>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
   </div>
 </div>
