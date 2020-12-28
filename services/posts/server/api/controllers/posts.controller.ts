@@ -898,7 +898,7 @@ export class PostController {
     }
 
     async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfValue: string, userId: string) {
-        let post =await postService.changeCustomFieldValue(postId, cfName, cfValue);
+        let post = await postService.changeCustomFieldValue(postId, cfName, cfValue);
 
         post.task.custom_fields[cfName] = cfValue;
         // Execute Automation Flows
@@ -1261,30 +1261,36 @@ console.log("EXECUTE!!!!!!")
     doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger?: boolean) {
         let retValue = true;
         if (triggers && triggers.length > 1) {
-            triggers.forEach(trigger => {
+            triggers.forEach(async trigger => {
                 if (retValue) {
 console.log('trigger', trigger.name);
 console.log('retValue 0', retValue);
                     switch (trigger.name) {
                         case 'Assigned to':
-                            const usersMatch = trigger._user.filter((triggerUser) => {
-                                for (var i = 0; i < post._assigned_to.length; i++) {
-                                    if (triggerUser._id == post._assigned_to[i]._id) {
-                                        return true;
-                                    }
-                                }
-                                return false;
-                            });
+                            // const usersMatch = await trigger._user.filter(triggerUser => post._assigned_to.some(assignee => triggerUser._id == assignee['_id']))
+                            const usersMatch = 
+                                trigger._user.filter((triggerUser) => {
+                                    return post._assigned_to.findIndex(assignee => {
+                                        assignee._id == triggerUser._id
+                                    }) != -1
+                                });
+console.log('trigger._user', trigger._user);
+console.log('post._assigned_to', post._assigned_to);
+console.log('usersMatch', usersMatch);
                             retValue = (usersMatch && usersMatch.length > 0);
+console.log('retValue As', retValue);
                             break;
                         case 'Custom Field':
                             retValue = post.task.custom_fields[trigger.custom_field.name] == trigger.custom_field.value;
+console.log('retValue CF', retValue);
                             break;
                         case 'Section is':
                             retValue = trigger.section.toUpperCase() == post.task._column.title.toUpperCase();
+console.log('retValue Se', retValue);
                             break;
                         case 'Status is':
                             retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+console.log('retValue St', retValue);
                             break;
                         case 'Task is CREATED':
                             if (isCreationTaskTrigger) {
