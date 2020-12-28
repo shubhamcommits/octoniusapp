@@ -19,7 +19,7 @@
       "
       >
         <app-assignee-avatar [post]="task.task" [userData]="userData"></app-assignee-avatar>
-        <p *ngIf="task.difference>0" class="task_title_text" >{{task.difference===1 ? (task.name | truncatetext:2) : task.name}}</p>
+        <p *ngIf="task.difference>0" class="task_title_text" >{{task.difference===1 ? (task.name | truncatetext:2) : task.name | truncatetext:14}}</p>
         <i class="material-icons-outlined ml-2 menu_icon" >more_vert</i>
       </div>
     </div>
