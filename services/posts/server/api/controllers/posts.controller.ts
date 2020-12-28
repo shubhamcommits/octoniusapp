@@ -1244,7 +1244,6 @@ export class PostController {
                     if (steps && steps.length > 0) {
                         steps.forEach(async step => {
                             if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger)) {
-console.log("EXECUTE!!!!!!")
                                 await this.executeActionFlow(step.action, post, userId, groupId);
                             }
                         });
@@ -1263,34 +1262,24 @@ console.log("EXECUTE!!!!!!")
         if (triggers && triggers.length > 1) {
             triggers.forEach(async trigger => {
                 if (retValue) {
-console.log('trigger', trigger.name);
-console.log('retValue 0', retValue);
                     switch (trigger.name) {
                         case 'Assigned to':
-                            // const usersMatch = await trigger._user.filter(triggerUser => post._assigned_to.some(assignee => triggerUser._id == assignee['_id']))
                             const usersMatch = 
                                 trigger._user.filter((triggerUser) => {
                                     return post._assigned_to.findIndex(assignee => {
-                                        assignee._id == triggerUser._id
+                                        return assignee._id.toString() == triggerUser._id.toString()
                                     }) != -1
                                 });
-console.log('trigger._user', trigger._user);
-console.log('post._assigned_to', post._assigned_to);
-console.log('usersMatch', usersMatch);
                             retValue = (usersMatch && usersMatch.length > 0);
-console.log('retValue As', retValue);
                             break;
                         case 'Custom Field':
                             retValue = post.task.custom_fields[trigger.custom_field.name] == trigger.custom_field.value;
-console.log('retValue CF', retValue);
                             break;
                         case 'Section is':
                             retValue = trigger.section.toUpperCase() == post.task._column.title.toUpperCase();
-console.log('retValue Se', retValue);
                             break;
                         case 'Status is':
                             retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
-console.log('retValue St', retValue);
                             break;
                         case 'Task is CREATED':
                             if (isCreationTaskTrigger) {
@@ -1301,11 +1290,9 @@ console.log('retValue St', retValue);
                             retValue = true;
                             break;
                     }
-console.log('retValue 1', retValue);
                 }
             });
         }
-console.log('retValue 2', retValue);
         return retValue;
     }
 
@@ -1340,25 +1327,4 @@ console.log('retValue 2', retValue);
         });
         return post;
     }
-    /*
-    isTriggerValueMatch(triggerIndex: number, triggerTpe: string, triggers: any[], value: any) {
-        
-        switch (triggerTpe) {
-            case 'Assigned to':
-                const userIndex = triggers[triggerIndex]._user.findIndex(userTrigger => (userTrigger._id == value || userTrigger == value));
-                return (userIndex > -1);
-            case 'Custom Field':
-                return (triggers[triggerIndex].custom_field.name.toUpperCase() == value.name.toUpperCase()
-                    && triggers[triggerIndex].custom_field.value.toUpperCase() == value.value.toUpperCase());
-            case 'Section is':
-                return triggers[triggerIndex].section.toUpperCase() == value.toUpperCase();
-            case 'Status is':
-                return triggers[triggerIndex].status.toUpperCase() == value.toUpperCase();
-            case 'Task is CREATED':
-                return true;
-            default:
-                return false;
-        }
-    }
-    */
 }

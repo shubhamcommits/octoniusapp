@@ -1057,15 +1057,13 @@ export class PublicFunctions {
             if (retValue) {
               switch (trigger.name) {
                   case 'Assigned to':
-                      const usersMatch = trigger._user.filter((triggerUser) => {
-                          for(var i=0; i < post._assigned_to.length; i++){
-                            if(triggerUser._id == post._assigned_to[i]._id){
-                              return true;
-                            }
-                          }
-                          return false;
+                      const usersMatch =
+                      trigger._user.filter((triggerUser) => {
+                          return post._assigned_to.findIndex(assignee => {
+                              return assignee._id.toString() == triggerUser._id.toString()
+                          }) != -1
                       });
-                      retValue = (usersMatch.length > 0);
+                      retValue = (usersMatch && usersMatch.length > 0);
                       break;
                   case 'Custom Field':
                       retValue = post.task.custom_fields[trigger.custom_field.name] == trigger.custom_field.value;
