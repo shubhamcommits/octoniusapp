@@ -18,9 +18,18 @@
         : task.custom_class == 'done' ? 'task_card status-done' : 'task_card status-todo'
       "
       >
+      <div class="media">
+
         <app-assignee-avatar [post]="task.task" [userData]="userData"></app-assignee-avatar>
-        <p *ngIf="task.difference>0" class="task_title_text" >{{task.difference===1 ? (task.name | truncatetext:2) : task.name | truncatetext:14}}</p>
-        <i class="material-icons-outlined ml-2 menu_icon" >more_vert</i>
+        <div class="media-body">
+
+
+          <h5 *ngIf="task.difference>0" class="mt-2 task_title_text" >{{task.difference===1 ? (task.name | truncatetext:2) : task.name | truncatetext:20}}</h5>
+          
+          <i class="material-icons-outlined ml-2 menu_icon" >more_vert</i>
+        
+      </div>
+      </div>
       </div>
     </div>
   </div>

@@ -62,17 +62,13 @@
 }
 
 
-
 .task_title_text{
-    position: absolute;
-    top: 10px;
-    left: 45px;
-    font-family: Nunito;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 16px;
+    font-family: 'Nunito';
+    font-weight: 400;
+    font-size: 15px;
     color: #242D3A;
+    width: 100%;
+    white-space: normal;
 }
 
 $pumpkin-orange: #ffab00;
