@@ -26,7 +26,8 @@
         </app-group-tasks-list-view>
 
         <app-gantt-view *ngIf="viewType === 'gantt'"
-          [tasks]="tasks">
+          [tasks]="tasks" 
+          [userData]="userData">
         </app-gantt-view>
 
         <app-group-calendar-view *ngIf="viewType === 'calendar'"
