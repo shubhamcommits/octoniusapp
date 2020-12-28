@@ -202,7 +202,7 @@ export class PostService {
     toPromise()}
 
   /**
-   * This function is resposible for changing the task status of a post
+   * This function is resposible for changing the task Assignee of a post
    * @param postId
    * @param assigneeId
    */
@@ -216,7 +216,7 @@ export class PostService {
   }
 
   /**
-   * This function is resposible for changing the task status of a post
+   * This function is resposible for changing the task DueDate of a post
    * @param postId
    * @param dateDueTo
    */
