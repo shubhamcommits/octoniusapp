@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-gantt-view',
@@ -53,6 +54,10 @@ export class GanttViewComponent implements OnInit {
 
   }
 
+  //sfdsdfd
+  drop(event: CdkDragDrop<string[]>) {
+    console.log("dropped",event)
+  }
   //onupdate task
   async updateTask(updatedTask: any) {
 
