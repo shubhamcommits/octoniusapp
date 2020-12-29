@@ -25,6 +25,12 @@ routes.put('/:fileId', files.edit);
 // DELETE - Delete the file on the basis of fileId
 routes.delete('/:fileId', files.delete);
 
+// POST - Handles the copy of a folio to a group
+routes.post('/:fileId/copy-to-group', files.copy);
+
+// PUT - Handles the move of a folio to a group
+routes.put('/:fileId/move-to-group', files.move);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

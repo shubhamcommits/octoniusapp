@@ -63,7 +63,7 @@ export class PostController {
 
         if (post.type === 'task') {
             // Execute Automation Flows
-            post = await this.executeAutomationFlows((post._group || post._group._id), post, '', userId);
+            post = await this.executeAutomationFlows((post._group._id || post._group), post, userId, true);
         }
 
         return post;
@@ -575,7 +575,7 @@ export class PostController {
         let post = await postService.addAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, assigneeId, userId);
+        post = await this.executeAutomationFlows(groupId, post, userId);
 
         if (post._assigned_to) {
             const index = post._assigned_to.findIndex(assignee => assignee._id == assigneeId);
@@ -626,7 +626,7 @@ export class PostController {
         let post = await postService.changeTaskAssignee(postId, assigneeId, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows((post._group || post._group._id), post, assigneeId, userId);
+        post = await this.executeAutomationFlows((post._group || post._group._id), post, userId);
         
         post.task._assigned_to = assigneeId;
 
@@ -722,16 +722,16 @@ export class PostController {
     }
 
     async callChangeTaskStatusService(postId: string, status: string, userId: string, groupId: string) {
+
         // Call Service function to change the assignee
         let post = await postService.changeTaskStatus(postId, status, userId)
             .catch((err) => {
                 throw err;
             });
+        post.task.status = status;
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, status, userId);
-
-        post.task.status = status;
+        post = await this.executeAutomationFlows(groupId, post, userId);
         
         return post;
     }
@@ -773,7 +773,7 @@ export class PostController {
         let post = await postService.changeTaskColumn(postId, sectionTitle, userId);
 
         // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, sectionTitle, userId);
+        post = await this.executeAutomationFlows(groupId, post, userId);
 
         post.task._column.title = sectionTitle;
 
@@ -900,10 +900,9 @@ export class PostController {
     async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfValue: string, userId: string) {
         let post = await postService.changeCustomFieldValue(postId, cfName, cfValue);
 
-        // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, '', userId, {name: cfName, value: cfValue});
-
         post.task.custom_fields[cfName] = cfValue;
+        // Execute Automation Flows
+        post = await this.executeAutomationFlows(groupId, post, userId);
 
         return post;
     }
@@ -1235,7 +1234,7 @@ export class PostController {
         }
     }
 
-    async executeAutomationFlows(groupId: string, post: any, triggerText: string, userId: string, cfTrigger?: any) {
+    async executeAutomationFlows(groupId: string, post: any, userId: string, isCreationTaskTrigger?: boolean) {
         try {
             const flows = await flowService.getAtomationFlows(groupId);
             if (flows && flows.length > 0) {
@@ -1244,43 +1243,8 @@ export class PostController {
 
                     if (steps && steps.length > 0) {
                         steps.forEach(async step => {
-
-                            let triggerIndex = -1;
-                            if (step.trigger.name === 'Assigned to' && step.trigger._user) {
-                                triggerIndex = step.trigger._user.findIndex(userTrigger => (userTrigger._id === triggerText || userTrigger === triggerText));
-                            }
-                            
-                            if ((step.trigger.name === 'Assigned to' && (triggerIndex >= 0))
-                                || (step.trigger.name === 'Section is' && step.trigger.section.toUpperCase() === triggerText.toUpperCase())
-                                || (step.trigger.name === 'Status is' && step.trigger.status.toUpperCase() === triggerText.toUpperCase())
-                                || (step.trigger.name === 'Custom Field' && cfTrigger
-                                    && step.trigger.custom_field.name.toUpperCase() === cfTrigger.name.toUpperCase()
-                                    && step.trigger.custom_field.value.toUpperCase() === cfTrigger.value.toUpperCase())
-                                || (step.trigger.name === 'Task is CREATED')) {
-
-                                if (step.action.name === 'Assign to') {
-                                    step.action._user.forEach(async userAction => {
-                                        let index = -1;
-                                        if (post._assigned_to) {
-                                            index = post._assigned_to.findIndex(assignee => assignee._id == userAction._id || assignee._id == userAction);
-                                        }
-                                        if (index < 0) {
-                                            return await this.callAddAssigneeService(post._id, userAction, userId, groupId);
-                                        }
-                                    });
-                                }
-                                
-                                if (step.action.name === 'Change Status to') {
-                                    return await this.callChangeTaskStatusService(post._id, step.action.status, userId, groupId);
-                                }
-
-                                if (step.action.name === 'Custom Field') {
-                                    return await this.callChangeCustomFieldValueService(groupId, post._id, step.action.custom_field.name, step.action.custom_field.value, userId);
-                                }
-
-                                if (step.action.name === 'Move to') {
-                                    return await this.changeTaskSection(post._id, step.action.section, userId, groupId);
-                                }
+                            if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger)) {
+                                await this.executeActionFlow(step.action, post, userId, groupId);
                             }
                         });
                     }
@@ -1291,5 +1255,77 @@ export class PostController {
             console.log(`\n⛔️ Error:\n ${error}`);
             throw error;
         }
+    }
+    
+    doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger?: boolean) {
+        let retValue = true;
+        if (triggers && triggers.length > 1) {
+            triggers.forEach(async trigger => {
+                if (retValue) {
+                    switch (trigger.name) {
+                        case 'Assigned to':
+                            // const usersMatch = await trigger._user.filter(triggerUser => post._assigned_to.some(assignee => triggerUser._id == assignee['_id']))
+                            const usersMatch = 
+                                trigger._user.filter((triggerUser) => {
+                                    return post._assigned_to.findIndex(assignee => {
+                                        return assignee._id.toString() == triggerUser._id.toString()
+                                    }) != -1
+                                });
+                            retValue = (usersMatch && usersMatch.length > 0);
+                            break;
+                        case 'Custom Field':
+                            retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
+                            break;
+                        case 'Section is':
+                            retValue = trigger.section.toUpperCase() == post.task._column.title.toUpperCase();
+                            break;
+                        case 'Status is':
+                            retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+                            break;
+                        case 'Task is CREATED':
+                            if (isCreationTaskTrigger) {
+                                retValue = true;
+                            }
+                            break;
+                        default:
+                            retValue = true;
+                            break;
+                    }
+                }
+            });
+        }
+        return retValue;
+    }
+
+    executeActionFlow(actions: any[], post: any, userId: string, groupId: string) {
+        actions.forEach(async action => {
+            switch (action.name) {
+                case 'Assign to':
+                    action._user.forEach(async userAction => {
+                        let index = -1;
+                        if (post._assigned_to) {
+                            index = post._assigned_to.findIndex(assignee => {return (assignee._id || assignee) == (userAction._id || userAction)});
+
+                            if (index < 0) {
+                                post = await this.callAddAssigneeService(post._id, userAction, userId, groupId);
+                            }
+                        }
+                    });
+
+                    break;
+                case 'Custom Field':
+                    post = await this.callChangeCustomFieldValueService(groupId, post._id, action.custom_field.name, action.custom_field.value, userId);
+                    break;
+                case 'Move to':
+                    post = await this.changeTaskSection(post._id, action.section, userId, groupId);
+                    break;
+                case 'Change Status to':
+                    post = await this.callChangeTaskStatusService(post._id, action.status, userId, groupId);
+                    break;
+                default:
+                    break;
+            } 
+        });
+        return post;
     }
 }

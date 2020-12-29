@@ -412,7 +412,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
         .then(async (res) => {
           this.postData.task.custom_fields[customFieldName] = customFieldValue;
 
-          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, '', this.flows, {name: customFieldName, value: customFieldValue});
+          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, {name: customFieldName, value: customFieldValue}, this.groupData._id, this.postData, this.userData._id);
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`${customFieldName} updated!`));
@@ -509,14 +509,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
     // Set the status
     this.postData.task.status = event;
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, event, this.flows);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, event, this.groupData._id, this.postData, this.userData._id);
   }
 
   async moveTaskToColumn(event) {
     await this.publicFunctions.changeTaskColumn(this.postData._id, event.post.task._column.title, this.userData._id, this.groupId);
     this.postData.task._column.title = event.post.task._column.title;
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, event.post.task._column.title, this.flows);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, event.post.task._column.title, this.groupData._id, this.postData, this.userData._id);
   }
 
   async onAssigned(res) {
@@ -524,7 +524,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.setAssignedBy(this.postData);
 
     if (this.postData.type === 'task') {
-      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.postData, res['assigneeId'], this.flows);
+      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, res['assigneeId'], this.groupData._id, this.postData, this.userData._id);
     }
   }
 

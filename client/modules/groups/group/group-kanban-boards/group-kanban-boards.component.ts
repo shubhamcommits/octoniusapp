@@ -348,7 +348,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
   async moveTaskToNewColumn(task: any, oldColumn: string, newColumn: string) {
     this.publicFunctions.changeTaskColumn(task._id, newColumn, this.userData._id, this.groupId);
 
-    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(task, newColumn, this.flows);
+    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, newColumn, this.groupId, task, this.userData._id);
 
     // Prepare Event
     let columnEvent = {
