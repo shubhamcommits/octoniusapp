@@ -33,6 +33,7 @@ export class PostActionsComponent implements OnInit {
 
   likedByUsers = [];
   followedByUsers = [];
+  newComment;
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
@@ -114,7 +115,9 @@ export class PostActionsComponent implements OnInit {
     this.showComments = commentsDisplayState
   }
 
-  newComment(comment: any) {
+  newCommentReceived(comment: any) {
+    this.post.comments_count++;
+    this.newComment = comment;
     this.newCommentEmitter.emit(comment);
   }
 
