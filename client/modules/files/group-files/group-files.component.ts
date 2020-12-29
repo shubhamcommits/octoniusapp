@@ -267,6 +267,10 @@ export class GroupFilesComponent implements OnInit {
           await this.utilityService.asyncNotification('Please wait we are move the folio...', new Promise((resolve, reject) => {
             this.filesService.transferToGroup(fileId, groupId, false)
               .then((res) => {
+                // Remove the file from the list
+                // this.files.splice(this.files.findIndex(file => file._id == fileId), 1);
+
+                // Redirect to the new group files page
                 this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId, myWorkplace: false } });
                 resolve(this.utilityService.resolveAsyncPromise(`👍 Folio Moved!`));
               })
