@@ -166,4 +166,36 @@ export class GroupFilesComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * This function is responsible for copying the folio link to the clipboard
+   */
+  copyToClipboard(fileId: string) {
+
+    // Create Selection Box
+    let selBox = document.createElement('textarea');
+
+    // Set the CSS Properties
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+
+    selBox.value = environment.clientUrl + '/document/' + fileId + '?group=' + this.groupId + '&readOnly=true';
+    // Append the element to the DOM
+    document.body.appendChild(selBox);
+
+    // Set the focus and Child
+    selBox.focus();
+    selBox.select();
+
+    // Execute Copy Command
+    document.execCommand('copy');
+
+    // Once Copied remove the child from the dom
+    document.body.removeChild(selBox);
+
+    // Show Confirmed notification
+    this.utilityService.simpleNotification(`Copied to Clipboard!`);
+  }
 }

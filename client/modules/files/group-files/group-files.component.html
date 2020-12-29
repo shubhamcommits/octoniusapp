@@ -61,6 +61,10 @@
                             onerror="this.src='assets/images/user.png'" class="feed-avatar">
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
                         <mat-menu #menu="matMenu">
+                            <a *ngIf="file?.type === 'folio'" mat-menu-item (click)="copyToClipboard(file?._id)">
+                                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
+                                <span>Copy Link</span>
+                            </a>
                             <a *ngIf="file?.type === 'file' || file?.type === undefined" mat-menu-item (click)="openViewFileDialog(filesBaseUrl + '/' + file?.modified_name)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                                 <span>View</span>
