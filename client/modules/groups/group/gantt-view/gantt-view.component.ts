@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ResizeEvent } from 'angular-resizable-element';
 
 @Component({
   selector: 'app-gantt-view',
@@ -57,6 +58,52 @@ export class GanttViewComponent implements OnInit {
   //sfdsdfd
   drop(event: CdkDragDrop<string[]>) {
     console.log("dropped",event)
+  }
+
+  validate(event: ResizeEvent): boolean {
+    const MIN_DIMENSIONS_PX: number = 50;
+    if (
+      event.rectangle.width &&
+      event.rectangle.height &&
+      (event.rectangle.width < MIN_DIMENSIONS_PX)
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  onResizeEnd(event: ResizeEvent,Taskid:string,Taskindex): void {
+    console.log('Element was resized', event,Taskid);
+
+    if (event.edges?.right) {
+      
+      if (event.edges?.right>0){
+        var multiple = Math.floor(Number(event.edges?.right)/50);
+      } else {
+        var multiple = Math.ceil(Number(event.edges?.right)/50);
+      }
+      var result= multiple*50;
+      var clientWidth=document.getElementById(Taskid).clientWidth;
+      var newWidth=clientWidth+result+4;
+      document.getElementById(Taskid).style.width=newWidth+'px';
+      console.log("Width",this.tasksdata[Taskindex],result,newWidth);
+
+    } else if (event.edges?.left){
+      if (event.edges?.left>0){
+        var multiple = Math.floor(Number(event.edges?.left)/50);
+      } else {
+        var multiple = Math.ceil(Number(event.edges?.left)/50);
+      }
+      var result= multiple*50;
+      var offsetLeft=document.getElementById(Taskid).offsetLeft;
+      var clientWidth=document.getElementById(Taskid).clientWidth;
+      var newWidth=clientWidth-result+4;
+      document.getElementById(Taskid).style.width=newWidth+'px';
+      var newLeft=offsetLeft+result;
+      document.getElementById(Taskid).style.left=newLeft+'px';
+      console.log("left",document.getElementById(Taskid).offsetLeft,result);
+    }
+    
   }
   //onupdate task
   async updateTask(updatedTask: any) {

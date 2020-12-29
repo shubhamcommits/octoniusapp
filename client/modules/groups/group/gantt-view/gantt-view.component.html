@@ -11,12 +11,26 @@
           <p [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}" [ngClass]="i==current_date_index?'curretn_date':''">
             {{item.day}}</p>
         </div>
-        <div *ngFor="let task of tasksdata; let i =index" id="itaskcard" [ngStyle]="{'left':(task.index_date*step)+'px','top':(60*i+100)+'px','width'
+        <div *ngFor="let task of tasksdata; let i =index"[attr.taskIndex]="i" [attr.id]="task.id" [ngStyle]="{'left':(task.index_date*step)+'px','top':(60*i+100)+'px','width'
           :(task.difference*step+step)+'px'}" (click)="openFullscreenModal(task.task)" [ngClass]="
-        task.custom_class == 'to do'? 'task_card status-todo' 
-        : task.custom_class == 'in progress' ? 'task_card status-inprogress' 
-        : task.custom_class == 'done' ? 'task_card status-done' : 'task_card status-todo'
-      " cdkDragLockAxis="x" cdkDrag>
+        task.custom_class == 'to do'? 'rectangle task_card status-todo' 
+        : task.custom_class == 'in progress' ? 'rectangle task_card status-inprogress' 
+        : task.custom_class == 'done' ? 'rectangle task_card status-done' : 'rectangle task_card status-todo'
+      " cdkDragLockAxis="x" cdkDrag
+        mwlResizable
+        [validateResize]="validate"
+        [enableGhostResize]="true"
+        (resizeEnd)="onResizeEnd($event,task.id,i)">
+          <div
+          class="resize-handle-left"
+          mwlResizeHandle
+          [resizeEdges]="{ left: true }"
+        ></div>
+        <div
+          class="resize-handle-right"
+          mwlResizeHandle
+          [resizeEdges]="{ right: true }"
+        ></div>
           <div class="media">
             <app-assignee-avatar [post]="task.task" [userData]="userData"></app-assignee-avatar>
             <div class="media-body">

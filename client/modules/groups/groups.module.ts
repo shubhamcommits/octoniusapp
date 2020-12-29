@@ -77,7 +77,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
-
+import { ResizableModule } from 'angular-resizable-element';
  /**
   * 3. !===== SERVICES =====!
   */
@@ -211,6 +211,7 @@ import { CalendarModule as Calendar, DateAdapter } from 'angular-calendar';
     MatExpansionModule,
     MatTableModule,
     MatSortModule,
+    ResizableModule,
 
     Calendar.forRoot({
       provide: DateAdapter,
