@@ -3,7 +3,7 @@ import { Component, OnInit, Injector, Output, EventEmitter, Inject } from '@angu
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { Subject } from 'rxjs/internal/Subject';
 import { SubSink } from 'subsink';
@@ -22,10 +22,14 @@ export class GroupFilesComponent implements OnInit {
   constructor(
     public utilityService: UtilityService,
     private injector: Injector,
+    private _router: Router,
     private router: ActivatedRoute,
     private filesService: FilesService,
     public dialog: MatDialog,
   ) { }
+
+  // Delete Event Emitter - Emits delete event
+  @Output('delete') delete = new EventEmitter();
 
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot.queryParamMap.get('group');
@@ -65,19 +69,44 @@ export class GroupFilesComponent implements OnInit {
 
   myWorkplace = this.router.snapshot.queryParamMap.has('myWorkplace') ? this.router.snapshot.queryParamMap.get('myWorkplace') : false
 
-  // Delete Event Emitter - Emits delete event
-  @Output('delete') delete = new EventEmitter();
+
+  userGroups = [];
+  transferAction = '';
+  groupData: any;
 
   async ngOnInit() {
 
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
 
+    // Fetch the current group
+    this.groupData = await this.publicFunctions.getCurrentGroup();
+
     // Fetch the uploaded files from the server
     this.files = await this.publicFunctions.getFiles(this.groupId);
 
     // Concat the files
     this.files = [...this.files, ...this.folders];
+
+    if (this.groupId && this.userData) {
+      // Fetches the user groups from the server
+      await this.publicFunctions.getUserGroups(this.groupData._workspace, this.userData._id)
+        .then((groups: any) => {
+
+          groups.splice(groups.findIndex(group => group._id == this.groupId), 1);
+
+          this.userGroups = groups;
+
+          this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
+          this.utilityService.removeDuplicates(this.userGroups, '_id').then((groups)=>{
+            this.userGroups = groups;
+          });
+        })
+        .catch(() => {
+          // If the function breaks, then catch the error and console to the application
+          this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        });
+    }
   }
 
   getFile(file: any){
@@ -197,5 +226,55 @@ export class GroupFilesComponent implements OnInit {
 
     // Show Confirmed notification
     this.utilityService.simpleNotification(`Copied to Clipboard!`);
+  }
+
+  saveTransferAction(action: string) {
+    this.transferAction = action;
+  }
+
+  transferToGroup(fileId: string, group: string) {
+    if (this.transferAction === 'copy') {
+      this.copyToGroup(fileId, group);
+    }
+    if (this.transferAction === 'move') {
+      this.moveToGroup(fileId, group);
+    }
+    this.transferAction = '';
+  }
+
+  async copyToGroup(fileId: string, group: string) {
+    // Open the Confirm Dialog to ask for permission
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the folio will be copied to the selected group!')
+      .then(async (res) => {
+        if (res.value) {
+          await this.utilityService.asyncNotification('Please wait we are copy the folio...', new Promise((resolve, reject) => {
+            this.filesService.transferToGroup(fileId, group, true).then((res) => {
+                resolve(this.utilityService.resolveAsyncPromise(`👍 Folio Copied!`));
+              })
+              .catch((error) => {
+                reject(this.utilityService.rejectAsyncPromise(`Error while copying the folio!`));
+              });
+          }));
+        }
+      });
+  }
+
+  async moveToGroup(fileId: string, groupId: string) {
+    // Open the Confirm Dialog to ask for permission
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the folio will be moved to the selected group!')
+      .then(async (res) => {
+        if (res.value) {
+          await this.utilityService.asyncNotification('Please wait we are move the folio...', new Promise((resolve, reject) => {
+            this.filesService.transferToGroup(fileId, groupId, false)
+              .then((res) => {
+                this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId, myWorkplace: false } });
+                resolve(this.utilityService.resolveAsyncPromise(`👍 Folio Moved!`));
+              })
+              .catch((error) => {
+                reject(this.utilityService.rejectAsyncPromise(`Error while moving the folio!`));
+              });
+          }));
+        }
+      });
   }
 }

@@ -202,4 +202,58 @@ export class FilesService {
 
         return groupsIds;
     }
+
+    /**
+     * This function is responsible for copying a folio to a group
+     * @param fileId
+     * @param groupId 
+     */
+    async copy(fileId: string, groupId: string) {
+
+        if (fileId) {
+
+            // Find the folio by Id
+            let oldFile: any = await File.findById(fileId).lean();
+
+            let newFile = oldFile;
+            delete newFile._id;
+            newFile._group = groupId;
+
+            // Create new folio
+            newFile = await File.create(newFile);
+
+            // Populate File Properties
+            newFile = this.populateFileProperties(newFile)
+
+            // TODO - Copy the content
+
+            // Return file
+            return newFile;
+        }
+    }
+
+    /**
+     * This function is responsible for moving a folio to a group
+     * @param fileId
+     * @param groupId 
+     */
+    async move(fileId: string, groupId: string) {
+
+        if (fileId) {
+
+            const update = {
+                _group: groupId,
+              }
+
+            // Find the file by Id
+            let file: any = await File.findByIdAndUpdate(fileId,
+                { _group: groupId });
+
+            // Populate File Properties
+            file = this.populateFileProperties(file)
+
+            // Return file
+            return file;
+        }
+    }
 }

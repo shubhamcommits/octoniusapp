@@ -65,6 +65,26 @@
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
                                 <span>Copy Link</span>
                             </a>
+
+                            <div *ngIf="file?.type === 'folio'">
+                              <!--
+                              <a mat-menu-item [matMenuTriggerFor]="transferMenu" (mouseover)="saveTransferAction('copy')">
+                                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
+                                Copy to Group
+                              </a>
+                              -->
+                              <a mat-menu-item [matMenuTriggerFor]="transferMenu" (mouseover)="saveTransferAction('move')">
+                                <i class="material-icons">arrow_forward</i>
+                                Move to Group
+                              </a>
+
+                              <mat-menu #transferMenu="matMenu">
+                                <ng-container *ngFor="let group of userGroups; let index = index">
+                                  <button mat-menu-item (click)="transferToGroup(file._id, userGroups[index]?._id)">{{ group.group_name }}</button>
+                                </ng-container>
+                              </mat-menu>
+                            </div>
+
                             <a *ngIf="file?.type === 'file' || file?.type === undefined" mat-menu-item (click)="openViewFileDialog(filesBaseUrl + '/' + file?.modified_name)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                                 <span>View</span>

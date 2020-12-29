@@ -202,4 +202,70 @@ export class FilesControllers {
         }
     }
 
+    /**
+     * This function is responsible for copying a folio to a group
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async copy(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the fileId from the request
+            const { params: { fileId }, body: { groupId } } = req;
+
+            // If fileId is not found, then throw the error
+            if (!fileId && !groupId) {
+                return res.status(400).json({
+                    message: 'Please pass the fileId and groupId'
+                });
+            }
+
+            // Copy the folio
+            let fileData = await filesService.copy(fileId, groupId);
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Folio copied!',
+                file: fileData
+            })
+
+        } catch (err) {
+            return sendError(res, new Error('Internal Server Error!'), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for moving a folio to a group
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async move(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the fileId from the request
+            const { params: { fileId }, body: { groupId } } = req;
+
+            // If fileId is not found, then throw the error
+            if (!fileId &&  !groupId) {
+                return res.status(400).json({
+                    message: 'Please pass the fileId and groupId'
+                });
+            }
+
+            // Move the folio
+            let fileData = await filesService.move(fileId, groupId);
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Folio moved!',
+                file: fileData
+            })
+
+        } catch (err) {
+            return sendError(res, new Error('Internal Server Error!'), 'Internal Server Error!', 500);
+        }
+    }
+
 }
