@@ -51,6 +51,7 @@ import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SelectWorkspaceComponent } from './select-workspace/select-workspace.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 
@@ -77,7 +78,9 @@ import { SelectWorkspaceComponent } from './select-workspace/select-workspace.co
     // FORGOT PASSWORD COMPONENT
     ForgotPasswordComponent,
 
-    SelectWorkspaceComponent
+    SelectWorkspaceComponent,
+
+    ResetPasswordComponent
   ],
   imports: [
     // AUTHENTICATION ROUTING MODULE
