@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthNewWorkplaceComponent } from './auth-new-workplace/auth-new-workplace.component';
 import { AuthSignInComponent } from './auth-sign-in/auth-sign-in.component';
 import { AuthSignUpComponent } from './auth-sign-up/auth-sign-up.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { SelectWorkspaceComponent } from './select-workspace/select-workspace.component';
 
 const routes: Routes = [
@@ -31,7 +32,13 @@ const routes: Routes = [
   {
     path: 'new-workplace',
     component: AuthNewWorkplaceComponent
-  }
+  },
+
+    // 'reset-password' ROUTE
+    {
+      path: 'reset-password/:resetPwdId',
+      component: ResetPasswordComponent
+    }
 ];
 
 // IMPORT & EXPORT

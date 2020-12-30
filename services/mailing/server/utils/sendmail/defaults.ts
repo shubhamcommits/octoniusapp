@@ -24,6 +24,6 @@ export = {
         return `${process.env.PROTOCOL}://${process.env.DOMAIN}/authentication/sign-up${workplace ? `?workspace=${workplace}` : ''}${email ? `&email=${email}` : ''}${type ? `&type=${type}` : ''}${group ? `&group=${group}` : ''}`;
     },
     signinLink: generateLink('signin'),
-    resetPwdLink: generateLink('resetPassword'),
+    resetPwdLink: generateLink('authentication/reset-password'),
     postLink
 };

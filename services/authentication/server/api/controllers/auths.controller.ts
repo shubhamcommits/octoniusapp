@@ -49,7 +49,7 @@ export class AuthsController {
             }
 
             // Resolve the promise
-            resolve();
+            resolve({});
         })
 
     }
