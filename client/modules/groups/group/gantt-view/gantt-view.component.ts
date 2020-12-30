@@ -61,7 +61,37 @@ export class GanttViewComponent implements OnInit {
 
   //sfdsdfd
   drop(event: CdkDragDrop<string[]>) {
-    console.log("dropped", event)
+    var Taskindex = event.item.element.nativeElement.attributes['taskindex'].nodeValue;
+    var task = this.tasksdata[event.item.element.nativeElement.attributes['taskindex'].nodeValue];
+    console.log("dropped", event,task);
+
+    var distance = (event.distance.x)/50;
+    var mod = (event.distance.x)%50;
+    if (mod > 30) {
+      var days = Math.ceil(distance);
+    } else {
+      var days = Math.floor(distance);
+    }
+    var updated_x = task.index_date+days;
+    
+    event.item.element.nativeElement.setAttribute('style', `top:0px;left:${updated_x*50}px;width: ${event.item.element.nativeElement.style.width}`)
+    
+    var endDate = new Date(this.tasksdata[Taskindex].end);
+    console.log("endDate",endDate,days);
+    var newEndDate = new Date(this.tasksdata[Taskindex].end);
+    newEndDate.setDate(endDate.getDate()+days);
+
+    var startDate = new Date(this.tasksdata[Taskindex].start);
+    console.log("startDate",startDate,days);
+    var newStartDate = new Date(this.tasksdata[Taskindex].start);
+    newStartDate.setDate(startDate.getDate()+days);
+
+    this.tasksdata[Taskindex].end=this.datePipe.transform(newEndDate,"yyyy-MM-dd");
+    this.tasksdata[Taskindex].task.task.due_to=this.datePipe.transform(newEndDate,"yyyy-MM-dd");
+    this.tasksdata[Taskindex].task.task.start_date=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
+    this.tasksdata[Taskindex].start=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
+    console.log("new start end date",newStartDate,newEndDate);
+    this.dateupdate(this.tasksdata[Taskindex],newStartDate,newEndDate);
   }
 
   validate(event: ResizeEvent): boolean {
@@ -81,10 +111,19 @@ export class GanttViewComponent implements OnInit {
 
     if (event.edges?.right) {
 
-      if (event.edges?.right > 0) {
-        var multiple = Math.floor(Number(event.edges?.right) / 50);
+      var mod = Number(event.edges?.right)%50;
+      if (event.edges?.left > 0) {
+        if (mod > 30) {
+          var multiple = Math.ceil(Number(event.edges?.right) / 50);
+        } else {
+          var multiple = Math.floor(Number(event.edges?.right) / 50);
+        }
       } else {
-        var multiple = Math.ceil(Number(event.edges?.right) / 50);
+        if (mod > -30) {
+          var multiple = Math.ceil(Number(event.edges?.right) / 50);
+        } else {
+          var multiple = Math.floor(Number(event.edges?.right) / 50);
+        }
       }
       var result = multiple * 50;
       var clientWidth = document.getElementById(Taskid).clientWidth;
@@ -102,10 +141,22 @@ export class GanttViewComponent implements OnInit {
 
     } else if (event.edges?.left) {
 
+      console.log("Event Left",event.edges?.left)
+      var mod = Number(event.edges?.left)%50;
       if (event.edges?.left > 0) {
-        var multiple = Math.floor(Number(event.edges?.left) / 50);
+        if (mod > 30 ) {
+          var multiple = Math.ceil(Number(event.edges?.left) / 50);
+        } else {
+          var multiple = Math.floor(Number(event.edges?.left) / 50);
+        }
       } else {
-        var multiple = Math.ceil(Number(event.edges?.left) / 50);
+        
+        if (mod > -30 ) {
+          var multiple = Math.ceil(Number(event.edges?.left) / 50);
+
+        } else {
+          var multiple = Math.floor(Number(event.edges?.left) / 50);
+        }
       }
       var result = multiple * 50;
       var offsetLeft = document.getElementById(Taskid).offsetLeft;
@@ -118,8 +169,10 @@ export class GanttViewComponent implements OnInit {
 
       var startDate = new Date(this.tasksdata[Taskindex].start);
       console.log("startDate",startDate,multiple);
+      
       var newStartDate = new Date(this.tasksdata[Taskindex].start);
       newStartDate.setDate(startDate.getDate()+multiple);
+
       this.tasksdata[Taskindex].task.task.start_date=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
       this.tasksdata[Taskindex].start=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
       this.dateupdate(this.tasksdata[Taskindex],newStartDate,this.tasksdata[Taskindex].end);
