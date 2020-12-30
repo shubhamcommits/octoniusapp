@@ -43,12 +43,19 @@ export class CommonNavbarComponent implements OnInit, AfterContentChecked {
     // Get current loggedIn user data
     const currentUserData = await this.publicFunctions.getCurrentUser();
 
-    // Fetch the current user
-    await this.publicFunctions.getOtherUser(this.router.snapshot.queryParamMap.get('userId')).then(async res => {
-      this.userData = res;
+    const userId = this.router.snapshot.queryParamMap.get('userId');
+    if (userId) {
+      // Fetch the current user
+      await this.publicFunctions.getOtherUser(this.router.snapshot.queryParamMap.get('userId')).then(async res => {
+        this.userData = res;
 
-      this.isCurrentUser = await this.checkIsCurrentUser(currentUserData._id);
-    });
+        this.isCurrentUser = await this.checkIsCurrentUser(currentUserData._id);
+      });
+    } else {
+      // Fetch the current user
+      await this.publicFunctions.getCurrentUser().then(user => this.userData = user);
+      this.isCurrentUser = true;
+    }
 
     // Subscribe to the change in workspace data from the socket server
     this.subSink.add(this.utilityService.currentWorkplaceData.subscribe((res) => {
