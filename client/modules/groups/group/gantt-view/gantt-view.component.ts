@@ -189,39 +189,12 @@ export class GanttViewComponent implements OnInit {
   }
 
   dateupdate(task, start, end) {
+    
     const startdate = this.datePipe.transform(start,"yyyy-MM-dd");
     const enddate = this.datePipe.transform(end,"yyyy-MM-dd");
     console.log("new start date end date", startdate, enddate);
-
-    this.postService.changeTaskDueDate(task['id'],enddate).then((res) => {
-      
-      console.log("start date task prev",  this.tasksdata )
-      console.log("start date update task resp", res['post'])
-
-      // this.tasks = res['post'];
-      // Resolve with success
-      // resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
-    })
-    .catch(() => {
-      // reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
-    });
-
-
-
-
-    this.postService.saveTaskDates(task['id'],startdate,'start_date').then((res) => {
-      
-      console.log("task prev",  this.tasksdata )
-      console.log("task resp", res['post'])
-
-      // this.tasks = res['post'];
-      // Resolve with success
-      // resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
-    })
-    .catch(() => {
-      // reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
-    });
-
+    this.postService.changeTaskDueDate(task['id'],enddate);
+    this.postService.saveTaskDates(task['id'],startdate,'start_date');
 
   }
 
@@ -422,7 +395,7 @@ export class GanttViewComponent implements OnInit {
         const startdate: any = new Date(x.task.start_date);
         const endate: any = new Date(x.task.due_to);
         var Difference_In_Time = endate.getTime() - startdate.getTime();
-        var Difference_In_Days = Math.floor(Difference_In_Time / (1000 * 3600 * 24));
+        var Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
 
         if (x.task.due_to && x.task.start_date) {
           this.tasksdata.push({
