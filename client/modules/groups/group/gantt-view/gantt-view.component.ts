@@ -67,10 +67,18 @@ export class GanttViewComponent implements OnInit {
 
     var distance = (event.distance.x)/50;
     var mod = (event.distance.x)%50;
-    if (mod > 30) {
-      var days = Math.ceil(distance);
+    if(distance>0){
+      if (mod > 30) {
+        var days = Math.ceil(distance);
+      } else {
+        var days = Math.floor(distance);
+      }
     } else {
-      var days = Math.floor(distance);
+      if (mod > -30) {
+        var days = Math.ceil(distance);
+      } else {
+        var days = Math.floor(distance);
+      }
     }
     var updated_x = task.index_date+days;
     
