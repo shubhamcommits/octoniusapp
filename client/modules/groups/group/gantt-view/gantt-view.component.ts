@@ -85,7 +85,7 @@ export class GanttViewComponent implements OnInit {
     console.log("startDate",startDate,days);
     var newStartDate = new Date(this.tasksdata[Taskindex].start);
     newStartDate.setDate(startDate.getDate()+days);
-
+    this.tasksdata[Taskindex].index_date=updated_x;
     this.tasksdata[Taskindex].end=this.datePipe.transform(newEndDate,"yyyy-MM-dd");
     this.tasksdata[Taskindex].task.task.due_to=this.datePipe.transform(newEndDate,"yyyy-MM-dd");
     this.tasksdata[Taskindex].task.task.start_date=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
