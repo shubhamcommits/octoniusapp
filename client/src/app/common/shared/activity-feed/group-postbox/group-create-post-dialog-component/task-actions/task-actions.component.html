@@ -26,7 +26,7 @@
     <input type="search" id="keyword" autocomplete="off" placeholder="Search for a task" class="input-search"
       [(ngModel)]="itemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChange($event)" />
     <!-- INPUT BAR ENDS -->
-
+  <div *ngIf="searchingOn === 'keyword'">
     <section id="results" *ngIf="!(isLoadingAction$ | async)" class="results" onfocusout="">
       <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
         <div class="media-body mt-2">
@@ -41,9 +41,41 @@
 
 
       <!-- LOADING SPINNER STARTS -->
+      <ng-container *ngIf="(isLoadingAction$ | async)">
+        <app-loading-spinner class="media"></app-loading-spinner>
+      </ng-container>
+  </div>
+      <!-- LOADING SPINNER ENDS -->
+  </div>
+
+
+  <div *ngIf="groupData && !parentTask && groupData.project_type" class="set-parent">
+    Make Dependency for
+
+    <!-- INPUT BAR STARTS -->
+    <input type="search" id="dependencyKeyword" autocomplete="off" placeholder="Search for a task" class="input-search"
+      [(ngModel)]="dependencyItemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChange($event)" />
+    <!-- INPUT BAR ENDS -->
+    <div *ngIf="searchingOn === 'dependencyKeyword'">
+    <section id="results" *ngIf="!(isLoadingAction$ | async)" class="results" onfocusout="">
+      <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
+        <div class="media-body mt-2">
+          <!-- Display full name of the member starts -->
+          <h4 class="mt-0 full-name-text" (click)="setDependencyTask(task._id)">
+            {{ task?.title | truncatetext: 50 }}
+          </h4>
+          <!-- Display full name of the member ends -->
+        </div>
+      </div>
+    </section>
+
+
+      <!-- LOADING SPINNER STARTS -->
       <ng-container *ngIf="isLoadingAction$ | async">
         <app-loading-spinner class="media"></app-loading-spinner>
       </ng-container>
       <!-- LOADING SPINNER ENDS -->
+    </div>
   </div>
+
 </div>

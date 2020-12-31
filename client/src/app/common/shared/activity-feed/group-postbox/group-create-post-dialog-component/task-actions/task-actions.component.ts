@@ -30,9 +30,10 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
   parentTask: boolean = false;
 
   tasksList: any = [];
-
+  searchingOn: 'keyword';
   // Item value variable mapped with search field
-  itemValue: string
+  itemValue: string;
+  dependencyItemValue: string;
 
   // This observable is mapped with item field to recieve updates on change value
   itemValueChanged: Subject<Event> = new Subject<Event>();
@@ -93,10 +94,15 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
       .pipe(distinctUntilChanged(), debounceTime(500))
       .subscribe(async () => {
         // If value is null then empty the array
-        if (this.itemValue == "") {
+        if (this.itemValue == "" ) {
           this.tasksList = []
         } else {
-          this.tasksList = await this.postService.searchPosibleParents(this.groupData._id, this.postData._id, this.itemValue) || []
+          if (this.searchingOn === 'keyword') {
+            this.tasksList = await this.postService.searchPosibleParents(this.groupData._id, this.postData._id, this.itemValue) || []
+          } else {
+            this.tasksList = await this.postService.searchPosibleParents(this.groupData._id, this.postData._id, this.dependencyItemValue) || []
+          }
+          
           //this.tasksList = await this.postService.getPosts(this.groupData._id, 'task') || []
 
           // Update the tasksList
@@ -199,7 +205,12 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
    * @param $event
    */
   modelChange($event: any) {
-    this.itemValue = $event;
+
+    if (this.searchingOn === 'keyword') {
+      this.itemValue = $event;
+    } else {
+      this.dependencyItemValue = $event;  
+    } 
     this.tasksList = []
   }
 
@@ -208,11 +219,13 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
    * @param $event - value of item
    */
   onSearch($event: Event) {
+
     // Set loading state to be true
     this.isLoadingAction$.next(true);
 
     // Set the itemValueChange
     this.itemValueChanged.next($event);
+    this.searchingOn = $event['path'][0]['attributes'][3]['nodeValue'];
   }
 
   async setParentTask(parentTaskId: string) {
@@ -224,6 +237,26 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
 
             // Clear search input after assigning
             this.itemValue = '';
+
+            // Close the list after assigning
+            this.tasksList = [];
+
+            this.parentTaskSelectedEmitter.emit(this.postData);
+          });
+        }
+      });
+  }
+
+  async setDependencyTask(dependencyTaskId: string) {
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will change its dependency task!')
+      .then((res) => {
+        if (res.value) {
+          this.postService.setDependencyTask(this.postData._id, dependencyTaskId).then(res => {
+            this.postData =  res['post'];
+
+            // Clear search input after assigning
+            // this.itemValue = '';
+            this.dependencyItemValue = '';
 
             // Close the list after assigning
             this.tasksList = [];

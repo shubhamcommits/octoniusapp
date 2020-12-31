@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ResizeEvent } from 'angular-resizable-element';
+import { PostService } from 'src/shared/services/post-service/post.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-gantt-view',
@@ -33,7 +37,7 @@ export class GanttViewComponent implements OnInit {
   //Card  height
   card_height = 40;
 
-  constructor(private utilityService: UtilityService) { }
+  constructor(private utilityService: UtilityService, private postService: PostService,private datePipe: DatePipe) { }
 
   async ngOnInit() {
     await this.parsedTasks(this.tasks);
@@ -51,6 +55,134 @@ export class GanttViewComponent implements OnInit {
       this.gantt_container_height = screenHeight + 'px';
     }
 
+  }
+
+  //Drop event on drag
+  drop(event: CdkDragDrop<string[]>) {
+    var Taskindex = event.item.element.nativeElement.attributes['taskindex'].nodeValue;
+    var task = this.tasksdata[event.item.element.nativeElement.attributes['taskindex'].nodeValue];
+    var distance = (event.distance.x)/50;
+    var mod = (event.distance.x)%50;
+
+    if(distance>0){
+
+      if (mod > 30) {
+        var days = Math.ceil(distance);
+      } else {
+        var days = Math.floor(distance);
+      }
+    } else {
+
+      if (mod > -30) {
+        var days = Math.ceil(distance);
+      } else {
+        var days = Math.floor(distance);
+      }
+    }
+    var updated_x = task.index_date+days;
+    event.item.element.nativeElement.setAttribute('style', `top:0px;left:${updated_x*50}px;width: ${event.item.element.nativeElement.style.width}`)
+    var endDate = new Date(this.tasksdata[Taskindex].end);
+    var newEndDate = new Date(this.tasksdata[Taskindex].end);
+    newEndDate.setDate(endDate.getDate()+days);
+    var startDate = new Date(this.tasksdata[Taskindex].start);
+    var newStartDate = new Date(this.tasksdata[Taskindex].start);
+    newStartDate.setDate(startDate.getDate()+days);
+    this.tasksdata[Taskindex].index_date=updated_x;
+    this.tasksdata[Taskindex].end=this.datePipe.transform(newEndDate,"yyyy-MM-dd");
+    this.tasksdata[Taskindex].task.task.due_to=this.datePipe.transform(newEndDate,"yyyy-MM-dd");
+    this.tasksdata[Taskindex].task.task.start_date=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
+    this.tasksdata[Taskindex].start=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
+    this.dateupdate(this.tasksdata[Taskindex],newStartDate,newEndDate);
+  }
+
+  //Validating Resize.
+  validate(event: ResizeEvent): boolean {
+    const MIN_DIMENSIONS_PX: number = 50;
+
+    if (
+      event.rectangle.width &&
+      event.rectangle.height &&
+      (event.rectangle.width < MIN_DIMENSIONS_PX)
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  //Resize Event
+  onResizeEnd(event: ResizeEvent, Taskid: string, Taskindex): void {
+
+    if (event.edges?.right) {
+      var mod = Number(event.edges?.right)%50;
+
+      if (event.edges?.left > 0) {
+
+        if (mod > 30) {
+          var multiple = Math.ceil(Number(event.edges?.right) / 50);
+        } else {
+          var multiple = Math.floor(Number(event.edges?.right) / 50);
+        }
+      } else {
+
+        if (mod > -30) {
+          var multiple = Math.ceil(Number(event.edges?.right) / 50);
+        } else {
+          var multiple = Math.floor(Number(event.edges?.right) / 50);
+        }
+      }
+      var result = multiple * 50;
+      var clientWidth = document.getElementById(Taskid).clientWidth;
+      var newWidth = clientWidth + result + 4;
+      document.getElementById(Taskid).style.width = newWidth + 'px';
+      var endDate = new Date(this.tasksdata[Taskindex].end);
+      var newEndDate = new Date(this.tasksdata[Taskindex].end);
+      newEndDate.setDate(endDate.getDate()+multiple);
+      this.tasksdata[Taskindex].end=this.datePipe.transform(newEndDate,"yyyy-MM-dd");
+      this.tasksdata[Taskindex].task.task.due_to=this.datePipe.transform(newEndDate,"yyyy-MM-dd");
+      this.dateupdate(this.tasksdata[Taskindex],this.tasksdata[Taskindex].start,newEndDate);
+
+    } else if (event.edges?.left) {
+      var mod = Number(event.edges?.left)%50;
+
+      if (event.edges?.left > 0) {
+
+        if (mod > 30 ) {
+          var multiple = Math.ceil(Number(event.edges?.left) / 50);
+        } else {
+          var multiple = Math.floor(Number(event.edges?.left) / 50);
+        }
+      } else {
+        
+        if (mod > -30 ) {
+          var multiple = Math.ceil(Number(event.edges?.left) / 50);
+
+        } else {
+          var multiple = Math.floor(Number(event.edges?.left) / 50);
+        }
+      }
+      var result = multiple * 50;
+      var offsetLeft = document.getElementById(Taskid).offsetLeft;
+      var clientWidth = document.getElementById(Taskid).clientWidth;
+      var newWidth = clientWidth - result + 4;
+      document.getElementById(Taskid).style.width = newWidth + 'px';
+      var newLeft = offsetLeft + result;
+      document.getElementById(Taskid).style.left = newLeft + 'px';
+      var startDate = new Date(this.tasksdata[Taskindex].start);
+      var newStartDate = new Date(this.tasksdata[Taskindex].start);
+      newStartDate.setDate(startDate.getDate()+multiple);
+      this.tasksdata[Taskindex].task.task.start_date=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
+      this.tasksdata[Taskindex].start=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
+      this.dateupdate(this.tasksdata[Taskindex],newStartDate,this.tasksdata[Taskindex].end);
+    }
+
+  }
+
+  //Update Dates
+  dateupdate(task, start, end) {
+    const startdate = this.datePipe.transform(start,"yyyy-MM-dd");
+    const enddate = this.datePipe.transform(end,"yyyy-MM-dd");
+    this.postService.changeTaskDueDate(task['id'],enddate);
+    this.postService.saveTaskDates(task['id'],startdate,'start_date');
   }
 
   //onupdate task
@@ -112,7 +244,6 @@ export class GanttViewComponent implements OnInit {
 
   //refresh Chart
   async refreshChart() {
-
     await this.parsedTasks(this.tasks);
     this.datestoshow.start = await this.min_date(this.tasksdata);
     this.datestoshow.end = await this.max_date(this.tasksdata)
@@ -136,7 +267,12 @@ export class GanttViewComponent implements OnInit {
     if (new Date(this.datestoshow.start).getTime() > new Date().getTime()) {
       // Find duration between start and end date
       const currentDate = new Date();
-      const endDate = new Date(this.datestoshow.end);
+      if (new Date(this.datestoshow.end).getTime() < new Date().getTime()) {
+        var endDate = new Date();
+      } else {
+        var endDate = new Date(this.datestoshow.end);
+      }
+      
       var Difference_In_Time = endDate.getTime() - currentDate.getTime();
       var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
 
@@ -144,10 +280,10 @@ export class GanttViewComponent implements OnInit {
         var lessdays = 26 - Difference_In_Days;
         Difference_In_Days = Difference_In_Days + lessdays;
       } else {
-        Difference_In_Days = Difference_In_Days+2
+        Difference_In_Days = Difference_In_Days + 2
       }
       //Continer width
-      
+
       this.gantt_container_width = (Difference_In_Days * this.step) + 'px';
       //Populating the dates.
 
@@ -160,7 +296,11 @@ export class GanttViewComponent implements OnInit {
     } else {
       // Find duration between start and end date
       const currentDate = new Date(this.datestoshow.start)
-      const endDate = new Date(this.datestoshow.end)
+      if (new Date(this.datestoshow.end).getTime() < new Date().getTime()) {
+        var endDate = new Date();
+      } else {
+        var endDate = new Date(this.datestoshow.end);
+      }
       var Difference_In_Time = endDate.getTime() - currentDate.getTime();
       var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
 
@@ -168,7 +308,7 @@ export class GanttViewComponent implements OnInit {
         var lessdays = 26 - Difference_In_Days;
         Difference_In_Days = Difference_In_Days + lessdays;
       } else {
-        Difference_In_Days = Difference_In_Days+2
+        Difference_In_Days = Difference_In_Days + 2
       }
       //Continer width
       this.gantt_container_width = (Difference_In_Days * this.step) + 'px';
@@ -248,7 +388,7 @@ export class GanttViewComponent implements OnInit {
         const startdate: any = new Date(x.task.start_date);
         const endate: any = new Date(x.task.due_to);
         var Difference_In_Time = endate.getTime() - startdate.getTime();
-        var Difference_In_Days = Math.floor(Difference_In_Time / (1000 * 3600 * 24));
+        var Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
 
         if (x.task.due_to && x.task.start_date) {
           this.tasksdata.push({
@@ -272,7 +412,7 @@ export class GanttViewComponent implements OnInit {
   //Get the Min date
   async min_date(all_dates) {
     var min_dt = all_dates[0]?.start,
-      min_dtObj = new Date(all_dates[0]?.start);
+    min_dtObj = new Date(all_dates[0]?.start);
     all_dates.forEach(function (dt, index) {
 
       if (new Date(dt.start) < min_dtObj) {
@@ -285,7 +425,7 @@ export class GanttViewComponent implements OnInit {
   //Get the Min date
   async max_date(all_dates) {
     var max_dt = all_dates[0]?.end,
-      max_dtObj = new Date(all_dates[0]?.end);
+    max_dtObj = new Date(all_dates[0]?.end);
     all_dates.forEach(function (dt, index) {
 
       if (new Date(dt.end) > max_dtObj) {
@@ -302,7 +442,7 @@ export class GanttViewComponent implements OnInit {
     this.dates.forEach((dt, index) => {
       var a = new Date(dt.date);
       var b = new Date(date);
-      if (a.valueOf() == b.valueOf()) {
+      if (this.datePipe.transform(a,"yyyy-MM-dd")===this.datePipe.transform(b,"yyyy-MM-dd")) {
         dateindex = index;
       }
     });
@@ -327,5 +467,5 @@ export class GanttViewComponent implements OnInit {
       this.tasksdata[index].index_date = this.find_index(task.start);
     });
   }
- 
+
 }
