@@ -113,4 +113,11 @@ export class FilesService {
       user: userId
     });
   }
+
+  async transferToGroup(fileId: string, groupId: string, isCopy: boolean) {
+    if (isCopy) {
+      return this._http.post(this.baseURL + `/files/${fileId}/copy-to-group`, { groupId: groupId }).toPromise();
+    }
+    return this._http.put(this.baseURL + `/files/${fileId}/move-to-group`, { groupId: groupId }).toPromise();
+  }
 }

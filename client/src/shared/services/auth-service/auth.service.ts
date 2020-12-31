@@ -100,7 +100,7 @@ export class AuthService {
    * @param resetPasswordData : { resetPwdId: string, password: string }
    */
   resetPassword(resetPasswordData: Object) {
-    return this.httpClient.put(this.AUTH_BASE_API_URL + `/passwords/reset`, resetPasswordData);
+    return this.httpClient.put(this.AUTH_BASE_API_URL + `/passwords/reset`, resetPasswordData).toPromise()
   }
 
   /**

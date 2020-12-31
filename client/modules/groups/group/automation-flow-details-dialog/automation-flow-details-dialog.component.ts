@@ -26,6 +26,10 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
   statusOptions = ['to do', 'in progress', 'done'];
   customFields = [];
   customFieldOptions = [];
+
+  newTrigger = false;
+  newAction = false;
+
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   userData: any;
@@ -158,92 +162,111 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  getMember(event: any, type: string, index: number) {
+  selectTrigger(trigger: string, stepIndex: number) {
+    if (!this.flowSteps[stepIndex].trigger) {
+      this.flowSteps[stepIndex].trigger = [];
+    }
+    this.flowSteps[stepIndex].trigger.push({ name: trigger });
+
+    this.newTrigger = false;
+  }
+
+  selectAction(action: string, stepIndex: number) {
+    if (!this.flowSteps[stepIndex].action) {
+      this.flowSteps[stepIndex].action = [];
+    }
+    this.flowSteps[stepIndex].action.push({ name: action });
+
+    this.newAction = false;
+  }
+
+  getMember(event: any, type: string, stepIndex: number, index: number) {
     if (type === 'trigger') {
-      if (!this.flowSteps[index].trigger._user) {
-        this.flowSteps[index].trigger._user = [];
+      if (!this.flowSteps[stepIndex].trigger[index]._user) {
+        this.flowSteps[stepIndex].trigger[index]._user = [];
       }
-      this.flowSteps[index].trigger._user.push(event['assignee']);
+      this.flowSteps[stepIndex].trigger[index]._user.push(event['assignee']);
     }
 
     if (type === 'action') {
-      if (!this.flowSteps[index].action._user) {
-        this.flowSteps[index].action._user = [];
+      if (!this.flowSteps[stepIndex].action[index]._user) {
+        this.flowSteps[stepIndex].action[index]._user = [];
       }
-      this.flowSteps[index].action._user.push(event['assignee']);
-      this.saveStep(this.flowSteps[index]);
+      this.flowSteps[stepIndex].action[index]._user.push(event['assignee']);
+      this.saveStep(this.flowSteps[stepIndex]);
     }
   }
 
-  removeMember(event: any, type: string, index: number) {
+  removeMember(event: any, type: string, stepIndex: number, index: number) {
     if (type === 'trigger') {
-      const assigneeIndex = this.flowSteps[index].trigger._user.findIndex(user => user._id == event['assigneeId']);
-      this.flowSteps[index].trigger._user.splice(assigneeIndex, 1);
-      if (this.flowSteps[index]._id) {
-        this.saveStep(this.flowSteps[index]);
+      const assigneeIndex = this.flowSteps[stepIndex].trigger[index]._user.findIndex(user => user._id == event['assigneeId']);
+      this.flowSteps[stepIndex].trigger[index]._user.splice(assigneeIndex, 1);
+      if (this.flowSteps[stepIndex]._id) {
+        this.saveStep(this.flowSteps[stepIndex]);
       }
     }
 
     if (type === 'action') {
-      const assigneeIndex = this.flowSteps[index].action._user.findIndex(user => user._id == event['assigneeId']);
-      this.flowSteps[index].action._user.splice(assigneeIndex, 1);
-      this.saveStep(this.flowSteps[index]);
+      const assigneeIndex = this.flowSteps[stepIndex].action[index]._user.findIndex(user => user._id == event['assigneeId']);
+      this.flowSteps[stepIndex].action[index]._user.splice(assigneeIndex, 1);
+      this.saveStep(this.flowSteps[stepIndex]);
     }
   }
 
-  selectTrigger(trigger: string, index: number) {
-    this.flowSteps[index].trigger = { name: trigger };
-  }
-
-  selectAction(action: string, index: number) {
-    this.flowSteps[index].action = { name: action };
-  }
-
-  statusTriggerSelected(status: string, index: number) {
-    this.flowSteps[index].trigger.status = status;
-  }
-
-  sectionTriggerSelected(section: string, index: number) {
-    this.flowSteps[index].trigger.section = section;
-  }
-
-  customFieldNameTriggerSelected(cf: string, index: number) {
+  customFieldNameTriggerSelected(cf: string, stepIndex: number, triggerIndex: number) {
     const custom_field = {
       name: cf
     }
-    this.flowSteps[index].trigger.custom_field = custom_field;
+    this.flowSteps[stepIndex].trigger[triggerIndex].custom_field = custom_field;
   }
 
-  customFieldValueTriggerSelected(cf: string, index: number) {
-    this.flowSteps[index].trigger.custom_field.value = cf;
-  }
-
-  customFieldNameActionSelected(cf: string, index: number) {
-    const custom_field = {
-      name: cf
-    }
-    this.flowSteps[index].action.custom_field = custom_field;
-  }
-
-  actionSelected(type: string, value: string, index: number) {
+  triggerSelected(type: string, value: string, stepIndex: number, triggerIndex: number) {
     switch (type) {
       case 'cf':
-        this.flowSteps[index].action.custom_field.value = value;
+        this.flowSteps[stepIndex].trigger[triggerIndex].custom_field.value = value;
         break;
 
       case 'status':
-        this.flowSteps[index].action.status = value;
+        this.flowSteps[stepIndex].trigger[triggerIndex].status = value;
         break;
 
       case 'section':
-        this.flowSteps[index].action.section = value;
+        this.flowSteps[stepIndex].trigger[triggerIndex].section = value;
         break;
 
       default:
         break;
     }
 
-    this.saveStep(this.flowSteps[index]);
+    this.saveStep(this.flowSteps[stepIndex]);
+  }
+
+  customFieldNameActionSelected(cf: string, stepIndex: number, actionIndex: number) {
+    const custom_field = {
+      name: cf
+    }
+    this.flowSteps[stepIndex].action[actionIndex].custom_field = custom_field;
+  }
+
+  actionSelected(type: string, value: string, stepIndex: number, actionIndex: number) {
+    switch (type) {
+      case 'cf':
+        this.flowSteps[stepIndex].action[actionIndex].custom_field.value = value;
+        break;
+
+      case 'status':
+        this.flowSteps[stepIndex].action[actionIndex].status = value;
+        break;
+
+      case 'section':
+        this.flowSteps[stepIndex].action[actionIndex].section = value;
+        break;
+
+      default:
+        break;
+    }
+
+    this.saveStep(this.flowSteps[stepIndex]);
   }
 
   saveStep(step: any) {

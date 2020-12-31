@@ -10,7 +10,7 @@ export class AuthCommonLayoutComponent implements OnInit {
 
   constructor() { }
 
-  // ROUTER NAME STATE OF THE COMPONENT - 'new-workplace', 'signup', 'signin', or 'home'
+  // ROUTER NAME STATE OF THE COMPONENT - 'new-workplace', 'signup', 'signin', 'home', or 'reset-password'
   @Input('routerState') routerState: string;
   @Input() userWorkspaces = [];
 

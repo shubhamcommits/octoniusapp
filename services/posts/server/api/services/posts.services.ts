@@ -857,7 +857,7 @@ export class PostService {
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        $push: { _assigned_to: assigneeId }
+        $addToSet: { _assigned_to: assigneeId }
       }, {
         new: true
       })

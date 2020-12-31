@@ -182,11 +182,11 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
    */
   async updateTask(post: any, cfTrigger?: any) {
     if (post) {
+
       if (cfTrigger) {
         post.task.custom_fields[cfTrigger.name] = cfTrigger.value;
       }
-
-      post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(post, '', this.flows, cfTrigger);
+      post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, cfTrigger, this.groupData._id, post, this.userData._id);
 
       // Find the index of the task
       const indexTask = this.tasks.findIndex((task: any) => task._id === post._id);
@@ -203,12 +203,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       this.initTable();
     }
   }
-
-  /*
-  async onCloseDoneTaskModalEvent(post) {
-    this.updateTask(post);
-  }
-  */
 
   getCustomField(fieldName: string) {
     const index = this.customFields.findIndex((f: any) => f.name === fieldName);

@@ -130,7 +130,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   checkIsFavoriteGroup() {
     let groupIndex = -1;
     if (this.userData && this.userData.stats && this.userData.stats.favorite_groups) {
-      groupIndex = this.userData.stats.favorite_groups.findIndex(g => g == this.groupId);
+      groupIndex = this.userData.stats.favorite_groups.findIndex(group => (group._id || group) == this.groupId);
     }
     return groupIndex >= 0;
   }
