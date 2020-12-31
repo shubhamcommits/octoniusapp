@@ -20,7 +20,7 @@
         task.custom_class == 'to do'? 'rectangle task_card status-todo' 
         : task.custom_class == 'in progress' ? 'rectangle task_card status-inprogress' 
         : task.custom_class == 'done' ? 'rectangle task_card status-done' : 'rectangle task_card status-todo'
-      " cdkDragLockAxis="x" cdkDrag mwlResizable [validateResize]="validate" [enableGhostResize]="true"
+      " cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".example-list" mwlResizable [validateResize]="validate" [enableGhostResize]="true"
             (resizeEnd)="onResizeEnd($event,task.id,i)">
             <div class="resize-handle-left" mwlResizeHandle [resizeEdges]="{ left: true }"></div>
             <div class="resize-handle-right" mwlResizeHandle [resizeEdges]="{ right: true }"></div>
