@@ -178,4 +178,7 @@ routes.get('/:currentPostId/searchParent', postController.searchPossibleParents)
 // PUT - Used to set a parent task to a task
 routes.put('/:postId/set-parent', postController.setParentTask);
 
+// PUT - Used to set a dependency task to a task
+routes.put('/:postId/set-dependency', postController.setDependencyTask);
+
 export { routes as postRoutes };

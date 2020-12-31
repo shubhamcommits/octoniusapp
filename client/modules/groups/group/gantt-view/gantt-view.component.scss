@@ -90,7 +90,7 @@ $dark-sky-blue: #4a90e2;
     position: absolute;
     right: -7px;
     top: 0%;
-    cursor: pointer;
+    cursor: all-scroll;
     /* muted text */
     color: #9D9FA2;
     /* Inside Auto Layout */
@@ -99,3 +99,75 @@ $dark-sky-blue: #4a90e2;
     flex-grow: 0;
     margin: 6px 0px;
 }
+
+
+//
+.rectangle {
+    position: relative;
+    // top: 200px;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    // width: 300px;
+    // height: 150px;
+    // background-color: #fd4140;
+    // border: solid 1px #121621;
+    // color: #121621;
+    // margin: auto;
+  }
+
+  mwlResizable {
+    box-sizing: border-box; // required for the enableGhostResize option to work
+  }
+
+  .resize-handle-top,
+  .resize-handle-bottom {
+    position: absolute;
+    height: 5px;
+    cursor: row-resize;
+    width: 100%;
+  }
+
+  .resize-handle-top {
+    top: 0;
+  }
+
+  .resize-handle-bottom {
+    bottom: 0;
+  }
+
+  .resize-handle-left,
+  .resize-handle-right {
+    position: absolute;
+    height: 100%;
+    cursor: col-resize;
+    width: 5px;
+  }
+
+  .resize-handle-left {
+    left: -5px;
+    z-index: 100;
+  }
+
+  .resize-handle-right {
+    right: 0;
+    right: -3px;
+    z-index: 100;
+  }
+  .cdk-drop-list-dragging {
+    display: none;
+  }
+
+  .task_card:active{
+    cursor: all-scroll;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+
+  .cdk-drag-preview{
+    cursor: all-scroll;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }

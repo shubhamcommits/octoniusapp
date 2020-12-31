@@ -2012,4 +2012,30 @@ export class PostService {
       throw (err);
     }
   }
+
+  async setDependencyTask(postId: string, dependecyTaskId: string) {
+    
+    try {
+      // Update the post
+      let post = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        'task._dependency_task': dependecyTaskId,
+        'task._column.title': ''
+      }, {
+        new: true
+      })
+
+      // populate the properties of this document
+      post = await this.populatePostProperties(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      console.log(`\n⛔️ Error:\n ${err}`);
+      // Return with error
+      throw (err);
+    }
+  }
 }
