@@ -33,7 +33,6 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
   searchingOn: 'keyword';
   // Item value variable mapped with search field
   itemValue: string;
-  nullmodel:''
   dependencyItemValue: string;
 
   // This observable is mapped with item field to recieve updates on change value
@@ -220,9 +219,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
    * @param $event - value of item
    */
   onSearch($event: Event) {
-    console.log("event new here", $event['path'][0]['attributes'][3]['nodeValue']);
 
-    // this.searchingOn = $event['path'][0]['attributes'][3]['nodeValue'];
     // Set loading state to be true
     this.isLoadingAction$.next(true);
 
