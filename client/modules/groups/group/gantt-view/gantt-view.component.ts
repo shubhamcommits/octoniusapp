@@ -267,7 +267,12 @@ export class GanttViewComponent implements OnInit {
     if (new Date(this.datestoshow.start).getTime() > new Date().getTime()) {
       // Find duration between start and end date
       const currentDate = new Date();
-      const endDate = new Date(this.datestoshow.end);
+      if (new Date(this.datestoshow.end).getTime() < new Date().getTime()) {
+        var endDate = new Date();
+      } else {
+        var endDate = new Date(this.datestoshow.end);
+      }
+      
       var Difference_In_Time = endDate.getTime() - currentDate.getTime();
       var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
 
@@ -291,7 +296,11 @@ export class GanttViewComponent implements OnInit {
     } else {
       // Find duration between start and end date
       const currentDate = new Date(this.datestoshow.start)
-      const endDate = new Date(this.datestoshow.end)
+      if (new Date(this.datestoshow.end).getTime() < new Date().getTime()) {
+        var endDate = new Date();
+      } else {
+        var endDate = new Date(this.datestoshow.end);
+      }
       var Difference_In_Time = endDate.getTime() - currentDate.getTime();
       var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
 
@@ -403,7 +412,7 @@ export class GanttViewComponent implements OnInit {
   //Get the Min date
   async min_date(all_dates) {
     var min_dt = all_dates[0]?.start,
-      min_dtObj = new Date(all_dates[0]?.start);
+    min_dtObj = new Date(all_dates[0]?.start);
     all_dates.forEach(function (dt, index) {
 
       if (new Date(dt.start) < min_dtObj) {
@@ -416,7 +425,7 @@ export class GanttViewComponent implements OnInit {
   //Get the Min date
   async max_date(all_dates) {
     var max_dt = all_dates[0]?.end,
-      max_dtObj = new Date(all_dates[0]?.end);
+    max_dtObj = new Date(all_dates[0]?.end);
     all_dates.forEach(function (dt, index) {
 
       if (new Date(dt.end) > max_dtObj) {
