@@ -34,6 +34,9 @@ export class AuthUserDetailsComponent implements OnInit {
   // CHECK VALID WORKSPACE
   validWorkspace = false;
 
+  // Check Password matches
+  matchPasswordState = false;
+
   // Defining User Object, which accepts the following properties
   user: { company: string, workspace: String; email: string; password: string, repeatPassword: string, firstName: string, lastName: string } = {
     company: null,
@@ -68,6 +71,10 @@ export class AuthUserDetailsComponent implements OnInit {
 
   // Email
   email = this._ActivatedRoute.snapshot.queryParamMap.get('email');
+
+  // Reset Password Id
+  resetPwdId = this._ActivatedRoute.snapshot.paramMap.get('resetPwdId');
+
   password;
 
   @Input() userWorkspaces = [];
@@ -75,11 +82,11 @@ export class AuthUserDetailsComponent implements OnInit {
   baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
 
   ngOnInit() {
-    if(this.workspace_name)
+    if (this.workspace_name)
       this.user.workspace = this.workspace_name
-    if(this.email)
+    if (this.email)
       this.user.email = this.email
-   }
+  }
 
   /**
    * This function unsubscribes the observables
@@ -101,24 +108,24 @@ export class AuthUserDetailsComponent implements OnInit {
 
     // VALIDATE WORKPLACE SUBJECT CHANGE
     this.subSink.add(this.validateWorkplace
-    .pipe(debounceTime(1000), distinctUntilChanged())
-    .subscribe((workplace)=>{
-      this.utilityService.clearAllNotifications();
-      this.utilityService.asyncNotification('Please wait, let us check if the name is available or not... ',
-      new Promise((resolve, reject) => {
-        this.authenticationService.checkWorkspaceName({
-          workspace_name: workplace
-        })
-          .then(() => {
-            this.validWorkspace = true;
-            resolve(this.utilityService.resolveAsyncPromise('This workplace name is available.'))
-          })
-          .catch(() => {
-            this.validWorkspace = false;
-            reject(this.utilityService.rejectAsyncPromise('This workplace name is taken, kindly come up with another one!'))
-          })
+      .pipe(debounceTime(1000), distinctUntilChanged())
+      .subscribe((workplace) => {
+        this.utilityService.clearAllNotifications();
+        this.utilityService.asyncNotification('Please wait, let us check if the name is available or not... ',
+          new Promise((resolve, reject) => {
+            this.authenticationService.checkWorkspaceName({
+              workspace_name: workplace
+            })
+              .then(() => {
+                this.validWorkspace = true;
+                resolve(this.utilityService.resolveAsyncPromise('This workplace name is available.'))
+              })
+              .catch(() => {
+                this.validWorkspace = false;
+                reject(this.utilityService.rejectAsyncPromise('This workplace name is taken, kindly come up with another one!'))
+              })
+          }))
       }))
-    }))
 
     // VALIDATE EMAIL SUBJECT CHANGE
     this.subSink.add(
@@ -156,22 +163,25 @@ export class AuthUserDetailsComponent implements OnInit {
 
     // VALIDATE MATCH PASSWORD SUBJECT CHANGE
     this.subSink.add(this.matchPassword.pipe(debounceTime(500), distinctUntilChanged())
-    .subscribe((matchStatus) => {
-      this.utilityService.clearAllNotifications();
-      let matchPass = (JSON.stringify(this.user.password) === JSON.stringify(this.user.repeatPassword))
-        ? this.utilityService.successNotification('Password matches successfully!')
-        : this.utilityService.warningNotification("Password doesn\'t match!");
-    }))
+      .subscribe((matchStatus) => {
+        this.utilityService.clearAllNotifications();
+        let matchPass = (JSON.stringify(this.user.password) === JSON.stringify(this.user.repeatPassword))
+          ? this.utilityService.successNotification('Password matches successfully!')
+          : this.utilityService.warningNotification("Password doesn\'t match!");
+
+        // Match Password state
+        this.matchPasswordState = (JSON.stringify(this.user.password) === JSON.stringify(this.user.repeatPassword))
+      }))
   }
 
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 
-/** ============================
- *  -- SIGN IN METHODS STARTS --
- *  ============================
- */
+  /** ============================
+   *  -- SIGN IN METHODS STARTS --
+   *  ============================
+   */
 
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 
 
   executeSignIn() {
@@ -195,8 +205,8 @@ export class AuthUserDetailsComponent implements OnInit {
           const numUsers = res['numUsers'] || 0;
           if (numUsers > 1) {
             this.email = email;
-            this.storageService.setLocalData('password', JSON.stringify({'password': password}));
-            this.router.navigate(['/authentication', 'select-workspace'], {queryParams: {email: email}});
+            this.storageService.setLocalData('password', JSON.stringify({ 'password': password }));
+            this.router.navigate(['/authentication', 'select-workspace'], { queryParams: { email: email } });
           } else {
             // Preparing the user data
             let userData: Object = {
@@ -267,23 +277,23 @@ export class AuthUserDetailsComponent implements OnInit {
         }))
     })
   }
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 
-/** ==========================
- *  -- SIGN IN METHODS ENDS--
- *  ==========================
- */
-/*=====================================================================================================================================================================================================*/
+  /** ==========================
+   *  -- SIGN IN METHODS ENDS--
+   *  ==========================
+   */
+  /*=====================================================================================================================================================================================================*/
 
 
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 
-/** =============================
- *  -- SIGN UP METHODS STARTS --
- *  =============================
- */
+  /** =============================
+   *  -- SIGN UP METHODS STARTS --
+   *  =============================
+   */
 
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 
   /**
    * This function is responsible for signing up a user in to the workspace
@@ -308,13 +318,13 @@ export class AuthUserDetailsComponent implements OnInit {
           last_name: lastName.trim()
         }
 
-        if(this.group_name && this.type){
+        if (this.group_name && this.type) {
           userData.group_name = this.group_name;
           userData.type = this.type
         }
 
         this.utilityService.asyncNotification('Please wait while we are setting up your new account...',
-        this.signUpServiceFunction(userData))
+          this.signUpServiceFunction(userData))
       }
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
@@ -351,37 +361,37 @@ export class AuthUserDetailsComponent implements OnInit {
     })
   }
 
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 
-/** ===========================
- *  -- SIGN UP METHODS ENDS --
- *  ===========================
- */
+  /** ===========================
+   *  -- SIGN UP METHODS ENDS --
+   *  ===========================
+   */
 
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 
 
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 
-/** =========================================
- *  -- CREATE NEW WORKPLACE METHODS STARTS --
- *  =========================================
- */
+  /** =========================================
+   *  -- CREATE NEW WORKPLACE METHODS STARTS --
+   *  =========================================
+   */
 
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 
   /**
    * This function checks if the the company and workspace names are in the valid states
    * @param company
    * @param workspace
    */
-  continueToCreateWorkspace(company: string, workspace: string){
-    if(workspace == null|| company == null || workspace == '' || company == ''){
+  continueToCreateWorkspace(company: string, workspace: string) {
+    if (workspace == null || company == null || workspace == '' || company == '') {
       this.utilityService.warningNotification('Company or Workplace name can\'t be empty!');
       this.validWorkspace = false;
-    } else if(!this.validWorkspace){
+    } else if (!this.validWorkspace) {
       this.utilityService.warningNotification('You can\'t proceed with this workplace name, try choosing a different one!');
-    } else{
+    } else {
       this.newWorkplaceNextState = true;
     }
   }
@@ -396,7 +406,7 @@ export class AuthUserDetailsComponent implements OnInit {
    * @param lastName
    * Makes a HTTP Post request to verify and return with a token which we can store on client side
    */
-  async createNewWorkplace(workplace: string, company: string, email: string, password: string, firstName: string, lastName: string){
+  async createNewWorkplace(workplace: string, company: string, email: string, password: string, firstName: string, lastName: string) {
     try {
       if (workplace == null || company == null || email == null || password == null || firstName == null || lastName == null || workplace == '' || company == '' || email == '' || password == '' || firstName == '' || lastName == '') {
         this.utilityService.warningNotification('Insufficient data, kindly fill up all the fields correctly!');
@@ -411,7 +421,7 @@ export class AuthUserDetailsComponent implements OnInit {
           owner_last_name: lastName.trim()
         }
         this.utilityService.asyncNotification('Please wait while we are setting up your new workplace and account...',
-        this.newWorkplaceServiceFunction(workplaceData))
+          this.newWorkplaceServiceFunction(workplaceData))
       }
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
@@ -423,49 +433,100 @@ export class AuthUserDetailsComponent implements OnInit {
    * This implements the service function for @function createNewWorkplace(workplaceData)
    * @param workspaceData
    */
-  newWorkplaceServiceFunction(workspaceData: Object){
-    return new Promise((resolve, reject)=>{
+  newWorkplaceServiceFunction(workspaceData: Object) {
+    return new Promise((resolve, reject) => {
       this.authenticationService.createNewWorkspace(workspaceData)
-      .then((res)=>{
-        this.clearUserData();
-        this.storeUserData(res);
-        this.router.navigate(['dashboard', 'myspace', 'inbox'])
-        .then(()=>{
-          this.utilityService.successNotification(`Hi ${res['user']['first_name']}, welcome to your new workplace!`);
-          resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome to your new workplace!`))
-        })
-        .catch(()=> {
+        .then((res) => {
+          this.clearUserData();
+          this.storeUserData(res);
+          this.router.navigate(['dashboard', 'myspace', 'inbox'])
+            .then(() => {
+              this.utilityService.successNotification(`Hi ${res['user']['first_name']}, welcome to your new workplace!`);
+              resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome to your new workplace!`))
+            })
+            .catch(() => {
+              this.utilityService.errorNotification('Oops some error occured while setting you up, please try again!');
+              reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
+            })
+
+        }, (err) => {
+          console.error('Error occured while creating new workplace', err);
           this.utilityService.errorNotification('Oops some error occured while setting you up, please try again!');
+          this.storageService.clear();
           reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
         })
-
-      }, (err)=>{
-        console.error('Error occured while creating new workplace', err);
-        this.utilityService.errorNotification('Oops some error occured while setting you up, please try again!');
-        this.storageService.clear();
-        reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
-      })
     })
   }
 
-/*=====================================================================================================================================================================================================*/
+  /**
+   * This function is responsible for reseting the password
+   * @param resetPasswordId 
+   * @param password 
+   */
+  resetPassword(resetPasswordId: string, password: string, repeatPassword: string) {
+    try {
 
-/** ========================================
- *  -- CREATE NEW WORKPLACE METHODS ENDS --
- *  ========================================
- */
+      if (password == repeatPassword) {
 
-/*=====================================================================================================================================================================================================*/
+        // Reset password object
+        const resetPassObject = {
+          resetPwdId: resetPasswordId,
+          password: password
+        }
+
+        // Call the service function
+        this.utilityService.asyncNotification('Please wait while we are resetting your password...',
+          this.resetPasswordServiceFunction(resetPassObject))
+      } else{
+        this.utilityService.warningNotification("Password doesn\'t match!");
+      }
+
+    } catch (err) {
+      console.log('There\'s some unexpected error occurred, please try again later!', err);
+      this.utilityService.errorNotification('There\'s some unexpected error occurred, please try again later!');
+    }
+  }
+
+  /**
+   * This service function calls the reset password API
+   * @param resetPasswordObject 
+   */
+  resetPasswordServiceFunction(resetPasswordObject: any) {
+    return new Promise((resolve, reject) => {
+      this.authenticationService.resetPassword(resetPasswordObject)
+        .then((res) => {
+          console.log(res)
+          this.router.navigate(['authentication', 'sign-in'])
+            .then(() => {
+              this.utilityService.successNotification(`Your password has been reset successfully!`);
+              resolve(this.utilityService.resolveAsyncPromise(`Your password has been reset successfully!`))
+            })
+            .catch(() => {
+              this.utilityService.errorNotification('Oops some error occured while setting you up, please try again!');
+              reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
+            })
+        })
+    })
+  }
+
+  /*=====================================================================================================================================================================================================*/
+
+  /** ========================================
+   *  -- CREATE NEW WORKPLACE METHODS ENDS --
+   *  ========================================
+   */
+
+  /*=====================================================================================================================================================================================================*/
 
 
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 
-/** =====================================
- *  -- HELPER FUNCTION METHODS STARTS --
- *  =====================================
- */
+  /** =====================================
+   *  -- HELPER FUNCTION METHODS STARTS --
+   *  =====================================
+   */
 
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 
   /**
    * This method is binded to keyup event of workspace input field
@@ -526,12 +587,12 @@ export class AuthUserDetailsComponent implements OnInit {
     this.storageService.setLocalData('authToken', JSON.stringify(res['token']));
   }
 
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 
-/** ===================================
- *  -- HELPER FUNCTION METHODS ENDS --
- *  ===================================
- */
+  /** ===================================
+   *  -- HELPER FUNCTION METHODS ENDS --
+   *  ===================================
+   */
 
-/*=====================================================================================================================================================================================================*/
+  /*=====================================================================================================================================================================================================*/
 }

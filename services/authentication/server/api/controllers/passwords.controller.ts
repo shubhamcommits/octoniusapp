@@ -16,8 +16,8 @@ export class PasswordsControllers {
     async resetPassword(req: Request, res: Response) {
         try {
             // grab the resetPWD + document user + delete the resetPwd document
-            const delResetPwdDoc: any = await User.findOneAndDelete({ _id: req.body.resetPwdId })
-                .populate('user', 'password');
+            const delResetPwdDoc: any = await Resetpwd.findOneAndDelete({ _id: req.body.resetPwdId })
+                .populate('user');
 
             if (!delResetPwdDoc) {
                 return sendError(res, new Error('Your link is not valid'), 'Your link is not valid', 401);
