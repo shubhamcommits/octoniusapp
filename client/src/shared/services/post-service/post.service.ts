@@ -413,4 +413,7 @@ export class PostService {
   setParentTask(taskId: string, parentTaskId: string) {
     return this._http.put(this.baseURL + `/${taskId}/set-parent`, { parentTaskId: parentTaskId }).toPromise();
   }
+  setDependencyTask(taskId: string, dependencyTaskId: string) {
+    return this._http.put(this.baseURL + `/${taskId}/set-dependency`, { dependencyTaskId: dependencyTaskId }).toPromise();
+  }
 }

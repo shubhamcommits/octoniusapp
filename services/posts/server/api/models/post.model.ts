@@ -172,6 +172,10 @@ const PostSchema = new Schema({
         _parent_task: {
             type: Schema.Types.ObjectId,
             ref: 'Post'
+        },
+        _dependency_task:{
+            type: Schema.Types.ObjectId,
+            ref: 'Post'
         }
     },
 

@@ -176,8 +176,8 @@
 
         <!-- Dates starts -->
         <div class="content-box" *ngIf="postData?.type === 'task' || postData.type === 'event'">
-          <p class="box-title">Start date</p>
-          <div *ngIf="postData?.type === 'task'">
+          <p *ngIf="groupData && groupData.project_type" class="box-title">Start date</p>
+          <div *ngIf="groupData && postData?.type === 'task' && groupData.project_type">
 
 
             <!-- Date Picker starts -->
