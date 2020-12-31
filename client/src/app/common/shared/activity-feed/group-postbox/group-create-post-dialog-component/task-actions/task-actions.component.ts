@@ -30,7 +30,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
   parentTask: boolean = false;
 
   tasksList: any = [];
-  searchingOn: 'keyword';
+  searchingOn:string = 'keyword';
   // Item value variable mapped with search field
   itemValue: string;
   dependencyItemValue: string;
@@ -208,8 +208,11 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
 
     if (this.searchingOn === 'keyword') {
       this.itemValue = $event;
+      this.dependencyItemValue = ""; 
+
     } else {
-      this.dependencyItemValue = $event;  
+      this.dependencyItemValue = $event;
+      this.itemValue = "";
     } 
     this.tasksList = []
   }
@@ -220,12 +223,13 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
    */
   onSearch($event: Event) {
 
+    this.searchingOn = $event['path'][0]['attributes'][3]['nodeValue'];
+
     // Set loading state to be true
     this.isLoadingAction$.next(true);
 
     // Set the itemValueChange
     this.itemValueChanged.next($event);
-    this.searchingOn = $event['path'][0]['attributes'][3]['nodeValue'];
   }
 
   async setParentTask(parentTaskId: string) {
