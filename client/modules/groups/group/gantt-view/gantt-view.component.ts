@@ -1,20 +1,23 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ResizeEvent } from 'angular-resizable-element';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { DatePipe } from '@angular/common';
+declare var LeaderLine: any;
 
 @Component({
   selector: 'app-gantt-view',
   templateUrl: './gantt-view.component.html',
   styleUrls: ['./gantt-view.component.scss']
 })
-export class GanttViewComponent implements OnInit {
+export class GanttViewComponent implements OnInit , AfterViewInit{
 
   @Input() tasks;
   @Input() userData;
+  @ViewChild("myDiv") divView1: ElementRef;
+  @ViewChild("myDiv2") divView2: ElementRef;
 
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -54,8 +57,43 @@ export class GanttViewComponent implements OnInit {
     } else {
       this.gantt_container_height = screenHeight + 'px';
     }
+    console.log("Tasks and prepaerd tasked",this.tasks,this.tasksdata);
+    console.log("Parent element",document.getElementById('#5fed98f2d493e05e2c3db437'));
 
   }
+
+  ngAfterViewInit() {
+    console.log("Parent element",document.getElementById('5fed98f2d493e05e2c3db437'));
+    setTimeout(() => {
+      const startingElement = document.getElementById('5fed98f2d493e05e2c3db437');
+      const endingElement = document.getElementById('5fed990f035fa55e2a8cf4d6');
+      const endingElement2 = document.getElementById('5fedb9aed383755e2b8633eb');
+      const endingElement3 = document.getElementById('5feec76a46d1d498f8523fa7');
+      
+      
+      console.log("starting ending",startingElement,endingElement);
+      var line = new LeaderLine(startingElement, endingElement,{
+        startPlug:'disc',
+        startSocket:'right',
+        endSocket:'left',
+        size:2
+      });
+      var line2 = new LeaderLine(startingElement, endingElement2,{
+        startPlug:'disc',
+        startSocket:'right',
+        endSocket:'left',
+        size:2
+  
+      });
+      var line3 = new LeaderLine(startingElement, endingElement3,{
+        startPlug:'disc',
+        startSocket:'right',
+        endSocket:'left',
+        size:2
+      });
+    }, 50);
+  }
+
 
   //Drop event on drag
   drop(event: CdkDragDrop<string[]>) {
@@ -330,6 +368,8 @@ export class GanttViewComponent implements OnInit {
     if (tasksdata.length > 0) {
       //Sorted Tasks
       var SortedTask: any = [];
+
+      var FinalSorted: any = [];
       //Child Indexd Task
       var child_index: any = [];
       //Tasks before Sorting
@@ -337,7 +377,7 @@ export class GanttViewComponent implements OnInit {
 
       for (var a = 0; a < tasksdata.length; a++) {
 
-        if (tasksdata[a].task._parent_task) {
+        if (tasksdata[a].task._dependency_task) {
           child_index.push(tasksdata[a]);
         } else {
           sortedBefore.push(tasksdata[a]);
@@ -370,8 +410,8 @@ export class GanttViewComponent implements OnInit {
 
           for (var j = i + 1; j < sortedBefore.length; j++) {
 
-            if (sortedBefore[j].task._parent_task) {
-              const parenttaskID = sortedBefore[j].task._parent_task;
+            if (sortedBefore[j].task._dependency_task) {
+              const parenttaskID = sortedBefore[j].task._dependency_task;
               const idi = sortedBefore[i]._id + '';
               const idj = parenttaskID._id + '';
 
@@ -382,6 +422,7 @@ export class GanttViewComponent implements OnInit {
           }
         }
       }
+      console.log("SortedTask",SortedTask);
       this.tasksdata = [];
       //Saving the only required fields of the task in tasksData array.
       SortedTask.map(x => {
@@ -390,7 +431,7 @@ export class GanttViewComponent implements OnInit {
         var Difference_In_Time = endate.getTime() - startdate.getTime();
         var Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
 
-        if (x.task.due_to && x.task.start_date) {
+        if (x.task.due_to && x.task.start_date && !(x.task._parent_task)) {
           this.tasksdata.push({
             id: x._id,
             name: x.title,
@@ -399,11 +440,27 @@ export class GanttViewComponent implements OnInit {
             progress: '0',
             difference: Difference_In_Days,
             custom_class: x?.task.status,
+            dependency:x?.task._dependency_task,
             image: (x?._assigned_to?.length > 0) ? this.baseUrl + '/' + x._assigned_to[0].profile_pic : undefined,
             noOfParticipants: (x?._assigned_to?.length > 1) ? x?._assigned_to?.length - 1 : undefined,
-            dependencies: (x.task._parent_task) ? x.task._parent_task._id : '',
             task: x
           });
+        } else {
+          if(x.task._dependency_task){
+            this.tasksdata.push({
+              id: x._id,
+              name: x.title,
+              start: x.task.start_date,
+              end: x.task.due_to,
+              progress: '0',
+              difference: Difference_In_Days,
+              custom_class: x?.task.status,
+              dependency:x?.task._dependency_task,
+              image: (x?._assigned_to?.length > 0) ? this.baseUrl + '/' + x._assigned_to[0].profile_pic : undefined,
+              noOfParticipants: (x?._assigned_to?.length > 1) ? x?._assigned_to?.length - 1 : undefined,
+              task: x
+            });
+          }
         }
       });
     }
