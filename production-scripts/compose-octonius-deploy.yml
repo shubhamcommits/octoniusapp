@@ -6,11 +6,11 @@ services:
     image: mongo:latest
     restart: always
     volumes:
-      - production_db_data:/data/db
+      - productionapp_db_data:/data/db
     ports:
       - 27017:27017
     networks:
-      - production
+      - productionapp
     
       
   mailing-server:
@@ -40,7 +40,7 @@ services:
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
     
       
   auths-server:
@@ -70,7 +70,7 @@ services:
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
     
          
   groups-server:
@@ -101,7 +101,7 @@ services:
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
     
       
   workspaces-server:
@@ -132,7 +132,7 @@ services:
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
     
       
   search-server:
@@ -164,7 +164,7 @@ services:
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
     
       
   users-server:
@@ -196,7 +196,7 @@ services:
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
     
       
   posts-server:
@@ -228,7 +228,7 @@ services:
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
     
       
   notifications-server:
@@ -259,7 +259,7 @@ services:
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
     
       
   utilities-server:
@@ -291,7 +291,7 @@ services:
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
     
 
   folio-server:
@@ -322,7 +322,7 @@ services:
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
     
 
   integrations-server:
@@ -353,7 +353,7 @@ services:
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
     
       
   client:
@@ -374,7 +374,7 @@ services:
       - folio-server
       - search-server
     networks:
-      - production
+      - productionapp
     
 
   nginx:
@@ -397,7 +397,7 @@ services:
       - search-server
       - client
     networks:
-      - production
+      - productionapp
     
 
 volumes:
@@ -452,5 +452,5 @@ volumes:
   
       
 networks:
-  production: 
+  productionapp: 
     driver: bridge
