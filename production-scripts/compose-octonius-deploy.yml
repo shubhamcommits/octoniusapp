@@ -6,7 +6,7 @@ services:
     image: mongo:latest
     restart: always
     volumes:
-      - productionapp_db_data:/data/db
+      - production_db_data:/data/db
     ports:
       - 27017:27017
     networks:
