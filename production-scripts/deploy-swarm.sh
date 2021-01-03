@@ -1,6 +1,11 @@
 #!/bin/bash
 # Octonius image deployment to Docker Hub
 
+# Import Environment Variables
+set -o allexport
+source .env
+set +o allexport
+
 # Make Suitable Directories
 mkdir -p data \
       data/db \
@@ -18,47 +23,6 @@ sudo chmod u+x data
 # Login to dockerhub
 docker login
 
-# Pull the images
-
-# Client Microservice Image Name
-export CLIENT_IMAGE_NAME=octoniusapp/octonius-prod:client
-
-# Mails Microservice Image Name
-export MAILS_IMAGE_NAME=octoniusapp/octonius-prod:mailing-server
-
-# Auths Microservice Image Name
-export AUTHS_IMAGE_NAME=octoniusapp/octonius-prod:auths-server
-
-# Groups Microservice Image Name
-export GROUPS_IMAGE_NAME=octoniusapp/octonius-prod:groups-server
-
-# Workspaces Microservice Image Name
-export WORKSPACES_IMAGE_NAME=octoniusapp/octonius-prod:workspaces-server
-
-# Users Microservice Image Name
-export USERS_IMAGE_NAME=octoniusapp/octonius-prod:users-server
-
-# Posts Microservice Image Name
-export POSTS_IMAGE_NAME=octoniusapp/octonius-prod:posts-server
-
-# Notifications Microservice Image Name
-export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-prod:notifications-server
-
-# Utilities Microservice Image Name
-export UTILITIES_IMAGE_NAME=octoniusapp/octonius-prod:utilities-server
-
-# Folio Microservice Image Name
-export FOLIO_IMAGE_NAME=octoniusapp/octonius-prod:folio-server
-
-# Search Microservice Image Name
-export SEARCH_IMAGE_NAME=octoniusapp/octonius-prod:search-server
-
-# Integrations Microservice Image Name
-export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius-prod:integrations-server
-
-# Nginx Image Name
-export NGINX_IMAGE_NAME=octoniusapp/octonius-prod:nginx
-
 # pull the new Docker image to the Docker registry
           docker pull $MAILS_IMAGE_NAME
           docker pull $AUTHS_IMAGE_NAME
@@ -75,4 +39,4 @@ export NGINX_IMAGE_NAME=octoniusapp/octonius-prod:nginx
           docker pull $NGINX_IMAGE_NAME
 
 # Deploy the Stack
-docker stack deploy -c stack-octonius-deploy.yml octonius --with-registry-auth
+env $(cat .env | grep ^[A-Z] | xargs) docker stack deploy -c stack-octonius-deploy.yml octonius --with-registry-auth
