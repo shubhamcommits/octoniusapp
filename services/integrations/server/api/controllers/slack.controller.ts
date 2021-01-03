@@ -622,7 +622,7 @@ export class SlackController {
         
         console.log("req.body",req.body);
         
-        const responce = await axios.get('https://slack.com/api/oauth.v2.access', { params: { code: req.body.code, client_id: process.env.SLACK_CLINET_ID ,client_secret:process.env.SLACK_CLIENT_SECRET} });
+        const responce = await axios.get('https://slack.com/api/oauth.v2.access', { params: { code: req.body.code, client_id: process.env.SLACK_CLIENT_ID ,client_secret:process.env.SLACK_CLIENT_SECRET} });
         
         const resp = responce.data;
         console.log("resp",resp);

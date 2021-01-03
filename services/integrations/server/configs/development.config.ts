@@ -18,7 +18,7 @@ function devConfigInit() {
   process.env.JWT_KEY = process.env.JWT_KEY || 'asfsaf12safas23fsafa12sf'
 
   // Database Url String
-  process.env.dbURL = process.env.dbURL || 'mongodb://127.0.0.1:27017/octonius'
+  process.env.DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/octonius'
 
   // Redis Environments
   process.env.REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1'
@@ -33,15 +33,14 @@ function devConfigInit() {
   // Slack WebHook URL
   process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
 
-  process.env.SLACK_CLINET_ID = process.env.SLACK_CLINET_ID || "2561616476.1145669381443"
+  // Slack Keys
+  process.env.SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID || "2561616476.1145669381443"
   process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET || "acaf1f9b8e2c2607124c74ea9273a2ed"
   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN || "xoxb-2561616476-1145480914898-bFLn6YJrfzbJ9jvCTU34uNuu"
 
-  
-
   // Stripe Keys
   process.env.SK_STRIPE = process.env.SK_STRIPE || 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
-  process.env.stripe_plan = process.env.stripe_plan || 'plan_EK1uRUJLJcDS6e';
+  process.env.STRIPE_PLAN = process.env.STRIPE_PLAN || 'plan_EK1uRUJLJcDS6e';
   process.env.WEBHOOK_PS_SECRET = process.env.WEBHOOK_PS_SECRET || 'whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn';
 
   // External Key
@@ -97,7 +96,7 @@ function devConfigInit() {
   process.env.UTILITIES_PORT = process.env.UTILITIES_PORT || '10000'
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}`
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}/api`
-  
+
   // Client Server
   process.env.CLIENT_PORT = process.env.CLIENT_PORT || '4200';
   process.env.CLIENT_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.CLIENT_PORT}`
