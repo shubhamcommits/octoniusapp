@@ -5,9 +5,9 @@ services:
   mongodb:
     image: mongo:latest
     volumes:
-      - production_db_data:/data/db
+      - octonius_production_db_data:/data/db
     ports:
-      - ${MONGO_PORT}:${MONGO_PORT}
+      - ${MONGO_PORT}:27017
     deploy:
       replicas: 1
       placement:
@@ -17,22 +17,20 @@ services:
           memory: 128M
         limits:
           memory: 256M
-    ports:
-      - 27017:27017
     networks:
-      - production
+      - octonius_production
     volumes:
-      - production_db_data:/data/db
+      - octonius_production_db_data:/data/db
 
   mailing-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:mailing-server
     ports:
-      - ${MAILING_SERVER_PORT}:${MAILING_SERVER_PORT}
+      - ${MAILING_SERVER_PORT}:2000
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${MAILING_SERVER_PORT}
+      - PORT=2000
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -53,17 +51,17 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
       
   auths-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:auths-server
     ports:
-      - ${AUTHS_SERVER_PORT}:${AUTHS_SERVER_PORT}
+      - ${AUTHS_SERVER_PORT}:3000
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${AUTHS_SERVER_PORT}
+      - PORT=3000
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -84,18 +82,18 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
          
   groups-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:groups-server
     ports:
-      - ${GROUPS_SERVER_PORT}:${GROUPS_SERVER_PORT}
+      - ${GROUPS_SERVER_PORT}:4000
     volumes:
       - ${VOLUME_NODE_MODULES}
-      - production_groups_uploads_data:${VOLUME_UPLOADS}
+      - octonius_production_groups_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${GROUPS_SERVER_PORT}
+      - PORT=4000
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -116,18 +114,18 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
       
   workspaces-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:workspaces-server
     ports:
-      - ${WORKSPACES_SERVER_PORT}:${WORKSPACES_SERVER_PORT}
+      - ${WORKSPACES_SERVER_PORT}:5000
     volumes:
       - ${VOLUME_NODE_MODULES}
-      - production_workspaces_uploads_data:${VOLUME_UPLOADS}
+      - octonius_production_workspaces_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${WORKSPACES_SERVER_PORT}
+      - PORT=5000
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -148,18 +146,18 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
       
   users-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:users-server
     ports:
-      - ${USERS_SERVER_PORT}:${USERS_SERVER_PORT}
+      - ${USERS_SERVER_PORT}:7000
     volumes:
       - ${VOLUME_NODE_MODULES}
-      - production_users_uploads_data:${VOLUME_UPLOADS}
+      - octonius_production_users_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${USERS_SERVER_PORT}
+      - PORT=7000
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -180,18 +178,18 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
       
   posts-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:posts-server
     ports:
-      - ${POSTS_SERVER_PORT}:${POSTS_SERVER_PORT}
+      - ${POSTS_SERVER_PORT}:8000
     volumes:
       - ${VOLUME_NODE_MODULES}
-      - production_posts_uploads_data:${VOLUME_UPLOADS}
+      - octonius_production_posts_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${POSTS_SERVER_PORT}
+      - PORT=8000
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -212,17 +210,17 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
       
   notifications-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:notifications-server
     ports:
-      - ${NOTIFICATIONS_SERVER_PORT}:${NOTIFICATIONS_SERVER_PORT}
+      - ${NOTIFICATIONS_SERVER_PORT}:9000
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${NOTIFICATIONS_SERVER_PORT}
+      - PORT=9000
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -243,18 +241,18 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
       
   utilities-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:utilities-server
     ports:
-      - ${UTILITIES_SERVER_PORT}:${UTILITIES_SERVER_PORT}
+      - ${UTILITIES_SERVER_PORT}:10000
     volumes:
       - ${VOLUME_NODE_MODULES}
-      - production_utilities_uploads_data:${VOLUME_UPLOADS}
+      - octonius_production_utilities_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${UTILITIES_SERVER_PORT}
+      - PORT=10000
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -275,17 +273,17 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
 
   folio-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:folio-server
     ports:
-      - ${FOLIO_SERVER_PORT}:${FOLIO_SERVER_PORT}
+      - ${FOLIO_SERVER_PORT}:11000
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${FOLIO_SERVER_PORT}
+      - PORT=11000
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -306,18 +304,18 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
 
   search-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:search-server
     ports:
-      - ${SEARCH_SERVER_PORT}:${SEARCH_SERVER_PORT}
+      - ${SEARCH_SERVER_PORT}:12000
     volumes:
       - ${VOLUME_NODE_MODULES}
-      - production_search_uploads_data:${VOLUME_UPLOADS}
+      - octonius_production_search_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${SEARCH_SERVER_PORT}
+      - PORT=12000
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -338,17 +336,17 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
       
   integrations-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:integrations-server
     ports:
-      - ${INTEGRATIONS_SERVER_PORT}:${INTEGRATIONS_SERVER_PORT}
+      - ${INTEGRATIONS_SERVER_PORT}:13000
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${INTEGRATIONS_SERVER_PORT}
+      - PORT=13000
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -373,7 +371,7 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
       
   client:
     image: ${DOCKER_USER}/${DOCKER_REPO}:client
@@ -387,12 +385,12 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
 
   nginx:
     image: ${DOCKER_USER}/${DOCKER_REPO}:nginx
     ports:
-      - ${NGINX_PORT}:${NGINX_PORT}
+      - ${MACHINE_PORT}:${NGINX_PORT}
     deploy:
       replicas: 1
       update_config:
@@ -401,52 +399,52 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - production
+      - octonius_production
 
 volumes:
-  production_db_data:
+  octonius_production_db_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/db
       o: bind
 
-  production_groups_uploads_data:
+  octonius_production_groups_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/groups
       o: bind
   
-  production_posts_uploads_data:
+  octonius_production_posts_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/posts
       o: bind
 
-  production_users_uploads_data:
+  octonius_production_users_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/users
       o: bind
 
-  production_workspaces_uploads_data:
+  octonius_production_workspaces_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/workspaces
       o: bind
 
-  production_utilities_uploads_data:
+  octonius_production_utilities_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/utilities
       o: bind
   
-  production_search_uploads_data:
+  octonius_production_search_uploads_data:
     driver: local
     driver_opts:
       type: none
@@ -454,4 +452,4 @@ volumes:
       o: bind 
 
 networks:
-  production:
+  octonius_production:
