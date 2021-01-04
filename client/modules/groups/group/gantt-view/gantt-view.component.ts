@@ -40,7 +40,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   //Card  height
   card_height = 40;
   //Lines Array
-  linesArray:any=[];
+  linesArray: any = [];
 
   constructor(private utilityService: UtilityService, private postService: PostService, private datePipe: DatePipe) { }
 
@@ -68,12 +68,12 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     this.linesGenetate();
   }
 
-  linesGenetate(){
+  linesGenetate() {
     setTimeout(() => {
       for (var i = 0; i < this.tasksdata.length; i++) {
-        
-        if(this.tasksdata[i] && this.tasksdata[i].dependency){
-          console.log("this.tasksdata[i].dependency",this.tasksdata[i]?.dependency,this.tasksdata[i]?.id);
+
+        if (this.tasksdata[i] && this.tasksdata[i].dependency) {
+          console.log("this.tasksdata[i].dependency", this.tasksdata[i]?.dependency, this.tasksdata[i]?.id);
           this.linesArray.push(new LeaderLine(document.getElementById(this.tasksdata[i]?.dependency), document.getElementById(this.tasksdata[i]?.id), {
             startPlug: 'disc',
             startSocket: 'right',
@@ -81,14 +81,14 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             size: 2
           }));
 
-          var lines =this.linesArray;
-          document.getElementsByClassName('mat-drawer-content')[0].addEventListener('scroll', (function() {
+          var lines = this.linesArray;
+          document.getElementsByClassName('mat-drawer-content')[0].addEventListener('scroll', (function () {
             lines.forEach(line => {
               line.position();
             });
           }), false);
 
-          document.getElementsByClassName('root')[0].addEventListener('scroll', (function() {
+          document.getElementsByClassName('root')[0].addEventListener('scroll', (function () {
             lines.forEach(line => {
               line.position();
             });
@@ -99,13 +99,13 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     }, 50);
   };
 
-  lineRemove(){
+  lineRemove() {
     this.linesArray.forEach(line => {
       line.remove();
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.lineRemove();
   }
 
@@ -152,7 +152,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         line.position();
       });
     }, 10);
-  
+
   }
 
   //Validating Resize.
@@ -327,7 +327,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     }
 
     this.lineRemove();
-    this.linesArray=[];
+    this.linesArray = [];
     this.linesGenetate();
   }
 
@@ -401,7 +401,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       //Sorted Tasks
       var SortedTask: any = [];
 
-      var FinalSorted: any = [];
       //Child Indexd Task
       var child_index: any = [];
       //Tasks before Sorting
@@ -418,6 +417,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       child_index.map(child => {
         sortedBefore.push(child);
       });
+
       SortedTask.push(sortedBefore[0]);
 
       for (var i = 0; i < sortedBefore.length; i++) {
@@ -437,6 +437,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           SortedTask.push(sortedBefore[i]);
         }
 
+
         //Finding the child of the current task and pushing into  SortedTask array.
         if (i < sortedBefore.length - 1) {
 
@@ -445,8 +446,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             if (sortedBefore[j].task._dependency_task) {
               const parenttaskID = sortedBefore[j].task._dependency_task;
               const idi = sortedBefore[i]._id + '';
-              const idj = parenttaskID._id + '';
-
+              const idj = parenttaskID + '';
               if (idi === idj) {
                 SortedTask.push(sortedBefore[j]);
               }
