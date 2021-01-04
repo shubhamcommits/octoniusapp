@@ -30,7 +30,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
   parentTask: boolean = false;
 
   tasksList: any = [];
-  searchingOn:string = 'keyword';
+  searchingOn: string = 'keyword';
   // Item value variable mapped with search field
   itemValue: string;
   dependencyItemValue: string;
@@ -64,7 +64,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
             group.sections = await this.publicFunctions.getAllColumns(group._id);
             if (group.sections) {
               group.sections.sort((s1, s2) => (s1.title > s2.title) ? 1 : -1);
-              this.utilityService.removeDuplicates(group.sections, 'title').then((sections)=>{
+              this.utilityService.removeDuplicates(group.sections, 'title').then((sections) => {
                 group.sections = sections;
               });
             }
@@ -73,7 +73,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
             }
           });
           this.userGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
-          this.utilityService.removeDuplicates(this.userGroups, '_id').then((groups)=>{
+          this.utilityService.removeDuplicates(this.userGroups, '_id').then((groups) => {
             this.userGroups = groups;
           });
         })
@@ -88,13 +88,13 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
 
   ngAfterViewInit() {
     if (this.itemValue == "")
-    this.tasksList = []
+      this.tasksList = []
     // Adding the service function to the subsink(), so that we can unsubscribe the observable when the component gets destroyed
     this.subSink.add(this.itemValueChanged
       .pipe(distinctUntilChanged(), debounceTime(500))
       .subscribe(async () => {
         // If value is null then empty the array
-        if (this.itemValue == "" ) {
+        if (this.itemValue == "" && this.dependencyItemValue == "") {
           this.tasksList = []
         } else {
           if (this.searchingOn === 'keyword') {
@@ -102,7 +102,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
           } else {
             this.tasksList = await this.postService.searchPosibleParents(this.groupData._id, this.postData._id, this.dependencyItemValue) || []
           }
-          
+
           //this.tasksList = await this.postService.getPosts(this.groupData._id, 'task') || []
 
           // Update the tasksList
@@ -111,7 +111,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
 
         // Stop the loading state once the values are loaded
         this.isLoadingAction$.next(false);
-    }));
+      }));
   }
 
   /**
@@ -150,12 +150,12 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
         if (res.value) {
           await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
             this.postService.transferToGroup(this.postData._id, group, section.title, this.groupData._id, this.userData._id, true).then((res) => {
-              this.onTransferPost({post: res['post'], isCopy: true});
+              this.onTransferPost({ post: res['post'], isCopy: true });
               resolve(this.utilityService.resolveAsyncPromise(`👍 Task Copied!`));
             })
-            .catch((error) => {
-              reject(this.utilityService.rejectAsyncPromise(`Error while copying the task!`));
-            });
+              .catch((error) => {
+                reject(this.utilityService.rejectAsyncPromise(`Error while copying the task!`));
+              });
           }));
         }
       });
@@ -169,7 +169,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
           await this.utilityService.asyncNotification('Please wait we are move the task...', new Promise((resolve, reject) => {
             this.postService.transferToGroup(this.postData._id, group, section.title, this.groupData._id, this.userData._id, false)
               .then((res) => {
-                this.onTransferPost({post: res['post'], isCopy: false, groupId: group});
+                this.onTransferPost({ post: res['post'], isCopy: false, groupId: group });
                 resolve(this.utilityService.resolveAsyncPromise(`👍 Task moved!`));
               })
               .catch((error) => {
@@ -205,15 +205,12 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
    * @param $event
    */
   modelChange($event: any) {
+    this.itemValue = $event;
+    this.tasksList = []
+  }
 
-    if (this.searchingOn === 'keyword') {
-      this.itemValue = $event;
-      this.dependencyItemValue = ""; 
-
-    } else {
-      this.dependencyItemValue = $event;
-      this.itemValue = "";
-    } 
+  modelChangeForDependency($event: any) {
+    this.dependencyItemValue = $event;
     this.tasksList = []
   }
 
@@ -237,7 +234,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
       .then((res) => {
         if (res.value) {
           this.postService.setParentTask(this.postData._id, parentTaskId).then(res => {
-            this.postData =  res['post'];
+            this.postData = res['post'];
 
             // Clear search input after assigning
             this.itemValue = '';
@@ -256,7 +253,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
       .then((res) => {
         if (res.value) {
           this.postService.setDependencyTask(this.postData._id, dependencyTaskId).then(res => {
-            this.postData =  res['post'];
+            this.postData = res['post'];
 
             // Clear search input after assigning
             // this.itemValue = '';

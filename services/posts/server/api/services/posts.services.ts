@@ -2020,8 +2020,7 @@ export class PostService {
       let post = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        'task._dependency_task': dependecyTaskId,
-        'task._column.title': ''
+        'task._dependency_task': dependecyTaskId
       }, {
         new: true
       })
