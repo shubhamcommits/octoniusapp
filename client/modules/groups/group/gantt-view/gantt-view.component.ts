@@ -5,6 +5,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { ResizeEvent } from 'angular-resizable-element';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { DatePipe } from '@angular/common';
+import { reduce } from 'rxjs/operators';
 declare var LeaderLine: any;
 
 @Component({
@@ -76,7 +77,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             startPlug: 'disc',
             startSocket: 'right',
             endSocket: 'left',
-            size: 2
+            size: 2,
+            color: '#4a90e2',
           }));
 
           var lines = this.linesArray;
