@@ -25,12 +25,12 @@ services:
   mailing-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:mailing-server
     ports:
-      - ${MAILING_SERVER_PORT}:2000
+      - ${MAILING_SERVER_PORT}:${MAILING_SERVER_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=2000
+      - PORT=${MAILING_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -44,7 +44,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s
@@ -56,12 +56,12 @@ services:
   auths-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:auths-server
     ports:
-      - ${AUTHS_SERVER_PORT}:3000
+      - ${AUTHS_SERVER_PORT}:${AUTHS_SERVER_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=3000
+      - PORT=${AUTHS_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -75,7 +75,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s
@@ -87,13 +87,13 @@ services:
   groups-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:groups-server
     ports:
-      - ${GROUPS_SERVER_PORT}:4000
+      - ${GROUPS_SERVER_PORT}:${GROUPS_SERVER_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
       - octonius_production_groups_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=4000
+      - PORT=${GROUPS_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -107,7 +107,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s
@@ -119,13 +119,13 @@ services:
   workspaces-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:workspaces-server
     ports:
-      - ${WORKSPACES_SERVER_PORT}:5000
+      - ${WORKSPACES_SERVER_PORT}:${WORKSPACES_SERVER_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
       - octonius_production_workspaces_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=5000
+      - PORT=${WORKSPACES_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -139,7 +139,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s
@@ -151,13 +151,13 @@ services:
   users-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:users-server
     ports:
-      - ${USERS_SERVER_PORT}:7000
+      - ${USERS_SERVER_PORT}:${USERS_SERVER_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
       - octonius_production_users_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=7000
+      - PORT=${USERS_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -171,7 +171,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s
@@ -183,13 +183,13 @@ services:
   posts-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:posts-server
     ports:
-      - ${POSTS_SERVER_PORT}:8000
+      - ${POSTS_SERVER_PORT}:${POSTS_SERVER_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
       - octonius_production_posts_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=8000
+      - PORT=${POSTS_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -203,7 +203,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s
@@ -215,12 +215,12 @@ services:
   notifications-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:notifications-server
     ports:
-      - ${NOTIFICATIONS_SERVER_PORT}:9000
+      - ${NOTIFICATIONS_SERVER_PORT}:${NOTIFICATIONS_SERVER_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=9000
+      - PORT=${NOTIFICATIONS_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -234,7 +234,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s
@@ -246,13 +246,13 @@ services:
   utilities-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:utilities-server
     ports:
-      - ${UTILITIES_SERVER_PORT}:10000
+      - ${UTILITIES_SERVER_PORT}:${UTILITIES_SERVER_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
       - octonius_production_utilities_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=10000
+      - PORT=${UTILITIES_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -266,7 +266,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s
@@ -278,12 +278,12 @@ services:
   folio-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:folio-server
     ports:
-      - ${FOLIO_SERVER_PORT}:11000
+      - ${FOLIO_SERVER_PORT}:${FOLIO_SERVER_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=11000
+      - PORT=${FOLIO_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -297,7 +297,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s
@@ -309,13 +309,13 @@ services:
   search-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:search-server
     ports:
-      - ${SEARCH_SERVER_PORT}:12000
+      - ${SEARCH_SERVER_PORT}:${SEARCH_SERVER_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
       - octonius_production_search_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=12000
+      - PORT=${SEARCH_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -329,7 +329,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s
@@ -341,12 +341,12 @@ services:
   integrations-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:integrations-server
     ports:
-      - ${INTEGRATIONS_SERVER_PORT}:13000
+      - ${INTEGRATIONS_SERVER_PORT}:${INTEGRATIONS_SERVER_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=13000
+      - PORT=${INTEGRATIONS_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -364,7 +364,7 @@ services:
       - SLACK_CLIENT_SECRET=${SLACK_CLIENT_SECRET}
       - SLACK_BOT_ACCESS_TOKEN=${SLACK_BOT_ACCESS_TOKEN}
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s
@@ -378,7 +378,7 @@ services:
     volumes:
       - ${VOLUME_NODE_MODULES}
     deploy:
-      replicas: 1
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s
@@ -392,7 +392,7 @@ services:
     ports:
       - ${MACHINE_PORT}:${NGINX_PORT}
     deploy:
-      replicas: 1
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s
