@@ -16,6 +16,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   @Input() tasks;
   @Input() userData;
+  @Input() columns: any;
   @ViewChild("myDiv") divView1: ElementRef;
   @ViewChild("myDiv2") divView2: ElementRef;
 
@@ -291,7 +292,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   //open model
   openFullscreenModal(postData: any,): void {
 
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id);
+    console.log("postData",postData);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id,this.columns);
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
     });
