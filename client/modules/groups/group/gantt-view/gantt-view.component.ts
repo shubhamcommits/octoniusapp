@@ -60,8 +60,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     } else {
       this.gantt_container_height = screenHeight + 'px';
     }
-    console.log("Tasks and prepaerd tasked", this.tasks, this.tasksdata);
-    console.log("Parent element", document.getElementById('#5fed98f2d493e05e2c3db437'));
 
   }
 
@@ -74,7 +72,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       for (var i = 0; i < this.tasksdata.length; i++) {
 
         if (this.tasksdata[i] && this.tasksdata[i].dependency) {
-          console.log("this.tasksdata[i].dependency", this.tasksdata[i]?.dependency, this.tasksdata[i]?.id);
           this.linesArray.push(new LeaderLine(document.getElementById(this.tasksdata[i]?.dependency), document.getElementById(this.tasksdata[i]?.id), {
             startPlug: 'disc',
             startSocket: 'right',
@@ -291,8 +288,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   //open model
   openFullscreenModal(postData: any,): void {
-
-    console.log("postData",postData);
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id,this.columns);
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
@@ -456,7 +451,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           }
         }
       }
-      console.log("SortedTask", SortedTask);
       this.tasksdata = [];
       //Saving the only required fields of the task in tasksData array.
       SortedTask.map(x => {
