@@ -25,7 +25,7 @@ function prodConfigInit() {
   process.env.REDIS_PORT = process.env.REDIS_PORT
 
   // Files Uploads Folder
-  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER
+  process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || path.join(__dirname, '../uploads/');
 
   // Sendgrid Key
   process.env.SENDGRID_KEY = process.env.SENDGRID_KEY
