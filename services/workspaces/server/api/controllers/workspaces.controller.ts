@@ -199,12 +199,28 @@ export class WorkspaceController {
             };
 
             // Create new global group
-            const group = await Group.create(globalGroup);
+            let group = await Group.create(globalGroup);
 
             // Error creating global group
             if (!group) {
                 return sendError(res, new Error('Unable to create the global group, some unexpected error occured!'), 'Unable to create the global group, some unexpected error occured!', 500);
             }
+
+            const default_CF = {
+                title: 'Priority',
+                name: 'priority',
+                values: ['📪 Low', '🚂 Medium', '🚀 High']
+            };
+
+            // Find the group and update their respective group avatar
+            group = await Group.findByIdAndUpdate({
+                _id: group._id
+            }, {
+                //custom_fields: newCustomField
+                $push: { "custom_fields": default_CF }
+            }, {
+                new: true
+            });
 
             // Add Global group to user's groups
             var userUpdate = await User.findByIdAndUpdate({
@@ -244,7 +260,23 @@ export class WorkspaceController {
             } else {
 
                 // Create personal group
-                const group = await Group.create(newGroupData);
+                let group = await Group.create(newGroupData);
+
+                const default_CF = {
+                    title: 'Priority',
+                    name: 'priority',
+                    values: ['📪 Low', '🚂 Medium', '🚀 High']
+                };
+    
+                // Find the group and update their respective group avatar
+                group = await Group.findByIdAndUpdate({
+                    _id: group._id
+                }, {
+                    //custom_fields: newCustomField
+                    $push: { "custom_fields": default_CF }
+                }, {
+                    new: true
+                });
 
                 // Add personal group to user's groups
                 userUpdate = await User.findByIdAndUpdate({
