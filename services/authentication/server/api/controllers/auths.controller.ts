@@ -177,7 +177,7 @@ export class AuthsController {
                         const default_CF = {
                             title: 'Priority',
                             name: 'priority',
-                            values: ['📪 Low', '🚂 Medium', '🚀 High']
+                            values: ['Low', 'Medium', 'High']
                         };
             
                         // Find the group and update their respective group avatar
