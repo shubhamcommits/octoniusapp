@@ -12,7 +12,7 @@ declare var LeaderLine: any;
   templateUrl: './gantt-view.component.html',
   styleUrls: ['./gantt-view.component.scss']
 })
-export class GanttViewComponent implements OnInit , AfterViewInit{
+export class GanttViewComponent implements OnInit, AfterViewInit {
 
   @Input() tasks;
   @Input() userData;
@@ -39,8 +39,10 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
   step = 50;
   //Card  height
   card_height = 40;
+  //Lines Array
+  linesArray:any=[];
 
-  constructor(private utilityService: UtilityService, private postService: PostService,private datePipe: DatePipe) { }
+  constructor(private utilityService: UtilityService, private postService: PostService, private datePipe: DatePipe) { }
 
   async ngOnInit() {
     await this.parsedTasks(this.tasks);
@@ -57,41 +59,54 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
     } else {
       this.gantt_container_height = screenHeight + 'px';
     }
-    console.log("Tasks and prepaerd tasked",this.tasks,this.tasksdata);
-    console.log("Parent element",document.getElementById('#5fed98f2d493e05e2c3db437'));
+    console.log("Tasks and prepaerd tasked", this.tasks, this.tasksdata);
+    console.log("Parent element", document.getElementById('#5fed98f2d493e05e2c3db437'));
 
   }
 
   ngAfterViewInit() {
-    console.log("Parent element",document.getElementById('5fed98f2d493e05e2c3db437'));
+    this.linesGenetate();
+  }
+
+  linesGenetate(){
     setTimeout(() => {
-      const startingElement = document.getElementById('5fed98f2d493e05e2c3db437');
-      const endingElement = document.getElementById('5fed990f035fa55e2a8cf4d6');
-      const endingElement2 = document.getElementById('5fedb9aed383755e2b8633eb');
-      const endingElement3 = document.getElementById('5feec76a46d1d498f8523fa7');
-      
-      
-      console.log("starting ending",startingElement,endingElement);
-      var line = new LeaderLine(startingElement, endingElement,{
-        startPlug:'disc',
-        startSocket:'right',
-        endSocket:'left',
-        size:2
-      });
-      var line2 = new LeaderLine(startingElement, endingElement2,{
-        startPlug:'disc',
-        startSocket:'right',
-        endSocket:'left',
-        size:2
-  
-      });
-      var line3 = new LeaderLine(startingElement, endingElement3,{
-        startPlug:'disc',
-        startSocket:'right',
-        endSocket:'left',
-        size:2
-      });
+      for (var i = 0; i < this.tasksdata.length; i++) {
+        
+        if(this.tasksdata[i] && this.tasksdata[i].dependency){
+          console.log("this.tasksdata[i].dependency",this.tasksdata[i]?.dependency,this.tasksdata[i]?.id);
+          this.linesArray.push(new LeaderLine(document.getElementById(this.tasksdata[i]?.dependency), document.getElementById(this.tasksdata[i]?.id), {
+            startPlug: 'disc',
+            startSocket: 'right',
+            endSocket: 'left',
+            size: 2
+          }));
+
+          var lines =this.linesArray;
+          document.getElementsByClassName('mat-drawer-content')[0].addEventListener('scroll', (function() {
+            lines.forEach(line => {
+              line.position();
+            });
+          }), false);
+
+          document.getElementsByClassName('root')[0].addEventListener('scroll', (function() {
+            lines.forEach(line => {
+              line.position();
+            });
+          }), false);
+
+        }
+      }
     }, 50);
+  };
+
+  lineRemove(){
+    this.linesArray.forEach(line => {
+      line.remove();
+    });
+  }
+
+  ngOnDestroy(){
+    this.lineRemove();
   }
 
 
@@ -99,10 +114,10 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
   drop(event: CdkDragDrop<string[]>) {
     var Taskindex = event.item.element.nativeElement.attributes['taskindex'].nodeValue;
     var task = this.tasksdata[event.item.element.nativeElement.attributes['taskindex'].nodeValue];
-    var distance = (event.distance.x)/50;
-    var mod = (event.distance.x)%50;
+    var distance = (event.distance.x) / 50;
+    var mod = (event.distance.x) % 50;
 
-    if(distance>0){
+    if (distance > 0) {
 
       if (mod > 30) {
         var days = Math.ceil(distance);
@@ -117,20 +132,27 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
         var days = Math.floor(distance);
       }
     }
-    var updated_x = task.index_date+days;
-    event.item.element.nativeElement.setAttribute('style', `top:0px;left:${updated_x*50}px;width: ${event.item.element.nativeElement.style.width}`)
+    var updated_x = task.index_date + days;
+    event.item.element.nativeElement.setAttribute('style', `top:0px;left:${updated_x * 50}px;width: ${event.item.element.nativeElement.style.width}`)
     var endDate = new Date(this.tasksdata[Taskindex].end);
     var newEndDate = new Date(this.tasksdata[Taskindex].end);
-    newEndDate.setDate(endDate.getDate()+days);
+    newEndDate.setDate(endDate.getDate() + days);
     var startDate = new Date(this.tasksdata[Taskindex].start);
     var newStartDate = new Date(this.tasksdata[Taskindex].start);
-    newStartDate.setDate(startDate.getDate()+days);
-    this.tasksdata[Taskindex].index_date=updated_x;
-    this.tasksdata[Taskindex].end=this.datePipe.transform(newEndDate,"yyyy-MM-dd");
-    this.tasksdata[Taskindex].task.task.due_to=this.datePipe.transform(newEndDate,"yyyy-MM-dd");
-    this.tasksdata[Taskindex].task.task.start_date=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
-    this.tasksdata[Taskindex].start=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
-    this.dateupdate(this.tasksdata[Taskindex],newStartDate,newEndDate);
+    newStartDate.setDate(startDate.getDate() + days);
+    this.tasksdata[Taskindex].index_date = updated_x;
+    this.tasksdata[Taskindex].end = this.datePipe.transform(newEndDate, "yyyy-MM-dd");
+    this.tasksdata[Taskindex].task.task.due_to = this.datePipe.transform(newEndDate, "yyyy-MM-dd");
+    this.tasksdata[Taskindex].task.task.start_date = this.datePipe.transform(newStartDate, "yyyy-MM-dd");
+    this.tasksdata[Taskindex].start = this.datePipe.transform(newStartDate, "yyyy-MM-dd");
+    this.dateupdate(this.tasksdata[Taskindex], newStartDate, newEndDate);
+
+    setTimeout(() => {
+      this.linesArray.forEach(line => {
+        line.position();
+      });
+    }, 10);
+  
   }
 
   //Validating Resize.
@@ -151,7 +173,7 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
   onResizeEnd(event: ResizeEvent, Taskid: string, Taskindex): void {
 
     if (event.edges?.right) {
-      var mod = Number(event.edges?.right)%50;
+      var mod = Number(event.edges?.right) % 50;
 
       if (event.edges?.left > 0) {
 
@@ -174,24 +196,24 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
       document.getElementById(Taskid).style.width = newWidth + 'px';
       var endDate = new Date(this.tasksdata[Taskindex].end);
       var newEndDate = new Date(this.tasksdata[Taskindex].end);
-      newEndDate.setDate(endDate.getDate()+multiple);
-      this.tasksdata[Taskindex].end=this.datePipe.transform(newEndDate,"yyyy-MM-dd");
-      this.tasksdata[Taskindex].task.task.due_to=this.datePipe.transform(newEndDate,"yyyy-MM-dd");
-      this.dateupdate(this.tasksdata[Taskindex],this.tasksdata[Taskindex].start,newEndDate);
+      newEndDate.setDate(endDate.getDate() + multiple);
+      this.tasksdata[Taskindex].end = this.datePipe.transform(newEndDate, "yyyy-MM-dd");
+      this.tasksdata[Taskindex].task.task.due_to = this.datePipe.transform(newEndDate, "yyyy-MM-dd");
+      this.dateupdate(this.tasksdata[Taskindex], this.tasksdata[Taskindex].start, newEndDate);
 
     } else if (event.edges?.left) {
-      var mod = Number(event.edges?.left)%50;
+      var mod = Number(event.edges?.left) % 50;
 
       if (event.edges?.left > 0) {
 
-        if (mod > 30 ) {
+        if (mod > 30) {
           var multiple = Math.ceil(Number(event.edges?.left) / 50);
         } else {
           var multiple = Math.floor(Number(event.edges?.left) / 50);
         }
       } else {
-        
-        if (mod > -30 ) {
+
+        if (mod > -30) {
           var multiple = Math.ceil(Number(event.edges?.left) / 50);
 
         } else {
@@ -207,20 +229,26 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
       document.getElementById(Taskid).style.left = newLeft + 'px';
       var startDate = new Date(this.tasksdata[Taskindex].start);
       var newStartDate = new Date(this.tasksdata[Taskindex].start);
-      newStartDate.setDate(startDate.getDate()+multiple);
-      this.tasksdata[Taskindex].task.task.start_date=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
-      this.tasksdata[Taskindex].start=this.datePipe.transform(newStartDate,"yyyy-MM-dd");
-      this.dateupdate(this.tasksdata[Taskindex],newStartDate,this.tasksdata[Taskindex].end);
+      newStartDate.setDate(startDate.getDate() + multiple);
+      this.tasksdata[Taskindex].task.task.start_date = this.datePipe.transform(newStartDate, "yyyy-MM-dd");
+      this.tasksdata[Taskindex].start = this.datePipe.transform(newStartDate, "yyyy-MM-dd");
+      this.dateupdate(this.tasksdata[Taskindex], newStartDate, this.tasksdata[Taskindex].end);
     }
+
+    setTimeout(() => {
+      this.linesArray.forEach(line => {
+        line.position();
+      });
+    }, 10);
 
   }
 
   //Update Dates
   dateupdate(task, start, end) {
-    const startdate = this.datePipe.transform(start,"yyyy-MM-dd");
-    const enddate = this.datePipe.transform(end,"yyyy-MM-dd");
-    this.postService.changeTaskDueDate(task['id'],enddate);
-    this.postService.saveTaskDates(task['id'],startdate,'start_date');
+    const startdate = this.datePipe.transform(start, "yyyy-MM-dd");
+    const enddate = this.datePipe.transform(end, "yyyy-MM-dd");
+    this.postService.changeTaskDueDate(task['id'], enddate);
+    this.postService.saveTaskDates(task['id'], startdate, 'start_date');
   }
 
   //onupdate task
@@ -297,6 +325,10 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
     } else {
       this.gantt_container_height = screenHeight + 'px';
     }
+
+    this.lineRemove();
+    this.linesArray=[];
+    this.linesGenetate();
   }
 
   //Generate the dates for Nav
@@ -310,7 +342,7 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
       } else {
         var endDate = new Date(this.datestoshow.end);
       }
-      
+
       var Difference_In_Time = endDate.getTime() - currentDate.getTime();
       var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
 
@@ -422,7 +454,7 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
           }
         }
       }
-      console.log("SortedTask",SortedTask);
+      console.log("SortedTask", SortedTask);
       this.tasksdata = [];
       //Saving the only required fields of the task in tasksData array.
       SortedTask.map(x => {
@@ -440,13 +472,13 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
             progress: '0',
             difference: Difference_In_Days,
             custom_class: x?.task.status,
-            dependency:x?.task._dependency_task,
+            dependency: x?.task._dependency_task,
             image: (x?._assigned_to?.length > 0) ? this.baseUrl + '/' + x._assigned_to[0].profile_pic : undefined,
             noOfParticipants: (x?._assigned_to?.length > 1) ? x?._assigned_to?.length - 1 : undefined,
             task: x
           });
         } else {
-          if(x.task._dependency_task){
+          if (x.task._dependency_task) {
             this.tasksdata.push({
               id: x._id,
               name: x.title,
@@ -455,7 +487,7 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
               progress: '0',
               difference: Difference_In_Days,
               custom_class: x?.task.status,
-              dependency:x?.task._dependency_task,
+              dependency: x?.task._dependency_task,
               image: (x?._assigned_to?.length > 0) ? this.baseUrl + '/' + x._assigned_to[0].profile_pic : undefined,
               noOfParticipants: (x?._assigned_to?.length > 1) ? x?._assigned_to?.length - 1 : undefined,
               task: x
@@ -469,7 +501,7 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
   //Get the Min date
   async min_date(all_dates) {
     var min_dt = all_dates[0]?.start,
-    min_dtObj = new Date(all_dates[0]?.start);
+      min_dtObj = new Date(all_dates[0]?.start);
     all_dates.forEach(function (dt, index) {
 
       if (new Date(dt.start) < min_dtObj) {
@@ -482,7 +514,7 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
   //Get the Min date
   async max_date(all_dates) {
     var max_dt = all_dates[0]?.end,
-    max_dtObj = new Date(all_dates[0]?.end);
+      max_dtObj = new Date(all_dates[0]?.end);
     all_dates.forEach(function (dt, index) {
 
       if (new Date(dt.end) > max_dtObj) {
@@ -499,7 +531,7 @@ export class GanttViewComponent implements OnInit , AfterViewInit{
     this.dates.forEach((dt, index) => {
       var a = new Date(dt.date);
       var b = new Date(date);
-      if (this.datePipe.transform(a,"yyyy-MM-dd")===this.datePipe.transform(b,"yyyy-MM-dd")) {
+      if (this.datePipe.transform(a, "yyyy-MM-dd") === this.datePipe.transform(b, "yyyy-MM-dd")) {
         dateindex = index;
       }
     });
