@@ -163,7 +163,7 @@ export class AuthsController {
                     const personalGroup = await Group.findOne({
                         group_name: personalGroupData.group_name,
                         _admins: personalGroupData._admins,
-                        workspace_name: personalGroupData.workspace_name
+                        workspace_name: personalGroupData.workspace_name,
                     });
 
                     // Send Error response if 'personal' group already exist
@@ -172,7 +172,24 @@ export class AuthsController {
                     } else {
 
                         // Create new personal group
-                        const group = await Group.create(personalGroupData);
+                        let group = await Group.create(personalGroupData);
+
+                        const default_CF = {
+                            title: 'Priority',
+                            name: 'priority',
+                            values: ['Low', 'Medium', 'High']
+                        };
+            
+                        // Find the group and update their respective group avatar
+                        group = await Group.findByIdAndUpdate({
+                            _id: group._id
+                        }, {
+                            //custom_fields: newCustomField
+                            $push: { "custom_fields": default_CF }
+                        }, {
+                            new: true
+                        });
+                            
 
                         // Add personal group to user's groups
                         user = await User.findByIdAndUpdate({

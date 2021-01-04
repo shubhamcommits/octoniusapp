@@ -53,6 +53,7 @@
     "date-fns": "^2.11.0",
     "highlight.js": "^9.18.1",
     "interactjs": "^1.10.0",
+    "leader-line": "^1.0.5",
     "moment": "^2.24.0",
     "ng2-charts": "^2.2.3",
     "ngx-doc-viewer": "^1.2.0",

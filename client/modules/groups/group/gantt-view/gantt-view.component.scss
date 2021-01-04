@@ -21,25 +21,33 @@
     top: 0px;
     left:0px;
     font-family:'Nunito';
-    font-size:16px;
+    font-size:14px;
+    font-weight: 700;
 }
 .vl{
-    border-left: 2px solid #4a90e2;
+    border-left: 1px dashed #4a90e2;
     position: absolute;
     top:47px;
     height: 100%;
+    width: 4px;
+    margin-left: 10px;
 }
 #main_container{
     position: relative;
-    background-color:#fafafafa;
+    // background-color:#ffffff;
     height:90vh;
 }
 .date_div{
     position:absolute;
     top: 30px;
     font-family:'Nunito';
-    font-size:16px;
     width: 50px;
+    text-align: center;
+    border-right: 1px solid #E4EDF8;
+    .day{
+      font-size: 12px;
+      font-family:'Nunito';
+    }
 }
 .task_card{
     position:absolute;
@@ -52,6 +60,7 @@
     box-sizing: border-box;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.11);
     border-radius: 4px;
+    z-index: 100;
 }
 .task_title_text{
     font-family: 'Nunito';
@@ -78,10 +87,9 @@ $dark-sky-blue: #4a90e2;
 .curretn_date{
     color: white !important;
     background: rgb(74, 144, 226);
-    width: 30px;
+    width: 50px;
     height: 30px;
     top: -6px;
-    padding-left: 5px;
     padding-top: 4px;
     position: absolute;
     border-radius: 4px;
@@ -171,3 +179,5 @@ $dark-sky-blue: #4a90e2;
                 0 8px 10px 1px rgba(0, 0, 0, 0.14),
                 0 3px 14px 2px rgba(0, 0, 0, 0.12);
   }
+
+  

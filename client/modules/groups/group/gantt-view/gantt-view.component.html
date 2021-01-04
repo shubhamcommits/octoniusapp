@@ -5,10 +5,10 @@
         <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div>
         <p [attr.width]="step" class="first_month">{{dates[0]?.month}}</p>
         <div *ngFor="let item of dates; let i =index" [ngStyle]="{'left':(i*50)+'px','height':gantt_container_height,'background-color'
-          : item.isweekend?'#ececec':'initial'}" class="date_div">
+          : item.isweekend?'#fff':'initial'}" class="date_div">
           <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">{{item.month}}
           </p>
-          <p [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}" [ngClass]="i==current_date_index?'curretn_date':''">
+          <p [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}" [ngClass]="i==current_date_index?'curretn_date':''" class="day">
             {{item.day}}</p>
         </div>
         <div *ngFor="let task of tasksdata; let i =index" 
@@ -22,8 +22,8 @@
         : task.custom_class == 'done' ? 'rectangle task_card status-done' : 'rectangle task_card status-todo'
       " cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".example-list" mwlResizable [validateResize]="validate" [enableGhostResize]="true"
             (resizeEnd)="onResizeEnd($event,task.id,i)">
-            <div class="resize-handle-left" mwlResizeHandle [resizeEdges]="{ left: true }"></div>
-            <div class="resize-handle-right" mwlResizeHandle [resizeEdges]="{ right: true }"></div>
+            <div class="resize-handle-left" [attr.id]="task.id+'l'" mwlResizeHandle [resizeEdges]="{ left: true }"></div>
+            <div class="resize-handle-right" [attr.id]="task.id+'r'" mwlResizeHandle [resizeEdges]="{ right: true }"></div>
             <div class="media">
               <app-assignee-avatar [post]="task.task" [userData]="userData"></app-assignee-avatar>
               <div class="media-body">

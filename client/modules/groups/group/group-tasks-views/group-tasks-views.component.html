@@ -27,7 +27,9 @@
 
         <app-gantt-view *ngIf="viewType === 'gantt'"
           [tasks]="tasks" 
-          [userData]="userData">
+          [userData]="userData"
+          [columns]="columns"
+          >
         </app-gantt-view>
 
         <app-group-calendar-view *ngIf="viewType === 'calendar'"

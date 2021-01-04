@@ -31,3 +31,6 @@ $client-theme: mat-light-theme($client-primary, $client-accent, $client-warn);
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.leader-line {
+    z-index: 100 !important;
+}

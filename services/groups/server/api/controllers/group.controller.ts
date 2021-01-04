@@ -327,7 +327,23 @@ export class GroupController {
             }
 
             // If group doesn't exists, then create a new document
-            const group = await Group.create(groupData);
+            let group = await Group.create(groupData);
+
+            const default_CF = {
+                title: 'Priority',
+                name: 'priority',
+                values: ['Low', 'Medium', 'High']
+            };
+
+            // Find the group and update their respective group avatar
+            group = await Group.findByIdAndUpdate({
+                _id: group._id
+            }, {
+                //custom_fields: newCustomField
+                $push: { "custom_fields": default_CF }
+            }, {
+                new: true
+            })
 
             // Find the user and update the _groups array in the corresponding user document 
             const user = await User.findByIdAndUpdate({

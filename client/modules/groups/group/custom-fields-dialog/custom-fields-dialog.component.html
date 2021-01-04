@@ -20,29 +20,29 @@
         <div class="customFieldsList" *ngIf="customFields.length <= 0">
             <h3 class="text-center muted">🌵 There are no custom fields...</h3>
         </div>
-       
+
 
         <div class="customFieldsList" *ngIf="customFields.length > 0">
-          
+
             <div class="customFieldsBody">
                 <div class="field" *ngFor="let field of customFields">
                     <div class="title">
                         <i class="material-icons" style="color: #005FD5">label</i>
                         {{ field.title }}
-                        <i class="material-icons"
+                        <i class="material-icons" *ngIf="field.name != 'priority'"
                             (click)="removeCustomField(field)"
                             style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
                     </div>
                     <div class="values">
                         <span class="badge" *ngFor="let value of field.values">
                             {{ value }}
-                            <i class="material-icons"
+                            <i class="material-icons" *ngIf="field.name != 'priority'"
                                 (click)="removeValue(field, value)"
                                 style="cursor: pointer;">highlight_off</i>
                         </span>
-                        <div class="newValue">
-                            <input type="text" autocomplete="off" placeholder="Add value and hit ENTER..." 
-                                class="newValueInput" 
+                        <div class="newValue" *ngIf="field.name != 'priority'">
+                            <input type="text" autocomplete="off" placeholder="Add value and hit ENTER..."
+                                class="newValueInput"
                                 (keyup.enter)="addValue(field, $event)"/>
                             <!--
                             <button mat-button (click)="addValue(field, $event)">Add</button>
@@ -68,6 +68,6 @@
                  </div>
              </div>
         </div>
-       
+
     </mat-dialog-content>
 </div>
