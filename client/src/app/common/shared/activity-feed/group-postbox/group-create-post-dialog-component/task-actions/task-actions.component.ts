@@ -94,7 +94,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
       .pipe(distinctUntilChanged(), debounceTime(500))
       .subscribe(async () => {
         // If value is null then empty the array
-        if (this.itemValue == "" ) {
+        if (this.itemValue == "" && this.dependencyItemValue == "" ) {
           this.tasksList = []
         } else {
           if (this.searchingOn === 'keyword') {
@@ -205,15 +205,16 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
    * @param $event
    */
   modelChange($event: any) {
+    // console.log("search on 222", this.searchingOn  )
+    // console.log("search on event 1", $event  )
+    this.itemValue = $event;
+    this.tasksList = []
+  }
 
-    if (this.searchingOn === 'keyword') {
-      this.itemValue = $event;
-      this.dependencyItemValue = ""; 
-
-    } else {
-      this.dependencyItemValue = $event;
-      this.itemValue = "";
-    } 
+  modelChangeForDependency($event: any) {
+    // console.log("search on 222", this.searchingOn  )
+    // console.log("search on event 1", $event  )
+    this.dependencyItemValue = $event;
     this.tasksList = []
   }
 
@@ -222,7 +223,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
    * @param $event - value of item
    */
   onSearch($event: Event) {
-
+    console.log("search on", $event['path'][0]['attributes'][3]['nodeValue'] )
     this.searchingOn = $event['path'][0]['attributes'][3]['nodeValue'];
 
     // Set loading state to be true
