@@ -4,20 +4,20 @@ import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 
 // Set up mongoose connection
-var DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/octonius';
+var DB_URL = process.env.DB_URL;
 
 const options = {
   useNewUrlParser: true,
   useFindAndModify: false,
   useCreateIndex: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  auto_reconnect: true,
+  bufferMaxEntries: 0
 };
 
 // Connect mongoose to db
 mongoose.connect(DB_URL, options)
 .catch(()=>{
-  // Catch the Error on Production 
-  DB_URL = 'mongodb://127.0.0.1:27017/octonius';
   mongoose.connect(DB_URL, options);
 })
 
@@ -35,6 +35,9 @@ mongoose.connection.on('error', (err) => {
 mongoose.connection.on('disconnected', () => {
   // eslint-disable-next-line no-console
   console.log('Mongoose disconnected.');
+
+  // If Mongoose is disconnected, we attempt to restart the containers
+  process.exit(0)
 });
 
 process.on('SIGINT', () => {

@@ -58,12 +58,12 @@ services:
   auths-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:auths-server
     ports:
-      - {AUTHS_SERVER_PORT}:${AUTHS_SERVER_PORT}
+      - ${AUTHS_SERVER_PORT}:${AUTHS_SERVER_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${MAILING_SERVER_PORT}
+      - PORT=${AUTHS_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -95,7 +95,7 @@ services:
       - production_groups_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${MAILING_SERVER_PORT}
+      - PORT=${GROUPS_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -127,7 +127,7 @@ services:
       - production_workspaces_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${MAILING_SERVER_PORT}
+      - PORT=${WORKSPACES_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -159,7 +159,7 @@ services:
       - production_users_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${MAILING_SERVER_PORT}
+      - PORT=${USERS_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -191,7 +191,7 @@ services:
       - production_posts_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${MAILING_SERVER_PORT}
+      - PORT=${POSTS_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -222,7 +222,7 @@ services:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${MAILING_SERVER_PORT}
+      - PORT=${NOTIFICATIONS_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -254,7 +254,7 @@ services:
       - production_utilities_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${MAILING_SERVER_PORT}
+      - PORT=${UTILITIES_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -285,7 +285,7 @@ services:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${MAILING_SERVER_PORT}
+      - PORT=${FOLIO_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -317,7 +317,7 @@ services:
       - production_search_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${MAILING_SERVER_PORT}
+      - PORT=${SEARCH_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -341,16 +341,14 @@ services:
       - production
       
   integrations-server:
-    container_name: integrations-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:integrations-server
     ports:
       - ${INTEGRATIONS_SERVER_PORT}:${INTEGRATIONS_SERVER_PORT}
-    restart: always
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${MAILING_SERVER_PORT}
+      - PORT=${INTEGRATIONS_SERVER_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
