@@ -37,7 +37,7 @@ mongoose.connection.on('disconnected', () => {
   console.log('Mongoose disconnected.');
 
   // If Mongoose is disconnected, we attempt to restart the containers
-  process.exit(0)
+  mongoose.connect(DB_URL, options);
 });
 
 process.on('SIGINT', () => {
