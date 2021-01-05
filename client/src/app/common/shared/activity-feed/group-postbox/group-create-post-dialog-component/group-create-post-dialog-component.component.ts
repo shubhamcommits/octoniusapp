@@ -685,6 +685,17 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     await this.initPostData();
 
-    this.parentAssignEvent.emit(post);
+    this.parentAssignEvent.emit(post); // 2
+  }
+
+  async onDependencyTaskSelected(post) {
+    // Set loading state to be true
+    this.isLoading$.next(true);
+
+    this.postData = post;
+
+    await this.initPostData();
+
+    // this.parentAssignEvent.emit(post); // 2
   }
 }

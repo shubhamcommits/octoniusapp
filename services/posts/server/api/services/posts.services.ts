@@ -1976,7 +1976,7 @@ export class PostService {
       })
       .sort({ title: -1 })
       .limit(5)
-      .select('_id title');
+      .select('_id title type');
 
       // Return set of posts 
       return posts;
