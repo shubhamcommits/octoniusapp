@@ -2016,7 +2016,26 @@ export class PostService {
   async setDependencyTask(postId: string, dependecyTaskId: string) {
     
     try {
+      
       // Update the post
+
+      let post11= await Post.findById(postId);
+      if(post11.task && post11.task._dependency_task){
+        let oldParent = await Post.findById(post11.task._dependency_task);
+        console.log(post11,oldParent);
+  
+        for(var i=0;i<oldParent.task._dependent_child.length;i++){
+          if(oldParent.task._dependent_child[i]+'' == post11._id+''){
+            console.log("am here",post11._id);
+            oldParent.task._dependent_child.splice(i,1);
+            break;
+          }
+        }
+        
+        console.log("After pop",oldParent);
+        oldParent.save();
+      }
+    
       let post = await Post.findOneAndUpdate({
         _id: postId
       }, {
@@ -2024,6 +2043,16 @@ export class PostService {
       }, {
         new: true
       })
+
+      let post1 = await Post.findOneAndUpdate({
+        _id: dependecyTaskId 
+      }, {
+        "$push": {"task._dependent_child": postId } 
+      }, {
+        new: true
+      })
+
+      
 
       // populate the properties of this document
       post = await this.populatePostProperties(post);

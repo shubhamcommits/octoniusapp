@@ -62,6 +62,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       this.gantt_container_height = screenHeight + 'px';
     }
 
+    console.log("Post tasks",this.tasks,this.tasksdata);
   }
 
   ngAfterViewInit() {
@@ -405,6 +406,48 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       //Tasks before Sorting
       var sortedBefore: any = [];
 
+      function findchilds(index,dependencyid,rec){
+        console.log("In function for ",dependencyid,rec);
+        for (var j = index + 1; j < sortedBefore.length; j++) {
+          
+          if (sortedBefore[j].task._dependency_task) {
+            const parenttaskID = dependencyid;
+            const idi = sortedBefore[j].task._dependency_task + '';
+            const idj = parenttaskID + '';
+            
+            if (idi === idj) {
+              
+              console.log("pushed id",sortedBefore[j]._id);
+              SortedTask.push(sortedBefore[j]);
+              
+              if(sortedBefore[j].task && sortedBefore[j].task._dependent_child){
+               console.log("hehehe",sortedBefore[j].task._dependent_child.length )
+                if(sortedBefore[j].task._dependent_child.length > 0){
+                  findchilds(index,sortedBefore[j]._id,true);
+                }
+              }
+              
+            }
+          }
+        }
+      }
+
+
+      function isAlready(){
+        var already = false;
+
+        //Checking Task already pused or not
+        for (var k = SortedTask.length - 1; k >= 0; k--) {
+
+          if (sortedBefore[i]._id == SortedTask[k]._id) {
+            already = true;
+            break;
+          }
+        }
+
+        return already;
+      }
+
       for (var a = 0; a < tasksdata.length; a++) {
 
         if (tasksdata[a].task._dependency_task) {
@@ -420,41 +463,25 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       SortedTask.push(sortedBefore[0]);
 
       for (var i = 0; i < sortedBefore.length; i++) {
-        // C heck bit task is already pushed or not  
-        var already = false;
-
-        //Checking Task already pused or not
-        for (var k = SortedTask.length - 1; k >= 0; k--) {
-
-          if (sortedBefore[i]._id == SortedTask[k]._id) {
-            already = true;
-          }
-        }
+        // Check bit task is already pushed or not  
+        var already = isAlready();
 
         //If not already pushed pushing into  SortedTask array.
         if (!already) {
           SortedTask.push(sortedBefore[i]);
         }
 
-
         //Finding the child of the current task and pushing into  SortedTask array.
-        if (i < sortedBefore.length - 1) {
+        if ((i < sortedBefore.length - 1) && (sortedBefore.length!=SortedTask.length)) {
 
-          for (var j = i + 1; j < sortedBefore.length; j++) {
-
-            if (sortedBefore[j].task._dependency_task) {
-              const parenttaskID = sortedBefore[j].task._dependency_task;
-              const idi = sortedBefore[i]._id + '';
-              const idj = parenttaskID + '';
-              if (idi === idj) {
-                SortedTask.push(sortedBefore[j]);
-              }
-            }
-          }
+           findchilds(i,sortedBefore[i]._id,false); 
         }
+
       }
       this.tasksdata = [];
       //Saving the only required fields of the task in tasksData array.
+
+      console.log("Sorted",SortedTask);
       SortedTask.map(x => {
         const startdate: any = new Date(x.task.start_date);
         const endate: any = new Date(x.task.due_to);
@@ -468,7 +495,9 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             start: x.task.start_date,
             end: x.task.due_to,
             progress: '0',
+            dependent_tasks:x?.task?._dependent_child,
             difference: Difference_In_Days,
+            dependency_index:x?.parentIndex,
             custom_class: x?.task.status,
             dependency: x?.task._dependency_task,
             image: (x?._assigned_to?.length > 0) ? this.baseUrl + '/' + x._assigned_to[0].profile_pic : undefined,
@@ -483,6 +512,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
               start: x.task.start_date,
               end: x.task.due_to,
               progress: '0',
+              dependent_tasks:x?.task?._dependent_child,
+              dependency_index:x?.parentIndex,
               difference: Difference_In_Days,
               custom_class: x?.task.status,
               dependency: x?.task._dependency_task,
