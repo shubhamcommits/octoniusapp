@@ -58,6 +58,8 @@
                                 *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
                                 [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
                                 {{task?.task?.due_to | date}}</span>
+                                <div class="label-priority low">Low</div>
+                                <!-- PRIORITY design added -->
                             </div>
 
                             <app-assignee-avatar [post]="task" [userData]="userData" style="margin-right: 10px;"></app-assignee-avatar>
