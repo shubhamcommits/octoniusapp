@@ -1061,38 +1061,40 @@ export class GroupController {
 
             const group = await Group.findById(groupId);
 
-            // Remove owner/admin from prospective members
-            group['_admins'].map((adminId) => {
-                if (validUsers.has(adminId.toString())) {
-                    validUsers.delete(adminId.toString());
-                }
-            });
-
-            // Remove the group from the current members' _groups set
-            group['_members'].map(async (userId) => {
-                await User.findByIdAndUpdate(userId, {
-                    $pull: { _groups: groupId }
+            if (group.group_name.toLowerCase() != 'global') {
+                // Remove owner/admin from prospective members
+                group['_admins'].map((adminId) => {
+                    if (validUsers.has(adminId.toString())) {
+                        validUsers.delete(adminId.toString());
+                    }
                 });
-            });
 
-            // Remove the current members from the group
-            await Group.findByIdAndUpdate(groupId, {
-                $set: { _members: [] }
-            });
-
-            if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0) {
-                // Add new members
-                Array.from(validUsers).map(async (userId) => {
-                    // Add the user to the group
-                    await Group.findByIdAndUpdate(groupId, {
-                        $addToSet: { _members: userId }
-                    });
-
-                    // Add the group to the user document
+                // Remove the group from the current members' _groups set
+                group['_members'].map(async (userId) => {
                     await User.findByIdAndUpdate(userId, {
-                        $addToSet: { _groups: groupId }
+                        $pull: { _groups: groupId }
                     });
                 });
+
+                // Remove the current members from the group
+                await Group.findByIdAndUpdate(groupId, {
+                    $set: { _members: [] }
+                });
+
+                if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0) {
+                    // Add new members
+                    Array.from(validUsers).map(async (userId) => {
+                        // Add the user to the group
+                        await Group.findByIdAndUpdate(groupId, {
+                            $addToSet: { _members: userId }
+                        });
+
+                        // Add the group to the user document
+                        await User.findByIdAndUpdate(userId, {
+                            $addToSet: { _groups: groupId }
+                        });
+                    });
+                }
             }
 
             return res.status(200).json({
