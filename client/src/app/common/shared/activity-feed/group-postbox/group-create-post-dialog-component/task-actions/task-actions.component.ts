@@ -31,6 +31,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
 
   parentTask: boolean = false;
   ischild:boolean =false;
+  isdependent:boolean=false;
   tasksList: any = [];
   searchingOn: string = 'keyword';
   // Item value variable mapped with search field
@@ -85,10 +86,15 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
         });
     }
 
-    console.log("This.post",this.postData?.task?._parent_task);
+    console.log("This.post",this.postData?.task);
     if(this.postData?.task?._parent_task){
       this.ischild=true;
     }
+
+    if(this.postData?.task?._dependency_task || this.postData?.task?._dependent_child.length>0){
+      this.isdependent=true;
+    }
+    
     this.parentTask = await this.isParent();
   }
 
