@@ -246,8 +246,7 @@ export class GroupSmartAdminComponent implements OnInit {
    */
   autoAdd(): void {
     const data = {
-      workspaceId: this.group._workspace,
-      currentSettings: this.currentSettings
+      workspaceId: this.group._workspace
     };
     this.groupService.updateSmartGroupMembers(
       this.group._id,

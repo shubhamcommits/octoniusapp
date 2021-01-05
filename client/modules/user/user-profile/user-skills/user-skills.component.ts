@@ -2,6 +2,9 @@ import { Component, OnInit, Input, Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { GroupService } from 'src/shared/services/group-service/group.service';
+import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
+import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 
 @Component({
   selector: 'app-user-skills',
@@ -13,6 +16,9 @@ export class UserSkillsComponent implements OnInit {
   constructor(
     public utilityService: UtilityService,
     public userService: UserService,
+    public groupService: GroupService,
+    public groupsService: GroupsService,
+    public workspaceService: WorkspaceService,
     public injector: Injector
   ) { }
 
@@ -21,6 +27,12 @@ export class UserSkillsComponent implements OnInit {
 
   // Is current user variable
   @Input('currentUser') currentUser: boolean = false;
+
+  currentGroupSettings: any = {
+    emailDomains: [],
+    jobPositions: [],
+    skills: []
+  };
 
   // Public Functions class
   public publicFunctions = new PublicFunctions(this.injector);
@@ -35,13 +47,16 @@ export class UserSkillsComponent implements OnInit {
 
   /**
    * This function adds new skill to user's skill set
-   * @param $event 
+   * @param $event
    */
   addNewSkill($event: string){
     return new Promise((resolve, reject)=>{
       this.userService.addSkill($event)
       .toPromise()
-      .then(()=> resolve(this.utilityService.successNotification('New skill Added!')))
+      .then(()=> {
+        this.autoUpdateGroups();
+        resolve(this.utilityService.successNotification('New skill Added!'));
+      })
       .catch(() => reject(this.utilityService.errorNotification('Unable to add new skill, please try again!')));
     })
   }
@@ -57,6 +72,8 @@ export class UserSkillsComponent implements OnInit {
       .toPromise()
       .then(()=> {
 
+        this.autoUpdateGroups();
+
         // Remove the skill from the array
         this.userData.skills.splice(index, 1);
 
@@ -70,4 +87,30 @@ export class UserSkillsComponent implements OnInit {
     })
   }
 
+  /**
+   * Executes whenever a skill is added or deleted.
+   * Responsible for automatically adding or removing
+   * group members.
+   */
+  autoUpdateGroups() {
+    const workspaceId = this.userData._workspace._id || this.userData._workspace;
+    this.groupsService.getWorkspaceGroups(workspaceId)
+      .then(res => {
+        res['groups'].forEach(group => {
+          this.groupService.updateSmartGroupMembers(
+            group._id || group,
+            {
+              workspaceId: workspaceId
+            }
+          ).subscribe(
+            res => {},
+            error => {
+              this.utilityService.errorNotification('An error occurred whilst modifying the members of the group.');
+              console.error('Could not auto update members!');
+              console.error(error);
+            }
+          );
+        });
+      });
+  }
 }
