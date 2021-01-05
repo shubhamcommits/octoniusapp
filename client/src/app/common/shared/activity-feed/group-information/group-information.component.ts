@@ -73,7 +73,7 @@ export class GroupInformationComponent implements OnInit {
     return this.utilityService.getSwalModal({
       title: title,
       html:
-        `<input id="phone-number" type="text" placeholder="Group Name"
+        `<input id="phone-number" type="text" placeholder="Group Name" disabled="${this.groupData.group_name.toLowerCase() != 'global'}"
     value="${this.groupData.group_name || 'Your Group Name here...'}" class="swal2-input">` +
 
         `<input id="mobile-number" type="text" placeholder="Group Description"
