@@ -9,13 +9,13 @@
   </div>
 
   <!-- Invite guest -->
-  <app-invite-user *ngIf="groupData && workspaceData"
+  <app-invite-user *ngIf="groupData && workspaceData && groupData.group_name.toLowerCase() != 'global'"
     [workspaceData]="workspaceData"
     [groupData]="groupData">
   </app-invite-user>
 
   <!-- Smart admin content -->
-  <app-group-smart-admin *ngIf="groupData" [group]="groupData">
+  <app-group-smart-admin *ngIf="groupData && groupData.group_name.toLowerCase() != 'global'" [group]="groupData">
   </app-group-smart-admin>
 
   <!-- Add Users -->
