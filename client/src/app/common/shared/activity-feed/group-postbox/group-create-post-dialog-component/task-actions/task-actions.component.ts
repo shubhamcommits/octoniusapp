@@ -120,10 +120,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
 
           // Update the tasksList
           this.tasksList = Array.from(new Set(this.tasksList['posts']));
-          setTimeout(() => {
-            console.log("tasksList",  this.tasksList )
-
-          }, 2000);
+          
         }
 
         // Stop the loading state once the values are loaded

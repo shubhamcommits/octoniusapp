@@ -59,7 +59,7 @@
     <div *ngIf="searchingOn === 'dependencyKeyword'">
     <section id="results" *ngIf="!(isLoadingAction$ | async)" class="results" onfocusout="">
       <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
-        <div class="media-body mt-2" *ngIf="task.type === 'task' ">
+        <div class="media-body mt-2" *ngIf="task.type === 'task' && !(task?.task)" >
           <!-- Display full name of the member starts -->
           <h4 class="mt-0 full-name-text" (click)="setDependencyTask(task._id)">
             {{ task?.title | truncatetext: 50 }}
