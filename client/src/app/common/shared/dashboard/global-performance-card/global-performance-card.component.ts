@@ -114,9 +114,9 @@ export class GlobalPerformanceCardComponent implements OnChanges {
         // Get all tasks count having status as 'done'
         this.doneTasks[this.groups[i]._id] = this.totalTasks[this.groups[i]._id] - (this.toDoTasks[this.groups[i]._id] + this.inProgressTasks[this.groups[i]._id]);
 
-        this.overdueTasks[this.groups[i]._id] = await this.getOverdueTasksCount();
+        this.overdueTasks[this.groups[i]._id] = await this.getOverdueTasksCount(this.groups[i]._id);
 
-        const percentageDone = (this.totalTasks[this.groups[i]._id] + this.overdueTasks.length > 0) ? (((this.doneTasks[this.groups[i]._id])*100)/(this.totalTasks[this.groups[i]._id] + this.overdueTasks.length)) : 0;
+        const percentageDone = (this.totalTasks[this.groups[i]._id] + this.overdueTasks[this.groups[i]._id] > 0) ? (((this.doneTasks[this.groups[i]._id])*100)/(this.totalTasks[this.groups[i]._id] + this.overdueTasks[this.groups[i]._id])) : 0;
         this.groups[i].completitionPercentage = Math.round(percentageDone);
 
         this.groups[i].projectStatusClass = "pulse_tweet " + this.setStatusClass(this.groups[i].project_status, false);
@@ -138,9 +138,9 @@ export class GlobalPerformanceCardComponent implements OnChanges {
     })
   }
 
-  async getOverdueTasksCount() {
+  async getOverdueTasksCount(groupId: string) {
     return new Promise((resolve, reject) => {
-      this.postService.getWorkspacePosts(this.workspaceData['_id'], 'task', this.period, true, false)
+      this.postService.getGroupPosts(groupId, 'task', this.period, true)
         .then((res) => {
           resolve(res['posts'].length)
         })
