@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Injector, Input, OnDestroy, OnChanges, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { settings } from 'cluster';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -23,12 +24,14 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
   @Input() userData: any;
 
   @Output() parentTaskSelectedEmitter = new EventEmitter();
+  @Output() dependencyTaskSelectedEmitter = new EventEmitter();
 
   userGroups = [];
   transferAction = '';
 
   parentTask: boolean = false;
-
+  ischild:boolean =false;
+  isdependent:boolean=false;
   tasksList: any = [];
   searchingOn: string = 'keyword';
   // Item value variable mapped with search field
@@ -83,6 +86,15 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
         });
     }
 
+    console.log("This.post",this.postData?.task);
+    if(this.postData?.task?._parent_task){
+      this.ischild=true;
+    }
+
+    if(this.postData?.task?._dependency_task || this.postData?.task?._dependent_child.length>0){
+      this.isdependent=true;
+    }
+    
     this.parentTask = await this.isParent();
   }
 
@@ -100,13 +112,15 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
           if (this.searchingOn === 'keyword') {
             this.tasksList = await this.postService.searchPosibleParents(this.groupData._id, this.postData._id, this.itemValue) || []
           } else {
+
             this.tasksList = await this.postService.searchPosibleParents(this.groupData._id, this.postData._id, this.dependencyItemValue) || []
           }
 
           //this.tasksList = await this.postService.getPosts(this.groupData._id, 'task') || []
 
           // Update the tasksList
-          this.tasksList = Array.from(new Set(this.tasksList['posts']))
+          this.tasksList = Array.from(new Set(this.tasksList['posts']));
+          
         }
 
         // Stop the loading state once the values are loaded
@@ -220,7 +234,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
    */
   onSearch($event: Event) {
 
-    this.searchingOn = $event['path'][0]['attributes'][3]['nodeValue'];
+    this.searchingOn = $event.target['id'];
 
     // Set loading state to be true
     this.isLoadingAction$.next(true);
@@ -254,7 +268,8 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
         if (res.value) {
           this.postService.setDependencyTask(this.postData._id, dependencyTaskId).then(res => {
             this.postData = res['post'];
-
+            let settings = {setDependency: "setDependency"}
+            this.postData.settings = settings;
             // Clear search input after assigning
             // this.itemValue = '';
             this.dependencyItemValue = '';
@@ -262,7 +277,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
             // Close the list after assigning
             this.tasksList = [];
 
-            this.parentTaskSelectedEmitter.emit(this.postData);
+            this.dependencyTaskSelectedEmitter.emit(this.postData);
           });
         }
       });
