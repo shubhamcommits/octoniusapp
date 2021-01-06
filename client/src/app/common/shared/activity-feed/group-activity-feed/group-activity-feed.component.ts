@@ -269,7 +269,7 @@ export class GroupActivityFeedComponent implements OnInit {
       this.postService.deletePost(post._id).then((res)=>{
          // Find the key(postId) and remove the post
         this.posts.delete(post._id);
-        resolve();
+        resolve({});
       }).catch((err)=>{
         console.log(err);
         reject();
