@@ -25,7 +25,7 @@ export class PostController {
             return false;
         }
         return true;
-    }    
+    }
 
     /**
      * This function is responsible to add a post
@@ -57,7 +57,7 @@ export class PostController {
     }
 
     async callAddPostService(post: any, userId: string) {
-        
+
         // Call Service function to change the assignee
         post = await postService.addPost(post, userId);
 
@@ -627,11 +627,11 @@ export class PostController {
 
         // Execute Automation Flows
         post = await this.executeAutomationFlows((post._group || post._group._id), post, userId);
-        
+
         post.task._assigned_to = assigneeId;
 
         post = await postService.populatePostProperties(post);
-        
+
         return post;
     }
 
@@ -732,7 +732,7 @@ export class PostController {
 
         // Execute Automation Flows
         post = await this.executeAutomationFlows(groupId, post, userId);
-        
+
         return post;
     }
 
@@ -789,7 +789,7 @@ export class PostController {
     async getTags(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const  { groupId, tag }  = req.query;
+        const { groupId, tag } = req.query;
 
         try {
 
@@ -809,9 +809,9 @@ export class PostController {
         }
     }
 
-    async getRecentActivity(req: Request, res: Response, next: NextFunction){
+    async getRecentActivity(req: Request, res: Response, next: NextFunction) {
         try {
-            
+
             // Fetch data from request
             const userId = req['userId'];
 
@@ -822,54 +822,54 @@ export class PostController {
             return res.status(200).json({
                 message: 'Successfully Retrieved Posts!',
                 posts: posts
-            }); 
+            });
         } catch (error) {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
         }
     }
 
 
-    async getNextRecentActivity(req: Request, res: Response, next: NextFunction){
+    async getNextRecentActivity(req: Request, res: Response, next: NextFunction) {
         try {
-            
+
             // Fetch data from request
             const userId = req['userId'];
             const { lastPostId } = req.params;
 
             // Call service function to get next recent activity
-            const posts:any = await postService.getNextRecentActivity(userId, lastPostId);
+            const posts: any = await postService.getNextRecentActivity(userId, lastPostId);
 
             // Send status 200 response
             return res.status(200).json({
                 message: `Successfully Retrieved Next ${posts.length} Posts!`,
                 posts: posts
-            }); 
+            });
         } catch (error) {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
         }
     }
 
 
-    async getRecentGroups(req: Request, res: Response, next: NextFunction){
+    async getRecentGroups(req: Request, res: Response, next: NextFunction) {
         try {
             // Fetch data from request
             const userId = req['userId'];
 
             // Call service function to get recent groups
             const groupSet = await postService.getRecentGroups(userId);
-            
+
             // Send status 200 response
             return res.status(200).json({
                 message: `Successfully Retrieved Groups List`,
                 groups: groupSet
-            }); 
+            });
         } catch (error) {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
         }
     }
-    
+
     async saveCustomField(req: Request, res: Response, next: NextFunction) {
-        
+
         const userId = req['userId'];
 
         // Fetch the groupId
@@ -907,7 +907,7 @@ export class PostController {
         return post;
     }
 
-    async addBarToPost(req: Request, res:Response, next: NextFunction){
+    async addBarToPost(req: Request, res: Response, next: NextFunction) {
         const { postId } = req.params;
         const { bar } = req.body;
         try {
@@ -925,7 +925,7 @@ export class PostController {
             return sendErr(res, err, 'Internal Server Error!', 500);
         }
     }
-    async removeBarFromPost(req: Request, res:Response, next: NextFunction){
+    async removeBarFromPost(req: Request, res: Response, next: NextFunction) {
         const { postId } = req.params;
         const { bar } = req.body;
         try {
@@ -953,7 +953,7 @@ export class PostController {
     async getWorspacePosts(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const  { workspaceId, type, numDays, overdue, isNorthStar }  = req.query;
+        const { workspaceId, type, numDays, overdue, isNorthStar } = req.query;
 
         try {
 
@@ -962,14 +962,14 @@ export class PostController {
 
             if (isNorthStar) {
                 posts = await postService.getWorspaceNorthStars(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"))
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
+                    .catch((err) => {
+                        return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                    })
             } else {
                 posts = await postService.getWorspacePostsResults(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"))
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
+                    .catch((err) => {
+                        return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                    })
             }
             // // Send status 200 response
             return res.status(200).json({
@@ -990,7 +990,7 @@ export class PostController {
     async getGroupPosts(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const  { groupId, type, numDays, overdue }  = req.query;
+        const { groupId, type, numDays, overdue } = req.query;
 
         try {
 
@@ -1028,7 +1028,7 @@ export class PostController {
     async getSubtasks(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const  { parentId }  = req.query;
+        const { parentId } = req.query;
 
         try {
 
@@ -1059,7 +1059,7 @@ export class PostController {
     async getSubtasksCount(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const  { parentId }  = req.query;
+        const { parentId } = req.query;
 
         try {
 
@@ -1176,7 +1176,7 @@ export class PostController {
     async searchPossibleParents(req: Request, res: Response, next: NextFunction) {
 
         // Fetch groupId and lastPostId from request
-        var { groupId, query } = req.query;
+        var { groupId, query, field } = req.query;
         var { currentPostId } = req.params
         try {
             // If groupId or currentPostId are not present, then return error
@@ -1185,7 +1185,7 @@ export class PostController {
             }
 
             // Fetch the 10 possible posts
-            await postService.searchPossibleParents(groupId, currentPostId, query)
+            await postService.searchPossibleParents(groupId, currentPostId, query, field)
                 .then((posts) => {
                     return res.status(200).json({
                         message: `The ${posts.length} possible parent tasks!`,
@@ -1289,7 +1289,7 @@ export class PostController {
             throw error;
         }
     }
-    
+
     doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger?: boolean) {
         let retValue = true;
         if (triggers && triggers.length > 1) {
@@ -1298,7 +1298,7 @@ export class PostController {
                     switch (trigger.name) {
                         case 'Assigned to':
                             // const usersMatch = await trigger._user.filter(triggerUser => post._assigned_to.some(assignee => triggerUser._id == assignee['_id']))
-                            const usersMatch = 
+                            const usersMatch =
                                 trigger._user.filter((triggerUser) => {
                                     return post._assigned_to.findIndex(assignee => {
                                         return assignee._id.toString() == triggerUser._id.toString()
@@ -1337,7 +1337,7 @@ export class PostController {
                     action._user.forEach(async userAction => {
                         let index = -1;
                         if (post._assigned_to) {
-                            index = post._assigned_to.findIndex(assignee => {return (assignee._id || assignee) == (userAction._id || userAction)});
+                            index = post._assigned_to.findIndex(assignee => { return (assignee._id || assignee) == (userAction._id || userAction) });
 
                             if (index < 0) {
                                 post = await this.callAddAssigneeService(post._id, userAction, userId, groupId);
@@ -1357,7 +1357,7 @@ export class PostController {
                     break;
                 default:
                     break;
-            } 
+            }
         });
         return post;
     }
