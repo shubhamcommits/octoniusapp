@@ -287,7 +287,9 @@
           [postData]="postData"
           [groupData]="groupData"
           [userData]="userData"
-          (parentTaskSelectedEmitter)="onParentTaskSelected($event)"></app-task-actions>
+          (parentTaskSelectedEmitter)="onParentTaskSelected($event)"
+          (dependencyTaskSelectedEmitter)="onDependencyTaskSelected($event)"
+          ></app-task-actions>
     </div>
     <!-- Top Right Section ends -->
 </div>

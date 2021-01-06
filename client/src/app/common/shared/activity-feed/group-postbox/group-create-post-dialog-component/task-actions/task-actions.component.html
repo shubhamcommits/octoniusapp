@@ -19,7 +19,7 @@
       </ng-container>
     </mat-menu>
   </div>
-  <div *ngIf="!parentTask" class="set-parent">
+  <div *ngIf="!parentTask && !isdependent" class="set-parent">
     Make subtask of
 
     <!-- INPUT BAR STARTS -->
@@ -49,7 +49,7 @@
   </div>
 
 
-  <div *ngIf="groupData && !parentTask && groupData.project_type" class="set-parent">
+  <div *ngIf="groupData && !ischild && groupData.project_type" class="set-parent">
     Make Dependency for
 
     <!-- INPUT BAR STARTS -->
@@ -59,7 +59,7 @@
     <div *ngIf="searchingOn === 'dependencyKeyword'">
     <section id="results" *ngIf="!(isLoadingAction$ | async)" class="results" onfocusout="">
       <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
-        <div class="media-body mt-2">
+        <div class="media-body mt-2" >
           <!-- Display full name of the member starts -->
           <h4 class="mt-0 full-name-text" (click)="setDependencyTask(task._id)">
             {{ task?.title | truncatetext: 50 }}

@@ -27,15 +27,15 @@
 
     <div class="flowStepsList" *ngIf="flowSteps.length > 0">
       <div class="flowStepsBody">
-        <div class="step row" *ngFor="let step of flowSteps; let stepIndex = index">
-          <div class="col-md-1">
+        <div class="step" *ngFor="let step of flowSteps; let stepIndex = index">
+         
             <div class="index">{{ stepIndex + 1 }}</div>
-          </div>
+
 
           <!-- TRIGGER SECTION -->
-          <div class="values col-md-5" *ngIf="step.trigger">
+          <div class="values" *ngIf="step.trigger">
             <div *ngFor="let trigger of step.trigger; let triggerIndex = index">
-              <div>
+              <div class="step-element">
                 <span style="margin-right: 10px;">
                   {{ trigger.name }}
                 </span>
@@ -117,10 +117,12 @@
                 </div>
               </div>
             </div>
-            <i class="material-icons-outlined" *ngIf="!newTrigger" (click)="newTrigger = !newTrigger" style="cursor: pointer;">add</i>
+            <div class="add-step">
+              <i class="material-icons-outlined" *ngIf="!newTrigger" (click)="newTrigger = !newTrigger" style="cursor: pointer;">add</i>
+            </div>
           </div>
-
-          <div class="values col-md-5" *ngIf="!step.trigger || newTrigger">
+          
+          <div class="step-element" *ngIf="!step.trigger || newTrigger">
             WHEN
             <!-- TRIGGER OPTIONS SECTION -->
             <button mat-menu-item [matMenuTriggerFor]="triggerMenu">
@@ -133,14 +135,14 @@
             </mat-menu>
           </div>
 
-          <div class="col-md-1">
+          <div class="step-separator">
             <i class="material-icons" style="color: #005FD5; line-height: 48px;">offline_bolt</i>
           </div>
-
+          
           <!-- ACTION SECTION -->
-          <div class="values col-md-4" *ngIf="step.action">
+          <div class="values" *ngIf="step.action">
             <div *ngFor="let action of step.action; let actionIndex = index">
-              <div>
+              <div class="step-element">
                 <span style="margin-right: 10px;">
                   {{ action.name }}
                 </span>
@@ -222,10 +224,10 @@
                 </div>
               </div>
             </div>
-            <i class="material-icons-outlined" *ngIf="!newAction" (click)="newAction = !newAction" style="cursor: pointer;">add</i>
+           <div class="add-step"> <i class="material-icons-outlined" *ngIf="!newAction" (click)="newAction = !newAction" style="cursor: pointer;">add</i></div>
           </div>
 
-          <div class="values col-md-4" *ngIf="!step.action || newAction">
+          <div class="step-element" *ngIf="!step.action || newAction">
             THEN
             <!-- ACTION OPTIONS SECTION -->
             <button mat-menu-item [matMenuTriggerFor]="actionMenu">
@@ -239,7 +241,7 @@
           </div>
 
           <!-- DELETE STEP -->
-          <div class="values col-md-1">
+          <div class="remove-separator">
             <i class="material-icons text-danger" (click)="removeStep(step._id)"
               style=" cursor: pointer; margin-left: 20px;">delete</i>
           </div>
