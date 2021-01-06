@@ -124,13 +124,17 @@ do
     # Go to service directory
     cd $i
 
+    # Removing the lock files
+    rm -rf yarn.lock package-lock.json
+
+    # Service Name
     service="$(cut -d'/' -f1 <<<"$i")"
 
     # Echo the Status
     echo -e "\n \t Installing $service service..."
 
     # Create Uploads Folder
-    mkdir uploads
+    mkdir -p uploads
 
     # Start the process and push it to background
     $packageManager install &
