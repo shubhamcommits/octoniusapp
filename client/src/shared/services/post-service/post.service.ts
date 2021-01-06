@@ -20,7 +20,7 @@ export class PostService {
 
     // Call the HTTP Request
     return this._http.post(this.baseURL + '/', formData).
-    toPromise()
+      toPromise()
   }
 
   /**
@@ -32,25 +32,25 @@ export class PostService {
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}`, formData).
-    toPromise()
+      toPromise()
   }
 
-  addBar(postId: string, bar:any){
-        // Call the HTTP Request
-        const body = {
-          bar
-        };
-        return this._http.put(this.baseURL + `/${postId}/addBar`, body).
-        toPromise();
+  addBar(postId: string, bar: any) {
+    // Call the HTTP Request
+    const body = {
+      bar
+    };
+    return this._http.put(this.baseURL + `/${postId}/addBar`, body).
+      toPromise();
   }
 
-  removeBar(postId: string, bar:any){
+  removeBar(postId: string, bar: any) {
     const body = {
       bar
     };
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/removeBar`, body).
-    toPromise();
+      toPromise();
   }
   /**
    * This function is responsible for fetching a post details
@@ -60,51 +60,51 @@ export class PostService {
 
     // Call the HTTP Request
     return this._http.get(this.baseURL + `/${postId}`).
-    toPromise()
+      toPromise()
   }
 
   /**
    * This function is responsible for liking a post
    * @param postId
    */
-  like(postId: string){
+  like(postId: string) {
 
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/like`, '').
-    toPromise()
+      toPromise()
   }
 
   /**
    * This function is responsible for unliking a post
    * @param postId
    */
-  unlike(postId: string){
+  unlike(postId: string) {
 
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/unlike`, '').
-    toPromise()
+      toPromise()
   }
 
   /**
    * This function is responsible for liking a post
    * @param postId
    */
-  follow(postId: string){
+  follow(postId: string) {
 
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/follow`, '').
-    toPromise()
+      toPromise()
   }
 
   /**
    * This function is responsible for unliking a post
    * @param postId
    */
-  unfollow(postId: string){
+  unfollow(postId: string) {
 
     // Call the HTTP Request
     return this._http.post(this.baseURL + `/${postId}/unfollow`, '').
-    toPromise()
+      toPromise()
   }
 
   /**
@@ -117,13 +117,13 @@ export class PostService {
     // Create the request variable
     let request: any;
 
-    if(!lastPostId || lastPostId === undefined || lastPostId === null)
+    if (!lastPostId || lastPostId === undefined || lastPostId === null)
       request = this._http.get(this.baseURL + `/`, {
-      params: {
-        groupId: groupId,
-        type: type
-      }
-    }).toPromise()
+        params: {
+          groupId: groupId,
+          type: type
+        }
+      }).toPromise()
 
     else {
       request = this._http.get(this.baseURL + `/`, {
@@ -164,10 +164,10 @@ export class PostService {
    * @param groupId
    * @param userId
    */
-  getCalendarPosts(year: any, month: any, groupId: string, userId?: string){
-    if(userId){
+  getCalendarPosts(year: any, month: any, groupId: string, userId?: string) {
+    if (userId) {
       return this._http.get(this.baseURL + `/calendar/timeline`, {
-        params:{
+        params: {
           year: year,
           month: month,
           groupId: groupId,
@@ -175,9 +175,9 @@ export class PostService {
         }
       }).toPromise();
     }
-    else{
+    else {
       return this._http.get(this.baseURL + `/calendar/timeline`, {
-        params:{
+        params: {
           year: year,
           month: month,
           groupId: groupId
@@ -191,7 +191,8 @@ export class PostService {
     return this._http.put(this.baseURL + `/${postId}/remove-assignee`, {
       assigneeId: assigneeId
     }).
-    toPromise()}
+      toPromise()
+  }
 
   addAssigneeToPost(postId: string, assigneeId: string, groupId: string) {
     // Call the HTTP Request
@@ -199,20 +200,21 @@ export class PostService {
       assigneeId: assigneeId,
       groupId: groupId
     }).
-    toPromise()}
+      toPromise()
+  }
 
   /**
    * This function is resposible for changing the task Assignee of a post
    * @param postId
    * @param assigneeId
    */
-  changeTaskAssignee(postId: string, assigneeId: string){
+  changeTaskAssignee(postId: string, assigneeId: string) {
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-assignee`, {
       assigneeId: assigneeId
     }).
-    toPromise()
+      toPromise()
   }
 
   /**
@@ -220,13 +222,13 @@ export class PostService {
    * @param postId
    * @param dateDueTo
    */
-  changeTaskDueDate(postId: string, dateDueTo: string){
+  changeTaskDueDate(postId: string, dateDueTo: string) {
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-due-date`, {
       date_due_to: dateDueTo
     }).
-    toPromise()
+      toPromise()
   }
 
   /**
@@ -234,7 +236,7 @@ export class PostService {
    * @param postId
    * @param status
    */
-  changeTaskStatus(postId: string, status: string, userId: string, groupId: string){
+  changeTaskStatus(postId: string, status: string, userId: string, groupId: string) {
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-status`, {
@@ -242,7 +244,7 @@ export class PostService {
       userId: userId,
       groupId: groupId
     }).
-    toPromise()
+      toPromise()
   }
 
   /**
@@ -251,7 +253,7 @@ export class PostService {
    * @param title
    * @param userId
    */
-  changeTaskColumn(postId: string, title: string, userId: string, groupId: string){
+  changeTaskColumn(postId: string, title: string, userId: string, groupId: string) {
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-column`, {
@@ -259,7 +261,7 @@ export class PostService {
       userId: userId,
       groupId: groupId
     }).
-    toPromise()
+      toPromise()
   }
 
   /**
@@ -284,7 +286,7 @@ export class PostService {
    * This function is used to delete a post
    * @param postId
    */
-  deletePost(postId: string){
+  deletePost(postId: string) {
     return this._http.delete(this.baseURL + `/${postId}`).toPromise();
   }
 
@@ -400,12 +402,13 @@ export class PostService {
    * @param currentPostId
    * @param queryText
    */
-  searchPosibleParents(groupId: string, currentPostId: string, queryText: string) {
+  searchPosibleParents(groupId: string, currentPostId: string, queryText: string, type: string) {
     // Call the HTTP Request
     return this._http.get(this.baseURL + `/${currentPostId}/searchParent`, {
       params: {
         groupId: groupId,
-        query: queryText
+        query: queryText,
+        field: type
       }
     }).toPromise()
   }
