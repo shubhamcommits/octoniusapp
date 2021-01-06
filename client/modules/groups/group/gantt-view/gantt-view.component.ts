@@ -101,9 +101,11 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   };
 
   lineRemove() {
+
     this.linesArray.forEach(line => {
       line.remove();
     });
+
   }
 
   ngOnDestroy() {

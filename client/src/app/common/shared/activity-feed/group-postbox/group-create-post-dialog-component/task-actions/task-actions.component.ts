@@ -234,7 +234,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
    */
   onSearch($event: Event) {
 
-    this.searchingOn = $event['path'][0]['attributes'][3]['nodeValue'];
+    this.searchingOn = $event.target['id'];
 
     // Set loading state to be true
     this.isLoadingAction$.next(true);
