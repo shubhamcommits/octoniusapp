@@ -1,4 +1,3 @@
-import socketIO from 'socket.io';
 import { helperFunctions } from '.';
 import { NotificationsService } from '../api/service/notification.service';
 
@@ -10,7 +9,7 @@ const globalConnections = [];
 
 function init(server: any){
 
-    const io: any = socketIO(server);
+    const io: any = require('socket.io')(server);
 
     /* =================
      * - NOTIFICATIONS -
