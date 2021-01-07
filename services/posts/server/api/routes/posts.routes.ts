@@ -181,4 +181,6 @@ routes.put('/:postId/set-parent', postController.setParentTask);
 // PUT - Used to set a dependency task to a task
 routes.put('/:postId/set-dependency', postController.setDependencyTask);
 
+routes.post('/:postId/gantt-task-dates-update',postController.updateGanttTasksDates)
+
 export { routes as postRoutes };
