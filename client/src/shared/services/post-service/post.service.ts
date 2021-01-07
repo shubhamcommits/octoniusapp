@@ -232,6 +232,24 @@ export class PostService {
   }
 
   /**
+   * This function is resposible for changing the task DueDate of a post
+   * @param postId
+   * @param dateDueTo
+   */
+  updateGanttTasksDates(postId: string, groupId: string, dateDueTo: string, startdate: string, startdays: number, enddays: number) {
+
+    // Call the HTTP Request
+    return this._http.post(this.baseURL + `/${postId}/gantt-task-dates-update`, {
+      date_due_to: dateDueTo,
+      start_date: startdate,
+      s_days: startdays,
+      e_days: enddays,
+      group_id:groupId
+    }).
+      toPromise()
+  }
+
+  /**
    * This function is resposible for changing the task status of a post
    * @param postId
    * @param status
