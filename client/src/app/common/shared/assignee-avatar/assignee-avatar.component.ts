@@ -24,14 +24,14 @@ export class AssigneeAvatarComponent implements OnChanges {
     }
   }
 
-  getAssigneePic(post) {
+  getAssigneePic(_assigned_to) {
     let profilePic = '';
-    if (post._assigned_to && post._assigned_to.length > 0) {
-      const index = post._assigned_to.findIndex(assignee => assignee._id == this.userData._id);
+    if (_assigned_to && _assigned_to.length > 0) {
+      const index = _assigned_to.findIndex(assignee => assignee._id == this.userData._id);
       if (index < 0) {
-        profilePic = this.baseUrl + '/' + post._assigned_to[0].profile_pic;
+        profilePic = this.baseUrl + '/' + _assigned_to[0].profile_pic;
       } else {
-        profilePic = this.baseUrl + '/' + post._assigned_to[index].profile_pic;
+        profilePic = this.baseUrl + '/' + _assigned_to[index].profile_pic;
       }
     } else {
       profilePic = 'assets/images/user.png';
@@ -39,4 +39,16 @@ export class AssigneeAvatarComponent implements OnChanges {
     return profilePic;
   }
 
+  getAssigneeTooltip(_assigned_to) {
+    let tooltip = '';
+    if (_assigned_to && _assigned_to.length > 0) {
+      const index = _assigned_to.findIndex(assignee => assignee._id == this.userData._id);
+      if (index < 0) {
+        tooltip = _assigned_to[0].first_name + ' ' + _assigned_to[0].last_name;
+      } else {
+        tooltip = _assigned_to[index].first_name + ' ' + _assigned_to[index].last_name;
+      }
+    }
+    return tooltip;
+  }
 }
