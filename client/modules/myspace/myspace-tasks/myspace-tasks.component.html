@@ -325,7 +325,7 @@
 
   <div *ngFor="let task of futureTasks; let i = index;">
     <a (click)="openModal(task)">
-      <!-- My Space This week Tasks -->
+      <!-- My Space future Tasks -->
 
 
       <div *ngIf="task.type== 'task'">
@@ -342,6 +342,15 @@
             </div>
             <div class="col-md-3">
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
+            </div>
+
+            <div class="col-md-2">
+              <div *ngIf="task.overdue" class="overview-item small text-right overdue">
+                OVERDUE
+              </div>
+              <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
+                {{task.task.due_to | date:'MMM d, y' }}
+              </div>
             </div>
 
           </div>
@@ -372,6 +381,15 @@
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
             </div>
 
+            <div class="col-md-2">
+              <div *ngIf="task.overdue" class="overview-item small text-right overdue">
+                OVERDUE
+              </div>
+              <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
+                {{task.task.due_to | date:'MMM d, y' }}
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -392,6 +410,15 @@
             </div>
             <div class="col-md-3">
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
+            </div>
+
+            <div class="col-md-2">
+              <div *ngIf="task.overdue" class="overview-item small text-right overdue">
+                OVERDUE
+              </div>
+              <div *ngIf="!task.overdue" class="overview-item small text-muted text-right">
+                {{task.task.due_to | date:'MMM d, y' }}
+              </div>
             </div>
           </div>
         </div>
