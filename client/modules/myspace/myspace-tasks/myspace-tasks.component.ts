@@ -197,4 +197,7 @@ export class MyspaceTasksComponent implements OnInit {
     this.markOverdueTasks();
   }
 
+  getPriorityClass(priority: string) {
+    return 'label-priority ' + priority.toLocaleLowerCase();
+  }
 }

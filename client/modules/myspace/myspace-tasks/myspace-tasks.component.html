@@ -17,7 +17,12 @@
             <div class="col-md-6">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1"> <div class="label-priority low">Low</div></div>
+            <div class="col-md-1">
+              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
             <div class="col-md-3">
               <div class=" grouplabel " [innerHTML]="task?._group?.group_name"></div>
             </div>
@@ -49,7 +54,12 @@
             <div class="col-md-6">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1"> <div class="label-priority medium">Medium</div></div>
+            <div class="col-md-1">
+              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
             <div class="col-md-3">
               <div class=" grouplabel" [innerHTML]="task?._group?.group_name"></div>
             </div>
@@ -74,7 +84,12 @@
             <div class="col-md-6">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1"> <div class="label-priority urgent">High</div></div>
+            <div class="col-md-1">
+              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
             <div class="col-md-3">
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
             </div>
@@ -108,7 +123,12 @@
             <div class="col-md-6">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1"> <div class="label-priority urgent">High</div></div>
+            <div class="col-md-1">
+              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
             <div class="col-md-3">
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
             </div>
@@ -140,7 +160,12 @@
             <div class="col-md-6">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1"> <div class="label-priority urgent">High</div></div>
+            <div class="col-md-1">
+              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
             <div class="col-md-3">
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
             </div>
@@ -165,7 +190,12 @@
             <div class="col-md-6">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1"> <div class="label-priority urgent">High</div></div>
+            <div class="col-md-1">
+              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
             <div class="col-md-3">
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
             </div>
@@ -198,7 +228,12 @@
             <div class="col-md-6">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1"> <div class="label-priority urgent">High</div></div>
+            <div class="col-md-1">
+              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
             <div class="col-md-3">
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
             </div>
@@ -230,7 +265,12 @@
             <div class="col-md-6">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1"> <div class="label-priority urgent">High</div></div>
+            <div class="col-md-1">
+              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
             <div class="col-md-3">
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
             </div>
@@ -255,7 +295,12 @@
             <div class="col-md-6">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1"> <div class="label-priority urgent">High</div></div>
+            <div class="col-md-1">
+              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
             <div class="col-md-3">
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
             </div>
@@ -289,7 +334,12 @@
             <div class="col-md-6">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1"> <div class="label-priority urgent">High</div></div>
+            <div class="col-md-1">
+              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
             <div class="col-md-3">
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
             </div>
@@ -312,7 +362,12 @@
             <div class="col-md-6">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1"> <div class="label-priority urgent">High</div></div>
+            <div class="col-md-1">
+              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
             <div class="col-md-3">
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
             </div>
@@ -329,7 +384,12 @@
             <div class="col-md-6">
               <div class="overview-item title-nowrap pl-0" [innerHTML]="task?.title"></div>
             </div>
-            <div class="col-md-1"> <div class="label-priority urgent">High</div></div>
+            <div class="col-md-1">
+              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                {{ task?.task?.custom_fields['priority'] }}
+              </div>
+            </div>
             <div class="col-md-3">
               <div class="overview-item grouplabel" [innerHTML]="task?._group?.group_name"></div>
             </div>
