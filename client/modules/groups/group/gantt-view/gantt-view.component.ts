@@ -43,6 +43,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   card_height = 40;
   //Lines Array
   linesArray: any = [];
+  indexleft: number
 
   constructor(private utilityService: UtilityService, private postService: PostService, private datePipe: DatePipe) { }
 
@@ -61,6 +62,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     } else {
       this.gantt_container_height = screenHeight + 'px';
     }
+
+    console.log("Post", this.tasksdata);
   }
 
   ngAfterViewInit() {
@@ -104,7 +107,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   ngOnDestroy() {
     this.lineRemove();
   }
-  
+
   //Drop event on drag
   drop(event: CdkDragDrop<string[]>) {
     var Taskindex = event.item.element.nativeElement.attributes['taskindex'].nodeValue;
@@ -135,6 +138,18 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     var startDate = new Date(this.tasksdata[Taskindex].start);
     var newStartDate = new Date(this.tasksdata[Taskindex].start);
     newStartDate.setDate(startDate.getDate() + days);
+    if(task?.dependency){
+      var limitdate = new Date(task?.parent_due);
+      var newlimitdate = new Date(task?.parent_due);
+      newlimitdate.setDate(limitdate.getDate()+1);
+      if(newStartDate < newlimitdate){
+        var Difference_In_Time = newlimitdate.getTime() - newStartDate.getTime();
+        var Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
+        newStartDate = newlimitdate;
+        newEndDate.setDate(newStartDate.getDate()+task.difference);
+        days = days+Difference_In_Days;
+      }
+    }
     this.tasksdata[Taskindex].index_date = updated_x;
     this.tasksdata[Taskindex].end = this.datePipe.transform(newEndDate, "yyyy-MM-dd");
     this.tasksdata[Taskindex].task.task.due_to = this.datePipe.transform(newEndDate, "yyyy-MM-dd");
@@ -154,14 +169,27 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   validate(event: ResizeEvent): boolean {
     const MIN_DIMENSIONS_PX: number = 50;
 
-    if (
-      event.rectangle.width &&
-      event.rectangle.height &&
-      (event.rectangle.width < MIN_DIMENSIONS_PX)
-    ) {
+    if (event.rectangle.width && (event.rectangle.width < MIN_DIMENSIONS_PX)) {
       return false;
     }
+    if (this.indexleft) {
+      var task = this.tasksdata[this.indexleft];
+      var diff = task.index_date - task.parent_due_index;
+      diff--;
+      var leftlimit = 0;
+      if(diff > 0){
+        leftlimit = diff * -50;
+      }
+
+      if(event.edges.left < leftlimit){
+        return false;
+      }
+    }
     return true;
+  }
+
+  updatingx(index) {
+    this.indexleft = index;
   }
 
   //Resize Event
@@ -185,10 +213,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           var multiple = Math.floor(Number(event.edges?.right) / 50);
         }
       }
-      var result = multiple * 50;
-      var clientWidth = document.getElementById(Taskid).clientWidth;
-      var newWidth = clientWidth + result + 4;
-      document.getElementById(Taskid).style.width = newWidth + 'px';
       var endDate = new Date(this.tasksdata[Taskindex].end);
       var newEndDate = new Date(this.tasksdata[Taskindex].end);
       newEndDate.setDate(endDate.getDate() + multiple);
@@ -215,13 +239,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           var multiple = Math.floor(Number(event.edges?.left) / 50);
         }
       }
-      var result = multiple * 50;
-      var offsetLeft = document.getElementById(Taskid).offsetLeft;
-      var clientWidth = document.getElementById(Taskid).clientWidth;
-      var newWidth = clientWidth - result + 4;
-      document.getElementById(Taskid).style.width = newWidth + 'px';
-      var newLeft = offsetLeft + result;
-      document.getElementById(Taskid).style.left = newLeft + 'px';
       var startDate = new Date(this.tasksdata[Taskindex].start);
       var newStartDate = new Date(this.tasksdata[Taskindex].start);
       newStartDate.setDate(startDate.getDate() + multiple);
@@ -324,7 +341,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     }
 
     this.lineRemove();
-    // this.linesArray = [];
     this.linesGenetate(true);
   }
 
@@ -417,7 +433,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
               SortedTask.push(sortedBefore[j]);
 
               if (sortedBefore[j].task && sortedBefore[j].task._dependent_child) {
-                
+
                 if (sortedBefore[j].task._dependent_child.length > 0) {
                   findchilds(index, sortedBefore[j]._id, true);
                 }
@@ -492,7 +508,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             progress: '0',
             dependent_tasks: x?.task?._dependent_child,
             difference: Difference_In_Days,
-            dependency_index: x?.parentIndex,
             custom_class: x?.task.status,
             _groupid: x?._group._id,
             dependency: x?.task._dependency_task,
@@ -509,7 +524,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
               end: x.task.due_to,
               progress: '0',
               dependent_tasks: x?.task?._dependent_child,
-              dependency_index: x?.parentIndex,
               difference: Difference_In_Days,
               custom_class: x?.task.status,
               _groupid: x?._group._id,
@@ -580,6 +594,17 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   async add_index() {
     this.tasksdata.forEach((task, index) => {
       this.tasksdata[index].index_date = this.find_index(task.start);
+      if (task?.dependent_tasks && task?.dependent_tasks.length > 0) {
+        for (var i = 0 ; i < task?.dependent_tasks.length; i++) {
+          for (var j = 0; j < this.tasksdata.length; j++) {
+            if (task.id === this.tasksdata[j].dependency) {
+              this.tasksdata[j].parent_index = index;
+              this.tasksdata[j].parent_due = task.end;
+              this.tasksdata[j].parent_due_index = this.tasksdata[index].index_date + task.difference;
+            }
+          }
+        }
+      }
     });
   }
 
