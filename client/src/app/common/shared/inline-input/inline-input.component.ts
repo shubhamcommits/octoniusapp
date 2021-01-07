@@ -282,4 +282,8 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
       }));
     }
   }
+
+  getPriorityClass(priority: string) {
+    return 'list-card-title inline-edit label-priority ' + priority.toLocaleLowerCase();
+  }
 }

@@ -29,7 +29,15 @@
 
 <div *ngIf="type === 'customField'">
     <div *ngIf="!editing">
-        <p class="list-card-title inline-edit" *ngIf="customFieldValue !== ''"
+        <p *ngIf="customFieldValue !== '' && customFieldName == 'priority'"
+            [ngClass]="getPriorityClass(customFieldValue)"
+            style="margin-left: auto; margin-right: auto;"
+            (click)="edit(customFieldValue)"
+            (focus)="edit(customFieldValue);"
+            tabindex="0">
+              {{ customFieldValue }}
+        </p>
+        <p class="list-card-title inline-edit" *ngIf="customFieldValue !== '' && customFieldName != 'priority'"
             (click)="edit(customFieldValue)"
             (focus)="edit(customFieldValue);"
             tabindex="0">

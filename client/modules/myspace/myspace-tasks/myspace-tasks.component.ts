@@ -3,7 +3,6 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-myspace-tasks',
@@ -43,7 +42,11 @@ export class MyspaceTasksComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     await this.loadTasks();
-    this.overdueAndTodayTasks = this.overdueTasks.concat(this.todayTasks);
+    this.overdueAndTodayTasks = this.overdueTasks.concat(this.todayTasks).sort((t1, t2) => {
+      return ((t1.task.custom_fields['priority'] == 'High' && t2.task.custom_fields['priority'] != 'High') || (t1.task.custom_fields['priority'] == 'Medium' && t2.task.custom_fields['priority'] == 'Low'))
+        ? -1 : (((t1.task.custom_fields['priority'] != 'High' && t2.task.custom_fields['priority'] == 'High') || (t1.task.custom_fields['priority'] == 'Low' && t2.task.custom_fields['priority'] == 'Medium'))
+          ? 1 : 0);
+    });
 
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
@@ -73,7 +76,7 @@ export class MyspaceTasksComponent implements OnInit {
         .then((res) => {
           res['tasks'] = res['tasks'].filter((task)=> {
             return task._group != null
-          })
+          });
           resolve(res['tasks'])
         })
         .catch(() => {
@@ -89,7 +92,11 @@ export class MyspaceTasksComponent implements OnInit {
         .then((res) => {
           res['tasks'] = res['tasks'].filter((task)=> {
             return task._group != null
-          })
+          }).sort((t1, t2) => {
+            return ((t1.task.custom_fields['priority'] == 'High' && t2.task.custom_fields['priority'] != 'High') || (t1.task.custom_fields['priority'] == 'Medium' && t2.task.custom_fields['priority'] == 'Low'))
+              ? -1 : (((t1.task.custom_fields['priority'] != 'High' && t2.task.custom_fields['priority'] == 'High') || (t1.task.custom_fields['priority'] == 'Low' && t2.task.custom_fields['priority'] == 'Medium'))
+                ? 1 : 0);
+          });
           resolve(res['tasks'])
         })
         .catch(() => {
@@ -105,7 +112,11 @@ export class MyspaceTasksComponent implements OnInit {
         .then((res) => {
           res['tasks'] = res['tasks'].filter((task)=> {
             return task._group != null
-          })
+          }).sort((t1, t2) => {
+            return ((t1.task.custom_fields['priority'] == 'High' && t2.task.custom_fields['priority'] != 'High') || (t1.task.custom_fields['priority'] == 'Medium' && t2.task.custom_fields['priority'] == 'Low'))
+              ? -1 : (((t1.task.custom_fields['priority'] != 'High' && t2.task.custom_fields['priority'] == 'High') || (t1.task.custom_fields['priority'] == 'Low' && t2.task.custom_fields['priority'] == 'Medium'))
+                ? 1 : 0);
+          });
           resolve(res['tasks'])
         })
         .catch(() => {
@@ -121,7 +132,11 @@ export class MyspaceTasksComponent implements OnInit {
         .then((res) => {
           res['tasks'] = res['tasks'].filter((task)=> {
             return task._group != null
-          })
+          }).sort((t1, t2) => {
+            return ((t1.task.custom_fields['priority'] == 'High' && t2.task.custom_fields['priority'] != 'High') || (t1.task.custom_fields['priority'] == 'Medium' && t2.task.custom_fields['priority'] == 'Low'))
+              ? -1 : (((t1.task.custom_fields['priority'] != 'High' && t2.task.custom_fields['priority'] == 'High') || (t1.task.custom_fields['priority'] == 'Low' && t2.task.custom_fields['priority'] == 'Medium'))
+                ? 1 : 0);
+          });
           resolve(res['tasks'])
         })
         .catch(() => {
@@ -197,4 +212,7 @@ export class MyspaceTasksComponent implements OnInit {
     this.markOverdueTasks();
   }
 
+  getPriorityClass(priority: string) {
+    return 'label-priority ' + priority.toLocaleLowerCase();
+  }
 }

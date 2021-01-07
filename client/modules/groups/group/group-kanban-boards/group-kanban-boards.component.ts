@@ -111,6 +111,10 @@ export class GroupKanbanBoardsComponent implements OnInit {
     return (isNorthStar) ? taskClass + ' north-star' : taskClass ;
   }
 
+  getPriorityClass(priority: string) {
+    return 'label-priority ' + priority.toLocaleLowerCase();
+  }
+
   /**
    * Standard Angular CDK Event which monitors the drop functionality between different columns
    * @param event

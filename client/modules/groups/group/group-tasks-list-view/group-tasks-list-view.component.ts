@@ -134,7 +134,8 @@ export class GroupTasksListViewComponent implements OnChanges {
       this.createNewSection(this.groupId, section.title)
 
       // Assign the tasks to be []
-      section.tasks = []
+      section.tasks = [];
+      section.custom_fields_to_show = ['priority'];
 
       // Push the Column
       this.sections.push(section)

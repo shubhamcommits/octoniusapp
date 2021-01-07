@@ -147,13 +147,26 @@ export class PostsService {
      */
     async getFutureTasks(userId: string) {
 
+        // Generate the +14days from today time
+        const todayPlus14Days = moment().add(14, 'days').endOf('day').format();
+
         // Fetch the tasks posts
         const tasks = await Post.find({
-            '_assigned_to': userId,
-            'task.due_to': null,
-            $or: [
-                { 'task.status': 'to do' },
-                { 'task.status': 'in progress' }
+            $and:[
+                { '_assigned_to': userId},
+                {
+                    $or: [
+                        { 'task.due_to': { $gte: todayPlus14Days }},
+                        { 'task.due_to': null }
+                    ]
+                    
+                },
+                {
+                    $or: [
+                        { 'task.status': 'to do' },
+                        { 'task.status': 'in progress' }
+                    ]
+                }
             ]
         })
             .sort('-task.due_to')
