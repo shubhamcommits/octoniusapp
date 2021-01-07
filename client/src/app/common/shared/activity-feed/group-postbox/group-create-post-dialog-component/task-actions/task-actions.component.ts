@@ -91,7 +91,7 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
       this.ischild = true;
     }
 
-    if (this.postData?.task?._dependency_task || this.postData?.task?._dependent_child.length > 0) {
+    if (this.postData?.task?._dependency_task || this.postData?.task?._dependent_child?.length > 0) {
       this.isdependent = true;
     }
 

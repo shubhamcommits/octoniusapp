@@ -1,6 +1,6 @@
 <!-- Assignee section for tasks starts -->
 <section>
-  <img *ngFor="let assignee of assigned_to" (click)="unassign(assignee._id)"
+  <img *ngFor="let assignee of assigned_to" (click)="unassign(assignee._id)" [ngbTooltip]="assignee.first_name + ' ' + assignee.last_name"
     src="{{ baseUrl }}/{{ assignee.profile_pic }}" [alt]="assignee.first_name + ' ' + assignee.last_name"
     onerror="this.src='assets/images/user.png'" class="feed-avatar-small">
   <span *ngIf="!assigned_to || assigned_to.length === 0">

@@ -17,7 +17,7 @@ const ColumnSchema = new Schema({
         default: [{
             title: 'to do',
             taskCount: 0,
-            custom_fields_to_show: []
+            custom_fields_to_show: ['priority']
         }]
     }
 });

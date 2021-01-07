@@ -38,6 +38,7 @@ export class RecentGroupsComponent implements OnInit {
   }
 
   goToGroup(groupId: string) {
-    this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], {queryParams: { group: groupId, myWorkplace: false }});
+    const personalGroup = (this.userData?._private_group._id || this.userData?._private_group) == groupId;
+    this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], {queryParams: { group: groupId, myWorkplace: personalGroup }});
   }
 }
