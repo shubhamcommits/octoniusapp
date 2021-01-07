@@ -1069,10 +1069,10 @@ export class PublicFunctions {
                       retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
                       break;
                   case 'Section is':
-                      retValue = trigger.section.toUpperCase() == post.task._column.title.toUpperCase();
+                      retValue = trigger?.section?.toUpperCase() == post?.task?._column?.title?.toUpperCase();
                       break;
                   case 'Status is':
-                      retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+                      retValue = trigger?.status?.toUpperCase() == post?.task?.status?.toUpperCase();
                       break;
                   case 'Task is CREATED':
                       if (isCreationTaskTrigger) {
@@ -1099,19 +1099,15 @@ export class PublicFunctions {
                         post._assigned_to.push(userAction);
                       }
                   });
-                  // return await this.executedAutomationFlowsPropertiesFront(flows, userAction._id, groupId, post, userId);
                   return post;
               case 'Custom Field':
                   post.task.custom_fields[action.custom_field.name] = action.custom_field.value;
-                  // return await this.executedAutomationFlowsPropertiesFront(flows, action.custom_field, groupId, post, userId);
                   return post;
               case 'Move to':
                   post.task._column.title = action.section;
-                  // return await this.executedAutomationFlowsPropertiesFront(flows, action.section, groupId, post, userId);
                   return post;
               case 'Change Status to':
                   post.task.status = action.status;
-                  // return await this.executedAutomationFlowsPropertiesFront(flows, action.status, groupId, post, userId);
                   return post;
               default:
                   break;
