@@ -43,8 +43,8 @@ export class MyspaceTasksComponent implements OnInit {
 
     await this.loadTasks();
     this.overdueAndTodayTasks = this.overdueTasks.concat(this.todayTasks).sort((t1, t2) => {
-      return ((t1.task.custom_fields['priority'] == 'High' && t2.task.custom_fields['priority'] != 'High') || (t1.task.custom_fields['priority'] == 'Medium' && t2.task.custom_fields['priority'] == 'Low'))
-        ? -1 : (((t1.task.custom_fields['priority'] != 'High' && t2.task.custom_fields['priority'] == 'High') || (t1.task.custom_fields['priority'] == 'Low' && t2.task.custom_fields['priority'] == 'Medium'))
+      return ((t1.task.custom_fields && t2.task.custom_fields) && (t1.task.custom_fields['priority'] == 'High' && t2.task.custom_fields['priority'] != 'High') || (t1.task.custom_fields['priority'] == 'Medium' && t2.task.custom_fields['priority'] == 'Low'))
+        ? -1 : (((t1.task.custom_fields && t2.task.custom_fields) && (t1.task.custom_fields['priority'] != 'High' && t2.task.custom_fields['priority'] == 'High') || (t1.task.custom_fields['priority'] == 'Low' && t2.task.custom_fields['priority'] == 'Medium'))
           ? 1 : 0);
     });
 
@@ -93,8 +93,8 @@ export class MyspaceTasksComponent implements OnInit {
           res['tasks'] = res['tasks'].filter((task)=> {
             return task._group != null
           }).sort((t1, t2) => {
-            return ((t1.task.custom_fields['priority'] == 'High' && t2.task.custom_fields['priority'] != 'High') || (t1.task.custom_fields['priority'] == 'Medium' && t2.task.custom_fields['priority'] == 'Low'))
-              ? -1 : (((t1.task.custom_fields['priority'] != 'High' && t2.task.custom_fields['priority'] == 'High') || (t1.task.custom_fields['priority'] == 'Low' && t2.task.custom_fields['priority'] == 'Medium'))
+            return ((t1.task.custom_fields && t2.task.custom_fields) && (t1.task.custom_fields['priority'] == 'High' && t2.task.custom_fields['priority'] != 'High') || (t1.task.custom_fields['priority'] == 'Medium' && t2.task.custom_fields['priority'] == 'Low'))
+              ? -1 : (((t1.task.custom_fields && t2.task.custom_fields) && (t1.task.custom_fields['priority'] != 'High' && t2.task.custom_fields['priority'] == 'High') || (t1.task.custom_fields['priority'] == 'Low' && t2.task.custom_fields['priority'] == 'Medium'))
                 ? 1 : 0);
           });
           resolve(res['tasks'])
@@ -113,8 +113,8 @@ export class MyspaceTasksComponent implements OnInit {
           res['tasks'] = res['tasks'].filter((task)=> {
             return task._group != null
           }).sort((t1, t2) => {
-            return ((t1.task.custom_fields['priority'] == 'High' && t2.task.custom_fields['priority'] != 'High') || (t1.task.custom_fields['priority'] == 'Medium' && t2.task.custom_fields['priority'] == 'Low'))
-              ? -1 : (((t1.task.custom_fields['priority'] != 'High' && t2.task.custom_fields['priority'] == 'High') || (t1.task.custom_fields['priority'] == 'Low' && t2.task.custom_fields['priority'] == 'Medium'))
+            return ((t1.task.custom_fields && t2.task.custom_fields) && (t1.task.custom_fields['priority'] == 'High' && t2.task.custom_fields['priority'] != 'High') || (t1.task.custom_fields['priority'] == 'Medium' && t2.task.custom_fields['priority'] == 'Low'))
+              ? -1 : (((t1.task.custom_fields && t2.task.custom_fields) && (t1.task.custom_fields['priority'] != 'High' && t2.task.custom_fields['priority'] == 'High') || (t1.task.custom_fields['priority'] == 'Low' && t2.task.custom_fields['priority'] == 'Medium'))
                 ? 1 : 0);
           });
           resolve(res['tasks'])
@@ -133,8 +133,8 @@ export class MyspaceTasksComponent implements OnInit {
           res['tasks'] = res['tasks'].filter((task)=> {
             return task._group != null
           }).sort((t1, t2) => {
-            return ((t1.task.custom_fields['priority'] == 'High' && t2.task.custom_fields['priority'] != 'High') || (t1.task.custom_fields['priority'] == 'Medium' && t2.task.custom_fields['priority'] == 'Low'))
-              ? -1 : (((t1.task.custom_fields['priority'] != 'High' && t2.task.custom_fields['priority'] == 'High') || (t1.task.custom_fields['priority'] == 'Low' && t2.task.custom_fields['priority'] == 'Medium'))
+            return ((t1.task.custom_fields && t2.task.custom_fields) && (t1.task.custom_fields['priority'] == 'High' && t2.task.custom_fields['priority'] != 'High') || (t1.task.custom_fields['priority'] == 'Medium' && t2.task.custom_fields['priority'] == 'Low'))
+              ? -1 : (((t1.task.custom_fields && t2.task.custom_fields) && (t1.task.custom_fields['priority'] != 'High' && t2.task.custom_fields['priority'] == 'High') || (t1.task.custom_fields['priority'] == 'Low' && t2.task.custom_fields['priority'] == 'Medium'))
                 ? 1 : 0);
           });
           resolve(res['tasks'])
