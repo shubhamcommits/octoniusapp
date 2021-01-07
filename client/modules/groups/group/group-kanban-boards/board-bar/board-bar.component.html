@@ -1,6 +1,19 @@
 <nav class="navbar fixed-top">
   <div class="container">
     <div class="rightside">
+     
+      <button class="btn badge-cf" *ngIf="isAdmin" [matMenuTriggerFor]="menuSort">
+        <i class="material-icons-outlined"> import_export</i> <span>Sort</span>
+      </button>
+      
+      <span class="separator"></span>
+
+      <button class="btn badge-cf" [matMenuTriggerFor]="menuFilter"  *ngIf="isAdmin" >
+        <i class="material-icons-outlined"> filter_list</i> <span>Filter</span>
+      </button>
+
+      <span class="separator"></span>
+
       <button class="btn badge-cf" *ngIf="isAdmin" (click)="openCustomFieldsDialog()">
         <i class="material-icons-outlined">label</i> <span>Custom Fields</span>
       </button>
@@ -36,6 +49,53 @@
           <span>Timeline</span>
         </a>
            
+      </mat-menu>
+
+      <mat-menu #menuSort="matMenu">
+        <a mat-menu-item (click)="sortTasks('none')">
+          <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
+          <span>None</span>
+        </a>
+        <a mat-menu-item (click)="sortTasks('due_date')">
+          <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
+          <span>Due Date</span>
+        </a>
+        <a mat-menu-item (click)="sortTasks('proirity')">
+          <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
+          <span>Priority</span>
+        </a>
+        
+        <a mat-menu-item (click)="sortTasks('tags')">
+          <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">import_export</i>
+          <span>Tags</span>
+        </a>
+
+        <a mat-menu-item (click)="sortTasks('status')">
+          <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">import_export</i>
+          <span>Status</span>
+        </a>
+
+      </mat-menu>
+
+      <mat-menu #menuFilter="matMenu">
+        <a mat-menu-item (click)="changeView('kanban')">
+          <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">dashboard</i>
+          <span>Kanban Board</span>
+        </a>
+        <a mat-menu-item (click)="changeView('list')">
+          <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">list</i>
+          <span>Table</span>
+        </a>
+        <a mat-menu-item (click)="changeView('calendar')">
+          <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">calendar_today</i>
+          <span>Calendar</span>
+        </a>
+        
+        <a *ngIf="groupData.project_type" mat-menu-item (click)="changeView('gantt')">
+          <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">align_horizontal_left</i>
+          <span>Timeline</span>
+        </a>
+        
       </mat-menu>
     </div>
   </div>

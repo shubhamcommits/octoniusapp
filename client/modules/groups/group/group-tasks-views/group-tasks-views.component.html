@@ -6,7 +6,8 @@
             [isAdmin]="isAdminUser()"
             [customFields]="customFields"
             (changeViewEmitter)='onChangeViewEmitter($event)'
-            (customFieldEmitter)="onCustomFieldEmitter($event)">
+            (customFieldEmitter)="onCustomFieldEmitter($event)"
+            (sortTaskEmitter)="onSortTaskEmitter($event)">
         </app-board-bar>
 
         <app-group-kanban-boards *ngIf="viewType === 'kanban'"

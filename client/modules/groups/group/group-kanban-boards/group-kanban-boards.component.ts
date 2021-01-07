@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input } from '@angular/core';
+import { Component, OnInit, Injector, Input,OnChanges,SimpleChanges, SimpleChange,ChangeDetectionStrategy } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
@@ -15,7 +15,7 @@ import { FlowService } from 'src/shared/services/flow-service/flow.service';
   templateUrl: './group-kanban-boards.component.html',
   styleUrls: ['./group-kanban-boards.component.scss']
 })
-export class GroupKanbanBoardsComponent implements OnInit {
+export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
 
   constructor(
     private router: ActivatedRoute,
@@ -46,7 +46,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
   flows = [];
-
+  
+  
   async ngOnInit() {
 
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
@@ -97,6 +98,20 @@ export class GroupKanbanBoardsComponent implements OnInit {
       column.tasks = tasks;
       // column.tasks.done = doneTasks;
     });
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    console.log("changes",changes);
+    for (const propName in changes) {
+      const change = changes[propName];
+      const to  = change.currentValue;
+      const from = change.previousValue;
+      console.log(propName,from,to);
+      if(propName === 'tasks'){
+        console.log("am here heheheheheeeh ")
+        this.tasks = [];
+      }
+ }
   }
 
   getTaskClass(status, isNorthStar) {

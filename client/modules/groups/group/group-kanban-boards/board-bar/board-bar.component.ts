@@ -22,6 +22,9 @@ export class BoardBarComponent implements OnInit {
 
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
+  
+  // Emitter to notify that the view is changing
+  @Output() sortTaskEmitter: EventEmitter<string> = new EventEmitter<string>();
 
   // Emitter to notify that a customField was edited/added
   @Output() customFieldEmitter= new EventEmitter();
@@ -31,6 +34,10 @@ export class BoardBarComponent implements OnInit {
 
   changeView(view: string) {
     this.changeViewEmitter.emit(view);
+  }
+
+  sortTasks(bit: string) {
+    this.sortTaskEmitter.emit(bit);
   }
 
   openCustomFieldsDialog(): void {

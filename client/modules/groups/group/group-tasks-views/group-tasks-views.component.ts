@@ -76,6 +76,13 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     this.viewType = view;
   }
 
+  async onSortTaskEmitter(bit:string){
+    console.log("Sort bit",bit,this.tasks);
+    this.tasks=[];
+    console.log("POpTask",this.tasks);
+
+  }
+
   async onCustomFieldEmitter(customFields) {
     this.customFields = [...customFields];
   }
