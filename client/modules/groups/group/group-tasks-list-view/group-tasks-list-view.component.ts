@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, Injector, ViewChild } from '@angular/core';
+import { Component, OnChanges, Input, Injector, ViewChild, Output, EventEmitter } from '@angular/core';
 import moment from 'moment/moment';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -25,6 +25,8 @@ export class GroupTasksListViewComponent implements OnChanges {
   @Input() customFields: any;
 
   @Input() isAdmin = false;
+
+  @Output() taskClonnedEvent = new EventEmitter();
 
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
 
@@ -63,24 +65,6 @@ export class GroupTasksListViewComponent implements OnChanges {
   initSections() {
     this.sections.forEach( section => {
       let tasks = [];
-      // let doneTasks = [];
-
-      /*
-      // Filtering done tasks
-      if(section.tasks.done !== undefined){
-        section.tasks.done.forEach(doneTask =>{
-          if(doneTask.bars !== undefined && doneTask.bars.length > 0){
-              doneTask.bars.forEach(bar => {
-                if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
-                  doneTasks.push(doneTask);
-                }
-              });
-            } else {
-              doneTasks.push(doneTask);
-            }
-        });
-      }
-      */
 
       // Filtering other tasks
       section.tasks.forEach( task => {
@@ -95,7 +79,6 @@ export class GroupTasksListViewComponent implements OnChanges {
         }
       });
       section.tasks = tasks;
-      // section.tasks.done = doneTasks;
     });
   }
 
@@ -110,7 +93,6 @@ export class GroupTasksListViewComponent implements OnChanges {
 
     // const doneTasks = [...section.tasks['done']];
     section.tasks = [...section.tasks];
-    // section.tasks['done'] = doneTasks;
   }
 
   /**
@@ -192,5 +174,9 @@ export class GroupTasksListViewComponent implements OnChanges {
 
       this.initSections()
     }
+  }
+
+  onTaskClonned(data) {
+    this.taskClonnedEvent.emit(data);
   }
 }

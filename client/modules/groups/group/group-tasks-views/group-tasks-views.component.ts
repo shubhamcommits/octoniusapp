@@ -203,4 +203,15 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
       */
     });
   }
+
+
+  async onTaskClonned(data) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    await this.initView();
+
+    // Return the function via stopping the loader
+    return this.isLoading$.next(false);
+  }
 }

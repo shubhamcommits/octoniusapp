@@ -42,13 +42,7 @@ export class MyspaceTasksComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     await this.loadTasks();
-    this.overdueAndTodayTasks = this.overdueTasks.concat(this.todayTasks).sort((t1, t2) => {
-      return (t1?.task?.custom_fields && t2?.task?.custom_fields)
-        ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
-          ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
-            ? 1 : 0))
-        : 0;
-    });
+    this.overdueAndTodayTasks = this.sortTasksByPriority(this.overdueTasks.concat(this.todayTasks));
 
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
@@ -77,12 +71,13 @@ export class MyspaceTasksComponent implements OnInit {
       userService.getUserTodayTasks()
         .then((res) => {
           res['tasks'] = res['tasks'].filter((task)=> {
-            return task._group != null
+            return task._group != null;
           });
-          resolve(res['tasks'])
+
+          resolve(res['tasks']);
         })
         .catch(() => {
-          reject([])
+          reject([]);
         })
     })
   }
@@ -92,15 +87,9 @@ export class MyspaceTasksComponent implements OnInit {
       let userService = this.injector.get(UserService);
       userService.getUserThisWeekTasks()
         .then((res) => {
-          res['tasks'] = res['tasks'].filter((task)=> {
+          res['tasks'] = this.sortTasksByPriority(res['tasks'].filter((task)=> {
             return task._group != null
-          }).sort((t1, t2) => {
-            return (t1?.task?.custom_fields && t2?.task?.custom_fields)
-              ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
-                ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
-                  ? 1 : 0))
-              : 0;
-          });
+          }));
           resolve(res['tasks'])
         })
         .catch(() => {
@@ -114,15 +103,9 @@ export class MyspaceTasksComponent implements OnInit {
       let userService = this.injector.get(UserService);
       userService.getUserNextWeekTasks()
         .then((res) => {
-          res['tasks'] = res['tasks'].filter((task)=> {
+          res['tasks'] = this.sortTasksByPriority(res['tasks'].filter((task)=> {
             return task._group != null
-          }).sort((t1, t2) => {
-            return (t1?.task?.custom_fields && t2?.task?.custom_fields)
-              ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
-                ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
-                  ? 1 : 0))
-              : 0;
-          });
+          }));
           resolve(res['tasks'])
         })
         .catch(() => {
@@ -136,15 +119,9 @@ export class MyspaceTasksComponent implements OnInit {
       let userService = this.injector.get(UserService);
       userService.getUserFutureTasks()
         .then((res) => {
-          res['tasks'] = res['tasks'].filter((task)=> {
+          res['tasks'] = this.sortTasksByPriority(res['tasks'].filter((task)=> {
             return task._group != null
-          }).sort((t1, t2) => {
-            return (t1?.task?.custom_fields && t2?.task?.custom_fields)
-              ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
-                ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
-                  ? 1 : 0))
-              : 0;
-          });
+          }));
           resolve(res['tasks'])
         })
         .catch(() => {
@@ -222,5 +199,17 @@ export class MyspaceTasksComponent implements OnInit {
 
   getPriorityClass(priority: string) {
     return 'label-priority ' + priority.toLocaleLowerCase();
+  }
+
+  sortTasksByPriority(tasks: any) {
+    return tasks.sort((t1, t2) => {
+      return (t1?.task?.custom_fields && t2?.task?.custom_fields)
+        ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
+          ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
+            ? 1 : 0))
+        : ((t1?.task?.custom_fields && !t2?.task?.custom_fields)
+          ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
+            ? 1 : 0);
+    });
   }
 }

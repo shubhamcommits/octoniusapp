@@ -183,4 +183,7 @@ routes.put('/:postId/set-dependency', postController.setDependencyTask);
 
 routes.post('/:postId/gantt-task-dates-update',postController.updateGanttTasksDates)
 
+// POST - Used to clone the post to a user
+routes.post('/clone-to-assignee', postController.cloneToAssignee);
+
 export { routes as postRoutes };

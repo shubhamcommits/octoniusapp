@@ -197,7 +197,7 @@
           <!-- Time Picker starts -->
           <app-time-picker class="ml-1" *ngIf="postData.type === 'event'" [time]="this.dueTime" (time)="getTime($event)">
           </app-time-picker>
-          <!-- Time Picker ends -->  
+          <!-- Time Picker ends -->
           <p class="box-title">Due date</p>
             <div *ngIf="postData?.type === 'task'">
 
@@ -289,6 +289,7 @@
           [userData]="userData"
           (parentTaskSelectedEmitter)="onParentTaskSelected($event)"
           (dependencyTaskSelectedEmitter)="onDependencyTaskSelected($event)"
+          (taskClonedEmitter)="onTaskClonned($event)"
           ></app-task-actions>
     </div>
     <!-- Top Right Section ends -->
