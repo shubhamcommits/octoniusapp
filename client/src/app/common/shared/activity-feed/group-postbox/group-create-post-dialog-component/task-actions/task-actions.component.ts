@@ -26,8 +26,13 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
   @Output() parentTaskSelectedEmitter = new EventEmitter();
   @Output() dependencyTaskSelectedEmitter = new EventEmitter();
 
+  @Output() taskClonedEmitter = new EventEmitter();
+
   userGroups = [];
   transferAction = '';
+
+  searchText = '';
+  groupMembers = [];
 
   parentTask: boolean = false;
   ischild: boolean = false;
@@ -86,7 +91,21 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
         });
     }
 
-    console.log("This.post", this.postData?.task);
+    this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
+      if (JSON.stringify(res) != JSON.stringify({})) {
+
+        // Assign the GroupData
+        this.groupData = res;
+
+        this.groupMembers = this.groupData._members.concat(this.groupData._admins);
+        this.groupMembers = this.groupMembers.filter((member, index) => {
+            return (this.groupMembers.findIndex(m => m._id == member._id) == index)
+        });
+
+        this.groupMembers.unshift({_id: 'all', first_name: 'All', last_name: 'members', email: ''});
+      }
+    }));
+
     if (this.postData?.task?._parent_task) {
       this.ischild = true;
     }
@@ -283,4 +302,31 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
       });
   }
 
+  getMemberDetails(selectedMemberId: any) {
+    let assignees = [];
+
+    if (selectedMemberId == 'all') {
+      this.groupMembers.forEach((member)=> {
+        if(member._id != 'all'){
+          assignees.push(member._id);
+        }
+      });
+    } else {
+      assignees = [selectedMemberId];
+    }
+
+    this.utilityService.asyncNotification('Please wait we are cloning the task...', new Promise((resolve, reject) => {
+      this.postService.cloneToAssignee(assignees, this.postData._id)
+        .then((res) => {
+          // Close the modal
+          this.mdDialogRef.close();
+
+          this.taskClonedEmitter.emit();
+          resolve(this.utilityService.resolveAsyncPromise(`👍 Task cloned!`));
+        })
+        .catch((error) => {
+          reject(this.utilityService.rejectAsyncPromise(`Error while cloning the task!`));
+        });
+    }));
+  }
 }

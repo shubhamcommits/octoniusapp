@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -18,6 +18,9 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   @Input() tasks;
   @Input() userData;
   @Input() columns: any;
+
+  @Output() taskClonnedEvent = new EventEmitter();
+
   @ViewChild("myDiv") divView1: ElementRef;
   @ViewChild("myDiv2") divView2: ElementRef;
 
@@ -104,7 +107,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   ngOnDestroy() {
     this.lineRemove();
   }
-  
+
   //Drop event on drag
   drop(event: CdkDragDrop<string[]>) {
     var Taskindex = event.item.element.nativeElement.attributes['taskindex'].nodeValue;
@@ -298,10 +301,15 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
       this.onDeleteEvent(data._id);
     });
+    const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
+      this.onTaskClonned(data);
+    });
+
     dialogRef.afterClosed().subscribe(result => {
       deleteEventSubs.unsubscribe();
       closeEventSubs.unsubscribe();
       parentAssignEventSubs.unsubscribe();
+      taskClonnedEventSubs.unsubscribe();
     });
   }
 
@@ -417,7 +425,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
               SortedTask.push(sortedBefore[j]);
 
               if (sortedBefore[j].task && sortedBefore[j].task._dependent_child) {
-                
+
                 if (sortedBefore[j].task._dependent_child.length > 0) {
                   findchilds(index, sortedBefore[j]._id, true);
                 }
@@ -459,7 +467,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       SortedTask.push(sortedBefore[0]);
 
       for (var i = 0; i < sortedBefore.length; i++) {
-        // Check bit task is already pushed or not  
+        // Check bit task is already pushed or not
         var already = isAlready();
 
         //If not already pushed pushing into  SortedTask array.
@@ -583,4 +591,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     });
   }
 
+  onTaskClonned(data) {
+    this.taskClonnedEvent.emit(data);
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input } from '@angular/core';
+import { Component, OnInit, Injector, Input, Output, EventEmitter } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
@@ -39,6 +39,8 @@ export class GroupKanbanBoardsComponent implements OnInit {
   // Task Posts array variable
   @Input() tasks: any;
 
+  @Output() taskClonnedEvent = new EventEmitter();
+
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -55,23 +57,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
 
     this.columns.forEach( column => {
       let tasks = [];
-      /*
-      let doneTasks = [];
-      if(column.tasks.done !== undefined){
-        column.tasks.done.forEach(doneTask =>{
-          if(doneTask.bars !== undefined && doneTask.bars.length > 0){
-              doneTask.bars.forEach(bar => {
-                if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
-                  doneTasks.push(doneTask);
-                }
-              });
-            } else {
-              doneTasks.push(doneTask);
-            }
-          }
-        );
-      }
-      */
+
       column.tasks.forEach( task => {
         if(task.bars && task.bars !== undefined && task.bars.length > 0){
           task.bars.forEach(bar => {
@@ -95,7 +81,6 @@ export class GroupKanbanBoardsComponent implements OnInit {
       });
 
       column.tasks = tasks;
-      // column.tasks.done = doneTasks;
     });
   }
 
@@ -373,19 +358,6 @@ export class GroupKanbanBoardsComponent implements OnInit {
     this.updateTask(data);
   }
 
-  /*
-  onDeleteDoneEvent(id) {
-    this.columns.forEach((col, indexColumn) => {
-      // Find the index of the tasks inside the column
-      const indexTask = col.tasks.done.findIndex((task: any) => task._id === id);
-      if (indexTask !== -1) {
-        this.columns[indexColumn].tasks.done.splice(indexTask, 1);
-        return;
-      }
-    });
-  }
-  */
-
   onDeleteEvent(id) {
     this.columns.forEach((col, indexColumn) => {
       // Find the index of the tasks inside the column
@@ -411,12 +383,16 @@ export class GroupKanbanBoardsComponent implements OnInit {
     const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
       this.onDeleteEvent(data._id);
     });
+    const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
+      this.onTaskClonned(data);
+    });
 
 
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
       deleteEventSubs.unsubscribe();
       parentAssignEventSubs.unsubscribe();
+      taskClonnedEventSubs.unsubscribe();
     });
   }
 
@@ -505,9 +481,6 @@ export class GroupKanbanBoardsComponent implements OnInit {
    */
   changeDueDate(task: any, dueDate: any) {
 
-    // dueDate = new Date(dueDate)
-
-    // dueDate = new Date(dueDate.getFull
     dueDate = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
 
     dueDate = moment(dueDate).format()
@@ -568,4 +541,7 @@ export class GroupKanbanBoardsComponent implements OnInit {
     this.utilityService.closeAllModals()
   }
 
+  onTaskClonned(data) {
+    this.taskClonnedEvent.emit(data);
+  }
 }
