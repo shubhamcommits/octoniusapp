@@ -38,6 +38,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
   @Input() columns: any;
   // Task Posts array variable
   @Input() tasks: any;
+  
+  tasktest:any
+  
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -49,55 +52,55 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
   
   
   async ngOnInit() {
-
+    console.log("After Ngonchnage");
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
       this.flows = res['flows'];
     });
 
-    this.columns.forEach( column => {
-      let tasks = [];
-      /*
-      let doneTasks = [];
-      if(column.tasks.done !== undefined){
-        column.tasks.done.forEach(doneTask =>{
-          if(doneTask.bars !== undefined && doneTask.bars.length > 0){
-              doneTask.bars.forEach(bar => {
-                if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
-                  doneTasks.push(doneTask);
-                }
-              });
-            } else {
-              doneTasks.push(doneTask);
-            }
-          }
-        );
-      }
-      */
-      column.tasks.forEach( task => {
-        if(task.bars && task.bars !== undefined && task.bars.length > 0){
-          task.bars.forEach(bar => {
-            if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
-              tasks.push(task);
-            }
-          });
-        } else {
-          tasks.push(task);
-        }
-      });
+    // this.columns.forEach( column => {
+    //   let tasks = [];
+    //   /*
+    //   let doneTasks = [];
+    //   if(column.tasks.done !== undefined){
+    //     column.tasks.done.forEach(doneTask =>{
+    //       if(doneTask.bars !== undefined && doneTask.bars.length > 0){
+    //           doneTask.bars.forEach(bar => {
+    //             if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+    //               doneTasks.push(doneTask);
+    //             }
+    //           });
+    //         } else {
+    //           doneTasks.push(doneTask);
+    //         }
+    //       }
+    //     );
+    //   }
+    //   */
+    //   column.tasks.forEach( task => {
+    //     if(task.bars && task.bars !== undefined && task.bars.length > 0){
+    //       task.bars.forEach(bar => {
+    //         if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+    //           tasks.push(task);
+    //         }
+    //       });
+    //     } else {
+    //       tasks.push(task);
+    //     }
+    //   });
 
-      tasks.sort(function(t1, t2) {
-        if (t1.task.status != t2.task.status) {
-          return t1.task.status == 'done' ? 1 : -1;
-        }
-        if (t1.task._column.order != t2.task._column.order) {
-          return t2.task._column.order - t1.task._column.order;
-        }
-        return t2.title - t1.title;
-      });
+    //   tasks.sort(function(t1, t2) {
+    //     if (t1.task.status != t2.task.status) {
+    //       return t1.task.status == 'done' ? 1 : -1;
+    //     }
+    //     if (t1.task._column.order != t2.task._column.order) {
+    //       return t2.task._column.order - t1.task._column.order;
+    //     }
+    //     return t2.title - t1.title;
+    //   });
 
-      column.tasks = tasks;
-      // column.tasks.done = doneTasks;
-    });
+    //   column.tasks = tasks;
+    //   // column.tasks.done = doneTasks;
+    // });
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -107,9 +110,12 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
       const to  = change.currentValue;
       const from = change.previousValue;
       console.log(propName,from,to);
-      if(propName === 'tasks'){
-        console.log("am here heheheheheeeh ")
-        this.tasks = [];
+      if(propName === 'column'){
+        this.columns = to;
+        console.log(" tasks b", this.tasks)
+        setTimeout(() => {
+          console.log(" this.tasks", this.tasks)
+        }, 3000);
       }
  }
   }
@@ -124,10 +130,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
       taskClass = 'status-done';
     }
     return (isNorthStar) ? taskClass + ' north-star' : taskClass ;
-  }
-
-  getPriorityClass(priority: string) {
-    return 'label-priority ' + priority.toLocaleLowerCase();
   }
 
   /**
@@ -581,6 +583,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
    */
   closeModal() {
     this.utilityService.closeAllModals()
+  }
+
+  getPriorityClass(priority: string) {
+    return 'label-priority ' + priority.toLocaleLowerCase();
   }
 
 }
