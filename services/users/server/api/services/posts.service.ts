@@ -21,14 +21,24 @@ export class PostsService {
         // Generate the +24h time
         const endOfDay = moment().endOf('day').format();
 
+        const user = await User.findById(userId).select('_private_group');
+
         // Fetch users task for today
         const tasks = await Post.find({
-            '_assigned_to': userId,
-            'task.due_to': { $gte: startOfDay, $lte: endOfDay },
-            $or: [
-                { 'task.status': 'to do' },
-                { 'task.status': 'in progress' },
-                { 'task.status': 'done' }
+            $and: [
+                { $or: [
+                        { '_assigned_to': userId },
+                        { '_group': user._private_group }
+                    ]
+                },
+                { 'task.due_to': { $gte: startOfDay, $lte: endOfDay }},
+                {
+                    $or: [
+                        { 'task.status': 'to do' },
+                        { 'task.status': 'in progress' },
+                        { 'task.status': 'done' }
+                    ]
+                }
             ]
         })
             .sort('-task.due_to')
@@ -49,16 +59,26 @@ export class PostsService {
      */
     async getOverdueTasks(userId: string) {
 
+        const user = await User.findById(userId).select('_private_group');
+
         // Generate the actual time
         const today = moment().subtract(1, 'days').endOf('day').format()
 
         // Fetch the tasks posts
         const tasks = await Post.find({
-            '_assigned_to': userId,
-            'task.due_to': { $lt: today },
-            $or: [
-                { 'task.status': 'to do' },
-                { 'task.status': 'in progress' }
+            $and: [
+                { $or: [
+                        { '_assigned_to': userId },
+                        { '_group': user._private_group }
+                    ]
+                },
+                {'task.due_to': { $lt: today }},
+                {
+                    $or: [
+                        { 'task.status': 'to do' },
+                        { 'task.status': 'in progress' }
+                    ]
+                }
             ]
         })
             .sort('-task.due_to')
@@ -79,6 +99,8 @@ export class PostsService {
      */
     async getThisWeekTasks(userId: string) {
 
+        const user = await User.findById(userId).select('_private_group');
+
         // Generate the today
         const today = moment().add(1, 'days').startOf('day').format();
 
@@ -87,12 +109,20 @@ export class PostsService {
 
         // Fetch the tasks posts
         const tasks = await Post.find({
-            '_assigned_to': userId,
-            'task.due_to': { $gte: today, $lte: todayPlus7Days },
-            $or: [
-                { 'task.status': 'to do' },
-                { 'task.status': 'in progress' },
-                { 'task.status': 'done' }
+            $and: [
+                { $or: [
+                        { '_assigned_to': userId },
+                        { '_group': user._private_group }
+                    ]
+                },
+                {'task.due_to': { $gte: today, $lte: todayPlus7Days }},
+                {
+                    $or: [
+                        { 'task.status': 'to do' },
+                        { 'task.status': 'in progress' },
+                        { 'task.status': 'done' }
+                    ]
+                }
             ]
         })
             .sort('-task.due_to')
@@ -113,6 +143,8 @@ export class PostsService {
      */
     async getNextWeekTasks(userId: string) {
 
+        const user = await User.findById(userId).select('_private_group');
+
         // Generate the +7days
         const todayPlus7Days = moment().add(7, 'days').startOf('day').format();
 
@@ -121,12 +153,20 @@ export class PostsService {
 
         // Fetch the tasks posts
         const tasks = await Post.find({
-            '_assigned_to': userId,
-            'task.due_to': { $gte: todayPlus7Days, $lte: todayPlus14Days },
-            $or: [
-                { 'task.status': 'to do' },
-                { 'task.status': 'in progress' },
-                { 'task.status': 'done' }
+            $and: [
+                { $or: [
+                        { '_assigned_to': userId },
+                        { '_group': user._private_group }
+                    ]
+                },
+                {'task.due_to': { $gte: todayPlus7Days, $lte: todayPlus14Days }},
+                {
+                    $or: [
+                        { 'task.status': 'to do' },
+                        { 'task.status': 'in progress' },
+                        { 'task.status': 'done' }
+                    ]
+                }
             ]
         })
             .sort('-task.due_to')
@@ -147,13 +187,33 @@ export class PostsService {
      */
     async getFutureTasks(userId: string) {
 
+        const user = await User.findById(userId).select('_private_group');
+
+        // Generate the +14days from today time
+        const todayPlus14Days = moment().add(14, 'days').endOf('day').format();
+
         // Fetch the tasks posts
         const tasks = await Post.find({
-            '_assigned_to': userId,
-            'task.due_to': null,
-            $or: [
-                { 'task.status': 'to do' },
-                { 'task.status': 'in progress' }
+            $and:[
+                { 
+                    $or: [
+                        { '_assigned_to': userId },
+                        { '_group': user._private_group }
+                    ]
+                },
+                {
+                    $or: [
+                        { 'task.due_to': { $gte: todayPlus14Days }},
+                        { 'task.due_to': null }
+                    ]
+                    
+                },
+                {
+                    $or: [
+                        { 'task.status': 'to do' },
+                        { 'task.status': 'in progress' }
+                    ]
+                }
             ]
         })
             .sort('-task.due_to')
@@ -179,6 +239,8 @@ export class PostsService {
      */
     async getTodayEvents(userId: string) {
 
+        const user = await User.findById(userId).select('_private_group');
+
         // Generate the actual time
         const startOfDay = moment().startOf('day').format();
 
@@ -193,6 +255,7 @@ export class PostsService {
             $or: [
                 { '_assigned_to': userId },
                 // { '_assigned_to': 'all' }
+                { '_group': user._private_group }
             ],
             'event.due_to': { $gte: startOfDay, $lte: endOfDay }
 
@@ -213,6 +276,8 @@ export class PostsService {
      */
     async getThisWeekEvents(userId: string) {
 
+        const user = await User.findById(userId).select('_private_group');
+
         // Generate the actual time
         const todayForEvent = moment().add(1, 'days').startOf('day').format();
 
@@ -227,6 +292,7 @@ export class PostsService {
             $or: [
                 { '_assigned_to': userId },
                 // { '_assigned_to': 'all' }
+                { '_group': user._private_group }
             ],
             'event.due_to': { $gte: todayForEvent, $lte: todayPlus7Days }
         })

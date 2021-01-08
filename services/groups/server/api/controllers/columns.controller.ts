@@ -92,7 +92,8 @@ export class ColumnsController {
                 $addToSet: {
                     columns: {
                         title: columnName,
-                        taskCount: 0
+                        taskCount: 0,
+                        custom_fields_to_show: ['priority']
                     }
                 }
             };

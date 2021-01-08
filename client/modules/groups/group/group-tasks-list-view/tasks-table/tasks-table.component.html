@@ -85,7 +85,7 @@
     <th mat-header-cell *matHeaderCellDef>
       <div class="cf_cell" >
         {{ cf.title }}
-        <i class="material-icons small" *ngIf="isAdmin" (click)="removeColumn(cf)"
+        <i class="material-icons small" *ngIf="isAdmin && cf.name != 'priority'" (click)="removeColumn(cf)"
           style="cursor: pointer;">close</i>
       </div>
     </th>
