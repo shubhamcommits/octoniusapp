@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, Injector, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, Injector, Input, Output, EventEmitter } from '@angular/core';
 import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours } from 'date-fns';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -237,8 +237,13 @@ export class GroupCalendarViewComponent implements OnInit {
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateEvent(data);
     });
+    const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
+      this.onTaskClonned(data);
+    });
+
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
+      taskClonnedEventSubs.unsubscribe();
     });
   }
 
@@ -354,5 +359,9 @@ export class GroupCalendarViewComponent implements OnInit {
         }
       }
     ];
+  }
+
+  onTaskClonned(data) {
+    this.ngOnInit();
   }
 }

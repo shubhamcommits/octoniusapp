@@ -22,6 +22,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   @Output() closeEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
   @Output() parentAssignEvent = new EventEmitter();
+  @Output() taskClonnedEvent = new EventEmitter();
 
   postData: any;
   userData: any;
@@ -697,5 +698,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
     await this.initPostData();
 
     // this.parentAssignEvent.emit(post); // 2
+  }
+
+  onTaskClonned ($event) {
+    this.taskClonnedEvent.emit($event);
   }
 }

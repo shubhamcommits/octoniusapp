@@ -1161,7 +1161,7 @@ export class PostController {
     }
 
     /**
-     * This function is responsible for fetching the posts of a group
+     * This function is responsible for moving the posts of a group
      * @param req 
      * @param res 
      * @param next 
@@ -1193,7 +1193,7 @@ export class PostController {
     }
 
     /**
-     * This function is responsible for fetching the posts of a group
+     * This function is responsible for copying the posts of a group
      * @param req 
      * @param res 
      * @param next 
@@ -1442,5 +1442,34 @@ export class PostController {
             }
         });
         return post;
+    }
+
+    /**
+     * This function is responsible for cloning the posts of a assignee
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async cloneToAssignee(req: Request, res: Response, next: NextFunction) {
+
+        // Post Object From request
+        const { postId, assignees } = req.body;
+
+        try {
+            // Call servide function for adding the post
+            assignees.forEach(async assigneeId => {
+                const postData = await postService.cloneToAssignee(postId, assigneeId)
+                    .catch((err) => {
+                        return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+                    });
+            });
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Post Clonned Successfully!',
+            });
+        } catch (error) {
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
     }
 }

@@ -19,6 +19,33 @@
       </ng-container>
     </mat-menu>
   </div>
+
+  <div>
+    <button mat-menu-item [matMenuTriggerFor]="cloneTaskSearchMenu">
+      <i class="material-icons">recent_actors</i>
+      Clone to
+    </button>
+    <mat-menu #cloneTaskSearchMenu="matMenu">
+      <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+        <div class="users-card">
+          <div class="form-group">
+            <label for="search-text">Assignee</label>
+            <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
+              placeholder="Search group member" autofocus>
+          </div>
+          <ul class="assignee-list">
+            <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText"
+                (click)="getMemberDetails(member._id)"
+                [searchedWord]="searchText"
+                [content]="member">
+              {{ member.first_name }} {{ member.last_name }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </mat-menu>
+  </div>
+
   <div *ngIf="!parentTask && !isdependent" class="set-parent">
     Make subtask of
 
@@ -26,26 +53,26 @@
     <input type="search" id="keyword" autocomplete="off" placeholder="Search for a task" class="input-search"
       [(ngModel)]="itemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChange($event)" />
     <!-- INPUT BAR ENDS -->
-  <div *ngIf="searchingOn === 'keyword'">
-    <section id="results" *ngIf="!(isLoadingAction$ | async)" class="results" onfocusout="">
-      <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
-        <div class="media-body mt-2">
-          <!-- Display full name of the member starts -->
-          <h4 class="mt-0 full-name-text" (click)="setParentTask(task._id)">
-            {{ task?.title | truncatetext: 50 }}
-          </h4>
-          <!-- Display full name of the member ends -->
+    <div *ngIf="searchingOn === 'keyword'">
+      <section id="results" *ngIf="!(isLoadingAction$ | async)" class="results" onfocusout="">
+        <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
+          <div class="media-body mt-2">
+            <!-- Display full name of the member starts -->
+            <h4 class="mt-0 full-name-text" (click)="setParentTask(task._id)">
+              {{ task?.title | truncatetext: 50 }}
+            </h4>
+            <!-- Display full name of the member ends -->
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
 
-      <!-- LOADING SPINNER STARTS -->
-      <ng-container *ngIf="(isLoadingAction$ | async)">
-        <app-loading-spinner class="media"></app-loading-spinner>
-      </ng-container>
-  </div>
-      <!-- LOADING SPINNER ENDS -->
+        <!-- LOADING SPINNER STARTS -->
+        <ng-container *ngIf="(isLoadingAction$ | async)">
+          <app-loading-spinner class="media"></app-loading-spinner>
+        </ng-container>
+        <!-- LOADING SPINNER ENDS -->
+    </div>
   </div>
 
 
