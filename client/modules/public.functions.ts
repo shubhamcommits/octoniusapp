@@ -1104,7 +1104,9 @@ export class PublicFunctions {
                   post.task.custom_fields[action.custom_field.name] = action.custom_field.value;
                   return post;
               case 'Move to':
-                  post.task._column.title = action.section;
+                  if (!post.task._parent_task) {
+                    post.task._column.title = action.section;
+                  }
                   return post;
               case 'Change Status to':
                   post.task.status = action.status;
