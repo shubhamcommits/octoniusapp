@@ -1379,7 +1379,6 @@ export class PostController {
                 if (retValue) {
                     switch (trigger.name) {
                         case 'Assigned to':
-                            // const usersMatch = await trigger._user.filter(triggerUser => post._assigned_to.some(assignee => triggerUser._id == assignee['_id']))
                             const usersMatch =
                                 trigger._user.filter((triggerUser) => {
                                     return post._assigned_to.findIndex(assignee => {
@@ -1396,6 +1395,14 @@ export class PostController {
                             break;
                         case 'Status is':
                             retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+                            break;
+                        case 'Subtasks Status are':
+                            let subtasks = await postService.getSubtasks(post._id);
+                            subtasks.forEach(subtask => {
+                                if (retValue) {
+                                    retValue = trigger.subtaskStatus.toUpperCase() == subtask.task.status.toUpperCase();
+                                }
+                            });
                             break;
                         case 'Task is CREATED':
                             if (isCreationTaskTrigger) {

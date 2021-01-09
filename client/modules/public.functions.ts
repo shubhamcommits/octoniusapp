@@ -1079,6 +1079,16 @@ export class PublicFunctions {
                         retValue = true;
                       }
                       break;
+                  case 'Subtasks Status are':
+                      let postService = this.injector.get(PostService)
+                      postService.getSubTasks(post._id).then(res => {
+                        res['subtasks'].forEach(subtask => {
+                          if (retValue) {
+                              retValue = trigger.subtaskStatus.toUpperCase() == subtask.task.status.toUpperCase();
+                          }
+                        });
+                      });
+                      break;
                   default:
                       retValue = true;
                       break;
