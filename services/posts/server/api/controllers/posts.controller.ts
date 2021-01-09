@@ -1432,7 +1432,9 @@ export class PostController {
                     post = await this.callChangeCustomFieldValueService(groupId, post._id, action.custom_field.name, action.custom_field.value, userId);
                     break;
                 case 'Move to':
-                    post = await this.changeTaskSection(post._id, action.section, userId, groupId);
+                    if (!post.task._parent_task) {
+                        post = await this.changeTaskSection(post._id, action.section, userId, groupId);
+                    }
                     break;
                 case 'Change Status to':
                     post = await this.callChangeTaskStatusService(post._id, action.status, userId, groupId);
