@@ -186,7 +186,7 @@ export class MembersControllers {
             ] }).countDocuments();
             
            // Update the subscription details
-           let subscription = await stripe.subscriptionItems.update(workspace['billing'].subscription_item_id, {
+           let subscription = stripe.subscriptionItems.update(workspace['billing'].subscription_item_id, {
                 quantity: usersCount
             });
 
@@ -248,7 +248,7 @@ export class MembersControllers {
                 ] }).countDocuments();
 
                 // Update the subscription details
-                let subscription = await stripe.subscriptionItems.update(workspace['billing'].subscription_item_id, {
+                let subscription = stripe.subscriptionItems.update(workspace['billing'].subscription_item_id, {
                     quantity: usersCount
                 });
 
