@@ -589,7 +589,7 @@ export class UsersControllers {
 
         // Update stripe subscription
         const stripe = require('stripe')(process.env.SK_STRIPE);
-        await stripe.subscriptionItems.update(workspaceUpdated['billing'].subscription_item_id, {
+        stripe.subscriptionItems.update(workspaceUpdated['billing'].subscription_item_id, {
             quantity: usersCount
         });
 
