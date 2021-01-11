@@ -125,4 +125,8 @@ export class PostActionsComponent implements OnInit {
     this.post = post;
     this.closeModalEvent.emit(post);
   }
+
+  onCommentRemoved($event) {
+    this.post.comments_count--;
+  }
 }

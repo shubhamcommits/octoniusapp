@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 
@@ -14,6 +14,8 @@ export class CommentListComponent implements OnChanges {
   @Input() userData;
   @Input() length;
   @Input() newComment;
+
+  @Output() removeCommentEvent = new EventEmitter();
 
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
@@ -62,6 +64,8 @@ export class CommentListComponent implements OnChanges {
     this.comments.splice(index, 1);
     this.length = this.length--;
     this.displayShowMore = this.length > 5;
+
+    this.removeCommentEvent.emit();
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
