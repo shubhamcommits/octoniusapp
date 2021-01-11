@@ -46,6 +46,7 @@ export class GroupAdminComponent implements OnInit {
     // Fetch current group from the service
     this.groupData = await this.publicFunctions.getCurrentGroup();
     this.enabledRights = this.groupData.enabled_rights;
+    this.enabledProjectType = this.groupData.project_type;
     // Fetch Current User
     this.userData = await this.publicFunctions.getCurrentUser();
 
