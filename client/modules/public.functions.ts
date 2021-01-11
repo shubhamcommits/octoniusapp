@@ -1040,8 +1040,8 @@ export class PublicFunctions {
               if (steps && steps.length > 0) {
                   steps.forEach(async (step, stepIndex) => {
                       if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger || false)) {
-
-                          post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, userId, groupId);
+                        const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status are'; });
+                        post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, childStatusTriggerIndex);
                       }
                   });
               }
@@ -1052,7 +1052,7 @@ export class PublicFunctions {
 
   doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger: boolean) {
       let retValue = true;
-      if (triggers && triggers.length > 1) {
+      if (triggers && triggers.length > 0) {
           triggers.forEach(trigger => {
             if (retValue) {
               switch (trigger.name) {
@@ -1080,51 +1080,59 @@ export class PublicFunctions {
                       }
                       break;
                   case 'Subtasks Status are':
-                      let postService = this.injector.get(PostService)
-                      postService.getSubTasks(post._id).then(res => {
-                        res['subtasks'].forEach(subtask => {
-                          if (retValue) {
-                              retValue = trigger.subtaskStatus.toUpperCase() == subtask.task.status.toUpperCase();
-                          }
+                    let postService = this.injector.get(PostService);
+                    if (retValue && post.task._parent_task && trigger.subtaskStatus.toUpperCase() == post.task.status.toUpperCase()) {
+                        postService.getSubTasks(post.task._parent_task._id || post.task._parent_task).then(res => {
+                          res['subtasks'].forEach(subtask => {
+                            if (retValue && subtask._id != post._id) {
+                                retValue = trigger.subtaskStatus.toUpperCase() == subtask.task.status.toUpperCase();
+                            }
+                          });
                         });
-                      });
+                      } else {
+                        retValue = false;
+                      }
                       break;
                   default:
                       retValue = true;
                       break;
-              }
+                }
             }
           });
+      } else {
+        retValue = false;
       }
       return retValue;
   }
 
-  executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, userId: string, groupId: string) {
-    flows[flowIndex].steps[stepIndex].action.forEach(async action => {
-          switch (action.name) {
-              case 'Assign to':
-                  action._user.forEach(async userAction => {
-                      const indexAction = post._assigned_to.findIndex(assignee => (assignee._id || assignee) == (userAction._id || userAction));
-                      if (indexAction < 0) {
-                        post._assigned_to.push(userAction);
-                      }
-                  });
-                  return post;
-              case 'Custom Field':
-                  post.task.custom_fields[action.custom_field.name] = action.custom_field.value;
-                  return post;
-              case 'Move to':
-                  if (!post.task._parent_task) {
-                    post.task._column.title = action.section;
-                  }
-                  return post;
-              case 'Change Status to':
-                  post.task.status = action.status;
-                  return post;
-              default:
-                  break;
-          }
-      });
-      return post;
+  executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, childTasksUpdated: boolean) {
+    if (!childTasksUpdated) {
+      flows[flowIndex].steps[stepIndex].action.forEach(async action => {
+            switch (action.name) {
+                case 'Assign to':
+                    action._user.forEach(async userAction => {
+                        const indexAction = post._assigned_to.findIndex(assignee => (assignee._id || assignee) == (userAction._id || userAction));
+                        if (indexAction < 0) {
+                          post._assigned_to.push(userAction);
+                        }
+                    });
+                    return post;
+                case 'Custom Field':
+                    post.task.custom_fields[action.custom_field.name] = action.custom_field.value;
+                    return post;
+                case 'Move to':
+                    if (!post.task._parent_task) {
+                      post.task._column.title = action.section;
+                    }
+                    return post;
+                case 'Change Status to':
+                    post.task.status = action.status;
+                    return post;
+                default:
+                    break;
+            }
+        });
+        return post;
+    }
   }
 }
