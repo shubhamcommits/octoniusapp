@@ -25,7 +25,7 @@ export class CommentListComponent implements OnChanges {
     private commentService: CommentService) {
   }
 
-  ngOnChanges() {
+  ngOnInit() {
     // Start the loading spinner
     this.isLoading$.next(true);
 
@@ -33,14 +33,22 @@ export class CommentListComponent implements OnChanges {
     this.commentService.getComments(this.postId).subscribe((res) => {
       this.comments = res['comments'];
       this.displayShowMore = this.length > this.comments.length;
-
-      if (this.newComment) {
-        this.comments.unshift(this.newComment);
-        this.displayShowMore = this.comments.length > 5;
-        this.length++;
-        this.comments.splice(5);
-      }
     });
+
+    // Return the function via stopping the loader
+    return this.isLoading$.next(false);
+  }
+
+  ngOnChanges() {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    if (this.newComment) {
+      this.comments.unshift(this.newComment);
+      this.displayShowMore = this.comments.length > 5;
+      this.length++;
+      this.comments.splice(5);
+    }
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
