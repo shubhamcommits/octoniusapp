@@ -97,9 +97,9 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     if (this.sortingBit == 'due_date' || this.sortingBit == 'none') {
       this.tasks.sort((t1, t2) => {
         if (new Date(t1.task?.due_to) < new Date(t2.task?.due_to)) {
-          return this.sortingBit == 'none' ? -1 : 1;
+          return this.sortingBit == 'due_date' ? -1 : 1;
         } else {
-          return this.sortingBit == 'none' ? 1 : -1;
+          return this.sortingBit == 'due_date' ? 1 : -1;
         }
       })
 

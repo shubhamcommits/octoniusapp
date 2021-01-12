@@ -126,9 +126,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {
           if (new Date(t1.task?.due_to) < new Date(t2.task?.due_to)) {
-            return this.sortingBit == 'none' ? -1 : 1;
+            return this.sortingBit == 'due_date' ? -1 : 1;
           } else {
-            return this.sortingBit == 'none' ? 1 : -1;
+            return this.sortingBit == 'due_date' ? 1 : -1;
           }
         })
         this.columns[index].tasks = task;
