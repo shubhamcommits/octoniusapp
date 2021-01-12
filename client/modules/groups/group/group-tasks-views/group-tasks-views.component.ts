@@ -24,7 +24,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   tasks: any = [];
   userData: any;
   customFields: any = [];
-
+  sortingBit:String = 'none'
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot.queryParamMap.get('group');
 
@@ -77,85 +77,10 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   }
 
   async onSortTaskEmitter(bit:string){
-    console.log("Sort bit",bit,this.columns);
     // let task = this.columns;
+    this.sortingBit = bit;
     
-    if(bit=='due_date' || bit == 'none'){
-      for (let index = 0; index < this.columns.length; index++) {
-        let task = this.columns[index].tasks;
-        task.sort((t1,t2) => {
-          if (new Date(t1.task?.due_to ) < new Date(t2.task?.due_to)) {
-            return bit == 'none'?-1:1;
-          } else {
-            return bit == 'none'?1:-1;
-          }
-        })
-        this.columns[index].tasks=task;
-      }        
-    } else if(bit == 'proirity'){
-      // task?.task?.custom_fields['priority']
-      var heigh:any=[],medium:any=[],low:any=[],sorted:any=[];
-      for (let index = 0; index < this.columns.length; index++) {
-        this.columns[0].tasks.forEach(task => {
-          if(task.task?.custom_fields['priority']=='High'){
-            heigh.push(task);
-          } else if(task.task?.custom_fields['priority']=='Medium'){
-            medium.push(task);
-          } else if(task.task?.custom_fields['priority']=='Low'){
-            low.push(task);
-          }
-        });
-        heigh.forEach(task => {
-          sorted.push(task)
-        });
-        medium.forEach(task => {
-          sorted.push(task)
-        });
-        low.forEach(task => {
-          sorted.push(task)
-        });
-        this.columns[0].tasks = sorted;
-      }
-      
-
-      console.log("Sort proirity");
-    } else if(bit == 'tags'){
-      console.log("Sort tags");
-      for (let index = 0; index < this.columns.length; index++) {
-        let task = this.columns[index].tasks;
-        task.sort((t1, t2) => {
-          const name1 = t1?.tags[0]?.toLowerCase();
-          const name2 = t2?.tags[0]?.toLowerCase();
-          if (name1 > name2) { return 1; }
-          if (name1 < name2) { return -1; }
-          return 0;
-        });
-        this.columns[index].tasks=task;
-      }
-    } else if(bit == 'status'){
-      var todo:any=[],inprogress:any=[],done:any=[],sorted:any=[];
-      for (let index = 0; index < this.columns.length; index++) {
-        this.columns[0].tasks.forEach(task => {
-          if(task.task?.status == 'to do'){
-            todo.push(task);
-          } else if(task.task?.status=='in progress'){
-            inprogress.push(task);
-          } else if(task.task?.status=='done'){
-            done.push(task);
-          }
-        });
-        todo.forEach(task => {
-          sorted.push(task)
-        });
-        inprogress.forEach(task => {
-          sorted.push(task)
-        });
-        done.forEach(task => {
-          sorted.push(task)
-        });
-        this.columns[0].tasks = sorted;
-      }
-    }
+    
   }
 
   async onCustomFieldEmitter(customFields) {

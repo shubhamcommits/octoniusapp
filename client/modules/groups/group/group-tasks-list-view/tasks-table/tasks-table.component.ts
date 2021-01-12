@@ -20,7 +20,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   @Input() userData;
   @Input() section;
   @Input() sections;
-
+  @Input() sortingBit:String
   @Input() isAdmin = false;
   @Input() customFields = [];
 
@@ -77,19 +77,89 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     //const doneTasks = [...this.tasks['done']];
     this.tasks = [...this.tasks];
     //this.tasks['done'] = doneTasks;
+    console.log("Tasks For Table",this.tasks,this.sortingBit);
 
-    this.tasks.sort(function(t1, t2) {
-      if (t1.task.status != t2.task.status) {
-        return t1.task.status == 'done' ? 1 : -1;
-      }
-      if (t1.task._column.order != t2.task._column.order) {
-        return t2.task._column.order - t1.task._column.order;
-      }
-      return t2.title - t1.title;
-    });
+    // this.tasks.sort(function(t1, t2) {
+    //   if (t1.task.status != t2.task.status) {
+    //     return t1.task.status == 'done' ? 1 : -1;
+    //   }
+    //   if (t1.task._column.order != t2.task._column.order) {
+    //     return t2.task._column.order - t1.task._column.order;
+    //   }
+    //   return t2.title - t1.title;
+    // });
+    
+    await this.sorting();
 
     this.dataSource = new MatTableDataSource(this.tasks);
     this.dataSource.sort = this.sort;
+  }
+
+  async sorting(){
+    if(this.sortingBit=='due_date' || this.sortingBit == 'none'){
+        this.tasks.sort((t1,t2) => {
+          if (new Date(t1.task?.due_to ) < new Date(t2.task?.due_to)) {
+            return this.sortingBit == 'none'?-1:1;
+          } else {
+            return this.sortingBit == 'none'?1:-1;
+          }
+        })
+
+    } else if(this.sortingBit == 'proirity'){
+      // task?.task?.custom_fields['priority']
+      var heigh:any=[],medium:any=[],low:any=[],sorted:any=[];
+        this.tasks.forEach(task => {
+          if(task.task?.custom_fields['priority']=='High'){
+            heigh.push(task);
+          } else if(task.task?.custom_fields['priority']=='Medium'){
+            medium.push(task);
+          } else if(task.task?.custom_fields['priority']=='Low'){
+            low.push(task);
+          }
+        });
+        heigh.forEach(task => {
+          sorted.push(task)
+        });
+        medium.forEach(task => {
+          sorted.push(task)
+        });
+        low.forEach(task => {
+          sorted.push(task)
+        });
+        this.tasks = sorted;
+      console.log("Sort proirity");
+    } else if(this.sortingBit == 'tags'){
+      console.log("Sort tags");
+        this.tasks.sort((t1, t2) => {
+          const name1 = t1?.tags[0]?.toLowerCase();
+          const name2 = t2?.tags[0]?.toLowerCase();
+          if (name1 > name2) { return 1; }
+          if (name1 < name2) { return -1; }
+          return 0;
+        });
+    } else if(this.sortingBit == 'status'){
+      var todo:any=[],inprogress:any=[],done:any=[],sorted:any=[];
+      
+        this.tasks.forEach(task => {
+          if(task.task?.status == 'to do'){
+            todo.push(task);
+          } else if(task.task?.status=='in progress'){
+            inprogress.push(task);
+          } else if(task.task?.status=='done'){
+            done.push(task);
+          }
+        });
+        todo.forEach(task => {
+          sorted.push(task)
+        });
+        inprogress.forEach(task => {
+          sorted.push(task)
+        });
+        done.forEach(task => {
+          sorted.push(task)
+        });
+        this.tasks = sorted;
+    }
   }
 
   loadCustomFieldsToShow() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input,OnChanges,SimpleChanges,Output, EventEmitter, SimpleChange,ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Injector, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
@@ -15,7 +15,7 @@ import { FlowService } from 'src/shared/services/flow-service/flow.service';
   templateUrl: './group-kanban-boards.component.html',
   styleUrls: ['./group-kanban-boards.component.scss']
 })
-export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
+export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
   constructor(
     private router: ActivatedRoute,
@@ -38,9 +38,11 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
   @Input() columns: any;
   // Task Posts array variable
   @Input() tasks: any;
-  
-  tasktest:any
-  
+
+  @Input() sortingBit: String
+
+  tasktest: any
+
 
   @Output() taskClonnedEvent = new EventEmitter();
 
@@ -51,10 +53,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
   flows = [];
-  
-  
+
+
   async ngOnInit() {
-    console.log("After Ngonchnage");
+
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
       this.flows = res['flows'];
     });
@@ -106,20 +108,90 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    console.log("changes",changes);
     for (const propName in changes) {
       const change = changes[propName];
-      const to  = change.currentValue;
+      const to = change.currentValue;
       const from = change.previousValue;
-      console.log(propName,from,to);
-      if(propName === 'column'){
-        this.columns = to;
-        console.log(" tasks b", this.tasks)
-        setTimeout(() => {
-          console.log(" this.tasks", this.tasks)
-        }, 3000);
+      if (propName === 'sortingBit') {
+        this.sortingBit = to;
+        await this.sorting();
       }
- }
+    }
+  }
+
+  async sorting() {
+
+    if (this.sortingBit == 'due_date' || this.sortingBit == 'none') {
+      for (let index = 0; index < this.columns.length; index++) {
+        let task = this.columns[index].tasks;
+        task.sort((t1, t2) => {
+          if (new Date(t1.task?.due_to) < new Date(t2.task?.due_to)) {
+            return this.sortingBit == 'none' ? -1 : 1;
+          } else {
+            return this.sortingBit == 'none' ? 1 : -1;
+          }
+        })
+        this.columns[index].tasks = task;
+      }
+    } else if (this.sortingBit == 'proirity') {
+      for (let index = 0; index < this.columns.length; index++) {
+        var heigh: any = [], medium: any = [], low: any = [], sorted: any = [];
+        this.columns[index].tasks.forEach(task => {
+          if (task.task?.custom_fields['priority'] == 'High') {
+            heigh.push(task);
+          } else if (task.task?.custom_fields['priority'] == 'Medium') {
+            medium.push(task);
+          } else if (task.task?.custom_fields['priority'] == 'Low') {
+            low.push(task);
+          }
+        });
+        heigh.forEach(task => {
+          sorted.push(task)
+        });
+        medium.forEach(task => {
+          sorted.push(task)
+        });
+        low.forEach(task => {
+          sorted.push(task)
+        });
+        this.columns[index].tasks = sorted;
+      }
+    } else if (this.sortingBit == 'tags') {
+      for (let index = 0; index < this.columns.length; index++) {
+        let task = this.columns[index].tasks;
+        task.sort((t1, t2) => {
+          const name1 = t1?.tags[0]?.toLowerCase();
+          const name2 = t2?.tags[0]?.toLowerCase();
+          if (name1 > name2) { return 1; }
+          if (name1 < name2) { return -1; }
+          return 0;
+        });
+        this.columns[index].tasks = task;
+      }
+    } else if (this.sortingBit == 'status') {
+      for (let index = 0; index < this.columns.length; index++) {
+        var todo: any = [], inprogress: any = [], done: any = [], sorted: any = [];
+        this.columns[index].tasks.forEach(task => {
+          if (task.task?.status == 'to do') {
+            todo.push(task);
+          } else if (task.task?.status == 'in progress') {
+            inprogress.push(task);
+          } else if (task.task?.status == 'done') {
+            done.push(task);
+          }
+        });
+        todo.forEach(task => {
+          sorted.push(task)
+        });
+        inprogress.forEach(task => {
+          sorted.push(task)
+        });
+        done.forEach(task => {
+          sorted.push(task)
+        });
+        this.columns[index].tasks = sorted;
+      }
+    }
   }
 
   getTaskClass(status, isNorthStar) {
@@ -131,7 +203,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
     } else if (status === 'done') {
       taskClass = 'status-done';
     }
-    return (isNorthStar) ? taskClass + ' north-star' : taskClass ;
+    return (isNorthStar) ? taskClass + ' north-star' : taskClass;
   }
 
   /**
@@ -158,8 +230,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
       // Post Service Instance
       let postService = this.injector.get(PostService);
       //always, recalculate the order of the container (the list to drag)
-      event.container.data.forEach((task,index)=>{
-        task['task']._column.order=index;
+      event.container.data.forEach((task, index) => {
+        task['task']._column.order = index;
         postService.updateTaskOrderInColumn(task['_id'], index);
       });
     }
@@ -225,7 +297,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
    * @param groupId
    * @param columnName
    */
-  removeColumn(groupId: string, columnName: string){
+  removeColumn(groupId: string, columnName: string) {
 
     // Column Service Instance
     let columnService = this.injector.get(ColumnService)
@@ -270,18 +342,18 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
       // Call the HTTP Service function
       this.utilityService.asyncNotification('Please wait we are renaming your column...', new Promise((resolve, reject) => {
         columnService.editColumnName(this.groupId, oldTitle, newColTitle)
-        .then((res) => {
+          .then((res) => {
 
-          // rename the column in the tasks
-          oldCol['tasks'].forEach(task => {
-            task.task._column.title = newColTitle;
-          });
+            // rename the column in the tasks
+            oldCol['tasks'].forEach(task => {
+              task.task._column.title = newColTitle;
+            });
 
-          resolve(this.utilityService.resolveAsyncPromise('Column Renamed!'));
-        })
-        .catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise('Unable to rename the column at the moment, please try again!'))
-        })
+            resolve(this.utilityService.resolveAsyncPromise('Column Renamed!'));
+          })
+          .catch((err) => {
+            reject(this.utilityService.rejectAsyncPromise('Unable to rename the column at the moment, please try again!'))
+          })
       }))
     }
   }
@@ -308,10 +380,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
           else if (index != -1 && this.columns.length > 1) {
 
             // Move All the columns' task to other column
-            if(this.columns[index]['tasks'].length > 0){
+            if (this.columns[index]['tasks'].length > 0) {
 
               // Call for each task present in the board
-              this.columns[index]['tasks'].forEach((task)=>{
+              this.columns[index]['tasks'].forEach((task) => {
                 let newColumnTitle = 'to do';
                 if (index - 1 >= 0) {
                   newColumnTitle = this.columns[index - 1]['title'];
@@ -338,13 +410,13 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
    * @param column - column data
    * @param post - post
    */
-  removeTask(column: any, post: any){
+  removeTask(column: any, post: any) {
 
     // Find the index of the tasks inside the column
-    let index = column.tasks.findIndex((task: any)=> task._id == post._id)
+    let index = column.tasks.findIndex((task: any) => task._id == post._id)
 
     // If the index is not found
-    if(index != -1){
+    if (index != -1) {
 
       // Remove the tasks from the array
       column.tasks.splice(index, 1)
@@ -410,15 +482,19 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
     const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
+      this.sorting();
     });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateTask(data);
+      this.sorting();
     });
     const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
       this.onDeleteEvent(data._id);
+      this.sorting();
     });
     const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
       this.onTaskClonned(data);
+      this.sorting();
     });
 
 
@@ -440,8 +516,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
       const indexTask = col.tasks.findIndex((task: any) => task._id === post._id);
       if (indexTask != -1) {
         if (col.title.toLowerCase() == post.task._column.title.toLowerCase()) {
-            // update the tasks from the array
-            this.columns[indexColumn].tasks[indexTask]= post;
+          // update the tasks from the array
+          this.columns[indexColumn].tasks[indexTask] = post;
         } else {
           let indexNewColumn = this.columns.findIndex((column: any) => column.title.toLowerCase() == post.task._column.title.toLowerCase());
           if (indexNewColumn != -1) {
@@ -450,7 +526,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
           }
         }
 
-        this.columns[indexColumn].tasks.sort(function(t1, t2) {
+        this.columns[indexColumn].tasks.sort(function (t1, t2) {
           if (t1.task.status != t2.task.status) {
             return t1.task.status == 'done' ? 1 : -1;
           }

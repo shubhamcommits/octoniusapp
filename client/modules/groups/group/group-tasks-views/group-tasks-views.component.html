@@ -15,6 +15,7 @@
             [userData]="userData"
             [columns]="columns"
             [tasks]="tasks"
+            [sortingBit]="sortingBit"
             (taskClonnedEvent)="onTaskClonned($event)">
         </app-group-kanban-boards>
 
@@ -25,6 +26,7 @@
             [tasks]="tasks"
             [customFields]="customFields"
             [isAdmin]="isAdminUser()"
+            [sortingBit]="sortingBit"
             (taskClonnedEvent)="onTaskClonned($event)">
         </app-group-tasks-list-view>
 
