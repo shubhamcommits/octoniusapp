@@ -105,4 +105,48 @@
     </div>
   </div>
 
+  <div>
+    <button mat-menu-item [matMenuTriggerFor]="templateTaskMenu">
+      <i class="material-icons">playlist_add</i>
+      Templates
+    </button>
+    <mat-menu #templateTaskMenu="matMenu">
+      <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+        <div class="users-card">
+          <ul class="assignee-list">
+            <li class="assignee-list-item" *ngFor="let template of groupTemplates" (click)="selectTemplate(template._id)">
+              {{ template.task.template_name }}
+            </li>
+
+            <!-- <li class="assignee-list-item save-template" (click)="createTemplate()">Save as template</li> -->
+            <button class="assignee-list-item save-template" mat-menu-item [matMenuTriggerFor]="templatesMenu" (mouseover)="saveTemplateAction('save')" (click)="saveTemplateAction('save')">
+              <i class="material-icons">save_alt</i>
+              Save as template
+            </button>
+
+            <button class="assignee-list-item save-template" mat-menu-item [matMenuTriggerFor]="templatesMenu" (mouseover)="saveTemplateAction('delete')" (click)="saveTemplateAction('delete')">
+              <i class="material-icons">delete</i>
+              Delete template
+            </button>
+
+            <mat-menu #templatesMenu="matMenu">
+              <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                <div class="users-card">
+                  <ul class="assignee-list">
+                    <li class="assignee-list-item" *ngFor="let template of groupTemplates" (click)="selectTemplate(template._id, template.task.template_name)">
+                      {{ template.task.template_name }}
+                    </li>
+
+                    <li *ngIf="templateAction == 'save'" class="assignee-list-item save-template" (click)="createTemplate()">Save as new template</li>
+                  </ul>
+                </div>
+              </div>
+            </mat-menu>
+
+          </ul>
+        </div>
+      </div>
+    </mat-menu>
+  </div>
+
 </div>

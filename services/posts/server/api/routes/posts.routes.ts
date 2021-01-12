@@ -186,4 +186,19 @@ routes.post('/:postId/gantt-task-dates-update',postController.updateGanttTasksDa
 // POST - Used to clone the post to a user
 routes.post('/clone-to-assignee', postController.cloneToAssignee);
 
+/**
+ * GET - This route fetches the list of templates present in a group
+ * @param { groupId } query
+ */
+routes.get('/post/templates', postController.getGroupTemplates);
+
+// POST - Used to create a template
+routes.post('/create-template', postController.createTemplate);
+
+// PUT - Used to overwrite a template
+routes.put('/:postId/overwrite-template', postController.overwriteTemplate);
+
+// POST - Create a task from a template
+routes.post('/create-task-from-template', postController.createTaskFromTemplate);
+
 export { routes as postRoutes };
