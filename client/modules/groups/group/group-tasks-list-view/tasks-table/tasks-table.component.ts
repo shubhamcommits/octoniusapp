@@ -20,7 +20,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   @Input() userData;
   @Input() section;
   @Input() sections;
-  @Input() sortingBit:String
+  @Input() sortingBit: String
   @Input() isAdmin = false;
   @Input() customFields = [];
 
@@ -42,7 +42,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   flows = [];
 
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     public utilityService: UtilityService,
@@ -77,7 +77,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     //const doneTasks = [...this.tasks['done']];
     this.tasks = [...this.tasks];
     //this.tasks['done'] = doneTasks;
-    console.log("Tasks For Table",this.tasks,this.sortingBit);
+    console.log("Tasks For Table", this.tasks, this.sortingBit);
 
     // this.tasks.sort(function(t1, t2) {
     //   if (t1.task.status != t2.task.status) {
@@ -88,82 +88,91 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     //   }
     //   return t2.title - t1.title;
     // });
-    
+
     await this.sorting();
 
     this.dataSource = new MatTableDataSource(this.tasks);
     this.dataSource.sort = this.sort;
   }
 
-  async sorting(){
-    if(this.sortingBit=='due_date' || this.sortingBit == 'none'){
-        this.tasks.sort((t1,t2) => {
-          if (new Date(t1.task?.due_to ) < new Date(t2.task?.due_to)) {
-            return this.sortingBit == 'none'?-1:1;
-          } else {
-            return this.sortingBit == 'none'?1:-1;
-          }
-        })
+  async sorting() {
+    if (this.sortingBit == 'due_date' || this.sortingBit == 'none') {
+      this.tasks.sort((t1, t2) => {
+        if (new Date(t1.task?.due_to) < new Date(t2.task?.due_to)) {
+          return this.sortingBit == 'none' ? -1 : 1;
+        } else {
+          return this.sortingBit == 'none' ? 1 : -1;
+        }
+      })
 
-    } else if(this.sortingBit == 'proirity'){
+    } else if (this.sortingBit == 'proirity') {
       // task?.task?.custom_fields['priority']
-      var heigh:any=[],medium:any=[],low:any=[],sorted:any=[];
-        this.tasks.forEach(task => {
-          if(task.task?.custom_fields['priority']=='High'){
-            heigh.push(task);
-          } else if(task.task?.custom_fields['priority']=='Medium'){
-            medium.push(task);
-          } else if(task.task?.custom_fields['priority']=='Low'){
-            low.push(task);
-          }
-        });
-        heigh.forEach(task => {
-          sorted.push(task)
-        });
-        medium.forEach(task => {
-          sorted.push(task)
-        });
-        low.forEach(task => {
-          sorted.push(task)
-        });
-        this.tasks = sorted;
+      var heigh: any = [], medium: any = [], low: any = [], none: any = [], sorted: any = [];
+      this.tasks.forEach(task => {
+        if (task.task?.custom_fields?.priority == 'High') {
+          heigh.push(task);
+        } else if (task.task?.custom_fields?.priority == 'Medium') {
+          medium.push(task);
+        } else if (task.task?.custom_fields?.priority == 'Low') {
+          low.push(task);
+        } else {
+          none.push(task)
+        }
+      });
+      heigh.forEach(task => {
+        sorted.push(task)
+      });
+      medium.forEach(task => {
+        sorted.push(task)
+      });
+      low.forEach(task => {
+        sorted.push(task)
+      });
+      none.forEach(task => {
+        sorted.push(task)
+      });
+      this.tasks = sorted;
       console.log("Sort proirity");
-    } else if(this.sortingBit == 'tags'){
+    } else if (this.sortingBit == 'tags') {
       console.log("Sort tags");
-        this.tasks.sort((t1, t2) => {
-          const name1 = t1?.tags[0]?.toLowerCase();
-          const name2 = t2?.tags[0]?.toLowerCase();
-          if (name1 > name2) { return 1; }
-          if (name1 < name2) { return -1; }
-          return 0;
-        });
-    } else if(this.sortingBit == 'status'){
-      var todo:any=[],inprogress:any=[],done:any=[],sorted:any=[];
-      
-        this.tasks.forEach(task => {
-          if(task.task?.status == 'to do'){
-            todo.push(task);
-          } else if(task.task?.status=='in progress'){
-            inprogress.push(task);
-          } else if(task.task?.status=='done'){
-            done.push(task);
-          }
-        });
-        todo.forEach(task => {
-          sorted.push(task)
-        });
-        inprogress.forEach(task => {
-          sorted.push(task)
-        });
-        done.forEach(task => {
-          sorted.push(task)
-        });
-        this.tasks = sorted;
+      this.tasks.sort((t1, t2) => {
+        const name1 = t1?.tags[0]?.toLowerCase();
+        const name2 = t2?.tags[0]?.toLowerCase();
+        if (name1 > name2) { return 1; }
+        if (name1 < name2) { return -1; }
+        return 0;
+      });
+    } else if (this.sortingBit == 'status') {
+      var todo: any = [], inprogress: any = [], done: any = [], none: any = [], sorted: any = [];
+      this.tasks.forEach(task => {
+        if (task.task?.status == 'to do') {
+          todo.push(task);
+        } else if (task.task?.status == 'in progress') {
+          inprogress.push(task);
+        } else if (task.task?.status == 'done') {
+          done.push(task);
+        } else {
+          none.push(task)
+        }
+      });
+      todo.forEach(task => {
+        sorted.push(task)
+      });
+      inprogress.forEach(task => {
+        sorted.push(task)
+      });
+      done.forEach(task => {
+        sorted.push(task)
+      });
+      none.forEach(task => {
+        sorted.push(task)
+      });
+      this.tasks = sorted;
     }
   }
 
   loadCustomFieldsToShow() {
-    if (this.customFieldsToShow.length === 0){
+    if (this.customFieldsToShow.length === 0) {
       this.section.custom_fields_to_show.forEach(field => {
         const cf = this.getCustomField(field);
         // Push the Column
@@ -180,7 +189,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
   getProgressPercent(northStar) {
     if (northStar.type !== 'Percent') {
-      return (northStar.values[northStar.values.length - 1].value)/northStar.target_value;
+      return (northStar.values[northStar.values.length - 1].value) / northStar.target_value;
     }
 
     return northStar.values[northStar.values.length - 1].value / 100;
@@ -272,7 +281,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
           this.tasks[indexTask] = post;
         } else {
           this.tasks.splice(indexTask, 1);
-          this.taskChangeSectionEmitter.emit({post: post, oldSection: this.section.title});
+          this.taskChangeSectionEmitter.emit({ post: post, oldSection: this.section.title });
         }
       }
 
@@ -311,15 +320,15 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   removeColumn(field: any) {
     let index: number = this.customFieldsToShow.findIndex(cf => cf.name === field);
     if (index !== -1) {
-        this.customFieldsToShow.splice(index, 1);
+      this.customFieldsToShow.splice(index, 1);
     }
     index = this.displayedColumns.indexOf(field.name);
     if (index !== -1) {
-        this.displayedColumns.splice(index, 1);
+      this.displayedColumns.splice(index, 1);
     }
     index = this.section.custom_fields_to_show.indexOf(field.name);
     if (index !== -1) {
-        this.section.custom_fields_to_show.splice(index, 1);
+      this.section.custom_fields_to_show.splice(index, 1);
     }
 
     this.columnService.saveCustomFieldsToShow(this.groupData._id, this.section.title, this.section.custom_fields_to_show);

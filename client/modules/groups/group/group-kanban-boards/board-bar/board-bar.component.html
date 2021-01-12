@@ -52,25 +52,25 @@
       </mat-menu>
 
       <mat-menu #menuSort="matMenu">
-        <a mat-menu-item (click)="sortTasks('none')">
+        <a mat-menu-item (click)="sortTasks('none')" [ngStyle]="{'color' : (sortby==='none') ? 'green' : 'black'}">
           <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
           <span>None</span>
         </a>
-        <a mat-menu-item (click)="sortTasks('due_date')">
+        <a mat-menu-item (click)="sortTasks('due_date')" [ngStyle]="{'color' : (sortby==='due_date') ? 'green' : 'black'}">
           <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
           <span>Due Date</span>
         </a>
-        <a mat-menu-item (click)="sortTasks('proirity')">
+        <a mat-menu-item (click)="sortTasks('proirity')" [ngStyle]="{'color' : (sortby==='proirity') ? 'green' : 'black'}">
           <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
           <span>Priority</span>
         </a>
         
-        <a mat-menu-item (click)="sortTasks('tags')">
+        <a mat-menu-item (click)="sortTasks('tags')" [ngStyle]="{'color' : (sortby==='tags') ? 'green' : 'black'}">
           <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">import_export</i>
           <span>Tags</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('status')">
+        <a mat-menu-item (click)="sortTasks('status')" [ngStyle]="{'color' : (sortby==='status') ? 'green' : 'black'}">
           <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">import_export</i>
           <span>Status</span>
         </a>

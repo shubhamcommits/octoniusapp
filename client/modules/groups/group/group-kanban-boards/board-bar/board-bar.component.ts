@@ -11,8 +11,8 @@ import { CustomFieldsDialogComponent } from '../../custom-fields-dialog/custom-f
 export class BoardBarComponent implements OnInit {
 
   constructor(
-      public dialog: MatDialog
-    ) {}
+    public dialog: MatDialog
+  ) { }
 
   // GroupData Variable
   @Input() groupData: any;
@@ -22,12 +22,14 @@ export class BoardBarComponent implements OnInit {
 
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
-  
+
   // Emitter to notify that the view is changing
   @Output() sortTaskEmitter: EventEmitter<string> = new EventEmitter<string>();
 
   // Emitter to notify that a customField was edited/added
-  @Output() customFieldEmitter= new EventEmitter();
+  @Output() customFieldEmitter = new EventEmitter();
+
+  sortby: String = 'none'
 
   ngOnInit() {
   }
@@ -37,6 +39,7 @@ export class BoardBarComponent implements OnInit {
   }
 
   sortTasks(bit: string) {
+    this.sortby = bit;
     this.sortTaskEmitter.emit(bit);
   }
 

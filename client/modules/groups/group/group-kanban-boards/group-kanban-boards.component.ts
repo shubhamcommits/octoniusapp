@@ -135,14 +135,17 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       }
     } else if (this.sortingBit == 'proirity') {
       for (let index = 0; index < this.columns.length; index++) {
-        var heigh: any = [], medium: any = [], low: any = [], sorted: any = [];
+        var heigh: any = [], medium: any = [], low: any = [], none: any = [], sorted: any = [];
         this.columns[index].tasks.forEach(task => {
-          if (task.task?.custom_fields['priority'] == 'High') {
+          console.log("Tasksssss", task)
+          if (task?.task?.custom_fields?.priority == 'High') {
             heigh.push(task);
-          } else if (task.task?.custom_fields['priority'] == 'Medium') {
+          } else if (task?.task?.custom_fields?.priority == 'Medium') {
             medium.push(task);
-          } else if (task.task?.custom_fields['priority'] == 'Low') {
+          } else if (task?.task?.custom_fields?.priority == 'Low') {
             low.push(task);
+          } else {
+            none.push(task);
           }
         });
         heigh.forEach(task => {
@@ -152,6 +155,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
           sorted.push(task)
         });
         low.forEach(task => {
+          sorted.push(task)
+        });
+        none.forEach(task => {
           sorted.push(task)
         });
         this.columns[index].tasks = sorted;
@@ -170,7 +176,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       }
     } else if (this.sortingBit == 'status') {
       for (let index = 0; index < this.columns.length; index++) {
-        var todo: any = [], inprogress: any = [], done: any = [], sorted: any = [];
+        var todo: any = [], inprogress: any = [], none: any = [], done: any = [], sorted: any = [];
         this.columns[index].tasks.forEach(task => {
           if (task.task?.status == 'to do') {
             todo.push(task);
@@ -178,16 +184,21 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
             inprogress.push(task);
           } else if (task.task?.status == 'done') {
             done.push(task);
+          } else {
+            none.push(task);
           }
         });
         todo.forEach(task => {
-          sorted.push(task)
+          sorted.push(task);
         });
         inprogress.forEach(task => {
-          sorted.push(task)
+          sorted.push(task);
         });
         done.forEach(task => {
-          sorted.push(task)
+          sorted.push(task);
+        });
+        none.forEach(task => {
+          sorted.push(task);
         });
         this.columns[index].tasks = sorted;
       }
