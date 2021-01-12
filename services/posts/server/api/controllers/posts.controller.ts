@@ -1358,8 +1358,13 @@ export class PostController {
 
                     if (steps && steps.length > 0) {
                         steps.forEach(async step => {
-                            if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger)) {
-                                await this.executeActionFlow(step.action, post, userId, groupId);
+                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status are'; });
+                            const isChildStatusTrigger = (childStatusTriggerIndex >= 0)
+                                ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], post.task._parent_task._id || post.task._parent_task)
+                                : false;
+                                const doTrigger = await this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger, isChildStatusTrigger);
+                            if (doTrigger) {
+                                await this.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
                             }
                         });
                     }
@@ -1372,14 +1377,13 @@ export class PostController {
         }
     }
 
-    doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger?: boolean) {
+    doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger?: boolean, isChildStatusTrigger?: boolean) {
         let retValue = true;
-        if (triggers && triggers.length > 1) {
+        if (triggers && triggers.length > 0) {
             triggers.forEach(async trigger => {
                 if (retValue) {
                     switch (trigger.name) {
                         case 'Assigned to':
-                            // const usersMatch = await trigger._user.filter(triggerUser => post._assigned_to.some(assignee => triggerUser._id == assignee['_id']))
                             const usersMatch =
                                 trigger._user.filter((triggerUser) => {
                                     return post._assigned_to.findIndex(assignee => {
@@ -1397,6 +1401,21 @@ export class PostController {
                         case 'Status is':
                             retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
                             break;
+                        case 'Subtasks Status are':
+                            /*    
+                            if (retValue && post.task._parent_task && trigger.subtaskStatus.toUpperCase() == post.task.status.toUpperCase()) {
+                                let subtasks = await postService.getSubtasks(post.task._parent_task._id || post.task._parent_task);
+                                subtasks.forEach(subtask => {
+                                    if (retValue && subtask._id != post._id) {
+                                        retValue = trigger.subtaskStatus.toUpperCase() == subtask.task.status.toUpperCase();
+                                    }
+                                });
+                            } else {
+                              retValue = false;
+                            }
+                            */
+                            retValue = isChildStatusTrigger;
+                            break;
                         case 'Task is CREATED':
                             if (isCreationTaskTrigger) {
                                 retValue = true;
@@ -1408,11 +1427,28 @@ export class PostController {
                     }
                 }
             });
+        } else {
+          retValue = false;
         }
         return retValue;
     }
 
-    executeActionFlow(actions: any[], post: any, userId: string, groupId: string) {
+    async isChildTasksUpdated(trigger: any, parentTaskId: string) {
+      let retValue = true;
+        if (trigger && parentTaskId) {
+            let subtasks = await postService.getSubtasks(parentTaskId);
+            subtasks.forEach(subtask => {
+                if (retValue) {
+                    retValue = trigger.subtaskStatus.toUpperCase() == subtask.task.status.toUpperCase();
+                }
+            });
+        } else {
+          retValue = false;
+        }
+        return retValue;
+    }
+
+    executeActionFlow(actions: any[], post: any, userId: string, groupId: string, isChildStatusTrigger: boolean) {
         actions.forEach(async action => {
             switch (action.name) {
                 case 'Assign to':
@@ -1422,20 +1458,38 @@ export class PostController {
                             index = post._assigned_to.findIndex(assignee => { return (assignee._id || assignee) == (userAction._id || userAction) });
 
                             if (index < 0) {
+                              if (isChildStatusTrigger && post.task._parent_task) {
+                                post = await this.callAddAssigneeService(post.task._parent_task._id || post.task._parent_task, userAction, userId, groupId);
+                              } else {
                                 post = await this.callAddAssigneeService(post._id, userAction, userId, groupId);
+                              }
                             }
                         }
                     });
 
                     break;
                 case 'Custom Field':
-                    post = await this.callChangeCustomFieldValueService(groupId, post._id, action.custom_field.name, action.custom_field.value, userId);
+                      if (isChildStatusTrigger && post.task._parent_task) {
+                        post = await this.callChangeCustomFieldValueService(groupId, post.task._parent_task._id || post.task._parent_task, action.custom_field.name, action.custom_field.value, userId);
+                      } else {
+                        post = await this.callChangeCustomFieldValueService(groupId, post._id, action.custom_field.name, action.custom_field.value, userId);
+                      }
                     break;
                 case 'Move to':
-                    post = await this.changeTaskSection(post._id, action.section, userId, groupId);
+                    if (isChildStatusTrigger && post.task._parent_task) {
+                      post = await this.changeTaskSection(post.task._parent_task._id || post.task._parent_task, action.section, userId, groupId);
+                    } else {
+                      if (!post.task._parent_task) {
+                        post = await this.changeTaskSection(post._id, action.section, userId, groupId);
+                      }
+                    }
                     break;
                 case 'Change Status to':
-                    post = await this.callChangeTaskStatusService(post._id, action.status, userId, groupId);
+                    if (isChildStatusTrigger && post.task._parent_task) {
+                      post = await this.callChangeTaskStatusService(post.task._parent_task._id || post.task._parent_task, action.status, userId, groupId);
+                    } else {
+                      post = await this.callChangeTaskStatusService(post._id, action.status, userId, groupId);
+                    }
                     break;
                 default:
                     break;

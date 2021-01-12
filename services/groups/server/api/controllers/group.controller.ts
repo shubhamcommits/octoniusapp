@@ -434,7 +434,7 @@ export class GroupController {
 
             // Remove the group from users, and users´ favorite groups
             await User.updateMany({ _groups: groupId }, {
-                $pull: { _groups: groupId, 'stats.favorite_groups': groupId },
+                $pull: { _groups: groupId, 'stats.favorite_groups': groupId, 'stats.groups._group': groupId },
             });
 
             // Delete Posts and Files too
