@@ -28,7 +28,7 @@
     <div class="flowStepsList" *ngIf="flowSteps.length > 0">
       <div class="flowStepsBody">
         <div class="step" *ngFor="let step of flowSteps; let stepIndex = index">
-         
+
             <div class="index">{{ stepIndex + 1 }}</div>
 
 
@@ -115,13 +115,28 @@
                     </div>
                   </div>
                 </div>
+
+                <div *ngIf="trigger.name === 'Subtasks Status are'">
+                  <div *ngIf="trigger.subtaskStatus" [ngClass]="getStatusClass(trigger.subtaskStatus)">
+                    {{ trigger.subtaskStatus.toUpperCase() }}
+                  </div>
+
+                  <button *ngIf="!trigger.subtaskStatus" mat-menu-item [matMenuTriggerFor]="subtaskStatusMenu">
+                    Select Status
+                  </button>
+                  <mat-menu #subtaskStatusMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let status of statusOptions" (click)="triggerSelected('subtaskStatus', status, stepIndex, triggerIndex)">{{ status.toUpperCase() }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
               </div>
             </div>
             <div class="add-step">
               <i class="material-icons-outlined" *ngIf="!newTrigger" (click)="newTrigger = !newTrigger" style="cursor: pointer;">add</i>
             </div>
           </div>
-          
+
           <div class="step-element" *ngIf="!step.trigger || newTrigger">
             WHEN
             <!-- TRIGGER OPTIONS SECTION -->
@@ -138,7 +153,7 @@
           <div class="step-separator">
             <i class="material-icons" style="color: #005FD5; line-height: 48px;">offline_bolt</i>
           </div>
-          
+
           <!-- ACTION SECTION -->
           <div class="values" *ngIf="step.action">
             <div *ngFor="let action of step.action; let actionIndex = index">
