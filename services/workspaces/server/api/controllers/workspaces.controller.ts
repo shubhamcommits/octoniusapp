@@ -569,7 +569,7 @@ export class WorkspaceController {
             if (workspace['billing']) {
                 // Remove stripe client
                 const stripe = require('stripe')(process.env.SK_STRIPE);
-                await stripe.customers.del(workspace['billing']['client_id']);
+                stripe.customers.del(workspace['billing']['client_id']);
             }
 
             // Send the status 200 response 

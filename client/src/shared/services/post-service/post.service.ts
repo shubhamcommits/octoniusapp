@@ -437,4 +437,11 @@ export class PostService {
   setDependencyTask(taskId: string, dependencyTaskId: string) {
     return this._http.put(this.baseURL + `/${taskId}/set-dependency`, { dependencyTaskId: dependencyTaskId }).toPromise();
   }
+
+  /**
+   * This function is responsible for creating a copy of the task assigning it to a specific user
+   */
+  cloneToAssignee(assignees: any, postId: string) {
+    return this._http.post(this.baseURL + '/clone-to-assignee', { postId: postId, assignees: assignees }).toPromise();
+  }
 }

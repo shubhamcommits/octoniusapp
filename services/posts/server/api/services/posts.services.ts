@@ -2104,4 +2104,94 @@ export class PostService {
       throw (err);
     }
   }
+
+  async cloneToAssignee(postId: string, assigneeId: string, parentId?: string) {
+
+    try {
+      const oldPost = await Post.findById(postId).lean();
+
+      let newPost = oldPost;
+
+      delete newPost._id;
+      delete newPost.bars;
+      delete newPost.records;
+      delete newPost.comments;
+      if (newPost.task && newPost.task.custom_fields) {
+        delete newPost.task.custom_fields;
+      }
+      if (newPost.records && newPost.records.assignments) {
+        delete newPost.records.assignments;
+      }
+
+      newPost._assigned_to = [assigneeId];
+      newPost.task.status = 'to do';
+      newPost.comments_count = 0;
+      newPost.created_date = moment().format();
+      
+      if (parentId) {
+        newPost.task._parent_task = parentId;
+      }
+
+      if (newPost.files) {
+        let files = newPost.files;
+        newPost.files = [];
+
+        // Fetch the files from the current request
+        await files.forEach(async (currentFile: any, index: Number) => {
+
+          // Instantiate the fileName variable and add the date object in the name
+          let fileName = Date.now().toString() + currentFile.original_name;
+
+          // Get the folder link from the environment
+          const folder = process.env.FILE_UPLOAD_FOLDER;
+
+          // Modify the file accordingly and handle request
+          await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
+            if (error) {
+              fileName = null;
+              console.log(`\n⛔️ Error:\n ${error}`);
+              throw (error);
+            }
+          });
+
+          // Modify the file and serialise the object
+          const file = {
+            original_name: currentFile.original_name,
+            modified_name: fileName
+          };
+
+          // Push the file object
+          newPost.files.push(file);
+        });
+      }
+
+      // Create new post
+      newPost = await Post.create(newPost);
+
+      // set the record in the new post
+      newPost = Post.findOneAndUpdate({
+        _id: newPost._id
+      }, {
+        new: true
+      });
+
+      // populate the assigned_to property of this document
+      newPost = await this.populatePostProperties(newPost);
+
+      // copy the subtasks
+      if (!oldPost.task._parent_task) {
+        (await this.getSubtasks(postId)).forEach(task => {
+          this.cloneToAssignee(task._id, assigneeId, newPost._id);
+        });
+      }
+      
+      // Return Post Object
+      return newPost;
+
+    } catch (err) {
+      console.log(`\n⛔️ Error:\n ${err}`);
+      // Return with error
+      throw (err);
+    }
+  }
 }

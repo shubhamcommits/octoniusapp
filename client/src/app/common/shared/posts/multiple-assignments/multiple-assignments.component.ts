@@ -53,6 +53,8 @@ export class MultipleAssignmentsComponent implements OnChanges {
         this.groupMembers = this.groupMembers.filter((member, index) => {
             return (this.groupMembers.findIndex(m => m._id == member._id) == index)
         });
+
+        this.groupMembers.unshift({_id: 'all', first_name: 'All', last_name: 'members', email: ''});
       }
     }));
 
@@ -98,38 +100,50 @@ export class MultipleAssignmentsComponent implements OnChanges {
     }
   }
 
-  getMemberDetails(member: any) {
-    const index = this.assigned_to.findIndex((assignee) => { assignee._id === member._id });
-    if (index < 0) {
-      if (this.type == 'post') {
-        if (!this.isNewEvent) {
-          this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
-            this.postService.addAssigneeToPost(this.post._id, member._id, (this.post._group || this.post._group._id))
-              .then((res) => {
-                this.post = res['post'];
-                this.assigned_to.push(member);
-                this.trigger.closeMenu();
+  getMemberDetails(selectedMember: any) {
+    let assignees = [];
 
-                // Emit the post to other components
-                this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
-
-                // Resolve with success
-                resolve(this.utilityService.resolveAsyncPromise(`Assignee added!`));
-              })
-              .catch((err) => {
-                reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
-              });
-          }));
-        } else {
-          this.trigger.closeMenu();
-
-          // Emit the post to other components
-          this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
-        }
-      } else if (this.type == 'flow') {
-        this.trigger.closeMenu();
-        this.assigneeAddedEmiter.emit({assignee: member});
-      }
+    if (selectedMember._id == 'all') {
+      assignees = this.groupMembers.filter((member)=> {
+        return member._id != 'all';
+      });
+    } else {
+      assignees = [selectedMember];
     }
+
+    assignees.forEach(member => {
+      const index = this.assigned_to.findIndex((assignee) => { assignee._id === member._id });
+      if (index < 0) {
+        if (this.type == 'post') {
+          if (!this.isNewEvent) {
+            this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+              this.postService.addAssigneeToPost(this.post._id, member._id, (this.post._group || this.post._group._id))
+                .then((res) => {
+                  this.post = res['post'];
+                  this.assigned_to.push(member);
+                  this.trigger.closeMenu();
+
+                  // Emit the post to other components
+                  this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
+
+                  // Resolve with success
+                  resolve(this.utilityService.resolveAsyncPromise(`Assignee added!`));
+                })
+                .catch((err) => {
+                  reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+                });
+            }));
+          } else {
+            this.trigger.closeMenu();
+
+            // Emit the post to other components
+            this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
+          }
+        } else if (this.type == 'flow') {
+          this.trigger.closeMenu();
+          this.assigneeAddedEmiter.emit({assignee: member});
+        }
+      }
+    });
   }
 }

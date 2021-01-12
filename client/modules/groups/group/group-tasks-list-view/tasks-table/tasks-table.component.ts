@@ -25,6 +25,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   @Input() customFields = [];
 
   @Output() taskChangeSectionEmitter = new EventEmitter();
+  @Output() taskClonnedEvent = new EventEmitter();
 
   customFieldsToShow = [];
 
@@ -159,10 +160,15 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
       this.onDeleteEvent(data._id);
     });
+    const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
+      this.onTaskClonned(data);
+    });
+
     dialogRef.afterClosed().subscribe(result => {
       deleteEventSubs.unsubscribe();
       closeEventSubs.unsubscribe();
       parentAssignEventSubs.unsubscribe();
+      taskClonnedEventSubs.unsubscribe();
     });
   }
 
@@ -252,5 +258,9 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   customFieldValues(fieldName: string) {
     const cf = this.getCustomField(fieldName);
     return (cf) ? cf.values.sort((v1, v2) => (v1 > v2) ? 1 : -1) : '';
+  }
+
+  onTaskClonned(data) {
+    this.taskClonnedEvent.emit(data);
   }
 }

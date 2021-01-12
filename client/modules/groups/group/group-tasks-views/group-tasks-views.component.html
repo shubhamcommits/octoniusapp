@@ -14,7 +14,8 @@
             [groupData]="groupData"
             [userData]="userData"
             [columns]="columns"
-            [tasks]="tasks">
+            [tasks]="tasks"
+            (taskClonnedEvent)="onTaskClonned($event)">
         </app-group-kanban-boards>
 
         <app-group-tasks-list-view *ngIf="viewType === 'list'"
@@ -23,13 +24,15 @@
             [sections]="columns"
             [tasks]="tasks"
             [customFields]="customFields"
-            [isAdmin]="isAdminUser()">
+            [isAdmin]="isAdminUser()"
+            (taskClonnedEvent)="onTaskClonned($event)">
         </app-group-tasks-list-view>
 
         <app-gantt-view *ngIf="viewType === 'gantt'"
-          [tasks]="tasks" 
+          [tasks]="tasks"
           [userData]="userData"
           [columns]="columns"
+          (taskClonnedEvent)="onTaskClonned($event)"
           >
         </app-gantt-view>
 

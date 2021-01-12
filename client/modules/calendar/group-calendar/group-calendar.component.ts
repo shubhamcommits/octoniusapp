@@ -240,8 +240,13 @@ export class GroupCalendarComponent implements OnInit {
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateEvent(data);
     });
+    const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
+      this.onTaskClonned(data);
+    });
+
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
+      taskClonnedEventSubs.unsubscribe();
     });
   }
 
@@ -357,5 +362,14 @@ export class GroupCalendarComponent implements OnInit {
         }
       }
     ];
+  }
+
+  onTaskClonned(data) {
+    this.columns = [];
+    this.posts = [];
+    this.events = [];
+    this.timeline = [];
+
+    this.ngOnInit();
   }
 }

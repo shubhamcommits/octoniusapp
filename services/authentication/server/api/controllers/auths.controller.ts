@@ -273,7 +273,7 @@ export class AuthsController {
                     ] }).countDocuments();
 
                     // Update the subscription details
-                    let subscription = await stripe.subscriptions.update(workspace.billing.subscription_id, {
+                    let subscription = stripe.subscriptions.update(workspace.billing.subscription_id, {
                         price: workspace.billing.price_id,
                         quantity: usersCount
                     });

@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input,OnChanges,SimpleChanges, SimpleChange,ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Injector, Input,OnChanges,SimpleChanges,Output, EventEmitter, SimpleChange,ChangeDetectionStrategy } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
@@ -41,6 +41,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
   
   tasktest:any
   
+
+  @Output() taskClonnedEvent = new EventEmitter();
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -390,19 +392,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
     this.updateTask(data);
   }
 
-  /*
-  onDeleteDoneEvent(id) {
-    this.columns.forEach((col, indexColumn) => {
-      // Find the index of the tasks inside the column
-      const indexTask = col.tasks.done.findIndex((task: any) => task._id === id);
-      if (indexTask !== -1) {
-        this.columns[indexColumn].tasks.done.splice(indexTask, 1);
-        return;
-      }
-    });
-  }
-  */
-
   onDeleteEvent(id) {
     this.columns.forEach((col, indexColumn) => {
       // Find the index of the tasks inside the column
@@ -428,12 +417,16 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
     const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
       this.onDeleteEvent(data._id);
     });
+    const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
+      this.onTaskClonned(data);
+    });
 
 
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
       deleteEventSubs.unsubscribe();
       parentAssignEventSubs.unsubscribe();
+      taskClonnedEventSubs.unsubscribe();
     });
   }
 
@@ -522,9 +515,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
    */
   changeDueDate(task: any, dueDate: any) {
 
-    // dueDate = new Date(dueDate)
-
-    // dueDate = new Date(dueDate.getFull
     dueDate = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
 
     dueDate = moment(dueDate).format()
@@ -589,4 +579,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges{
     return 'label-priority ' + priority.toLocaleLowerCase();
   }
 
+  onTaskClonned(data) {
+    this.taskClonnedEvent.emit(data);
+  }
 }

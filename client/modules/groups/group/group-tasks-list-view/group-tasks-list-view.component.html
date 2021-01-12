@@ -31,7 +31,8 @@
                   [section]="section"
                   [isAdmin]="isAdmin"
                   [customFields]="customFields"
-                  (taskChangeSectionEmitter)="onTaskChangeSection($event)"></app-tasks-table>
+                  (taskChangeSectionEmitter)="onTaskChangeSection($event)"
+                  (taskClonnedEvent)="onTaskClonned($event)"></app-tasks-table>
                 <!-- TASKS TABLE ENDS -->
               </div>
               <!-- TASK CONTAINER ENDS -->
