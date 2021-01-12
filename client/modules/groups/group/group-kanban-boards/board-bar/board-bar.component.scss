@@ -55,3 +55,11 @@ a {
   width: 5px;
   border-left: 1px solid #E4EDF8;
 }
+
+.cursordefault {
+  cursor: default !important;
+  width: 200px;
+}
+.overflowvisible{
+  overflow: unset;
+}

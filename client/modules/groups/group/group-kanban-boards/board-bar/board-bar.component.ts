@@ -19,7 +19,7 @@ export class BoardBarComponent implements OnInit {
   @Input() sections = [];
   @Input() isAdmin = false;
   @Input() customFields = [];
-
+  @Input() userData;
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
 
@@ -32,6 +32,7 @@ export class BoardBarComponent implements OnInit {
   sortby: String = 'none'
 
   ngOnInit() {
+    console.log("groupDatasssss",this.userData)
   }
 
   changeView(view: string) {
