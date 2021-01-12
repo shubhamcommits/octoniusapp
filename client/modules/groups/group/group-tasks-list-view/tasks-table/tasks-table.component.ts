@@ -77,8 +77,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     //const doneTasks = [...this.tasks['done']];
     this.tasks = [...this.tasks];
     //this.tasks['done'] = doneTasks;
-    console.log("Tasks For Table", this.tasks, this.sortingBit);
-
     // this.tasks.sort(function(t1, t2) {
     //   if (t1.task.status != t2.task.status) {
     //     return t1.task.status == 'done' ? 1 : -1;
@@ -132,9 +130,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
         sorted.push(task)
       });
       this.tasks = sorted;
-      console.log("Sort proirity");
     } else if (this.sortingBit == 'tags') {
-      console.log("Sort tags");
       this.tasks.sort((t1, t2) => {
         const name1 = t1?.tags[0]?.toLowerCase();
         const name2 = t2?.tags[0]?.toLowerCase();

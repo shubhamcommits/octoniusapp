@@ -137,7 +137,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       for (let index = 0; index < this.columns.length; index++) {
         var heigh: any = [], medium: any = [], low: any = [], none: any = [], sorted: any = [];
         this.columns[index].tasks.forEach(task => {
-          console.log("Tasksssss", task)
           if (task?.task?.custom_fields?.priority == 'High') {
             heigh.push(task);
           } else if (task?.task?.custom_fields?.priority == 'Medium') {
