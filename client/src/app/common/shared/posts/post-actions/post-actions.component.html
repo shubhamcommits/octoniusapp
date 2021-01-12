@@ -57,7 +57,8 @@
     [userData]="userData"
     [groupId]="post?._group?._id || post?._group"
     [length]="post?.comments_count"
-    [newComment]="newComment"></app-comment-list>
+    [newComment]="newComment"
+    (removeCommentEvent)="onCommentRemoved($event)"></app-comment-list>
 </section>
 
 <!-- END CARD FOOTER and footer component-->
