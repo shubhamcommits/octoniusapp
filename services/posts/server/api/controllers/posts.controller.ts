@@ -1358,10 +1358,13 @@ export class PostController {
 
                     if (steps && steps.length > 0) {
                         steps.forEach(async step => {
-                            if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger)) {
-                                const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status are'; });
-                                //const childTasksUpdated = await this.isChildTasksUpdated(step.trigger, post.task._parent_task._id || post.task._parent_task);
-                                await this.executeActionFlow(step.action, post, userId, groupId, childStatusTriggerIndex >= 0);
+                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status are'; });
+                            const isChildStatusTrigger = (childStatusTriggerIndex >= 0)
+                                ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], post.task._parent_task._id || post.task._parent_task)
+                                : false;
+                                const doTrigger = await this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger, isChildStatusTrigger);
+                            if (doTrigger) {
+                                await this.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
                             }
                         });
                     }
@@ -1374,7 +1377,7 @@ export class PostController {
         }
     }
 
-    doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger?: boolean) {
+    doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger?: boolean, isChildStatusTrigger?: boolean) {
         let retValue = true;
         if (triggers && triggers.length > 0) {
             triggers.forEach(async trigger => {
@@ -1399,6 +1402,7 @@ export class PostController {
                             retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
                             break;
                         case 'Subtasks Status are':
+                            /*    
                             if (retValue && post.task._parent_task && trigger.subtaskStatus.toUpperCase() == post.task.status.toUpperCase()) {
                                 let subtasks = await postService.getSubtasks(post.task._parent_task._id || post.task._parent_task);
                                 subtasks.forEach(subtask => {
@@ -1409,6 +1413,8 @@ export class PostController {
                             } else {
                               retValue = false;
                             }
+                            */
+                            retValue = isChildStatusTrigger;
                             break;
                         case 'Task is CREATED':
                             if (isCreationTaskTrigger) {
@@ -1426,16 +1432,14 @@ export class PostController {
         }
         return retValue;
     }
-/*
-    async isChildTasksUpdated(triggers: any[], parentTaskId: string) {
+
+    async isChildTasksUpdated(trigger: any, parentTaskId: string) {
       let retValue = true;
-        if (triggers && triggers.length > 0 && parentTaskId) {
+        if (trigger && parentTaskId) {
             let subtasks = await postService.getSubtasks(parentTaskId);
-            triggers.forEach(async trigger => {
-                if (retValue && trigger.name.toLowerCase() == 'subtasks status are') {
-                  subtasks.forEach(subtask => {
+            subtasks.forEach(subtask => {
+                if (retValue) {
                     retValue = trigger.subtaskStatus.toUpperCase() == subtask.task.status.toUpperCase();
-                  });
                 }
             });
         } else {
@@ -1443,8 +1447,8 @@ export class PostController {
         }
         return retValue;
     }
-*/
-    executeActionFlow(actions: any[], post: any, userId: string, groupId: string, childTasksUpdated: boolean) {
+
+    executeActionFlow(actions: any[], post: any, userId: string, groupId: string, isChildStatusTrigger: boolean) {
         actions.forEach(async action => {
             switch (action.name) {
                 case 'Assign to':
@@ -1454,7 +1458,7 @@ export class PostController {
                             index = post._assigned_to.findIndex(assignee => { return (assignee._id || assignee) == (userAction._id || userAction) });
 
                             if (index < 0) {
-                              if (childTasksUpdated && post.task._parent_task) {
+                              if (isChildStatusTrigger && post.task._parent_task) {
                                 post = await this.callAddAssigneeService(post.task._parent_task._id || post.task._parent_task, userAction, userId, groupId);
                               } else {
                                 post = await this.callAddAssigneeService(post._id, userAction, userId, groupId);
@@ -1465,14 +1469,14 @@ export class PostController {
 
                     break;
                 case 'Custom Field':
-                      if (childTasksUpdated && post.task._parent_task) {
+                      if (isChildStatusTrigger && post.task._parent_task) {
                         post = await this.callChangeCustomFieldValueService(groupId, post.task._parent_task._id || post.task._parent_task, action.custom_field.name, action.custom_field.value, userId);
                       } else {
                         post = await this.callChangeCustomFieldValueService(groupId, post._id, action.custom_field.name, action.custom_field.value, userId);
                       }
                     break;
                 case 'Move to':
-                    if (childTasksUpdated && post.task._parent_task) {
+                    if (isChildStatusTrigger && post.task._parent_task) {
                       post = await this.changeTaskSection(post.task._parent_task._id || post.task._parent_task, action.section, userId, groupId);
                     } else {
                       if (!post.task._parent_task) {
@@ -1481,7 +1485,7 @@ export class PostController {
                     }
                     break;
                 case 'Change Status to':
-                    if (childTasksUpdated && post.task._parent_task) {
+                    if (isChildStatusTrigger && post.task._parent_task) {
                       post = await this.callChangeTaskStatusService(post.task._parent_task._id || post.task._parent_task, action.status, userId, groupId);
                     } else {
                       post = await this.callChangeTaskStatusService(post._id, action.status, userId, groupId);
