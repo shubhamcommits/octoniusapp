@@ -2349,9 +2349,49 @@ export class PostService {
         _assigned_to: template._assigned_to
       });
 
+      //delete files, this catches both document insertion as well as multiple file attachment deletes
+      if (newPost.files?.length > 0) {
+        //gather source file
+        function deleteFiles(files, callback) {
+          var i = files.length;
+          files.forEach(function (filepath) {
+            const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
+            fs.unlink(finalpath, function (err) {
+              i--;
+              if (err) {
+                callback(err);
+                return;
+              } else if (i <= 0) {
+                callback(null);
+              }
+            });
+          });
+        }
+        deleteFiles(newPost.files, function (err) {
+          if (err) { throw (err); }
+          //all files removed);
+        });
+      }
+
+      //chec/delete document files that were exported
+      const filepath = `${process.env.FILE_UPLOAD_FOLDER}${newPostId + (newPost._group._id || newPost._group) + 'export' + '.docx'}`;
+      //check if file exists
+      fs.access(filepath, fs.F_OK, error => {
+        //if error there was no file
+        if (!error) {
+          //the file was there now unlink it
+          fs.unlink(filepath, (err) => {
+            //handle error when file was not deleted properly
+            if (err) { throw (err); }
+            //deleted document
+          })
+        }
+      })
+      
       if (template.files) {
+        // Start adding the files from the template
         let files = template.files;
-        newPost.files = [];
+        let postFiles = [];
 
         // Fetch the files from the current request
         await files.forEach(async (currentFile: any, index: Number) => {
@@ -2378,7 +2418,11 @@ export class PostService {
           };
 
           // Push the file object
-          newPost.files.push(file);
+          postFiles.push(file);
+        });
+
+        newPost = await Post.findOneAndUpdate({_id: newPostId}, {
+          files: postFiles
         });
       }
 
