@@ -1839,7 +1839,7 @@ export class PostService {
     }
   }
 
-  async copyToGroup(postId: string, groupId: string, columnTitle: string, oldGroupId: string, userId: string, parentId?: string) {
+  async copyToGroup(postId: string, groupId: string, columnTitle: string, oldGroupId?: string, userId?: string, parentId?: string, isTemplate?: boolean) {
 
     try {
       const oldPost = await Post.findById(postId).lean();
@@ -1858,9 +1858,11 @@ export class PostService {
       }
 
       newPost._group = groupId;
-      newPost._assigned_to = [];
       newPost.comments_count = 0;
       newPost.created_date = moment().format();
+      if (!isTemplate) {
+        newPost._assigned_to = [];
+      }
       if (parentId) {
         newPost.task._parent_task = parentId;
       } else {
@@ -1904,21 +1906,23 @@ export class PostService {
       newPost = await Post.create(newPost);
 
       // set the record in the new post
-      newPost = Post.findOneAndUpdate({
-        _id: newPost._id
-      }, {
-        $push: {
-          "records.group_change": {
-            date: moment().format(),
-            _fromGroup: oldGroupId,
-            _toGroup: groupId,
-            type: 'copy',
-            _user: userId
+      if (oldGroupId && groupId && userId) {
+        newPost = Post.findOneAndUpdate({
+          _id: newPost._id
+        }, {
+          $push: {
+            "records.group_change": {
+              date: moment().format(),
+              _fromGroup: oldGroupId,
+              _toGroup: groupId,
+              type: 'copy',
+              _user: userId
+            }
           }
-        }
-      }, {
-        new: true
-      });
+        }, {
+          new: true
+        });
+      }
 
       // populate the assigned_to property of this document
       newPost = await this.populatePostProperties(newPost);
@@ -2185,6 +2189,262 @@ export class PostService {
         });
       }
       
+      // Return Post Object
+      return newPost;
+
+    } catch (err) {
+      console.log(`\n⛔️ Error:\n ${err}`);
+      // Return with error
+      throw (err);
+    }
+  }
+  
+  /**
+   * This service is responsible for fetching templates based on the @groupId
+   * @param groupId
+   */
+  async getGroupTemplates(groupId: any) {
+
+    try {
+
+      // Posts Variable
+      var posts = []
+
+      posts = await Post.find({
+          $and: [
+            { _group: groupId },
+            { type: 'task' },
+            { 'task.is_template': true },
+            { 'task._parent_task': null }
+          ]
+        }).select('_id task.template_name')
+        .sort('-task.template_name');
+
+      // Return set of posts 
+      return posts;
+
+    } catch (err) {
+
+      // Return With error
+      throw (err);
+    }
+  }
+
+  async createTemplate(postId: string, groupId: string, templateName: string, parentId?: string) {
+
+    try {
+      const oldPost = await Post.findById(postId).lean();
+
+      let template = oldPost;
+
+      template.task.is_template = true;
+      template.task.template_name = templateName;
+
+      // Delete unneeded fields
+      delete template._id;
+      delete template.bars;
+      delete template.records;
+      delete template.comments;
+      delete template.task._column;
+      delete template.task.due_date;
+      delete template.task.start_date;
+      if (template.task && template.task.custom_fields) {
+        delete template.task.custom_fields;
+      }
+      if (template.records && template.records.assignments) {
+        delete template.records.assignments;
+      }
+
+      template._group = groupId;
+      template.comments_count = 0;
+      template.created_date = moment().format();
+      if (parentId) {
+        template.task._parent_task = parentId;
+      }
+
+      if (template.files) {
+        let files = template.files;
+        template.files = [];
+
+        // Fetch the files from the current request
+        await files.forEach(async (currentFile: any, index: Number) => {
+
+          // Instantiate the fileName variable and add the date object in the name
+          let fileName = Date.now().toString() + currentFile.original_name;
+
+          // Get the folder link from the environment
+          const folder = process.env.FILE_UPLOAD_FOLDER;
+
+          // Modify the file accordingly and handle request
+          await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
+            if (error) {
+              fileName = null;
+              console.log(`\n⛔️ Error:\n ${error}`);
+              throw (error);
+            }
+          });
+
+          // Modify the file and serialise the object
+          const file = {
+            original_name: currentFile.original_name,
+            modified_name: fileName
+          };
+
+          // Push the file object
+          template.files.push(file);
+        });
+      }
+
+      // Create new post
+      template = await Post.create(template);
+
+      // populate the assigned_to property of this document
+      template = await this.populatePostProperties(template);
+
+      // copy the subtasks
+      if (!oldPost.task._parent_task) {
+        (await this.getSubtasks(postId)).forEach(task => {
+          this.createTemplate(task._id, groupId, templateName, template._id);
+        });
+      }
+
+      // Return Post Object
+      return template;
+
+    } catch (err) {
+      console.log(`\n⛔️ Error:\n ${err}`);
+      // Return with error
+      throw (err);
+    }
+  }
+
+  async overwriteTemplate(postId: string, templateId: string, templateName: string) {
+    try {
+      let template = await Post.findById(templateId).select("_id _group _posted_by");
+      const groupId = template._group._id || template._group;
+      const posted_by = template._posted_by._id || template._posted_by;
+
+      // Delete old template
+      this.remove(posted_by, templateId);
+
+      // Create the new template
+      return this.createTemplate(postId, groupId, templateName);
+
+    } catch (err) {
+      console.log(`\n⛔️ Error:\n ${err}`);
+      // Return with error
+      throw (err);
+    }
+  }
+
+  async createTaskFromTemplate(templatePostId: string, newPostId: string) {
+
+    try {
+      const template = await Post.findById(templatePostId).lean();
+
+      // Update the new post
+      let newPost = await Post.findOneAndUpdate({_id: newPostId}, {
+        title: template.title,
+        content: template.content,
+        _assigned_to: template._assigned_to
+      });
+
+      //delete files, this catches both document insertion as well as multiple file attachment deletes
+      if (newPost.files?.length > 0) {
+        //gather source file
+        function deleteFiles(files, callback) {
+          var i = files.length;
+          files.forEach(function (filepath) {
+            const finalpath = `${process.env.FILE_UPLOAD_FOLDER}${filepath.modified_name}`
+            fs.unlink(finalpath, function (err) {
+              i--;
+              if (err) {
+                callback(err);
+                return;
+              } else if (i <= 0) {
+                callback(null);
+              }
+            });
+          });
+        }
+        deleteFiles(newPost.files, function (err) {
+          if (err) { throw (err); }
+          //all files removed);
+        });
+      }
+
+      //chec/delete document files that were exported
+      const filepath = `${process.env.FILE_UPLOAD_FOLDER}${newPostId + (newPost._group._id || newPost._group) + 'export' + '.docx'}`;
+      //check if file exists
+      fs.access(filepath, fs.F_OK, error => {
+        //if error there was no file
+        if (!error) {
+          //the file was there now unlink it
+          fs.unlink(filepath, (err) => {
+            //handle error when file was not deleted properly
+            if (err) { throw (err); }
+            //deleted document
+          })
+        }
+      })
+      
+      if (template.files) {
+        // Start adding the files from the template
+        let files = template.files;
+        let postFiles = [];
+
+        // Fetch the files from the current request
+        await files.forEach(async (currentFile: any, index: Number) => {
+
+          // Instantiate the fileName variable and add the date object in the name
+          let fileName = Date.now().toString() + currentFile.original_name;
+
+          // Get the folder link from the environment
+          const folder = process.env.FILE_UPLOAD_FOLDER;
+
+          // Modify the file accordingly and handle request
+          await fs.copyFile(folder + currentFile.modified_name, folder + fileName, (error: Error) => {
+            if (error) {
+              fileName = null;
+              console.log(`\n⛔️ Error:\n ${error}`);
+              throw (error);
+            }
+          });
+
+          // Modify the file and serialise the object
+          const file = {
+            original_name: currentFile.original_name,
+            modified_name: fileName
+          };
+
+          // Push the file object
+          postFiles.push(file);
+        });
+
+        newPost = await Post.findOneAndUpdate({_id: newPostId}, {
+          files: postFiles
+        });
+      }
+
+      // populate the assigned_to property of this document
+      newPost = await this.populatePostProperties(newPost);
+
+      // copy the subtasks
+      if (!template.task._parent_task) {
+        // remove subtasks
+        await Post.deleteMany({
+          $and: [
+            { type: 'task' },
+            { 'task._parent_task': newPostId }
+          ]
+        });
+        
+        // Create new subtasks
+        (await this.getSubtasks(templatePostId)).forEach(task => {
+          this.copyToGroup(task._id, template._group._id || template._group, '', null, null, newPostId, true);
+        });
+      }
+
       // Return Post Object
       return newPost;
 
