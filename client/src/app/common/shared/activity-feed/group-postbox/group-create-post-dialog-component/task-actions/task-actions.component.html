@@ -111,12 +111,12 @@
       Templates
     </button>
     <mat-menu #templateTaskMenu="matMenu">
-      <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+      <div>
         <div class="users-card">
           <ul class="assignee-list">
-            <li class="assignee-list-item" *ngFor="let template of groupTemplates" (click)="selectTemplate(template._id)">
+            <button mat-menu-item  class="assignee-list-item" *ngFor="let template of groupTemplates" (mouseover)="saveTemplateAction('')" (click)="selectTemplate(template._id)">
               {{ template.task.template_name }}
-            </li>
+            </button>
 
             <!-- <li class="assignee-list-item save-template" (click)="createTemplate()">Save as template</li> -->
             <button class="assignee-list-item save-template" mat-menu-item [matMenuTriggerFor]="templatesMenu" (mouseover)="saveTemplateAction('save')" (click)="saveTemplateAction('save')">
@@ -130,7 +130,7 @@
             </button>
 
             <mat-menu #templatesMenu="matMenu">
-              <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+              <div>
                 <div class="users-card">
                   <ul class="assignee-list">
                     <li class="assignee-list-item" *ngFor="let template of groupTemplates" (click)="selectTemplate(template._id, template.task.template_name)">

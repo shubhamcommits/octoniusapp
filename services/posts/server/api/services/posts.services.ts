@@ -2387,6 +2387,15 @@ export class PostService {
 
       // copy the subtasks
       if (!template.task._parent_task) {
+        // remove subtasks
+        await Post.deleteMany({
+          $and: [
+            { type: 'task' },
+            { 'task._parent_task': newPostId }
+          ]
+        });
+        
+        // Create new subtasks
         (await this.getSubtasks(templatePostId)).forEach(task => {
           this.copyToGroup(task._id, template._group._id || template._group, '', null, null, newPostId, true);
         });
