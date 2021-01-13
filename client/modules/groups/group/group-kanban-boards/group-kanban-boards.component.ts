@@ -41,7 +41,11 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
   @Input() sortingBit: String
 
-  tasktest: any
+  @Input() filteringBit: String
+
+  tasktest: any;
+
+  unchangedColumns: any;
 
 
   @Output() taskClonnedEvent = new EventEmitter();
@@ -56,6 +60,12 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
 
   async ngOnInit() {
+    let col = [];
+    this.columns.forEach(val => col.push(Object.assign({}, val)));
+    let unchangedColumns:any = {columns: col};
+    this.unchangedColumns = JSON.parse(JSON.stringify(unchangedColumns));
+    // this.unchangedColumns[0].tasks[0].ShallowBit = 1;
+    console.log("asdadadsaf",unchangedColumns,this.unchangedColumns);
 
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
       this.flows = res['flows'];
@@ -108,6 +118,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   }
 
   async ngOnChanges(changes: SimpleChanges) {
+
     for (const propName in changes) {
       const change = changes[propName];
       const to = change.currentValue;
@@ -116,11 +127,64 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         this.sortingBit = to;
         await this.sorting();
       }
+      if(propName === 'filteringBit'){
+        console.log(propName,to);
+        this.filtering(to);
+      }
     }
   }
 
-  async sorting() {
+  async filtering(to) {
+    if (to == "mytask") { 
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task:any) => {
+          var bit = false;
+          task._assigned_to.forEach(element => {
+            console.log("element._id",element._id == this.userData._id)
+            if(element._id == this.userData._id){
+              bit=true
+            }
+        })
+        return bit;
+      })
+      }
+      this.unchangedColumns = tasks;
+    } else if (to == "priority_high") { 
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task:any) => (
+          task.task.custom_fields?.priority==="High"))
+      }
+      this.unchangedColumns = tasks;
+    } else if (to == "priority_medium") { 
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task:any) => (
+          task.task.custom_fields?.priority==="Medium"))
+      }
+      this.unchangedColumns = tasks;
+    } else if (to == "priority_low") { 
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task:any) => (
+          task.task.custom_fields?.priority==="Low"))
+      }
+      this.unchangedColumns = tasks;
+    } else {
+      console.log("unchanged column",this.unchangedColumns,this.userData);
 
+      this.columns = this.unchangedColumns.columns;
+    }
+ 
+
+  }
+
+  async sorting() {
     if (this.sortingBit == 'due_date' || this.sortingBit == 'none') {
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;

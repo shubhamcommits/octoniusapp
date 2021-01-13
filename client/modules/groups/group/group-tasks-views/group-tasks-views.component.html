@@ -8,7 +8,9 @@
             [customFields]="customFields"
             (changeViewEmitter)='onChangeViewEmitter($event)'
             (customFieldEmitter)="onCustomFieldEmitter($event)"
-            (sortTaskEmitter)="onSortTaskEmitter($event)">
+            (sortTaskEmitter)="onSortTaskEmitter($event)"
+            (filterTaskEmitter)="onFilterTaskEmitter($event)"
+            >
         </app-board-bar>
 
         <app-group-kanban-boards *ngIf="viewType === 'kanban'"
@@ -17,6 +19,7 @@
             [columns]="columns"
             [tasks]="tasks"
             [sortingBit]="sortingBit"
+            [filteringBit]="filteringBit"
             (taskClonnedEvent)="onTaskClonned($event)">
         </app-group-kanban-boards>
 

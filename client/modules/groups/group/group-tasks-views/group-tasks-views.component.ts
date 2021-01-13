@@ -25,6 +25,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   userData: any;
   customFields: any = [];
   sortingBit:String = 'none'
+
+  filteringBit:String = 'none'
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot.queryParamMap.get('group');
 
@@ -79,8 +81,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   async onSortTaskEmitter(bit:string){
     // let task = this.columns;
     this.sortingBit = bit;
-    
-    
+  }
+
+  async onFilterTaskEmitter(bit:string){
+    // let task = this.columns;
+    this.filteringBit = bit;
   }
 
   async onCustomFieldEmitter(customFields) {

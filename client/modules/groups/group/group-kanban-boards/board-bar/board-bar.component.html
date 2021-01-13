@@ -80,13 +80,13 @@
       </mat-menu>
 
       <mat-menu #menuFilter="matMenu" style="overflow: visible !important;">
-        <a mat-menu-item>
+        <a mat-menu-item (click)="filterTask('none')">
           <span>None</span>
         </a>
-        <a mat-menu-item>
+        <a mat-menu-item (click)="filterTask('mytask')">
           <span>My Tasks</span>
         </a>
-        <span mat-menu-item class="cursordefault overflowvisible">
+        <span mat-menu-item class="cursordefault overflowvisible" (click)="filterTask('users')">
           <span>Users</span>
         </span>
 
@@ -97,22 +97,22 @@
 
           <!-- Menu Drawer Starts -->
           <ul class="dropdown-menu">
-            <li class="dropdown-item">
+            <li class="dropdown-item" (click)="filterTask('due_before_today')">
               <span>Before today</span>
             </li>
-            <li class="dropdown-item">
+            <li class="dropdown-item" (click)="filterTask('due_today')">
               <span>Today</span>
             </li>
-            <li class="dropdown-item">
+            <li class="dropdown-item" (click)="filterTask('due_tomorrow')">
               <span>Tomorrow</span>
             </li>
-            <li class="dropdown-item">
+            <li class="dropdown-item" (click)="filterTask('due_week')">
               <span>This week</span>
             </li>
-            <li class="dropdown-item">
+            <li class="dropdown-item" (click)="filterTask('due_next_week')">
               <span>Next week</span>
             </li>
-            <li class="dropdown-item">
+            <li class="dropdown-item" (click)="filterTask('due_14_days')">
               <span>Next 14 days</span>
             </li>
           </ul>
@@ -127,21 +127,21 @@
           <ul class="dropdown-menu">
             <li class="dropdown-item">
               <span>
-                <div class="label-priority high" >
+                <div class="label-priority high" (click)="filterTask('priority_high')">
                   High
                 </div>
               </span>
             </li>
             <li class="dropdown-item">
               <span>
-                <div class="label-priority medium" >
+                <div class="label-priority medium" (click)="filterTask('priority_medium')">
                   Medium
                 </div>
               </span>
             </li>
             <li class="dropdown-item">
               <span>
-                <div class="label-priority low" >
+                <div class="label-priority low" (click)="filterTask('priority_low')">
                   Low
                 </div>
               </span>

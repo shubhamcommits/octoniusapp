@@ -23,13 +23,17 @@ export class BoardBarComponent implements OnInit {
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
 
-  // Emitter to notify that the view is changing
+  // Emitter to notify that the sorting type is changing
   @Output() sortTaskEmitter: EventEmitter<string> = new EventEmitter<string>();
+
+  // Emitter to notify that the filter type is changing
+  @Output() filterTaskEmitter: EventEmitter<string> = new EventEmitter<string>();
 
   // Emitter to notify that a customField was edited/added
   @Output() customFieldEmitter = new EventEmitter();
 
   sortby: String = 'none'
+  filterfor: String = 'none'
 
   ngOnInit() {
     console.log("groupDatasssss",this.userData)
@@ -42,6 +46,11 @@ export class BoardBarComponent implements OnInit {
   sortTasks(bit: string) {
     this.sortby = bit;
     this.sortTaskEmitter.emit(bit);
+  }
+
+  filterTask(bit: string){
+    this.filterfor = bit;
+    this.filterTaskEmitter.emit(bit);
   }
 
   openCustomFieldsDialog(): void {
