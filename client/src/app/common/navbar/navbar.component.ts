@@ -107,8 +107,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.publicFunctions.reuseRoute(this._router)
 
     // FETCH THE USER DETAILS FROM THE SERVER
-    // this.userData = await this.getCurrentUser();
-    this.userData = await this.publicFunctions.getCurrentUser();
+    this.userData = await this.getCurrentUser();
+    // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
     this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
 
@@ -194,6 +194,24 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subSink.unsubscribe()
   }
 
+  /**
+   * This function fetches the user details, makes a GET request to the server
+   */
+  async getCurrentUser() {
+    return new Promise((resolve, reject) => {
+      try {
+        this.subSink.add(this.userService.getUser()
+          .pipe(retry(3))
+          .subscribe(res => resolve(res['user']))
+        );
+      } catch (err) {
+        console.log('Error occured while fetching the user details', err);
+        this.utilityService.errorNotification('Error occured while fetching your profile details');
+        reject({});
+      }
+    })
+  }
+
   closeModal(){
     this.utilityService.closeAllModals();
   }
@@ -210,8 +228,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async onFavoriteGroupSaved() {
-    // this.userData = await this.getCurrentUser();
-    this.userData = await this.publicFunctions.getCurrentUser();
+    this.userData = await this.getCurrentUser();
+    // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
   }
 }
