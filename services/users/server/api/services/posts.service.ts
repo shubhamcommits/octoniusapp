@@ -32,6 +32,7 @@ export class PostsService {
                     ]
                 },
                 { 'task.due_to': { $gte: startOfDay, $lte: endOfDay }},
+                { 'task.is_template': { $ne: true }},
                 {
                     $or: [
                         { 'task.status': 'to do' },
@@ -72,7 +73,8 @@ export class PostsService {
                         { '_group': user._private_group }
                     ]
                 },
-                {'task.due_to': { $lt: today }},
+                { 'task.due_to': { $lt: today }},
+                { 'task.is_template': { $ne: true }},
                 {
                     $or: [
                         { 'task.status': 'to do' },
@@ -115,7 +117,8 @@ export class PostsService {
                         { '_group': user._private_group }
                     ]
                 },
-                {'task.due_to': { $gte: today, $lte: todayPlus7Days }},
+                { 'task.due_to': { $gte: today, $lte: todayPlus7Days }},
+                { 'task.is_template': { $ne: true }},
                 {
                     $or: [
                         { 'task.status': 'to do' },
@@ -159,7 +162,8 @@ export class PostsService {
                         { '_group': user._private_group }
                     ]
                 },
-                {'task.due_to': { $gte: todayPlus7Days, $lte: todayPlus14Days }},
+                { 'task.due_to': { $gte: todayPlus7Days, $lte: todayPlus14Days }},
+                { 'task.is_template': { $ne: true }},
                 {
                     $or: [
                         { 'task.status': 'to do' },
@@ -195,6 +199,7 @@ export class PostsService {
         // Fetch the tasks posts
         const tasks = await Post.find({
             $and:[
+                { 'task.is_template': { $ne: true }},
                 { 
                     $or: [
                         { '_assigned_to': userId },
