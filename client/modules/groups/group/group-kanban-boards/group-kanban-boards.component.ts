@@ -62,10 +62,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   async ngOnInit() {
     let col = [];
     this.columns.forEach(val => col.push(Object.assign({}, val)));
-    let unchangedColumns:any = {columns: col};
+    let unchangedColumns: any = { columns: col };
     this.unchangedColumns = JSON.parse(JSON.stringify(unchangedColumns));
     // this.unchangedColumns[0].tasks[0].ShallowBit = 1;
-    console.log("asdadadsaf",unchangedColumns,this.unchangedColumns);
+    console.log("asdadadsaf", unchangedColumns, this.unchangedColumns);
 
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
       this.flows = res['flows'];
@@ -127,60 +127,60 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         this.sortingBit = to;
         await this.sorting();
       }
-      if(propName === 'filteringBit'){
-        console.log(propName,to);
+      if (propName === 'filteringBit') {
+        console.log(propName, to);
         this.filtering(to);
       }
     }
   }
 
   async filtering(to) {
-    if (to == "mytask") { 
+    if (to == "mytask") {
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task:any) => {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
           var bit = false;
           task._assigned_to.forEach(element => {
-            console.log("element._id",element._id == this.userData._id)
-            if(element._id == this.userData._id){
-              bit=true
+            console.log("element._id", element._id == this.userData._id)
+            if (element._id == this.userData._id) {
+              bit = true
             }
+          })
+          return bit;
         })
-        return bit;
-      })
       }
       this.unchangedColumns = tasks;
-    } else if (to == "priority_high") { 
+    } else if (to == "priority_high") {
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task:any) => (
-          task.task.custom_fields?.priority==="High"))
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          task.task.custom_fields?.priority === "High"))
       }
       this.unchangedColumns = tasks;
-    } else if (to == "priority_medium") { 
+    } else if (to == "priority_medium") {
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task:any) => (
-          task.task.custom_fields?.priority==="Medium"))
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          task.task.custom_fields?.priority === "Medium"))
       }
       this.unchangedColumns = tasks;
-    } else if (to == "priority_low") { 
+    } else if (to == "priority_low") {
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
-        this.columns[index].tasks = tasks.columns[index].tasks.filter((task:any) => (
-          task.task.custom_fields?.priority==="Low"))
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          task.task.custom_fields?.priority === "Low"))
       }
       this.unchangedColumns = tasks;
     } else {
-      console.log("unchanged column",this.unchangedColumns,this.userData);
+      console.log("unchanged column", this.unchangedColumns, this.userData);
 
       this.columns = this.unchangedColumns.columns;
     }
- 
+
 
   }
 
@@ -189,81 +189,71 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {
-          if (new Date(t1.task?.due_to) < new Date(t2.task?.due_to)) {
-            return this.sortingBit == 'due_date' ? -1 : 1;
+          if (t1.task?.due_to && t2.task?.due_to) {
+            if (new Date(t1.task?.due_to) < new Date(t2.task?.due_to)) {
+              return this.sortingBit == 'due_date' ? -1 : 1;
+            } else {
+              return this.sortingBit == 'due_date' ? 1 : -1;
+            }
           } else {
-            return this.sortingBit == 'due_date' ? 1 : -1;
+            if (t1.task?.due_to && !t2.task?.due_to) {
+              return -1;
+            } else if (!t1.task?.due_to && t2.task?.due_to) {
+              return 1;
+            }
           }
+
         })
         this.columns[index].tasks = task;
       }
     } else if (this.sortingBit == 'proirity') {
       for (let index = 0; index < this.columns.length; index++) {
-        var heigh: any = [], medium: any = [], low: any = [], none: any = [], sorted: any = [];
-        this.columns[index].tasks.forEach(task => {
-          if (task?.task?.custom_fields?.priority == 'High') {
-            heigh.push(task);
-          } else if (task?.task?.custom_fields?.priority == 'Medium') {
-            medium.push(task);
-          } else if (task?.task?.custom_fields?.priority == 'Low') {
-            low.push(task);
-          } else {
-            none.push(task);
-          }
+        let task = this.columns[index].tasks;
+        task.sort((t1, t2) => {
+          return (t1?.task?.custom_fields && t2?.task?.custom_fields)
+            ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
+              ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
+                ? 1 : 0))
+            : ((t1?.task?.custom_fields && !t2?.task?.custom_fields)
+              ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
+                ? 1 : 0);
         });
-        heigh.forEach(task => {
-          sorted.push(task)
-        });
-        medium.forEach(task => {
-          sorted.push(task)
-        });
-        low.forEach(task => {
-          sorted.push(task)
-        });
-        none.forEach(task => {
-          sorted.push(task)
-        });
-        this.columns[index].tasks = sorted;
+        this.columns[index].tasks = task;
       }
     } else if (this.sortingBit == 'tags') {
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {
-          const name1 = t1?.tags[0]?.toLowerCase();
-          const name2 = t2?.tags[0]?.toLowerCase();
-          if (name1 > name2) { return 1; }
-          if (name1 < name2) { return -1; }
-          return 0;
+          if (t1?.tags.length > 0 && t2?.tags.length > 0) {
+            const name1 = t1?.tags[0]?.toLowerCase();
+            const name2 = t2?.tags[0]?.toLowerCase();
+            if (name1 > name2) { return 1; }
+            if (name1 < name2) { return -1; }
+            return 0;
+          } else {
+            if (t1?.tags.length > 0 && t2?.tags.length == 0) {
+              return -1;
+            } else if (t1?.tags.length == 0 && t2?.tags.length > 0) {
+              return 1;
+            }
+          }
         });
         this.columns[index].tasks = task;
       }
     } else if (this.sortingBit == 'status') {
+
       for (let index = 0; index < this.columns.length; index++) {
-        var todo: any = [], inprogress: any = [], none: any = [], done: any = [], sorted: any = [];
-        this.columns[index].tasks.forEach(task => {
-          if (task.task?.status == 'to do') {
-            todo.push(task);
-          } else if (task.task?.status == 'in progress') {
-            inprogress.push(task);
-          } else if (task.task?.status == 'done') {
-            done.push(task);
-          } else {
-            none.push(task);
-          }
+        let task = this.columns[index].tasks;
+        task.sort((t1, t2) => {
+          return (t1?.task?.status && t2?.task?.status)
+            ? (((t1?.task?.status == 'to do' && t2?.task?.status != 'to do') || (t1?.task?.status == 'in progress' && t2?.task?.status == 'done'))
+              ? -1 : (((t1?.task?.status != 'to do' && t2?.task?.status == 'to do') || (t1?.task?.status == 'done' && t2?.task?.status == 'in progress'))
+                ? 1 : 0))
+            : ((t1?.task?.status && !t2?.task?.status)
+              ? -1 : ((!t1?.task?.status && t2?.task?.status))
+                ? 1 : 0);
         });
-        todo.forEach(task => {
-          sorted.push(task);
-        });
-        inprogress.forEach(task => {
-          sorted.push(task);
-        });
-        done.forEach(task => {
-          sorted.push(task);
-        });
-        none.forEach(task => {
-          sorted.push(task);
-        });
-        this.columns[index].tasks = sorted;
+        this.columns[index].tasks = task;
       }
     }
   }

@@ -96,74 +96,61 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   async sorting() {
     if (this.sortingBit == 'due_date' || this.sortingBit == 'none') {
       this.tasks.sort((t1, t2) => {
-        if (new Date(t1.task?.due_to) < new Date(t2.task?.due_to)) {
-          return this.sortingBit == 'due_date' ? -1 : 1;
+        if (t1.task?.due_to && t2.task?.due_to) {
+          if (new Date(t1.task?.due_to) < new Date(t2.task?.due_to)) {
+            return this.sortingBit == 'due_date' ? -1 : 1;
+          } else {
+            return this.sortingBit == 'due_date' ? 1 : -1;
+          }
         } else {
-          return this.sortingBit == 'due_date' ? 1 : -1;
+          if (t1.task?.due_to && !t2.task?.due_to) {
+            return -1;
+          } else if (!t1.task?.due_to && t2.task?.due_to) {
+            return 1;
+          }
         }
       })
 
     } else if (this.sortingBit == 'proirity') {
-      // task?.task?.custom_fields['priority']
-      var heigh: any = [], medium: any = [], low: any = [], none: any = [], sorted: any = [];
-      this.tasks.forEach(task => {
-        if (task.task?.custom_fields?.priority == 'High') {
-          heigh.push(task);
-        } else if (task.task?.custom_fields?.priority == 'Medium') {
-          medium.push(task);
-        } else if (task.task?.custom_fields?.priority == 'Low') {
-          low.push(task);
-        } else {
-          none.push(task)
-        }
+
+      this.tasks.sort((t1, t2) => {
+        return (t1?.task?.custom_fields && t2?.task?.custom_fields)
+          ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
+            ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
+              ? 1 : 0))
+          : ((t1?.task?.custom_fields && !t2?.task?.custom_fields)
+            ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
+              ? 1 : 0);
       });
-      heigh.forEach(task => {
-        sorted.push(task)
-      });
-      medium.forEach(task => {
-        sorted.push(task)
-      });
-      low.forEach(task => {
-        sorted.push(task)
-      });
-      none.forEach(task => {
-        sorted.push(task)
-      });
-      this.tasks = sorted;
+
     } else if (this.sortingBit == 'tags') {
       this.tasks.sort((t1, t2) => {
-        const name1 = t1?.tags[0]?.toLowerCase();
-        const name2 = t2?.tags[0]?.toLowerCase();
-        if (name1 > name2) { return 1; }
-        if (name1 < name2) { return -1; }
-        return 0;
-      });
-    } else if (this.sortingBit == 'status') {
-      var todo: any = [], inprogress: any = [], done: any = [], none: any = [], sorted: any = [];
-      this.tasks.forEach(task => {
-        if (task.task?.status == 'to do') {
-          todo.push(task);
-        } else if (task.task?.status == 'in progress') {
-          inprogress.push(task);
-        } else if (task.task?.status == 'done') {
-          done.push(task);
+        if (t1?.tags.length > 0 && t2?.tags.length > 0) {
+          const name1 = t1?.tags[0]?.toLowerCase();
+          const name2 = t2?.tags[0]?.toLowerCase();
+          if (name1 > name2) { return 1; }
+          if (name1 < name2) { return -1; }
+          return 0;
         } else {
-          none.push(task)
+          if (t1?.tags.length > 0 && t2?.tags.length == 0) {
+            return -1;
+          } else if (t1?.tags.length == 0 && t2?.tags.length > 0) {
+            return 1;
+          }
+          return 0;
         }
       });
-      todo.forEach(task => {
-        sorted.push(task)
+    } else if (this.sortingBit == 'status') {
+
+      this.tasks.sort((t1, t2) => {
+        return (t1?.task?.status && t2?.task?.status)
+          ? (((t1?.task?.status == 'to do' && t2?.task?.status != 'to do') || (t1?.task?.status == 'in progress' && t2?.task?.status == 'done'))
+            ? -1 : (((t1?.task?.status != 'to do' && t2?.task?.status == 'to do') || (t1?.task?.status == 'done' && t2?.task?.status == 'in progress'))
+              ? 1 : 0))
+          : ((t1?.task?.status && !t2?.task?.status)
+            ? -1 : ((!t1?.task?.status && t2?.task?.status))
+              ? 1 : 0);
       });
-      inprogress.forEach(task => {
-        sorted.push(task)
-      });
-      done.forEach(task => {
-        sorted.push(task)
-      });
-      none.forEach(task => {
-        sorted.push(task)
-      });
-      this.tasks = sorted;
     }
   }
 
