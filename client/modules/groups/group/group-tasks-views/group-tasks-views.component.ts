@@ -27,6 +27,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   sortingBit:String = 'none'
 
   filteringBit:String = 'none'
+  filteringData:String = ''
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot.queryParamMap.get('group');
 
@@ -83,9 +84,16 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     this.sortingBit = bit;
   }
 
-  async onFilterTaskEmitter(bit:string){
+  async onFilterTaskEmitter(obj:any){
     // let task = this.columns;
-    this.filteringBit = bit;
+    console.log("sdcsfds",obj);
+    if(obj.bit){
+      this.filteringBit = obj.bit;
+    }
+    if(obj.data){
+      this.filteringData=obj.data
+    }
+    
   }
 
   async onCustomFieldEmitter(customFields) {

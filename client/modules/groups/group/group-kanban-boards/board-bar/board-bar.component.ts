@@ -20,6 +20,7 @@ export class BoardBarComponent implements OnInit {
   @Input() isAdmin = false;
   @Input() customFields = [];
   @Input() userData;
+  groupMembers:any = []
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
 
@@ -27,7 +28,7 @@ export class BoardBarComponent implements OnInit {
   @Output() sortTaskEmitter: EventEmitter<string> = new EventEmitter<string>();
 
   // Emitter to notify that the filter type is changing
-  @Output() filterTaskEmitter: EventEmitter<string> = new EventEmitter<string>();
+  @Output() filterTaskEmitter: EventEmitter<Object> = new EventEmitter<Object>();
 
   // Emitter to notify that a customField was edited/added
   @Output() customFieldEmitter = new EventEmitter();
@@ -36,7 +37,17 @@ export class BoardBarComponent implements OnInit {
   filterfor: String = 'none'
 
   ngOnInit() {
-    console.log("groupDatasssss",this.userData)
+    
+    if(this.groupData._admins.length>0){
+      this.groupData._admins.forEach(element => {
+        this.groupMembers.push(element);
+      });
+    }
+    if(this.groupData._members.length>0){
+      this.groupData._members.forEach(element => {
+        this.groupMembers.push(element);
+      });
+    }
   }
 
   changeView(view: string) {
@@ -50,8 +61,17 @@ export class BoardBarComponent implements OnInit {
 
   filterTask(bit: string){
     this.filterfor = bit;
-    this.filterTaskEmitter.emit(bit);
+    const obj={bit:bit,data:''}
+    this.filterTaskEmitter.emit(obj);
   }
+
+  async onUserSelctionEmitter(userId:string){
+    const obj={bit:'users',data:userId}
+    this.filterTaskEmitter.emit(obj);
+   
+  }
+
+  
 
   openCustomFieldsDialog(): void {
     const dialogRef = this.dialog.open(CustomFieldsDialogComponent, {

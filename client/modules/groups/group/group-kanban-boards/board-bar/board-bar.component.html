@@ -79,21 +79,27 @@
 
       </mat-menu>
 
-      <mat-menu #menuFilter="matMenu" style="overflow: visible !important;">
+      <mat-menu #menuFilter="matMenu" style="overflow: visible !important;" class="filter-menu">
         <a mat-menu-item (click)="filterTask('none')">
           <span>None</span>
         </a>
         <a mat-menu-item (click)="filterTask('mytask')">
           <span>My Tasks</span>
         </a>
-        <span mat-menu-item class="cursordefault overflowvisible" (click)="filterTask('users')">
-          <span>Users</span>
+        <span mat-menu-item class="cursordefault overflowvisible">
+          <!-- <span >Users</span> -->
+          <div (click)="$event.stopPropagation();">
+            <app-member-list-menu [groupMembers]="groupMembers" (userSelctionEmitter)="onUserSelctionEmitter($event)">
+            </app-member-list-menu>
+          </div>
+
+          <!-- <button mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">add assignee</button> -->
         </span>
 
         <span mat-menu-item class="cursordefault overflowvisible">
           <span>Due Date</span>
-          <button class="btn btn-sm text-capitalize dropdown-toggle" type="button" id="dropdown"
-            data-toggle="dropdown">Select</button>
+          <button class="btn btn-sm text-capitalize dropdown-toggle focus" type="button" id="dropdown"
+            data-toggle="dropdown" style="width: 155px;margin-left: 15px;box-shadow: none;">Select</button>
 
           <!-- Menu Drawer Starts -->
           <ul class="dropdown-menu">
@@ -119,9 +125,9 @@
         </span>
 
         <span mat-menu-item class="cursordefault overflowvisible">
-          <span>Priority</span>
-          <button class="btn btn-sm text-capitalize dropdown-toggle" type="button" id="dropdown"
-            data-toggle="dropdown">Select</button>
+          <span >Priority</span>
+          <button class="btn btn-sm text-capitalize dropdown-toggle focus" type="button" id="dropdown"
+            data-toggle="dropdown" style="width: 182px;margin-left: 15px;box-shadow: none;">Select</button>
 
           <!-- Menu Drawer Starts -->
           <ul class="dropdown-menu">

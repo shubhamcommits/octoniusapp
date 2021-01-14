@@ -38,6 +38,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   @Input() columns: any;
   // Task Posts array variable
   @Input() tasks: any;
+  @Input() filteringData: any;
 
   @Input() sortingBit: String
 
@@ -64,9 +65,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     this.columns.forEach(val => col.push(Object.assign({}, val)));
     let unchangedColumns: any = { columns: col };
     this.unchangedColumns = JSON.parse(JSON.stringify(unchangedColumns));
-    // this.unchangedColumns[0].tasks[0].ShallowBit = 1;
-    console.log("asdadadsaf", unchangedColumns, this.unchangedColumns);
-
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
       this.flows = res['flows'];
     });
@@ -128,8 +126,13 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         await this.sorting();
       }
       if (propName === 'filteringBit') {
-        console.log(propName, to);
         this.filtering(to);
+      }
+      if (propName === 'filteringData') {
+        this.filteringData = to;
+        if(this.filteringData){
+          this.filtering(this.filteringBit);
+        }
       }
     }
   }
@@ -142,7 +145,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
           var bit = false;
           task._assigned_to.forEach(element => {
-            console.log("element._id", element._id == this.userData._id)
             if (element._id == this.userData._id) {
               bit = true
             }
@@ -175,9 +177,114 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
           task.task.custom_fields?.priority === "Low"))
       }
       this.unchangedColumns = tasks;
+    } else if (to == 'due_before_today'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          (task?.task?.due_to)? new Date(task?.task?.due_to) < new Date(new Date().setDate(new Date().getDate()-1)):false))
+      }
+      this.unchangedColumns = tasks;
+    } else if (to == 'due_today'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          (task?.task?.due_to)? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'):false))
+      }
+      this.unchangedColumns = tasks;
+    } else if (to == 'due_today'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          (task?.task?.due_to)? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'):false))
+      }
+      this.unchangedColumns = tasks;
+    } else if (to == 'due_tomorrow'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          (task?.task?.due_to)? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment(new Date(new Date().setDate(new Date().getDate()+1))).format('YYYY-MM-DD'):false))
+      }
+      this.unchangedColumns = tasks;
+    } else if (to == 'due_week'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+          const first = moment().startOf('week').format('YYYY-MM-DD');
+          const last = moment().endOf('week').add(1,'days').format('YYYY-MM-DD');
+          if(task?.task?.due_to){
+            if((new Date(task?.task?.due_to) > new Date(first)) && (new Date(task?.task?.due_to) < new Date(last))){
+              return true;
+            }else{
+              return false;
+            }
+          } else {
+            return false;  
+          }
+         
+        }) 
+      }
+      this.unchangedColumns = tasks;
+    } else if (to == 'due_next_week'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+          const first = moment().endOf('week').add(1,'days').format('YYYY-MM-DD');
+          const last = moment().endOf('week').add(8,'days').format('YYYY-MM-DD');
+          if(task?.task?.due_to){
+            if((new Date(task?.task?.due_to) > new Date(first)) && (new Date(task?.task?.due_to) < new Date(last))){
+              return true;
+            }else{
+              return false;
+            }
+          } else {
+            return false;  
+          }
+         
+        }) 
+      }
+      this.unchangedColumns = tasks;
+    } else if (to == 'due_14_days'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+          const first = moment().format('YYYY-MM-DD');
+          const last = moment().add(14,'days').format('YYYY-MM-DD');
+          if(task?.task?.due_to){
+            if((new Date(task?.task?.due_to) > new Date(first)) && (new Date(task?.task?.due_to) < new Date(last))){
+              return true;
+            }else{
+              return false;
+            }
+          } else {
+            return false;  
+          }
+         
+        }) 
+      }
+      this.unchangedColumns = tasks;
+    }else if (to == "users") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+          var bit = false;
+          task._assigned_to.forEach(element => {
+            if (element._id == this.filteringData) {
+              bit = true
+            }
+          })
+          return bit;
+        })
+      }
+      this.unchangedColumns = tasks;
     } else {
-      console.log("unchanged column", this.unchangedColumns, this.userData);
-
       this.columns = this.unchangedColumns.columns;
     }
 
