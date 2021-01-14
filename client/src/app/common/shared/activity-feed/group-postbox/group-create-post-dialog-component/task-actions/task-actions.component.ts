@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Injector, Input, OnDestroy, OnChanges, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Injector, Input, OnDestroy, OnChanges, OnInit, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { settings } from 'cluster';
@@ -17,7 +17,7 @@ import { GroupCreatePostDialogComponent } from '../group-create-post-dialog-comp
   templateUrl: './task-actions.component.html',
   styleUrls: ['./task-actions.component.scss']
 })
-export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy {
+export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
 
   @Input() postData: any;
   @Input() groupData: any;
@@ -27,6 +27,8 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
   @Output() dependencyTaskSelectedEmitter = new EventEmitter();
 
   @Output() taskClonedEmitter = new EventEmitter();
+
+  @Output() taskFromTemplateEmitter = new EventEmitter();
 
   userGroups = [];
   transferAction = '';
@@ -42,6 +44,9 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
   // Item value variable mapped with search field
   itemValue: string;
   dependencyItemValue: string;
+
+  groupTemplates = [];
+  templateAction = '';
 
   // This observable is mapped with item field to recieve updates on change value
   itemValueChanged: Subject<Event> = new Subject<Event>();
@@ -117,34 +122,40 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
     this.parentTask = await this.isParent();
   }
 
+  ngOnInit() {
+    this.postService.getGroupTemplates(this.groupData?._id || this.postData?._group?._id || this.postData?._group).then(res => {
+      this.groupTemplates = res['posts'];
+    })
+  }
+
   ngAfterViewInit() {
     if (this.itemValue == "")
       this.tasksList = []
-    // Adding the service function to the subsink(), so that we can unsubscribe the observable when the component gets destroyed
-    this.subSink.add(this.itemValueChanged
-      .pipe(distinctUntilChanged(), debounceTime(500))
-      .subscribe(async () => {
-        // If value is null then empty the array
-        if (this.itemValue == "" && this.dependencyItemValue == "") {
-          this.tasksList = []
-        } else {
-          if (this.searchingOn === 'keyword') {
-            this.tasksList = await this.postService.searchPosibleParents(this.groupData._id, this.postData._id, this.itemValue, 'subtask') || []
+      // Adding the service function to the subsink(), so that we can unsubscribe the observable when the component gets destroyed
+      this.subSink.add(this.itemValueChanged
+        .pipe(distinctUntilChanged(), debounceTime(500))
+        .subscribe(async () => {
+          // If value is null then empty the array
+          if (this.itemValue == "" && this.dependencyItemValue == "") {
+            this.tasksList = []
           } else {
-            this.tasksList = await this.postService.searchPosibleParents(this.groupData._id, this.postData._id, this.dependencyItemValue, 'dependency') || []
+            if (this.searchingOn === 'keyword') {
+              this.tasksList = await this.postService.searchPosibleParents(this.groupData._id, this.postData._id, this.itemValue, 'subtask') || []
+            } else {
+              this.tasksList = await this.postService.searchPosibleParents(this.groupData._id, this.postData._id, this.dependencyItemValue, 'dependency') || []
+            }
+
+            //this.tasksList = await this.postService.getPosts(this.groupData._id, 'task') || []
+
+            // Update the tasksList
+            this.tasksList = Array.from(new Set(this.tasksList['posts']));
+
+            console.log("this.tasksList", this.tasksList);
           }
 
-          //this.tasksList = await this.postService.getPosts(this.groupData._id, 'task') || []
-
-          // Update the tasksList
-          this.tasksList = Array.from(new Set(this.tasksList['posts']));
-
-          console.log("this.tasksList", this.tasksList);
-        }
-
-        // Stop the loading state once the values are loaded
-        this.isLoadingAction$.next(false);
-      }));
+          // Stop the loading state once the values are loaded
+          this.isLoadingAction$.next(false);
+        }));
   }
 
   /**
@@ -173,7 +184,8 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
     if (this.transferAction === 'move') {
       this.moveToGroup(group, section);
     }
-    this.transferAction = '';
+
+    this.saveTransferAction('');
   }
 
   async copyToGroup(group: string, section: any) {
@@ -328,5 +340,105 @@ export class TaskActionsComponent implements OnChanges, AfterViewInit, OnDestroy
           reject(this.utilityService.rejectAsyncPromise(`Error while cloning the task!`));
         });
     }));
+  }
+
+  saveTemplateAction(action: string) {
+    this.templateAction = action;
+  }
+
+  /**
+   * Create a new task from a template
+   */
+  selectTemplate(templatePostId: string, templateName?: string) {
+    if (this.templateAction == 'save') {
+      this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will change the content of the template!')
+        .then((res) => {
+          if (res.value) {
+            this.utilityService.asyncNotification('Please wait, while we are updating the template for you...', new Promise((resolve, reject) => {
+              this.postService.overwriteTemplate(this.postData._id, templatePostId, templateName)
+                .then((res) => {
+                  const index = this.groupTemplates.findIndex(t => t._id == templatePostId);
+                  if (index >= 0) {
+                    this.groupTemplates[index] = res['post'];
+                  }
+                  resolve(this.utilityService.resolveAsyncPromise('Template updated!'))
+                })
+                .catch(() => reject(this.utilityService.rejectAsyncPromise('An unexpected error occured while updating the template, please try again!')))
+            }))
+          }
+        });
+    } else if (this.templateAction == 'delete') {
+      this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the template will be deleted!')
+        .then((res) => {
+          if (res.value) {
+            this.utilityService.asyncNotification('Please wait, while we are deleting the template for you...', new Promise((resolve, reject) => {
+              this.postService.deletePost(templatePostId)
+                .then((res) => {
+                  this.groupTemplates.splice(this.groupTemplates.findIndex((t) => t._id === templatePostId), 1);
+                  resolve(this.utilityService.resolveAsyncPromise('Template deleted!'))
+                })
+                .catch(() => reject(this.utilityService.rejectAsyncPromise('An unexpected error occured while deleting the template, please try again!')))
+            }))
+          }
+        });
+    } else {
+      this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will change the content of the task!')
+        .then((res) => {
+          if (res.value) {
+            this.utilityService.asyncNotification('Please wait, while we are updating the task for you...', new Promise((resolve, reject) => {
+              this.postService.createTaskFromTemplate(templatePostId, this.postData._id)
+                .then((res) => {
+                  this.taskFromTemplateEmitter.emit(this.postData._id);
+                  resolve(this.utilityService.resolveAsyncPromise('Task updated!'))
+                })
+                .catch(() => reject(this.utilityService.rejectAsyncPromise('An unexpected error occured while updating the task, please try again!')))
+            }))
+          }
+        });
+    }
+
+    this.saveTemplateAction('');
+  }
+
+  /**
+   * This function creates a new template from the current post
+   */
+  async createTemplate() {
+    const { value: value } = await this.openModal('Create Template');
+    if (value) {
+      this.utilityService.asyncNotification('Please wait, while we are creating the template for you...', new Promise((resolve, reject) => {
+        this.postService.createTemplate(this.postData._id, this.groupData._id, value)
+          .then((res) => {
+            this.groupTemplates.unshift(res['post']);
+            this.groupTemplates.sort((t1, t2) => (t1.task.template_name > t2.task.template_name) ? 1 : -1);
+            resolve(this.utilityService.resolveAsyncPromise('Template created!'))
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise('An unexpected error occured while creating the template, please try again!')))
+      }))
+    } else if(value == ''){
+      this.utilityService.warningNotification('Template name can\'t be empty!');
+    }
+  }
+
+  /**
+   * This function opens the Swal modal to create template
+   * @param title
+   * @param imageUrl
+   */
+  openModal(title: string) {
+    return this.utilityService.getSwalModal({
+      title: title,
+      input: 'text',
+      inputPlaceholder: 'Try to add a name',
+      inputAttributes: {
+        maxlength: 30,
+        autocapitalize: 'off',
+        autocorrect: 'off'
+      },
+      confirmButtonText: title,
+      showCancelButton: true,
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: '#d33',
+    })
   }
 }

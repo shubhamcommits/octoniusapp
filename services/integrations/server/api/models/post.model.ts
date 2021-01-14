@@ -161,6 +161,14 @@ const PostSchema = new Schema({
         _parent_task: {
             type: Schema.Types.ObjectId,
             ref: 'Post'
+        },
+        is_template: {
+            type: Boolean,
+            default: false
+        },
+        template_name: {
+            type: String,
+            default: null
         }
     },
 

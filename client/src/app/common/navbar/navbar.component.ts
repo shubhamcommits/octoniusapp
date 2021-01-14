@@ -108,6 +108,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // FETCH THE USER DETAILS FROM THE SERVER
     this.userData = await this.getCurrentUser();
+    // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
     this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
 
@@ -211,18 +212,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  /**
-   * Add Hot Keys
-   */
-  /*
-  addHotKeys(searchRef: any){
-    this.hotKeysService.add(new Hotkey(['shift+space'], (event: KeyboardEvent, combo: string): boolean =>{
-      this.openModal(searchRef);
-      return false;
-    }))
-  }
-  */
-
   closeModal(){
     this.utilityService.closeAllModals();
   }
@@ -240,6 +229,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async onFavoriteGroupSaved() {
     this.userData = await this.getCurrentUser();
+    // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
   }
 }

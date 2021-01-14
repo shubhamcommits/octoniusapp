@@ -432,8 +432,9 @@ export class GroupController {
             const group: any = await Group.findByIdAndDelete(groupId)
                 .select('group_name _workspace')
 
+            // Remove the group from users, and users´ favorite groups
             await User.updateMany({ _groups: groupId }, {
-                $pull: { _groups: groupId }
+                $pull: { _groups: groupId, 'stats.favorite_groups': groupId, 'stats.groups._group': groupId },
             });
 
             // Delete Posts and Files too

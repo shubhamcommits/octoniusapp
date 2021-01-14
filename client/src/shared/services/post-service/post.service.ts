@@ -444,4 +444,24 @@ export class PostService {
   cloneToAssignee(assignees: any, postId: string) {
     return this._http.post(this.baseURL + '/clone-to-assignee', { postId: postId, assignees: assignees }).toPromise();
   }
+
+  getGroupTemplates(groupId: string) {
+    return this._http.get(this.baseURL + `/post/templates`, {
+      params: {
+        groupId: groupId
+      }
+    }).toPromise()
+  }
+
+  createTemplate(postId: string, groupId: string, templateName: any) {
+    return this._http.post(this.baseURL + '/create-template', { postId: postId, groupId: groupId, templateName: templateName }).toPromise();
+  }
+
+  overwriteTemplate(postId: string, templateId: string, templateName: string) {
+    return this._http.put(this.baseURL + `/${postId}/overwrite-template`, { templateId: templateId, templateName: templateName }).toPromise();
+  }
+
+  createTaskFromTemplate(templatePostId: string, postId: string) {
+    return this._http.post(this.baseURL + '/create-task-from-template', { templatePostId: templatePostId, postId: postId }).toPromise();
+  }
 }

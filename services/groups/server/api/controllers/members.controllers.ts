@@ -263,7 +263,7 @@ export class MembersControllers {
             let userUpdate = await User.findOneAndUpdate({
                 _id: userId
             }, {
-                $pull: { _groups: groupId }
+                $pull: { _groups: groupId, 'stats.favorite_groups': groupId, 'stats.groups._group': groupId }
             }, {
                 new: true
             });
