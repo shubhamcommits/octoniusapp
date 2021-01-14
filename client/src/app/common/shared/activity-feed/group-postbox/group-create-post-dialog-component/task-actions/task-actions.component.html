@@ -47,7 +47,7 @@
   </div>
 
 
-  <div>
+  <div *ngIf="!postData?.task?._parent_task">
     <button mat-menu-item [matMenuTriggerFor]="templateTaskMenu">
       <i class="material-icons-outlined">playlist_add</i>
       TEMPLATES
@@ -126,7 +126,7 @@
 
 
 
-  
+
 
 
 
