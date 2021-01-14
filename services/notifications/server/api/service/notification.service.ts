@@ -195,7 +195,7 @@ export class NotificationsService {
                 _actor: posted_by,
                 _owner: assigneeId,
                 _origin_post: postId,
-                message: 'reassigned you',
+                message: 'assigned you',
                 type: 'assignment'
             });
         } catch (err) {
