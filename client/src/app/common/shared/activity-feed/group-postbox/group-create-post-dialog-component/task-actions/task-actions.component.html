@@ -3,11 +3,11 @@
   <div *ngIf="!postData?.task?._parent_task">
     <button mat-menu-item [matMenuTriggerFor]="transferMenu" (click)="saveTransferAction('copy')">
       <i  class="material-icons">content_copy</i>
-      Copy to Group
+      COPY TO GROUP
     </button>
     <button mat-menu-item [matMenuTriggerFor]="transferMenu" (click)="saveTransferAction('move')">
       <i class="material-icons">arrow_forward</i>
-      Move to Group
+      MOVE TO GROUP
     </button>
 
     <mat-menu #transferMenu="matMenu">
@@ -22,8 +22,8 @@
 
   <div>
     <button mat-menu-item [matMenuTriggerFor]="cloneTaskSearchMenu">
-      <i class="material-icons">recent_actors</i>
-      Clone to
+      <i class="material-icons-outlined">recent_actors</i>
+      CLONE TASK
     </button>
     <mat-menu #cloneTaskSearchMenu="matMenu">
       <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
@@ -46,8 +46,57 @@
     </mat-menu>
   </div>
 
+
+  <div *ngIf="!postData?.task?._parent_task">
+    <button mat-menu-item [matMenuTriggerFor]="templateTaskMenu">
+      <i class="material-icons-outlined">playlist_add</i>
+      TEMPLATES
+    </button>
+    <mat-menu #templateTaskMenu="matMenu">
+      <div>
+        <div class="users-card" style="width: 200px">
+          <ul class="assignee-list">
+            <button mat-menu-item  class="assignee-list-item" style="line-height: inherit;" *ngFor="let template of groupTemplates" (mouseover)="saveTemplateAction('')" (click)="selectTemplate(template._id)">
+              {{ template.task.template_name }}
+            </button>
+
+            <!-- <li class="assignee-list-item save-template" (click)="createTemplate()">Save as template</li> -->
+            <button class="assignee-list-item save-template" style="line-height: inherit;" mat-menu-item [matMenuTriggerFor]="templatesMenu" (mouseover)="saveTemplateAction('save')" (click)="saveTemplateAction('save')">
+              <i class="material-icons-outlined">save_alt</i>
+              Save template
+            </button>
+
+            <button class="assignee-list-item save-template" style="line-height: inherit;" mat-menu-item [matMenuTriggerFor]="templatesMenu" (mouseover)="saveTemplateAction('delete')" (click)="saveTemplateAction('delete')">
+              <i class="material-icons-outlined">delete</i>
+              Delete template
+            </button>
+
+            <mat-menu #templatesMenu="matMenu">
+              <div>
+                <div class="users-card">
+                  <ul class="assignee-list">
+                    <li class="assignee-list-item" *ngFor="let template of groupTemplates" (click)="selectTemplate(template._id, template.task.template_name)">
+                      {{ template.task.template_name }}
+                    </li>
+
+                    <li *ngIf="templateAction == 'save'" class="assignee-list-item save-template" (click)="createTemplate()">Save new template</li>
+                  </ul>
+                </div>
+              </div>
+            </mat-menu>
+
+          </ul>
+        </div>
+      </div>
+    </mat-menu>
+  </div>
+
+
+
+
+
   <div *ngIf="!parentTask && !isdependent" class="set-parent">
-    Make subtask of
+   MAKE SUBTASK OF
 
     <!-- INPUT BAR STARTS -->
     <input type="search" id="keyword" autocomplete="off" placeholder="Search for a task" class="input-search"
@@ -76,8 +125,14 @@
   </div>
 
 
+
+
+
+
+
+
   <div *ngIf="groupData && !ischild && groupData.project_type" class="set-parent">
-    Make Dependency for
+    MAKE DEPENDENCY OF
 
     <!-- INPUT BAR STARTS -->
     <input type="search" id="dependencyKeyword" autocomplete="off" placeholder="Search for a task" class="input-search"
@@ -104,5 +159,7 @@
       <!-- LOADING SPINNER ENDS -->
     </div>
   </div>
+
+
 
 </div>

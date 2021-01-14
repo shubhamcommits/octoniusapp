@@ -264,7 +264,7 @@ export class NotificationsController {
             console.log('postTitle ==>', postTitle);
             const comment_object = {
                 name: assigneFromFullName,
-                text: `${assigneFromFullName} reassigned ${assignedToFullName} on post ${postTitle}`,
+                text: `${assigneFromFullName} assigned ${assignedToFullName} on post ${postTitle}`,
                 image: assigneFromProfilePic,
                 group_id:groupId,
                 post_id: postId,
@@ -279,7 +279,7 @@ export class NotificationsController {
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'New Task Reassignment Succeded!'
+                message: 'New Task Assignment Succeded!'
             });
         } catch (err) {
             // Error Handling
