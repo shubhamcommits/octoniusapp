@@ -99,16 +99,16 @@
           <!-- <button mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">add assignee</button> -->
         </span>
 
-        <span mat-menu-item class="cursordefault overflowvisible" [ngStyle]="{'color' : (filterfor==='due_before_today' || 
-        filterfor==='due_today' || 
-        filterfor==='due_tomorrow'|| 
-        filterfor==='due_week' || 
-        filterfor==='due_next_week' || 
-        filterfor==='due_14_days') ? 'green' : 'black'}">
+        <span mat-menu-item class="cursordefault overflowvisible">
 
           <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
             <button [matMenuTriggerFor]="menuDueDate" class="dropdownbtn">
-              <span style="cursor: pointer;">Due Date</span>
+              <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='due_before_today' || 
+              filterfor==='due_today' || 
+              filterfor==='due_tomorrow'|| 
+              filterfor==='due_week' || 
+              filterfor==='due_next_week' || 
+              filterfor==='due_14_days') ? 'green' : 'black'}">Due Date</span>
               <span>
                 <div class="label-priority low selectedPriority" *ngIf="(filterfor==='due_before_today' || 
                 filterfor==='due_today' || 
@@ -156,12 +156,12 @@
           </div>
         </span>
 
-        <span mat-menu-item class="cursordefault overflowvisible" [ngStyle]="{'color' : (filterfor==='priority_high' || 
-        filterfor==='priority_medium' || 
-        filterfor==='priority_low') ? 'green' : 'black'}">
+        <span mat-menu-item class="cursordefault overflowvisible" >
           <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
             <button [matMenuTriggerFor]="menuPriority" class="dropdownbtn">
-              <span style="cursor: pointer;">Priority</span>
+              <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='priority_high' || 
+              filterfor==='priority_medium' || 
+              filterfor==='priority_low') ? 'green' : 'black'}">Priority</span>
               <span>
                 <div class="label-priority high selectedPriority" *ngIf="filterfor==='priority_high'">High</div>
                 <div class="label-priority medium selectedPriority" *ngIf="filterfor==='priority_medium'">Medium</div>
