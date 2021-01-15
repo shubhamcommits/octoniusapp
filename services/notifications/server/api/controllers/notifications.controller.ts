@@ -29,7 +29,7 @@ export class NotificationsController {
             // Call Service Function for newCommentMentions
             await notificationService.newCommentMentions(comment).then(() => {
                 return res.status(200).json({
-                    message: `Comment Mentions succeded!`,
+                    message: `Comment Mentions Succeeded!`,
                 });
             }).catch(err => {
                 return sendError(res, new Error(err), 'Internal Server Error!', 500);
@@ -93,7 +93,7 @@ export class NotificationsController {
 
             // Send status 200 response
             return res.status(200).json({
-                message: `Event Assignments succeded!`,
+                message: `Event Assignments Succeeded!`,
             });
         } catch (err) {
             // Error Handling
@@ -114,7 +114,7 @@ export class NotificationsController {
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'New Post Mention succeded!'
+                message: 'New Post Mention Succeeded!'
             });
         } catch (err) {
             // Error Handling
@@ -138,7 +138,7 @@ export class NotificationsController {
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'New Folio Mention succeded!'
+                message: 'New Folio Mention Succeeded!'
             });
         } catch (err) {
             // Error Handling
@@ -194,7 +194,7 @@ export class NotificationsController {
               });
             // Send status 200 response
             return res.status(200).json({
-                message: 'New Task Assignment Succeded!'
+                message: 'New Task Assignment Succeeded!'
             });
         } catch (err) {
             // Error Handling
@@ -254,7 +254,7 @@ export class NotificationsController {
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'New Task Assignment Succeded!'
+                message: 'New Task Assignment Succeeded!'
             });
         } catch (err) {
             // Error Handling
@@ -403,7 +403,7 @@ export class NotificationsController {
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'New Task Status Change Succeded!'
+                message: 'New Task Status Change Succeeded!'
             });
         } catch (err) {
             // Error Handling
@@ -457,7 +457,7 @@ export class NotificationsController {
             }
             // Send status 200 response
             return res.status(200).json({
-                message: 'New Comment Succeded!'
+                message: 'New Comment Succeeded!'
             });
         } catch (err) {
             // Error Handling
@@ -514,7 +514,7 @@ export class NotificationsController {
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'Post Followed Succeded!'
+                message: 'Post Followed Succeeded!'
             });
         } catch (err) {
             // Error Handling
@@ -572,7 +572,7 @@ export class NotificationsController {
               });
             // Send status 200 response
             return res.status(200).json({
-                message: 'Post Liked Succeded!'
+                message: 'Post Liked Succeeded!'
             });
         } catch (err) {
             // Error Handling
@@ -638,7 +638,7 @@ export class NotificationsController {
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'Comment Liked Succeded!'
+                message: 'Comment Liked Succeeded!'
             });
         } catch (err) {
             // Error Handling
