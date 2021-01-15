@@ -33,13 +33,13 @@ export class BoardBarComponent implements OnInit {
   // Emitter to notify that a customField was edited/added
   @Output() customFieldEmitter = new EventEmitter();
 
-  sortby: String = 'none'
-  filterfor: String = 'none'
-  menuLable:string='Filter Task For';
-  menuFor:string='Filter';
+  sortby: string = 'none'
+  filterfor: string = 'none'
+  menuLable: string='Filter Task For';
+  menuFor: string='Filter';
 
   ngOnInit() {
-    
+
     if(this.groupData._admins.length>0){
       this.groupData._admins.forEach(element => {
         this.groupMembers.push(element);
@@ -71,10 +71,10 @@ export class BoardBarComponent implements OnInit {
     this.filterfor='users';
     const obj={bit:'users',data:userId}
     this.filterTaskEmitter.emit(obj);
-   
+
   }
 
-  
+
 
   openCustomFieldsDialog(): void {
     const dialogRef = this.dialog.open(CustomFieldsDialogComponent, {
