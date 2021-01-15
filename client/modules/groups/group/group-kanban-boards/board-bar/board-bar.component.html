@@ -80,57 +80,129 @@
       </mat-menu>
 
       <mat-menu #menuFilter="matMenu" style="overflow: visible !important;" class="filter-menu">
-        <a mat-menu-item (click)="filterTask('none')">
+        <a mat-menu-item (click)="filterTask('none')" [ngStyle]="{'color' : (filterfor==='none') ? 'green' : 'black'}">
           <span>None</span>
         </a>
-        <a mat-menu-item (click)="filterTask('mytask')">
+        <a mat-menu-item (click)="filterTask('mytask')" [ngStyle]="{'color' : (filterfor==='mytask') ? 'green' : 'black'}">
           <span>My Tasks</span>
         </a>
-        <span mat-menu-item class="cursordefault overflowvisible">
+        <span mat-menu-item class="cursordefault overflowvisible" [ngStyle]="{'color' : (filterfor==='users') ? 'green' : 'black'}">
           <!-- <span >Users</span> -->
           <div (click)="$event.stopPropagation();">
-            <app-member-list-menu [groupMembers]="groupMembers" (userSelctionEmitter)="onUserSelctionEmitter($event)">
+            <app-member-list-menu 
+            [groupMembers]="groupMembers" 
+            [filterfor]="filterfor"
+            (userSelctionEmitter)="onUserSelctionEmitter($event)">
             </app-member-list-menu>
           </div>
 
           <!-- <button mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">add assignee</button> -->
         </span>
 
-        <span mat-menu-item class="cursordefault overflowvisible">
-          <span>Due Date</span>
-          <button class="btn btn-sm text-capitalize dropdown-toggle focus" type="button" id="dropdown"
-            data-toggle="dropdown" style="width: 155px;margin-left: 15px;box-shadow: none;">Select</button>
+        <span mat-menu-item class="cursordefault overflowvisible" [ngStyle]="{'color' : (filterfor==='due_before_today' || 
+        filterfor==='due_today' || 
+        filterfor==='due_tomorrow'|| 
+        filterfor==='due_week' || 
+        filterfor==='due_next_week' || 
+        filterfor==='due_14_days') ? 'green' : 'black'}">
+          <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+            <span [matMenuTriggerFor]="menuDueDate">
+              <span style="cursor: pointer;">Due Date</span>
+              <span>
+                <div class="label-priority low selectedPriority" [ngStyle]="{'display':(filterfor==='due_before_today' || 
+                filterfor==='due_today' || 
+                filterfor==='due_tomorrow'|| 
+                filterfor==='due_week' || 
+                filterfor==='due_next_week' || 
+                filterfor==='due_14_days')?'inherit':'none'}">
+                {{
+                  filterfor==='due_before_today'?"Before today":
+                  filterfor==='due_today'?"Today":
+                  filterfor==='due_tomorrow'?"Tomorrow":
+                  filterfor==='due_week'?"This week":
+                  filterfor==='due_next_week'?"Next week":
+                  filterfor==='due_14_days'?"Next 14 days":""
+                }}</div>
+              </span>
+            </span>
+            <mat-menu #menuDueDate="matMenu">
 
-          <!-- Menu Drawer Starts -->
-          <ul class="dropdown-menu">
-            <li class="dropdown-item" (click)="filterTask('due_before_today')">
-              <span>Before today</span>
-            </li>
-            <li class="dropdown-item" (click)="filterTask('due_today')">
-              <span>Today</span>
-            </li>
-            <li class="dropdown-item" (click)="filterTask('due_tomorrow')">
-              <span>Tomorrow</span>
-            </li>
-            <li class="dropdown-item" (click)="filterTask('due_week')">
-              <span>This week</span>
-            </li>
-            <li class="dropdown-item" (click)="filterTask('due_next_week')">
-              <span>Next week</span>
-            </li>
-            <li class="dropdown-item" (click)="filterTask('due_14_days')">
-              <span>Next 14 days</span>
-            </li>
-          </ul>
+              <a mat-menu-item (click)="filterTask('due_before_today')" style="margin: 10px;text-decoration: none;">
+                <span>Before today</span>
+              </a>
+
+              <a mat-menu-item (click)="filterTask('due_today')" style="margin: 10px;text-decoration: none;">
+                <span>Today</span>
+              </a>
+
+              <a mat-menu-item (click)="filterTask('due_tomorrow')" style="margin: 10px;text-decoration: none;">
+                <span>Tomorrow</span>
+              </a>
+
+              <a mat-menu-item (click)="filterTask('due_week')" style="margin: 10px;text-decoration: none;">
+                <span>This week</span>
+              </a>
+
+              <a mat-menu-item (click)="filterTask('due_next_week')" style="margin: 10px;text-decoration: none;">
+                <span>Next week</span>
+              </a>
+
+              <a mat-menu-item (click)="filterTask('due_14_days')" style="margin: 10px;text-decoration: none;">
+                <span>Next 14 days</span>
+              </a>
+
+            </mat-menu>
+          </div>
         </span>
 
-        <span mat-menu-item class="cursordefault overflowvisible">
-          <span >Priority</span>
+        <span mat-menu-item class="cursordefault overflowvisible" [ngStyle]="{'color' : (filterfor==='priority_high' || 
+        filterfor==='priority_medium' || 
+        filterfor==='priority_low') ? 'green' : 'black'}">
+          <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+            <span [matMenuTriggerFor]="menuPriority">
+              <span style="cursor: pointer;">Priority</span>
+              <span>
+                <div class="label-priority high selectedPriority" [ngStyle]="{'display':filterfor==='priority_high'?'inherit':'none'}">High</div>
+                <div class="label-priority medium selectedPriority" [ngStyle]="{'display':filterfor==='priority_medium'?'inherit':'none'}">Medium</div>
+                <div class="label-priority low selectedPriority" [ngStyle]="{'display':filterfor==='priority_low'?'inherit':'none'}">Low</div>
+              </span>
+            </span>
+
+            <mat-menu #menuPriority="matMenu">
+
+              <a mat-menu-item (click)="filterTask('priority_high')" style="margin: 10px;text-decoration: none;">
+                <span>
+                  <div class="label-priority high" (click)="filterTask('priority_high')">
+                    High
+                  </div>
+                </span>
+              </a>
+
+              <a mat-menu-item (click)="filterTask('priority_medium')" style="margin: 10px;text-decoration: none;">
+                <span>
+                  <div class="label-priority medium" (click)="filterTask('priority_medium')">
+                    Medium
+                  </div>
+                </span>
+              </a>
+
+              <a mat-menu-item (click)="filterTask('priority_low')" style="margin: 10px;text-decoration: none;">
+                <span>
+                  <div class="label-priority low" (click)="filterTask('priority_low')">
+                    Low
+                  </div>
+                </span>
+              </a>
+            </mat-menu>
+          </div>
+
+
+
+          <!-- <span >Priority</span>
           <button class="btn btn-sm text-capitalize dropdown-toggle focus" type="button" id="dropdown"
             data-toggle="dropdown" style="width: 182px;margin-left: 15px;box-shadow: none;">Select</button>
-
-          <!-- Menu Drawer Starts -->
-          <ul class="dropdown-menu">
+          
+            <ul class="dropdown-menu">
             <li class="dropdown-item">
               <span>
                 <div class="label-priority high" (click)="filterTask('priority_high')">
@@ -152,7 +224,7 @@
                 </div>
               </span>
             </li>
-          </ul>
+          </ul> -->
         </span>
 
       </mat-menu>

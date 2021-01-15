@@ -66,6 +66,7 @@ export class BoardBarComponent implements OnInit {
   }
 
   async onUserSelctionEmitter(userId:string){
+    this.filterfor='users';
     const obj={bit:'users',data:userId}
     this.filterTaskEmitter.emit(obj);
    

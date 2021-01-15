@@ -81,3 +81,16 @@ li {
 ul {
     padding: 0px;;
 }
+
+
+.feed-avatar {
+  //avatar image for in-feed display
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 5px 10px;
+  position: absolute;
+  top: 0px;
+  right: 20px;
+}
