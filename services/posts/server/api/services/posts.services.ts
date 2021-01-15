@@ -2064,17 +2064,14 @@ export class PostService {
       let post11 = await Post.findById(postId);
       if (post11.task && post11.task._dependency_task) {
         let oldParent = await Post.findById(post11.task._dependency_task);
-        console.log(post11, oldParent);
 
         for (var i = 0; i < oldParent.task._dependent_child.length; i++) {
           if (oldParent.task._dependent_child[i] + '' == post11._id + '') {
-            console.log("am here", post11._id);
             oldParent.task._dependent_child.splice(i, 1);
             break;
           }
         }
 
-        console.log("After pop", oldParent);
         oldParent.save();
       }
 

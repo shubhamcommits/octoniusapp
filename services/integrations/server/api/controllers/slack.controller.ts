@@ -21,24 +21,15 @@ const auths = new Auths();
 export class SlackController {
 
     async slackNotify (req: Request ,res:Response ,next: NextFunction) {
-        console.log('slackNotify Function');
 
         const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
-        
-        console.log('Slack auth data ==>', user_octonius);
-
         var MY_SLACK_WEBHOOK_URL;
 
         if(user_octonius && user_octonius != null){
             MY_SLACK_WEBHOOK_URL = user_octonius['incoming_webhook'];
-            console.log('inside if ==>', MY_SLACK_WEBHOOK_URL);
         }
         var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL); 
-
-        console.log('This webhook used ==>', MY_SLACK_WEBHOOK_URL);
-        console.log('req.body ==>', req.body);
         const body = JSON.parse(req.body.data);
-
         slack.alert({
             text: body.text,
             attachments: [
@@ -84,8 +75,6 @@ export class SlackController {
 
     async slackWebhook(req: Request , res: Response, next: NextFunction) {
         
-        // console.log("req.params",req.headers);
-        console.log("req.body",req.body.payload);
 
         if(req.body.challenge){
 
@@ -102,7 +91,6 @@ export class SlackController {
 
         const user_octonius = await SlackAuth.findOne({slack_user_id:bodypay.user.id}).sort({created_date:-1}).populate('_user');
         
-        console.log("Slack auth data",user_octonius);
         
         var botAccessToken ;
 
@@ -112,7 +100,6 @@ export class SlackController {
         
         botAccessToken = user_octonius['bot_access_token'];
 
-        console.log("botAccessToken",botAccessToken);
 
         var BearerToken = "Bearer ";
         const user_auth = await Auth.findOne({_user:_id}).sort({created_date:-1});
@@ -128,18 +115,15 @@ export class SlackController {
             } else {
                 // Assigning and feeding the userId into the req object
                 BearerToken = BearerToken+token;
-                console.log("token is valid can be used");
             }
         });
 
         if(!isvalidToken){
-            console.log("Token is not valid creating one");
             const user = user_octonius['_user']._id;
             const workspace_name = user_octonius['_user'].workspace_name;
             
             let tokens = await auths.generateToken(user, workspace_name);
 
-            console.log("token generated",tokens);
             BearerToken = BearerToken+tokens['token'];
 
         }
@@ -156,7 +140,6 @@ export class SlackController {
                     
                     const user = user_octonius['_user'];
 
-                    console.log("user_octonius",user);
 
                     if(user){
                         const groups = await Group.find({_admins:user._id});
@@ -174,7 +157,6 @@ export class SlackController {
                         }
                     }  
                 }catch(err){
-                    console.log("Am here in error");
                     console.log(err);
                 }
             
@@ -249,7 +231,6 @@ export class SlackController {
                     ]
                 }},{ headers: { authorization: `Bearer `+botAccessToken } });
                 
-                console.log("responce",respo.data);
 
             
 
@@ -258,7 +239,6 @@ export class SlackController {
                 const view = bodypay.view;
                 const callback = view.callback_id;
                 const triggered_id_2 = bodypay.trigger_id;
-                console.log("call cabk hshdhhs",callback);
 
                 if(callback == 'step_1') {
 
@@ -266,16 +246,13 @@ export class SlackController {
                     let date = ("0" + date_ob.getDate()).slice(-2);
                     let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
                     let year = date_ob.getFullYear();
-                    console.log(year + "-" + month + "-" + date);
                     const current_date = year + "-" + month + "-" + date;
                
                     const values = view.state.values;
-                    console.log("call values",values);
                     var title,description,group,groupid;
                     
                     Object.keys(values).forEach(function(key) {
                         var val = values[key];
-                        console.log(val);
                         if(val && val.title_action)
                         {
                             title=val.title_action.value;
@@ -308,9 +285,7 @@ export class SlackController {
                     for (var i=0;i < columns.length;i++){
                         
                         const onecolum = columns[i];
-                        console.log(onecolum,"Fetched columns");
                         const columndata = onecolum;
-                        console.log(columndata,"show columns");
                         columnoption.push(
                             {
                                 "text": {
@@ -325,7 +300,6 @@ export class SlackController {
 
                     var userdata = grpresp['_members'];
                     for (var i=0;i < userdata.length;i++){
-                        console.log(userdata[i].full_name);
                         useroption.push(
                             {
                                 "text": {
@@ -341,7 +315,6 @@ export class SlackController {
 
                     var useradmin = grpresp['_admins'];
                     for (var i=0;i < useradmin.length;i++){
-                        console.log(useradmin[i].full_name);
                         useroption.push(
                             {
                                 "text": {
@@ -478,7 +451,6 @@ export class SlackController {
                     }
                     },{ headers: { authorization: `Bearer `+botAccessToken } });
 
-                    console.log("responce",respo.data);
                 
                 } else if(callback != 'step_1'){
                     
@@ -486,12 +458,10 @@ export class SlackController {
                     const blocks = view.blocks;
                     const callback = view.callback_id;
                     const values = view.state.values;
-                    console.log("call values",values);
                     var column,date,user;
                     
                     Object.keys(values).forEach(function(key) {
                         var val = values[key];
-                        console.log(val);
                         if(val && val.column_select_action)
                         {
                             column = val.column_select_action.selected_option.text;
@@ -568,11 +538,9 @@ export class SlackController {
                             }
                             },{ headers: { authorization: `Bearer `+botAccessToken } });
 
-                            console.log("responce",respo.data);
 
                     } catch(err){
 
-                        console.log(err,"ERROR occured");
                         const respo = await axios.post('https://slack.com/api/views.open', {
                         trigger_id : triggered_id_2,
                         view : 
@@ -600,7 +568,6 @@ export class SlackController {
                         }
                         },{ headers: { authorization: `Bearer `+botAccessToken } });
 
-                        console.log("responce",respo.data);
 
                     }
 
@@ -611,7 +578,6 @@ export class SlackController {
             const respo = await axios.post(url_responceback,{
                     text: "UnAuthorized User! Please connect your Octonius workspace to slack"
                 },{ headers: { authorization: `Bearer `+botAccessToken } })
-                console.log("responce",respo.data);
         }
        
         // res.status(200).json(true);        
@@ -620,12 +586,10 @@ export class SlackController {
 
     async authSlack(req: Request , res: Response, next: NextFunction){
         
-        console.log("req.body",req.body);
         
         const responce = await axios.get('https://slack.com/api/oauth.v2.access', { params: { code: req.body.code, client_id: process.env.SLACK_CLINET_ID ,client_secret:process.env.SLACK_CLIENT_SECRET} });
         
         const resp = responce.data;
-        console.log("resp",resp);
         if(resp['ok']){
             const slack_user = resp['authed_user'];
             const team = resp['team'];
@@ -639,7 +603,6 @@ export class SlackController {
                 incoming_webhook:incoming_webhook.url,
                 bot_access_token:resp['access_token']
             });
-            console.log(slack_auth);
 
             var user = await User.findById(req.body.user._id);
 
@@ -647,14 +610,11 @@ export class SlackController {
             
             integration['is_slack_connected']=true;
 
-            console.log(integration);
 
             const update_user = await User.findOneAndUpdate({_id:req.body.user._id},{$set:{integrations:integration}},{new:true});
             
-            console.log("update_user",update_user);
             
             await slack_auth.save();
-            console.log(slack_auth);
             res.status(200).json(resp);
         } else {
             res.status(400).json(resp);
@@ -664,7 +624,6 @@ export class SlackController {
 
     async isSlackAuth(req: Request , res: Response, next: NextFunction){
         
-        console.log("req.body",req.params.userID);
         const slack_auth = await SlackAuth.findOne({_user:req.params.userID}).sort({created_date:-1});
 
 
@@ -678,7 +637,6 @@ export class SlackController {
 
     async disconnectSlack(req: Request , res: Response, next: NextFunction){
         
-        console.log("req.body",req.params.userID);
 
         try {
 
@@ -690,11 +648,8 @@ export class SlackController {
             
             integration['is_slack_connected']=false;
 
-            console.log(integration);
-
             const update_user = await User.findOneAndUpdate({_id:req.params.userID},{$set:{integrations:integration}},{new:true});
             
-            console.log("update_user" , update_user);
 
             res.status(200).json({message:"Diconnected Successfully"});
 
