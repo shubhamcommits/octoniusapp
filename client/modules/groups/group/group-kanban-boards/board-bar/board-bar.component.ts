@@ -35,6 +35,8 @@ export class BoardBarComponent implements OnInit {
 
   sortby: String = 'none'
   filterfor: String = 'none'
+  menuLable:string='Filter Task For';
+  menuFor:string='Filter';
 
   ngOnInit() {
     

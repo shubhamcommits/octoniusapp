@@ -11,6 +11,8 @@ export class MemberListMenuComponent implements OnInit {
   constructor() { }
   @Input() groupMembers:any
   @Input() filterfor:string
+  @Input() menuLable:string
+  @Input() menuFor:string
   searchText = '';
   picsUrl:string='';
 
@@ -34,7 +36,6 @@ export class MemberListMenuComponent implements OnInit {
   }
 
   getMemberDetails(selectedMemberId: any) {
-    console.log(document.getElementsByClassName('user-filter-menu'));
     this.groupMembers.forEach(element => {
       if(element._id==selectedMemberId){
         this.picsUrl = this.baseUrl + '/' +element.profile_pic;

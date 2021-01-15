@@ -21,29 +21,13 @@
   </div>
 
   <div>
-    <button mat-menu-item [matMenuTriggerFor]="cloneTaskSearchMenu">
-      <i class="material-icons-outlined">recent_actors</i>
-      CLONE TASK
-    </button>
-    <mat-menu #cloneTaskSearchMenu="matMenu">
-      <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-        <div class="users-card">
-          <div class="form-group">
-            <label for="search-text">Assignee</label>
-            <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
-              placeholder="Search group member" autofocus>
-          </div>
-          <ul class="assignee-list">
-            <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText"
-                (click)="getMemberDetails(member._id)"
-                [searchedWord]="searchText"
-                [content]="member">
-              {{ member.first_name }} {{ member.last_name }}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </mat-menu>
+    <app-member-list-menu
+    [groupMembers]="groupMembers"
+    [menuLable]="menuLable"
+    [menuFor]="menuFor"
+    (userSelctionEmitter)="onUserSelctionEmitter($event)"
+    >
+    </app-member-list-menu>
   </div>
 
 

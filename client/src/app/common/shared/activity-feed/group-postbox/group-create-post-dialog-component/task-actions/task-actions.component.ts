@@ -32,7 +32,8 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
   userGroups = [];
   transferAction = '';
-
+  menuLable:string='Assignee';
+  menuFor:string='Task';
   searchText = '';
   groupMembers = [];
 
@@ -164,6 +165,36 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   ngOnDestroy() {
     this.subSink.unsubscribe()
     this.isLoadingAction$.complete()
+  }
+
+  async onUserSelctionEmitter(userId:string){
+    console.log("user selected",userId)
+    const selectedMemberId=userId;
+    let assignees = [];
+
+    if (selectedMemberId == 'all') {
+      this.groupMembers.forEach((member)=> {
+        if(member._id != 'all'){
+          assignees.push(member._id);
+        }
+      });
+    } else {
+      assignees = [selectedMemberId];
+    }
+
+    this.utilityService.asyncNotification('Please wait we are cloning the task...', new Promise((resolve, reject) => {
+      this.postService.cloneToAssignee(assignees, this.postData._id)
+        .then((res) => {
+          // Close the modal
+          this.mdDialogRef.close();
+
+          this.taskClonedEmitter.emit();
+          resolve(this.utilityService.resolveAsyncPromise(`👍 Task cloned!`));
+        })
+        .catch((error) => {
+          reject(this.utilityService.rejectAsyncPromise(`Error while cloning the task!`));
+        });
+    }));
   }
 
   async isParent() {
@@ -312,34 +343,6 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
           });
         }
       });
-  }
-
-  getMemberDetails(selectedMemberId: any) {
-    let assignees = [];
-
-    if (selectedMemberId == 'all') {
-      this.groupMembers.forEach((member)=> {
-        if(member._id != 'all'){
-          assignees.push(member._id);
-        }
-      });
-    } else {
-      assignees = [selectedMemberId];
-    }
-
-    this.utilityService.asyncNotification('Please wait we are cloning the task...', new Promise((resolve, reject) => {
-      this.postService.cloneToAssignee(assignees, this.postData._id)
-        .then((res) => {
-          // Close the modal
-          this.mdDialogRef.close();
-
-          this.taskClonedEmitter.emit();
-          resolve(this.utilityService.resolveAsyncPromise(`👍 Task cloned!`));
-        })
-        .catch((error) => {
-          reject(this.utilityService.rejectAsyncPromise(`Error while cloning the task!`));
-        });
-    }));
   }
 
   saveTemplateAction(action: string) {
