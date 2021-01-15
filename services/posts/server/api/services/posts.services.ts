@@ -1947,31 +1947,6 @@ export class PostService {
     }
   }
 
-  async updateTaskOrderInColumn(postId: string, order) {
-
-    try {
-      // Update the post
-      let post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        $set: { "task._column.order": order }
-      }, {
-        new: true
-      });
-
-      // populate the assigned_to property of this document
-      post = await this.populatePostProperties(post);
-
-      // Return the post
-      return post;
-
-    } catch (err) {
-      console.log(`\n⛔️ Error:\n ${err}`);
-      // Return with error
-      throw (err);
-    }
-  }
-
   /**
    * This function fetches the 10 possible parent tasks
    * @param query
