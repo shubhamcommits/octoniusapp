@@ -1,8 +1,8 @@
-<button [matMenuTriggerFor]="cloneTaskSearchMenu" #trigger="matMenuTrigger" [ngStyle]="{'cursor': 'pointer','display':menuFor==='Filter'?'inherit':'none'}" class="dropdownbtn">
+<button [matMenuTriggerFor]="cloneTaskSearchMenu" #trigger="matMenuTrigger" *ngIf="menuFor==='Filter'" [ngStyle]="{'cursor': 'pointer'}" class="dropdownbtn">
     Users
     <img [src]="picsUrl" onerror="this.src='assets/images/user.png'" class="feed-avatar" [ngStyle]="{'display': filterfor==='users'?'inherit':'none'}">
 </button>
-<button mat-menu-item [matMenuTriggerFor]="cloneTaskSearchMenu" [ngStyle]="{'display':menuFor==='Task'?'inherit':'none'}">
+<button mat-menu-item [matMenuTriggerFor]="cloneTaskSearchMenu" *ngIf="menuFor==='Task'">
     <i class="material-icons-outlined">recent_actors</i>
     CLONE TASK
   </button>

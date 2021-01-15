@@ -54,7 +54,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   ) { }
 
   async ngOnChanges() {
-    console.log("Tabel change");
     this.customFields = [...this.customFields];
     await this.initTable();
 
@@ -92,7 +91,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     //   }
     //   return t2.title - t1.title;
     // });
-    console.log("In Tabel", this.filteringBit, this.filteringData)
 
     await this.sorting();
     await this.filtering(this.filteringBit);
@@ -225,11 +223,9 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
         })
         return bit;
       })
-      console.log("Tasks",tasks);
       this.unchangedTasks = tasks;
     }
     else {
-      console.log("here none",this.unchangedTasks);
       this.tasks = this.unchangedTasks.tasksList;
     }
 

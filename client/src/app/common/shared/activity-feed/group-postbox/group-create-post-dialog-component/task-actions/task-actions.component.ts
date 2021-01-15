@@ -151,7 +151,6 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
             // Update the tasksList
             this.tasksList = Array.from(new Set(this.tasksList['posts']));
 
-            console.log("this.tasksList", this.tasksList);
           }
 
           // Stop the loading state once the values are loaded
@@ -168,7 +167,6 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   }
 
   async onUserSelctionEmitter(userId:string){
-    console.log("user selected",userId)
     const selectedMemberId=userId;
     let assignees = [];
 

@@ -86,7 +86,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
   async onFilterTaskEmitter(obj:any){
     // let task = this.columns;
-    console.log("sdcsfds",obj);
     if(obj.bit){
       this.filteringBit = obj.bit;
     }

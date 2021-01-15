@@ -71,13 +71,11 @@ export class GroupTasksListViewComponent implements OnChanges {
       }
       if (propName === 'filteringBit') {
         // this.filtering(to);
-        console.log("List view",this.filteringBit,to);
       }
       if (propName === 'filteringData') {
         this.filteringData = to;
         if(this.filteringData){
           // this.filtering(this.filteringBit);
-        console.log("List view",this.filteringData,to);
 
         }
       }
