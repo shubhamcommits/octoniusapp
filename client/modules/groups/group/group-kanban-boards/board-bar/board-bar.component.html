@@ -61,8 +61,8 @@
           <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
           <span>Due Date</span>
         </a>
-        <a mat-menu-item (click)="sortTasks('proirity')"
-          [ngStyle]="{'color' : (sortby==='proirity') ? 'green' : 'black'}">
+        <a mat-menu-item (click)="sortTasks('priority')"
+          [ngStyle]="{'color' : (sortby==='priority') ? 'green' : 'black'}">
           <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
           <span>Priority</span>
         </a>
@@ -103,18 +103,18 @@
 
           <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
             <button [matMenuTriggerFor]="menuDueDate" class="dropdownbtn">
-              <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='due_before_today' || 
-              filterfor==='due_today' || 
-              filterfor==='due_tomorrow'|| 
-              filterfor==='due_week' || 
-              filterfor==='due_next_week' || 
+              <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='due_before_today' ||
+              filterfor==='due_today' ||
+              filterfor==='due_tomorrow'||
+              filterfor==='due_week' ||
+              filterfor==='due_next_week' ||
               filterfor==='due_14_days') ? 'green' : 'black'}">Due Date</span>
               <span>
-                <div class="label-priority low selectedPriority" *ngIf="(filterfor==='due_before_today' || 
-                filterfor==='due_today' || 
-                filterfor==='due_tomorrow'|| 
-                filterfor==='due_week' || 
-                filterfor==='due_next_week' || 
+                <div class="label-priority low selectedPriority" *ngIf="(filterfor==='due_before_today' ||
+                filterfor==='due_today' ||
+                filterfor==='due_tomorrow'||
+                filterfor==='due_week' ||
+                filterfor==='due_next_week' ||
                 filterfor==='due_14_days')">
                   {{
                   filterfor==='due_before_today'?"Before today":
@@ -159,8 +159,8 @@
         <span mat-menu-item class="cursordefault overflowvisible" >
           <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
             <button [matMenuTriggerFor]="menuPriority" class="dropdownbtn">
-              <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='priority_high' || 
-              filterfor==='priority_medium' || 
+              <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='priority_high' ||
+              filterfor==='priority_medium' ||
               filterfor==='priority_low') ? 'green' : 'black'}">Priority</span>
               <span>
                 <div class="label-priority high selectedPriority" *ngIf="filterfor==='priority_high'">High</div>
@@ -202,7 +202,7 @@
           <!-- <span >Priority</span>
           <button class="btn btn-sm text-capitalize dropdown-toggle focus" type="button" id="dropdown"
             data-toggle="dropdown" style="width: 182px;margin-left: 15px;box-shadow: none;">Select</button>
-          
+
             <ul class="dropdown-menu">
             <li class="dropdown-item">
               <span>

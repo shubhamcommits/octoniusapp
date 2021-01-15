@@ -310,7 +310,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         })
         this.columns[index].tasks = task;
       }
-    } else if (this.sortingBit == 'proirity') {
+    } else if (this.sortingBit == 'priority') {
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {

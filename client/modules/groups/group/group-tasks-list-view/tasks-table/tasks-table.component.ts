@@ -83,7 +83,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     this.tasks = [...this.tasks];
     await this.filtering(this.filteringBit);
     await this.sorting();
-    
+
 
     this.dataSource = new MatTableDataSource(this.tasks);
     this.dataSource.sort = this.sort;
@@ -240,7 +240,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
         }
       })
 
-    } else if (this.sortingBit == 'proirity') {
+    } else if (this.sortingBit == 'priority') {
       this.tasks.sort((t1, t2) => {
         return (t1?.task?.custom_fields && t2?.task?.custom_fields)
           ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
