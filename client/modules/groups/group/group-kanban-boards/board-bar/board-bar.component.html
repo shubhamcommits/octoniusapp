@@ -1,14 +1,14 @@
 <nav class="navbar fixed-top">
-  <div class="container">
+
     <div class="rightside">
 
-      <button class="btn badge-cf" *ngIf="isAdmin" [matMenuTriggerFor]="menuSort">
+      <button class="btn badge-filters" *ngIf="isAdmin" [matMenuTriggerFor]="menuSort">
         <i class="material-icons-outlined"> import_export</i> <span>Sort</span>
       </button>
 
       <span class="separator"></span>
 
-      <button class="btn badge-cf" [matMenuTriggerFor]="menuFilter" *ngIf="isAdmin">
+      <button class="btn badge-filters" [matMenuTriggerFor]="menuFilter" *ngIf="isAdmin">
         <i class="material-icons-outlined"> filter_list</i> <span>Filter</span>
       </button>
 
@@ -53,27 +53,22 @@
 
       <mat-menu #menuSort="matMenu">
         <a mat-menu-item (click)="sortTasks('none')" [ngStyle]="{'color' : (sortby==='none') ? 'green' : 'black'}">
-          <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
           <span>None</span>
         </a>
         <a mat-menu-item (click)="sortTasks('due_date')"
           [ngStyle]="{'color' : (sortby==='due_date') ? 'green' : 'black'}">
-          <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
           <span>Due Date</span>
         </a>
         <a mat-menu-item (click)="sortTasks('proirity')"
           [ngStyle]="{'color' : (sortby==='proirity') ? 'green' : 'black'}">
-          <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
           <span>Priority</span>
         </a>
 
         <a mat-menu-item (click)="sortTasks('tags')" [ngStyle]="{'color' : (sortby==='tags') ? 'green' : 'black'}">
-          <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
           <span>Tags</span>
         </a>
 
         <a mat-menu-item (click)="sortTasks('status')" [ngStyle]="{'color' : (sortby==='status') ? 'green' : 'black'}">
-          <i class="material-icons-outlined ml-2"  style="margin-right: .7rem;">import_export</i>
           <span>Status</span>
         </a>
 
@@ -162,11 +157,11 @@
               <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='priority_high' || 
               filterfor==='priority_medium' || 
               filterfor==='priority_low') ? 'green' : 'black'}">Priority</span>
-              <span>
+
                 <div class="label-priority high selectedPriority" *ngIf="filterfor==='priority_high'">High</div>
                 <div class="label-priority medium selectedPriority" *ngIf="filterfor==='priority_medium'">Medium</div>
                 <div class="label-priority low selectedPriority" *ngIf="filterfor==='priority_low'">Low</div>
-              </span>
+
             </button>
 
             <mat-menu #menuPriority="matMenu">
@@ -199,36 +194,9 @@
 
 
 
-          <!-- <span >Priority</span>
-          <button class="btn btn-sm text-capitalize dropdown-toggle focus" type="button" id="dropdown"
-            data-toggle="dropdown" style="width: 182px;margin-left: 15px;box-shadow: none;">Select</button>
-          
-            <ul class="dropdown-menu">
-            <li class="dropdown-item">
-              <span>
-                <div class="label-priority high" (click)="filterTask('priority_high')">
-                  High
-                </div>
-              </span>
-            </li>
-            <li class="dropdown-item">
-              <span>
-                <div class="label-priority medium" (click)="filterTask('priority_medium')">
-                  Medium
-                </div>
-              </span>
-            </li>
-            <li class="dropdown-item">
-              <span>
-                <div class="label-priority low" (click)="filterTask('priority_low')">
-                  Low
-                </div>
-              </span>
-            </li>
-          </ul> -->
+        
         </span>
 
       </mat-menu>
     </div>
-  </div>
 </nav>
