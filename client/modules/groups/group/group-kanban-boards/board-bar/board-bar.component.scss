@@ -10,8 +10,8 @@
     box-shadow: 0 4px 6px rgba(37, 38, 94, 0.1);
 }
 
-.container{
-  justify-content: flex-end;
+.rightside{
+  margin-right: 30px;
 }
 
 a {
@@ -51,6 +51,18 @@ a {
   }
 }
 
+
+.badge-filters {
+  font-size: 12px;
+  color: #9D9FA1;
+  span{
+    color: #9D9FA1;
+    &:hover{
+      color: #005fd5;
+    }
+  }
+}
+
 .separator {
   width: 5px;
   border-left: 1px solid #E4EDF8;
@@ -83,4 +95,9 @@ a {
 }
 .dropdownbtn:hover{
   background: rgba(0, 0, 0, 0.001) !important;
+}
+
+.label-priority{
+  line-height: 20px;
+  margin-top: 15px;
 }
