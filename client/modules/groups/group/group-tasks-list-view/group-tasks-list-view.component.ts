@@ -24,6 +24,8 @@ export class GroupTasksListViewComponent implements OnChanges {
   @Input() tasks: any;
   @Input() customFields: any;
   @Input() sortingBit: any;
+  @Input() filteringBit:any;
+  @Input() filteringData:any;
   @Input() isAdmin = false;
 
   @Output() taskClonnedEvent = new EventEmitter();
@@ -66,6 +68,18 @@ export class GroupTasksListViewComponent implements OnChanges {
       const from = change.previousValue;
       if (propName === 'sortingBit') {
         this.sortingBit = to;
+      }
+      if (propName === 'filteringBit') {
+        // this.filtering(to);
+        console.log("List view",this.filteringBit,to);
+      }
+      if (propName === 'filteringData') {
+        this.filteringData = to;
+        if(this.filteringData){
+          // this.filtering(this.filteringBit);
+        console.log("List view",this.filteringData,to);
+
+        }
       }
     }
   }

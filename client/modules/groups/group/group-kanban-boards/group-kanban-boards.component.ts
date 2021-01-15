@@ -118,6 +118,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   async ngOnChanges(changes: SimpleChanges) {
 
     for (const propName in changes) {
+      console.log("Kanban change",changes);
       const change = changes[propName];
       const to = change.currentValue;
       const from = change.previousValue;
