@@ -104,9 +104,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     //     if (t1.task.status != t2.task.status) {
     //       return t1.task.status == 'done' ? 1 : -1;
     //     }
-    //     if (t1.task._column.order != t2.task._column.order) {
-    //       return t2.task._column.order - t1.task._column.order;
-    //     }
     //     return t2.title - t1.title;
     //   });
 
@@ -223,10 +220,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
               return false;
             }
           } else {
-            return false;  
+            return false;
           }
-         
-        }) 
+
+        })
       }
       this.unchangedColumns = tasks;
     } else if (to == 'due_next_week'){
@@ -243,10 +240,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
               return false;
             }
           } else {
-            return false;  
+            return false;
           }
-         
-        }) 
+
+        })
       }
       this.unchangedColumns = tasks;
     } else if (to == 'due_14_days'){
@@ -263,10 +260,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
               return false;
             }
           } else {
-            return false;  
+            return false;
           }
-         
-        }) 
+
+        })
       }
       this.unchangedColumns = tasks;
     }else if (to == "users") {
@@ -395,16 +392,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
       // Call move task to a new column
       this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
-    }
-
-    if (event.previousContainer !== event.container || event.previousIndex !== event.currentIndex) {
-      // Post Service Instance
-      let postService = this.injector.get(PostService);
-      //always, recalculate the order of the container (the list to drag)
-      event.container.data.forEach((task, index) => {
-        task['task']._column.order = index;
-        postService.updateTaskOrderInColumn(task['_id'], index);
-      });
     }
   }
 
@@ -697,15 +684,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
           }
         }
 
-        this.columns[indexColumn].tasks.sort(function (t1, t2) {
-          if (t1.task.status != t2.task.status) {
-            return t1.task.status == 'done' ? 1 : -1;
-          }
-          if (t1.task._column.order != t2.task._column.order) {
-            return t2.task._column.order - t1.task._column.order;
-          }
-          return t2.title - t1.title;
-        });
+        this.sorting();
+
         return;
       }
     });

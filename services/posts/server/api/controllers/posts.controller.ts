@@ -1204,35 +1204,6 @@ export class PostController {
     }
 
     /**
-     * This function is responsible for fetching the posts of a group
-     * @param req 
-     * @param res 
-     * @param next 
-     */
-    async updateTaskOrderInColumn(req: Request, res: Response, next: NextFunction) {
-
-        // Post Object From request
-        const { body: { order }, params: { postId } } = req;
-
-        try {
-
-            // Call service function to edit
-            const updatedPost = await postService.updateTaskOrderInColumn(postId, order)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
-
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Post Ordered Successfully!',
-                post: updatedPost
-            });
-        } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
-    }
-
-    /**
      * This function fetches the 10 possible parent tasks
      * @param { query: { groupId, currentPostId, query } } req 
      * @param res 

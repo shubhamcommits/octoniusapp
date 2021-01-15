@@ -79,18 +79,8 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     this.tasks.forEach(val => taskslist.push(Object.assign({}, val)));
     let unchangedTasks: any = { tasksList: taskslist };
     this.unchangedTasks = JSON.parse(JSON.stringify(unchangedTasks));
-    //const doneTasks = [...this.tasks['done']];
+
     this.tasks = [...this.tasks];
-    //this.tasks['done'] = doneTasks;
-    // this.tasks.sort(function(t1, t2) {
-    //   if (t1.task.status != t2.task.status) {
-    //     return t1.task.status == 'done' ? 1 : -1;
-    //   }
-    //   if (t1.task._column.order != t2.task._column.order) {
-    //     return t2.task._column.order - t1.task._column.order;
-    //   }
-    //   return t2.title - t1.title;
-    // });
 
     await this.sorting();
     await this.filtering(this.filteringBit);

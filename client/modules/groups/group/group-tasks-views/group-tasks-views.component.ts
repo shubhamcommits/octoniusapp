@@ -92,7 +92,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     if(obj.data){
       this.filteringData=obj.data
     }
-    
+
   }
 
   async onCustomFieldEmitter(customFields) {
@@ -207,9 +207,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         .sort(function(t1, t2) {
           if (t1.task.status != t2.task.status) {
             return t1.task.status == 'done' ? 1 : -1;
-          }
-          if (t1.task._column.order != t2.task._column.order) {
-            return t2.task._column.order - t1.task._column.order;
           }
           return t2.title - t1.title;
         });
