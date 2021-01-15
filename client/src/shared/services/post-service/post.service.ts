@@ -410,10 +410,6 @@ export class PostService {
     }).toPromise();
   }
 
-  updateTaskOrderInColumn(taskId: string, order: number) {
-    return this._http.put(this.baseURL + `/${taskId}/update-task-order`, { order: order }).toPromise();
-  }
-
   /**
    * This function is responsible for fetching first 10 tasks
    * @param groupId

@@ -106,8 +106,8 @@ export class PostsService {
         // Generate the today
         const today = moment().add(1, 'days').startOf('day').format();
 
-        // Generate the +7days from today time
-        const todayPlus7Days = moment().add(7, 'days').endOf('day').format();
+        // Generate the date for the end of the week
+        const endOfWeek = moment().add(1, 'days').endOf('day').endOf('week').format();
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -117,7 +117,7 @@ export class PostsService {
                         { '_group': user._private_group }
                     ]
                 },
-                { 'task.due_to': { $gte: today, $lte: todayPlus7Days }},
+                { 'task.due_to': { $gte: today, $lte: endOfWeek }},
                 { 'task.is_template': { $ne: true }},
                 {
                     $or: [
@@ -148,11 +148,11 @@ export class PostsService {
 
         const user = await User.findById(userId).select('_private_group');
 
-        // Generate the +7days
-        const todayPlus7Days = moment().add(7, 'days').startOf('day').format();
+        // Generate the date for the end of the week
+        const endOfWeek = moment().add(1, 'days').endOf('day').endOf('week').format();
 
-        // Generate the +14days from today time
-        const todayPlus14Days = moment().add(14, 'days').endOf('day').format();
+        // Generate the date for the end of the next week
+        const endOfNextWeek = moment().endOf('week').add(1, 'days').endOf('day').endOf('week').format();
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -162,7 +162,7 @@ export class PostsService {
                         { '_group': user._private_group }
                     ]
                 },
-                { 'task.due_to': { $gte: todayPlus7Days, $lte: todayPlus14Days }},
+                {'task.due_to': { $gt: endOfWeek, $lte: endOfNextWeek }},
                 { 'task.is_template': { $ne: true }},
                 {
                     $or: [

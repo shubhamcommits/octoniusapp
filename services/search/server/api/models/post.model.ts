@@ -113,10 +113,6 @@ const PostSchema = new Schema({
         _column: {
             title: {
                 type: String
-            },
-            order: {
-                type: Number,
-                default: 0
             }
         },
 

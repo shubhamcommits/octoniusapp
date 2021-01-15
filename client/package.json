@@ -14,8 +14,8 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "dev": "ng serve",
+    "start": "ng serve ",
+    "dev": "ng serve ",
     "build": "ng build",
     "prod": "ng build --prod",
     "postprod": "gzipper --verbose ./dist",

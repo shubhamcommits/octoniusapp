@@ -1947,31 +1947,6 @@ export class PostService {
     }
   }
 
-  async updateTaskOrderInColumn(postId: string, order) {
-
-    try {
-      // Update the post
-      let post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        $set: { "task._column.order": order }
-      }, {
-        new: true
-      });
-
-      // populate the assigned_to property of this document
-      post = await this.populatePostProperties(post);
-
-      // Return the post
-      return post;
-
-    } catch (err) {
-      console.log(`\n⛔️ Error:\n ${err}`);
-      // Return with error
-      throw (err);
-    }
-  }
-
   /**
    * This function fetches the 10 possible parent tasks
    * @param query
@@ -2064,17 +2039,14 @@ export class PostService {
       let post11 = await Post.findById(postId);
       if (post11.task && post11.task._dependency_task) {
         let oldParent = await Post.findById(post11.task._dependency_task);
-        console.log(post11, oldParent);
 
         for (var i = 0; i < oldParent.task._dependent_child.length; i++) {
           if (oldParent.task._dependent_child[i] + '' == post11._id + '') {
-            console.log("am here", post11._id);
             oldParent.task._dependent_child.splice(i, 1);
             break;
           }
         }
 
-        console.log("After pop", oldParent);
         oldParent.save();
       }
 

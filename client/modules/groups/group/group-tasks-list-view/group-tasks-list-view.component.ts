@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, Injector, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnChanges, Input, Injector, ViewChild, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import moment from 'moment/moment';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -23,7 +23,9 @@ export class GroupTasksListViewComponent implements OnChanges {
   // Task Posts array variable
   @Input() tasks: any;
   @Input() customFields: any;
-
+  @Input() sortingBit: any;
+  @Input() filteringBit:any;
+  @Input() filteringData:any;
   @Input() isAdmin = false;
 
   @Output() taskClonnedEvent = new EventEmitter();
@@ -52,25 +54,43 @@ export class GroupTasksListViewComponent implements OnChanges {
   displayedColumns = ['title', 'tags', 'asignee', 'due_to', 'nsPercent', 'star'];
 
   constructor(
-      public utilityService: UtilityService,
-      private injector: Injector,
-      private router: ActivatedRoute,
-      public dialog: MatDialog
-    ) {}
+    public utilityService: UtilityService,
+    private injector: Injector,
+    private router: ActivatedRoute,
+    public dialog: MatDialog
+  ) { }
 
-  async ngOnChanges() {
+  async ngOnChanges(changes: SimpleChanges) {
     this.initSections();
+    for (const propName in changes) {
+      const change = changes[propName];
+      const to = change.currentValue;
+      const from = change.previousValue;
+      if (propName === 'sortingBit') {
+        this.sortingBit = to;
+      }
+      if (propName === 'filteringBit') {
+        // this.filtering(to);
+      }
+      if (propName === 'filteringData') {
+        this.filteringData = to;
+        if(this.filteringData){
+          // this.filtering(this.filteringBit);
+
+        }
+      }
+    }
   }
 
   initSections() {
-    this.sections.forEach( section => {
+    this.sections.forEach(section => {
       let tasks = [];
 
       // Filtering other tasks
-      section.tasks.forEach( task => {
-        if(task.bars !== undefined && task.bars.length > 0){
+      section.tasks.forEach(task => {
+        if (task.bars !== undefined && task.bars.length > 0) {
           task.bars.forEach(bar => {
-            if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+            if (bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
               tasks.push(task);
             }
           });
@@ -80,6 +100,7 @@ export class GroupTasksListViewComponent implements OnChanges {
       });
       section.tasks = tasks;
     });
+
   }
 
   /**

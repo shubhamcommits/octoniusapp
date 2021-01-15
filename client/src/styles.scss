@@ -34,3 +34,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .leader-line {
     z-index: 100 !important;
 }
+.mat-menu-panel{
+overflow: visible !important;
+}
+.user-filter-menu {
+    width: 400px !important;
+    min-width: 300px !important;
+    max-width: 400px !important;
+}
