@@ -105,8 +105,9 @@
         filterfor==='due_week' || 
         filterfor==='due_next_week' || 
         filterfor==='due_14_days') ? 'green' : 'black'}">
-          <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-            <span [matMenuTriggerFor]="menuDueDate">
+          
+        <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+            <button [matMenuTriggerFor]="menuDueDate" class="dropdownbtn">
               <span style="cursor: pointer;">Due Date</span>
               <span>
                 <div class="label-priority low selectedPriority" [ngStyle]="{'display':(filterfor==='due_before_today' || 
@@ -124,7 +125,7 @@
                   filterfor==='due_14_days'?"Next 14 days":""
                 }}</div>
               </span>
-            </span>
+            </button>
             <mat-menu #menuDueDate="matMenu">
 
               <a mat-menu-item (click)="filterTask('due_before_today')" style="margin: 10px;text-decoration: none;">
@@ -159,14 +160,14 @@
         filterfor==='priority_medium' || 
         filterfor==='priority_low') ? 'green' : 'black'}">
           <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-            <span [matMenuTriggerFor]="menuPriority">
+            <button [matMenuTriggerFor]="menuPriority" class="dropdownbtn">
               <span style="cursor: pointer;">Priority</span>
               <span>
                 <div class="label-priority high selectedPriority" [ngStyle]="{'display':filterfor==='priority_high'?'inherit':'none'}">High</div>
                 <div class="label-priority medium selectedPriority" [ngStyle]="{'display':filterfor==='priority_medium'?'inherit':'none'}">Medium</div>
                 <div class="label-priority low selectedPriority" [ngStyle]="{'display':filterfor==='priority_low'?'inherit':'none'}">Low</div>
               </span>
-            </span>
+            </button>
 
             <mat-menu #menuPriority="matMenu">
 

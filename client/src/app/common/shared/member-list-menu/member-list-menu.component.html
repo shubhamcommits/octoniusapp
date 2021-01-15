@@ -1,7 +1,7 @@
-<span [matMenuTriggerFor]="cloneTaskSearchMenu" #trigger="matMenuTrigger" style="cursor: pointer;">
+<button [matMenuTriggerFor]="cloneTaskSearchMenu" #trigger="matMenuTrigger" style="cursor: pointer;" class="dropdownbtn">
     Users
     <img [src]="picsUrl" onerror="this.src='assets/images/user.png'" class="feed-avatar" [ngStyle]="{'display': filterfor==='users'?'inherit':'none'}">
-</span>
+</button>
 <mat-menu #cloneTaskSearchMenu="matMenu" class="user-filter-menu">
     <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()" style="padding: 10px;">
         <div class="users-card">
