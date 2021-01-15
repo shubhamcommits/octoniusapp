@@ -677,49 +677,33 @@ export class PostController {
         const { params: { postId }, body: { date_due_to, start_date, s_days, e_days, group_id } } = req;
 
         try {
-            console.log("redeived date_due_to",date_due_to);
-            console.log("redeived start_date",start_date);
-            console.log("redeived s_days",s_days);
-            console.log("redeived e_days",e_days);
-            console.log("redeived group_id",group_id);
-            console.log("redeived postId",postId);
             
             async function update(p_Id, d_date, s_date , s_day, e_day, rec){
                 if (s_day != 0){
-                    console.log("update start",s_date);
                     var post = await postService.changeTaskDate(p_Id,'start_date',s_date)
                     .catch((err) => {
                         return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                     })
-                    // console.log("post",post);
-                    if(post?.task?._dependency_task){
-                        console.log("Apply check",post?.task?._dependency_task)
-                    }
+                    
                 }
                 
                 if (e_day != 0){
-                    console.log("update end date",d_date)
                     var post = await postService.changeTaskDueDate(p_Id, d_date)
                     .catch((err) => {
                         return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                     })
     
-                    // console.log("post",post);
                     if(post?.task?._dependent_child && post?.task?._dependent_child.length>0){
-                        console.log("Apply updation",post?.task?._dependent_child)
                         
                         for( var i=0;i<post?.task?._dependent_child.length;i++){
-                            console.log("id",post?.task?._dependent_child[i]);
                             const childpost = await postService.get(post?.task?._dependent_child[i]);
                             if(childpost){
-                                // console.log("childpost",childpost?.task);
                                 var endDate = new Date(childpost?.task?.due_to);
                                 var newEndDate = new Date(childpost?.task?.due_to);
                                 newEndDate.setDate(endDate.getDate() + e_day);
                                 var startDate = new Date(childpost?.task?.start_date);
                                 var newStartDate = new Date(childpost?.task?.start_date);
                                 newStartDate.setDate(startDate.getDate() + e_day);
-                                console.log("new start date end date",moment(newStartDate).format(),moment(newEndDate).format());
                                 await update(post?.task?._dependent_child[i],moment(newEndDate).format(),moment(newStartDate).format(),e_day,e_day,true);
                             }
                         }
@@ -733,7 +717,6 @@ export class PostController {
             await update(postId,date_due_to,start_date,s_days,e_days,false);
         
             var postlist = await postService.getPosts(group_id,'task');
-            console.log("postlist",postlist);
             
             // Send status 200 response
             return res.status(200).json({
@@ -1214,35 +1197,6 @@ export class PostController {
             return res.status(200).json({
                 message: 'Post Copied Successfully!',
                 post: postData
-            });
-        } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
-    }
-
-    /**
-     * This function is responsible for fetching the posts of a group
-     * @param req 
-     * @param res 
-     * @param next 
-     */
-    async updateTaskOrderInColumn(req: Request, res: Response, next: NextFunction) {
-
-        // Post Object From request
-        const { body: { order }, params: { postId } } = req;
-
-        try {
-
-            // Call service function to edit
-            const updatedPost = await postService.updateTaskOrderInColumn(postId, order)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
-
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Post Ordered Successfully!',
-                post: updatedPost
             });
         } catch (error) {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);

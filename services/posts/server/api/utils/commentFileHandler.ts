@@ -9,7 +9,6 @@ import http from 'axios';
  */
 const commentFileHandler = async (req: Request, res: Response, next: NextFunction) => {
 
-  console.log('commentFileHandler');
   // Initialize the req['files'] object
   let files: any = req['files']
 
@@ -18,13 +17,11 @@ const commentFileHandler = async (req: Request, res: Response, next: NextFunctio
 
   // Check the current request has files object underlying
   if (!files) {
-    console.log('no file attached');
     // Set the body.files object as null
     req.body.comment.files = null;
 
     // Convert the Object Back to string
     req.body.comment = JSON.stringify(req.body.comment);
-    console.log('req.body.comment ==>', req.body.comment);
 
     // Pass the middleware
     next();
@@ -32,7 +29,6 @@ const commentFileHandler = async (req: Request, res: Response, next: NextFunctio
     // If multiple files are attached with comment
   } else if (files.attachments.length > 1) {
 
-    console.log('inside files.attachments.length > 1');
     // Fetch the files from the current request
     files.attachments.forEach((currentFile: any, index: Number) => {
 

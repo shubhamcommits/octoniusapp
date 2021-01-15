@@ -20,7 +20,9 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   @Input() userData;
   @Input() section;
   @Input() sections;
-
+  @Input() sortingBit: String
+  @Input() filteringBit: any;
+  @Input() filteringData: any;
   @Input() isAdmin = false;
   @Input() customFields = [];
 
@@ -28,7 +30,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   @Output() taskClonnedEvent = new EventEmitter();
 
   customFieldsToShow = [];
-
+  unchangedTasks: any;
   newColumnSelected
 
   // Base URL of the uploads
@@ -42,7 +44,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   flows = [];
 
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     public utilityService: UtilityService,
@@ -73,27 +75,215 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
   async initTable() {
     await this.loadCustomFieldsToShow();
+    let taskslist = [];
+    this.tasks.forEach(val => taskslist.push(Object.assign({}, val)));
+    let unchangedTasks: any = { tasksList: taskslist };
+    this.unchangedTasks = JSON.parse(JSON.stringify(unchangedTasks));
 
-    //const doneTasks = [...this.tasks['done']];
     this.tasks = [...this.tasks];
-    //this.tasks['done'] = doneTasks;
-
-    this.tasks.sort(function(t1, t2) {
-      if (t1.task.status != t2.task.status) {
-        return t1.task.status == 'done' ? 1 : -1;
-      }
-      if (t1.task._column.order != t2.task._column.order) {
-        return t2.task._column.order - t1.task._column.order;
-      }
-      return t2.title - t1.title;
-    });
+    await this.filtering(this.filteringBit);
+    await this.sorting();
+    
 
     this.dataSource = new MatTableDataSource(this.tasks);
     this.dataSource.sort = this.sort;
   }
 
+  async filtering(to) {
+    if (to == "mytask") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => {
+        var bit = false;
+        task._assigned_to.forEach(element => {
+          if (element._id == this.userData._id) {
+            bit = true
+          }
+        })
+        return bit;
+      })
+      this.unchangedTasks = tasks;
+    }
+    else if (to == "priority_high") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => (
+        task.task.custom_fields?.priority === "High"))
+      this.unchangedTasks = tasks;
+    } else if (to == "priority_medium") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => (
+        task.task.custom_fields?.priority === "Medium"))
+      this.unchangedTasks = tasks;
+    } else if (to == "priority_low") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => (
+        task.task.custom_fields?.priority === "Low"))
+      this.unchangedTasks = tasks;
+    }
+    else if (to == 'due_before_today') {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => (
+        (task?.task?.due_to) ? new Date(task?.task?.due_to) < new Date(new Date().setDate(new Date().getDate() - 1)) : false))
+      this.unchangedTasks = tasks;
+    } else if (to == 'due_today') {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => (
+        (task?.task?.due_to) ? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') : false))
+      this.unchangedTasks = tasks;
+    } else if (to == 'due_today') {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => (
+        (task?.task?.due_to) ? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') : false))
+      this.unchangedTasks = tasks;
+    } else if (to == 'due_tomorrow') {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => (
+        (task?.task?.due_to) ? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment(new Date(new Date().setDate(new Date().getDate() + 1))).format('YYYY-MM-DD') : false))
+      this.unchangedTasks = tasks;
+    } else if (to == 'due_week') {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => {
+        const first = moment().startOf('week').format('YYYY-MM-DD');
+        const last = moment().endOf('week').add(1, 'days').format('YYYY-MM-DD');
+        if (task?.task?.due_to) {
+          if ((new Date(task?.task?.due_to) > new Date(first)) && (new Date(task?.task?.due_to) < new Date(last))) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+
+      })
+      this.unchangedTasks = tasks;
+    } else if (to == 'due_next_week') {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => {
+        const first = moment().endOf('week').add(1, 'days').format('YYYY-MM-DD');
+        const last = moment().endOf('week').add(8, 'days').format('YYYY-MM-DD');
+        if (task?.task?.due_to) {
+          if ((new Date(task?.task?.due_to) > new Date(first)) && (new Date(task?.task?.due_to) < new Date(last))) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+
+      })
+      this.unchangedTasks = tasks;
+    } else if (to == 'due_14_days') {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => {
+        const first = moment().format('YYYY-MM-DD');
+        const last = moment().add(14, 'days').format('YYYY-MM-DD');
+        if (task?.task?.due_to) {
+          if ((new Date(task?.task?.due_to) > new Date(first)) && (new Date(task?.task?.due_to) < new Date(last))) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+
+      })
+      this.unchangedTasks = tasks;
+    } else if (to == "users") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => {
+        var bit = false;
+        task._assigned_to.forEach(element => {
+          if (element._id == this.filteringData) {
+            bit = true
+          }
+        })
+        return bit;
+      })
+      this.unchangedTasks = tasks;
+    }
+    else {
+      this.tasks = this.unchangedTasks.tasksList;
+    }
+
+
+  }
+
+  async sorting() {
+    if (this.sortingBit == 'due_date' || this.sortingBit == 'none') {
+      this.tasks.sort((t1, t2) => {
+        if (t1.task?.due_to && t2.task?.due_to) {
+          if (new Date(t1.task?.due_to) < new Date(t2.task?.due_to)) {
+            return this.sortingBit == 'due_date' ? -1 : 1;
+          } else {
+            return this.sortingBit == 'due_date' ? 1 : -1;
+          }
+        } else {
+          if (t1.task?.due_to && !t2.task?.due_to) {
+            return -1;
+          } else if (!t1.task?.due_to && t2.task?.due_to) {
+            return 1;
+          }
+        }
+      })
+
+    } else if (this.sortingBit == 'proirity') {
+      this.tasks.sort((t1, t2) => {
+        return (t1?.task?.custom_fields && t2?.task?.custom_fields)
+          ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
+            ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
+              ? 1 : 0))
+          : ((t1?.task?.custom_fields && !t2?.task?.custom_fields)
+            ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
+              ? 1 : 0);
+      });
+
+    } else if (this.sortingBit == 'tags') {
+      this.tasks.sort((t1, t2) => {
+        if (t1?.tags.length > 0 && t2?.tags.length > 0) {
+          const name1 = t1?.tags[0]?.toLowerCase();
+          const name2 = t2?.tags[0]?.toLowerCase();
+          if (name1 > name2) { return 1; }
+          if (name1 < name2) { return -1; }
+          return 0;
+        } else {
+          if (t1?.tags.length > 0 && t2?.tags.length == 0) {
+            return -1;
+          } else if (t1?.tags.length == 0 && t2?.tags.length > 0) {
+            return 1;
+          }
+          return 0;
+        }
+      });
+    } else if (this.sortingBit == 'status') {
+
+      this.tasks.sort((t1, t2) => {
+        return (t1?.task?.status && t2?.task?.status)
+          ? (((t1?.task?.status == 'to do' && t2?.task?.status != 'to do') || (t1?.task?.status == 'in progress' && t2?.task?.status == 'done'))
+            ? -1 : (((t1?.task?.status != 'to do' && t2?.task?.status == 'to do') || (t1?.task?.status == 'done' && t2?.task?.status == 'in progress'))
+              ? 1 : 0))
+          : ((t1?.task?.status && !t2?.task?.status)
+            ? -1 : ((!t1?.task?.status && t2?.task?.status))
+              ? 1 : 0);
+      });
+    }
+  }
+
   loadCustomFieldsToShow() {
-    if (this.customFieldsToShow.length === 0){
+    if (this.customFieldsToShow.length === 0) {
       this.section.custom_fields_to_show.forEach(field => {
         const cf = this.getCustomField(field);
         // Push the Column
@@ -110,7 +300,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
   getProgressPercent(northStar) {
     if (northStar.type !== 'Percent') {
-      return (northStar.values[northStar.values.length - 1].value)/northStar.target_value;
+      return (northStar.values[northStar.values.length - 1].value) / northStar.target_value;
     }
 
     return northStar.values[northStar.values.length - 1].value / 100;
@@ -202,7 +392,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
           this.tasks[indexTask] = post;
         } else {
           this.tasks.splice(indexTask, 1);
-          this.taskChangeSectionEmitter.emit({post: post, oldSection: this.section.title});
+          this.taskChangeSectionEmitter.emit({ post: post, oldSection: this.section.title });
         }
       }
 
@@ -241,15 +431,15 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   removeColumn(field: any) {
     let index: number = this.customFieldsToShow.findIndex(cf => cf.name === field);
     if (index !== -1) {
-        this.customFieldsToShow.splice(index, 1);
+      this.customFieldsToShow.splice(index, 1);
     }
     index = this.displayedColumns.indexOf(field.name);
     if (index !== -1) {
-        this.displayedColumns.splice(index, 1);
+      this.displayedColumns.splice(index, 1);
     }
     index = this.section.custom_fields_to_show.indexOf(field.name);
     if (index !== -1) {
-        this.section.custom_fields_to_show.splice(index, 1);
+      this.section.custom_fields_to_show.splice(index, 1);
     }
 
     this.columnService.saveCustomFieldsToShow(this.groupData._id, this.section.title, this.section.custom_fields_to_show);
