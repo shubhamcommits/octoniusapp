@@ -74,6 +74,12 @@ export class GroupFilesComponent implements OnInit {
   transferAction = '';
   groupData: any;
 
+  // Variable for lastPostId
+  lastFileId: string;
+
+  // More to load maintains check if we have more to load members on scroll
+  public moreToLoad: boolean = true;
+
   async ngOnInit() {
 
     // Fetch the current user
@@ -84,6 +90,9 @@ export class GroupFilesComponent implements OnInit {
 
     // Fetch the uploaded files from the server
     this.files = await this.publicFunctions.getFiles(this.groupId);
+
+    // Set the lastFileId for scroll
+    this.lastFileId = this.files[this.files.length - 1]?._id;
 
     // Concat the files
     this.files = [...this.files, ...this.folders];
@@ -135,8 +144,24 @@ export class GroupFilesComponent implements OnInit {
     return !(JSON.stringify(object) === JSON.stringify({}))
   }
 
-  onScroll() {
+  async onScroll() {
+    if (this.moreToLoad) {
+      // Start the loading spinner
+      this.isLoading$.next(true);
 
+      const files:any = await this.publicFunctions.getFiles(this.groupId, this.lastFileId);
+      this.files = [...this.files, ...files];
+
+      // Set the lastFileId for scroll
+      this.lastFileId = files[files.length - 1]?._id;
+
+      if (files.length < 5) {
+        this.moreToLoad = false;
+      }
+
+      // Stop the loading spinner
+      this.isLoading$.next(false);
+    }
   }
 
   /**
