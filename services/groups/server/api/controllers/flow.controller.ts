@@ -45,7 +45,7 @@ export class FlowController {
      * This function fetches the automation flows of the group corresponding to the @constant groupId 
      * @param req - @constant groupId
      */
-    async getAtomationFlows(req: Request, res: Response) {
+    async getAutomationFlows(req: Request, res: Response) {
         try {
             // Find the Group based on the groupId
             const flows = await Flow.find({

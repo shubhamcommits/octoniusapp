@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Injector, Input, OnChanges, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, SimpleChanges, Injector, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { PublicFunctions } from 'modules/public.functions';
@@ -32,6 +32,8 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   customFieldsToShow = [];
   unchangedTasks: any;
   newColumnSelected
+  notchanged: any;
+  revert: boolean = false;
 
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -53,13 +55,37 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     private injector: Injector
   ) { }
 
-  async ngOnChanges() {
+  async ngOnChanges(changes: SimpleChanges) {
     this.customFields = [...this.customFields];
-    await this.initTable();
-
     this.flowService.getGroupAutomationFlows(this.groupData._id).then(res => {
       this.flows = res['flows'];
     });
+
+    for (const propName in changes) {
+      const change = changes[propName];
+      const to = change.currentValue;
+      const from = change.previousValue;
+      if (propName === 'sortingBit') {
+        if (to == 'reverse') {
+          if (from == 'invert') {
+            this.sortingBit = this.notchanged;
+          } else {
+            this.sortingBit = from;
+            this.notchanged = from;
+          }
+          this.revert = true;
+        } else if (to == 'invert') {
+          this.sortingBit = this.notchanged;
+          this.revert = false;
+        } else {
+          this.sortingBit = to;
+          this.revert = false;
+        }
+      }
+    }
+
+    await this.initTable();
+
   }
 
   ngAfterViewInit() {
@@ -83,7 +109,9 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     this.tasks = [...this.tasks];
     await this.filtering(this.filteringBit);
     await this.sorting();
-    
+    if (this.revert) {
+      this.tasks.reverse();
+    }
 
     this.dataSource = new MatTableDataSource(this.tasks);
     this.dataSource.sort = this.sort;
@@ -240,7 +268,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
         }
       })
 
-    } else if (this.sortingBit == 'proirity') {
+    } else if (this.sortingBit == 'priority') {
       this.tasks.sort((t1, t2) => {
         return (t1?.task?.custom_fields && t2?.task?.custom_fields)
           ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
@@ -269,7 +297,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
         }
       });
     } else if (this.sortingBit == 'status') {
-
       this.tasks.sort((t1, t2) => {
         return (t1?.task?.status && t2?.task?.status)
           ? (((t1?.task?.status == 'to do' && t2?.task?.status != 'to do') || (t1?.task?.status == 'in progress' && t2?.task?.status == 'done'))

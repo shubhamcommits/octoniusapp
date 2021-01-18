@@ -1041,7 +1041,7 @@ export class PublicFunctions {
                   steps.forEach(async (step, stepIndex) => {
                       if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger || false)) {
                         const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status are'; });
-                        post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, childStatusTriggerIndex);
+                        post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, childStatusTriggerIndex != -1);
                       }
                   });
               }
@@ -1134,5 +1134,6 @@ export class PublicFunctions {
         });
         return post;
     }
+    return post;
   }
 }
