@@ -1302,7 +1302,7 @@ export class PostController {
 
     async executeAutomationFlows(groupId: string, post: any, userId: string, isCreationTaskTrigger?: boolean) {
         try {
-            const flows = await flowService.getAtomationFlows(groupId);
+            const flows = await flowService.getAutomationFlows(groupId);
             if (flows && flows.length > 0) {
                 await flows.forEach(flow => {
                     const steps = flow['steps'];

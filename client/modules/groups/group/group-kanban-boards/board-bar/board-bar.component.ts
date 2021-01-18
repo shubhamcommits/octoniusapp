@@ -37,6 +37,7 @@ export class BoardBarComponent implements OnInit {
   filterfor: string = 'none'
   menuLable: string='Filter Task For';
   menuFor: string='Filter';
+  reverse: boolean = false;
 
   ngOnInit() {
 
@@ -57,8 +58,21 @@ export class BoardBarComponent implements OnInit {
   }
 
   sortTasks(bit: string) {
-    this.sortby = bit;
-    this.sortTaskEmitter.emit(bit);
+    if(bit==this.sortby){
+      if(this.reverse==false){
+        this.reverse = true;
+        this.sortTaskEmitter.emit('reverse');
+      } else if(this.reverse==true){
+        this.reverse = false;
+        this.sortTaskEmitter.emit('invert');
+      }
+      
+    } else {
+      this.sortby = bit;
+      this.reverse = false;
+      this.sortTaskEmitter.emit(bit);
+    }
+    
   }
 
   filterTask(bit: string){
