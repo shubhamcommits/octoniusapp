@@ -335,8 +335,7 @@ export class PostController {
             // Send status 200 response
             return res.status(200).json({
                 message: 'Post Successfully Liked',
-                post: data.post,
-                user: data.user
+                follow: 'OK'
             });
         } catch (error) {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
@@ -368,8 +367,7 @@ export class PostController {
             // Send status 200 response
             return res.status(200).json({
                 message: 'Post Successfully Unliked',
-                post: data.post,
-                user: data.user
+                unfollow: 'OK'
             });
         } catch (error) {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
@@ -1304,7 +1302,7 @@ export class PostController {
 
     async executeAutomationFlows(groupId: string, post: any, userId: string, isCreationTaskTrigger?: boolean) {
         try {
-            const flows = await flowService.getAtomationFlows(groupId);
+            const flows = await flowService.getAutomationFlows(groupId);
             if (flows && flows.length > 0) {
                 await flows.forEach(flow => {
                     const steps = flow['steps'];

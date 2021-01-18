@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
   templateUrl: './follow-post.component.html',
   styleUrls: ['./follow-post.component.scss']
 })
-export class FollowPostComponent implements OnInit {
+export class FollowPostComponent implements OnInit, OnChanges {
 
   constructor(private _injector: Injector) { }
 
@@ -19,7 +19,14 @@ export class FollowPostComponent implements OnInit {
   @Output() postLiked = new EventEmitter();
   @Output() postUnLiked = new EventEmitter();
 
+  isFollowedByUser: boolean = false;
+
   ngOnInit() {
+  }
+
+  ngOnChanges() {
+    this.isFollowedByUser = (this.post.hasOwnProperty('_followers') && this.post._followers.findIndex(follower => follower._id === this.userData._id)>=0)
+      ? true : false;
   }
 
   /**
@@ -32,6 +39,8 @@ export class FollowPostComponent implements OnInit {
 
     // Increment the likes count by 1
     this.post.followers_count += 1
+
+    this.isFollowedByUser = true;
 
     this.postLiked.emit(this.userData._id);
 
@@ -50,7 +59,9 @@ export class FollowPostComponent implements OnInit {
     this.post._followers.splice(userIndex, 1)
 
     // Decrement the likes count by 1
-    this.post.followers_count -= 1
+    this.post.followers_count -= 1;
+
+    this.isFollowedByUser = false;
 
     this.postUnLiked.emit(this.userData);
 
@@ -58,18 +69,8 @@ export class FollowPostComponent implements OnInit {
   }
 
   /**
-   * Check if the post is followed by the currently loggedIn user
-   */
-  isFollowedByUser() {
-    if (this.post.hasOwnProperty('_followers') && this.post._followers.findIndex(follower => follower._id === this.userData._id)>=0) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
    * This function is responsible for calling the HTTP request to like a post
-   * @param postId 
+   * @param postId
    */
   onFollowPost(postId: string){
 
@@ -79,7 +80,7 @@ export class FollowPostComponent implements OnInit {
     // Return a new promise to call the service function
     return new Promise((resolve, reject)=>{
       postService.follow(postId)
-      .then((res)=>{
+      .then((res)=> {
         resolve(res);
       })
       .catch((err)=>{
@@ -90,7 +91,7 @@ export class FollowPostComponent implements OnInit {
 
   /**
    * This function is responsible for calling the HTTP request to unlike a post
-   * @param postId 
+   * @param postId
    */
   onUnfollowPost(postId: string){
 
@@ -100,7 +101,7 @@ export class FollowPostComponent implements OnInit {
     // Return a new promise to call the service function
     return new Promise((resolve, reject)=>{
       postService.unfollow(postId)
-      .then((res)=>{
+      .then((res)=> {
         resolve(res);
       })
       .catch((err)=>{

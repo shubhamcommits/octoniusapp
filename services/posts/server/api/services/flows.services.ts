@@ -21,7 +21,7 @@ export class FlowService {
    * This function fetches the automation flows of a group
    * @param groupId
    */
-  async getAtomationFlows(groupId: string) {
+  async getAutomationFlows(groupId: string) {
     const flows = await Flow.find({
         _group: groupId
     })
