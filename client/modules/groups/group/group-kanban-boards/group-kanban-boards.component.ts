@@ -68,48 +68,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
       this.flows = res['flows'];
     });
-
-    // this.columns.forEach( column => {
-    //   let tasks = [];
-    //   /*
-    //   let doneTasks = [];
-    //   if(column.tasks.done !== undefined){
-    //     column.tasks.done.forEach(doneTask =>{
-    //       if(doneTask.bars !== undefined && doneTask.bars.length > 0){
-    //           doneTask.bars.forEach(bar => {
-    //             if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
-    //               doneTasks.push(doneTask);
-    //             }
-    //           });
-    //         } else {
-    //           doneTasks.push(doneTask);
-    //         }
-    //       }
-    //     );
-    //   }
-    //   */
-    //   column.tasks.forEach( task => {
-    //     if(task.bars && task.bars !== undefined && task.bars.length > 0){
-    //       task.bars.forEach(bar => {
-    //         if(bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
-    //           tasks.push(task);
-    //         }
-    //       });
-    //     } else {
-    //       tasks.push(task);
-    //     }
-    //   });
-
-    //   tasks.sort(function(t1, t2) {
-    //     if (t1.task.status != t2.task.status) {
-    //       return t1.task.status == 'done' ? 1 : -1;
-    //     }
-    //     return t2.title - t1.title;
-    //   });
-
-    //   column.tasks = tasks;
-    //   // column.tasks.done = doneTasks;
-    // });
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -311,7 +269,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         })
         this.columns[index].tasks = task;
       }
-    } else if (this.sortingBit == 'proirity') {
+    } else if (this.sortingBit == 'priority') {
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {
@@ -556,6 +514,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
                   newColumnTitle = this.columns[index - 1]['title'];
                 } else if (index + 1 < this.columns.length) {
                   newColumnTitle = this.columns[index + 1]['title'];
+                } else {
+                  newColumnTitle = this.columns[0]['title'];
                 }
 
                 // Call the HTTP Request to move the task
@@ -653,7 +613,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateTask(data);
-      this.sorting();
+      // this.sorting();
     });
     const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
       this.onDeleteEvent(data._id);
@@ -693,11 +653,11 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
           }
         }
 
-        this.sorting();
-
         return;
       }
     });
+
+    this.sorting();
   }
 
   /**

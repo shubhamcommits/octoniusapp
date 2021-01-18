@@ -27,7 +27,7 @@ routes.post('/addAutomationFlow', flow.addAutomationFlow);
 routes.delete('/:flowId', flow.deleteFlow);
 
 // GET - Get group automation flows
-routes.get('/:groupId/getAutomationFlows', flow.getAtomationFlows);
+routes.get('/:groupId/getAutomationFlows', flow.getAutomationFlows);
 
 // PUT - Update the flow name
 routes.put('/updateFlowName', flow.updateFlowName);
