@@ -2,13 +2,13 @@
 
     <div class="rightside">
 
-      <button class="btn badge-filters" *ngIf="isAdmin" [matMenuTriggerFor]="menuSort">
+      <button class="btn badge-filters" [matMenuTriggerFor]="menuSort">
         <i class="material-icons-outlined"> import_export</i> <span>Sort</span>
       </button>
 
       <span class="separator"></span>
 
-      <button class="btn badge-filters" [matMenuTriggerFor]="menuFilter" *ngIf="isAdmin">
+      <button class="btn badge-filters" [matMenuTriggerFor]="menuFilter">
         <i class="material-icons-outlined"> filter_list</i> <span>Filter</span>
       </button>
 
@@ -194,7 +194,7 @@
 
 
 
-        
+
         </span>
 
       </mat-menu>
