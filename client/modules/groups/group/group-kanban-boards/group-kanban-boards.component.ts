@@ -289,6 +289,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   }
 
   async sorting() {
+    
     if (this.sortingBit == 'due_date' || this.sortingBit == 'none') {
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;
@@ -359,6 +360,14 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         });
         this.columns[index].tasks = task;
       }
+    } else if(this.sortingBit == 'reverse'){
+      this.columns.forEach(column => {
+        column.tasks.reverse();
+      });
+    } else if (this.sortingBit == 'invert'){
+      this.columns.forEach(column => {
+        column.tasks.reverse();
+      });
     }
   }
 
