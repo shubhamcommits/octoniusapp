@@ -335,8 +335,7 @@ export class PostController {
             // Send status 200 response
             return res.status(200).json({
                 message: 'Post Successfully Liked',
-                post: data.post,
-                user: data.user
+                follow: 'OK'
             });
         } catch (error) {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
@@ -368,8 +367,7 @@ export class PostController {
             // Send status 200 response
             return res.status(200).json({
                 message: 'Post Successfully Unliked',
-                post: data.post,
-                user: data.user
+                unfollow: 'OK'
             });
         } catch (error) {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
