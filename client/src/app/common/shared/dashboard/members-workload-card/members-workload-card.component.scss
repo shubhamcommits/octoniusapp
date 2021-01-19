@@ -69,12 +69,14 @@ img {
   display: flex;
   align-items: center;
   cursor: pointer;
+
+  justify-content: space-between;
 }
 
 .workload_avatar {
   flex: 0 0;
   text-align: center;
-  margin-right: 16px;
+
   .feed-avatar {
       width: 50px;
       height: 50px;
@@ -85,17 +87,14 @@ img {
 .workload_member {
   max-width: 200px;
   flex: 0 1 200px;
-  margin-right: 16px;
+  margin-left: -200px;
 }
 
 .member_tasks {
-  margin-right: 80px;
 }
 
 .member_tasks_statistics {
-  margin-right: 80px;
 }
 
 .member_tasks_velocity {
-
 }

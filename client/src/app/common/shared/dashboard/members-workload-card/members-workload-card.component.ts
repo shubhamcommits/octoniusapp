@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { PostService } from 'src/shared/services/post-service/post.service';
+import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
   selector: 'app-members-workload-card',
@@ -15,11 +15,27 @@ export class MembersWorkloadCardComponent implements OnInit {
 
   public publicFunctions = new PublicFunctions(this.injector);
 
+  userData;
   groupData;
   groupMembers = [];
   groupTasks;
 
-  period = 7;
+  period = 0;
+  // last week, this week, next week
+  periods = [
+    {
+     key: -7,
+     value: 'Last week'
+    },
+    {
+     key: 0,
+     value: 'This week'
+    },
+    {
+     key: 7,
+     value: 'NextWeek'
+    }
+  ];
 
   chartsReady = false;
 
@@ -31,30 +47,35 @@ export class MembersWorkloadCardComponent implements OnInit {
 
   constructor(
     private injector: Injector,
-    private groupService: GroupService,
-    private postService: PostService
+    private groupService: GroupService
   ) { }
 
   async ngOnInit() {
-
     // Starts the spinner
     this.isLoading$.next(true);
 
+    this.userData = await this.publicFunctions.getCurrentUser();
     this.groupData = await this.publicFunctions.getCurrentGroup();
+
+    await this.initTable();
+
+    // Stops the spinner and return the value with ngOnInit
+    this.isLoading$.next(false);
+  }
+
+  async initTable() {
+
+    this.period = (this.userData.stats.group_dashboard_members_period) ? this.userData.stats.group_dashboard_members_period : 0;
 
     await this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
       this.groupMembers = res['users'];
     });
 
-    // last week, this week, next week
     this.groupTasks = await this.publicFunctions.getAllGroupTasks(this.groupData?._id);
 
     await this.assignTasks();
 
     this.chartsReady = true;
-
-    // Stops the spinner and return the value with ngOnInit
-    this.isLoading$.next(false);
   }
 
   assignTasks() {
@@ -289,4 +310,26 @@ export class MembersWorkloadCardComponent implements OnInit {
     return returnCounter;
   }
   */
+
+  async periodSelected(event) {
+    // Starts the spinner
+    this.isLoading$.next(true);
+
+    this.period = event.value;
+    this.userData.stats.group_dashboard_members_period = this.period;
+
+    this.chartsReady = false;
+
+    await this.initTable();
+
+    // User service
+    const userService = this.injector.get(UserService);
+
+    // Update user´s period
+    userService.updateUser(this.userData);
+    this.publicFunctions.sendUpdatesToUserData(this.userData);
+
+    // Stops the spinner and return the value with ngOnInit
+    this.isLoading$.next(false);
+  }
 }
