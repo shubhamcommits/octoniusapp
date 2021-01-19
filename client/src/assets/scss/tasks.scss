@@ -1,0 +1,11 @@
+@import "src/assets/scss/variables";
+
+.status-todo-color {
+  color: $pumpkin-orange;
+}
+.status-in-progress-color {
+  color:  $turquoise;
+}
+.status-done-color {
+  color:  $dark-sky-blue;
+}

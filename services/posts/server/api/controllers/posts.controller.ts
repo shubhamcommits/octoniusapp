@@ -1083,6 +1083,35 @@ export class PostController {
     }
 
     /**
+     * This function is responsible for fetching the posts of a group
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getAllGroupTasks(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { groupId, numDays } = req.query;
+
+        try {
+
+            // Call Service function to fetch the posts
+            const posts = await postService.getAllGroupTasks(groupId, +numDays)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                });
+            
+            // // Send status 200 response
+            return res.status(200).json({
+                message: 'Group Tasks fetched!',
+                posts: posts
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for fetching the subtasks of a task
      * @param req 
      * @param res 

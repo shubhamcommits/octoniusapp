@@ -1709,6 +1709,32 @@ export class PostService {
     return posts;
   }
 
+  async getAllGroupTasks(groupId: any, numDays?: number) {
+
+    const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
+
+    let posts = [];
+
+    // Generate the actual time
+    const today = moment().subtract(1, 'days').endOf('day').format()
+
+    // Fetch the tasks posts
+    posts = await Post.find({
+      $and: [
+        { _group: groupId },
+        { type: 'task' },
+        { 'task.is_template': { $ne: true }},
+        //{ 'task.due_to': { $gte: comparingDate, $lt: today } }
+      ]
+    })
+      .sort('-task.due_to')
+      .select('_id _group task')
+      .populate('_assigned_to', this.userFields)
+      .lean();
+
+    return posts;
+  }
+
   async getGroupPostsResults(groupId: any, numDays: number) {
 
     const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');

@@ -103,6 +103,47 @@ export class MembersControllers {
     }
 
     /**
+     * This function is responsible for fetching the list of group members based on the groupId
+     * @param { params: { groupId } }req 
+     * @param res 
+     * @param next 
+     */
+    async getAllGroupMembers(req: Request, res: Response, next: NextFunction) {
+
+        const { query: { groupId } } = req;
+
+        try {
+
+            // If either groupId is null or not provided then we throw BAD REQUEST 
+            if (!groupId) {
+                return res.status(400).json({
+                    message: 'Please provide groupId as the query parameter!'
+                })
+            }
+
+            // Find the users based on the regex expression matched with either full_name or email property present in the current group
+            const users = await User.find({
+                $and: [
+                    { _groups: groupId },
+                    { active: true }
+                ]
+            })
+                .sort('_id')
+                .select('first_name last_name full_name email current_position active role profile_pic created_date')
+                .lean() || []
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `The First ${users.length} group members found!`,
+                users: users
+            })
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for adding a new user to the group
      * @param { body: { groupId, member: { _id, role, first_name, email  } } }req 
      * @param res 

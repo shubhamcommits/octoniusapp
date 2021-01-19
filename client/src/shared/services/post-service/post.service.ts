@@ -362,6 +362,21 @@ export class PostService {
   }
 
   /**
+   * Group's tasks
+   */
+  getAllGroupTasks(groupId: string, numDays?: number) {
+    let params = {};
+
+    params = {
+      groupId: groupId.toString().trim(),
+      numDays: (numDays) ? numDays.toString().trim() : '0'
+    };
+    return this._http.get(this.baseURL + `/group/tasks`, {
+      params: params
+    }).toPromise();
+  }
+
+  /**
    * This function is used to save the start or end date of a task
    * @param postId
    */

@@ -112,6 +112,9 @@ routes.get('/workspace/posts', postController.getWorspacePosts);
 // This route is used to get the group's posts
 routes.get('/group/posts', postController.getGroupPosts);
 
+// This route is used to get the group's tasks
+routes.get('/group/tasks', postController.getAllGroupTasks);
+
 // -| TASKS |-
 // PUT - Add a new assignee to the task
 routes.put('/:postId/add-assignee', postController.addAssignee.bind(postController));

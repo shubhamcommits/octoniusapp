@@ -21,11 +21,14 @@ routes.use(authsHelper.isLoggedIn);
 
 // -| Group Members |-
 
-// GET - Get a list of first 10 workspace members
+// GET - Get a list of first 10 members
 routes.get('/', members.getGroupMembers);
 
-// GET - Get a list of next 5 workspace members based on the lastUserId fetched from the first 10 workspace
+// GET - Get a list of next 5 members based on the lastUserId fetched from the first 10 workspace
 routes.get('/next', members.getNextGroupMembers);
+
+// GET - Get a list of members
+routes.get('/all', members.getAllGroupMembers);
 
 // POST - Add a new user to the group
 routes.post('/add', members.addNewUserInGroup);
