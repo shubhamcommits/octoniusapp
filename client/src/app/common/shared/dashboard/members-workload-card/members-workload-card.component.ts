@@ -53,9 +53,6 @@ export class MembersWorkloadCardComponent implements OnInit {
 
     this.chartsReady = true;
 
-console.log(this.groupMembers);
-console.log(this.chartsReady);
-
     // Stops the spinner and return the value with ngOnInit
     this.isLoading$.next(false);
   }
