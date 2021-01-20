@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar *ngIf="myAuthCheck()"></app-navbar>
 <router-outlet>
   <ngx-ui-loader></ngx-ui-loader>
 </router-outlet>

@@ -4,6 +4,7 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { retry } from 'rxjs/internal/operators/retry';
 import { map } from 'rxjs/internal/operators/map';
 import { SubSink } from 'subsink';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
 
@@ -33,7 +34,8 @@ export class AppComponent {
    * 4. Enabling and calling the @event workspaceData from the socket server
    */
   constructor(
-    private injector: Injector
+    private injector: Injector,
+    private storageService: StorageService,
   ) {
 
     let socketService = this.injector.get(SocketService);
@@ -53,6 +55,9 @@ export class AppComponent {
 
   }
 
+  myAuthCheck() {
+    return this.storageService.existData('authToken');
+  } 
   /**
    * This function checks for the active internet connection
    * @param utilityService

@@ -46,7 +46,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   userData: any;
 
   // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.queryParamMap.get('group');
+  groupId = window?.location?.search?.split("?group=")[1]?.split("&")[0];
 
   // My Workplace variable check
   myWorkplace: boolean;
