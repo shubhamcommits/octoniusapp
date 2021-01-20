@@ -1711,22 +1711,47 @@ export class PostService {
 
   async getAllGroupTasks(groupId: any, numDays?: number) {
 
-    const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
-
     let posts = [];
+    let query = {};
 
-    // Generate the actual time
-    const today = moment().subtract(1, 'days').endOf('day').format()
+    if (numDays) {
+      // Generate the date for the start of the week
+      let startingDate = moment().add(1, 'days').endOf('day').startOf('week').format();
+      // Generate the date for the end of the week
+      let endDate = moment().add(1, 'days').endOf('day').endOf('week').format();
 
+      if (numDays == -7) {
+        // Generate the date for the start of the previous week
+        startingDate = moment().startOf('week').subtract(1, 'days').endOf('day').startOf('week').format();
+        // Generate the date for the end of the previous week
+        endDate = moment().startOf('week').subtract(2, 'days').endOf('day').endOf('week').format();
+      } else if (numDays == 7) {
+        // Generate the date for the start of the next week
+        startingDate = moment().add(1, 'days').endOf('day').endOf('week').format();
+        // Generate the date for the end of the next week
+        endDate = moment().endOf('week').add(1, 'days').endOf('day').endOf('week').format();
+      }
+      query = {
+        $and: [
+          { _group: groupId },
+          { type: 'task' },
+          { 'task.is_template': { $ne: true }},
+          { 'task.due_to': { $gte: startingDate, $lte: endDate }},
+        ]
+      };
+    } else {
+      query = {
+        $and: [
+          { _group: groupId },
+          { type: 'task' },
+          { 'task.is_template': { $ne: true }}
+        ]
+      };
+    }
+    
+    
     // Fetch the tasks posts
-    posts = await Post.find({
-      $and: [
-        { _group: groupId },
-        { type: 'task' },
-        { 'task.is_template': { $ne: true }},
-        //{ 'task.due_to': { $gte: comparingDate, $lt: today } }
-      ]
-    })
+    posts = await Post.find(query)
       .sort('-task.due_to')
       .select('_id _group task')
       .populate('_assigned_to', this.userFields)

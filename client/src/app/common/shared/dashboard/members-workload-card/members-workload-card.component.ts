@@ -21,7 +21,6 @@ export class MembersWorkloadCardComponent implements OnInit {
   groupTasks;
 
   period = 0;
-  // last week, this week, next week
   periods = [
     {
      key: -7,
@@ -71,7 +70,7 @@ export class MembersWorkloadCardComponent implements OnInit {
       this.groupMembers = res['users'];
     });
 
-    this.groupTasks = await this.publicFunctions.getAllGroupTasks(this.groupData?._id);
+    this.groupTasks = await this.publicFunctions.getAllGroupTasks(this.groupData?._id, this.period);
 
     await this.assignTasks();
 

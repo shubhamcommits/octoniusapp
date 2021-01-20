@@ -369,7 +369,7 @@ export class PostService {
 
     params = {
       groupId: groupId.toString().trim(),
-      numDays: (numDays) ? numDays.toString().trim() : '0'
+      numDays: (numDays) ? numDays.toString().trim() : null
     };
     return this._http.get(this.baseURL + `/group/tasks`, {
       params: params
