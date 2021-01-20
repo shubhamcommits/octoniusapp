@@ -548,6 +548,31 @@ export class PublicFunctions {
     }
 
     /**
+     * This function is responsible for fetching the tasks from the server based on the groupId
+     * @param groupId
+     * @param period
+     */
+    getAllGroupTasks(groupId: string, period: string) {
+
+        // Post Service Instance
+        let postService = this.injector.get(PostService);
+
+        return new Promise((resolve, reject) => {
+            postService.getAllGroupTasks(groupId, period)
+                .then((res: any) => {
+
+                    // Resolve with sucess
+                    resolve(res['posts'])
+                })
+                .catch(() => {
+
+                    // If there's an error, then reject with empty array
+                    reject([]);
+                })
+        })
+    }
+
+    /**
      * This function is responsible for fetching the tags from the server based on the groupId
      * @param groupId
      * @param tag: optional
@@ -1135,5 +1160,21 @@ export class PublicFunctions {
         return post;
     }
     return post;
+  }
+
+  async getCurrentGroupMembers() {
+    const groupData = await this.getCurrentGroup();
+    let groupMembers = [];
+    if(groupData['_admins'].length>0){
+      groupData['_admins'].forEach(element => {
+        groupMembers.push(element);
+      });
+    }
+    if(groupData['_members'].length>0){
+      groupData['_members'].forEach(element => {
+        groupMembers.push(element);
+      });
+    }
+    return groupMembers;
   }
 }
