@@ -1709,34 +1709,53 @@ export class PostService {
     return posts;
   }
 
-  async getAllGroupTasks(groupId: any, numDays?: number) {
+  async getAllGroupTasks(groupId: any, period: any) {
 
     let posts = [];
     let query = {};
 
-    if (numDays) {
-      // Generate the date for the start of the week
-      let startingDate = moment().add(1, 'days').endOf('day').startOf('week').format();
-      // Generate the date for the end of the week
-      let endDate = moment().add(1, 'days').endOf('day').endOf('week').format();
+    // We assume that by default it will be 'this_week'
+    // Generate the date for the start of the week
+    let startingDate = moment().add(1, 'days').endOf('day').startOf('week').format();
+    // Generate the date for the end of the week
+    let endDate = moment().add(1, 'days').endOf('day').endOf('week').format();
 
-      if (numDays == -7) {
-        // Generate the date for the start of the previous week
-        startingDate = moment().startOf('week').subtract(1, 'days').endOf('day').startOf('week').format();
-        // Generate the date for the end of the previous week
-        endDate = moment().startOf('week').subtract(2, 'days').endOf('day').endOf('week').format();
-      } else if (numDays == 7) {
-        // Generate the date for the start of the next week
-        startingDate = moment().add(1, 'days').endOf('day').endOf('week').format();
-        // Generate the date for the end of the next week
-        endDate = moment().endOf('week').add(1, 'days').endOf('day').endOf('week').format();
-      }
+    if (period.toLowerCase() == 'next_week') {
+      // Generate the date for the start of the next week
+      startingDate = moment().add(1, 'weeks').endOf('day').startOf('week').format();
+      // Generate the date for the end of the next week
+      endDate = moment().add(1, 'weeks').endOf('day').endOf('week').format();
+
+    } else if (period.toLowerCase() == 'this_month') {
+      // Generate the date for the start of the month
+      startingDate = moment().add(1, 'days').endOf('day').startOf('month').format();
+      // Generate the date for the end of the month
+      endDate = moment().add(1, 'days').endOf('day').endOf('month').format();
+
+    } else if (period.toLowerCase() == 'next_month') {
+      // Generate the date for the start of the next month
+      startingDate = moment().add(1, 'months').endOf('day').startOf('month').format();
+      // Generate the date for the end of the next month
+      endDate = moment().add(1, 'months').endOf('day').endOf('month').format();
+    }
+
+    if (period.toLowerCase() == 'this_week') {
       query = {
         $and: [
           { _group: groupId },
           { type: 'task' },
           { 'task.is_template': { $ne: true }},
-          { 'task.due_to': { $gte: startingDate, $lte: endDate }},
+          {
+            $or: [
+              { 'task.due_to': { $gte: startingDate, $lte: endDate }},
+              {
+                $and:[
+                  { 'task.due_to': { $lte: moment().local().add(1, 'days').format('YYYY-MM-DD') }},
+                  { 'task.status': { $ne: 'done' }}
+                ]
+              }
+            ]
+          }
         ]
       };
     } else {
@@ -1744,7 +1763,8 @@ export class PostService {
         $and: [
           { _group: groupId },
           { type: 'task' },
-          { 'task.is_template': { $ne: true }}
+          { 'task.is_template': { $ne: true }},
+          { 'task.due_to': { $gte: startingDate, $lte: endDate }}
         ]
       };
     }

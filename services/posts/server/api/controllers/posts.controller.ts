@@ -1091,12 +1091,12 @@ export class PostController {
     async getAllGroupTasks(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { groupId, numDays } = req.query;
+        const { groupId, period } = req.query;
 
         try {
 
             // Call Service function to fetch the posts
-            const posts = await postService.getAllGroupTasks(groupId, +numDays)
+            const posts = await postService.getAllGroupTasks(groupId, period)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });

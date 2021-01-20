@@ -20,19 +20,23 @@ export class MembersWorkloadCardComponent implements OnInit {
   groupMembers = [];
   groupTasks;
 
-  period = 0;
+  period = 'this_week';
   periods = [
     {
-     key: -7,
-     value: 'Last week'
-    },
-    {
-     key: 0,
+     key: 'this_week',
      value: 'This week'
     },
     {
-     key: 7,
-     value: 'NextWeek'
+     key: 'next_week',
+     value: 'Next week'
+    },
+    {
+     key: 'this_month',
+     value: 'This month'
+    },
+    {
+     key: 'next_month',
+     value: 'Next month'
     }
   ];
 
@@ -64,7 +68,7 @@ export class MembersWorkloadCardComponent implements OnInit {
 
   async initTable() {
 
-    this.period = (this.userData.stats.group_dashboard_members_period) ? this.userData.stats.group_dashboard_members_period : 0;
+    this.period = (this.userData.stats.group_dashboard_members_period) ? this.userData.stats.group_dashboard_members_period : 'this_week';
 
     await this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
       this.groupMembers = res['users'];
@@ -140,12 +144,12 @@ export class MembersWorkloadCardComponent implements OnInit {
       if (moment(task.task.due_to).isBefore(today)) overdueCount++;
     });
 
-    return [toDoCount, inProgressCount, doneCount, overdueCount];
+    return (this.period.toLowerCase() == 'this_week') ? [toDoCount, inProgressCount, doneCount, overdueCount] : [toDoCount, inProgressCount, doneCount];
   }
 
   async getUserWorkStatisticsChartData(tasks) {
-    const barChartData = await this.getTasksStatisticsData(tasks);
-    const barChartOptions = {
+    const data = await this.getTasksStatisticsData(tasks);
+    const options = {
       legend: {
         display: false
       },
@@ -169,27 +173,36 @@ export class MembersWorkloadCardComponent implements OnInit {
       },
     };
 
-    const barChartColors = [{
-      backgroundColor: [
-        '#FFAB00',
-        '#0bc6a0',
-        '#4a90e2',
-        '#FF6584'
-      ]
-    }];
-    let barChartPlugins = [{
+    const colors =
+      (this.period.toLowerCase() == 'this_week')
+        ? [{
+          backgroundColor: [
+            '#FFAB00',
+            '#0bc6a0',
+            '#4a90e2',
+            '#FF6584'
+          ]
+        }]
+        : [{
+          backgroundColor: [
+            '#FFAB00',
+            '#0bc6a0',
+            '#4a90e2'
+          ]
+        }];
+    let plugins = [{
       beforeDraw(chart, options) {
 
       }
     }];
 
     return {
-      data: barChartData,
-      options: barChartOptions,
-      colors: barChartColors,
+      data: data,
+      options: options,
+      colors: colors,
       type: 'bar',
-      labels: ['To Do', 'In Progress', 'Done', 'Overdue'],
-      plugins: barChartPlugins
+      labels: (this.period.toLowerCase() == 'this_week') ? ['To Do', 'In Progress', 'Done', 'Overdue'] : ['To Do', 'In Progress', 'Done'],
+      plugins: plugins
     }
   }
 

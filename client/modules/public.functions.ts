@@ -550,15 +550,15 @@ export class PublicFunctions {
     /**
      * This function is responsible for fetching the tasks from the server based on the groupId
      * @param groupId
-     * @param numDays
+     * @param period
      */
-    getAllGroupTasks(groupId: string, numDays?: any) {
+    getAllGroupTasks(groupId: string, period: string) {
 
         // Post Service Instance
         let postService = this.injector.get(PostService);
 
         return new Promise((resolve, reject) => {
-            postService.getAllGroupTasks(groupId, numDays)
+            postService.getAllGroupTasks(groupId, period)
                 .then((res: any) => {
 
                     // Resolve with sucess
