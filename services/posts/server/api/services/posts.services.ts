@@ -1720,26 +1720,26 @@ export class PostService {
     // Generate the date for the end of the week
     let endDate = moment().add(1, 'days').endOf('day').endOf('week').format();
 
-    if (period.toLowerCase() == 'next_week') {
+    if (period == 'next_week') {
       // Generate the date for the start of the next week
       startingDate = moment().add(1, 'weeks').endOf('day').startOf('week').format();
       // Generate the date for the end of the next week
       endDate = moment().add(1, 'weeks').endOf('day').endOf('week').format();
 
-    } else if (period.toLowerCase() == 'this_month') {
+    } else if (period == 'this_month') {
       // Generate the date for the start of the month
       startingDate = moment().add(1, 'days').endOf('day').startOf('month').format();
       // Generate the date for the end of the month
       endDate = moment().add(1, 'days').endOf('day').endOf('month').format();
 
-    } else if (period.toLowerCase() == 'next_month') {
+    } else if (period == 'next_month') {
       // Generate the date for the start of the next month
       startingDate = moment().add(1, 'months').endOf('day').startOf('month').format();
       // Generate the date for the end of the next month
       endDate = moment().add(1, 'months').endOf('day').endOf('month').format();
     }
 
-    if (period.toLowerCase() == 'this_week') {
+    if (period == 'this_week') {
       query = {
         $and: [
           { _group: groupId },

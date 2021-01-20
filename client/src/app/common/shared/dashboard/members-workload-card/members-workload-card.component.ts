@@ -68,7 +68,7 @@ export class MembersWorkloadCardComponent implements OnInit {
 
   async initTable() {
 
-    this.period = (this.userData.stats.group_dashboard_members_period) ? this.userData.stats.group_dashboard_members_period : 'this_week';
+    this.period = (this.userData?.stats?.group_dashboard_members_period) ? this.userData.stats.group_dashboard_members_period : 'this_week';
 
     await this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
       this.groupMembers = res['users'];
@@ -144,7 +144,7 @@ export class MembersWorkloadCardComponent implements OnInit {
       if (moment(task.task.due_to).isBefore(today)) overdueCount++;
     });
 
-    return (this.period.toLowerCase() == 'this_week') ? [toDoCount, inProgressCount, doneCount, overdueCount] : [toDoCount, inProgressCount, doneCount];
+    return (this.period == 'this_week') ? [toDoCount, inProgressCount, doneCount, overdueCount] : [toDoCount, inProgressCount, doneCount];
   }
 
   async getUserWorkStatisticsChartData(tasks) {
@@ -174,7 +174,7 @@ export class MembersWorkloadCardComponent implements OnInit {
     };
 
     const colors =
-      (this.period.toLowerCase() == 'this_week')
+      (this.period == 'this_week')
         ? [{
           backgroundColor: [
             '#FFAB00',
@@ -201,7 +201,7 @@ export class MembersWorkloadCardComponent implements OnInit {
       options: options,
       colors: colors,
       type: 'bar',
-      labels: (this.period.toLowerCase() == 'this_week') ? ['To Do', 'In Progress', 'Done', 'Overdue'] : ['To Do', 'In Progress', 'Done'],
+      labels: (this.period == 'this_week') ? ['To Do', 'In Progress', 'Done', 'Overdue'] : ['To Do', 'In Progress', 'Done'],
       plugins: plugins
     }
   }
