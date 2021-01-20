@@ -43,6 +43,10 @@ import { IconsSidebarComponent } from '../common/navbar/icons-sidebar/icons-side
     FormsModule,
     SearchModule
   ],
+  exports: [
+    NavbarComponent
+  ],
+
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptorService, multi: true }
   ],

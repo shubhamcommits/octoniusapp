@@ -61,7 +61,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   async ngOnInit() {
 
     // Fetch groupId from router snapshot
-    this.groupId = this.router.snapshot.queryParamMap.get('group');
+    // this.groupId = this.router.snapshot.queryParamMap.get('group');
+    this.groupId = window?.location?.search?.split("?group=")[1]?.split("&")[0];
 
     // Fetch the group data from HTTP Request
     if(this.groupId)
@@ -120,11 +121,17 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   }
 
   isPersonalNavigation() {
-    return this.router.snapshot.queryParamMap.has('myWorkplace')
-      ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-      : (this.router.snapshot['_routerState'].url.toLowerCase().includes('myspace')
-          ? true
-          : false)
+    let workspace = window?.location?.search?.split("&")[1]?.split("myWorkplace=")[1];
+    return workspace
+      ? (workspace == ('false') ? (false) : (true))
+      : (window.location.href.toLowerCase().includes('myspace')
+        ? true
+        : false)
+    // return this.router.snapshot.queryParamMap.has('myWorkplace')
+    //   ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
+    //   : (this.router.snapshot['_routerState'].url.toLowerCase().includes('myspace')
+    //       ? true
+    //       : false)
   }
 
   checkIsFavoriteGroup() {
