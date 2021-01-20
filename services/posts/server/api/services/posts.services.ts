@@ -1709,6 +1709,77 @@ export class PostService {
     return posts;
   }
 
+  async getAllGroupTasks(groupId: any, period: any) {
+
+    let posts = [];
+    let query = {};
+
+    // We assume that by default it will be 'this_week'
+    // Generate the date for the start of the week
+    let startingDate = moment().add(1, 'days').endOf('day').startOf('week').format();
+    // Generate the date for the end of the week
+    let endDate = moment().add(1, 'days').endOf('day').endOf('week').format();
+
+    if (period.toLowerCase() == 'next_week') {
+      // Generate the date for the start of the next week
+      startingDate = moment().add(1, 'weeks').endOf('day').startOf('week').format();
+      // Generate the date for the end of the next week
+      endDate = moment().add(1, 'weeks').endOf('day').endOf('week').format();
+
+    } else if (period.toLowerCase() == 'this_month') {
+      // Generate the date for the start of the month
+      startingDate = moment().add(1, 'days').endOf('day').startOf('month').format();
+      // Generate the date for the end of the month
+      endDate = moment().add(1, 'days').endOf('day').endOf('month').format();
+
+    } else if (period.toLowerCase() == 'next_month') {
+      // Generate the date for the start of the next month
+      startingDate = moment().add(1, 'months').endOf('day').startOf('month').format();
+      // Generate the date for the end of the next month
+      endDate = moment().add(1, 'months').endOf('day').endOf('month').format();
+    }
+
+    if (period.toLowerCase() == 'this_week') {
+      query = {
+        $and: [
+          { _group: groupId },
+          { type: 'task' },
+          { 'task.is_template': { $ne: true }},
+          {
+            $or: [
+              { 'task.due_to': { $gte: startingDate, $lte: endDate }},
+              {
+                $and:[
+                  { 'task.due_to': { $lte: moment().local().add(1, 'days').format('YYYY-MM-DD') }},
+                  { 'task.status': { $ne: 'done' }}
+                ]
+              }
+            ]
+          }
+        ]
+      };
+    } else {
+      query = {
+        $and: [
+          { _group: groupId },
+          { type: 'task' },
+          { 'task.is_template': { $ne: true }},
+          { 'task.due_to': { $gte: startingDate, $lte: endDate }}
+        ]
+      };
+    }
+    
+    
+    // Fetch the tasks posts
+    posts = await Post.find(query)
+      .sort('-task.due_to')
+      .select('_id _group task')
+      .populate('_assigned_to', this.userFields)
+      .lean();
+
+    return posts;
+  }
+
   async getGroupPostsResults(groupId: any, numDays: number) {
 
     const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');

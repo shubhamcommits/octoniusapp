@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PublicFunctions } from 'modules/public.functions';
 import { AutomationFlowsDialogComponent } from '../../automation-flows-dialog/automation-flows-dialog.component';
 import { CustomFieldsDialogComponent } from '../../custom-fields-dialog/custom-fields-dialog.component';
 
@@ -11,7 +12,8 @@ import { CustomFieldsDialogComponent } from '../../custom-fields-dialog/custom-f
 export class BoardBarComponent implements OnInit {
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private injector: Injector
   ) { }
 
   // GroupData Variable
@@ -20,7 +22,7 @@ export class BoardBarComponent implements OnInit {
   @Input() isAdmin = false;
   @Input() customFields = [];
   @Input() userData;
-  groupMembers:any = []
+
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
 
@@ -33,24 +35,19 @@ export class BoardBarComponent implements OnInit {
   // Emitter to notify that a customField was edited/added
   @Output() customFieldEmitter = new EventEmitter();
 
+  public publicFunctions = new PublicFunctions(this.injector);
+
   sortby: string = 'none'
   filterfor: string = 'none'
   menuLable: string='Filter Task For';
   menuFor: string='Filter';
   reverse: boolean = false;
 
-  ngOnInit() {
+  groupMembers:any = []
 
-    if(this.groupData._admins.length>0){
-      this.groupData._admins.forEach(element => {
-        this.groupMembers.push(element);
-      });
-    }
-    if(this.groupData._members.length>0){
-      this.groupData._members.forEach(element => {
-        this.groupMembers.push(element);
-      });
-    }
+  async ngOnInit() {
+
+    this.groupMembers = await this.publicFunctions.getCurrentGroupMembers();
   }
 
   changeView(view: string) {
@@ -66,13 +63,13 @@ export class BoardBarComponent implements OnInit {
         this.reverse = false;
         this.sortTaskEmitter.emit('invert');
       }
-      
+
     } else {
       this.sortby = bit;
       this.reverse = false;
       this.sortTaskEmitter.emit(bit);
     }
-    
+
   }
 
   filterTask(bit: string){
