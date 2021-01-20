@@ -122,7 +122,7 @@ const UserSchema = new Schema({
             default: 7
         },
         group_dashboard_members_period: {
-            type: Number,
+            type: String,
             default: 7
         },
         default_icons_sidebar: {
