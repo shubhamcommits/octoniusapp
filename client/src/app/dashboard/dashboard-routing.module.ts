@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { NavbarComponent } from '../common/navbar/navbar.component';
 import { AdminGuard } from 'src/shared/guards/admin-guard/admin.guard';
 import { DenyNavigationGuard } from 'src/shared/guards/deny-navigation-guard/deny-navigation.guard';
 
 const routes: Routes = [
   {
-    path: '', component: NavbarComponent, children: [
+    path: '', children: [
       {
         path: 'admin',
         loadChildren: () => import('modules/admin/admin.module')

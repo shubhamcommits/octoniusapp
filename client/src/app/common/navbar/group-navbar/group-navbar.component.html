@@ -30,10 +30,10 @@
       </li>
 
       <li class="nav-item" *ngIf="myWorkplace">
-        <a class="nav-link" routerLink="/dashboard/myspace/inbox" routerLinkActive="active">Inbox</a>
+        <a class="nav-link" routerLink="/dashboard/myspace/inbox" [queryParams]="{myWorkplace: true }" routerLinkActive="active">Inbox</a>
       </li>
       <li class="nav-item" *ngIf="myWorkplace">
-        <a class="nav-link" routerLink="/dashboard/myspace/tasks" routerLinkActive="active">Tasks</a>
+        <a class="nav-link" routerLink="/dashboard/myspace/tasks" [queryParams]="{myWorkplace: true }" routerLinkActive="active">Tasks</a>
       </li>
       <li class="nav-item" *ngIf="myWorkplace">
         <a class="nav-link" routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
@@ -65,7 +65,6 @@
       <li class="nav-item">
           <a class="nav-link" *ngIf="!myWorkplace" routerLink="/dashboard/work/groups/files" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
               routerLinkActive="active">Files
-
           </a>
       </li>
 

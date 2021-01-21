@@ -4,8 +4,10 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { retry } from 'rxjs/internal/operators/retry';
 import { map } from 'rxjs/internal/operators/map';
 import { SubSink } from 'subsink';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
+import { Router,RouterEvent,NavigationEnd ,ChildActivationEnd} from '@angular/router';
 
 // Google API Variable
 declare const gapi: any;
@@ -32,9 +34,22 @@ export class AppComponent {
    * 3. Enabling and calling the @event notificationsFeed from the socket server
    * 4. Enabling and calling the @event workspaceData from the socket server
    */
+
+  routerFromEvent:any;
+  groupId:any;
+
   constructor(
-    private injector: Injector
+    private injector: Injector,
+    private storageService: StorageService,
+    private _router:Router
   ) {
+
+    this.subSink.add(this._router.events.subscribe((e: any) => {
+      if (e instanceof ChildActivationEnd) {
+        this.groupId = e.snapshot.queryParamMap.get('group'); 
+        this.routerFromEvent = e.snapshot;
+      }
+    }))
 
     let socketService = this.injector.get(SocketService);
     let utilityService = this.injector.get(UtilityService);
@@ -53,6 +68,9 @@ export class AppComponent {
 
   }
 
+  myAuthCheck() {
+    return this.storageService.existData('authToken');
+  } 
   /**
    * This function checks for the active internet connection
    * @param utilityService
