@@ -50,12 +50,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   // Router state of the application
   routerState: any = 'home'
 
+  /*
   // My Workplace variable check
   myWorkplace: boolean = this._ActivatedRoute.snapshot.queryParamMap.has('myWorkplace')
       ? (this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
       : (this._ActivatedRoute.snapshot['_routerState'].url.toLowerCase().includes('myspace')
           ? true
           : false)
+  */
 
   isGroupNavbar$ = new BehaviorSubject(false);
   isAdminNavbar$ = new BehaviorSubject(false);
@@ -100,12 +102,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (this.routerState === 'group' || this.routerState === 'home') {
           this.nextGroupNavbarState()
 
+          /*
           // Check for myWorkplace
           this.myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.has('myWorkplace')
             ? (this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
             : (this._ActivatedRoute.snapshot['_routerState'].url.toLowerCase().includes('myspace')
                 ? true
                 : false)
+          */
         }
         else if (this.routerState === 'work') {
           this.nextWorkNavbar()

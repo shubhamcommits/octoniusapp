@@ -1,4 +1,4 @@
-import { Component, SimpleChanges, OnInit, Injector, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, SimpleChanges, OnInit, OnChanges, Injector, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent, ChildActivationEnd, RouteConfigLoadEnd } from '@angular/router';
@@ -11,13 +11,16 @@ import { UserService } from 'src/shared/services/user-service/user.service';
   templateUrl: './group-navbar.component.html',
   styleUrls: ['./group-navbar.component.scss']
 })
-export class GroupNavbarComponent implements OnInit, OnDestroy {
+export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private injector: Injector,
     private router: ActivatedRoute,
     private _router: Router
   ) {
+    this.publicFunctions.getCurrentUser().then(user => {
+      this.userData = user;
+    });
 
     this.subSink.add(this._router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
@@ -30,6 +33,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   @Output() favoriteGroupSaved = new EventEmitter();
   @Input() groupId: any;
   @Input() routerFromEvent: any;
+
   isAdmin: boolean = false;
 
   // UNSUBSCRIBE THE DATA
@@ -59,29 +63,23 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
 
-    this.groupData = undefined;
-
-    // Fetch the group data from HTTP Request
-    if (this.groupId) {
-      this.groupData = await this.publicFunctions.getGroupDetails(this.groupId)
+    // Fetch the current user
+    if (!this.userData) {
+      this.userData = await this.publicFunctions.getCurrentUser();
     }
 
-    // Fetch the current user
-    this.userData = await this.publicFunctions.getCurrentUser();
-
-    console.log('Group Data', this.groupData);
+    if (this.groupId) {
+      // Fetch current group
+      this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+      this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+    }
 
     if (this.groupData) {
-      // Send the updates of the groupdata through shared service
-      this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-
       this.isAdmin = this.isAdminUser();
 
-      if (this.groupId) {
-        this.userService.increaseGroupVisit(this.userData._id, this.groupId).then(res => {
-          this.publicFunctions.sendUpdatesToUserData(res['user']);
-        });
-      }
+      this.userService.increaseGroupVisit(this.userData._id, this.groupId || this.groupData._id).then(res => {
+        this.publicFunctions.sendUpdatesToUserData(res['user']);
+      });
     }
 
     // My Workplace variable check
@@ -90,7 +88,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     this.isFavoriteGroup = this.checkIsFavoriteGroup();
   }
 
-  async ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       const change = changes[propName];
       const to = change.currentValue;
@@ -136,11 +134,11 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
   isPersonalNavigation() {
     return (this.groupId)
-      ? ((this.groupData.group_name==='personal')
-          && (this.groupData?._admins[0].role === "owner")
-          && (this.groupData?._admins[0]._id == this.userData._id)
-        ) ? true : false
-      : true;
+      ? this.groupData.group_name==='personal'
+        ? ((this.groupData?._admins[0].role === "owner") && (this.groupData?._admins[0]._id == this.userData._id))
+          ? true : false
+        :false
+      :true;
   }
 
   checkIsFavoriteGroup() {

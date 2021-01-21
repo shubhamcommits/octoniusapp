@@ -46,7 +46,7 @@ export class AppComponent {
 
     this.subSink.add(this._router.events.subscribe((e: any) => {
       if (e instanceof ChildActivationEnd) {
-        this.groupId = e.snapshot.queryParamMap.get('group'); 
+        this.groupId = e.snapshot.queryParamMap.get('group');
         this.routerFromEvent = e.snapshot;
       }
     }))
@@ -70,7 +70,7 @@ export class AppComponent {
 
   myAuthCheck() {
     return this.storageService.existData('authToken');
-  } 
+  }
   /**
    * This function checks for the active internet connection
    * @param utilityService

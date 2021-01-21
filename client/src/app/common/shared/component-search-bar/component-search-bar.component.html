@@ -22,21 +22,21 @@
         *ngFor="let member of members; let index = index; trackBy: utilityService.trackByIndex;">
 
         <!-- Avatar Image of the member -->
-        <img *ngIf="member.active" src="{{ baseUrl }}/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
+        <img *ngIf="member.active || type == 'group'" src="{{ baseUrl }}/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
             [queryParams]="{ userId: member._id }" onerror="this.src='assets/images/user.png'" class="feed-avatar">
         <!-- Avatar Image of the member -->
 
-        <div class="media-body">
+        <div *ngIf="member.active || type == 'group'" class="media-body">
 
             <!-- Member Details Starts -->
-            <div *ngIf="member.active" class="float-left">
+            <div class="float-left">
                 <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
                 <p>Role: {{member?.role}}<span *ngIf="type === 'group' && isGroupManager(member._id)">, Group
                         Manager</span> (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
             </div>
             <!-- Member Details Ends -->
 
-            <div *ngIf="member.active" class="btn-group mr-3 float-right">
+            <div class="btn-group mr-3 float-right">
 
                 <!-- Changing role functionality starts -->
                 <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
