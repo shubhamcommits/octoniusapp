@@ -109,8 +109,7 @@
                     <!-- Member Details Starts -->
                     <div *ngIf="!member.active" class="float-left inactive-person">
                         <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
-                        <p>Role: {{member?.role}}<span *ngIf="type === 'group' && isGroupManager(member._id)">, Group
-                                Manager</span> (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
+                        <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
                     </div>
                     <!-- Member Details Ends -->
 
@@ -122,15 +121,7 @@
                                 (click)="reactivateUserInWorkplace(member._id, workspaceId, index)">
                                 Activate user
                             </button>
-
                         </div>
-
-                        <!-- Remove from Group -->
-                        <section *ngIf="type == 'group'">
-                            <button class="btn btn-danger btn-sm" *ngIf="groupData.group_name != 'Global'"
-                                (click)="removeUserFromGroup(groupId, member._id, index)">Remove Member</button>
-                        </section>
-                        <!-- Remove from Group -->
                     </div>
 
                 </div>
