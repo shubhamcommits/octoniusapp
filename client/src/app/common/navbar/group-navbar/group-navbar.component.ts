@@ -58,7 +58,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   private userService = this.injector.get(UserService);
 
   async ngOnInit() {
-
+    this.groupData=undefined;
+    console.log("ds ngoninit",this.groupId);
     // Fetch the group data from HTTP Request
     if (this.groupId)
       this.groupData = await this.publicFunctions.getGroupDetails(this.groupId)
@@ -132,9 +133,10 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   }
 
   isPersonalNavigation() {
-    return this.routerFromEvent.queryParamMap.has('myWorkplace')
-      ? (this.routerFromEvent.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-      : false
+  return (this.groupId)?this.groupData.group_name==='personal'?
+  ((this.groupData?._admins[0].role === "owner") && (this.groupData?._admins[0]._id == this.userData._id))?true:false
+  :false
+  :true;
   }
 
   checkIsFavoriteGroup() {
