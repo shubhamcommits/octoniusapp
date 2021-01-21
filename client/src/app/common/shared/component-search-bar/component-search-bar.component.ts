@@ -48,6 +48,8 @@ export class ComponentSearchBarComponent implements OnInit {
   // Members array
   @Input('members') members: any = [];
 
+  panelOpenState:any=false;
+
   // BASE URL OF THE APPLICATION
   public baseUrl = environment.UTILITIES_USERS_UPLOADS;
 

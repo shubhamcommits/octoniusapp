@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injector, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -27,7 +27,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private socketService: SocketService,
     private injector: Injector,
     private _router: Router
-    ) { }
+  ) { }
+
+  @Input() groupId: any;
+  @Input() routerFromEvent: any;
 
   // CURRENT USER DATA
   userData: any
@@ -60,11 +63,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // NOTIFICATIONS DATA
   public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
-      readNotifications: [],
-      unreadNotifications: []
+    readNotifications: [],
+    unreadNotifications: []
   }
 
-  nextGroupNavbarState(){
+  nextGroupNavbarState() {
     this.isGroupNavbar$.next(true);
     this.isAdminNavbar$.next(false)
     this.isWorkNavbar$.next(false)
@@ -89,15 +92,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.routerState === 'admin') {
           this.nextCommonNavbarState()
         } else
-        if (this.routerState === 'group' || this.routerState === 'home') {
-          this.nextGroupNavbarState()
+          if (this.routerState === 'group' || this.routerState === 'home') {
+            this.nextGroupNavbarState()
 
-          // Check for myWorkplace
-          this.myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
-        }
-        else if (this.routerState === 'work') {
-          this.nextWorkNavbar()
-        }
+            // Check for myWorkplace
+            this.myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
+          }
+          else if (this.routerState === 'work') {
+            this.nextWorkNavbar()
+          }
       }
     }));
   }
@@ -159,32 +162,32 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   async initNotifications() {
     // Subscribe to the change in notifications data from the server
     this.subSink.add(this.socketService.currentData.subscribe((res) => {
-        if (JSON.stringify(res) != JSON.stringify({}))
-            this.notificationsData = res;
+      if (JSON.stringify(res) != JSON.stringify({}))
+        this.notificationsData = res;
     }));
 
     /**
      * emitting the @event joinUser to let the server know that user has joined
      */
     this.subSink.add(this.socketService.onEmit('joinUser', this.userData['_id'])
-        .pipe(retry(Infinity))
-        .subscribe());
+      .pipe(retry(Infinity))
+      .subscribe());
 
     /**
      * emitting the @event joinWorkspace to let the server know that user has joined
      */
     this.subSink.add(this.socketService.onEmit('joinWorkspace', {
-        workspace_name: this.userData['workspace_name']
+      workspace_name: this.userData['workspace_name']
     })
-        .pipe(retry(Infinity))
-        .subscribe());
+      .pipe(retry(Infinity))
+      .subscribe());
 
     /**
      * emitting the @event getNotifications to let the server know to give back the push notifications
      */
     this.subSink.add(this.socketService.onEmit('getNotifications', this.userData['_id'])
-        .pipe(retry(Infinity))
-        .subscribe());
+      .pipe(retry(Infinity))
+      .subscribe());
   }
 
   /**
@@ -212,11 +215,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  closeModal(){
+  closeModal() {
     this.utilityService.closeAllModals();
   }
 
-  openModal(content: any){
+  openModal(content: any) {
     this.utilityService.openModal(content, {
       size: 'l',
       windowClass: 'search'

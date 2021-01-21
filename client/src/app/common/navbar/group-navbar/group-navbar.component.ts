@@ -1,7 +1,7 @@
-import { Component, OnInit, Injector, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, SimpleChanges, OnInit, Injector, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterEvent, ChildActivationEnd, RouteConfigLoadEnd } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -18,6 +18,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     private router: ActivatedRoute,
     private _router: Router
   ) {
+
     this.subSink.add(this._router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
@@ -27,7 +28,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   }
 
   @Output() favoriteGroupSaved = new EventEmitter();
-
+  @Input() groupId: any;
+  @Input() routerFromEvent: any;
   isAdmin: boolean = false;
 
   // UNSUBSCRIBE THE DATA
@@ -45,9 +47,6 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   // User Data
   userData: any;
 
-  // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.queryParamMap.get('group');
-
   // My Workplace variable check
   myWorkplace: boolean;
 
@@ -60,11 +59,8 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
 
-    // Fetch groupId from router snapshot
-    this.groupId = this.router.snapshot.queryParamMap.get('group');
-
     // Fetch the group data from HTTP Request
-    if(this.groupId)
+    if (this.groupId)
       this.groupData = await this.publicFunctions.getGroupDetails(this.groupId)
 
     // Fetch the current user
@@ -89,6 +85,22 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     this.myWorkplace = this.isPersonalNavigation();
 
     this.isFavoriteGroup = this.checkIsFavoriteGroup();
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    for (const propName in changes) {
+      const change = changes[propName];
+      const to = change.currentValue;
+      const from = change.previousValue;
+      if (propName === 'groupId') {
+        this.groupId = to;
+        this.ngOnInit();
+      }
+      if (propName === 'routerFromEvent') {
+        this.routerFromEvent = to;
+        this.ngOnInit();
+      }
+    }
   }
 
   /**
@@ -120,11 +132,9 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   }
 
   isPersonalNavigation() {
-    return this.router.snapshot.queryParamMap.has('myWorkplace')
-      ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-      : (this.router.snapshot['_routerState'].url.toLowerCase().includes('myspace')
-          ? true
-          : false)
+    return this.routerFromEvent.queryParamMap.has('myWorkplace')
+      ? (this.routerFromEvent.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
+      : false
   }
 
   checkIsFavoriteGroup() {
@@ -140,19 +150,19 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     let utilityService = this.injector.get(UtilityService);
 
     utilityService.asyncNotification('Please wait we are saving the information...',
-          new Promise((resolve, reject) => {
-            // Call HTTP Request to change the request
-            this.userService.saveFavoriteGroup(this.userData._id, this.groupId, !this.isFavoriteGroup)
-              .then((res) => {
-                this.isFavoriteGroup = !this.isFavoriteGroup;
-                this.userData = res['user'];
-                this.publicFunctions.sendUpdatesToUserData(this.userData);
-                this.favoriteGroupSaved.emit(this.userData);
-                resolve(utilityService.resolveAsyncPromise(`Group saved as favorite!`))
-              })
-              .catch(() => {
-                reject(utilityService.rejectAsyncPromise(`Unable to save the group as favorite, please try again!`))
-              });
-          }));
+      new Promise((resolve, reject) => {
+        // Call HTTP Request to change the request
+        this.userService.saveFavoriteGroup(this.userData._id, this.groupId, !this.isFavoriteGroup)
+          .then((res) => {
+            this.isFavoriteGroup = !this.isFavoriteGroup;
+            this.userData = res['user'];
+            this.publicFunctions.sendUpdatesToUserData(this.userData);
+            this.favoriteGroupSaved.emit(this.userData);
+            resolve(utilityService.resolveAsyncPromise(`Group saved as favorite!`))
+          })
+          .catch(() => {
+            reject(utilityService.rejectAsyncPromise(`Unable to save the group as favorite, please try again!`))
+          });
+      }));
   }
 }
