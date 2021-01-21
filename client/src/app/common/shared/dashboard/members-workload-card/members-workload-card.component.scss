@@ -74,7 +74,9 @@ img {
 }
 
 .workload_avatar {
-  flex: 0 0;
+  width: 50px;
+  float: left;
+  margin-right: 20px;
   text-align: center;
 
   .feed-avatar {
@@ -82,10 +84,4 @@ img {
       height: 50px;
       margin: 0;
   }
-}
-
-.workload_member {
-  max-width: 200px;
-  flex: 0 1 200px;
-  margin-left: -200px;
 }
