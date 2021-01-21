@@ -58,11 +58,13 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   private userService = this.injector.get(UserService);
 
   async ngOnInit() {
-    this.groupData=undefined;
-    console.log("ds ngoninit",this.groupId);
+
+    this.groupData = undefined;
+
     // Fetch the group data from HTTP Request
-    if (this.groupId)
+    if (this.groupId) {
       this.groupData = await this.publicFunctions.getGroupDetails(this.groupId)
+    }
 
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -133,10 +135,12 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   }
 
   isPersonalNavigation() {
-  return (this.groupId)?this.groupData.group_name==='personal'?
-  ((this.groupData?._admins[0].role === "owner") && (this.groupData?._admins[0]._id == this.userData._id))?true:false
-  :false
-  :true;
+    return (this.groupId)
+      ? ((this.groupData.group_name==='personal')
+          && (this.groupData?._admins[0].role === "owner")
+          && (this.groupData?._admins[0]._id == this.userData._id)
+        ) ? true : false
+      : true;
   }
 
   checkIsFavoriteGroup() {

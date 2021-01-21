@@ -25,7 +25,7 @@ export class FollowPostComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.isFollowedByUser = (this.post.hasOwnProperty('_followers') && this.post._followers.findIndex(follower => (follower._id?follower._id:follower) === this.userData._id)>=0)
+    this.isFollowedByUser = (this.post.hasOwnProperty('_followers') && this.post._followers.findIndex(follower => (follower?._id || follower) === this.userData._id)>=0)
       ? true : false;
   }
 
