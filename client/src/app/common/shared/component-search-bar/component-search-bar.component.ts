@@ -366,23 +366,15 @@ export class ComponentSearchBarComponent implements OnInit {
       let nextUsers: any = []
 
       // Fetching next users based on the lastUserId
-      if (this.type === 'workspace')
+      if (this.type === 'workspace') {
         nextUsers = await this.publicFunctions.getNextWorkspaceMembers(this.workspaceData['_id'], this.lastUserId, this.query);
-
-      if (this.type === 'group')
-        nextUsers = await this.publicFunctions.getNextGroupMembers(this.groupId, this.lastUserId, this.query)
-
-      // If we have 0 users, then stop the function immediately and set moreToLoad to false
-      if (nextUsers.length == 0) {
-
-        // Set more to load to false and stop the function
-        this.moreToLoad = false;
-
       }
 
-      // If we have users then update the members array and lastUserId
-      if (this.moreToLoad) {
+      if (this.type === 'group') {
+        nextUsers = await this.publicFunctions.getNextGroupMembers(this.groupId, this.lastUserId, this.query)
+      }
 
+      if (nextUsers.length > 0) {
         // Adding into exisiting array
         this.members = [...this.members, ...nextUsers];
 
@@ -395,6 +387,11 @@ export class ComponentSearchBarComponent implements OnInit {
         this.lastUserId = this.members[this.members.length - 1]['_id'];
       }
 
+      // If we have 0 users, then stop the function immediately and set moreToLoad to false
+      if (nextUsers.length < 5) {
+        // Set more to load to false and stop the function
+        this.moreToLoad = false;
+      }
     }
 
     // Stop the loading spinner
