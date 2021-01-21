@@ -134,9 +134,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   isPersonalNavigation() {
     return this.routerFromEvent.queryParamMap.has('myWorkplace')
       ? (this.routerFromEvent.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-      : (this.routerFromEvent['_routerState'].url.toLowerCase().includes('myspace')
-        ? true
-        : false)
+      : false
   }
 
   checkIsFavoriteGroup() {
