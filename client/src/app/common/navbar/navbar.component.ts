@@ -4,7 +4,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
@@ -64,6 +64,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   userGroups: any = [];
 
   iconsSidebar = false;
+  isDocumentPage = false;
 
   // NOTIFICATIONS DATA
   public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
@@ -92,7 +93,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterContentChecked() {
     this.subSink.add(this.utilityService.routerStateData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
-        this.routerState = res['state']
+        this.routerState = res['state'];
         if (this.routerState === 'admin') {
           this.nextCommonNavbarState()
 
@@ -131,6 +132,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userData = res;
       }
     }))
+
+    this.subSink.add(this._router.events.subscribe((e: any) => {
+      if (e instanceof NavigationEnd) {
+        this.isDocumentPage = e.url.includes('/document/');
+      }
+    }));
 
     // Call the HTTP API to fetch the current workspace details
     this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
@@ -242,5 +249,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userData = await this.getCurrentUser();
     // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
+  }
+
+  showSideBar() {
+    return !this.isDocumentPage;
   }
 }
