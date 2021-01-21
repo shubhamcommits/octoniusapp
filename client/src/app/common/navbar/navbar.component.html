@@ -1,5 +1,5 @@
 <mat-drawer-container style="height: 100vh;" autosize>
-  <mat-drawer opened="true" mode="side" #sidenav disableClose autosize >
+  <mat-drawer *ngIf="showSideBar()" opened="true" mode="side" #sidenav disableClose autosize >
 
     <!-- SIDE MENU ICON STARTS -->
     <app-sidebar *ngIf="!iconsSidebar" class="nav navbar-nav navbar-left" [userGroups]="userGroups" [sideNav]="sidenav" [iconsSidebar]="iconsSidebar" (sidebarChange)="switchSideBar()"></app-sidebar>
