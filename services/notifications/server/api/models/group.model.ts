@@ -30,6 +30,10 @@ const GroupSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+    members_fares: {
+        type: Map,
+        of: Number
+    },
     enabled_rights: {
         type: Schema.Types.Boolean,
         default: false,
