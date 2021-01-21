@@ -24,8 +24,6 @@
         <!-- Avatar Image of the member -->
         <img *ngIf="member.active" src="{{ baseUrl }}/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
             [queryParams]="{ userId: member._id }" onerror="this.src='assets/images/user.png'" class="feed-avatar">
-        <!-- <img *ngIf="!member.active" class="inactive-person" src="{{ baseUrl }}/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
-            [queryParams]="{ userId: member._id }" onerror="this.src='assets/images/user.png'" class="feed-avatar"> -->
         <!-- Avatar Image of the member -->
 
         <div class="media-body">
@@ -36,10 +34,6 @@
                 <p>Role: {{member?.role}}<span *ngIf="type === 'group' && isGroupManager(member._id)">, Group
                         Manager</span> (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
             </div>
-            <!-- <div *ngIf="!member.active" class="float-left inactive-person">
-                <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
-                <p>Role: {{member?.role}}<span *ngIf="type === 'group' && isGroupManager(member._id)">, Group Manager</span> (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
-            </div> -->
             <!-- Member Details Ends -->
 
             <div *ngIf="member.active" class="btn-group mr-3 float-right">
@@ -68,12 +62,6 @@
                 </div>
 
                 <!-- Remove from Group -->
-                <!--
-                <section *ngIf="type == 'group'">
-                    <button class="btn btn-danger btn-sm" *ngIf="groupData.group_name != 'Global'"
-                        (click)="removeUserFromGroup(groupId, member._id, index)">Remove Member</button>
-                </section>
-                -->
                 <div class="dropdown"
                     *ngIf="(userData?.role === 'owner' || isGroupManager(userData?._id)) && type == 'group'">
                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage
@@ -96,26 +84,9 @@
                 </div>
                 <!-- Remove from Group -->
             </div>
-            <!-- <div *ngIf="!member.active" class="btn-group mr-3 float-right"> -->
-
-            <!-- Changing role functionality starts -->
-            <!-- <div class="activate-user" *ngIf="member.role != 'owner' && type == 'workspace'">
-                    <button class="btn btn-success btn-sm " type="button" (click)="reactivateUserInWorkplace(member._id, workspaceId, index)">
-                        Activate user
-                    </button>
-
-                </div> -->
-
-            <!-- Remove from Group -->
-            <!-- <section *ngIf="type == 'group'">
-                    <button class="btn btn-danger btn-sm" *ngIf="groupData.group_name != 'Global'"
-                        (click)="removeUserFromGroup(groupId, member._id, index)">Remove Member</button>
-                </section> -->
-            <!-- Remove from Group -->
-            <!-- </div> -->
-
         </div>
     </div>
+
     <mat-accordion *ngIf="type == 'workspace'">
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
@@ -175,7 +146,3 @@
     <app-loading-spinner></app-loading-spinner>
 </ng-container>
 <!-- Loading Spinner Ends -->
-
-<!-- Section separator indicator starts -->
-<!-- <app-section-separator *ngIf="!moreToLoad"></app-section-separator> -->
-<!-- Section separator indicator ends -->
