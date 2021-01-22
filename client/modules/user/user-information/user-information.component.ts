@@ -23,8 +23,18 @@ export class UserInformationComponent implements OnInit {
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
 
+
   ngOnInit() {
     // console.log('User Data from User Information Component', this.userData);
+  }
+
+  mycallback = (data?: any) => {
+    document.getElementById("userData_company_name").innerText = " " + data?.company_name;
+    document.getElementById("userData_mobile_number").innerText = " " + data?.mobile_number;
+    document.getElementById("userData_phone_number").innerText = " " + data?.phone_number;
+    this.userData.company_name = data?.company_name;
+    this.userData.mobile_number = data?.mobile_number;
+    this.userData.phone_number = data?.phone_number;
   }
 
   /**
