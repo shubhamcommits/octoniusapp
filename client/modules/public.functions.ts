@@ -441,7 +441,7 @@ export class PublicFunctions {
     /**
      * This function is responsible for editing the user details
      */
-    async editUserDetails(openModal) {
+    async editUserDetails(openModal, myfun?: Function) {
 
         // Utility Service
         const utilityService = this.injector.get(UtilityService);
@@ -456,11 +456,10 @@ export class PublicFunctions {
                 new Promise((resolve, reject) => {
                     this.userDetailsServiceFunction(userService, value)
                         .then((user) => {
-
                             // Send the updates to the userData in the app for the updated data
                             this.sendUpdatesToUserData(user);
-
                             // Resolve with success
+                            myfun(value)
                             resolve(utilityService.resolveAsyncPromise('Details updated sucessfully!'))
                         })
                         .catch(() =>
@@ -469,6 +468,8 @@ export class PublicFunctions {
         } else if (JSON.stringify(value) == '') {
             utilityService.warningNotification('Kindly fill up all the details properly!');
         }
+
+
     }
 
 
@@ -1059,122 +1060,122 @@ export class PublicFunctions {
     }
 
     executedAutomationFlowsPropertiesFront(flows: any[], value: any, groupId: string, post: any, userId: string, isCreationTaskTrigger?: boolean) {
-      if (flows && flows.length > 0) {
-          flows.forEach((flow, flowIndex) => {
-              const steps = flow['steps'];
-              if (steps && steps.length > 0) {
-                  steps.forEach(async (step, stepIndex) => {
-                      if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger || false)) {
-                        const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status are'; });
-                        post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, childStatusTriggerIndex != -1);
-                      }
-                  });
-              }
-          });
-      }
-      return post;
-  }
-
-  doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger: boolean) {
-      let retValue = true;
-      if (triggers && triggers.length > 0) {
-          triggers.forEach(trigger => {
-            if (retValue) {
-              switch (trigger.name) {
-                  case 'Assigned to':
-                      const usersMatch =
-                      trigger._user.filter((triggerUser) => {
-                          return post._assigned_to.findIndex(assignee => {
-                              return (assignee._id || assignee).toString() == (triggerUser._id || triggerUser).toString()
-                          }) != -1
-                      });
-                      retValue = (usersMatch && usersMatch.length > 0);
-                      break;
-                  case 'Custom Field':
-                      retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
-                      break;
-                  case 'Section is':
-                      retValue = trigger?.section?.toUpperCase() == post?.task?._column?.title?.toUpperCase();
-                      break;
-                  case 'Status is':
-                      retValue = trigger?.status?.toUpperCase() == post?.task?.status?.toUpperCase();
-                      break;
-                  case 'Task is CREATED':
-                      if (isCreationTaskTrigger) {
-                        retValue = true;
-                      }
-                      break;
-                  case 'Subtasks Status are':
-                    let postService = this.injector.get(PostService);
-                    if (retValue && post.task._parent_task && trigger.subtaskStatus.toUpperCase() == post.task.status.toUpperCase()) {
-                        postService.getSubTasks(post.task._parent_task._id || post.task._parent_task).then(res => {
-                          res['subtasks'].forEach(subtask => {
-                            if (retValue && subtask._id != post._id) {
-                                retValue = trigger.subtaskStatus.toUpperCase() == subtask.task.status.toUpperCase();
-                            }
-                          });
-                        });
-                      } else {
-                        retValue = false;
-                      }
-                      break;
-                  default:
-                      retValue = true;
-                      break;
-                }
-            }
-          });
-      } else {
-        retValue = false;
-      }
-      return retValue;
-  }
-
-  executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, childTasksUpdated: boolean) {
-    if (!childTasksUpdated) {
-      flows[flowIndex].steps[stepIndex].action.forEach(async action => {
-            switch (action.name) {
-                case 'Assign to':
-                    action._user.forEach(async userAction => {
-                        const indexAction = post._assigned_to.findIndex(assignee => (assignee._id || assignee) == (userAction._id || userAction));
-                        if (indexAction < 0) {
-                          post._assigned_to.push(userAction);
+        if (flows && flows.length > 0) {
+            flows.forEach((flow, flowIndex) => {
+                const steps = flow['steps'];
+                if (steps && steps.length > 0) {
+                    steps.forEach(async (step, stepIndex) => {
+                        if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger || false)) {
+                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status are'; });
+                            post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, childStatusTriggerIndex != -1);
                         }
                     });
-                    return post;
-                case 'Custom Field':
-                    post.task.custom_fields[action.custom_field.name] = action.custom_field.value;
-                    return post;
-                case 'Move to':
-                    if (!post.task._parent_task) {
-                      post.task._column.title = action.section;
-                    }
-                    return post;
-                case 'Change Status to':
-                    post.task.status = action.status;
-                    return post;
-                default:
-                    break;
-            }
-        });
+                }
+            });
+        }
         return post;
     }
-    return post;
-  }
 
-  async getCurrentGroupMembers() {
-    const groupData = await this.getCurrentGroup();
-    let groupMembers = [];
-    if(groupData['_admins'].length>0){
-      groupData['_admins'].forEach(element => {
-        groupMembers.push(element);
-      });
+    doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger: boolean) {
+        let retValue = true;
+        if (triggers && triggers.length > 0) {
+            triggers.forEach(trigger => {
+                if (retValue) {
+                    switch (trigger.name) {
+                        case 'Assigned to':
+                            const usersMatch =
+                                trigger._user.filter((triggerUser) => {
+                                    return post._assigned_to.findIndex(assignee => {
+                                        return (assignee._id || assignee).toString() == (triggerUser._id || triggerUser).toString()
+                                    }) != -1
+                                });
+                            retValue = (usersMatch && usersMatch.length > 0);
+                            break;
+                        case 'Custom Field':
+                            retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
+                            break;
+                        case 'Section is':
+                            retValue = trigger?.section?.toUpperCase() == post?.task?._column?.title?.toUpperCase();
+                            break;
+                        case 'Status is':
+                            retValue = trigger?.status?.toUpperCase() == post?.task?.status?.toUpperCase();
+                            break;
+                        case 'Task is CREATED':
+                            if (isCreationTaskTrigger) {
+                                retValue = true;
+                            }
+                            break;
+                        case 'Subtasks Status are':
+                            let postService = this.injector.get(PostService);
+                            if (retValue && post.task._parent_task && trigger.subtaskStatus.toUpperCase() == post.task.status.toUpperCase()) {
+                                postService.getSubTasks(post.task._parent_task._id || post.task._parent_task).then(res => {
+                                    res['subtasks'].forEach(subtask => {
+                                        if (retValue && subtask._id != post._id) {
+                                            retValue = trigger.subtaskStatus.toUpperCase() == subtask.task.status.toUpperCase();
+                                        }
+                                    });
+                                });
+                            } else {
+                                retValue = false;
+                            }
+                            break;
+                        default:
+                            retValue = true;
+                            break;
+                    }
+                }
+            });
+        } else {
+            retValue = false;
+        }
+        return retValue;
     }
-    if(groupData['_members'].length>0){
-      groupData['_members'].forEach(element => {
-        groupMembers.push(element);
-      });
+
+    executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, childTasksUpdated: boolean) {
+        if (!childTasksUpdated) {
+            flows[flowIndex].steps[stepIndex].action.forEach(async action => {
+                switch (action.name) {
+                    case 'Assign to':
+                        action._user.forEach(async userAction => {
+                            const indexAction = post._assigned_to.findIndex(assignee => (assignee._id || assignee) == (userAction._id || userAction));
+                            if (indexAction < 0) {
+                                post._assigned_to.push(userAction);
+                            }
+                        });
+                        return post;
+                    case 'Custom Field':
+                        post.task.custom_fields[action.custom_field.name] = action.custom_field.value;
+                        return post;
+                    case 'Move to':
+                        if (!post.task._parent_task) {
+                            post.task._column.title = action.section;
+                        }
+                        return post;
+                    case 'Change Status to':
+                        post.task.status = action.status;
+                        return post;
+                    default:
+                        break;
+                }
+            });
+            return post;
+        }
+        return post;
     }
-    return groupMembers;
-  }
+
+    async getCurrentGroupMembers() {
+        const groupData = await this.getCurrentGroup();
+        let groupMembers = [];
+        if (groupData['_admins'].length > 0) {
+            groupData['_admins'].forEach(element => {
+                groupMembers.push(element);
+            });
+        }
+        if (groupData['_members'].length > 0) {
+            groupData['_members'].forEach(element => {
+                groupMembers.push(element);
+            });
+        }
+        return groupMembers;
+    }
 }

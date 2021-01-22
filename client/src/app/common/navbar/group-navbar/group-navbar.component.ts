@@ -95,13 +95,12 @@ export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
       const from = change.previousValue;
       if (propName === 'groupId') {
         this.groupId = to;
-        this.ngOnInit();
       }
       if (propName === 'routerFromEvent') {
         this.routerFromEvent = to;
-        this.ngOnInit();
       }
     }
+    this.ngOnInit();
   }
 
   /**
@@ -135,7 +134,7 @@ export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
   isPersonalNavigation() {
     return (this.groupId)
       ? this.groupData.group_name==='personal'
-        ? ((this.groupData?._admins[0].role === "owner") && (this.groupData?._admins[0]._id == this.userData._id))
+        ? (this.groupData?._id == this.userData._private_group)
           ? true : false
         :false
       :true;

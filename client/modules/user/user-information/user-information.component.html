@@ -2,20 +2,20 @@
     <div class="card sideinnercard">
         <div class="card-block">
             <h6 class="card-title"><b>User Information</b>
-                <button *ngIf="currentUser" type="button" name="button" class="btn btn-link" 
-                (click)="this.publicFunctions.editUserDetails(this.openModal('Update your Information!', 'assets/images/user-info.svg'))">
+                <button *ngIf="currentUser" type="button" name="button" class="btn btn-link"
+                    (click)="this.publicFunctions.editUserDetails(this.openModal('Update your Information!', 'assets/images/user-info.svg'),this.mycallback)">
                     <i class="material-icons">create</i>
                 </button>
             </h6>
             <hr />
             <p class="card-text"><strong>Email:</strong>
-                {{ userData?.email}}</p>
+                {{ userData?.email}} </p>
             <p class="card-text"><strong>Phone:</strong>
-                {{ userData?.phone_number }}</p>
+                <span id="userData_phone_number"> {{ userData?.phone_number }} </span></p>
             <p class="card-text"><strong>Mobile:</strong>
-                {{ userData?.mobile_number }}</p>
+                <span id="userData_mobile_number"> {{ userData?.mobile_number }}</span></p>
             <p class="card-text"><strong>Company:</strong>
-                {{ userData?.company_name }}</p>
+                <span id="userData_company_name"> {{ userData?.company_name }} </span></p>
             <p class="card-text"><strong>Role:</strong>
                 {{ userData?.role }}</p>
         </div>
