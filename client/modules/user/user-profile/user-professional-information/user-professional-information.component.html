@@ -1,18 +1,18 @@
 <div class="card-tile">
     <div class="card-block">
         <h6 class="card-title"><b>User Professional Information</b>
-            <button *ngIf="currentUser" type="button" name="button" class="btn btn-link" 
-            (click)="publicFunctions.editUserDetails(this.openModal('Update your Professional Information!', 'assets/images/user-professional-info.svg'))">
+            <button *ngIf="currentUser" type="button" name="button" class="btn btn-link"
+                (click)="publicFunctions.editUserDetails(this.openModal('Update your Professional Information!', 'assets/images/user-professional-info.svg'),this.mycallback)">
                 <i class="material-icons">create</i>
             </button></h6>
         <hr />
         <p class="card-text"><strong>Current Position:</strong>
-            {{ userData?.current_position}}</p>
+            <span id="userData_current_position"> {{ userData?.current_position}} </span></p>
         <p class="card-text"><strong>Company Joining Date:</strong>
-            {{ userData?.company_join_date | date: 'longDate' }}</p>
+            <span id="userData_company_join_date"> {{ userData?.company_join_date | date: 'longDate' }} </span></p>
         <p class="card-text"><strong>Groups Count:</strong>
             {{ userData?._groups?.length || 0 }}</p>
         <p class="card-text"><strong>Biography:</strong>
-            {{ userData?.bio }}</p>
+            <span id="userData_bio"> {{ userData?.bio }} </span></p>
     </div>
 </div>

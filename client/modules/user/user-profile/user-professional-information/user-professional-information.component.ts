@@ -29,6 +29,15 @@ export class UserProfessionalInformationComponent implements OnInit {
     // console.log('User Data from User Professional Component', this.userData);
   }
 
+  mycallback = (data?: any) => {
+    document.getElementById("userData_current_position").innerText = " " + data?.current_position;
+    document.getElementById("userData_company_join_date").innerText = " " + moment(data?.company_join_date).format('MMMM DD, YYYY');;
+    document.getElementById("userData_bio").innerText = " " + data?.bio;
+    this.userData.current_position = data?.current_position;
+    this.userData.company_join_date = data?.company_join_date;
+    this.userData.bio = data?.bio;
+  }
+
   /**
  * This function opens the Swal modal to edit the user details
  * @param title 
