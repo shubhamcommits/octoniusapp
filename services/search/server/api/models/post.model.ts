@@ -115,7 +115,10 @@ const PostSchema = new Schema({
                 type: String
             }
         },
-
+        allocation: {
+            type: Number,
+            default: 0
+        },
         // Custom Fields
         custom_fields: {
             type: Map,

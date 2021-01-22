@@ -97,6 +97,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommentListComponent } from './comments/comment-list/comment-list.component';
 import { MemberListMenuComponent } from './member-list-menu/member-list-menu.component';
 import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/members-workload-card.component';
+import { SectionStatusCardComponent } from './dashboard/section-status-card/section-status-card.component';
 
 
 
@@ -191,6 +192,7 @@ import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/
     EngagementCardComponent,
     GlobalPerformanceCardComponent,
     MembersWorkloadCardComponent,
+    SectionStatusCardComponent,
 
     NewTaskComponent,
 
@@ -320,6 +322,7 @@ import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/
     EngagementCardComponent,
     GlobalPerformanceCardComponent,
     MembersWorkloadCardComponent,
+    SectionStatusCardComponent,
 
     NewTaskComponent,
 
