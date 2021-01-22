@@ -9,7 +9,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 })
 export class SectionStatusCardComponent implements OnInit {
 
-  @Input() groupData;
+  groupData;
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -23,6 +23,9 @@ export class SectionStatusCardComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+
+    // Fetch current group details
+    this.groupData = await this.publicFunctions.getCurrentGroup();
 
     /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one
