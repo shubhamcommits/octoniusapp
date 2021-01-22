@@ -133,9 +133,10 @@ export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   isPersonalNavigation() {
+    console.log("group data",this.groupData._id,this.userData)
     return (this.groupId)
       ? this.groupData.group_name==='personal'
-        ? ((this.groupData?._admins[0].role === "owner") && (this.groupData?._admins[0]._id == this.userData._id))
+        ? (this.groupData?._id == this.userData._private_group)
           ? true : false
         :false
       :true;
