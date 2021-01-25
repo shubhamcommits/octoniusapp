@@ -149,8 +149,14 @@ export class GroupFilesComponent implements OnInit {
       // Start the loading spinner
       this.isLoading$.next(true);
 
-      const files:any = await this.publicFunctions.getFiles(this.groupId, this.lastFileId);
+      const files: any = await this.publicFunctions.getFiles(this.groupId, this.lastFileId);
+
       this.files = [...this.files, ...files];
+
+      // Removing duplicates from the array if any
+      this.utilityService.removeDuplicates(this.files, '_id').then((files) => {
+        this.files = files;
+      });
 
       // Set the lastFileId for scroll
       this.lastFileId = files[files.length - 1]?._id;
