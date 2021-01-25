@@ -68,6 +68,9 @@ export class ComponentSearchBarComponent implements OnInit {
   // Query value variable mapped with search field
   query: string = "";
 
+  ActiveMembers:any=[];
+  DisabledMembers:any=[];
+
   // This observable is mapped with query field to recieve updates on change value
   queryChanged: Subject<any> = new Subject<any>();
 
@@ -78,6 +81,21 @@ export class ComponentSearchBarComponent implements OnInit {
 
     // Calculate the lastUserId
     this.lastUserId = this.members[this.members.length - 1]['_id'];
+    this.separateDisabled(this.members);
+  }
+
+  async separateDisabled(members){
+    this.ActiveMembers=[];
+    this.DisabledMembers=[];
+    members.forEach((member,index) => {
+      if(member.active) {
+          member.index = index;
+          this.ActiveMembers.push(member);
+      } else {
+        member.index = index;
+        this.DisabledMembers.push(member);
+      }
+    });
   }
 
   /**
@@ -157,7 +175,6 @@ export class ComponentSearchBarComponent implements OnInit {
 
     // Create Service Instance
     let groupService = this.injector.get(GroupService);
-
     // Ask User to remove this user from the group or not
     this.utilityService.getConfirmDialogAlert('Are you sure?',
      'This will deactivate user!')
@@ -168,10 +185,8 @@ export class ComponentSearchBarComponent implements OnInit {
             new Promise((resolve, reject) => {
               groupService.removeUser(groupId, userId)
                 .then(() => {
-
                   // Member Details
                   let member = this.members[index];
-
                   // Update the GroupData
                   this.groupData._members.splice(this.groupData._members.findIndex((user: any) => user._id === member._id), 1)
                   this.groupData._admins.splice(this.groupData._admins.findIndex((user: any) => user._id === member._id), 1)
@@ -181,7 +196,7 @@ export class ComponentSearchBarComponent implements OnInit {
 
                   // Send updates to groupData via service
                   this.publicFunctions.sendUpdatesToGroupData(this.groupData)
-
+                  
                   // Resolve with success
                   resolve(this.utilityService.resolveAsyncPromise('User removed!'))
 
@@ -225,6 +240,8 @@ export class ComponentSearchBarComponent implements OnInit {
                   this.members.sort((x, y) => {
                     return (x.active === y.active) ? 0 : x.active ? -1 : 1;
                   });
+
+                  this.separateDisabled(this.members);
                   // Resolve with success
                   resolve(this.utilityService.resolveAsyncPromise('User activated!'));
                 })
@@ -270,6 +287,7 @@ export class ComponentSearchBarComponent implements OnInit {
 
                   // Send updates to workspaceData via service
                   this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
+                  this.separateDisabled(this.members);
 
                   // Resolve with success
                   resolve(this.utilityService.resolveAsyncPromise('User removed!'))
