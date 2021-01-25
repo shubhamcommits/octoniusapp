@@ -11,7 +11,8 @@ import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChang
 import { SubSink } from 'subsink';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
-import { AnySoaRecord } from 'dns';
+import { MatDialog } from '@angular/material/dialog';
+import { MemberDialogComponent } from '../member-dialog/member-dialog.component';
 
 @Component({
   selector: 'app-component-search-bar',
@@ -22,7 +23,8 @@ export class ComponentSearchBarComponent implements OnInit {
 
   constructor(
     private injector: Injector,
-    public utilityService: UtilityService) { }
+    public utilityService: UtilityService,
+    public dialog: MatDialog) { }
 
   // Placeholder for the input bar
   @Input('placeholder') placeholder: string = '';
@@ -196,7 +198,7 @@ export class ComponentSearchBarComponent implements OnInit {
 
                   // Send updates to groupData via service
                   this.publicFunctions.sendUpdatesToGroupData(this.groupData)
-                  
+
                   // Resolve with success
                   resolve(this.utilityService.resolveAsyncPromise('User removed!'))
 
@@ -474,5 +476,25 @@ export class ComponentSearchBarComponent implements OnInit {
             reject(utilityService.rejectAsyncPromise('Oops, an error occured while updating the role, please try again!'))
           })
       }))
+  }
+
+  /**
+   * This function is responsible for opening a fullscreen dialog to see the member profile
+   */
+  openFullscreenModal(userId: string): void {
+    const data =
+      {
+        userId: userId,
+        // userData: userData,
+        // groupId: groupId
+      };
+
+    this.dialog.open(MemberDialogComponent, {
+      width: '50%',
+      //height: '75%',
+      //disableClose: true,
+      //panelClass: 'groupCreatePostDialog',
+      data: data
+    });
   }
 }

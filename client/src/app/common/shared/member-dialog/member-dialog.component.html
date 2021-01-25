@@ -1,0 +1,80 @@
+<div class="dialog-content">
+  <mat-dialog-actions align="end">
+      <div class="action-box">
+        <a mat-dialog-close>
+          <i  class="material-icons" style="cursor: pointer">close</i>
+        </a>
+      </div>
+  </mat-dialog-actions>
+
+  <div class="content">
+    <div class="container">
+      <div class="row main-actvity" *ngIf="userData">
+
+          <div class="col-md-4">
+            <div class="sidecontent">
+              <div class="card sideinnercard">
+                  <div class="card-block">
+                      <h6 class="card-title">
+                        <b>User Information</b>
+                      </h6>
+                      <img class="mr-3 feed-avatar" src="{{userBaseUrl}}/{{userData?.profile_pic}}"
+                        onerror="this.src='assets/images/user.png'" placement="bottom">
+                      <hr />
+                      <p class="card-text"><strong>Email:</strong>
+                          {{ userData?.email}} </p>
+                      <p class="card-text"><strong>Phone:</strong>
+                          <span id="userData_phone_number"> {{ userData?.phone_number }} </span></p>
+                      <p class="card-text"><strong>Mobile:</strong>
+                          <span id="userData_mobile_number"> {{ userData?.mobile_number }}</span></p>
+                      <p class="card-text"><strong>Company:</strong>
+                          <span id="userData_company_name"> {{ userData?.company_name }} </span></p>
+                      <p class="card-text"><strong>Role:</strong>
+                          {{ userData?.role }}</p>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <div class="card-tile">
+              <div class="card-block">
+                  <h6 class="card-title">
+                    <b>User Professional Information</b>
+                  </h6>
+                  <hr />
+                  <p class="card-text"><strong>Current Position:</strong>
+                      <span id="userData_current_position"> {{ userData?.current_position}} </span></p>
+                  <p class="card-text"><strong>Company Joining Date:</strong>
+                      <span id="userData_company_join_date"> {{ userData?.company_join_date | date: 'longDate' }} </span></p>
+                  <p class="card-text"><strong>Groups Count:</strong>
+                      {{ userData?._groups?.length || 0 }}</p>
+                  <p class="card-text"><strong>Biography:</strong>
+                      <span id="userData_bio"> {{ userData?.bio }} </span></p>
+              </div>
+            </div>
+
+            <div class="card-tile">
+              <div class="card-block">
+
+                  <!-- Template Heading starts -->
+                  <h6 class="card-title"><b>User Skills</b></h6>
+                  <!-- Template Heading ends -->
+
+                  <hr />
+
+                  <!-- Iterate over all the skills present for a particular user starts -->
+                  <ul class="skills">
+                      <li *ngFor="let skill of userData?.skills">
+                          {{skill}}
+                      </li>
+                  </ul>
+                  <!-- Iterate over all the skills present for a particular user ends -->
+
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
