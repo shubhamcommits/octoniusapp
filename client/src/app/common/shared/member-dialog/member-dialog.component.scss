@@ -1,6 +1,6 @@
 .dialog-content {
   // padding: 10px;
-  background-color: #F3F4F6;
+//   background-color: #26A69A;
   // height: 95%;
   width: 100%;
   padding-bottom: 1px;
@@ -15,13 +15,16 @@
       border: 1px solid #E4EDF8;
       border-radius: 5px;
       padding: 5px;
+      margin-right: 16px;
   }
 
   .content {
-    width: 70%;
+    width: 80%;
     margin-top: -21px;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 30px;
+    border-radius: 10px;
 
     .attach-files {
         width: 100%;
@@ -36,4 +39,27 @@
         margin-bottom: 10px;
     }
 }
+}
+
+.inner-content{
+    background-color: #fff;
+    border-radius: 10px;
+}
+.feed-avatar{
+    width: 120px;
+    height: 120px;
+}
+
+.blue{
+    color: #005FD5;
+}
+
+.job-title{
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.user-name{
+    font-size: 24px;
+    color: #242D3A;
 }
