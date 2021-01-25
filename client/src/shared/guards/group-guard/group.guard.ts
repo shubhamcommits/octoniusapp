@@ -45,7 +45,6 @@ export class GroupGuard implements CanActivate  {
 
     let currentGroup;
     currentGroup = await this.publicFunctions.getCurrentGroupDetails(currentGroupId);
-    this.publicFunctions.sendUpdatesToGroupData(currentGroup);
 
     const groupMembersIndex = currentGroup._members.findIndex((member: any) => member._id == userData._id);
     const groupAdminsIndex = currentGroup._admins.findIndex((admin: any) => admin._id == userData._id);

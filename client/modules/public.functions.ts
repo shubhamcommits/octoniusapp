@@ -232,7 +232,7 @@ export class PublicFunctions {
        if (JSON.stringify(groupData) == JSON.stringify({})){
          groupData = await this.getGroupDetails(groupId);
        } else {
-           if(""+groupId != groupData._id){
+           if(groupId != groupData._id){
             groupData = await this.getGroupDetails(groupId);
            }
        }

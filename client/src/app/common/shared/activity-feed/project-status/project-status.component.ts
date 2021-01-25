@@ -28,7 +28,6 @@ export class ProjectStatusComponent implements OnInit {
     // Create Group Service Instance
     let currentGroup;
     currentGroup = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
-    this.publicFunctions.sendUpdatesToGroupData(currentGroup);
     this.status = currentGroup['project_status'];
     this.setStatusClass(this.status);
   }
