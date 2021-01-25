@@ -91,6 +91,12 @@ export class GroupFilesComponent implements OnInit {
     // Set the lastFileId for scroll
     this.lastFileId = this.files[this.files.length - 1]?._id;
 
+    
+    // Fetch the uploaded files from the server
+
+    this.files = await this.publicFunctions.getFiles(this.groupId);
+
+
     // Concat the files
     this.files = [...this.files, ...this.folders];
 
@@ -147,9 +153,20 @@ export class GroupFilesComponent implements OnInit {
       this.isLoading$.next(true);
 
       const files:any = await this.publicFunctions.getFiles(this.groupId, this.lastFileId);
-      this.files = [...this.files, ...files];
+      // this.files = [...this.files, ...files];
 
-      // Set the lastFileId for scroll
+      files.forEach(file => {
+        var isalready = false;
+        this.files.forEach(Filesfile => {
+          if(Filesfile._id == file._id){
+            isalready = true;
+          }
+        });
+        if(!isalready){
+          this.files.push(file);
+        }
+      });
+
       this.lastFileId = files[files.length - 1]?._id;
 
       if (files.length < 5) {
