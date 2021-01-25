@@ -39,7 +39,7 @@ export class UserCloudsComponent implements OnInit {
 
     // Setting Home State
     this.publicFunctions.sendUpdatesToRouterState({
-      state: 'admin'
+      state: 'user-account'
     })
 
     this.userData = await this.publicFunctions.getCurrentUser();

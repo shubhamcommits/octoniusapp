@@ -3,48 +3,28 @@
     <ul class="nav">
       <li class="nav-item mr-3 d-none d-sm-block">
         <!-- Octonius Avatar starts -->
-        <img *ngIf="!isUserNav && workspaceData" class="mr-3 feed-avatar"
+        <img *ngIf="workspaceData" class="mr-3 feed-avatar"
           src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}"
           onerror="this.src='assets/images/organization.png'"
           placement="bottom" ngbTooltip="Change this workspace's avatar"
           (click)="openDetails(workspaceContent)">
         <!-- Octonius Avatar ends -->
 
-        <!-- My user avatar starts -->
-        <img *ngIf="isUserNav && userData" class="mr-3 feed-avatar" src="{{userBaseUrl}}/{{userData?.profile_pic}}"
-            onerror="this.src='assets/images/user.png'"
-            placement="bottom" ngbTooltip="Change your avatar"
-            (click)="openDetails(userContent)">
-        <!-- My user avatar ends -->
-
         <h2> <i class="material-icons">arrow_forward_ios
         </i></h2>
       </li>
 
-      <li *ngIf="isUserNav" class="nav-item">
-        <a class="nav-link" [routerLink]="['/dashboard', 'user', 'profile']"
-            [queryParams]="{ userId: userData?._id }" routerLinkActive="active">Profile
-            <span class="sr-only">(current)</span>
-        </a>
-      </li>
-      <li *ngIf="isUserNav && isCurrentUser" class="nav-item">
-          <a class="nav-link" [routerLink]="['/dashboard', 'user', 'clouds']"
-              [queryParams]="{ userId: userData?._id }" routerLinkActive="active">Integrations
-              <span class="sr-only">(current)</span>
-          </a>
-      </li>
-
-      <li *ngIf="!isUserNav" class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" routerLink="/dashboard/admin/general" routerLinkActive="active">General
            <span class="sr-only">(current)</span>
         </a>
       </li>
-      <li *ngIf="!isUserNav" class="nav-item">
+      <li class="nav-item">
           <a class="nav-link" routerLink="/dashboard/admin/members" routerLinkActive="active">Members
             <span class="sr-only">(current)</span>
           </a>
       </li>
-      <li *ngIf="!isUserNav" class="nav-item">
+      <li class="nav-item">
           <a class="nav-link" routerLink="/dashboard/admin/billing" routerLinkActive="active">
             Billing
             <span class="sr-only">(current)</span>
@@ -54,10 +34,6 @@
   </div>
 </nav>
 
-<ng-template #userContent let-modal>
-  <app-user-image-details [userData]="userData" [baseUrl]="baseUrl" [workspaceData]="workspaceData">
-  </app-user-image-details>
-</ng-template>
 <ng-template #workspaceContent let-modal>
    <app-workspace-details [userData]="userData" [workspaceData]="workspaceData" [baseUrl]="baseUrl">
    </app-workspace-details>
