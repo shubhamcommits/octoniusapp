@@ -97,6 +97,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommentListComponent } from './comments/comment-list/comment-list.component';
 import { MemberListMenuComponent } from './member-list-menu/member-list-menu.component';
 import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/members-workload-card.component';
+import { MemberDialogComponent } from './member-dialog/member-dialog.component';
 
 
 
@@ -205,7 +206,8 @@ import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/
 
     AssigneeAvatarComponent,
     CommentListComponent,
-    MemberListMenuComponent
+    MemberListMenuComponent,
+    MemberDialogComponent
   ],
   imports: [
     CommonModule,
@@ -330,7 +332,8 @@ import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/
     MultipleAssignmentsComponent,
     AssigneeAvatarComponent,
     CommentListComponent,
-    MemberListMenuComponent
+    MemberListMenuComponent,
+    MemberDialogComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
@@ -342,7 +345,8 @@ import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/
   ],
   entryComponents: [
     PreviewFilesDialogComponent,
-    GroupCreatePostDialogComponent
+    GroupCreatePostDialogComponent,
+    MemberDialogComponent
   ]
 })
 export class SharedModule { }

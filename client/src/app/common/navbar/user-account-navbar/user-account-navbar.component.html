@@ -1,0 +1,35 @@
+<nav class="navbar">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="nav">
+      <li class="nav-item mr-3 d-none d-sm-block">
+        <!-- My user avatar starts -->
+        <img *ngIf="userData" class="mr-3 feed-avatar" src="{{userBaseUrl}}/{{userData?.profile_pic}}"
+            onerror="this.src='assets/images/user.png'"
+            placement="bottom" ngbTooltip="Change your avatar"
+            (click)="openDetails(userContent)">
+        <!-- My user avatar ends -->
+
+        <h2> <i class="material-icons">arrow_forward_ios
+        </i></h2>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/dashboard', 'user', 'profile']"
+            [queryParams]="{ userId: userData?._id }" routerLinkActive="active">Profile
+            <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/dashboard', 'user', 'clouds']"
+              [queryParams]="{ userId: userData?._id }" routerLinkActive="active">Integrations
+              <span class="sr-only">(current)</span>
+          </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<ng-template #userContent let-modal>
+  <app-user-image-details [userData]="userData" [baseUrl]="baseUrl" [workspaceData]="workspaceData">
+  </app-user-image-details>
+</ng-template>

@@ -62,6 +62,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   isGroupNavbar$ = new BehaviorSubject(false);
   isAdminNavbar$ = new BehaviorSubject(false);
   isWorkNavbar$ = new BehaviorSubject(false);
+  isUserAccountNavbar$ = new BehaviorSubject(false);
 
   userGroups: any = [];
 
@@ -75,21 +76,31 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   nextGroupNavbarState() {
+    this.isUserAccountNavbar$.next(false);
+    this.isAdminNavbar$.next(false);
+    this.isWorkNavbar$.next(false);
     this.isGroupNavbar$.next(true);
-    this.isAdminNavbar$.next(false)
-    this.isWorkNavbar$.next(false)
   }
 
   nextCommonNavbarState() {
+    this.isUserAccountNavbar$.next(false);
+    this.isGroupNavbar$.next(false);
+    this.isWorkNavbar$.next(false);
     this.isAdminNavbar$.next(true);
-    this.isGroupNavbar$.next(false)
-    this.isWorkNavbar$.next(false)
   }
 
   nextWorkNavbar() {
+    this.isUserAccountNavbar$.next(false);
+    this.isAdminNavbar$.next(false);
+    this.isGroupNavbar$.next(false);
     this.isWorkNavbar$.next(true);
-    this.isAdminNavbar$.next(false)
-    this.isGroupNavbar$.next(false)
+  }
+
+  nextUserAccountNavbarState() {
+    this.isUserAccountNavbar$.next(true);
+    this.isAdminNavbar$.next(false);
+    this.isGroupNavbar$.next(false);
+    this.isWorkNavbar$.next(false);
   }
 
   ngAfterContentChecked() {
@@ -97,22 +108,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       if (JSON.stringify(res) != JSON.stringify({})) {
         this.routerState = res['state'];
         if (this.routerState === 'admin') {
-          this.nextCommonNavbarState()
+          this.nextCommonNavbarState();
 
         } else if (this.routerState === 'group' || this.routerState === 'home') {
-          this.nextGroupNavbarState()
-
-          /*
-          // Check for myWorkplace
-          this.myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.has('myWorkplace')
-            ? (this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-            : (this._ActivatedRoute.snapshot['_routerState'].url.toLowerCase().includes('myspace')
-                ? true
-                : false)
-          */
+          this.nextGroupNavbarState();
         }
         else if (this.routerState === 'work') {
-          this.nextWorkNavbar()
+          this.nextWorkNavbar();
+        }
+        else if (this.routerState === 'user-account') {
+          this.nextUserAccountNavbarState();
         }
       }
     }));
