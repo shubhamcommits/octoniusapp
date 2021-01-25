@@ -46,9 +46,11 @@ export class NewTaskComponent implements OnInit {
       this.column = null;
     }
 
-    this.flowService.getGroupAutomationFlows(this.groupData._id).then(res => {
-      this.flows = res['flows'];
-    });
+    if (this.groupData) {
+      this.flowService.getGroupAutomationFlows(this.groupData._id).then(res => {
+        this.flows = res['flows'];
+      });
+    }
   }
 
   /**

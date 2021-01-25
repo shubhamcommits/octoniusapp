@@ -83,6 +83,18 @@ export class GroupService {
   }
 
   /**
+   * This function is responsible for fetching all group members
+   * @param groupId
+   */
+  getAllGroupMembers(groupId: string) {
+    return this._http.get(this.baseURL + `/members/all`, {
+      params: {
+        groupId: groupId
+      }
+    }).toPromise()
+  }
+
+  /**
    * This function is responsible for adding a new user to the group
    * @param groupId
    * @param { _id, role, first_name, email } member

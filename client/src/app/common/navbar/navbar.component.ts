@@ -1,10 +1,10 @@
-import { Component, OnInit, Injector, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injector, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
@@ -27,7 +27,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private socketService: SocketService,
     private injector: Injector,
     private _router: Router
-    ) { }
+  ) { }
+
+  @Input() groupId: any;
+  @Input() routerFromEvent: any;
 
   // CURRENT USER DATA
   userData: any
@@ -47,8 +50,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   // Router state of the application
   routerState: any = 'home'
 
+  /*
   // My Workplace variable check
-  myWorkplace: boolean = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
+  myWorkplace: boolean = this._ActivatedRoute.snapshot.queryParamMap.has('myWorkplace')
+      ? (this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
+      : (this._ActivatedRoute.snapshot['_routerState'].url.toLowerCase().includes('myspace')
+          ? true
+          : false)
+  */
 
   isGroupNavbar$ = new BehaviorSubject(false);
   isAdminNavbar$ = new BehaviorSubject(false);
@@ -57,14 +66,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   userGroups: any = [];
 
   iconsSidebar = false;
+  isDocumentPage = false;
 
   // NOTIFICATIONS DATA
   public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
-      readNotifications: [],
-      unreadNotifications: []
+    readNotifications: [],
+    unreadNotifications: []
   }
 
-  nextGroupNavbarState(){
+  nextGroupNavbarState() {
     this.isGroupNavbar$.next(true);
     this.isAdminNavbar$.next(false)
     this.isWorkNavbar$.next(false)
@@ -85,15 +95,21 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterContentChecked() {
     this.subSink.add(this.utilityService.routerStateData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
-        this.routerState = res['state']
+        this.routerState = res['state'];
         if (this.routerState === 'admin') {
           this.nextCommonNavbarState()
-        } else
-        if (this.routerState === 'group' || this.routerState === 'home') {
+
+        } else if (this.routerState === 'group' || this.routerState === 'home') {
           this.nextGroupNavbarState()
 
+          /*
           // Check for myWorkplace
-          this.myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') ? true : false
+          this.myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.has('myWorkplace')
+            ? (this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
+            : (this._ActivatedRoute.snapshot['_routerState'].url.toLowerCase().includes('myspace')
+                ? true
+                : false)
+          */
         }
         else if (this.routerState === 'work') {
           this.nextWorkNavbar()
@@ -120,6 +136,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userData = res;
       }
     }))
+
+    this.subSink.add(this._router.events.subscribe((e: any) => {
+      if (e instanceof NavigationEnd) {
+        this.isDocumentPage = e.url.includes('/document/');
+      }
+    }));
 
     // Call the HTTP API to fetch the current workspace details
     this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
@@ -159,32 +181,32 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   async initNotifications() {
     // Subscribe to the change in notifications data from the server
     this.subSink.add(this.socketService.currentData.subscribe((res) => {
-        if (JSON.stringify(res) != JSON.stringify({}))
-            this.notificationsData = res;
+      if (JSON.stringify(res) != JSON.stringify({}))
+        this.notificationsData = res;
     }));
 
     /**
      * emitting the @event joinUser to let the server know that user has joined
      */
     this.subSink.add(this.socketService.onEmit('joinUser', this.userData['_id'])
-        .pipe(retry(Infinity))
-        .subscribe());
+      .pipe(retry(Infinity))
+      .subscribe());
 
     /**
      * emitting the @event joinWorkspace to let the server know that user has joined
      */
     this.subSink.add(this.socketService.onEmit('joinWorkspace', {
-        workspace_name: this.userData['workspace_name']
+      workspace_name: this.userData['workspace_name']
     })
-        .pipe(retry(Infinity))
-        .subscribe());
+      .pipe(retry(Infinity))
+      .subscribe());
 
     /**
      * emitting the @event getNotifications to let the server know to give back the push notifications
      */
     this.subSink.add(this.socketService.onEmit('getNotifications', this.userData['_id'])
-        .pipe(retry(Infinity))
-        .subscribe());
+      .pipe(retry(Infinity))
+      .subscribe());
   }
 
   /**
@@ -212,11 +234,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  closeModal(){
+  closeModal() {
     this.utilityService.closeAllModals();
   }
 
-  openModal(content: any){
+  openModal(content: any) {
     this.utilityService.openModal(content, {
       size: 'l',
       windowClass: 'search'
@@ -231,5 +253,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userData = await this.getCurrentUser();
     // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
+  }
+
+  showSideBar() {
+    return !this.isDocumentPage;
   }
 }

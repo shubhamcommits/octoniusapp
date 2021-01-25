@@ -121,6 +121,10 @@ const UserSchema = new Schema({
             type: Number,
             default: 7
         },
+        group_dashboard_members_period: {
+            type: String,
+            default: 7
+        },
         default_icons_sidebar: {
             type: Boolean,
             default: false

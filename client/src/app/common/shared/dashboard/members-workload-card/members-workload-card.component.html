@@ -1,0 +1,67 @@
+<div class="smart-card" style="padding: 10px;">
+  <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+    <div class="card-title mt-1">
+      Team workload
+    </div>
+
+    <div>
+      <mat-form-field>
+        <mat-select ngDefaultControl
+                (selectionChange)="periodSelected($event)"
+                (click)="$event.stopPropagation()"
+                [(value)]="period"
+                name="period">
+            <mat-option *ngFor="let p of periods" [value]="p.key">{{ p.value }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div>
+    <!-- MEMBER DETAILS STARTS -->
+    <div *ngFor="let member of groupMembers" class="workload_card">
+      <div style="width: 300px;">
+        <div class="workload_avatar">
+          <img class="feed-avatar" src="{{ this.baseUrl }}/{{member?.profile_pic}}"
+            onerror="this.src='assets/images/user.png'" alt="{{ member?.full_name }}">
+        </div>
+
+        <div>
+          {{ member?.first_name }} {{ member?.last_name }}
+          <div class="muted"> {{ member?.current_position }} </div>
+        </div>
+      </div>
+
+      <div>
+        {{ member?.tasksCount }} tasks
+        <div [ngClass]="{'status-todo-color': member?.topStatus?.name === 'to do', 'status-in-progress-color': member?.topStatus?.name === 'in progress', 'status-done-color': member?.topStatus?.name === 'done'}">
+          {{ member?.topStatus?.count }} {{ member?.topStatus?.name }}
+        </div>
+      </div>
+
+      <div *ngIf="chartsReady">
+        <canvas
+          baseChart
+          height="50"
+          [data]="member?.barChart?.data"
+          [labels]="member?.barChart?.labels"
+          [chartType]="member?.barChart?.type"
+          [options]="member?.barChart?.options"
+          [colors]="member?.barChart?.colors"
+          [plugins]="member?.barChart?.plugins"></canvas>
+      </div>
+
+    </div>
+    <!-- MEMBER DETAILS ENDS -->
+  </div>
+
+  <div class="col-5" *ngIf="groupMembers.length === 0">
+    <img src='assets/images/inbox-tasks-card-empty.svg'>
+  </div>
+
+  <!-- LOADING SPINNER STARTS -->
+  <ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+  </ng-container>
+  <!-- LOADING SPINNER ENDS -->
+</div>

@@ -60,6 +60,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
@@ -95,6 +96,7 @@ import { AssigneeAvatarComponent } from './assignee-avatar/assignee-avatar.compo
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommentListComponent } from './comments/comment-list/comment-list.component';
 import { MemberListMenuComponent } from './member-list-menu/member-list-menu.component';
+import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/members-workload-card.component';
 
 
 
@@ -188,6 +190,7 @@ import { MemberListMenuComponent } from './member-list-menu/member-list-menu.com
     OrganizationalStructureCardComponent,
     EngagementCardComponent,
     GlobalPerformanceCardComponent,
+    MembersWorkloadCardComponent,
 
     NewTaskComponent,
 
@@ -246,6 +249,7 @@ import { MemberListMenuComponent } from './member-list-menu/member-list-menu.com
     MatMenuModule,
     MatBadgeModule,
     MatPaginatorModule,
+    MatExpansionModule
   ],
   exports: [
     AttachFilesComponent,
@@ -315,6 +319,7 @@ import { MemberListMenuComponent } from './member-list-menu/member-list-menu.com
     OrganizationalStructureCardComponent,
     EngagementCardComponent,
     GlobalPerformanceCardComponent,
+    MembersWorkloadCardComponent,
 
     NewTaskComponent,
 

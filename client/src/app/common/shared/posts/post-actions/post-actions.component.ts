@@ -60,7 +60,11 @@ export class PostActionsComponent implements OnInit {
     });
 
     await this.post._followers.forEach(user => {
-      this.followedByUsers.push(user['first_name'] + ' ' + user['last_name']);
+      (user['first_name'] && user['last_name'])
+        ? this.followedByUsers.push(user['first_name'] + ' ' + user['last_name'])
+        : this.publicFunctions.getOtherUser(user._id || user).then(user => {
+            this.followedByUsers.push(user['first_name'] + ' ' + user['last_name']);
+          });
     });
 
     this.showComments = false;

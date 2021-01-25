@@ -1,5 +1,5 @@
 <mat-drawer-container style="height: 100vh;" autosize>
-  <mat-drawer opened="true" mode="side" #sidenav disableClose autosize >
+  <mat-drawer *ngIf="showSideBar()" opened="true" mode="side" #sidenav disableClose autosize >
 
     <!-- SIDE MENU ICON STARTS -->
     <app-sidebar *ngIf="!iconsSidebar" class="nav navbar-nav navbar-left" [userGroups]="userGroups" [sideNav]="sidenav" [iconsSidebar]="iconsSidebar" (sidebarChange)="switchSideBar()"></app-sidebar>
@@ -30,7 +30,7 @@
           <!-- MENU ITEMS STARTS -->
 
           <app-common-navbar *ngIf="isAdminNavbar$ | async"></app-common-navbar>
-          <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()"></app-group-navbar>
+          <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()" [groupId]="groupId" [routerFromEvent]="routerFromEvent"></app-group-navbar>
           <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
           <!-- MENU ITEMS ENDS -->
 
