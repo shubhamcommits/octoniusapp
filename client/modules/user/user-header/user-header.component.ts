@@ -60,7 +60,7 @@ export class UserHeaderComponent implements OnInit, OnDestroy {
 
     // Setting Home State
     this.publicFunctions.sendUpdatesToRouterState({
-      state: 'admin'
+      state: 'user-account'
     })
 
   }

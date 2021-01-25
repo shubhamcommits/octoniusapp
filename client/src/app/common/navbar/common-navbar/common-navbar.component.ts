@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
@@ -10,7 +10,7 @@ import { SubSink } from 'subsink';
   templateUrl: './common-navbar.component.html',
   styleUrls: ['./common-navbar.component.scss']
 })
-export class CommonNavbarComponent implements OnInit, AfterContentChecked {
+export class CommonNavbarComponent implements OnInit {
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
@@ -18,9 +18,6 @@ export class CommonNavbarComponent implements OnInit, AfterContentChecked {
 
   // SUBSINK
   private subSink = new SubSink();
-
-  // My user nav variable check
-  isUserNav: boolean = this.isUserNavigation();
 
   isCurrentUser: boolean = false;
 
@@ -63,15 +60,6 @@ export class CommonNavbarComponent implements OnInit, AfterContentChecked {
         this.workspaceData = res;
       }
     }));
-  }
-
-  async ngAfterContentChecked() {
-    // My user nav variable check
-    this.isUserNav = this.isUserNavigation();
-  }
-
-  isUserNavigation() {
-    return this.router.snapshot.queryParamMap.has('userId') ? true : false;
   }
 
   /**
