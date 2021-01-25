@@ -163,8 +163,8 @@ export class PublicFunctions {
     }
 
     public async getCurrentGroup() {
-
-        let groupData = await this.getCurrentGroupFromService()
+        
+        let groupData = await this.getCurrentGroupFromService();
 
         this.sendUpdatesToGroupData(groupData);
 
@@ -172,11 +172,14 @@ export class PublicFunctions {
     }
 
     async getCurrentGroupFromService() {
+       
         return new Promise((resolve) => {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.currentGroupData.subscribe((res) => {
                 if (JSON.stringify(res) != JSON.stringify({}))
-                    resolve(res)
+                    resolve(res);
+                else 
+                    resolve({}) ;
             })
             )
         })
@@ -219,6 +222,27 @@ export class PublicFunctions {
         });
     }
 
+    /**
+     * This function fetches the group details
+     * @param groupId
+     */
+    public async getCurrentGroupDetails(groupId: string) {
+    
+       let groupData: any = await this.getCurrentGroupFromService();
+       if (JSON.stringify(groupData) == JSON.stringify({})){
+         groupData = await this.getGroupDetails(groupId);
+       } else {
+           if(groupId != groupData._id){
+            groupData = await this.getGroupDetails(groupId);
+           }
+       }
+
+       this.sendUpdatesToGroupData(groupData);
+       
+       return groupData || {};
+    }
+    
+    
     /**
      * This function fetches the group details
      * @param groupId

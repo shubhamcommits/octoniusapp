@@ -2,6 +2,7 @@ import { Component, OnInit, Injector, Input } from '@angular/core';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-project-status',
@@ -17,6 +18,7 @@ export class ProjectStatusComponent implements OnInit {
 
   status_types = ['NOT STARTED', 'ON TRACK', 'IN DANGER', 'ACHIEVED'];
 
+  private publicFunctions = new PublicFunctions(this.injector);
   // Status description variable
   status: string = '';
 
@@ -24,13 +26,10 @@ export class ProjectStatusComponent implements OnInit {
 
   async ngOnInit() {
     // Create Group Service Instance
-    let groupService = this.injector.get(GroupService);
-
-    await groupService.getGroup(this.groupId).then(res => {
-      this.status = res['group']['project_status'];
-
-      this.setStatusClass(this.status);
-    });
+    let currentGroup;
+    currentGroup = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
+    this.status = currentGroup['project_status'];
+    this.setStatusClass(this.status);
   }
 
   changeStatus(status) {

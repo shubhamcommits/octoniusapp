@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable ,Injector} from '@angular/core';
 import {
   CanActivate,
   Router,
@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/operators';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Injectable({
@@ -20,7 +21,8 @@ export class GroupGuard implements CanActivate  {
     private groupService: GroupService,
     private utilityService: UtilityService,
     private storageService: StorageService,
-    private router: Router
+    private router: Router,
+    private injector: Injector,
   ) {
 
   }
@@ -34,14 +36,15 @@ export class GroupGuard implements CanActivate  {
     return this.checkUserGroups(currentGroup) && this.checkGroupAdmins(currentGroup, state);
   }
 
+  private publicFunctions = new PublicFunctions(this.injector);
+  
+
   async checkUserGroups(currentGroupId) {
 
     let userData = (this.storageService.existData('userData') === null) ? {} : this.storageService.getLocalData('userData');
 
     let currentGroup;
-    await this.groupService.getGroup(currentGroupId).then(res => {
-      currentGroup = res['group'];
-    });
+    currentGroup = await this.publicFunctions.getCurrentGroupDetails(currentGroupId);
 
     const groupMembersIndex = currentGroup._members.findIndex((member: any) => member._id == userData._id);
     const groupAdminsIndex = currentGroup._admins.findIndex((admin: any) => admin._id == userData._id);

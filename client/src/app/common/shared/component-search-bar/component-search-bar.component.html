@@ -19,11 +19,12 @@
 <!-- Members array template starts -->
 <app-infinite-scroll (scrolled)="onScroll()">
     <div class="media card-tile user-list"
-        *ngFor="let member of members; let index = index; trackBy: utilityService.trackByIndex;">
+        *ngFor="let member of ActiveMembers; let index = index; trackBy: utilityService.trackByIndex;">
 
         <!-- Avatar Image of the member -->
-        <img *ngIf="member.active || type == 'group'" src="{{ baseUrl }}/{{member?.profile_pic}}" routerLink="/dashboard/user/profile"
-            [queryParams]="{ userId: member._id }" onerror="this.src='assets/images/user.png'" class="feed-avatar">
+        <img *ngIf="member.active || type == 'group'" src="{{ baseUrl }}/{{member?.profile_pic}}"
+            (click)="openFullscreenModal(member._id)"
+            onerror="this.src='assets/images/user.png'" class="feed-avatar">
         <!-- Avatar Image of the member -->
 
         <div *ngIf="member.active || type == 'group'" class="media-body">
@@ -48,13 +49,13 @@
                     <!-- Menu Drawer Starts -->
                     <ul class="dropdown-menu">
                         <li class="dropdown-item" *ngIf="member.role != 'admin'"
-                            (click)="changeRole(member._id, 'admin', index)">Change to Admin</li>
+                            (click)="changeRole(member._id, 'admin', member.index)">Change to Admin</li>
                         <li class="dropdown-item" *ngIf="member.role != 'manager'"
-                            (click)="changeRole(member._id, 'manager', index)">Change to Group Manager</li>
+                            (click)="changeRole(member._id, 'manager', member.index)">Change to Group Manager</li>
                         <li class="dropdown-item" *ngIf="member.role != 'member'"
-                            (click)="changeRole(member._id, 'member', index)">Change to Member</li>
+                            (click)="changeRole(member._id, 'member', member.index)">Change to Member</li>
                         <li class="dropdown-divider"></li>
-                        <li class="dropdown-item" (click)="removeUserFromWorkplace(member._id, workspaceId, index)">
+                        <li class="dropdown-item" (click)="removeUserFromWorkplace(member._id, workspaceId, member.index)">
                             Deactivate user</li>
                     </ul>
                     <!-- Menu Drawer Ends -->
@@ -77,7 +78,7 @@
                             (click)="changeGroupRole(member, 'member', groupId)">Change to Member</li>
                         <li class="dropdown-divider"></li>
                         <li class="dropdown-item btn btn-danger btn-sm dropdown-toggle"
-                            (click)="removeUserFromGroup(groupId, member._id, index)">Remove Member</li>
+                            (click)="removeUserFromGroup(groupId, member._id, member.index)">Remove Member</li>
                     </ul>
                     <!-- Menu Drawer Ends -->
 
@@ -95,12 +96,12 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div class="media card-tile user-list"
-                *ngFor="let member of members; let index = index; trackBy: utilityService.trackByIndex;">
+                *ngFor="let member of DisabledMembers; let index = index; trackBy: utilityService.trackByIndex;">
 
                 <!-- Avatar Image of the member -->
 
                 <img *ngIf="!member.active" class="inactive-person" src="{{ baseUrl }}/{{member?.profile_pic}}"
-                    routerLink="/dashboard/user/profile" [queryParams]="{ userId: member._id }"
+                    (click)="openFullscreenModal(member._id)"
                     onerror="this.src='assets/images/user.png'" class="feed-avatar">
                 <!-- Avatar Image of the member -->
 
@@ -118,7 +119,7 @@
                         <!-- Changing role functionality starts -->
                         <div class="activate-user" *ngIf="member.role != 'owner' && type == 'workspace'">
                             <button class="btn btn-success btn-sm " type="button"
-                                (click)="reactivateUserInWorkplace(member._id, workspaceId, index)">
+                                (click)="reactivateUserInWorkplace(member._id, workspaceId, member.index)">
                                 Activate user
                             </button>
                         </div>
