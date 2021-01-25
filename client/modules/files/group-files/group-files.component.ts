@@ -88,9 +88,6 @@ export class GroupFilesComponent implements OnInit {
     // Fetch the current group
     this.groupData = await this.publicFunctions.getCurrentGroup();
 
-    // Fetch the uploaded files from the server
-    this.files = await this.publicFunctions.getFiles(this.groupId);
-
     // Set the lastFileId for scroll
     this.lastFileId = this.files[this.files.length - 1]?._id;
 
