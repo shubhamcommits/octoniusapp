@@ -63,8 +63,6 @@ export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
 
   async ngOnInit() {
 
-    // console.log("am hererere in group nav",this.router,this.groupId,this.routerFromEvent);
-
     // Fetch the current user
     if (!this.userData) {
       this.userData = await this.publicFunctions.getCurrentUser();
