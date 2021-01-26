@@ -6,8 +6,7 @@
             <!-- Image Avatar Starts -->
             <div class="col-md-1 ">
                 <img src="{{ baseUrl }}/{{post?._posted_by?.profile_pic}}" onerror="this.src='assets/images/user.png'"
-                    class="feed-avatar ml-2" routerLink="/dashboard/user/profile"
-                    [queryParams]="{ userId: post?._posted_by?._id }" />
+                    class="feed-avatar ml-2" (click)="openFullscreenModal(post?._posted_by?._id)" />
             </div>
             <!-- Image Avatar Ends -->
 
