@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 // import { TimeAgoPipe } from 'time-ago-pipe';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
@@ -10,6 +10,7 @@ import { CommonNavbarComponent } from '../common/navbar/common-navbar/common-nav
 import { PushNotificationsComponent } from '../common/navbar/push-notifications/push-notifications.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthorizationInterceptorService } from 'src/shared/services/authorization-interceptor-service/authorization-interceptor.service';
+import { ngxUiLoaderConfig } from 'src/shared/config/ngx-ui-loader.config';
 // import { HotkeyModule } from 'angular2-hotkeys';
 import { SearchModule } from 'modules/search/search.module';
 import { FormsModule } from '@angular/forms';
@@ -43,7 +44,9 @@ import { UserAccountNavbarComponent } from '../common/navbar/user-account-navbar
     // HotkeyModule.forRoot(),
     SharedModule,
     FormsModule,
-    SearchModule
+    SearchModule,
+     // NGX UI LOADER MODULE
+     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
   ],
   exports: [
     NavbarComponent
