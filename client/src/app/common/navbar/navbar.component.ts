@@ -8,6 +8,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-navbar',
@@ -24,6 +25,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private userService: UserService,
     private utilityService: UtilityService,
     private _ActivatedRoute: ActivatedRoute,
+    private storageService: StorageService,
     private socketService: SocketService,
     private injector: Injector,
     private _router: Router
@@ -73,6 +75,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
     readNotifications: [],
     unreadNotifications: []
+  }
+
+  myAuthCheck() {
+    return this.storageService.existData('authToken');
   }
 
   nextGroupNavbarState() {
