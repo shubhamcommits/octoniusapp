@@ -94,12 +94,6 @@ export class GroupFilesComponent implements OnInit {
     // Set the lastFileId for scroll
     this.lastFileId = this.files[this.files.length - 1]?._id;
 
-    
-    // Fetch the uploaded files from the server
-
-    this.files = await this.publicFunctions.getFiles(this.groupId);
-
-
     // Concat the files
     this.files = [...this.files, ...this.folders];
 
