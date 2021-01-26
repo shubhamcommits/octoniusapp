@@ -108,7 +108,7 @@
                 <div class="media-body">
 
                     <!-- Member Details Starts -->
-                    <div *ngIf="!member.active" class="float-left inactive-person">
+                    <div *ngIf="!member.active" class="float-left inactive-person" style="opacity: 0.5 !important;">
                         <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
                         <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
                     </div>
