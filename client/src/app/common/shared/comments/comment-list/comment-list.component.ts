@@ -31,11 +31,7 @@ export class CommentListComponent implements OnChanges {
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    this.comments = [];
-    this.commentService.getComments(this.postId).subscribe((res) => {
-      this.comments = res['comments'];
-      this.displayShowMore = this.length > this.comments.length;
-    });
+    this.initComments();
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
@@ -50,10 +46,20 @@ export class CommentListComponent implements OnChanges {
       this.displayShowMore = this.comments.length > 5;
       this.length++;
       this.comments.splice(5);
+    } else {
+      this.initComments();
     }
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
+  }
+
+  initComments() {
+    this.comments = [];
+    this.commentService.getComments(this.postId).subscribe((res) => {
+      this.comments = res['comments'];
+      this.displayShowMore = this.length > this.comments.length;
+    });
   }
 
   removeComment(commentId: string) {
