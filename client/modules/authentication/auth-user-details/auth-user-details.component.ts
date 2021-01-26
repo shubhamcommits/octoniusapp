@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from "@angular/core";
+import { Component, OnInit, Input, ChangeDetectionStrategy} from "@angular/core";
 import { debounceTime } from "rxjs/internal/operators/debounceTime";
 import { distinctUntilChanged } from "rxjs/internal/operators/distinctUntilChanged";
 import { UtilityService } from "src/shared/services/utility-service/utility.service";
@@ -81,11 +81,15 @@ export class AuthUserDetailsComponent implements OnInit {
 
   baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
 
-  ngOnInit() {
+ ngOnInit() {
     if (this.workspace_name)
       this.user.workspace = this.workspace_name
     if (this.email)
       this.user.email = this.email
+    if(this.routerState == 'select-workspace'){
+      this.userWorkspaces = this.storageService.getLocalData('myWorkspaces').worksP;
+      this.storageService.removeLocalData('myWorkspaces');
+    }
   }
 
   /**
@@ -205,8 +209,11 @@ export class AuthUserDetailsComponent implements OnInit {
           const numUsers = res['numUsers'] || 0;
           if (numUsers > 1) {
             this.email = email;
-            this.storageService.setLocalData('password', JSON.stringify({ 'password': password }));
-            this.router.navigate(['/authentication', 'select-workspace'], { queryParams: { email: email } });
+            this.authenticationService.getUserWorkspaces(this.email).then(res => {
+              this.storageService.setLocalData('myWorkspaces',JSON.stringify({ 'worksP': res['workspaces'] }));
+              this.storageService.setLocalData('password', JSON.stringify({ 'password': password }));
+              this.router.navigate(['/authentication', 'select-workspace'], { queryParams: { email: email } });
+            });
           } else {
             // Preparing the user data
             let userData: Object = {
