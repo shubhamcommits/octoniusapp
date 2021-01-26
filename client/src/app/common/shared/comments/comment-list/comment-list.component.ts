@@ -46,6 +46,7 @@ export class CommentListComponent implements OnChanges {
       this.displayShowMore = this.comments.length > 5;
       this.length++;
       this.comments.splice(5);
+      this.newComment = null;
     } else {
       this.initComments();
     }
