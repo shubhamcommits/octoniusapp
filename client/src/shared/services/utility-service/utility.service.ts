@@ -5,6 +5,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
+import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -444,4 +445,22 @@ export class UtilityService {
     })
   }
 
+  /**
+   * This function is responsible for opening a fullscreen dialog to see the member profile
+   */
+  openFullscreenModal(userId: string): void {
+    const data =
+      {
+        userId: userId,
+        // userData: userData,
+        // groupId: groupId
+      };
+
+    this.dialog.open(MemberDialogComponent, {
+      width: '50%',
+      //height: '75%',
+      hasBackdrop: true,
+      data: data
+    });
+  }
 }
