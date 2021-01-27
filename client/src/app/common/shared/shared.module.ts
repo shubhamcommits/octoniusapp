@@ -100,9 +100,8 @@ import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/
 import { SectionStatusCardComponent } from './dashboard/section-status-card/section-status-card.component';
 import { MemberDialogComponent } from './member-dialog/member-dialog.component';
 
-import { CalendarModule as Calendar, DateAdapter } from 'angular-calendar';
+import { CalendarModule as Calendar, CalendarUtils, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-
 
 @NgModule({
   declarations: [
@@ -260,7 +259,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     Calendar.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory
-    }),
+    })
   ],
   exports: [
     AttachFilesComponent,
