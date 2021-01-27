@@ -9,6 +9,7 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { SubSink } from 'subsink';
 import { MatSidenav } from '@angular/material/sidenav';
 import { UserService } from 'src/shared/services/user-service/user.service';
+// import { retry } from 'rxjs/internal/operators/retry';
 
 @Component({
   selector: 'app-sidebar',
@@ -55,10 +56,31 @@ export class SidebarComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // FETCH THE USER DETAILS
     this.userData = await this.publicFunctions.getCurrentUser();
-
+    // let data = await this.getCurrentUser();
+    // this.userData = data;
+    // this.userGroups = data['stats']['favorite_groups'];
+    // console.log("user data in side bar",await this.getCurrentUser());
     // Fetch the current workspace data
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
+
+  /**
+   * This function fetches the user details, makes a GET request to the server
+   */
+  // async getCurrentUser() {
+  //   return new Promise((resolve, reject) => {
+  //     try {
+  //       this.subSink.add(this.userService.getUser()
+  //         .pipe(retry(3))
+  //         .subscribe(res => resolve(res['user']))
+  //       );
+  //     } catch (err) {
+  //       console.log('Error occured while fetching the user details', err);
+  //       this.utilityService.errorNotification('Error occured while fetching your profile details');
+  //       reject({});
+  //     }
+  //   })
+  // }
 
   /**
    * This functions unsubscribes all the observables subscription to avoid memory leak
@@ -82,6 +104,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
               this.publicFunctions.sendUpdatesToUserData({})
               this.publicFunctions.sendUpdatesToWorkspaceData({})
               this.socketService.disconnectSocket();
+              this.socketService.clear();
+              window.location.href = window.location.href;
               this.router.navigate(['/home'])
               resolve(this.utilityService.resolveAsyncPromise('Successfully Logged out!'));
             }).catch((err) => {

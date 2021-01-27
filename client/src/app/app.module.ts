@@ -45,7 +45,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 /**
  * 3. !===== SERVICES =====!
@@ -126,7 +126,7 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
 
     // NGX UI LOADER MODULE
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
-
+    MatSidenavModule,
     // SHARED MODULES
     // SharedModule,
 
