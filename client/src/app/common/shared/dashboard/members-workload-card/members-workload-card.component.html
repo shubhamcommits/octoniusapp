@@ -4,6 +4,7 @@
       Team workload
     </div>
 
+    <!--
     <div>
       <mat-form-field>
         <mat-select ngDefaultControl
@@ -15,10 +16,62 @@
         </mat-select>
       </mat-form-field>
     </div>
+    -->
   </div>
 
   <div>
-    <!-- MEMBER DETAILS STARTS -->
+
+    <div class="row text-center">
+      <div class="col-md-4">
+          <div class="btn-group">
+              <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+                  (viewDateChange)="closeOpenMonthViewDay()">
+                  Previous
+              </div>
+              <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+                  Today
+              </div>
+              <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+                  (viewDateChange)="closeOpenMonthViewDay()">
+                  Next
+              </div>
+          </div>
+      </div>
+      <div class="col-md-3">
+          <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+      </div>
+    </div>
+    <br />
+    <div [ngSwitch]="view">
+      <div>
+        <div *ngFor="let member of groupMembers"> {{ member.first_name }}  {{ member.last_name }} </div>
+      </div>
+      <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week"
+        [viewDate]="viewDate" [events]="groupMembers" [refresh]="refresh"
+        [eventTemplate]="customEventTemplate"
+        (eventClicked)="handleEvent('Clicked', $event.event)"
+        (eventTimesChanged)="eventTimesChanged($event)"
+        (beforeViewRender)="beforeViewRender($event)">
+      </mwl-calendar-week-view>
+      <!--
+        <mwl-calendar-week-view
+          *ngSwitchCase="'week'"
+          [viewDate]="viewDate"
+          [events]="events"
+          [eventTemplate]="customEventTemplate"
+          (beforeViewRender)="beforeViewRender($event)"
+          >
+        </mwl-calendar-week-view>
+      -->
+      <ng-template #customEventTemplate let-event="event">
+          <div class="custom-event">
+              <div>{{ event.first_name }}</div>
+              <p class="time">Hello</p>
+          </div>
+      </ng-template>
+    </div>
+
+    <!-- MEMBER DETAILS STARTS
     <div *ngFor="let member of groupMembers" class="workload_card">
       <div style="width: 300px;">
         <div class="workload_avatar">

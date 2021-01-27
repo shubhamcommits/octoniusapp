@@ -1,7 +1,8 @@
 import { Component, OnInit, Injector } from '@angular/core';
+import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -20,6 +21,7 @@ export class MembersWorkloadCardComponent implements OnInit {
   groupMembers = [];
   groupTasks;
 
+  /*
   period = 'this_week';
   periods = [
     {
@@ -41,6 +43,28 @@ export class MembersWorkloadCardComponent implements OnInit {
   ];
 
   chartsReady = false;
+  */
+
+  // Define the month view
+  view: CalendarView = CalendarView.Week;
+
+  // Calendar Views
+  CalendarView = CalendarView;
+
+  // View Date
+  viewDate: Date = new Date();
+
+  // Open the current active day automatically
+  activeDayIsOpen: boolean = true;
+
+  // Modal Data to add the event and action
+  modalData: {
+    action: string;
+    event: CalendarEvent;
+  }
+
+  // Refresh Subject
+  refresh: Subject<any> = new Subject();
 
   // IsLoading behavior subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
@@ -68,19 +92,20 @@ export class MembersWorkloadCardComponent implements OnInit {
 
   async initTable() {
 
-    this.period = (this.userData?.stats?.group_dashboard_members_period) ? this.userData.stats.group_dashboard_members_period : 'this_week';
+    // this.period = (this.userData?.stats?.group_dashboard_members_period) ? this.userData.stats.group_dashboard_members_period : 'this_week';
 
     await this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
       this.groupMembers = res['users'];
     });
 
-    this.groupTasks = await this.publicFunctions.getAllGroupTasks(this.groupData?._id, this.period);
+    // this.groupTasks = await this.publicFunctions.getAllGroupTasks(this.groupData?._id, this.period);
 
-    await this.assignTasks();
+    // await this.assignTasks();
 
-    this.chartsReady = true;
+    // this.chartsReady = true;
   }
 
+  /*
   assignTasks() {
 
     this.groupMembers.forEach(async (member, index) => {
@@ -226,5 +251,47 @@ export class MembersWorkloadCardComponent implements OnInit {
 
     // Stops the spinner and return the value with ngOnInit
     this.isLoading$.next(false);
+  }
+  */
+
+  closeOpenMonthViewDay() {
+    this.activeDayIsOpen = false;
+  }
+
+  eventTimesChanged({
+    event,
+    newStart,
+    newEnd
+  }: CalendarEventTimesChangedEvent): void {
+    this.groupTasks = this.groupTasks.map(iEvent => {
+      if (iEvent === event) {
+        return {
+          ...event,
+          start: newStart,
+          end: newEnd
+        };
+      }
+      return iEvent;
+    });
+    this.handleEvent('Dropped or resized', event);
+  }
+
+  handleEvent(action: string, event: any): void {
+    this.modalData = { event, action };
+  }
+
+  beforeViewRender($event) {
+console.log($event);
+    const group: any[] = [];
+    let i = 0;
+    $event.period.events.forEach((event: any) => {
+        if (i % 2 === 0) {
+          group.push(event);
+        }
+        i++;
+    });
+
+    $event.period["eventGroups"] = Object.entries(group);
+console.log($event);
   }
 }

@@ -21,6 +21,18 @@ img {
   height: 100%;
 }
 
+.cal-week-view .cal-time-label-column {
+  display: none !important;
+}
+
+.cal-week-view .cal-day-headers {
+  padding-left: 0;
+}
+
+.cal-week-view .cal-events-row {
+  margin-left: 0 !important;
+}
+/*
 .workload_card{
   height: 60px;
   padding: 0 5px;
@@ -50,3 +62,4 @@ img {
       margin: 0;
   }
 }
+*/
