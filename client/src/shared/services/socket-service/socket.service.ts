@@ -57,4 +57,8 @@ export class SocketService {
     return this.socket.disconnect();
   }
 
+  clear() {
+    this.changeData({});
+  }
+
 }

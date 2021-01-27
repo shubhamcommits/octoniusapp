@@ -3,7 +3,6 @@ import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent, ChildActivationEnd, RouteConfigLoadEnd } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { SubSink } from 'subsink';
 import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
@@ -11,7 +10,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
   templateUrl: './group-navbar.component.html',
   styleUrls: ['./group-navbar.component.scss']
 })
-export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
+export class GroupNavbarComponent implements OnInit, OnChanges{
 
   constructor(
     private injector: Injector,
@@ -21,13 +20,6 @@ export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
     this.publicFunctions.getCurrentUser().then(user => {
       this.userData = user;
     });
-
-    this.subSink.add(this._router.events.subscribe((e: any) => {
-      // If it is a NavigationEnd event re-initalise the component
-      if (e instanceof NavigationEnd) {
-        this.ngOnInit()
-      }
-    }))
   }
 
   @Output() favoriteGroupSaved = new EventEmitter();
@@ -35,9 +27,6 @@ export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() routerFromEvent: any;
 
   isAdmin: boolean = false;
-
-  // UNSUBSCRIBE THE DATA
-  private subSink = new SubSink();
 
   // baseUrl for uploads
   baseUrl = environment.UTILITIES_GROUPS_UPLOADS
@@ -73,6 +62,7 @@ export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
       this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
     }
 
+    console.log("Group data is here",this.groupData);
     
 
     if (this.groupData) {
@@ -97,24 +87,13 @@ export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
       const from = change.previousValue;
       if (propName === 'groupId') {
         this.groupId = to;
+        this.ngOnInit();
       }
       if (propName === 'routerFromEvent') {
         this.routerFromEvent = to;
         
       }
     }
-
-    setTimeout(() => {
-      this.ngOnInit();
-    }, 50);
-    
-  }
-
-  /**
-   * This functions unsubscribes all the observables subscription to avoid memory leak
-   */
-  ngOnDestroy(): void {
-    this.subSink.unsubscribe();
   }
 
   isAdminUser() {
