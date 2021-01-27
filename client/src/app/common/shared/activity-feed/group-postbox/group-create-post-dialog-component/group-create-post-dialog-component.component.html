@@ -185,7 +185,7 @@
             <!--Date Picker ends -->
 
             <!-- Clean field starts -->
-            <i (click)="updateDate(null, 'start_date')" class="material-icons" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+            <i (click)="updateDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
             <!-- Clean field ends -->
           </div>
           <div *ngIf="postData.type === 'event'" class="btn-group">
@@ -211,7 +211,7 @@
               <!--Date Picker ends -->
 
               <!-- Clean field starts -->
-              <i (click)="updateDate(null, 'due_date')" class="material-icons" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+              <i (click)="updateDate(null, 'due_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
               <!-- Clean field ends -->
             </div>
             <div *ngIf="postData.type === 'event'" class="btn-group">
@@ -285,7 +285,7 @@
                 </mat-select>
 
                 <!-- Clean field starts -->
-                <i (click)="saveCustomField(cf.name, null);" class="material-icons mr-5" style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+                <i (click)="saveCustomField(cf.name, null);" class="material-icons muted mr-5" style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
                 <!-- Clean field ends -->
             </div>
         </div>
