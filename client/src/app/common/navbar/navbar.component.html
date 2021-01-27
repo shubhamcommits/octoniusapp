@@ -53,10 +53,7 @@
         <!-- COLLAPSABLE MENU ENDS -->
       </div>
   </nav>
-
-    <router-outlet>
-      <ngx-ui-loader></ngx-ui-loader>
-    </router-outlet>
+    <router-outlet *ngIf="myAuthCheck()"></router-outlet>
     <!-- Search Modal -->
     <ng-template #search let-modal>
       <app-search-header (close)="closeModal()"></app-search-header>

@@ -86,10 +86,6 @@ export class AuthUserDetailsComponent implements OnInit {
       this.user.workspace = this.workspace_name
     if (this.email)
       this.user.email = this.email
-    if(this.routerState == 'select-workspace'){
-      this.userWorkspaces = this.storageService.getLocalData('myWorkspaces').worksP;
-      this.storageService.removeLocalData('myWorkspaces');
-    }
   }
 
   /**
@@ -209,11 +205,8 @@ export class AuthUserDetailsComponent implements OnInit {
           const numUsers = res['numUsers'] || 0;
           if (numUsers > 1) {
             this.email = email;
-            this.authenticationService.getUserWorkspaces(this.email).then(res => {
-              this.storageService.setLocalData('myWorkspaces',JSON.stringify({ 'worksP': res['workspaces'] }));
-              this.storageService.setLocalData('password', JSON.stringify({ 'password': password }));
+            this.storageService.setLocalData('password', JSON.stringify({ 'password': password }));
               this.router.navigate(['/authentication', 'select-workspace'], { queryParams: { email: email } });
-            });
           } else {
             // Preparing the user data
             let userData: Object = {
