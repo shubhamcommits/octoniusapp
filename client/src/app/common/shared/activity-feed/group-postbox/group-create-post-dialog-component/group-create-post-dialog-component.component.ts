@@ -534,17 +534,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
     if (this.postData.records && this.postData.records.assignments && this.postData.records.assignments.length > 0) {
       this.postData.records.assignments = this.postData.records.assignments.sort((a1, a2) => (new Date(a1.date).getTime() < new Date(a2.date).getTime()) ? 1 : -1);
       this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData.records.assignments[0]._assigned_from);
-      /*
-      if (this.postData.records.assignments[0]._assigned_from === '') {
-        this.lastAssignedBy = {
-          first_name: 'Automation',
-          last_name: 'Flow',
-          profile_pic: ''
-        }
-      } else {
-        this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData.records.assignments[0]._assigned_from);
-      }
-      */
     }
   }
 
@@ -702,5 +691,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   onTaskClonned ($event) {
     this.taskClonnedEvent.emit($event);
+  }
+
+  onAllocationChanged(allocation) {
+    this.postData.task.allocation = allocation;
   }
 }

@@ -475,4 +475,15 @@ export class PostService {
   createTaskFromTemplate(templatePostId: string, postId: string) {
     return this._http.post(this.baseURL + '/create-task-from-template', { templatePostId: templatePostId, postId: postId }).toPromise();
   }
+
+  /**
+   * This function is used to save the allocation of a task
+   * @param allocation
+   * @param postId
+   */
+  saveAllocation(allocation: string, postId: string) {
+    return this._http.put(this.baseURL + `/${postId}/save-allocation`, {
+      allocation: allocation
+    }).toPromise();
+  }
 }
