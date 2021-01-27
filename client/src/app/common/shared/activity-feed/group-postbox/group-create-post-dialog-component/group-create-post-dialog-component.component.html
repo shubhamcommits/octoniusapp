@@ -178,13 +178,15 @@
         <div class="content-box" *ngIf="postData?.type === 'task' || postData.type === 'event'">
           <p *ngIf="groupData && groupData.project_type" class="box-title">Start date</p>
           <div *ngIf="groupData && postData?.type === 'task' && groupData.project_type">
-
-
             <!-- Date Picker starts -->
             <app-date-picker (date)="getDate($event, 'start_date')" [dueDate]="postData?.task.start_date"
               [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
             </app-date-picker>
             <!--Date Picker ends -->
+
+            <!-- Clean field starts -->
+            <i (click)="updateDate(null, 'start_date')" class="material-icons" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+            <!-- Clean field ends -->
           </div>
           <div *ngIf="postData.type === 'event'" class="btn-group">
             <!-- Date Picker starts -->
@@ -200,8 +202,6 @@
           <!-- Time Picker ends -->
           <p class="box-title">Due date</p>
             <div *ngIf="postData?.type === 'task'">
-
-
               <!-- Date Picker starts -->
               <app-date-picker
                 (date)="getDate($event, 'due_date')"
@@ -209,6 +209,10 @@
                 [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
               </app-date-picker>
               <!--Date Picker ends -->
+
+              <!-- Clean field starts -->
+              <i (click)="updateDate(null, 'due_date')" class="material-icons" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+              <!-- Clean field ends -->
             </div>
             <div *ngIf="postData.type === 'event'" class="btn-group">
               <!-- Date Picker starts -->
@@ -275,11 +279,14 @@
                     [(value)]="selectedCFValues[cf.name]"
                     (selectionChange)="onCustomFieldChange($event, cf.name)"
                     appearance="fill"
-                    class="col mr-5"
-                    >
+                    class="col">
                     <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
                     <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
                 </mat-select>
+
+                <!-- Clean field starts -->
+                <i (click)="saveCustomField(cf.name, null);" class="material-icons mr-5" style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+                <!-- Clean field ends -->
             </div>
         </div>
 
