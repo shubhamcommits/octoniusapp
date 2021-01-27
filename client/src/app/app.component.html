@@ -1,1 +1,5 @@
-<app-navbar [groupId]="groupId" [routerFromEvent]="routerFromEvent"></app-navbar>
+<app-navbar *ngIf="myAuthCheck()" [groupId]="groupId" [routerFromEvent]="routerFromEvent"></app-navbar>
+<router-outlet *ngIf="!myAuthCheck()">
+    <ngx-ui-loader></ngx-ui-loader>
+  </router-outlet>
+  
