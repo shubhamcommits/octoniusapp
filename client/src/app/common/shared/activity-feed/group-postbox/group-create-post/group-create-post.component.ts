@@ -281,13 +281,13 @@ export class GroupCreatePostComponent implements OnInit {
    */
   getDate(dateObject: any, property: string) {
     if (property === 'start_date') {
-      this.startDate = dateObject.toDate();
+      this.startDate = dateObject.toDate() || null;
     }
     if (property === 'end_date') {
-      this.endDate = dateObject.toDate();
+      this.endDate = dateObject.toDate() || null;
     }
     if (property === 'due_date') {
-      this.dueDate = dateObject.toDate();
+      this.dueDate = dateObject.toDate() || null;
     }
     if (this.edit) {
       this.date.emit({startDate: this.startDate, endDate: this.endDate, dueDate: this.dueDate});
