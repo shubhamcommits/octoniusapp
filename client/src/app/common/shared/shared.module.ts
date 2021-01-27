@@ -98,6 +98,7 @@ import { CommentListComponent } from './comments/comment-list/comment-list.compo
 import { MemberListMenuComponent } from './member-list-menu/member-list-menu.component';
 import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/members-workload-card.component';
 import { SectionStatusCardComponent } from './dashboard/section-status-card/section-status-card.component';
+import { MemberDialogComponent } from './member-dialog/member-dialog.component';
 
 
 
@@ -207,7 +208,8 @@ import { SectionStatusCardComponent } from './dashboard/section-status-card/sect
 
     AssigneeAvatarComponent,
     CommentListComponent,
-    MemberListMenuComponent
+    MemberListMenuComponent,
+    MemberDialogComponent
   ],
   imports: [
     CommonModule,
@@ -333,7 +335,8 @@ import { SectionStatusCardComponent } from './dashboard/section-status-card/sect
     MultipleAssignmentsComponent,
     AssigneeAvatarComponent,
     CommentListComponent,
-    MemberListMenuComponent
+    MemberListMenuComponent,
+    MemberDialogComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
@@ -345,7 +348,8 @@ import { SectionStatusCardComponent } from './dashboard/section-status-card/sect
   ],
   entryComponents: [
     PreviewFilesDialogComponent,
-    GroupCreatePostDialogComponent
+    GroupCreatePostDialogComponent,
+    MemberDialogComponent
   ]
 })
 export class SharedModule { }

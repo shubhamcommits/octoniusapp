@@ -1,5 +1,5 @@
 <mat-drawer-container style="height: 100vh;" autosize>
-  <mat-drawer *ngIf="showSideBar()" opened="true" mode="side" #sidenav disableClose autosize >
+  <mat-drawer *ngIf="showSideBar() && myAuthCheck()" opened="true" mode="side" #sidenav disableClose autosize >
 
     <!-- SIDE MENU ICON STARTS -->
     <app-sidebar *ngIf="!iconsSidebar" class="nav navbar-nav navbar-left" [userGroups]="userGroups" [sideNav]="sidenav" [iconsSidebar]="iconsSidebar" (sidebarChange)="switchSideBar()"></app-sidebar>
@@ -12,7 +12,7 @@
   </mat-drawer>
 
 
-    <nav class="navbar navbar-expand-md supersticky">
+    <nav class="navbar navbar-expand-md supersticky" *ngIf="myAuthCheck()">
       <div class="container-fluid">
 
         <!-- COLLAPSABLE MENU STARTS -->
@@ -30,6 +30,7 @@
           <!-- MENU ITEMS STARTS -->
 
           <app-common-navbar *ngIf="isAdminNavbar$ | async"></app-common-navbar>
+          <app-user-account-navbar *ngIf="isUserAccountNavbar$ | async"></app-user-account-navbar>
           <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()" [groupId]="groupId" [routerFromEvent]="routerFromEvent"></app-group-navbar>
           <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
           <!-- MENU ITEMS ENDS -->
@@ -53,7 +54,9 @@
       </div>
   </nav>
 
-    <router-outlet></router-outlet>
+    <router-outlet>
+      <ngx-ui-loader></ngx-ui-loader>
+    </router-outlet>
     <!-- Search Modal -->
     <ng-template #search let-modal>
       <app-search-header (close)="closeModal()"></app-search-header>

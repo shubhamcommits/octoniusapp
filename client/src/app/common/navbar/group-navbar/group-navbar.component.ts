@@ -70,9 +70,10 @@ export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.groupId) {
       // Fetch current group
-      this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
-      this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
     }
+
+    
 
     if (this.groupData) {
       this.isAdmin = this.isAdminUser();
@@ -89,6 +90,7 @@ export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    
     for (const propName in changes) {
       const change = changes[propName];
       const to = change.currentValue;
@@ -98,9 +100,14 @@ export class GroupNavbarComponent implements OnInit, OnChanges, OnDestroy {
       }
       if (propName === 'routerFromEvent') {
         this.routerFromEvent = to;
+        
       }
     }
-    this.ngOnInit();
+
+    setTimeout(() => {
+      this.ngOnInit();
+    }, 50);
+    
   }
 
   /**
