@@ -73,7 +73,7 @@ export class MembersWorkloadCardComponent implements OnInit {
       tasks = res['posts'];
     });
 
-    this.groupMembers.forEach(member => {
+    this.groupMembers.forEach(async member => {
 
       member.workload = [];
       const memberTasks = tasks.filter(post => { return post._assigned_to.includes(member?._id); });
@@ -90,9 +90,11 @@ export class MembersWorkloadCardComponent implements OnInit {
         const tasksTmp = await memberTasks.filter(post => { return moment(date).startOf('day').isSame(moment(post.task.due_to).startOf('day')) });
         workloadDay.numTasks = tasksTmp.length;
 
-        const allocationTasksTmp = await tasksTmp.map(post => post.task.allocation || 0);
-        if (allocationTasksTmp && allocationTasksTmp.length > 0) {
-          workloadDay.allocation = await allocationTasksTmp.map(post => post?.task?.allocation)
+        //const tasksTmp = await tasksTmp.map(post => post.task.allocation || 0);
+        if (tasksTmp && tasksTmp.length > 0) {
+          const allocationTasks = tasksTmp.map(post => post?.task?.allocation || 0);
+
+          workloadDay.allocation = allocationTasks
             .reduce((a, b) => {
               return a + b;
             });
@@ -107,6 +109,7 @@ export class MembersWorkloadCardComponent implements OnInit {
 
         member.workload.push(workloadDay);
       });
+      member.workload.sort((w1, w2) => (moment(w1.date).startOf('day').isBefore(moment(w2.date).startOf('day'))) ? -1 : 1);
     });
   }
 

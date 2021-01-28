@@ -1290,7 +1290,7 @@ export class GroupController {
                     { 'task.due_to': { $gte: startDate, $lte: endDate} }
                 ]
             })
-            .select('task.status task.due_to _assigned_to')
+            .select('task.status task.due_to _assigned_to task.allocation')
             .lean() || [];
 
             // Send the status 200 response
