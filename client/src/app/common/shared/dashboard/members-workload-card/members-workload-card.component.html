@@ -18,7 +18,7 @@
         -->
       </div>
       <div class="col-md-4">
-          <h3>{{ dates[0]?.date | date:'MMM dd, yyyy' }} - {{ dates[dates?.length - 1]?.date | date:'MMM dd, yyyy' }}</h3>
+          <h3>{{ dates[0] | date:'MMM dd, yyyy' }} - {{ dates[dates?.length - 1] | date:'MMM dd, yyyy' }}</h3>
       </div>
       <div class="col-md-4">
         <div class="btn-group">
@@ -38,7 +38,7 @@
         <thead>
           <tr>
             <th class="header"> {{ currentMonth }} </th>
-            <th *ngFor="let date of dates"> {{ date?.day }} </th>
+            <th *ngFor="let date of dates" [ngClass]="{'muted': !isCurrentDay(date), 'weekend': isWeekend(date)}"> {{ date | date: 'dd' }} </th>
           </tr>
         </thead>
         <tbody>
@@ -55,8 +55,15 @@
                 </div>
               </div>
             </td>
-            <td *ngFor="let date of dates" [ngStyle]="{'background-color': (date?.isOutOfTheOffice) ? '#005FD5' : ''}">
-              1
+            <td *ngFor="let workload of member.workload"
+              [ngStyle]="{'background-color': (workload?.isOutOfTheOffice) ? 'rgba(0, 95, 213, 0.12)' : ''}">
+                <i  class="material-icons muted">task_alt</i> &nbsp;
+                <span class="badge badge-done">{{ workload.numDoneTasks }}</span> / <span class="badge">{{ workload.numTasks }}</span>
+                <br />
+                <span class="allocation">
+                  <i  class="material-icons">update</i> &nbsp;&nbsp;
+                  {{ workload.allocation || 0 }} h
+                </span>
             </td>
           </tr>
         </tbody>

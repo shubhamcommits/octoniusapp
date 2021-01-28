@@ -108,6 +108,9 @@ routes.put('/project/status', group.updateStatus);
 // GET - Get number of posts
 routes.get('/:groupId/postsCount', group.getPostsCount);
 
+// GET - Get group tasks between two dates
+routes.get('/:groupId/tasks-between-days', group.getTasksBetweenDates);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

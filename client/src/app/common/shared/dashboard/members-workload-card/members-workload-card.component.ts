@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { addDays, addHours, endOfDay, endOfMonth, endOfWeek, isSaturday, isSunday, startOfDay, startOfWeek, subDays } from 'date-fns';
+import { isSaturday, isSunday } from 'date-fns';
 import { PublicFunctions } from 'modules/public.functions';
+import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
@@ -18,16 +19,13 @@ export class MembersWorkloadCardComponent implements OnInit {
   userData;
   groupData;
   groupMembers = [];
+  // membersIds = [];
   groupTasks;
 
   //date for calendar Nav
   dates: any = [];
 
-  monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
-  currentDate: any = new Date();
+  currentDate: any = moment().format();;
 
   currentMonth = '';
 
@@ -57,36 +55,92 @@ export class MembersWorkloadCardComponent implements OnInit {
   }
 
   async initTable() {
-    await this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
+    this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
       this.groupMembers = res['users'];
+      // this.membersIds = this.groupMembers.map(member => member._id);
     });
 
     this.generateNavDates();
   }
 
   async generateNavDates() {
-    this.dates = [];
-    const firstDay = startOfWeek(this.currentDate);
+    const firstDay = moment(this.currentDate).startOf('week').add(1, 'd');
+
+    this.dates = await this.getRangeDates(firstDay);
+
+    let tasks = [];
+    await this.groupService.getGroupTasksBetweenDays(this.groupData._id, moment(this.dates[0]).format('YYYY-MM-DD'), moment(this.dates[this.dates.length -1]).format('YYYY-MM-DD')).then(res => {
+      tasks = res['posts'];
+    });
+
+    this.groupMembers.forEach(member => {
+
+      member.workload = [];
+      const memberTasks = tasks.filter(post => { return post._assigned_to.includes(member?._id); });
+
+      this.dates.forEach(async date => {
+        let workloadDay = {
+          date: date,
+          numTasks: 0,
+          numDoneTasks: 0,
+          allocation: 0,
+          isOutOfTheOffice: false
+        };
+
+        const tasksTmp = await memberTasks.filter(post => { return moment(date).startOf('day').isSame(moment(post.task.due_to).startOf('day')) });
+        workloadDay.numTasks = tasksTmp.length;
+
+        const allocationTasksTmp = await tasksTmp.map(post => post.task.allocation || 0);
+        if (allocationTasksTmp && allocationTasksTmp.length > 0) {
+          workloadDay.allocation = await allocationTasksTmp.map(post => post?.task?.allocation)
+            .reduce((a, b) => {
+              return a + b;
+            });
+        } else {
+          workloadDay.allocation = 0;
+        }
+
+        const doneTasks = await tasksTmp.filter(post => { return post.task.status == 'done'; });
+        workloadDay.numDoneTasks = doneTasks.length;
+
+        // TODO - Add the out of the office
+
+        member.workload.push(workloadDay);
+      });
+    });
+  }
+
+  getRangeDates(firstDay) {
+    let dates = [];
     for (var i = 0; i < 7; i++) {
-      const date = addDays(firstDay, i);
-      this.dates.push({ day: date.getDate(), date: date, month: date.getMonth(), isweekend: (isSaturday(date) || isSunday(date)), isOutOfTheOffice: (i%2==0) });
+      dates.push(moment(firstDay).add(i, 'days'));
     }
 
     if (this.dates[0]?.month == this.dates[this.dates?.length -1]?.month) {
-      this.currentMonth = this.monthNames[this.dates[0]?.month];
+      this.currentMonth = moment(this.dates[0]).format('MMMM');
     } else {
-      this.currentMonth = this.monthNames[this.dates[0]?.month] + ' / ' + this.monthNames[this.dates[this.dates?.length -1]?.month];
+      this.currentMonth = moment(this.dates[0]).format('MMMM') + ' / ' + moment(this.dates[this.dates?.length -1]).format('MMMM');
     }
 
+    return dates;
   }
 
   changeDates(numDays: number, type: string) {
     if (type == 'add') {
-      this.currentDate = addDays(this.currentDate, numDays);
+      this.currentDate = moment(this.currentDate).add(numDays, 'days');
     } else if (type == 'sub') {
-      this.currentDate = subDays(this.currentDate, numDays);
+      this.currentDate = moment(this.currentDate).subtract(numDays, 'days');
     }
     this.generateNavDates()
+  }
+
+  isCurrentDay(day) {
+    return day.startOf('day').isSame(moment().startOf('day'));
+  }
+
+  isWeekend(date) {
+    var day = date.format('d');
+    return (day == '6') || (day == '0');
   }
 
   /**

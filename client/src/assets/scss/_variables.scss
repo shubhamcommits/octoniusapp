@@ -24,6 +24,8 @@ $headings-color: #313131;
 $body-bg: #f3f4f6;
 $muted-color:#9D9FA1;
 // $body-bg: #fff;
+$weekend-bg: #FAFAFA;
+
 
 .pumpkin-orange-bg {
   background: $pumpkin-orange;
@@ -66,7 +68,7 @@ $muted-color:#9D9FA1;
 }
 
 .comment {
-  background: #fafafa !important;
+  background: $weekend-bg !important;
   margin: 5px !important;
   width: auto !important;
   border-top: none !important;
@@ -174,7 +176,7 @@ hr {
   border-bottom: $border-gray !important;
 }
 
-@media (max-width: 575.98px) { 
+@media (max-width: 575.98px) {
   .nav{
     display: block !important;
   }
