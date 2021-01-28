@@ -254,12 +254,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     MatMenuModule,
     MatBadgeModule,
     MatPaginatorModule,
-    MatExpansionModule,
-
-    Calendar.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory
-    })
+    MatExpansionModule
   ],
   exports: [
     AttachFilesComponent,

@@ -1,12 +1,9 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarView, CalendarWeekViewBeforeRenderEvent } from 'angular-calendar';
 import { addDays, addHours, endOfDay, endOfMonth, endOfWeek, isSaturday, isSunday, startOfDay, startOfWeek, subDays } from 'date-fns';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -31,6 +28,8 @@ export class MembersWorkloadCardComponent implements OnInit {
   ];
 
   currentDate: any = new Date();
+
+  currentMonth = '';
 
   // IsLoading behavior subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
@@ -58,28 +57,36 @@ export class MembersWorkloadCardComponent implements OnInit {
   }
 
   async initTable() {
-
-    // this.period = (this.userData?.stats?.group_dashboard_members_period) ? this.userData.stats.group_dashboard_members_period : 'this_week';
-
     await this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
       this.groupMembers = res['users'];
     });
 
-    // this.groupTasks = await this.publicFunctions.getAllGroupTasks(this.groupData?._id, this.period);
-
-    // await this.assignTasks();
-
-    // this.chartsReady = true;
-
-    ////////////////////
-    this.generateNavDate();
+    this.generateNavDates();
   }
 
-  async generateNavDate() {
+  async generateNavDates() {
+    this.dates = [];
+    const firstDay = startOfWeek(this.currentDate);
     for (var i = 0; i < 7; i++) {
-      const date = addDays(startOfWeek(new Date()), i);
-      this.dates.push({ day: date.getDate(), date: date, month: date.getMonth(), isweekend: (isSaturday(date) || isSunday(date)) });
+      const date = addDays(firstDay, i);
+      this.dates.push({ day: date.getDate(), date: date, month: date.getMonth(), isweekend: (isSaturday(date) || isSunday(date)), isOutOfTheOffice: (i%2==0) });
     }
+
+    if (this.dates[0]?.month == this.dates[this.dates?.length -1]?.month) {
+      this.currentMonth = this.monthNames[this.dates[0]?.month];
+    } else {
+      this.currentMonth = this.monthNames[this.dates[0]?.month] + ' / ' + this.monthNames[this.dates[this.dates?.length -1]?.month];
+    }
+
+  }
+
+  changeDates(numDays: number, type: string) {
+    if (type == 'add') {
+      this.currentDate = addDays(this.currentDate, numDays);
+    } else if (type == 'sub') {
+      this.currentDate = subDays(this.currentDate, numDays);
+    }
+    this.generateNavDates()
   }
 
   /**
