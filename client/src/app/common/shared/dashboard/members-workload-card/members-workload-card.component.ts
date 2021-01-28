@@ -1,5 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
-import { isSaturday, isSunday } from 'date-fns';
+import { Component, OnInit, Injector, Input } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
@@ -13,6 +12,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   styleUrls: ['./members-workload-card.component.scss']
 })
 export class MembersWorkloadCardComponent implements OnInit {
+
+  @Input() groupId: string;
 
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -46,7 +47,7 @@ export class MembersWorkloadCardComponent implements OnInit {
     this.isLoading$.next(true);
 
     this.userData = await this.publicFunctions.getCurrentUser();
-    this.groupData = await this.publicFunctions.getCurrentGroup();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
 
     await this.initTable();
 
