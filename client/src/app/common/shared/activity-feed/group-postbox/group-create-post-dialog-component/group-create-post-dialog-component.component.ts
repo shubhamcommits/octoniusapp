@@ -10,6 +10,7 @@ import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-group-create-post-dialog-component',
@@ -411,6 +412,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
       this.postService.saveCustomField(this.postData._id, customFieldName, customFieldValue, this.groupId)
         .then(async (res) => {
+          this.selectedCFValues[customFieldName] = customFieldValue;
           this.postData.task.custom_fields[customFieldName] = customFieldValue;
 
           this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, {name: customFieldName, value: customFieldValue}, this.groupData._id, this.postData, this.userData._id);

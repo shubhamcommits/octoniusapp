@@ -61,10 +61,7 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
       // Fetch current group
       this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
     }
-
-    console.log("Group data is here",this.groupData);
     
-
     if (this.groupData) {
       this.isAdmin = this.isAdminUser();
 
