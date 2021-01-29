@@ -75,7 +75,7 @@ export class UtilityService {
   successNotification(text: string, title?: string) {
     const Toast = Swal.mixin({
       toast: true,
-      position: 'bottom-end',
+      position: 'top-end',
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true
@@ -96,7 +96,7 @@ export class UtilityService {
   simpleNotification(text: string, title?: string){
     const Toast = Swal.mixin({
       toast: true,
-      position: 'bottom-end',
+      position: 'top-end',
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true
@@ -117,7 +117,7 @@ export class UtilityService {
   warningNotification(text: string, title?: string){
     const Toast = Swal.mixin({
       toast: true,
-      position: 'bottom-end',
+      position: 'top-end',
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true
@@ -138,7 +138,7 @@ export class UtilityService {
   errorNotification(text: string, title?: string){
     const Toast = Swal.mixin({
       toast: true,
-      position: 'bottom-end',
+      position: 'top-end',
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true
@@ -159,7 +159,7 @@ export class UtilityService {
   infoNotification(text: string, title?: string){
     const Toast = Swal.mixin({
       toast: true,
-      position: 'bottom-end',
+      position: 'top-end',
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true
@@ -181,7 +181,7 @@ export class UtilityService {
   asyncNotification(text: string, promise: Promise<any>){
     const Toast = Swal.mixin({
       toast: true,
-      position: 'bottom-end',
+      position: 'top-end',
       showConfirmButton: false,
       timerProgressBar: true
     })
@@ -428,7 +428,7 @@ export class UtilityService {
   public getSwalToast(icon: SweetAlertIcon, title: string, text: string){
     let Toast = Swal.mixin({
       toast: true,
-      position: 'bottom-end',
+      position: 'top-end',
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true,
