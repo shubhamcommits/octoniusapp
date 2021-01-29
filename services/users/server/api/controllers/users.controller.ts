@@ -156,6 +156,53 @@ export class UsersControllers {
      * @param res 
      * @param next 
      */
+    async transferOwnership(req: Request, res: Response, next: NextFunction) {
+
+        const { userById ,userToId,workspaceId} = req.body;
+
+        try {
+
+            const userTo = await User.findById(userToId);
+            const userBY = await User.findById(userById);
+            console.log("data",userTo,userBY);
+            var workspace = await Workspace.findOneAndUpdate({
+                _id:workspaceId
+            },
+            {
+                owner_first_name:userTo.first_name,
+                owner_last_name:userTo.last_name,
+                owner_email:userTo.email,
+                owner_password:userTo.password,
+                _owner:userTo._id
+            });
+
+            userTo.workspace_name = workspace.workspace_name;
+            userTo._workspace = workspace._id;
+            userTo.role = 'owner';
+            userBY.role = 'admin';
+
+            await userTo.save();
+            await userBY.save();
+            console.log("Workspace",workspace,userTo,userBY);
+
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Successfully Transfer ownership`,
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+
+
+    /**
+     * This function is responsible for changing the role of the other user
+     * @param req 
+     * @param res 
+     * @param next 
+     */
     async updateUserRole(req: Request, res: Response, next: NextFunction) {
 
         const { userId, role } = req.body;

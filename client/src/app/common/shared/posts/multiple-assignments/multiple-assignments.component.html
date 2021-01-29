@@ -7,7 +7,7 @@
     Unassigned
   </span>
 
-  <button *ngIf="!post?.task?.allocation || post?.task?.allocation == 0"
+  <button *ngIf="(!post?.task?.allocation || post?.task?.allocation == 0) || (assigned_to?.length < 1)"
     mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">add assignee</button>
   <mat-menu #assigneeSearch="matMenu">
     <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
