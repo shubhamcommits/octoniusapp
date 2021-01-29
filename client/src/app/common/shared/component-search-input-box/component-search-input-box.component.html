@@ -78,6 +78,18 @@
                             </div>
                         </div>
                     </section>
+
+                    <section *ngIf="type === 'workspaceMembers'">
+                        <div>
+                            <i *ngIf="item.showAddMem"
+                                class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>
+                            <div *ngIf="!item.showAddMem">
+                                <button (click)="onAddNewMember(item)"
+                                    class="btn btn-primary btn-sm">Transfer
+                                </button>
+                            </div>
+                        </div>
+                    </section>
                     <!-- Group section ends -->
 
                     <!-- Group section starts -->

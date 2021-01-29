@@ -109,6 +109,8 @@ routes.get('/user/all', user.getAllUsers);
 // PUT - Transform the user on the basis of userId on a portal app manager
 routes.put('/:userId/make-portal-manager', user.makeUserPortalManager);
 
+routes.put('/transefer-ownership', user.transferOwnership);
+
 // DELETE - Remove the user on the basis of userId
 routes.delete('/:userId', user.removeUser);
 
