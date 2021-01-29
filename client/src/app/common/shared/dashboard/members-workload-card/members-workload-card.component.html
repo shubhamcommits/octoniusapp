@@ -6,39 +6,34 @@
   </div>
 
   <div>
-    <div class="row text-center">
-      <div class="col-md-4">
-        <div class="btn btn-primary" (click)="changeDates(7, 'sub')">
-            Previous Week
+    <div class="row text-center mb-3">
+      <div class="col-md-2">
+        <div class="btn btn-default" (click)="changeDates(7, 'sub')">
+            <i class="material-icons">navigate_before</i>
         </div>
+        
         <!--
         <div class="btn btn-primary" (click)="changeDates(1, 'sub')">
             Yesterday
         </div>
         -->
       </div>
-      <div class="col-md-4">
-          <h3>{{ dates[0] | date:'MMM dd, yyyy' }} - {{ dates[dates?.length - 1] | date:'MMM dd, yyyy' }}</h3>
+      <div class="col-md-8">
+          <h6>{{ dates[0] | date:'MMM dd' }} - {{ dates[dates?.length - 1] | date:'MMM dd' }}</h6>
       </div>
-      <div class="col-md-4">
-        <div class="btn-group">
-          <!--
-          <div class="btn btn-primary" (click)="changeDates(1, 'add')">
-              Tomorrow
-          </div>
-          -->
-          <div class="btn btn-primary" (click)="changeDates(7, 'add')">
-              Next Week
-          </div>
-        </div>
+      <div class="col-md-2">
+        <div class="btn btn-default" (click)="changeDates(7, 'add')">
+        <i class="material-icons">navigate_next</i>
       </div>
+    </div>
+      
     </div>
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
             <th class="header"> {{ currentMonth }} </th>
-            <th *ngFor="let date of dates" [ngClass]="{'muted': !isCurrentDay(date), 'weekend': isWeekend(date)}"> {{ date | date: 'dd' }} </th>
+            <th *ngFor="let date of dates" [ngClass]="{'today': isCurrentDay(date),'muted': !isCurrentDay(date), 'weekend': isWeekend(date)}"> {{ date | date: 'dd' }} </th>
           </tr>
         </thead>
         <tbody>
@@ -57,13 +52,13 @@
             </td>
             <td *ngFor="let workload of member.workload"
               [ngStyle]="{'background-color': (workload?.isOutOfTheOffice) ? 'rgba(0, 95, 213, 0.12)' : ''}">
-                <i  class="material-icons muted">task_alt</i> &nbsp;
-                <span class="badge badge-done">{{ workload.numDoneTasks }}</span> / <span class="badge">{{ workload.numTasks }}</span>
-                <br />
-                <span class="allocation">
+                <i  class="material-icons task-status">task_alt</i> &nbsp;
+                <span class="badge badge-done">{{ workload.numDoneTasks }}</span> <span class="muted"> / </span><span class="badge">{{ workload.numTasks }}</span>
+                
+                <div class="allocation">
                   <i  class="material-icons">update</i> &nbsp;&nbsp;
-                  {{ workload.allocation || 0 }} h
-                </span>
+                  <span>{{ workload.allocation || 0 }}h</span>
+                </div>
             </td>
           </tr>
         </tbody>

@@ -52,6 +52,7 @@ th {
   z-index: 2;
   text-align: center;
   padding: 0px;
+  font-weight: 400;
 
   &:first-of-type {
     border-left: none;
@@ -74,6 +75,11 @@ tbody tr td:first-of-type {
   background-color: $weekend-bg;
 }
 
+.today{
+  color: #fff;
+  background-color: $brand-primary;
+}
+
 .out-of-the-office {
   background-color: rgba(0, 95, 213, 0.12);
 }
@@ -84,11 +90,11 @@ tbody tr td:first-of-type {
   display: inline;
   font-family: Nunito,sans-serif;
   font-style: normal;
-  font-weight: 700!important;
+  font-weight: 400!important;
   font-size: 12px;
   align-items: center;
-  color: #005fd5;
-  background-color: #e4edf8;
+  color: #fff;
+  background-color: rgba(157, 159, 161, 0.5);
   border-radius: 10px;
   padding: 2px 10px !important;
 }
@@ -98,5 +104,12 @@ tbody tr td:first-of-type {
 }
 
 .allocation {
-  color: #26A69A;
+  color: rgba(38, 166, 154, 0.5);
+  margin-top: 10px;
+  span{
+    color:$turquoise;
+  }
+}
+.task-status{
+  color: rgba(157, 159, 161, 0.5);
 }
