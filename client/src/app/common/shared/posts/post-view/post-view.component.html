@@ -12,7 +12,7 @@
 
             <!-- Details of the Post Creator Starts -->
             <div class="col-md-7">
-                <h6>{{post?._posted_by?.first_name || 'First Name'}} {{post?._posted_by?.last_name || 'Last Name'}} <br>
+                <h6>{{post?._posted_by?.first_name || 'Deleted'}} {{post?._posted_by?.last_name || 'User'}} <br>
                     <span class="small lightgray date">
                         {{ (post?.created_date | date : 'medium') || ( this.date | date: 'medium') }}</span>
                 </h6>

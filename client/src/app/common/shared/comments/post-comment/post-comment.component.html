@@ -8,9 +8,9 @@
 
             </div>
             <div class="col-md-11 ">
-                <h6 class="ml-2">{{comment?._commented_by?.first_name}} {{comment?._commented_by?.last_name}}
+                <h6 class="ml-2"> {{comment?._commented_by?.first_name || 'Deleted'}} {{comment?._commented_by?.last_name || 'User'}}
                     <br>
-                    <span class="small lightgray date">{{comment?.created_date | date: 'medium'}}</span>
+                    <span class="small lightgray date"> {{comment?.created_date | date: 'medium'}}</span>
                 </h6>
             </div>
         </div>

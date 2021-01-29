@@ -51,7 +51,7 @@
           </div>
 
           <div class="notification_title">
-            {{ notification?._actor?.first_name }} {{ notification?._actor?.last_name }}
+            {{ notification?._actor?.first_name || 'Deleted' }} {{ notification?._actor?.last_name || 'User' }}
             <span
             [ngClass]="{
               'assignment_notification': notification?.type === 'assignment',

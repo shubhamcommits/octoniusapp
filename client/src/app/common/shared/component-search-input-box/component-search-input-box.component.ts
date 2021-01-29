@@ -37,6 +37,8 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   @Input('groupData') groupData: any = {};
 
+  @Input('workspaceData') workspaceData:any = {};
+
   @Input('bar') bar: string;
 
   @Input('barMemberList') barMemberList: any = [];
@@ -93,7 +95,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     this.subSink.add(this.itemValueChanged
       .pipe(distinctUntilChanged(), debounceTime(500))
       .subscribe(async () => {
-        if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event' || this.type === 'tag' || this.type === 'barTag' || this.type === 'barMembers') {
+        if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event' || this.type === 'tag' || this.type === 'barTag' || this.type === 'barMembers' || this.type === 'workspaceMembers') {
 
           // If value is null then empty the array
           if (this.itemValue == "")
@@ -106,6 +108,20 @@ export class ComponentSearchInputBoxComponent implements OnInit {
             }
             if(this.type === 'barMembers'){
               this.itemList = this.groupData._members.filter( member => {
+                let item = member.first_name + ' ' + member.last_name
+                return item.includes(this.itemValue);
+              });
+              this.itemList.forEach(item => {
+                if(this.barMemberList.includes(item)){
+                  item.showAddMem = true;
+                } else {
+                  item.showAddMem = false;
+                }
+              }); 
+            }
+
+            if(this.type === 'workspaceMembers'){
+              this.itemList = this.workspaceData.members.filter( member => {
                 let item = member.first_name + ' ' + member.last_name
                 return item.includes(this.itemValue);
               });

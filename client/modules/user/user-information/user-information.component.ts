@@ -1,6 +1,10 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
+import { UserService } from "src/shared/services/user-service/user.service";
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { AuthService } from 'src/shared/services/auth-service/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-information',
@@ -12,7 +16,12 @@ export class UserInformationComponent implements OnInit {
 
   constructor(
     private utilityService: UtilityService,
-    private injector: Injector) { }
+    private storageService: StorageService,
+    private authService: AuthService,
+    private userService:UserService,
+    private injector: Injector,
+    private router: Router
+    ) { }
 
   // User Data Object
   @Input('userData') userData: any = {};
@@ -79,6 +88,44 @@ export class UserInformationComponent implements OnInit {
         container: 'container-class',
       }
     })
+  }
+
+  async removeUser(userID: string){
+    
+    // Ask User to remove this user from the group or not
+    this.utilityService.getConfirmDialogAlert('Are you sure?',
+    'This action will delete your account.')
+      .then((result) => {
+        if (result.value) {
+          // Delete the User
+          this.utilityService.asyncNotification('Please wait while we are Deleting the user ...',
+            new Promise((resolve, reject) => {
+              this.userService.removeUser(userID)
+              .then(res => {
+                  if(res){
+                    this.authService.signout().toPromise()
+                    .then((res) => {
+                      this.storageService.clear();
+                      this.publicFunctions.sendUpdatesToGroupData({})
+                      this.publicFunctions.sendUpdatesToRouterState({})
+                      this.publicFunctions.sendUpdatesToUserData({})
+                      this.publicFunctions.sendUpdatesToWorkspaceData({})
+                      this.router.navigate(['/home'])
+                      resolve(this.utilityService.resolveAsyncPromise('Successfully Logged out!'));
+                    }).catch((err) => {
+                      console.log('Error occurred while logging out!', err);
+                      reject(this.utilityService.rejectAsyncPromise('Error occurred while logging you out!, please try again!'));
+                    });
+                  }
+                  // Resolve with success
+                  resolve(this.utilityService.resolveAsyncPromise('User Deleted!'))
+                })
+                .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the workplace, please try again!')))
+            }))
+        }
+      })
+
+    console.log("User id to delete user",userID);
   }
 
 }
