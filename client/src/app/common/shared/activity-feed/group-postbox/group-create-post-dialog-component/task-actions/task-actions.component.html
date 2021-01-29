@@ -108,13 +108,6 @@
     </div>
   </div>
 
-
-
-
-
-
-
-
   <div *ngIf="groupData && !ischild && groupData.project_type" class="set-parent">
     MAKE DEPENDENCY OF
 
@@ -144,6 +137,12 @@
     </div>
   </div>
 
+  <div *ngIf="postData?._assigned_to?.length < 2" class="set-parent">
+    Allocation
 
+    <!-- INPUT STARTS -->
+    <input type="text" name="allocation" [ngModel]="allocation" (blur)="allocationChange($event)" class="input-search" placeholder="Allocation" />
+    <!-- INPUT ENDS -->
+  </div>
 
 </div>

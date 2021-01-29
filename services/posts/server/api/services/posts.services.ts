@@ -2498,4 +2498,33 @@ export class PostService {
       throw (err);
     }
   }
+
+  /**
+   * This function is responsible for changing the task dates
+   * @param postId
+   * @param date_field
+   * @param newDate
+   */
+  async saveAllocation(postId: string, allocation: number) {
+
+    try {
+      // Get post data
+      var post: any = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        "task.allocation": allocation
+      }, {
+        new: true
+      });
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      throw (err);
+    }
+  }
 }

@@ -1271,4 +1271,35 @@ export class GroupController {
             return sendError(res, err);
         }
     };
+
+    /**
+     * This function fetches the posts of the group with specific dates
+     * @param req
+     */
+    async getTasksBetweenDates(req: Request, res: Response) {
+        try {
+
+            const { groupId } = req.params;
+            const { query: { startDate, endDate } } = req;
+
+            // Find the Group based on the groupId
+            const posts = await Post.find({
+                $and: [
+                    { _group: groupId },
+                    { type: 'task' },
+                    { 'task.due_to': { $gte: startDate, $lte: endDate} }
+                ]
+            })
+            .select('task.status task.due_to _assigned_to task.allocation')
+            .lean() || [];
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Posts found!',
+                posts: posts
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
 }

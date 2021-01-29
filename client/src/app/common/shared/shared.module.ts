@@ -97,9 +97,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommentListComponent } from './comments/comment-list/comment-list.component';
 import { MemberListMenuComponent } from './member-list-menu/member-list-menu.component';
 import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/members-workload-card.component';
+import { SectionStatusCardComponent } from './dashboard/section-status-card/section-status-card.component';
 import { MemberDialogComponent } from './member-dialog/member-dialog.component';
 
-
+import { CalendarModule as Calendar, CalendarUtils, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 @NgModule({
   declarations: [
@@ -192,6 +194,7 @@ import { MemberDialogComponent } from './member-dialog/member-dialog.component';
     EngagementCardComponent,
     GlobalPerformanceCardComponent,
     MembersWorkloadCardComponent,
+    SectionStatusCardComponent,
 
     NewTaskComponent,
 
@@ -322,6 +325,7 @@ import { MemberDialogComponent } from './member-dialog/member-dialog.component';
     EngagementCardComponent,
     GlobalPerformanceCardComponent,
     MembersWorkloadCardComponent,
+    SectionStatusCardComponent,
 
     NewTaskComponent,
 

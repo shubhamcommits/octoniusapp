@@ -25,10 +25,9 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
   @Output() parentTaskSelectedEmitter = new EventEmitter();
   @Output() dependencyTaskSelectedEmitter = new EventEmitter();
-
   @Output() taskClonedEmitter = new EventEmitter();
-
   @Output() taskFromTemplateEmitter = new EventEmitter();
+  @Output() taskAllocationEmitter = new EventEmitter();
 
   userGroups = [];
   transferAction = '';
@@ -48,6 +47,8 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
   groupTemplates = [];
   templateAction = '';
+
+  allocation = '';
 
   // This observable is mapped with item field to recieve updates on change value
   itemValueChanged: Subject<Event> = new Subject<Event>();
@@ -119,6 +120,8 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     if (this.postData?.task?._dependency_task || this.postData?.task?._dependent_child?.length > 0) {
       this.isdependent = true;
     }
+
+    this.allocation = this.postData?.task?.allocation;
 
     this.parentTask = await this.isParent();
   }
@@ -441,5 +444,22 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       cancelButtonText: 'Cancel',
       cancelButtonColor: '#d33',
     })
+  }
+
+  allocationChange(event) {
+
+    const allocation = event.target.value;
+
+    this.utilityService.asyncNotification('Please wait we are saving the task...', new Promise((resolve, reject) => {
+      this.postService.saveAllocation(allocation, this.postData?._id)
+        .then((res) => {
+          this.allocation = allocation;
+          this.taskAllocationEmitter.emit(allocation);
+          resolve(this.utilityService.resolveAsyncPromise(`👍 Task saved!`));
+        })
+        .catch((error) => {
+          reject(this.utilityService.rejectAsyncPromise(`Error while saving the task!`));
+        });
+    }));
   }
 }
