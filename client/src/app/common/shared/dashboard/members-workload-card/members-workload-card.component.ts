@@ -85,13 +85,12 @@ export class MembersWorkloadCardComponent implements OnInit {
           numTasks: 0,
           numDoneTasks: 0,
           allocation: 0,
-          isOutOfTheOffice: false
+          outOfTheOfficeClass: ''
         };
 
         const tasksTmp = await memberTasks.filter(post => { return moment(date).startOf('day').isSame(moment(post.task.due_to).startOf('day')) });
         workloadDay.numTasks = tasksTmp.length;
 
-        //const tasksTmp = await tasksTmp.map(post => post.task.allocation || 0);
         if (tasksTmp && tasksTmp.length > 0) {
           const allocationTasks = tasksTmp.map(post => post?.task?.allocation || 0);
 
@@ -106,7 +105,18 @@ export class MembersWorkloadCardComponent implements OnInit {
         const doneTasks = await tasksTmp.filter(post => { return post.task.status == 'done'; });
         workloadDay.numDoneTasks = doneTasks.length;
 
-        // TODO - Add the out of the office
+        const index = member?.out_of_office?.findIndex(outOfficeDay => moment(outOfficeDay.date).isSame(moment(date, 'day')));
+
+        if (index >= 0) {
+          const outOfficeDay = member?.out_of_office[index];
+          workloadDay.outOfTheOfficeClass = (outOfficeDay.type == 'holidays')
+            ? 'cal-day-holidays'
+            : ((outOfficeDay.type == 'personal')
+              ? 'cal-day-personal'
+              : ((outOfficeDay.type == 'sick') ? 'cal-day-sick' : ''));
+
+          workloadDay.outOfTheOfficeClass += (workloadDay.outOfTheOfficeClass != '' && outOfficeDay.approved) ? '-approved' : '';
+        }
 
         member.workload.push(workloadDay);
       });

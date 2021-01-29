@@ -1,34 +1,3 @@
 @import "src/assets/scss/variables";
 @import "src/assets/scss/tasks";
-
-.cal-day-selected,
-.cal-day-selected:hover {
-  background-color: $day-selected !important;
-}
-
-.cal-day-holidays,
-.cal-day-holidays:hover {
-  background-color: $day-holiday !important;
-}
-.cal-day-holidays-approved,
-.cal-day-holidays-approved:hover {
-  background-color: $day-holiday-approved !important;
-}
-
-.cal-day-personal,
-.cal-day-personal:hover {
-  background-color: $day-personal !important;
-}
-.cal-day-personal-approved,
-.cal-day-personal-approved:hover {
-  background-color: $day-personal-approved !important;
-}
-
-.cal-day-sick,
-.cal-day-sick:hover {
-  background-color: $day-sick !important;
-}
-.cal-day-sick-approved,
-.cal-day-sick-approved:hover {
-  background-color: $day-sick-approved !important;
-}
+@import "src/assets/scss/group";
