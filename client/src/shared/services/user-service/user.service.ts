@@ -121,7 +121,6 @@ export class UserService {
    * This function is responsible for deleting user
    */
   transferOwnership(querydata: Object){
-    console.log("am hererer");
     return this._http.put(this.BASE_API_URL +'/transefer-ownership',querydata).toPromise();;
   }
 

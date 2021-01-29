@@ -179,7 +179,7 @@ export class UsersControllers {
             userTo.workspace_name = workspace.workspace_name;
             userTo._workspace = workspace._id;
             userTo.role = 'owner';
-            userBY.role = 'member';
+            userBY.role = 'admin';
 
             await userTo.save();
             await userBY.save();
