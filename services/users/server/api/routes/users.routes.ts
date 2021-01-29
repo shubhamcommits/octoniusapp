@@ -116,6 +116,12 @@ routes.put('/add-favorite-group', user.addFavoriteGroup);
 
 routes.put('/default-icons-sidebar', user.saveIconSidebarByDefault);
 
+// PUT - Save the out of the office days 
+routes.put('/:userId/out-of-office-days', user.saveOutOfOfficeDays);
+
+// GET - Get the out of the office days 
+routes.get('/:userId/out-of-office-days', user.getOutOfOfficeDays);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

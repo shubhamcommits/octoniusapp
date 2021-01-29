@@ -632,4 +632,54 @@ export class UsersControllers {
         return sendError(res, err, 'Internal Server Error!', 500);
     }
   }
+
+  async getOutOfOfficeDays(req: Request, res: Response, next: NextFunction) {
+
+    const userId = req['userId'];
+    try {
+
+      let user: any = await User.findOne({
+          _id: userId
+        })
+        .select('_id out_of_office');
+
+      // Send status 200 response
+      return res.status(200).json({
+          message: `User out of the office days`,
+          user: user
+      });
+
+    } catch (err) {
+        return sendError(res, err, 'Internal Server Error!', 500);
+    }
+  }
+
+  async saveOutOfOfficeDays(req: Request, res: Response, next: NextFunction) {
+
+    const { days } = req.body;
+    const userId = req['userId'];
+    
+    try {
+
+
+        let user: any = await User.findOne({
+          _id: userId
+        });
+
+        days.forEach(day => {
+            user.out_of_office.push(day);
+        });
+
+        user.save();
+        
+        // Send status 200 response
+        return res.status(200).json({
+            message: `User Stats has been updated`,
+            user: user
+        });
+
+    } catch (err) {
+        return sendError(res, err, 'Internal Server Error!', 500);
+    }
+  }
 }
