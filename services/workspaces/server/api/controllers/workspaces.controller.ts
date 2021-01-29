@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { CommonService, UsersService } from '../services';
 import http from 'axios';
 import moment from 'moment';
+import mongoose from "mongoose";
 
 // Password Helper Class
 const passwordHelper = new PasswordHelper();
@@ -549,7 +550,7 @@ export class WorkspaceController {
 
         try {
             const { workspaceId } = req.params;
-    
+
             if (!workspaceId) {
                 return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
             }
@@ -563,14 +564,16 @@ export class WorkspaceController {
                 await commonService.removeGroup(group._id);
             });
 
-            // Delete the workspace
-            const workspace = await Workspace.findByIdAndDelete(workspaceId).populate('billing');
+            let workspace = await Workspace.findOne({_id: workspaceId}).select('billing');
 
-            if (workspace['billing']) {
+            if (workspace && workspace['billing']) {
                 // Remove stripe client
                 const stripe = require('stripe')(process.env.SK_STRIPE);
                 stripe.customers.del(workspace['billing']['client_id']);
             }
+
+            // Delete the workspace
+            workspace = await Workspace.findByIdAndDelete(workspaceId);
 
             // Send the status 200 response 
             return res.status(200).json({
