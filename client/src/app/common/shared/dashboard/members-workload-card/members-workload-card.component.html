@@ -3,56 +3,67 @@
     <div class="card-title mt-1">
       Team workload
     </div>
-
-    <div>
-      <mat-form-field>
-        <mat-select ngDefaultControl
-                (selectionChange)="periodSelected($event)"
-                (click)="$event.stopPropagation()"
-                [(value)]="period"
-                name="period">
-            <mat-option *ngFor="let p of periods" [value]="p.key">{{ p.value }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
   </div>
 
   <div>
-    <!-- MEMBER DETAILS STARTS -->
-    <div *ngFor="let member of groupMembers" class="workload_card">
-      <div style="width: 300px;">
-        <div class="workload_avatar">
-          <img class="feed-avatar" src="{{ this.baseUrl }}/{{member?.profile_pic}}"
-            onerror="this.src='assets/images/user.png'" alt="{{ member?.full_name }}">
+    <div class="row text-center mb-3">
+      <div class="col-md-2">
+        <div class="btn btn-default" (click)="changeDates(7, 'sub')">
+            <i class="material-icons">navigate_before</i>
         </div>
-
-        <div>
-          {{ member?.first_name }} {{ member?.last_name }}
-          <div class="muted"> {{ member?.current_position }} </div>
+        
+        <!--
+        <div class="btn btn-primary" (click)="changeDates(1, 'sub')">
+            Yesterday
         </div>
+        -->
       </div>
-
-      <div>
-        {{ member?.tasksCount }} tasks
-        <div [ngClass]="{'status-todo-color': member?.topStatus?.name === 'to do', 'status-in-progress-color': member?.topStatus?.name === 'in progress', 'status-done-color': member?.topStatus?.name === 'done'}">
-          {{ member?.topStatus?.count }} {{ member?.topStatus?.name }}
-        </div>
+      <div class="col-md-8">
+          <h6>{{ dates[0] | date:'MMM dd' }} - {{ dates[dates?.length - 1] | date:'MMM dd' }}</h6>
       </div>
-
-      <div *ngIf="chartsReady">
-        <canvas
-          baseChart
-          height="50"
-          [data]="member?.barChart?.data"
-          [labels]="member?.barChart?.labels"
-          [chartType]="member?.barChart?.type"
-          [options]="member?.barChart?.options"
-          [colors]="member?.barChart?.colors"
-          [plugins]="member?.barChart?.plugins"></canvas>
+      <div class="col-md-2">
+        <div class="btn btn-default" (click)="changeDates(7, 'add')">
+        <i class="material-icons">navigate_next</i>
       </div>
-
     </div>
-    <!-- MEMBER DETAILS ENDS -->
+      
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th class="header"> {{ currentMonth }} </th>
+            <th *ngFor="let date of dates" [ngClass]="{'today': isCurrentDay(date),'muted': !isCurrentDay(date), 'weekend': isWeekend(date)}"> {{ date | date: 'dd' }} </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of groupMembers">
+            <td>
+              <div class="member">
+                <div>
+                  <img src="{{ baseUrl }}/{{member?.profile_pic}}" onerror="this.src='assets/images/user.png'"
+                    class="feed-avatar ml-2" (click)="openFullscreenModal(member?._id)" />
+                </div>
+                <div class="name">
+                  {{ member?.first_name }}  {{ member?.last_name }}
+                  <p class="muted"> {{ member?.current_position }} </p>
+                </div>
+              </div>
+            </td>
+            <td *ngFor="let workload of member.workload"
+              [ngStyle]="{'background-color': (workload?.isOutOfTheOffice) ? 'rgba(0, 95, 213, 0.12)' : ''}">
+                <i  class="material-icons task-status">task_alt</i> &nbsp;
+                <span class="badge badge-done">{{ workload.numDoneTasks }}</span> <span class="muted"> / </span><span class="badge">{{ workload.numTasks }}</span>
+                
+                <div class="allocation">
+                  <i  class="material-icons">update</i> &nbsp;&nbsp;
+                  <span>{{ workload.allocation || 0 }}h</span>
+                </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div class="col-5" *ngIf="groupMembers.length === 0">

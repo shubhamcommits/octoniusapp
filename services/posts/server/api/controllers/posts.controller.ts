@@ -1630,4 +1630,33 @@ export class PostController {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for changing the task allocation
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async saveAllocation(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { allocation } } = req;
+
+        try {
+
+            // Call Service function to change the assignee
+            const post = await postService.saveAllocation(postId, +allocation)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task allocation updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }
