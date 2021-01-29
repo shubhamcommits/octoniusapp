@@ -18,6 +18,9 @@
                 <span id="userData_company_name"> {{ userData?.company_name }} </span></p>
             <p class="card-text"><strong>Role:</strong>
                 {{ userData?.role }}</p>
+            <button *ngIf="currentUser && userData.role !='owner'" type="button" name="button" class="btn btn-link" (click)="removeUser(userData._id)">
+                    Delete Account
+            </button>
         </div>
     </div>
 </div>

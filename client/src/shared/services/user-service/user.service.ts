@@ -110,6 +110,14 @@ export class UserService {
     return this._http.post(this.SLACK_API_URL + `/slack-auth`, { code, user });
   }
 
+ /**
+   * This function is responsible for deleting user
+   */
+  removeUser(userId: string){
+    return this._http.delete(this.BASE_API_URL + `/${userId}`).toPromise();;
+  }
+
+
   /**
    * This function is responsible for diconnecting the slack oA
    */
