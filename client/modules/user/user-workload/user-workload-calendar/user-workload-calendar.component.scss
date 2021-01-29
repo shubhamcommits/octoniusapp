@@ -1,14 +1,6 @@
 @import "src/assets/scss/variables";
 @import "src/assets/scss/tasks";
 
-$day-selected: #ffc014;
-$day-holiday: #b9ebb9;
-$day-holiday-approved: #32dc32;
-$day-personal: #95eeee;
-$day-personal-approved: #08d5d5;
-$day-sick: #f4d9bb;
-$day-sick-approved: #f49f3e;
-
 .cal-day-selected,
 .cal-day-selected:hover {
   background-color: $day-selected !important;
