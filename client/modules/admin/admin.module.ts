@@ -19,6 +19,7 @@ import { MomentModule } from "ngx-moment";
 import { StripePaymentComponent } from './admin-billing/stripe-payment/stripe-payment.component';
 import { StartSubscriptionComponent } from './admin-billing/stripe-payment/start-subscription/start-subscription.component';
 import { SubscriptionDetailsComponent } from './admin-billing/stripe-payment/subscription-details/subscription-details.component';
+import { TransferOwnershipComponent } from './admin-general/transfer-ownership/transfer-ownership.component';
 
 
 @NgModule({
@@ -29,7 +30,7 @@ import { SubscriptionDetailsComponent } from './admin-billing/stripe-payment/sub
     AdminHeaderComponent,
     WorkplaceInformationComponent,
     WorkplaceAddDomainComponent,
-    WorkplaceInviteUserComponent, StripePaymentComponent, StartSubscriptionComponent, SubscriptionDetailsComponent],
+    WorkplaceInviteUserComponent, StripePaymentComponent, StartSubscriptionComponent, SubscriptionDetailsComponent, TransferOwnershipComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

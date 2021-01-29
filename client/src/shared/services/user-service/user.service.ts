@@ -117,6 +117,14 @@ export class UserService {
     return this._http.delete(this.BASE_API_URL + `/${userId}`).toPromise();;
   }
 
+  /**
+   * This function is responsible for deleting user
+   */
+  transferOwnership(querydata: Object){
+    console.log("am hererer");
+    return this._http.put(this.BASE_API_URL +'/transefer-ownership',querydata).toPromise();;
+  }
+
 
   /**
    * This function is responsible for diconnecting the slack oA
