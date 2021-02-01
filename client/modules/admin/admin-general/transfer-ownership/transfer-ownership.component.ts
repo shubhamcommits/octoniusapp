@@ -17,7 +17,6 @@ export class TransferOwnershipComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("workSPace data",this.workspaceData);
   }
 
 
@@ -26,7 +25,6 @@ export class TransferOwnershipComponent implements OnInit {
   }
 
   addNewUser(User:any){
-    console.log("am herer",User,this.utilityService);
     this.utilityService.asyncNotification('Please wait while we are Deleting the user ...',
     new Promise((resolve, reject) => {
       this.userService.transferOwnership({
@@ -40,7 +38,7 @@ export class TransferOwnershipComponent implements OnInit {
         reject(this.utilityService.rejectAsyncPromise('Error occurred while transfering ownership , please try again!'));
       })
     }));
-    
+
 
   }
 

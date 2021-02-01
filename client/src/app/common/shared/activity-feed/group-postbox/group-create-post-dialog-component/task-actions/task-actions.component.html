@@ -83,7 +83,7 @@
    MAKE SUBTASK OF
 
     <!-- INPUT BAR STARTS -->
-    <input type="search" id="keyword" autocomplete="off" placeholder="Search for a task" class="input-search"
+    <input type="search" id="keyword" autocomplete="off" placeholder="Search task" class="input-search"
       [(ngModel)]="itemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChange($event)" />
     <!-- INPUT BAR ENDS -->
     <div *ngIf="searchingOn === 'keyword'">

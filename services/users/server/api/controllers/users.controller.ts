@@ -78,8 +78,7 @@ export class UsersControllers {
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
             });
-
-            if (user['stats'] && user['stats']['favorite_groups']) {
+            if (user && user['stats'] && user['stats']['favorite_groups']) {
                 user['stats']['favorite_groups'].sort(function(a, b) {
                   return b.group_name - a.group_name;
                 });

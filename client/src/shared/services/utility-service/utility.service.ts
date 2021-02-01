@@ -202,6 +202,21 @@ export class UtilityService {
       );
   }
 
+  openTryOutNotification(timeRemaining: number) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      showCloseButton: true
+    })
+
+    return Toast.fire({
+      icon: 'warning',
+      title: 'Subscription pending',
+      text: timeRemaining + 'days trial left.'
+    })
+  }
+
   /**
    * This function will be called when @function asyncNotification resolves the promise
    * @param text
