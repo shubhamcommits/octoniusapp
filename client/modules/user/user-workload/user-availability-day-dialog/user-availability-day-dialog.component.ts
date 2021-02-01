@@ -48,6 +48,7 @@ export class UserAvailabilityDayDialogComponent implements OnInit {
       this.userService.saveOutOfTheOfficeDays(this.userId, days, 'add').then((res) => {
           this.datesSavedEvent.emit(days);
 
+          this.closeDialog();
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`Days saved!`));
