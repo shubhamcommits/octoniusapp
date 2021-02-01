@@ -38,6 +38,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   gantt_container_width: string;
   //container height
   gantt_container_height: string;
+  //screen height
+  screen_height:string;
   //container height
   current_date_index: any;
   //Grid column width
@@ -64,7 +66,12 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     } else {
       this.gantt_container_height = screenHeight + 'px';
     }
+
+    this.screen_height = screenHeight + 'px';
+    console.log("screenHeight",this.screen_height);
   }
+
+ 
 
   ngAfterViewInit() {
     this.linesGenetate(false);
@@ -84,8 +91,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           }));
         }
       }
-      document.getElementsByClassName('mat-drawer-content')[0].addEventListener('scroll', this.linePotionsListener.bind(this), false);
-      document.getElementsByClassName('root')[0].addEventListener('scroll', this.linePotionsListener.bind(this), false);
+      document.getElementById('fixed-container-gantt').addEventListener('scroll', this.linePotionsListener.bind(this), false);
     }, 50);
   };
 
@@ -96,8 +102,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   }
 
   lineRemove() {
-    document.getElementsByClassName('mat-drawer-content')[0].removeEventListener('scroll', this.linePotionsListener.bind(this), false);
-    document.getElementsByClassName('root')[0].removeEventListener('scroll', this.linePotionsListener.bind(this), false);
+    document.getElementById('fixed-container-gantt').removeEventListener('scroll', this.linePotionsListener.bind(this), false);
     this.linesArray.forEach(line => {
       line.remove();
     });
