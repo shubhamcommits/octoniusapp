@@ -33,6 +33,11 @@
   background-color: $day-selected !important;
 }
 
+.cal-day-cancel-selected,
+.cal-day-cancel-selected:hover {
+  background-color: $day-cancel-selected !important;
+}
+
 .cal-day-holidays,
 .cal-day-holidays:hover {
   background-color: $day-holiday !important;

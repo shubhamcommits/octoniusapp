@@ -1,6 +1,7 @@
 import { Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError } from '../../utils';
+import moment from 'moment';
 
 /*  ===================
  *  -- USER METHODS --
@@ -702,7 +703,7 @@ export class UsersControllers {
 
   async saveOutOfOfficeDays(req: Request, res: Response, next: NextFunction) {
 
-    const { days } = req.body;
+    const { days, action } = req.body;
     const userId = req['userId'];
     
     try {
@@ -712,9 +713,22 @@ export class UsersControllers {
           _id: userId
         });
 
-        days.forEach(day => {
-            user.out_of_office.push(day);
-        });
+        if (action == 'add') {
+            days.forEach(day => {
+                const index = user.out_of_office.findIndex(outOfficeDay => moment(outOfficeDay.date).isSame(moment(day.date), 'day'));
+                if (index < 0) {
+                    user.out_of_office.push(day);
+                }
+            });
+        } else if (action == 'remove') {
+            days.forEach(day => {
+                const index = user.out_of_office.findIndex(outOfficeDay => moment(outOfficeDay.date).isSame(moment(day.date), 'day'));
+                if (index >= 0) {
+                    user.out_of_office.splice(index, 1);
+                }
+            });
+        }
+        
 
         user.save();
         

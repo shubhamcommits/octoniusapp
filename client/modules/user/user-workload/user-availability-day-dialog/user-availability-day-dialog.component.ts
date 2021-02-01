@@ -45,11 +45,9 @@ export class UserAvailabilityDayDialogComponent implements OnInit {
         }
       });
 
-      this.userService.saveOutOfTheOfficeDays(this.userId, days).then((res) => {
+      this.userService.saveOutOfTheOfficeDays(this.userId, days, 'add').then((res) => {
           this.datesSavedEvent.emit(days);
 
-          // Close the modal
-          this.mdDialogRef.close();
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`Days saved!`));
@@ -58,7 +56,11 @@ export class UserAvailabilityDayDialogComponent implements OnInit {
           reject(this.utilityService.rejectAsyncPromise(`Unable to save the dates, please try again!`));
         });
     }));
+  }
 
+  closeDialog() {
+    // Close the modal
+    this.mdDialogRef.close();
   }
 
 }

@@ -5,6 +5,7 @@ import { WeekViewHourColumn } from 'calendar-utils';
 import moment from 'moment';
 import { Subject } from 'rxjs';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserAvailabilityDayDialogComponent } from '../user-availability-day-dialog/user-availability-day-dialog.component';
 
 @Component({
@@ -34,11 +35,12 @@ export class UserWorkloadCalendarComponent implements OnInit {
   refresh: Subject<any> = new Subject();
 
   selectedDays: any = [];
-  //holidayDays: any = [];
-  bookedDays: any = []
+  bookedDays: any = [];
+  daysToCancel: any = [];
 
   constructor(
     private userService: UserService,
+    private utilityService: UtilityService,
     public dialog: MatDialog
     ) { }
 
@@ -52,11 +54,10 @@ export class UserWorkloadCalendarComponent implements OnInit {
 
   dayClicked(day: CalendarMonthViewDay): void {
 
-    // if the selected day is already saved it is not allow to select it
+    // check if the day is already booked, so we will remove it from out of offie days
     const bookedDayIndex = this.bookedDays.findIndex((bookedDay) => moment(bookedDay.date).isSame(moment(day.date), 'day'));
     if (bookedDayIndex < 0) {
       this.selectedMonthViewDay = day;
-
       const dateIndex = this.selectedDays.findIndex((selectedDay) => moment(selectedDay.date).isSame(moment(day.date), 'day'));
 
       if (dateIndex > -1) {
@@ -67,6 +68,17 @@ export class UserWorkloadCalendarComponent implements OnInit {
         day.cssClass = 'cal-day-selected';
         this.selectedMonthViewDay = day;
       }
+    } else {
+      this.selectedMonthViewDay = day;
+      const dateIndex = this.daysToCancel.findIndex((dayToCancel) => moment(dayToCancel.date).isSame(moment(day.date), 'day'));
+      if (dateIndex > -1) {
+        this.daysToCancel.splice(dateIndex, 1);
+        this.refresh.next();
+      } else {
+        this.daysToCancel.push(this.selectedMonthViewDay);
+        day.cssClass = 'cal-day-cancel-selected';
+        this.selectedMonthViewDay = day;
+      }
     }
   }
 
@@ -75,44 +87,92 @@ export class UserWorkloadCalendarComponent implements OnInit {
       const index = this.bookedDays.findIndex((bookedDay) => moment(bookedDay.date).isSame(moment(day.date), 'day'))
       if (index >= 0) {
         const bookedDay = this.bookedDays[index];
-        day.cssClass = (bookedDay.type == 'holidays')
-          ? 'cal-day-holidays'
-          : ((bookedDay.type == 'personal')
-            ? 'cal-day-personal'
-            : ((bookedDay.type == 'sick') ? 'cal-day-sick' : ''));
+        day.cssClass = this.getDayStyleClass(bookedDay.type);
 
         day.cssClass += (day.cssClass != '' && bookedDay.approved) ? '-approved' : '';
+      }
+
+      const cancelIndex = this.daysToCancel.findIndex((dayToCancel) => moment(dayToCancel.date).isSame(moment(day.date), 'day'));
+      if (cancelIndex >= 0) {
+        day.cssClass = 'cal-day-cancel-selected';
+      }
+
+      const selIndex = this.selectedDays.findIndex((selectedDay) => moment(selectedDay.date).isSame(moment(day.date), 'day'));
+      if (selIndex >= 0) {
+        day.cssClass = 'cal-day-selected';
       }
     });
   }
 
-  openDialog() {
-    const data = {
-      selectedDays: this.selectedDays,
-      userId: this.userId
+  getDayStyleClass(type: string) {
+    return (type == 'holidays')
+      ? 'cal-day-holidays'
+      : ((type == 'personal')
+        ? 'cal-day-personal'
+        : ((type == 'sick') ? 'cal-day-sick' : ''));
+  }
+
+  openDialog(action: string) {
+    if (action == 'add') {
+      if (this.selectedDays && this.selectedDays.length > 0) {
+        const data = {
+          selectedDays: this.selectedDays,
+          userId: this.userId
+        }
+
+        const dialogRef = this.dialog.open(UserAvailabilityDayDialogComponent, {
+          width: '15%',
+          disableClose: true,
+          data: data
+        });
+
+        const datesSavedEventSubs = dialogRef.componentInstance.datesSavedEvent.subscribe((data) => {
+          this.selectedDays = [];
+          data.forEach(day => {
+            this.bookedDays.push(day);
+          });
+
+          this.refresh.next();
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          datesSavedEventSubs.unsubscribe();
+        });
+      }
+    } else if (action == 'remove') {
+      if (this.daysToCancel && this.daysToCancel.length > 0) {
+        this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the day will be cancelled!')
+          .then(async (res) => {
+            if (res.value) {
+              await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
+                this.userService.saveOutOfTheOfficeDays(this.userId, this.daysToCancel, 'remove').then((res) => {
+
+                  this.daysToCancel.forEach(day => {
+                    const index = this.bookedDays.findIndex(bookedDay => moment(bookedDay.date).isSame(moment(day.date), 'day'));
+                    if (index >= 0) {
+                      this.bookedDays.splice(index, 1);
+                    }
+                  });
+
+                  this.daysToCancel = [];
+                  this.refresh.next();
+
+                  // Resolve with success
+                  resolve(this.utilityService.resolveAsyncPromise(`👍 Day/s cancelled!`));
+                })
+                .catch(() => {
+                  reject(this.utilityService.rejectAsyncPromise(`Error while cancelling the days!`));
+                });
+              }));
+            }
+          });
+      }
     }
-
-    const dialogRef = this.dialog.open(UserAvailabilityDayDialogComponent, {
-      width: '15%',
-      disableClose: true,
-      data: data
-    });
-
-    const datesSavedEventSubs = dialogRef.componentInstance.datesSavedEvent.subscribe((data) => {
-      data.forEach(day => {
-        this.bookedDays.push(day);
-      });
-
-      this.refresh.next();
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      datesSavedEventSubs.unsubscribe();
-    });
   }
 
   clearDates() {
     this.selectedDays = [];
+    this.daysToCancel = [];
     this.refresh.next();
   }
 }
