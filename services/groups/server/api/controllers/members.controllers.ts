@@ -129,7 +129,7 @@ export class MembersControllers {
                 ]
             })
                 .sort('_id')
-                .select('first_name last_name full_name email current_position active role profile_pic created_date')
+                .select('first_name last_name full_name email current_position active role profile_pic created_date out_of_office')
                 .lean() || []
 
             // Send the status 200 response

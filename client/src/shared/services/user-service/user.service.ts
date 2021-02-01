@@ -286,4 +286,15 @@ export class UserService {
     })
     .toPromise();
   }
+
+  getOutOfTheOfficeDays(userId: string) {
+    return this._http.get(this.BASE_API_URL + `/${userId}/out-of-office-days`)
+      .toPromise();
+  }
+
+  saveOutOfTheOfficeDays(userId: string, days: any) {
+    return this._http.put(this.BASE_API_URL + `/${userId}/out-of-office-days`, {
+      days: days
+    }).toPromise();
+  }
 }

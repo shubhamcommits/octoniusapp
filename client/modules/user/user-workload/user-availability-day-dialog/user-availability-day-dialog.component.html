@@ -1,0 +1,40 @@
+<div class="dialog-content">
+  <mat-dialog-actions align="end" class="mat-dialog-actions">
+      <div class="action-box">
+          <a mat-dialog-close>
+            <i class="material-icons" style="cursor: pointer">close</i>
+          </a>
+      </div>
+  </mat-dialog-actions>
+
+  <div class="content">
+    <div>
+      <p class="title">Selected days</p>
+      <div *ngFor="let day of selectedDays">
+        {{ day.date | date: 'MMM dd, yyyy' }}
+      </div>
+    </div>
+
+    <div>
+      <p class="title">Reason</p>
+      <mat-select ngDefaultControl
+          [(value)]="selectedReason"
+          (selectionChange)="onSelectedReasonChange($event, selectedReason)"
+          appearance="fill"
+          class="col">
+          <mat-select-trigger>{{ selectedReason }}</mat-select-trigger>
+          <mat-option *ngFor="let val of outOfOfficeReason" [value]="val.toLowerCase()">{{ val }}</mat-option>
+      </mat-select>
+    </div>
+
+    <div class="clearfix save-content">
+      <button mat-dialog-close class="btn float-left btn-danger btn-md">
+        Cancel
+      </button>
+      <button [disabled]="selectedReason == ''" class="btn float-right btn-primary btn-md" (click)="confirmDays()">
+        Save
+      </button>
+    </div>
+  </div>
+  <!-- Top Right Section ends -->
+</div>
