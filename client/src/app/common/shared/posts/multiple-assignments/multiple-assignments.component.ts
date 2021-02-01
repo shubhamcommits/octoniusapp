@@ -121,7 +121,7 @@ export class MultipleAssignmentsComponent implements OnChanges {
                 .then((res) => {
                   this.post = res['post'];
                   this.assigned_to.push(member);
-                  this.trigger.closeMenu();
+                  //this.trigger.closeMenu();
 
                   // Emit the post to other components
                   this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
@@ -130,17 +130,17 @@ export class MultipleAssignmentsComponent implements OnChanges {
                   resolve(this.utilityService.resolveAsyncPromise(`Assignee added!`));
                 })
                 .catch((err) => {
-                  reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+                  reject(this.utilityService.rejectAsyncPromise(`Unable to assign, please try again!`));
                 });
             }));
           } else {
-            this.trigger.closeMenu();
+            //this.trigger.closeMenu();
 
             // Emit the post to other components
             this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
           }
         } else if (this.type == 'flow') {
-          this.trigger.closeMenu();
+          //this.trigger.closeMenu();
           this.assigneeAddedEmiter.emit({assignee: member});
         }
       }
