@@ -138,7 +138,7 @@
   </div>
 
   <div *ngIf="postData?._assigned_to?.length < 2" class="set-parent">
-    Allocation
+    <i class="material-icons">hourglass_top</i> Allocation
 
     <!-- INPUT STARTS -->
     <input type="text" name="allocation" [ngModel]="allocation" (blur)="allocationChange($event)" class="input-search" placeholder="Allocation" />
