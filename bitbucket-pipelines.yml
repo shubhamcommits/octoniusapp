@@ -68,14 +68,14 @@ pipelines:
           - docker push $INTEGRATIONS_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
-    # - step:
-    #    name: Deploy to production server
-    #    script:
-    #      - pipe: atlassian/ssh-run:0.2.2
-    #        variables:
-    #          SSH_USER: 'ubuntu'
-    #          SERVER: $HOST_ADDRESS
-    #          COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./stop-compose.sh && ./deploy-compose.sh'  
+    - step:
+       name: Deploy to production server
+       script:
+         - pipe: atlassian/ssh-run:0.2.2
+           variables:
+             SSH_USER: 'ubuntu'
+             SERVER: $HOST_ADDRESS
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./stop-compose.sh && ./deploy-compose.sh'  
     
     "{staging}":
     - step:
