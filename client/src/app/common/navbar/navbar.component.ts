@@ -9,6 +9,7 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-navbar',
@@ -179,6 +180,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     setInterval(async () => {
       await this.publicFunctions.handleGoogleSignIn()
     }, 1800000);
+
+    if ((this.userData?.role == 'admin' || this.userData?.role == 'owner')
+        && (this.workspaceData?.time_remaining <= 0
+          || (this.workspaceData?.time_remaining > 0
+            && moment(this.workspaceData?.billing?.current_period_end).isBefore(moment())))
+        && !this.workspaceData?.billing?.subscription_id) {
+      this.utilityService.openTryOutNotification(this.workspaceData?.time_remaining);
+    }
 
     console.log('User Data', this.userData);
     console.log('Workspace Data', this.workspaceData);

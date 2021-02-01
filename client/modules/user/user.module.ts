@@ -15,6 +15,12 @@ import { UserConnectedCloudsComponent } from './user-clouds/user-connected-cloud
 import { GoogleCloudModule } from './user-clouds/user-available-clouds/google-cloud/google-cloud.module';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { SlackCloudModule } from './user-clouds/user-available-clouds/slack/slack.module';
+import { UserWorkloadComponent } from './user-workload/user-workload.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { UserWorkloadCalendarComponent } from './user-workload/user-workload-calendar/user-workload-calendar.component';
+import { UserAvailabilityDayDialogComponent } from './user-workload/user-availability-day-dialog/user-availability-day-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -25,18 +31,32 @@ import { SlackCloudModule } from './user-clouds/user-available-clouds/slack/slac
     UserProfessionalInformationComponent,
     UserSkillsComponent,
     UserAvailableCloudsComponent,
-    UserConnectedCloudsComponent
+    UserConnectedCloudsComponent,
+    UserWorkloadComponent,
+    UserWorkloadCalendarComponent,
+    UserAvailabilityDayDialogComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     GoogleCloudModule,
     SlackCloudModule,
-    UserRoutingModule
+    UserRoutingModule,
+    MatSelectModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    })
   ],
   providers: [
     UserService
   ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  exports: [
+    UserAvailabilityDayDialogComponent
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+  entryComponents: [
+    UserAvailabilityDayDialogComponent
+  ]
 })
 export class UserModule { }

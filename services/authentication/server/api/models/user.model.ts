@@ -142,6 +142,20 @@ const UserSchema = new Schema({
             }
         }
     },
+    out_of_office: [{
+        type: {
+            type: String,
+            enum: ['holidays', 'sick', 'personal']
+        },
+        date: {
+            type: Date,
+            default: moment().format()
+        },
+        approved: {
+            type: Boolean,
+            default: false
+        }
+    }],
     portal_manager: {
         // This property is used to authenticate into the portal managment app
         type: Boolean,

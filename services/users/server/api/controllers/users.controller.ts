@@ -1,6 +1,7 @@
 import { Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError } from '../../utils';
+import moment from 'moment';
 
 /*  ===================
  *  -- USER METHODS --
@@ -78,8 +79,7 @@ export class UsersControllers {
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
             });
-
-            if (user['stats'] && user['stats']['favorite_groups']) {
+            if (user && user['stats'] && user['stats']['favorite_groups']) {
                 user['stats']['favorite_groups'].sort(function(a, b) {
                   return b.group_name - a.group_name;
                 });
@@ -674,6 +674,69 @@ export class UsersControllers {
           message: `User Stats has been updated`,
           user: user
       });
+
+    } catch (err) {
+        return sendError(res, err, 'Internal Server Error!', 500);
+    }
+  }
+
+  async getOutOfOfficeDays(req: Request, res: Response, next: NextFunction) {
+
+    const userId = req['userId'];
+    try {
+
+      let user: any = await User.findOne({
+          _id: userId
+        })
+        .select('_id out_of_office');
+
+      // Send status 200 response
+      return res.status(200).json({
+          message: `User out of the office days`,
+          user: user
+      });
+
+    } catch (err) {
+        return sendError(res, err, 'Internal Server Error!', 500);
+    }
+  }
+
+  async saveOutOfOfficeDays(req: Request, res: Response, next: NextFunction) {
+
+    const { days, action } = req.body;
+    const userId = req['userId'];
+    
+    try {
+
+
+        let user: any = await User.findOne({
+          _id: userId
+        });
+
+        if (action == 'add') {
+            days.forEach(day => {
+                const index = user.out_of_office.findIndex(outOfficeDay => moment(outOfficeDay.date).isSame(moment(day.date), 'day'));
+                if (index < 0) {
+                    user.out_of_office.push(day);
+                }
+            });
+        } else if (action == 'remove') {
+            days.forEach(day => {
+                const index = user.out_of_office.findIndex(outOfficeDay => moment(outOfficeDay.date).isSame(moment(day.date), 'day'));
+                if (index >= 0) {
+                    user.out_of_office.splice(index, 1);
+                }
+            });
+        }
+        
+
+        user.save();
+        
+        // Send status 200 response
+        return res.status(200).json({
+            message: `User Stats has been updated`,
+            user: user
+        });
 
     } catch (err) {
         return sendError(res, err, 'Internal Server Error!', 500);
