@@ -88,7 +88,7 @@ export class MembersWorkloadCardComponent implements OnInit {
           outOfTheOfficeClass: ''
         };
 
-        const tasksTmp = await memberTasks.filter(post => { return moment(date).startOf('day').isSame(moment(post.task.due_to).startOf('day'), 'day') });
+        const tasksTmp = await memberTasks.filter(post => {return date.startOf('day').isSame(moment(post.task.due_to).startOf('day'), 'day') });
         workloadDay.numTasks = tasksTmp.length;
 
         if (tasksTmp && tasksTmp.length > 0) {
@@ -127,7 +127,7 @@ export class MembersWorkloadCardComponent implements OnInit {
   getRangeDates(firstDay) {
     let dates = [];
     for (var i = 0; i < 7; i++) {
-      dates.push(moment(firstDay).add(i, 'days'));
+      dates.push(moment(firstDay).add(i, 'd'));
     }
 
     if (this.dates[0]?.month == this.dates[this.dates?.length -1]?.month) {
@@ -141,9 +141,9 @@ export class MembersWorkloadCardComponent implements OnInit {
 
   changeDates(numDays: number, type: string) {
     if (type == 'add') {
-      this.currentDate = moment(this.currentDate).add(numDays, 'days');
+      this.currentDate = moment(this.currentDate).add(numDays, 'd');
     } else if (type == 'sub') {
-      this.currentDate = moment(this.currentDate).subtract(numDays, 'days');
+      this.currentDate = moment(this.currentDate).subtract(numDays, 'd');
     }
     this.generateNavDates()
   }

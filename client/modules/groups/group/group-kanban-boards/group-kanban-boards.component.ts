@@ -99,11 +99,13 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
           var bit = false;
-          task._assigned_to.forEach(element => {
-            if (element._id == this.userData._id) {
-              bit = true
-            }
-          })
+          if (task && task._assigned_to) {
+            task._assigned_to.forEach(element => {
+              if (element._id == this.userData._id) {
+                bit = true
+              }
+            });
+          }
           return bit;
         })
       }
@@ -230,11 +232,13 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
           var bit = false;
-          task._assigned_to.forEach(element => {
-            if (element._id == this.filteringData) {
-              bit = true
-            }
-          })
+          if (task && task._assigned_to) {
+            task._assigned_to.forEach(element => {
+              if (element._id == this.filteringData) {
+                bit = true
+              }
+            });
+          }
           return bit;
         })
       }
@@ -247,7 +251,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   }
 
   async sorting() {
-    
+
     if (this.sortingBit == 'due_date' || this.sortingBit == 'none') {
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;

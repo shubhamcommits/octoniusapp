@@ -123,11 +123,13 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       this.tasks = tasks.tasksList.filter((task: any) => {
         var bit = false;
-        task._assigned_to.forEach(element => {
-          if (element._id == this.userData._id) {
-            bit = true
-          }
-        })
+        if (task && task._assigned_to) {
+          task._assigned_to.forEach(element => {
+            if (element._id == this.userData._id) {
+              bit = true
+            }
+          });
+        }
         return bit;
       })
       this.unchangedTasks = tasks;
@@ -234,11 +236,13 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       this.tasks = tasks.tasksList.filter((task: any) => {
         var bit = false;
-        task._assigned_to.forEach(element => {
-          if (element._id == this.filteringData) {
-            bit = true
-          }
-        })
+        if (task && task._assigned_to) {
+          task._assigned_to.forEach(element => {
+            if (element._id == this.filteringData) {
+              bit = true
+            }
+          });
+        }
         return bit;
       })
       this.unchangedTasks = tasks;
