@@ -88,7 +88,7 @@ export class MembersWorkloadCardComponent implements OnInit {
           outOfTheOfficeClass: ''
         };
 
-        const tasksTmp = await memberTasks.filter(post => { return moment(date).startOf('day').isSame(moment(post.task.due_to).startOf('day')) });
+        const tasksTmp = await memberTasks.filter(post => { return moment(date).startOf('day').isSame(moment(post.task.due_to).startOf('day'), 'day') });
         workloadDay.numTasks = tasksTmp.length;
 
         if (tasksTmp && tasksTmp.length > 0) {
@@ -105,7 +105,7 @@ export class MembersWorkloadCardComponent implements OnInit {
         const doneTasks = await tasksTmp.filter(post => { return post.task.status == 'done'; });
         workloadDay.numDoneTasks = doneTasks.length;
 
-        const index = member?.out_of_office?.findIndex(outOfficeDay => moment(outOfficeDay.date).isSame(moment(date, 'day')));
+        const index = member?.out_of_office?.findIndex(outOfficeDay => moment(outOfficeDay.date).isSame(moment(date, 'day'), 'day'));
 
         if (index >= 0) {
           const outOfficeDay = member?.out_of_office[index];
@@ -120,7 +120,7 @@ export class MembersWorkloadCardComponent implements OnInit {
 
         member.workload.push(workloadDay);
       });
-      member.workload.sort((w1, w2) => (moment(w1.date).startOf('day').isBefore(moment(w2.date).startOf('day'))) ? -1 : 1);
+      member.workload.sort((w1, w2) => (moment(w1.date).startOf('day').isBefore(moment(w2.date).startOf('day'), 'day')) ? -1 : 1);
     });
   }
 
