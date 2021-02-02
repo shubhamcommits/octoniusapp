@@ -66,9 +66,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     } else {
       this.gantt_container_height = screenHeight + 'px';
     }
-
     this.screen_height = screenHeight + 'px';
-    console.log("screenHeight",this.screen_height);
+    document.getElementsByTagName("body")[0].style.overflow = 'hidden';
   }
 
  
@@ -96,6 +95,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   };
 
   linePotionsListener() {
+    this.screen_height = (window.innerHeight - 100) + 'px';
     this.linesArray.forEach(line => {
       line.position();
     });
