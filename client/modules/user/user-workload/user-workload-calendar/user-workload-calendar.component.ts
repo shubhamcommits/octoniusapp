@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, Input } 
 import { MatDialog } from '@angular/material/dialog';
 import { CalendarEvent, CalendarMonthViewDay, CalendarView, DAYS_OF_WEEK } from 'angular-calendar';
 import { WeekViewHourColumn } from 'calendar-utils';
-import moment from 'moment';
+import moment from 'moment/moment';
 import { Subject } from 'rxjs';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -22,7 +22,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
   view: CalendarView = CalendarView.Month;
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
 
-  viewDate: Date = new Date();
+  viewDate: string = moment().format();
 
   selectedMonthViewDay: CalendarMonthViewDay;
 

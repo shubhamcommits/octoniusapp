@@ -139,7 +139,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
-          (task?.task?.due_to)? new Date(task?.task?.due_to) < new Date(new Date().setDate(new Date().getDate()-1)):false))
+          (task?.task?.due_to)? moment(task?.task?.due_to).isBefore(moment().add(-1,'days')):false))
       }
       this.unchangedColumns = tasks;
     } else if (to == 'due_today'){
@@ -163,7 +163,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
-          (task?.task?.due_to)? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment(new Date(new Date().setDate(new Date().getDate()+1))).format('YYYY-MM-DD'):false))
+          (task?.task?.due_to)? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment().add(1,'days').format('YYYY-MM-DD'):false))
       }
       this.unchangedColumns = tasks;
     } else if (to == 'due_week'){
@@ -172,9 +172,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
           const first = moment().startOf('week').format('YYYY-MM-DD');
-          const last = moment().endOf('week').add(1,'days').format('YYYY-MM-DD');
+          const last = moment().endOf('week').add(2,'days').format('YYYY-MM-DD');
           if(task?.task?.due_to){
-            if((new Date(task?.task?.due_to) > new Date(first)) && (new Date(task?.task?.due_to) < new Date(last))){
+            if((moment(task?.task?.due_to).isAfter(first)) && (moment(task?.task?.due_to).isBefore(last))){
               return true;
             }else{
               return false;
@@ -192,9 +192,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
           const first = moment().endOf('week').add(1,'days').format('YYYY-MM-DD');
-          const last = moment().endOf('week').add(8,'days').format('YYYY-MM-DD');
+          const last = moment().endOf('week').add(9,'days').format('YYYY-MM-DD');
           if(task?.task?.due_to){
-            if((new Date(task?.task?.due_to) > new Date(first)) && (new Date(task?.task?.due_to) < new Date(last))){
+            if((moment(task?.task?.due_to).isAfter(first)) && (moment(task?.task?.due_to).isBefore(last))){
               return true;
             }else{
               return false;
@@ -212,9 +212,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
           const first = moment().format('YYYY-MM-DD');
-          const last = moment().add(14,'days').format('YYYY-MM-DD');
+          const last = moment().add(15,'days').format('YYYY-MM-DD');
           if(task?.task?.due_to){
-            if((new Date(task?.task?.due_to) > new Date(first)) && (new Date(task?.task?.due_to) < new Date(last))){
+            if((moment(task?.task?.due_to).isAfter(first)) && (moment(task?.task?.due_to).isBefore(last))){
               return true;
             }else{
               return false;
@@ -257,7 +257,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {
           if (t1.task?.due_to && t2.task?.due_to) {
-            if (new Date(t1.task?.due_to) < new Date(t2.task?.due_to)) {
+            if (moment(t1.task?.due_to).isBefore(t2.task?.due_to)) {
               return this.sortingBit == 'due_date' ? -1 : 1;
             } else {
               return this.sortingBit == 'due_date' ? 1 : -1;
@@ -715,7 +715,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
    */
   changeDueDate(task: any, dueDate: any) {
 
-    dueDate = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
+    dueDate = moment(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
 
     dueDate = moment(dueDate).format()
 

@@ -460,10 +460,7 @@ const userMentionedPost = async (req: Request, res: Response, next: NextFunction
 const userMentionedComment = async (req: Request, res: Response, next: NextFunction) => {
   const { comment, post, user } = req.body;
   try {
-    // const date = new Date();
-    // const date2 = moment('2019-01-11', 'YYYY-MM-DD').startOf('day').format();
-    // console.log(date2);
-
+    
     const emailType = 'userMentionedComment';
 
     // Generate email data
