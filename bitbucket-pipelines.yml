@@ -152,5 +152,5 @@ pipelines:
 definitions:
    services:
       docker:
-         memory: 6000
+         memory: 6000 
 
