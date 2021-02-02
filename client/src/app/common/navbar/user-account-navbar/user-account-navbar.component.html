@@ -15,19 +15,25 @@
 
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/dashboard', 'user', 'profile']"
-            [queryParams]="{ userId: userData?._id }" routerLinkActive="active">Profile
+            [queryParams]="{ userId: userData?._id }" routerLinkActive="active"
+            [ngClass]="activeState == 'profile'?'nav-link active-nav':'nav-link'" (click)="changeState('profile')"
+            >Profile
             <span class="sr-only">(current)</span>
         </a>
       </li>
       <li class="nav-item">
           <a class="nav-link" [routerLink]="['/dashboard', 'user', 'clouds']"
-              [queryParams]="{ userId: userData?._id }" routerLinkActive="active">Integrations
+              [queryParams]="{ userId: userData?._id }" routerLinkActive="active"
+              [ngClass]="activeState == 'clouds'?'nav-link active-nav':'nav-link'" (click)="changeState('clouds')"
+              >Integrations
               <span class="sr-only">(current)</span>
           </a>
       </li>
       <li class="nav-item">
           <a class="nav-link" [routerLink]="['/dashboard', 'user', 'workload']"
-              [queryParams]="{ userId: userData?._id }" routerLinkActive="active">Workload
+              [queryParams]="{ userId: userData?._id }" routerLinkActive="active"
+              [ngClass]="activeState == 'workload'?'nav-link active-nav':'nav-link'" (click)="changeState('workload')"
+              >Workload
               <span class="sr-only">(current)</span>
           </a>
       </li>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector ,Input} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
@@ -15,7 +15,8 @@ export class CommonNavbarComponent implements OnInit {
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
   userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
-
+  @Input() routerFromEvent: any;
+  activeState:string;
   // SUBSINK
   private subSink = new SubSink();
 
@@ -60,6 +61,13 @@ export class CommonNavbarComponent implements OnInit {
         this.workspaceData = res;
       }
     }));
+
+    const segments = this.routerFromEvent._urlSegment.children.primary.segments;
+    this.activeState = segments[segments.length-1].path;
+  }
+
+  async changeState(state:string){
+    this.activeState = state;
   }
 
   /**
