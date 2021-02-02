@@ -75,7 +75,7 @@ pipelines:
            variables:
              SSH_USER: 'ubuntu'
              SERVER: $HOST_ADDRESS
-             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./stop-compose.sh && ./deploy-compose.sh'  
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./stop-compose.sh && sudo -S ./deploy-compose.sh'  
     
     "{staging}":
     - step:
