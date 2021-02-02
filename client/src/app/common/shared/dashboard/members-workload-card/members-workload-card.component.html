@@ -7,25 +7,22 @@
 
   <div>
     <div class="row text-center mb-3">
-      <div class="col-md-2">
-        <div class="btn btn-default" (click)="changeDates(7, 'sub')">
-            <i class="material-icons">navigate_before</i>
-        </div>
-
-        <!--
-        <div class="btn btn-primary" (click)="changeDates(1, 'sub')">
-            Yesterday
-        </div>
-        -->
+      <div class="col-md-1">
       </div>
       <div class="col-md-8">
           <h6>{{ dates[0] | date:'MMM dd' }} - {{ dates[dates?.length - 1] | date:'MMM dd' }}</h6>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-3">
+        <div class="btn btn-default" (click)="changeDates(7, 'sub')">
+          <i class="material-icons">navigate_before</i>
+        </div>
+        <div class="btn btn-default" (click)="changeDates(0, 'today')">
+          Today
+        </div>
         <div class="btn btn-default" (click)="changeDates(7, 'add')">
-        <i class="material-icons">navigate_next</i>
+          <i class="material-icons">navigate_next</i>
+        </div>
       </div>
-    </div>
 
     </div>
     <div class="table-wrapper">
