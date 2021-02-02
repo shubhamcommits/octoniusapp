@@ -15,17 +15,22 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" routerLink="/dashboard/admin/general" routerLinkActive="active">General
+        <a class="nav-link" routerLink="/dashboard/admin/general" routerLinkActive="active"
+        [ngClass]="activeState == 'general'?'nav-link active-nav':'nav-link'" (click)="changeState('general')">
+        General
            <span class="sr-only">(current)</span>
         </a>
       </li>
       <li class="nav-item">
-          <a class="nav-link" routerLink="/dashboard/admin/members" routerLinkActive="active">Members
+          <a class="nav-link" routerLink="/dashboard/admin/members" routerLinkActive="active"
+          [ngClass]="activeState == 'members'?'nav-link active-nav':'nav-link'" (click)="changeState('members')">
+          Members
             <span class="sr-only">(current)</span>
           </a>
       </li>
       <li class="nav-item">
-          <a class="nav-link" routerLink="/dashboard/admin/billing" routerLinkActive="active">
+          <a class="nav-link" routerLink="/dashboard/admin/billing" routerLinkActive="active"
+          [ngClass]="activeState == 'billing'?'nav-link active-nav':'nav-link'" (click)="changeState('billing')">
             Billing
             <span class="sr-only">(current)</span>
           </a>

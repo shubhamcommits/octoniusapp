@@ -75,7 +75,7 @@ pipelines:
            variables:
              SSH_USER: 'ubuntu'
              SERVER: $HOST_ADDRESS
-             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./stop-compose.sh && ./deploy-compose.sh'  
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./stop-compose.sh && sudo -S ./deploy-compose.sh'  
     
     "{octonius_prod_v8}":
     - step:
@@ -143,5 +143,5 @@ pipelines:
 definitions:
    services:
       docker:
-         memory: 6000
+         memory: 6000 
 

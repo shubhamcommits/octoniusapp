@@ -45,6 +45,8 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
 
   isFavoriteGroup: boolean;
 
+  activeState:string;
+
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
 
@@ -74,10 +76,12 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
     this.myWorkplace = this.isPersonalNavigation();
 
     this.isFavoriteGroup = this.checkIsFavoriteGroup();
+
+    const segments = this.routerFromEvent._urlSegment.children.primary.segments;
+    this.activeState = segments[segments.length-2].path+'_'+segments[segments.length-1].path;
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    
     for (const propName in changes) {
       const change = changes[propName];
       const to = change.currentValue;
@@ -91,6 +95,10 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
         
       }
     }
+  }
+
+  async changeState(state:string){
+    this.activeState = state;
   }
 
   isAdminUser() {
