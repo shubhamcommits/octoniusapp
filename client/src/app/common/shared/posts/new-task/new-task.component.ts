@@ -87,6 +87,7 @@ export class NewTaskComponent implements OnInit {
           _assigned_to: null,
           status: 'to do',
           _column: null,
+          custom_fields: [],
           _parent_task: this.parentId
         }
       }
@@ -103,6 +104,7 @@ export class NewTaskComponent implements OnInit {
           task: {
             _assigned_to: this.userData._id,
             status: 'to do',
+            custom_fields: [],
             _column: {
               title: this.column.title
             }
@@ -120,6 +122,7 @@ export class NewTaskComponent implements OnInit {
           task: {
             _assigned_to: null,
             status: 'to do',
+            custom_fields: [],
             _column: {
               title: this.column.title
             }
@@ -156,7 +159,6 @@ export class NewTaskComponent implements OnInit {
     utilityService.asyncNotification('Please wait we are creating the post...', new Promise((resolve, reject) => {
       postService.create(postData)
         .then(async (res) => {
-
           let postData = res['post'];
 
           if (postData.type === 'task') {
