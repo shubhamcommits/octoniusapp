@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
+import { Component, Injector, OnInit, OnDestroy, Input} from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -14,8 +14,12 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
   // User Data
   userData: any;
 
+  @Input() routerFromEvent: any;
+
   // WORKSPACE DATA
   workspaceData: any;
+
+  activeState:string;
 
   baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
   userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -40,6 +44,13 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
         this.workspaceData = res;
       }
     }));
+
+    const segments = this.routerFromEvent._urlSegment.children.primary.segments;
+    this.activeState = segments[segments.length-1].path;
+  }
+
+  async changeState(state:string){
+    this.activeState = state;
   }
 
   /**
