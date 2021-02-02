@@ -915,3 +915,10 @@ input {
 .inactive-person{
   opacity: 50% !important;
 }
+
+.nav-link.active-nav{
+  color: #325fd5 !important;
+  border-bottom: 2px solid #325fd5;
+  font-weight: 600;
+  padding-bottom: 0px;
+}
