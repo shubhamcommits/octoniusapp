@@ -17,7 +17,7 @@
         <ul class="list-unstyled components">
             <li>
               <a [routerLink]="['/dashboard', 'myspace', 'inbox']" [queryParams]="{myWorkplace: true}" routerLinkActive="active">
-                  <i class="material-icons-outlined carret">self_improvement</i>
+                  <i class="material-icons-outlined carret">home</i>
                   MY SPACE
               </a>
             </li>
@@ -25,8 +25,8 @@
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
 
-                    <i class="material-icons-outlined carret">business_center</i>
-                    WORK
+                    <i class="material-icons-outlined carret">dashboard</i>
+                    MY WORKPLACE
                     <i class="material-icons-outlined carret">keyboard_arrow_down</i>
                 </a>
 
@@ -43,7 +43,7 @@
 
                     <li>
                       <a routerLinkActive="active" routerLink="/dashboard/work/groups/all">
-                        <span class="badge badge-primary">see all groups</span>
+                        <span class="btn btn-outline-light">explore work</span>
                       </a>
                     </li>
                 </ul>
@@ -72,7 +72,7 @@
                 <li>
                     <!-- LOGOUT FUNCTION STARTS-->
                     <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active" (click)="logout()">
-                        <i class="material-icons-outlined carret">power_settings_new</i>
+                        <i class="material-icons-outlined carret">logout</i>
                         LOGOUT
                         <span class="sr-only">(current)</span>
                     </a>
