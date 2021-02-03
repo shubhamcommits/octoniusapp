@@ -22,7 +22,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
   view: CalendarView = CalendarView.Month;
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
 
-  viewDate: string = moment().format();
+  viewDate: Date = moment().toDate();
 
   selectedMonthViewDay: CalendarMonthViewDay;
 

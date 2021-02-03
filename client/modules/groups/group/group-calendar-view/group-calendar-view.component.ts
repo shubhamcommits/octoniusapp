@@ -63,7 +63,7 @@ export class GroupCalendarViewComponent implements OnInit {
   CalendarView = CalendarView
 
   // View Date
-  viewDate: Date = new Date()
+  viewDate: Date = moment().toDate();
 
   // Modal Data to add the event and action
   modalData: {
@@ -166,7 +166,7 @@ export class GroupCalendarViewComponent implements OnInit {
 
       // Adding to calendar events
       this.events.push({
-        start: new Date(moment(post.event.due_to || post.task.due_to).toDate()),
+        start: moment(post.event.due_to || post.task.due_to).toDate(),
         title: `${post.title}`,
         color: color,
         allDay: true,
@@ -252,8 +252,8 @@ export class GroupCalendarViewComponent implements OnInit {
       ...this.events,
       {
         title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
+        start: moment().startOf('day').toDate(),
+        end: moment().endOf('day').toDate(),
         color: colors.red,
         draggable: false,
         resizable: {
@@ -276,7 +276,7 @@ export class GroupCalendarViewComponent implements OnInit {
 
         // Adding to calendar events
         this.events.push({
-          start: new Date(moment(event.event.due_to || event.task.due_to).toDate()),
+          start: moment(event.event.due_to || event.task.due_to).toDate(),
           title: `${event.title}`,
           color: color,
           allDay: true,
@@ -349,8 +349,8 @@ export class GroupCalendarViewComponent implements OnInit {
       ...this.events,
       {
         title: post.title,
-        start: startOfDay(new Date(post.event.due_to)),
-        end: endOfDay(new Date(post.event.due_to)),
+        start: moment(post.event.due_to).startOf('day').toDate(),
+        end: moment(post.event.due_to).endOf('day').toDate(),
         color: colors.red,
         draggable: false,
         resizable: {
