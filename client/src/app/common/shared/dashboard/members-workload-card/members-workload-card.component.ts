@@ -26,7 +26,7 @@ export class MembersWorkloadCardComponent implements OnInit {
   //date for calendar Nav
   dates: any = [];
 
-  currentDate: any = moment().format();;
+  currentDate: any = moment().format();
 
   currentMonth = '';
 
@@ -144,6 +144,8 @@ export class MembersWorkloadCardComponent implements OnInit {
       this.currentDate = moment(this.currentDate).add(numDays, 'd');
     } else if (type == 'sub') {
       this.currentDate = moment(this.currentDate).subtract(numDays, 'd');
+    } else if (type == 'today') {
+      this.currentDate = moment().format();
     }
     this.generateNavDates()
   }
