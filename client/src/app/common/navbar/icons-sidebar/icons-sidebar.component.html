@@ -17,13 +17,13 @@
       <ul class="list-unstyled components">
           <li>
               <a [routerLink]="['/dashboard', 'myspace', 'inbox']" data-toggle="collapse">
-                  <i class="material-icons-outlined carret">self_improvement</i>
+                  <i class="material-icons-outlined carret">home</i>
               </a>
           </li>
           <li> <hr style="opacity: 0.2;"></li>
 
           <li>
-             <i class="material-icons-outlined carret">business_center</i>
+             <i class="material-icons-outlined carret">dashboard</i>
           </li>
 
           <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
@@ -60,7 +60,7 @@
         <li>
             <!-- LOGOUT FUNCTION STARTS-->
             <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active" (click)="logout()">
-                <i class="material-icons-outlined carret">power_settings_new</i>
+                <i class="material-icons-outlined carret">logout</i>
             </a>
             <!-- LOGOUT FUNCTION ENDS-->
         </li>
