@@ -157,34 +157,34 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       this.tasks = tasks.tasksList.filter((task: any) => (
-        (task?.task?.due_to) ? moment(task?.task?.due_to).isBefore(moment().add(-1,'days')) : false))
+        (task?.task?.due_to) ? moment.utc(task?.task?.due_to).isBefore(moment().add(-1,'days')) : false))
       this.unchangedTasks = tasks;
     } else if (to == 'due_today') {
       let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       this.tasks = tasks.tasksList.filter((task: any) => (
-        (task?.task?.due_to) ? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') : false))
+        (task?.task?.due_to) ? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') : false))
       this.unchangedTasks = tasks;
     } else if (to == 'due_today') {
       let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       this.tasks = tasks.tasksList.filter((task: any) => (
-        (task?.task?.due_to) ? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') : false))
+        (task?.task?.due_to) ? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') : false))
       this.unchangedTasks = tasks;
     } else if (to == 'due_tomorrow') {
       let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       this.tasks = tasks.tasksList.filter((task: any) => (
-        (task?.task?.due_to) ? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment().add(1,'days').format('YYYY-MM-DD') : false))
+        (task?.task?.due_to) ? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().add(1,'days').format('YYYY-MM-DD') : false))
       this.unchangedTasks = tasks;
     } else if (to == 'due_week') {
       let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       this.tasks = tasks.tasksList.filter((task: any) => {
-        const first = moment().startOf('week').format('YYYY-MM-DD');
-        const last = moment().endOf('week').add(2, 'days').format('YYYY-MM-DD');
+        const first = moment().startOf('week').format();
+        const last = moment().endOf('week').add(1, 'days').format();
         if (task?.task?.due_to) {
-          if ((moment(task?.task?.due_to).isAfter(first)) && (moment(task?.task?.due_to).isBefore(last))) {
+          if ((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))) {
             return true;
           } else {
             return false;
@@ -199,10 +199,10 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       this.tasks = tasks.tasksList.filter((task: any) => {
-        const first = moment().endOf('week').add(1, 'days').format('YYYY-MM-DD');
-        const last = moment().endOf('week').add(9, 'days').format('YYYY-MM-DD');
+        const first = moment().endOf('week').add(1, 'days').format();
+        const last = moment().endOf('week').add(9, 'days').format();
         if (task?.task?.due_to) {
-          if ((moment(task?.task?.due_to).isAfter(first)) && (moment(task?.task?.due_to).isBefore(last))) {
+          if ((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))) {
             return true;
           } else {
             return false;
@@ -217,10 +217,10 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       this.tasks = tasks.tasksList.filter((task: any) => {
-        const first = moment().format('YYYY-MM-DD');
-        const last = moment().add(15, 'days').format('YYYY-MM-DD');
+        const first = moment().format();
+        const last = moment().add(14, 'days').format();
         if (task?.task?.due_to) {
-          if ((moment(task?.task?.due_to).isAfter(first)) && (moment(task?.task?.due_to).isBefore(last))) {
+          if ((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))) {
             return true;
           } else {
             return false;
@@ -258,7 +258,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     if (this.sortingBit == 'due_date' || this.sortingBit == 'none') {
       this.tasks.sort((t1, t2) => {
         if (t1.task?.due_to && t2.task?.due_to) {
-          if (moment(t1.task?.due_to).isBefore(moment(t2.task?.due_to))) {
+          if (moment.utc(t1.task?.due_to).isBefore(moment.utc(t2.task?.due_to))) {
             return this.sortingBit == 'due_date' ? -1 : 1;
           } else {
             return this.sortingBit == 'due_date' ? 1 : -1;
@@ -362,8 +362,8 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
    */
   checkOverdue(taskPost: any) {
     // Today's date object
-    const today = moment().local().startOf('day').format('YYYY-MM-DD');
-    return moment(taskPost.task.due_to).format('YYYY-MM-DD') < today;
+    const today = moment().startOf('day').format('YYYY-MM-DD');
+    return moment.utc(taskPost.task.due_to).format('YYYY-MM-DD') < today;
   }
 
   /**

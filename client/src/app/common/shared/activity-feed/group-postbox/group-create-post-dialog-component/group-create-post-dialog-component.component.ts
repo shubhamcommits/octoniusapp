@@ -130,6 +130,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
     await this.initPostData();
   }
 
+  formateDate(date){
+    return moment(moment.utc(date).format("YYYY-MM-DD")).toDate();
+  }
+
   async initPostData() {
     // Set the title of the post
     this.title = this.postData.title;

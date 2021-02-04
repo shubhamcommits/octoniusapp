@@ -166,7 +166,7 @@ export class GroupCalendarViewComponent implements OnInit {
 
       // Adding to calendar events
       this.events.push({
-        start: moment(post.event.due_to || post.task.due_to).toDate(),
+        start: moment(moment.utc(post.event.due_to || post.task.due_to).format('YYYY-MM-DD')).toDate(),
         title: `${post.title}`,
         color: color,
         allDay: true,
@@ -276,7 +276,7 @@ export class GroupCalendarViewComponent implements OnInit {
 
         // Adding to calendar events
         this.events.push({
-          start: moment(event.event.due_to || event.task.due_to).toDate(),
+          start: moment(moment.utc(event.event.due_to || event.task.due_to).format('YYYY-MM-DD')).toDate(),
           title: `${event.title}`,
           color: color,
           allDay: true,
@@ -349,8 +349,8 @@ export class GroupCalendarViewComponent implements OnInit {
       ...this.events,
       {
         title: post.title,
-        start: moment(post.event.due_to).startOf('day').toDate(),
-        end: moment(post.event.due_to).endOf('day').toDate(),
+        start: moment(moment.utc(post.event.due_to).format('YYYY-MM-DD')).startOf('day').toDate(),
+        end: moment(moment.utc(post.event.due_to).format('YYYY-MM-DD')).endOf('day').toDate(),
         color: colors.red,
         draggable: false,
         resizable: {

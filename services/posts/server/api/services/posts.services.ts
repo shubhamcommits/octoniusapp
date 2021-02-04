@@ -969,7 +969,7 @@ export class PostService {
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        "task.due_to": date_due_to ? moment(date_due_to).hours(12).format() : null,
+        "task.due_to": date_due_to ? moment(date_due_to).format('YYYY-MM-DD') : null,
       }, {
         new: true
       })
@@ -997,10 +997,10 @@ export class PostService {
 
       let field = {};
       if (date_field === 'start_date') {
-        field = { "task.start_date": moment(newDate).hours(12).format() }
+        field = { "task.start_date": moment(newDate).format('YYYY-MM-DD') }
       }
       if (date_field === 'end_date') {
-        field = { "task.end_date": moment(newDate).hours(12).format() }
+        field = { "task.end_date": moment(newDate).format('YYYY-MM-DD') }
       }
 
       // Get post data

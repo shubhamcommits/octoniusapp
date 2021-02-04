@@ -55,7 +55,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   public publicFunctions = new PublicFunctions(this.injector);
 
   // Today's date object
-  today = moment().local().startOf('day').format('YYYY-MM-DD');
+  today = moment().startOf('day').format('YYYY-MM-DD');
 
   flows = [];
 
@@ -90,6 +90,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  formateDate(date){
+    return moment.utc(date).format("MMM D, YYYY");
   }
 
   async filtering(to) {
@@ -139,7 +143,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
-          (task?.task?.due_to)? moment(task?.task?.due_to).isBefore(moment().add(-1,'days')):false))
+          (task?.task?.due_to)? moment.utc(task?.task?.due_to).isBefore(moment().add(-1,'days')):false))
       }
       this.unchangedColumns = tasks;
     } else if (to == 'due_today'){
@@ -147,7 +151,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
-          (task?.task?.due_to)? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'):false))
+          (task?.task?.due_to)? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'):false))
       }
       this.unchangedColumns = tasks;
     } else if (to == 'due_today'){
@@ -155,7 +159,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
-          (task?.task?.due_to)? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'):false))
+          (task?.task?.due_to)? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'):false))
       }
       this.unchangedColumns = tasks;
     } else if (to == 'due_tomorrow'){
@@ -163,7 +167,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
-          (task?.task?.due_to)? moment(task?.task?.due_to).format('YYYY-MM-DD') == moment().add(1,'days').format('YYYY-MM-DD'):false))
+          (task?.task?.due_to)? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().add(1,'days').format('YYYY-MM-DD'):false))
       }
       this.unchangedColumns = tasks;
     } else if (to == 'due_week'){
@@ -171,10 +175,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
-          const first = moment().startOf('week').format('YYYY-MM-DD');
-          const last = moment().endOf('week').add(2,'days').format('YYYY-MM-DD');
+          const first = moment().startOf('week').format();
+          const last = moment().endOf('week').add(1,'days').format();
           if(task?.task?.due_to){
-            if((moment(task?.task?.due_to).isAfter(first)) && (moment(task?.task?.due_to).isBefore(last))){
+            if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
               return true;
             }else{
               return false;
@@ -191,10 +195,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
-          const first = moment().endOf('week').add(1,'days').format('YYYY-MM-DD');
-          const last = moment().endOf('week').add(9,'days').format('YYYY-MM-DD');
+          const first = moment().endOf('week').add(1,'days').format();
+          const last = moment().endOf('week').add(9,'days').format();
           if(task?.task?.due_to){
-            if((moment(task?.task?.due_to).isAfter(first)) && (moment(task?.task?.due_to).isBefore(last))){
+            if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
               return true;
             }else{
               return false;
@@ -211,10 +215,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
-          const first = moment().format('YYYY-MM-DD');
-          const last = moment().add(15,'days').format('YYYY-MM-DD');
+          const first = moment().format();
+          const last = moment().add(14,'days').format();
           if(task?.task?.due_to){
-            if((moment(task?.task?.due_to).isAfter(first)) && (moment(task?.task?.due_to).isBefore(last))){
+            if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
               return true;
             }else{
               return false;
@@ -257,7 +261,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {
           if (t1.task?.due_to && t2.task?.due_to) {
-            if (moment(t1.task?.due_to).isBefore(t2.task?.due_to)) {
+            if (moment.utc(t1.task?.due_to).isBefore(t2.task?.due_to)) {
               return this.sortingBit == 'due_date' ? -1 : 1;
             } else {
               return this.sortingBit == 'due_date' ? 1 : -1;
@@ -715,15 +719,15 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
    */
   changeDueDate(task: any, dueDate: any) {
 
-    dueDate = moment(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
+    dueDate = moment.utc(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
 
-    dueDate = moment(dueDate).format()
+    dueDate = moment.utc(dueDate).format()
 
     // Call the HTTP Request to change the due date
     this.publicFunctions.changeTaskDueDate(task._id, dueDate)
 
     // Set the task due date on the UI
-    task.task.due_to = moment(dueDate).format('YYYY-MM-DD')
+    task.task.due_to = moment.utc(dueDate).format('YYYY-MM-DD')
   }
 
   /**
@@ -765,7 +769,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
    *
    */
   checkOverdue(taskPost: any) {
-    return (taskPost.task && moment(taskPost.task.due_to).format('YYYY-MM-DD') < this.today);
+    return (taskPost.task && moment.utc(taskPost.task.due_to).format('YYYY-MM-DD') < this.today);
   }
 
   /**
