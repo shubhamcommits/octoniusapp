@@ -55,10 +55,10 @@ export class UserWorkloadCalendarComponent implements OnInit {
   dayClicked(day: CalendarMonthViewDay): void {
 
     // check if the day is already booked, so we will remove it from out of offie days
-    const bookedDayIndex = this.bookedDays.findIndex((bookedDay) => moment(moment.utc(bookedDay.date).format("YYYY-MM-DD")).isSame(moment(day.date).format("YYYY-MM-DD"), 'day'));
+    const bookedDayIndex = this.bookedDays.findIndex((bookedDay) => moment(bookedDay.date).isSame(moment(day.date), 'day'));
     if (bookedDayIndex < 0) {
       this.selectedMonthViewDay = day;
-      const dateIndex = this.selectedDays.findIndex((selectedDay) => moment(moment.utc(selectedDay.date).format("YYYY-MM-DD")).isSame(moment(day.date).format("YYYY-MM-DD"), 'day'));
+      const dateIndex = this.selectedDays.findIndex((selectedDay) => moment(selectedDay.date).isSame(moment(day.date), 'day'));
 
       if (dateIndex > -1) {
         delete this.selectedMonthViewDay.cssClass;
@@ -70,7 +70,7 @@ export class UserWorkloadCalendarComponent implements OnInit {
       }
     } else {
       this.selectedMonthViewDay = day;
-      const dateIndex = this.daysToCancel.findIndex((dayToCancel) => moment(moment.utc(dayToCancel.date).format("YYYY-MM-DD")).isSame(moment(day.date).format("YYYY-MM-DD"), 'day'));
+      const dateIndex = this.daysToCancel.findIndex((dayToCancel) => moment(dayToCancel.date).isSame(moment(day.date), 'day'));
       if (dateIndex > -1) {
         this.daysToCancel.splice(dateIndex, 1);
         this.refresh.next();
