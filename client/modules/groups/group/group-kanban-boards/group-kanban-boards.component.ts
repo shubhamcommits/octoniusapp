@@ -721,7 +721,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
     dueDate = moment.utc(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
 
-    dueDate = moment.utc(dueDate).format()
+    dueDate = moment.utc(dueDate).format('YYYY-MM-DD')
 
     // Call the HTTP Request to change the due date
     this.publicFunctions.changeTaskDueDate(task._id, dueDate)
