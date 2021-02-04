@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 import { PublicFunctions } from 'modules/public.functions';
+import moment from 'moment/moment'
 
 @Component({
   selector: 'post-comment',
@@ -40,7 +41,7 @@ export class PostCommentComponent implements OnInit {
     },
     files: [],
     _content_mentions: [],
-    created_date: new Date(Date.now())
+    created_date: moment().format("YYYY-MM-DD")
   }
 
   // Remove Comment Event Emitter

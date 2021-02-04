@@ -3,6 +3,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import moment from 'moment/moment';
 
 @Component({
   selector: 'app-myspace-tasks',
@@ -58,6 +59,10 @@ export class MyspaceTasksComponent implements OnInit {
     this.futureTasks = await this.getUserFutureTasks();
 
     this.markOverdueTasks();
+  }
+
+  formateDate(date){
+    return moment.utc(date).format("MMM D, YYYY");
   }
 
   // Check if the data provided is not empty{}

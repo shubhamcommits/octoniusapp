@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { SlackService } from "../service";
+import moment from 'moment/moment'
 import { Group, Column, Auth, SlackAuth, User } from '../models';
 import { Auths } from '../../utils';
 import FormData from 'form-data';
@@ -242,11 +243,7 @@ export class SlackController {
 
                 if(callback == 'step_1') {
 
-                    let date_ob = new Date();
-                    let date = ("0" + date_ob.getDate()).slice(-2);
-                    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-                    let year = date_ob.getFullYear();
-                    const current_date = year + "-" + month + "-" + date;
+                    const current_date = moment().format("YYYY-MM-DD");
                
                     const values = view.state.values;
                     var title,description,group,groupid;
@@ -492,7 +489,7 @@ export class SlackController {
                     var formData = new FormData();
 
                     //Postdata
-                    const postdata = {"title": taskdata.title,"content": taskdata.description,"type":"task","_posted_by":_id,"_group": taskdata.groupid,"_content_mentions":[],"_assigned_to": user,"task":{"status":"to do","_column": {"title":column.text},"due_to": new Date(date)}};
+                    const postdata = {"title": taskdata.title,"content": taskdata.description,"type":"task","_posted_by":_id,"_group": taskdata.groupid,"_content_mentions":[],"_assigned_to": user,"task":{"status":"to do","_column": {"title":column.text},"due_to": moment(date).format("YYYY-MM-DD")}};
 
                     formData.append('post',JSON.stringify(postdata));
 

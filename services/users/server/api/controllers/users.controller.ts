@@ -164,7 +164,6 @@ export class UsersControllers {
 
             const userTo = await User.findById(userToId);
             const userBY = await User.findById(userById);
-            console.log("data",userTo,userBY);
             var workspace = await Workspace.findOneAndUpdate({
                 _id:workspaceId
             },
@@ -183,9 +182,7 @@ export class UsersControllers {
 
             await userTo.save();
             await userBY.save();
-            console.log("Workspace",workspace,userTo,userBY);
-
-
+            
             // Send status 200 response
             return res.status(200).json({
                 message: `Successfully Transfer ownership`,
@@ -715,14 +712,15 @@ export class UsersControllers {
 
         if (action == 'add') {
             days.forEach(day => {
-                const index = user.out_of_office.findIndex(outOfficeDay => moment(outOfficeDay.date).isSame(moment(day.date), 'day'));
+                const index = user.out_of_office.findIndex(outOfficeDay => moment(outOfficeDay.date,"YYYY-MM-DD").isSame(moment(day.date).format("YYYY-MM-DD"), 'day'));
                 if (index < 0) {
+                    day.date = moment(day.date).format('YYYY-MM-DD');
                     user.out_of_office.push(day);
                 }
             });
         } else if (action == 'remove') {
             days.forEach(day => {
-                const index = user.out_of_office.findIndex(outOfficeDay => moment(outOfficeDay.date).isSame(moment(day.date), 'day'));
+                const index = user.out_of_office.findIndex(outOfficeDay => moment(moment.utc(outOfficeDay.date).format('YYYY-MM-DD')).isSame(moment(moment(day.date).format('YYYY-MM-DD')), 'day'));
                 if (index >= 0) {
                     user.out_of_office.splice(index, 1);
                 }

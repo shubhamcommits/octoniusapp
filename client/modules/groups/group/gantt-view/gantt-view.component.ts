@@ -6,6 +6,7 @@ import { ResizeEvent } from 'angular-resizable-element';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { DatePipe } from '@angular/common';
 import { reduce } from 'rxjs/operators';
+import moment from 'moment/moment'
 declare var LeaderLine: any;
 
 @Component({
@@ -69,8 +70,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     this.screen_height = screenHeight + 'px';
     document.getElementsByTagName("body")[0].style.overflow = 'hidden';
   }
-
- 
 
   ngAfterViewInit() {
     this.linesGenetate(false);
@@ -137,18 +136,14 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     }
     var updated_x = task.index_date + days;
     event.item.element.nativeElement.setAttribute('style', `top:0px;left:${updated_x * 50}px;width: ${event.item.element.nativeElement.style.width}`)
-    var endDate = new Date(this.tasksdata[Taskindex].end);
-    var newEndDate = new Date(this.tasksdata[Taskindex].end);
-    newEndDate.setDate(endDate.getDate() + days);
-    var startDate = new Date(this.tasksdata[Taskindex].start);
-    var newStartDate = new Date(this.tasksdata[Taskindex].start);
-    newStartDate.setDate(startDate.getDate() + days);
+    var newEndDate = moment.utc(this.tasksdata[Taskindex].end,'YYYY-MM-DD').add(days,'days',);
+    var newStartDate = moment.utc(this.tasksdata[Taskindex].start,'YYYY-MM-DD').add(days,'days');
     this.tasksdata[Taskindex].index_date = updated_x;
-    this.tasksdata[Taskindex].end = this.datePipe.transform(newEndDate, "yyyy-MM-dd");
-    this.tasksdata[Taskindex].task.task.due_to = this.datePipe.transform(newEndDate, "yyyy-MM-dd");
-    this.tasksdata[Taskindex].task.task.start_date = this.datePipe.transform(newStartDate, "yyyy-MM-dd");
-    this.tasksdata[Taskindex].start = this.datePipe.transform(newStartDate, "yyyy-MM-dd");
-    this.dateupdate(this.tasksdata[Taskindex], newStartDate, newEndDate, days, days, this.tasksdata[Taskindex]?._groupid);
+    this.tasksdata[Taskindex].end = newEndDate.format("YYYY-MM-DD");
+    this.tasksdata[Taskindex].task.task.due_to = newEndDate.format("YYYY-MM-DD");
+    this.tasksdata[Taskindex].task.task.start_date = newStartDate.format("YYYY-MM-DD")
+    this.tasksdata[Taskindex].start = newStartDate.format("YYYY-MM-DD")
+    this.dateupdate(this.tasksdata[Taskindex], newStartDate.format("YYYY-MM-DD"), newEndDate.format("YYYY-MM-DD"), days, days, this.tasksdata[Taskindex]?._groupid);
 
     setTimeout(() => {
       this.linesArray.forEach(line => {
@@ -197,12 +192,10 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       var clientWidth = document.getElementById(Taskid).clientWidth;
       var newWidth = clientWidth + result + 4;
       document.getElementById(Taskid).style.width = newWidth + 'px';
-      var endDate = new Date(this.tasksdata[Taskindex].end);
-      var newEndDate = new Date(this.tasksdata[Taskindex].end);
-      newEndDate.setDate(endDate.getDate() + multiple);
-      this.tasksdata[Taskindex].end = this.datePipe.transform(newEndDate, "yyyy-MM-dd");
-      this.tasksdata[Taskindex].task.task.due_to = this.datePipe.transform(newEndDate, "yyyy-MM-dd");
-      this.dateupdate(this.tasksdata[Taskindex], this.tasksdata[Taskindex].start, newEndDate, 0, multiple, this.tasksdata[Taskindex]?._groupid);
+      var newEndDate = moment.utc(this.tasksdata[Taskindex].end,"YYYY-MM-DD").add(multiple,'days');
+      this.tasksdata[Taskindex].end = newEndDate.format("YYYY-MM-DD");
+      this.tasksdata[Taskindex].task.task.due_to = newEndDate.format("YYYY-MM-DD");
+      this.dateupdate(this.tasksdata[Taskindex], this.tasksdata[Taskindex].start, newEndDate.format("YYYY-MM-DD"), 0, multiple, this.tasksdata[Taskindex]?._groupid);
 
     } else if (event.edges?.left) {
       var mod = Number(event.edges?.left) % 50;
@@ -230,12 +223,10 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       document.getElementById(Taskid).style.width = newWidth + 'px';
       var newLeft = offsetLeft + result;
       document.getElementById(Taskid).style.left = newLeft + 'px';
-      var startDate = new Date(this.tasksdata[Taskindex].start);
-      var newStartDate = new Date(this.tasksdata[Taskindex].start);
-      newStartDate.setDate(startDate.getDate() + multiple);
-      this.tasksdata[Taskindex].task.task.start_date = this.datePipe.transform(newStartDate, "yyyy-MM-dd");
-      this.tasksdata[Taskindex].start = this.datePipe.transform(newStartDate, "yyyy-MM-dd");
-      this.dateupdate(this.tasksdata[Taskindex], newStartDate, this.tasksdata[Taskindex].end, multiple, 0, this.tasksdata[Taskindex]?._groupid);
+      var newStartDate = moment.utc(this.tasksdata[Taskindex].start,"YYYY-MM-DD").add(multiple,'days');
+      this.tasksdata[Taskindex].task.task.start_date = newStartDate.format("YYYY-MM-DD");
+      this.tasksdata[Taskindex].start = newStartDate.format("YYYY-MM-DD");
+      this.dateupdate(this.tasksdata[Taskindex], newStartDate.format("YYYY-MM-DD"), this.tasksdata[Taskindex].end, multiple, 0, this.tasksdata[Taskindex]?._groupid);
     }
 
     setTimeout(() => {
@@ -343,19 +334,18 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   //Generate the dates for Nav
   async generateNavDate() {
-
-    if (new Date(this.datestoshow.start).getTime() > new Date().getTime()) {
+    if (moment(moment.utc(this.datestoshow.start).format("YYYY-MM-DD")).isAfter(moment().format("YYYY-MM-DD"))) {
       // Find duration between start and end date
-      const currentDate = new Date();
-      if (new Date(this.datestoshow.end).getTime() < new Date().getTime()) {
-        var endDate = new Date();
+      const currentDate = moment().format('YYYY-MM-DD');
+      
+      if (moment(moment.utc(this.datestoshow.end).format("YYYY-MM-DD")).isBefore(moment().format('YYYY-MM-DD'))) {
+        var endDate = moment();
       } else {
-        var endDate = new Date(this.datestoshow.end);
+        var endDate = moment.utc(this.datestoshow.end);
       }
 
-      var Difference_In_Time = endDate.getTime() - currentDate.getTime();
-      var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
-
+      var Difference_In_Days = endDate.diff(currentDate,'days');
+      
       if (Difference_In_Days < 26) {
         var lessdays = 26 - Difference_In_Days;
         Difference_In_Days = Difference_In_Days + lessdays;
@@ -368,21 +358,20 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       //Populating the dates.
 
       for (var i = 0; i < Difference_In_Days; i++) {
-        const cueerntDate = new Date();
-        const reqdate = new Date();
-        reqdate.setDate(cueerntDate.getDate() + (i));
-        this.dates.push({ day: reqdate.getDate(), date: reqdate, month: this.months[reqdate.getMonth()], isweekend: (reqdate.getDay() == 0 || reqdate.getDay() == 6) ? true : false });
+        const reqdate =  moment(moment(),"YYYY-MM-DD").add(i,'days');
+        this.dates.push({ day: reqdate.date(), date: reqdate, month: this.months[reqdate.month()], isweekend: (reqdate.day() == 0 || reqdate.day() == 6) ? true : false });
       }
     } else {
       // Find duration between start and end date
-      const currentDate = new Date(this.datestoshow.start)
-      if (new Date(this.datestoshow.end).getTime() < new Date().getTime()) {
-        var endDate = new Date();
+      const currentDate = moment(moment.utc(this.datestoshow.start).format("YYYY-MM-DD"))
+      if (moment(moment.utc(this.datestoshow.end).format("YYYY-MM-DD")).isBefore(moment().format("YYYY-MM-DD"))) {
+        var endDate = moment();
       } else {
-        var endDate = new Date(this.datestoshow.end);
+        var endDate = moment.utc(this.datestoshow.end);
       }
-      var Difference_In_Time = endDate.getTime() - currentDate.getTime();
-      var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
+      var Difference_In_Days = moment.utc(endDate).diff(currentDate,'days');
+
+      // var Difference_In_Days = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
 
       if (Difference_In_Days < 26) {
         var lessdays = 26 - Difference_In_Days;
@@ -395,10 +384,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       //Populating the dates.
 
       for (var i = 0; i < Difference_In_Days; i++) {
-        const cueerntDate = new Date(this.datestoshow.start);
-        const reqdate = new Date(this.datestoshow.start);
-        reqdate.setDate(cueerntDate.getDate() + (i));
-        this.dates.push({ day: reqdate.getDate(), date: reqdate, month: this.months[reqdate.getMonth()], isweekend: (reqdate.getDay() == 0 || reqdate.getDay() == 6) ? true : false });
+        const reqdate = moment.utc(this.datestoshow.start,"YYYY-MM-DD").add(i,'days');
+        this.dates.push({ day: reqdate.date(), date: reqdate, month: this.months[reqdate.month()], isweekend: (reqdate.day() == 0 || reqdate.day() == 6) ? true : false });
       }
     }
 
@@ -491,10 +478,10 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       //Saving the only required fields of the task in tasksData array.
 
       SortedTask.map(x => {
-        const startdate: any = new Date(x.task.start_date);
-        const endate: any = new Date(x.task.due_to);
-        var Difference_In_Time = endate.getTime() - startdate.getTime();
-        var Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
+        const startdate: any = moment(moment.utc(x.task.start_date).format("YYYY-MM-DD"));
+        const endate: any = moment(moment.utc(x.task.due_to).format("YYYY-MM-DD"));
+        var Difference_In_Days = moment(endate).diff(startdate,'days');
+        // var Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
 
         if (x.task.due_to && x.task.start_date && !(x.task._parent_task)) {
           this.tasksdata.push({
@@ -540,12 +527,12 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   //Get the Min date
   async min_date(all_dates) {
     var min_dt = all_dates[0]?.start,
-      min_dtObj = new Date(all_dates[0]?.start);
+      min_dtObj = moment.utc(all_dates[0]?.start);
     all_dates.forEach(function (dt, index) {
 
-      if (new Date(dt.start) < min_dtObj) {
+      if (moment.utc(dt.start).isBefore(min_dtObj)) {
         min_dt = dt.start;
-        min_dtObj = new Date(dt.start);
+        min_dtObj = moment.utc(dt.start);
       }
     });
     return min_dt;
@@ -553,12 +540,12 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   //Get the Min date
   async max_date(all_dates) {
     var max_dt = all_dates[0]?.end,
-      max_dtObj = new Date(all_dates[0]?.end);
+      max_dtObj = moment.utc(all_dates[0]?.end);
     all_dates.forEach(function (dt, index) {
 
-      if (new Date(dt.end) > max_dtObj) {
+      if (moment.utc(dt.end).isAfter(max_dtObj)) {
         max_dt = dt.end;
-        max_dtObj = new Date(dt.end);
+        max_dtObj = moment.utc(dt.end);
       }
     });
     return max_dt;
@@ -568,9 +555,9 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   find_index(date) {
     var dateindex;
     this.dates.forEach((dt, index) => {
-      var a = new Date(dt.date);
-      var b = new Date(date);
-      if (this.datePipe.transform(a, "yyyy-MM-dd") === this.datePipe.transform(b, "yyyy-MM-dd")) {
+      var a = moment(dt.date);
+      var b = moment(moment.utc(date).format("YYYY-MM-DD"));
+      if (a.format("YYYY-MM-DD") === b.format("YYYY-MM-DD")) {
         dateindex = index;
       }
     });
@@ -580,10 +567,10 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   //Current date index
   async get_current_date_index() {
     this.dates.forEach((dt, index) => {
-      var a = new Date(dt.date);
-      var c = new Date();
+      var a = moment(dt.date);
+      var c = moment();
 
-      if (this.datePipe.transform(a, "yyyy-MM-dd") === this.datePipe.transform(c, "yyyy-MM-dd")) {
+      if (a.format("YYYY-MM-DD") === c.format("YYYY-MM-DD")) {
         this.current_date_index = index;
       }
     });

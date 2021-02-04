@@ -47,7 +47,7 @@ export class UserProfessionalInformationComponent implements OnInit {
 
     // If company_join_dateis undefined or empty then assign current date to the same
     if (JSON.stringify(this.userData.company_join_date) === undefined || JSON.stringify(this.userData.company_join_date) === '')
-      this.userData.company_join_date = moment(new Date(Date.now())).format('YYYY-MM-DD');
+      this.userData.company_join_date = moment().format('YYYY-MM-DD');
     else {
 
       // Else use the defined date and format it in YYYY-MM-DD
