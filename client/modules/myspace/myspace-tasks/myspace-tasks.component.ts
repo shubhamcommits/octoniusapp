@@ -62,7 +62,7 @@ export class MyspaceTasksComponent implements OnInit {
   }
 
   formateDate(date){
-    return moment.utc(date).format("MMM D, YYYY");
+    return date ? moment.utc(date).format("MMM D, YYYY") : '';
   }
 
   // Check if the data provided is not empty{}
