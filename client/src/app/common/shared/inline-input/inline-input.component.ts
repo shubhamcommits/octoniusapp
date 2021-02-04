@@ -161,7 +161,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
   async updateDate(date, property) {
     await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
       if (property === 'due_date') {
-        this.postService.changeTaskDueDate(this.domainObject._id, date)
+        this.postService.changeTaskDueDate(this.domainObject._id, moment(date).format('YYYY-MM-DD'))
           .then((res) => {
             // Emit the post to other components
             this.post.emit({post: res['post']});
@@ -173,7 +173,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
             reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
           });
       } else if(property === 'start_date' || property === 'end_date') {
-        this.postService.saveTaskDates(this.domainObject._id, date, property)
+        this.postService.saveTaskDates(this.domainObject._id, moment(date).format('YYYY-MM-DD'), property)
           .then((res) => {
             this.domainObject = res['post'];
             // Resolve with success

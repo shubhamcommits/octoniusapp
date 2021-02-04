@@ -281,7 +281,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async updateDate(date, property) {
     await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
       if (property === 'due_date') {
-        this.postService.changeTaskDueDate(this.postData._id, date)
+        this.postService.changeTaskDueDate(this.postData._id, moment(date).format('YYYY-MM-DD'))
           .then((res) => {
             this.postData = res['post'];
             // Resolve with success
@@ -291,7 +291,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
             reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
           });
       } else if(property === 'start_date' || property === 'end_date') {
-        this.postService.saveTaskDates(this.postData._id, date, property)
+        this.postService.saveTaskDates(this.postData._id, moment(date).format('YYYY-MM-DD'), property)
           .then((res) => {
             this.postData = res['post'];
             // Resolve with success
