@@ -63,7 +63,7 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the actual time
-        const today = moment().subtract(1, 'days').endOf('day').format('YYYY-MM-DD');
+        const today = moment().format('YYYY-MM-DD');
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -104,7 +104,7 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the today
-        const today = moment().add(1, 'days').startOf('day').format('YYYY-MM-DD');
+        const tomorrow = moment().add(1, 'days').startOf('day').format('YYYY-MM-DD');
 
         // Generate the date for the end of the week
         const endOfWeek = moment().add(1, 'days').endOf('day').endOf('week').format('YYYY-MM-DD');
@@ -117,7 +117,7 @@ export class PostsService {
                         { '_group': user._private_group }
                     ]
                 },
-                { 'task.due_to': { $gte: today, $lte: endOfWeek }},
+                { 'task.due_to': { $gte: tomorrow, $lte: endOfWeek }},
                 { 'task.is_template': { $ne: true }},
                 {
                     $or: [
