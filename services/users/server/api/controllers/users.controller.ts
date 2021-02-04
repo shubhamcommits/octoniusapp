@@ -720,7 +720,7 @@ export class UsersControllers {
             });
         } else if (action == 'remove') {
             days.forEach(day => {
-                const index = user.out_of_office.findIndex(outOfficeDay => moment(outOfficeDay.date).isSame(moment(day.date), 'day'));
+                const index = user.out_of_office.findIndex(outOfficeDay => moment(moment.utc(outOfficeDay.date).format('YYYY-MM-DD')).isSame(moment(moment(day.date).format('YYYY-MM-DD')), 'day'));
                 if (index >= 0) {
                     user.out_of_office.splice(index, 1);
                 }
