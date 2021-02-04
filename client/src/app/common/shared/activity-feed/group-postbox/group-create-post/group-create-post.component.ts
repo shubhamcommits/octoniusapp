@@ -439,7 +439,6 @@ export class GroupCreatePostComponent implements OnInit {
       // Task due date
       post.date_due_to = moment(this.dueDate).format("YYYY-MM-DD");
 
-      console.log("Ass due date ",post.date_due_to);
       // Task Assigned to
       if(this.postData._assigned_to)
         post.assigned_to = this.postData._assigned_to._id

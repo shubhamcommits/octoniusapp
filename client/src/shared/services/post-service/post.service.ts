@@ -382,7 +382,6 @@ export class PostService {
    */
   saveTaskDates(postId: any, newDate: any, date_field: string) {
     // Call the HTTP Request
-    console.log("date sdsfsssdc xcxcvxv",newDate);
     return this._http.put(this.baseURL + `/${postId}/update-date`, {
       newDate: newDate,
       date_field: date_field

@@ -733,7 +733,6 @@ export class PostController {
 
         // Fetch Data from request
         const { params: { postId }, body: { newDate, date_field } } = req;
-        console.log("am here with body",req.body);
         try {
 
             // Call Service function to change the assignee
