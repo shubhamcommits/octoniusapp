@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { FlowService, PostService, TagsService } from '../services';
-import moment from "moment";
+import moment from "moment/moment";
 import { sendErr } from '../utils/sendError';
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -696,12 +696,8 @@ export class PostController {
                         for( var i=0;i<post?.task?._dependent_child.length;i++){
                             const childpost = await postService.get(post?.task?._dependent_child[i]);
                             if(childpost){
-                                var endDate = new Date(childpost?.task?.due_to);
-                                var newEndDate = new Date(childpost?.task?.due_to);
-                                newEndDate.setDate(endDate.getDate() + e_day);
-                                var startDate = new Date(childpost?.task?.start_date);
-                                var newStartDate = new Date(childpost?.task?.start_date);
-                                newStartDate.setDate(startDate.getDate() + e_day);
+                                var newEndDate = moment(childpost?.task?.due_to).add(e_day,'days');
+                                var newStartDate = moment(childpost?.task?.start_date).add(e_day,'days');
                                 await update(post?.task?._dependent_child[i],moment(newEndDate).format(),moment(newStartDate).format(),e_day,e_day,true);
                             }
                         }
@@ -737,7 +733,6 @@ export class PostController {
 
         // Fetch Data from request
         const { params: { postId }, body: { newDate, date_field } } = req;
-
         try {
 
             // Call Service function to change the assignee

@@ -57,7 +57,7 @@
                                 <span class="small"
                                 *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
                                 [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
-                                {{task?.task?.due_to | date}}</span>
+                                {{task?.task?.due_to?formateDate(task?.task?.due_to):''}}</span>
                                 <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
                                   *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
                                   {{ task?.task?.custom_fields['priority'] }}

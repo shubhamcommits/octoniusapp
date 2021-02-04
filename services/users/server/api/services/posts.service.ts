@@ -16,10 +16,10 @@ export class PostsService {
     async getTodayTasks(userId: string) {
 
         // Generate the actual time
-        const startOfDay = moment().startOf('day').format();
+        const startOfDay = moment().startOf('day').format('YYYY-MM-DD');
 
         // Generate the +24h time
-        const endOfDay = moment().endOf('day').format();
+        const endOfDay = moment().endOf('day').format('YYYY-MM-DD');
 
         const user = await User.findById(userId).select('_private_group');
 
@@ -63,7 +63,7 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the actual time
-        const today = moment().subtract(1, 'days').endOf('day').format()
+        const today = moment().subtract(1, 'days').endOf('day').format('YYYY-MM-DD');
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -104,10 +104,10 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the today
-        const today = moment().add(1, 'days').startOf('day').format();
+        const today = moment().add(1, 'days').startOf('day').format('YYYY-MM-DD');
 
         // Generate the date for the end of the week
-        const endOfWeek = moment().add(1, 'days').endOf('day').endOf('week').format();
+        const endOfWeek = moment().add(1, 'days').endOf('day').endOf('week').format('YYYY-MM-DD');
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -149,10 +149,10 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the date for the end of the week
-        const endOfWeek = moment().add(1, 'days').endOf('day').endOf('week').format();
+        const endOfWeek = moment().add(1, 'days').endOf('day').endOf('week').format('YYYY-MM-DD');
 
         // Generate the date for the end of the next week
-        const endOfNextWeek = moment().endOf('week').add(1, 'days').endOf('day').endOf('week').format();
+        const endOfNextWeek = moment().endOf('week').add(1, 'days').endOf('day').endOf('week').format('YYYY-MM-DD');
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -194,7 +194,7 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the +14days from today time
-        const todayPlus14Days = moment().add(14, 'days').endOf('day').format();
+        const todayPlus14Days = moment().add(14, 'days').endOf('day').format('YYYY-MM-DD');
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -314,10 +314,10 @@ export class PostsService {
     async getRecentPosts(userId: string) {
 
         // Generate the actual time
-        const today = moment().startOf('day').format();
+        const today = moment().startOf('day').format('YYYY-MM-DD');
 
         // Generate the +24h time
-        const tomorrow = moment().endOf('day').format();
+        const tomorrow = moment().endOf('day').format('YYYY-MM-DD');
 
         // Get the group(s) that the user belongs to
         let user: any = await User.findById(userId)

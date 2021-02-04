@@ -179,7 +179,7 @@
           <p *ngIf="groupData && groupData.project_type" class="box-title">Start date</p>
           <div *ngIf="groupData && postData?.type === 'task' && groupData.project_type">
             <!-- Date Picker starts -->
-            <app-date-picker (date)="getDate($event, 'start_date')" [dueDate]="postData?.task.start_date"
+            <app-date-picker (date)="getDate($event, 'start_date')" [dueDate]="formateDate(postData?.task.start_date)"
               [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
             </app-date-picker>
             <!--Date Picker ends -->
@@ -205,7 +205,7 @@
               <!-- Date Picker starts -->
               <app-date-picker
                 (date)="getDate($event, 'due_date')"
-                [dueDate]="postData?.task.due_to"
+                [dueDate]="formateDate(postData?.task.due_to)"
                 [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
               </app-date-picker>
               <!--Date Picker ends -->

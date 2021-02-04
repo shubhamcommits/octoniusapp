@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
-
+import moment from 'moment/moment'
 import interact from 'interactjs';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -85,7 +85,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
             }
           }
 
-          newDate = this.addDaysToDate(new Date(this.task.task.start_date), offsetDay);
+          newDate = moment(this.task.task.start_date).add(offsetDay,'days');
           date_field = 'start_date';
         }
 
@@ -108,7 +108,7 @@ export class TaskComponent implements OnInit, AfterViewInit {
             }
           }
 
-          newDate = this.addDaysToDate(new Date(this.task.task.end_date), offsetDay);
+          newDate = moment(this.task.task.end_date).add(offsetDay,'days');
           date_field = 'end_date';
         }
 
@@ -177,8 +177,8 @@ export class TaskComponent implements OnInit, AfterViewInit {
           }
         }
 
-        const newStartDate = this.addDaysToDate(new Date(this.task.task.start_date), offsetDay);
-        const newEndDate = this.addDaysToDate(new Date(this.task.task.end_date), offsetDay);
+        const newStartDate =  moment(this.task.task.start_date).add(offsetDay,'days');
+        const newEndDate = moment(this.task.task.end_date).add(offsetDay,'days');
 
         this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise(async (resolve, reject) => {
           await this.postService.saveTaskDates(this.task._id, newStartDate, 'start_date').then(res => {
@@ -211,19 +211,5 @@ export class TaskComponent implements OnInit, AfterViewInit {
       onmove: (event) => {this.dragMoveListener(event)}
     })
 */
-  }
-
-  /**
-   * Add some days to a date object
-   *
-   * @param {DATE} date Original date
-   * @param {INT} days Number of days to add to the date
-   * @returns {DATE} The resulting date object, normalized to noon (12:00:00.000)
-   */
-  addDaysToDate(date, days) {
-    var mdate = new Date(date.getTime());
-    mdate.setTime( mdate.getTime()+ days * 1000*60*60*24 );
-    mdate.setHours(12); mdate.setMinutes(0); mdate.setSeconds(0); mdate.setMilliseconds(0);
-    return mdate;
   }
 }

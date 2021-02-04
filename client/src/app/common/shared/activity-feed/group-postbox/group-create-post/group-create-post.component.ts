@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
+import moment from 'moment/moment';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 
 @Component({
@@ -155,7 +155,7 @@ export class GroupCreatePostComponent implements OnInit {
         (this.postData.event.due_to && this.postData.event.due_to != null)) {
 
         // Set the DueDate variable
-        this.dueDate = new Date(this.postData.task.due_to || this.postData.event.due_to)
+        this.dueDate = moment(this.postData.task.due_to || this.postData.event.due_to)
       }
 
       // If post type is event, set the dueTime
@@ -340,28 +340,23 @@ export class GroupCreatePostComponent implements OnInit {
       var due_to;
 
       if (this.dueDate == undefined || this.dueDate == null) {
-        due_to = new Date(
-          new Date().getFullYear(),
-          new Date().getMonth(),
-          new Date().getDate(),
-          this.dueTime.hour,
-          this.dueTime.minute
-        );
+        const now = moment();
+        now.hours(this.dueTime.hour);
+        now.minute(this.dueTime.minute);
+        due_to = now;
       }
 
       // Create the due_to date
       else {
-        due_to = new Date(
-          new Date(this.dueDate).getFullYear(),
-          new Date(this.dueDate).getMonth(),
-          new Date(this.dueDate).getDate(),
-          this.dueTime.hour,
-          this.dueTime.minute)
+        const now = moment(this.dueDate.getFullYear(),this.dueDate.getMonth(),this.dueDate.getDate());
+        now.hours(this.dueTime.hour);
+        now.minute(this.dueTime.minute);
+        due_to = now;
       }
 
       // Add event.due_to property to the postData
       postData.event = {
-        due_to: moment(due_to).format()
+        due_to: moment(due_to).format("YYYY-MM-DD")
       }
     }
 
@@ -427,15 +422,12 @@ export class GroupCreatePostComponent implements OnInit {
     if (this.type == 'event') {
 
       // Set the due date for the events
-      this.dueDate = new Date(
-        new Date(this.dueDate).getFullYear(),
-        new Date(this.dueDate).getMonth(),
-        new Date(this.dueDate).getDate(),
-        this.dueTime.hour,
-        this.dueTime.minute)
-
+      const now = moment(this.dueDate.getFullYear(),this.dueDate.getMonth(),this.dueDate.getDate());
+      now.hours(this.dueTime.hour);
+      now.minute(this.dueTime.minute);
+      this.dueDate  = now;
       // Adding Due Date to event
-      post.date_due_to = this.dueDate
+      post.date_due_to = moment(this.dueDate).format("YYYY-MM-DD");
 
       // Adding assigned to for the events
       post.assigned_to = this.eventAssignees
@@ -445,7 +437,7 @@ export class GroupCreatePostComponent implements OnInit {
     if(this.type == 'task'){
 
       // Task due date
-      post.date_due_to = this.dueDate
+      post.date_due_to = moment(this.dueDate).format("YYYY-MM-DD");
 
       // Task Assigned to
       if(this.postData._assigned_to)

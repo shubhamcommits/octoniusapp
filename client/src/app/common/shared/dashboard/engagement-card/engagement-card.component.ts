@@ -67,7 +67,7 @@ export class EngagementCardComponent implements OnChanges {
       const comparingDate = moment().local().subtract(this.period, 'days').toDate();
 
       for (let group of this.groups) {
-        if (group.type === 'agora' && (new Date(group.created_date)).getTime() >= comparingDate.getTime()) {
+        if (group.type === 'agora' && (moment(group.created_date).add(-1,'days')).isAfter(comparingDate)) {
           this.num_agoras++;
         }
         // if (group.type === 'normal') this.num_groups++;
