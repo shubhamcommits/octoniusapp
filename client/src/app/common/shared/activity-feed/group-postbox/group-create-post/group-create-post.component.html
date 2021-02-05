@@ -90,17 +90,18 @@
   <!-- Top Right Section starts -->
   <div class="w400 float-right">
     <!-- Date Picker starts -->
-    <app-date-picker *ngIf="type === 'task'" [styleClass]="'input-date due'"
+    <app-date-picker *ngIf="type == 'task'" [styleClass]="'input-date due'"
       (date)="getDate($event, 'due_date')" [dueDate]="postData?.task.due_to">
     </app-date-picker>
 
-    <!-- Clean field starts -->
-    <i (click)="getDate(null, 'due_date')" class="material-icons" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
-    <!-- Clean field ends -->
-
-    <app-date-picker *ngIf="type === 'event'" [styleClass]="'input-date due'"
+    <app-date-picker *ngIf="type == 'event'" [styleClass]="'input-date due'"
       (date)="getDate($event, 'due_date')" [dueDate]="postData?.event.due_to">
     </app-date-picker>
+
+    <!-- Clean field starts -->
+    <i *ngIf="type == 'task' || type == 'event'" (click)="getDate(null, 'due_date')" class="material-icons" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <!-- Clean field ends -->
+
     <!-- Date Picker ends -->
 
     <!-- Time Picker starts -->

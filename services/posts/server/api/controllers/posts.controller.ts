@@ -1333,7 +1333,7 @@ export class PostController {
 
                     if (steps && steps.length > 0) {
                         steps.forEach(async step => {
-                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status are'; });
+                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
                             const isChildStatusTrigger = (childStatusTriggerIndex >= 0)
                                 ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], post.task._parent_task._id || post.task._parent_task)
                                 : false;
@@ -1376,19 +1376,7 @@ export class PostController {
                         case 'Status is':
                             retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
                             break;
-                        case 'Subtasks Status are':
-                            /*    
-                            if (retValue && post.task._parent_task && trigger.subtaskStatus.toUpperCase() == post.task.status.toUpperCase()) {
-                                let subtasks = await postService.getSubtasks(post.task._parent_task._id || post.task._parent_task);
-                                subtasks.forEach(subtask => {
-                                    if (retValue && subtask._id != post._id) {
-                                        retValue = trigger.subtaskStatus.toUpperCase() == subtask.task.status.toUpperCase();
-                                    }
-                                });
-                            } else {
-                              retValue = false;
-                            }
-                            */
+                        case 'Subtasks Status':
                             retValue = isChildStatusTrigger;
                             break;
                         case 'Task is CREATED':

@@ -172,7 +172,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
           .catch(() => {
             reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
           });
-      } else if(property === 'start_date' || property === 'end_date') {
+      } else if(property === 'start_date') {
         this.postService.saveTaskDates(this.domainObject._id, moment(date).format('YYYY-MM-DD'), property)
           .then((res) => {
             this.domainObject = res['post'];
@@ -230,8 +230,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
       _read_by: this.domainObject._read_by,
       task: this.domainObject.task,
       assigned_to: (this.domainObject._assigned_to) ? this.domainObject._assigned_to : [],
-      start_date: this.domainObject.task.start_date,
-      end_date: this.domainObject.task.end_date
+      start_date: this.domainObject.task.start_date
     };
 
     // If type is task, then add following properties too
