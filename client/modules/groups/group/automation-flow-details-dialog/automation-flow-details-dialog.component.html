@@ -116,7 +116,7 @@
                   </div>
                 </div>
 
-                <div *ngIf="trigger.name === 'Subtasks Status are'">
+                <div *ngIf="trigger.name == 'Subtasks Status'">
                   <div *ngIf="trigger.subtaskStatus" [ngClass]="getStatusClass(trigger.subtaskStatus)">
                     {{ trigger.subtaskStatus.toUpperCase() }}
                   </div>

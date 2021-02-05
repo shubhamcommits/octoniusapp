@@ -163,7 +163,7 @@ export class PublicFunctions {
     }
 
     public async getCurrentGroup() {
-        
+
         let groupData = await this.getCurrentGroupFromService();
 
         this.sendUpdatesToGroupData(groupData);
@@ -172,13 +172,13 @@ export class PublicFunctions {
     }
 
     async getCurrentGroupFromService() {
-       
+
         return new Promise((resolve) => {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.currentGroupData.subscribe((res) => {
                 if (JSON.stringify(res) != JSON.stringify({}))
                     resolve(res);
-                else 
+                else
                     resolve({}) ;
             })
             )
@@ -227,7 +227,7 @@ export class PublicFunctions {
      * @param groupId
      */
     public async getCurrentGroupDetails(groupId: string) {
-    
+
        let groupData: any = await this.getCurrentGroupFromService();
        if (JSON.stringify(groupData) == JSON.stringify({})){
          groupData = await this.getGroupDetails(groupId);
@@ -238,11 +238,11 @@ export class PublicFunctions {
        }
 
        this.sendUpdatesToGroupData(groupData);
-       
+
        return groupData || {};
     }
-    
-    
+
+
     /**
      * This function fetches the group details
      * @param groupId
@@ -1090,7 +1090,7 @@ export class PublicFunctions {
                 if (steps && steps.length > 0) {
                     steps.forEach(async (step, stepIndex) => {
                         if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger || false)) {
-                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status are'; });
+                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
                             post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, childStatusTriggerIndex != -1);
                         }
                     });
@@ -1129,7 +1129,7 @@ export class PublicFunctions {
                                 retValue = true;
                             }
                             break;
-                        case 'Subtasks Status are':
+                        case 'Subtasks Status':
                             let postService = this.injector.get(PostService);
                             if (retValue && post.task._parent_task && trigger.subtaskStatus.toUpperCase() == post.task.status.toUpperCase()) {
                                 postService.getSubTasks(post.task._parent_task._id || post.task._parent_task).then(res => {
