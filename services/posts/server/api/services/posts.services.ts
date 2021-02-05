@@ -472,7 +472,6 @@ export class PostService {
           postData.task = {
             due_to: (post.date_due_to) ? moment(post.date_due_to).format() : null,
             start_date: (post.start_date) ? moment(post.start_date).format() : null,
-            end_date: (post.end_date) ? moment(post.end_date).format() : null,
             status: post.status,
             _column: post._column,
             custom_fields: post.task.custom_fields,
@@ -998,9 +997,6 @@ export class PostService {
       let field = {};
       if (date_field === 'start_date') {
         field = { "task.start_date": moment(newDate).hours(12).format('YYYY-MM-DD') }
-      }
-      if (date_field === 'end_date') {
-        field = { "task.end_date": moment(newDate).hours(12).format('YYYY-MM-DD') }
       }
 
       // Get post data

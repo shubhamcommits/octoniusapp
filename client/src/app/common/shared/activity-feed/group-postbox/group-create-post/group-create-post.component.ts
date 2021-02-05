@@ -283,9 +283,6 @@ export class GroupCreatePostComponent implements OnInit {
     if (property === 'start_date') {
       this.startDate = dateObject.toDate() || null;
     }
-    if (property === 'end_date') {
-      this.endDate = dateObject.toDate() || null;
-    }
     if (property === 'due_date') {
       this.dueDate = dateObject.toDate() || null;
     }

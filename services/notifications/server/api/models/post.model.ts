@@ -144,10 +144,6 @@ const PostSchema = new Schema({
             type: Date,
             default: null
         },
-        end_date: {
-            type: Date,
-            default: null
-        },
 
         _parent_task: {
             type: Schema.Types.ObjectId,
