@@ -17,7 +17,7 @@ export class MyspaceAgendaComponent implements OnInit {
 
   thisWeekTimelineEvents: any = [];
 
-  now: Date = new Date();
+  now: string = moment().format();
 
   userData: any
 

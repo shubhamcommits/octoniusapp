@@ -472,7 +472,6 @@ export class PostService {
           postData.task = {
             due_to: (post.date_due_to) ? moment(post.date_due_to).format() : null,
             start_date: (post.start_date) ? moment(post.start_date).format() : null,
-            end_date: (post.end_date) ? moment(post.end_date).format() : null,
             status: post.status,
             _column: post._column,
             custom_fields: post.task.custom_fields,
@@ -965,12 +964,11 @@ export class PostService {
   async changeTaskDueDate(postId: string, date_due_to: string) {
 
     try {
-
       // Get post data
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        "task.due_to": date_due_to ? moment(date_due_to).format() : null,
+        "task.due_to": date_due_to ? moment(date_due_to).hours(12).format('YYYY-MM-DD') : null,
       }, {
         new: true
       })
@@ -993,15 +991,12 @@ export class PostService {
    * @param newDate
    */
   async changeTaskDate(postId: string, date_field: string, newDate: Date) {
-
+    
     try {
 
       let field = {};
       if (date_field === 'start_date') {
-        field = { "task.start_date": newDate }
-      }
-      if (date_field === 'end_date') {
-        field = { "task.end_date": newDate }
+        field = { "task.start_date": moment(newDate).hours(12).format('YYYY-MM-DD') }
       }
 
       // Get post data

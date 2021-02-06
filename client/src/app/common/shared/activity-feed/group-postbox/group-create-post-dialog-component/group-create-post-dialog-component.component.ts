@@ -71,7 +71,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
   assigned: boolean = false;
 
   startDate: any;
-  endDate: any;
 
   // Date Object to map the due dates
   dueDate: any;
@@ -116,7 +115,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async ngOnInit() {
     // Start the loading spinner
     this.isLoading$.next(true);
-
     this.postData = this.data.postData;
     this.userData = this.data.userData;
     this.groupId = this.data.groupId;
@@ -129,6 +127,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
     });
 
     await this.initPostData();
+  }
+
+  formateDate(date){
+    return moment(moment.utc(date).format("YYYY-MM-DD")).toDate();
   }
 
   async initPostData() {
@@ -149,19 +151,13 @@ export class GroupCreatePostDialogComponent implements OnInit {
       if ((this.postData.task.due_to && this.postData.task.due_to != null)
         || (this.postData.event.due_to && this.postData.event.due_to != null)) {
         // Set the DueDate variable
-        this.dueDate = new Date(this.postData.task.due_to || this.postData.event.due_to);
+        this.dueDate = moment(this.postData.task.due_to || this.postData.event.due_to);
       }
 
       // Set the due date variable for task
       if (this.postData.task.start_date && this.postData.task.start_date != null) {
         // Set the DueDate variable
-        this.startDate = new Date(this.postData.task.start_date);
-      }
-
-      // Set the due date variable for task
-      if (this.postData.task.end_date && this.postData.task.end_date != null) {
-        // Set the DueDate variable
-        this.endDate = new Date(this.postData.task.end_date);
+        this.startDate = moment(this.postData.task.start_date);
       }
 
       this.setAssignedBy(this.postData);
@@ -203,7 +199,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
       if (this.postData.event.due_to && this.postData.event.due_to != null) {
 
         // Set the DueDate variable
-        this.dueDate = new Date(this.postData.task.due_to || this.postData.event.due_to);
+        this.dueDate = moment(this.postData.task.due_to || this.postData.event.due_to);
       }
 
       if (this.dueDate) {
@@ -265,10 +261,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
       this.startDate = dateObject.toDate();
       this.updateDate(dateObject.toDate(), property);
     }
-    if (property === 'end_date') {
-      this.endDate = dateObject.toDate();
-      this.updateDate(dateObject.toDate(), property);
-    }
     if (property === 'due_date') {
       this.dueDate = dateObject.toDate();
       this.updateDate(dateObject.toDate(), property);
@@ -278,7 +270,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async updateDate(date, property) {
     await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
       if (property === 'due_date') {
-        this.postService.changeTaskDueDate(this.postData._id, date)
+        this.postService.changeTaskDueDate(this.postData._id, moment(date).format('YYYY-MM-DD'))
           .then((res) => {
             this.postData = res['post'];
             // Resolve with success
@@ -287,8 +279,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
           .catch(() => {
             reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
           });
-      } else if(property === 'start_date' || property === 'end_date') {
-        this.postService.saveTaskDates(this.postData._id, date, property)
+      } else if(property === 'start_date') {
+        this.postService.saveTaskDates(this.postData._id, moment(date).format('YYYY-MM-DD'), property)
           .then((res) => {
             this.postData = res['post'];
             // Resolve with success
@@ -446,21 +438,16 @@ export class GroupCreatePostDialogComponent implements OnInit {
       var due_to;
 
       if (this.dueDate == undefined || this.dueDate == null) {
-        due_to = new Date(
-          new Date().getFullYear(),
-          new Date().getMonth(),
-          new Date().getDate(),
-          this.dueTime.hour,
-          this.dueTime.minute
-        );
+        const now = moment();
+        now.hours(this.dueTime.hour);
+        now.minute(this.dueTime.minute);
+        due_to = now;
       } else {
         // Create the due_to date
-        due_to = new Date(
-          this.dueDate.getFullYear(),
-          this.dueDate.getMonth(),
-          this.dueDate.getDate(),
-          this.dueTime.hour,
-          this.dueTime.minute);
+        const now = moment(this.dueDate.getFullYear(),this.dueDate.getMonth(),this.dueDate.getDate());
+        now.hours(this.dueTime.hour);
+        now.minute(this.dueTime.minute);
+        due_to = now;
       }
 
       // Add event.due_to property to the postData and assignees
@@ -477,7 +464,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
       if (this.groupData.project_type) {
         post.start_date = this.startDate;
-        post.end_date = this.endDate;
       }
 
       if (!this.postData.task._parent_task) {
@@ -534,7 +520,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async setAssignedBy(post) {
 
     if (this.postData.records && this.postData.records.assignments && this.postData.records.assignments.length > 0) {
-      this.postData.records.assignments = this.postData.records.assignments.sort((a1, a2) => (new Date(a1.date).getTime() < new Date(a2.date).getTime()) ? 1 : -1);
+      this.postData.records.assignments = this.postData.records.assignments.sort((a1, a2) => (moment(a1.date).isBefore(a2.date)) ? 1 : -1);
       this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData.records.assignments[0]._assigned_from);
     }
   }

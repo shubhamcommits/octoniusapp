@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { FlowService, PostService, TagsService } from '../services';
-import moment from "moment";
+import moment from "moment/moment";
 import { sendErr } from '../utils/sendError';
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -696,12 +696,8 @@ export class PostController {
                         for( var i=0;i<post?.task?._dependent_child.length;i++){
                             const childpost = await postService.get(post?.task?._dependent_child[i]);
                             if(childpost){
-                                var endDate = new Date(childpost?.task?.due_to);
-                                var newEndDate = new Date(childpost?.task?.due_to);
-                                newEndDate.setDate(endDate.getDate() + e_day);
-                                var startDate = new Date(childpost?.task?.start_date);
-                                var newStartDate = new Date(childpost?.task?.start_date);
-                                newStartDate.setDate(startDate.getDate() + e_day);
+                                var newEndDate = moment(childpost?.task?.due_to).add(e_day,'days');
+                                var newStartDate = moment(childpost?.task?.start_date).add(e_day,'days');
                                 await update(post?.task?._dependent_child[i],moment(newEndDate).format(),moment(newStartDate).format(),e_day,e_day,true);
                             }
                         }
@@ -737,7 +733,6 @@ export class PostController {
 
         // Fetch Data from request
         const { params: { postId }, body: { newDate, date_field } } = req;
-
         try {
 
             // Call Service function to change the assignee
@@ -1338,7 +1333,7 @@ export class PostController {
 
                     if (steps && steps.length > 0) {
                         steps.forEach(async step => {
-                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status are'; });
+                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
                             const isChildStatusTrigger = (childStatusTriggerIndex >= 0)
                                 ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], post.task._parent_task._id || post.task._parent_task)
                                 : false;
@@ -1381,19 +1376,7 @@ export class PostController {
                         case 'Status is':
                             retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
                             break;
-                        case 'Subtasks Status are':
-                            /*    
-                            if (retValue && post.task._parent_task && trigger.subtaskStatus.toUpperCase() == post.task.status.toUpperCase()) {
-                                let subtasks = await postService.getSubtasks(post.task._parent_task._id || post.task._parent_task);
-                                subtasks.forEach(subtask => {
-                                    if (retValue && subtask._id != post._id) {
-                                        retValue = trigger.subtaskStatus.toUpperCase() == subtask.task.status.toUpperCase();
-                                    }
-                                });
-                            } else {
-                              retValue = false;
-                            }
-                            */
+                        case 'Subtasks Status':
                             retValue = isChildStatusTrigger;
                             break;
                         case 'Task is CREATED':
