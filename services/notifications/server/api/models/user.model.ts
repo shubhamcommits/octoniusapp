@@ -159,13 +159,7 @@ const UserSchema = new Schema({
             type: Boolean,
             default: false
         }
-    }],
-    portal_manager: {
-        // This property is used to authenticate into the portal managment app
-        type: Boolean,
-        required: true,
-        default: false
-    }
+    }]
 });
 
 const User = mongoose.model('User', UserSchema);
