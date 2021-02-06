@@ -67,16 +67,16 @@
                 </div>
 
                 <div *ngIf="trigger.name === 'Section is'">
-                  <div *ngIf="trigger.section" class="badge-section">
-                    {{ trigger.section }}
+                  <div *ngIf="trigger._section" class="badge-section">
+                    {{ trigger?._section?.title }}
                   </div>
 
-                  <button *ngIf="!trigger.section" mat-menu-item [matMenuTriggerFor]="sectionTriggerMenu">
+                  <button *ngIf="!trigger._section" mat-menu-item [matMenuTriggerFor]="sectionTriggerMenu">
                     Select Section
                   </button>
                   <mat-menu #sectionTriggerMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let section of groupSections" (click)="triggerSelected('section', section.title, stepIndex, triggerIndex)">{{ section.title }}</button>
+                      <button mat-menu-item *ngFor="let section of groupSections" (click)="triggerSelected('section', section, stepIndex, triggerIndex)">{{ section.title }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>
@@ -174,16 +174,16 @@
                 </div>
 
                 <div *ngIf="action.name === 'Move to'">
-                  <div *ngIf="action.section" class="badge-section">
-                    {{ action.section }}
+                  <div *ngIf="action._section" class="badge-section">
+                    {{ action._section.title }}
                   </div>
 
-                  <button *ngIf="!action.section" mat-menu-item [matMenuTriggerFor]="sectionActionMenu">
+                  <button *ngIf="!action._section" mat-menu-item [matMenuTriggerFor]="sectionActionMenu">
                     Select Section
                   </button>
                   <mat-menu #sectionActionMenu="matMenu">
                     <ng-container>
-                      <button mat-menu-item *ngFor="let section of groupSections" (click)="actionSelected('section', section.title, stepIndex, actionIndex)">{{ section.title }}</button>
+                      <button mat-menu-item *ngFor="let section of groupSections" (click)="actionSelected('section', section, stepIndex, actionIndex)">{{ section.title }}</button>
                     </ng-container>
                   </mat-menu>
                 </div>

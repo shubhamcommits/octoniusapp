@@ -27,9 +27,9 @@ const FlowSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'User'
             }],
-            section: {
-                type: String,
-                default: ''
+            _section: {
+                type: Schema.Types.ObjectId,
+                ref: 'Column'
             },
             status: {
                 type: String,
@@ -59,9 +59,9 @@ const FlowSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'User'
             }],
-            section: {
-                type: String,
-                default: ''
+            _section: {
+                type: Schema.Types.ObjectId,
+                ref: 'Column'
             },
             status: {
                 type: String,

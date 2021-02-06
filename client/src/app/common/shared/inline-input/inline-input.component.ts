@@ -245,9 +245,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
 
       if (this.domainObject.task && this.domainObject.task._column) {
         // Task column
-        postToUpdate._column = {
-          title: this.domainObject.task._column.title
-        }
+        postToUpdate._column = this.domainObject.task._column._id || this.domainObject.task._column;
       }
 
       // Task status

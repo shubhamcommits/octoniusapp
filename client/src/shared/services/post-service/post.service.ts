@@ -268,14 +268,14 @@ export class PostService {
   /**
    * This function is responsible for changing the column of a task
    * @param postId
-   * @param title
+   * @param columnId
    * @param userId
    */
-  changeTaskColumn(postId: string, title: string, userId: string, groupId: string) {
+  changeTaskColumn(postId: string, columnId: string, userId: string, groupId: string) {
 
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/task-column`, {
-      title: title,
+      columnId: columnId,
       userId: userId,
       groupId: groupId
     }).
@@ -412,11 +412,11 @@ export class PostService {
     }).toPromise();
   }
 
-  transferToGroup(postId: string, groupId: string, columnTitle: string, oldGroupId: string, userId: string, isCopy: boolean) {
+  transferToGroup(postId: string, groupId: string, columnId: string, oldGroupId: string, userId: string, isCopy: boolean) {
     if (isCopy) {
-      return this._http.post(this.baseURL + '/copy-to-group', { postId: postId, groupId: groupId, columnTitle: columnTitle, oldGroupId: oldGroupId, userId: userId }).toPromise();
+      return this._http.post(this.baseURL + '/copy-to-group', { postId: postId, groupId: groupId, columnId: columnId, oldGroupId: oldGroupId, userId: userId }).toPromise();
     }
-    return this._http.put(this.baseURL + `/${postId}/move-to-group`, { groupId: groupId, columnTitle: columnTitle || '', oldGroupId: oldGroupId, userId: userId }).toPromise();
+    return this._http.put(this.baseURL + `/${postId}/move-to-group`, { groupId: groupId, columnId: columnId || '', oldGroupId: oldGroupId, userId: userId }).toPromise();
   }
 
   removeAttachedFile(fileName: string) {

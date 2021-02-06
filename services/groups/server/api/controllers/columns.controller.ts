@@ -3,8 +3,8 @@ import { Column, Flow, Post } from '../models';
 import { sendError } from '../../utils';
 
 export class ColumnsController {
+    /*
     // initialize the basic columns
-
     async initColumns(req: Request, res: Response, next: NextFunction) {
         try {
 
@@ -15,7 +15,7 @@ export class ColumnsController {
                 groupId: groupId
             });
             await Column.findOne({
-                groupId: groupId
+                _group: groupId
             }, (err, col) => {
                 if (err) {
                     return res.status(200).json({ "err": "Error in recieving columns" });
@@ -35,6 +35,7 @@ export class ColumnsController {
             return sendError(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
+    */
 
     // get all existing columns
     async getAllColumns(req: Request, res: Response, next: NextFunction) {
@@ -43,39 +44,14 @@ export class ColumnsController {
             // Fetch GroupId from the query
             const { groupId } = req.query;
 
-            await Column.findOne({
-                groupId: groupId
-            }, (err, col) => {
-                if (err) {
-                    return res.status(200).json({ "err": "Error in recieving columns" });
-                } else {
-                    return res.status(200).json(col);
-                }
-            });
-        } catch (err) {
-            return sendError(res, new Error(err), 'Internal Server Error!', 500);
-        }
-    }
+            const columns = await Column.find({
+                _group: groupId
+            }).lean() || [];
 
-    // get one column
-
-    async getOneColumn(req: Request, res: Response, next: NextFunction) {
-        try {
-            const id = req.params.groupId;
-            const columnName = req.params.columnName;
-            await Column.findOne({
-                groupId: id,
-                columns: {
-                    "$elemMatch": {
-                        title: columnName
-                    }
-                }
-            }, (err, col) => {
-                if (err) {
-                    return res.status(200).json({ "err": "Error in recieving columns" });
-                } else {
-                    return res.status(200).json(col);
-                }
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Column obtained Successfully!',
+                columns: columns
             });
         } catch (err) {
             return sendError(res, new Error(err), 'Internal Server Error!', 500);
@@ -86,236 +62,90 @@ export class ColumnsController {
 
     async addColumn(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.body.groupId;
+            const groupId = req.body.groupId;
             const columnName = req.body.columnName;
-            const update = {
-                $addToSet: {
-                    columns: {
-                        title: columnName,
-                        taskCount: 0,
-                        custom_fields_to_show: ['priority']
-                    }
-                }
-            };
-            await Column.updateOne({
-                groupId: id
-            }, update, (err, col) => {
-                if (err) {
-                    return res.status(200).json({ "err": "Error in updating columns" });
-                } else {
-                    return res.status(200).json(col);
-                }
+
+            // Preparing the group data
+            const columnData = {
+                _group: groupId,
+                title: columnName,
+                custom_fields_to_show: ['priority']
+            }
+
+            // Checking if group already exists
+            const columnExist = await Column.findOne({
+                $and: [
+                    { _group: columnData._group },
+                    { title: columnData.title }
+                ]
+            });
+
+            // If Group Exists in the workspace, then send error response
+            if (columnExist) {
+                return res.status(409).json({
+                    message: 'Oops column name already exist, please try a different one!'
+                })
+            }
+
+            // If group doesn't exists, then create a new document
+            let column = await Column.create(columnData);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Column Created Successfully!',
+                column: column
             });
         } catch (err) {
             return sendError(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
 
-    // edit column name 
-
+    // edit column name
     async editColumnName(req: Request, res: Response, next: NextFunction) {
         try {
-            const groupId = req.body.groupId;
-            const oldColumnName = req.body.oldColumnName;
+            const columnId = req.body.columnId;
             const newColumnName = req.body.newColumnName;
 
-            if (!groupId || !oldColumnName || !newColumnName) {
+            if (!columnId || !newColumnName) {
                 return sendError(res, new Error('Please provide the group, old name and new name as parameters'), 'Please provide the group, old name and new name as paramaters!', 400);
             }
 
-            const update = {
-                "$set": {
-                    "columns.$.title": newColumnName
-                }
-            };
-            await Column.findOne({
-                groupId: groupId,
-                columns: {
-                    "$elemMatch": {
-                        title: newColumnName
-                    }
-                }
-            }, (err, col) => {
-                if (err) {
-                    return res.status(200).json({ "err": "Error in updating columns" });
-                } else if (!col) {
-                    Column.updateOne({
-                        groupId: groupId,
-                        columns: {
-                            "$elemMatch": {
-                                title: oldColumnName
-                            }
-                        }
-                    }, update, (err, col) => {
-                        if (err) {
-                            return res.status(200).json({ "err": "Error in updating columns" });
-                        } else {
-                            var tasks = Post.updateMany({
-                                $and: [
-                                  { _group: groupId },
-                                  { "task._column.title": oldColumnName }
-                                ]
-                              }, {
-                                "$set" : { "task._column.title": newColumnName }
-                            }, {
-                                new: true
-                            }, function(err, result){
-                                if (err)console.log(err);
-                                else console.log(result);
-                            });
-
-                            var triggers = Flow.updateMany({
-                                $and: [
-                                        { _group: groupId }
-                                    ]
-                                }, {
-                                    "$set" : { "steps.$[trigger].section": newColumnName }
-                                }, {
-                                    arrayFilters: [{ "trigger.section": oldColumnName }]
-                                }, function(err, result){
-                                    if (err)console.log(err);
-                                    else console.log(result);
-                                });
-
-                            var actions = Flow.updateMany({
-                                $and: [
-                                        { _group: groupId }
-                                    ]
-                                }, {
-                                    "$set" : { "steps.$[action].section": newColumnName }
-                                }, {
-                                    arrayFilters: [{ "action.section": oldColumnName }]
-                                }, function(err, result){
-                                    if (err)console.log(err);
-                                    else console.log(result);
-                                });
-
-                            return res.status(200).json(col);
-                        }
-                    });
-                } else if (col) {
-                    return res.status(200).json({ "err": "Column already exists" });
-                }
+            const columnToUpdate = await Column.findOne({
+                _id: columnId,
+                title: newColumnName
             });
 
-        } catch (err) {
-            return sendError(res, new Error(err), 'Internal Server Error!', 500);
-        }
-    }
+            if (columnToUpdate) {
+                return sendError(res, new Error('There is already a column with the provided name in this group.'), 'There is already a column with the provided name in this group.', 400);
+            }
 
-
-    // edit number of tasks
-
-    async editColumnTaskNumber(req: Request, res: Response, next: NextFunction) {
-        try {
-            const id = req.body.groupId;
-            const columnName = req.body.columnName;
-            const numberOfTasks = req.body.numberOfTasks;
-            const update = {
-                "$set": {
-                    "columns.$.taskCount": numberOfTasks
-                }
-            };
-            await Column.updateOne({
-                groupId: id,
-                columns: {
-                    "$elemMatch": {
-                        title: columnName
-                    }
-                }
-            }, update, (err, col) => {
-                if (err) {
-                    return res.status(200).json({ "err": "Error in updating columns" });
-                } else {
-                    return res.status(200).json(col);
-                }
+            const column = await Column.findOneAndUpdate({
+                _id: columnId
+            },{
+                title: newColumnName
             });
-        } catch (err) {
-            return sendError(res, new Error(err), 'Internal Server Error!', 500);
-        }
-    }
 
-    // add task to column
-
-    async columnTaskInc(req: Request, res: Response, next: NextFunction) {
-        try {
-            const id = req.body.groupId;
-            const columnName = req.body.columnName;
-            const update = {
-                "$inc": {
-                    "columns.$.taskCount": 0.5
-                }
-            };
-            await Column.updateOne({
-                groupId: id,
-                columns: {
-                    "$elemMatch": {
-                        title: columnName
-                    }
-                }
-            }, update, (err, col) => {
-                if (err) {
-                    return res.status(200).json({ "err": err });
-                } else {
-                    return res.status(200).json(col);
-                }
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Column Updated Successfully!',
+                column: column
             });
-        } catch (err) {
-            return sendError(res, new Error(err), 'Internal Server Error!', 500);
-        }
-    }
 
-    // remove task from column
-
-    async columnTaskDec(req: Request, res: Response, next: NextFunction) {
-        try {
-            const id = req.body.groupId;
-            const columnName = req.body.columnName;
-            const update = {
-                "$inc": {
-                    "columns.$.taskCount": -0.5
-                }
-            };
-            await Column.update({
-                groupId: id,
-                columns: {
-                    "$elemMatch": {
-                        title: columnName
-                    }
-                }
-            }, update, (err, col) => {
-                if (err) {
-                    return res.status(200).json({ "err": err });
-                } else {
-                    return res.status(200).json(col);
-                }
-            });
         } catch (err) {
             return sendError(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
 
     // delete column 
-
     async deleteColumn(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.body.groupId;
-            const columnName = req.body.columnName;
-            const update = {
-                $pull: {
-                    columns: {
-                        title: columnName
-                    }
-                }
-            };
-            await Column.update({
-                groupId: id
-            }, update, (err, col) => {
-                if (err) {
-                    return res.status(200).json({ "err": "Error in updating columns" });
-                } else {
-                    return res.status(200).json(col);
-                }
+            const id = req.body.columnId;
+            
+            await Column.findOneAndDelete({_id: id});
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Column Deleted Successfully!'
             });
         } catch (err) {
             return sendError(res, new Error(err), 'Internal Server Error!', 500);
@@ -335,15 +165,10 @@ export class ColumnsController {
         try {
             // Find the group and update their respective group avatar
             const group = await Column.updateOne({
-                groupId: column.groupId,
-                columns: {
-                    "$elemMatch": {
-                        title: column.columnName
-                    }
-                }
+                _id: column.columnId
             }, {
                 "$set": {
-                    "columns.$.custom_fields_to_show": column.customFieldsToShow
+                    "custom_fields_to_show": column.customFieldsToShow
                 }
             }, {
                 new: true

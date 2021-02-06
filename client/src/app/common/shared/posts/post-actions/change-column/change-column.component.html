@@ -1,11 +1,11 @@
 <!-- TASK CHANGE COLUMN STARTS -->
     <button class="btn btn-sm btn-outline-secondary text-uppercase dropdown-toggle" type="button" data-toggle="dropdown">
-        {{ post?.task?._column?.title }}</button>
+        {{ selectedColumn?.title }}</button>
 
     <!-- Menu Drawer Starts -->
     <ul class="dropdown-menu">
         <li *ngFor="let column of columns" class="dropdown-item column-title" class="dropdown-item"
-        (click)="sendMoveTaskMessage(post, post?.task?._column?.title, column?.title)">
+        (click)="sendMoveTaskMessage(post, post?.task?._column, column)">
             <span class="text-uppercase">{{column?.title}}</span>
         </li>
     </ul>

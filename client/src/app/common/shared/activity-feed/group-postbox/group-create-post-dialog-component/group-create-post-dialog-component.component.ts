@@ -407,7 +407,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
           this.selectedCFValues[customFieldName] = customFieldValue;
           this.postData.task.custom_fields[customFieldName] = customFieldValue;
 
-          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, {name: customFieldName, value: customFieldValue}, this.groupData._id, this.postData, this.userData._id);
+          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData);
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise(`${customFieldName} updated!`));
@@ -468,9 +468,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
       if (!this.postData.task._parent_task) {
         // Task column
-        post._column = {
-          title: this.postData.task._column.title
-        };
+        post._column = this.postData.task._column._id || this.postData.task._column;
       }
 
       // Task status
@@ -498,14 +496,15 @@ export class GroupCreatePostDialogComponent implements OnInit {
     // Set the status
     this.postData.task.status = event;
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, event, this.groupData._id, this.postData, this.userData._id);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData);
   }
 
   async moveTaskToColumn(event) {
-    await this.publicFunctions.changeTaskColumn(this.postData._id, event.post.task._column.title, this.userData._id, this.groupId);
-    this.postData.task._column.title = event.post.task._column.title;
+    const columnId = event.post.task._column._id || event.post.task._column;
+    await this.publicFunctions.changeTaskColumn(this.postData._id, columnId, this.userData._id, this.groupId);
+    this.postData.task._column = event.post.task._column;
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, event.post.task._column.title, this.groupData._id, this.postData, this.userData._id);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData);
   }
 
   async onAssigned(res) {
@@ -513,7 +512,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.setAssignedBy(this.postData);
 
     if (this.postData.type === 'task') {
-      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, res['assigneeId'], this.groupData._id, this.postData, this.userData._id);
+      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData);
     }
   }
 
@@ -626,9 +625,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one
      */
     this.columns = await this.publicFunctions.getAllColumns(this.groupId);
+    /*
     if (this.columns == null) {
       this.columns = await this.initialiseColumns(this.groupId);
     }
+    */
 
     await this.initPostData();
   }
@@ -637,6 +638,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * This function initialises the default column - todo
    * @param groupId
    */
+  /*
   async initialiseColumns(groupId: string) {
 
     // Column Service Instance
@@ -654,6 +656,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
         });
     });
   }
+  */
 
   async onParentTaskSelected(post) {
     // Set loading state to be true

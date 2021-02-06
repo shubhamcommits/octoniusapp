@@ -105,9 +105,7 @@ export class NewTaskComponent implements OnInit {
             _assigned_to: this.userData._id,
             status: 'to do',
             custom_fields: [],
-            _column: {
-              title: this.column.title
-            }
+            _column: this.column._id
           }
         }
       }
@@ -123,9 +121,7 @@ export class NewTaskComponent implements OnInit {
             _assigned_to: null,
             status: 'to do',
             custom_fields: [],
-            _column: {
-              title: this.column.title
-            }
+            _column: this.column._id
           }
         }
       }
@@ -162,7 +158,7 @@ export class NewTaskComponent implements OnInit {
           let postData = res['post'];
 
           if (postData.type === 'task') {
-            postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, status, this.groupData._id, postData, this.userData._id, true);
+            postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, postData, true);
           }
 
           // Emit the Post to the other compoentns
