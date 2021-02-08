@@ -164,7 +164,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // IF WE FIND THAT THE GET REQUEST HAS FAILED, THEN WE USE LOCAL DATA TO INTIALISE THE workspaceData
     if (JSON.stringify(this.workspaceData) === JSON.stringify({}))
-      this.userData = this.publicFunctions.getWorkspaceDetailsFromStorage();
+      this.workspaceData = this.publicFunctions.getWorkspaceDetailsFromStorage();
 
     // SENDING THE UPDATE THROUGH SERVICE TO UPDATE THE USER & WORKSPACE DETAILS AT ALL COMPONENTS
     if (this.userData && this.workspaceData) {
@@ -180,14 +180,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     setInterval(async () => {
       await this.publicFunctions.handleGoogleSignIn()
     }, 1800000);
-
-    if ((this.userData?.role == 'admin' || this.userData?.role == 'owner')
-        && (this.workspaceData?.time_remaining <= 0
-          || (this.workspaceData?.time_remaining > 0
-            && moment(this.workspaceData?.billing?.current_period_end).isBefore(moment())))
-        && !this.workspaceData?.billing?.subscription_id) {
-      this.utilityService.openTryOutNotification(this.workspaceData?.time_remaining);
-    }
 
     console.log('User Data', this.userData);
     console.log('Workspace Data', this.workspaceData);
