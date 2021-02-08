@@ -57,7 +57,16 @@ export class UserInformationComponent implements OnInit {
     return this.utilityService.getSwalModal({
       title: title,
       html:
-        `<input id="phone-number" type="text" placeholder="Your Phone Number" 
+      `<input id="user-first-name" type="text" placeholder="Your First Name" 
+      value="${this.userData.first_name || ''}" class="swal2-input">`+
+
+      `<input id="user-last-name" type="text" placeholder="Your Last Name" 
+      value="${this.userData.last_name || ''}" class="swal2-input">`+
+      
+      `<input id="user-email" type="text" placeholder="Your Email" 
+      value="${this.userData.email || ''}" class="swal2-input">`+
+
+      `<input id="phone-number" type="text" placeholder="Your Phone Number" 
       value="${this.userData.phone_number || ''}" class="swal2-input">` +
 
         `<input id="mobile-number" type="text" placeholder="Your Mobile Number" 
@@ -65,7 +74,7 @@ export class UserInformationComponent implements OnInit {
 
         `<input id="company-name" type="text" placeholder="Your Company Name" 
       value="${this.userData.company_name || ''}" class="swal2-input">`,
-
+      
       focusConfirm: false,
       preConfirm: () => {
 
@@ -74,6 +83,10 @@ export class UserInformationComponent implements OnInit {
           phone_number: document.getElementById('phone-number')['value'],
           mobile_number: document.getElementById('mobile-number')['value'],
           company_name: document.getElementById('company-name')['value'],
+          email:document.getElementById('user-email')['value'],
+          first_name:document.getElementById('user-first-name')['value'],
+          last_name:document.getElementById('user-last-name')['value'],
+          full_name:document.getElementById('user-first-name')['value']+" "+document.getElementById('user-last-name')['value'],
         }
       },
       confirmButtonText: 'Update Information!',
