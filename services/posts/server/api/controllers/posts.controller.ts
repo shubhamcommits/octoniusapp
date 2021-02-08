@@ -1441,7 +1441,6 @@ export class PostController {
                       }
                     break;
                 case 'Move to':
-console.log(action._section._id || action._section);
                     if (isChildStatusTrigger && post.task._parent_task) {
                       post = await this.changeTaskSection(post.task._parent_task._id || post.task._parent_task, (action._section._id || action._section), userId, groupId);
                     } else {

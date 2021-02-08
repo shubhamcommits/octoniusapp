@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-change-column',
   templateUrl: './change-column.component.html',
   styleUrls: ['./change-column.component.scss']
 })
-export class ChangeColumnComponent implements OnInit {
+export class ChangeColumnComponent implements OnChanges {
 
   constructor() { }
 
@@ -20,8 +20,8 @@ export class ChangeColumnComponent implements OnInit {
 
   selectedColumn: any;
 
-  ngOnInit() {
-    const columnInex = this.columns.findIndex(column => column._id == this.post?.task?._column);
+  ngOnChanges() {
+    const columnInex = this.columns.findIndex(column => column._id == (this.post?.task?._column._id || this.post?.task?._column));
     this.selectedColumn = this.columns[columnInex];
   }
 
