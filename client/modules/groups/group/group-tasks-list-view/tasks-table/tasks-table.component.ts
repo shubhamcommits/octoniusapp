@@ -101,6 +101,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
   async initTable() {
     await this.loadCustomFieldsToShow();
+
     let taskslist = [];
     this.tasks.forEach(val => taskslist.push(Object.assign({}, val)));
     let unchangedTasks: any = { tasksList: taskslist };
@@ -423,7 +424,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
           this.tasks[indexTask] = post;
         } else {
           this.tasks.splice(indexTask, 1);
-          this.taskChangeSectionEmitter.emit({ post: post, oldSection: this.section._id });
+          this.taskChangeSectionEmitter.emit({ post: post, oldSectionId: this.section._id });
         }
       }
 

@@ -67,6 +67,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   }
 
   async onChangeViewEmitter(view: string) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
 
     this.userData.stats.lastTaskView = view;
     // User service
@@ -77,6 +79,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     await this.publicFunctions.sendUpdatesToUserData(this.userData);
 
     this.viewType = view;
+
+    await this.initView();
+
+    // Return the function via stopping the loader
+    return this.isLoading$.next(false);
   }
 
   async onSortTaskEmitter(bit:string){
