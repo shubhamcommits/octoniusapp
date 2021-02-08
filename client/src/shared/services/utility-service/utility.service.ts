@@ -6,6 +6,7 @@ import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
 import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
+import { UserUpdateProfileDialogComponent } from 'src/app/common/shared/user-update-profile-dialog/user-update-profile-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -474,6 +475,25 @@ export class UtilityService {
     this.dialog.open(MemberDialogComponent, {
       width: '50%',
       //height: '75%',
+      hasBackdrop: true,
+      data: data
+    });
+  }
+
+  /**
+   * This function is responsible for opening a fullscreen dialog to see the member profile
+   */
+  openUpdateUserProfileModal(userData: any): void {
+    const data =
+      {
+        userData: userData,
+        // userData: userData,
+        // groupId: groupId
+      };
+
+    this.dialog.open(UserUpdateProfileDialogComponent, {
+      width: '25%',
+      height: '60%',
       hasBackdrop: true,
       data: data
     });

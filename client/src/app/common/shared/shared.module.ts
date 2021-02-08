@@ -99,6 +99,7 @@ import { MemberDialogComponent } from './member-dialog/member-dialog.component';
 
 import { CalendarModule as Calendar, CalendarUtils, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { UserUpdateProfileDialogComponent } from './user-update-profile-dialog/user-update-profile-dialog.component';
 
 @NgModule({
   declarations: [
@@ -204,7 +205,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     AssigneeAvatarComponent,
     CommentListComponent,
     MemberListMenuComponent,
-    MemberDialogComponent
+    MemberDialogComponent,
+    UserUpdateProfileDialogComponent
   ],
   imports: [
     CommonModule,
@@ -328,7 +330,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     AssigneeAvatarComponent,
     CommentListComponent,
     MemberListMenuComponent,
-    MemberDialogComponent
+    MemberDialogComponent,
+    UserUpdateProfileDialogComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
@@ -341,7 +344,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
   entryComponents: [
     PreviewFilesDialogComponent,
     GroupCreatePostDialogComponent,
-    MemberDialogComponent
+    MemberDialogComponent,
+    UserUpdateProfileDialogComponent
   ]
 })
 export class SharedModule { }
