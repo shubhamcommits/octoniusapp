@@ -1,12 +1,15 @@
 import { Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
-import { sendError } from '../../utils';
+import { sendError,PasswordHelper } from '../../utils';
 import moment from 'moment';
 
 /*  ===================
  *  -- USER METHODS --
  *  ===================
  * */
+// Password Helper Class
+const passwordHelper = new PasswordHelper();
+
 export class UsersControllers {
 
     /**
@@ -110,6 +113,23 @@ export class UsersControllers {
 
         // Request Body Data
         const { body } = req;
+
+        if(body.password){
+            // Encrypting user password
+            const passEncrypted: any = await passwordHelper.encryptPassword(body.password);
+
+            // If we are unable to encrypt the password and store into the server
+            if (!passEncrypted.password) {
+                return sendError(res, new Error('Unable to encrypt the password to the server'), 'Unable to encrypt the password to the server, please try with a different password!', 401);
+            }
+
+            // Updating the password value with the encrypted password
+            body.password = passEncrypted.password;
+            console.log("Body password",body);
+        }
+
+        
+        
 
         // Current loggedIn userId
         const userId = req['userId'];

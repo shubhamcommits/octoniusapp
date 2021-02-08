@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Injector,Output, EventEmitter} from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { UserService } from "src/shared/services/user-service/user.service";
@@ -29,6 +29,9 @@ export class UserInformationComponent implements OnInit {
   // Is current user variable
   @Input('currentUser') currentUser: boolean = false;
 
+  // Emitter to notify that the sorting type is changing
+  @Output() updateData: EventEmitter<Object> = new EventEmitter<Object>();
+
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -38,12 +41,13 @@ export class UserInformationComponent implements OnInit {
   }
 
   mycallback = (data?: any) => {
-    document.getElementById("userData_company_name").innerText = " " + data?.company_name;
-    document.getElementById("userData_mobile_number").innerText = " " + data?.mobile_number;
-    document.getElementById("userData_phone_number").innerText = " " + data?.phone_number;
     this.userData.company_name = data?.company_name;
     this.userData.mobile_number = data?.mobile_number;
     this.userData.phone_number = data?.phone_number;
+    this.userData.first_name = data?.first_name;
+    this.userData.last_name = data?.last_name;
+    this.userData.email = data?.email;
+    this.updateData.emit(this.userData);
   }
 
   /**

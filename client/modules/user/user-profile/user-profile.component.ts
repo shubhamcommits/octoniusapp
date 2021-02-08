@@ -45,4 +45,8 @@ export class UserProfileComponent implements OnInit {
       this.isCurrentUser = true;
     }
   }
+  onUpdateUserEmitter(updatedUserData){
+    this.userData = updatedUserData;
+  }
+
 }

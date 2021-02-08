@@ -2,6 +2,7 @@ import { Auths } from './auth';
 import { sendErr } from './sendError';
 import { hasProperty } from './helperFunctions';
 import { userFileHandler } from "./filehandler";
+import {Password} from './password';
 
 export {
 
@@ -15,5 +16,7 @@ export {
     hasProperty as hasProperty,
 
     // USER FILEHANDLER
-    userFileHandler as userFileHandler
+    userFileHandler as userFileHandler,
+
+    Password as PasswordHelper,
 }
