@@ -50,6 +50,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
 
   @Output() taskClonnedEvent = new EventEmitter();
+  @Output() newSectionEvent = new EventEmitter();
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -388,13 +389,15 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     else {
 
       // Create the Column asynchronously
-      this.createNewColumn(this.groupId, column.title)
+      this.createNewColumn(this.groupId, column.title);
 
       // Assign the tasks to be []
-      column.tasks = []
+      column.tasks = [];
 
       // Push the Column
-      this.columns.push(column)
+      this.columns.push(column);
+
+      this.newSectionEvent.emit(column);
     }
 
   }

@@ -235,7 +235,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
         break;
 
       case 'section':
-        this.flowSteps[stepIndex].trigger[triggerIndex]._section = value;
+        this.flowSteps[stepIndex].trigger[triggerIndex]._section = (value['_id'] || value);
         break;
 
       default:
@@ -263,7 +263,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
         break;
 
       case 'section':
-        this.flowSteps[stepIndex].action[actionIndex]._section = value;
+        this.flowSteps[stepIndex].action[actionIndex]._section = (value['_id'] || value);
         break;
 
       default:

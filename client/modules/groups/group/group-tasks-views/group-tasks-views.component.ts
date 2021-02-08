@@ -238,4 +238,10 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
   }
+
+  newSectionAdded(data) {
+
+    // Push the Column
+    this.columns.push(data);
+  }
 }

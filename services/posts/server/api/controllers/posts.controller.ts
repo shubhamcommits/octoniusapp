@@ -1371,7 +1371,9 @@ export class PostController {
                             retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
                             break;
                         case 'Section is':
-                            retValue = (trigger._section._id || trigger._section) == (post.task._column._id || post.task._column);
+                            const triggerSection = (trigger._section._id || trigger._section);
+                            const postSection = (post.task._column._id || post.task._column);
+                            retValue = triggerSection.toString() == postSection.toString();
                             break;
                         case 'Status is':
                             retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();

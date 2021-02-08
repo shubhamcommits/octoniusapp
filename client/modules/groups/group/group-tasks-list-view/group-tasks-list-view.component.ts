@@ -29,6 +29,7 @@ export class GroupTasksListViewComponent implements OnChanges {
   @Input() isAdmin = false;
 
   @Output() taskClonnedEvent = new EventEmitter();
+  @Output() newSectionEvent = new EventEmitter();
 
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
 
@@ -142,6 +143,8 @@ export class GroupTasksListViewComponent implements OnChanges {
 
       // Push the Column
       this.sections.push(section)
+
+      this.newSectionEvent.emit(section);
     }
 
   }
