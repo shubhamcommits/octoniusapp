@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, OnInit, Input, Output,ChangeDetectionStrategy, Injector,EventEmitter } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
@@ -22,6 +22,7 @@ export class UserProfessionalInformationComponent implements OnInit {
   // Is current user variable
   @Input('currentUser') currentUser: boolean = false;
 
+  @Output() updateData: EventEmitter<Object> = new EventEmitter<Object>();
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -30,12 +31,11 @@ export class UserProfessionalInformationComponent implements OnInit {
   }
 
   mycallback = (data?: any) => {
-    document.getElementById("userData_current_position").innerText = " " + data?.current_position;
-    document.getElementById("userData_company_join_date").innerText = " " + moment(data?.company_join_date).format('MMMM DD, YYYY');;
-    document.getElementById("userData_bio").innerText = " " + data?.bio;
     this.userData.current_position = data?.current_position;
     this.userData.company_join_date = data?.company_join_date;
     this.userData.bio = data?.bio;
+    this.updateData.emit(this.userData);
+
   }
 
   /**
