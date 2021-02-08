@@ -71,9 +71,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 import { ChartsModule, ThemeService } from 'ng2-charts';
-import { SchedulerComponent } from './scheduler/scheduler.component';
-import { TaskComponent } from './scheduler/task/task.component';
-import { TaskHelperComponent } from './scheduler/task-helper/task-helper.component';
 
 import { ResizableModule } from 'angular-resizable-element';
 import { ProjectStatusComponent } from './activity-feed/project-status/project-status.component';
@@ -181,9 +178,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     NorthStarStatsComponent,
 
     GroupCreatePostDialogComponent,
-    SchedulerComponent,
-    TaskComponent,
-    TaskHelperComponent,
 
     WorkStatisticsCardComponent,
     WorkloadCardComponent,
@@ -312,9 +306,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     GroupCreatePostDialogComponent,
     TruncateTextPipe,
     ChartsModule,
-    SchedulerComponent,
-    TaskComponent,
-    TaskHelperComponent,
 
     WorkStatisticsCardComponent,
     WorkloadCardComponent,

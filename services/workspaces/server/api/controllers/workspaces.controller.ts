@@ -497,55 +497,6 @@ export class WorkspaceController {
         }
     }
 
-    /**
-     * This function retreives all the workspaces in the DB
-     * @param req
-     * @param res
-     * @param next
-     */
-    async getWorkspacesList(req: Request, res: Response, next: NextFunction) {
-        try {
-            // Find the workspaces on the DB
-            const workspaces = await Workspace.find();
-
-            // Send the status 200 response 
-            return res.status(200).json({
-                message: 'This Workspace name is available!',
-                workspaces: workspaces
-            });
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    }
-
-    async getNumberGroupsByWorkspace(req: Request, res: Response, next: NextFunction) {
-        try {
-
-            const { workspaceId } = req.params;
-
-            if (!workspaceId) {
-                return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
-            }
-
-            // Find the workspaces on the DB
-            let num_groups = await Group.find({
-                _workspace: workspaceId
-            }).countDocuments();
-
-            // Error creating global group
-            if (!num_groups) {
-                num_groups = 0;
-            }
-
-            // Send the status 200 response 
-            return res.status(200).json({
-                num_groups: num_groups
-            });
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    }
-
     async remove(req: Request, res: Response, next: NextFunction) {
 
         try {
