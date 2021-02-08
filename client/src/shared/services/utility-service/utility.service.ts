@@ -213,7 +213,7 @@ export class UtilityService {
     return Toast.fire({
       icon: 'warning',
       title: 'Subscription pending',
-      text: timeRemaining + 'days trial left.'
+      text: timeRemaining + ' days trial left.'
     })
   }
 
