@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import moment from 'moment/moment';
 
 @Component({
   selector: 'app-user-availability-day-dialog',
@@ -39,7 +40,7 @@ export class UserAvailabilityDayDialogComponent implements OnInit {
     await this.utilityService.asyncNotification('Please wait we are saving your days...', new Promise((resolve, reject) => {
       const days = this.selectedDays.map(day => {
         return {
-          date: day.date,
+          date: day.date ? moment(day.date).format("YYYY-MM-DD"):null,
           type: (this.selectedReason == 'personal day') ? 'personal' : this.selectedReason,
           approved: true // TODO - this needs to be dynamic and aproved by manager
         }
