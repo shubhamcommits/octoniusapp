@@ -99,6 +99,9 @@ import { MemberDialogComponent } from './member-dialog/member-dialog.component';
 
 import { CalendarModule as Calendar, CalendarUtils, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { UserUpdateProfileDialogComponent } from './user-update-profile-dialog/user-update-profile-dialog.component';
+import { UserUpdateUserInformationDialogComponent } from './user-update-user-information-dialog/user-update-user-information-dialog.component';
+import { UserUpdateUserPersonalInformationDialogComponent } from './user-update-user-personal-information-dialog/user-update-user-personal-information-dialog.component';
 
 @NgModule({
   declarations: [
@@ -204,7 +207,10 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     AssigneeAvatarComponent,
     CommentListComponent,
     MemberListMenuComponent,
-    MemberDialogComponent
+    MemberDialogComponent,
+    UserUpdateProfileDialogComponent,
+    UserUpdateUserInformationDialogComponent,
+    UserUpdateUserPersonalInformationDialogComponent
   ],
   imports: [
     CommonModule,
@@ -328,7 +334,10 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     AssigneeAvatarComponent,
     CommentListComponent,
     MemberListMenuComponent,
-    MemberDialogComponent
+    MemberDialogComponent,
+    UserUpdateUserInformationDialogComponent,
+    UserUpdateProfileDialogComponent,
+    UserUpdateUserPersonalInformationDialogComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
@@ -341,7 +350,10 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
   entryComponents: [
     PreviewFilesDialogComponent,
     GroupCreatePostDialogComponent,
-    MemberDialogComponent
+    MemberDialogComponent,
+    UserUpdateProfileDialogComponent,
+    UserUpdateUserInformationDialogComponent,
+    UserUpdateUserPersonalInformationDialogComponent
   ]
 })
 export class SharedModule { }

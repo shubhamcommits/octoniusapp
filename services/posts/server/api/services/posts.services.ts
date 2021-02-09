@@ -958,9 +958,9 @@ export class PostService {
    * @param date_due_to
    */
   async changeTaskDueDate(postId: string, date_due_to: string) {
-
     try {
       // Get post data
+      
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
@@ -989,10 +989,9 @@ export class PostService {
   async changeTaskDate(postId: string, date_field: string, newDate: Date) {
     
     try {
-
       let field = {};
       if (date_field === 'start_date') {
-        field = { "task.start_date": moment(newDate).hours(12).format('YYYY-MM-DD') }
+        field = { "task.start_date":newDate? moment(newDate).hours(12).format('YYYY-MM-DD'):null }
       }
 
       // Get post data

@@ -21,6 +21,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { UserWorkloadCalendarComponent } from './user-workload/user-workload-calendar/user-workload-calendar.component';
 import { UserAvailabilityDayDialogComponent } from './user-workload/user-availability-day-dialog/user-availability-day-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
+import { UserPasswordUpdateComponent } from './user-profile/user-password-update/user-password-update.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MatSelectModule } from '@angular/material/select';
     UserConnectedCloudsComponent,
     UserWorkloadComponent,
     UserWorkloadCalendarComponent,
-    UserAvailabilityDayDialogComponent
+    UserAvailabilityDayDialogComponent,
+    UserPasswordUpdateComponent
   ],
   imports: [
     CommonModule,

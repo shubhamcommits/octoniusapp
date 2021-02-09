@@ -2,13 +2,15 @@
     <div class="row main-actvity" *ngIf="userData">
 
         <div class="col-md-4">
-            <app-user-information [userData]="userData" [currentUser]="isCurrentUser" ></app-user-information>
+            <app-user-information [userData]="userData" [currentUser]="isCurrentUser"  (updateData)="onUpdateUserEmitter($event)"></app-user-information>
         </div>
 
         <div class="col-md-8">
-            <app-user-professional-information [userData]="userData" [currentUser]="isCurrentUser"></app-user-professional-information>
+            <app-user-professional-information [userData]="userData" [currentUser]="isCurrentUser" (updateData)="onUpdateUserEmitter($event)"></app-user-professional-information>
 
             <app-user-skills [userData]="userData" [currentUser]="isCurrentUser"></app-user-skills>
+
+            <app-user-password-update [userData]="userData" [currentUser]="isCurrentUser"></app-user-password-update>
         </div>
     </div>
 </div>

@@ -3,11 +3,13 @@
         <div class="card-block">
             <h6 class="card-title"><b>User Information</b>
                 <button *ngIf="currentUser" type="button" name="button" class="btn btn-link"
-                    (click)="this.publicFunctions.editUserDetails(this.openModal('Update your Information!', 'assets/images/user-info.svg'),this.mycallback)">
+                    (click)="openUpdateModel()">
                     <i class="material-icons">create</i>
                 </button>
             </h6>
             <hr />
+            <p class="card-text"><strong>Name:</strong>
+                {{ userData?.first_name+' '+userData?.last_name}} </p>
             <p class="card-text"><strong>Email:</strong>
                 {{ userData?.email}} </p>
             <p class="card-text"><strong>Phone:</strong>

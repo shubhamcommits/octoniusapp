@@ -1,12 +1,15 @@
 import { Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
-import { sendError } from '../../utils';
+import { sendError,PasswordHelper } from '../../utils';
 import moment from 'moment';
 
 /*  ===================
  *  -- USER METHODS --
  *  ===================
  * */
+// Password Helper Class
+const passwordHelper = new PasswordHelper();
+
 export class UsersControllers {
 
     /**
@@ -110,6 +113,23 @@ export class UsersControllers {
 
         // Request Body Data
         const { body } = req;
+
+        if(body.password){
+            // Encrypting user password
+            const passEncrypted: any = await passwordHelper.encryptPassword(body.password);
+
+            // If we are unable to encrypt the password and store into the server
+            if (!passEncrypted.password) {
+                return sendError(res, new Error('Unable to encrypt the password to the server'), 'Unable to encrypt the password to the server, please try with a different password!', 401);
+            }
+
+            // Updating the password value with the encrypted password
+            body.password = passEncrypted.password;
+            console.log("Body password",body);
+        }
+
+        
+        
 
         // Current loggedIn userId
         const userId = req['userId'];
@@ -521,62 +541,6 @@ export class UsersControllers {
             user: user
         });
 
-    } catch (err) {
-        return sendError(res, err, 'Internal Server Error!', 500);
-    }
-  }
-
-  /**
-   * This function is responsible for fetching the current loggedIn user details
-   * @param { userId }req 
-   * @param res 
-   * @param next 
-   */
-  async getAllUsers(req: Request, res: Response, next: NextFunction) {
-
-      try {
-          // Find the user based on the userId
-          const users = await User.find()
-              .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats portal_manager');
-
-          // Send status 200 response
-          return res.status(200).json({
-              message: 'User found!',
-              users: users
-          });
-      } catch (err) {
-          return sendError(res, err, 'Internal Server Error!', 500);
-      }
-  }
-
-  async makeUserPortalManager(req: Request, res: Response, next: NextFunction) {
-
-    const { makePortalManager } = req.body;
-    const { userId } = req.params;
-
-    try {
-
-        // Find the user and update it on the basis of the userId
-        const user: any = await User.findByIdAndUpdate({
-            _id: userId
-        }, {
-            $set: {
-                portal_manager: makePortalManager
-            }
-        }, {
-            new: true
-        }).select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats portal_manager');
-
-        // If user not found
-        if (!user) {
-            return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
-        }
-
-        // Send status 200 response
-        return res.status(200).json({
-            message: 'User Profile updated!',
-            user: user
-        });
     } catch (err) {
         return sendError(res, err, 'Internal Server Error!', 500);
     }

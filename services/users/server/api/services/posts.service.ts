@@ -107,7 +107,7 @@ export class PostsService {
         const tomorrow = moment().add(1, 'days').startOf('day').format('YYYY-MM-DD');
 
         // Generate the date for the end of the week
-        const endOfWeek = moment().add(1, 'days').endOf('day').endOf('week').format('YYYY-MM-DD');
+        const endOfWeek = moment().add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
 
         // Fetch the tasks posts
         const tasks = await Post.find({
@@ -149,11 +149,12 @@ export class PostsService {
         const user = await User.findById(userId).select('_private_group');
 
         // Generate the date for the end of the week
-        const endOfWeek = moment().add(1, 'days').endOf('day').endOf('week').format('YYYY-MM-DD');
+        const endOfWeek = moment().add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
 
         // Generate the date for the end of the next week
-        const endOfNextWeek = moment().endOf('week').add(1, 'days').endOf('day').endOf('week').format('YYYY-MM-DD');
+        const endOfNextWeek = moment().endOf('isoWeek').add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
 
+        console.log("start of next week end of next week",endOfWeek,endOfNextWeek);
         // Fetch the tasks posts
         const tasks = await Post.find({
             $and: [
