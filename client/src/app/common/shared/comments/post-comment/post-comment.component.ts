@@ -154,5 +154,17 @@ export class PostCommentComponent implements OnInit {
     // this.updateDetails();
   }
 
+  onCommentLiked(data) {
+    const userTmp = this.userData['first_name'] + ' ' + this.userData['last_name'];
+    if (data == true) {
+      this.likedByUsers.push(userTmp);
+    } else {
+      const index = this.likedByUsers.findIndex(user => user == userTmp);
+      if (index >= 0) {
+        this.likedByUsers.splice(index, 1);
+      }
+    }
+  }
+
 }
 

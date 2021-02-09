@@ -73,7 +73,7 @@
             <div class="col-md-6 text-right">
 
                 <!-- Like Comment starts -->
-                <app-like-comment [userData]="userData" [comment]="comment"></app-like-comment>
+                <app-like-comment [userData]="userData" [comment]="comment" (commentLikedEmiter)="onCommentLiked($event)"></app-like-comment>
                 <!-- Like Comment ends -->
 
                 <!-- Comment Utils starts -->
