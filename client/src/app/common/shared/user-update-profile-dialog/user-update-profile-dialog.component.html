@@ -1,0 +1,33 @@
+<div class="dialog-content">
+    <div class="content">
+        <div class="container">
+            <div class="row inner-content" *ngIf="userData" style="padding-top: 15px;">
+                <img src="assets/images/user-info.svg" />
+                <br />
+                <br />
+                <h2 class="title">Update Password</h2>
+                <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN & SIGNUP COMPONENT -->
+                <div class="form-group">
+                    <input type="password" [(ngModel)]="password" class="form-control" name="password"
+                        placeholder="Enter Your Password">
+                </div>
+                <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN & SIGNUP COMPONENT -->
+
+                <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
+                <div class="form-group">
+                    <input type="password" (focusout)="matchUserPassword($event)" [(ngModel)]="repeatPassword"
+                        placeholder="Repeat Your Password" class="form-control" name="repeatPassword">
+                </div>
+                <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
+
+                <!-- SUBMIT BUTTON SIGN UP COMPONENT -->
+                <button type="submit" class="btn btn-primary my-btn" (click)="updatePassword()">Update
+                    Password!</button>
+                <!-- SUBMIT BUTTON SIGN UP COMPONENT -->
+
+                <button mat-dialog-close type="submit" class="btn btn-danger my-btn"
+                    >Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

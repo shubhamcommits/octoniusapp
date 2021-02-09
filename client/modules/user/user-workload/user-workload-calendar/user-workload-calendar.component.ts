@@ -146,8 +146,10 @@ export class UserWorkloadCalendarComponent implements OnInit {
           .then(async (res) => {
             if (res.value) {
               await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
+                for (let index = 0; index < this.daysToCancel.length; index++) {
+                  this.daysToCancel[index].date = moment(this.daysToCancel[index].date).format("YYYY-MM-DD");
+                }
                 this.userService.saveOutOfTheOfficeDays(this.userId, this.daysToCancel, 'remove').then((res) => {
-
                   this.daysToCancel.forEach(day => {
                     const index = this.bookedDays.findIndex(bookedDay => moment(moment.utc(bookedDay.date).format("YYYY-MM-DD")).isSame(moment(day.date).format("YYYY-MM-DD"), 'day'));
                     if (index >= 0) {
