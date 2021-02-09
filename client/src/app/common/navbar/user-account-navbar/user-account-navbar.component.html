@@ -33,7 +33,7 @@
           <a class="nav-link" [routerLink]="['/dashboard', 'user', 'workload']"
               [queryParams]="{ userId: userData?._id }" routerLinkActive="active"
               [ngClass]="activeState == 'workload'?'nav-link active-nav':'nav-link'" (click)="changeState('workload')"
-              >Workload
+              >Time off
               <span class="sr-only">(current)</span>
           </a>
       </li>
