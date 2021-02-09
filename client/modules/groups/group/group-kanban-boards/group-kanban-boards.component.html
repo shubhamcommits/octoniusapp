@@ -4,7 +4,7 @@
 
         <!-- ALL COLUMN DETAILS STARTS -->
         <div class="board-columns" cdkDropListGroup *ngIf="this.columns">
-            <div class="board-column" id="column.title" *ngFor="let column of columns; let i = index;">
+            <div class="board-column" id="column._id" *ngFor="let column of columns; let i = index;">
 
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                 <div class="column-title">
@@ -37,7 +37,7 @@
                 <!-- EDIT COLUMN ENDS -->
 
                 <!-- TASK CONTAINER STARTS -->
-                <div class="tasks-container" [id]="column.title" cdkDropList [cdkDropListData]="column.tasks"
+                <div class="tasks-container" [id]="column._id" cdkDropList [cdkDropListData]="column.tasks"
                     (cdkDropListDropped)="drop($event)">
 
                     <!-- CREATE TASK STARTS -->

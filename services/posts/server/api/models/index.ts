@@ -5,6 +5,7 @@ import { User } from './user.model';
 import { Comment } from './comment.model';
 import { Flow } from './flow.model';
 import { Notification } from './notification.model';
+import { Column } from './column.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -29,6 +30,9 @@ export {
 
     // FLOW
     Flow as Flow,
+
+    // COLUMN
+    Column as Column,
 
     // NOTIFICATION
     Notification as Notification

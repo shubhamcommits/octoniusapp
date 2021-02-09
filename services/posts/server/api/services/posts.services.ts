@@ -200,7 +200,6 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-        // .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -213,7 +212,6 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-        // .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -225,7 +223,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-        // .populate({ path: '_liked_by', select: this.userFields, options: { limit: 10 } })
+        //.populate({ path: 'task._column', select: '_id title custom_fields_to_show' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -245,7 +243,8 @@ export class PostService {
         { path: '_assigned_to', select: this.userFields },
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
-        { path: 'task._parent_task', select: '_id title _assigned_to' }
+        { path: 'task._parent_task', select: '_id title _assigned_to' },
+        //{ path: 'task._column', select: '_id title custom_fields_to_show' }
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -254,7 +253,7 @@ export class PostService {
       post = await Post.populate(post, [
         { path: 'performance_task._assigned_to', select: this.userFields },
         { path: '_group', select: this.groupFields },
-        { path: '_posted_by', select: this.userFields },
+        { path: '_posted_by', select: this.userFields }
       ]);
 
     } else if (post.type === 'event') {
@@ -263,15 +262,13 @@ export class PostService {
       if (post._assigned_to.includes('all')) {
         post = await Post.populate(post, [
           { path: '_group', select: this.groupFields },
-          { path: '_posted_by', select: this.userFields },
-          // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
+          { path: '_posted_by', select: this.userFields }
         ])
       } else {
         post = await Post.populate(post, [
           { path: '_assigned_to', select: this.userFields },
           { path: '_group', select: this.groupFields },
-          { path: '_posted_by', select: this.userFields },
-          // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
+          { path: '_posted_by', select: this.userFields }
         ])
       }
 
@@ -281,8 +278,7 @@ export class PostService {
       // Populate normal post properties
       post = await Post.populate(post, [
         { path: '_group', select: this.groupFields },
-        { path: '_posted_by', select: this.userFields },
-        // { path: '_liked_by', select: this.userFields, options: { limit: 10 } }
+        { path: '_posted_by', select: this.userFields }
       ]);
     }
 
@@ -1082,10 +1078,10 @@ export class PostService {
   /**
    * This function is responsible for changing the task column
    * @param postId
-   * @param status
+   * @param columnId
    * @param userId
    */
-  async changeTaskColumn(postId: string, title: string, userId: string) {
+  async changeTaskColumn(postId: string, columnId: string, userId: string) {
 
     try {
 
@@ -1094,12 +1090,12 @@ export class PostService {
         _id: postId
       }, {
         $set: {
-          "task._column.title": title,
+          "task._column": columnId,
         },
         $push: {
           "records.column": {
             date: moment().format(),
-            title: title,
+            _column: columnId,
             _user: userId
           }
         }
@@ -1823,14 +1819,14 @@ export class PostService {
     }).countDocuments();
   }
 
-  async moveToGroup(postId: string, groupId: string, columnTitle: string, oldGroupId: string, userId: string) {
+  async moveToGroup(postId: string, groupId: string, columnId: string, oldGroupId: string, userId: string) {
 
     let update = {};
 
-    if (columnTitle != '') {
+    if (columnId && columnId != '') {
       update = {
         _group: groupId,
-        'task._column.title': columnTitle,
+        'task._column': columnId,
         $push: {
           "records.group_change": {
             date: moment().format(),
@@ -1904,7 +1900,7 @@ export class PostService {
     }
   }
 
-  async copyToGroup(postId: string, groupId: string, columnTitle: string, oldGroupId?: string, userId?: string, parentId?: string, isTemplate?: boolean) {
+  async copyToGroup(postId: string, groupId: string, columnId: string, oldGroupId?: string, userId?: string, parentId?: string, isTemplate?: boolean) {
 
     try {
       const oldPost = await Post.findById(postId).lean();
@@ -1931,7 +1927,7 @@ export class PostService {
       if (parentId) {
         newPost.task._parent_task = parentId;
       } else {
-        newPost.task._column.title = columnTitle;
+        newPost.task._column = columnId;
       }
 
       if (newPost.files) {
@@ -2078,7 +2074,7 @@ export class PostService {
         _id: postId
       }, {
         'task._parent_task': parentTaskId,
-        'task._column.title': ''
+        $unset: { 'task._column': '' }
       }, {
         new: true
       })

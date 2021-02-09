@@ -2,7 +2,7 @@
     <div class="card-block">
         <h6 class="card-title"><b>User Professional Information</b>
             <button *ngIf="currentUser" type="button" name="button" class="btn btn-link"
-                (click)="publicFunctions.editUserDetails(this.openModal('Update your Professional Information!', 'assets/images/user-professional-info.svg'),this.mycallback)">
+                (click)="openUpdateModel()">
                 <i class="material-icons">create</i>
             </button></h6>
         <hr />

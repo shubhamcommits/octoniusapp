@@ -21,7 +21,8 @@
             [sortingBit]="sortingBit"
             [filteringBit]="filteringBit"
             [filteringData]="filteringData"
-            (taskClonnedEvent)="onTaskClonned($event)">
+            (taskClonnedEvent)="onTaskClonned($event)"
+            (newSectionEvent)="newSectionAdded($event)">
         </app-group-kanban-boards>
 
         <app-group-tasks-list-view *ngIf="viewType === 'list'"
@@ -34,7 +35,8 @@
             [sortingBit]="sortingBit"
             [filteringBit]="filteringBit"
             [filteringData]="filteringData"
-            (taskClonnedEvent)="onTaskClonned($event)">
+            (taskClonnedEvent)="onTaskClonned($event)"
+            (newSectionEvent)="newSectionAdded($event)">
         </app-group-tasks-list-view>
 
         <app-gantt-view *ngIf="viewType === 'gantt'"

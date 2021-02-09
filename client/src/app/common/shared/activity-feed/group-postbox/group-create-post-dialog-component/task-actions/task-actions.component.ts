@@ -226,7 +226,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       .then(async (res) => {
         if (res.value) {
           await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
-            this.postService.transferToGroup(this.postData._id, group, section.title, this.groupData._id, this.userData._id, true).then((res) => {
+            this.postService.transferToGroup(this.postData._id, group, section._id, this.groupData._id, this.userData._id, true).then((res) => {
               this.onTransferPost({ post: res['post'], isCopy: true });
               resolve(this.utilityService.resolveAsyncPromise(`👍 Task Copied!`));
             })
@@ -244,7 +244,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       .then(async (res) => {
         if (res.value) {
           await this.utilityService.asyncNotification('Please wait we are move the task...', new Promise((resolve, reject) => {
-            this.postService.transferToGroup(this.postData._id, group, section.title, this.groupData._id, this.userData._id, false)
+            this.postService.transferToGroup(this.postData._id, group, section._id, this.groupData._id, this.userData._id, false)
               .then((res) => {
                 this.onTransferPost({ post: res['post'], isCopy: false, groupId: group });
                 resolve(this.utilityService.resolveAsyncPromise(`👍 Task moved!`));
