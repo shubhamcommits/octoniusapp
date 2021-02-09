@@ -739,16 +739,17 @@ export class PublicFunctions {
             columnService.getAllColumns(groupId)
                 .then((res) => {
 
-                    if (res == null)
-                        resolve(null)
+                    if (res == null) {
+                        resolve([]);
+                    }
 
                     // Resolve with sucess
-                    resolve(res['columns'])
+                    resolve(res['columns']);
                 })
                 .catch(() => {
 
                     // If there's an error, then reject with empty object
-                    reject({})
+                    reject({});
                 })
         })
     }
@@ -828,7 +829,7 @@ export class PublicFunctions {
      * @param postId
      * @param title
      */
-    changeTaskColumn(postId: string, title: string, userId: string, groupId: string) {
+    changeTaskColumn(postId: string, columnId: string, userId: string, groupId: string) {
 
         // Post Service Instance
         let postService = this.injector.get(PostService)
@@ -840,12 +841,12 @@ export class PublicFunctions {
             new Promise((resolve, reject) => {
 
                 // Call HTTP Request to change the request
-                postService.changeTaskColumn(postId, title, userId, groupId)
+                postService.changeTaskColumn(postId, columnId, userId, groupId)
                     .then((res) => {
-                        resolve(utilityService.resolveAsyncPromise(`Task moved to - ${title}!`))
+                        resolve(utilityService.resolveAsyncPromise('Task moved'));
                     })
                     .catch(() => {
-                        reject(utilityService.rejectAsyncPromise(`Unable to move the task, please try again!`))
+                        reject(utilityService.rejectAsyncPromise(`Unable to move the task, please try again!`));
                     })
 
             }))
@@ -1083,7 +1084,7 @@ export class PublicFunctions {
         this.subSink.unsubscribe();
     }
 
-    executedAutomationFlowsPropertiesFront(flows: any[], value: any, groupId: string, post: any, userId: string, isCreationTaskTrigger?: boolean) {
+    executedAutomationFlowsPropertiesFront(flows: any[], post: any, isCreationTaskTrigger?: boolean) {
         if (flows && flows.length > 0) {
             flows.forEach((flow, flowIndex) => {
                 const steps = flow['steps'];
@@ -1119,7 +1120,7 @@ export class PublicFunctions {
                             retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
                             break;
                         case 'Section is':
-                            retValue = trigger?.section?.toUpperCase() == post?.task?._column?.title?.toUpperCase();
+                            retValue = (trigger?._section?._id || trigger?._section) == (post?.task?._column?._id || post?.task?._column);
                             break;
                         case 'Status is':
                             retValue = trigger?.status?.toUpperCase() == post?.task?.status?.toUpperCase();
@@ -1172,7 +1173,7 @@ export class PublicFunctions {
                         return post;
                     case 'Move to':
                         if (!post.task._parent_task) {
-                            post.task._column.title = action.section;
+                            post.task._column = action._section;
                         }
                         return post;
                     case 'Change Status to':

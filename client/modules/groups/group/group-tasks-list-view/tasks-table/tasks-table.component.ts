@@ -101,6 +101,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
   async initTable() {
     await this.loadCustomFieldsToShow();
+
     let taskslist = [];
     this.tasks.forEach(val => taskslist.push(Object.assign({}, val)));
     let unchangedTasks: any = { tasksList: taskslist };
@@ -413,17 +414,17 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       if (cfTrigger) {
         post.task.custom_fields[cfTrigger.name] = cfTrigger.value;
       }
-      post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, cfTrigger, this.groupData._id, post, this.userData._id);
+      post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, post);
 
       // Find the index of the task
       const indexTask = this.tasks.findIndex((task: any) => task._id === post._id);
       if (indexTask != -1) {
-        if (this.section.title.toLowerCase() == post.task._column.title.toLowerCase()) {
+        if (this.section._id == (post.task._column._id || post.task._column)) {
           // update the tasks from the array
           this.tasks[indexTask] = post;
         } else {
           this.tasks.splice(indexTask, 1);
-          this.taskChangeSectionEmitter.emit({ post: post, oldSection: this.section.title });
+          this.taskChangeSectionEmitter.emit({ post: post, oldSectionId: this.section._id });
         }
       }
 
@@ -455,7 +456,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
       this.newColumnSelected = null;
 
-      this.columnService.saveCustomFieldsToShow(this.groupData._id, this.section.title, this.section.custom_fields_to_show);
+      this.columnService.saveCustomFieldsToShow(this.section._id, this.section.custom_fields_to_show);
     }
   }
 
@@ -473,7 +474,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       this.section.custom_fields_to_show.splice(index, 1);
     }
 
-    this.columnService.saveCustomFieldsToShow(this.groupData._id, this.section.title, this.section.custom_fields_to_show);
+    this.columnService.saveCustomFieldsToShow(this.section._id, this.section.custom_fields_to_show);
   }
 
   customFieldValues(fieldName: string) {

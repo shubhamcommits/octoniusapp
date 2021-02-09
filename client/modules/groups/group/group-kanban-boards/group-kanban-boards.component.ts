@@ -50,6 +50,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
 
   @Output() taskClonnedEvent = new EventEmitter();
+  @Output() newSectionEvent = new EventEmitter();
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -363,7 +364,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       var post: any = event.previousContainer.data[event.previousIndex];
 
       // Update the task column when changed with dropping events to reflect back in the task view modal
-      event.previousContainer.data[event.previousIndex]['task']._column.title = event.container.id
+      post['task']._column = event.container.id
 
       // Call move task to a new column
       this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
@@ -377,7 +378,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   addColumn(column: any) {
 
     // Find the index of the column to check if the same named column exist or not
-    let index = this.columns.findIndex((col: any) => col.title.toLowerCase() === column.title.toLowerCase())
+    let index = this.columns.findIndex((col: any) => (col._id || col) == column._id)
 
     // If index is found, then throw error notification
     if (index != -1) {
@@ -388,13 +389,15 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     else {
 
       // Create the Column asynchronously
-      this.createNewColumn(this.groupId, column.title)
+      this.createNewColumn(this.groupId, column.title);
 
       // Assign the tasks to be []
-      column.tasks = []
+      column.tasks = [];
 
       // Push the Column
-      this.columns.push(column)
+      this.columns.push(column);
+
+      this.newSectionEvent.emit(column);
     }
 
   }
@@ -428,9 +431,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   /**
    * This function is responsible for removing the column
    * @param groupId
-   * @param columnName
    */
-  removeColumn(groupId: string, columnName: string) {
+  removeColumn(columnId: string) {
 
     // Column Service Instance
     let columnService = this.injector.get(ColumnService)
@@ -440,7 +442,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
     // Call the HTTP Service function
     utilityService.asyncNotification('Please wait we are removing your column...', new Promise((resolve, reject) => {
-      columnService.deleteColumn(groupId, columnName)
+      columnService.deleteColumn(columnId)
         .then((res) => {
           resolve(utilityService.resolveAsyncPromise('Column Removed!'));
         })
@@ -467,21 +469,21 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
     // If not found, then change the element details
     else if (index === -1) {
-      let oldTitle = oldCol.title;
+      const columnId = oldCol._id;
       oldCol.title = newColTitle
       // Column Service Instance
       let columnService = this.injector.get(ColumnService)
 
       // Call the HTTP Service function
       this.utilityService.asyncNotification('Please wait we are renaming your column...', new Promise((resolve, reject) => {
-        columnService.editColumnName(this.groupId, oldTitle, newColTitle)
+        columnService.editColumnName(columnId, newColTitle)
           .then((res) => {
-
+            /*
             // rename the column in the tasks
             oldCol['tasks'].forEach(task => {
               task.task._column.title = newColTitle;
             });
-
+            */
             resolve(this.utilityService.resolveAsyncPromise('Column Renamed!'));
           })
           .catch((err) => {
@@ -502,7 +504,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       .then((res) => {
         if (res.value) {
           // Find the index of the column to check if the same named column exist or not
-          let index = this.columns.findIndex((col: any) => col.title.toLowerCase() === column.title.toLowerCase())
+          let index = this.columns.findIndex((col: any) => col._id === column._id)
 
           // If index is found or it is the last column, then throw error notification
           if (index === -1 || this.columns.length === 1) {
@@ -517,24 +519,24 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
               // Call for each task present in the board
               this.columns[index]['tasks'].forEach((task) => {
-                let newColumnTitle = 'to do';
+                let newColumnId = 'to do';
                 if (index - 1 >= 0) {
-                  newColumnTitle = this.columns[index - 1]['title'];
+                  newColumnId = this.columns[index - 1]._id;
                 } else if (index + 1 < this.columns.length) {
-                  newColumnTitle = this.columns[index + 1]['title'];
+                  newColumnId = this.columns[index + 1]._id;
                 } else {
-                  newColumnTitle = this.columns[0]['title'];
+                  newColumnId = this.columns[0]._id;
                 }
 
                 // Call the HTTP Request to move the task
-                this.moveTaskToNewColumn(task, this.columns[index]['title'], newColumnTitle);
+                this.moveTaskToNewColumn(task, this.columns[index]['_id'], newColumnId);
               })
             }
             // Remove the column from the array
             this.columns.splice(index, 1)
 
             // This function removes the column
-            this.removeColumn(this.groupId, column.title)
+            this.removeColumn(column._id)
           }
         }
       })
@@ -572,19 +574,18 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   /**
    * This function handles the response of moving the task to another column
    * @param task
-   * @param oldColumn
-   * @param newColumn
+   * @param columnId
    */
-  async moveTaskToNewColumn(task: any, oldColumn: string, newColumn: string) {
-    this.publicFunctions.changeTaskColumn(task._id, newColumn, this.userData._id, this.groupId);
+  async moveTaskToNewColumn(task: any, oldColumnId: string, columnId: string) {
+    this.publicFunctions.changeTaskColumn(task._id, columnId, this.userData._id, this.groupId);
 
-    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, newColumn, this.groupId, task, this.userData._id);
+    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, task, this.userData._id);
 
     // Prepare Event
     let columnEvent = {
       post: task,
-      oldColumn: oldColumn,
-      newColumn: task.task._column.title
+      newColumn: (task.task._column._id || task.task._column),
+      oldColumn: oldColumnId
     }
 
     this.moveTaskToColumnFront(columnEvent)
@@ -650,11 +651,11 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       // Find the index of the tasks inside the column
       const indexTask = col.tasks.findIndex((task: any) => task._id === post._id);
       if (indexTask != -1) {
-        if (col.title.toLowerCase() == post.task._column.title.toLowerCase()) {
+        if (col._id == (post.task._column._id || post.task._column)) {
           // update the tasks from the array
           this.columns[indexColumn].tasks[indexTask] = post;
         } else {
-          let indexNewColumn = this.columns.findIndex((column: any) => column.title.toLowerCase() == post.task._column.title.toLowerCase());
+          let indexNewColumn = this.columns.findIndex((column: any) => column._id == (post.task._column._id || post.task._column));
           if (indexNewColumn != -1) {
             this.columns[indexNewColumn].tasks.unshift(post);
             this.columns[indexColumn].tasks.splice(indexTask, 1);
@@ -675,10 +676,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   moveTaskToColumnFront(columnEvent: any) {
 
     // Find the oldColumnIndex in which task existed
-    let oldColumnIndex = this.columns.findIndex((column: any) => column.title.toLowerCase() === columnEvent.oldColumn.toLowerCase());
+    let oldColumnIndex = this.columns.findIndex((column: any) => column._id == columnEvent.oldColumn);
 
     // Find the newColumnIndex in which task is to be shifted
-    let newColumnIndex = this.columns.findIndex((column: any) => column.title.toLowerCase() === columnEvent.newColumn.toLowerCase());
+    let newColumnIndex = this.columns.findIndex((column: any) => column._id == columnEvent.newColumn);
 
     // Remove the task from the old Column
     this.columns[oldColumnIndex]['tasks'].splice(this.columns[oldColumnIndex]['tasks'].findIndex((post: any) => post._id === columnEvent.post._id), 1);

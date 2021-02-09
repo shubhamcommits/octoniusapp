@@ -23,25 +23,13 @@ const columns = new ColumnsController();
 router.get('/all', columns.getAllColumns);
 
 // initialize the basic columns
-router.post('/init', columns.initColumns);
-
-// get one column
-router.get('/column/:groupId/:columnName', columns.getOneColumn);
+// router.post('/init', columns.initColumns);
 
 // add a new column
 router.post('/', columns.addColumn);
 
 // edit column name 
 router.put('/edit/name', columns.editColumnName);
-
-// edit number of tasks
-router.put('/edit/number', columns.editColumnTaskNumber);
-
-// add task to column
-router.put('/edit/inc', columns.columnTaskInc);
-
-// remove task from column
-router.put('/edit/dec', columns.columnTaskDec);
 
 // delete column 
 router.put('/delete', columns.deleteColumn);

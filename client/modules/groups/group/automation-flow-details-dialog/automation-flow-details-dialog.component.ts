@@ -235,7 +235,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
         break;
 
       case 'section':
-        this.flowSteps[stepIndex].trigger[triggerIndex].section = value;
+        this.flowSteps[stepIndex].trigger[triggerIndex]._section = (value['_id'] || value);
         break;
 
       default:
@@ -263,7 +263,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
         break;
 
       case 'section':
-        this.flowSteps[stepIndex].action[actionIndex].section = value;
+        this.flowSteps[stepIndex].action[actionIndex]._section = (value['_id'] || value);
         break;
 
       default:
@@ -280,7 +280,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
         resolve(this.utilityService.resolveAsyncPromise('Step saved!'));
       }).catch(err => {
-        reject(this.utilityService.rejectAsyncPromise(`Unable to savee the step, please try again!`));
+        reject(this.utilityService.rejectAsyncPromise(`Unable to save the step, please try again!`));
       });
     }));
   }
