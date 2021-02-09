@@ -37,76 +37,7 @@ export class UserInformationComponent implements OnInit {
 
 
   ngOnInit() {
-    // console.log('User Data from User Information Component', this.userData);
   }
-
-  mycallback = (data?: any) => {
-    this.userData.company_name = data?.company_name;
-    this.userData.mobile_number = data?.mobile_number;
-    this.userData.phone_number = data?.phone_number;
-    this.userData.first_name = data?.first_name;
-    this.userData.last_name = data?.last_name;
-    this.userData.email = data?.email;
-    this.updateData.emit(this.userData);
-  }
-
-  /**
- * This function opens the Swal modal to edit the user details
- * @param title 
- *  @param imageUrl 
- */
-  openModal(title: string, imageUrl: string) {
-
-    // Swal modal for update details
-    return this.utilityService.getSwalModal({
-      title: title,
-      html:
-      `<input id="user-first-name" type="text" placeholder="Your First Name" 
-      value="${this.userData.first_name || ''}" class="swal2-input">`+
-
-      `<input id="user-last-name" type="text" placeholder="Your Last Name" 
-      value="${this.userData.last_name || ''}" class="swal2-input">`+
-      
-      `<input id="user-email" type="text" placeholder="Your Email" 
-      value="${this.userData.email || ''}" class="swal2-input">`+
-
-      `<input id="phone-number" type="text" placeholder="Your Phone Number" 
-      value="${this.userData.phone_number || ''}" class="swal2-input">` +
-
-        `<input id="mobile-number" type="text" placeholder="Your Mobile Number" 
-      value="${this.userData.mobile_number || ''}" class="swal2-input">` +
-
-        `<input id="company-name" type="text" placeholder="Your Company Name" 
-      value="${this.userData.company_name || ''}" class="swal2-input">`,
-      
-      focusConfirm: false,
-      preConfirm: () => {
-
-        // Return Object to passed in the req.body
-        return {
-          phone_number: document.getElementById('phone-number')['value'],
-          mobile_number: document.getElementById('mobile-number')['value'],
-          company_name: document.getElementById('company-name')['value'],
-          email:document.getElementById('user-email')['value'],
-          first_name:document.getElementById('user-first-name')['value'],
-          last_name:document.getElementById('user-last-name')['value'],
-          full_name:document.getElementById('user-first-name')['value']+" "+document.getElementById('user-last-name')['value'],
-        }
-      },
-      confirmButtonText: 'Update Information!',
-      showCancelButton: true,
-      cancelButtonText: 'Cancel',
-      cancelButtonColor: '#d33',
-      scrollbarPadding: true,
-      imageUrl: imageUrl,
-      imageAlt: title,
-      customClass: {
-        content: 'content-class',
-        container: 'container-class',
-      }
-    })
-  }
-
   async removeUser(userID: string){
     
     // Ask User to remove this user from the group or not
@@ -141,8 +72,18 @@ export class UserInformationComponent implements OnInit {
             }))
         }
       })
+  }
 
-    console.log("User id to delete user",userID);
+  openUpdateModel(){
+    
+    const dialogRef = this.utilityService.openUpdateUserInformationModal(this.userData);
+
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      this.updateData.emit(data);
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      closeEventSubs.unsubscribe();
+    });
   }
 
 }
