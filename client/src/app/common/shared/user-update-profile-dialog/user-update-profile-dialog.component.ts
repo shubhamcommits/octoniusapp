@@ -31,7 +31,7 @@ export class UserUpdateProfileDialogComponent implements OnInit {
     this.userData = this.data.userData;
   }
 
-  matchUserPassword() {
+  matchUserPassword(event:any) {
     console.log("Matching", this.password, this.repeatPassword);
     if (this.password != this.repeatPassword) {
       this.repeatPassword='';
