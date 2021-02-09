@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
+import { Component, OnChanges, Input, Injector, EventEmitter, Output } from '@angular/core';
 import { CommentService } from 'src/shared/services/comment-service/comment.service';
 
 @Component({
@@ -6,20 +6,26 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
   templateUrl: './like-comment.component.html',
   styleUrls: ['./like-comment.component.scss']
 })
-export class LikeCommentComponent implements OnInit {
+export class LikeCommentComponent implements OnChanges {
 
-  constructor(
-    private _Injector: Injector
-  ) { }
-
-  ngOnInit() {
-  }
 
   // comment Data
   @Input('comment') comment: any;
 
   // User Data Variable
   @Input('userData') userData: any;
+
+  @Output() commentLikedEmiter = new EventEmitter();
+
+  liked = false;
+
+  constructor(
+    private _Injector: Injector
+  ) { }
+
+  ngOnChanges() {
+    this.isLikedByUser();
+  }
 
   /**
    * Like the comment
@@ -31,6 +37,9 @@ export class LikeCommentComponent implements OnInit {
 
     // Increment the likes count by 1
     this.comment.likes_count += 1
+
+    this.isLikedByUser();
+    this.commentLikedEmiter.emit(true);
 
     // Call the Service Function to like a comment
     // this.onLikeComment(this.comment._id);
@@ -49,7 +58,7 @@ export class LikeCommentComponent implements OnInit {
     return new Promise((resolve, reject) => {
       commentService.like(this.comment._id)
         .then((res) => {
-          resolve();
+          resolve({});
         })
         .catch((err) => {
           reject()
@@ -71,13 +80,16 @@ export class LikeCommentComponent implements OnInit {
     // Decrement the likes count by 1
     this.comment.likes_count -= 1
 
+    this.isLikedByUser();
+    this.commentLikedEmiter.emit(false);
+
     // Call the Service Function to unlike a comment
     this.onUnlikeComment(this.comment._id);
   }
 
   /**
    * This function is responsible for calling the HTTP request to unlike a comment
-   * @param commentId 
+   * @param commentId
    */
   onUnlikeComment(commentId: string) {
 
@@ -100,10 +112,12 @@ export class LikeCommentComponent implements OnInit {
    * Check if the comment is liked by the currently loggedIn user
    */
   isLikedByUser() {
-    if (this.comment._liked_by.includes(this.userData._id))
-      return true;
-    else
-      return false
+    const index = this.comment._liked_by.findIndex(user => (user._id || user) == this.userData._id);
+    if (index >= 0) {
+      this.liked = true;
+    } else {
+      this.liked = false;
+    }
   }
 
 }

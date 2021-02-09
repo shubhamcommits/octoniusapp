@@ -1,6 +1,6 @@
 <span *ngIf="userData && comment">
     <button class="btn btn-link">
-        <i placement="top" ngbTooltip="Unlike Comment" class="material-icons-outlined active" *ngIf="this.isLikedByUser(); else likeif" (click)="unlikeComment()">thumb_up</i>
+        <i placement="top" ngbTooltip="Unlike Comment" class="material-icons-outlined active" *ngIf="liked; else likeif" (click)="unlikeComment()">thumb_up</i>
         <ng-template #likeif><i class="material-icons-outlined muted" placement="top" ngbTooltip="Like Comment" (click)="likeComment()">thumb_up</i></ng-template>
     </button>
 </span>
