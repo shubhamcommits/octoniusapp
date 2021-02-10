@@ -4,6 +4,9 @@ import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent, ChildActivationEnd, RouteConfigLoadEnd } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { retry } from 'rxjs/internal/operators/retry';
+import { SubSink } from 'subsink';
+import { SocketService } from 'src/shared/services/socket-service/socket.service';
 
 @Component({
   selector: 'app-group-navbar',
@@ -15,6 +18,7 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
   constructor(
     private injector: Injector,
     private router: ActivatedRoute,
+    private socketService: SocketService,
     private _router: Router
   ) {
     this.publicFunctions.getCurrentUser().then(user => {
@@ -47,6 +51,15 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
 
   activeState:string;
 
+  // UNSUBSCRIBE THE DATA
+  private subSink = new SubSink()
+
+   // NOTIFICATIONS DATA
+   public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
+    readNotifications: [],
+    unreadNotifications: []
+  }
+  
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
 
@@ -79,6 +92,39 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
 
     const segments = this.routerFromEvent._urlSegment.children.primary.segments;
     this.activeState = segments[segments.length-2].path+'_'+segments[segments.length-1].path;
+
+    await this.initNotifications();
+  }
+
+  async initNotifications() {
+    // Subscribe to the change in notifications data from the server
+    this.subSink.add(this.socketService.currentData.subscribe((res) => {
+      if (JSON.stringify(res) != JSON.stringify({}))
+        this.notificationsData = res;
+    }));
+
+    /**
+     * emitting the @event joinUser to let the server know that user has joined
+     */
+    this.subSink.add(this.socketService.onEmit('joinUser', this.userData['_id'])
+      .pipe(retry(Infinity))
+      .subscribe());
+
+    /**
+     * emitting the @event joinWorkspace to let the server know that user has joined
+     */
+    this.subSink.add(this.socketService.onEmit('joinWorkspace', {
+      workspace_name: this.userData['workspace_name']
+    })
+      .pipe(retry(Infinity))
+      .subscribe());
+
+    /**
+     * emitting the @event getNotifications to let the server know to give back the push notifications
+     */
+    this.subSink.add(this.socketService.onEmit('getNotifications', this.userData['_id'])
+      .pipe(retry(Infinity))
+      .subscribe());
   }
 
   ngOnChanges(changes: SimpleChanges) {

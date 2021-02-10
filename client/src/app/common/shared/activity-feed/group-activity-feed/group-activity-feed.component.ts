@@ -192,7 +192,6 @@ export class GroupActivityFeedComponent implements OnInit {
     return socketService.onEvent('postAddedInGroup')
       .pipe(retry(Infinity))
       .subscribe((post) => {
-
         // Show new posts
         // if(post.group === this.groupId)
           this.showNewPosts = true;
