@@ -7,6 +7,8 @@ import { developmentConfig, productionConfig } from '../configs';
 // import { billingRoutes, workspaceRoutes } from './routes';
 import { notificationRoutes } from './routes/notifications.routes';
 import bodyParser from 'body-parser';
+import { sockets } from '../utils';
+import http from 'http';
 
 // Defining new Express application
 const app = express();
@@ -66,11 +68,25 @@ app.get("*.css", encodeResToGzip('text/css'));
 
 // static assets folder
 // app.use(express.static(path.join(__dirname, '../../client/dist')));
+  
+// Creating Sockets Microservice Server
+ const server = http.createServer(app);
+
+  // Initializing the sockets
+  const io = sockets.init(server);
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+    req.body.io = io; 
+    next();
+});
 
 // Routes which should handle request
 app.all('/', (req: Request, res: Response, next: NextFunction) => {
     res.sendFile(path.join(__dirname, './views/index.html'));
 });
+
+// Availing the static uploads folder to access from server
+app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
 // Routes to handle notifications
 app.use('/api', notificationRoutes);
@@ -98,4 +114,6 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 // Compressing the Application
 app.use(compression());
 
-export { app }
+
+
+export { server }

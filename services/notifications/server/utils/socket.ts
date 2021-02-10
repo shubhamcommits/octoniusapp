@@ -141,6 +141,7 @@ function init(server: any){
             console.log('User disconnected: %s sockets connected', globalConnections.length);
         });
     });
+    return io;
 };
 
 export {
