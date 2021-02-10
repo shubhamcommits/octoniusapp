@@ -1,7 +1,6 @@
-import http from 'http';
-import { app } from './api/app';
+import { server } from './api/app';
+import { Request, Response, NextFunction } from 'express';
 import cluster from 'cluster';
-import { sockets } from './utils';
 
 if (cluster.isMaster) {
 
@@ -36,13 +35,7 @@ if (cluster.isMaster) {
 
   // Environment State Variable
   const env = process.env.NODE_ENV;
-
-  // Creating Sockets Microservice Server
-  const server = http.createServer(app);
-
-  // Initializing the sockets
-  sockets.init(server);
-
+  
   // Exposing the server to the desired port
   server.listen(port, host, () => {
     console.log(`

@@ -9,6 +9,7 @@ import { take } from 'rxjs/internal/operators/take';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import moment from 'moment';
+import { retry } from 'rxjs/internal/operators/retry';
 
 @Component({
   selector: 'app-myspace-inbox',
@@ -55,6 +56,10 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
         this.notificationsData = res;
       }
     }));
+
+     // Notifications Feed Socket
+     this.subSink.add(this.enableNotificationsFeedSocket(socketService));
+
   }
 
   async ngOnInit() {
@@ -117,6 +122,20 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subSink.unsubscribe()
     this.isLoading$.complete()
+  }
+
+  /**
+   * This function enables the notifications feed for the user
+   * @param socketService
+   * calling the @event notificationsFeed to get the notifications for the user
+   */
+  enableNotificationsFeedSocket(socketService: SocketService) {
+    return socketService.onEvent('notificationsFeed')
+      .pipe(retry(Infinity))
+      .subscribe((notifications) => {
+        this.notificationsData = notifications;
+        socketService.changeData(notifications);
+      })
   }
 
   /**

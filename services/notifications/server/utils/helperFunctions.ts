@@ -49,6 +49,18 @@ async function sendNotificationsFeed(socket: any, userId: string, io: any) {
 }
 
 /**
+ * This function sends the generated notifications feed to the user
+ * @param socket 
+ * @param userId 
+ * @param io 
+ */
+async function sendNotificationsFeedFromService(userId: string, io: any) {
+    //  here the same as before, I deleted the emit code
+    generateFeed(userId, io);
+    console.log('Notifications Sent!')
+}
+
+/**
  * This function is responsible for notifying the users
  * @param io 
  * @param socket 
@@ -157,6 +169,7 @@ export {
 
     // SEND NOTIFICATIONS FEED
     sendNotificationsFeed,
+    sendNotificationsFeedFromService,
 
     // NOTIFY RELATED USERS
     notifyRelatedUsers,
