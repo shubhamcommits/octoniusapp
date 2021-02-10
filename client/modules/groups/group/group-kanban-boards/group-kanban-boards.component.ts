@@ -686,9 +686,21 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
     // Remove the task from the old Column
     this.columns[oldColumnIndex]['tasks'].splice(this.columns[oldColumnIndex]['tasks'].findIndex((post: any) => post._id === columnEvent.post._id), 1);
-
+    // Find the highest due date on the tasks of the column
+    if (this.columns[oldColumnIndex]['tasks'].length == 0) {
+      this.columns[oldColumnIndex].real_due_date = null;
+    } else {
+      this.columns[oldColumnIndex].real_due_date = moment(Math.max(...this.columns[oldColumnIndex].tasks.map(post => moment(post.task.due_to))));
+    }
+    
     // Add the task into the new column
     this.columns[newColumnIndex]['tasks'].unshift(columnEvent.post);
+    // Find the highest due date on the tasks of the column
+    if (this.columns[newColumnIndex]['tasks'].length == 0) {
+      this.columns[newColumnIndex].real_due_date = null;
+    } else {
+      this.columns[newColumnIndex].real_due_date = moment(Math.max(...this.columns[newColumnIndex].tasks.map(post => moment(post.task.due_to))));
+    }
   }
 
   /**
@@ -721,6 +733,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
    * @param task
    * @param dueDate
    */
+  /*
   changeDueDate(task: any, dueDate: any) {
 
     dueDate = moment.utc(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
@@ -733,6 +746,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     // Set the task due date on the UI
     task.task.due_to = moment.utc(dueDate).format('YYYY-MM-DD')
   }
+  */
 
   /**
    * This function changes the details on the UI

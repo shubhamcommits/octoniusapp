@@ -88,7 +88,7 @@
                                   *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
                                   [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
                                 {{ formateDate(task?.task?.due_to, "MMM D, YYYY") }}
-                                <i *ngIf="isDelay(task?.task?.due_to, column?.due_date)" class="material-icons" style="color: #eb5757;">error</i>
+                                <i *ngIf="column?.project_type && isDelay(task?.task?.due_to, column?.due_date)" class="material-icons" style="color: #eb5757;">error</i>
                               </span>
                               <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
                                 *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
