@@ -9,6 +9,7 @@ import moment from 'moment/moment';
 import { MatDialog } from '@angular/material/dialog';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
+import { CreateProjectColumnDialogComponent } from './create-project-column-dialog/create-project-column-dialog.component';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -93,8 +94,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     }
   }
 
-  formateDate(date){
-    return moment.utc(date).format("MMM D, YYYY");
+  formateDate(date: any, format: string){
+    return date ? moment.utc(date).format(format) : '';
   }
 
   async filtering(to) {
@@ -661,6 +662,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
             this.columns[indexColumn].tasks.splice(indexTask, 1);
           }
         }
+        // Find the hightes due date on the tasks of the column
+        col.real_due_date = moment(Math.max(...col.tasks.map(post => moment(post.task.due_to))));
 
         return;
       }
@@ -786,5 +789,31 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
   onTaskClonned(data) {
     this.taskClonnedEvent.emit(data);
+  }
+
+  openMakeColumnProjectDialog(column: any) {
+    const data = {
+        column: column
+      }
+
+    const dialogRef = this.dialog.open(CreateProjectColumnDialogComponent, {
+      data: data,
+      disableClose: true
+    });
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      const index = this.columns.findIndex(col => col._id == column._id);
+    if (index >= 0) {
+      this.columns[index] = column;
+    }
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      closeEventSubs.unsubscribe();
+    });
+  }
+
+  isDelay(realDueDate: any, dueDate: any) {
+    return moment(realDueDate).isAfter(moment(dueDate));
   }
 }

@@ -1,0 +1,57 @@
+<div class="dialog-content">
+  <div class="content">
+
+    <div class="modal-title">Project Setup</div>
+
+    <div class="content-box">
+      <mat-slide-toggle color="primary"
+        [checked]="this.column.project_type"
+        [name]="'project_type'"
+        (change)="changeColumnProjectType($event)">
+        <h6><b>Is it a project column?</b></h6>
+        <p class="card-text"></p>
+      </mat-slide-toggle>
+    </div>
+
+    <div class="content-box" *ngIf="column?.project_type">
+      <app-date-picker class="input-date due"
+        (date)="getDate($event, 'start_date')" [dueDate]="column?.start_date">
+      </app-date-picker>
+      <!-- Clean field starts -->
+      <i (click)="getDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+      <!-- Clean field ends -->
+
+      <br/><br/>
+
+      <app-date-picker class="input-date due"
+        (date)="getDate($event, 'due_date')" [dueDate]="column?.due_date">
+      </app-date-picker>
+
+      <!-- Clean field starts -->
+      <i (click)="getDate(null, 'due_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+      <!-- Clean field ends -->
+    </div>
+
+    <div class="content-box" *ngIf="column?.project_type">
+      Select a Start and Due Date for the duration of your project.
+    </div>
+
+    <div class="content-box save-content" *ngIf="column?.project_type">
+        <!-- Update Details Button starts -->
+        <button 
+            class="btn btn-danger btn-md"
+            (click)="cancel()">
+          Cancel
+        </button>
+        <!-- Update Details Button ends -->
+
+      <!-- Update Details Button starts -->
+        <button 
+            class="btn float-right btn-primary btn-md"
+            (click)="saveColumnProjectDates()">
+          Save
+      </button>
+      <!-- Update Details Button ends -->
+    </div>
+  </div>
+</div>

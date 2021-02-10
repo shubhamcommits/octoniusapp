@@ -183,4 +183,59 @@ export class ColumnsController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    async changeColumnProjectType(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the fileName from fileHandler middleware
+        const { columnId, projectType } = req.body;
+
+        try {
+            // Find the group and update their respective group avatar
+            const column = await Column.updateOne({
+                _id: columnId
+            }, {
+                "$set": {
+                    "project_type": projectType
+                }
+            }, {
+                new: true
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Column set as project!',
+                column: column
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async saveColumnProjectDates(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the fileName from fileHandler middleware
+        const { columnId, startDate, dueDate } = req.body;
+
+        try {
+            // Find the group and update their respective group avatar
+            const column = await Column.updateOne({
+                _id: columnId
+            }, {
+                "$set": {
+                    start_date: startDate,
+                    due_date: dueDate
+                }
+            }, {
+                new: true
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Column project dates saved!',
+                column: column
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }

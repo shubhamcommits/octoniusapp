@@ -8,7 +8,10 @@
 
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                 <div class="column-title">
-                    <p class="text-capitalize" [ngbTooltip]="column?.title"> {{ column?.title | truncatetext:20 }}</p>
+                    <p class="text-capitalize" [ngbTooltip]="column?.title">
+                      <span class="material-icons" *ngIf="column?.project_type">watch_later</span>
+                      {{ column?.title | truncatetext:20 }}
+                    </p>
                     <div class="inline-block">
                         <div class="dropdown">
                             <i class="material-icons action dropdown-toggle"
@@ -24,6 +27,10 @@
                                   <span class="material-icons-outlined">delete</span>
                                   Delete
                                 </li>
+                                <li class="dropdown-item" (click)="openMakeColumnProjectDialog(column)">
+                                  <span class="material-icons">watch_later</span>
+                                  Launch Project
+                                </li>
                             </ul>
                             <!-- Menu Drawer Ends -->
                         </div>
@@ -35,6 +42,29 @@
                 <app-edit-column *ngIf="column" [column]="column" (column)="editColumn(column, $event)">
                 </app-edit-column>
                 <!-- EDIT COLUMN ENDS -->
+
+                <!-- COLUMN PROJECT SECTION STARTS -->
+                <div class="project-container" *ngIf="column?.project_type">
+                  <div>
+                    Planed
+                    <span class="float-right">
+                      {{ formateDate(column?.start_date, "Do, MMM") }}
+                      <i class="material-icons">arrow_right_alt</i>
+                      {{ formateDate(column?.due_date, "Do, MMM") }}
+                      
+                    </span>
+                  </div>
+                  <br/>
+                  <div>
+                    Real
+                    <span *ngIf="column?.real_due_date" class="float-right">
+                      <i class="material-icons">arrow_right_alt</i>
+                      {{ formateDate(column?.real_due_date, "Do, MMM") }}
+                      <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons" style="color: #eb5757;">error</i>
+                    </span>
+                  </div>
+                </div>
+                <!-- COLUMN PROJECT SECTION ENDS -->
 
                 <!-- TASK CONTAINER STARTS -->
                 <div class="tasks-container" [id]="column._id" cdkDropList [cdkDropListData]="column.tasks"
@@ -52,20 +82,22 @@
                         *ngFor="let task of column.tasks; let j = index;" cdkDrag>
 
                         <div class="media" (click)="openFullscreenModal(task)">
-                            <div class="media-body">
-                                <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title }}</h5>
-                                <span class="small"
-                                *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
-                                [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
-                                {{task?.task?.due_to?formateDate(task?.task?.due_to):''}}</span>
-                                <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
-                                  *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
-                                  {{ task?.task?.custom_fields['priority'] }}
-                                </div>
-                                <!-- PRIORITY design added -->
-                            </div>
+                          <div class="media-body">
+                              <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title }}</h5>
+                              <span class="small"
+                                  *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
+                                  [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
+                                {{ formateDate(task?.task?.due_to, "MMM D, YYYY") }}
+                                <i *ngIf="isDelay(task?.task?.due_to, column?.due_date)" class="material-icons" style="color: #eb5757;">error</i>
+                              </span>
+                              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+                                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+                                {{ task?.task?.custom_fields['priority'] }}
+                              </div>
+                              <!-- PRIORITY design added -->
+                          </div>
 
-                            <app-assignee-avatar [post]="task" [userData]="userData" style="margin-right: 10px;"></app-assignee-avatar>
+                          <app-assignee-avatar [post]="task" [userData]="userData" style="margin-right: 10px;"></app-assignee-avatar>
                         </div>
 
                     </div>

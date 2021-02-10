@@ -87,4 +87,23 @@ export class ColumnService {
     return this._http.put(this.baseUrl + `/columns/customFieldsToShow`, column).toPromise();
   }
 
+  changeColumnProjectType(columnId: string, projectType: boolean) {
+    const column = {
+      columnId: columnId,
+      projectType: projectType
+    };
+
+    return this._http.put(this.baseUrl + `/columns/changeColumnProjectType`, column).toPromise();
+  }
+
+  saveColumnProjectDates(columnId: string, startDate: any, dueDate: any) {
+    const column = {
+      columnId: columnId,
+      startDate: startDate,
+      dueDate: dueDate
+    };
+
+    return this._http.put(this.baseUrl + `/columns/saveColumnProjectDates`, column).toPromise();
+  }
+
 }
