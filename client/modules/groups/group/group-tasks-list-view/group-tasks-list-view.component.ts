@@ -29,6 +29,7 @@ export class GroupTasksListViewComponent implements OnChanges {
   @Input() isAdmin = false;
 
   @Output() taskClonnedEvent = new EventEmitter();
+  @Output() newSectionEvent = new EventEmitter();
 
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
 
@@ -142,6 +143,8 @@ export class GroupTasksListViewComponent implements OnChanges {
 
       // Push the Column
       this.sections.push(section)
+
+      this.newSectionEvent.emit(section);
     }
 
   }
@@ -179,15 +182,18 @@ export class GroupTasksListViewComponent implements OnChanges {
   onTaskChangeSection(data) {
     const post = data.post;
     if (post) {
-      const oldSectionIndex = this.sections.findIndex((section) => section.title.toLowerCase() == data.oldSection.toLowerCase());
-      const sectionIndex = this.sections.findIndex((section) => section.title.toLowerCase() == post.task._column.title.toLowerCase());
+      const oldSectionIndex = this.sections.findIndex((section) => (section._id || section) == data.oldSectionId);
+      const sectionIndex = this.sections.findIndex((section) => (section._id || section) == (post.task._column._id || post.task._column));
+
       if (oldSectionIndex != -1 && sectionIndex != -1) {
         const oldIndexTask = this.sections[oldSectionIndex].tasks.findIndex((task: any) => task._id == post._id);
         const indexTask = this.sections[sectionIndex].tasks.findIndex((task: any) => task._id == post._id);
+
         if (oldIndexTask != -1) {
           this.sections[oldSectionIndex].tasks.splice(oldIndexTask, 1);
         }
-        if (indexTask != -1) {
+
+        if (indexTask == -1) {
           this.sections[sectionIndex].tasks.unshift(post);
           this.sections[sectionIndex].tasks = [...this.sections[sectionIndex].tasks];
         }

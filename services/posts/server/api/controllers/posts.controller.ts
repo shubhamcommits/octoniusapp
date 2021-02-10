@@ -803,15 +803,15 @@ export class PostController {
     async changeTaskColumn(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { params: { postId }, body: { title, userId, groupId } } = req;
+        const { params: { postId }, body: { columnId, userId, groupId } } = req;
 
         try {
 
-            if (!postId || !title || !userId) {
+            if (!postId || !columnId || !userId) {
                 return sendErr(res, new Error('Please provide the post, title and user as parameters'), 'Please provide the post, title and user as paramaters!', 400);
             }
 
-            const post = this.changeTaskSection(postId, title, userId, groupId)
+            const post = this.changeTaskSection(postId, columnId, userId, groupId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });
@@ -826,14 +826,14 @@ export class PostController {
         }
     }
 
-    async changeTaskSection(postId: string, sectionTitle: string, userId: string, groupId: string) {
+    async changeTaskSection(postId: string, columnId: string, userId: string, groupId: string) {
         // Call Service function to change the assignee
-        let post = await postService.changeTaskColumn(postId, sectionTitle, userId);
+        let post = await postService.changeTaskColumn(postId, columnId, userId);
 
         // Execute Automation Flows
         post = await this.executeAutomationFlows(groupId, post, userId);
 
-        post.task._column.title = sectionTitle;
+        post.task._column = columnId;
 
         return post;
     }
@@ -1174,12 +1174,12 @@ export class PostController {
     async moveToGroup(req: Request, res: Response, next: NextFunction) {
 
         // Post Object From request
-        const { body: { groupId, oldGroupId, userId, columnTitle }, params: { postId } } = req;
+        const { body: { groupId, oldGroupId, userId, columnId }, params: { postId } } = req;
 
         try {
 
             // Call service function to edit
-            const updatedPost = await postService.moveToGroup(postId, groupId, columnTitle, oldGroupId, userId)
+            const updatedPost = await postService.moveToGroup(postId, groupId, columnId, oldGroupId, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
                 })
@@ -1206,11 +1206,11 @@ export class PostController {
     async copyToGroup(req: Request, res: Response, next: NextFunction) {
 
         // Post Object From request
-        const { postId, groupId, columnTitle, oldGroupId, userId } = req.body;
+        const { postId, groupId, columnId, oldGroupId, userId } = req.body;
 
         try {
             // Call servide function for adding the post
-            const postData = await postService.copyToGroup(postId, groupId, columnTitle, oldGroupId, userId)
+            const postData = await postService.copyToGroup(postId, groupId, columnId, oldGroupId, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
                 })
@@ -1337,7 +1337,7 @@ export class PostController {
                             const isChildStatusTrigger = (childStatusTriggerIndex >= 0)
                                 ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], post.task._parent_task._id || post.task._parent_task)
                                 : false;
-                                const doTrigger = await this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger, isChildStatusTrigger);
+                            const doTrigger = await this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger, isChildStatusTrigger);
                             if (doTrigger) {
                                 await this.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
                             }
@@ -1371,7 +1371,9 @@ export class PostController {
                             retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
                             break;
                         case 'Section is':
-                            retValue = trigger.section.toUpperCase() == post.task._column.title.toUpperCase();
+                            const triggerSection = (trigger._section._id || trigger._section);
+                            const postSection = (post.task._column._id || post.task._column);
+                            retValue = triggerSection.toString() == postSection.toString();
                             break;
                         case 'Status is':
                             retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
@@ -1440,10 +1442,10 @@ export class PostController {
                     break;
                 case 'Move to':
                     if (isChildStatusTrigger && post.task._parent_task) {
-                      post = await this.changeTaskSection(post.task._parent_task._id || post.task._parent_task, action.section, userId, groupId);
+                      post = await this.changeTaskSection(post.task._parent_task._id || post.task._parent_task, (action._section._id || action._section), userId, groupId);
                     } else {
                       if (!post.task._parent_task) {
-                        post = await this.changeTaskSection(post._id, action.section, userId, groupId);
+                        post = await this.changeTaskSection(post._id, (action._section._id || action._section), userId, groupId);
                       }
                     }
                     break;

@@ -99,9 +99,8 @@ const PostSchema = new Schema({
             default: null
         },
         _column: {
-            title: {
-                type: String
-            }
+            type: Schema.Types.ObjectId,
+            ref: 'Column'
         },
 
         // Custom Fields

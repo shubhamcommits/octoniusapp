@@ -67,6 +67,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   }
 
   async onChangeViewEmitter(view: string) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
 
     this.userData.stats.lastTaskView = view;
     // User service
@@ -77,6 +79,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     await this.publicFunctions.sendUpdatesToUserData(this.userData);
 
     this.viewType = view;
+
+    await this.initView();
+
+    // Return the function via stopping the loader
+    return this.isLoading$.next(false);
   }
 
   async onSortTaskEmitter(bit:string){
@@ -125,14 +132,17 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one
      */
     this.columns = await this.publicFunctions.getAllColumns(this.groupId);
+
+    /*
     if (this.columns == null) {
       this.columns = await this.initialiseColumns(this.groupId);
     }
+    */
 
     /**
      * Adding the property of tasks in every column
      */
-    this.columns.forEach((column: any) => {
+    this.columns?.forEach((column: any) => {
       column.tasks = []
     });
 
@@ -167,6 +177,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
    * This function initialises the default column - todo
    * @param groupId
    */
+  /*
   async initialiseColumns(groupId: string) {
 
     // Column Service Instance
@@ -184,6 +195,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         });
     });
   }
+  */
 
   isAdminUser() {
     const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
@@ -200,9 +212,10 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     columns.forEach((column: any) => {
       // Feed the tasks into that column which has matching property _column with the column title
       column.tasks = tasks
-        .filter((post: any) => post.task.hasOwnProperty(
-          '_column') === true &&
-          post.task._column != null && post.task._column.title === column['title']//  && post.task.status !== 'done'
+        .filter((post: any) => post.task.hasOwnProperty('_column') === true
+          && post.task._column
+          && (post.task._column._id || post.task._column) == column['_id']
+          // TODO - we should have to remove the title comparison and use only the _id
         )
         .sort(function(t1, t2) {
           if (t1.task.status != t2.task.status) {
@@ -214,7 +227,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
       column.tasks.done = tasks
         .filter((post: any) => post.task.hasOwnProperty(
           '_column') === true &&
-          post.task._column != null && post.task._column.title === column['title'] && post.task.status === 'done'
+          post.task._column
+          && (post.task._column._id || post.task._column) == column['_id']
+          && post.task.status === 'done'
         );
       */
     });
@@ -229,5 +244,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
+  }
+
+  newSectionAdded(data) {
+
+    // Push the Column
+    this.columns.push(data);
   }
 }

@@ -53,7 +53,9 @@ export class FlowController {
             })
             .sort('name')
             .populate('steps.action._user', '_id profile_pic')
-            //.populate({ path: 'action', populate: { path: '_user', select: '_id profile_pic' }})
+            .populate('steps.trigger._user', '_id profile_pic')
+            .populate('steps.action._section', '_id title')
+            .populate('steps.trigger._section', '_id title')
             .lean();
 
             // Check if group already exist with the same groupId
@@ -123,6 +125,8 @@ export class FlowController {
                 path: 'steps.action._user',
                 select: 'first_name last_name profile_pic created_date'
             })
+            .populate('steps.action._section', '_id title')
+            .populate('steps.trigger._section', '_id title')
             .lean();
 
             if (!flow) {
@@ -198,6 +202,8 @@ export class FlowController {
                 path: 'steps.action._user',
                 select: 'first_name last_name profile_pic created_date'
             })
+            .populate('steps.action._section', '_id title')
+            .populate('steps.trigger._section', '_id title')
             .lean();
 
             // Check if group already exist with the same groupId

@@ -15,6 +15,7 @@ export class ColumnService {
    * This function is responsible for initializing the columns
    * @param groupId
    */
+  /*
   initColumns(groupId: string) {
     const group = {
       groupId: groupId
@@ -22,6 +23,7 @@ export class ColumnService {
     return this._http.post(this.baseUrl + `/columns/init/`, group)
     .toPromise()
   }
+  */
 
   /**
    * This function is responsible for fetching all the columns present in a board
@@ -51,67 +53,34 @@ export class ColumnService {
 
   /**
    * This function is responsible to renaming a column
-   * @param groupId
+   * @param columnId
    * @param oldColumnName
    * @param newColumnName
    */
-  editColumnName(groupId: string, oldColumnName: string, newColumnName: string) {
-    const group = {
-      groupId: groupId,
-      oldColumnName: oldColumnName,
+  editColumnName(columnId: string, newColumnName: string) {
+    const column = {
+      columnId: columnId,
       newColumnName: newColumnName
     }
-    return this._http.put(this.baseUrl + `/columns/edit/name`, group)
+    return this._http.put(this.baseUrl + `/columns/edit/name`, column)
     .toPromise()
   }
 
   /**
    * This function is responsible for deleting a column
-   * @param groupId
-   * @param columnName
+   * @param columnId
    */
-  deleteColumn(groupId: string, columnName: string) {
-    const group = {
-      groupId: groupId,
-      columnName: columnName
+  deleteColumn(columnId: string) {
+    const column = {
+      columnId: columnId
     }
-    return this._http.put(this.baseUrl + `/columns/delete`, group)
+    return this._http.put(this.baseUrl + `/columns/delete`, column)
     .toPromise()
   }
 
-  getOneColumn(groupId, columnName) {
-    return this._http.get(this.baseUrl + `/column/${groupId}/${columnName}`);
-  }
-
-  editColumnNumber(groupId, columnName, numberOfTasks) {
-    const group = {
-      groupId: groupId,
-      columnName: columnName,
-      numberOfTasks: numberOfTasks
-    };
-    return this._http.put(this.baseUrl + `/columns/edit/number`, group);
-  }
-
-  addColumnTask(groupId, columnName) {
-    const group = {
-      groupId: groupId,
-      columnName: columnName
-    };
-    return this._http.put(this.baseUrl + `/columns/edit/inc`, group);
-  }
-
-  deleteColumnTask(groupId, columnName) {
-    const group = {
-      groupId: groupId,
-      columnName: columnName
-    };
-    return this._http.put(this.baseUrl + `/columns/edit/dec`, group);
-  }
-
-  saveCustomFieldsToShow(groupId: string, columnName: string, customFieldsToShow: any[]) {
+  saveCustomFieldsToShow(columnId: string, customFieldsToShow: any[]) {
     const column = {
-      groupId: groupId,
-      columnName: columnName,
+      columnId: columnId,
       customFieldsToShow: customFieldsToShow
     };
 
