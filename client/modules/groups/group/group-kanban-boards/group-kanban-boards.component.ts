@@ -828,6 +828,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   }
 
   isDelay(realDueDate: any, dueDate: any) {
-    return moment(realDueDate).isAfter(moment(dueDate));
+    return moment(realDueDate).isAfter(moment(dueDate), 'day');
   }
 }
