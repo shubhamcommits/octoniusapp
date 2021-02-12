@@ -5,6 +5,8 @@ import { UserService } from "src/shared/services/user-service/user.service";
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { Router } from '@angular/router';
+import { UserUpdateUserInformationDialogComponent } from 'src/app/common/shared/user-update-user-information-dialog/user-update-user-information-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-user-information',
@@ -20,7 +22,8 @@ export class UserInformationComponent implements OnInit {
     private authService: AuthService,
     private userService:UserService,
     private injector: Injector,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
     ) { }
 
   // User Data Object
@@ -74,10 +77,21 @@ export class UserInformationComponent implements OnInit {
       })
   }
 
-  openUpdateModel(){
-    
-    const dialogRef = this.utilityService.openUpdateUserInformationModal(this.userData);
+  /**
+   * This function is responsible for opening a dialog to update User Profile Information
+   */
+  openUpdateModel() {
+    const data = {
+      userData: this.userData,
+    };
 
+    const dialogRef = this.dialog.open(UserUpdateUserInformationDialogComponent, {
+      width: '25%',
+      height: '95%',
+      hasBackdrop: true,
+      data: data
+    });
+    
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateData.emit(data);
     });
