@@ -68,6 +68,8 @@ export class CreateProjectColumnDialogComponent implements OnChanges {
             reject(this.utilityService.rejectAsyncPromise('Unable to save the project at the moment, please try again!'))
           })
       }));
+    } else {
+      this.utilityService.infoNotification('Start and Due Dates must be selected!');
     }
   }
 
@@ -77,10 +79,21 @@ export class CreateProjectColumnDialogComponent implements OnChanges {
    */
   getDate(dateObject: any, property: string) {
     if (property == 'start_date') {
-      this.startDate = (dateObject) ? dateObject.toDate() : null;
+      if (dateObject) {
+        this.startDate = dateObject.toDate();
+      } else {
+        this.startDate = null;
+        this.column.start_date = null;
+      }
     }
+
     if (property == 'due_date') {
-      this.dueDate = (dateObject) ? dateObject.toDate() : null
+      if (dateObject) {
+        this.dueDate = dateObject.toDate();
+      } else {
+        this.dueDate = null;
+        this.column.due_date = null;
+      }
     }
   }
 }

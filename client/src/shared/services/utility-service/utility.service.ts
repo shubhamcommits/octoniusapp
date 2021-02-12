@@ -226,7 +226,8 @@ export class UtilityService {
    */
   resolveAsyncPromise(text: string){
     return {
-      body: text    }
+      body: text
+    }
   }
 
   /**
