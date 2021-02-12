@@ -812,7 +812,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
     const dialogRef = this.dialog.open(CreateProjectColumnDialogComponent, {
       data: data,
-      disableClose: true
+      hasBackdrop: true
     });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       const index = this.columns.findIndex(col => col._id == column._id);
