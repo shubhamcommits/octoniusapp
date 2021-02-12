@@ -15,7 +15,8 @@
         <div class="form-group">
           <label for="search-text">Assignee</label>
           <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
-            placeholder="Search group member" autofocus>
+            placeholder="Search group member" autofocus
+            (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
         </div>
         <ul class="assignee-list">
           <li appHighlight class="assignee-list-item" *ngFor="let member of groupMembers | appFilter: searchText"
