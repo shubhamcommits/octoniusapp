@@ -14,7 +14,6 @@ export class NorthStarComponent implements OnInit {
   @Input() isNorthStar = false;
   @Input() northStar;
 
-  @Output() transformIntoNorthStarEmitter = new EventEmitter();
   @Output() saveInitialNorthStarEmitter = new EventEmitter();
   @Output() addProgressNorthStarEmitter = new EventEmitter();
 
@@ -59,10 +58,6 @@ export class NorthStarComponent implements OnInit {
         this.setStatusClass('NOT STARTED');
       }
     }
-  }
-
-  transformToNorthStart() {
-    this.transformIntoNorthStarEmitter.emit();
   }
 
   changeType(type) {

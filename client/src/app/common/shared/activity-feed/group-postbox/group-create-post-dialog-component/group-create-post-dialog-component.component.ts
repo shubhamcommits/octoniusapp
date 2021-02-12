@@ -562,14 +562,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }));
   }
 
-  transformToNorthStart() {
-    this.postData.task.isNorthStar = true;
+  transformToNorthStart(data) {
+    this.postData.task.isNorthStar = data;
     this.postData.task.northStar = {
       target_value: 0,
-      values: {
+      values: [{
         date: Date.now(),
         value: 0
-      },
+      }],
       type: 'Currency $',
       status: 'ON TRACK'
     };

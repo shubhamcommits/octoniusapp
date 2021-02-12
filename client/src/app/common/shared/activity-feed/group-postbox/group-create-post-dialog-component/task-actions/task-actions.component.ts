@@ -22,12 +22,14 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Input() postData: any;
   @Input() groupData: any;
   @Input() userData: any;
+  @Input() isNorthStar = false;
 
   @Output() parentTaskSelectedEmitter = new EventEmitter();
   @Output() dependencyTaskSelectedEmitter = new EventEmitter();
   @Output() taskClonedEmitter = new EventEmitter();
   @Output() taskFromTemplateEmitter = new EventEmitter();
   @Output() taskAllocationEmitter = new EventEmitter();
+  @Output() transformIntoNorthStarEmitter = new EventEmitter();
 
   userGroups = [];
   transferAction = '';
@@ -461,5 +463,10 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
           reject(this.utilityService.rejectAsyncPromise(`Error while saving the task!`));
         });
     }));
+  }
+
+  transformToNorthStart() {
+    this.isNorthStar = !this.isNorthStar;
+    this.transformIntoNorthStarEmitter.emit(this.isNorthStar);
   }
 }

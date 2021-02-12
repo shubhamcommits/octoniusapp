@@ -5,48 +5,41 @@
     <p class="box-title">Showing how your team's day-to-day work connects to achieve the goal.</p>
  
 
-<div class="timeline" *ngIf="northStar?.values">
-  <div *ngFor="let value of northStar.values; let index = index">
+    <div class="timeline" *ngIf="northStar?.values">
+      <div *ngFor="let value of northStar?.values; let index = index">
 
-    <ul class="timeline">
+        <ul class="timeline">
 
-      <!-- Item 1 -->
-      <li>
-        <div class="" [ngClass]="{'direction-r': index%2===0, 'direction-l': index%2!==0}">
-          <div class="flag-wrapper">
-            <span class="flag">
-              <span *ngIf="northStar.type === 'Percent'">
-                {{ value.value / 100 | percent: '.2-2' }}
-              </span>
-              <span *ngIf="northStar.type === 'Currency $'">
-                {{ value.value | currency: '$' }}
-              </span>
-              <span  *ngIf="northStar.type === 'Currency €'">
-                {{ value.value | currency: '€' }}
-              </span>
-              <span  *ngIf="northStar.type === 'Number'">
-                {{ value.value }}
+          <!-- Item 1 -->
+          <li>
+            <div class="" [ngClass]="{'direction-r': index%2===0, 'direction-l': index%2!==0}">
+              <div class="flag-wrapper">
+                <span class="flag">
+                  <span *ngIf="northStar.type === 'Percent'">
+                    {{ value.value / 100 | percent: '.2-2' }}
+                  </span>
+                  <span *ngIf="northStar.type === 'Currency $'">
+                    {{ value.value | currency: '$' }}
+                  </span>
+                  <span  *ngIf="northStar.type === 'Currency €'">
+                    {{ value.value | currency: '€' }}
+                  </span>
+                  <span  *ngIf="northStar.type === 'Number'">
+                    {{ value.value }}
+                  </span>
+                  
+                </span>
+                <span class="time-wrapper"><span class="time">{{ value.date | date: 'MMM, d' }}</span></span>
+              </div>
+              <div class="desc"> <span [ngClass]="getNSStatusClass(value.status)">
+                {{ value.status }}
               </span>
               
-             </span>
-            <span class="time-wrapper"><span class="time">{{ value.date | date: 'MMM, d' }}</span></span>
-          </div>
-          <div class="desc"> <span [ngClass]="getNSStatusClass(value.status)">
-            {{ value.status }}
-          </span>
-           
-          </div>
-        </div>
-      </li>
-      
-      
-    </ul>
-
-
-   
-  
-</div>
-  
-</div>
-</div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>

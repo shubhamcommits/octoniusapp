@@ -133,8 +133,7 @@
         </div>
       </div>
     </section>
-
-
+    
       <!-- LOADING SPINNER STARTS -->
       <ng-container *ngIf="isLoadingAction$ | async">
         <app-loading-spinner class="media"></app-loading-spinner>
@@ -143,6 +142,19 @@
     </div>
   </div>
 
+  <!-- North Start Switch starts -->
+  <div class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+    <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
+   MAKE NORTH STAR
+    <mat-slide-toggle color="primary" style=" margin-left: 15px;"
+      [checked]="isNorthStar"
+      [name]="'north_star'"
+      (change)="transformToNorthStart()">
+    </mat-slide-toggle>
  
+   
+    <p>North Stars are goals for you or your team.</p>
+  </div>
+  <!-- North Start Switch ends -->
 
 </div>
