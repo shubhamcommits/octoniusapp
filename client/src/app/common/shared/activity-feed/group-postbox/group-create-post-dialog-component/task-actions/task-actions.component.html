@@ -143,6 +143,16 @@
     </div>
   </div>
 
- 
+  <!-- North Start Switch starts -->
+  <div class="set-parent">
+    <mat-slide-toggle color="primary" style="float:left; margin-right: 10px;"
+      [checked]="isNorthStar"
+      [name]="'north_star'"
+      (change)="transformToNorthStart()">
+    </mat-slide-toggle>
+    <p class="box-title">North Star</p>
+    <p>Convert this task into a North Star.<br/>North Stars are goals for you or your team.</p>
+  </div>
+  <!-- North Start Switch ends -->
 
 </div>

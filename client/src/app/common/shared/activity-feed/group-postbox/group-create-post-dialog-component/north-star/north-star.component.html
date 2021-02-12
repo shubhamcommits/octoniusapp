@@ -1,18 +1,6 @@
-<div class="north-star-box">
+<div class="north-star-box" *ngIf="isNorthStar">
   <!-- Is Not North Start starts -->
-  <div *ngIf="!isNorthStar">
-    <mat-slide-toggle color="primary" style="float:left; margin-right: 10px;"
-      [checked]="isNorthStar"
-      [name]="'north_star'"
-      (change)="transformToNorthStart()">
-    </mat-slide-toggle>
-    <p class="box-title">North Star</p>
-    <p>Convert this task into a North Star.<br/>North Stars are goals for you or your team.</p>
-  </div>
-  <!-- Is Not North Start ends -->
-
-  <!-- Is Not North Start starts -->
-  <div *ngIf="isNorthStar">
+  <div>
     <p class="box-title"><i class="material-icons-round" style="vertical-align: middle;">
       explore
     </i> North Star</p>
