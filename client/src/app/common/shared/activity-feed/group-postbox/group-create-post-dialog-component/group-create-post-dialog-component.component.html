@@ -122,7 +122,6 @@
         <app-north-star *ngIf="postData?.type === 'task'"
           [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
           [northStar]="postData.task.northStar"
-          (transformIntoNorthStarEmitter)="transformToNorthStart()"
           (saveInitialNorthStarEmitter)="saveNorthStar($event)"
           (addProgressNorthStarEmitter)="saveNorthStar($event)">
         </app-north-star>
@@ -156,7 +155,9 @@
             <p *ngIf="groupData && groupData.enabled_rights" class="box-title" style="margin-top: 18px;">BAR</p>
             <div *ngIf="groupData && groupData.enabled_rights" class="ml-1">
                 <div (click)="removeBarTag(i, barTag)" *ngFor="let barTag of barTags; let i = index">
-                <div><span class="tag"> {{ barTag }}</span> <i class="material-icons" style="color: red;">clear</i></div>
+                  <div>
+                    <span class="tag"> {{ barTag }}</span> <i class="material-icons" style="color: red;">clear</i>
+                  </div>
                 </div>
 
                 <app-component-search-input-box
@@ -294,11 +295,13 @@
           [postData]="postData"
           [groupData]="groupData"
           [userData]="userData"
+          [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
           (parentTaskSelectedEmitter)="onParentTaskSelected($event)"
           (dependencyTaskSelectedEmitter)="onDependencyTaskSelected($event)"
           (taskClonedEmitter)="onTaskClonned($event)"
           (taskFromTemplateEmitter)="openParentTask($event)"
           (taskAllocationEmitter)="onAllocationChanged($event)"
+          (transformIntoNorthStarEmitter)="transformToNorthStart($event)"
           ></app-task-actions>
     </div>
     <!-- Top Right Section ends -->
