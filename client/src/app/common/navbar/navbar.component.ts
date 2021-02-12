@@ -172,7 +172,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
     }
 
-    await this.initNotifications();
+    // await this.initNotifications();
 
     await this.publicFunctions.handleGoogleSignIn()
 
@@ -190,36 +190,37 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     //this.addHotKeys(searchRef)
   }
 
-  async initNotifications() {
-    // Subscribe to the change in notifications data from the server
-    this.subSink.add(this.socketService.currentData.subscribe((res) => {
-      if (JSON.stringify(res) != JSON.stringify({}))
-        this.notificationsData = res;
-    }));
+  // async initNotifications() {
+  //   console.log("Am herer initNotifications");
+  //   // Subscribe to the change in notifications data from the server
+  //   this.subSink.add(this.socketService.currentData.subscribe((res) => {
+  //     if (JSON.stringify(res) != JSON.stringify({}))
+  //       this.notificationsData = res;
+  //   }));
 
-    /**
-     * emitting the @event joinUser to let the server know that user has joined
-     */
-    this.subSink.add(this.socketService.onEmit('joinUser', this.userData['_id'])
-      .pipe(retry(Infinity))
-      .subscribe());
+  //   /**
+  //    * emitting the @event joinUser to let the server know that user has joined
+  //    */
+  //   this.subSink.add(this.socketService.onEmit('joinUser', this.userData['_id'])
+  //     .pipe(retry(Infinity))
+  //     .subscribe());
 
-    /**
-     * emitting the @event joinWorkspace to let the server know that user has joined
-     */
-    this.subSink.add(this.socketService.onEmit('joinWorkspace', {
-      workspace_name: this.userData['workspace_name']
-    })
-      .pipe(retry(Infinity))
-      .subscribe());
+  //   /**
+  //    * emitting the @event joinWorkspace to let the server know that user has joined
+  //    */
+  //   this.subSink.add(this.socketService.onEmit('joinWorkspace', {
+  //     workspace_name: this.userData['workspace_name']
+  //   })
+  //     .pipe(retry(Infinity))
+  //     .subscribe());
 
-    /**
-     * emitting the @event getNotifications to let the server know to give back the push notifications
-     */
-    this.subSink.add(this.socketService.onEmit('getNotifications', this.userData['_id'])
-      .pipe(retry(Infinity))
-      .subscribe());
-  }
+  //   /**
+  //    * emitting the @event getNotifications to let the server know to give back the push notifications
+  //    */
+  //   this.subSink.add(this.socketService.onEmit('getNotifications', this.userData['_id'])
+  //     .pipe(retry(Infinity))
+  //     .subscribe());
+  // }
 
   /**
    * This functions unsubscribes all the observables subscription to avoid memory leak

@@ -1,5 +1,6 @@
 import { Notification, User, File } from "../models";
 import { Readable } from 'stream';
+import { helperFunctions } from '../../utils';
 
 /*  ===============================
  *  -- NOTIFICATIONS Service --
@@ -188,8 +189,8 @@ export class NotificationsService {
      * This function is responsible to notifying all the user on re-assigning of a new task to them
      * @param { _id, _assigned_to, _posted_by } post
      */
-    async newTaskReassignment(postId, assigneeId: string, posted_by) {
-
+    async newTaskReassignment(postId, assigneeId: string, posted_by,io:any) {
+       
         try {
             const notification = await Notification.create({
                 _actor: posted_by,
@@ -208,7 +209,7 @@ export class NotificationsService {
      * @param { _id, _assigned_to, _posted_by } post
      * @param status
      */
-    async taskStatusChanged(postId: String, status: string, actor: string, assigned_to, owner?: string) {
+    async taskStatusChanged(postId: String, status: string, actor: string, assigned_to, owner?: string,io?:any) {
         try {
             if (owner) {
                 const notification = await Notification.create({
@@ -218,6 +219,7 @@ export class NotificationsService {
                     message: status,
                     type: status
                 });
+                await helperFunctions.sendNotificationsFeedFromService(owner, io);
             } else {
 
                 // Create Readble Stream from the Event Assignee
@@ -231,6 +233,7 @@ export class NotificationsService {
                         message: status,
                         type: status
                     });
+                await helperFunctions.sendNotificationsFeedFromService(user?._id, io);
                 });
             }
         } catch (err) {

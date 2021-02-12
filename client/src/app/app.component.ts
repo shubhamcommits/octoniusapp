@@ -107,7 +107,7 @@ export class AppComponent {
         this.subSink.add(this.enableNotificationDataTransmitter(socketService));
 
         // Notifications Feed Socket
-        this.subSink.add(this.enableNotificationsFeedSocket(socketService));
+        // this.subSink.add(this.enableNotificationsFeedSocket(socketService));
 
         // Workspace Data Socket
         this.subSink.add(this.enableWorkspaceDataSocket(socketService, this.publicFunctions));
@@ -126,19 +126,20 @@ export class AppComponent {
     return socketService.currentData.pipe(map((res) => res)).subscribe();
   }
 
-  /**
-   * This function enables the notifications feed for the user
-   * @param socketService
-   * calling the @event notificationsFeed to get the notifications for the user
-   */
-  enableNotificationsFeedSocket(socketService: SocketService) {
-    return socketService.onEvent('notificationsFeed')
-      .pipe(retry(Infinity))
-      .subscribe((notifications) => {
-        // Here we send the message to change and update the notifications feed through the shared service
-        socketService.changeData(notifications);
-      })
-  }
+  // /**
+  //  * This function enables the notifications feed for the user
+  //  * @param socketService
+  //  * calling the @event notificationsFeed to get the notifications for the user
+  //  */
+  // enableNotificationsFeedSocket(socketService: SocketService) {
+  //   return socketService.onEvent('notificationsFeed')
+  //     .pipe(retry(Infinity))
+  //     .subscribe((notifications) => {
+  //       console.log("In APP Roaring");
+  //       // Here we send the message to change and update the notifications feed through the shared service
+  //       socketService.changeData(notifications);
+  //     })
+  // }
 
   /**
    * This function enables the workspace data sharing over the socket

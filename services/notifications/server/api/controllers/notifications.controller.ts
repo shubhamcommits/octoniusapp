@@ -1,9 +1,10 @@
 import { Notification, Post, User } from "../models";
 import { Response, Request, NextFunction } from "express";
-import { sendError } from "../../utils";
+import { sendError} from "../../utils";
 import { NotificationsService } from "../service";
 import { sendErr } from "../../utils/sendError";
 import { validateId } from "../../utils/helperFunctions";
+import { helperFunctions } from '../../utils';
 import axios from 'axios';
 
 // Creating Service class in order to build wrapper class
@@ -72,6 +73,8 @@ export class NotificationsController {
                     data: JSON.stringify(comment_object),
                     userid:comment_mentions_ids[i]
                   });
+                
+                await helperFunctions.sendNotificationsFeedFromService(comment_mentions_ids[i], req.body.io);
             }
 
         } catch (err) {
@@ -86,11 +89,12 @@ export class NotificationsController {
      */
     async newEventAssignments(req: Request, res: Response, next: NextFunction) {
 
-        const { postId, assigned_to, groupId, posted_by } = req.body;
+        const { postId, assigned_to, groupId, posted_by, io } = req.body;
         try {
             // Call Service Function for newEventAssignments
             await notificationService.newEventAssignments(postId, assigned_to, groupId, posted_by);
-
+            
+            await helperFunctions.sendNotificationsFeedFromService(assigned_to, io);
             // Send status 200 response
             return res.status(200).json({
                 message: `Event Assignments Succeeded!`,
@@ -130,12 +134,14 @@ export class NotificationsController {
      */
     async newFolioMention(req: Request, res: Response, next: NextFunction) {
 
-        const { mention, file, user } = req.body;
+        const { mention, file, user,io } = req.body;
 
         try {
             // Call Service function for newPostMentions
             await notificationService.newFolioMentions(file, user, mention);
 
+            await helperFunctions.sendNotificationsFeedFromService(mention, io);
+            
             // Send status 200 response
             return res.status(200).json({
                 message: 'New Folio Mention Succeeded!'
@@ -152,11 +158,12 @@ export class NotificationsController {
      */
     async newTaskAssignment(req: Request, res: Response, next: NextFunction) {
 
-        const { postId, assigned_to, groupId, posted_by } = req.body;
+        const { postId, assigned_to, groupId, posted_by,io } = req.body;
         try {
             // Call Service Function for newTaskAssignments
             await notificationService.newTaskAssignment(postId, assigned_to, groupId, posted_by);
             
+            await helperFunctions.sendNotificationsFeedFromService(assigned_to, io);
             const postData = await Post.findById(postId, (err, data) => {
                 if(err){
                 } else {
@@ -209,11 +216,13 @@ export class NotificationsController {
     async newTaskReassignment(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { postId, assigneeId, _assigned_from } = req.body;
+        const { postId, assigneeId, _assigned_from , io} = req.body;
         try {
             
             // Call Service function for newTaskReassignment
-            await notificationService.newTaskReassignment(postId, assigneeId, _assigned_from);
+            await notificationService.newTaskReassignment(postId, assigneeId, _assigned_from,io);
+
+            await helperFunctions.sendNotificationsFeedFromService(assigneeId, io);
 
             const postData = await Post.findById(postId, (err, data) => {
                 if(err){
@@ -345,7 +354,7 @@ export class NotificationsController {
 
 
     async taskStatusChanged(req: Request, res: Response, next: NextFunction) {
-        let { postId, assigned_to, userId, status, followers, posted_by } = req.body;
+        let { postId, assigned_to, userId, status, followers, posted_by, io } = req.body;
         
         try {
             status = (status == 'in progress') ? 'started' : 'completed';
@@ -353,15 +362,16 @@ export class NotificationsController {
             if (assigned_to) {
                 const index = assigned_to.findIndex(assignee => assignee._id == posted_by);
                 if (index < 0) {
-                    await notificationService.taskStatusChanged(postId, status, userId, assigned_to, posted_by);
+                    await notificationService.taskStatusChanged(postId, status, userId, assigned_to, posted_by,req.body.io);
+                    await helperFunctions.sendNotificationsFeedFromService(posted_by?._id, io);
                 }
-                await notificationService.taskStatusChanged(postId, status, userId, assigned_to);
+                await notificationService.taskStatusChanged(postId, status, userId, assigned_to,null,req.body.io);
             }
 
             followers.forEach(async follower => {
                 const index = assigned_to.findIndex(assignee => assignee._id == follower);
                 if (index < 0 && follower !== posted_by) {
-                    await notificationService.taskStatusChanged(postId, status, userId, null, followers);
+                    await notificationService.taskStatusChanged(postId, status, userId, null, followers,req.body.io);
                 }
             });
 
@@ -412,7 +422,7 @@ export class NotificationsController {
     }
 
     async newComment(req: Request, res: Response, next: NextFunction) {
-        const { posted_by, assigned_to, followers } = req.body;
+        const { posted_by, assigned_to, followers,io } = req.body;
         try {
             const comment = JSON.parse(req.body.comment);
             // Call Service Function for newComment
@@ -438,6 +448,8 @@ export class NotificationsController {
                 post_id: postId,
                 btn_title:'view comment'
             }
+            await helperFunctions.sendNotificationsFeedFromService(posted_by, io);
+
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
                 data: JSON.stringify(comment_object),
                 userid: posted_by
@@ -466,7 +478,7 @@ export class NotificationsController {
     }
 
     async followPost(req: Request, res: Response, next: NextFunction) {
-        const { postId, posted_by, follower } = req.body;
+        const { postId, posted_by, follower,io } = req.body;
 
         try {
             // Call Service Function for followPost
@@ -507,6 +519,7 @@ export class NotificationsController {
                 post_id: postId,
                 btn_title:'view post'
             }
+            await helperFunctions.sendNotificationsFeedFromService(posted_by, io);
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
                 data: JSON.stringify(comment_object),
                 userid:follower
@@ -523,7 +536,7 @@ export class NotificationsController {
     }
 
     async likePost(req: Request, res: Response, next: NextFunction) {
-        const { postId, posted_by, followers, user } = req.body;
+        const { postId, posted_by, followers, user, io } = req.body;
         const postData = await Post.findById(postId, (err, data) => {
             if(err){
             } else {
@@ -566,6 +579,8 @@ export class NotificationsController {
                 post_id: postId,
                 btn_title:'view post'
             }
+            await helperFunctions.sendNotificationsFeedFromService(posted_by, io);
+
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
                 data: JSON.stringify(comment_object),
                 userid: user
@@ -581,7 +596,7 @@ export class NotificationsController {
     }
 
     async likeComment(req: Request, res: Response, next: NextFunction) {
-        const { comment, user } = req.body;
+        const { comment, user, io } = req.body;
         try {
             const postId = req.body.comment._post._id;
             // Call Service Function for likeComment
@@ -619,6 +634,7 @@ export class NotificationsController {
                 post_id: postId,
                 btn_title:'view post'
             }
+            await helperFunctions.sendNotificationsFeedFromService(comment._commented_by, io);
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
                 data: JSON.stringify(comment_object),
                 userid: comment._commented_by
