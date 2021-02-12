@@ -21,6 +21,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   constructor(
     private router: ActivatedRoute,
     public utilityService: UtilityService,
+    private columnService: ColumnService,
     private injector: Injector,
     public dialog: MatDialog,
     private flowService: FlowService
@@ -803,6 +804,23 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
   onTaskClonned(data) {
     this.taskClonnedEvent.emit(data);
+  }
+
+  makeColumnProjectDialog(column: any) {
+    if (!column?.project_type) {
+      this.utilityService.asyncNotification('Please wait we are creating a project from your column...', new Promise((resolve, reject) => {
+        this.columnService.changeColumnProjectType(column._id, true)
+          .then((res) => {
+            column.project_type = true;
+            resolve(this.utilityService.resolveAsyncPromise('Column type changed!'));
+          })
+          .catch((err) => {
+            column.project_type = false;
+            reject(this.utilityService.rejectAsyncPromise('Unable to change the column type at the moment, please try again!'))
+          })
+      }));
+    }
+    this.openMakeColumnProjectDialog(column);
   }
 
   openMakeColumnProjectDialog(column: any) {
