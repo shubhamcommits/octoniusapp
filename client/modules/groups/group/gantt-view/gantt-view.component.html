@@ -1,45 +1,125 @@
 <div class="board">
   <div class="board-wrapper">
-    <div *ngIf="tasksdata?.length > 0" id="wrapper-fixed-container" [ngStyle]="{'position': 'fixed','margin-top': '15px'}">
-      <div id="fixed-container-gantt" [ngStyle]="{'position': 'relative','width': '100%','height': screen_height,'overflow': 'scroll'}">
-        <div [ngStyle]="{'position': 'absolute', 'width': '100%','height': 'gantt_container_height','top':'0px','left':'0px'}">
+    <div *ngIf="tasksdata?.length > 0" id="wrapper-fixed-container"
+      [ngStyle]="{'position': 'fixed','margin-top': '15px'}">
+      <div id="fixed-container-gantt"
+        [ngStyle]="{'position': 'relative','width': '100%','height': screen_height,'overflow': 'scroll'}">
+        <div
+          [ngStyle]="{'position': 'absolute', 'width': '100%','height': 'gantt_container_height','top':'0px','left':'0px'}">
           <div style="width: 100%;">
-            <div id="main_container" [attr.width]="gantt_container_width" [ngStyle]="{'height':gantt_container_height}">
+            <div class="projects-row" [ngStyle]="{'height': '170px'}">
+              <div *ngFor="let item of columns;let i = index" [ngClass]="i==0?'project-card is-clicked':'project-card'"
+                [ngStyle]="{'left': (i*333+30)+'px'}">
+                <div style="position: relative;width: 293px;height: 75px;">
+                  <p class="text-capitalize project-title" [ngbTooltip]="item?.title">
+                    <span class="material-icons" *ngIf="item?.project_type">watch_later</span>
+                    {{ item?.title | truncatetext:20 }}
+                  </p>
+                  <div *ngIf="item?.start_date && item?.due_date">
+                    <span class="planed-date">
+                      <span [ngStyle]="{'color': i == 0 ? '#26A69A' : 'initial' }">{{ formateDate(item?.start_date, "Do,
+                        MMM") }}</span>
+                      <span [ngStyle]="{'color': i == 0 ? '#005FD5' : 'initial' }">
+                        <i class="material-icons">arrow_right_alt</i>
+                        {{ formateDate(item?.due_date, "Do, MMM") }}
+                      </span>
+
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div [ngStyle]="{'height':'30px','top':'111px','position':'absolute'}">
+                <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div>
+                <p [attr.width]="step" class="first_month">{{dates[0]?.month}}</p>
+                <div *ngFor="let item of dates; let i =index" [ngStyle]="{'left':(i*50)+'px','height':'30px','background-color'
+                : item.isweekend?'#fff':'initial'}" class="date_div">
+                  <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">
+                    {{item.month}}
+                  </p>
+                  <p [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}"
+                    [ngClass]="i==current_date_index?'curretn_date':''" class="day">
+                    {{item.day}}</p>
+                </div>
+              </div>
+            </div>
+            <div id="main_container" [attr.width]="gantt_container_width"
+              [ngStyle]="{'height':gantt_container_height,'margin-top':'-75px'}">
               <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div>
-              <p [attr.width]="step" class="first_month">{{dates[0]?.month}}</p>
+              <!-- <p [attr.width]="step" class="first_month">{{dates[0]?.month}}</p> -->
               <div *ngFor="let item of dates; let i =index" [ngStyle]="{'left':(i*50)+'px','height':gantt_container_height,'background-color'
                 : item.isweekend?'#fff':'initial'}" class="date_div">
-                <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">{{item.month}}
-                </p>
-                <p [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}" [ngClass]="i==current_date_index?'curretn_date':''" class="day">
-                  {{item.day}}</p>
+                <!-- <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">
+                    {{item.month}}
+                  </p> -->
+                <!-- <p [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}"
+                    [ngClass]="i==current_date_index?'curretn_date':''" class="day">
+                    {{item.day}}</p> -->
               </div>
-              <div *ngFor="let task of tasksdata; let i =index"
-              [ngStyle]="{'left':'0px','position':'absolute','top':(60*i+100)+'px',
-              'board':'1px solid gray','width':gantt_container_width}"
-              cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-                <div [attr.taskIndex]="i" [attr.id]="task.id" [ngStyle]="{'left':(task.index_date*step)+'px','top':'0px','width'
+              <div *ngFor="let item of projectsdata;let i = index" class="project-timeline"
+                [ngStyle]="{'top':item.startheight+'px','left': (item.startingIndex*50)+'px','position':'absolute','height':(60*item.noOfTasks+100)+'px',
+                'border-left':'1px solid #26A69A','border-right':'1px dotted #005FD5','width':(item.differencedays*50)+'px'}">
+              </div>
+              <div *ngFor="let item of projectsdata;let i = index"
+                [ngStyle]="{'top':item.startheight+'px','left': (item.startingIndex*50)+'px','position':'absolute','height':(60*item.noOfTasks+100)+'px',
+                'border-left':'1px solid #26A69A','border-right':'1px dotted #005FD5','width':(item.differencedays*50)+'px'}">
+                <div>
+                  <p class="project-name" [ngStyle]="{'width':item.data.title.length*15+'px'}">{{item.data.title}}</p>
+                </div>
+
+                <div *ngFor="let task of item.tasks; let i =index"  [ngStyle]="{'left':'0px','position':'absolute','top':(60*i+100)+'px',
+                  'board':'1px solid gray','width':gantt_container_width}" cdkDropList class="example-list"
+                  (cdkDropListDropped)="drop($event)">
+                  <div  [attr.taskIndex]="i" [attr.id]="task.id" [ngStyle]="{'left':(task.index_date*step)+'px','top':'0px','width'
+                    :(task.difference*step+step)+'px'}" (click)="openFullscreenModal(task.task)" [ngClass]="
+                  task.custom_class == 'to do'? 'rectangle task_card status-todo'
+                  : task.custom_class == 'in progress' ? 'rectangle task_card status-inprogress'
+                  : task.custom_class == 'done' ? 'rectangle task_card status-done' : 'rectangle task_card status-todo'
+                " cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".example-list" mwlResizable [validateResize]="validate"
+                    [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event,task.id,i)">
+                    <div class="resize-handle-left" [attr.id]="task.id+'l'" mwlResizeHandle
+                      [resizeEdges]="{ left: true }"></div>
+                    <div class="resize-handle-right" [attr.id]="task.id+'r'" mwlResizeHandle
+                      [resizeEdges]="{ right: true }"></div>
+                    <div class="media">
+                      <app-assignee-avatar [post]="task.task" [userData]="userData"></app-assignee-avatar>
+                      <div class="media-body">
+                        <h5 *ngIf="task.difference>0" class="mt-2 task_title_text">{{task.difference===1 ? (task.name |
+                          truncatetext:2) : task.name | truncatetext:20}}</h5>
+                        <i class="material-icons-outlined ml-2 menu_icon" cdkDragHandle>more_vert</i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <!-- <div *ngFor="let task of tasksdata; let i =index" [ngStyle]="{'left':'0px','position':'absolute','top':(60*i+100)+'px',
+              'board':'1px solid gray','width':gantt_container_width}" cdkDropList class="example-list"
+                  (cdkDropListDropped)="drop($event)">
+                  <div [attr.taskIndex]="i" [attr.id]="task.id" [ngStyle]="{'left':(task.index_date*step)+'px','top':'0px','width'
                 :(task.difference*step+step)+'px'}" (click)="openFullscreenModal(task.task)" [ngClass]="
               task.custom_class == 'to do'? 'rectangle task_card status-todo'
               : task.custom_class == 'in progress' ? 'rectangle task_card status-inprogress'
               : task.custom_class == 'done' ? 'rectangle task_card status-done' : 'rectangle task_card status-todo'
-            " cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".example-list" mwlResizable [validateResize]="validate" [enableGhostResize]="true"
-                  (resizeEnd)="onResizeEnd($event,task.id,i)">
-                  <div class="resize-handle-left" [attr.id]="task.id+'l'" mwlResizeHandle [resizeEdges]="{ left: true }"></div>
-                  <div class="resize-handle-right" [attr.id]="task.id+'r'" mwlResizeHandle [resizeEdges]="{ right: true }"></div>
-                  <div class="media">
-                    <app-assignee-avatar [post]="task.task" [userData]="userData"></app-assignee-avatar>
-                    <div class="media-body">
-                      <h5 *ngIf="task.difference>0" class="mt-2 task_title_text">{{task.difference===1 ? (task.name |
-                      truncatetext:2) : task.name | truncatetext:20}}</h5>
-                      <i class="material-icons-outlined ml-2 menu_icon" cdkDragHandle>more_vert</i>
+            " cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".example-list" mwlResizable [validateResize]="validate"
+                    [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event,task.id,i)">
+                    <div class="resize-handle-left" [attr.id]="task.id+'l'" mwlResizeHandle
+                      [resizeEdges]="{ left: true }"></div>
+                    <div class="resize-handle-right" [attr.id]="task.id+'r'" mwlResizeHandle
+                      [resizeEdges]="{ right: true }"></div>
+                    <div class="media">
+                      <app-assignee-avatar [post]="task.task" [userData]="userData"></app-assignee-avatar>
+                      <div class="media-body">
+                        <h5 *ngIf="task.difference>0" class="mt-2 task_title_text">{{task.difference===1 ? (task.name |
+                          truncatetext:2) : task.name | truncatetext:20}}</h5>
+                        <i class="material-icons-outlined ml-2 menu_icon" cdkDragHandle>more_vert</i>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                </div> -->
             </div>
           </div>
         </div>
+        <!-- </div> -->
       </div>
     </div>
     <div *ngIf="!tasksdata || tasksdata?.length <= 0">

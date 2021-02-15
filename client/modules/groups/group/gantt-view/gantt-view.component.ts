@@ -31,6 +31,9 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   datestoshow: any = { start: '2020-12-30', end: '2021-01-15' };
   //task parsed data
   tasksdata: any = [];
+
+  //projects data
+  projectsdata:any = [];
   //date for calendar Nav
   dates: any = [];
   //Month
@@ -53,11 +56,14 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   constructor(private utilityService: UtilityService, private postService: PostService, private datePipe: DatePipe) { }
 
   async ngOnInit() {
+    
     await this.parsedTasks(this.tasks);
     this.datestoshow.start = await this.min_date(this.tasksdata);
     this.datestoshow.end = await this.max_date(this.tasksdata)
     await this.generateNavDate();
     await this.add_index();
+    await this.parsedProjects(this.columns);
+    console.log("tasks",this.tasksdata,this.projectsdata.tasks);
     await this.get_current_date_index()
     var ganttHeight = 100 + this.tasksdata.length * 60;
     var screenHeight = window.innerHeight - 100;
@@ -391,8 +397,35 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   }
 
+  async parsedProjects(columnsData:any){
+
+    let index=0;
+    columnsData.forEach(column => {
+      if(column.due_date && column.start_date && column.project_type){
+        const newColumnsData = {
+          data:column,
+          differencedays: moment(column?.due_date).diff(column?.start_date,'days'),
+          startingIndex: this.find_index(moment(column.start_date).format("YYYY-MM-DD")),
+          noOfTasks:column?.tasks?.length || 0,
+          id:column._id,
+          startheight: index===0?100:(60*this.projectsdata[index-1].noOfTasks+260),
+          tasks:[]
+        }
+
+        for (let i = 0; i < this.tasksdata.length; i++) {
+           if(this.tasksdata[i]?.projectId+'' == column._id+''){
+             newColumnsData.tasks.push(this.tasksdata[i]);
+             this.tasksdata.splice(i,1);
+           }  
+        }
+        this.projectsdata.push(newColumnsData);
+        index++;
+      }
+    });
+  }
+
   //Parsing the data
-  async parsedTasks(tasksdata) {
+  async parsedTasks(tasksdata:any) {
 
     if (tasksdata.length > 0) {
       //Sorted Tasks
@@ -498,6 +531,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             dependency: x?.task._dependency_task,
             image: (x?._assigned_to?.length > 0) ? this.baseUrl + '/' + x._assigned_to[0].profile_pic : undefined,
             noOfParticipants: (x?._assigned_to?.length > 1) ? x?._assigned_to?.length - 1 : undefined,
+            projectId:x?.task?._column,
             task: x
           });
         } else {
@@ -516,6 +550,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
               dependency: x?.task._dependency_task,
               image: (x?._assigned_to?.length > 0) ? this.baseUrl + '/' + x._assigned_to[0].profile_pic : undefined,
               noOfParticipants: (x?._assigned_to?.length > 1) ? x?._assigned_to?.length - 1 : undefined,
+              projectId:x?.task?._column,
               task: x
             });
           }
@@ -535,6 +570,13 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         min_dtObj = moment.utc(dt.start);
       }
     });
+
+    this.columns.forEach(column => {
+      if (moment.utc(column.start_date).isBefore(min_dtObj)) {
+        min_dt = column.start_date;
+        min_dtObj = moment.utc(column.start_date);
+      }
+    });
     return min_dt;
   }
   //Get the Min date
@@ -548,6 +590,14 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         max_dtObj = moment.utc(dt.end);
       }
     });
+
+    this.columns.forEach(column => {
+      if (moment.utc(column.due_date).isAfter(max_dtObj)) {
+        max_dt = column.due_date;
+        max_dtObj = moment.utc(column.due_date);
+      }
+    });
+
     return max_dt;
   }
 
@@ -585,5 +635,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   onTaskClonned(data) {
     this.taskClonnedEvent.emit(data);
+  }
+  formateDate(date: any, format: string){
+    return date ? moment.utc(date).format(format) : '';
   }
 }
