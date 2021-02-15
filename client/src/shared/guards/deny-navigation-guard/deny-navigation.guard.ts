@@ -76,6 +76,7 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
 
       return this.workspaceService.getBillingStatus(this.workspaceId).then(
         (res) => {
+console.log(res);
           if ( !res['status'] ) {
             if (!adminUser || res['message'] == 'Workspace does not exist') {
               this.authService.signout().subscribe((res) => {
