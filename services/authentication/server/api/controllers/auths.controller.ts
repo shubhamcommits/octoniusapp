@@ -412,7 +412,7 @@ export class AuthsController {
 
             // If user wasn't found or user was previsously removed/disabled, return error
             if (!users) {
-                return sendError(res, new Error('Please enter a valid combination or user email or user might be disabled!'), 'Please enter a valid combination or workspace name and user email!', 401);
+                return sendError(res, new Error('Please enter a valid user email or user might be disabled!'), 'Please enter a valid user email or user might be disabled!', 401);
             }
 
             for (const user of users) {
