@@ -324,7 +324,7 @@ export class AuthsController {
                   active: true
               });
             } else {
-              // Find the active user with having the same workspace_name and email as in req.body
+              // Find the active user with having the same email as in req.body
               user = await User.findOne({
                 email: email,
                 active: true
@@ -364,17 +364,36 @@ export class AuthsController {
 
     async getNumUsers(req: Request, res: Response, next: NextFunction) {
         try {
-            // Find the active user with having the same workspace_name and email as in req.body
-            let usersCount: any = await User.find({
-                email: req.query.email,
-                active: true
-            }).countDocuments();
 
-            // Send the status 200 response 
-            return res.status(200).json({
-                message: `There are ${usersCount} users with the email ${req.query.email}!`,
-                numUsers: usersCount
+            const { email, password } = req.query;
+
+            // Find the active user with having the same workspace_name and email as in req.body
+            let users: any = await User.find({
+                email: email,
+                active: true
             });
+
+            for (const user of users) {
+                const passDecrypted: any = await passwordHelper.decryptPassword(password+'', user.password);
+                if (!passDecrypted.password) {
+                    users.splice(users.findIndex(u => u._id == user._id), 1);
+                }
+            }
+
+            if (users.length > 1) {
+                // Send the status 200 response 
+                return res.status(200).json({
+                    message: `There are ${users.length} users with the email ${req.query.email}!`,
+                    numUsers: users.length
+                });
+            } else {
+                // Send the status 200 response 
+                return res.status(200).json({
+                    message: `There are ${users.length} users with the email ${req.query.email}!`,
+                    numUsers: users.length,
+                    workspace_name: users[0].workspace_name
+                });   
+            }
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
@@ -384,8 +403,8 @@ export class AuthsController {
         try {
 
             // Request query data
-            let email: any  = req.query.email;
-
+            const { email, password } = req.query;
+            
             // Find the active user with having the same workspace_name and email as in req.body
             let users: any = await User.find({
                 email: email,
@@ -397,7 +416,14 @@ export class AuthsController {
                 return sendError(res, new Error('Please enter a valid combination or user email or user might be disabled!'), 'Please enter a valid combination or workspace name and user email!', 401);
             }
 
-            const workspaces = users.map(u => { return u['_workspace'] });
+            for (const user of users) {
+                const passDecrypted: any = await passwordHelper.decryptPassword(password+'', user.password);
+                if (!passDecrypted.password) {
+                    users.splice(users.findIndex(u => u._id == user._id), 1);
+                }
+            }
+
+            const workspaces = users.map(user => { return user['_workspace'] });
 
             // Send the status 200 response 
             return res.status(200).json({

@@ -375,7 +375,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
    * This function recieves the output from the other component for creating column
    * @param column
    */
-  addColumn(column: any) {
+  async addColumn(column: any) {
 
     // Find the index of the column to check if the same named column exist or not
     let index = this.columns.findIndex((col: any) => (col._id || col) == column._id)
@@ -387,17 +387,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
     // If not found, then push the element
     else {
-
       // Create the Column asynchronously
-      this.createNewColumn(this.groupId, column.title);
-
-      // Assign the tasks to be []
-      column.tasks = [];
-
-      // Push the Column
-      this.columns.push(column);
-
-      this.newSectionEvent.emit(column);
+      await this.createNewColumn(this.groupId, column.title);
     }
 
   }
@@ -420,6 +411,16 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     utilityService.asyncNotification('Please wait we are creating a new column...', new Promise((resolve, reject) => {
       columnService.addColumn(groupId, columnName)
         .then((res) => {
+          let column = res['column'];
+
+          // Assign the tasks to be []
+          column.tasks = [];
+
+          // Push the Column
+          this.columns.push(column);
+
+          this.newSectionEvent.emit(column);
+
           resolve(utilityService.resolveAsyncPromise('New Column Created!'));
         })
         .catch((err) => {
@@ -584,7 +585,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     // Prepare Event
     let columnEvent = {
       post: task,
-      newColumn: (task.task._column._id || task.task._column),
+      newColumn: (task?.task?._column?._id || task?.task?._column),
       oldColumn: oldColumnId
     }
 

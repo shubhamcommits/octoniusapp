@@ -6,9 +6,6 @@ import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
 import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
-import { UserUpdateProfileDialogComponent } from 'src/app/common/shared/user-update-profile-dialog/user-update-profile-dialog.component';
-import {UserUpdateUserInformationDialogComponent} from 'src/app/common/shared/user-update-user-information-dialog/user-update-user-information-dialog.component'
-import {UserUpdateUserPersonalInformationDialogComponent} from 'src/app/common/shared/user-update-user-personal-information-dialog/user-update-user-personal-information-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -226,7 +223,8 @@ export class UtilityService {
    */
   resolveAsyncPromise(text: string){
     return {
-      body: text    }
+      body: text
+    }
   }
 
   /**
@@ -477,60 +475,6 @@ export class UtilityService {
     this.dialog.open(MemberDialogComponent, {
       width: '50%',
       //height: '75%',
-      hasBackdrop: true,
-      data: data
-    });
-  }
-
-  /**
-   * This function is responsible for opening a dialog to update User password.
-   */
-  openUpdateUserProfileModal(userData: any): void {
-    const data =
-      {
-        userData: userData,
-      };
-
-    this.dialog.open(UserUpdateProfileDialogComponent, {
-      width: '25%',
-      height: '60%',
-      hasBackdrop: true,
-      data: data
-    });
-  }
-
-
-   /**
-   * This function is responsible for opening a dialog to update User professional Information
-   */
-  openUpdateUserPersonalModal(userData: any) {
-    const data =
-      {
-        userData: userData,
-      };
-
-    return this.dialog.open(UserUpdateUserPersonalInformationDialogComponent, {
-      width: '25%',
-      height: '80%',
-      hasBackdrop: true,
-      data: data
-    });
-  }
-
-
-
-  /**
-   * This function is responsible for opening a dialog to update User Profile Information
-   */
-  openUpdateUserInformationModal(userData: any){
-    const data =
-      {
-        userData: userData,
-      };
-
-    return this.dialog.open(UserUpdateUserInformationDialogComponent, {
-      width: '25%',
-      height: '95%',
       hasBackdrop: true,
       data: data
     });

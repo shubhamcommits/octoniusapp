@@ -201,7 +201,7 @@ export class AuthUserDetailsComponent implements OnInit {
       if (email == null || password == null || email == '' || password == '') {
         this.utilityService.warningNotification('Insufficient data, kindly fill up all the fields correctly!');
       } else {
-        this.authenticationService.getNumberUsersByEmail(email.trim()).then(res => {
+        this.authenticationService.getNumberUsersByEmailAndPassword(email.trim(), password.trim()).then(res => {
           const numUsers = res['numUsers'] || 0;
           if (numUsers > 1) {
             this.email = email;
@@ -211,7 +211,8 @@ export class AuthUserDetailsComponent implements OnInit {
             // Preparing the user data
             let userData: Object = {
               email: email.trim(),
-              password: password.trim()
+              password: password.trim(),
+              workspace_name: res['workspace_name']
             }
             this.utilityService.asyncNotification('Please wait while we sign you in...',
               this.signInServiceFunction(userData));
