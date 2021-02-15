@@ -125,7 +125,6 @@ export class UsersControllers {
 
             // Updating the password value with the encrypted password
             body.password = passEncrypted.password;
-            console.log("Body password",body);
         }
 
         
