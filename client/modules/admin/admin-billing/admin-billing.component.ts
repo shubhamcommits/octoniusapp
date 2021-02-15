@@ -2,6 +2,7 @@ import { Component, OnInit, Injector, OnDestroy  } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { SubSink } from 'subsink';
+import moment from 'moment';
 
 @Component({
   selector: 'app-admin-billing',
@@ -35,9 +36,6 @@ export class AdminBillingComponent implements OnInit, OnDestroy  {
 
     let utilityService = this.injector.get(UtilityService)
 
-    // Starts the foreground loader
-    // utilityService.startForegroundLoader();
-
     // Subscribe to the change in workspace data from the socket server
     this.subSink.add(utilityService.currentWorkplaceData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
@@ -51,8 +49,16 @@ export class AdminBillingComponent implements OnInit, OnDestroy  {
     // Fetches the workspace data
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    // Stops the foreground loader
-    // return utilityService.stopForegroundLoader();
+    const workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    if ((this.userData?.role == 'admin' || this.userData?.role == 'owner')
+        && (workspaceData['time_remaining'] <= 0
+          || !workspaceData['billing']?.current_period_end
+          || (workspaceData['time_remaining'] > 0
+            && moment(workspaceData['billing']?.current_period_end).isBefore(moment())))
+        && !workspaceData['billing']?.subscription_id) {
+      utilityService.openTryOutNotification(workspaceData['time_remaining']);
+    }
   }
 
   ngOnDestroy(): void {

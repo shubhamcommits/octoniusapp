@@ -91,7 +91,7 @@ export class WorkspaceController {
             }
 
             // Add time remaining property to maintain the trial version of the user
-            workspace.time_remaining = moment(workspace.created_date).add(14, 'days').diff(moment(), 'days');
+            workspace.time_remaining = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days');
 
             // Add company members count
             workspace.company_members_count = membersCount;

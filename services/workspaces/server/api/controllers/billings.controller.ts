@@ -174,7 +174,7 @@ export class BillingControllers {
 
             // Fetch the current_period_end value
             const workspace: any = await Workspace.findOne({ _id: workspaceId })
-                .select('billing');
+                .select('billing created_date');
 
             let message = '';
             let status = true;
@@ -194,11 +194,11 @@ export class BillingControllers {
                     }
                 } else {
                     message = 'No payment yet';
-                    status = moment().isBetween(moment(workspace.created_date).add(-1, 'days'), moment(workspace.created_date).add(13, 'days'));
+                    status = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days') >= 0;
                 }
 
                 // Check to stripe if the payment was done in stripe
-                if (!status) {
+                if (!status && workspace.billing.subscription_id) {
 
                     const subscription = await stripe.subscriptions.retrieve(
                         workspace.billing.subscription_id
