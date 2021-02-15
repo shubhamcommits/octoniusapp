@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output,ChangeDetectionStrategy, Injector,EventEmitter } from '@angular/core';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment/moment';
+import { UserUpdateUserPersonalInformationDialogComponent } from 'src/app/common/shared/user-update-user-personal-information-dialog/user-update-user-personal-information-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-user-professional-information',
@@ -12,8 +12,8 @@ import moment from 'moment/moment';
 export class UserProfessionalInformationComponent implements OnInit {
 
   constructor(
-    private utilityService: UtilityService,
-    private injector: Injector
+    private injector: Injector,
+    private dialog: MatDialog
   ) { }
 
   // User Data Object
@@ -29,10 +29,21 @@ export class UserProfessionalInformationComponent implements OnInit {
   ngOnInit() {
   }
 
-  openUpdateModel(){
-    
-    const dialogRef = this.utilityService.openUpdateUserPersonalModal(this.userData);
+  /**
+   * This function is responsible for opening a dialog to update User professional Information
+   */
+  openUpdateModel() {
+    const data = {
+        userData: this.userData,
+    };
 
+    const dialogRef = this.dialog.open(UserUpdateUserPersonalInformationDialogComponent, {
+      width: '25%',
+      height: '80%',
+      hasBackdrop: true,
+      data: data
+    });
+    
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateData.emit(data);
     });

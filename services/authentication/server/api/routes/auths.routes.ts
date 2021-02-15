@@ -15,7 +15,7 @@ const routes = express.Router();
 routes.post('/sign-in', auth.signIn);
 
 // GET - get number of users by an email
-routes.get('/num-user-by-email', auth.getNumUsers);
+routes.get('/num-user-by-email-pwd', auth.getNumUsers);
 
 // GET - get user workspaces
 routes.get('/user-workspaces', auth.getUserWorkspaces);

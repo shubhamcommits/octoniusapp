@@ -63,7 +63,7 @@ export class AuthService {
    */
   checkWorkspaceName(workspaceData: any) {
     return this.httpClient.get(this.WORKSPACE_BASE_API_URL + '/check-availability', {
-      params :{
+      params: {
         workspace_name: workspaceData.workspace_name
       }
     }).toPromise();
@@ -116,14 +116,14 @@ export class AuthService {
 
   getUserByEmail(email: string) {
     // Call the API
-    return this.httpClient.get(this.AUTH_BASE_API_URL + '/email-exists', { params:{email: email}}).toPromise();
+    return this.httpClient.get(this.AUTH_BASE_API_URL + '/email-exists', { params: { email: email } }).toPromise();
   }
 
-  getNumberUsersByEmail(email: string) {
-    return this.httpClient.get(this.AUTH_BASE_API_URL + '/num-user-by-email', { params: { email: email}}).toPromise();
+  getNumberUsersByEmailAndPassword(email: string, password: string) {
+    return this.httpClient.get(this.AUTH_BASE_API_URL + '/num-user-by-email-pwd', { params: { email: email, password: password } }).toPromise();
   }
 
-  getUserWorkspaces(email: string) {
-    return this.httpClient.get(this.AUTH_BASE_API_URL + '/user-workspaces', {params: {email: email}}).toPromise();
+  getUserWorkspaces(email: string, password: string) {
+    return this.httpClient.get(this.AUTH_BASE_API_URL + '/user-workspaces', { params: { email: email, password: password } }).toPromise();
   }
 }
