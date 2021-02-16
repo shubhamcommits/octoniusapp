@@ -7,7 +7,7 @@
         <div
           [ngStyle]="{'position': 'absolute', 'width': '100%','height': 'gantt_container_height','top':'0px','left':'0px'}">
           <div style="width: 100%;">
-            <div class="projects-row" [ngStyle]="{'height': '170px'}">
+            <div class="projects-row" [ngStyle]="{'height': '170px','width':gantt_header_width}">
               <div *ngFor="let item of columns;let i = index" [ngClass]="i==0?'project-card is-clicked':'project-card'"
                 [ngStyle]="{'left': (i*333+30)+'px'}">
                 <div style="position: relative;width: 293px;height: 75px;">
@@ -66,16 +66,16 @@
                   <p class="project-name" [ngStyle]="{'width':item.data.title.length*15+'px'}">{{item.data.title}}</p>
                 </div>
 
-                <div *ngFor="let task of item.tasks; let i =index"  [ngStyle]="{'left':'0px','position':'absolute','top':(60*i+100)+'px',
+                <div *ngFor="let task of item.tasks; let j =index"  [ngStyle]="{'left':(-1*item.startingIndex*50)+'px','position':'absolute','top':(60*j+60)+'px',
                   'board':'1px solid gray','width':gantt_container_width}" cdkDropList class="example-list"
                   (cdkDropListDropped)="drop($event)">
-                  <div  [attr.taskIndex]="i" [attr.id]="task.id" [ngStyle]="{'left':(task.index_date*step)+'px','top':'0px','width'
+                  <div  [attr.taskIndex]="j" [attr.projectIndex]="i" [attr.id]="task.id" [ngStyle]="{'left':(task.index_date*step)+'px','top':'0px','width'
                     :(task.difference*step+step)+'px'}" (click)="openFullscreenModal(task.task)" [ngClass]="
                   task.custom_class == 'to do'? 'rectangle task_card status-todo'
                   : task.custom_class == 'in progress' ? 'rectangle task_card status-inprogress'
                   : task.custom_class == 'done' ? 'rectangle task_card status-done' : 'rectangle task_card status-todo'
                 " cdkDragLockAxis="x" cdkDrag cdkDragBoundary=".example-list" mwlResizable [validateResize]="validate"
-                    [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event,task.id,i)">
+                    [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event,task.id,j,i)">
                     <div class="resize-handle-left" [attr.id]="task.id+'l'" mwlResizeHandle
                       [resizeEdges]="{ left: true }"></div>
                     <div class="resize-handle-right" [attr.id]="task.id+'r'" mwlResizeHandle
@@ -92,7 +92,7 @@
                 </div>
 
               </div>
-              <!-- <div *ngFor="let task of tasksdata; let i =index" [ngStyle]="{'left':'0px','position':'absolute','top':(60*i+100)+'px',
+              <div *ngFor="let task of tasksdata; let i =index" [ngStyle]="{'left':'0px','position':'absolute','top':((tasksStartingHeight)+(60*i+100))+'px',
               'board':'1px solid gray','width':gantt_container_width}" cdkDropList class="example-list"
                   (cdkDropListDropped)="drop($event)">
                   <div [attr.taskIndex]="i" [attr.id]="task.id" [ngStyle]="{'left':(task.index_date*step)+'px','top':'0px','width'
@@ -115,7 +115,7 @@
                       </div>
                     </div>
                   </div>
-                </div> -->
+                </div>
             </div>
           </div>
         </div>
