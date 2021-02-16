@@ -72,7 +72,7 @@ export class SearchHeaderComponent implements OnInit {
               this.searchedPosts.push(post);
             });
           }
-          resolve();
+          resolve({});
         }).catch((err) => {
           reject();
         });
@@ -92,7 +92,7 @@ export class SearchHeaderComponent implements OnInit {
               }
             });
           }
-          resolve();
+          resolve({});
         }).catch((err) => {
           reject();
         })
@@ -118,7 +118,7 @@ export class SearchHeaderComponent implements OnInit {
               this.searchedUsers.push(user);
             });
           }
-          resolve();
+          resolve({});
         }).catch((err)=>{
           reject();
         })
@@ -147,7 +147,7 @@ export class SearchHeaderComponent implements OnInit {
               this.searchedFiles.push(file);
             });
           }
-          resolve();
+          resolve({});
         }).catch((err)=>{
           reject();
         })
