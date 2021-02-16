@@ -43,6 +43,15 @@
                 </app-edit-column>
                 <!-- EDIT COLUMN ENDS -->
 
+                <!-- COLUMN STATS SECTION STARTS -->
+                <div class="project-container">
+                  Done Tasks
+                  <span class="float-right">
+                    {{ column?.numDoneTasks }}
+                  </span>
+                </div>
+                <!-- COLUMN STATS SECTION ENDS -->
+
                 <!-- COLUMN PROJECT SECTION STARTS -->
                 <div class="project-container" *ngIf="column?.project_type">
                   <div>

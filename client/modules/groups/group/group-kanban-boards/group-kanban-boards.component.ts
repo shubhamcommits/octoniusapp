@@ -667,6 +667,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         // Find the hightes due date on the tasks of the column
         col.real_due_date = moment(Math.max(...col.tasks.map(post => moment(post.task.due_to))));
 
+        // Calculate number of done tasks
+        col.numDoneTasks = col.tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;
+
         return;
       }
     });
