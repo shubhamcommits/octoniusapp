@@ -135,14 +135,7 @@ export class GroupTasksListViewComponent implements OnChanges {
     else {
 
       // Create the Column asynchronously
-      this.createNewSection(this.groupId, section.title)
-
-      // Assign the tasks to be []
-      section.tasks = [];
-      section.custom_fields_to_show = ['priority'];
-
-      // Push the Column
-      this.sections.push(section)
+      this.createNewSection(this.groupId, section.title);
 
       this.newSectionEvent.emit(section);
     }
@@ -167,6 +160,15 @@ export class GroupTasksListViewComponent implements OnChanges {
     utilityService.asyncNotification('Please wait we are creating a new section...', new Promise((resolve, reject) => {
       columnService.addColumn(groupId, columnName)
         .then((res) => {
+          let section = res['column'];
+
+          // Assign the tasks to be []
+          section.tasks = [];
+          section.custom_fields_to_show = ['priority'];
+    
+          // Push the Column
+          this.sections.push(section);
+
           resolve(utilityService.resolveAsyncPromise('New Section Created!'));
         })
         .catch((err) => {
