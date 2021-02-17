@@ -1,6 +1,6 @@
 <div class="board">
   <div class="board-wrapper">
-    <div *ngIf="tasksdata?.length > 0" id="wrapper-fixed-container"
+    <div *ngIf="tasksdata?.length > 0 || projectsdata?.length > 0" id="wrapper-fixed-container"
       [ngStyle]="{'position': 'fixed','margin-top': '15px'}">
       <div style="overflow:scroll;overflow-x: hidden">
         <div class="projects-row" [ngStyle]="{'height': '100px','width':gantt_header_width}">
@@ -69,11 +69,11 @@
               <!-- <div *ngFor="let item of projectsdata;let i = index" [attr.id]="item.id" [ngStyle]="{'top':(item.startheight-76)+'px','left': (item.startingIndex*50)+'px','position':'absolute'}"> -->
               <div *ngFor="let item of projectsdata;let i = index" [attr.id]="item.id" [ngStyle]="{'top':(item.startheight)+'px','left': (item.startingIndex*50)+'px','position':'absolute','height':(60*item.noOfTasks+100)+'px',
                 'border-left':'2px solid #26A69A','border-right':'2px dashed #005FD5','width':(item.differencedays*50)+'px'}">
-                
+
                 <div *ngIf="item.taskAfterDueDate" [ngStyle]="{'position':'absolute',left:(item.differencedays*50)+'px',
                 'height':(60*item.noOfTasks+100)+'px','width':(item.taskAfterDueDate*50)+'px','border-right':'2px dashed #EB5757'}"></div>
                 <div>
-                
+
                 <!-- <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div> -->
                   <p class="project-name" [ngStyle]="{'width':item.data.title.length*15+'px'}">{{item.data.title}}</p>
                 </div>
@@ -141,7 +141,7 @@
         <!-- </div> -->
       </div>
     </div>
-    <div *ngIf="!tasksdata || tasksdata?.length <= 0">
+    <div *ngIf="(!tasksdata || tasksdata?.length <= 0) && (!projectsdata || projectsdata?.length <= 0)">
       <img src='assets/images/placeholder_timeline.svg' style="width: 60%; margin:60px 150px">
     </div>
   </div>
