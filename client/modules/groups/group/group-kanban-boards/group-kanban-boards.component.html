@@ -45,9 +45,9 @@
 
                 <!-- COLUMN STATS SECTION STARTS -->
                 <div class="project-container">
-                  Done Tasks
+                  {{ column?.tasks?.length }} Tasks
                   <span class="float-right">
-                    {{ column?.numDoneTasks }}
+                    {{ column?.numDoneTasks }} Done
                   </span>
                 </div>
                 <!-- COLUMN STATS SECTION ENDS -->
@@ -60,7 +60,7 @@
                       {{ formateDate(column?.start_date, "Do, MMM") }}
                       <i class="material-icons">arrow_right_alt</i>
                       {{ formateDate(column?.due_date, "Do, MMM") }}
-                      
+
                     </span>
                   </div>
                   <br/>
