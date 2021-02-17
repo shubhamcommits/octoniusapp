@@ -308,6 +308,32 @@ export class WorkspaceController {
                 workspace: workspaceUpdate
             })
 
+            // Send new workspace to the mgmt portal
+            let workspaceMgmt = {
+                _id: "",
+                company_name: newWorkspace.company_name,
+                workspace_name: newWorkspace.workspace_name,
+                owner_email: newWorkspace.owner_email,
+                owner_first_name: newWorkspace.owner_first_name,
+                owner_last_name: newWorkspace.owner_last_name,
+                _owner_remote_id: user._id,
+                environment: "PROD", // TODO
+                num_members: 1,
+                num_invited_users: 0,
+                num_groups: 1,
+                created_date: workspace.created_date,
+                // billing: {
+                //     "subscription_id": "",
+                //     "current_period_end": "",
+                //     "scheduled_cancellation": "",
+                //     "quantity": ""
+                // }
+            }
+            http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
+                API_KEY: process.env.MANAGEMENT_API_KEY,
+                workspaceData: workspaceMgmt
+            });
+
             // Send the status 200 response
             return res.status(200).json({
                 message: 'Workspace created!',
@@ -525,6 +551,11 @@ export class WorkspaceController {
 
             // Delete the workspace
             workspace = await Workspace.findByIdAndDelete(workspaceId);
+
+            // Send new workspace to the mgmt portal
+            http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, { data:
+                { API_KEY: process.env.MANAGEMENT_API_KEY }
+            });
 
             // Send the status 200 response 
             return res.status(200).json({
