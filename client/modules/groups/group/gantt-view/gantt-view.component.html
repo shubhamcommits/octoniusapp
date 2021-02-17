@@ -2,33 +2,37 @@
   <div class="board-wrapper">
     <div *ngIf="tasksdata?.length > 0" id="wrapper-fixed-container"
       [ngStyle]="{'position': 'fixed','margin-top': '15px'}">
+      <div style="overflow:scroll;overflow-x: hidden">
+        <div class="projects-row" [ngStyle]="{'height': '100px','width':gantt_header_width}">
+          <div *ngFor="let item of columns;let i = index" [ngClass]="i==0?'project-card is-clicked':'project-card'"
+            [ngStyle]="{'left': (i*333+30)+'px','cursor':'pointer'}" (click)="scroll(item._id)">
+            <div style="position: relative;width: 293px;height: 75px;">
+              <p class="text-capitalize project-title" [ngbTooltip]="item?.title">
+                <span class="material-icons" *ngIf="item?.project_type">watch_later</span>
+                {{ item?.title | truncatetext:20 }}
+              </p>
+              <div *ngIf="item?.start_date && item?.due_date">
+                <span class="planed-date">
+                  <span [ngStyle]="{'color': i == 0 ? '#26A69A' : 'initial' }">{{ formateDate(item?.start_date, "Do,
+                    MMM") }}</span>
+                  <span [ngStyle]="{'color': i == 0 ? '#005FD5' : 'initial' }">
+                    <i class="material-icons">arrow_right_alt</i>
+                    {{ formateDate(item?.due_date, "Do, MMM") }}
+                  </span>
+
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="fixed-container-gantt"
         [ngStyle]="{'position': 'relative','width': '100%','height': screen_height,'overflow': 'scroll'}">
         <div
           [ngStyle]="{'position': 'absolute', 'width': '100%','height': 'gantt_container_height','top':'0px','left':'0px'}">
           <div style="width: 100%;">
-            <div class="projects-row" [ngStyle]="{'height': '170px','width':gantt_header_width}">
-              <div *ngFor="let item of columns;let i = index" [ngClass]="i==0?'project-card is-clicked':'project-card'"
-                [ngStyle]="{'left': (i*333+30)+'px'}">
-                <div style="position: relative;width: 293px;height: 75px;">
-                  <p class="text-capitalize project-title" [ngbTooltip]="item?.title">
-                    <span class="material-icons" *ngIf="item?.project_type">watch_later</span>
-                    {{ item?.title | truncatetext:20 }}
-                  </p>
-                  <div *ngIf="item?.start_date && item?.due_date">
-                    <span class="planed-date">
-                      <span [ngStyle]="{'color': i == 0 ? '#26A69A' : 'initial' }">{{ formateDate(item?.start_date, "Do,
-                        MMM") }}</span>
-                      <span [ngStyle]="{'color': i == 0 ? '#005FD5' : 'initial' }">
-                        <i class="material-icons">arrow_right_alt</i>
-                        {{ formateDate(item?.due_date, "Do, MMM") }}
-                      </span>
-
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div [ngStyle]="{'height':'30px','top':'111px','position':'absolute'}">
+            <div style="height: 52px;top: 0px;position: sticky;z-index: 10000;background-color: white;">
+              <div [ngStyle]="{'height':'30px','top':'0px','position':'sticky','z-index':'100000'}">
                 <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div>
                 <p [attr.width]="step" class="first_month">{{dates[0]?.month}}</p>
                 <div *ngFor="let item of dates; let i =index" [ngStyle]="{'left':(i*50)+'px','height':'30px','background-color'
@@ -36,33 +40,41 @@
                   <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">
                     {{item.month}}
                   </p>
-                  <p [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}"
+                  <p *ngIf="i !== projectsdata[0].startingIndex" [ngStyle]="{'color':item.day === 1 ? 'red':'initial','background-color': ((i > projectsdata[0].startingIndex) && (i < projectsdata[0].taskAfterDueDateStart))?'#eaf6f5':''}"
                     [ngClass]="i==current_date_index?'curretn_date':''" class="day">
+                    {{item.day}}</p>
+                  <p *ngIf="i === projectsdata[0].startingIndex" [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}"
+                    class="project_start_date day">
                     {{item.day}}</p>
                 </div>
               </div>
             </div>
             <div id="main_container" [attr.width]="gantt_container_width"
-              [ngStyle]="{'height':gantt_container_height,'margin-top':'-75px'}">
+              [ngStyle]="{'height':gantt_container_height,'margin-top':'-76px'}">
               <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div>
-              <!-- <p [attr.width]="step" class="first_month">{{dates[0]?.month}}</p> -->
               <div *ngFor="let item of dates; let i =index" [ngStyle]="{'left':(i*50)+'px','height':gantt_container_height,'background-color'
                 : item.isweekend?'#fff':'initial'}" class="date_div">
-                <!-- <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">
-                    {{item.month}}
-                  </p> -->
-                <!-- <p [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}"
-                    [ngClass]="i==current_date_index?'curretn_date':''" class="day">
-                    {{item.day}}</p> -->
               </div>
               <div *ngFor="let item of projectsdata;let i = index" class="project-timeline"
                 [ngStyle]="{'top':item.startheight+'px','left': (item.startingIndex*50)+'px','position':'absolute','height':(60*item.noOfTasks+100)+'px',
                 'border-left':'1px solid #26A69A','border-right':'1px dotted #005FD5','width':(item.differencedays*50)+'px'}">
+                <div *ngIf="item.taskAfterDueDate" [ngStyle]="{'position':'absolute',left:(item.differencedays*50)+'px','background-color':'red',
+                'height':(60*item.noOfTasks+100)+'px','width':(item.taskAfterDueDate*50)+'px','border-right':'2px dashed #EB5757'}"></div>
               </div>
-              <div *ngFor="let item of projectsdata;let i = index"
-                [ngStyle]="{'top':item.startheight+'px','left': (item.startingIndex*50)+'px','position':'absolute','height':(60*item.noOfTasks+100)+'px',
-                'border-left':'1px solid #26A69A','border-right':'1px dotted #005FD5','width':(item.differencedays*50)+'px'}">
+              <div *ngFor="let item of projectsdata;let i = index">
+                <div class="pvl" [ngStyle]="{'left':(item.startingIndex*step)+'px','height':((item.startheight)+(60*item.noOfTasks))+'px','border-left': i===0?'2px solid #26A69A':'1px solid #9D9FA2'}"></div>
+                <div *ngIf="i!== 0" class="pvl" [ngStyle]="{'left':(item.taskAfterDueDateStart*step)+'px','height':((item.startheight)+(60*item.noOfTasks))+'px','border-left':'1px solid #9D9FA2'}"></div>
+                <div *ngIf="i === 0" class="pvl" [ngStyle]="{'left':(item.taskAfterDueDateStart*step-2)+'px','height':'50px','border-left': '2px dashed #005FD5'}"></div>
+              </div>
+              <!-- <div *ngFor="let item of projectsdata;let i = index" [attr.id]="item.id" [ngStyle]="{'top':(item.startheight-76)+'px','left': (item.startingIndex*50)+'px','position':'absolute'}"> -->
+              <div *ngFor="let item of projectsdata;let i = index" [attr.id]="item.id" [ngStyle]="{'top':(item.startheight)+'px','left': (item.startingIndex*50)+'px','position':'absolute','height':(60*item.noOfTasks+100)+'px',
+                'border-left':'2px solid #26A69A','border-right':'2px dashed #005FD5','width':(item.differencedays*50)+'px'}">
+                
+                <div *ngIf="item.taskAfterDueDate" [ngStyle]="{'position':'absolute',left:(item.differencedays*50)+'px',
+                'height':(60*item.noOfTasks+100)+'px','width':(item.taskAfterDueDate*50)+'px','border-right':'2px dashed #EB5757'}"></div>
                 <div>
+                
+                <!-- <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div> -->
                   <p class="project-name" [ngStyle]="{'width':item.data.title.length*15+'px'}">{{item.data.title}}</p>
                 </div>
 
@@ -92,6 +104,7 @@
                 </div>
 
               </div>
+              <!-- </div> -->
               <div *ngFor="let task of tasksdata; let i =index" [ngStyle]="{'left':'0px','position':'absolute','top':((tasksStartingHeight)+(60*i+100))+'px',
               'board':'1px solid gray','width':gantt_container_width}" cdkDropList class="example-list"
                   (cdkDropListDropped)="drop($event)">
@@ -116,6 +129,12 @@
                     </div>
                   </div>
                 </div>
+                <div #target style="    z-index: 1000000;
+                position: absolute;
+                top: 400px;
+                left: 50px;
+                width: 200px;
+                height: 100px;"> Your target</div>
             </div>
           </div>
         </div>

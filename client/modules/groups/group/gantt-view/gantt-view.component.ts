@@ -66,6 +66,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     await this.generateNavDate();
     await this.add_index();
     await this.parsedProjects(this.columns);
+    await this.taskAfterDueDate();
     console.log("tasks oninit",this.tasksdata,this.projectsdata);
     await this.get_current_date_index()
     var ganttHeight = (100 + this.tasksdata.length * 60) + (this.tasksStartingHeight);
@@ -77,7 +78,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       this.gantt_container_height = screenHeight + 'px';
     }
     this.screen_height = screenHeight + 'px';
-    document.getElementsByTagName("body")[0].style.overflow = 'hidden';
+    // document.getElementsByTagName("body")[0].style.overflow = 'hidden';
   }
 
   ngAfterViewInit() {
@@ -102,7 +103,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       this.projectsdata.forEach(project => {
         for (let i = 0; i < project.tasks.length; i++) {
           if (project.tasks[i] && project.tasks[i].dependency) {
-            console.log("am here",project.tasks[i])
             this.linesArray.push(new LeaderLine(document.getElementById(project.tasks[i]?.dependency), document.getElementById(project.tasks[i]?.id), {
               startPlug: 'disc',
               startSocket: 'right',
@@ -139,7 +139,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   //Drop event on drag
   drop(event: CdkDragDrop<string[]>) {
-    // console.log("event",event.item.element.nativeElement);
     if(event.item.element.nativeElement.attributes['projectindex']){
       var projectId = event.item.element.nativeElement.attributes['projectindex'].nodeValue;
     }
@@ -147,7 +146,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       var project = this.projectsdata[projectId];
       var Taskindex = event.item.element.nativeElement.attributes['taskindex'].nodeValue;
       var task = project.tasks[Taskindex];
-      // console.log("tasks events",task);
     } else {
       var Taskindex = event.item.element.nativeElement.attributes['taskindex'].nodeValue;
       var task = this.tasksdata[event.item.element.nativeElement.attributes['taskindex'].nodeValue];
@@ -219,7 +217,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   //Resize Event
   onResizeEnd(event: ResizeEvent, Taskid: string, Taskindex:number,projectIndex?:number): void {
 
-    console.log("Data to resize",Taskid,Taskindex,projectIndex);
     if (event.edges?.right) {
       var mod = Number(event.edges?.right) % 50;
 
@@ -243,7 +240,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       var newWidth = clientWidth + result + 4;
       document.getElementById(Taskid).style.width = newWidth + 'px';
       if(projectIndex>=0){
-        console.log("this.projectsdata[projectIndex].tasks[Taskindex]",this.projectsdata[projectIndex].tasks[Taskindex]);
         var newEndDate = moment.utc(this.projectsdata[projectIndex].tasks[Taskindex].end,"YYYY-MM-DD").add(multiple,'days');
         this.projectsdata[projectIndex].tasks[Taskindex].end = newEndDate.format("YYYY-MM-DD");
         this.projectsdata[projectIndex].tasks[Taskindex].task.task.due_to = newEndDate.format("YYYY-MM-DD");
@@ -284,7 +280,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       var newLeft = offsetLeft + result;
       document.getElementById(Taskid).style.left = newLeft + 'px';
       if(projectIndex>=0){
-        console.log("this.projectsdata[projectIndex].tasks[Taskindex]",this.projectsdata[projectIndex].tasks[Taskindex]);
         var newStartDate = moment.utc(this.projectsdata[projectIndex].tasks[Taskindex].start,"YYYY-MM-DD").add(multiple,'days');
         this.projectsdata[projectIndex].tasks[Taskindex].task.task.start_date = newStartDate.format("YYYY-MM-DD");
         this.projectsdata[projectIndex].tasks[Taskindex].start = newStartDate.format("YYYY-MM-DD");
@@ -312,7 +307,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     const enddate = this.datePipe.transform(end, "yyyy-MM-dd");
     this.postService.updateGanttTasksDates(task['id'], groupid, enddate, startdate, sday, eday)
       .then((res) => {
-        console.log("Responce",res['posts']);
         this.tasks = res['posts'];
         
         this.refreshChart();
@@ -389,6 +383,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     await this.generateNavDate();
     await this.add_index();
     await this.parsedProjects(this.columns);
+    await this.taskAfterDueDate();
     console.log("tasks refresh",this.tasksdata,this.projectsdata);
     await this.get_current_date_index()
     var ganttHeight = (100 + this.tasksdata.length * 60) + (this.tasksStartingHeight);
@@ -478,6 +473,23 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   }
 
+  scroll(id: string) {
+    const el=document.getElementById(id);
+    if(el){
+      console.log("element",el,el.style.top.substring(0,el.style.top.length-2),el.style.left.substring(0,el.style.left.length-2));
+      const elTop = Number(el.style.top.substring(0,el.style.top.length-2))-110;
+      const elLeft = Number(el.style.left.substring(0,el.style.left.length-2));
+      document.getElementById('fixed-container-gantt').scrollTo({top: elTop,
+        left: elLeft,
+        behavior: 'smooth'});
+      // el.scrollIntoView({ behavior: 'smooth' });
+
+      console.log("element",el.scrollTop);
+  
+    }
+   
+}
+
   async parsedProjects(columnsData:any){
 
     let index=0;
@@ -492,11 +504,13 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           noOfTasks:column?.tasks?.length || 0,
           id:column._id,
           startheight: index===0?100:(60*this.projectsdata[index-1].noOfTasks+260),
-          tasks:[]
+          tasks:[],
+          taskAfterDueDate:undefined,
+          taskAfterDueDateStart:this.find_index(moment(column.due_date).format("YYYY-MM-DD"))
         }
         for (let i = 0; i < this.tasksdata.length; i++) {
-          // console.log(this.tasksdata[i],column._id,this.tasksdata[i]?.projectId+'' == column._id+'')
-           if(this.tasksdata[i]?.projectId+'' == column._id+''){
+
+          if(this.tasksdata[i]?.projectId+'' == column._id+''){
              newColumnsData.tasks.push(this.tasksdata[i]);
              tasktobedeleted.push(i);
            }  
@@ -514,7 +528,18 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       const last_project = this.projectsdata[this.projectsdata.length-1];
       this.tasksStartingHeight = (last_project.startheight)+(60*last_project.noOfTasks+100);
     }
-    
+  }
+
+  async taskAfterDueDate(){
+    for (let index = 0; index < this.projectsdata.length; index++) {
+      for (let i = 0; i < this.projectsdata[index].tasks.length; i++) {
+        if(moment(moment.utc(this.projectsdata[index].tasks[i].end).format("YYYY-MM-DD")).isAfter(moment.utc(this.projectsdata[index].data.due_date).format("YYYY-MM-DD")))
+        {
+          this.projectsdata[index].taskAfterDueDate = moment(moment.utc(this.projectsdata[index].tasks[i].end).format("YYYY-MM-DD")).diff(moment.utc(this.projectsdata[index].data.due_date).format("YYYY-MM-DD"),'days');
+        }  
+      }
+      
+    }
   }
 
   //Parsing the data

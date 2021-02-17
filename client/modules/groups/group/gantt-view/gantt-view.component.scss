@@ -32,6 +32,11 @@
     width: 4px;
     margin-left: 10px;
 }
+.pvl{
+    position: absolute;
+    top: 45px;
+    width: 4px;
+}
 #main_container{
     position: relative;
     // background-color:#ffffff;
@@ -86,13 +91,24 @@ $dark-sky-blue: #4a90e2;
 }
 .curretn_date{
     color: white !important;
-    background: rgb(74, 144, 226);
+    background: rgb(74, 144, 226) !important;
     width: 50px;
     height: 30px;
     top: -6px;
     padding-top: 4px;
     position: absolute;
     border-radius: 4px;
+}
+
+.project_start_date{
+  color: white !important;
+  background-color: #26A69A;
+  width: 50px;
+  height: 30px;
+  top: -6px;
+  padding-top: 4px;
+  position: absolute;
+  border-radius: 4px;
 }
 .menu_icon{
     position: absolute;
