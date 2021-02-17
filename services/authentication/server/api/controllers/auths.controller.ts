@@ -285,6 +285,55 @@ export class AuthsController {
                         'billing.quantity': usersCount
                     });
 
+                    // Send workspace to the mgmt portal
+                    // Count all the groups present inside the workspace
+                    const groupsCount: number = await Group.find({ $and: [
+                        { group_name: { $ne: 'personal' } },
+                        { _workspace: workspace._id }
+                    ]}).countDocuments();
+
+                    let workspaceMgmt = {
+                        _id: workspace._id,
+                        company_name: workspace.company_name,
+                        workspace_name: workspace.workspace_name,
+                        owner_email: workspace.owner_email,
+                        owner_first_name: workspace.owner_first_name,
+                        owner_last_name: workspace.owner_last_name,
+                        _owner_remote_id: workspace._owner,
+                        environment: "PROD", // TODO
+                        num_members: usersCount,
+                        num_invited_users: workspace.invited_users.length,
+                        num_groups: groupsCount,
+                        created_date: workspace.created_date,
+                        billing: {
+                            subscription_id: subscription.id,
+                            current_period_end: subscription.current_period_end,
+                            scheduled_cancellation: false,
+                            quantity: subscription.quantity
+                        }
+                    }
+                    http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                        API_KEY: process.env.MANAGEMENT_API_KEY,
+                        workspaceData: workspaceMgmt
+                    });
+
+                    // Send user to the mgmt portal
+                    let userMgmt = {
+                        _id: user._id,
+                        active: user.active,
+                        email: user.email,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        _workspace: workspace._id,
+                        environment: "PROD", // TODO
+                        created_date: user.created_date
+                    }
+
+                    http.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
+                        API_KEY: process.env.MANAGEMENT_API_KEY,
+                        userData: userMgmt
+                    });
+
                     // Signup user and return the token
                     return res.status(200).json({
                         message: `Welcome to ${workspace_name} Workspace!`,

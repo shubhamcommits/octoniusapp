@@ -29,7 +29,7 @@ const addUserToSubscription = async (stripe: any, subscriptionId: any, priceId: 
     ]}).countDocuments();
 
     let workspaceMgmt = {
-        _id: "",
+        _id: workspaceId,
         company_name: workspace.company_name,
         workspace_name: workspace.workspace_name,
         owner_email: workspace.owner_email,
@@ -74,7 +74,7 @@ const removeUserFromSubscription = async (stripe: any, subscriptionId: any, pric
         'billing.quantity': usersCount
     });
 
-    // Send new workspace to the mgmt portal
+    // Send workspace to the mgmt portal
     // Count all the groups present inside the workspace
     const groupsCount: number = await Group.find({ $and: [
         { group_name: { $ne: 'personal' } },
@@ -82,7 +82,7 @@ const removeUserFromSubscription = async (stripe: any, subscriptionId: any, pric
     ]}).countDocuments();
 
     let workspaceMgmt = {
-        _id: "",
+        _id: workspaceId,
         company_name: workspace.company_name,
         workspace_name: workspace.workspace_name,
         owner_email: workspace.owner_email,

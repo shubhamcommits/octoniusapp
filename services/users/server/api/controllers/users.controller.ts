@@ -160,6 +160,23 @@ export class UsersControllers {
                 return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
             }
 
+            // Send user to the mgmt portal
+            let userMgmt = {
+                _id: user._id,
+                active: user.active,
+                email: user.email,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                _workspace: user._workspace,
+                environment: "PROD", // TODO
+                created_date: user.created_date
+            }
+
+            http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
+                API_KEY: process.env.MANAGEMENT_API_KEY,
+                userData: userMgmt
+            });
+
             // Send status 200 response
             return res.status(200).json({
                 message: 'User Profile updated!',
@@ -217,7 +234,7 @@ export class UsersControllers {
             ]}).countDocuments();
 
             let workspaceMgmt = {
-                _id: "",
+                _id: workspaceId,
                 company_name: workspace.company_name,
                 workspace_name: workspace.workspace_name,
                 owner_email: workspace.owner_email,
@@ -648,7 +665,7 @@ export class UsersControllers {
         ]}).countDocuments();
 
         let workspaceMgmt = {
-            _id: "",
+            _id: workspace._id,
             company_name: workspace.company_name,
             workspace_name: workspace.workspace_name,
             owner_email: workspace.owner_email,

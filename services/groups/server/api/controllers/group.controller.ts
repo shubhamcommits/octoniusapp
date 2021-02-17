@@ -374,7 +374,7 @@ export class GroupController {
             ] }).countDocuments();
 
             let workspaceMgmt = {
-                _id: "",
+                _id: workspace._id,
                 company_name: workspace.company_name,
                 workspace_name: workspace.workspace_name,
                 owner_email: workspace.owner_email,
@@ -512,7 +512,7 @@ export class GroupController {
             ] }).countDocuments();
 
             let workspaceMgmt = {
-                _id: "",
+                _id: workspace._id,
                 company_name: workspace.company_name,
                 workspace_name: workspace.workspace_name,
                 owner_email: workspace.owner_email,

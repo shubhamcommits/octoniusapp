@@ -126,7 +126,7 @@ export class BillingControllers {
             ]}).countDocuments();
 
             let workspaceMgmt = {
-                _id: "",
+                _id: workspaceId,
                 company_name: workspaceUpdated.company_name,
                 workspace_name: workspaceUpdated.workspace_name,
                 owner_email: workspaceUpdated.owner_email,
@@ -420,7 +420,7 @@ export class BillingControllers {
             ] }).countDocuments();
 
             let workspaceMgmt = {
-                _id: "",
+                _id: workspace._id,
                 company_name: workspace.company_name,
                 workspace_name: workspace.workspace_name,
                 owner_email: workspace.owner_email,
@@ -505,7 +505,7 @@ export class BillingControllers {
             ] }).countDocuments();
 
             let workspaceMgmt = {
-                _id: "",
+                _id: workspace._id,
                 company_name: workspace.company_name,
                 workspace_name: workspace.workspace_name,
                 owner_email: workspace.owner_email,
@@ -608,7 +608,7 @@ export class BillingControllers {
             ]}).countDocuments();
 
             let workspaceMgmt = {
-                _id: "",
+                _id: updatedWorkspace._id,
                 company_name: updatedWorkspace.company_name,
                 workspace_name: updatedWorkspace.workspace_name,
                 owner_email: updatedWorkspace.owner_email,
@@ -830,7 +830,7 @@ export class BillingControllers {
             ] }).countDocuments();
 
             let workspaceMgmt = {
-                _id: "",
+                _id: workspace._id,
                 company_name: workspace.company_name,
                 workspace_name: workspace.workspace_name,
                 owner_email: workspace.owner_email,
