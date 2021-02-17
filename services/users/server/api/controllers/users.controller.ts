@@ -1,6 +1,7 @@
 import { Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper } from '../../utils';
+import http from 'axios';
 import moment from 'moment';
 
 /*  ===================
@@ -201,6 +202,45 @@ export class UsersControllers {
 
             await userTo.save();
             await userBY.save();
+
+            // Send new workspace to the mgmt portal
+            // Count all the users present inside the workspace
+            const usersCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId }
+            ]}).countDocuments();
+
+            // Count all the groups present inside the workspace
+            const groupsCount: number = await Group.find({ $and: [
+                { group_name: { $ne: 'personal' } },
+                { _workspace: workspaceId }
+            ]}).countDocuments();
+
+            let workspaceMgmt = {
+                _id: "",
+                company_name: workspace.company_name,
+                workspace_name: workspace.workspace_name,
+                owner_email: workspace.owner_email,
+                owner_first_name: workspace.owner_first_name,
+                owner_last_name: workspace.owner_last_name,
+                _owner_remote_id: workspace._owner,
+                environment: "PROD", // TODO
+                num_members: usersCount,
+                num_invited_users: workspace.invited_users.length,
+                num_groups: groupsCount,
+                created_date: workspace.created_date,
+                billing: {
+                    subscription_id: workspace.billing.subscription_id,
+                    current_period_end: workspace.billing.current_period_end,
+                    scheduled_cancellation: workspace.billing.scheduled_cancellation,
+                    quantity: usersCount
+                }
+            }
+
+            http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                API_KEY: process.env.MANAGEMENT_API_KEY,
+                workspaceData: workspaceMgmt
+            });
             
             // Send status 200 response
             return res.status(200).json({
@@ -599,6 +639,43 @@ export class UsersControllers {
         stripe.subscriptionItems.update(workspaceUpdated['billing'].subscription_item_id, {
             quantity: usersCount
         });
+
+        // Send new workspace to the mgmt portal
+        // Count all the groups present inside the workspace
+        const groupsCount: number = await Group.find({ $and: [
+            { group_name: { $ne: 'personal' } },
+            { _workspace: workspace._id }
+        ]}).countDocuments();
+
+        let workspaceMgmt = {
+            _id: "",
+            company_name: workspace.company_name,
+            workspace_name: workspace.workspace_name,
+            owner_email: workspace.owner_email,
+            owner_first_name: workspace.owner_first_name,
+            owner_last_name: workspace.owner_last_name,
+            _owner_remote_id: workspace._owner,
+            environment: "PROD", // TODO
+            num_members: usersCount,
+            num_invited_users: workspace.invited_users.length,
+            num_groups: groupsCount,
+            created_date: workspace.created_date,
+            billing: {
+                subscription_id: workspace.billing.subscription_id,
+                current_period_end: workspace.billing.current_period_end,
+                scheduled_cancellation: workspace.billing.scheduled_cancellation,
+                quantity: usersCount
+            }
+        }
+
+        http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+            API_KEY: process.env.MANAGEMENT_API_KEY,
+            workspaceData: workspaceMgmt
+        });
+
+        http.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {data: {
+            API_KEY: process.env.MANAGEMENT_API_KEY
+        }});
 
         // Send the status 200 response 
         return res.status(200).json({
