@@ -130,11 +130,10 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         if(Number(values[0])<left || Number(values[1]<top )){
           linesAll[index].setAttribute('style','display:none');
         } else {
-          linesAll[index].setAttribute('style',`left:${values[0]};top: ${values[1]}; width: ${values[2]}; height: ${values[3]};`);
+          linesAll[index].setAttribute('style',`left:${values[0]}px;top: ${values[1]}px; width: ${values[2]}px; height: ${values[3]}px;`);
         }
         
       }
-
       line.position();
     });
   }
