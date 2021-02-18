@@ -95,7 +95,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     }
   }
 
-  formateDate(date: any, format: string){
+  formateDate(date: any, format: string) {
     return date ? moment.utc(date).format(format) : '';
   }
 
@@ -697,7 +697,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     } else {
       this.columns[oldColumnIndex].real_due_date = moment(Math.max(...this.columns[oldColumnIndex].tasks.map(post => moment(post.task.due_to))));
     }
-    
+
     // Add the task into the new column
     this.columns[newColumnIndex]['tasks'].unshift(columnEvent.post);
     // Find the highest due date on the tasks of the column

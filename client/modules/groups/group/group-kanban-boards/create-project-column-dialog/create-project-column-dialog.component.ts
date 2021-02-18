@@ -17,7 +17,7 @@ export class CreateProjectColumnDialogComponent implements OnChanges {
   column: any;
   startDate: any;
   dueDate: any;
-  
+
   constructor(
     public utilityService: UtilityService,
     private columnService: ColumnService,
@@ -29,6 +29,8 @@ export class CreateProjectColumnDialogComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.column.projectType = this.column?.projectType || true;
+    this.startDate = this.column?.start_date;
+    this.dueDate = this.column?.due_date;
   }
 
   changeColumnProjectType(selected) {
@@ -55,8 +57,8 @@ export class CreateProjectColumnDialogComponent implements OnChanges {
       this.utilityService.asyncNotification('Please wait we are saving your project dates...', new Promise((resolve, reject) => {
         this.columnService.saveColumnProjectDates(this.column?._id, this.startDate, this.dueDate)
           .then((res) => {
-            this.column.start_date = this.startDate;
-            this.column.due_date = this.dueDate;
+            this.column.start_date = moment(this.startDate).hours(12).format('YYYY-MM-DD');
+            this.column.due_date = moment(this.dueDate).hours(12).format('YYYY-MM-DD');
 
             // Close the modal
             this.closeEvent.emit(this.column);

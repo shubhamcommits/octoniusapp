@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Column, Flow, Post } from '../models';
 import { sendError } from '../../utils';
+import moment from 'moment';
 
 export class ColumnsController {
     /*
@@ -222,8 +223,8 @@ export class ColumnsController {
                 _id: columnId
             }, {
                 "$set": {
-                    start_date: startDate,
-                    due_date: dueDate
+                    start_date: startDate ? moment(startDate).hours(12).format('YYYY-MM-DD') : null,
+                    due_date: dueDate ? moment(dueDate).hours(12).format('YYYY-MM-DD') : null,
                 }
             }, {
                 new: true

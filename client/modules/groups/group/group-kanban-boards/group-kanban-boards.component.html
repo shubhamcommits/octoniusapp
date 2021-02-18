@@ -47,7 +47,7 @@
                 <div class="project-container">
                   {{ column?.tasks?.length }} Tasks
                   <span class="float-right">
-                    {{ column?.numDoneTasks }} Done
+                    {{ column?.numDoneTasks || 0 }} Done
                   </span>
                 </div>
                 <!-- COLUMN STATS SECTION ENDS -->
