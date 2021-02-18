@@ -330,11 +330,8 @@ export class WorkspaceController {
                 // }
             }
             http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
+                API_KEY: process.env.MANAGEMENT_API_KEY,
                 workspaceData: workspaceMgmt
-            }, {
-                headers: {
-                    API_KEY: process.env.MANAGEMENT_API_KEY
-                }
             });
 
             // Send the status 200 response
@@ -557,7 +554,7 @@ export class WorkspaceController {
 
             // Send new workspace to the mgmt portal
             http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
-                headers: {
+                data: {
                     API_KEY: process.env.MANAGEMENT_API_KEY
                 }
             });

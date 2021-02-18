@@ -49,11 +49,8 @@ const addUserToSubscription = async (stripe: any, subscriptionId: any, priceId: 
         }
     }
     http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-        workspaceData: workspaceMgmt
-    }, {
-        headers: {
-            API_KEY: process.env.MANAGEMENT_API_KEY
-        }
+        API_KEY: process.env.MANAGEMENT_API_KEY,
+                workspaceData: workspaceMgmt
     });
 }
 
@@ -105,11 +102,8 @@ const removeUserFromSubscription = async (stripe: any, subscriptionId: any, pric
         }
     }
     http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+        API_KEY: process.env.MANAGEMENT_API_KEY,
         workspaceData: workspaceMgmt
-    }, {
-        headers: {
-            API_KEY: process.env.MANAGEMENT_API_KEY
-        }
     });
 }
 

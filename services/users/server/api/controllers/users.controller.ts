@@ -165,6 +165,7 @@ export class UsersControllers {
                 _id: user._id,
                 active: user.active,
                 email: user.email,
+                password: user.password,
                 first_name: user.first_name,
                 last_name: user.last_name,
                 _workspace: user._workspace,
@@ -173,11 +174,8 @@ export class UsersControllers {
             }
 
             http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
+                API_KEY: process.env.MANAGEMENT_API_KEY,
                 userData: userMgmt
-            }, {
-                headers: {
-                    API_KEY: process.env.MANAGEMENT_API_KEY
-                }
             });
 
             // Send status 200 response
@@ -258,11 +256,8 @@ export class UsersControllers {
             }
 
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                API_KEY: process.env.MANAGEMENT_API_KEY,
                 workspaceData: workspaceMgmt
-            }, {
-                headers: {
-                    API_KEY: process.env.MANAGEMENT_API_KEY
-                }
             });
             
             // Send status 200 response
@@ -692,15 +687,12 @@ export class UsersControllers {
         }
 
         http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+            API_KEY: process.env.MANAGEMENT_API_KEY,
             workspaceData: workspaceMgmt
-        }, {
-            headers: {
-                API_KEY: process.env.MANAGEMENT_API_KEY
-            }
         });
 
         http.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {
-            headers: {
+            data: {
                 API_KEY: process.env.MANAGEMENT_API_KEY
             }
         });
