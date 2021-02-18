@@ -25,12 +25,12 @@ services:
   mailing-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:mailing-server
     ports:
-      - ${MAILING_SERVER_PORT}:${MAILING_SERVER_PORT}
+      - ${MAILING_SERVER_PORT}:${MACHINE_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${MAILING_SERVER_PORT}
+      - PORT=${MACHINE_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -56,12 +56,12 @@ services:
   auths-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:auths-server
     ports:
-      - ${AUTHS_SERVER_PORT}:${AUTHS_SERVER_PORT}
+      - ${AUTHS_SERVER_PORT}:${MACHINE_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${AUTHS_SERVER_PORT}
+      - PORT=${MACHINE_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -87,13 +87,13 @@ services:
   groups-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:groups-server
     ports:
-      - ${GROUPS_SERVER_PORT}:${GROUPS_SERVER_PORT}
+      - ${GROUPS_SERVER_PORT}:${MACHINE_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
       - octonius_production_groups_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${GROUPS_SERVER_PORT}
+      - PORT=${MACHINE_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -119,13 +119,13 @@ services:
   workspaces-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:workspaces-server
     ports:
-      - ${WORKSPACES_SERVER_PORT}:${WORKSPACES_SERVER_PORT}
+      - ${WORKSPACES_SERVER_PORT}:${MACHINE_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
       - octonius_production_workspaces_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${WORKSPACES_SERVER_PORT}
+      - PORT=${MACHINE_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -151,13 +151,13 @@ services:
   users-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:users-server
     ports:
-      - ${USERS_SERVER_PORT}:${USERS_SERVER_PORT}
+      - ${USERS_SERVER_PORT}:${MACHINE_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
       - octonius_production_users_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${USERS_SERVER_PORT}
+      - PORT=${MACHINE_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -183,13 +183,13 @@ services:
   posts-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:posts-server
     ports:
-      - ${POSTS_SERVER_PORT}:${POSTS_SERVER_PORT}
+      - ${POSTS_SERVER_PORT}:${MACHINE_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
       - octonius_production_posts_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${POSTS_SERVER_PORT}
+      - PORT=${MACHINE_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -215,12 +215,12 @@ services:
   notifications-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:notifications-server
     ports:
-      - ${NOTIFICATIONS_SERVER_PORT}:${NOTIFICATIONS_SERVER_PORT}
+      - ${NOTIFICATIONS_SERVER_PORT}:${MACHINE_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${NOTIFICATIONS_SERVER_PORT}
+      - PORT=${MACHINE_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -246,13 +246,13 @@ services:
   utilities-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:utilities-server
     ports:
-      - ${UTILITIES_SERVER_PORT}:${UTILITIES_SERVER_PORT}
+      - ${UTILITIES_SERVER_PORT}:${MACHINE_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
       - octonius_production_utilities_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${UTILITIES_SERVER_PORT}
+      - PORT=${MACHINE_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -278,12 +278,12 @@ services:
   folio-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:folio-server
     ports:
-      - ${FOLIO_SERVER_PORT}:${FOLIO_SERVER_PORT}
+      - ${FOLIO_SERVER_PORT}:${MACHINE_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${FOLIO_SERVER_PORT}
+      - PORT=${MACHINE_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -309,13 +309,13 @@ services:
   search-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:search-server
     ports:
-      - ${SEARCH_SERVER_PORT}:${SEARCH_SERVER_PORT}
+      - ${SEARCH_SERVER_PORT}:${MACHINE_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
       - octonius_production_search_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${SEARCH_SERVER_PORT}
+      - PORT=${MACHINE_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
@@ -341,12 +341,12 @@ services:
   integrations-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:integrations-server
     ports:
-      - ${INTEGRATIONS_SERVER_PORT}:${INTEGRATIONS_SERVER_PORT}
+      - ${INTEGRATIONS_SERVER_PORT}:${MACHINE_PORT}
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
       - NODE_ENV=${NODE_ENV}
-      - PORT=${INTEGRATIONS_SERVER_PORT}
+      - PORT=${MACHINE_PORT}
       - HOST=${HOST}
       - JWT_KEY=${JWT_KEY}
       - DB_URL=${DB_URL}
