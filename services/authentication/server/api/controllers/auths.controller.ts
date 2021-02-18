@@ -313,8 +313,11 @@ export class AuthsController {
                         }
                     }
                     http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                        API_KEY: process.env.MANAGEMENT_API_KEY,
                         workspaceData: workspaceMgmt
+                    }, {
+                        headers: {
+                            API_KEY: process.env.MANAGEMENT_API_KEY
+                        }
                     });
 
                     // Send user to the mgmt portal
@@ -330,8 +333,11 @@ export class AuthsController {
                     }
 
                     http.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
-                        API_KEY: process.env.MANAGEMENT_API_KEY,
                         userData: userMgmt
+                    }, {
+                        headers: {
+                            API_KEY: process.env.MANAGEMENT_API_KEY
+                        }
                     });
 
                     // Signup user and return the token

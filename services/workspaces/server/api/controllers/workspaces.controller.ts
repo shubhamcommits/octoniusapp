@@ -330,8 +330,11 @@ export class WorkspaceController {
                 // }
             }
             http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
                 workspaceData: workspaceMgmt
+            }, {
+                headers: {
+                    API_KEY: process.env.MANAGEMENT_API_KEY
+                }
             });
 
             // Send the status 200 response
@@ -553,8 +556,10 @@ export class WorkspaceController {
             workspace = await Workspace.findByIdAndDelete(workspaceId);
 
             // Send new workspace to the mgmt portal
-            http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, { data:
-                { API_KEY: process.env.MANAGEMENT_API_KEY }
+            http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
+                headers: {
+                    API_KEY: process.env.MANAGEMENT_API_KEY
+                }
             });
 
             // Send the status 200 response 

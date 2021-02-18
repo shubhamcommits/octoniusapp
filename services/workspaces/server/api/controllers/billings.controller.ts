@@ -146,8 +146,11 @@ export class BillingControllers {
                 }
             }
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
                 workspaceData: workspaceMgmt
+            }, {
+                headers: {
+                    API_KEY: process.env.MANAGEMENT_API_KEY
+                }
             });
 
             // Send the status 200 response
@@ -440,8 +443,11 @@ export class BillingControllers {
                 }
             }
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
                 workspaceData: workspaceMgmt
+            }, {
+                headers: {
+                    API_KEY: process.env.MANAGEMENT_API_KEY
+                }
             });
 
             // Send the status 200 response
@@ -525,8 +531,11 @@ export class BillingControllers {
                 }
             }
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
                 workspaceData: workspaceMgmt
+            }, {
+                headers: {
+                    API_KEY: process.env.MANAGEMENT_API_KEY
+                }
             });
 
             // Send the status 200 response
@@ -628,8 +637,11 @@ export class BillingControllers {
                 }
             }
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${updatedWorkspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
                 workspaceData: workspaceMgmt
+            }, {
+                headers: {
+                    API_KEY: process.env.MANAGEMENT_API_KEY
+                }
             });
 
             // Prepare adjustedSubscription Object
@@ -850,8 +862,11 @@ export class BillingControllers {
                 }
             }
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
                 workspaceData: workspaceMgmt
+            }, {
+                headers: {
+                    API_KEY: process.env.MANAGEMENT_API_KEY
+                }
             });
 
             // Return a response to acknowledge receipt of the event
