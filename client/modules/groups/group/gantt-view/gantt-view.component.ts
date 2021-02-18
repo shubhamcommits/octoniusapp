@@ -73,12 +73,12 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     var screenHeight = window.innerHeight - 100;
 
     if (ganttHeight > screenHeight) {
-      this.gantt_container_height = ganttHeight + 'px';
+      this.gantt_container_height = (ganttHeight+100) + 'px';
     } else {
-      this.gantt_container_height = screenHeight + 'px';
+      this.gantt_container_height = (screenHeight+100) + 'px';
     }
     this.screen_height = screenHeight + 'px';
-    // document.getElementsByTagName("body")[0].style.overflow = 'hidden';
+    document.getElementsByTagName("body")[0].style.overflow = 'hidden';
   }
 
   ngAfterViewInit() {
@@ -121,6 +121,20 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   linePotionsListener() {
     this.screen_height = (window.innerHeight - 100) + 'px';
     this.linesArray.forEach(line => {
+      const linesAll = document.getElementsByClassName('leader-line');
+      for (let index = 0; index < linesAll.length; index++) {
+        const viewboxvalue = linesAll[index].attributes['viewBox'].nodeValue;
+        const values=viewboxvalue.split(" ");
+        const left = 130;
+        const top = 260;
+        if(Number(values[0])<left || Number(values[1]<top )){
+          linesAll[index].setAttribute('style','display:none');
+        } else {
+          linesAll[index].setAttribute('style',`left:${values[0]};top: ${values[1]}; width: ${values[2]}; height: ${values[3]};`);
+        }
+        
+      }
+
       line.position();
     });
   }
@@ -390,9 +404,9 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     var screenHeight = window.innerHeight - 100;
 
     if (ganttHeight > screenHeight) {
-      this.gantt_container_height = ganttHeight + 'px';
+      this.gantt_container_height = (ganttHeight+100) + 'px';
     } else {
-      this.gantt_container_height = screenHeight + 'px';
+      this.gantt_container_height = (screenHeight+100) + 'px';
     }
     this.screen_height = screenHeight + 'px';
     document.getElementsByTagName("body")[0].style.overflow = 'hidden';
@@ -476,7 +490,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   scroll(id: string) {
     const el=document.getElementById(id);
     if(el){
-      console.log("element",el,el.style.top.substring(0,el.style.top.length-2),el.style.left.substring(0,el.style.left.length-2));
+      // console.log("element",el,el.style.top.substring(0,el.style.top.length-2),el.style.left.substring(0,el.style.left.length-2));
       const elTop = Number(el.style.top.substring(0,el.style.top.length-2))-110;
       const elLeft = Number(el.style.left.substring(0,el.style.left.length-2));
       document.getElementById('fixed-container-gantt').scrollTo({top: elTop,
@@ -484,7 +498,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         behavior: 'smooth'});
       // el.scrollIntoView({ behavior: 'smooth' });
 
-      console.log("element",el.scrollTop);
+      // console.log("element",el.scrollTop);
   
     }
    
@@ -512,18 +526,24 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
           if(this.tasksdata[i]?.projectId+'' == column._id+''){
              newColumnsData.tasks.push(this.tasksdata[i]);
-             tasktobedeleted.push(i);
+             tasktobedeleted.push(this.tasksdata[i].id);
            }  
         }
         this.projectsdata.push(newColumnsData);
         index++;
       }
     });
-    let deleted=0;
-    tasktobedeleted.forEach(index => {
-      this.tasksdata.splice(index-deleted,1);
-      deleted++;
+    
+    tasktobedeleted.forEach(userID => {
+      let deleted=0;
+      this.tasksdata.forEach(task => {
+        if(userID == task.id){
+          this.tasksdata.splice(deleted,1);
+        }
+        deleted++;
+      });
     });
+
     if(this.projectsdata.length>0){
       const last_project = this.projectsdata[this.projectsdata.length-1];
       this.tasksStartingHeight = (last_project.startheight)+(60*last_project.noOfTasks+100);

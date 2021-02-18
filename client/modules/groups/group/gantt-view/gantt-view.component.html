@@ -2,8 +2,9 @@
   <div class="board-wrapper">
     <div *ngIf="tasksdata?.length > 0 || projectsdata?.length > 0" id="wrapper-fixed-container"
       [ngStyle]="{'position': 'fixed','margin-top': '15px'}">
-      <div style="overflow:scroll;overflow-x: hidden">
-        <div class="projects-row" [ngStyle]="{'height': '100px','width':gantt_header_width}">
+      <div style="height: 100px;overflow: hidden;">
+      <div id="hideScrollbar" [ngStyle]="{'height': '120px','width':'100%','overflow':'auto'}">
+        <div class="projects-row" [ngStyle]="{'height': '100px','width':gantt_header_width,'padding-bottom':'30px'}">
           <div *ngFor="let item of columns;let i = index" [ngClass]="i==0?'project-card is-clicked':'project-card'"
             [ngStyle]="{'left': (i*333+30)+'px','cursor':'pointer'}" (click)="scroll(item._id)">
             <div style="position: relative;width: 293px;height: 75px;">
@@ -26,12 +27,13 @@
           </div>
         </div>
       </div>
+      </div>
       <div id="fixed-container-gantt"
         [ngStyle]="{'position': 'relative','width': '100%','height': screen_height,'overflow': 'scroll'}">
         <div
           [ngStyle]="{'position': 'absolute', 'width': '100%','height': 'gantt_container_height','top':'0px','left':'0px'}">
-          <div style="width: 100%;">
-            <div style="height: 52px;top: 0px;position: sticky;z-index: 10000;background-color: white;">
+          <div [ngStyle]="{'width':gantt_container_width}">
+            <div style="height: 52px;top: 0px;position: sticky;z-index: 10000;background-color: white;" [attr.width]="gantt_container_width">
               <div [ngStyle]="{'height':'30px','top':'0px','position':'sticky','z-index':'100000'}">
                 <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div>
                 <p [attr.width]="step" class="first_month">{{dates[0]?.month}}</p>
@@ -129,12 +131,6 @@
                     </div>
                   </div>
                 </div>
-                <div #target style="    z-index: 1000000;
-                position: absolute;
-                top: 400px;
-                left: 50px;
-                width: 200px;
-                height: 100px;"> Your target</div>
             </div>
           </div>
         </div>
