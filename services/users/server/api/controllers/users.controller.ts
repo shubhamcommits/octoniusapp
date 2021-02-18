@@ -170,7 +170,7 @@ export class UsersControllers {
                     first_name: user.first_name,
                     last_name: user.last_name,
                     _workspace: user._workspace,
-                    environment: "PROD", // TODO
+                    environment: process.env.DOMAIN,
                     created_date: user.created_date
                 }
 
@@ -245,7 +245,7 @@ export class UsersControllers {
                     owner_first_name: workspace.owner_first_name,
                     owner_last_name: workspace.owner_last_name,
                     _owner_remote_id: workspace._owner,
-                    environment: "PROD", // TODO
+                    environment: process.env.DOMAIN,
                     num_members: usersCount,
                     num_invited_users: workspace.invited_users.length,
                     num_groups: groupsCount,
@@ -678,7 +678,7 @@ export class UsersControllers {
                 owner_first_name: workspace.owner_first_name,
                 owner_last_name: workspace.owner_last_name,
                 _owner_remote_id: workspace._owner,
-                environment: "PROD", // TODO
+                environment: process.env.DOMAIN,
                 num_members: usersCount,
                 num_invited_users: workspace.invited_users.length,
                 num_groups: groupsCount,

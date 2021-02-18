@@ -382,7 +382,7 @@ export class GroupController {
                     owner_first_name: workspace.owner_first_name,
                     owner_last_name: workspace.owner_last_name,
                     _owner_remote_id: workspace._owner,
-                    environment: "PROD", // TODO
+                    environment: process.env.DOMAIN,
                     num_members: usersCount,
                     num_invited_users: workspace.invited_users.length,
                     num_groups: groupsCount,
@@ -522,7 +522,7 @@ export class GroupController {
                     owner_first_name: workspace.owner_first_name,
                     owner_last_name: workspace.owner_last_name,
                     _owner_remote_id: workspace._owner,
-                    environment: "PROD", // TODO
+                    environment: process.env.DOMAIN,
                     num_members: usersCount,
                     num_invited_users: workspace.invited_users.length,
                     num_groups: groupsCount,

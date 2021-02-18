@@ -37,7 +37,7 @@ const addUserToSubscription = async (stripe: any, subscriptionId: any, priceId: 
             owner_first_name: workspace.owner_first_name,
             owner_last_name: workspace.owner_last_name,
             _owner_remote_id: workspace._owner,
-            environment: "PROD", // TODO
+            environment: process.env.DOMAIN,
             num_members: usersCount,
             num_invited_users: workspace.invited_users.length,
             num_groups: groupsCount,
@@ -92,7 +92,7 @@ const removeUserFromSubscription = async (stripe: any, subscriptionId: any, pric
             owner_first_name: workspace.owner_first_name,
             owner_last_name: workspace.owner_last_name,
             _owner_remote_id: workspace._owner,
-            environment: "PROD", // TODO
+            environment: process.env.DOMAIN,
             num_members: usersCount,
             num_invited_users: workspace.invited_users.length,
             num_groups: groupsCount,

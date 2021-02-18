@@ -134,7 +134,7 @@ export class BillingControllers {
                     owner_first_name: workspaceUpdated.owner_first_name,
                     owner_last_name: workspaceUpdated.owner_last_name,
                     _owner_remote_id: workspaceUpdated._owner,
-                    environment: "PROD", // TODO
+                    environment: process.env.DOMAIN,
                     num_members: usersCount,
                     num_invited_users: workspaceUpdated.invited_users.length,
                     num_groups: groupsCount,
@@ -430,7 +430,7 @@ export class BillingControllers {
                     owner_first_name: workspace.owner_first_name,
                     owner_last_name: workspace.owner_last_name,
                     _owner_remote_id: workspace._owner,
-                    environment: "PROD", // TODO
+                    environment: process.env.DOMAIN,
                     num_members: usersCount,
                     num_invited_users: workspace.invited_users.length,
                     num_groups: groupsCount,
@@ -517,7 +517,7 @@ export class BillingControllers {
                     owner_first_name: workspace.owner_first_name,
                     owner_last_name: workspace.owner_last_name,
                     _owner_remote_id: workspace._owner,
-                    environment: "PROD", // TODO
+                    environment: process.env.DOMAIN,
                     num_members: usersCount,
                     num_invited_users: workspace.invited_users.length,
                     num_groups: groupsCount,
@@ -622,7 +622,7 @@ export class BillingControllers {
                     owner_first_name: updatedWorkspace.owner_first_name,
                     owner_last_name: updatedWorkspace.owner_last_name,
                     _owner_remote_id: updatedWorkspace._owner,
-                    environment: "PROD", // TODO
+                    environment: process.env.DOMAIN,
                     num_members: usersCount,
                     num_invited_users: updatedWorkspace.invited_users.length,
                     num_groups: groupsCount,
@@ -846,7 +846,7 @@ export class BillingControllers {
                     owner_first_name: workspace.owner_first_name,
                     owner_last_name: workspace.owner_last_name,
                     _owner_remote_id: workspace._owner,
-                    environment: "PROD", // TODO
+                    environment: process.env.DOMAIN,
                     num_members: usersCount,
                     num_invited_users: workspace.invited_users.length,
                     num_groups: groupsCount,

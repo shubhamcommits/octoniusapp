@@ -318,7 +318,7 @@ export class WorkspaceController {
                     owner_first_name: newWorkspace.owner_first_name,
                     owner_last_name: newWorkspace.owner_last_name,
                     _owner_remote_id: user._id,
-                    environment: "PROD", // TODO
+                    environment: process.env.DOMAIN,
                     num_members: 1,
                     num_invited_users: 0,
                     num_groups: 1,
