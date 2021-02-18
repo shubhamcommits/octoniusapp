@@ -48,6 +48,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   screen_height:string;
   //container height
   current_date_index: any;
+  selectedProjectIndex:number = 0;
   //Grid column width
   step = 50;
   //Card  height
@@ -486,7 +487,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   }
 
-  scroll(id: string) {
+  scroll(id: string,index:number) {
+    this.selectedProjectIndex = index;
     const el=document.getElementById(id);
     if(el){
       // console.log("element",el,el.style.top.substring(0,el.style.top.length-2),el.style.left.substring(0,el.style.left.length-2));
