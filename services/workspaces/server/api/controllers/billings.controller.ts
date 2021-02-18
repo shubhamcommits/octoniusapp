@@ -119,36 +119,38 @@ export class BillingControllers {
 
 
             // Send new workspace to the mgmt portal
-            // Count all the groups present inside the workspace
-            const groupsCount: number = await Group.find({ $and: [
-                { group_name: { $ne: 'personal' } },
-                { _workspace: workspaceId }
-            ]}).countDocuments();
+            if (process.env.NODE_ENV !== 'production') {
+                // Count all the groups present inside the workspace
+                const groupsCount: number = await Group.find({ $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { _workspace: workspaceId }
+                ]}).countDocuments();
 
-            let workspaceMgmt = {
-                _id: workspaceId,
-                company_name: workspaceUpdated.company_name,
-                workspace_name: workspaceUpdated.workspace_name,
-                owner_email: workspaceUpdated.owner_email,
-                owner_first_name: workspaceUpdated.owner_first_name,
-                owner_last_name: workspaceUpdated.owner_last_name,
-                _owner_remote_id: workspaceUpdated._owner,
-                environment: "PROD", // TODO
-                num_members: usersCount,
-                num_invited_users: workspaceUpdated.invited_users.length,
-                num_groups: groupsCount,
-                created_date: workspaceUpdated.created_date,
-                billing: {
-                    subscription_id: subscription.id,
-                    current_period_end: subscription.current_period_end,
-                    scheduled_cancellation: false,
-                    quantity: subscription.quantity
+                let workspaceMgmt = {
+                    _id: workspaceId,
+                    company_name: workspaceUpdated.company_name,
+                    workspace_name: workspaceUpdated.workspace_name,
+                    owner_email: workspaceUpdated.owner_email,
+                    owner_first_name: workspaceUpdated.owner_first_name,
+                    owner_last_name: workspaceUpdated.owner_last_name,
+                    _owner_remote_id: workspaceUpdated._owner,
+                    environment: "PROD", // TODO
+                    num_members: usersCount,
+                    num_invited_users: workspaceUpdated.invited_users.length,
+                    num_groups: groupsCount,
+                    created_date: workspaceUpdated.created_date,
+                    billing: {
+                        subscription_id: subscription.id,
+                        current_period_end: subscription.current_period_end,
+                        scheduled_cancellation: false,
+                        quantity: subscription.quantity
+                    }
                 }
+                http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
+                    API_KEY: process.env.MANAGEMENT_API_KEY,
+                    workspaceData: workspaceMgmt
+                });
             }
-            http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
-                workspaceData: workspaceMgmt
-            });
 
             // Send the status 200 response
             res.status(200).json({
@@ -407,42 +409,44 @@ export class BillingControllers {
             }).select('billing.scheduled_cancellation');
 
             // Send new workspace to the mgmt portal
-            // Count all the groups present inside the workspace
-            const groupsCount: number = await Group.find({ $and: [
-                { group_name: { $ne: 'personal' } },
-                { _workspace: workspace._id }
-            ]}).countDocuments();
+            if (process.env.NODE_ENV !== 'production') {
+                // Count all the groups present inside the workspace
+                const groupsCount: number = await Group.find({ $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { _workspace: workspace._id }
+                ]}).countDocuments();
 
-            // Count all the users present inside the workspace
-            const usersCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: user['_workspace'] }
-            ] }).countDocuments();
+                // Count all the users present inside the workspace
+                const usersCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: user['_workspace'] }
+                ] }).countDocuments();
 
-            let workspaceMgmt = {
-                _id: workspace._id,
-                company_name: workspace.company_name,
-                workspace_name: workspace.workspace_name,
-                owner_email: workspace.owner_email,
-                owner_first_name: workspace.owner_first_name,
-                owner_last_name: workspace.owner_last_name,
-                _owner_remote_id: workspace._owner,
-                environment: "PROD", // TODO
-                num_members: usersCount,
-                num_invited_users: workspace.invited_users.length,
-                num_groups: groupsCount,
-                created_date: workspace.created_date,
-                billing: {
-                    subscription_id: updatedSubscription.id,
-                    current_period_end: updatedSubscription.current_period_end,
-                    scheduled_cancellation: true,
-                    quantity: updatedSubscription.quantity
+                let workspaceMgmt = {
+                    _id: workspace._id,
+                    company_name: workspace.company_name,
+                    workspace_name: workspace.workspace_name,
+                    owner_email: workspace.owner_email,
+                    owner_first_name: workspace.owner_first_name,
+                    owner_last_name: workspace.owner_last_name,
+                    _owner_remote_id: workspace._owner,
+                    environment: "PROD", // TODO
+                    num_members: usersCount,
+                    num_invited_users: workspace.invited_users.length,
+                    num_groups: groupsCount,
+                    created_date: workspace.created_date,
+                    billing: {
+                        subscription_id: updatedSubscription.id,
+                        current_period_end: updatedSubscription.current_period_end,
+                        scheduled_cancellation: true,
+                        quantity: updatedSubscription.quantity
+                    }
                 }
+                http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                    API_KEY: process.env.MANAGEMENT_API_KEY,
+                    workspaceData: workspaceMgmt
+                });
             }
-            http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
-                workspaceData: workspaceMgmt
-            });
 
             // Send the status 200 response
             return res.status(200).json({
@@ -492,42 +496,44 @@ export class BillingControllers {
             }).select('billing.scheduled_cancellation');
 
             // Send new workspace to the mgmt portal
-            // Count all the groups present inside the workspace
-            const groupsCount: number = await Group.find({ $and: [
-                { group_name: { $ne: 'personal' } },
-                { _workspace: workspace._id }
-            ]}).countDocuments();
+            if (process.env.NODE_ENV !== 'production') {
+                // Count all the groups present inside the workspace
+                const groupsCount: number = await Group.find({ $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { _workspace: workspace._id }
+                ]}).countDocuments();
 
-            // Count all the users present inside the workspace
-            const usersCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: user['_workspace'] }
-            ] }).countDocuments();
+                // Count all the users present inside the workspace
+                const usersCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: user['_workspace'] }
+                ] }).countDocuments();
 
-            let workspaceMgmt = {
-                _id: workspace._id,
-                company_name: workspace.company_name,
-                workspace_name: workspace.workspace_name,
-                owner_email: workspace.owner_email,
-                owner_first_name: workspace.owner_first_name,
-                owner_last_name: workspace.owner_last_name,
-                _owner_remote_id: workspace._owner,
-                environment: "PROD", // TODO
-                num_members: usersCount,
-                num_invited_users: workspace.invited_users.length,
-                num_groups: groupsCount,
-                created_date: workspace.created_date,
-                billing: {
-                    subscription_id: updatedSubscription.id,
-                    current_period_end: updatedSubscription.current_period_end,
-                    scheduled_cancellation: false,
-                    quantity: updatedSubscription.quantity
+                let workspaceMgmt = {
+                    _id: workspace._id,
+                    company_name: workspace.company_name,
+                    workspace_name: workspace.workspace_name,
+                    owner_email: workspace.owner_email,
+                    owner_first_name: workspace.owner_first_name,
+                    owner_last_name: workspace.owner_last_name,
+                    _owner_remote_id: workspace._owner,
+                    environment: "PROD", // TODO
+                    num_members: usersCount,
+                    num_invited_users: workspace.invited_users.length,
+                    num_groups: groupsCount,
+                    created_date: workspace.created_date,
+                    billing: {
+                        subscription_id: updatedSubscription.id,
+                        current_period_end: updatedSubscription.current_period_end,
+                        scheduled_cancellation: false,
+                        quantity: updatedSubscription.quantity
+                    }
                 }
+                http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                    API_KEY: process.env.MANAGEMENT_API_KEY,
+                    workspaceData: workspaceMgmt
+                });
             }
-            http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
-                workspaceData: workspaceMgmt
-            });
 
             // Send the status 200 response
             return res.status(200).json({
@@ -601,36 +607,38 @@ export class BillingControllers {
             //}).select('billing');
 
             // Send new workspace to the mgmt portal
-            // Count all the groups present inside the workspace
-            const groupsCount: number = await Group.find({ $and: [
-                { group_name: { $ne: 'personal' } },
-                { _workspace: updatedWorkspace._id }
-            ]}).countDocuments();
+            if (process.env.NODE_ENV !== 'production') {
+                // Count all the groups present inside the workspace
+                const groupsCount: number = await Group.find({ $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { _workspace: updatedWorkspace._id }
+                ]}).countDocuments();
 
-            let workspaceMgmt = {
-                _id: updatedWorkspace._id,
-                company_name: updatedWorkspace.company_name,
-                workspace_name: updatedWorkspace.workspace_name,
-                owner_email: updatedWorkspace.owner_email,
-                owner_first_name: updatedWorkspace.owner_first_name,
-                owner_last_name: updatedWorkspace.owner_last_name,
-                _owner_remote_id: updatedWorkspace._owner,
-                environment: "PROD", // TODO
-                num_members: usersCount,
-                num_invited_users: updatedWorkspace.invited_users.length,
-                num_groups: groupsCount,
-                created_date: updatedWorkspace.created_date,
-                billing: {
-                    subscription_id: subscription.id,
-                    current_period_end: subscription.current_period_end,
-                    scheduled_cancellation: false,
-                    quantity: subscription.quantity
+                let workspaceMgmt = {
+                    _id: updatedWorkspace._id,
+                    company_name: updatedWorkspace.company_name,
+                    workspace_name: updatedWorkspace.workspace_name,
+                    owner_email: updatedWorkspace.owner_email,
+                    owner_first_name: updatedWorkspace.owner_first_name,
+                    owner_last_name: updatedWorkspace.owner_last_name,
+                    _owner_remote_id: updatedWorkspace._owner,
+                    environment: "PROD", // TODO
+                    num_members: usersCount,
+                    num_invited_users: updatedWorkspace.invited_users.length,
+                    num_groups: groupsCount,
+                    created_date: updatedWorkspace.created_date,
+                    billing: {
+                        subscription_id: subscription.id,
+                        current_period_end: subscription.current_period_end,
+                        scheduled_cancellation: false,
+                        quantity: subscription.quantity
+                    }
                 }
+                http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${updatedWorkspace._id}/update`, {
+                    API_KEY: process.env.MANAGEMENT_API_KEY,
+                    workspaceData: workspaceMgmt
+                });
             }
-            http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${updatedWorkspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
-                workspaceData: workspaceMgmt
-            });
 
             // Prepare adjustedSubscription Object
             const adjustedSubscription = {
@@ -817,42 +825,44 @@ export class BillingControllers {
             }
 
             // Send new workspace to the mgmt portal
-            // Count all the groups present inside the workspace
-            const groupsCount: number = await Group.find({ $and: [
-                { group_name: { $ne: 'personal' } },
-                { _workspace: workspace._id }
-            ]}).countDocuments();
+            if (process.env.NODE_ENV !== 'production') {
+                // Count all the groups present inside the workspace
+                const groupsCount: number = await Group.find({ $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { _workspace: workspace._id }
+                ]}).countDocuments();
 
-            // Count all the users present inside the workspace
-            const usersCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: workspace._id }
-            ] }).countDocuments();
+                // Count all the users present inside the workspace
+                const usersCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: workspace._id }
+                ] }).countDocuments();
 
-            let workspaceMgmt = {
-                _id: workspace._id,
-                company_name: workspace.company_name,
-                workspace_name: workspace.workspace_name,
-                owner_email: workspace.owner_email,
-                owner_first_name: workspace.owner_first_name,
-                owner_last_name: workspace.owner_last_name,
-                _owner_remote_id: workspace._owner,
-                environment: "PROD", // TODO
-                num_members: usersCount,
-                num_invited_users: workspace.invited_users.length,
-                num_groups: groupsCount,
-                created_date: workspace.created_date,
-                billing: {
-                    subscription_id: workspace.billing.subscription_id,
-                    current_period_end: workspace.billing.current_period_end,
-                    scheduled_cancellation: true,
-                    quantity: workspace.billing.quantity
+                let workspaceMgmt = {
+                    _id: workspace._id,
+                    company_name: workspace.company_name,
+                    workspace_name: workspace.workspace_name,
+                    owner_email: workspace.owner_email,
+                    owner_first_name: workspace.owner_first_name,
+                    owner_last_name: workspace.owner_last_name,
+                    _owner_remote_id: workspace._owner,
+                    environment: "PROD", // TODO
+                    num_members: usersCount,
+                    num_invited_users: workspace.invited_users.length,
+                    num_groups: groupsCount,
+                    created_date: workspace.created_date,
+                    billing: {
+                        subscription_id: workspace.billing.subscription_id,
+                        current_period_end: workspace.billing.current_period_end,
+                        scheduled_cancellation: true,
+                        quantity: workspace.billing.quantity
+                    }
                 }
+                http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                    API_KEY: process.env.MANAGEMENT_API_KEY,
+                    workspaceData: workspaceMgmt
+                });
             }
-            http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
-                workspaceData: workspaceMgmt
-            });
 
             // Return a response to acknowledge receipt of the event
             return res.json({received: true});
