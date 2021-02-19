@@ -88,6 +88,10 @@ function devConfigInit() {
   process.env.UTILITIES_PORT = process.env.UTILITIES_PORT || '10000'
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}`
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}/api`
+
+  // MANAGEMENT PORTAL API
+  process.env.MANAGEMENT_URL = `https://${process.env.DOMAIN}`
+  process.env.MANAGEMENT_API_KEY = "TZCDAC3CDCJILSRGA2II"
 };
 
 export { devConfigInit as developmentConfig }

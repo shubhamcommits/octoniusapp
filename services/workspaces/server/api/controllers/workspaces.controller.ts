@@ -308,6 +308,28 @@ export class WorkspaceController {
                 workspace: workspaceUpdate
             })
 
+            // Send new workspace to the mgmt portal
+            if (process.env.NODE_ENV !== 'production') {
+                let workspaceMgmt = {
+                    _id: workspace._id,
+                    company_name: newWorkspace.company_name,
+                    workspace_name: newWorkspace.workspace_name,
+                    owner_email: newWorkspace.owner_email,
+                    owner_first_name: newWorkspace.owner_first_name,
+                    owner_last_name: newWorkspace.owner_last_name,
+                    _owner_remote_id: user._id,
+                    environment: process.env.DOMAIN,
+                    num_members: 1,
+                    num_invited_users: 0,
+                    num_groups: 1,
+                    created_date: workspace.created_date
+                }
+                http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
+                    API_KEY: process.env.MANAGEMENT_API_KEY,
+                    workspaceData: workspaceMgmt
+                });
+            }
+
             // Send the status 200 response
             return res.status(200).json({
                 message: 'Workspace created!',
@@ -525,6 +547,17 @@ export class WorkspaceController {
 
             // Delete the workspace
             workspace = await Workspace.findByIdAndDelete(workspaceId);
+
+            // Send new workspace to the mgmt portal
+            if (process.env.NODE_ENV !== 'production') {
+                if (process.env.NODE_ENV !== 'production') {
+                    http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
+                        data: {
+                            API_KEY: process.env.MANAGEMENT_API_KEY
+                        }
+                    });
+                }
+            }
 
             // Send the status 200 response 
             return res.status(200).json({
