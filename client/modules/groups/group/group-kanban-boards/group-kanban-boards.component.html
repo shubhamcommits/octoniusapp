@@ -9,7 +9,7 @@
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                 <div class="column-title">
                     <p class="text-capitalize" [ngbTooltip]="column?.title">
-                      <span class="material-icons" *ngIf="column?.project_type">watch_later</span>
+                      <span class="material-icons" *ngIf="column?.project_type">history_toggle_off</span>
                       {{ column?.title | truncatetext:20 }}
                     </p>
                     <div class="inline-block">
@@ -28,7 +28,7 @@
                                   Delete
                                 </li>
                                 <li class="dropdown-item" (click)="makeColumnProjectDialog(column)">
-                                  <span class="material-icons">watch_later</span>
+                                  <span class="material-icons">history_toggle_off</span>
                                   Launch Project
                                 </li>
                             </ul>
@@ -46,15 +46,15 @@
                 <!-- COLUMN STATS SECTION STARTS -->
                 <div class="project-container">
                   {{ column?.tasks?.length }} Tasks
-                  <span class="float-right">
+                  <span class="float-right done">
                     {{ column?.numDoneTasks || 0 }} Done
                   </span>
                 </div>
                 <!-- COLUMN STATS SECTION ENDS -->
 
                 <!-- COLUMN PROJECT SECTION STARTS -->
-                <div class="project-container" *ngIf="column?.project_type">
-                  <div>
+                <div *ngIf="column?.project_type">
+                  <div class="project-container">
                     Planed
                     <span class="float-right">
                       {{ formateDate(column?.start_date, "Do, MMM") }}
@@ -63,13 +63,13 @@
 
                     </span>
                   </div>
-                  <br/>
-                  <div>
+
+                  <div class="project-container">
                     Real
                     <span *ngIf="column?.real_due_date" class="float-right">
-                      <i class="material-icons">arrow_right_alt</i>
+                      <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757;">arrow_right_alt</i>
                       {{ formateDate(column?.real_due_date, "Do, MMM") }}
-                      <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons" style="color: #eb5757;">error</i>
+                      <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757;">error</i>
                     </span>
                   </div>
                 </div>
