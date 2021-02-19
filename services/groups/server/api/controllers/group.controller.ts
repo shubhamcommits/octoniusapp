@@ -358,7 +358,7 @@ export class GroupController {
             }).lean();
 
             // Send new workspace to the mgmt portal
-            if (process.env.NODE_ENV !== 'production') {
+            if (process.env.NODE_ENV == 'production') {
                 // Obtain the workspace of the group
                 const workspace = await Workspace.find({ _id: groupData._workspace });
 
@@ -498,7 +498,7 @@ export class GroupController {
             Flow.deleteMany({ _group: groupId});
 
             // Send new workspace to the mgmt portal
-            if (process.env.NODE_ENV !== 'production') {
+            if (process.env.NODE_ENV == 'production') {
                 // Obtain the workspace of the group
                 const workspace = await Workspace.find({ _id: group._workspace });
 
