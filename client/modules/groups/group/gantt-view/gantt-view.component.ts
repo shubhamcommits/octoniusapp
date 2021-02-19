@@ -520,7 +520,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           startingIndex: this.find_index(moment(column.start_date).format("YYYY-MM-DD")),
           noOfTasks:column?.tasks?.length || 0,
           id:column._id,
-          startheight: index===0?100:(60*this.projectsdata[index-1].noOfTasks+260),
+          startheight: index===0?100:((60*this.projectsdata[index-1].tasks.length)+(this.projectsdata[index-1].startheight)+160),
           tasks:[],
           taskAfterDueDate:undefined,
           taskAfterDueDateStart:this.find_index(moment(column.due_date).format("YYYY-MM-DD"))
