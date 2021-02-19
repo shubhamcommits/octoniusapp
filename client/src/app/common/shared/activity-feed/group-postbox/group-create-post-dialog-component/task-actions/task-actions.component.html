@@ -117,8 +117,12 @@
   <div *ngIf="groupData && !ischild && groupData.project_type" class="set-parent">
     MAKE DEPENDENCY OF
 
+    <button class="btn dependencylabel" style="margin-right: 1rem;"
+        *ngIf="dependencyTask" (click)="removeDependencyTask()">
+      <b>X</b> {{ dependencyTask.title | truncatetext: 50 }}
+    </button>
     <!-- INPUT BAR STARTS -->
-    <input type="search" id="dependencyKeyword" autocomplete="off" placeholder="Search task" class="input-search"
+    <input *ngIf="!dependencyTask" type="search" id="dependencyKeyword" autocomplete="off" placeholder="Search task" class="input-search"
       [(ngModel)]="dependencyItemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChangeForDependency($event)" />
     <!-- INPUT BAR ENDS -->
     <div *ngIf="searchingOn === 'dependencyKeyword'">
@@ -133,7 +137,7 @@
         </div>
       </div>
     </section>
-    
+
       <!-- LOADING SPINNER STARTS -->
       <ng-container *ngIf="isLoadingAction$ | async">
         <app-loading-spinner class="media"></app-loading-spinner>
@@ -151,8 +155,8 @@
       [name]="'north_star'"
       (change)="transformToNorthStart()">
     </mat-slide-toggle>
- 
-   
+
+
     <p>North Stars are goals for you or your team.</p>
   </div>
   <!-- North Start Switch ends -->

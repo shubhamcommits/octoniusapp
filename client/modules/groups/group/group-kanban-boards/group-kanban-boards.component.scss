@@ -89,6 +89,12 @@ $border-color: #e4edf8;
     }
 }
 
+.project-container {
+  width: 310px;
+  border-bottom: 1px solid $border-color;
+  margin-bottom: 16px;
+}
+
 .tasks-container {
     flex-grow: 1;
     overflow-y: auto;
@@ -215,4 +221,11 @@ img:hover {
     width: 30px !important;
     height: 30px !important;
     margin: 0;
+}
+
+.caption{
+    font-size: 12px;
+}
+.blue{
+    color: #005fd5;
 }

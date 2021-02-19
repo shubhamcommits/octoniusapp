@@ -9,6 +9,7 @@ import moment from 'moment/moment';
 import { MatDialog } from '@angular/material/dialog';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
+import { CreateProjectColumnDialogComponent } from './create-project-column-dialog/create-project-column-dialog.component';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -20,6 +21,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   constructor(
     private router: ActivatedRoute,
     public utilityService: UtilityService,
+    private columnService: ColumnService,
     private injector: Injector,
     public dialog: MatDialog,
     private flowService: FlowService
@@ -93,8 +95,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     }
   }
 
-  formateDate(date){
-    return moment.utc(date).format("MMM D, YYYY");
+  formateDate(date: any, format: string) {
+    return date ? moment.utc(date).format(format) : '';
   }
 
   async filtering(to) {
@@ -616,7 +618,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns,this.tasks);
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
       this.sorting();
@@ -662,6 +664,11 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
             this.columns[indexColumn].tasks.splice(indexTask, 1);
           }
         }
+        // Find the hightes due date on the tasks of the column
+        col.real_due_date = moment(Math.max(...col.tasks.map(post => moment(post.task.due_to))));
+
+        // Calculate number of done tasks
+        col.numDoneTasks = col.tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;
 
         return;
       }
@@ -684,9 +691,21 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
     // Remove the task from the old Column
     this.columns[oldColumnIndex]['tasks'].splice(this.columns[oldColumnIndex]['tasks'].findIndex((post: any) => post._id === columnEvent.post._id), 1);
+    // Find the highest due date on the tasks of the column
+    if (this.columns[oldColumnIndex]['tasks'].length == 0) {
+      this.columns[oldColumnIndex].real_due_date = null;
+    } else {
+      this.columns[oldColumnIndex].real_due_date = moment(Math.max(...this.columns[oldColumnIndex].tasks.map(post => moment(post.task.due_to))));
+    }
 
     // Add the task into the new column
     this.columns[newColumnIndex]['tasks'].unshift(columnEvent.post);
+    // Find the highest due date on the tasks of the column
+    if (this.columns[newColumnIndex]['tasks'].length == 0) {
+      this.columns[newColumnIndex].real_due_date = null;
+    } else {
+      this.columns[newColumnIndex].real_due_date = moment(Math.max(...this.columns[newColumnIndex].tasks.map(post => moment(post.task.due_to))));
+    }
   }
 
   /**
@@ -719,6 +738,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
    * @param task
    * @param dueDate
    */
+  /*
   changeDueDate(task: any, dueDate: any) {
 
     dueDate = moment.utc(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
@@ -731,6 +751,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     // Set the task due date on the UI
     task.task.due_to = moment.utc(dueDate).format('YYYY-MM-DD')
   }
+  */
 
   /**
    * This function changes the details on the UI
@@ -787,5 +808,48 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
   onTaskClonned(data) {
     this.taskClonnedEvent.emit(data);
+  }
+
+  makeColumnProjectDialog(column: any) {
+    if (!column?.project_type) {
+      this.utilityService.asyncNotification('Please wait we are creating a project from your column...', new Promise((resolve, reject) => {
+        this.columnService.changeColumnProjectType(column._id, true)
+          .then((res) => {
+            column.project_type = true;
+            resolve(this.utilityService.resolveAsyncPromise('Column type changed!'));
+          })
+          .catch((err) => {
+            column.project_type = false;
+            reject(this.utilityService.rejectAsyncPromise('Unable to change the column type at the moment, please try again!'))
+          })
+      }));
+    }
+    this.openMakeColumnProjectDialog(column);
+  }
+
+  openMakeColumnProjectDialog(column: any) {
+    const data = {
+        column: column
+      }
+
+    const dialogRef = this.dialog.open(CreateProjectColumnDialogComponent, {
+      data: data,
+      hasBackdrop: true
+    });
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      const index = this.columns.findIndex(col => col._id == column._id);
+    if (index >= 0) {
+      this.columns[index] = column;
+    }
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      closeEventSubs.unsubscribe();
+    });
+  }
+
+  isDelay(realDueDate: any, dueDate: any) {
+    return moment(realDueDate).isAfter(moment(dueDate), 'day');
   }
 }
