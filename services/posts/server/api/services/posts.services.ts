@@ -613,6 +613,23 @@ export class PostService {
         })
       }
 
+      if (post.type == 'task') {
+        // Remove dependencies
+        await Post.update({
+          'task._dependency_task': postId
+        }, {
+          'task._dependency_task': undefined
+        });
+
+        await Post.updateMany({
+          'task._dependent_child': postId
+        }, { 
+          $pull: { 'task._dependent_child': userId }
+        }, {
+            multi: true
+        });
+      }
+
       //delete files, this catches both document insertion as well as multiple file attachment deletes
       if (post.files?.length > 0) {
         //gather source file
@@ -2018,14 +2035,15 @@ export class PostService {
 
     try {
       let posts: any;
-      if (field === 'subtask') {
-
+      if (field == 'subtask') {
+        // search for parent task
         posts = await Post.find({
           $and: [
             { _group: groupId },
             { _id: { $ne: currentPostId } },
             { title: { $regex: query, $options: 'i' } },
-            { type: 'task' }
+            { type: 'task' },
+            { 'task._parent_task': null }
           ]
         })
           .sort({ title: -1 })
@@ -2033,7 +2051,7 @@ export class PostService {
           .select('_id title');
 
       } else {
-
+        // search for dependency
         posts = await Post.find({
           $and: [
             { _group: groupId },
