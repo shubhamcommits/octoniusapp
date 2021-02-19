@@ -49,7 +49,7 @@
         </app-gantt-view>
 
         <app-group-calendar-view *ngIf="viewType === 'calendar'"
-          [groupId]="groupData._id">
+          [groupId]="groupData._id" [tasks]="tasks">
         </app-group-calendar-view>
 
 </div>

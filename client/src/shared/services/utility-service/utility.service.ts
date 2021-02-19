@@ -256,14 +256,15 @@ export class UtilityService {
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openCreatePostFullscreenModal(postData: any, userData: any, groupId: string, columns?: any) {
+  openCreatePostFullscreenModal(postData: any, userData: any, groupId: string, columns?: any,tasks?:any) {
 
     const data = (columns) ?
       {
         postData: postData,
         userData: userData,
         groupId: groupId,
-        columns: columns
+        columns: columns,
+        Tasks:tasks
       }
     :
       {

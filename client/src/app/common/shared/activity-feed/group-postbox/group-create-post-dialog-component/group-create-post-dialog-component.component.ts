@@ -29,6 +29,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   userData: any;
   groupId: string;
   columns: any;
+  tasks:any;
   customFields = [];
   selectedCFValues = [];
   groupData: any;
@@ -119,6 +120,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.userData = this.data.userData;
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
+    this.tasks = this.data.Tasks;
 
     this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
 
