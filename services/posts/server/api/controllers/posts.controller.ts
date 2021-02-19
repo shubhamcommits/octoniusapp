@@ -1291,7 +1291,7 @@ export class PostController {
             return sendErr(res, new Error(error), 'Internal Server Error!', 500);
         }
     }
-
+    
     /**
      * This function is responsible for setting the parent task of a task
      * @param req 
@@ -1314,6 +1314,38 @@ export class PostController {
             // Send Status 200 response
             return res.status(200).json({
                 message: 'Post assigned to a parent Successfully!',
+                post: updatedPost
+            });
+        } catch (error) {
+            if (error == null) {
+                sendErr(res, null, 'User not allowed to edit this post!', 403);
+            }
+            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for removeing the dependency task of a task
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async removeDependencyTask(req: Request, res: Response, next: NextFunction) {
+
+        // Post Object From request
+        const { body: { dependencyTaskId }, params: { postId } } = req;
+
+        try {
+
+            // Call service function to edit
+            const updatedPost = await postService.removeDependencyTask(postId, dependencyTaskId)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+                })
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Dependency removed Successfully!',
                 post: updatedPost
             });
         } catch (error) {

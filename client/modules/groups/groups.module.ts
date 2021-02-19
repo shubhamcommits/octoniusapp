@@ -95,6 +95,8 @@ import { GroupCalendarViewComponent } from './group/group-calendar-view/group-ca
 
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarModule as Calendar, DateAdapter } from 'angular-calendar';
+import { CreateProjectColumnDialogComponent } from './group/group-kanban-boards/create-project-column-dialog/create-project-column-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -191,7 +193,8 @@ import { CalendarModule as Calendar, DateAdapter } from 'angular-calendar';
 
     GroupCalendarViewComponent,
 
-    GanttViewComponent
+    GanttViewComponent,
+    CreateProjectColumnDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -212,6 +215,7 @@ import { CalendarModule as Calendar, DateAdapter } from 'angular-calendar';
     MatExpansionModule,
     MatTableModule,
     MatSortModule,
+    MatDatepickerModule,
     ResizableModule,
 
     Calendar.forRoot({
@@ -234,6 +238,7 @@ import { CalendarModule as Calendar, DateAdapter } from 'angular-calendar';
     CustomFieldsDialogComponent,
     AutomationFlowsDialogComponent,
     AutomationFlowDetailsDialogComponent,
+    CreateProjectColumnDialogComponent,
     GroupBarComponent
   ]
 })

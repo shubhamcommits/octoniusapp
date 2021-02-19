@@ -1,14 +1,6 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-/*
-const Columns = new Schema({
-    title: String,
-    taskCount: Number,
-    custom_fields_to_show: [String]
-});
-*/
-
 const ColumnSchema = new Schema({
     _group: {
         type: Schema.Types.ObjectId,
@@ -23,16 +15,20 @@ const ColumnSchema = new Schema({
         type: String,
         required: true,
         default: ['priority']
-    }]
-    /*
-    columns: {
-        type: [Columns],
-        default: [{
-            title: 'to do',
-            taskCount: 0,
-            custom_fields_to_show: ['priority']
-        }]
-    }*/
+    }],
+    project_type: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    start_date: {
+        type: Date,
+        default: null
+    },
+    due_date: {
+        type: Date,
+        default: null
+    }
 });
 
 const Column = mongoose.model('Column', ColumnSchema);

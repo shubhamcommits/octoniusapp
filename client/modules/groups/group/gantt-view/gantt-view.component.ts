@@ -31,41 +31,52 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   datestoshow: any = { start: '2020-12-30', end: '2021-01-15' };
   //task parsed data
   tasksdata: any = [];
+
+  //projects data
+  projectsdata:any = [];
   //date for calendar Nav
   dates: any = [];
   //Month
   months: any = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   //container Width
   gantt_container_width: string;
+  //header Width
+  gantt_header_width: string;
   //container height
   gantt_container_height: string;
   //screen height
   screen_height:string;
   //container height
   current_date_index: any;
+  selectedProjectIndex:number = 0;
   //Grid column width
   step = 50;
   //Card  height
   card_height = 40;
   //Lines Array
+  tasksStartingHeight = 0;
   linesArray: any = [];
 
   constructor(private utilityService: UtilityService, private postService: PostService, private datePipe: DatePipe) { }
 
   async ngOnInit() {
+    
     await this.parsedTasks(this.tasks);
     this.datestoshow.start = await this.min_date(this.tasksdata);
     this.datestoshow.end = await this.max_date(this.tasksdata)
     await this.generateNavDate();
     await this.add_index();
+    await this.parsedProjects(this.columns);
+    await this.taskAfterDueDate();
+    console.log("tasks oninit",this.tasksdata,this.projectsdata);
     await this.get_current_date_index()
-    var ganttHeight = 100 + this.tasksdata.length * 60;
+    var ganttHeight = (100 + this.tasksdata.length * 60) + (this.tasksStartingHeight);
     var screenHeight = window.innerHeight - 100;
 
     if (ganttHeight > screenHeight) {
-      this.gantt_container_height = ganttHeight + 'px';
+      this.gantt_container_height = (ganttHeight+100) + 'px';
     } else {
-      this.gantt_container_height = screenHeight + 'px';
+      this.gantt_container_height = (screenHeight+100) + 'px';
     }
     this.screen_height = screenHeight + 'px';
     document.getElementsByTagName("body")[0].style.overflow = 'hidden';
@@ -89,6 +100,21 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           }));
         }
       }
+
+      this.projectsdata.forEach(project => {
+        for (let i = 0; i < project.tasks.length; i++) {
+          if (project.tasks[i] && project.tasks[i].dependency) {
+            this.linesArray.push(new LeaderLine(document.getElementById(project.tasks[i]?.dependency), document.getElementById(project.tasks[i]?.id), {
+              startPlug: 'disc',
+              startSocket: 'right',
+              endSocket: 'left',
+              size: 2,
+              color: '#4a90e2',
+            }));
+          }
+        }
+      });
+
       document.getElementById('fixed-container-gantt').addEventListener('scroll', this.linePotionsListener.bind(this), false);
     }, 50);
   };
@@ -96,6 +122,19 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   linePotionsListener() {
     this.screen_height = (window.innerHeight - 100) + 'px';
     this.linesArray.forEach(line => {
+      const linesAll = document.getElementsByClassName('leader-line');
+      for (let index = 0; index < linesAll.length; index++) {
+        const viewboxvalue = linesAll[index].attributes['viewBox'].nodeValue;
+        const values=viewboxvalue.split(" ");
+        const left = 130;
+        const top = 260;
+        if(Number(values[0])<left || Number(values[1]<top )){
+          linesAll[index].setAttribute('style','display:none');
+        } else {
+          linesAll[index].setAttribute('style',`left:${values[0]}px;top: ${values[1]}px; width: ${values[2]}px; height: ${values[3]}px;`);
+        }
+        
+      }
       line.position();
     });
   }
@@ -114,8 +153,18 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   //Drop event on drag
   drop(event: CdkDragDrop<string[]>) {
-    var Taskindex = event.item.element.nativeElement.attributes['taskindex'].nodeValue;
-    var task = this.tasksdata[event.item.element.nativeElement.attributes['taskindex'].nodeValue];
+    if(event.item.element.nativeElement.attributes['projectindex']){
+      var projectId = event.item.element.nativeElement.attributes['projectindex'].nodeValue;
+    }
+    if(projectId){
+      var project = this.projectsdata[projectId];
+      var Taskindex = event.item.element.nativeElement.attributes['taskindex'].nodeValue;
+      var task = project.tasks[Taskindex];
+    } else {
+      var Taskindex = event.item.element.nativeElement.attributes['taskindex'].nodeValue;
+      var task = this.tasksdata[event.item.element.nativeElement.attributes['taskindex'].nodeValue];
+    }
+    
     var distance = (event.distance.x) / 50;
     var mod = (event.distance.x) % 50;
 
@@ -136,15 +185,27 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     }
     var updated_x = task.index_date + days;
     event.item.element.nativeElement.setAttribute('style', `top:0px;left:${updated_x * 50}px;width: ${event.item.element.nativeElement.style.width}`)
-    var newEndDate = moment.utc(this.tasksdata[Taskindex].end,'YYYY-MM-DD').add(days,'days',);
-    var newStartDate = moment.utc(this.tasksdata[Taskindex].start,'YYYY-MM-DD').add(days,'days');
-    this.tasksdata[Taskindex].index_date = updated_x;
-    this.tasksdata[Taskindex].end = newEndDate.format("YYYY-MM-DD");
-    this.tasksdata[Taskindex].task.task.due_to = newEndDate.format("YYYY-MM-DD");
-    this.tasksdata[Taskindex].task.task.start_date = newStartDate.format("YYYY-MM-DD")
-    this.tasksdata[Taskindex].start = newStartDate.format("YYYY-MM-DD")
-    this.dateupdate(this.tasksdata[Taskindex], newStartDate.format("YYYY-MM-DD"), newEndDate.format("YYYY-MM-DD"), days, days, this.tasksdata[Taskindex]?._groupid);
+    if(projectId){
+      var newEndDate = moment.utc(this.projectsdata[projectId].tasks[Taskindex].end,'YYYY-MM-DD').add(days,'days',);
+      var newStartDate = moment.utc(this.projectsdata[projectId].tasks[Taskindex].start,'YYYY-MM-DD').add(days,'days');
+      this.projectsdata[projectId].tasks[Taskindex];
+      this.projectsdata[projectId].tasks[Taskindex].index_date = updated_x;
+      this.projectsdata[projectId].tasks[Taskindex].end = newEndDate.format("YYYY-MM-DD");
+      this.projectsdata[projectId].tasks[Taskindex].task.task.due_to = newEndDate.format("YYYY-MM-DD");
+      this.projectsdata[projectId].tasks[Taskindex].task.task.start_date = newStartDate.format("YYYY-MM-DD")
+      this.projectsdata[projectId].tasks[Taskindex].start = newStartDate.format("YYYY-MM-DD")
+      this.dateupdate(this.projectsdata[projectId].tasks[Taskindex], newStartDate.format("YYYY-MM-DD"), newEndDate.format("YYYY-MM-DD"), days, days, this.projectsdata[projectId].tasks[Taskindex]?._groupid);
 
+    }else{
+      var newEndDate = moment.utc(this.tasksdata[Taskindex].end,'YYYY-MM-DD').add(days,'days',);
+      var newStartDate = moment.utc(this.tasksdata[Taskindex].start,'YYYY-MM-DD').add(days,'days');
+      this.tasksdata[Taskindex].index_date = updated_x;
+      this.tasksdata[Taskindex].end = newEndDate.format("YYYY-MM-DD");
+      this.tasksdata[Taskindex].task.task.due_to = newEndDate.format("YYYY-MM-DD");
+      this.tasksdata[Taskindex].task.task.start_date = newStartDate.format("YYYY-MM-DD")
+      this.tasksdata[Taskindex].start = newStartDate.format("YYYY-MM-DD")
+      this.dateupdate(this.tasksdata[Taskindex], newStartDate.format("YYYY-MM-DD"), newEndDate.format("YYYY-MM-DD"), days, days, this.tasksdata[Taskindex]?._groupid);
+    }
     setTimeout(() => {
       this.linesArray.forEach(line => {
         line.position();
@@ -168,7 +229,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   }
 
   //Resize Event
-  onResizeEnd(event: ResizeEvent, Taskid: string, Taskindex): void {
+  onResizeEnd(event: ResizeEvent, Taskid: string, Taskindex:number,projectIndex?:number): void {
 
     if (event.edges?.right) {
       var mod = Number(event.edges?.right) % 50;
@@ -192,10 +253,19 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       var clientWidth = document.getElementById(Taskid).clientWidth;
       var newWidth = clientWidth + result + 4;
       document.getElementById(Taskid).style.width = newWidth + 'px';
-      var newEndDate = moment.utc(this.tasksdata[Taskindex].end,"YYYY-MM-DD").add(multiple,'days');
-      this.tasksdata[Taskindex].end = newEndDate.format("YYYY-MM-DD");
-      this.tasksdata[Taskindex].task.task.due_to = newEndDate.format("YYYY-MM-DD");
-      this.dateupdate(this.tasksdata[Taskindex], this.tasksdata[Taskindex].start, newEndDate.format("YYYY-MM-DD"), 0, multiple, this.tasksdata[Taskindex]?._groupid);
+      if(projectIndex>=0){
+        var newEndDate = moment.utc(this.projectsdata[projectIndex].tasks[Taskindex].end,"YYYY-MM-DD").add(multiple,'days');
+        this.projectsdata[projectIndex].tasks[Taskindex].end = newEndDate.format("YYYY-MM-DD");
+        this.projectsdata[projectIndex].tasks[Taskindex].task.task.due_to = newEndDate.format("YYYY-MM-DD");
+        this.dateupdate(this.projectsdata[projectIndex].tasks[Taskindex], this.projectsdata[projectIndex].tasks[Taskindex].start, newEndDate.format("YYYY-MM-DD"), 0, multiple, this.projectsdata[projectIndex].tasks[Taskindex]?._groupid);
+
+      }else{
+        var newEndDate = moment.utc(this.tasksdata[Taskindex].end,"YYYY-MM-DD").add(multiple,'days');
+        this.tasksdata[Taskindex].end = newEndDate.format("YYYY-MM-DD");
+        this.tasksdata[Taskindex].task.task.due_to = newEndDate.format("YYYY-MM-DD");
+        this.dateupdate(this.tasksdata[Taskindex], this.tasksdata[Taskindex].start, newEndDate.format("YYYY-MM-DD"), 0, multiple, this.tasksdata[Taskindex]?._groupid);
+      }
+      
 
     } else if (event.edges?.left) {
       var mod = Number(event.edges?.left) % 50;
@@ -223,10 +293,18 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       document.getElementById(Taskid).style.width = newWidth + 'px';
       var newLeft = offsetLeft + result;
       document.getElementById(Taskid).style.left = newLeft + 'px';
-      var newStartDate = moment.utc(this.tasksdata[Taskindex].start,"YYYY-MM-DD").add(multiple,'days');
-      this.tasksdata[Taskindex].task.task.start_date = newStartDate.format("YYYY-MM-DD");
-      this.tasksdata[Taskindex].start = newStartDate.format("YYYY-MM-DD");
-      this.dateupdate(this.tasksdata[Taskindex], newStartDate.format("YYYY-MM-DD"), this.tasksdata[Taskindex].end, multiple, 0, this.tasksdata[Taskindex]?._groupid);
+      if(projectIndex>=0){
+        var newStartDate = moment.utc(this.projectsdata[projectIndex].tasks[Taskindex].start,"YYYY-MM-DD").add(multiple,'days');
+        this.projectsdata[projectIndex].tasks[Taskindex].task.task.start_date = newStartDate.format("YYYY-MM-DD");
+        this.projectsdata[projectIndex].tasks[Taskindex].start = newStartDate.format("YYYY-MM-DD");
+        this.dateupdate(this.projectsdata[projectIndex].tasks[Taskindex], newStartDate.format("YYYY-MM-DD"), this.projectsdata[projectIndex].tasks[Taskindex].end, multiple, 0, this.projectsdata[projectIndex].tasks[Taskindex]?._groupid);
+      }else{
+        var newStartDate = moment.utc(this.tasksdata[Taskindex].start,"YYYY-MM-DD").add(multiple,'days');
+        this.tasksdata[Taskindex].task.task.start_date = newStartDate.format("YYYY-MM-DD");
+        this.tasksdata[Taskindex].start = newStartDate.format("YYYY-MM-DD");
+        this.dateupdate(this.tasksdata[Taskindex], newStartDate.format("YYYY-MM-DD"), this.tasksdata[Taskindex].end, multiple, 0, this.tasksdata[Taskindex]?._groupid);
+      }
+     
     }
 
     setTimeout(() => {
@@ -244,17 +322,19 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     this.postService.updateGanttTasksDates(task['id'], groupid, enddate, startdate, sday, eday)
       .then((res) => {
         this.tasks = res['posts'];
+        
         this.refreshChart();
       });;
   }
 
   //onupdate task
   async updateTask(updatedTask: any) {
-
     for (var i = 0; i < this.tasks.length; i++) {
 
       if (this.tasks[i]._id == updatedTask._id) {
+
         this.tasks[i] = updatedTask;
+        
       } else if (this.tasks[i]._id == updatedTask?.task?._parent_task?._id) {
         var isExist = false;
         this.tasks.forEach(task => {
@@ -269,6 +349,11 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         }
       }
     }
+    this.columns.forEach(column => {
+      if(updatedTask?.task?._column?._id == column._id){
+        column.tasks.push(updatedTask);
+      }
+    });
     await this.refreshChart();
   }
 
@@ -287,7 +372,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   //open model
   openFullscreenModal(postData: any,): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.columns);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.columns ,this.tasks);
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
     });
@@ -313,19 +398,24 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   async refreshChart() {
     await this.parsedTasks(this.tasks);
     this.datestoshow.start = await this.min_date(this.tasksdata);
-    this.datestoshow.end = await this.max_date(this.tasksdata)
+    this.datestoshow.end = await this.max_date(this.tasksdata);
     this.dates = [];
     await this.generateNavDate();
     await this.add_index();
+    await this.parsedProjects(this.columns);
+    await this.taskAfterDueDate();
+    console.log("tasks refresh",this.tasksdata,this.projectsdata);
     await this.get_current_date_index()
-    var ganttHeight = 100 + this.tasksdata.length * 60;
+    var ganttHeight = (100 + this.tasksdata.length * 60) + (this.tasksStartingHeight);
     var screenHeight = window.innerHeight - 100;
 
     if (ganttHeight > screenHeight) {
-      this.gantt_container_height = ganttHeight + 'px';
+      this.gantt_container_height = (ganttHeight+100) + 'px';
     } else {
-      this.gantt_container_height = screenHeight + 'px';
+      this.gantt_container_height = (screenHeight+100) + 'px';
     }
+    this.screen_height = screenHeight + 'px';
+    document.getElementsByTagName("body")[0].style.overflow = 'hidden';
 
     this.lineRemove();
     // this.linesArray = [];
@@ -356,6 +446,11 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
       this.gantt_container_width = (Difference_In_Days * this.step) + 'px';
       //Populating the dates.
+      if(Difference_In_Days * this.step > this.columns.length*350){
+        this.gantt_header_width = (Difference_In_Days * this.step) + 'px';
+      } else {
+        this.gantt_header_width = (this.columns.length*350) + 'px';
+      }
 
       for (var i = 0; i < Difference_In_Days; i++) {
         const reqdate =  moment(moment(),"YYYY-MM-DD").add(i,'days');
@@ -381,6 +476,13 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       }
       //Continer width
       this.gantt_container_width = (Difference_In_Days * this.step) + 'px';
+
+      if(Difference_In_Days * this.step > this.columns.length*350){
+        this.gantt_header_width = (Difference_In_Days * this.step) + 'px';
+      } else {
+        this.gantt_header_width = (this.columns.length*350) + 'px';
+      }
+
       //Populating the dates.
 
       for (var i = 0; i < Difference_In_Days; i++) {
@@ -391,8 +493,80 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   }
 
+  scroll(id: string,index:number) {
+    this.selectedProjectIndex = index;
+    const el=document.getElementById(id);
+    if(el){
+      const elTop = Number(el.style.top.substring(0,el.style.top.length-2))-110;
+      const elLeft = Number(el.style.left.substring(0,el.style.left.length-2));
+      document.getElementById('fixed-container-gantt').scrollTo({top: elTop,
+        left: elLeft,
+        behavior: 'smooth'});
+
+    }
+   
+}
+
+  async parsedProjects(columnsData:any){
+
+    let index=0;
+    this.projectsdata=[];
+    let tasktobedeleted:any=[];
+    columnsData.forEach(column => {
+      if(column.due_date && column.start_date && column.project_type){
+        const newColumnsData = {
+          data:column,
+          differencedays: moment(column?.due_date).diff(column?.start_date,'days'),
+          startingIndex: this.find_index(moment(column.start_date).format("YYYY-MM-DD")),
+          noOfTasks:column?.tasks?.length || 0,
+          id:column._id,
+          startheight: index===0?100:((60*this.projectsdata[index-1].tasks.length)+(this.projectsdata[index-1].startheight)+160),
+          tasks:[],
+          taskAfterDueDate:undefined,
+          taskAfterDueDateStart:this.find_index(moment(column.due_date).format("YYYY-MM-DD"))
+        }
+
+        for (let i = 0; i < this.tasksdata.length; i++) {
+          if(this.tasksdata[i]?.projectId+'' == column._id+''){
+             newColumnsData.tasks.push(this.tasksdata[i]);
+             tasktobedeleted.push(this.tasksdata[i].id);
+           }  
+        }
+        this.projectsdata.push(newColumnsData);
+        index++;
+      }
+    });
+    
+    tasktobedeleted.forEach(userID => {
+      let deleted=0;
+      this.tasksdata.forEach(task => {
+        if(userID == task.id){
+          this.tasksdata.splice(deleted,1);
+        }
+        deleted++;
+      });
+    });
+
+    if(this.projectsdata.length>0){
+      const last_project = this.projectsdata[this.projectsdata.length-1];
+      this.tasksStartingHeight = (last_project.startheight)+(60*last_project.noOfTasks+100);
+    }
+  }
+
+  async taskAfterDueDate(){
+    for (let index = 0; index < this.projectsdata.length; index++) {
+      for (let i = 0; i < this.projectsdata[index].tasks.length; i++) {
+        if(moment(moment.utc(this.projectsdata[index].tasks[i].end).format("YYYY-MM-DD")).isAfter(moment.utc(this.projectsdata[index].data.due_date).format("YYYY-MM-DD")))
+        {
+          this.projectsdata[index].taskAfterDueDate = moment(moment.utc(this.projectsdata[index].tasks[i].end).format("YYYY-MM-DD")).diff(moment.utc(this.projectsdata[index].data.due_date).format("YYYY-MM-DD"),'days');
+        }  
+      }
+      
+    }
+  }
+
   //Parsing the data
-  async parsedTasks(tasksdata) {
+  async parsedTasks(tasksdata:any) {
 
     if (tasksdata.length > 0) {
       //Sorted Tasks
@@ -498,6 +672,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             dependency: x?.task._dependency_task,
             image: (x?._assigned_to?.length > 0) ? this.baseUrl + '/' + x._assigned_to[0].profile_pic : undefined,
             noOfParticipants: (x?._assigned_to?.length > 1) ? x?._assigned_to?.length - 1 : undefined,
+            projectId:(x?.task?._column._id)?x?.task?._column._id:x?.task?._column,
             task: x
           });
         } else {
@@ -516,6 +691,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
               dependency: x?.task._dependency_task,
               image: (x?._assigned_to?.length > 0) ? this.baseUrl + '/' + x._assigned_to[0].profile_pic : undefined,
               noOfParticipants: (x?._assigned_to?.length > 1) ? x?._assigned_to?.length - 1 : undefined,
+              projectId:x?.task?._column,
               task: x
             });
           }
@@ -535,6 +711,13 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         min_dtObj = moment.utc(dt.start);
       }
     });
+
+    this.columns.forEach(column => {
+      if (moment.utc(column.start_date).isBefore(min_dtObj)) {
+        min_dt = column.start_date;
+        min_dtObj = moment.utc(column.start_date);
+      }
+    });
     return min_dt;
   }
   //Get the Min date
@@ -548,6 +731,14 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         max_dtObj = moment.utc(dt.end);
       }
     });
+
+    this.columns.forEach(column => {
+      if (moment.utc(column.due_date).isAfter(max_dtObj)) {
+        max_dt = column.due_date;
+        max_dtObj = moment.utc(column.due_date);
+      }
+    });
+
     return max_dt;
   }
 
@@ -585,5 +776,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   onTaskClonned(data) {
     this.taskClonnedEvent.emit(data);
+  }
+  formateDate(date: any, format: string){
+    return date ? moment.utc(date).format(format) : '';
   }
 }
