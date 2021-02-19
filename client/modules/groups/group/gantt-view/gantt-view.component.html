@@ -5,20 +5,20 @@
       <div style="height: 100px;overflow: hidden;">
       <div id="hideScrollbar" [ngStyle]="{'height': '120px','width':'100%','overflow':'auto'}">
         <div class="projects-row" [ngStyle]="{'height': '100px','width':gantt_header_width,'padding-bottom':'30px'}">
-          <div *ngFor="let item of columns;let i = index" [ngClass]="i==selectedProjectIndex?'project-card is-clicked':'project-card'"
-            [ngStyle]="{'left': (i*333+30)+'px','cursor':'pointer'}" (click)="scroll(item._id,i)">
+          <div *ngFor="let item of projectsdata;let i = index" [ngClass]="i==selectedProjectIndex?'project-card is-clicked':'project-card'"
+            [ngStyle]="{'left': (i*333+30)+'px','cursor':'pointer'}" (click)="scroll(item.id,i)">
             <div style="position: relative;width: 293px;height: 75px;">
               <p class="text-capitalize project-title" [ngbTooltip]="item?.title">
-                <span class="material-icons" *ngIf="item?.project_type">watch_later</span>
-                {{ item?.title | truncatetext:20 }}
+                <span class="material-icons" *ngIf="item?.data?.project_type">watch_later</span>
+                {{ item?.data?.title | truncatetext:20 }}
               </p>
-              <div *ngIf="item?.start_date && item?.due_date">
+              <div *ngIf="item?.data?.start_date && item?.data?.due_date">
                 <span class="planed-date">
-                  <span [ngStyle]="{'color': i == selectedProjectIndex ? '#26A69A' : 'initial' }">{{ formateDate(item?.start_date, "Do,
+                  <span [ngStyle]="{'color': i == selectedProjectIndex ? '#26A69A' : 'initial' }">{{ formateDate(item?.data?.start_date, "Do,
                     MMM") }}</span>
                   <span [ngStyle]="{'color': i == selectedProjectIndex ? '#005FD5' : 'initial' }">
                     <i class="material-icons">arrow_right_alt</i>
-                    {{ formateDate(item?.due_date, "Do, MMM") }}
+                    {{ formateDate(item?.data?.due_date, "Do, MMM") }}
                   </span>
                 </span>
               </div>
