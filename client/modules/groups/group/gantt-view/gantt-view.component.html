@@ -9,7 +9,7 @@
             [ngStyle]="{'left': (i*333+30)+'px','cursor':'pointer'}" (click)="scroll(item.id,i)">
             <div style="position: relative;width: 293px;height: 75px;">
               <p class="text-capitalize project-title" [ngbTooltip]="item?.title">
-                <span class="material-icons" *ngIf="item?.data?.project_type">watch_later</span>
+                <span class="material-icons" *ngIf="item?.data?.project_type">history_toggle_off</span>
                 {{ item?.data?.title | truncatetext:20 }}
               </p>
               <div *ngIf="item?.data?.start_date && item?.data?.due_date">

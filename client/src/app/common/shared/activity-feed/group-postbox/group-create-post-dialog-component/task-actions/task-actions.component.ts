@@ -22,6 +22,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Input() postData: any;
   @Input() groupData: any;
   @Input() userData: any;
+  @Input() tasks: any;
   @Input() isNorthStar = false;
 
   @Output() parentTaskSelectedEmitter = new EventEmitter();
@@ -42,6 +43,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   ischild: boolean = false;
   isdependent: boolean = false;
   tasksList: any = [];
+  dependencyTask: any;
   searchingOn: string = 'keyword';
   // Item value variable mapped with search field
   itemValue: string;
@@ -131,7 +133,9 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   ngOnInit() {
     this.postService.getGroupTemplates(this.groupData?._id || this.postData?._group?._id || this.postData?._group).then(res => {
       this.groupTemplates = res['posts'];
-    })
+    });
+    this.getDependencyTask();
+    console.log("input data tasks action",this.tasks,this.postData);
   }
 
   ngAfterViewInit() {
@@ -341,11 +345,44 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
             // Close the list after assigning
             this.tasksList = [];
+            this.getDependencyTask();
 
             this.dependencyTaskSelectedEmitter.emit(this.postData);
           });
         }
       });
+  }
+
+  async getDependencyTask(){
+    this.tasks.forEach(task => {
+      if(this.postData?.task?._dependency_task == task._id){
+        this.dependencyTask = task;
+      }
+    });
+  }
+
+  async removeDependencyTask(){
+    
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will remove its dependency task!')
+    .then((res) => {
+      if (res.value) {
+        this.postService.removeDependencyTask(this.postData._id, this.dependencyTask._id).then(res => {
+          this.postData = res['post'];
+          let settings = { setDependency: "setDependency" }
+          this.postData.settings = settings;
+          // Clear search input after assigning
+          // this.itemValue = '';
+          this.dependencyItemValue = '';
+
+          // Close the list after assigning
+          this.tasksList = [];
+          this.dependencyTask=undefined;
+
+          this.dependencyTaskSelectedEmitter.emit(this.postData);
+        });
+      }
+    });
+    console.log("remove dependecny");
   }
 
   saveTemplateAction(action: string) {

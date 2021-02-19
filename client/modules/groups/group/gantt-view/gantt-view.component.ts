@@ -372,7 +372,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   //open model
   openFullscreenModal(postData: any,): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.columns);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.columns ,this.tasks);
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
     });

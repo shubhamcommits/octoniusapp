@@ -618,7 +618,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns,this.tasks);
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
       this.sorting();

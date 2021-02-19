@@ -2143,6 +2143,43 @@ export class PostService {
     }
   }
 
+  async removeDependencyTask(postId: string, dependecyTaskId: string) {
+
+    try {
+      
+      let oldParent = await Post.findById(dependecyTaskId);
+      
+      for (var i = 0; i < oldParent.task._dependent_child.length; i++) {
+        if (oldParent.task._dependent_child[i] + '' == postId + '') {
+          oldParent.task._dependent_child.splice(i, 1);
+          break;
+        }
+      }
+
+      oldParent.save();
+      
+
+      let post = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        'task._dependency_task': undefined
+      }, {
+        new: true
+      })
+
+      // populate the properties of this document
+      post = await this.populatePostProperties(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      console.log(`\n⛔️ Error:\n ${err}`);
+      // Return with error
+      throw (err);
+    }
+  }
+
   async cloneToAssignee(postId: string, assigneeId: string, parentId?: string) {
 
     try {

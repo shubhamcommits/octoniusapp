@@ -371,7 +371,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData._id, this.sections);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData._id, this.sections,this.tasks);
 
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
