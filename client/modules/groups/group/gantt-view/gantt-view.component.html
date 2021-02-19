@@ -41,7 +41,7 @@
                   <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">
                     {{item.month}}
                   </p>
-                  <p *ngIf="i !== projectsdata[0].startingIndex" [ngStyle]="{'color':item.day === 1 ? 'red':'initial','background-color': ((i > projectsdata[0].startingIndex) && (i < projectsdata[0].taskAfterDueDateStart))?'#eaf6f5':''}"
+                  <p *ngIf="i !== projectsdata[0].startingIndex" [ngStyle]="{'color':item.day === 1 ? 'red':'initial','background-color': ((i > projectsdata[0].startingIndex) && (i < projectsdata[0].taskAfterDueDateStart+1))?'#eaf6f5':''}"
                     [ngClass]="i==current_date_index?'curretn_date':''" class="day">
                     {{item.day}}</p>
                   <p *ngIf="i === projectsdata[0].startingIndex" [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}"
@@ -57,22 +57,22 @@
                 : item.isweekend?'#fff':'initial'}" class="date_div">
               </div>
               <div *ngFor="let item of projectsdata;let i = index" class="project-timeline"
-                [ngStyle]="{'top':item.startheight+'px','left': (item.startingIndex*50)+'px','position':'absolute','height':(60*item.noOfTasks+100)+'px',
-                'border-left':'1px solid #26A69A','border-right':'1px dotted #005FD5','width':(item.differencedays*50)+'px'}">
-                <div *ngIf="item.taskAfterDueDate" [ngStyle]="{'position':'absolute',left:(item.differencedays*50)+'px','background-color':'red',
-                'height':(60*item.noOfTasks+100)+'px','width':(item.taskAfterDueDate*50)+'px','border-right':'2px dashed #EB5757'}"></div>
+                [ngStyle]="{'top':item.startheight+'px','left': (item.startingIndex*step)+'px','position':'absolute','height':(60*item.tasks.length+100)+'px',
+                'border-left':'1px solid #26A69A','border-right':'1px dotted #005FD5','width':(item.differencedays*step+step)+'px'}">
+                <div *ngIf="item.taskAfterDueDate" [ngStyle]="{'position':'absolute',left:(item.differencedays*step+step)+'px','background-color':'red',
+                'height':(60*item.tasks.length+100)+'px','width':(item.taskAfterDueDate*step)+'px','border-right':'2px dashed #EB5757'}"></div>
               </div>
               <div *ngFor="let item of projectsdata;let i = index">
-                <div *ngIf="i == selectedProjectIndex" class="pvl" [ngStyle]="{'left':(item.startingIndex*step)+'px','height':((item.startheight)+(60*item.noOfTasks))+'px','border-left': i===0?'2px solid #26A69A':'1px solid #9D9FA2'}"></div>
-                <div *ngIf="i == selectedProjectIndex && i!==0" class="pvl" [ngStyle]="{'left':(item.taskAfterDueDateStart*step)+'px','height':((item.startheight)+(60*item.noOfTasks))+'px','border-left':'1px solid #9D9FA2'}"></div>
-                <div *ngIf="i == selectedProjectIndex && i===0" class="pvl" [ngStyle]="{'left':(item.taskAfterDueDateStart*step-2)+'px','height':((item.startheight)+(60*item.noOfTasks))+'px','border-left': '2px dashed #005FD5'}"></div>
+                <div *ngIf="i == selectedProjectIndex" class="pvl" [ngStyle]="{'left':(item.startingIndex*step)+'px','height':((item.startheight)+(60*item.tasks.length))+'px','border-left': i===0?'2px solid #26A69A':'1px solid #9D9FA2'}"></div>
+                <div *ngIf="i == selectedProjectIndex && i!==0" class="pvl" [ngStyle]="{'left':(item.taskAfterDueDateStart*step+step)+'px','height':((item.startheight)+(60*item.tasks.length))+'px','border-left':'1px solid #9D9FA2'}"></div>
+                <div *ngIf="i == selectedProjectIndex && i===0" class="pvl" [ngStyle]="{'left':(item.taskAfterDueDateStart*step+step-2)+'px','height':(item.startheight+50)+'px','border-left': '2px dashed #005FD5'}"></div>
               </div>
               <!-- <div *ngFor="let item of projectsdata;let i = index" [attr.id]="item.id" [ngStyle]="{'top':(item.startheight-76)+'px','left': (item.startingIndex*50)+'px','position':'absolute'}"> -->
-              <div *ngFor="let item of projectsdata;let i = index" [attr.id]="item.id" [ngStyle]="{'top':(item.startheight)+'px','left': (item.startingIndex*50)+'px','position':'absolute','height':(60*item.noOfTasks+100)+'px',
-                'border-left':'2px solid #26A69A','border-right':'2px dashed #005FD5','width':(item.differencedays*50)+'px'}">
+              <div *ngFor="let item of projectsdata;let i = index" [attr.id]="item.id" [ngStyle]="{'top':(item.startheight)+'px','left': (item.startingIndex*50)+'px','position':'absolute','height':(60*item.tasks.length+100)+'px',
+                'border-left':'2px solid #26A69A','border-right':'2px dashed #005FD5','width':(item.differencedays*step+step)+'px'}">
 
-                <div *ngIf="item.taskAfterDueDate" [ngStyle]="{'position':'absolute',left:(item.differencedays*50)+'px',
-                'height':(60*item.noOfTasks+100)+'px','width':(item.taskAfterDueDate*50)+'px','border-right':'2px dashed #EB5757'}"></div>
+                <div *ngIf="item.taskAfterDueDate" [ngStyle]="{'position':'absolute',left:(item.differencedays*step+step)+'px',
+                'height':(60*item.tasks.length+100)+'px','width':(item.taskAfterDueDate*50)+'px','border-right':'2px dashed #EB5757'}"></div>
                 <div>
 
                 <!-- <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div> -->

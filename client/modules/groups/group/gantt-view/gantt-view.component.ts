@@ -329,11 +329,12 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   //onupdate task
   async updateTask(updatedTask: any) {
-
     for (var i = 0; i < this.tasks.length; i++) {
 
       if (this.tasks[i]._id == updatedTask._id) {
+
         this.tasks[i] = updatedTask;
+        
       } else if (this.tasks[i]._id == updatedTask?.task?._parent_task?._id) {
         var isExist = false;
         this.tasks.forEach(task => {
@@ -348,6 +349,11 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         }
       }
     }
+    this.columns.forEach(column => {
+      if(updatedTask?.task?._column?._id == column._id){
+        column.tasks.push(updatedTask);
+      }
+    });
     await this.refreshChart();
   }
 
@@ -491,16 +497,12 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     this.selectedProjectIndex = index;
     const el=document.getElementById(id);
     if(el){
-      // console.log("element",el,el.style.top.substring(0,el.style.top.length-2),el.style.left.substring(0,el.style.left.length-2));
       const elTop = Number(el.style.top.substring(0,el.style.top.length-2))-110;
       const elLeft = Number(el.style.left.substring(0,el.style.left.length-2));
       document.getElementById('fixed-container-gantt').scrollTo({top: elTop,
         left: elLeft,
         behavior: 'smooth'});
-      // el.scrollIntoView({ behavior: 'smooth' });
 
-      // console.log("element",el.scrollTop);
-  
     }
    
 }
@@ -523,8 +525,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           taskAfterDueDate:undefined,
           taskAfterDueDateStart:this.find_index(moment(column.due_date).format("YYYY-MM-DD"))
         }
-        for (let i = 0; i < this.tasksdata.length; i++) {
 
+        for (let i = 0; i < this.tasksdata.length; i++) {
           if(this.tasksdata[i]?.projectId+'' == column._id+''){
              newColumnsData.tasks.push(this.tasksdata[i]);
              tasktobedeleted.push(this.tasksdata[i].id);
@@ -670,7 +672,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             dependency: x?.task._dependency_task,
             image: (x?._assigned_to?.length > 0) ? this.baseUrl + '/' + x._assigned_to[0].profile_pic : undefined,
             noOfParticipants: (x?._assigned_to?.length > 1) ? x?._assigned_to?.length - 1 : undefined,
-            projectId:x?.task?._column,
+            projectId:(x?.task?._column._id)?x?.task?._column._id:x?.task?._column,
             task: x
           });
         } else {
