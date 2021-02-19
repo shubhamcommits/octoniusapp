@@ -2039,7 +2039,9 @@ export class PostService {
             { _group: groupId },
             { _id: { $ne: currentPostId } },
             { title: { $regex: query, $options: 'i' } },
-            { type: 'task' }
+            { type: 'task' },
+            { "task.start_date": { $ne: null } },
+            { "task.due_date": { $ne: null } }
           ]
         })
           .sort({ title: -1 })
