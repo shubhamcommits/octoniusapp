@@ -289,12 +289,13 @@ export class AuthsController {
 
                     // Send workspace to the mgmt portal
                     if (process.env.NODE_ENV == 'production') {
+console.log("111111");
                         // Count all the groups present inside the workspace
                         const groupsCount: number = await Group.find({ $and: [
                             { group_name: { $ne: 'personal' } },
                             { _workspace: workspace._id }
                         ]}).countDocuments();
-
+console.log("222222");
                         let workspaceMgmt = {
                             _id: workspace._id,
                             company_name: workspace.company_name,
@@ -315,11 +316,12 @@ export class AuthsController {
                                 quantity: usersCount
                             }
                         }
+console.log("333333");
                         http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                             API_KEY: process.env.MANAGEMENT_API_KEY,
                             workspaceData: workspaceMgmt
                         });
-
+console.log("444444");
                         // Send user to the mgmt portal
                         let userMgmt = {
                             _id: user._id,
@@ -332,11 +334,12 @@ export class AuthsController {
                             environment: process.env.DOMAIN,
                             created_date: user.created_date
                         }
-
+console.log("555555");
                         http.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
                             API_KEY: process.env.MANAGEMENT_API_KEY,
                             userData: userMgmt
                         });
+console.log("666666");
                     }
 
                     // Signup user and return the token
