@@ -161,7 +161,7 @@ export class UsersControllers {
             }
 
             // Send user to the mgmt portal
-            if (process.env.NODE_ENV !== 'production') {
+            if (process.env.NODE_ENV == 'production') {
                 let userMgmt = {
                     _id: user._id,
                     active: user.active,
@@ -224,7 +224,7 @@ export class UsersControllers {
             await userBY.save();
 
             // Send new workspace to the mgmt portal
-            if (process.env.NODE_ENV !== 'production') {
+            if (process.env.NODE_ENV == 'production') {
                 // Count all the users present inside the workspace
                 const usersCount: number = await User.find({ $and: [
                     { active: true },
@@ -663,7 +663,7 @@ export class UsersControllers {
         });
 
         // Send new workspace to the mgmt portal
-        if (process.env.NODE_ENV !== 'production') {
+        if (process.env.NODE_ENV == 'production') {
             // Count all the groups present inside the workspace
             const groupsCount: number = await Group.find({ $and: [
                 { group_name: { $ne: 'personal' } },

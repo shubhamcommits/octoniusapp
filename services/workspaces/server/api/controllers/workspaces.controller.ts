@@ -307,9 +307,9 @@ export class WorkspaceController {
             http.post(`${process.env.MAILING_SERVER_API}/new-workspace`, {
                 workspace: workspaceUpdate
             })
-
+console.log(process.env.NODE_ENV);
             // Send new workspace to the mgmt portal
-            if (process.env.NODE_ENV !== 'production') {
+            if (process.env.NODE_ENV == 'production') {
                 let workspaceMgmt = {
                     _id: workspace._id,
                     company_name: newWorkspace.company_name,
@@ -547,16 +547,14 @@ export class WorkspaceController {
 
             // Delete the workspace
             workspace = await Workspace.findByIdAndDelete(workspaceId);
-
+console.log(process.env.NODE_ENV);
             // Send new workspace to the mgmt portal
-            if (process.env.NODE_ENV !== 'production') {
-                if (process.env.NODE_ENV !== 'production') {
-                    http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
-                        data: {
-                            API_KEY: process.env.MANAGEMENT_API_KEY
-                        }
-                    });
-                }
+            if (process.env.NODE_ENV == 'production') {
+                http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
+                    data: {
+                        API_KEY: process.env.MANAGEMENT_API_KEY
+                    }
+                });
             }
 
             // Send the status 200 response 

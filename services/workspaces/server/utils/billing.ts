@@ -22,7 +22,7 @@ const addUserToSubscription = async (stripe: any, subscriptionId: any, priceId: 
     });
 
     // Send new workspace to the mgmt portal
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV == 'production') {
         // Count all the groups present inside the workspace
         const groupsCount: number = await Group.find({ $and: [
             { group_name: { $ne: 'personal' } },
@@ -77,7 +77,7 @@ const removeUserFromSubscription = async (stripe: any, subscriptionId: any, pric
     });
 
     // Send workspace to the mgmt portal
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV == 'production') {
         // Count all the groups present inside the workspace
         const groupsCount: number = await Group.find({ $and: [
             { group_name: { $ne: 'personal' } },

@@ -286,7 +286,7 @@ export class AuthsController {
                     });
 
                     // Send workspace to the mgmt portal
-                    if (process.env.NODE_ENV !== 'production') {
+                    if (process.env.NODE_ENV == 'production') {
                         // Count all the groups present inside the workspace
                         const groupsCount: number = await Group.find({ $and: [
                             { group_name: { $ne: 'personal' } },
