@@ -272,11 +272,13 @@ export class AuthsController {
                         { _workspace: workspace._id }
                     ] }).countDocuments();
 
-                    // Update the subscription details
-                    let subscription = stripe.subscriptions.update(workspace.billing.subscription_id, {
-                        price: workspace.billing.price_id,
-                        quantity: usersCount
-                    });
+                    if (workspace.billing.subscription_id) {
+                        // Update the subscription details
+                        let subscription = stripe.subscriptions.update(workspace.billing.subscription_id, {
+                            price: workspace.billing.price_id,
+                            quantity: usersCount
+                        });
+                    }
 
                     // Update the4 workspace details
                     await Workspace.findOneAndUpdate({
@@ -307,10 +309,10 @@ export class AuthsController {
                             num_groups: groupsCount,
                             created_date: workspace.created_date,
                             billing: {
-                                subscription_id: subscription.id || '',
-                                current_period_end: subscription.current_period_end || '',
+                                subscription_id: workspace.billing.subscription_id || '',
+                                current_period_end: workspace.billing.current_period_end || '',
                                 scheduled_cancellation: false,
-                                quantity: subscription.quantity || 0
+                                quantity: workspace.billing.quantity || 0
                             }
                         }
                         http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
