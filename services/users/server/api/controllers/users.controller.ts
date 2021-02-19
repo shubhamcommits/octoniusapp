@@ -657,10 +657,12 @@ export class UsersControllers {
             });
 
         // Update stripe subscription
-        const stripe = require('stripe')(process.env.SK_STRIPE);
-        stripe.subscriptionItems.update(workspaceUpdated['billing'].subscription_item_id, {
-            quantity: usersCount
-        });
+        if (workspaceUpdated['billing'].subscription_item_id) {
+            const stripe = require('stripe')(process.env.SK_STRIPE);
+            stripe.subscriptionItems.update(workspaceUpdated['billing'].subscription_item_id, {
+                quantity: usersCount
+            });
+        }
 
         // Send new workspace to the mgmt portal
         if (process.env.NODE_ENV == 'production') {
