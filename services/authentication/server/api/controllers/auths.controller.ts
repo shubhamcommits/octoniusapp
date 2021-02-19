@@ -302,7 +302,7 @@ export class AuthsController {
                             owner_email: workspace.owner_email,
                             owner_first_name: workspace.owner_first_name,
                             owner_last_name: workspace.owner_last_name,
-                            _owner_remote_id: workspace._owner,
+                            _owner_remote_id: workspace._owner._id || workspace._owner,
                             environment: process.env.DOMAIN,
                             num_members: usersCount,
                             num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
