@@ -384,7 +384,7 @@ export class GroupController {
                     _owner_remote_id: workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users.length || 0,
+                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
@@ -471,9 +471,11 @@ export class GroupController {
 
         try {
 
-            // Find the group and remove it from the database
-            const group: any = await Group.findByIdAndDelete(groupId)
+            const group: any = await Group.find({ _id: groupId })
                 .select('group_name _workspace')
+
+            // Find the group and remove it from the database
+            const groupDeleted: any = await Group.findByIdAndDelete(groupId);
 
             // Remove the group from users, and users´ favorite groups
             await User.updateMany({ _groups: groupId }, {
@@ -524,7 +526,7 @@ export class GroupController {
                     _owner_remote_id: workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users.length || 0,
+                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {

@@ -136,7 +136,7 @@ export class BillingControllers {
                     _owner_remote_id: workspaceUpdated._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspaceUpdated.invited_users.length,
+                    num_invited_users: workspaceUpdated.invited_users ? workspaceUpdated.invited_users.length : 0,
                     num_groups: groupsCount,
                     created_date: workspaceUpdated.created_date,
                     billing: {
@@ -432,7 +432,7 @@ export class BillingControllers {
                     _owner_remote_id: workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users.length || 0,
+                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
@@ -519,7 +519,7 @@ export class BillingControllers {
                     _owner_remote_id: workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users.length || 0,
+                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
@@ -624,7 +624,7 @@ export class BillingControllers {
                     _owner_remote_id: updatedWorkspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: updatedWorkspace.invited_users.length || 0,
+                    num_invited_users: updatedWorkspace.invited_users ? updatedWorkspace.invited_users.length : 0,
                     num_groups: groupsCount,
                     created_date: updatedWorkspace.created_date,
                     billing: {
@@ -848,7 +848,7 @@ export class BillingControllers {
                     _owner_remote_id: workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users.length || 0,
+                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
