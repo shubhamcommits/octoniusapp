@@ -2041,7 +2041,7 @@ export class PostService {
             { title: { $regex: query, $options: 'i' } },
             { type: 'task' },
             { "task.start_date": { $ne: null } },
-            { "task.due_date": { $ne: null } }
+            { "task.due_to": { $ne: null } }
           ]
         })
           .sort({ title: -1 })
