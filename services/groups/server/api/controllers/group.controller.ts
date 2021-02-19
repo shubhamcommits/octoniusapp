@@ -365,17 +365,17 @@ export class GroupController {
                 // Count all the groups present inside the workspace
                 const groupsCount: number = await Group.find({ $and: [
                     { group_name: { $ne: 'personal' } },
-                    { _workspace: workspace._id }
+                    { _workspace: groupData._workspace }
                 ]}).countDocuments();
 
                 // Count all the users present inside the workspace
                 const usersCount: number = await User.find({ $and: [
                     { active: true },
-                    { _workspace: workspace._id }
+                    { _workspace: groupData._workspace }
                 ] }).countDocuments();
 
                 let workspaceMgmt = {
-                    _id: workspace._id,
+                    _id: groupData._workspace,
                     company_name: workspace.company_name,
                     workspace_name: workspace.workspace_name,
                     owner_email: workspace.owner_email,
@@ -507,7 +507,7 @@ export class GroupController {
                 // Count all the groups present inside the workspace
                 const groupsCount: number = await Group.find({ $and: [
                     { group_name: { $ne: 'personal' } },
-                    { _workspace: workspace._id }
+                    { _workspace: group._workspace }
                 ]}).countDocuments();
 
                 // Count all the users present inside the workspace
@@ -517,7 +517,7 @@ export class GroupController {
                 ] }).countDocuments();
 
                 let workspaceMgmt = {
-                    _id: workspace._id,
+                    _id: group._workspace,
                     company_name: workspace.company_name,
                     workspace_name: workspace.workspace_name,
                     owner_email: workspace.owner_email,
