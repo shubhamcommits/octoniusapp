@@ -309,7 +309,7 @@ export class WorkspaceController {
             })
 
             if (process.env.NODE_ENV == 'production') {
-                // Send new workspace to the mgmt portal
+                // Send new workspace and user to the mgmt portal
                 let workspaceMgmt = {
                     _id: workspace._id,
                     company_name: newWorkspace.company_name,
@@ -324,12 +324,6 @@ export class WorkspaceController {
                     num_groups: 1,
                     created_date: workspace.created_date
                 }
-                http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
-                    API_KEY: process.env.MANAGEMENT_API_KEY,
-                    workspaceData: workspaceMgmt
-                });
-
-                // Send user to the mgmt portal
                 let userMgmt = {
                     _id: user._id,
                     active: user.active,
@@ -341,9 +335,9 @@ export class WorkspaceController {
                     environment: process.env.DOMAIN,
                     created_date: user.created_date
                 }
-
-                http.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
+                http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
                     API_KEY: process.env.MANAGEMENT_API_KEY,
+                    workspaceData: workspaceMgmt,
                     userData: userMgmt
                 });
             }
