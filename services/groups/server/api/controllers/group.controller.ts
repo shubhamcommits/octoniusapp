@@ -384,14 +384,14 @@ export class GroupController {
                     _owner_remote_id: workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users.length,
+                    num_invited_users: workspace.invited_users.length || 0,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
-                        subscription_id: workspace.billing.subscription_id,
-                        current_period_end: workspace.billing.current_period_end,
-                        scheduled_cancellation: workspace.billing.scheduled_cancellation,
-                        quantity: workspace.billing.quantity
+                        subscription_id: workspace.billing.subscription_id || '',
+                        current_period_end: workspace.billing.current_period_end || '',
+                        scheduled_cancellation: workspace.billing.scheduled_cancellation || false,
+                        quantity: workspace.billing.quantity || 0
                     }
                 }
                 http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
@@ -524,14 +524,14 @@ export class GroupController {
                     _owner_remote_id: workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users.length,
+                    num_invited_users: workspace.invited_users.length || 0,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
-                        subscription_id: workspace.billing.subscription_id,
-                        current_period_end: workspace.billing.current_period_end,
-                        scheduled_cancellation: workspace.billing.scheduled_cancellation,
-                        quantity: workspace.billing.quantity
+                        subscription_id: workspace.billing.subscription_id || '',
+                        current_period_end: workspace.billing.current_period_end || '',
+                        scheduled_cancellation: workspace.billing.scheduled_cancellation || false,
+                        quantity: workspace.billing.quantity || 0
                     }
                 }
                 http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {

@@ -140,10 +140,10 @@ export class BillingControllers {
                     num_groups: groupsCount,
                     created_date: workspaceUpdated.created_date,
                     billing: {
-                        subscription_id: subscription.id,
-                        current_period_end: subscription.current_period_end,
+                        subscription_id: subscription.id || '',
+                        current_period_end: subscription.current_period_end || '',
                         scheduled_cancellation: false,
-                        quantity: subscription.quantity
+                        quantity: subscription.quantity || 0
                     }
                 }
                 http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
@@ -432,14 +432,14 @@ export class BillingControllers {
                     _owner_remote_id: workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users.length,
+                    num_invited_users: workspace.invited_users.length || 0,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
-                        subscription_id: updatedSubscription.id,
-                        current_period_end: updatedSubscription.current_period_end,
+                        subscription_id: updatedSubscription.id || '',
+                        current_period_end: updatedSubscription.current_period_end || '',
                         scheduled_cancellation: true,
-                        quantity: updatedSubscription.quantity
+                        quantity: updatedSubscription.quantity || 0
                     }
                 }
                 http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
@@ -519,14 +519,14 @@ export class BillingControllers {
                     _owner_remote_id: workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users.length,
+                    num_invited_users: workspace.invited_users.length || 0,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
-                        subscription_id: updatedSubscription.id,
-                        current_period_end: updatedSubscription.current_period_end,
+                        subscription_id: updatedSubscription.id || '',
+                        current_period_end: updatedSubscription.current_period_end || '',
                         scheduled_cancellation: false,
-                        quantity: updatedSubscription.quantity
+                        quantity: updatedSubscription.quantity || 0
                     }
                 }
                 http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
@@ -624,14 +624,14 @@ export class BillingControllers {
                     _owner_remote_id: updatedWorkspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: updatedWorkspace.invited_users.length,
+                    num_invited_users: updatedWorkspace.invited_users.length || 0,
                     num_groups: groupsCount,
                     created_date: updatedWorkspace.created_date,
                     billing: {
-                        subscription_id: subscription.id,
-                        current_period_end: subscription.current_period_end,
+                        subscription_id: subscription.id || '',
+                        current_period_end: subscription.current_period_end || '',
                         scheduled_cancellation: false,
-                        quantity: subscription.quantity
+                        quantity: subscription.quantity || 0
                     }
                 }
                 http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${updatedWorkspace._id}/update`, {
@@ -848,14 +848,14 @@ export class BillingControllers {
                     _owner_remote_id: workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users.length,
+                    num_invited_users: workspace.invited_users.length || 0,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
-                        subscription_id: workspace.billing.subscription_id,
-                        current_period_end: workspace.billing.current_period_end,
-                        scheduled_cancellation: true,
-                        quantity: workspace.billing.quantity
+                        subscription_id: workspace.billing.subscription_id || '',
+                        current_period_end: workspace.billing.current_period_end || '',
+                        scheduled_cancellation: workspace.billing.scheduled_cancellation || false,
+                        quantity: workspace.billing.quantity || 0
                     }
                 }
                 http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {

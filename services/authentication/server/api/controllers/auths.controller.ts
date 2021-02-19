@@ -303,14 +303,14 @@ export class AuthsController {
                             _owner_remote_id: workspace._owner,
                             environment: process.env.DOMAIN,
                             num_members: usersCount,
-                            num_invited_users: workspace.invited_users.length,
+                            num_invited_users: workspace.invited_users.length || 0,
                             num_groups: groupsCount,
                             created_date: workspace.created_date,
                             billing: {
-                                subscription_id: subscription.id,
-                                current_period_end: subscription.current_period_end,
+                                subscription_id: subscription.id || '',
+                                current_period_end: subscription.current_period_end || '',
                                 scheduled_cancellation: false,
-                                quantity: subscription.quantity
+                                quantity: subscription.quantity || 0
                             }
                         }
                         http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
