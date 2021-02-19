@@ -852,10 +852,10 @@ export class BillingControllers {
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
-                        subscription_id: workspace.billing.subscription_id || '',
-                        current_period_end: workspace.billing.current_period_end || '',
-                        scheduled_cancellation: workspace.billing.scheduled_cancellation || false,
-                        quantity: workspace.billing.quantity || 0
+                        subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
+                        current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
+                        scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
+                        quantity: usersCount || 0
                     }
                 }
                 http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {

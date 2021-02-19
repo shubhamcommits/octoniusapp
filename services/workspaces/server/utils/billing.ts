@@ -46,7 +46,7 @@ const addUserToSubscription = async (stripe: any, subscriptionId: any, priceId: 
                 subscription_id: subscription.id || '',
                 current_period_end: subscription.current_period_end || '',
                 scheduled_cancellation: false,
-                quantity: subscription.quantity || 0
+                quantity: usersCount || 0
             }
         }
         http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
@@ -101,7 +101,7 @@ const removeUserFromSubscription = async (stripe: any, subscriptionId: any, pric
                 subscription_id: subscription.id || '',
                 current_period_end: subscription.current_period_end || '',
                 scheduled_cancellation: false,
-                quantity: subscription.quantity || 0
+                quantity: usersCount || 0
             }
         }
         http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {

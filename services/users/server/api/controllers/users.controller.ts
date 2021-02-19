@@ -251,9 +251,9 @@ export class UsersControllers {
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
-                        subscription_id: workspace.billing.subscription_id || '',
-                        current_period_end: workspace.billing.current_period_end || '',
-                        scheduled_cancellation: workspace.billing.scheduled_cancellation || false,
+                        subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
+                        current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
+                        scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
                         quantity: usersCount || 0
                     }
                 }
@@ -686,9 +686,9 @@ export class UsersControllers {
                 num_groups: groupsCount,
                 created_date: workspace.created_date,
                 billing: {
-                    subscription_id: workspace.billing.subscription_id || '',
-                    current_period_end: workspace.billing.current_period_end || '',
-                    scheduled_cancellation: workspace.billing.scheduled_cancellation || false,
+                    subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
+                    current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
+                    scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
                     quantity: usersCount || 0
                 }
             }
