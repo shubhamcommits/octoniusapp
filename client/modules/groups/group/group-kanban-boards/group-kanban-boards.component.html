@@ -64,12 +64,12 @@
                     </span>
                   </div>
 
-                  <div class="project-container">
+                  <div class="project-container bold">
                     Real
                     <span *ngIf="column?.real_due_date" class="float-right">
                       <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757;">arrow_right_alt</i>
                       {{ formateDate(column?.real_due_date, "Do, MMM") }}
-                      <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757;">error</i>
+                      <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757; margin-top: -6px;">error</i>
                     </span>
                   </div>
                 </div>
