@@ -33,6 +33,8 @@ export class GroupCalendarViewComponent implements OnInit {
   // Fetch groupId from router snapshot
   @Input() groupId
 
+  @Input() tasks:any;
+
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector)
 
@@ -223,7 +225,7 @@ export class GroupCalendarViewComponent implements OnInit {
     let dialogRef;
     if (this.post) {
       if (this.post.type === 'task' && !this.post.task._parent_task) {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.columns);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.columns,this.tasks);
       } else {
         if (this.post.task._parent_task && !this.post.task._parent_task._id) {
           this.publicFunctions.getPost(this.post.task._parent_task).then(post => {

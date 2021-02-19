@@ -445,8 +445,19 @@ export class PostService {
   setParentTask(taskId: string, parentTaskId: string) {
     return this._http.put(this.baseURL + `/${taskId}/set-parent`, { parentTaskId: parentTaskId }).toPromise();
   }
+
+  /**
+   * This function is responsible for making task dependency
+   */
   setDependencyTask(taskId: string, dependencyTaskId: string) {
     return this._http.put(this.baseURL + `/${taskId}/set-dependency`, { dependencyTaskId: dependencyTaskId }).toPromise();
+  }
+
+  /**
+   * This function is responsible for removing task dependency
+   */
+  removeDependencyTask(taskId: string, dependencyTaskId: string) {
+    return this._http.put(this.baseURL + `/${taskId}/remove-dependency`, { dependencyTaskId: dependencyTaskId }).toPromise();
   }
 
   /**

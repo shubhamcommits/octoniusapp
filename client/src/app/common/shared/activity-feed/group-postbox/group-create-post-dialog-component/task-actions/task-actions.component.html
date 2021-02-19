@@ -117,8 +117,12 @@
   <div *ngIf="groupData && !ischild && groupData.project_type" class="set-parent">
     MAKE DEPENDENCY OF
 
+    <button class="btn dependencylabel" 
+    style="margin-right: 1rem;" 
+    (click)="removeDependencyTask()" 
+    *ngIf="dependencyTask"><b>X</b> {{ dependencyTask.title | truncatetext: 50 }}</button>
     <!-- INPUT BAR STARTS -->
-    <input type="search" id="dependencyKeyword" autocomplete="off" placeholder="Search task" class="input-search"
+    <input *ngIf="!dependencyTask" type="search" id="dependencyKeyword" autocomplete="off" placeholder="Search task" class="input-search"
       [(ngModel)]="dependencyItemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChangeForDependency($event)" />
     <!-- INPUT BAR ENDS -->
     <div *ngIf="searchingOn === 'dependencyKeyword'">

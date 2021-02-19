@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-group-tasks-views',
@@ -209,13 +210,12 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
    */
   sortTasksInColumns(columns: any, tasks: any) {
 
-    columns.forEach((column: any) => {
+    columns.forEach(async (column: any) => {
       // Feed the tasks into that column which has matching property _column with the column title
-      column.tasks = tasks
+      column.tasks = await tasks
         .filter((post: any) => post.task.hasOwnProperty('_column') === true
           && post.task._column
           && (post.task._column._id || post.task._column) == column['_id']
-          // TODO - we should have to remove the title comparison and use only the _id
         )
         .sort(function(t1, t2) {
           if (t1.task.status != t2.task.status) {
@@ -223,15 +223,12 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
           }
           return t2.title - t1.title;
         });
-      /*
-      column.tasks.done = tasks
-        .filter((post: any) => post.task.hasOwnProperty(
-          '_column') === true &&
-          post.task._column
-          && (post.task._column._id || post.task._column) == column['_id']
-          && post.task.status === 'done'
-        );
-      */
+      
+      // Find the hightes due date on the tasks of the column
+      column.real_due_date = moment(Math.max(...column.tasks.map(post => moment(post.task.due_to))));
+
+      // Calculate number of done tasks
+      column.numDoneTasks = column.tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;
     });
   }
 
