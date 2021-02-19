@@ -360,7 +360,7 @@ export class GroupController {
             // Send new workspace to the mgmt portal
             if (process.env.NODE_ENV == 'production') {
                 // Obtain the workspace of the group
-                const workspace = await Workspace.find({ _id: groupData._workspace });
+                const workspace = await Workspace.find({ _group: group._id });
 console.log(workspace);
                 // Count all the groups present inside the workspace
                 const groupsCount: number = await Group.find({ $and: [
@@ -502,7 +502,7 @@ console.log(workspace);
             // Send new workspace to the mgmt portal
             if (process.env.NODE_ENV == 'production') {
                 // Obtain the workspace of the group
-                const workspace = await Workspace.find({ _id: group._workspace });
+                const workspace = await Workspace.find({ _group: groupId });
 
                 // Count all the groups present inside the workspace
                 const groupsCount: number = await Group.find({ $and: [
