@@ -22,6 +22,7 @@ export class BoardBarComponent implements OnInit {
   @Input() isAdmin = false;
   @Input() customFields = [];
   @Input() userData;
+  @Input() viewType;
 
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
