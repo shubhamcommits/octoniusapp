@@ -54,7 +54,7 @@
             [checked]="groupData.share_files"
             [name]="'share_files'"
             (change)="saveSettings($event)">
-            <h6><b>Shared files with the organization?</b></h6>
+            <h6><b>Share files with the organization?</b></h6>
             <p class="card-text">This option makes all the files from this group accessible to the entire organization</p>
           </mat-slide-toggle>
         </div>
@@ -78,8 +78,8 @@
           [name]="'enabled_project_type'"
           (change)="saveSettings($event)"
           [(ngModel)]="enabledProjectType">
-            <h6><b>Enable Project Group?</b></h6>
-            <p class="card-text"></p>
+            <h6><b>Enable Project Features?</b></h6>
+            <p class="card-text"> This will enable all advanced project related funtionalities like: timeline, project planning etc.</p>
           </mat-slide-toggle><br>
 
         </div>
