@@ -20,43 +20,43 @@ docker login
 
 # Pull the images
 # Client Microservice Image Name
-export CLIENT_IMAGE_NAME=octoniusapp/octonius-prod:client
+export CLIENT_IMAGE_NAME=octoniusapp/octonius:client
 
 # Mails Microservice Image Name
-export MAILS_IMAGE_NAME=octoniusapp/octonius-prod:mailing-server
+export MAILS_IMAGE_NAME=octoniusapp/octonius:mailing-server
 
 # Auths Microservice Image Name
-export AUTHS_IMAGE_NAME=octoniusapp/octonius-prod:auths-server
+export AUTHS_IMAGE_NAME=octoniusapp/octonius:auths-server
 
 # Groups Microservice Image Name
-export GROUPS_IMAGE_NAME=octoniusapp/octonius-prod:groups-server
+export GROUPS_IMAGE_NAME=octoniusapp/octonius:groups-server
 
 # Workspaces Microservice Image Name
-export WORKSPACES_IMAGE_NAME=octoniusapp/octonius-prod:workspaces-server
+export WORKSPACES_IMAGE_NAME=octoniusapp/octonius:workspaces-server
 
 # Users Microservice Image Name
-export USERS_IMAGE_NAME=octoniusapp/octonius-prod:users-server
+export USERS_IMAGE_NAME=octoniusapp/octonius:users-server
 
 # Posts Microservice Image Name
-export POSTS_IMAGE_NAME=octoniusapp/octonius-prod:posts-server
+export POSTS_IMAGE_NAME=octoniusapp/octonius:posts-server
 
 # Notifications Microservice Image Name
-export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-prod:notifications-server
+export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius:notifications-server
 
 # Utilities Microservice Image Name
-export UTILITIES_IMAGE_NAME=octoniusapp/octonius-prod:utilities-server
+export UTILITIES_IMAGE_NAME=octoniusapp/octonius:utilities-server
 
 # Folio Microservice Image Name
-export FOLIO_IMAGE_NAME=octoniusapp/octonius-prod:folio-server
+export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
 
 # Search Microservice Image Name
-export SEARCH_IMAGE_NAME=octoniusapp/octonius-prod:search-server
+export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
 
 # Integrations Microservice Image Name
-export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius-prod:integrations-server
+export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius:integrations-server
 
 # Nginx Image Name
-export NGINX_IMAGE_NAME=octoniusapp/octonius-prod:nginx
+export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
 
 # Mongo Image Name
 export MONGO_IMAGE_NAME=mongo:latest
@@ -78,7 +78,7 @@ export MONGO_IMAGE_NAME=mongo:latest
       docker pull $INTEGRATIONS_IMAGE_NAME
 
 # Deploy the Stack
-docker-compose --compatibility -f compose-octonius-deploy.yml -p octoniusprod up -d
+docker-compose -f compose-octonius-deploy.yml -p octonius up -d
 
 
 

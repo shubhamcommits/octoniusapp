@@ -77,32 +77,32 @@ pipelines:
              SERVER: $HOST_ADDRESS
              COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./stop-compose.sh && sudo -S ./deploy-compose.sh'  
     
-    "{staging}":
+    "{octonius_prod_v8}":
     - step:
         name: Deploy to dockerhub
         services:
           - docker
 
         # can be test, staging or production.
-        deployment: staging   
+        deployment: production   
         script: 
         
           # Modify the commands below to build your repository.
           
           # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
-          - export CLIENT_IMAGE_NAME=octoniusapp/octonius-alpha:client
-          - export MAILS_IMAGE_NAME=octoniusapp/octonius-alpha:mailing-server
-          - export AUTHS_IMAGE_NAME=octoniusapp/octonius-alpha:auths-server
-          - export GROUPS_IMAGE_NAME=octoniusapp/octonius-alpha:groups-server
-          - export WORKSPACES_IMAGE_NAME=octoniusapp/octonius-alpha:workspaces-server
-          - export USERS_IMAGE_NAME=octoniusapp/octonius-alpha:users-server
-          - export POSTS_IMAGE_NAME=octoniusapp/octonius-alpha:posts-server
-          - export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-alpha:notifications-server
-          - export UTILITIES_IMAGE_NAME=octoniusapp/octonius-alpha:utilities-server
-          - export FOLIO_IMAGE_NAME=octoniusapp/octonius-alpha:folio-server
-          - export SEARCH_IMAGE_NAME=octoniusapp/octonius-alpha:search-server
-          - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius-alpha:integrations-server
-          - export NGINX_IMAGE_NAME=octoniusapp/octonius-alpha:nginx
+          - export CLIENT_IMAGE_NAME=octoniusapp/octonius-prod:client
+          - export MAILS_IMAGE_NAME=octoniusapp/octonius-prod:mailing-server
+          - export AUTHS_IMAGE_NAME=octoniusapp/octonius-prod:auths-server
+          - export GROUPS_IMAGE_NAME=octoniusapp/octonius-prod:groups-server
+          - export WORKSPACES_IMAGE_NAME=octoniusapp/octonius-prod:workspaces-server
+          - export USERS_IMAGE_NAME=octoniusapp/octonius-prod:users-server
+          - export POSTS_IMAGE_NAME=octoniusapp/octonius-prod:posts-server
+          - export NOTIFICATIONS_IMAGE_NAME=octoniusapp/octonius-prod:notifications-server
+          - export UTILITIES_IMAGE_NAME=octoniusapp/octonius-prod:utilities-server
+          - export FOLIO_IMAGE_NAME=octoniusapp/octonius-prod:folio-server
+          - export SEARCH_IMAGE_NAME=octoniusapp/octonius-prod:search-server
+          - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius-prod:integrations-server
+          - export NGINX_IMAGE_NAME=octoniusapp/octonius-prod:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
           - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
@@ -139,15 +139,6 @@ pipelines:
           - docker push $SEARCH_IMAGE_NAME
           - docker push $INTEGRATIONS_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
-
-    - step:
-       name: Deploy to staging server
-       script:
-         - pipe: atlassian/ssh-run:0.2.2
-           variables:
-             SSH_USER: 'ubuntu'
-             SERVER: $HOST_ADDRESS
-             COMMAND: 'cd /home/ubuntu/flash; echo $HOST_PASSWORD | sudo -S ./stop-compose.sh && ./deploy-compose.sh'
           
 definitions:
    services:

@@ -18,7 +18,7 @@ function devConfigInit() {
   process.env.JWT_KEY = process.env.JWT_KEY || 'asfsaf12safas23fsafa12sf'
 
   // Database Url String
-  process.env.dbURL = process.env.dbURL || 'mongodb://127.0.0.1:27017/octonius'
+  process.env.DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/octonius'
 
   // Redis Environments
   process.env.REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1'
@@ -32,7 +32,7 @@ function devConfigInit() {
 
   // Stripe Keys
   process.env.SK_STRIPE = process.env.SK_STRIPE || 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
-  process.env.stripe_plan = process.env.stripe_plan || 'plan_EK1uRUJLJcDS6e';
+  process.env.STRIPE_PLAN = process.env.STRIPE_PLAN || 'plan_EK1uRUJLJcDS6e';
   process.env.WEBHOOK_PS_SECRET = process.env.WEBHOOK_PS_SECRET || 'whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn';
 
   // External Key

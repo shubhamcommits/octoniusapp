@@ -1,24 +1,29 @@
-version: "3.3"
+version: '3.6'
 
 services:
 
   mongodb:
-    container_name: mongodb
-    image: mvertes/alpine-mongo:latest
-    restart: always
+    image: mongo:latest
     volumes:
       - production_db_data:/data/db
     ports:
       - 27017:27017
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
     networks:
-      - production
+      - production  
       
   mailing-server:
-    container_name: mailing-server
     image: octoniusapp/octonius:mailing-server
     ports:
       - 2000:2000
-    restart: always
     volumes:
       - /usr/app/node_modules
     environment:
@@ -26,29 +31,32 @@ services:
       - PORT=2000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - DB_URL=mongodb://mongodb:27017/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
+      - stripe_plan=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   auths-server:
-    container_name: auths-server
     image: octoniusapp/octonius:auths-server
     ports:
       - 3000:3000
-    restart: always
     volumes:
       - /usr/app/node_modules
     environment:
@@ -56,179 +64,202 @@ services:
       - PORT=3000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - DB_URL=mongodb://mongodb:27017/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
+      - stripe_plan=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
          
   groups-server:
-    container_name: groups-server
     image: octoniusapp/octonius:groups-server
     ports:
       - 4000:4000
-    restart: always
     volumes:
       - /usr/app/node_modules
+      - production_groups_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=4000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - DB_URL=mongodb://mongodb:27017/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
+      - stripe_plan=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   workspaces-server:
-    container_name: workspaces-server
     image: octoniusapp/octonius:workspaces-server
     ports:
       - 5000:5000
-    restart: always
     volumes:
       - /usr/app/node_modules
+      - production_workspaces_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=5000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - DB_URL=mongodb://mongodb:27017/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
+      - stripe_plan=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   search-server:
-    container_name: search-server
     image: octoniusapp/octonius:search-server
     ports:
       - 12000:12000
-    restart: always
     volumes:
       - /usr/app/node_modules
+      - production_search_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=12000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - DB_URL=mongodb://mongodb:27017/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
+      - stripe_plan=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   users-server:
-    container_name: users-server
     image: octoniusapp/octonius:users-server
     ports:
       - 7000:7000
-    restart: always
     volumes:
       - /usr/app/node_modules
+      - production_users_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=7000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - DB_URL=mongodb://mongodb:27017/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
+      - stripe_plan=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   posts-server:
-    container_name: posts-server
     image: octoniusapp/octonius:posts-server
     ports:
       - 8000:8000
-    restart: always
     volumes:
       - /usr/app/node_modules
+      - production_posts_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=8000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - DB_URL=mongodb://mongodb:27017/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
+      - stripe_plan=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   notifications-server:
-    container_name: notifications-server
     image: octoniusapp/octonius:notifications-server
     ports:
       - 9000:9000
-    restart: always
     volumes:
       - /usr/app/node_modules
     environment:
@@ -236,50 +267,92 @@ services:
       - PORT=9000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - DB_URL=mongodb://mongodb:27017/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
+      - stripe_plan=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
       
   utilities-server:
-    container_name: utilities-server
     image: octoniusapp/octonius:utilities-server
     ports:
       - 10000:10000
-    restart: always
     volumes:
       - /usr/app/node_modules
+      - production_utilities_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=10000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - DB_URL=mongodb://mongodb:27017/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
+      - stripe_plan=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - production
+
+  folio-server:
+    image: octoniusapp/octonius:folio-server
+    ports:
+      - 11000:11000
+    volumes:
+      - /usr/app/node_modules
+    environment:
+      - NODE_ENV=production
+      - PORT=11000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - dbURL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - SENDGRID_KEY=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
+      - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
+      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=https
+      - DOMAIN=workplace.octonius.com
+    depends_on:
       - mongodb
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
 
@@ -296,30 +369,34 @@ services:
       - PORT=13000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - DB_URL=mongodb://mongodb:27017/octonius
+      - dbURL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
+      - stripe_plan=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
       - DOMAIN=workplace.octonius.com
     depends_on:
       - mongodb
-    links:
-      - mongodb
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
-
-  nginx:
-    container_name: nginx
-    image: octoniusapp/octonius:nginx
-    restart: always
-    ports:
-      - 8080:80
+      
+  client:
+    image: octoniusapp/octonius:client
+    volumes:
+      - /usr/app/node_modules
     depends_on:
+      - mongodb
       - mailing-server
       - auths-server
       - groups-server
@@ -328,6 +405,42 @@ services:
       - posts-server
       - notifications-server
       - utilities-server
+      - folio-server
+      - search-server
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - production
+
+  nginx:
+    image: octoniusapp/octonius:nginx
+    ports:
+      - 8080:80
+    depends_on:
+      - mongodb
+      - mailing-server
+      - auths-server
+      - groups-server
+      - workspaces-server
+      - users-server
+      - posts-server
+      - notifications-server
+      - utilities-server
+      - folio-server
+      - search-server
+      - client
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
     networks:
       - production
 
@@ -339,13 +452,49 @@ volumes:
       device: ${PWD}/data/db
       o: bind
 
-  production_uploads_data:
+  production_groups_uploads_data:
     driver: local
     driver_opts:
       type: none
-      device: ${PWD}/data/uploads
+      device: ${PWD}/data/uploads/groups
+      o: bind
+  
+  production_posts_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/posts
+      o: bind
+
+  production_users_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/users
+      o: bind
+
+  production_workspaces_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/workspaces
+      o: bind
+
+  production_utilities_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/utilities
+      o: bind
+  
+  production_search_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/search
       o: bind
       
 networks:
   production: 
-    driver: bridge
+    driver: overlay
+# If any problem related to newtworks occured in future, use proxy of network to be true
