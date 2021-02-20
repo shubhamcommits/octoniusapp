@@ -75,6 +75,10 @@ function prodConfigInit() {
   // Utilities Microservice
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/utilities`
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/utilities`
+
+  // MANAGEMENT PORTAL API
+  process.env.MANAGEMENT_URL = 'https://management.octonius.com'
+  process.env.MANAGEMENT_API_KEY = "TZCDAC3CDCJILSRGA2II"
 };
 
 export { prodConfigInit as productionConfig } 

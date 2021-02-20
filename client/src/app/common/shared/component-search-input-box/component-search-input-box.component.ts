@@ -108,22 +108,22 @@ export class ComponentSearchInputBoxComponent implements OnInit {
             }
             if(this.type === 'barMembers'){
               this.itemList = this.groupData._members.filter( member => {
-                let item = member.first_name + ' ' + member.last_name
-                return item.includes(this.itemValue);
+                let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase()
+                return item.includes(this.itemValue.toLowerCase());
               });
               this.itemList.forEach(item => {
-                if(this.barMemberList.includes(item)){
+                if(this.barMemberList.includes(item.toLowerCase())){
                   item.showAddMem = true;
                 } else {
                   item.showAddMem = false;
                 }
-              }); 
+              });
             }
 
-            if(this.type === 'workspaceMembers'){
+            if(this.type === 'workspaceMembers') {
               this.itemList = this.workspaceData.members.filter( member => {
-                let item = member.first_name + ' ' + member.last_name
-                return item.includes(this.itemValue);
+                let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase()
+                return item.includes(this.itemValue.toLowerCase());
               });
               this.itemList.forEach(item => {
                 if(this.barMemberList.includes(item)){
@@ -131,7 +131,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
                 } else {
                   item.showAddMem = false;
                 }
-              }); 
+              });
             }
 
             // Update the itemList with the skill set
@@ -184,7 +184,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   /**
    * This function clears the list on the UI if the input changes accordingly
-   * @param $event 
+   * @param $event
    */
   modelChange($event: any) {
     this.itemValue = $event;
@@ -347,7 +347,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   /**
    * This function makes the HTTP request to search the skills present in the database
-   * @param skill 
+   * @param skill
    */
   async searchSkills(skill: string) {
     return new Promise((resolve, reject) => {
@@ -367,7 +367,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   /**
    * This function emits the skill as an object
-   * @param skill 
+   * @param skill
    */
   async onAddSkill(skill: any) {
 
@@ -386,7 +386,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   /**
    * This function checks if a skill exist in users's skills array
-   * @param skill 
+   * @param skill
    */
   hasSkill(skill: string) {
 
@@ -400,7 +400,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   /**
    * This function emits the tag as an object
-   * @param tag 
+   * @param tag
    */
   async onAddTag(tag: any) {
 
