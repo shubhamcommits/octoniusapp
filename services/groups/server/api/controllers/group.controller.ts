@@ -361,7 +361,7 @@ export class GroupController {
             if (process.env.NODE_ENV == 'production') {
                 // Obtain the workspace of the group
                 const workspace = await Workspace.findOne({ _id: groupData._workspace });
-console.log(workspace);
+
                 // Count all the groups present inside the workspace
                 const groupsCount: number = await Group.find({ $and: [
                     { group_name: { $ne: 'personal' } },
@@ -397,7 +397,7 @@ console.log(workspace);
                 http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                     API_KEY: process.env.MANAGEMENT_API_KEY,
                     workspaceData: workspaceMgmt
-                });
+                }).then().catch(err => console.log(err));
             }
 
             // Send the status 200 response
@@ -471,7 +471,7 @@ console.log(workspace);
 
         try {
 
-            const group: any = await Group.find({ _id: groupId })
+            const group: any = await Group.findOne({ _id: groupId })
                 .select('group_name _workspace')
 
             // Find the group and remove it from the database
@@ -503,7 +503,7 @@ console.log(workspace);
             if (process.env.NODE_ENV == 'production') {
                 // Obtain the workspace of the group
                 const workspace = await Workspace.findOne({ _id: group._workspace });
-console.log(workspace);
+
                 // Count all the groups present inside the workspace
                 const groupsCount: number = await Group.find({ $and: [
                     { group_name: { $ne: 'personal' } },
@@ -539,7 +539,7 @@ console.log(workspace);
                 http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                     API_KEY: process.env.MANAGEMENT_API_KEY,
                     workspaceData: workspaceMgmt
-                });
+                }).then().catch(err => console.log(err));
             }
 
             // Send the status 200 response

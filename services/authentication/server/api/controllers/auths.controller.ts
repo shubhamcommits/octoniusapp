@@ -67,7 +67,6 @@ export class AuthsController {
             // Check the Workspace and User Availability
             await new AuthsController().checkUserAvailability(email, workspace_name)
                 .then(async () => {
-
                     // Userdata variable which stores all the details
                     const userData = req.body;
 
@@ -289,13 +288,12 @@ export class AuthsController {
 
                     // Send workspace to the mgmt portal
                     if (process.env.NODE_ENV == 'production') {
-console.log("111111");
                         // Count all the groups present inside the workspace
                         const groupsCount: number = await Group.find({ $and: [
                             { group_name: { $ne: 'personal' } },
                             { _workspace: workspace._id }
                         ]}).countDocuments();
-console.log("222222");
+
                         let workspaceMgmt = {
                             _id: workspace._id,
                             company_name: workspace.company_name,
@@ -316,12 +314,11 @@ console.log("222222");
                                 quantity: usersCount
                             }
                         }
-console.log("333333");
                         http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                             API_KEY: process.env.MANAGEMENT_API_KEY,
                             workspaceData: workspaceMgmt
-                        });
-console.log("444444");
+                        }).then().catch(err => console.log(err));
+
                         // Send user to the mgmt portal
                         let userMgmt = {
                             _id: user._id,
@@ -330,16 +327,15 @@ console.log("444444");
                             password: user.password,
                             first_name: user.first_name,
                             last_name: user.last_name,
-                            _workspace: workspace._id,
+                            _remote_workspace_id: workspace._id,
+                            workspace_name: workspace.workspace_name,
                             environment: process.env.DOMAIN,
                             created_date: user.created_date
                         }
-console.log("555555");
                         http.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
                             API_KEY: process.env.MANAGEMENT_API_KEY,
                             userData: userMgmt
-                        });
-console.log("666666");
+                        }).then().catch(err => console.log(err));
                     }
 
                     // Signup user and return the token
@@ -442,13 +438,15 @@ console.log("666666");
                     message: `There are ${users.length} users with the email ${req.query.email}!`,
                     numUsers: users.length
                 });
-            } else {
+            } else if (users.length == 1) {
                 // Send the status 200 response 
                 return res.status(200).json({
                     message: `There are ${users.length} users with the email ${req.query.email}!`,
                     numUsers: users.length,
                     workspace_name: users[0].workspace_name
                 });   
+            } else {
+                return sendError(res, new Error('Please enter a valid combination or workspace name and user email or user might be disabled!'), 'Please enter a valid combination or workspace name and user email!', 401);
             }
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
