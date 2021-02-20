@@ -1,8 +1,8 @@
 // DNS Details
 const url = {
-  protocol: window[`env`][`protocol`], // standard protocol
-  domain: window[`env`][`domain`], // your domain name where application is supposed to be visible
-  websocket: window[`env`][`websocket`] // wss in case of https protocol, else pass ws here
+  protocol: window["env"]["protocol"], // standard protocol
+  domain: window["env"]["domain"], // your domain name where application is supposed to be visible
+  websocket: window["env"]["websocket"]  // wss in case of https protocol, else pass ws here
 }
 
 // Export Environment variables
