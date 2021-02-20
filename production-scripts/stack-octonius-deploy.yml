@@ -377,6 +377,10 @@ services:
     image: ${DOCKER_USER}/${DOCKER_REPO}:client
     volumes:
       - ${VOLUME_NODE_MODULES}
+    environment: 
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - WEBSOCKET=${WEBSOCKET}
     deploy:
       replicas: 3
       update_config:
