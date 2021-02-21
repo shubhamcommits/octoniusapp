@@ -2,7 +2,7 @@
 import { environment } from 'src/environments/environment';
 
 export const socketConfig = {
-    url: environment.NOTIFICATIONS_BASE_URL || `${window["env"]["websocket"]}://${window["env"]["domain"]}`, 
+    url: `${window["env"]["websocket"]}://${window["env"]["domain"]}`, 
     options: {
         reconnection: true,
         reconnectionAttempts: Infinity,
