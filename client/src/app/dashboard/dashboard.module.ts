@@ -20,7 +20,6 @@ import { WorkspaceDetailsComponent } from '../common/navbar/common-navbar/worksp
 import { UserImageDetailsComponent } from '../common/navbar/common-navbar/user-image-details/user-image-details.component';
 import { IconsSidebarComponent } from '../common/navbar/icons-sidebar/icons-sidebar.component';
 import { UserAccountNavbarComponent } from '../common/navbar/user-account-navbar/user-account-navbar.component';
-import { SocketIoModule } from 'ngx-socket-io';
 
 @NgModule({
   declarations: [
@@ -44,21 +43,6 @@ import { SocketIoModule } from 'ngx-socket-io';
     SharedModule,
     FormsModule,
     SearchModule,
-
-    // SOCKET MODULE AND INITIALISATION
-    SocketIoModule.forRoot({
-      url: `${window["env"]["websocket"]}://${window["env"]["domain"]}`,
-      options: {
-        reconnection: true,
-        reconnectionAttempts: Infinity,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 2000,
-        randomizationFactor: 0.5,
-        autoConnect: true,
-        transports: ['websocket'],
-        upgrade: false
-      }
-    }),
     // NGX UI LOADER MODULE
   ],
   exports: [

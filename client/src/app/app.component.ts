@@ -51,17 +51,17 @@ export class AppComponent {
       }
     }))
 
-    // let socketService = this.injector.get(SocketService);
+    let socketService = this.injector.get(SocketService);
     let utilityService = this.injector.get(UtilityService);
 
-    // // Internet connection validity
+    // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));
 
-    // // Socket connection initilisation
-    // this.subSink.add(this.enableSocketConnection(socketService, utilityService));
+    // Socket connection initilisation
+    this.subSink.add(this.enableSocketConnection(socketService, utilityService));
 
-    // // Reconnection Socket Emitter
-    // this.subSink.add(this.enableReconnectSocket(socketService));
+    // Reconnection Socket Emitter
+    this.subSink.add(this.enableReconnectSocket(socketService));
 
     // Initiate the gapi variable to confirm the check the gapi is ready to work
     this.loadGoogleAPI();
