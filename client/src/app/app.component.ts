@@ -54,6 +54,8 @@ export class AppComponent {
     let socketService = this.injector.get(SocketService);
     let utilityService = this.injector.get(UtilityService);
 
+    this.initSocketServer(socketService)
+
     // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));
 
@@ -90,9 +92,8 @@ export class AppComponent {
    * This function makes the HTTP initial request to the socket server in order to initiate the connection
    * @param socketService
    */
-  initSockerServer(socketService: SocketService) {
-    socketService.serverInit()
-      .subscribe()
+  initSocketServer(socketService: SocketService) {
+    return socketService.serverInit()
   }
 
   /**
