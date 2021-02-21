@@ -131,7 +131,7 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     // SharedModule,
 
     // SOCKET MODULE AND INITIALISATION
-    // SocketIoModule.forRoot(socketConfig),
+    SocketIoModule.forRoot(socketConfig),
   ],
 
   providers: [
