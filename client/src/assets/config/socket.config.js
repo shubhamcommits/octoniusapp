@@ -1,7 +1,7 @@
-import { SocketIoConfig } from 'ngx-socket-io';
+// import { SocketIoConfig } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 
-export const socketConfig: SocketIoConfig = {
+export const socketConfig = {
     url: environment.NOTIFICATIONS_BASE_URL || `${window["env"]["websocket"]}://${window["env"]["domain"]}`, 
     options: {
         reconnection: true,
