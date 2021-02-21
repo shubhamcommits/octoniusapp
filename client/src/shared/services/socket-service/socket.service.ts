@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { io } from 'socket.io-client';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,10 @@ import { environment } from 'src/environments/environment';
 export class SocketService {
 
   constructor(
-    private socket: Socket, 
     private http: HttpClient) { }
+
+  // Socket variable
+  private socket; 
 
   public baseUrl = environment.NOTIFICATIONS_BASE_URL;
 
@@ -47,7 +50,17 @@ export class SocketService {
    * This function initates the request to socket server
    */
   public serverInit(){
-    return this.http.get('http://localhost:9000' + '/', { responseType: 'text' });
+    this.socket = io( environment.NOTIFICATIONS_BASE_URL, 
+      {
+          reconnection: true,
+          reconnectionAttempts: Infinity,
+          reconnectionDelay: 1000,
+          reconnectionDelayMax: 2000,
+          randomizationFactor: 0.5,
+          autoConnect: true,
+          transports: ['websocket'],
+          upgrade: false
+      })
   }
 
   public changeData(data: any){
