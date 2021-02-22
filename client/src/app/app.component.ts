@@ -8,6 +8,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
 import { Router, RouterEvent, NavigationEnd, ChildActivationEnd } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 // Google API Variable
 declare const gapi: any;
@@ -53,6 +54,8 @@ export class AppComponent {
 
     let socketService = this.injector.get(SocketService);
     let utilityService = this.injector.get(UtilityService);
+
+    console.log("Env variables", environment)
 
     this.initSocketServer(socketService)
 
