@@ -5,6 +5,8 @@ import { retry } from 'rxjs/internal/operators/retry';
 import { map } from 'rxjs/internal/operators/map';
 import { SubSink } from 'subsink';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+
+import { NotificationService } from 'src/shared/services/notification-service/notification.service';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
 import { Router, RouterEvent, NavigationEnd, ChildActivationEnd } from '@angular/router';
@@ -42,9 +44,11 @@ export class AppComponent {
   constructor(
     private injector: Injector,
     private storageService: StorageService,
-    private _router: Router
+    private _router: Router,
+    private _notificationService: NotificationService
   ) {
-
+    this._notificationService.requestPermission();
+  
     this.subSink.add(this._router.events.subscribe((e: any) => {
       if (e instanceof ChildActivationEnd) {
         this.groupId = e.snapshot.queryParamMap.get('group');
