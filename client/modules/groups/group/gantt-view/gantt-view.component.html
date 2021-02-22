@@ -41,10 +41,10 @@
                   <p *ngIf="item.day == 1" [ngStyle]="{'top':'-30px'}" [attr.width]="step" class="first_month">
                     {{item.month}}
                   </p>
-                  <p *ngIf="i !== projectsdata[0].startingIndex" [ngStyle]="{'color':item.day === 1 ? 'red':'initial','background-color': ((i > projectsdata[0].startingIndex) && (i < projectsdata[0].taskAfterDueDateStart+1))?'#eaf6f5':''}"
+                  <p *ngIf="!(projectsdata[0]?.startingIndex) && (i !== projectsdata[0]?.startingIndex)" [ngStyle]="{'color':item.day === 1 ? 'red':'initial','background-color': ((i > projectsdata[0]?.startingIndex) && (i < projectsdata[0]?.taskAfterDueDateStart+1))?'#eaf6f5':''}"
                     [ngClass]="i==current_date_index?'curretn_date':''" class="day">
                     {{item.day}}</p>
-                  <p *ngIf="i === projectsdata[0].startingIndex" [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}"
+                  <p *ngIf="(projectsdata[0]?.startingIndex) && (i === projectsdata[0]?.startingIndex)" [ngStyle]="{'color':item.day === 1 ? 'red':'initial'}"
                     class="project_start_date day">
                     {{item.day}}</p>
                 </div>

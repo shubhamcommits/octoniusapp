@@ -68,7 +68,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     await this.add_index();
     await this.parsedProjects(this.columns);
     await this.taskAfterDueDate();
-    console.log("tasks oninit",this.tasksdata,this.projectsdata);
+    console.log("tasks oninit",this.tasksdata,this.projectsdata,this.dates);
     await this.get_current_date_index()
     var ganttHeight = (100 + this.tasksdata.length * 60) + (this.tasksStartingHeight);
     var screenHeight = window.innerHeight - 100;
@@ -513,17 +513,18 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     this.projectsdata=[];
     let tasktobedeleted:any=[];
     columnsData.forEach(column => {
-      if(column.due_date && column.start_date && column.project_type){
+      
+      if(column?.due_date && column?.start_date && column?.project_type){
         const newColumnsData = {
           data:column,
           differencedays: moment(column?.due_date).diff(column?.start_date,'days'),
-          startingIndex: this.find_index(moment(column.start_date).format("YYYY-MM-DD")),
+          startingIndex: this.find_index(moment(column?.start_date).format("YYYY-MM-DD")),
           noOfTasks:column?.tasks?.length || 0,
           id:column._id,
           startheight: index===0?100:((60*this.projectsdata[index-1].tasks.length)+(this.projectsdata[index-1].startheight)+160),
           tasks:[],
           taskAfterDueDate:undefined,
-          taskAfterDueDateStart:this.find_index(moment(column.due_date).format("YYYY-MM-DD"))
+          taskAfterDueDateStart:this.find_index(moment(column?.due_date).format("YYYY-MM-DD"))
         }
 
         for (let i = 0; i < this.tasksdata.length; i++) {
