@@ -8,12 +8,14 @@
         [checked]="this.column.project_type"
         [name]="'project_type'"
         (change)="changeColumnProjectType($event)">
-        <h6><b>Is it a project column?</b></h6>
-        <p class="card-text"></p>
+        <h6><b>Launch as Project</b></h6>
+       
       </mat-slide-toggle>
+      <p class="card-text">Allows you to plan and manage this section as a project.</p>
     </div>
 
     <div class="content-box" *ngIf="column?.project_type">
+      <p class="card-text">Select a START and DUE DATE for your project.</p>
       <app-date-picker class="input-date due"
         (date)="getDate($event, 'start_date')" [dueDate]="column?.start_date">
       </app-date-picker>
@@ -32,11 +34,9 @@
       <!-- Clean field ends -->
     </div>
 
-    <div class="content-box" *ngIf="column?.project_type">
-      Select a Start and Due Date for the duration of your project.
-    </div>
+   
 
-    <div class="content-box save-content" *ngIf="column?.project_type">
+    <div class="conten-box save-content" *ngIf="column?.project_type">
         <!-- Update Details Button starts -->
         <button 
             class="btn btn-danger btn-md"

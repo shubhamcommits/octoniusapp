@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-
+import moment from 'moment/moment';
+ 
 @Injectable({
   providedIn: 'root'
 })
@@ -99,8 +100,8 @@ export class ColumnService {
   saveColumnProjectDates(columnId: string, startDate: any, dueDate: any) {
     const column = {
       columnId: columnId,
-      startDate: startDate,
-      dueDate: dueDate
+      startDate: moment(startDate).format('YYYY-MM-DD'),
+      dueDate: moment(dueDate).format('YYYY-MM-DD')
     };
 
     return this._http.put(this.baseUrl + `/columns/saveColumnProjectDates`, column).toPromise();

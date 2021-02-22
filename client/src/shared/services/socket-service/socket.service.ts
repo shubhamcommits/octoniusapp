@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { NotificationService } from '../notification-service/notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class SocketService {
 
   constructor(
     private socket: Socket, 
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private _notificationService : NotificationService) { }
 
   public baseUrl = environment.NOTIFICATIONS_BASE_URL;
 
@@ -29,6 +31,22 @@ export class SocketService {
         this.socket.on(eventName, (data: any) => {
           console.log(`Socket for event name - ${eventName} is connected!`);
           observer.next(data);
+          if(eventName === 'notificationsFeed' && data.new){
+            const notify = data['unreadNotifications'][0];
+            let notifyData: Array < any >= [];
+            if(notify?.type === 'mention_folio'){
+              notifyData.push({
+                'title': 'Notification',
+                'alertContent': `${notify?._actor?.first_name || 'Deleted'} ${notify?._actor?.last_name || 'User'} ${notify?.message} ${notify?._origin_folio?.original_name}` ,
+              });
+            } else {
+              notifyData.push({
+                  'title': 'Notification',
+                  'alertContent': `${notify?._actor?.first_name || 'Deleted'} ${notify?._actor?.last_name || 'User'} ${notify?.message} ${notify?._origin_post?.title}` ,
+              });
+            }
+            this._notificationService.generateNotification(notifyData);
+          }
         });
     });
   }
