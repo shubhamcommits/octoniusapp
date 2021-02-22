@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { SocketServer } from 'src/app/app.module';
 
 @Injectable({
   providedIn: 'root'
@@ -11,26 +12,11 @@ import { environment } from 'src/environments/environment';
 export class SocketService {
 
   constructor(
-    private socket: Socket, 
+    private socket: SocketServer, 
     private http: HttpClient) { }
 
   // Define baseurl
   public baseUrl = environment.NOTIFICATIONS_BASE_URL;
-
-  // Socket Config
-  socketConfig: SocketIoConfig = {
-    url: environment.NOTIFICATIONS_BASE_URL || `${window["env"]["websocket"]}://${window["env"]["domain"]}`, 
-    options: {
-        reconnection: true,
-        reconnectionAttempts: Infinity,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 2000,
-        randomizationFactor: 0.5,
-        autoConnect: true,
-        transports: ['websocket'],
-        upgrade: false
-    }
-}
 
   /**
    * Both of the variables listed down below are used to share the data through this common service among different components in the app
@@ -41,11 +27,7 @@ export class SocketService {
   currentData = this.dataSource.asObservable();
 
   public onEvent(eventName: string): Observable<any> {
-    if(eventName === 'reconnect_attempt'){
-      this.socket = new Socket(this.socketConfig)
-      console.log("socket reinitialised", this.socket)
-    }
-
+    console.log(this.socket)
     return new Observable<any>(observer => {
         this.socket.on(eventName, (data: any) => {
           console.log(`Socket for event name - ${eventName} is connected!`);
