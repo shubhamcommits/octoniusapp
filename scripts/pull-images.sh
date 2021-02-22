@@ -10,7 +10,8 @@ set +o allexport
 # Authenticate with the Docker Hub registry
 docker login
 
-# Pull the new Docker image to the Docker registry
+# Pull the new Docker image from the Docker registry
+          docker pull $MONGO_IMAGE_NAME
           docker pull $MAILS_IMAGE_NAME
           docker pull $AUTHS_IMAGE_NAME
           docker pull $GROUPS_IMAGE_NAME

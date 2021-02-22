@@ -3,29 +3,22 @@ version: '3.7'
 services:
 
   mongodb:
+    container_name: mongodb
     image: mongo:latest
+    restart: always
     volumes:
-      - octonius_production_db_data:/data/db
+      - acc_db_data:/data/db
     ports:
       - ${MONGO_PORT}:27017
-    deploy:
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-      resources:
-        reservations:
-          memory: 128M
-        limits:
-          memory: 256M
     networks:
-      - octonius_production
-    volumes:
-      - octonius_production_db_data:/data/db
-
+      - acc
+          
   mailing-server:
+    container_name: mailing-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:mailing-server
     ports:
       - ${MAILING_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
@@ -43,20 +36,19 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     networks:
-      - octonius_production
-      
+      - acc
+         
   auths-server:
+    container_name: auths-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:auths-server
     ports:
       - ${AUTHS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
@@ -74,23 +66,22 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     networks:
-      - octonius_production
-         
+      - acc
+             
   groups-server:
+    container_name: groups-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:groups-server
     ports:
       - ${GROUPS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
     volumes:
       - ${VOLUME_NODE_MODULES}
-      - octonius_production_groups_uploads_data:${VOLUME_UPLOADS}
+      - acc_groups_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
       - PORT=${MACHINE_PORT}
@@ -106,23 +97,22 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     networks:
-      - octonius_production
-      
+      - acc
+         
   workspaces-server:
+    container_name: workspaces-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:workspaces-server
     ports:
       - ${WORKSPACES_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
     volumes:
       - ${VOLUME_NODE_MODULES}
-      - octonius_production_workspaces_uploads_data:${VOLUME_UPLOADS}
+      - acc_workspaces_uploads_data:/usr/app/uploads
     environment:
       - NODE_ENV=${NODE_ENV}
       - PORT=${MACHINE_PORT}
@@ -138,23 +128,22 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     networks:
-      - octonius_production
-      
+      - acc
+    
   users-server:
+    container_name: users-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:users-server
     ports:
       - ${USERS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
     volumes:
       - ${VOLUME_NODE_MODULES}
-      - octonius_production_users_uploads_data:${VOLUME_UPLOADS}
+      - acc_users_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
       - PORT=${MACHINE_PORT}
@@ -170,23 +159,22 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     networks:
-      - octonius_production
+      - acc    
       
   posts-server:
+    container_name: posts-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:posts-server
     ports:
       - ${POSTS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
     volumes:
       - ${VOLUME_NODE_MODULES}
-      - octonius_production_posts_uploads_data:${VOLUME_UPLOADS}
+      - acc_posts_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
       - PORT=${MACHINE_PORT}
@@ -202,20 +190,19 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     networks:
-      - octonius_production
-      
+      - acc
+          
   notifications-server:
+    container_name: notifications-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:notifications-server
     ports:
       - ${NOTIFICATIONS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
@@ -233,23 +220,22 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     networks:
-      - octonius_production
-      
+      - acc
+          
   utilities-server:
+    container_name: utilities-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:utilities-server
     ports:
       - ${UTILITIES_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
     volumes:
       - ${VOLUME_NODE_MODULES}
-      - octonius_production_utilities_uploads_data:${VOLUME_UPLOADS}
+      - acc_utilities_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
       - PORT=${MACHINE_PORT}
@@ -265,20 +251,19 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     networks:
-      - octonius_production
-
+      - acc
+    
   folio-server:
+    container_name: folio-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:folio-server
     ports:
       - ${FOLIO_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
@@ -296,23 +281,22 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     networks:
-      - octonius_production
-
+      - acc
+    
   search-server:
+    container_name: search-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:search-server
     ports:
       - ${SEARCH_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
     volumes:
       - ${VOLUME_NODE_MODULES}
-      - octonius_production_search_uploads_data:${VOLUME_UPLOADS}
+      - acc_search_uploads_data:${VOLUME_UPLOADS}
     environment:
       - NODE_ENV=${NODE_ENV}
       - PORT=${MACHINE_PORT}
@@ -328,20 +312,19 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     networks:
-      - octonius_production
-      
+      - acc
+
   integrations-server:
+    container_name: integrations-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:integrations-server
     ports:
       - ${INTEGRATIONS_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
@@ -363,17 +346,15 @@ services:
       - SLACK_CLIENT_ID=${SLACK_CLIENT_ID}
       - SLACK_CLIENT_SECRET=${SLACK_CLIENT_SECRET}
       - SLACK_BOT_ACCESS_TOKEN=${SLACK_BOT_ACCESS_TOKEN}
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
     networks:
-      - octonius_production
-      
+      - acc
+          
   client:
+    container_name: client
     image: ${DOCKER_USER}/${DOCKER_REPO}:client
     volumes:
       - ${VOLUME_NODE_MODULES}
@@ -381,79 +362,93 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
       - WEBSOCKET=${WEBSOCKET}
-    deploy:
-      replicas: 3
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+      - mailing-server
+      - auths-server
+      - groups-server
+      - workspaces-server
+      - users-server
+      - posts-server
+      - notifications-server
+      - utilities-server
+      - folio-server
+      - search-server
     networks:
-      - octonius_production
-
+      - acc
+    
   nginx:
+    container_name: nginx
     image: ${DOCKER_USER}/${DOCKER_REPO}:nginx
+    restart: always
     ports:
       - ${APPLICATION_PORT}:${NGINX_PORT}
-    deploy:
-      replicas: 3
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+    depends_on:
+      - mongodb
+      - mailing-server
+      - auths-server
+      - groups-server
+      - workspaces-server
+      - users-server
+      - posts-server
+      - notifications-server
+      - utilities-server
+      - folio-server
+      - search-server
+      - client
     networks:
-      - octonius_production
-
+      - acc
+    
 volumes:
-  octonius_production_db_data:
+  acc_db_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/db
       o: bind
 
-  octonius_production_groups_uploads_data:
+  acc_groups_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/groups
       o: bind
   
-  octonius_production_posts_uploads_data:
+  acc_posts_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/posts
       o: bind
 
-  octonius_production_users_uploads_data:
+  acc_users_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/users
       o: bind
 
-  octonius_production_workspaces_uploads_data:
+  acc_workspaces_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/workspaces
       o: bind
 
-  octonius_production_utilities_uploads_data:
+  acc_utilities_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/utilities
       o: bind
-  
-  octonius_production_search_uploads_data:
+
+  acc_search_uploads_data:
     driver: local
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/search
-      o: bind 
-
+      o: bind
+        
 networks:
-  octonius_production:
+  acc: 
+    driver: bridge
