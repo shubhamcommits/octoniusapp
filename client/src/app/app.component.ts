@@ -58,7 +58,7 @@ export class AppComponent {
     console.log("Env variables", environment)
     console.log("window", window["env"])
 
-    this.initSocketServer(socketService)
+    // this.initSocketServer(socketService)
 
     // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));
