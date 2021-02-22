@@ -75,8 +75,8 @@ import { SocketIoModule } from 'ngx-socket-io';
 /**
  * 7. !===== ERROR HANDLERS =====!
  */
-import { ngxUiLoaderConfig } from 'src/shared/config/ngx-ui-loader.config';
-import { socketConfig } from 'src/shared/config/socket.config';
+import { ngxUiLoaderConfig } from 'src/assets/config/ngx-ui-loader.config';
+import { socketConfig } from 'src/assets/config/socket.config';
 
 
 

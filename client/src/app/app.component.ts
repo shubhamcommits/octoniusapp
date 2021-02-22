@@ -55,9 +55,6 @@ export class AppComponent {
     let socketService = this.injector.get(SocketService);
     let utilityService = this.injector.get(UtilityService);
 
-    console.log("Env variables", environment)
-    console.log("window", window["env"])
-
     // this.initSocketServer(socketService)
 
     // Internet connection validity
