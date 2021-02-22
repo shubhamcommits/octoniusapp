@@ -6,51 +6,51 @@ import path from 'path';
 function prodConfigInit() {
 
   // Node Environment
-  process.env.NODE_ENV = process.env.NODE_ENV || 'production'
+  process.env.NODE_ENV = process.env.NODE_ENV
 
   // Application Port
-  process.env.PORT = process.env.PORT ||'13000'
+  process.env.PORT = process.env.PORT
 
   // Application Host
-  process.env.HOST = process.env.HOST ||'0.0.0.0'
+  process.env.HOST = process.env.HOST
 
   // Jwt Key
-  process.env.JWT_KEY = process.env.JWT_KEY ||'asfsaf12safas23fsafa12sf'
+  process.env.JWT_KEY = process.env.JWT_KEY
 
   // Database Url String
-  process.env.dbURL = process.env.dbURL || 'mongodb://mongodb:27017/octonius' || 'mongodb://127.0.0.1:27017/octonius'
+  process.env.DB_URL = process.env.DB_URL
 
   // Redis Environments
-  process.env.REDIS_HOST = process.env.REDIS_HOST ||'redis'
-  process.env.REDIS_PORT = process.env.REDIS_PORT ||'6379'
+  process.env.REDIS_HOST = process.env.REDIS_HOST
+  process.env.REDIS_PORT = process.env.REDIS_PORT
 
   // Files Uploads Folder
   process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || path.join(__dirname, '../uploads/');
 
   // Sendgrid Key
-  process.env.SENDGRID_KEY = process.env.SENDGRID_KEY || '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'
+  process.env.SENDGRID_KEY = process.env.SENDGRID_KEY
 
+  // Slack WebHook URL
+  process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL
 
-   // Slack WebHook URL
-   process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
-
-   process.env.SLACK_CLINET_ID = process.env.SLACK_CLINET_ID || "2561616476.1145669381443"
-   process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET || "acaf1f9b8e2c2607124c74ea9273a2ed"
-   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN || "xoxb-2561616476-1145480914898-bFLn6YJrfzbJ9jvCTU34uNuu"
+  // Slack Keys
+  process.env.SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID
+  process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET
+  process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN
 
   // Stripe Keys
-  process.env.SK_STRIPE = process.env.SK_STRIPE || 'sk_live_WupyMoQf93S59gwTqmYpmWel'
-  process.env.stripe_plan = process.env.stripe_plan || 'plan_EK1rDLfKr9NRkU'
-  process.env.WEBHOOK_PS_SECRET = process.env.WEBHOOK_PS_SECRET ||'whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn'
+  process.env.SK_STRIPE = process.env.SK_STRIPE
+  process.env.STRIPE_PLAN = process.env.STRIPE_PLAN
+  process.env.WEBHOOK_PS_SECRET = process.env.WEBHOOK_PS_SECRET
 
   // External Key
-  process.env.HEADER_EXTERNAL_KEY = process.env.HEADER_EXTERNAL_KEY || 'HEADERIDSHAREDFOROCTONIUS'
+  process.env.HEADER_EXTERNAL_KEY = process.env.HEADER_EXTERNAL_KEY
 
   // Protocol- 'http' or 'https'
-  process.env.PROTOCOL = process.env.PROTOCOL ||'http'
+  process.env.PROTOCOL = process.env.PROTOCOL
 
   // Domain
-  process.env.DOMAIN = process.env.DOMAIN ||'localhost'
+  process.env.DOMAIN = process.env.DOMAIN
 
   // Mailing Mircoservice
   process.env.MAILING_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/mails`
@@ -88,7 +88,7 @@ function prodConfigInit() {
   process.env.CLIENT_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/`
 
   // Image Process URL for Notification
-  process.env.IMAGE_PROCESS_URL = process.env.IMAGE_PROCESS_URL || `${process.env.PROTOCOL}://${process.env.DOMAIN}/users/uploads`
+  process.env.IMAGE_PROCESS_URL = `${process.env.PROTOCOL}://${process.env.DOMAIN}/users/uploads`
 };
 
 export { prodConfigInit as productionConfig } 

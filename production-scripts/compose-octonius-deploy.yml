@@ -3,7 +3,6 @@ version: "3.3"
 services:
 
   mongodb:
-    container_name: mongodb
     image: mongo:latest
     restart: always
     volumes:
@@ -11,11 +10,11 @@ services:
     ports:
       - 27017:27017
     networks:
-      - production
+      - productionapp
+    
       
   mailing-server:
-    container_name: mailing-server
-    image: octoniusapp/octonius:mailing-server
+    image: octoniusapp/octonius-prod:mailing-server
     ports:
       - 2000:2000
     restart: always
@@ -26,26 +25,26 @@ services:
       - PORT=2000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27017/octonius
+      - DB_URL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=workplace.octonius.com
+      - DOMAIN=app.octonius.com
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
+    
       
   auths-server:
-    container_name: auths-server
-    image: octoniusapp/octonius:auths-server
+    image: octoniusapp/octonius-prod:auths-server
     ports:
       - 3000:3000
     restart: always
@@ -56,26 +55,26 @@ services:
       - PORT=3000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27017/octonius
+      - DB_URL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=workplace.octonius.com
+      - DOMAIN=app.octonius.com
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
+    
          
   groups-server:
-    container_name: groups-server
-    image: octoniusapp/octonius:groups-server
+    image: octoniusapp/octonius-prod:groups-server
     ports:
       - 4000:4000
     restart: always
@@ -87,26 +86,26 @@ services:
       - PORT=4000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27017/octonius
+      - DB_URL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=workplace.octonius.com
+      - DOMAIN=app.octonius.com
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
+    
       
   workspaces-server:
-    container_name: workspaces-server
-    image: octoniusapp/octonius:workspaces-server
+    image: octoniusapp/octonius-prod:workspaces-server
     ports:
       - 5000:5000
     restart: always
@@ -118,26 +117,27 @@ services:
       - PORT=5000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27017/octonius
+      - DB_URL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=workplace.octonius.com
+      - DOMAIN=app.octonius.com
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
+    
       
   search-server:
     container_name: search-server
-    image: octoniusapp/octonius:search-server
+    image: octoniusapp/octonius-prod:search-server
     ports:
       - 12000:12000
     restart: always
@@ -149,26 +149,27 @@ services:
       - PORT=12000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27017/octonius
+      - DB_URL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=workplace.octonius.com
+      - DOMAIN=app.octonius.com
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
+    
       
   users-server:
     container_name: users-server
-    image: octoniusapp/octonius:users-server
+    image: octoniusapp/octonius-prod:users-server
     ports:
       - 7000:7000
     restart: always
@@ -180,26 +181,27 @@ services:
       - PORT=7000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27017/octonius
+      - DB_URL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=workplace.octonius.com
+      - DOMAIN=app.octonius.com
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
+    
       
   posts-server:
     container_name: posts-server
-    image: octoniusapp/octonius:posts-server
+    image: octoniusapp/octonius-prod:posts-server
     ports:
       - 8000:8000
     restart: always
@@ -211,26 +213,27 @@ services:
       - PORT=8000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27017/octonius
+      - DB_URL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=workplace.octonius.com
+      - DOMAIN=app.octonius.com
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
+    
       
   notifications-server:
     container_name: notifications-server
-    image: octoniusapp/octonius:notifications-server
+    image: octoniusapp/octonius-prod:notifications-server
     ports:
       - 9000:9000
     restart: always
@@ -241,26 +244,27 @@ services:
       - PORT=9000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27017/octonius
+      - DB_URL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=workplace.octonius.com
+      - DOMAIN=app.octonius.com
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
+    
       
   utilities-server:
     container_name: utilities-server
-    image: octoniusapp/octonius:utilities-server
+    image: octoniusapp/octonius-prod:utilities-server
     ports:
       - 10000:10000
     restart: always
@@ -272,26 +276,27 @@ services:
       - PORT=10000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27017/octonius
+      - DB_URL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=workplace.octonius.com
+      - DOMAIN=app.octonius.com
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
+    
 
   folio-server:
     container_name: folio-server
-    image: octoniusapp/octonius:folio-server
+    image: octoniusapp/octonius-prod:folio-server
     ports:
       - 11000:11000
     restart: always
@@ -302,26 +307,27 @@ services:
       - PORT=11000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27017/octonius
+      - DB_URL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=workplace.octonius.com
+      - DOMAIN=app.octonius.com
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
+    
 
   integrations-server:
     container_name: integrations-server
-    image: octoniusapp/octonius:integrations-server
+    image: octoniusapp/octonius-prod:integrations-server
     ports:
       - 13000:13000
     restart: always
@@ -332,26 +338,27 @@ services:
       - PORT=13000
       - HOST=0.0.0.0
       - JWT_KEY=asfsaf12safas23fsafa12sf
-      - dbURL=mongodb://mongodb:27017/octonius
+      - DB_URL=mongodb://mongodb:27017/octonius
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SENDGRID_KEY=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
       - SK_STRIPE=sk_live_WupyMoQf93S59gwTqmYpmWel
-      - stripe_plan=plan_EK1rDLfKr9NRkU
+      - STRIPE_PLAN=plan_EK1rDLfKr9NRkU
       - WEBHOOK_PS_SECRET=whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn
       - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
       - PROTOCOL=https
-      - DOMAIN=workplace.octonius.com
+      - DOMAIN=app.octonius.com
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - production
+      - productionapp
+    
       
   client:
     container_name: client
-    image: octoniusapp/octonius:client
+    image: octoniusapp/octonius-prod:client
     volumes:
       - /usr/app/node_modules
     depends_on:
@@ -367,11 +374,12 @@ services:
       - folio-server
       - search-server
     networks:
-      - production
+      - productionapp
+    
 
   nginx:
     container_name: nginx
-    image: octoniusapp/octonius:nginx
+    image: octoniusapp/octonius-prod:nginx
     restart: always
     ports:
       - 8080:80
@@ -389,7 +397,8 @@ services:
       - search-server
       - client
     networks:
-      - production
+      - productionapp
+    
 
 volumes:
   production_db_data:
@@ -440,7 +449,8 @@ volumes:
       type: none
       device: ${PWD}/data/uploads/search
       o: bind
+  
       
 networks:
-  production: 
+  productionapp: 
     driver: bridge

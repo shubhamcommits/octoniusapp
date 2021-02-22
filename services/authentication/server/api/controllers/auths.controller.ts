@@ -67,7 +67,6 @@ export class AuthsController {
             // Check the Workspace and User Availability
             await new AuthsController().checkUserAvailability(email, workspace_name)
                 .then(async () => {
-
                     // Userdata variable which stores all the details
                     const userData = req.body;
 
@@ -272,11 +271,13 @@ export class AuthsController {
                         { _workspace: workspace._id }
                     ] }).countDocuments();
 
-                    // Update the subscription details
-                    let subscription = stripe.subscriptions.update(workspace.billing.subscription_id, {
-                        price: workspace.billing.price_id,
-                        quantity: usersCount
-                    });
+                    if (workspace.billing.subscription_id) {
+                        // Update the subscription details
+                        let subscription = stripe.subscriptions.update(workspace.billing.subscription_id, {
+                            price: workspace.billing.price_id,
+                            quantity: usersCount
+                        });
+                    }
 
                     // Update the4 workspace details
                     await Workspace.findOneAndUpdate({
@@ -284,6 +285,58 @@ export class AuthsController {
                     }, {
                         'billing.quantity': usersCount
                     });
+
+                    // Send workspace to the mgmt portal
+                    if (process.env.NODE_ENV == 'production') {
+                        // Count all the groups present inside the workspace
+                        const groupsCount: number = await Group.find({ $and: [
+                            { group_name: { $ne: 'personal' } },
+                            { _workspace: workspace._id }
+                        ]}).countDocuments();
+
+                        let workspaceMgmt = {
+                            _id: workspace._id,
+                            company_name: workspace.company_name,
+                            workspace_name: workspace.workspace_name,
+                            owner_email: workspace.owner_email,
+                            owner_first_name: workspace.owner_first_name,
+                            owner_last_name: workspace.owner_last_name,
+                            _owner_remote_id: workspace._owner._id || workspace._owner,
+                            environment: process.env.DOMAIN,
+                            num_members: usersCount,
+                            num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
+                            num_groups: groupsCount,
+                            created_date: workspace.created_date,
+                            billing: {
+                                subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
+                                current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
+                                scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
+                                quantity: usersCount
+                            }
+                        }
+                        http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                            API_KEY: process.env.MANAGEMENT_API_KEY,
+                            workspaceData: workspaceMgmt
+                        }).then().catch(err => console.log(err));
+
+                        // Send user to the mgmt portal
+                        let userMgmt = {
+                            _id: user._id,
+                            active: user.active,
+                            email: user.email,
+                            password: user.password,
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            _remote_workspace_id: workspace._id,
+                            workspace_name: workspace.workspace_name,
+                            environment: process.env.DOMAIN,
+                            created_date: user.created_date
+                        }
+                        http.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
+                            API_KEY: process.env.MANAGEMENT_API_KEY,
+                            userData: userMgmt
+                        }).then().catch(err => console.log(err));
+                    }
 
                     // Signup user and return the token
                     return res.status(200).json({
@@ -385,13 +438,15 @@ export class AuthsController {
                     message: `There are ${users.length} users with the email ${req.query.email}!`,
                     numUsers: users.length
                 });
-            } else {
+            } else if (users.length == 1) {
                 // Send the status 200 response 
                 return res.status(200).json({
                     message: `There are ${users.length} users with the email ${req.query.email}!`,
                     numUsers: users.length,
                     workspace_name: users[0].workspace_name
                 });   
+            } else {
+                return sendError(res, new Error('Please enter a valid combination or workspace name and user email or user might be disabled!'), 'Please enter a valid combination or workspace name and user email!', 401);
             }
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

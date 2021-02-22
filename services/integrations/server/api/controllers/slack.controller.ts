@@ -584,7 +584,7 @@ export class SlackController {
     async authSlack(req: Request , res: Response, next: NextFunction){
         
         
-        const responce = await axios.get('https://slack.com/api/oauth.v2.access', { params: { code: req.body.code, client_id: process.env.SLACK_CLINET_ID ,client_secret:process.env.SLACK_CLIENT_SECRET} });
+        const responce = await axios.get('https://slack.com/api/oauth.v2.access', { params: { code: req.body.code, client_id: process.env.SLACK_CLIENT_ID ,client_secret:process.env.SLACK_CLIENT_SECRET} });
         
         const resp = responce.data;
         if(resp['ok']){

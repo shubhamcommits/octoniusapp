@@ -1,4 +1,4 @@
-import { Column, Flow, Group, Post, User, Notification } from '../models';
+import { Column, Flow, Group, Post, User, Notification, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError, hasProperty } from '../../utils';
 import http from 'axios';
@@ -357,6 +357,49 @@ export class GroupController {
                 new: true
             }).lean();
 
+            // Send new workspace to the mgmt portal
+            if (process.env.NODE_ENV == 'production') {
+                // Obtain the workspace of the group
+                const workspace = await Workspace.findOne({ _id: groupData._workspace });
+
+                // Count all the groups present inside the workspace
+                const groupsCount: number = await Group.find({ $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { _workspace: groupData._workspace }
+                ]}).countDocuments();
+
+                // Count all the users present inside the workspace
+                const usersCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: groupData._workspace }
+                ] }).countDocuments();
+
+                let workspaceMgmt = {
+                    _id: groupData._workspace,
+                    company_name: workspace.company_name,
+                    workspace_name: workspace.workspace_name,
+                    owner_email: workspace.owner_email,
+                    owner_first_name: workspace.owner_first_name,
+                    owner_last_name: workspace.owner_last_name,
+                    _owner_remote_id: workspace._owner._id || workspace._owner,
+                    environment: process.env.DOMAIN,
+                    num_members: usersCount,
+                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
+                    num_groups: groupsCount,
+                    created_date: workspace.created_date,
+                    billing: {
+                        subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
+                        current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
+                        scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
+                        quantity: usersCount || 0
+                    }
+                }
+                http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                    API_KEY: process.env.MANAGEMENT_API_KEY,
+                    workspaceData: workspaceMgmt
+                }).then().catch(err => console.log(err));
+            }
+
             // Send the status 200 response
             return res.status(200).json({
                 message: 'Group Created Successfully!',
@@ -428,9 +471,11 @@ export class GroupController {
 
         try {
 
-            // Find the group and remove it from the database
-            const group: any = await Group.findByIdAndDelete(groupId)
+            const group: any = await Group.findOne({ _id: groupId })
                 .select('group_name _workspace')
+
+            // Find the group and remove it from the database
+            const groupDeleted: any = await Group.findByIdAndDelete(groupId);
 
             // Remove the group from users, and users´ favorite groups
             await User.updateMany({ _groups: groupId }, {
@@ -453,6 +498,49 @@ export class GroupController {
 
             // Delete the flows
             Flow.deleteMany({ _group: groupId});
+
+            // Send new workspace to the mgmt portal
+            if (process.env.NODE_ENV == 'production') {
+                // Obtain the workspace of the group
+                const workspace = await Workspace.findOne({ _id: group._workspace });
+
+                // Count all the groups present inside the workspace
+                const groupsCount: number = await Group.find({ $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { _workspace: group._workspace }
+                ]}).countDocuments();
+
+                // Count all the users present inside the workspace
+                const usersCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: group._workspace }
+                ] }).countDocuments();
+
+                let workspaceMgmt = {
+                    _id: group._workspace,
+                    company_name: workspace.company_name,
+                    workspace_name: workspace.workspace_name,
+                    owner_email: workspace.owner_email,
+                    owner_first_name: workspace.owner_first_name,
+                    owner_last_name: workspace.owner_last_name,
+                    _owner_remote_id: workspace._owner._id || workspace._owner,
+                    environment: process.env.DOMAIN,
+                    num_members: usersCount,
+                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
+                    num_groups: groupsCount,
+                    created_date: workspace.created_date,
+                    billing: {
+                        subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
+                        current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
+                        scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
+                        quantity: usersCount || 0
+                    }
+                }
+                http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                    API_KEY: process.env.MANAGEMENT_API_KEY,
+                    workspaceData: workspaceMgmt
+                }).then().catch(err => console.log(err));
+            }
 
             // Send the status 200 response
             return res.status(200).json({
