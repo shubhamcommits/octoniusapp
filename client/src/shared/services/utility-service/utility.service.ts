@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -17,6 +17,9 @@ export class UtilityService {
     private ngxUiLoaderService: NgxUiLoaderService,
     public dialog: MatDialog
     ) { }
+
+   groupDeleteEvent: EventEmitter<any> = new EventEmitter();
+
 
   /**
    * Both of the variables listed down below are used to share the data through this common service among different components in the app
@@ -479,5 +482,9 @@ export class UtilityService {
       hasBackdrop: true,
       data: data
     });
+  }
+
+  handleDeleteGroupFavorite() {
+    return this.groupDeleteEvent;
   }
 }
