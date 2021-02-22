@@ -45,8 +45,7 @@
               "node_modules/quill/dist/quill.js",
               "src/shared/utilities/highlight.js/highlight.min.js",
               "src/shared/utilities/loading-bar/loading-bar.min.js",
-              "node_modules/leader-line/leader-line.min.js",
-              "src/assets/env.js"
+              "node_modules/leader-line/leader-line.min.js"
             ],
             "allowedCommonJsDependencies": [
               "lodash",
