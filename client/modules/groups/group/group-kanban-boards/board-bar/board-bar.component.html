@@ -2,23 +2,23 @@
 
     <div class="rightside">
 
-      <button class="btn badge-filters" [matMenuTriggerFor]="menuSort">
+      <button *ngIf="viewType == 'kanban' || viewType == 'table'" class="btn badge-filters" [matMenuTriggerFor]="menuSort">
         <i class="material-icons-outlined"> import_export</i> <span>Sort</span>
       </button>
 
-      <span class="separator"></span>
+      <span *ngIf="viewType == 'kanban' || viewType == 'table'" class="separator"></span>
 
-      <button class="btn badge-filters" [matMenuTriggerFor]="menuFilter">
+      <button *ngIf="viewType == 'kanban' || viewType == 'table'" class="btn badge-filters" [matMenuTriggerFor]="menuFilter">
         <i class="material-icons-outlined"> filter_list</i> <span>Filter</span>
       </button>
 
-      <span class="separator"></span>
+      <span *ngIf="viewType == 'kanban' || viewType == 'table'" class="separator"></span>
 
       <button class="btn badge-cf" *ngIf="isAdmin" (click)="openCustomFieldsDialog()">
         <i class="material-icons-outlined">label</i> <span>Custom Fields</span>
       </button>
 
-      <span class="separator"></span>
+      <span class="separator" *ngIf="isAdmin"></span>
 
       <button class="btn badge-automator" *ngIf="isAdmin" (click)="openAutomatorDialog()">
         <i class="material-icons-outlined">offline_bolt</i> <span>Automator</span>
