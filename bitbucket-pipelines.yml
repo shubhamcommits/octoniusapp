@@ -84,7 +84,7 @@ pipelines:
           - docker
 
         # can be test, staging or production.
-        deployment: stating   
+        deployment: staging   
         script: 
         
           # Modify the commands below to build your repository.
