@@ -12,7 +12,9 @@ import { io } from 'socket.io-client';
 export class SocketService {
 
   constructor(
-    private http: HttpClient) { }
+    private http: HttpClient) {
+      console.log("env from service", environment)
+     }
 
   // Socket variable
   private socket; 
@@ -60,6 +62,7 @@ export class SocketService {
           transports: ['websocket'],
           upgrade: false
       })
+      console.log(this.socket)
   }
 
   public changeData(data: any){
