@@ -394,7 +394,7 @@ services:
   nginx:
     image: ${DOCKER_USER}/${DOCKER_REPO}:nginx
     ports:
-      - ${MACHINE_PORT}:${NGINX_PORT}
+      - ${APPLICATION_PORT}:${NGINX_PORT}
     deploy:
       replicas: 3
       update_config:
