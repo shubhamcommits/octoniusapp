@@ -68,7 +68,7 @@ export const environment = {
   POST_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/posts`,
 
   // Notifications URLs
-  NOTIFICATIONS_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}`,
+  NOTIFICATIONS_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}`,
   NOTIFICATIONS_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/notifications`,
 
   // Utilities URLs
