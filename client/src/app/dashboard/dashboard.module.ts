@@ -43,7 +43,7 @@ import { UserAccountNavbarComponent } from '../common/navbar/user-account-navbar
     SharedModule,
     FormsModule,
     SearchModule,
-     // NGX UI LOADER MODULE
+    // NGX UI LOADER MODULE
   ],
   exports: [
     NavbarComponent

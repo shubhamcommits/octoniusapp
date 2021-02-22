@@ -5,9 +5,12 @@ import { retry } from 'rxjs/internal/operators/retry';
 import { map } from 'rxjs/internal/operators/map';
 import { SubSink } from 'subsink';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+
+import { NotificationService } from 'src/shared/services/notification-service/notification.service';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
-import { Router,RouterEvent,NavigationEnd ,ChildActivationEnd} from '@angular/router';
+import { Router, RouterEvent, NavigationEnd, ChildActivationEnd } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 // Google API Variable
 declare const gapi: any;
@@ -35,15 +38,17 @@ export class AppComponent {
    * 4. Enabling and calling the @event workspaceData from the socket server
    */
 
-  routerFromEvent:any;
-  groupId:any;
+  routerFromEvent: any;
+  groupId: any;
 
   constructor(
     private injector: Injector,
     private storageService: StorageService,
-    private _router:Router
+    private _router: Router,
+    private _notificationService: NotificationService
   ) {
-
+    this._notificationService.requestPermission();
+  
     this.subSink.add(this._router.events.subscribe((e: any) => {
       if (e instanceof ChildActivationEnd) {
         this.groupId = e.snapshot.queryParamMap.get('group');
@@ -53,6 +58,8 @@ export class AppComponent {
 
     let socketService = this.injector.get(SocketService);
     let utilityService = this.injector.get(UtilityService);
+
+    // this.initSocketServer(socketService)
 
     // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));
@@ -90,9 +97,8 @@ export class AppComponent {
    * This function makes the HTTP initial request to the socket server in order to initiate the connection
    * @param socketService
    */
-  initSockerServer(socketService: SocketService) {
-    socketService.serverInit()
-      .subscribe()
+  initSocketServer(socketService: SocketService) {
+    return socketService.serverInit()
   }
 
   /**

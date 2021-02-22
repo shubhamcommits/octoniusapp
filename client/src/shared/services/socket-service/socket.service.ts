@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
+import { Socket, SocketIoConfig } from 'ngx-socket-io';
 import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { SocketServer } from 'src/app/app.module';
+import { NotificationService } from '../notification-service/notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +13,11 @@ import { environment } from 'src/environments/environment';
 export class SocketService {
 
   constructor(
-    private socket: Socket, 
-    private http: HttpClient) { }
+    private socket: SocketServer, 
+    private http: HttpClient,
+    private _notificationService: NotificationService) { }
 
+  // Define baseurl
   public baseUrl = environment.NOTIFICATIONS_BASE_URL;
 
   /**
@@ -25,10 +29,27 @@ export class SocketService {
   currentData = this.dataSource.asObservable();
 
   public onEvent(eventName: string): Observable<any> {
+    console.log(this.socket)
     return new Observable<any>(observer => {
         this.socket.on(eventName, (data: any) => {
           console.log(`Socket for event name - ${eventName} is connected!`);
           observer.next(data);
+          if(eventName === 'notificationsFeed' && data.new){
+            const notify = data['unreadNotifications'][0];
+            let notifyData: Array < any >= [];
+            if(notify?.type === 'mention_folio'){
+              notifyData.push({
+                'title': 'Notification',
+                'alertContent': `${notify?._actor?.first_name || 'Deleted'} ${notify?._actor?.last_name || 'User'} ${notify?.message} ${notify?._origin_folio?.original_name}` ,
+              });
+            } else {
+              notifyData.push({
+                  'title': 'Notification',
+                  'alertContent': `${notify?._actor?.first_name || 'Deleted'} ${notify?._actor?.last_name || 'User'} ${notify?.message} ${notify?._origin_post?.title}` ,
+              });
+            }
+            this._notificationService.generateNotification(notifyData);
+          }
         });
     });
   }
@@ -46,7 +67,7 @@ export class SocketService {
    * This function initates the request to socket server
    */
   public serverInit(){
-    return this.http.get('http://localhost:9000' + '/', { responseType: 'text' });
+    return this.http.get(this.baseUrl + '/', { responseType: 'text' });
   }
 
   public changeData(data: any){
