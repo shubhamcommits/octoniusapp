@@ -2,7 +2,7 @@
     window["env"] = window["env"] || {};
   
     // Environment variables
-    window["env"]["protocol"] = "https";
-    window["env"]["domain"] = "app.octonius.com";
-    window["env"]["websocket"] = "wss";
+    window["env"]["protocol"] = "";
+    window["env"]["domain"] = "";
+    window["env"]["websocket"] = "";
   })(this);
