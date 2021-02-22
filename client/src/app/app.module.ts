@@ -41,7 +41,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 // ANGULAR MODULES
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, Injectable } from '@angular/core';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -69,7 +69,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
  */
 // import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
-import { SocketIoModule } from 'ngx-socket-io';
+import { Socket, SocketIoModule } from 'ngx-socket-io';
 // import { ChartsModule, ThemeService } from 'ng2-charts';
 
 /**
@@ -86,6 +86,15 @@ import { socketConfig } from 'src/assets/config/socket.config';
 import { GlobalErrorHandler } from 'src/shared/error-handler/global-error-handler';
 import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.interceptor';
 
+// Injectable Class
+@Injectable()
+export class SocketServer extends Socket {
+ 
+    constructor() {
+        super(socketConfig);
+    }
+ 
+}
 
 /**
  * 9. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -131,7 +140,7 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     // SharedModule,
 
     // SOCKET MODULE AND INITIALISATION
-    SocketIoModule.forRoot(socketConfig),
+    SocketIoModule,
   ],
 
   providers: [
@@ -151,7 +160,9 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
       useClass: ServerErrorInterceptor,
       multi: true
     },
-    // ThemeService
+
+    // Socket Server Class
+    SocketServer
   ],
   bootstrap: [AppComponent]
 })
