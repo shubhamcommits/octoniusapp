@@ -69,14 +69,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
  */
 // import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
-import { SocketIoModule } from 'ngx-socket-io';
+// import { SocketIoModule } from 'ngx-socket-io';
 // import { ChartsModule, ThemeService } from 'ng2-charts';
 
 /**
  * 7. !===== ERROR HANDLERS =====!
  */
-import { ngxUiLoaderConfig } from 'src/assets/config/ngx-ui-loader.config';
-import { socketConfig } from 'src/assets/config/socket.config';
+import { ngxUiLoaderConfig } from 'src/shared/config/ngx-ui-loader.config';
+// import { socketConfig } from 'src/shared/config/socket.config';
 
 
 
@@ -131,7 +131,7 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
     // SharedModule,
 
     // SOCKET MODULE AND INITIALISATION
-    SocketIoModule.forRoot(socketConfig),
+    // SocketIoModule.forRoot(socketConfig),
   ],
 
   providers: [
