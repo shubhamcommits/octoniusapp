@@ -56,6 +56,7 @@ export class AppComponent {
     let utilityService = this.injector.get(UtilityService);
 
     console.log("Env variables", environment)
+    console.log("window", window["env"])
 
     this.initSocketServer(socketService)
 
