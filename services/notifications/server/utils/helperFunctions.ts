@@ -20,12 +20,12 @@ function hasProperty(object: any, property: any) {
  * @param userId 
  * @param io 
  */
-async function generateFeed(userId: string, io: any) {
+async function generateFeed(userId: string, io: any,backend?:any) {
     try {
         const unreadNotifications = await notifications.getUnread(userId);
         const readNotifications = await notifications.getRead(userId);
 
-        const feed = { unreadNotifications, readNotifications };
+        const feed = { unreadNotifications, readNotifications , new:backend};
 
         // console.log(feed)
 
@@ -54,9 +54,9 @@ async function sendNotificationsFeed(socket: any, userId: string, io: any) {
  * @param userId 
  * @param io 
  */
-async function sendNotificationsFeedFromService(userId: string, io: any) {
+async function sendNotificationsFeedFromService(userId: string, io: any,backend?:any) {
     //  here the same as before, I deleted the emit code
-    generateFeed(userId, io);
+    generateFeed(userId, io,backend);
     console.log('Notifications Sent!')
 }
 
