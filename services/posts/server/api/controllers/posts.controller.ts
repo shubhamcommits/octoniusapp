@@ -553,7 +553,7 @@ export class PostController {
         const userId = req['userId'];
 
         try {
-            const post = await this.callAddAssigneeService(postId, assigneeId, userId, groupId, true)
+            const post = await this.callAddAssigneeService(postId, assigneeId, userId, groupId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
@@ -568,15 +568,14 @@ export class PostController {
         }
     }
 
-    async callAddAssigneeService(postId: string, assigneeId: string, userId: string, groupId: string, runAutomator: boolean) {
+    async callAddAssigneeService(postId: string, assigneeId: string, userId: string, groupId: string) {
 
         // Call Service function to change the assignee
         let post = await postService.addAssignee(postId, assigneeId, userId);
 
-        if (runAutomator) {
-            // Execute Automation Flows
-            post = await this.executeAutomationFlows(groupId, post, userId);
-        }
+        // Execute Automation Flows
+        post = await this.executeAutomationFlows(groupId, post, userId);
+
         if (post._assigned_to) {
             const index = post._assigned_to.findIndex(assignee => assignee._id == assigneeId);
             if (index < 0) {
@@ -765,7 +764,7 @@ export class PostController {
 
         try {
             // Call Service function to change the assignee
-            let post = await this.callChangeTaskStatusService(postId, status, userId, groupId, true)
+            let post = await this.callChangeTaskStatusService(postId, status, userId, groupId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });
@@ -780,7 +779,7 @@ export class PostController {
         }
     }
 
-    async callChangeTaskStatusService(postId: string, status: string, userId: string, groupId: string, runAutomator: boolean) {
+    async callChangeTaskStatusService(postId: string, status: string, userId: string, groupId: string) {
 
         // Call Service function to change the assignee
         let post = await postService.changeTaskStatus(postId, status, userId)
@@ -789,10 +788,10 @@ export class PostController {
             });
         post.task.status = status;
 
-        if (runAutomator) {
-            // Execute Automation Flows
-            post = await this.executeAutomationFlows(groupId, post, userId);
-        }
+        
+        // Execute Automation Flows
+        post = await this.executeAutomationFlows(groupId, post, userId);
+        
 
         return post;
     }
@@ -814,7 +813,7 @@ export class PostController {
                 return sendErr(res, new Error('Please provide the post, title and user as parameters'), 'Please provide the post, title and user as paramaters!', 400);
             }
 
-            const post = this.changeTaskSection(postId, columnId, userId, groupId, true)
+            const post = this.changeTaskSection(postId, columnId, userId, groupId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });
@@ -829,14 +828,12 @@ export class PostController {
         }
     }
 
-    async changeTaskSection(postId: string, columnId: string, userId: string, groupId: string, runAutomator: boolean) {
+    async changeTaskSection(postId: string, columnId: string, userId: string, groupId: string) {
         // Call Service function to change the assignee
         let post = await postService.changeTaskColumn(postId, columnId, userId);
 
-        if (runAutomator) {
-            // Execute Automation Flows
-            post = await this.executeAutomationFlows(groupId, post, userId);
-        }
+        // Execute Automation Flows
+        post = await this.executeAutomationFlows(groupId, post, userId);
 
         post.task._column = columnId;
 
@@ -945,7 +942,7 @@ export class PostController {
 
         try {
 
-            const post = await this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldValue, userId, true)
+            const post = await this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldValue, userId)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });
@@ -960,15 +957,13 @@ export class PostController {
         }
     }
 
-    async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfValue: string, userId: string, runAutomator: boolean) {
+    async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfValue: string, userId: string) {
         let post = await postService.changeCustomFieldValue(postId, cfName, cfValue);
 
         post.task.custom_fields[cfName] = cfValue;
 
-        if (runAutomator) {
-            // Execute Automation Flows
-            post = await this.executeAutomationFlows(groupId, post, userId);
-        }
+        // Execute Automation Flows
+        post = await this.executeAutomationFlows(groupId, post, userId);
 
         return post;
     }
