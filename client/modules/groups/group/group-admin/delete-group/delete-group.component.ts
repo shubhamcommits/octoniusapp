@@ -12,7 +12,8 @@ export class DeleteGroupComponent implements OnInit {
 
   constructor(
     private injector: Injector,
-    public router: Router
+    public router: Router,
+    private utilityService: UtilityService
   ) { }
 
   // groupId of the current group
@@ -52,7 +53,10 @@ export class DeleteGroupComponent implements OnInit {
                   this.router.navigate(['/dashboard', 'work', 'groups', 'all'])
                     .then(() => {
                       // Resolve the async promise
-                      resolve(utilityService.resolveAsyncPromise('Group removed!'))
+                      this.utilityService.handleDeleteGroupFavorite().emit(true);
+                      this.utilityService.handleUpdateGroupData().emit(true);
+                      resolve(utilityService.resolveAsyncPromise('Group removed!'));
+
                     });
                 })
                 .catch(() => {

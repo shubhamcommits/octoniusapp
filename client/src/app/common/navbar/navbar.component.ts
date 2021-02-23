@@ -132,6 +132,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async ngOnInit() {
 
+    this.utilityService.handleDeleteGroupFavorite().subscribe(event => {
+      this.onFavoriteGroupSaved()
+    });
+
     this.publicFunctions.reuseRoute(this._router)
 
     // FETCH THE USER DETAILS FROM THE SERVER

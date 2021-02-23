@@ -50,7 +50,9 @@ export class GroupInformationComponent implements OnInit {
 
                 // Send Updates to the group data service
                 this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-
+                
+                this.utilityService.handleDeleteGroupFavorite().emit(true);
+                this.utilityService.handleUpdateGroupData().emit(true);
                 // Resolve with success
                 resolve(this.utilityService.resolveAsyncPromise('Group updated sucessfully!'))
             })
