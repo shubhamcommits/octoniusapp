@@ -54,11 +54,31 @@ export class SidebarComponent implements OnInit, OnDestroy {
   public utilityService = this.injector.get(UtilityService);
 
   async ngOnInit() {
+
+    this.utilityService.handleUpdateGroupData().subscribe(event => {
+      setTimeout(() => {
+        this.sort();
+      }, 100);
+    });
     // FETCH THE USER DETAILS
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetch the current workspace data
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    setTimeout(() => {
+      this.sort();
+    }, 500);
+  }
+
+  async sort(){
+    this.userGroups.sort((t1, t2) => {
+      const name1 = t1?.group_name.toLowerCase();
+      const name2 = t2?.group_name.toLowerCase();
+      if (name1 > name2) { return 1; }
+      if (name1 < name2) { return -1; }
+      return 0;
+    });
   }
 
   /**

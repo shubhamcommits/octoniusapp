@@ -54,6 +54,7 @@ export class DeleteGroupComponent implements OnInit {
                     .then(() => {
                       // Resolve the async promise
                       this.utilityService.handleDeleteGroupFavorite().emit(true);
+                      this.utilityService.handleUpdateGroupData().emit(true);
                       resolve(utilityService.resolveAsyncPromise('Group removed!'));
 
                     });

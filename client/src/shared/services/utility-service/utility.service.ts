@@ -19,6 +19,7 @@ export class UtilityService {
     ) { }
 
    groupDeleteEvent: EventEmitter<any> = new EventEmitter();
+   groupUpdateEvent: EventEmitter<any> = new EventEmitter();
 
 
   /**
@@ -486,5 +487,9 @@ export class UtilityService {
 
   handleDeleteGroupFavorite() {
     return this.groupDeleteEvent;
+  }
+
+  handleUpdateGroupData() {
+    return this.groupUpdateEvent;
   }
 }
