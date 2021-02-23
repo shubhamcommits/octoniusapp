@@ -53,15 +53,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   // Router state of the application
   routerState: any = 'home'
 
-  /*
-  // My Workplace variable check
-  myWorkplace: boolean = this._ActivatedRoute.snapshot.queryParamMap.has('myWorkplace')
-      ? (this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-      : (this._ActivatedRoute.snapshot['_routerState'].url.toLowerCase().includes('myspace')
-          ? true
-          : false)
-  */
-
   isGroupNavbar$ = new BehaviorSubject(false);
   isAdminNavbar$ = new BehaviorSubject(false);
   isWorkNavbar$ = new BehaviorSubject(false);
@@ -184,47 +175,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     setInterval(async () => {
       await this.publicFunctions.handleGoogleSignIn()
     }, 1800000);
-
-    console.log('User Data', this.userData);
-    console.log('Workspace Data', this.workspaceData);
   }
 
   ngAfterViewInit() {
     const searchRef = this.search;
     //this.addHotKeys(searchRef)
   }
-
-  // async initNotifications() {
-  //   console.log("Am herer initNotifications");
-  //   // Subscribe to the change in notifications data from the server
-  //   this.subSink.add(this.socketService.currentData.subscribe((res) => {
-  //     if (JSON.stringify(res) != JSON.stringify({}))
-  //       this.notificationsData = res;
-  //   }));
-
-  //   /**
-  //    * emitting the @event joinUser to let the server know that user has joined
-  //    */
-  //   this.subSink.add(this.socketService.onEmit('joinUser', this.userData['_id'])
-  //     .pipe(retry(Infinity))
-  //     .subscribe());
-
-  //   /**
-  //    * emitting the @event joinWorkspace to let the server know that user has joined
-  //    */
-  //   this.subSink.add(this.socketService.onEmit('joinWorkspace', {
-  //     workspace_name: this.userData['workspace_name']
-  //   })
-  //     .pipe(retry(Infinity))
-  //     .subscribe());
-
-  //   /**
-  //    * emitting the @event getNotifications to let the server know to give back the push notifications
-  //    */
-  //   this.subSink.add(this.socketService.onEmit('getNotifications', this.userData['_id'])
-  //     .pipe(retry(Infinity))
-  //     .subscribe());
-  // }
 
   /**
    * This functions unsubscribes all the observables subscription to avoid memory leak

@@ -2574,4 +2574,62 @@ export class PostService {
       throw (err);
     }
   }
+
+  /**
+   * Execute the actions from the automator
+   * 
+   * @param actions 
+   * @param post 
+   * @param userId 
+   * @param groupId 
+   * @param isChildStatusTrigger 
+   */
+  executeActionFlow(actions: any[], post: any, userId: string, groupId: string, isChildStatusTrigger: boolean) {
+    actions.forEach(async action => {
+        switch (action.name) {
+            case 'Assign to':
+                action._user.forEach(async userAction => {
+                    let assigneeIndex = -1;
+                    if (post._assigned_to) {
+                        assigneeIndex = post._assigned_to.findIndex(assignee => { return (assignee._id || assignee) == (userAction._id || userAction) });
+                        if (assigneeIndex < 0) {
+                          if (isChildStatusTrigger && post.task._parent_task) {
+                            post = await this.addAssignee(post.task._parent_task._id || post.task._parent_task, userAction, userId);
+                          } else {
+                            post = await this.addAssignee(post._id, userAction, userId);
+                          }
+                        }
+                    }
+                });
+
+                break;
+            case 'Custom Field':
+                  if (isChildStatusTrigger && post.task._parent_task) {
+                    post = await this.changeCustomFieldValue(post.task._parent_task._id || post.task._parent_task, action.custom_field.name, action.custom_field.value);
+                  } else {
+                    post = await this.changeCustomFieldValue(post._id, action.custom_field.name, action.custom_field.value);
+                  }
+                break;
+            case 'Move to':
+                if (isChildStatusTrigger && post.task._parent_task) {
+                  post = await this.changeTaskColumn(post.task._parent_task._id || post.task._parent_task, (action._section._id || action._section), userId);
+                } else {
+                  if (!post.task._parent_task) {
+                    post = await this.changeTaskColumn(post._id, (action._section._id || action._section), userId);
+                  }
+                }
+                break;
+            case 'Change Status to':
+                if (isChildStatusTrigger && post.task._parent_task) {
+                  post = await this.changeTaskStatus(post.task._parent_task._id || post.task._parent_task, action.status, userId);
+                } else {
+                  post = await this.changeTaskStatus(post._id, action.status, userId);
+                }
+                break;
+            default:
+                break;
+        }
+    });
+    return post;
+}
 }
