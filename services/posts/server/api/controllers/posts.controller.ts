@@ -553,7 +553,7 @@ export class PostController {
         const userId = req['userId'];
 
         try {
-            const post = await this.callAddAssigneeService(postId, assigneeId, userId, groupId)
+            const post = await this.callAddAssigneeService(postId, assigneeId, userId, groupId, true)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
@@ -568,14 +568,15 @@ export class PostController {
         }
     }
 
-    async callAddAssigneeService(postId: string, assigneeId: string, userId: string, groupId: string) {
+    async callAddAssigneeService(postId: string, assigneeId: string, userId: string, groupId: string, runAutomator: boolean) {
 
         // Call Service function to change the assignee
         let post = await postService.addAssignee(postId, assigneeId, userId);
 
-        // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, userId);
-
+        if (runAutomator) {
+            // Execute Automation Flows
+            post = await this.executeAutomationFlows(groupId, post, userId);
+        }
         if (post._assigned_to) {
             const index = post._assigned_to.findIndex(assignee => assignee._id == assigneeId);
             if (index < 0) {
@@ -764,7 +765,7 @@ export class PostController {
 
         try {
             // Call Service function to change the assignee
-            let post = await this.callChangeTaskStatusService(postId, status, userId, groupId)
+            let post = await this.callChangeTaskStatusService(postId, status, userId, groupId, true)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });
@@ -779,7 +780,7 @@ export class PostController {
         }
     }
 
-    async callChangeTaskStatusService(postId: string, status: string, userId: string, groupId: string) {
+    async callChangeTaskStatusService(postId: string, status: string, userId: string, groupId: string, runAutomator: boolean) {
 
         // Call Service function to change the assignee
         let post = await postService.changeTaskStatus(postId, status, userId)
@@ -788,8 +789,10 @@ export class PostController {
             });
         post.task.status = status;
 
-        // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, userId);
+        if (runAutomator) {
+            // Execute Automation Flows
+            post = await this.executeAutomationFlows(groupId, post, userId);
+        }
 
         return post;
     }
@@ -811,7 +814,7 @@ export class PostController {
                 return sendErr(res, new Error('Please provide the post, title and user as parameters'), 'Please provide the post, title and user as paramaters!', 400);
             }
 
-            const post = this.changeTaskSection(postId, columnId, userId, groupId)
+            const post = this.changeTaskSection(postId, columnId, userId, groupId, true)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });
@@ -826,12 +829,14 @@ export class PostController {
         }
     }
 
-    async changeTaskSection(postId: string, columnId: string, userId: string, groupId: string) {
+    async changeTaskSection(postId: string, columnId: string, userId: string, groupId: string, runAutomator: boolean) {
         // Call Service function to change the assignee
         let post = await postService.changeTaskColumn(postId, columnId, userId);
 
-        // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, userId);
+        if (runAutomator) {
+            // Execute Automation Flows
+            post = await this.executeAutomationFlows(groupId, post, userId);
+        }
 
         post.task._column = columnId;
 
@@ -940,7 +945,7 @@ export class PostController {
 
         try {
 
-            const post = await this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldValue, userId)
+            const post = await this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldValue, userId, true)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });
@@ -955,12 +960,15 @@ export class PostController {
         }
     }
 
-    async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfValue: string, userId: string) {
+    async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfValue: string, userId: string, runAutomator: boolean) {
         let post = await postService.changeCustomFieldValue(postId, cfName, cfValue);
 
         post.task.custom_fields[cfName] = cfValue;
-        // Execute Automation Flows
-        post = await this.executeAutomationFlows(groupId, post, userId);
+
+        if (runAutomator) {
+            // Execute Automation Flows
+            post = await this.executeAutomationFlows(groupId, post, userId);
+        }
 
         return post;
     }
@@ -1356,6 +1364,14 @@ export class PostController {
         }
     }
 
+    /**
+     * This function runs the automator flows
+     * 
+     * @param groupId 
+     * @param post 
+     * @param userId 
+     * @param isCreationTaskTrigger 
+     */
     async executeAutomationFlows(groupId: string, post: any, userId: string, isCreationTaskTrigger?: boolean) {
         try {
             const flows = await flowService.getAutomationFlows(groupId);
@@ -1371,7 +1387,7 @@ export class PostController {
                                 : false;
                             const doTrigger = await this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger, isChildStatusTrigger);
                             if (doTrigger) {
-                                await this.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
+                                await postService.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
                             }
                         });
                     }
@@ -1384,6 +1400,14 @@ export class PostController {
         }
     }
 
+    /**
+     * This method is used to check if the task match the automator triggers
+     * 
+     * @param triggers 
+     * @param post 
+     * @param isCreationTaskTrigger 
+     * @param isChildStatusTrigger 
+     */
     doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger?: boolean, isChildStatusTrigger?: boolean) {
         let retValue = true;
         if (triggers && triggers.length > 0) {
@@ -1430,6 +1454,13 @@ export class PostController {
         return retValue;
     }
 
+    /**
+     * This method is used to check if the child tasks has been updated.
+     * In case one of the triggers is to check the status of all subtasks
+     * 
+     * @param trigger 
+     * @param parentTaskId 
+     */
     async isChildTasksUpdated(trigger: any, parentTaskId: string) {
       let retValue = true;
         if (trigger && parentTaskId) {
@@ -1443,56 +1474,6 @@ export class PostController {
           retValue = false;
         }
         return retValue;
-    }
-
-    executeActionFlow(actions: any[], post: any, userId: string, groupId: string, isChildStatusTrigger: boolean) {
-        actions.forEach(async action => {
-            switch (action.name) {
-                case 'Assign to':
-                    action._user.forEach(async userAction => {
-                        let index = -1;
-                        if (post._assigned_to) {
-                            index = post._assigned_to.findIndex(assignee => { return (assignee._id || assignee) == (userAction._id || userAction) });
-
-                            if (index < 0) {
-                              if (isChildStatusTrigger && post.task._parent_task) {
-                                post = await this.callAddAssigneeService(post.task._parent_task._id || post.task._parent_task, userAction, userId, groupId);
-                              } else {
-                                post = await this.callAddAssigneeService(post._id, userAction, userId, groupId);
-                              }
-                            }
-                        }
-                    });
-
-                    break;
-                case 'Custom Field':
-                      if (isChildStatusTrigger && post.task._parent_task) {
-                        post = await this.callChangeCustomFieldValueService(groupId, post.task._parent_task._id || post.task._parent_task, action.custom_field.name, action.custom_field.value, userId);
-                      } else {
-                        post = await this.callChangeCustomFieldValueService(groupId, post._id, action.custom_field.name, action.custom_field.value, userId);
-                      }
-                    break;
-                case 'Move to':
-                    if (isChildStatusTrigger && post.task._parent_task) {
-                      post = await this.changeTaskSection(post.task._parent_task._id || post.task._parent_task, (action._section._id || action._section), userId, groupId);
-                    } else {
-                      if (!post.task._parent_task) {
-                        post = await this.changeTaskSection(post._id, (action._section._id || action._section), userId, groupId);
-                      }
-                    }
-                    break;
-                case 'Change Status to':
-                    if (isChildStatusTrigger && post.task._parent_task) {
-                      post = await this.callChangeTaskStatusService(post.task._parent_task._id || post.task._parent_task, action.status, userId, groupId);
-                    } else {
-                      post = await this.callChangeTaskStatusService(post._id, action.status, userId, groupId);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        });
-        return post;
     }
 
     /**
