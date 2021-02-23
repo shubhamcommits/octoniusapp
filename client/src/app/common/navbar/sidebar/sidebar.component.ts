@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Injector, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector,SimpleChanges,Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
@@ -54,21 +54,21 @@ export class SidebarComponent implements OnInit, OnDestroy {
   public utilityService = this.injector.get(UtilityService);
 
   async ngOnInit() {
-
-    this.utilityService.handleUpdateGroupData().subscribe(event => {
-      setTimeout(() => {
-        this.sort();
-      }, 100);
-    });
     // FETCH THE USER DETAILS
     this.userData = await this.publicFunctions.getCurrentUser();
-
     // Fetch the current workspace data
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+  }
 
-    setTimeout(() => {
-      this.sort();
-    }, 500);
+  async ngOnChanges(changes: SimpleChanges) {
+    for (const propName in changes) {
+      const change = changes[propName];
+      const to = change.currentValue;
+      if (propName === 'userGroups') {
+        this.userGroups = to;
+        await this.sort();
+      }
+    }
   }
 
   async sort(){
