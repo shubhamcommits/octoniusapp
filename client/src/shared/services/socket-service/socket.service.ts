@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
+import { Socket, SocketIoConfig } from 'ngx-socket-io';
 import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { SocketServer } from 'src/app/app.module';
 import { NotificationService } from '../notification-service/notification.service';
 
 @Injectable({
@@ -12,10 +13,11 @@ import { NotificationService } from '../notification-service/notification.servic
 export class SocketService {
 
   constructor(
-    private socket: Socket, 
+    private socket: SocketServer, 
     private http: HttpClient,
-    private _notificationService : NotificationService) { }
+    private _notificationService: NotificationService) { }
 
+  // Define baseurl
   public baseUrl = environment.NOTIFICATIONS_BASE_URL;
 
   /**
@@ -27,6 +29,7 @@ export class SocketService {
   currentData = this.dataSource.asObservable();
 
   public onEvent(eventName: string): Observable<any> {
+    console.log(this.socket)
     return new Observable<any>(observer => {
         this.socket.on(eventName, (data: any) => {
           console.log(`Socket for event name - ${eventName} is connected!`);
@@ -64,7 +67,7 @@ export class SocketService {
    * This function initates the request to socket server
    */
   public serverInit(){
-    return this.http.get('http://localhost:9000' + '/', { responseType: 'text' });
+    return this.http.get(this.baseUrl + '/', { responseType: 'text' });
   }
 
   public changeData(data: any){

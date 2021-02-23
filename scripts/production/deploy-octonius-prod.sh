@@ -23,7 +23,8 @@ sudo chmod u+x data
 # Login to dockerhub
 docker login
 
-# pull the new Docker image to the Docker registry
+# Pull the new Docker image from the Docker registry
+          docker pull $MONGO_IMAGE_NAME
           docker pull $MAILS_IMAGE_NAME
           docker pull $AUTHS_IMAGE_NAME
           docker pull $GROUPS_IMAGE_NAME
@@ -39,4 +40,4 @@ docker login
           docker pull $NGINX_IMAGE_NAME
 
 # Deploy the Stack
-env $(cat .env | grep ^[A-Z] | xargs) docker stack deploy -c stack-octonius-deploy.yml octonius --with-registry-auth
+env $(cat .env | grep ^[A-Z] | xargs) docker stack deploy -c deploy-octonius-prod.yml octonius --with-registry-auth

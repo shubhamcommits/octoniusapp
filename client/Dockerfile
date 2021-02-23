@@ -10,7 +10,7 @@ WORKDIR /usr/app
 COPY ./package.json ./
 
 ## Installing and storing node modules on a separate layer will prevent unnecessary npm installs at each build
-RUN yarn install --network-timeout 100000
+RUN npm install
 
 COPY ./ ./
 
@@ -18,7 +18,7 @@ COPY ./ ./
 RUN mv ./node_modules/ /usr/ && rm -rf *.ts && mv /usr/node_modules ./
 
 ## Build the angular app in production mode and store the artifacts in dist folder
-RUN yarn run prod
+RUN npm run prod
 
 
 
@@ -38,5 +38,5 @@ COPY --from=builder /usr/app/dist /usr/share/nginx/html
 # Exposing the builded application on port 80
 EXPOSE 80
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# When the container starts, replace the env.js with values from environment variables
+CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]
