@@ -1371,22 +1371,27 @@ export class PostController {
         try {
             const flows = await flowService.getAutomationFlows(groupId);
             if (flows && flows.length > 0) {
-                await flows.forEach(flow => {
-                    const steps = flow['steps'];
+                let doTrigger = true;
+                while (doTrigger) {
+                    await flows.forEach(flow => {
+                        const steps = flow['steps'];
 
-                    if (steps && steps.length > 0) {
-                        steps.forEach(async step => {
-                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
-                            const isChildStatusTrigger = (childStatusTriggerIndex >= 0)
-                                ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], post.task._parent_task._id || post.task._parent_task)
-                                : false;
-                            const doTrigger = await this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger, isChildStatusTrigger);
-                            if (doTrigger) {
-                                await postService.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
-                            }
-                        });
-                    }
-                });
+                        if (steps && steps.length > 0) {
+                            steps.forEach(async step => {
+                                const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
+                                const isChildStatusTrigger = (childStatusTriggerIndex >= 0)
+                                    ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], post.task._parent_task._id || post.task._parent_task)
+                                    : false;
+                                doTrigger = await this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger, isChildStatusTrigger);
+                                if (doTrigger) {
+                                    await postService.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
+                                }
+                            });
+                        } else {
+                            doTrigger = false;
+                        }
+                    });
+                };
             }
             return post;
         } catch (error) {
