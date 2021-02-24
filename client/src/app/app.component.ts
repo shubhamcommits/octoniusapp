@@ -5,7 +5,6 @@ import { retry } from 'rxjs/internal/operators/retry';
 import { map } from 'rxjs/internal/operators/map';
 import { SubSink } from 'subsink';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
-
 import { NotificationService } from 'src/shared/services/notification-service/notification.service';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
@@ -54,6 +53,10 @@ export class AppComponent {
         this.groupId = e.snapshot.queryParamMap.get('group');
         this.routerFromEvent = e.snapshot;
       }
+      if (e instanceof NavigationEnd) {
+        window['Appcues'].page();
+      }
+
     }))
 
     let socketService = this.injector.get(SocketService);
