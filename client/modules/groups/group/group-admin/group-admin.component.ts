@@ -102,18 +102,25 @@ export class GroupAdminComponent implements OnInit {
 
     // Group Service
     let groupService = this.injector.get(GroupService);
-    if(selected.source.name === 'enabled_rights') {
+    if (selected.source.name === 'enabled_rights') {
       this.enabledRights = selected.checked;
+      this.groupData.enabled_rights = selected.checked;
     }
-    if(selected.source.name === 'enabled_project_type') {
+
+    if (selected.source.name === 'enabled_project_type') {
       this.enabledProjectType = selected.checked;
+      this.groupData.project_type = selected.checked;
     }
+
     utilityService.asyncNotification('Please wait we are saving the new setting...',
-    new Promise((resolve, reject)=>{
-      groupService.saveSettings(this.groupId, selected.source.name, selected.checked)
-      .then(()=> resolve(utilityService.resolveAsyncPromise('Settings saved to your group!')))
-      .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
-    }))
+      new Promise((resolve, reject)=>{
+        groupService.saveSettings(this.groupId, selected.source.name, selected.checked)
+        .then(()=> {
+          this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+          resolve(utilityService.resolveAsyncPromise('Settings saved to your group!'));
+        })
+        .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+      }));
   }
   openBarModal(groupId){
     const dialogRef = this.dialog.open(GroupBarComponent, {

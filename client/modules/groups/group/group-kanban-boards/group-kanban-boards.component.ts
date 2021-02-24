@@ -706,6 +706,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     } else {
       this.columns[newColumnIndex].real_due_date = moment(Math.max(...this.columns[newColumnIndex].tasks.map(post => moment(post.task.due_to))));
     }
+
+    // Calculate number of done tasks
+    this.columns[oldColumnIndex].numDoneTasks = this.columns[oldColumnIndex].tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;
+    this.columns[newColumnIndex].numDoneTasks = this.columns[newColumnIndex].tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;
   }
 
   /**

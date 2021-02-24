@@ -135,7 +135,6 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       this.groupTemplates = res['posts'];
     });
     this.getDependencyTask();
-    console.log("input data tasks action",this.tasks,this.postData);
   }
 
   ngAfterViewInit() {
@@ -362,7 +361,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   }
 
   async removeDependencyTask(){
-    
+
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will remove its dependency task!')
     .then((res) => {
       if (res.value) {
@@ -382,7 +381,6 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
         });
       }
     });
-    console.log("remove dependecny");
   }
 
   saveTemplateAction(action: string) {
