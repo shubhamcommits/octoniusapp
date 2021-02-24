@@ -76,10 +76,7 @@ export class SlackController {
 
     async slackWebhook(req: Request , res: Response, next: NextFunction) {
         
-        console.log("am here in the slack-webhook");
-        // console.log(req.body,req.body.challenge);
         if(req.body.challenge){
-            console.log("am inside this");
             res.status(200).json(req.body.challenge);
             return;
 
@@ -160,7 +157,6 @@ export class SlackController {
                         groupsbymember.forEach(groups => {
                             groupsbyadmin.push(groups);
                         });
-                        console.log("groups",groupsbyadmin);
 
                         for(var i=0;i<groupsbyadmin.length;i++){
                             const grup =  groupsbyadmin[i];
@@ -291,12 +287,8 @@ export class SlackController {
                     
                     const resp = await Column.find({_group:groupid});
 
-                    console.log("resp Column",resp,groupid);
-
                     const grpresp = await Group.findOne({_id:groupid}).populate('_members').populate('_admins');
                     
-                    console.log("grpresp Column",grpresp);
-
                     const columns = resp;
                     let columnoption = [];
                     let useroption = [] ;
@@ -317,7 +309,7 @@ export class SlackController {
                     }
 
                     var userdata = grpresp['_members'];
-                    console.log("User data members",userdata);
+
                     for (var i=0;i < userdata.length;i++){
                         useroption.push(
                             {
@@ -334,7 +326,6 @@ export class SlackController {
 
                     var useradmin = grpresp['_admins'];
 
-                    console.log("User data admin",useradmin);
                     for (var i=0;i < useradmin.length;i++){
                         useroption.push(
                             {
@@ -348,8 +339,6 @@ export class SlackController {
                         );
                     }
 
-                    console.log("hahaahahah reached");
-                    
                     const respo = await axios.post('https://slack.com/api/views.open', {
                     trigger_id : triggered_id_2,
                     view : {
@@ -474,7 +463,6 @@ export class SlackController {
                     }
                     },{ headers: { authorization: `Bearer `+botAccessToken } });
 
-                    console.log("responce from slack",respo);
 
                 } else if(callback != 'step_1'){
                     
@@ -486,7 +474,6 @@ export class SlackController {
                     
                     Object.keys(values).forEach(function(key) {
                         var val = values[key];
-                        console.log("skvsdsd",val);
                         if(val && val.column_select_action)
                         {
                             column = val.column_select_action.selected_option.value;
@@ -519,22 +506,13 @@ export class SlackController {
                     //Postdata
                     const postdata = {"title": taskdata.title,"content": taskdata.description,"type":"task","_posted_by":_id,"_group": taskdata.groupid,"_content_mentions":[],"_assigned_to": user,"task":{"status":"to do","_column": column,"due_to": moment(date).format("YYYY-MM-DD")}};
 
-                    console.log("post data",postdata);
 
                     formData.append('post',JSON.stringify(postdata));
 
                     //axios call to create task
 
                     try {
-                        console.log("post datat axios",{
-                            url : process.env.POSTS_SERVER_API,
-                            method:'POST',
-                            headers:{
-                                'Content-Type': formData.getHeaders()['content-type'],
-                                'Authorization': BearerToken,
-                            }
-                        })
-                       
+                     
                         const responaxois = await axios({
                             url : process.env.POSTS_SERVER_API,
                             method:'POST',
