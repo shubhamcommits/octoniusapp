@@ -108,11 +108,10 @@ export class PostCommentComponent implements OnInit {
     }
 
 
-    commentService.edit(formData, this.comment._id).then((res)=>{
-      console.log(res);
-    }).catch((err)=>{
-      console.log(err);
-    })
+    commentService.edit(formData, this.comment._id)
+      .catch((err)=>{
+        console.log(err);
+      })
   }
 
   deleteComment(index: number) {
@@ -126,7 +125,6 @@ export class PostCommentComponent implements OnInit {
         if (result.value) {
           let commentService = this.injector.get(CommentService);
           commentService.remove(this.comment._id).then((res)=>{
-            console.log(res);
             this.remove.emit(index)
             utilityService.warningNotification('Comment Removed!');
           })

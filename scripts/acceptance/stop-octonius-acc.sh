@@ -3,4 +3,4 @@
 # Octonius stop compose services
 
 # Stop the Services
-docker-compose -f compose-octonius-deploy.yml -p octonius down
+docker-compose -f deploy-octonius-acc.yml -p octonius down

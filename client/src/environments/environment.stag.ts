@@ -8,6 +8,9 @@ export const environment = {
   pk_stripe: 'pk_live_C6kLYxOOeUXt0hzaK6PockGM',
   product_stripe: `prod_HxaOA05Qf9iwpV`,
 
+  //slack redirect url for authentication
+  slack_redirect_url:`https://slack.com/oauth/v2/authorize?client_id=2561616476.1793890184164&scope=commands,incoming-webhook`,
+  
   // Browser Storage Key
   storageKey: 'storageKey@20xx',
 

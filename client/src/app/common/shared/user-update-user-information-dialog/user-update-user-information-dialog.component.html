@@ -2,17 +2,15 @@
     <div class="content">
         <div class="container">
             <div class="row inner-content" *ngIf="userData" style="padding-top: 15px;">
-                <img src="assets/images/user-info.svg" />
-                <br />
-                <br />
-                <h2 class="title">Update your Information!</h2>
+               
+                <h2 class="title text-center"><i class="material-icons" style="margin-top:-5px">account_circle</i>Update your information</h2>
                 
                 <div class="form-group">
-                    <input type="text" [(ngModel)]="first_name" class="form-control" name="firstName" placeholder="Your First Name">
+                    <input type="text" [(ngModel)]="first_name" class="form-control" name="firstName" placeholder="First Name">
                 </div>
 
                 <div class="form-group">
-                    <input type="text" [(ngModel)]="last_name" placeholder="Your Last Name" class="form-control" name="lastName">
+                    <input type="text" [(ngModel)]="last_name" placeholder="Last Name" class="form-control" name="lastName">
                 </div>
 
                 <div class="form-group">
@@ -20,21 +18,22 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="text" [(ngModel)]="phone_number" placeholder="Your Phone Number" class="form-control" name="phoneNumber">
+                    <input type="text" [(ngModel)]="phone_number" placeholder="Phone Number" class="form-control" name="phoneNumber">
                 </div>
 
                 <div class="form-group">
-                    <input type="text" [(ngModel)]="mobile_number" placeholder="Your Mobile Number" class="form-control" name="mobileNumber">
+                    <input type="text" [(ngModel)]="mobile_number" placeholder="Mobile Number" class="form-control" name="mobileNumber">
                 </div>
 
                 <div class="form-group">
-                    <input type="text" [(ngModel)]="company_name" placeholder="Your Company Name" class="form-control" name="companyName">
+                    <input type="text" [(ngModel)]="company_name" placeholder="Company Name" class="form-control" name="companyName">
                 </div>
+                <div class="form-group clearfix mt-4">
+                <button type="submit" class="btn btn-primary float-left" (click)="updateInfo()">Update</button>
 
-                <button type="submit" class="btn btn-primary my-btn" (click)="updateInfo()">Update Information!</button>
-
-                <button mat-dialog-close type="submit" class="btn btn-danger my-btn"
+                <button mat-dialog-close type="submit" class="btn btn-danger float-right"
                     >Cancel</button>
+                </div>
             </div>
         </div>
     </div>

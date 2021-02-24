@@ -15,8 +15,6 @@ const groupFileHandler = (req: Request, res: Response, next: NextFunction) => {
         /// Instantiate the fileName variable and add the date object in the name
         let fileName: any = Date.now().toString() + req['files'].groupAvatar['name'];
 
-        console.log(req['files'])
-
         // Get the file from the request
         const file: any = req['files'].groupAvatar;
 

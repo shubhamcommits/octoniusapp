@@ -34,7 +34,7 @@ export class GroupTaskProgressComponent implements OnInit {
   undoneTasksCount: any = 0;
 
   percentageTodo: number;
-  
+
   percentageInProgress: number;
 
   percentageDone: number;
@@ -45,20 +45,19 @@ export class GroupTaskProgressComponent implements OnInit {
   ngOnInit(){
     new Promise((resolve, reject)=>{
       this.fetchData().then(()=>{
-        resolve();
+        resolve({});
       }).catch((err)=>{
-        console.log(err);
         reject();
       })
     })
-    
+
   }
 
   async fetchData(){
     // Total Tasks
     this.totalTasksCount = await this.publicFunctions.getTasksThisWeekCount(this.groupId)
 
-    // To Do Tasks 
+    // To Do Tasks
     this.todoTasksCount = await this.publicFunctions.getTasksThisWeekCount(this.groupId, 'to do')
 
     // In Progress Tasks

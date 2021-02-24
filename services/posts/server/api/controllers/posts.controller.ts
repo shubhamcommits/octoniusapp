@@ -788,8 +788,10 @@ export class PostController {
             });
         post.task.status = status;
 
+        
         // Execute Automation Flows
         post = await this.executeAutomationFlows(groupId, post, userId);
+        
 
         return post;
     }
@@ -959,6 +961,7 @@ export class PostController {
         let post = await postService.changeCustomFieldValue(postId, cfName, cfValue);
 
         post.task.custom_fields[cfName] = cfValue;
+
         // Execute Automation Flows
         post = await this.executeAutomationFlows(groupId, post, userId);
 
@@ -1356,26 +1359,41 @@ export class PostController {
         }
     }
 
+    /**
+     * This function runs the automator flows
+     * 
+     * @param groupId 
+     * @param post 
+     * @param userId 
+     * @param isCreationTaskTrigger 
+     */
     async executeAutomationFlows(groupId: string, post: any, userId: string, isCreationTaskTrigger?: boolean) {
         try {
             const flows = await flowService.getAutomationFlows(groupId);
             if (flows && flows.length > 0) {
-                await flows.forEach(flow => {
-                    const steps = flow['steps'];
+                let doTrigger = true;
+                let loopCounter = 1;
+                while (doTrigger && loopCounter <= 3) {
+                    await flows.forEach(flow => {
+                        const steps = flow['steps'];
 
-                    if (steps && steps.length > 0) {
-                        steps.forEach(async step => {
-                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
-                            const isChildStatusTrigger = (childStatusTriggerIndex >= 0)
-                                ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], post.task._parent_task._id || post.task._parent_task)
-                                : false;
-                            const doTrigger = await this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger, isChildStatusTrigger);
-                            if (doTrigger) {
-                                await this.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
-                            }
-                        });
-                    }
-                });
+                        if (steps && steps.length > 0) {
+                            steps.forEach(async step => {
+                                const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
+                                const isChildStatusTrigger = (childStatusTriggerIndex >= 0)
+                                    ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], post.task._parent_task._id || post.task._parent_task)
+                                    : false;
+                                doTrigger = await this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger, isChildStatusTrigger);
+                                if (doTrigger) {
+                                    await postService.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
+                                }
+                            });
+                        } else {
+                            doTrigger = false;
+                        }
+                        loopCounter++;
+                    });
+                };
             }
             return post;
         } catch (error) {
@@ -1384,6 +1402,14 @@ export class PostController {
         }
     }
 
+    /**
+     * This method is used to check if the task match the automator triggers
+     * 
+     * @param triggers 
+     * @param post 
+     * @param isCreationTaskTrigger 
+     * @param isChildStatusTrigger 
+     */
     doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger?: boolean, isChildStatusTrigger?: boolean) {
         let retValue = true;
         if (triggers && triggers.length > 0) {
@@ -1430,6 +1456,13 @@ export class PostController {
         return retValue;
     }
 
+    /**
+     * This method is used to check if the child tasks has been updated.
+     * In case one of the triggers is to check the status of all subtasks
+     * 
+     * @param trigger 
+     * @param parentTaskId 
+     */
     async isChildTasksUpdated(trigger: any, parentTaskId: string) {
       let retValue = true;
         if (trigger && parentTaskId) {
@@ -1443,56 +1476,6 @@ export class PostController {
           retValue = false;
         }
         return retValue;
-    }
-
-    executeActionFlow(actions: any[], post: any, userId: string, groupId: string, isChildStatusTrigger: boolean) {
-        actions.forEach(async action => {
-            switch (action.name) {
-                case 'Assign to':
-                    action._user.forEach(async userAction => {
-                        let index = -1;
-                        if (post._assigned_to) {
-                            index = post._assigned_to.findIndex(assignee => { return (assignee._id || assignee) == (userAction._id || userAction) });
-
-                            if (index < 0) {
-                              if (isChildStatusTrigger && post.task._parent_task) {
-                                post = await this.callAddAssigneeService(post.task._parent_task._id || post.task._parent_task, userAction, userId, groupId);
-                              } else {
-                                post = await this.callAddAssigneeService(post._id, userAction, userId, groupId);
-                              }
-                            }
-                        }
-                    });
-
-                    break;
-                case 'Custom Field':
-                      if (isChildStatusTrigger && post.task._parent_task) {
-                        post = await this.callChangeCustomFieldValueService(groupId, post.task._parent_task._id || post.task._parent_task, action.custom_field.name, action.custom_field.value, userId);
-                      } else {
-                        post = await this.callChangeCustomFieldValueService(groupId, post._id, action.custom_field.name, action.custom_field.value, userId);
-                      }
-                    break;
-                case 'Move to':
-                    if (isChildStatusTrigger && post.task._parent_task) {
-                      post = await this.changeTaskSection(post.task._parent_task._id || post.task._parent_task, (action._section._id || action._section), userId, groupId);
-                    } else {
-                      if (!post.task._parent_task) {
-                        post = await this.changeTaskSection(post._id, (action._section._id || action._section), userId, groupId);
-                      }
-                    }
-                    break;
-                case 'Change Status to':
-                    if (isChildStatusTrigger && post.task._parent_task) {
-                      post = await this.callChangeTaskStatusService(post.task._parent_task._id || post.task._parent_task, action.status, userId, groupId);
-                    } else {
-                      post = await this.callChangeTaskStatusService(post._id, action.status, userId, groupId);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        });
-        return post;
     }
 
     /**

@@ -26,9 +26,6 @@ async function generateFeed(userId: string, io: any,backend?:any) {
         const readNotifications = await notifications.getRead(userId);
 
         const feed = { unreadNotifications, readNotifications , new:backend};
-
-        // console.log(feed)
-
         // I moved this line from outside this function to inside
         io.sockets.in(userId).emit('notificationsFeed', feed);
     } catch (err) {
@@ -45,7 +42,6 @@ async function generateFeed(userId: string, io: any,backend?:any) {
 async function sendNotificationsFeed(socket: any, userId: string, io: any) {
     //  here the same as before, I deleted the emit code
     generateFeed(userId, io);
-    console.log('Notifications Sent!')
 }
 
 /**
@@ -57,7 +53,6 @@ async function sendNotificationsFeed(socket: any, userId: string, io: any) {
 async function sendNotificationsFeedFromService(userId: string, io: any,backend?:any) {
     //  here the same as before, I deleted the emit code
     generateFeed(userId, io,backend);
-    console.log('Notifications Sent!')
 }
 
 /**
@@ -96,7 +91,6 @@ async function notifyRelatedUsers(io: any, socket: any, data: any) {
             }
 
             userStream.on('data', (user: any) => {
-                console.log(user)
                 generateFeed(user, io);
             })
 

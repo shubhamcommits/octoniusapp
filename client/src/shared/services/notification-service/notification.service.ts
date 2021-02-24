@@ -29,7 +29,6 @@ export class NotificationService {
 
   requestPermission(): void {
       let self = this;
-      console.log("Am here getting permission");
       if ('Notification' in window) {
           Notification.requestPermission(function(status) {
               return self.permission = status;
@@ -41,11 +40,9 @@ export class NotificationService {
       let self = this;
       return new Observable(function(obs) {
           if (!('Notification' in window)) {
-              console.log('Notifications are not available in this environment');
               obs.complete();
           }
           if (self.permission !== 'granted') {
-              console.log("The user hasn't granted you permission to send push notifications");
               obs.complete();
           }
           let _notify = new Notification(title, options);

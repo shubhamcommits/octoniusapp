@@ -304,7 +304,6 @@ export class FolioEditorComponent implements OnInit {
         });
       }
       else if (source == 'api') {
-        // console.log("An API action triggered this change.");
       }
     })
 

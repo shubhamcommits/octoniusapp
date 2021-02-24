@@ -5,7 +5,6 @@ import { retry } from 'rxjs/internal/operators/retry';
 import { map } from 'rxjs/internal/operators/map';
 import { SubSink } from 'subsink';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
-
 import { NotificationService } from 'src/shared/services/notification-service/notification.service';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
@@ -48,12 +47,16 @@ export class AppComponent {
     private _notificationService: NotificationService
   ) {
     this._notificationService.requestPermission();
-  
+
     this.subSink.add(this._router.events.subscribe((e: any) => {
       if (e instanceof ChildActivationEnd) {
         this.groupId = e.snapshot.queryParamMap.get('group');
         this.routerFromEvent = e.snapshot;
       }
+      if (e instanceof NavigationEnd) {
+        window['Appcues'].page();
+      }
+
     }))
 
     let socketService = this.injector.get(SocketService);
@@ -141,7 +144,6 @@ export class AppComponent {
   //   return socketService.onEvent('notificationsFeed')
   //     .pipe(retry(Infinity))
   //     .subscribe((notifications) => {
-  //       console.log("In APP Roaring");
   //       // Here we send the message to change and update the notifications feed through the shared service
   //       socketService.changeData(notifications);
   //     })
@@ -221,7 +223,6 @@ export class AppComponent {
    */
   async loadGoogleAPI() {
     await gapi.load('auth', (() => {
-      console.log('Google API is connected!')
     }));
   }
 

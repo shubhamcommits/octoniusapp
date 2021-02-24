@@ -2,13 +2,13 @@
     <div class="card-block">
         
         <!-- Template Heading starts -->
-        <h6 class="card-title"><b>User Skills</b></h6>
+        <h6 class="card-title"><b>Your skills</b></h6>
         <!-- Template Heading ends -->
 
         <!-- Search skill component starts -->
         <app-component-search-input-box 
         *ngIf="userData && checkDataExist(userData) && currentUser"
-        [placeholder]="'Type here to search and add a new skill'" 
+        [placeholder]="'Type to add'" 
         [userData] = "userData"
         [type]="'skill'"
         (skill)="addNewSkill($event)">

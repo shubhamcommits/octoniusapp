@@ -208,9 +208,6 @@ export class GroupActivityFeedComponent implements OnInit {
     return socketService.onEvent('postEditedInGroup')
       .pipe(retry(Infinity))
       .subscribe((post) => {
-
-        // Console the edited post in group
-        console.log(post)
       })
   }
 
@@ -224,9 +221,6 @@ export class GroupActivityFeedComponent implements OnInit {
     return socketService.onEvent('postDeletedInGroup')
       .pipe(retry(Infinity))
       .subscribe((post) => {
-
-        // Console the deleted post in group
-        console.log(post)
       })
   }
 
@@ -238,7 +232,7 @@ export class GroupActivityFeedComponent implements OnInit {
     // Fetch the group data from HTTP Request
     if(this.groupId != null || this.groupId != undefined)
       this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId)
-      
+
   }
 
   /**
@@ -265,7 +259,6 @@ export class GroupActivityFeedComponent implements OnInit {
         this.posts.delete(post._id);
         resolve({});
       }).catch((err)=>{
-        console.log(err);
         reject();
       })
     });

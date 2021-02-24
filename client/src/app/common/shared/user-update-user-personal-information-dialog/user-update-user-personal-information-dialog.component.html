@@ -2,10 +2,8 @@
     <div class="content">
         <div class="container">
             <div class="row inner-content" *ngIf="userData" style="padding-top: 15px;">
-                <img src="assets/images/user-professional-info.svg" />
-                <br />
-                <br />
-                <h2 class="title">Update Professional Information!</h2>
+              
+                <h2 class="title text-center">Update professional information</h2>
                 
                 <div class="form-group">
                     <input type="text" [(ngModel)]="postion" class="form-control" name="Position" placeholder="Your Current Position">
@@ -16,13 +14,14 @@
                 </div>
 
                 <div class="form-group">
-                    <textarea cols="5" rows="4" [(ngModel)]="bio" class="form-control" name="date" placeholder="Your Short Bio"></textarea>
+                    <textarea cols="5" rows="8" [(ngModel)]="bio" class="form-control" name="date" placeholder="Your Short Bio"></textarea>
                 </div>
+                <div class="form-group clearfix mt-4">
+                <button type="submit" class="btn btn-primary float-left" (click)="updateInfo()">Update Information!</button>
 
-                <button type="submit" class="btn btn-primary my-btn" (click)="updateInfo()">Update Information!</button>
-
-                <button mat-dialog-close type="submit" class="btn btn-danger my-btn"
+                <button mat-dialog-close type="submit" class="btn btn-danger float-right"
                     >Cancel</button>
+                    </div>
             </div>
         </div>
     </div>

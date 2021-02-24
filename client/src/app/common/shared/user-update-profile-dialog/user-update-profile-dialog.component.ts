@@ -32,7 +32,6 @@ export class UserUpdateProfileDialogComponent implements OnInit {
   }
 
   matchUserPassword(event:any) {
-    console.log("Matching", this.password, this.repeatPassword);
     if (this.password != this.repeatPassword) {
       this.repeatPassword='';
       this.utilityService.asyncNotification('Please wait we are updating your information...',

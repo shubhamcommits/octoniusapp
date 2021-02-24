@@ -147,7 +147,7 @@ pipelines:
            variables:
              SSH_USER: 'ubuntu'
              SERVER: $HOST_ADDRESS
-             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./stop-octonius-acc.sh &$ sudo -S ./deploy-octonius-acc.sh'  
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S ./stop-octonius-acc.sh && sudo -S ./deploy-octonius-acc.sh'  
           
 definitions:
    services:

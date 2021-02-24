@@ -129,7 +129,6 @@ export class GroupCreatePostComponent implements OnInit {
 
     /*
     this.hotKeyService.add(new Hotkey(['meta+return', 'meta+enter'], (event: KeyboardEvent, combo: string): boolean => {
-      console.log('hotkey');
       this.createPost();
       return false;
     }));

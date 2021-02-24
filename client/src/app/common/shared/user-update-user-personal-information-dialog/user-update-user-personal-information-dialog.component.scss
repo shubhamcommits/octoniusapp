@@ -1,9 +1,5 @@
 .dialog-content {
-    // padding: 10px;
-  //   background-color: #26A69A;
-    // height: 95%;
     width: 100%;
-    padding-bottom: 1px;
   
     .modal-header {
         border: none;
@@ -19,12 +15,8 @@
     }
   
     .content {
-      width: 80%;
-      margin-top: -21px;
       margin-left: auto;
       margin-right: auto;
-      margin-bottom: 30px;
-      border-radius: 10px;
   
       .attach-files {
           width: 100%;
@@ -65,8 +57,7 @@
   }
 
   .user-form {
-    padding: 90px 30px;
-    max-height: 90vh;
+    padding: 90px;
     overflow: auto;
 }
 
@@ -83,11 +74,5 @@
 
 .title{
     margin-top: 15px;
-    margin-left: 5%;
 }
 
-.my-btn{
-    min-height: 52px;
-    height: 52px;
-    margin: 15px;
-}

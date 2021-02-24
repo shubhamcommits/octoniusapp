@@ -40,8 +40,6 @@ export class PushNotificationsComponent implements OnInit {
         this.subSink.add(this.socketService.currentData.subscribe((res) => {
             if (JSON.stringify(res) != JSON.stringify({}))
                 this.notificationsData = res;
-
-            console.log(this.notificationsData);
         }));
 
         /**
@@ -54,7 +52,7 @@ export class PushNotificationsComponent implements OnInit {
         /**
          * emitting the @event joinWorkspace to let the server know that user has joined
          */
-        this.subSink.add(this.socketService.onEmit('joinWorkspace', { 
+        this.subSink.add(this.socketService.onEmit('joinWorkspace', {
             workspace_name: this.userData['workspace_name']
         })
             .pipe(retry(Infinity))
@@ -74,7 +72,6 @@ export class PushNotificationsComponent implements OnInit {
      * @param userId - userId of the current user
      */
     markNotificationAsRead(notificationId: string, userId: string) {
-        console.log('hitted')
         this.subSink.add(this.socketService.onEmit('markRead', notificationId, userId)
             .pipe(take(1))
             .subscribe())

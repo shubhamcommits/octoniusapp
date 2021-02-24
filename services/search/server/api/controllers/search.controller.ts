@@ -119,7 +119,6 @@ export class SearchController {
         moreToLoad
       });
     } catch (err) {
-      console.log("here1")
       return sendErr(res, err);
     }
   };
@@ -136,7 +135,6 @@ export class SearchController {
         moreToLoad
       });
     } catch (err) {
-      console.log("here1")
       return sendErr(res, err);
     }
   };

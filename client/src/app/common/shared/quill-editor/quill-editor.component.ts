@@ -166,8 +166,6 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       this.setContents(this.quill, delta)
     }
 
-    // console.log('Quill Editor', this.quill, 'Quill Contents', this.getQuillContents(this.quill))
-
     // Turn on the quill text change event handler
     this.quillContentChanges(this.quill)
   }
@@ -392,7 +390,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   quillContentChanges(quill: Quill) {
     return quill.on('text-change', (delta, oldDelta, source) => {
       if (source == 'api') {
-        console.log("An API call triggered this change.");
+
       } else if (source == 'user') {
 
         // let driveDivision = document.getElementById('google-drive-file')['innerHTML']
