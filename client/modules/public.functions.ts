@@ -1,4 +1,4 @@
-import { Injector } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
 import moment from 'moment/moment';
@@ -20,7 +20,7 @@ import { environment } from 'src/environments/environment';
 declare const gapi: any;
 declare const google: any;
 
-// TODO: Add Angular decorator.
+@Injectable()
 export class PublicFunctions {
 
     constructor(
@@ -1086,17 +1086,23 @@ export class PublicFunctions {
 
     executedAutomationFlowsPropertiesFront(flows: any[], post: any, isCreationTaskTrigger?: boolean) {
         if (flows && flows.length > 0) {
+          let doTrigger = true;
+          let loopCounter = 1;
+          while (doTrigger && loopCounter <= 3) {
             flows.forEach((flow, flowIndex) => {
-                const steps = flow['steps'];
-                if (steps && steps.length > 0) {
-                    steps.forEach(async (step, stepIndex) => {
-                        if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger || false)) {
-                            const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
-                            post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, childStatusTriggerIndex != -1);
-                        }
-                    });
-                }
+              const steps = flow['steps'];
+              if (steps && steps.length > 0) {
+                steps.forEach(async (step, stepIndex) => {
+                  if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger || false)) {
+                    const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
+                    post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, childStatusTriggerIndex != -1);
+                  }
+                });
+              } else {
+                doTrigger = false;
+              }
             });
+          }
         }
         return post;
     }
