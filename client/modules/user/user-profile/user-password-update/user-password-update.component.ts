@@ -39,8 +39,8 @@ export class UserPasswordUpdateComponent implements OnInit {
     };
 
     this.dialog.open(UserUpdateProfileDialogComponent, {
-      width: '25%',
-      height: '60%',
+      width: '460px',
+      height: '80%',
       hasBackdrop: true,
       data: data
     });
