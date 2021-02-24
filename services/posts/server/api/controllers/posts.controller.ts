@@ -1372,7 +1372,8 @@ export class PostController {
             const flows = await flowService.getAutomationFlows(groupId);
             if (flows && flows.length > 0) {
                 let doTrigger = true;
-                while (doTrigger) {
+                let loopCounter = 1;
+                while (doTrigger && loopCounter <= 3) {
                     await flows.forEach(flow => {
                         const steps = flow['steps'];
 
@@ -1390,6 +1391,7 @@ export class PostController {
                         } else {
                             doTrigger = false;
                         }
+                        loopCounter++;
                     });
                 };
             }
