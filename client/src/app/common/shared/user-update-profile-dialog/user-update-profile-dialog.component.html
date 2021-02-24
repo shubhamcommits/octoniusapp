@@ -2,31 +2,30 @@
     <div class="content">
         <div class="container">
             <div class="row inner-content" *ngIf="userData" style="padding-top: 15px;">
-                <img src="assets/images/user-info.svg" style="width: 100%;"/>
-                <br />
-                <br />
-                <h2 class="title">Update Password</h2>
+              
+                <h2 class="title text-center"> <i class="material-icons" style="margin-top:-5px">lock</i> Update password</h2>
                 <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN & SIGNUP COMPONENT -->
                 <div class="form-group">
                     <input type="password" [(ngModel)]="password" class="form-control" name="password"
-                        placeholder="Enter Your Password">
+                        placeholder="Enter new password">
                 </div>
                 <!-- FORM FIELD FOR NEW WORKPLACE, SIGNIN & SIGNUP COMPONENT -->
 
                 <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
                 <div class="form-group">
                     <input type="password" (focusout)="matchUserPassword($event)" [(ngModel)]="repeatPassword"
-                        placeholder="Repeat Your Password" class="form-control" name="repeatPassword">
+                        placeholder="Repeat new password" class="form-control" name="repeatPassword">
                 </div>
                 <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
-
+                <div class="form-group clearfix mt-4">
                 <!-- SUBMIT BUTTON SIGN UP COMPONENT -->
-                <button type="submit" class="btn btn-primary my-btn" (click)="updatePassword()">Update
-                    Password!</button>
+                <button type="submit" class="btn btn-primary float-left" (click)="updatePassword()">Update</button>
                 <!-- SUBMIT BUTTON SIGN UP COMPONENT -->
 
-                <button mat-dialog-close type="submit" class="btn btn-danger my-btn"
+                <button mat-dialog-close type="submit" class="btn btn-danger float-right"
                     >Cancel</button>
+
+                </div>
             </div>
         </div>
     </div>
