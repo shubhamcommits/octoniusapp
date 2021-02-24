@@ -289,9 +289,9 @@ export class SlackController {
                     }
 
                     
-                    const resp = await Column.find({groupId:groupid});
+                    const resp = await Column.find({_group:groupid});
 
-                    console.log("resp Column",resp);
+                    console.log("resp Column",resp,groupid);
 
                     const grpresp = await Group.findOne({_id:groupid}).populate('_members').populate('_admins');
                     
@@ -347,6 +347,8 @@ export class SlackController {
                             }
                         );
                     }
+
+                    console.log("hahaahahah reached");
                     
                     const respo = await axios.post('https://slack.com/api/views.open', {
                     trigger_id : triggered_id_2,
@@ -472,7 +474,8 @@ export class SlackController {
                     }
                     },{ headers: { authorization: `Bearer `+botAccessToken } });
 
-                
+                    console.log("responce from slack",respo);
+
                 } else if(callback != 'step_1'){
                     
                     const view = bodypay.view;
@@ -483,9 +486,10 @@ export class SlackController {
                     
                     Object.keys(values).forEach(function(key) {
                         var val = values[key];
+                        console.log("skvsdsd",val);
                         if(val && val.column_select_action)
                         {
-                            column = val.column_select_action.selected_option.text;
+                            column = val.column_select_action.selected_option.value;
 
                         }else if(val && val.datepicker_action)
                         {
@@ -513,7 +517,7 @@ export class SlackController {
                     var formData = new FormData();
 
                     //Postdata
-                    const postdata = {"title": taskdata.title,"content": taskdata.description,"type":"task","_posted_by":_id,"_group": taskdata.groupid,"_content_mentions":[],"_assigned_to": user,"task":{"status":"to do","_column": {"title":column.text},"due_to": moment(date).format("YYYY-MM-DD")}};
+                    const postdata = {"title": taskdata.title,"content": taskdata.description,"type":"task","_posted_by":_id,"_group": taskdata.groupid,"_content_mentions":[],"_assigned_to": user,"task":{"status":"to do","_column": column,"due_to": moment(date).format("YYYY-MM-DD")}};
 
                     console.log("post data",postdata);
 
@@ -522,6 +526,14 @@ export class SlackController {
                     //axios call to create task
 
                     try {
+                        console.log("post datat axios",{
+                            url : process.env.POSTS_SERVER_API,
+                            method:'POST',
+                            headers:{
+                                'Content-Type': formData.getHeaders()['content-type'],
+                                'Authorization': BearerToken,
+                            }
+                        })
                        
                         const responaxois = await axios({
                             url : process.env.POSTS_SERVER_API,
@@ -532,6 +544,8 @@ export class SlackController {
                             },
                             data:formData
                         });
+
+
 
 
                         const respo = await axios.post('https://slack.com/api/views.open', {

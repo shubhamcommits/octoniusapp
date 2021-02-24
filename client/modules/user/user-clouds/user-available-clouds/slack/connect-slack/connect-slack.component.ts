@@ -35,7 +35,9 @@ export class ConnectSlackComponent implements OnInit {
         if (result.value) {
           localStorage.setItem("slackAuth", "connected");
           // window.location.href = "https://slack.com/oauth/v2/authorize?client_id=2561616476.1145669381443&scope=commands,incoming-webhook&user_scope=channels:history,groups:history";
-          window.location.href = "https://slack.com/oauth/v2/authorize?client_id=2561616476.1145669381443&scope=commands,incoming-webhook";
+          // window.location.href = "https://slack.com/oauth/v2/authorize?client_id=2561616476.1145669381443&scope=commands,incoming-webhook";
+          window.location.href = "https://slack.com/oauth/v2/authorize?client_id=2561616476.1793890184164&scope=commands,incoming-webhook";
+          
         }
       });
   }
