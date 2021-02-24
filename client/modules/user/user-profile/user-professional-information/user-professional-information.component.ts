@@ -39,7 +39,6 @@ export class UserProfessionalInformationComponent implements OnInit {
 
     const dialogRef = this.dialog.open(UserUpdateUserPersonalInformationDialogComponent, {
       width: '460px',
-      height: '95%',
       hasBackdrop: true,
       data: data
     });
