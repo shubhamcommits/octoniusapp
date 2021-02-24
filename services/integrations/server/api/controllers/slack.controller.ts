@@ -76,19 +76,31 @@ export class SlackController {
 
     async slackWebhook(req: Request , res: Response, next: NextFunction) {
         
-
+        console.log("am here in the slack-webhook");
+        // console.log(req.body,req.body.challenge);
         if(req.body.challenge){
-
+            console.log("am inside this");
             res.status(200).json(req.body.challenge);
+            return;
+
+        } else {
+            res.status(200).json({});
         }
 
-        const bosy = req.body.payload;
+        try {
 
-        const bodypay = JSON.parse(bosy);
+        const bodyPayload = req.body.payload;
 
-        const url_responceback = bodypay.response_url;
+        let bodypay:any;
 
-        res.status(200).json({});
+        if(bodyPayload){
+
+            bodypay = JSON.parse(bodyPayload);
+        }
+        
+        const url_responceback = bodypay?.response_url;
+
+        
 
         const user_octonius = await SlackAuth.findOne({slack_user_id:bodypay.user.id}).sort({created_date:-1}).populate('_user');
         
@@ -137,17 +149,22 @@ export class SlackController {
                 
                 let groupsOption=[];
 
-                try{   
+                try {   
                     
                     const user = user_octonius['_user'];
 
 
                     if(user){
-                        const groups = await Group.find({_admins:user._id});
+                        let groupsbyadmin = await Group.find({_admins:user._id});
+                        let groupsbymember = await Group.find({_members:user._id});
+                        groupsbymember.forEach(groups => {
+                            groupsbyadmin.push(groups);
+                        });
+                        console.log("groups",groupsbyadmin);
 
-                        for(var i=0;i<groups.length;i++){
-                            const grup =  groups[i];
-                            groupsOption[i]={
+                        for(var i=0;i<groupsbyadmin.length;i++){
+                            const grup =  groupsbyadmin[i];
+                            groupsOption[i] = {
                                 "text": {
                                     "type": "plain_text",
                                     "text": grup['group_name'],
@@ -157,7 +174,7 @@ export class SlackController {
                             };
                         }
                     }  
-                }catch(err){
+                } catch(err) {
                     console.log(err);
                 }
             
@@ -272,17 +289,21 @@ export class SlackController {
                     }
 
                     
-                    const resp = await Column.findOne({groupId:groupid});
+                    const resp = await Column.find({_group:groupid});
+
+                    console.log("resp Column",resp,groupid);
 
                     const grpresp = await Group.findOne({_id:groupid}).populate('_members').populate('_admins');
+                    
+                    console.log("grpresp Column",grpresp);
 
-                    const columns = resp['columns'];
-                    var columnoption = [];
-                    var useroption = [] ;
+                    const columns = resp;
+                    let columnoption = [];
+                    let useroption = [] ;
                     for (var i=0;i < columns.length;i++){
                         
-                        const onecolum = columns[i];
-                        const columndata = onecolum;
+                        const columndata = columns[i];
+
                         columnoption.push(
                             {
                                 "text": {
@@ -296,6 +317,7 @@ export class SlackController {
                     }
 
                     var userdata = grpresp['_members'];
+                    console.log("User data members",userdata);
                     for (var i=0;i < userdata.length;i++){
                         useroption.push(
                             {
@@ -311,6 +333,8 @@ export class SlackController {
                    
 
                     var useradmin = grpresp['_admins'];
+
+                    console.log("User data admin",useradmin);
                     for (var i=0;i < useradmin.length;i++){
                         useroption.push(
                             {
@@ -323,6 +347,8 @@ export class SlackController {
                             }
                         );
                     }
+
+                    console.log("hahaahahah reached");
                     
                     const respo = await axios.post('https://slack.com/api/views.open', {
                     trigger_id : triggered_id_2,
@@ -448,7 +474,8 @@ export class SlackController {
                     }
                     },{ headers: { authorization: `Bearer `+botAccessToken } });
 
-                
+                    console.log("responce from slack",respo);
+
                 } else if(callback != 'step_1'){
                     
                     const view = bodypay.view;
@@ -459,9 +486,10 @@ export class SlackController {
                     
                     Object.keys(values).forEach(function(key) {
                         var val = values[key];
+                        console.log("skvsdsd",val);
                         if(val && val.column_select_action)
                         {
-                            column = val.column_select_action.selected_option.text;
+                            column = val.column_select_action.selected_option.value;
 
                         }else if(val && val.datepicker_action)
                         {
@@ -489,13 +517,23 @@ export class SlackController {
                     var formData = new FormData();
 
                     //Postdata
-                    const postdata = {"title": taskdata.title,"content": taskdata.description,"type":"task","_posted_by":_id,"_group": taskdata.groupid,"_content_mentions":[],"_assigned_to": user,"task":{"status":"to do","_column": {"title":column.text},"due_to": moment(date).format("YYYY-MM-DD")}};
+                    const postdata = {"title": taskdata.title,"content": taskdata.description,"type":"task","_posted_by":_id,"_group": taskdata.groupid,"_content_mentions":[],"_assigned_to": user,"task":{"status":"to do","_column": column,"due_to": moment(date).format("YYYY-MM-DD")}};
+
+                    console.log("post data",postdata);
 
                     formData.append('post',JSON.stringify(postdata));
 
                     //axios call to create task
 
                     try {
+                        console.log("post datat axios",{
+                            url : process.env.POSTS_SERVER_API,
+                            method:'POST',
+                            headers:{
+                                'Content-Type': formData.getHeaders()['content-type'],
+                                'Authorization': BearerToken,
+                            }
+                        })
                        
                         const responaxois = await axios({
                             url : process.env.POSTS_SERVER_API,
@@ -506,6 +544,8 @@ export class SlackController {
                             },
                             data:formData
                         });
+
+
 
 
                         const respo = await axios.post('https://slack.com/api/views.open', {
@@ -575,6 +615,10 @@ export class SlackController {
             const respo = await axios.post(url_responceback,{
                     text: "UnAuthorized User! Please connect your Octonius workspace to slack"
                 },{ headers: { authorization: `Bearer `+botAccessToken } })
+        }
+
+        } catch(err) {
+            console.log(err);
         }
        
         // res.status(200).json(true);        

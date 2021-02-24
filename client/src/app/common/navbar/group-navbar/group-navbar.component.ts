@@ -7,6 +7,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
+import moment from 'moment/moment';
 
 @Component({
   selector: 'app-group-navbar',
@@ -70,6 +71,19 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
     // Fetch the current user
     if (!this.userData) {
       this.userData = await this.publicFunctions.getCurrentUser();
+    } 
+    if(moment.utc(this.userData['company_join_date']).isAfter(moment.utc().add(-2,'days'))){
+      window['Appcues'].identify(
+        this.userData?._id, // unique, required
+        {
+          companyJoinDate: this.userData?.company_join_date,
+          role: this.userData?.role, 
+          firstName: this.userData?.first_name, 
+          companyName: this.userData?.company_name, 
+          workSpaceName: this.userData?.workspace_name,
+          email: this.userData?.email
+        }
+      );
     }
 
     if (this.groupId) {
