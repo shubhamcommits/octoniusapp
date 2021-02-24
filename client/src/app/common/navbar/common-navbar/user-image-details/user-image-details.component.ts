@@ -50,16 +50,14 @@ export class UserImageDetailsComponent implements OnInit {
 
   /**
    * This function updates the user data
-   * @param userAvatar 
+   * @param userAvatar
    */
-  async updateUserDetails(userAvatar: File) { 
+  async updateUserDetails(userAvatar: File) {
     try {
       this.utilityService.asyncNotification('Please wait while we are updating your avatar ...',
         new Promise((resolve, reject) => {
           this.subSink.add(this.userService.updateUserProfileImage(userAvatar)
             .subscribe((res) => {
-              // console.log(res);
-              
               this.userData['profile_pic'] = res['user']['profile_pic'];
 
               // Find the index to check if the user exists inside the first 10 list of th workspace members
@@ -69,11 +67,11 @@ export class UserImageDetailsComponent implements OnInit {
 
                 // Updating the member's profile picture
                 this.workspaceData.members[index]['profile_pic'] = this.userData['profile_pic'];
-                
-                // Update the localdata of all the connected users 
+
+                // Update the localdata of all the connected users
                 this.publicFunctions.emitWorkspaceData(this.socketService, this.workspaceData)
               }
-              
+
               // Updating the data across the shared service in the application
               this.publicFunctions.sendUpdatesToUserData(this.userData);
 

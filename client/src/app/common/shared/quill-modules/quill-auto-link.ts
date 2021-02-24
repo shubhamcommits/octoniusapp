@@ -91,18 +91,15 @@ export default class QuillAutoLink {
             replaceFn: (match: any) => {
                 switch (match.getType()) {
                     case 'url':
-                        //console.log( "url: ", match.getUrl() );
                         var index = (currentIndex - match.matchedText.length) - 1;
                         this.textToUrl(index, match.matchedText, match.getUrl());
                         return true;  // let Autolinker perform its normal anchor tag replacement
 
                     case 'email':
                         var email = match.getEmail();
-                        console.log("email: ", email);
                         return true;
 
                     case 'phone':
-                        console.log("Phone Number: ", match.getNumber());
                 }
             }
         });

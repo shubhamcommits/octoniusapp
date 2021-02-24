@@ -42,7 +42,7 @@ export class GoogleCloudService {
 
         addToCalendar.onload = () => {
           if (addToCalendar.status === 200) {
-            resolve()
+            resolve({})
           }
           else {
             console.log('Error while adding to google calendar', JSON.parse(addToCalendar.responseText))
@@ -68,7 +68,7 @@ export class GoogleCloudService {
 
         getCalendarEvents.onload = () => {
           if (getCalendarEvents.status === 200) {
-            resolve()
+            resolve({})
           }
           else {
             console.log('Error while fetching google-calendar events', JSON.parse(getCalendarEvents.responseText))
@@ -95,7 +95,7 @@ export class GoogleCloudService {
 
   /**
    * This function is responsible for saving the access token to the user's profile
-   * @param token 
+   * @param token
    */
   saveRefreshTokenToUser(token: any) {
     return this._http.post(this.BASE_API_URL + '/integrations/gdrive/token', {
@@ -106,7 +106,7 @@ export class GoogleCloudService {
 
   /**
    * This function fetches the access token from the google server
-   * @param refreshToken 
+   * @param refreshToken
    */
   getAccessToken(refreshToken: string) {
     return this._httpBackend.post('https://www.googleapis.com/oauth2/v4/token', {
@@ -124,7 +124,7 @@ export class GoogleCloudService {
 
   /**
    * This function is responsible for fetching the google drive token(authorization code) from the access_token
-   * @param authResult 
+   * @param authResult
    */
   getGoogleDriveTokenFromAuthResult(code: any, access_token: any) {
     return this._httpBackend.post('https://www.googleapis.com/oauth2/v4/token', {
@@ -143,7 +143,7 @@ export class GoogleCloudService {
 
   /**
    * This function is responsible for fetching the google user details from the google server
-   * @param accessToken 
+   * @param accessToken
    */
   getGoogleUserDetails(accessToken: string) {
     return this._httpBackend.get('https://www.googleapis.com/drive/v3/about?fields=user,storageQuota', {
@@ -156,8 +156,8 @@ export class GoogleCloudService {
 
   /**
    * This function is responsible for search across the various files present in the connected google drive
-   * @param searchTerm 
-   * @param accessToken 
+   * @param searchTerm
+   * @param accessToken
    */
   getGoogleFiles(searchTerm: string, accessToken: string) {
     return this._httpBackend.get(`https://www.googleapis.com/drive/v2/files?q=fullText contains "${searchTerm}"&maxResults=10&access_token=${accessToken}`, {

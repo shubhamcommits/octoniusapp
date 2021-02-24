@@ -65,8 +65,6 @@ export class DomainsControllers {
 
             const { workspaceId } = req.query;
 
-            console.log(req.query)
-
             // If either workspaceId is null or not provided then we throw BAD REQUEST 
             if (!workspaceId) {
                 return res.status(400).json({

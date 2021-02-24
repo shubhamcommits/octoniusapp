@@ -154,7 +154,6 @@ export class PostsService {
         // Generate the date for the end of the next week
         const endOfNextWeek = moment().endOf('isoWeek').add(1, 'days').endOf('day').endOf('isoWeek').format('YYYY-MM-DD');
 
-        console.log("start of next week end of next week",endOfWeek,endOfNextWeek);
         // Fetch the tasks posts
         const tasks = await Post.find({
             $and: [

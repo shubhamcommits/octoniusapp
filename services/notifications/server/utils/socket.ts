@@ -25,9 +25,6 @@ function init(server: any){
         // Push the socket into the array
         globalConnections.push(socket);
 
-        // Console the present sockets connections
-        console.log('New User Connected: %s sockets are connected', globalConnections.length);
-
         // -| USER NOTIFICATION CENTER |-
 
         // Join user on private user room
@@ -54,11 +51,7 @@ function init(server: any){
         socket.on('markRead', async (topListId: string, userId: string) => {
             
             // Mark the notification as read
-            await notifications.markRead(topListId)
-            .then(()=>console.log('Notification marked as read!'))
-
-            // And immediately respond to the user about markRead
-            // await helperFunctions.sendNotificationsFeed(socket, userId, io);
+            await notifications.markRead(topListId);
         });
 
         /* =================
@@ -74,7 +67,6 @@ function init(server: any){
 
             // Join the workspace room
             socket.join(roomName, ()=>{
-                console.log('User joined: ', roomName)
             });
             
         });
@@ -98,7 +90,6 @@ function init(server: any){
 
             // join room
             socket.join(roomName, ()=>{
-                // console.log('User joined Group: ', roomName)
             });
         });
 
@@ -106,7 +97,6 @@ function init(server: any){
 
         // Listen to user likes who follows a post
         socket.on('userLiked', (data) => {
-            console.log('userLiked: ', data);
         });
 
         // Listen to new post creation
@@ -136,9 +126,6 @@ function init(server: any){
             
             // Remove the socket from globalConnection array
             globalConnections.splice(globalConnections.indexOf(socket), 1);
-
-            // Console the present list of of sockets
-            console.log('User disconnected: %s sockets connected', globalConnections.length);
         });
     });
     return io;

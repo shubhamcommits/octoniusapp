@@ -68,8 +68,6 @@ export class GroupAdminComponent implements OnInit {
     else
       this.groupData._admins.push(member)
 
-      console.log(this.groupData)
-
     this.publicFunctions.sendUpdatesToGroupData(this.groupData)
   }
 

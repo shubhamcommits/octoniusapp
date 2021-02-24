@@ -60,7 +60,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   constructor(private utilityService: UtilityService, private postService: PostService, private datePipe: DatePipe) { }
 
   async ngOnInit() {
-    
+
     await this.parsedTasks(this.tasks);
     this.datestoshow.start = await this.min_date(this.tasksdata);
     this.datestoshow.end = await this.max_date(this.tasksdata)
@@ -68,7 +68,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     await this.add_index();
     await this.parsedProjects(this.columns);
     await this.taskAfterDueDate();
-    console.log("tasks oninit",this.tasksdata,this.projectsdata,this.dates);
+
     await this.get_current_date_index()
     var ganttHeight = (100 + this.tasksdata.length * 60) + (this.tasksStartingHeight);
     var screenHeight = window.innerHeight - 100;
@@ -133,7 +133,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         } else {
           linesAll[index].setAttribute('style',`left:${values[0]}px;top: ${values[1]}px; width: ${values[2]}px; height: ${values[3]}px;`);
         }
-        
+
       }
       line.position();
     });
@@ -164,7 +164,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       var Taskindex = event.item.element.nativeElement.attributes['taskindex'].nodeValue;
       var task = this.tasksdata[event.item.element.nativeElement.attributes['taskindex'].nodeValue];
     }
-    
+
     var distance = (event.distance.x) / 50;
     var mod = (event.distance.x) % 50;
 
@@ -265,7 +265,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         this.tasksdata[Taskindex].task.task.due_to = newEndDate.format("YYYY-MM-DD");
         this.dateupdate(this.tasksdata[Taskindex], this.tasksdata[Taskindex].start, newEndDate.format("YYYY-MM-DD"), 0, multiple, this.tasksdata[Taskindex]?._groupid);
       }
-      
+
 
     } else if (event.edges?.left) {
       var mod = Number(event.edges?.left) % 50;
@@ -304,7 +304,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         this.tasksdata[Taskindex].start = newStartDate.format("YYYY-MM-DD");
         this.dateupdate(this.tasksdata[Taskindex], newStartDate.format("YYYY-MM-DD"), this.tasksdata[Taskindex].end, multiple, 0, this.tasksdata[Taskindex]?._groupid);
       }
-     
+
     }
 
     setTimeout(() => {
@@ -322,7 +322,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     this.postService.updateGanttTasksDates(task['id'], groupid, enddate, startdate, sday, eday)
       .then((res) => {
         this.tasks = res['posts'];
-        
+
         this.refreshChart();
       });;
   }
@@ -334,7 +334,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       if (this.tasks[i]._id == updatedTask._id) {
 
         this.tasks[i] = updatedTask;
-        
+
       } else if (this.tasks[i]._id == updatedTask?.task?._parent_task?._id) {
         var isExist = false;
         this.tasks.forEach(task => {
@@ -404,7 +404,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     await this.add_index();
     await this.parsedProjects(this.columns);
     await this.taskAfterDueDate();
-    console.log("tasks refresh",this.tasksdata,this.projectsdata);
+
     await this.get_current_date_index()
     var ganttHeight = (100 + this.tasksdata.length * 60) + (this.tasksStartingHeight);
     var screenHeight = window.innerHeight - 100;
@@ -427,7 +427,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     if (moment(moment.utc(this.datestoshow.start).format("YYYY-MM-DD")).isAfter(moment().format("YYYY-MM-DD"))) {
       // Find duration between start and end date
       const currentDate = moment().format('YYYY-MM-DD');
-      
+
       if (moment(moment.utc(this.datestoshow.end).format("YYYY-MM-DD")).isBefore(moment().format('YYYY-MM-DD'))) {
         var endDate = moment();
       } else {
@@ -435,7 +435,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       }
 
       var Difference_In_Days = endDate.diff(currentDate,'days');
-      
+
       if (Difference_In_Days < 26) {
         var lessdays = 26 - Difference_In_Days;
         Difference_In_Days = Difference_In_Days + lessdays;
@@ -504,7 +504,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         behavior: 'smooth'});
 
     }
-   
+
 }
 
   async parsedProjects(columnsData:any){
@@ -513,7 +513,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     this.projectsdata=[];
     let tasktobedeleted:any=[];
     columnsData.forEach(column => {
-      
+
       if(column?.due_date && column?.start_date && column?.project_type){
         const newColumnsData = {
           data:column,
@@ -531,13 +531,13 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           if(this.tasksdata[i]?.projectId+'' == column._id+''){
              newColumnsData.tasks.push(this.tasksdata[i]);
              tasktobedeleted.push(this.tasksdata[i].id);
-           }  
+           }
         }
         this.projectsdata.push(newColumnsData);
         index++;
       }
     });
-    
+
     tasktobedeleted.forEach(userID => {
       let deleted=0;
       this.tasksdata.forEach(task => {
@@ -560,9 +560,9 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         if(moment(moment.utc(this.projectsdata[index].tasks[i].end).format("YYYY-MM-DD")).isAfter(moment.utc(this.projectsdata[index].data.due_date).format("YYYY-MM-DD")))
         {
           this.projectsdata[index].taskAfterDueDate = moment(moment.utc(this.projectsdata[index].tasks[i].end).format("YYYY-MM-DD")).diff(moment.utc(this.projectsdata[index].data.due_date).format("YYYY-MM-DD"),'days');
-        }  
+        }
       }
-      
+
     }
   }
 

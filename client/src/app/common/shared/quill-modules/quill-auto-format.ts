@@ -53,7 +53,7 @@ export default class Autoformat extends Module {
       collapsed: true,
       format: ["autoformat-helper"]
     }, this.forwardKeyboardDown.bind(this));
-    
+
     this.quill.on('text-change', (delta, oldDelta, source) => {
       let ops = delta.ops
       if (source !== 'user' || !ops || ops.length < 1) {
@@ -91,9 +91,9 @@ export default class Autoformat extends Module {
 
       let leafIndex = leaf.offset(leaf.scroll);
       let leafSelIndex = checkIndex - leafIndex;
-      
+
       let transformed = false;
-      
+
       // Check transforms
       for (const name in this.transforms) {
         const transform = this.transforms[name];
@@ -106,11 +106,11 @@ export default class Autoformat extends Module {
             continue;
           }
         }
-        
+
         // Check transform trigger
         if (lastOp.insert.match(transform.trigger || /./)) {
           this.closeHelper(transform);
-          
+
           let ops = new Delta().retain(leafIndex);
           let transformOps = makeTransformedDelta(transform, leaf.text, leafSelIndex);
 
@@ -131,18 +131,17 @@ export default class Autoformat extends Module {
       }
     });
   }
-  
+
   forwardKeyboard(range, context) {
     if (this.currentHelper && this.currentHelper.container) {
       let target = this.currentHelper.container.querySelector('.dropdown-menu');
-      console.log("keyboard",target, context.event);
       target.dispatchEvent(context.event);
     }
   }
-  
+
   forwardKeyboardUp(range, context) {
     var e: any = new KeyboardEvent("keydown", {
-      key: "ArrowUp", 
+      key: "ArrowUp",
       // keyCode: 38,
       // which: 38,
       bubbles: true,
@@ -151,10 +150,10 @@ export default class Autoformat extends Module {
     context.event = e;
     this.forwardKeyboard(range, context);
   }
-  
+
   forwardKeyboardDown(range, context) {
     var e: any = new KeyboardEvent("keydown", {
-      key: "ArrowDown", 
+      key: "ArrowDown",
       // keycode: 40,
       // which: 40,
       bubbles: true,
@@ -168,7 +167,6 @@ export default class Autoformat extends Module {
     if(transform.helper) {
       this.currentHelper = transform.helper;
       if(typeof transform.helper.open === 'function') {
-        console.log("openHelper", index, this.quill.getFormat(index))
         let pos = this.quill.getBounds(index)
         let helperNode = this.quill.addContainer('ql-helper')
         helperNode.style.position = 'absolute';
@@ -176,9 +174,7 @@ export default class Autoformat extends Module {
         helperNode.style.left = pos.left + "px";
         helperNode.style.width = pos.width + "px";
         helperNode.style.height = pos.height + "px";
-        console.log("openHelper", pos, helperNode);
-        
-        
+
         transform.helper.container = helperNode;
         transform.helper.open(helperNode);
       }
@@ -320,13 +316,11 @@ Autoformat.DEFAULTS = {
     /*helper: {
       trigger: /(?:^|\s)#/,
       open: function(target) {
-        console.log("hashtag search", target)
       },
       select: function(target, callback) {
         callback()
       },
       close: function(target) {
-        console.log("hashtag search canceled")
         if (target) {
           target.innerHTML = "";
         }

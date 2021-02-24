@@ -3,7 +3,7 @@ import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { SlackService } from "../service";
 import moment from 'moment/moment'
 import { Group, Column, Auth, SlackAuth, User } from '../models';
-import { Auths } from '../../utils';
+import { Auths, sendError } from '../../utils';
 import FormData from 'form-data';
 // import { validateId } from "../../utils/helperFunctions";
 import axios from "axios";
@@ -119,9 +119,7 @@ export class SlackController {
         await jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
             if (err || !decoded) {
                 isvalidToken = false;
-                console.log({
-                    message: 'Unauthorized request, it must have a valid authorization token!'
-                });
+                sendError(res, err, 'Unauthorized request, it must have a valid authorization token!', 500);
             } else {
                 // Assigning and feeding the userId into the req object
                 BearerToken = BearerToken+token;

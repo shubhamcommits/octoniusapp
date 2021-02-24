@@ -13,7 +13,7 @@ import { NotificationService } from '../notification-service/notification.servic
 export class SocketService {
 
   constructor(
-    private socket: SocketServer, 
+    private socket: SocketServer,
     private http: HttpClient,
     private _notificationService: NotificationService) { }
 
@@ -31,7 +31,6 @@ export class SocketService {
   public onEvent(eventName: string): Observable<any> {
     return new Observable<any>(observer => {
         this.socket.on(eventName, (data: any) => {
-          console.log(`Socket for event name - ${eventName} is connected!`);
           observer.next(data);
           if(eventName === 'notificationsFeed' && data.new){
             const notify = data['unreadNotifications'][0];
@@ -56,7 +55,6 @@ export class SocketService {
   public onEmit(eventName: string, ...messageData: any) {
     return new Observable<any>(observer=>{
       this.socket.emit(eventName, ...messageData, (data: any)=> {
-        console.log(`Socket for ${eventName} has emitted a message with data - ${messageData} and it says - ${data}`);
         observer.next(data);
       });
     })

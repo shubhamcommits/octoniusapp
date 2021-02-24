@@ -28,8 +28,6 @@ export class ProgressBarComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // console.log(this.progressBar.nativeElement);
-
     //  Set the data-preset attribute
     this.progressBar.nativeElement.setAttribute('data-preset', this.preset)
 

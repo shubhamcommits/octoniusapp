@@ -51,7 +51,6 @@ export class UserHeaderComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // Fetch the userData from the server
     await this.publicFunctions.getOtherUser(this.router.snapshot.queryParams['userId']).then(res => {
-      console.log(res);
       this.userData = res;
       this.utilityService.updateOtherUserData(this.userData);
     });

@@ -47,7 +47,7 @@ export class AppComponent {
     private _notificationService: NotificationService
   ) {
     this._notificationService.requestPermission();
-  
+
     this.subSink.add(this._router.events.subscribe((e: any) => {
       if (e instanceof ChildActivationEnd) {
         this.groupId = e.snapshot.queryParamMap.get('group');
@@ -144,7 +144,6 @@ export class AppComponent {
   //   return socketService.onEvent('notificationsFeed')
   //     .pipe(retry(Infinity))
   //     .subscribe((notifications) => {
-  //       console.log("In APP Roaring");
   //       // Here we send the message to change and update the notifications feed through the shared service
   //       socketService.changeData(notifications);
   //     })
@@ -224,7 +223,6 @@ export class AppComponent {
    */
   async loadGoogleAPI() {
     await gapi.load('auth', (() => {
-      console.log('Google API is connected!')
     }));
   }
 

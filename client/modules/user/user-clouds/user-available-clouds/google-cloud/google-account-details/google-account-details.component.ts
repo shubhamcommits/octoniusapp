@@ -23,8 +23,6 @@ export class GoogleAccountDetailsComponent implements OnInit {
       this.googleDriveUsed = Math.round(
         (this.googleUser.storageQuota.usage / this.googleUser.storageQuota.limit) * 100
       )
-
-    console.log(this.googleUser)
   }
 
   getUserDataFromStorage() {

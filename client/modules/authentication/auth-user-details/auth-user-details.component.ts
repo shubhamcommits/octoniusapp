@@ -461,8 +461,8 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
    * This function is responsible for reseting the password
-   * @param resetPasswordId 
-   * @param password 
+   * @param resetPasswordId
+   * @param password
    */
   resetPassword(resetPasswordId: string, password: string, repeatPassword: string) {
     try {
@@ -490,13 +490,12 @@ export class AuthUserDetailsComponent implements OnInit {
 
   /**
    * This service function calls the reset password API
-   * @param resetPasswordObject 
+   * @param resetPasswordObject
    */
   resetPasswordServiceFunction(resetPasswordObject: any) {
     return new Promise((resolve, reject) => {
       this.authenticationService.resetPassword(resetPasswordObject)
         .then((res) => {
-          console.log(res)
           this.router.navigate(['authentication', 'sign-in'])
             .then(() => {
               this.utilityService.successNotification(`Your password has been reset successfully!`);

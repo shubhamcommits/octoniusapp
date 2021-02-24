@@ -51,8 +51,8 @@ export class WorkspaceDetailsComponent implements OnInit {
 
   /**
    * This function updates the workspace data
-   * @param workspaceId 
-   * @param workspaceAvatar 
+   * @param workspaceId
+   * @param workspaceAvatar
    */
   async updateWorkplaceDetails(workspaceId: string, workspaceAvatar: File) {
     try {
@@ -60,13 +60,11 @@ export class WorkspaceDetailsComponent implements OnInit {
         new Promise((resolve, reject) => {
           this.subSink.add(this.workspaceService.updateWorkspace(workspaceId, workspaceAvatar)
             .subscribe((res) => {
-              // console.log(res);
-              
               this.workspaceData['workspace_avatar'] = res['workspace']['workspace_avatar'];
-              
+
               // Updating the data across the shared service in the application
               this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
-              
+
               // Sends the updates to all the user connected in the same workspace
               this.subSink.add(this.emitWorkspaceData(this.socketService, this.workspaceData))
 
@@ -84,7 +82,7 @@ export class WorkspaceDetailsComponent implements OnInit {
 
   /**
    * This functions sends the update to other users about the updated workspace data
-   * @param socketService 
+   * @param socketService
    * @param workspaceData
    */
   emitWorkspaceData(socketService: SocketService, workspaceData: any){
