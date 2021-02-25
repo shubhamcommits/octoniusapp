@@ -1,7 +1,9 @@
 import { Component, OnInit, Injector } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { GoogleCloudService } from './user-available-clouds/google-cloud/services/google-cloud.service';
 
@@ -16,6 +18,9 @@ export class UserCloudsComponent implements OnInit {
     public injector: Injector,
     private googleService: GoogleCloudService,
     public userService: UserService,
+    private router: ActivatedRoute,
+    private _router: Router,
+    public utilityService: UtilityService,
     private storageService: StorageService
   ) { }
 
@@ -45,6 +50,35 @@ export class UserCloudsComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false;
+    
+    if(!this.slackAuthSuccessful){
+      this.router.queryParams.subscribe(params => {
+        if (params['code']) {
+          try {
+            this.utilityService.asyncNotification('Please wait, while we are authenticating the slack...', new Promise((resolve, reject) => {
+              this.userService.slackAuth(params['code'], this.userData)
+                .subscribe(() => {
+                  // Resolve the promise
+                  setTimeout(() => {
+                    this.updateUserData();
+                  }, 1000);
+                  
+                  resolve(this.utilityService.resolveAsyncPromise('Authenticated Successfully!'))
+                  
+                }),
+                ((err) => {
+                  console.log('Error occured, while authenticating for Slack', err);
+                  reject(this.utilityService.rejectAsyncPromise('Oops, an error occured while authenticating for Slack, please try again!'))
+                });
+            }));
+          }
+          catch (err) {
+            console.log('There\'s some unexpected error occured, please try again!', err);
+            this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
+          }
+        }
+      });
+    }
 
     // Subsribe to the google authsucessful behaviour subject and set the local googleauth value
     this.subSink.add(this.googleService.googleAuthSuccessfulBehavior.subscribe(auth => this.googleAuthSuccessful = auth))
@@ -59,6 +93,19 @@ export class UserCloudsComponent implements OnInit {
     if(this.googleAuthSuccessful == true){
       this.googleUser = this.storageService.getLocalData('googleUser')['userData']
     }
+  }
+
+  /**
+   * This function is responsible to update user slack connection status.
+   */
+  async updateUserData(){
+    this.userData = await this.publicFunctions.getCurrentUser();
+    let newuserdata = JSON.parse(JSON.stringify(this.userData));
+    newuserdata.integrations = {"is_slack_connected" : true};
+    this.userData = newuserdata;
+    await this.userService.updateUser(this.userData);
+    await this.publicFunctions.sendUpdatesToUserData(this.userData);
+    this.slackAuthSuccessful = true;
   }
 
   /**

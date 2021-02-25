@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 export class ConnectSlackComponent implements OnInit {
 
   slackAuthSuccessful: Boolean;
-  userData: any;
+  @Input() userData:any;
 
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -23,8 +23,29 @@ export class ConnectSlackComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.userData = await this.publicFunctions.getCurrentUser();
+
+    this.userService.slackConnectDisconnected().subscribe(event => {
+      setTimeout(() => {
+        this.userData = this.publicFunctions.getCurrentUser();
+      }, 200);
+      this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
+    });
+
+    if(!this.userData){
+      this.userData = await this.publicFunctions.getCurrentUser();
+    }
     this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    for (const propName in changes) {
+      const change = changes[propName];
+      const to = change.currentValue;
+      if (propName === 'userData') {
+        this.userData = to;
+        this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
+      }
+    }
   }
 
   /**
