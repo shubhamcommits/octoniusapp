@@ -1,13 +1,14 @@
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
+@import "src/assets/scss/_variables";
 
 #sidebar {
     min-height: 100vh;
     background: #005FD5;
     color: #FFFFFF;
-    padding: 0;
-    width: 200px;
+    padding: 0 10px;
+    width: 210px;
 }
 
 
@@ -29,12 +30,18 @@
     padding: 20px 5px;
     li a{
         padding: 10px;
-        font-size: 14px;
+        font-size: 15px;
+        font-weight: 700;
         display: block;
-        color: #FFFFFF;
+        color: $border-color;
         &:hover{
             color: #E4EDF8 !important;
             text-decoration: none !important;
+            background: rgba(0, 28, 71, 0.2);
+            border-radius: 4px;
+        }
+        i{
+            margin-top: -5px;
         }
     }
 }
@@ -45,10 +52,10 @@ a[data-toggle="collapse"] {
 }
 
 ul ul a {
-    font-size: 13px !important;
+    font-size: 12px !important;
     /* background: #6d7fcc; */
     color: #FFFFFF !important;
-    font-weight: 400;
+    font-weight: 400 !important;
 }
 
 .avatar{
@@ -79,6 +86,13 @@ ul ul a {
     }
   }
   
+  .explore-work{
+    color: #fff !important;
+    text-decoration: none !important;
+    background: rgba(0, 28, 71, 0.2);
+    border-radius: 4px;
+    border: 1px solid rgba(228, 237, 248, 0.6);
+  }
 
 .menu-options {
     margin-top: 50px;
@@ -93,4 +107,7 @@ ul ul{
     padding: 5px 15px;
     background: #E4EDF8;
     color: #005FD5;
+}
+.divider-line{
+   border-top: 1px solid rgba(0, 28, 71, 0.07);
 }
