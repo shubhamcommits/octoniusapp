@@ -1093,7 +1093,8 @@ export class PublicFunctions {
               const steps = flow['steps'];
               if (steps && steps.length > 0) {
                 steps.forEach(async (step, stepIndex) => {
-                  if (this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger || false)) {
+                  doTrigger = this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger || false)
+                  if (doTrigger) {
                     const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
                     post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, childStatusTriggerIndex != -1);
                   }
