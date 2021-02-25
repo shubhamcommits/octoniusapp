@@ -40,14 +40,15 @@
                             {{ group?.group_name | truncatetext: 16 }}
                         </a>
                     </li>
-
-                    <li>
-                      <a routerLinkActive="active" routerLink="/dashboard/work/groups/all">
-                        <span class="btn btn-outline-light">explore work</span>
-                      </a>
-                    </li>
                 </ul>
             </li>
+
+            <li>
+              <a routerLinkActive="active" routerLink="/dashboard/work/groups/all">
+                <span class="btn btn-outline-light">explore work</span>
+              </a>
+            </li>
+
             <li> <hr style="opacity: 0.2;"></li>
             <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
                 <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
