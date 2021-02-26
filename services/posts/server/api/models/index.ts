@@ -1,3 +1,4 @@
+import { Account } from "./account.model";
 import { Auth } from './auth.model';
 import { Group } from './group.model';
 import { Post } from './post.model';
@@ -12,6 +13,9 @@ import { Column } from './column.model';
  *  =====================
  * */
 export {
+
+    // Account
+    Account as Account,
 
     // AUTH
     Auth as Auth,

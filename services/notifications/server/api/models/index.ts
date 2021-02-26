@@ -5,12 +5,16 @@ import { Post } from "./post.model";
 import { User } from './user.model';
 import { File } from './file.model';
 import { Column } from './column.model';
+import { Account } from "./account.model";
 
 /*  =====================
  *  -- MODELS EXPORTS --
  *  =====================
  * */
 export {
+
+    // Account
+    Account as Account,
 
     // COMMENT
     Comment as Comment,
