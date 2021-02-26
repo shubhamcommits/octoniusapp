@@ -88,7 +88,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.subSink.unsubscribe();
   }
 
-  
+
 
   /**
    * This function is responsible for logging the user out
@@ -103,6 +103,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
               this.publicFunctions.sendUpdatesToGroupData({})
               this.publicFunctions.sendUpdatesToRouterState({})
               this.publicFunctions.sendUpdatesToUserData({})
+              this.publicFunctions.sendUpdatesToAccountData({})
               this.publicFunctions.sendUpdatesToWorkspaceData({})
               // this.socketService.clear();
               this.router.navigate(['/home'])

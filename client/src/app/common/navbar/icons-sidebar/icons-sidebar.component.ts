@@ -80,6 +80,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
               this.publicFunctions.sendUpdatesToGroupData({})
               this.publicFunctions.sendUpdatesToRouterState({})
               this.publicFunctions.sendUpdatesToUserData({})
+              this.publicFunctions.sendUpdatesToAccountData({})
               this.publicFunctions.sendUpdatesToWorkspaceData({})
               this.socketService.disconnectSocket();
               this.router.navigate(['/home'])
