@@ -21,34 +21,53 @@ a {
 
 .badge-cf {
   font-size: 12px;
-  color: #005fd5;
-  span{
-    color: #9D9FA1;
-    &:hover{
+  color: #9D9FA1;
+  svg{
+    fill: #9D9FA1;
+  }
+  &:hover{
       color: #005fd5;
-    }
+      svg{
+        fill: #005fd5;
+      }
   }
 }
 
 .badge-boardviews {
   font-size: 12px;
-  color: #ff6584;
-  span{
-    color: #9D9FA1;
-    &:hover{
-      color: #ff6584;
-    }
+  color: #9D9FA1;
+  svg{
+    fill: #9D9FA1;
+  }
+  &:hover{
+      color: #F67B99;
+      svg{
+        fill: #F67B99;
+      }
   }
 }
 
 .badge-automator {
   font-size: 12px;
-  color: #FFAB00;
-  span{
-    color: #9D9FA1;
-    &:hover{
-      color: #FFAB00;
-    }
+  color: #9D9FA1;
+  svg{
+    fill: #9D9FA1;
+  }
+  &:hover{
+      color: #FBB732;
+      svg{
+        fill: #FBB732;
+      }
+  }
+}
+
+.board-options {
+  color: #223044;
+  svg{
+    fill: #223044;
+  }
+  &:hover{
+      text-decoration: none;
   }
 }
 
@@ -56,11 +75,14 @@ a {
 .badge-filters {
   font-size: 12px;
   color: #9D9FA1;
-  span{
-    color: #9D9FA1;
-    &:hover{
+  svg{
+    fill: #9D9FA1;
+  }
+  &:hover{
       color: #005fd5;
-    }
+      svg{
+        fill: #005fd5;
+      }
   }
 }
 

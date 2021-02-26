@@ -7,7 +7,7 @@
 
             <!-- MENU BUTTON STARTS -->
             <button type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
-              <i class="material-icons">arrow_left</i>
+                <i class="material-icons">menu_open</i>
             </button>
             <!-- MENU BUTTON ENDS -->
 
@@ -18,15 +18,15 @@
             <li>
               <a [routerLink]="['/dashboard', 'myspace', 'inbox']" [queryParams]="{myWorkplace: true}" routerLinkActive="active">
                   <i class="material-icons-outlined carret">home</i>
-                  MY SPACE
+                  My Space
               </a>
             </li>
-            <li> <hr style="opacity: 0.2;"></li>
+            <li> <hr class="divider-line"></li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
 
-                    <i class="material-icons-outlined carret">dashboard</i>
-                    MY WORKPLACE
+                    <i class="material-icons-outlined carret">star_outline</i>
+                    My Workplace
                     <i class="material-icons-outlined carret">keyboard_arrow_down</i>
                 </a>
 
@@ -40,19 +40,21 @@
                             {{ group?.group_name | truncatetext: 16 }}
                         </a>
                     </li>
-
-                    <li>
-                      <a routerLinkActive="active" routerLink="/dashboard/work/groups/all">
-                        <span class="btn btn-outline-light">explore work</span>
-                      </a>
-                    </li>
                 </ul>
             </li>
-            <li> <hr style="opacity: 0.2;"></li>
+            <li> <hr class="divider-line"></li>
+            <li>
+              <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" class="explore-work">
+                <i class="material-icons-outlined carret">groups</i>
+                Explore Work
+              </a>
+            </li>
+
+            <li> <hr class="divider-line"></li>
             <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
                 <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
                     <i class="material-icons-outlined">settings</i>
-                    ADMINISTRATION<span class="sr-only">(current)</span>
+                    Administration<span class="sr-only">(current)</span>
                 </a>
             </li>
 
@@ -64,7 +66,7 @@
                         <img src="{{userBaseUrl}}/{{userData?.profile_pic}}"
                         onerror="this.src='assets/images/user.png'"
                         class="avatar">
-                        MY ACCOUNT
+                        My Account
                     </a>
                     <!-- USER PROFILE BADGE ENDS -->
                 </li>
@@ -73,7 +75,7 @@
                     <!-- LOGOUT FUNCTION STARTS-->
                     <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active" (click)="logout()">
                         <i class="material-icons-outlined carret">logout</i>
-                        LOGOUT
+                        Sign Out
                         <span class="sr-only">(current)</span>
                     </a>
                     <!-- LOGOUT FUNCTION ENDS-->
