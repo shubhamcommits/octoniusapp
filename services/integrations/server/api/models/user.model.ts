@@ -97,7 +97,7 @@ const UserSchema = new Schema({
     stats: {
         lastTaskView: {
             type: String,
-            default: 'list'
+            default: 'kanban'
         },
         groups: [{
             _group: {
