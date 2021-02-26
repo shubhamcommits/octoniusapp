@@ -150,4 +150,17 @@ export class Auths {
         }
     }
 
+    /**
+     * This method is used to generate a random Access Code for each workspace
+     */
+    async generateWorkspaceAccessCode() {
+        const resultLength = 6;
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        for ( var i = 0; i < resultLength; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
 }

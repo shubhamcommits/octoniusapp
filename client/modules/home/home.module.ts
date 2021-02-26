@@ -5,6 +5,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { BrandingPanelComponent } from './branding-panel/branding-panel.component';
 import { LoadingSpinnerSmallComponent } from './loading-spinner-small/loading-spinner-small.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,10 @@ import { LoadingSpinnerSmallComponent } from './loading-spinner-small/loading-sp
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+
+    // FORMS MODULE
+    FormsModule
   ],
   exports: [
     BrandingPanelComponent

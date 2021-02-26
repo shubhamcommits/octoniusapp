@@ -75,6 +75,9 @@ routes.get('/global/feed', post.getGlobalFeed);
 // GET - Get current loggedIn user on the basis of userId
 routes.get('/', user.get);
 
+// GET - Get account of the current loggedIn user on the basis of userId
+routes.get('/account', user.getAccount);
+
 // GET - Get other user details on the basis of userId
 routes.get('/:userId', user.getOtherUser);
 

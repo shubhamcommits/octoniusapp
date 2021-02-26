@@ -27,6 +27,19 @@ export class AuthService {
   }
 
   /**
+   * This function is responsible for completing the login process by selecting a workspace
+   *
+   * @param accountId
+   * @param workspaceId
+   */
+  selectWorkspace(accountId: string, workspaceId: string) {
+    return this.httpClient.post(this.AUTH_BASE_API_URL + '/select-workspace', {
+      accountId: accountId,
+      workspaceId: workspaceId
+    });
+  }
+
+  /**
    * This function is responsible for requesting the Signup API from the server
    * @param userData - needs to be passed as the functional parameter with the following @properties to be used in the request body
    * @name first_name
@@ -37,7 +50,7 @@ export class AuthService {
    * @param user : { first_name: string, last_name:string, email: string, workspace_name: string, password: string }
    */
   signUp(userData: Object) {
-    return this.httpClient.post(this.AUTH_BASE_API_URL + '/sign-up', userData);
+    return this.httpClient.post(this.AUTH_BASE_API_URL + '/sign-up', { userData: userData });
   }
 
   /**
@@ -71,17 +84,26 @@ export class AuthService {
 
   /**
    * This function is responsible for requesting the create new workspace API from the server
-   * @param workspaceData - needs to be passed as the functional parameter with the following @properties to be used in the request body
-   * @name owner_first_name
-   * @name owner_last_name
-   * @name owner_email
-   * @name company_name
-   * @name workspace_name
-   * @name owner_password
-   * @param workspaceData : { owner_first_name: string, owner_last_name: string, owner_email: string, company_name: string, workspace_name: string, owner_password: string }
+   * @param workspaceData
+   * @param accountData
    */
-  createNewWorkspace(workspaceData: Object) {
-    return this.httpClient.post(this.WORKSPACE_BASE_API_URL + '/', workspaceData).toPromise();
+  createNewWorkspace(workspaceData: Object, accountData: Object) {
+    return this.httpClient.post(this.WORKSPACE_BASE_API_URL + '/', {
+      newWorkspace: workspaceData,
+      accountData: accountData
+    }).toPromise();
+  }
+
+  /**
+   * This function is responsible for requesting the join user to a workspace API from the server
+   * @param workspaceData
+   * @param accountData
+   */
+  joinWorkspace(workspaceData: Object, accountData: Object) {
+    return this.httpClient.post(this.AUTH_BASE_API_URL + '/join-workspace', {
+      workspace: workspaceData,
+      accountData: accountData
+    }).toPromise();
   }
 
   /**

@@ -6,16 +6,16 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
-  selector: 'app-new-workplace',
-  templateUrl: './auth-new-workplace.component.html',
-  styleUrls: ['./auth-new-workplace.component.scss']
+  selector: 'app-join-workplace',
+  templateUrl: './auth-join-workplace.component.html',
+  styleUrls: ['./auth-join-workplace.component.scss']
 })
-export class AuthNewWorkplaceComponent implements OnInit {
+export class AuthJoinWorkplaceComponent implements OnInit {
 
   // Defining User Object, which accepts the following properties
-  workplace: { name: string, company_name: string } = {
+  workplace: { name: string, access_code: string } = {
     name: null,
-    company_name: null
+    access_code: null
   };
 
   accountData;
@@ -47,12 +47,12 @@ export class AuthNewWorkplaceComponent implements OnInit {
           workspace_name: this.workplace.name
         })
         .then(() => {
-          this.validWorkspace = true;
-          this.utilityService.successNotification('This workplace name is available.');
+          this.validWorkspace = false;
+          this.utilityService.errorNotification('This workplace name does not exist!');
         })
         .catch(() => {
-          this.validWorkspace = false;
-          this.utilityService.errorNotification('This workplace name is taken, kindly come up with another one!');
+          this.validWorkspace = true;
+          this.utilityService.successNotification('This workplace name is correct!');
         });
     }
   }
@@ -63,18 +63,18 @@ export class AuthNewWorkplaceComponent implements OnInit {
    * @param name
    * @param company_name
    */
-  createNewWorkplace() {
+  joinWorkplace() {
     try {
-      if (!this.validWorkspace || this.workplace.company_name == null || this.workplace.company_name == '') {
+      if (!this.validWorkspace || this.workplace.access_code == null || this.workplace.access_code == '') {
         this.utilityService.warningNotification('Insufficient or incorrect data, kindly fill up all the fields correctly!');
       } else {
         // PREPARING THE WORKPLACE DATA
         let workplaceData: Object = {
           workspace_name: this.workplace.name.trim(),
-          company_name: this.workplace.company_name.trim()
+          access_code: this.workplace.access_code.trim()
         }
         this.utilityService.asyncNotification('Please wait while we are setting up your new workplace and account...',
-          this.newWorkplaceServiceFunction(workplaceData))
+          this.joinWorkplaceServiceFunction(workplaceData))
       }
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
@@ -86,27 +86,23 @@ export class AuthNewWorkplaceComponent implements OnInit {
    * This implements the service function for @function createNewWorkplace(workplaceData)
    * @param workspaceData
    */
-  newWorkplaceServiceFunction(workspaceData: any) {
+  joinWorkplaceServiceFunction(workspaceData: any) {
     return new Promise((resolve, reject) => {
-      this.authenticationService.createNewWorkspace(workspaceData, this.accountData)
+      this.authenticationService.joinWorkspace(workspaceData, this.accountData)
         .then((res) => {
           this.clearUserData();
           this.storeData(res);
           this.router.navigate(['dashboard', 'myspace', 'inbox'])
             .then(() => {
-              this.utilityService.successNotification(`Hi ${res['user']['first_name']}, welcome to your new workplace!`);
               resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome to your new workplace!`))
             })
             .catch(() => {
-              this.utilityService.errorNotification('Oops some error occured while setting you up, please try again!');
               reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
             })
 
         }, (err) => {
-          console.error('Error occured while creating new workplace', err);
-          this.utilityService.errorNotification('Oops some error occured while setting you up, please try again!');
           this.storageService.clear();
-          reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
+          reject(this.utilityService.rejectAsyncPromise(err.message));
         })
     })
   }
@@ -123,8 +119,8 @@ export class AuthNewWorkplaceComponent implements OnInit {
    * @param res
    */
   storeData(res: Object) {
-    this.publicFunctions.sendUpdatesToUserData(JSON.stringify(res['user']));
-    this.publicFunctions.sendUpdatesToWorkspaceData(JSON.stringify(res['workspace']));
+    this.publicFunctions.sendUpdatesToUserData(res['user']);
+    this.publicFunctions.sendUpdatesToWorkspaceData(res['workspace']);
     this.storageService.setLocalData('authToken', JSON.stringify(res['token']));
   }
 }

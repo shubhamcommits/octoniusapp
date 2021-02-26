@@ -52,6 +52,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SelectWorkspaceComponent } from './select-workspace/select-workspace.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { AuthJoinWorkplaceComponent } from './auth-join-workplace/auth-join-workplace.component';
 
 
 
@@ -65,6 +66,9 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 
     // AUTH NEW WORKPLACE COMPONENT
     AuthNewWorkplaceComponent,
+
+    // AUTH JOIN WORKPLACE COMPONENT
+    AuthJoinWorkplaceComponent,
 
     // AUTH SIGNIN COMPONENT
     AuthSignInComponent,

@@ -1,0 +1,60 @@
+<div class="container-fluid h-100 welcome">
+  <div class="row h-100">
+
+    <!-- OCTONIUS LEFT BRANDING PANEL STARTS -->
+    <app-branding-panel [routerState]="'select-workspace'" class="col-md-8 overlay"></app-branding-panel>
+    <!-- OCTONIUS LEFT BRANDING PANEL ENDS -->
+
+    <!-- HOME PANEL STARTS -->
+    <div class="col-md-4 shaddow">
+      <div style="padding:100px 30px;">
+
+        <div style="width: 100%; margin:0 auto; align-items: center; text-align: center; height: 30vh;">
+          <!-- SELECT A WORKPLACE -->
+          <div class="form-group">
+            <div *ngFor="let workspace of accountData?._workspaces"
+                class="card" (click)="selectWorkspace(workspace._id)">
+              <h3 class="card-title">
+                <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}"
+                    style="height: 30px; width:30px" class="feed-avatar"
+                    onerror="this.src='assets/images/icon-new-group.svg'" />
+                  {{workspace?.workspace_name}}
+              </h3>
+            </div>
+          </div>
+          <!-- SELECT A WORKPLACE -->
+
+          <!-- CREATE A NEW WORKPLACE -->
+          <div class="form-group">
+            <div [routerLink]="['/authentication', 'new-workplace']" routerLinkActive="router-link-active"
+                class="card">
+              <h3 class="card-title">
+                <img src="assets/images/icon_file.svg"
+                    style="height: 30px; width:30px" class="feed-avatar"
+                    onerror="this.src='assets/images/icon-new-group.svg'" />
+                  Create a new workspace
+              </h3>
+            </div>
+          </div>
+          <!-- CREATE A NEW WORKPLACE -->
+
+          <!-- JOIN AN EXISTING WORKPLACE -->
+          <div class="form-group">
+            <div [routerLink]="['/authentication', 'join-workplace']" routerLinkActive="router-link-active"
+                class="card">
+              <h3 class="card-title">
+                <img src="assets/images/icon_file.svg"
+                    style="height: 30px; width:30px" class="feed-avatar"
+                    onerror="this.src='assets/images/icon-new-group.svg'" />
+                  Join another workspace
+              </h3>
+            </div>
+          </div>
+          <!-- JOIN AN EXISTING WORKPLACE -->
+        </div>
+
+      </div>
+   </div>
+   <!-- HOME PANEL ENDS -->
+  </div>
+</div>

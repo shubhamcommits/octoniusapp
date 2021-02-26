@@ -417,7 +417,6 @@ export class AuthUserDetailsComponent implements OnInit {
           workspace_name: workplace.trim(),
           company_name: company.trim(),
           owner_email: email.trim(),
-          owner_password: password.trim(),
           owner_first_name: firstName.trim(),
           owner_last_name: lastName.trim()
         }
@@ -436,6 +435,7 @@ export class AuthUserDetailsComponent implements OnInit {
    */
   newWorkplaceServiceFunction(workspaceData: Object) {
     return new Promise((resolve, reject) => {
+      /*
       this.authenticationService.createNewWorkspace(workspaceData)
         .then((res) => {
           this.clearUserData();
@@ -456,6 +456,7 @@ export class AuthUserDetailsComponent implements OnInit {
           this.storageService.clear();
           reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
         })
+      */
     })
   }
 

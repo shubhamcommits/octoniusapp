@@ -36,6 +36,10 @@ export class UsersControllers {
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
             });
 
             if (user['stats'] && user['stats']['favorite_groups']) {
@@ -53,6 +57,40 @@ export class UsersControllers {
             return res.status(200).json({
                 message: 'User found!',
                 user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the account details of the current loggedIn user
+     * @param { userId }req 
+     * @param res 
+     * @param next 
+     */
+    async getAccount(req: Request, res: Response, next: NextFunction) {
+
+        const userId = req['userId'];
+
+        try {
+
+            // Find the user based on the userId
+            const user = await User.findOne({ _id: userId })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
+
+            // If user not found
+            if (!user) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Account found!',
+                account: user._account
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -82,7 +120,12 @@ export class UsersControllers {
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
             });
+
             if (user && user['stats'] && user['stats']['favorite_groups']) {
                 user['stats']['favorite_groups'].sort(function(a, b) {
                   return b.group_name - a.group_name;
@@ -135,17 +178,21 @@ export class UsersControllers {
 
             // Find the user and update it on the basis of the userId
             const user: any = await User.findByIdAndUpdate({
-                _id: userId
-            }, {
-                $set: body
-            }, {
-                new: true
-            })
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
-            .populate({
-                path: 'stats.favorite_groups',
-                select: '_id group_name group_avatar'
-            });
+                    _id: userId
+                }, {
+                    $set: body
+                }, {
+                    new: true
+                })
+                .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
 
             if (user['stats'] && user['stats']['favorite_groups']) {
                 user['stats']['favorite_groups'].sort(function(a, b) {
@@ -206,11 +253,10 @@ export class UsersControllers {
                 _id:workspaceId
             },
             {
-                owner_first_name:userTo.first_name,
+                owner_first_name: userTo.first_name,
                 owner_last_name:userTo.last_name,
-                owner_email:userTo.email,
-                owner_password:userTo.password,
-                _owner:userTo._id
+                owner_email: userTo.email,
+                _owner: userTo._id
             });
 
             userTo.workspace_name = workspace.workspace_name;
@@ -488,26 +534,34 @@ export class UsersControllers {
       // Find the user and update their respective role
       if (!user) {
         user = await User.findOneAndUpdate({
-          _id: userId,
-          'stats.groups._group': {$ne: groupId }
-        }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
-        )
-        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
-        .populate({
-            path: 'stats.favorite_groups',
-            select: '_id group_name group_avatar'
-        });
+            _id: userId,
+            'stats.groups._group': {$ne: groupId }
+            }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
+            )
+            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            });
       } else {
         user = await User.findOneAndUpdate({
-          _id: userId,
-          'stats.groups._group': groupId 
-        }, { $inc: { 'stats.groups.$.count': 1 }
-        })
-        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
-        .populate({
-            path: 'stats.favorite_groups',
-            select: '_id group_name group_avatar'
-        });
+            _id: userId,
+            'stats.groups._group': groupId 
+            }, { $inc: { 'stats.groups.$.count': 1 }
+            })
+            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            });
       }
       // Send status 200 response
       return res.status(200).json({
@@ -586,6 +640,10 @@ export class UsersControllers {
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
             });
 
         if (user['stats'] && user['stats']['favorite_groups']) {
@@ -718,14 +776,18 @@ export class UsersControllers {
     const { iconsSidebar, userId } = req.body;
     try {
 
-      let user: any = await User.findOneAndUpdate({
-          _id: userId
-        }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
-        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
-        .populate({
-            path: 'stats.favorite_groups',
-            select: '_id group_name group_avatar'
-        });
+        let user: any = await User.findOneAndUpdate({
+            _id: userId
+            }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
+            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            });
 
         if (user['stats'] && user['stats']['favorite_groups']) {
             user['stats']['favorite_groups'].sort(function(a, b) {

@@ -1,6 +1,7 @@
 // MODULES
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthJoinWorkplaceComponent } from './auth-join-workplace/auth-join-workplace.component';
 
 // COMPONENTS
 import { AuthNewWorkplaceComponent } from './auth-new-workplace/auth-new-workplace.component';
@@ -34,11 +35,17 @@ const routes: Routes = [
     component: AuthNewWorkplaceComponent
   },
 
-    // 'reset-password' ROUTE
-    {
-      path: 'reset-password/:resetPwdId',
-      component: ResetPasswordComponent
-    }
+  // 'join-workplace' ROUTE
+  {
+    path: 'join-workplace',
+    component: AuthJoinWorkplaceComponent
+  },
+
+  // 'reset-password' ROUTE
+  {
+    path: 'reset-password/:resetPwdId',
+    component: ResetPasswordComponent
+  }
 ];
 
 // IMPORT & EXPORT

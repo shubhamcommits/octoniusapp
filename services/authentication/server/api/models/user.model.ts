@@ -6,8 +6,8 @@ const { Schema } = mongoose;
 const UserSchema = new Schema({
     _account: {
         type: Schema.Types.ObjectId,
-        required: true,
-        ref: 'Account'
+        ref: 'Account',
+        required: true
     },
     active: {
         type: Boolean,

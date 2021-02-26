@@ -13,6 +13,11 @@ const workspaceSchema = new Schema({
         unique: true,
         required: true
     },
+    access_code: {
+        type: String,
+        unique: true,
+        required: true
+    },
     workspace_avatar: {
         type: String,
         default: 'default_organization.png'
@@ -21,10 +26,6 @@ const workspaceSchema = new Schema({
         type: String,
         required: true,
         // unique : true
-    },
-    owner_password: {
-        type: String,
-        required: true
     },
     owner_first_name: {
         type: String,
