@@ -422,6 +422,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   async updateDetails() {
     // Prepare the normal  object
+
+    
+    this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
+    
     const post: any = {
       title: this.title,
       type: this.postData.type,

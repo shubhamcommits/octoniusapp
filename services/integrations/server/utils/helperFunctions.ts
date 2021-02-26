@@ -25,6 +25,10 @@ async function sendSlackNotification(data: any) {
                 return await likePost(data);
             case 'LIKECOMMENT':
                 return await likeComment(data);
+            case 'POSTMENTION':
+                return await postMention(data);
+            case 'COMMENTMENTION':
+                return await commentMention(data);
             default:
                 return "am here working";
         }
@@ -44,26 +48,23 @@ async function taskAssigned(data:any){
             return data;
         }
     });
-    const userData = await User.findById(data.assigneeId, (err, data) => {
-        if(err){
-        } else {
-            return data;
-        }
-    });
+
     const assigneeFromData = await User.findById(data._assigned_from, (err, data) => {
         if(err){
         } else {
             return data;
         }
     });
+
+    console.log("assigneeFromData",assigneeFromData);
+
     const assigneFromFullName = assigneeFromData['full_name'];
     const assigneFromProfilePic = assigneeFromData['profile_pic'];
-    const assignedToFullName = userData['full_name'];
     const postTitle = postData['title'];
     const groupId = postData['_group'];
      const comment_object = {
         name: assigneFromFullName,
-        text: `${assigneFromFullName} assigned ${assignedToFullName} on post ${postTitle}`,
+        text: `${assigneFromFullName} assigned you on ${postTitle}`,
         image: assigneFromProfilePic,
         group_id:groupId,
         post_id: data.postId,
@@ -89,7 +90,7 @@ async function statusChanged(data:any) {
         const userAssignedFullName = userAssignedData['full_name'];
         notification_text = `${userAssignedFullName}'s assignment status changed by ${userFullName} on post ${postTitle} `;
     } else {
-        notification_text = `${postTitle} post status changed by ${userFullName}`;
+        notification_text = `${postTitle} status changed by ${userFullName}`;
     }
     const comment_object = {
         name: userFullName,
@@ -162,7 +163,7 @@ async function followPost(data:any) {
 
     const comment_object = {
         name: followerName,
-        text: `${followerName} follows ${postUserFullName}'s post ${postTitle} `,
+        text: `${followerName} follows  ${postTitle} `,
         image: profile_img,
         content: '\n ',
         group_id: groupId,
@@ -252,6 +253,70 @@ async function likeComment(data:any) {
 
     return comment_object;
 
+}
+
+async function postMention(data:any) {
+
+    console.log("data in side postMention",data);
+
+    const postData = await Post.findById(data.postId, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+    
+    const assigneFromFullName = data.posted_by.first_name+' '+data.posted_by.last_name;
+    const assigneFromProfilePic = data.posted_by.profile_pic;
+    const postTitle = postData['title'];
+    const groupId = postData['_group'];
+     const comment_object = {
+        name: assigneFromFullName,
+        text: `${assigneFromFullName} mentioned ${data.mentioned_all?'all':'you'} on his post ${postTitle}`,
+        image: assigneFromProfilePic,
+        group_id:groupId,
+        post_id: data.postId,
+        content: '\n ',
+        btn_title:'view task'
+    }
+
+    return comment_object;
+}
+
+async function commentMention(data:any) {
+    
+    const commented_by_id = data.comment._commented_by;
+    const groupId = data.comment._post._group._id;
+    
+    const userData = await User.findById(commented_by_id, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+
+    const postData = await Post.findById(data.comment._post._id, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+
+    const commented_by = userData['full_name'];
+    const commented_by_profile_pic = userData['profile_pic'];
+    const postTitle = postData['title'];
+    console.log("data.comment._post",data.comment._post)
+    const comment_object = {
+        name: commented_by,
+        text: `${commented_by} mentioned ${data.comment._content_mentions.includes('all')?'all':'you'} in his comment on post ${postTitle}`,
+        image: commented_by_profile_pic,
+        content: '\n',
+        group_id: groupId,
+        post_id: data.comment._post._id,
+        btn_title:'view comment'
+    }    
+
+    return comment_object;
 }
 
 /*  =======================

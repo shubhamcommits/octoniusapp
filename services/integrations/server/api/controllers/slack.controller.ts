@@ -24,7 +24,11 @@ export class SlackController {
 
     async slackNotify (req: Request ,res:Response ,next: NextFunction) {
         
-        if(req.body.type){
+        console.log("checking",req.body.userid , req.body.userid!=null , req.body.userid?.length > 0)
+
+
+
+        if(req.body.type && req.body.userid && req.body.userid!=null && req.body.userid?.length > 0 ){
             let data = await helperFunctions.sendSlackNotification(req.body);
             console.log("data",data);
             const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
@@ -35,6 +39,7 @@ export class SlackController {
             }
             var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL); 
             // const body = JSON.parse(req.body.data);
+            console.log("image ",process.env.IMAGE_PROCESS_URL,`${process.env.IMAGE_PROCESS_URL}/${data['image']}`);
             slack.alert({
                 text: data['text'],
                 attachments: [
@@ -73,7 +78,7 @@ export class SlackController {
                 ]
             });
 
-        } else {
+        } else if(req.body.userid && req.body.userid!=null && req.body.userid?.length > 0){
             console.log("am here in else")
             const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
             var MY_SLACK_WEBHOOK_URL;
@@ -120,10 +125,11 @@ export class SlackController {
                     }
                   ]
             });
+        } else {
+            return  res.status(200).json({
+                message: 'Slack can not Sent  Notification '
+            }); 
         }
-
-      
-        
 
         return  res.status(200).json({
             message: 'Slack Sent Notification successed!'

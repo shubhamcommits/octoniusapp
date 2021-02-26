@@ -28,6 +28,7 @@ export class NotificationsController {
         try {
 
             // Call Service Function for newCommentMentions
+            
             await notificationService.newCommentMentions(comment).then(() => {
                 return res.status(200).json({
                     message: `Comment Mentions Succeeded!`,
@@ -35,46 +36,37 @@ export class NotificationsController {
             }).catch(err => {
                 return sendError(res, new Error(err), 'Internal Server Error!', 500);
             });
-            
-            const comment_mentions_ids = comment._content_mentions;
-            let comment_mentions_name_array = [];
-            for(let i = 0; i < comment_mentions_ids.length; i++){
-                const comment_mentions_data = await User.findById(comment_mentions_ids[i], (err, data) => {
-                    if(err){
-                    } else {
-                        return data;
-                    }
-                });
-                comment_mentions_name_array.push(comment_mentions_data['full_name']);
-            }
-            const commented_by_id = comment._commented_by;
-            const groupId = comment._post._group._id;
-            const userData = await User.findById(commented_by_id, (err, data) => {
-                if(err){
-                } else {
-                    return data;
-                }
-            });
-            const commented_by = userData['full_name'];
-            const commented_by_profile_pic = userData['profile_pic'];
-            const comment_content = JSON.parse(comment.content);
-            const comment_object = {
-                name: commented_by,
-                text: `${commented_by} mentions ${comment_mentions_name_array} in his comment on post ${comment._post.title}`,
-                image: commented_by_profile_pic,
-                content: '\n',
-                group_id: groupId,
-                post_id: comment._post._id,
-                btn_title:'view comment'
-            }
 
-            for(let i = 0; i < comment_mentions_ids.length; i++){
-                await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                    data: JSON.stringify(comment_object),
-                    userid:comment_mentions_ids[i]
-                  });
-                
-                await helperFunctions.sendNotificationsFeedFromService(comment_mentions_ids[i], req.body.io, true);
+            console.log("comment._content_mentions",comment._content_mentions);
+
+            if (comment._content_mentions.includes('all')) {
+
+                const userlist = await User.find({
+                    _groups: comment._post._group._id
+                }).distinct('_id');
+
+                for (let index = 0; index < userlist.length; index++) {
+                    const mentiond = userlist[index];
+                    await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                        userid: mentiond._id,
+                        comment,
+                        type:"COMMENTMENTION"
+                      });
+                    
+                }
+
+            } else {
+            
+                const comment_mentions_ids = comment._content_mentions;
+                for(let i = 0; i < comment_mentions_ids.length; i++){
+                    await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                        userid: comment_mentions_ids[i],
+                        comment,
+                        type:"COMMENTMENTION"
+                    });
+                    
+                    await helperFunctions.sendNotificationsFeedFromService(comment_mentions_ids[i], req.body.io, true);
+                }
             }
 
         } catch (err) {
@@ -115,6 +107,39 @@ export class NotificationsController {
         try {
             // Call Service function for newPostMentions
             await notificationService.newPostMentions(postId, content_mentions, groupId, posted_by);
+
+
+            if (content_mentions.includes('all')) {
+
+                const userlist = await User.find({
+                    _groups: groupId
+                }).distinct('_id');
+
+                for (let index = 0; index < userlist.length; index++) {
+                    const mentiond = userlist[index];
+                    await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                        postId,
+                        posted_by,
+                        mentioned_all:true,
+                        userid: mentiond._id,
+                        type:"POSTMENTION"
+                      });
+                    
+                }
+
+            } else {
+                for (let index = 0; index < content_mentions.length; index++) {
+                    const mentiond = content_mentions[index];
+                    await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                        postId,
+                        posted_by,
+                        mentioned_all:false,
+                        userid: mentiond,
+                        type:"POSTMENTION"
+                      });
+                    
+                }
+            }
 
             // Send status 200 response
             return res.status(200).json({
@@ -372,6 +397,8 @@ export class NotificationsController {
                 userid: posted_by,
                 type:"COMMENTED"
               });
+            
+            console.log("assigned_to",assigned_to);
 
             if (assigned_to) {
                 assigned_to.forEach(async assignee => {
@@ -413,21 +440,73 @@ export class NotificationsController {
     }
 
     async followPost(req: Request, res: Response, next: NextFunction) {
-        const { postId, posted_by, follower,io } = req.body;
+        const { postId, posted_by, assigned_to, groupId, mentions, follower,io } = req.body;
 
         try {
             // Call Service Function for followPost
             await notificationService.followPost(postId, posted_by, follower);
 
             await helperFunctions.sendNotificationsFeedFromService(posted_by, io, true);
-            await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                // data: JSON.stringify(comment_object),
-                userid:follower,
-                postId, 
-                posted_by, 
-                follower,
-                type:"FOLLOW"
-              });
+            
+            if(posted_by !== follower){
+                await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                    userid:posted_by,
+                    postId, 
+                    posted_by, 
+                    follower,
+                    type:"FOLLOW"
+                });
+            }
+
+              assigned_to.forEach(async assignee => {
+                if (posted_by !== assignee && assignee !== follower) {
+                    await notificationService.likePost(postId, assignee, follower);
+                    await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                        userid: assignee,
+                        postId, 
+                        posted_by, 
+                        follower,
+                        type:"FOLLOW"
+                      });
+                }
+            });
+
+            if (mentions.includes('all')) {
+
+                const userlist = await User.find({
+                    _groups: groupId
+                }).distinct('_id');
+
+                for (let index = 0; index < userlist.length; index++) {
+                    const mentiond = userlist[index];
+                    if(mentiond._id !== follower && mentiond._id !== posted_by){
+                        await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                            // data: JSON.stringify(comment_object),
+                            userid: mentiond,
+                            postId, 
+                            posted_by, 
+                            follower,
+                            type:"FOLLOW"
+                          });
+                    } 
+                }
+
+            } else {
+                for (let index = 0; index < mentions.length; index++) {
+                    const mentiond = mentions[index];
+                    console.log("jsdssddfskfsfs",follower,mentiond,posted_by);
+                    if(mentiond !== follower && mentiond !== posted_by){
+                        await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                            userid:mentiond._id,
+                            postId, 
+                            posted_by, 
+                            follower,
+                            type:"FOLLOW"
+                          });
+                    } 
+                    
+                }
+            }
 
             // Send status 200 response
             return res.status(200).json({
@@ -440,27 +519,89 @@ export class NotificationsController {
     }
 
     async likePost(req: Request, res: Response, next: NextFunction) {
-        const { postId, posted_by, followers, user, io } = req.body;
+
+        const { postId, posted_by,groupId, followers, user,assigned_to,mentions, io } = req.body;
+
+        console.log("req.body",req.body);
 
         try {
             // Call Service Function for likePost
             await notificationService.likePost(postId, posted_by, user);
 
             followers.forEach(async follower => {
-                if (posted_by !== follower) {
+                if (posted_by !== follower && follower !== user) {
                     await notificationService.likePost(postId, follower, user);
+                    await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                        userid: follower,
+                        postId, 
+                        posted_by,  
+                        user,
+                        type:"LIKE"
+                    });
                 }
             });
 
-            await helperFunctions.sendNotificationsFeedFromService(posted_by, io, true);
+            assigned_to.forEach(async assignee => {
+                if (posted_by !== assignee && assignee !== user) {
+                    await notificationService.likePost(postId, assignee, user);
+                    await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                        userid: assignee,
+                        postId, 
+                        posted_by,  
+                        user,
+                        type:"LIKE"
+                    });
+                }
+            });
 
-            await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                userid: user,
-                postId, 
-                posted_by,  
-                user,
-                type:"LIKE"
-              });
+            if (mentions.includes('all')) {
+
+                const userlist = await User.find({
+                    _groups: groupId
+                }).distinct('_id');
+
+                for (let index = 0; index < userlist.length; index++) {
+                    const mentiond = userlist[index];
+                    if(mentiond !== user && mentiond !== posted_by){
+                        await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                            userid: mentiond,
+                            postId, 
+                            posted_by,  
+                            user,
+                            type:"LIKE"
+                        });
+                    } 
+                }
+
+            } else {
+                for (let index = 0; index < mentions.length; index++) {
+                    const mentiond = mentions[index];
+                    if(mentiond._id !== user && mentiond._id !== posted_by){
+                        await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                            userid: mentiond._id,
+                            postId, 
+                            posted_by,  
+                            user,
+                            type:"LIKE"
+                        });
+                    } 
+                    
+                }
+            }
+
+            await helperFunctions.sendNotificationsFeedFromService(posted_by, io, true);
+            
+            if(posted_by !== user) {
+                
+                await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                    userid: posted_by,
+                    postId, 
+                    posted_by,  
+                    user,
+                    type:"LIKE"
+                });
+            }
+            
             // Send status 200 response
             return res.status(200).json({
                 message: 'Post Liked Succeeded!'
@@ -478,25 +619,38 @@ export class NotificationsController {
             // Call Service Function for likeComment
             await notificationService.likeComment(comment, comment._commented_by, user);
             await helperFunctions.sendNotificationsFeedFromService(comment._commented_by, io, true);
-            await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
-                comment, 
-                user,
-                postId,
-                userid: comment._commented_by,
-                type:"LIKECOMMENT"
-              });
+            
+            console.log("comment._post",comment._post);
 
-            let index = comment._post._assigned_to.findIndex(assignee => assignee === comment._commented_by);
-            if (comment._post._posted_by && index < 0) {
-                await notificationService.likeComment(comment, comment._post._posted_by, user);
+            if(user !== comment._commented_by){
+                await axios.post(`${process.env.INTEGRATION_SERVER_API}/slack-notify`, {
+                    comment, 
+                    user,
+                    postId,
+                    userid: comment._commented_by,
+                    type:"LIKECOMMENT"
+                });    
+            }
+            
+            let index:any;
+            if(comment._post?._assigned_to){
+                index = comment._post._assigned_to.findIndex(assignee => assignee === comment._commented_by);
+                if (comment._post._posted_by && index < 0) {
+                    await notificationService.likeComment(comment, comment._post._posted_by, user);
+                }
             }
 
-            comment.post._followers.forEach(async follower => {
-                index = comment._post._assigned_to.findIndex(assignee => assignee === follower);
-                if (index < 0 && follower !== comment._commented_by) {
-                    await notificationService.likeComment(comment, follower, user);
-                }
-            });
+
+            if(comment._post?._followers){
+                comment._post._followers.forEach(async follower => {
+                    if(comment._post._assigned_to){
+                        index = comment._post._assigned_to.findIndex(assignee => assignee === follower);
+                        if (index < 0 && follower !== comment._commented_by) {
+                            await notificationService.likeComment(comment, follower, user);
+                        }
+                    }
+                });
+            }
 
             // Send status 200 response
             return res.status(200).json({
