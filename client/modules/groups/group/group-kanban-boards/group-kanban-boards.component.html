@@ -9,7 +9,7 @@
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                 <div class="column-title">
                     <p class="text-capitalize" [ngbTooltip]="column?.title">
-                      <span class="material-icons" *ngIf="column?.project_type">history_toggle_off</span>
+                      <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type">
                       {{ column?.title | truncatetext:20 }}
                     </p>
                     <div class="inline-block">
@@ -28,7 +28,7 @@
                                   Delete
                                 </li>
                                 <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(column)">
-                                  <span class="material-icons">history_toggle_off</span>
+                                  <img src="assets/images/Icon/icon_launch_project.svg" alt="" >
                                   Launch Project
                                 </li>
                             </ul>
