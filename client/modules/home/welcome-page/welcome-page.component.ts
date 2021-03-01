@@ -138,4 +138,15 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
   storeAccountData(res: Object) {
     this.publicFunctions.sendUpdatesToAccountData(res['account']);
   }
+
+  /**
+    * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
+    * @param content
+    */
+  async openForgotPassword(content) {
+    this.utilityService.openModal(content, {
+      size: 'lg',
+      centered: true
+    });
+  }
 }

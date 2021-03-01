@@ -27,6 +27,14 @@
                 [(ngModel)]="account.password" (keyup.enter)="signIn()">
             </div>
 
+            <!-- FORGOT PASSWORD MODULE STARTS -->
+            <p (click)="openForgotPassword(content)" class="forgot-password">
+              Forgot password?</p>
+            <ng-template #content let-modal>
+              <forgot-password></forgot-password>
+            </ng-template>
+            <!-- FORGOT PASSWORD MODULE ENDS -->
+
             <button type="submit" class="btn btn-primary" (click)="signIn()">Log In</button>
           </div>
 

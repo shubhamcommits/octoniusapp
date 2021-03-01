@@ -107,14 +107,6 @@ export class AuthService {
   }
 
   /**
-   * This function is responsible to request the reset password details API from the server
-   * @param userId - userId of the current user needs to be passed as the functional parameter to be used in the request params
-   */
-  getResetPwdDetails(userId: string) {
-    return this.httpClient.get(this.AUTH_BASE_API_URL + `/passwords/reset-details/${userId}`);
-  }
-
-  /**
    * This function is responsible for requesting the reset password API from the server
    * @param resetPasswordData - needs to be passed as the functional parameter with the following @properties to be used in the request body
    * @name resetPwdId

@@ -21,10 +21,8 @@
  */
 import { AuthCommonLayoutComponent } from './auth-common-layout/auth-common-layout.component';
 import { AuthNewWorkplaceComponent } from './auth-new-workplace/auth-new-workplace.component';
-import { AuthSignInComponent } from './auth-sign-in/auth-sign-in.component';
 import { AuthSignUpComponent } from './auth-sign-up/auth-sign-up.component';
 import { AuthUserDetailsComponent } from './auth-user-details/auth-user-details.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 
 
@@ -70,17 +68,11 @@ import { AuthJoinWorkplaceComponent } from './auth-join-workplace/auth-join-work
     // AUTH JOIN WORKPLACE COMPONENT
     AuthJoinWorkplaceComponent,
 
-    // AUTH SIGNIN COMPONENT
-    AuthSignInComponent,
-
     // AUTH SIGNUP COMPONENT
     AuthSignUpComponent,
 
     // AUTH USER DETAILS COMPONENT
     AuthUserDetailsComponent,
-
-    // FORGOT PASSWORD COMPONENT
-    ForgotPasswordComponent,
 
     SelectWorkspaceComponent,
 

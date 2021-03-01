@@ -303,7 +303,7 @@ const resetPassword = async (req: Request, res: Response, next: NextFunction) =>
     const { workspace, user } = req.body;
 
     const resetPwdData = {
-      user: user._id
+      _account: user._id
     };
 
     // so this is a new document we create whenever a user requests a password reset

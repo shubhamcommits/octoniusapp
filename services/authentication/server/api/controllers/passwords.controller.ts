@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { User, Workspace, Resetpwd } from '../models';
+import { User, Workspace, Resetpwd, Account } from '../models';
 import { sendError, PasswordHelper } from '../../utils';
 import http from 'axios';
 
@@ -17,17 +17,17 @@ export class PasswordsControllers {
         try {
             // grab the resetPWD + document user + delete the resetPwd document
             const delResetPwdDoc: any = await Resetpwd.findOneAndDelete({ _id: req.body.resetPwdId })
-                .populate('user');
+                .populate('_account');
 
             if (!delResetPwdDoc) {
                 return sendError(res, new Error('Your link is not valid'), 'Your link is not valid', 401);
             }
 
             // the user that requested the password reset
-            let user = delResetPwdDoc.user;
+            let account = delResetPwdDoc._account;
 
             // delete all the other reset pasword documents of this user
-            await Resetpwd.remove({ user: user._id });
+            await Resetpwd.remove({ _account: account._id });
 
             // Encrypting user password
             const passEncrypted: any = await passwordHelper.encryptPassword(req.body.password);
@@ -38,41 +38,13 @@ export class PasswordsControllers {
             }
 
             //  save the encrypted password in the user document
-            user.password = passEncrypted.password;
+            account.password = passEncrypted.password;
 
             // Save the new user document
-            await user.save();
+            await account.save();
 
             res.status(200).json({
                 message: 'succesfully changed password'
-            });
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    };
-
-    /**
-     * This function retrieves the reset password information
-     * @param { params.userId }req 
-     * @param res 
-     */
-    async resetPasswordDetails(req: Request, res: Response) {
-        try {
-            const { userId } = req.params;
-
-            // find the document that is linked to this password reset
-            const resetPwdDoc = await Resetpwd.findOne({ _id: userId })
-                .populate('user', 'first_name last_name profile_pic');
-
-            // if we don't find a document we throw an error
-            if (!resetPwdDoc) {
-                return sendError(res, new Error('This link is no longer valid'), 'This link is no longer valid', 401);
-            }
-
-            // Send the status 200 response 
-            res.status(200).json({
-                message: 'Succesfully retrieved reset password information',
-                resetPwdDoc
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -99,22 +71,39 @@ export class PasswordsControllers {
             }
 
             // Search for the desired user
+            const account = await Account.findOne({
+                $and: [
+                    { email: email }
+                ]
+            }).select('_id email');
+
+            // Error finding the user
+            if (!account) {
+                return sendError(res, new Error('We were unable to find an account with this email combination! Please try again.'), 'We were unable to find an account with this email combination! Please try again.', 401);
+            }
+
             const user = await User.findOne({
                 $and: [
                     { _workspace: workspace._id },
-                    { email: email }
+                    { _account: account._id }
                 ]
-            })
-                .select('first_name last_name email')
+            }).select('first_name last_name');
 
             // Error finding the user
             if (!user) {
-                return sendError(res, new Error('We were unable to find a user with this email / workspace combination! Please try again.'), 'We were unable to find a user with this email / workspace combination! Please try again.', 401);
+                return sendError(res, new Error('We were unable to find a user with this email for the workspace combination! Please try again.'), 'We were unable to find a user with this email for the workspace combination! Please try again.', 401);
+            }
+
+            const userEmail = {
+                _id: account._id,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email: account.email
             }
 
             // Send email to user using mailing microservice
             http.post(`${process.env.MAILING_SERVER_API}/reset-password`, {
-                user: user,
+                user: userEmail,
                 workspace: workspace
             })
             .catch((err)=>{
