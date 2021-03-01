@@ -342,7 +342,7 @@ export class UsersControllers {
                 new: true
             }).select('first_name last_name profile_pic email role _workspace');
 
-            if (user.role == 'invite') {
+            if (user.role == 'guest') {
                 // Add new user to workspace's group
                 const groupUpdate = await Group.findOneAndUpdate({
                     group_name: 'Global',

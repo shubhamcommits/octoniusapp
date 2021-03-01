@@ -202,7 +202,7 @@ export class AuthsController {
                             full_name: `${accountData.first_name} ${accountData.last_name}`,
                             _workspace: workspace._id,
                             workspace_name: workspace.workspace_name,
-                            role: (inviteIndex < 0) ? 'member' : 'invite'
+                            role: (inviteIndex < 0) ? 'member' : 'guest'
                         };
 
                         // Create new user with all the properties of userData
@@ -258,7 +258,7 @@ export class AuthsController {
                         }
     
                         // If user is invite, does not have access to global
-                        if (user.role != 'invite') {
+                        if (user.role != 'guest') {
                             // Add new user to workspace's group
                             const groupUpdate = await Group.findOneAndUpdate({
                                 group_name: 'Global',
