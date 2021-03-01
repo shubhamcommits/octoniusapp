@@ -292,7 +292,6 @@ export class PostService {
    */
   async sendNotifications(post: any) {
 
-    console.log("sdcsssdfsfsdfs",)
     if (post._content_mentions.length !== 0) {
 
       // Create Real time Notification for all the mentions on post content
@@ -452,7 +451,6 @@ export class PostService {
       
       post = JSON.parse(post)
 
-      console.log("ddddsssaa",post);
       // Post Data Object
       var postData: any = {
         title: post.title,
@@ -698,8 +696,6 @@ export class PostService {
         { new: true }
       )
       .lean();
-    
-    console.log("scscdsdsds",post);
     
     await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-post`, {
       postId: post._id,

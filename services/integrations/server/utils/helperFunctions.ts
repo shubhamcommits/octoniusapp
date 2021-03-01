@@ -39,8 +39,6 @@ async function sendSlackNotification(data: any) {
 };
 
 async function taskAssigned(data:any){
-    
-    console.log("data in side taskAssigned",data);
 
     const postData = await Post.findById(data.postId, (err, data) => {
         if(err){
@@ -55,8 +53,6 @@ async function taskAssigned(data:any){
             return data;
         }
     });
-
-    console.log("assigneeFromData",assigneeFromData);
 
     const assigneFromFullName = assigneeFromData['full_name'];
     const assigneFromProfilePic = assigneeFromData['profile_pic'];
@@ -77,9 +73,9 @@ async function taskAssigned(data:any){
 }
 
 async function statusChanged(data:any) {
-    console.log("data in side statusChanged",data);
+    
     const postData = await Post.findById(data.postId, { _group: 1, title: 1 });
-    const userAssignedData = await User.findById(data.assigned_to, { full_name: 1 });
+    const userAssignedData = await User.findById(data?.assigned_to?._id, { full_name: 1 });
     const userData = await User.findById(data.userId, {full_name: 1, profile_pic: 1});
     const userFullName = userData['full_name'];
     const userProfilePic = userData['profile_pic'];
@@ -88,9 +84,9 @@ async function statusChanged(data:any) {
     var notification_text = '';
     if(data.assigned_to && userAssignedData){
         const userAssignedFullName = userAssignedData['full_name'];
-        notification_text = `${userAssignedFullName}'s assignment status changed by ${userFullName} on post ${postTitle} `;
+        notification_text = `${userFullName} changed status for ${postTitle} `;
     } else {
-        notification_text = `${postTitle} status changed by ${userFullName}`;
+        notification_text = `${userFullName} changed status for ${postTitle}`;
     }
     const comment_object = {
         name: userFullName,
@@ -108,7 +104,6 @@ async function statusChanged(data:any) {
 
 async function commented(data:any) {
     
-    console.log("data in side commented",data);
 
     const postData = await Post.findById({ _id: data.postId }, { _group:1, title:1 });
     const userData = await User.findById({_id: data.commented_by}, {full_name:1, profile_pic:1});
@@ -134,7 +129,6 @@ async function commented(data:any) {
 
 async function followPost(data:any) {
     
-    console.log("data in side commented",data);
     const postData = await Post.findById(data.postId, (err, data) => {
         if(err){
         } else {
@@ -163,7 +157,7 @@ async function followPost(data:any) {
 
     const comment_object = {
         name: followerName,
-        text: `${followerName} follows  ${postTitle} `,
+        text: `${followerName} is following ${postTitle} `,
         image: profile_img,
         content: '\n ',
         group_id: groupId,
@@ -175,7 +169,6 @@ async function followPost(data:any) {
 }
 
 async function likePost(data:any) {
-    console.log("data in side likePost",data);
 
     const postData = await Post.findById(data.postId, (err, data) => {
         if(err){
@@ -203,7 +196,7 @@ async function likePost(data:any) {
 
     const comment_object = {
         name: userObject.full_name,
-        text: `${userObject.full_name} likes ${postUserFullName}'s post ${postObject.title}`,
+        text: `${userObject.full_name} likes ${postUserFullName}'s ${postObject.title}`,
         image: userObject.profile_pic,
         content: '\n ',
         group_id: postObject._group,
@@ -216,7 +209,6 @@ async function likePost(data:any) {
 }
 
 async function likeComment(data:any) {
-    console.log("data in side likeComment",data);
 
     const postData = await Post.findById(data.postId, (err, data) => {
         if(err){
@@ -257,7 +249,6 @@ async function likeComment(data:any) {
 
 async function postMention(data:any) {
 
-    console.log("data in side postMention",data);
 
     const postData = await Post.findById(data.postId, (err, data) => {
         if(err){
@@ -272,7 +263,7 @@ async function postMention(data:any) {
     const groupId = postData['_group'];
      const comment_object = {
         name: assigneFromFullName,
-        text: `${assigneFromFullName} mentioned ${data.mentioned_all?'all':'you'} on his post ${postTitle}`,
+        text: `${assigneFromFullName} mentioned ${data.mentioned_all?'all':'you'} in ${postTitle}`,
         image: assigneFromProfilePic,
         group_id:groupId,
         post_id: data.postId,
@@ -305,10 +296,9 @@ async function commentMention(data:any) {
     const commented_by = userData['full_name'];
     const commented_by_profile_pic = userData['profile_pic'];
     const postTitle = postData['title'];
-    console.log("data.comment._post",data.comment._post)
     const comment_object = {
         name: commented_by,
-        text: `${commented_by} mentioned ${data.comment._content_mentions.includes('all')?'all':'you'} in his comment on post ${postTitle}`,
+        text: `${commented_by} mentioned ${data.comment._content_mentions.includes('all')?'all':'you'} in a comment to ${postTitle}`,
         image: commented_by_profile_pic,
         content: '\n',
         group_id: groupId,
