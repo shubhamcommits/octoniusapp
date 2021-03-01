@@ -79,9 +79,24 @@ export class WorkspaceController {
             // Workspace Company Members Count
             const membersCount = await User.find({
                 $and: [
-                    { _workspace: workspaceId }
+                    { _workspace: workspaceId },
+                    { role: { $ne: 'guest' }},
                 ]
             }).countDocuments();
+            // Add company members count
+            workspace.company_members_count = membersCount;
+
+            // Workspace Company Members Count
+            const guestsCount = await User.find({
+                $and: [
+                    { _workspace: workspaceId },
+                    { role: { $eq: 'guest' }},
+                ]
+            }).countDocuments();
+
+            // Add company members count
+            workspace.guests_count = guestsCount;
+
 
             // If unable to find the workspace
             if (!workspace) {
@@ -90,9 +105,6 @@ export class WorkspaceController {
 
             // Add time remaining property to maintain the trial version of the user
             workspace.time_remaining = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days');
-
-            // Add company members count
-            workspace.company_members_count = membersCount;
 
             // Send the status 200 response 
             return res.status(200).json({

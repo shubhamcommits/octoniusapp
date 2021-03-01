@@ -9,15 +9,13 @@
             <p class="card-text">Owner Name:
                 {{ workspaceData?.owner_first_name }} {{ workspaceData?.owner_last_name }}</p>
             <p class="card-text">Total Members:
-                {{ workspaceData?.company_members_count + workspaceData?.invited_users?.length }}</p>
+                {{ workspaceData?.company_members_count + workspaceData?.guests_count }}</p>
             <p class="card-text">Company Members:
                 {{ workspaceData?.company_members_count }}</p>
+            <p class="card-text">Invited Guests:
+                {{ workspaceData?.guests_count }}</p>
             <p class="card-text">Invite Access Code:
                 {{ workspaceData?.access_code }}</p>
-            <!--
-            <p class="card-text">Invited Guests:
-                {{ workspaceData?.invited_users?.length }}</p>
-            -->
         </div>
     </div>
 </div>
