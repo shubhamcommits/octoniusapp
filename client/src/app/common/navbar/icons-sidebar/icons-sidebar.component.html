@@ -1,29 +1,32 @@
 <nav id="sidebar">
   <div class="sidebar-header">
+   <!-- MENU BUTTON STARTS -->
+   <button type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
+    <i class="material-icons">menu_open</i>
+  </button>
+  <!-- MENU BUTTON ENDS -->
+
       <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
           <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
       </a>
 
      
-          <!-- MENU BUTTON STARTS -->
-          <button type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
-            <i class="material-icons">arrow_right</i>
-          </button>
-          <!-- MENU BUTTON ENDS -->
+       
      
   </div>
 
   <div class="menu-options">
       <ul class="list-unstyled components">
           <li>
-              <a [routerLink]="['/dashboard', 'myspace', 'inbox']" data-toggle="collapse">
-                  <i class="material-icons-outlined carret">home</i>
+              <a [routerLink]="['/dashboard', 'myspace', 'inbox']">
+                  <i class="material-icons-outlined">home</i>
               </a>
           </li>
-          <li> <hr style="opacity: 0.2;"></li>
+          <li> <hr class="divider-line"></li>
 
-          <li>
-             <i class="material-icons-outlined carret">dashboard</i>
+          <li class="static">
+
+            <i class="material-icons-outlined">star_outline</i>
           </li>
 
           <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
@@ -33,12 +36,14 @@
                     onerror="this.src='assets/images/icon-new-group.svg'">
             </a>
         </li>
+        <li> <hr class="divider-line"></li>
         <li>
-          <a routerLinkActive="active" routerLink="/dashboard/work/groups/all">
-            <span class="badge badge-primary">all</span>
+          <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" class="explore-work">
+            <i class="material-icons-outlined carret">groups</i>
+          
           </a>
         </li>
-        <li> <hr style="opacity: 0.2;"></li>
+        <li> <hr class="divider-line"></li>
         <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
             <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
               <i class="material-icons">settings</i>
