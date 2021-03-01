@@ -26,6 +26,7 @@ const fs = require('fs');
 
           comment = JSON.parse(comment);
           
+          console.log("comentndfvdvvsdc",comment);
           // Generate comment data
           const commentData = {
             content: comment['content'],
@@ -55,7 +56,7 @@ const fs = require('fs');
               }
             }, {
               new: true
-            }).select('title _posted_by task _content_mentions');
+            }).select('title _posted_by task _content_mentions _assigned_to _followers');
 
           followRedirects.maxBodyLength = 60 * 1024 * 1024;
           // const parsed_newComment = JSON.stringify(newComment);
@@ -116,6 +117,8 @@ const fs = require('fs');
           }
 
           comment = JSON.parse(comment)
+
+          console.log("comentndfvdvvsdc",comment);
       
           // Update comment
           const updatedComment = await Comment.findOneAndUpdate({
@@ -379,7 +382,7 @@ const fs = require('fs');
               new: true
             })
             .populate('_liked_by', 'first_name last_name')
-            .populate('_post', '_posted_by')
+            .populate('_post', '_posted_by _assigned_to _followers')
             .lean();
 
           const user = await User.findOne({

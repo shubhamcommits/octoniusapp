@@ -295,7 +295,7 @@ export class PostService {
     if (post._content_mentions.length !== 0) {
 
       // Create Real time Notification for all the mentions on post content
-      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
+      return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
         postId: post._id,
         content_mentions: post._content_mentions,
         groupId: post._group._id || post._group,
@@ -338,7 +338,7 @@ export class PostService {
         if (post._assigned_to) {
 
           // Real time notification for new task assignment
-          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
+          return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
             postId: post._id,
             assigned_to: post._assigned_to,
             groupId: post._group._id || post._group,
@@ -361,7 +361,7 @@ export class PostService {
       case 'event':
 
         // Real time notification for new event assignment
-        http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-event`, {
+        return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-event`, {
           postId: post._id,
           assigned_to: post._assigned_to,
           grouId: (post._group._id || post._group),
@@ -426,7 +426,7 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       // Send all the required emails and notifications
-      this.sendNotifications(post)
+      await this.sendNotifications(post)
 
       // Return Post Object
       return post;
@@ -448,6 +448,7 @@ export class PostService {
     try {
 
       // Parse the String to JSON Object
+      
       post = JSON.parse(post)
 
       // Post Data Object
@@ -695,11 +696,14 @@ export class PostService {
         { new: true }
       )
       .lean();
-
+    
     await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-post`, {
       postId: post._id,
       posted_by: post['_posted_by'],
       followers: post['_followers'],
+      assigned_to:post['_assigned_to'],
+      mentions:post['_content_mentions'],
+      groupId:post['_group'],
       user: userId
     });
 
@@ -765,6 +769,9 @@ export class PostService {
     await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-follow-post`, {
       postId: post._id,
       posted_by: post['_posted_by'],
+      assigned_to:post['_assigned_to'],
+      mentions:post['_content_mentions'],
+      groupId:post['_group'],
       follower: userId
     }).catch(err => sendErr(err, new Error(err), 'Internal Server Error!', 500));
 

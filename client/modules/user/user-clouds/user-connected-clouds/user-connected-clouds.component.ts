@@ -1,5 +1,6 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
   selector: 'app-user-connected-clouds',
@@ -15,7 +16,8 @@ export class UserConnectedCloudsComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private injector: Injector
+    private injector: Injector,
+    public userService: UserService,
   ) { }
 
   async ngOnInit() {

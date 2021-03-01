@@ -16,10 +16,11 @@ export class SlackAccountDetailsComponent implements OnInit {
 
   constructor(
     public userService: UserService,
-    private injector: Injector
+    private injector: Injector,
   ) { }
 
   async ngOnInit() {
+
     this.userData = await this.publicFunctions.getCurrentUser();
     this.slackUser = this.userData.integrations.is_slack_connected ? true : false
   }
@@ -32,7 +33,7 @@ export class SlackAccountDetailsComponent implements OnInit {
           this.userService.updateUser(this.userData);
           this.publicFunctions.sendUpdatesToUserData(this.userData);
           this.slackUser = false;
-          window.location.reload();
+          this.userService.slackDisconnected().emit(true);
         }
       }),
       ((err) => {

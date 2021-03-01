@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable ,EventEmitter} from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -13,6 +13,9 @@ export class UserService {
   SLACK_API_URL = environment.SLACK_BASE_API_URL;
 
   constructor(private _http: HttpClient) { }
+
+  slackDisconnectedEvent: EventEmitter<any> = new EventEmitter();
+  slackConnectedEvent: EventEmitter<any> = new EventEmitter();
 
   /* | ======================================= USER DETAILS ========================================== | */
 
@@ -298,4 +301,14 @@ export class UserService {
       action: action
     }).toPromise();
   }
+
+  slackDisconnected(){
+    return this.slackDisconnectedEvent;
+  }
+
+  slackConnected(){
+    return this.slackConnectedEvent;
+  }
+
+
 }

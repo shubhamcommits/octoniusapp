@@ -39,7 +39,7 @@ export class MembersControllers {
             })
                 .sort('_id')
                 .limit(10)
-                .select('first_name last_name email active role profile_pic created_date')
+                .select('first_name last_name email active role profile_pic created_date integrations')
                 .lean() || []
 
             // Send the status 200 response
@@ -88,7 +88,7 @@ export class MembersControllers {
             })
                 .sort('_id')
                 .limit(5)
-                .select('first_name last_name email active role profile_pic created_date')
+                .select('first_name last_name email active role profile_pic created_date integrations')
                 .lean() || []
 
             // Send the status 200 response
@@ -129,7 +129,7 @@ export class MembersControllers {
                 ]
             })
                 .sort('_id')
-                .select('first_name last_name full_name email current_position active role profile_pic created_date out_of_office')
+                .select('first_name last_name full_name email current_position active role profile_pic created_date out_of_office integrations')
                 .lean() || []
 
             // Send the status 200 response

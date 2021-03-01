@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Injector, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-connect-slack',
@@ -12,19 +13,90 @@ import { environment } from 'src/environments/environment';
 export class ConnectSlackComponent implements OnInit {
 
   slackAuthSuccessful: Boolean;
-  userData: any;
+  @Input() userData:any;
 
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     public utilityService: UtilityService,
     public userService: UserService,
-    private injector: Injector
+    private injector: Injector,
+    private router: ActivatedRoute,
+    private _router: Router,
   ) { }
 
   async ngOnInit() {
-    this.userData = await this.publicFunctions.getCurrentUser();
+
+    this.userService.slackDisconnected().subscribe(event => {
+      setTimeout(() => {
+        this.userData = this.publicFunctions.getCurrentUser();
+      }, 200);
+      this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
+    });
+
+    if(!this.userData){
+      this.userData = await this.publicFunctions.getCurrentUser();
+    }
     this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
+  
+   if(!this.slackAuthSuccessful){
+      this.router.queryParams.subscribe(params => {
+        if (params['code']) {
+          try {
+            this.utilityService.asyncNotification('Please wait, while we are authenticating the slack...', new Promise((resolve, reject) => {
+              this.userService.slackAuth(params['code'], this.userData)
+                .subscribe(() => {
+                  // Resolve the promise
+                  setTimeout(() => {
+                    this.updateUserData();
+                  }, 1000);
+                  
+                  resolve(this.utilityService.resolveAsyncPromise('Authenticated Successfully!'))
+                  
+                }),
+                ((err) => {
+                  console.log('Error occured, while authenticating for Slack', err);
+                  reject(this.utilityService.rejectAsyncPromise('Oops, an error occured while authenticating for Slack, please try again!'))
+                });
+            }));
+          }
+          catch (err) {
+            console.log('There\'s some unexpected error occured, please try again!', err);
+            this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
+          }
+        }
+      });
+    }
+    
+  
+  
+  }
+
+  
+/**
+   * This function is responsible to update user slack connection status.
+   */
+  async updateUserData(){
+    this.userData = await this.publicFunctions.getCurrentUser();
+    let newuserdata = JSON.parse(JSON.stringify(this.userData));
+    newuserdata.integrations = {"is_slack_connected" : true};
+    this.userData = newuserdata;
+    await this.userService.updateUser(this.userData);
+    await this.publicFunctions.sendUpdatesToUserData(this.userData);
+    this.slackAuthSuccessful = true;
+    this.userService.slackConnected().emit(true);
+  
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    for (const propName in changes) {
+      const change = changes[propName];
+      const to = change.currentValue;
+      if (propName === 'userData') {
+        this.userData = to;
+        this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
+      }
+    }
   }
 
   /**
