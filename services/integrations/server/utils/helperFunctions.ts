@@ -58,7 +58,8 @@ async function taskAssigned(data:any){
     const assigneFromProfilePic = assigneeFromData['profile_pic'];
     const postTitle = postData['title'];
     const groupId = postData['_group'];
-     const comment_object = {
+     
+    const notificationObject = {
         name: assigneFromFullName,
         text: `${assigneFromFullName} assigned you on ${postTitle}`,
         image: assigneFromProfilePic,
@@ -68,7 +69,7 @@ async function taskAssigned(data:any){
         btn_title:'view task'
     }
 
-    return comment_object;
+    return notificationObject;
 
 }
 
@@ -81,14 +82,15 @@ async function statusChanged(data:any) {
     const userProfilePic = userData['profile_pic'];
     const groupId = postData['_group'];
     const postTitle = postData['title'];
+    
     var notification_text = '';
+    
     if(data.assigned_to && userAssignedData){
-        const userAssignedFullName = userAssignedData['full_name'];
         notification_text = `${userFullName} changed status for ${postTitle} `;
     } else {
         notification_text = `${userFullName} changed status for ${postTitle}`;
     }
-    const comment_object = {
+    const notificationObject = {
         name: userFullName,
         text: notification_text,
         image: userProfilePic,
@@ -98,7 +100,7 @@ async function statusChanged(data:any) {
         btn_title:'view task'
     }
 
-    return comment_object;
+    return notificationObject;
     
 }
 
@@ -114,7 +116,8 @@ async function commented(data:any) {
     const postUserFullName = postUserData['full_name'];
     const userFullName = userData['full_name'];
     const userProfilePic = userData['profile_pic'];
-    const comment_object = {
+    
+    const notificationObject = {
         name: userFullName,
         text: `${userFullName} commented on ${postUserFullName}'s ${title}`,
         image: userProfilePic,
@@ -124,7 +127,7 @@ async function commented(data:any) {
         btn_title:'view comment'
     }
 
-    return comment_object;
+    return notificationObject;
 }
 
 async function followPost(data:any) {
@@ -141,21 +144,13 @@ async function followPost(data:any) {
             return data;
         }
     });
-    const postUserData = await User.findById(data.posted_by, (err, data) => {
-        if(err){
-        } else {
-            return data;
-        }
-    });
-
-    const postUserFullName = postUserData['full_name'];
-
+    
     const postTitle = postData['title'];
     const groupId = postData['_group'];
     const followerName = userData['full_name'];
     const profile_img = userData['profile_pic'];
 
-    const comment_object = {
+    const notificationObject = {
         name: followerName,
         text: `${followerName} is following ${postTitle} `,
         image: profile_img,
@@ -165,7 +160,7 @@ async function followPost(data:any) {
         btn_title:'view post'
     }
 
-    return comment_object;
+    return notificationObject;
 }
 
 async function likePost(data:any) {
@@ -194,7 +189,7 @@ async function likePost(data:any) {
 
     const userObject = userData.toObject();
 
-    const comment_object = {
+    const notificationObject = {
         name: userObject.full_name,
         text: `${userObject.full_name} likes ${postUserFullName}'s ${postObject.title}`,
         image: userObject.profile_pic,
@@ -204,7 +199,7 @@ async function likePost(data:any) {
         btn_title:'view post'
     }
 
-    return comment_object;
+    return notificationObject;
 
 }
 
@@ -233,7 +228,8 @@ async function likeComment(data:any) {
     const userFullName = userData['full_name'];
     const commentedByUserFullName = commentedByUser['full_name'];
     const profile_pic = userData['profile_pic'];
-    const comment_object = {
+    
+    const notificationObject = {
         name: userFullName,
         text: `${userFullName} likes ${commentedByUserFullName}'s comment on ${postTitle}`,
         image: profile_pic,
@@ -243,7 +239,7 @@ async function likeComment(data:any) {
         btn_title:'view post'
     }
 
-    return comment_object;
+    return notificationObject;
 
 }
 
@@ -261,7 +257,8 @@ async function postMention(data:any) {
     const assigneFromProfilePic = data.posted_by.profile_pic;
     const postTitle = postData['title'];
     const groupId = postData['_group'];
-     const comment_object = {
+     
+    const notificationObject = {
         name: assigneFromFullName,
         text: `${assigneFromFullName} mentioned ${data.mentioned_all?'all':'you'} in ${postTitle}`,
         image: assigneFromProfilePic,
@@ -271,7 +268,7 @@ async function postMention(data:any) {
         btn_title:'view task'
     }
 
-    return comment_object;
+    return notificationObject;
 }
 
 async function commentMention(data:any) {
@@ -296,7 +293,8 @@ async function commentMention(data:any) {
     const commented_by = userData['full_name'];
     const commented_by_profile_pic = userData['profile_pic'];
     const postTitle = postData['title'];
-    const comment_object = {
+    
+    const notificationObject = {
         name: commented_by,
         text: `${commented_by} mentioned ${data.comment._content_mentions.includes('all')?'all':'you'} in a comment to ${postTitle}`,
         image: commented_by_profile_pic,
@@ -306,7 +304,7 @@ async function commentMention(data:any) {
         btn_title:'view comment'
     }    
 
-    return comment_object;
+    return notificationObject;
 }
 
 /*  =======================
@@ -315,7 +313,7 @@ async function commentMention(data:any) {
  * */
 export {
 
-    // send Slack Notification
+    // parsed Notification data
     parsedNotificationData,
 
 }

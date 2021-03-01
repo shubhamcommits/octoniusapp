@@ -25,108 +25,49 @@ export class IntegrationController {
     async notify (req: Request ,res:Response ,next: NextFunction) {
         
 
-        if(req.body.type && req.body.userid && req.body.userid!=null && req.body.userid?.length > 0 ){
-            let data = await helperFunctions.parsedNotificationData(req.body);
-            const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
-            var MY_SLACK_WEBHOOK_URL;
-
-            if(user_octonius && user_octonius != null){
-                MY_SLACK_WEBHOOK_URL = user_octonius['incoming_webhook'];
-            }
-            var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL); 
-            // const body = JSON.parse(req.body.data);
-            slack.alert({
-                text: data['text'],
-                attachments: [
-                    {
-                        blocks: [
-                            {
-                                type: "context",
-                                elements: [
-                                    {
-                                        type: "image",
-                                        image_url: `${process.env.IMAGE_PROCESS_URL}/${data['image']}`,
-                                        alt_text: "avatar_img"
-                                    },
-                                    {
-                                        type: "mrkdwn",
-                                        text: data['name']
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "actions",
-                                "elements": [
-                                    {
-                                        "type": "button",
-                                        "text": {
-                                            "type": "plain_text",
-                                            "text": data['btn_title'],
-                                            "emoji": true
-                                        },
-                                        url: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${data['group_id']}&myWorkplace=false&postId=${data['post_id']}`
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            });
-
-        } else if(req.body.userid && req.body.userid!=null && req.body.userid?.length > 0){
-            const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
-            var MY_SLACK_WEBHOOK_URL;
+        try {
+            const user = await User.findById(req.body.userid);
     
-            if(user_octonius && user_octonius != null){
-                MY_SLACK_WEBHOOK_URL = user_octonius['incoming_webhook'];
-            }
-            var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL); 
-            const body = JSON.parse(req.body.data);
-            slack.alert({
-                text: body.text,
-                attachments: [
-                    {
-                        blocks: [
-                            {
-                                type: "context",
-                                elements: [
-                                    {
-                                        type: "image",
-                                        image_url: `${process.env.IMAGE_PROCESS_URL}/${body.image}`,
-                                        alt_text: "avatar_img"
-                                    },
-                                    {
-                                        type: "mrkdwn",
-                                        text: body.name
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "actions",
-                                "elements": [
-                                    {
-                                        "type": "button",
-                                        "text": {
-                                            "type": "plain_text",
-                                            "text": body.btn_title,
-                                            "emoji": true
-                                        },
-                                        url: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${body.group_id}&myWorkplace=false&postId=${body.post_id}`
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                  ]
-            });
-        } else {
+            //Slack connected or not checking..
+            const is_slack_connected = user?.integrations?.is_slack_connected || false;
+        
+            //check any integration here later
+
+            if(is_slack_connected){
+      
+                let data = await helperFunctions.parsedNotificationData(req.body);
+                
+                const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
+                
+                var MY_SLACK_WEBHOOK_URL;
+    
+                if(user_octonius && user_octonius != null){
+                   
+                    MY_SLACK_WEBHOOK_URL = user_octonius['incoming_webhook'];
+                    
+                    var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL); 
+                
+                    integrationService.sendNotificationToSlack(slack,data);
+
+                } else {
+
+                }
+ 
+            
+             
+            } else {
+                    return  res.status(200).json({
+                    message: 'Slack not connected '
+                    }); 
+                }
+        } catch (error) {
             return  res.status(200).json({
-                message: 'Slack can not Sent  Notification '
-            }); 
+                message: 'System can not sent Notification!'
+            });
         }
 
         return  res.status(200).json({
-            message: 'Slack Sent Notification successed!'
+            message: 'System Sent Notification successed!'
         });
         
     }
