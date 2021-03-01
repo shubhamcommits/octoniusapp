@@ -41,7 +41,7 @@ export class UsersService {
             // If type is 'group' invite
             if(type == 'group' && groupId && groupId != ''){
                 // Add the property to `_group`
-                invited_user._groups = [groupId];
+                invited_user._group = [groupId];
             }
 
             // check if email has already been invited

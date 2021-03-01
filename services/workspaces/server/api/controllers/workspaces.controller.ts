@@ -583,7 +583,7 @@ export class WorkspaceController {
                     new: true
                 }).select('access_code allowed_domains');
             }
-            
+
             if (addInvite && user.type == 'group') {
                 // Add user to invite users only when is a group invite
                 await usersService.inviteUserToJoin(user.email, user.workspaceId, user.type, user.groupId)
