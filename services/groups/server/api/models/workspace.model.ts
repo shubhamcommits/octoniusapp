@@ -50,8 +50,23 @@ const workspaceSchema = new Schema({
         required: true
     }],
     invited_users: [{
-        type: String,
-        required: true
+        email: {
+            type: String,
+            required: true
+        },
+        invited_date: {
+            type: Date,
+            required: true
+        },
+        type: {
+            type: String,
+            enum: ['group', 'workspace']
+        },
+        _group: {
+            type: Schema.Types.ObjectId,
+            ref: 'Group',
+            required: false
+        },
     }],
 
     // Anish edit starts here 09/04

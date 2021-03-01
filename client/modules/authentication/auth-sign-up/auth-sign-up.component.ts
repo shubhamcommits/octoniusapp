@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -32,6 +32,7 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
     private utilityService: UtilityService,
     private storageService: StorageService,
     public router: Router,
+    private route: ActivatedRoute,
     private _Injector: Injector
   ) { }
 
@@ -41,6 +42,11 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
     this.publicFunctions.sendUpdatesToRouterState({});
     this.publicFunctions.sendUpdatesToUserData({});
     this.publicFunctions.sendUpdatesToWorkspaceData({});
+
+    const email = this.route.snapshot.queryParamMap.get("email")
+    if (email) {
+      this.account.email = email;
+    }
   }
 
   /**
@@ -120,7 +126,7 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
               this.utilityService.errorNotification('Oops some error occured while signing you up, please try again!');
               this.storageService.clear();
               reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you up, please try again!'))
-            })
+            });
 
         }, (err) => {
           console.error('Error occured while signing in the user', err);

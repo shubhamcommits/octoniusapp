@@ -509,27 +509,66 @@ export class WorkspaceController {
             let { body: { user } } = req;
 
             // Check if the user data is not an empty object
-            if (JSON.stringify(user) == JSON.stringify({}) || JSON.stringify(req.body) == JSON.stringify({}))
+            if (JSON.stringify(user) == JSON.stringify({}) || JSON.stringify(req.body) == JSON.stringify({})) {
                 return res.status(400).json({
                     message: 'Bad request as the request body was empty!'
-                })
+                });
+            }
 
-            // Send the invite to workspace
-            let send = await usersService.inviteUserToJoin(
-                user.email, user.workspace_name, user.type, user.group_name
-            )
+            let addInvite = true;
+            const account = await Account.findOne({ email: user.email });
+            if (account) {
+                let userDB = await User.findOne({ _account: account._id, _workspaces: user.workspaceId });
+
+                if (userDB && user.type == 'group') {
+                    // if the user already exists just add it to the group
+
+                    // Add new user to group
+                    const groupUpdate = await Group.findOneAndUpdate({
+                        _id: user.groupId
+                    }, {
+                        $push: {
+                            _members: userDB._id
+                        },
+                        $inc: { members_count: 1 }
+                    });
+
+                    // Error updating the group
+                    if (!groupUpdate) {
+                        return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                    }
+
+                    // Add group to user's groups
+                    userDB = await User.findByIdAndUpdate({
+                        _id: userDB._id
+                    }, {
+                        $push: {
+                            _groups: user.groupId
+                        }
+                    });
+
+                    addInvite = false;
+                }
+            }
+            
+            const workspace = await Workspace.findById(user.workspaceId).select('access_code');
+            
+            if (addInvite && user.type == 'group') {
+                // Add user to invite users only when is a group invite
+                await usersService.inviteUserToJoin(user.email, user.workspaceId, user.type, user.groupId)
+            }
 
             // Send signup invite to user
-            // if(send == true)
-                http.post(`${process.env.MAILING_SERVER_API}/invite-user`, {
-                    data: {
-                        from: req['userId'],
-                        email: user.email,
-                        workspace: user.workspace_name,
-                        type: user.type,
-                        group_name: user.group_name
-                    }
-                })
+            http.post(`${process.env.MAILING_SERVER_API}/invite-user`, {
+                data: {
+                    from: req['userId'],
+                    email: user.email,
+                    access_code: workspace.access_code,
+                    workspace: user.workspace_name,
+                    type: user.type,
+                    groupId: user.groupId
+                }
+            });
 
             return res.status(200).json({
                 message: 'User has been invited!'

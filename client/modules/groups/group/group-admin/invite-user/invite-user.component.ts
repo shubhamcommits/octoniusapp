@@ -34,15 +34,15 @@ export class InviteUserComponent implements OnInit {
 
   /**
    * This function is resposible for sending the invitation email to the user to join this current workspace
-   * @param workspace_name
+   * @param workspaceId
    * @param email
    * @param group_name
    * Calls the service function via making a POST request
    */
-  inviteUser(workspace_name: string, email: string, group_name?: string){
+  inviteUser(workspaceId: string, email: string, groupId: string){
     try{
       this.utilityService.asyncNotification('Please wait, while we are sending the email...', new Promise((resolve, reject)=>{
-        this.adminService.inviteNewUserViaEmail(workspace_name, email, 'group', group_name)
+        this.adminService.inviteNewUserViaEmail(workspaceId, email, 'group', groupId)
         .subscribe((res)=>{
           this.email = '';
           resolve(this.utilityService.resolveAsyncPromise(`We have sent the invitation email at ${email} to join your group!`))

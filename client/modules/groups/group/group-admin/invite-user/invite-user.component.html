@@ -15,7 +15,7 @@
         (outputEmail)="getValidEmail($event)" class="email-search">
       </app-email-input>
 
-      <button class="btn btn-primary" (click)="inviteUser(workspaceData?.workspace_name, this.email, groupData?.group_name)">
+      <button class="btn btn-primary" (click)="inviteUser(workspaceData?._id, this.email, groupData?._id)">
         Invite to Join
       </button>
     </div>

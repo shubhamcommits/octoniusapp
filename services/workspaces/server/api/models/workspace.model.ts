@@ -62,21 +62,11 @@ const workspaceSchema = new Schema({
             type: String,
             enum: ['group', 'workspace']
         },
-        _user: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: false
-        },
         _group: {
             type: Schema.Types.ObjectId,
             ref: 'Group',
             required: false
         },
-        accepted: {
-            type: Boolean,
-            default: false,
-            required: true
-        }
     }],
     created_date: {
         type: Date,

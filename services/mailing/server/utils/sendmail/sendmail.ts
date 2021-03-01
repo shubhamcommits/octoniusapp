@@ -403,7 +403,8 @@ const joinWorkspace = async (req: Request, res: Response, next: NextFunction) =>
       fromName: from.first_name,
       fromEmail: from.email,
       workspace: workspace,
-      link: defaults.signupLink(workspace, data.email, data.type, data.group_name)
+      accessCode: data.access_code,
+      link: defaults.signupLink(data.email)
     };
 
     // Generate email body from template

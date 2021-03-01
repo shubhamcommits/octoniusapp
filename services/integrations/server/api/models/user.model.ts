@@ -51,7 +51,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         default: 'member',
-        enum: ['owner', 'member', 'admin', 'manager']
+        enum: ['owner', 'member', 'admin', 'manager', 'invite']
     },
     phone_number: {
         type: String,

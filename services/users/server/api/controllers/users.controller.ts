@@ -1,4 +1,4 @@
-import { Group, User, Workspace } from '../models';
+import { Account, Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper } from '../../utils';
 import http from 'axios';
@@ -719,6 +719,18 @@ export class UsersControllers {
             stripe.subscriptionItems.update(workspaceUpdated['billing'].subscription_item_id, {
                 quantity: usersCount
             });
+        }
+
+        const accountId = user?._account?._id || user?._account;
+        if (accountId) {
+            // Remove workspace to user account
+            const accountUpdate: any = await Account.findByIdAndUpdate({
+                    _id: accountId
+                }, {
+                    $pull: {
+                        _workspaces: workspace
+                    }
+                });
         }
 
         // Send new workspace to the mgmt portal

@@ -59,7 +59,8 @@ export class AuthsController {
             // Find the user with the given details
             const user = await User.findOne({
                 workspace_name: workspace_name,
-                _account: account._id
+                _account: account._id,
+                active: true
             });
 
             // If user is already a member, user must sign in
@@ -176,129 +177,192 @@ export class AuthsController {
                         return sendError(res, new Error('Unable to update the account, some unexpected error occured!'), 'Unable to update the account, some unexpected error occured!', 500);
                     }
 
-                    let userData: Object = {
-                        _account: accountUpdate._id,
-                        first_name: accountData.first_name,
-                        last_name: accountData.last_name,
-                        full_name: `${accountData.first_name} ${accountData.last_name}`,
-                        // Adding _workspace property to userData variable
-                        _workspace: workspace._id,
+                    // Find if the user already exist in the workplace, but is inactive
+                    let user = await User.findOne({
+                        email: accountData.email,
                         workspace_name: workspace.workspace_name,
-                        role: 'member'
-                    };
-                    // Create new user with all the properties of userData
-                    let user: any = await User.create(userData);
-
-                    // Error creating the new user
-                    if (!user) {
-                        return sendError(res, new Error('Unable to create the user, some unexpected error occured!'), 'Unable to create the user, some unexpected error occured!', 500);
-                    }
-
-                    // Add new user to workspace's group
-                    const groupUpdate = await Group.findOneAndUpdate({
-                        // TODO - check how to do when someone is invite only to specific group
-                        //group_name: (type == 'group') ? group_name : 'Global',
-                        group_name: 'Global',
-                        workspace_name: workspace.workspace_name
-                    }, {
-                        $push: {
-                            _members: user._id
-                        },
-                        $inc: { members_count: 1 }
+                        active: false
                     });
 
-                    // Error updating the group
-                    if (!groupUpdate) {
-                        return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
-                    }
-
-                    // Add group to user's groups
-                    let userUpdate: any = await User.findByIdAndUpdate({
-                        _id: user._id
-                    }, {
-                        $push: {
-                            _groups: groupUpdate._id,
-                            'stats.favorite_groups': groupUpdate._id
-                        }
-                    }, {
-                        new: true
-                    });
-
-                    // Error updating the user
-                    if (!userUpdate) {
-                        return sendError(res, new Error('Unable to update the user, some unexpected error occured!'), 'Unable to update the user, some unexpected error occured!', 500);
-                    }
-
-                    // personalGroupData variable to create group for my workplace
-                    const personalGroupData = {
-                        group_name: 'personal',
-                        _workspace: workspace._id,
-                        _admins: [user._id],
-                        workspace_name: workspace.workspace_name
-                    };
-
-                    // Check if personal group already exist
-                    const personalGroup = await Group.findOne({
-                        group_name: personalGroupData.group_name,
-                        _admins: personalGroupData._admins,
-                        workspace_name: personalGroupData.workspace_name,
-                    });
-
-                    // Send Error response if 'personal' group already exist
-                    if (!!personalGroup) {
-                        return sendError(res, new Error('Group name already taken, please choose another name!'), 'Group name already taken, please choose another name!', 409);
+                    if (user) {
+                        // As we found that user was disabled, then enable them accordingly.
+                        user = await User.findOneAndUpdate(
+                            { email: accountData.email },
+                            { $set: { active: true } },
+                            { new: true }
+                        );
                     } else {
 
-                        // Create new personal group
-                        let group = await Group.create(personalGroupData);
+                        let inviteIndex = await workspace.invited_users.findIndex(invite => {invite.email == accountData.email});
 
-                        const default_CF = {
-                            title: 'Priority',
-                            name: 'priority',
-                            values: ['Low', 'Medium', 'High']
+                        let userData: Object = {
+                            _account: accountUpdate._id,
+                            first_name: accountData.first_name,
+                            last_name: accountData.last_name,
+                            full_name: `${accountData.first_name} ${accountData.last_name}`,
+                            _workspace: workspace._id,
+                            workspace_name: workspace.workspace_name,
+                            role: (inviteIndex < 0) ? 'member' : 'invite'
                         };
-            
-                        // Find the group and update their respective group avatar
-                        group = await Group.findByIdAndUpdate({
-                            _id: group._id
-                        }, {
-                            //custom_fields: newCustomField
-                            $push: { "custom_fields": default_CF }
-                        }, {
-                            new: true
-                        });
-                            
 
-                        // Add personal group to user's groups
-                        user = await User.findByIdAndUpdate({
-                            _id: personalGroupData._admins,
-                            _workspace: personalGroupData._workspace
+                        // Create new user with all the properties of userData
+                        user = await User.create(userData);
+    
+                        // Error creating the new user
+                        if (!user) {
+                            return sendError(res, new Error('Unable to create the user, some unexpected error occured!'), 'Unable to create the user, some unexpected error occured!', 500);
+                        }
+
+                        // Since user is already a member now, remove it from invite members of workspace
+                        workspace = await Workspace.findOneAndUpdate(
+                            { _id: workspace._id },
+                            { $pull: { invited_users: { email: accountData.email }}},
+                            { multi: true }
+                        );
+                        
+                        // In case user was invited to multiple groups before the account was created
+                        inviteIndex = await workspace.invited_users.findIndex(invite => {invite.email == accountData.email});
+                        while (inviteIndex >= 0) {
+                            const group = workspace.infited_users[inviteIndex]._group;
+                            // Add new user to group
+                            const groupUpdate = await Group.findOneAndUpdate({
+                                _id: group?._id || group
+                            }, {
+                                $push: {
+                                    _members: user._id
+                                },
+                                $inc: { members_count: 1 }
+                            });
+        
+                            // Error updating the group
+                            if (!groupUpdate) {
+                                return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                            }
+        
+                            // Add group to user's groups
+                            user = await User.findByIdAndUpdate({
+                                _id: user._id
+                            }, {
+                                $push: {
+                                    _groups: group?._id || group
+                                }
+                            });
+
+                            workspace = await Workspace.findOneAndUpdate(
+                                { _id: workspace._id },
+                                { $pull: { invited_users: { email: accountData.email }}},
+                                { multi: true }
+                            );
+
+                            inviteIndex = await workspace.invited_users.findIndex(invite => {invite.email == accountData.email});
+                        }
+    
+                        // If user is invite, does not have access to global
+                        if (user.role != 'invite') {
+                            // Add new user to workspace's group
+                            const groupUpdate = await Group.findOneAndUpdate({
+                                group_name: 'Global',
+                                workspace_name: workspace.workspace_name
+                            }, {
+                                $push: {
+                                    _members: user._id
+                                },
+                                $inc: { members_count: 1 }
+                            });
+        
+                            // Error updating the group
+                            if (!groupUpdate) {
+                                return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                            }
+        
+                            // Add group to user's groups
+                            user = await User.findByIdAndUpdate({
+                                _id: user._id
+                            }, {
+                                $push: {
+                                    _groups: groupUpdate._id,
+                                    'stats.favorite_groups': groupUpdate._id
+                                }
+                            }, {
+                                new: true
+                            });
+        
+                            // Error updating the user
+                            if (!user) {
+                                return sendError(res, new Error('Unable to update the user, some unexpected error occured!'), 'Unable to update the user, some unexpected error occured!', 500);
+                            }
+                        }
+
+                        // personalGroupData variable to create group for my workplace
+                        const personalGroupData = {
+                            group_name: 'personal',
+                            _workspace: workspace._id,
+                            _admins: [user._id],
+                            workspace_name: workspace.workspace_name
+                        };
+    
+                        // Check if personal group already exist
+                        const personalGroup = await Group.findOne({
+                            group_name: personalGroupData.group_name,
+                            _admins: personalGroupData._admins,
+                            workspace_name: personalGroupData.workspace_name,
+                        });
+    
+                        // Send Error response if 'personal' group already exist
+                        if (!!personalGroup) {
+                            return sendError(res, new Error('Group name already taken, please choose another name!'), 'Group name already taken, please choose another name!', 409);
+                        } else {
+    
+                            // Create new personal group
+                            let group = await Group.create(personalGroupData);
+    
+                            const default_CF = {
+                                title: 'Priority',
+                                name: 'priority',
+                                values: ['Low', 'Medium', 'High']
+                            };
+                
+                            // Find the group and update their respective group avatar
+                            group = await Group.findByIdAndUpdate({
+                                _id: group._id
+                            }, {
+                                //custom_fields: newCustomField
+                                $push: { "custom_fields": default_CF }
+                            }, {
+                                new: true
+                            });
+    
+                            // Add personal group to user's groups
+                            user = await User.findByIdAndUpdate({
+                                _id: personalGroupData._admins,
+                                _workspace: personalGroupData._workspace
+                            }, {
+                                $push: {
+                                    _groups: group._id
+                                },
+                                $set: {
+                                    _private_group: group
+                                }
+                            }, {
+                                new: true
+                            });
+                        }
+    
+                        // Add new user to workspace members and remove user email
+                        workspace = await Workspace.findByIdAndUpdate({
+                            _id: workspace._id
                         }, {
                             $push: {
-                                _groups: group._id
-                            },
-                            $set: {
-                                _private_group: group
+                                members: user._id
                             }
                         }, {
                             new: true
-                        });
-                    }
-
-                    // Add new user to workspace members and remove user email
-                    workspace = await Workspace.findByIdAndUpdate({
-                        _id: workspace._id
-                    }, {
-                        $push: {
-                            members: user._id
+                        })
+    
+                        // Error updating the Workspace and removing the user email
+                        if (!workspace) {
+                            return sendError(res, new Error('Unable to update the workspace, some unexpected error occured!'), 'Unable to update the workspace, some unexpected error occured!', 500);
                         }
-                    }, {
-                        new: true
-                    })
-
-                    // Error updating the Workspace and removing the user email
-                    if (!workspace) {
-                        return sendError(res, new Error('Unable to update the workspace, some unexpected error occured!'), 'Unable to update the workspace, some unexpected error occured!', 500);
                     }
 
                     // Generate new token and logs the auth record
@@ -307,7 +371,7 @@ export class AuthsController {
                     // Send signup confirmation email using mailing microservice
                     http.post(`${process.env.MAILING_SERVER_API}/join-workspace`, {
                         // TODO - send the proper data
-                        user: userUpdate
+                        user: user
                     })
 
                     // Count all the users present inside the workspace

@@ -234,11 +234,6 @@ export class MembersControllers {
 
             // User found
             if (user) {
-                // TODO Check if this part is needed
-                // Remove from workspace
-                // const workspace = await Workspace.findByIdAndUpdate(workspaceId, {
-                //     $pull: { "invited_users._user": userId, "members": userId },
-                // }, { new: true });
                 const workspace = await Workspace.findById(workspaceId);
 
                 // Count all the users present inside the workspace
@@ -258,6 +253,8 @@ export class MembersControllers {
                 }, {
                     'billing.quantity': usersCount
                 });
+
+                // TODO - Send updates to mgmt portal
             } else {
                 return sendError(res, new Error("No Such User"), 'No Such User!', 400);
             }

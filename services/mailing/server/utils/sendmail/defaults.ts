@@ -20,8 +20,8 @@ export = {
     fromName: 'Team Octonius',
     replyToEmail: 'support@octonius.com',
     replyToName: 'Support',
-    signupLink(workplace, email?, type?, group?) {
-        return `${process.env.PROTOCOL}://${process.env.DOMAIN}/authentication/sign-up${workplace ? `?workspace=${workplace}` : ''}${email ? `&email=${email}` : ''}${type ? `&type=${type}` : ''}${group ? `&group=${group}` : ''}`;
+    signupLink(email) {
+        return `${process.env.PROTOCOL}://${process.env.DOMAIN}/authentication/sign-up${email ? `?email=${email}` : ''}`;
     },
     signinLink: generateLink('signin'),
     resetPwdLink: generateLink('authentication/reset-password'),
