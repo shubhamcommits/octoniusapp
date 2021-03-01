@@ -1,14 +1,14 @@
-import { SlackService } from "../api/service"
+import { IntegrationService } from "../api/service"
 import { Post, Comment, User } from "../api/models";
 
 // Create Notifications controller class
-const slackService = new SlackService()
+const integrationService = new IntegrationService()
 
 /**
- * This function is responsible for generating the notifications feed
+ * This function is responsible for generating the notifications Object
  * @param requestbody
  */
-async function sendSlackNotification(data: any) {
+async function parsedNotificationData(data: any) {
     try {
         const type = data?.type;
 
@@ -316,6 +316,6 @@ async function commentMention(data:any) {
 export {
 
     // send Slack Notification
-    sendSlackNotification,
+    parsedNotificationData,
 
 }

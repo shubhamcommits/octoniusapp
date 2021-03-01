@@ -1,6 +1,6 @@
 import e, { Response, Request, NextFunction } from "express";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
-import { SlackService } from "../service";
+import { IntegrationService } from "../service";
 import moment from 'moment/moment'
 import { Group, Column, Auth, SlackAuth, User } from '../models';
 import { Auths, sendError } from '../../utils';
@@ -11,22 +11,22 @@ import { connect } from "mongoose";
 import { helperFunctions } from '../../utils';
 
 // Creating Service class in order to build wrapper class
-const slackService = new SlackService()
+const integrationService = new IntegrationService()
 
 /*  ===============================
- *  -- Slack CONTROLLERS --
+ *  -- Integration CONTROLLERS --
  *  ===============================
  */
 // Authentication Utilities Class
 const auths = new Auths();
 
-export class SlackController {
+export class IntegrationController {
 
-    async slackNotify (req: Request ,res:Response ,next: NextFunction) {
+    async notify (req: Request ,res:Response ,next: NextFunction) {
         
 
         if(req.body.type && req.body.userid && req.body.userid!=null && req.body.userid?.length > 0 ){
-            let data = await helperFunctions.sendSlackNotification(req.body);
+            let data = await helperFunctions.parsedNotificationData(req.body);
             const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
             var MY_SLACK_WEBHOOK_URL;
 

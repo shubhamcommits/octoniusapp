@@ -1,9 +1,9 @@
-import { SlackService } from "./slack.service";
+import { IntegrationService } from "./integration.service";
 
 /*  ==========================
  *  -- SERVICE EXPORTS --
  *  ==========================
  * */
 export {
-    SlackService as SlackService
+    IntegrationService as IntegrationService
 }

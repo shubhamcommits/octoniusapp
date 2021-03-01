@@ -1,9 +1,9 @@
-import { SlackController } from "./slack.controller";
+import { IntegrationController } from "./integration.controller";
 
 /*  ==========================
  *  -- CONTROLLERS EXPORTS --
  *  ==========================
  * */
 export {
-    SlackController as SlackController
+    IntegrationController as IntegrationController
 }
