@@ -193,68 +193,68 @@ export class AuthsController {
                         );
                     } else {
 
-                        let inviteIndex = await workspace.invited_users.findIndex(invite => {invite.email == accountData.email});
+                        let groups = workspace.invited_users
+                            .filter(invite => invite.email == accountData.email)
+                            .map(invite => invite._group);
 
-                        let userData: Object = {
-                            _account: accountUpdate._id,
-                            first_name: accountData.first_name,
-                            last_name: accountData.last_name,
-                            full_name: `${accountData.first_name} ${accountData.last_name}`,
-                            _workspace: workspace._id,
-                            workspace_name: workspace.workspace_name,
-                            role: (inviteIndex < 0) ? 'member' : 'guest'
-                        };
+                        if (groups && groups.length > 0) {
 
-                        // Create new user with all the properties of userData
-                        user = await User.create(userData);
+                            let userData: Object = {
+                                _account: accountUpdate._id,
+                                first_name: accountData.first_name,
+                                last_name: accountData.last_name,
+                                full_name: `${accountData.first_name} ${accountData.last_name}`,
+                                _workspace: workspace._id,
+                                workspace_name: workspace.workspace_name,
+                                role: 'guest'
+                            };
+
+                            // Create new user with all the properties of userData
+                            user = await User.create(userData);
+
+                            for (let i = 0; i < groups.length; i++) {
+                                // Add new user to group
+                                const groupUpdate = await Group.findOneAndUpdate({
+                                    _id: groups[i]._id || groups[i]
+                                }, {
+                                    $push: {
+                                        _members: user._id
+                                    },
+                                    $inc: { members_count: 1 }
+                                });
+            
+                                // Error updating the group
+                                if (!groupUpdate) {
+                                    return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                                }
+            
+                                // Add group to user's groups
+                                user = await User.findByIdAndUpdate({
+                                    _id: user._id
+                                }, {
+                                    $push: {
+                                        _groups: groups[i]._id || groups[i]
+                                    }
+                                });
+                            }
+                        } else {
+                            let userData: Object = {
+                                _account: accountUpdate._id,
+                                first_name: accountData.first_name,
+                                last_name: accountData.last_name,
+                                full_name: `${accountData.first_name} ${accountData.last_name}`,
+                                _workspace: workspace._id,
+                                workspace_name: workspace.workspace_name,
+                                role: 'member'
+                            };
+
+                            // Create new user with all the properties of userData
+                            user = await User.create(userData);
+                        }
     
                         // Error creating the new user
                         if (!user) {
                             return sendError(res, new Error('Unable to create the user, some unexpected error occured!'), 'Unable to create the user, some unexpected error occured!', 500);
-                        }
-
-                        // Since user is already a member now, remove it from invite members of workspace
-                        workspace = await Workspace.findOneAndUpdate(
-                            { _id: workspace._id },
-                            { $pull: { invited_users: { email: accountData.email }}},
-                            { multi: true }
-                        );
-                        
-                        // In case user was invited to multiple groups before the account was created
-                        inviteIndex = await workspace.invited_users.findIndex(invite => {invite.email == accountData.email});
-                        while (inviteIndex >= 0) {
-                            const group = workspace.infited_users[inviteIndex]._group;
-                            // Add new user to group
-                            const groupUpdate = await Group.findOneAndUpdate({
-                                _id: group?._id || group
-                            }, {
-                                $push: {
-                                    _members: user._id
-                                },
-                                $inc: { members_count: 1 }
-                            });
-        
-                            // Error updating the group
-                            if (!groupUpdate) {
-                                return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
-                            }
-        
-                            // Add group to user's groups
-                            user = await User.findByIdAndUpdate({
-                                _id: user._id
-                            }, {
-                                $push: {
-                                    _groups: group?._id || group
-                                }
-                            });
-
-                            workspace = await Workspace.findOneAndUpdate(
-                                { _id: workspace._id },
-                                { $pull: { invited_users: { email: accountData.email }}},
-                                { multi: true }
-                            );
-
-                            inviteIndex = await workspace.invited_users.findIndex(invite => {invite.email == accountData.email});
                         }
     
                         // If user is invite, does not have access to global

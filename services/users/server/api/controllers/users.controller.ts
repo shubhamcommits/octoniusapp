@@ -347,7 +347,7 @@ export class UsersControllers {
                 role: role
             }, {
                 new: true
-            }).select('first_name last_name profile_pic email role _workspace');
+            }).select('first_name last_name profile_pic email role _workspace _account');
 
             if (user.role == 'guest') {
                 // Add new user to workspace's group
@@ -378,6 +378,13 @@ export class UsersControllers {
                 }, {
                     new: true
                 });
+
+                // Since user is already a member now, remove it from invite members of workspace
+                const workspace = await Workspace.findOneAndUpdate(
+                    { _id: user._workspace },
+                    { $pull: { invited_users: { email: user._account.email }}},
+                    { multi: true }
+                );
             } else {
                 // Find the user and update their respective role
                 user = await User.findOneAndUpdate({

@@ -563,7 +563,26 @@ export class WorkspaceController {
                 }
             }
             
-            const workspace = await Workspace.findById(user.workspaceId).select('access_code');
+            const domain = user.email.split('@')[1];
+            let workspace = await Workspace.findOne({
+                $and: [
+                    { _id: user.workspaceId },
+                    { allowed_domains: domain }
+                ]
+            }).select('access_code allowed_domains');
+
+            if (!workspace) {
+                // Add the domain to the 'allowed_domains' set 
+                workspace = await Workspace.findOneAndUpdate({
+                    _id: user.workspaceId
+                }, {
+                    $addToSet: {
+                        allowed_domains: domain
+                    }
+                }, {
+                    new: true
+                }).select('access_code allowed_domains');
+            }
             
             if (addInvite && user.type == 'group') {
                 // Add user to invite users only when is a group invite
