@@ -262,7 +262,7 @@ export class AuthsController {
                             // Add new user to workspace's group
                             const groupUpdate = await Group.findOneAndUpdate({
                                 group_name: 'Global',
-                                workspace_name: workspace.workspace_name
+                                _workspace: workspace._id
                             }, {
                                 $push: {
                                     _members: user._id

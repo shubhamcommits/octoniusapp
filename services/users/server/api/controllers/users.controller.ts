@@ -330,8 +330,8 @@ export class UsersControllers {
         const { userId, role } = req.body;
         try {
 
-            // Find the user and update their respective role
-            const user: any = await User.findOneAndUpdate({
+            // find the user
+            let user: any = await User.findOne({
                 $and: [
                     { _id: userId },
                     { active: true }
@@ -340,7 +340,56 @@ export class UsersControllers {
                 role: role
             }, {
                 new: true
-            }).select('first_name last_name profile_pic email role');
+            }).select('first_name last_name profile_pic email role _workspace');
+
+            if (user.role == 'invite') {
+                // Add new user to workspace's group
+                const groupUpdate = await Group.findOneAndUpdate({
+                    group_name: 'Global',
+                    _workspace: user._workspace
+                }, {
+                    $push: {
+                        _members: user._id
+                    },
+                    $inc: { members_count: 1 }
+                });
+
+                // Error updating the group
+                if (!groupUpdate) {
+                    return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                }
+
+                // Add group to user's groups
+                user = await User.findByIdAndUpdate({
+                    _id: user._id
+                }, {
+                    $push: {
+                        _groups: groupUpdate._id,
+                        'stats.favorite_groups': groupUpdate._id
+                    },
+                    role: role
+                }, {
+                    new: true
+                });
+            } else {
+                // Find the user and update their respective role
+                user = await User.findOneAndUpdate({
+                    $and: [
+                        { _id: userId },
+                        { active: true }
+                    ]
+                }, {
+                    role: role
+                }, {
+                    new: true
+                }).select('first_name last_name profile_pic email role _workspace');
+            }
+
+            // Error updating the user
+            if (!user) {
+                return sendError(res, new Error('Unable to update the user, some unexpected error occured!'), 'Unable to update the user, some unexpected error occured!', 500);
+            }
+
             let groupsUpdate;
             if(role === 'member') {
                 groupsUpdate = await Group.updateMany({
