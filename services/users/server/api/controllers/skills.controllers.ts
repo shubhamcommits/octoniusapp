@@ -28,7 +28,7 @@ export class SkillsControllers {
                     { active: true }
                 ]
             })
-                .select('skills');
+                .select('skills integrations');
 
             // If user not found
             if (!user) {
@@ -73,7 +73,7 @@ export class SkillsControllers {
             }, {
                 new: true
             })
-                .select('skills full_name email active _id');
+                .select('skills full_name email active _id integrations');
 
             // If unable to update the user skills
             if (!user) {
@@ -118,7 +118,7 @@ export class SkillsControllers {
             }, {
                 new: true
             })
-                .select('skills full_name email active _id');
+                .select('skills full_name email active _id integrations');
 
             // If unable to update the user skills
             if (!user) {

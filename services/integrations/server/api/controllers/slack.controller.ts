@@ -1,4 +1,4 @@
-import { Response, Request, NextFunction } from "express";
+import e, { Response, Request, NextFunction } from "express";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { SlackService } from "../service";
 import moment from 'moment/moment'
@@ -8,6 +8,7 @@ import FormData from 'form-data';
 // import { validateId } from "../../utils/helperFunctions";
 import axios from "axios";
 import { connect } from "mongoose";
+import { helperFunctions } from '../../utils';
 
 // Creating Service class in order to build wrapper class
 const slackService = new SlackService()
@@ -22,56 +23,112 @@ const auths = new Auths();
 export class SlackController {
 
     async slackNotify (req: Request ,res:Response ,next: NextFunction) {
+        
 
-        const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
-        var MY_SLACK_WEBHOOK_URL;
+        if(req.body.type && req.body.userid && req.body.userid!=null && req.body.userid?.length > 0 ){
+            let data = await helperFunctions.sendSlackNotification(req.body);
+            const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
+            var MY_SLACK_WEBHOOK_URL;
 
-        if(user_octonius && user_octonius != null){
-            MY_SLACK_WEBHOOK_URL = user_octonius['incoming_webhook'];
-        }
-        var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL); 
-        const body = JSON.parse(req.body.data);
-        slack.alert({
-            text: body.text,
-            attachments: [
-                {
-                    blocks: [
-                        {
-                            type: "context",
-                            elements: [
-                                {
-                                    type: "image",
-                                    image_url: `${process.env.IMAGE_PROCESS_URL}/${body.image}`,
-                                    alt_text: "avatar_img"
-                                },
-                                {
-                                    type: "mrkdwn",
-                                    text: body.name
-                                }
-                            ]
-                        },
-                        {
-                            "type": "actions",
-                            "elements": [
-                                {
-                                    "type": "button",
-                                    "text": {
-                                        "type": "plain_text",
-                                        "text": body.btn_title,
-                                        "emoji": true
+            if(user_octonius && user_octonius != null){
+                MY_SLACK_WEBHOOK_URL = user_octonius['incoming_webhook'];
+            }
+            var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL); 
+            // const body = JSON.parse(req.body.data);
+            slack.alert({
+                text: data['text'],
+                attachments: [
+                    {
+                        blocks: [
+                            {
+                                type: "context",
+                                elements: [
+                                    {
+                                        type: "image",
+                                        image_url: `${process.env.IMAGE_PROCESS_URL}/${data['image']}`,
+                                        alt_text: "avatar_img"
                                     },
-                                    url: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${body.group_id}&myWorkplace=false&postId=${body.post_id}`
-                                }
-                            ]
-                        }
-                    ]
-                }
-              ]
-        });
+                                    {
+                                        type: "mrkdwn",
+                                        text: data['name']
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "actions",
+                                "elements": [
+                                    {
+                                        "type": "button",
+                                        "text": {
+                                            "type": "plain_text",
+                                            "text": data['btn_title'],
+                                            "emoji": true
+                                        },
+                                        url: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${data['group_id']}&myWorkplace=false&postId=${data['post_id']}`
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            });
+
+        } else if(req.body.userid && req.body.userid!=null && req.body.userid?.length > 0){
+            const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
+            var MY_SLACK_WEBHOOK_URL;
+    
+            if(user_octonius && user_octonius != null){
+                MY_SLACK_WEBHOOK_URL = user_octonius['incoming_webhook'];
+            }
+            var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL); 
+            const body = JSON.parse(req.body.data);
+            slack.alert({
+                text: body.text,
+                attachments: [
+                    {
+                        blocks: [
+                            {
+                                type: "context",
+                                elements: [
+                                    {
+                                        type: "image",
+                                        image_url: `${process.env.IMAGE_PROCESS_URL}/${body.image}`,
+                                        alt_text: "avatar_img"
+                                    },
+                                    {
+                                        type: "mrkdwn",
+                                        text: body.name
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "actions",
+                                "elements": [
+                                    {
+                                        "type": "button",
+                                        "text": {
+                                            "type": "plain_text",
+                                            "text": body.btn_title,
+                                            "emoji": true
+                                        },
+                                        url: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${body.group_id}&myWorkplace=false&postId=${body.post_id}`
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                  ]
+            });
+        } else {
+            return  res.status(200).json({
+                message: 'Slack can not Sent  Notification '
+            }); 
+        }
 
         return  res.status(200).json({
             message: 'Slack Sent Notification successed!'
         });
+        
     }
 
     async slackWebhook(req: Request , res: Response, next: NextFunction) {
@@ -116,15 +173,20 @@ export class SlackController {
         const token = user_auth['token'];
         var isvalidToken = true;
 
-        await jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
-            if (err || !decoded) {
-                isvalidToken = false;
-                sendError(res, err, 'Unauthorized request, it must have a valid authorization token!', 500);
-            } else {
-                // Assigning and feeding the userId into the req object
-                BearerToken = BearerToken+token;
-            }
-        });
+        if(token && token != null){
+            jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+                if (err || !decoded) {
+                    isvalidToken = false;
+                    sendError(res, err, 'Unauthorized request, it must have a valid authorization token!', 500);
+                } else {
+                    // Assigning and feeding the userId into the req object
+                    BearerToken = BearerToken+token;
+                }
+            });
+        } else {
+            isvalidToken = false;
+        }
+        
 
         if(!isvalidToken){
             const user = user_octonius['_user']._id;

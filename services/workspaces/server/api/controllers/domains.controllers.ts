@@ -153,7 +153,7 @@ export class DomainsControllers {
                     { _workspace: workspace._id },
                     { email: { $regex: new RegExp(domain.toString(), 'i') } }
                 ]
-            }).select('first_name last_name email')
+            }).select('first_name last_name email integrations')
                 .lean();
 
             // Generate an array of user ids
