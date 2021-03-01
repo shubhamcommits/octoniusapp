@@ -1,18 +1,12 @@
 <div class="container">
     <div class="row">
-        <ng-container *ngIf="userData && workspaceData">
+        <ng-container *ngIf="userData && workspaceData && userData?.role != 'guest'">
             <app-create-group
                 class="col-md-3"
                 [userData]="userData"
                 [workspaceData]="workspaceData"
                 (group)="receiveGroupUpdates($event)">
             </app-create-group>
-            <!-- <app-create-group class="col-md-4" [userData]="userData" [state]="'agora'" [workspaceData]="workspaceData"
-                (group)="receiveGroupUpdates($event)">
-            </app-create-group>
-            <app-create-group class="col-md-4" [userData]="userData" [state]="'smart'" [workspaceData]="workspaceData"
-                (group)="receiveGroupUpdates($event)">
-            </app-create-group> -->
         </ng-container>
     </div>
     <!-- INFINITE SCROLL STARTS FOR USER GROUPS -->
