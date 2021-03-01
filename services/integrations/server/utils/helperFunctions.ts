@@ -1,14 +1,14 @@
-import { SlackService } from "../api/service"
+import { IntegrationService } from "../api/service"
 import { Post, Comment, User } from "../api/models";
 
 // Create Notifications controller class
-const slackService = new SlackService()
+const integrationService = new IntegrationService()
 
 /**
- * This function is responsible for generating the notifications feed
+ * This function is responsible for generating the notifications Object
  * @param requestbody
  */
-async function sendSlackNotification(data: any) {
+async function parsedNotificationData(data: any) {
     try {
         const type = data?.type;
 
@@ -39,8 +39,6 @@ async function sendSlackNotification(data: any) {
 };
 
 async function taskAssigned(data:any){
-    
-    console.log("data in side taskAssigned",data);
 
     const postData = await Post.findById(data.postId, (err, data) => {
         if(err){
@@ -56,13 +54,12 @@ async function taskAssigned(data:any){
         }
     });
 
-    console.log("assigneeFromData",assigneeFromData);
-
     const assigneFromFullName = assigneeFromData['full_name'];
     const assigneFromProfilePic = assigneeFromData['profile_pic'];
     const postTitle = postData['title'];
     const groupId = postData['_group'];
-     const comment_object = {
+     
+    const notificationObject = {
         name: assigneFromFullName,
         text: `${assigneFromFullName} assigned you on ${postTitle}`,
         image: assigneFromProfilePic,
@@ -72,27 +69,28 @@ async function taskAssigned(data:any){
         btn_title:'view task'
     }
 
-    return comment_object;
+    return notificationObject;
 
 }
 
 async function statusChanged(data:any) {
-    console.log("data in side statusChanged",data);
+    
     const postData = await Post.findById(data.postId, { _group: 1, title: 1 });
-    const userAssignedData = await User.findById(data.assigned_to, { full_name: 1 });
+    const userAssignedData = await User.findById(data?.assigned_to?._id, { full_name: 1 });
     const userData = await User.findById(data.userId, {full_name: 1, profile_pic: 1});
     const userFullName = userData['full_name'];
     const userProfilePic = userData['profile_pic'];
     const groupId = postData['_group'];
     const postTitle = postData['title'];
+    
     var notification_text = '';
+    
     if(data.assigned_to && userAssignedData){
-        const userAssignedFullName = userAssignedData['full_name'];
-        notification_text = `${userAssignedFullName}'s assignment status changed by ${userFullName} on post ${postTitle} `;
+        notification_text = `${userFullName} changed status for ${postTitle} `;
     } else {
-        notification_text = `${postTitle} status changed by ${userFullName}`;
+        notification_text = `${userFullName} changed status for ${postTitle}`;
     }
-    const comment_object = {
+    const notificationObject = {
         name: userFullName,
         text: notification_text,
         image: userProfilePic,
@@ -102,13 +100,12 @@ async function statusChanged(data:any) {
         btn_title:'view task'
     }
 
-    return comment_object;
+    return notificationObject;
     
 }
 
 async function commented(data:any) {
     
-    console.log("data in side commented",data);
 
     const postData = await Post.findById({ _id: data.postId }, { _group:1, title:1 });
     const userData = await User.findById({_id: data.commented_by}, {full_name:1, profile_pic:1});
@@ -119,7 +116,8 @@ async function commented(data:any) {
     const postUserFullName = postUserData['full_name'];
     const userFullName = userData['full_name'];
     const userProfilePic = userData['profile_pic'];
-    const comment_object = {
+    
+    const notificationObject = {
         name: userFullName,
         text: `${userFullName} commented on ${postUserFullName}'s ${title}`,
         image: userProfilePic,
@@ -129,12 +127,11 @@ async function commented(data:any) {
         btn_title:'view comment'
     }
 
-    return comment_object;
+    return notificationObject;
 }
 
 async function followPost(data:any) {
     
-    console.log("data in side commented",data);
     const postData = await Post.findById(data.postId, (err, data) => {
         if(err){
         } else {
@@ -147,23 +144,15 @@ async function followPost(data:any) {
             return data;
         }
     });
-    const postUserData = await User.findById(data.posted_by, (err, data) => {
-        if(err){
-        } else {
-            return data;
-        }
-    });
-
-    const postUserFullName = postUserData['full_name'];
-
+    
     const postTitle = postData['title'];
     const groupId = postData['_group'];
     const followerName = userData['full_name'];
     const profile_img = userData['profile_pic'];
 
-    const comment_object = {
+    const notificationObject = {
         name: followerName,
-        text: `${followerName} follows  ${postTitle} `,
+        text: `${followerName} is following ${postTitle} `,
         image: profile_img,
         content: '\n ',
         group_id: groupId,
@@ -171,11 +160,10 @@ async function followPost(data:any) {
         btn_title:'view post'
     }
 
-    return comment_object;
+    return notificationObject;
 }
 
 async function likePost(data:any) {
-    console.log("data in side likePost",data);
 
     const postData = await Post.findById(data.postId, (err, data) => {
         if(err){
@@ -201,9 +189,9 @@ async function likePost(data:any) {
 
     const userObject = userData.toObject();
 
-    const comment_object = {
+    const notificationObject = {
         name: userObject.full_name,
-        text: `${userObject.full_name} likes ${postUserFullName}'s post ${postObject.title}`,
+        text: `${userObject.full_name} likes ${postUserFullName}'s ${postObject.title}`,
         image: userObject.profile_pic,
         content: '\n ',
         group_id: postObject._group,
@@ -211,12 +199,11 @@ async function likePost(data:any) {
         btn_title:'view post'
     }
 
-    return comment_object;
+    return notificationObject;
 
 }
 
 async function likeComment(data:any) {
-    console.log("data in side likeComment",data);
 
     const postData = await Post.findById(data.postId, (err, data) => {
         if(err){
@@ -241,7 +228,8 @@ async function likeComment(data:any) {
     const userFullName = userData['full_name'];
     const commentedByUserFullName = commentedByUser['full_name'];
     const profile_pic = userData['profile_pic'];
-    const comment_object = {
+    
+    const notificationObject = {
         name: userFullName,
         text: `${userFullName} likes ${commentedByUserFullName}'s comment on ${postTitle}`,
         image: profile_pic,
@@ -251,13 +239,12 @@ async function likeComment(data:any) {
         btn_title:'view post'
     }
 
-    return comment_object;
+    return notificationObject;
 
 }
 
 async function postMention(data:any) {
 
-    console.log("data in side postMention",data);
 
     const postData = await Post.findById(data.postId, (err, data) => {
         if(err){
@@ -270,9 +257,10 @@ async function postMention(data:any) {
     const assigneFromProfilePic = data.posted_by.profile_pic;
     const postTitle = postData['title'];
     const groupId = postData['_group'];
-     const comment_object = {
+     
+    const notificationObject = {
         name: assigneFromFullName,
-        text: `${assigneFromFullName} mentioned ${data.mentioned_all?'all':'you'} on his post ${postTitle}`,
+        text: `${assigneFromFullName} mentioned ${data.mentioned_all?'all':'you'} in ${postTitle}`,
         image: assigneFromProfilePic,
         group_id:groupId,
         post_id: data.postId,
@@ -280,7 +268,7 @@ async function postMention(data:any) {
         btn_title:'view task'
     }
 
-    return comment_object;
+    return notificationObject;
 }
 
 async function commentMention(data:any) {
@@ -305,10 +293,10 @@ async function commentMention(data:any) {
     const commented_by = userData['full_name'];
     const commented_by_profile_pic = userData['profile_pic'];
     const postTitle = postData['title'];
-    console.log("data.comment._post",data.comment._post)
-    const comment_object = {
+    
+    const notificationObject = {
         name: commented_by,
-        text: `${commented_by} mentioned ${data.comment._content_mentions.includes('all')?'all':'you'} in his comment on post ${postTitle}`,
+        text: `${commented_by} mentioned ${data.comment._content_mentions.includes('all')?'all':'you'} in a comment to ${postTitle}`,
         image: commented_by_profile_pic,
         content: '\n',
         group_id: groupId,
@@ -316,7 +304,7 @@ async function commentMention(data:any) {
         btn_title:'view comment'
     }    
 
-    return comment_object;
+    return notificationObject;
 }
 
 /*  =======================
@@ -325,7 +313,7 @@ async function commentMention(data:any) {
  * */
 export {
 
-    // send Slack Notification
-    sendSlackNotification,
+    // parsed Notification data
+    parsedNotificationData,
 
 }

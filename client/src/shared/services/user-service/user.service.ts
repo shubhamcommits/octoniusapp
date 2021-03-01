@@ -14,7 +14,8 @@ export class UserService {
 
   constructor(private _http: HttpClient) { }
 
-  slackConnectDisconnectedEvent: EventEmitter<any> = new EventEmitter();
+  slackDisconnectedEvent: EventEmitter<any> = new EventEmitter();
+  slackConnectedEvent: EventEmitter<any> = new EventEmitter();
 
   /* | ======================================= USER DETAILS ========================================== | */
 
@@ -301,7 +302,13 @@ export class UserService {
     }).toPromise();
   }
 
-  slackConnectDisconnected(){
-    return this.slackConnectDisconnectedEvent;
+  slackDisconnected(){
+    return this.slackDisconnectedEvent;
   }
+
+  slackConnected(){
+    return this.slackConnectedEvent;
+  }
+
+
 }
