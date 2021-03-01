@@ -19,12 +19,8 @@
  /**
  * 1. !===== COMPONENTS =====!
  */
-import { AuthCommonLayoutComponent } from './auth-common-layout/auth-common-layout.component';
 import { AuthNewWorkplaceComponent } from './auth-new-workplace/auth-new-workplace.component';
 import { AuthSignUpComponent } from './auth-sign-up/auth-sign-up.component';
-import { AuthUserDetailsComponent } from './auth-user-details/auth-user-details.component';
-
-
 
 /**
  * 2. !===== MODULES =====!
@@ -59,9 +55,6 @@ import { AuthJoinWorkplaceComponent } from './auth-join-workplace/auth-join-work
  */
 @NgModule({
   declarations: [
-    // AUTH COMMON LAYOUT COMPONENT
-    AuthCommonLayoutComponent,
-
     // AUTH NEW WORKPLACE COMPONENT
     AuthNewWorkplaceComponent,
 
@@ -70,9 +63,6 @@ import { AuthJoinWorkplaceComponent } from './auth-join-workplace/auth-join-work
 
     // AUTH SIGNUP COMPONENT
     AuthSignUpComponent,
-
-    // AUTH USER DETAILS COMPONENT
-    AuthUserDetailsComponent,
 
     SelectWorkspaceComponent,
 
