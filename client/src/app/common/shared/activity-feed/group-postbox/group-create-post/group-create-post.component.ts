@@ -203,7 +203,10 @@ export class GroupCreatePostComponent implements OnInit {
     this.quillData = quillData
 
     // Filter the Mention users content and map them into arrays of Ids
-    this._content_mentions = this.quillData.mention.users.map((user) => user.insert.mention.id)
+    
+    if(this.quillData && this.quillData?.mention){
+      this._content_mentions = this.quillData?.mention?.users?.map((user) => user.insert.mention.id);
+    }
 
     // If content mentions has 'all' then only pass 'all' inside the array
     if (this._content_mentions.includes('all'))
