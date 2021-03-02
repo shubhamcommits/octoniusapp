@@ -172,6 +172,7 @@ export class PublicFunctions {
             let userData = await this.getCurrentUser();
             const workspaceService = this.injector.get(WorkspaceService);
             const utilityService = this.injector.get(UtilityService);
+
             this.subSink.add(workspaceService.getWorkspace(userData['_workspace'])
                 .pipe(retry(3))
                 .subscribe((res) => { resolve(res['workspace']) },

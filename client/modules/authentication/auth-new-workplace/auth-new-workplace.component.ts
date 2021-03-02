@@ -123,8 +123,7 @@ export class AuthNewWorkplaceComponent implements OnInit {
    * @param res
    */
   storeData(res: Object) {
-    this.publicFunctions.sendUpdatesToUserData(JSON.stringify(res['user']));
-    this.publicFunctions.sendUpdatesToWorkspaceData(JSON.stringify(res['workspace']));
+    this.publicFunctions.sendUpdatesToUserData(res['user']);
     this.storageService.setLocalData('authToken', JSON.stringify(res['token']));
   }
 }
