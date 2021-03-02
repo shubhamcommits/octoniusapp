@@ -44,7 +44,6 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   parentTask: boolean = false;
   ischild: boolean = false;
   isdependent: boolean = false;
-  isProject:boolean = false;
   tasksList: any = [];
   dependencyTask: any = [];
   searchingOn: string = 'keyword';
@@ -78,8 +77,6 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   ) { }
 
   async ngOnChanges() {
-    
-    this.isProject = this.postData?.task?._column?.project_type || false ;
 
     if (this.postData.type === 'task' && this.groupData && this.userData) {
       // Fetches the user groups from the server
@@ -361,7 +358,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   async getDependencyTask(){
     this.dependencyTask = [] ;
     this.tasks.forEach(task => {
-      
+
       if(typeof this.postData?.task?._dependency_task == 'object'){
         let ispushed=false;
         this.postData?.task?._dependency_task.forEach(dependecy => {
@@ -375,7 +372,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
           this.dependencyTask.push(task);
         }
       }
-      
+
     });
   }
 

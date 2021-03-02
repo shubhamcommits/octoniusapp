@@ -223,7 +223,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-        .populate({ path: 'task._column', select: '_id title custom_fields_to_show project_type' })
+        .populate({ path: 'task._column', select: '_id title' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -244,7 +244,7 @@ export class PostService {
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
         { path: 'task._parent_task', select: '_id title _assigned_to' },
-        { path: 'task._column', select: '_id title custom_fields_to_show project_type' }
+        { path: 'task._column', select: '_id title' }
       ]);
 
     } else if (post.type === 'performance_task') {
