@@ -24,6 +24,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Input() userData: any;
   @Input() tasks: any;
   @Input() isNorthStar = false;
+  @Input() isMilestone = false;
 
   @Output() parentTaskSelectedEmitter = new EventEmitter();
   @Output() dependencyTaskSelectedEmitter = new EventEmitter();
@@ -31,6 +32,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Output() taskFromTemplateEmitter = new EventEmitter();
   @Output() taskAllocationEmitter = new EventEmitter();
   @Output() transformIntoNorthStarEmitter = new EventEmitter();
+  @Output() transformIntoMilestoneEmitter = new EventEmitter();
 
   userGroups = [];
   transferAction = '';
@@ -42,8 +44,9 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   parentTask: boolean = false;
   ischild: boolean = false;
   isdependent: boolean = false;
+  isProject:boolean = false;
   tasksList: any = [];
-  dependencyTask: any;
+  dependencyTask: any = [];
   searchingOn: string = 'keyword';
   // Item value variable mapped with search field
   itemValue: string;
@@ -75,6 +78,9 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   ) { }
 
   async ngOnChanges() {
+    
+    this.isProject = this.postData?.task?._column?.project_type || false ;
+
     if (this.postData.type === 'task' && this.groupData && this.userData) {
       // Fetches the user groups from the server
       await this.publicFunctions.getUserGroups(this.groupData._workspace, this.userData._id)
@@ -353,19 +359,32 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   }
 
   async getDependencyTask(){
+    this.dependencyTask = [] ;
     this.tasks.forEach(task => {
-      if(this.postData?.task?._dependency_task == task._id){
-        this.dependencyTask = task;
+      
+      if(typeof this.postData?.task?._dependency_task == 'object'){
+        let ispushed=false;
+        this.postData?.task?._dependency_task.forEach(dependecy => {
+          if(dependecy == task._id && !ispushed){
+            this.dependencyTask.push(task);
+            ispushed=true;
+          }
+        });
+      } else {
+        if(this.postData?.task?._dependency_task == task._id){
+          this.dependencyTask.push(task);
+        }
       }
+      
     });
   }
 
-  async removeDependencyTask(){
+  async removeDependencyTask(index){
 
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will remove its dependency task!')
     .then((res) => {
       if (res.value) {
-        this.postService.removeDependencyTask(this.postData._id, this.dependencyTask._id).then(res => {
+        this.postService.removeDependencyTask(this.postData._id, this.dependencyTask[index]._id).then(res => {
           this.postData = res['post'];
           let settings = { setDependency: "setDependency" }
           this.postData.settings = settings;
@@ -375,7 +394,8 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
           // Close the list after assigning
           this.tasksList = [];
-          this.dependencyTask=undefined;
+
+          this.getDependencyTask();
 
           this.dependencyTaskSelectedEmitter.emit(this.postData);
         });
@@ -504,4 +524,11 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     this.isNorthStar = !this.isNorthStar;
     this.transformIntoNorthStarEmitter.emit(this.isNorthStar);
   }
+
+  transformToMilestone() {
+    this.isMilestone = !this.isMilestone;
+    this.transformIntoMilestoneEmitter.emit(this.isMilestone);
+  }
+
+
 }

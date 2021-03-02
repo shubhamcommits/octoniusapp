@@ -23,11 +23,14 @@ const PostSchema = new Schema({
         required: true,
         enum: ['normal', 'event', 'task', 'performance_task', 'document']
     },
+    likes_count:{
+        type: Number,
+        default: 0
+    },
     _liked_by: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
-    bars: [],
     comments_count: {
         type: Number,
         default: 0
@@ -46,7 +49,7 @@ const PostSchema = new Schema({
         ref: 'User',
         required: true
     },
-
+    bars: [],
     created_date: {
         type: Date,
         default: Date.now
@@ -65,11 +68,19 @@ const PostSchema = new Schema({
         type: String,
         default: []
     }],
+    read_count:{
+        type: Number,
+        default: 0
+    },
     _read_by: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
         default: []
     }],
+    followers_count:{
+        type: Number,
+        default: 0
+    },
     _followers: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -114,6 +125,11 @@ const PostSchema = new Schema({
         },
 
         isNorthStar: {
+            type: Boolean,
+            default: false
+        },
+
+        is_milestone: {
             type: Boolean,
             default: false
         },
@@ -164,10 +180,10 @@ const PostSchema = new Schema({
             type: String,
             default: null
         },
-        _dependency_task:{
+        _dependency_task:[{
             type: Schema.Types.ObjectId,
             ref: 'Post'
-        },
+        }],
         _dependent_child:[{
             type: Schema.Types.ObjectId,
             ref: 'Post'
