@@ -2051,6 +2051,7 @@ export class PostService {
             { _id: { $ne: currentPostId } },
             { title: { $regex: query, $options: 'i' } },
             { type: 'task' },
+            { "task.is_milestone": false },
             { 'task._parent_task': null }
           ]
         })
@@ -2125,34 +2126,18 @@ export class PostService {
 
     try {
 
-      // Update the post
-
-      // let post11 = await Post.findById(postId);
-      // if (post11.task && post11.task._dependency_task) {
-      //   let oldParent = await Post.findById(post11.task._dependency_task);
-
-      //   for (var i = 0; i < oldParent.task._dependent_child.length; i++) {
-      //     if (oldParent.task._dependent_child[i] + '' == post11._id + '') {
-      //       oldParent.task._dependent_child.splice(i, 1);
-      //       break;
-      //     }
-      //   }
-
-        // oldParent.save();
-      // }
-
-      let post = await Post.findOneAndUpdate({
+      let dependentPost = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        "$push": { "task._dependency_task": dependecyTaskId }
+        $push: { "task._dependency_task": dependecyTaskId }
       }, {
         new: true
       })
 
-      let post1 = await Post.findOneAndUpdate({
+      let dependencyPost = await Post.findOneAndUpdate({
         _id: dependecyTaskId
       }, {
-        "$push": { "task._dependent_child": postId }
+        $push: { "task._dependent_child": postId }
       }, {
         new: true
       })
@@ -2160,10 +2145,10 @@ export class PostService {
 
 
       // populate the properties of this document
-      post = await this.populatePostProperties(post);
+      dependentPost = await this.populatePostProperties(dependentPost);
 
       // Return the post
-      return post;
+      return dependentPost;
 
     } catch (err) {
       console.log(`\n⛔️ Error:\n ${err}`);
