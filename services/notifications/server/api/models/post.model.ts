@@ -23,6 +23,10 @@ const PostSchema = new Schema({
         required: true,
         enum: ['normal', 'event', 'task', 'performance_task', 'document']
     },
+    likes_count:{
+        type: Number,
+        default: 0
+    },
     _liked_by: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -45,7 +49,7 @@ const PostSchema = new Schema({
         ref: 'User',
         required: true
     },
-
+    bars: [],
     created_date: {
         type: Date,
         default: Date.now
@@ -64,11 +68,19 @@ const PostSchema = new Schema({
         type: String,
         default: []
     }],
+    read_count:{
+        type: Number,
+        default: 0
+    },
     _read_by: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
         default: []
     }],
+    followers_count:{
+        type: Number,
+        default: 0
+    },
     _followers: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -102,44 +114,56 @@ const PostSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Column'
         },
-
+        allocation: {
+            type: Number,
+            default: 0
+        },
         // Custom Fields
         custom_fields: {
             type: Map,
             of: String
-         },
+        },
 
-         isNorthStar: {
-             type: Boolean,
-             default: false
-         },
- 
-         northStar: {
-             target_value: {
-                 type: Number,
-                 default: 0
-             },
-             values: [{
-                 date: {
-                     type: Date,
-                     default: Date.now
-                 },
-                 value: {
-                     type: Number,
-                     default: 0
-                 },
-                 status: {
-                     type: String,
-                     enum: ['NOT STARTED', 'ON TRACK', 'IN DANGER', 'ACHIEVED']
-                 }
-             }],
-             type: {
-                 type: String,
-                 enum: ['Currency $', 'Currency €', 'Percent', 'Number']
-             }
-         },
-         
-         start_date: {
+        isNorthStar: {
+            type: Boolean,
+            default: false
+        },
+
+        is_milestone: {
+            type: Boolean,
+            default: false
+        },
+
+        northStar: {
+            target_value: {
+                type: Number,
+                default: 0
+            },
+            values: [{
+                date: {
+                    type: Date,
+                    default: Date.now
+                },
+                value: {
+                    type: Number,
+                    default: 0
+                },
+                status: {
+                    type: String,
+                    enum: ['NOT STARTED', 'ON TRACK', 'IN DANGER', 'ACHIEVED']
+                },
+                _user: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'User'
+                }
+            }],
+            type: {
+                type: String,
+                enum: ['Currency $', 'Currency €', 'Percent', 'Number']
+            }
+        },
+        
+        start_date: {
             type: Date,
             default: null
         },

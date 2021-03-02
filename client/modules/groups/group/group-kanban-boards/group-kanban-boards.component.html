@@ -87,7 +87,7 @@
                     <!-- TASK DETAILS STARTS -->
                     <!-- add class="status-todo" or status-inprogress or status-done for each status accordingly -->
                     <div class="task"
-                        [ngClass]="getTaskClass(task?.task?.status, task?.task?.isNorthStar)"
+                        [ngClass]="getTaskClass(task?.task?.status, task?.task?.isNorthStar, task?.task?.is_milestone)"
                         *ngFor="let task of column.tasks; let j = index;" cdkDrag>
 
                         <div class="media" (click)="openFullscreenModal(task)">

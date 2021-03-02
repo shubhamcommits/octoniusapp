@@ -85,7 +85,7 @@
 
 
 
-  <div *ngIf="!parentTask && !isdependent" class="set-parent">
+  <div *ngIf="!parentTask && !isdependent && !isMilestone" class="set-parent">
    MAKE SUBTASK OF
 
     <!-- INPUT BAR STARTS -->
@@ -117,12 +117,12 @@
   <div *ngIf="groupData && !ischild && groupData.project_type" class="set-parent">
     MAKE DEPENDENCY OF
 
-    <button class="btn dependencylabel" style="margin-right: 1rem;"
-        *ngIf="dependencyTask" (click)="removeDependencyTask()">
-      <b>X</b> {{ dependencyTask.title | truncatetext: 50 }}
+    <button *ngFor="let task of dependencyTask; let i = index" class="btn dependencylabel" style="margin-right: 1rem;"
+       (click)="removeDependencyTask(i)">
+      <b>X</b> {{ task.title | truncatetext: 50 }}
     </button>
     <!-- INPUT BAR STARTS -->
-    <input *ngIf="!dependencyTask" type="search" id="dependencyKeyword" autocomplete="off" placeholder="Search task" class="input-search"
+    <input type="search" id="dependencyKeyword" autocomplete="off" placeholder="Search task" class="input-search"
       [(ngModel)]="dependencyItemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChangeForDependency($event)" />
     <!-- INPUT BAR ENDS -->
     <div *ngIf="searchingOn === 'dependencyKeyword'">
@@ -146,6 +146,9 @@
     </div>
   </div>
 
+
+
+
   <!-- North Start Switch starts -->
   <div class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
@@ -160,5 +163,21 @@
     <p>North Stars are goals for you or your team.</p>
   </div>
   <!-- North Start Switch ends -->
+
+
+  <!-- Milestone Switch starts -->
+  <div *ngIf="groupData && groupData.project_type && isProject" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+    <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
+   MAKE MILESTONE
+    <mat-slide-toggle color="primary" style=" margin-left: 15px;"
+      [checked]="isMilestone"
+      [name]="'milestone'"
+      (change)="transformToMilestone()">
+    </mat-slide-toggle>
+    <p>About MileStone ...</p>
+  </div>
+  <!-- Milestone Switch ends -->
+
+  
 
 </div>

@@ -129,6 +129,11 @@ const PostSchema = new Schema({
             default: false
         },
 
+        is_milestone: {
+            type: Boolean,
+            default: false
+        },
+
         northStar: {
             target_value: {
                 type: Number,

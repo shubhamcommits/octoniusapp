@@ -223,7 +223,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-        //.populate({ path: 'task._column', select: '_id title custom_fields_to_show' })
+        .populate({ path: 'task._column', select: '_id title custom_fields_to_show project_type' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -244,7 +244,7 @@ export class PostService {
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
         { path: 'task._parent_task', select: '_id title _assigned_to' },
-        //{ path: 'task._column', select: '_id title custom_fields_to_show' }
+        { path: 'task._column', select: '_id title custom_fields_to_show project_type' }
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -464,7 +464,6 @@ export class PostService {
 
       switch (post.type) {
         case 'task':
-
           // Add task property details
           postData.task = {
             due_to: (post.date_due_to) ? moment(post.date_due_to).format() : null,
@@ -474,6 +473,7 @@ export class PostService {
             custom_fields: post.task.custom_fields,
             isNorthStar: post.task.isNorthStar,
             northStar: post.task.northStar,
+            is_milestone: post?.task?.is_milestone || false,
             _parent_task: post.task._parent_task
           }
 
@@ -534,6 +534,7 @@ export class PostService {
       this.sendNotifications(post);
 
       // Return the post
+
       return post;
 
     } catch (err) {
@@ -2065,6 +2066,7 @@ export class PostService {
             { _id: { $ne: currentPostId } },
             { title: { $regex: query, $options: 'i' } },
             { type: 'task' },
+            { "task.is_milestone": false },
             { "task.start_date": { $ne: null } },
             { "task.due_to": { $ne: null } }
           ]
@@ -2125,24 +2127,24 @@ export class PostService {
 
       // Update the post
 
-      let post11 = await Post.findById(postId);
-      if (post11.task && post11.task._dependency_task) {
-        let oldParent = await Post.findById(post11.task._dependency_task);
+      // let post11 = await Post.findById(postId);
+      // if (post11.task && post11.task._dependency_task) {
+      //   let oldParent = await Post.findById(post11.task._dependency_task);
 
-        for (var i = 0; i < oldParent.task._dependent_child.length; i++) {
-          if (oldParent.task._dependent_child[i] + '' == post11._id + '') {
-            oldParent.task._dependent_child.splice(i, 1);
-            break;
-          }
-        }
+      //   for (var i = 0; i < oldParent.task._dependent_child.length; i++) {
+      //     if (oldParent.task._dependent_child[i] + '' == post11._id + '') {
+      //       oldParent.task._dependent_child.splice(i, 1);
+      //       break;
+      //     }
+      //   }
 
-        oldParent.save();
-      }
+        // oldParent.save();
+      // }
 
       let post = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        'task._dependency_task': dependecyTaskId
+        "$push": { "task._dependency_task": dependecyTaskId }
       }, {
         new: true
       })
@@ -2183,16 +2185,20 @@ export class PostService {
         }
       }
 
-      oldParent.save();
+      await oldParent.save();
       
 
-      let post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        'task._dependency_task': undefined
-      }, {
-        new: true
-      })
+      let post = await Post.findById(postId);
+
+      for (var i = 0; i < post.task._dependency_task.length; i++) {
+        if (post.task._dependency_task[i] + '' == dependecyTaskId + '') {
+          post.task._dependency_task.splice(i, 1);
+          break;
+        }
+      }
+
+      await post.save();
+
 
       // populate the properties of this document
       post = await this.populatePostProperties(post);

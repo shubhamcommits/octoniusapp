@@ -49,7 +49,7 @@ const PostSchema = new Schema({
         ref: 'User',
         required: true
     },
-
+    bars: [],
     created_date: {
         type: Date,
         default: Date.now
@@ -125,6 +125,11 @@ const PostSchema = new Schema({
         },
 
         isNorthStar: {
+            type: Boolean,
+            default: false
+        },
+
+        is_milestone: {
             type: Boolean,
             default: false
         },

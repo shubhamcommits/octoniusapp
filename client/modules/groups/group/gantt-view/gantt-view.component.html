@@ -94,10 +94,15 @@
                     <div class="resize-handle-right" [attr.id]="task.id+'r'" mwlResizeHandle
                       [resizeEdges]="{ right: true }"></div>
                     <div class="media">
-                      <app-assignee-avatar [post]="task.task" [userData]="userData"></app-assignee-avatar>
+                      <app-assignee-avatar *ngIf="!task.is_milestone" [post]="task.task" [userData]="userData"></app-assignee-avatar>
+                      <span *ngIf="task.is_milestone">
+                        <img src="assets/images/milestone.svg" alt="Flag" style="width: 40px;margin-right: 15px;"/>
+                      </span>
                       <div class="media-body">
-                        <h5 *ngIf="task.difference>0" class="mt-2 task_title_text">{{task.difference===1 ? (task.name |
+                        <h5 *ngIf="task.difference > 1 && task.difference <= 6 " class="mt-2 task_title_text">{{task.difference===1 ? (task.name |
                           truncatetext:2) : task.name | truncatetext:20}}</h5>
+                        <h5 *ngIf="task.difference>6 " class="mt-2 task_title_text">{{task.name}}</h5>
+                        <h5 *ngIf="task.difference < 2" [ngStyle]="{'width': '200px','margin-left':task.difference === 1 ?'50px':'0px'}" class="mt-2 task_title_text">{{task.name | truncatetext:30}}</h5>
                         <i class="material-icons-outlined ml-2 menu_icon" cdkDragHandle>more_vert</i>
                       </div>
                     </div>
