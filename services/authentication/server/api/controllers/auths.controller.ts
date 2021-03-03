@@ -438,9 +438,10 @@ export class AuthsController {
                         // Send user to the mgmt portal
                         let userMgmt = {
                             _id: user._id,
+                            _account_id: accountUpdate._id,
                             active: user.active,
-                            email: user.email,
-                            password: user.password,
+                            email: accountUpdate.email,
+                            password: accountUpdate.password,
                             first_name: user.first_name,
                             last_name: user.last_name,
                             _remote_workspace_id: workspace._id,

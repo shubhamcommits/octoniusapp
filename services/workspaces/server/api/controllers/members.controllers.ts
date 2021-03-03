@@ -230,7 +230,11 @@ export class MembersControllers {
                 invited: false
             }, {
                 new: true
-            }).select('first_name last_name profile_pic email role integrations');
+            }).select('first_name last_name profile_pic email role integrations')
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            });;
 
             // User found
             if (user) {
@@ -298,9 +302,10 @@ export class MembersControllers {
                     // Send user to the mgmt portal
                     let userMgmt = {
                         _id: user._id,
+                        _account_id: user._account._id,
                         active: user.active,
-                        email: user.email,
-                        password: user.password,
+                        email: user._account.email,
+                        password: user._account.password,
                         first_name: user.first_name,
                         last_name: user.last_name,
                         _remote_workspace_id: workspace._id,

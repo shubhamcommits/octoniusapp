@@ -208,6 +208,7 @@ export class UsersControllers {
             if (process.env.NODE_ENV == 'production') {
                 let userMgmt = {
                     _id: user._id,
+                    _account_id: user._account._id,
                     active: user.active,
                     email: user._account.email,
                     password: user._account.password,
