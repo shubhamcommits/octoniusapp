@@ -61,6 +61,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
 
+    
     await this.parsedTasks(this.tasks);
     this.datestoshow.start = await this.min_date(this.tasksdata);
     this.datestoshow.end = await this.max_date(this.tasksdata)
@@ -68,7 +69,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
     await this.add_index();
     await this.parsedProjects(this.columns);
     await this.taskAfterDueDate();
-
     await this.get_current_date_index()
     var ganttHeight = (100 + this.tasksdata.length * 60) + (this.tasksStartingHeight);
     var screenHeight = window.innerHeight - 100;
@@ -91,26 +91,52 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       for (var i = 0; i < this.tasksdata.length; i++) {
 
         if (this.tasksdata[i] && this.tasksdata[i].dependency) {
-          this.linesArray.push(new LeaderLine(document.getElementById(this.tasksdata[i]?.dependency), document.getElementById(this.tasksdata[i]?.id), {
-            startPlug: 'disc',
-            startSocket: 'right',
-            endSocket: 'left',
-            size: 2,
-            color: '#4a90e2',
-          }));
-        }
-      }
-
-      this.projectsdata.forEach(project => {
-        for (let i = 0; i < project.tasks.length; i++) {
-          if (project.tasks[i] && project.tasks[i].dependency) {
-            this.linesArray.push(new LeaderLine(document.getElementById(project.tasks[i]?.dependency), document.getElementById(project.tasks[i]?.id), {
+          if(typeof this.tasksdata[i].dependency == 'object'){
+            this.tasksdata[i].dependency.forEach(dependency => {
+              this.linesArray.push(new LeaderLine(document.getElementById(dependency), document.getElementById(this.tasksdata[i]?.id), {
+                startPlug: 'disc',
+                startSocket: 'right',
+                endSocket: 'left',
+                size: 2,
+                color: '#4a90e2',
+              }));
+            });
+          } else {
+            this.linesArray.push(new LeaderLine(document.getElementById(this.tasksdata[i]?.dependency), document.getElementById(this.tasksdata[i]?.id), {
               startPlug: 'disc',
               startSocket: 'right',
               endSocket: 'left',
               size: 2,
               color: '#4a90e2',
             }));
+          }
+
+          
+        }
+      }
+
+      this.projectsdata.forEach(project => {
+        for (let i = 0; i < project.tasks.length; i++) {
+          if (project.tasks[i] && project.tasks[i].dependency) {
+            if(typeof project.tasks[i].dependency == 'object'){
+              project.tasks[i].dependency.forEach(dependency => {
+                this.linesArray.push(new LeaderLine(document.getElementById(dependency), document.getElementById(project.tasks[i]?.id), {
+                  startPlug: 'disc',
+                  startSocket: 'right',
+                  endSocket: 'left',
+                  size: 2,
+                  color: '#4a90e2',
+                }));
+              });
+            } else {
+              this.linesArray.push(new LeaderLine(document.getElementById(project.tasks[i]?.dependency), document.getElementById(project.tasks[i]?.id), {
+                startPlug: 'disc',
+                startSocket: 'right',
+                endSocket: 'left',
+                size: 2,
+                color: '#4a90e2',
+              }));
+            }
           }
         }
       });
@@ -583,34 +609,65 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         for (var j = index + 1; j < sortedBefore.length; j++) {
 
           if (sortedBefore[j].task._dependency_task) {
+
             const parenttaskID = dependencyid;
-            const idi = sortedBefore[j].task._dependency_task + '';
-            const idj = parenttaskID + '';
+            
+            if( typeof sortedBefore[j].task._dependency_task == 'object'){
 
-            if (idi === idj) {
+              if(sortedBefore[j].task._dependency_task?.length > 0){
+              
+              for (let index = 0; index < sortedBefore[j].task._dependency_task.length; index++) {
+                const idi = sortedBefore[j].task._dependency_task[index]+ '';
+                const idj = parenttaskID + '';
 
-              SortedTask.push(sortedBefore[j]);
+                if (idi === idj) {
 
-              if (sortedBefore[j].task && sortedBefore[j].task._dependent_child) {
+                  if(!isAlready(sortedBefore[j]._id)){
+                    SortedTask.push(sortedBefore[j]);
+                  }
 
-                if (sortedBefore[j].task._dependent_child.length > 0) {
-                  findchilds(index, sortedBefore[j]._id, true);
-                }
+                  if (sortedBefore[j].task && sortedBefore[j].task._dependent_child) {
+
+                    if (sortedBefore[j].task._dependent_child.length > 0) {
+                      findchilds(index, sortedBefore[j]._id, true);
+                    }
+                  }
+
+                } 
               }
-
             }
+
+            } else {
+              const idi = sortedBefore[j].task._dependency_task + '';
+              const idj = parenttaskID + '';
+  
+              if (idi === idj) {
+  
+                if(!isAlready(sortedBefore[j]._id)){
+                  SortedTask.push(sortedBefore[j]);
+                }
+  
+                if (sortedBefore[j].task && sortedBefore[j].task._dependent_child) {
+  
+                  if (sortedBefore[j].task._dependent_child.length > 0) {
+                    findchilds(index, sortedBefore[j]._id, true);
+                  }
+                }
+  
+              }
+            } 
           }
         }
       }
 
 
-      function isAlready() {
+      function isAlready(id:any) {
         var already = false;
 
         //Checking Task already pused or not
         for (var k = SortedTask.length - 1; k >= 0; k--) {
 
-          if (sortedBefore[i]._id == SortedTask[k]._id) {
+          if (id == SortedTask[k]._id) {
             already = true;
             break;
           }
@@ -635,7 +692,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
       for (var i = 0; i < sortedBefore.length; i++) {
         // Check bit task is already pushed or not
-        var already = isAlready();
+        var already = isAlready(sortedBefore[i]._id);
 
         //If not already pushed pushing into  SortedTask array.
         if (!already) {
@@ -652,48 +709,51 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       this.tasksdata = [];
       //Saving the only required fields of the task in tasksData array.
 
-      SortedTask.map(x => {
-        const startdate: any = moment(moment.utc(x.task.start_date).format("YYYY-MM-DD"));
-        const endate: any = moment(moment.utc(x.task.due_to).format("YYYY-MM-DD"));
+      SortedTask.map(sortedTask => {
+        
+        const startdate: any = moment(moment.utc(sortedTask.task.start_date).format("YYYY-MM-DD"));
+        const endate: any = moment(moment.utc(sortedTask.task.due_to).format("YYYY-MM-DD"));
         var Difference_In_Days = moment(endate).diff(startdate,'days');
         // var Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
 
-        if (x.task.due_to && x.task.start_date && !(x.task._parent_task)) {
+        if (sortedTask.task.due_to && sortedTask.task.start_date && !(sortedTask.task._parent_task)) {
           this.tasksdata.push({
-            id: x._id,
-            name: x.title,
-            start: x.task.start_date,
-            end: x.task.due_to,
+            id: sortedTask._id,
+            name: sortedTask.title,
+            start: sortedTask.task.is_milestone? sortedTask.task?.due_to : sortedTask.task.start_date,
+            end: sortedTask.task.due_to,
+            is_milestone: sortedTask.task.is_milestone,
             progress: '0',
-            dependent_tasks: x?.task?._dependent_child,
+            dependent_tasks: sortedTask?.task?._dependent_child,
             difference: Difference_In_Days,
-            dependency_index: x?.parentIndex,
-            custom_class: x?.task.status,
-            _groupid: x?._group._id,
-            dependency: x?.task._dependency_task,
-            image: (x?._assigned_to?.length > 0) ? this.baseUrl + '/' + x._assigned_to[0].profile_pic : undefined,
-            noOfParticipants: (x?._assigned_to?.length > 1) ? x?._assigned_to?.length - 1 : undefined,
-            projectId:(x?.task?._column._id)?x?.task?._column._id:x?.task?._column,
-            task: x
+            dependency_index: sortedTask?.parentIndex,
+            custom_class: sortedTask?.task.status,
+            _groupid: sortedTask?._group._id,
+            dependency: sortedTask?.task._dependency_task,
+            image: (sortedTask?._assigned_to?.length > 0) ? this.baseUrl + '/' + sortedTask._assigned_to[0].profile_pic : undefined,
+            noOfParticipants: (sortedTask?._assigned_to?.length > 1) ? sortedTask?._assigned_to?.length - 1 : undefined,
+            projectId:(sortedTask?.task?._column._id)?sortedTask?.task?._column._id:sortedTask?.task?._column,
+            task: sortedTask
           });
         } else {
-          if (x.task._dependency_task) {
+          if (sortedTask.task._dependency_task || sortedTask?.task?.is_milestone ) {
             this.tasksdata.push({
-              id: x._id,
-              name: x.title,
-              start: x.task.start_date,
-              end: x.task.due_to,
+              id: sortedTask._id,
+              name: sortedTask.title,
+              start: sortedTask.task.is_milestone? sortedTask.task?.due_to : sortedTask.task.start_date,
+              end: sortedTask.task.due_to,
+              is_milestone: sortedTask?.task?.is_milestone,
               progress: '0',
-              dependent_tasks: x?.task?._dependent_child,
-              dependency_index: x?.parentIndex,
-              difference: Difference_In_Days,
-              custom_class: x?.task.status,
-              _groupid: x?._group._id,
-              dependency: x?.task._dependency_task,
-              image: (x?._assigned_to?.length > 0) ? this.baseUrl + '/' + x._assigned_to[0].profile_pic : undefined,
-              noOfParticipants: (x?._assigned_to?.length > 1) ? x?._assigned_to?.length - 1 : undefined,
-              projectId:x?.task?._column,
-              task: x
+              dependent_tasks: sortedTask?.task?._dependent_child,
+              dependency_index: sortedTask?.parentIndex,
+              difference: sortedTask.task.is_milestone? 0 : Difference_In_Days,
+              custom_class: sortedTask?.task.status,
+              _groupid: sortedTask?._group._id,
+              dependency: sortedTask?.task._dependency_task,
+              image: (sortedTask?._assigned_to?.length > 0) ? this.baseUrl + '/' + sortedTask._assigned_to[0].profile_pic : undefined,
+              noOfParticipants: (sortedTask?._assigned_to?.length > 1) ? sortedTask?._assigned_to?.length - 1 : undefined,
+              projectId:(sortedTask?.task?._column._id)?sortedTask?.task?._column._id:sortedTask?.task?._column,
+              task: sortedTask
             });
           }
         }

@@ -223,7 +223,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-        //.populate({ path: 'task._column', select: '_id title custom_fields_to_show' })
+        // .populate({ path: 'task._column', select: '_id title' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -244,7 +244,7 @@ export class PostService {
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
         { path: 'task._parent_task', select: '_id title _assigned_to' },
-        //{ path: 'task._column', select: '_id title custom_fields_to_show' }
+        // { path: 'task._column', select: '_id title' }
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -295,7 +295,7 @@ export class PostService {
     if (post._content_mentions.length !== 0) {
 
       // Create Real time Notification for all the mentions on post content
-      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
+      return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-mention`, {
         postId: post._id,
         content_mentions: post._content_mentions,
         groupId: post._group._id || post._group,
@@ -338,7 +338,7 @@ export class PostService {
         if (post._assigned_to) {
 
           // Real time notification for new task assignment
-          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
+          return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-task`, {
             postId: post._id,
             assigned_to: post._assigned_to,
             groupId: post._group._id || post._group,
@@ -361,7 +361,7 @@ export class PostService {
       case 'event':
 
         // Real time notification for new event assignment
-        http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-event`, {
+        return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-event`, {
           postId: post._id,
           assigned_to: post._assigned_to,
           grouId: (post._group._id || post._group),
@@ -426,7 +426,7 @@ export class PostService {
       post = await this.populatePostProperties(post);
 
       // Send all the required emails and notifications
-      this.sendNotifications(post)
+      await this.sendNotifications(post)
 
       // Return Post Object
       return post;
@@ -448,6 +448,7 @@ export class PostService {
     try {
 
       // Parse the String to JSON Object
+      
       post = JSON.parse(post)
 
       // Post Data Object
@@ -463,7 +464,6 @@ export class PostService {
 
       switch (post.type) {
         case 'task':
-
           // Add task property details
           postData.task = {
             due_to: (post.date_due_to) ? moment(post.date_due_to).format() : null,
@@ -473,6 +473,7 @@ export class PostService {
             custom_fields: post.task.custom_fields,
             isNorthStar: post.task.isNorthStar,
             northStar: post.task.northStar,
+            is_milestone: post?.task?.is_milestone || false,
             _parent_task: post.task._parent_task
           }
 
@@ -533,6 +534,7 @@ export class PostService {
       this.sendNotifications(post);
 
       // Return the post
+
       return post;
 
     } catch (err) {
@@ -695,11 +697,14 @@ export class PostService {
         { new: true }
       )
       .lean();
-
+    
     await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-post`, {
       postId: post._id,
       posted_by: post['_posted_by'],
       followers: post['_followers'],
+      assigned_to:post['_assigned_to'],
+      mentions:post['_content_mentions'],
+      groupId:post['_group'],
       user: userId
     });
 
@@ -765,6 +770,9 @@ export class PostService {
     await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-follow-post`, {
       postId: post._id,
       posted_by: post['_posted_by'],
+      assigned_to:post['_assigned_to'],
+      mentions:post['_content_mentions'],
+      groupId:post['_group'],
       follower: userId
     }).catch(err => sendErr(err, new Error(err), 'Internal Server Error!', 500));
 
@@ -2048,7 +2056,7 @@ export class PostService {
         })
           .sort({ title: -1 })
           .limit(5)
-          .select('_id title');
+          .select('_id title type task');
 
       } else {
         // search for dependency
@@ -2076,6 +2084,17 @@ export class PostService {
 
       }
 
+
+      if (posts && posts.length > 0) {
+        let length = posts.length;
+        for (var i = 0; i < length; i++) {
+          if (posts[i]?.task?.is_milestone == true) {
+            posts.splice(i, 1);
+            i--;
+            length--;
+          }
+        }
+      }
 
       // Return set of posts 
       return posts;
@@ -2116,34 +2135,18 @@ export class PostService {
 
     try {
 
-      // Update the post
-
-      let post11 = await Post.findById(postId);
-      if (post11.task && post11.task._dependency_task) {
-        let oldParent = await Post.findById(post11.task._dependency_task);
-
-        for (var i = 0; i < oldParent.task._dependent_child.length; i++) {
-          if (oldParent.task._dependent_child[i] + '' == post11._id + '') {
-            oldParent.task._dependent_child.splice(i, 1);
-            break;
-          }
-        }
-
-        oldParent.save();
-      }
-
-      let post = await Post.findOneAndUpdate({
+      let dependentPost = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        'task._dependency_task': dependecyTaskId
+        $push: { "task._dependency_task": dependecyTaskId }
       }, {
         new: true
       })
 
-      let post1 = await Post.findOneAndUpdate({
+      let dependencyPost = await Post.findOneAndUpdate({
         _id: dependecyTaskId
       }, {
-        "$push": { "task._dependent_child": postId }
+        $push: { "task._dependent_child": postId }
       }, {
         new: true
       })
@@ -2151,10 +2154,10 @@ export class PostService {
 
 
       // populate the properties of this document
-      post = await this.populatePostProperties(post);
+      dependentPost = await this.populatePostProperties(dependentPost);
 
       // Return the post
-      return post;
+      return dependentPost;
 
     } catch (err) {
       console.log(`\n⛔️ Error:\n ${err}`);
@@ -2166,32 +2169,37 @@ export class PostService {
   async removeDependencyTask(postId: string, dependecyTaskId: string) {
 
     try {
-      
-      let oldParent = await Post.findById(dependecyTaskId);
-      
-      for (var i = 0; i < oldParent.task._dependent_child.length; i++) {
-        if (oldParent.task._dependent_child[i] + '' == postId + '') {
-          oldParent.task._dependent_child.splice(i, 1);
-          break;
+
+
+      const dependencyPost = await Post.findByIdAndUpdate({
+        _id: dependecyTaskId
+      }, {
+        $pull: {
+           "task._dependent_child": postId 
+        }},
+        {
+          new: true
         }
-      }
-
-      oldParent.save();
+      );
       
 
-      let post = await Post.findOneAndUpdate({
+      let dependentPost = await Post.findByIdAndUpdate({
         _id: postId
       }, {
-        'task._dependency_task': undefined
-      }, {
-        new: true
-      })
+        $pull: {
+           "task._dependency_task": dependecyTaskId 
+        }},
+        {
+          new: true
+        }
+      );
+  
 
       // populate the properties of this document
-      post = await this.populatePostProperties(post);
+      dependentPost = await this.populatePostProperties(dependentPost);
 
       // Return the post
-      return post;
+      return dependentPost;
 
     } catch (err) {
       console.log(`\n⛔️ Error:\n ${err}`);

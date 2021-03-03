@@ -1,7 +1,9 @@
 import { Component, OnInit, Injector } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 import { GoogleCloudService } from './user-available-clouds/google-cloud/services/google-cloud.service';
 
@@ -16,6 +18,9 @@ export class UserCloudsComponent implements OnInit {
     public injector: Injector,
     private googleService: GoogleCloudService,
     public userService: UserService,
+    private router: ActivatedRoute,
+    private _router: Router,
+    public utilityService: UtilityService,
     private storageService: StorageService
   ) { }
 
@@ -59,6 +64,13 @@ export class UserCloudsComponent implements OnInit {
     if(this.googleAuthSuccessful == true){
       this.googleUser = this.storageService.getLocalData('googleUser')['userData']
     }
+
+    this.userService.slackConnected().subscribe(event => {
+
+      this.slackAuthSuccessful = true;
+
+    });
+
   }
 
   /**

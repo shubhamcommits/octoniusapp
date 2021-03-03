@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 // import { billingRoutes, workspaceRoutes } from './routes';
-import { slackRoutes } from './routes/slack.routes';
+import { integrationRoutes } from './routes/integration.routes';
 import  bodyParser from 'body-parser';
 
 // Defining new Express application
@@ -76,7 +76,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Routes to handle notifications
-app.use('/api', slackRoutes);
+app.use('/api', integrationRoutes);
 
 // // Correct REST naming
 // app.use('/api/billings', billingRoutes);

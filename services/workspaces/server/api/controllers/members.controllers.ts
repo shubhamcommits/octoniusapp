@@ -29,7 +29,7 @@ export class MembersControllers {
         })
             .sort('_id')
             //.limit(10)
-            .select('first_name last_name email role profile_pic active')
+            .select('first_name last_name email role profile_pic active integrations')
             .lean() || []
     }
 
@@ -147,7 +147,7 @@ export class MembersControllers {
             })
                 .sort('_id')
                 .limit(5)
-                .select('first_name last_name email role profile_pic active')
+                .select('first_name last_name email role profile_pic active integrations')
                 .lean() || []
 
             // Send the status 200 response
@@ -175,7 +175,7 @@ export class MembersControllers {
                 invited: false,
             }, {
                 new: true
-            }).select('first_name last_name profile_pic active email role');
+            }).select('first_name last_name profile_pic active email role integrations');
 
             const workspace = await Workspace.findById(workspaceId);
 
@@ -230,7 +230,7 @@ export class MembersControllers {
                 invited: false
             }, {
                 new: true
-            }).select('first_name last_name profile_pic email role');
+            }).select('first_name last_name profile_pic email role integrations');
 
             // User found
             if (user) {

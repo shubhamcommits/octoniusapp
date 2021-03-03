@@ -1,5 +1,5 @@
 <div class="col-md-8">
-    <app-google-account-details [googleUser]="googleUser"></app-google-account-details>
+    <app-google-account-details *ngIf="googleUser" [googleUser]="googleUser"></app-google-account-details>
 </div>
 <div class="col-md-8">
     <app-slack-account-details *ngIf="slackUser"></app-slack-account-details>

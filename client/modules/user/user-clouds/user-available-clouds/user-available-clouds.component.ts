@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class UserAvailableCloudsComponent implements OnInit {
   ) { }
 
   // Google User Output Event Emitter
+  @Input() userData:any;
   @Output('googleUser') googleUser = new EventEmitter();
 
   ngOnInit() {

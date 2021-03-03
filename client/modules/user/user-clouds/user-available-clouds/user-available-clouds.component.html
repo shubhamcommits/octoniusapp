@@ -6,7 +6,7 @@
             <hr>
             <app-connect-google-cloud (googleUser)="emitGoogleUser($event)"></app-connect-google-cloud>
             <br />
-            <app-connect-slack></app-connect-slack>
+            <app-connect-slack [userData]="userData"></app-connect-slack>
             <br />
             <!--
             <div class="row">

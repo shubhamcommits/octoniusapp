@@ -59,6 +59,10 @@ td.mat-column-star {
   border-left: 3px solid #5E2FE5;
 }
 
+.status-milestone {
+  border-left: 3px solid #5E2FE5;
+}
+
 .statusbar{
   height: 47px;
   line-height: 47px;
@@ -120,6 +124,17 @@ td.mat-column-star {
 
 
 .north-star {
+  height: 40px;
+  padding: 0;
+  width: 100%;
+  border-radius: 2px;
+  box-sizing: border-box;
+  margin: 2px auto;
+  transition: box-shadow 0.3s ease-in-out;
+  background: #E5DEFB;
+}
+
+.milestone {
   height: 40px;
   padding: 0;
   width: 100%;

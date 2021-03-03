@@ -32,7 +32,7 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -116,7 +116,7 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -184,7 +184,7 @@ export class UsersControllers {
                 }, {
                     new: true
                 })
-                .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+                .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -209,8 +209,8 @@ export class UsersControllers {
                 let userMgmt = {
                     _id: user._id,
                     active: user.active,
-                    email: user.email,
-                    password: user.password,
+                    email: user._account.email,
+                    password: user._account.password,
                     first_name: user.first_name,
                     last_name: user.last_name,
                     _remote_workspace_id: user._workspace,
@@ -347,7 +347,7 @@ export class UsersControllers {
                 role: role
             }, {
                 new: true
-            }).select('first_name last_name profile_pic email role _workspace _account');
+            }).select('first_name last_name profile_pic role _workspace _account integrations');
 
             if (user.role == 'guest') {
                 // Add new user to workspace's group
@@ -396,7 +396,7 @@ export class UsersControllers {
                     role: role
                 }, {
                     new: true
-                }).select('first_name last_name profile_pic email role _workspace');
+                }).select('first_name last_name profile_pic role _workspace integrations');
             }
 
             // Error updating the user
@@ -461,7 +461,7 @@ export class UsersControllers {
                 profile_pic: fileName
             }, {
                 new: true
-            }).select('first_name last_name profile_pic email role');
+            }).select('first_name last_name profile_pic role integrations');
 
             // Send status 200 response
             return res.status(200).json({
@@ -601,7 +601,7 @@ export class UsersControllers {
             'stats.groups._group': {$ne: groupId }
             }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
             )
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -616,7 +616,7 @@ export class UsersControllers {
             'stats.groups._group': groupId 
             }, { $inc: { 'stats.groups.$.count': 1 }
             })
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -653,7 +653,7 @@ export class UsersControllers {
       }
 
       const user = await User.findOne({_id: userId})
-        .select("_id stats")
+        .select("_id stats integrations")
         .populate({
             path: 'stats.favorite_groups',
             select: '_id group_name group_avatar'
@@ -699,7 +699,7 @@ export class UsersControllers {
         let user = await User.findOneAndUpdate({
                 _id: userId
             }, update)
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -742,7 +742,7 @@ export class UsersControllers {
         }
 
         // remove user
-        const user = await User.findByIdAndDelete(userId).select('_workspace');
+        const user = await User.findByIdAndDelete(userId).select('_workspace integrations');
         const workspaceId = user._workspace;
 
         const usersCount: number = await User.find({ $and: [
@@ -861,7 +861,7 @@ export class UsersControllers {
         let user: any = await User.findOneAndUpdate({
             _id: userId
             }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats')
+            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -896,7 +896,7 @@ export class UsersControllers {
       let user: any = await User.findOne({
           _id: userId
         })
-        .select('_id out_of_office');
+        .select('_id out_of_office integrations');
 
       // Send status 200 response
       return res.status(200).json({

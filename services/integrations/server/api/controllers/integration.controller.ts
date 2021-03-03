@@ -1,6 +1,6 @@
-import { Response, Request, NextFunction } from "express";
+import e, { Response, Request, NextFunction } from "express";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
-import { SlackService } from "../service";
+import { IntegrationService } from "../service";
 import moment from 'moment/moment'
 import { Group, Column, Auth, SlackAuth, User } from '../models';
 import { Auths, sendError } from '../../utils';
@@ -8,70 +8,68 @@ import FormData from 'form-data';
 // import { validateId } from "../../utils/helperFunctions";
 import axios from "axios";
 import { connect } from "mongoose";
+import { helperFunctions } from '../../utils';
 
 // Creating Service class in order to build wrapper class
-const slackService = new SlackService()
+const integrationService = new IntegrationService()
 
 /*  ===============================
- *  -- Slack CONTROLLERS --
+ *  -- Integration CONTROLLERS --
  *  ===============================
  */
 // Authentication Utilities Class
 const auths = new Auths();
 
-export class SlackController {
+export class IntegrationController {
 
-    async slackNotify (req: Request ,res:Response ,next: NextFunction) {
+    async notify (req: Request ,res:Response ,next: NextFunction) {
+        
 
-        const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
-        var MY_SLACK_WEBHOOK_URL;
+        try {
+            const user = await User.findById(req.body.userid);
+    
+            //Slack connected or not checking..
+            const is_slack_connected = user?.integrations?.is_slack_connected || false;
+        
+            //check any integration here later
 
-        if(user_octonius && user_octonius != null){
-            MY_SLACK_WEBHOOK_URL = user_octonius['incoming_webhook'];
-        }
-        var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL); 
-        const body = JSON.parse(req.body.data);
-        slack.alert({
-            text: body.text,
-            attachments: [
-                {
-                    blocks: [
-                        {
-                            type: "context",
-                            elements: [
-                                {
-                                    type: "image",
-                                    image_url: `${process.env.IMAGE_PROCESS_URL}/${body.image}`,
-                                    alt_text: "avatar_img"
-                                },
-                                {
-                                    type: "mrkdwn",
-                                    text: body.name
-                                }
-                            ]
-                        },
-                        {
-                            "type": "actions",
-                            "elements": [
-                                {
-                                    "type": "button",
-                                    "text": {
-                                        "type": "plain_text",
-                                        "text": body.btn_title,
-                                        "emoji": true
-                                    },
-                                    url: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${body.group_id}&myWorkplace=false&postId=${body.post_id}`
-                                }
-                            ]
-                        }
-                    ]
+            if(is_slack_connected){
+      
+                let data = await helperFunctions.parsedNotificationData(req.body);
+                
+                const user_octonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
+                
+                var MY_SLACK_WEBHOOK_URL;
+    
+                if(user_octonius && user_octonius != null){
+                   
+                    MY_SLACK_WEBHOOK_URL = user_octonius['incoming_webhook'];
+                    
+                    var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL); 
+                
+                    integrationService.sendNotificationToSlack(slack,data);
+
+                } else {
+
                 }
-              ]
-        });
+ 
+            
+             
+            } else {
+                    return  res.status(200).json({
+                    message: 'Slack not connected '
+                    }); 
+                }
+        } catch (error) {
+            return  res.status(200).json({
+                message: 'System can not sent Notification!'
+            });
+        }
 
         return  res.status(200).json({
-            message: 'Slack Sent Notification successed!'
+            message: 'System Sent Notification successed!'
         });
+        
     }
 
     async slackWebhook(req: Request , res: Response, next: NextFunction) {
@@ -116,15 +114,20 @@ export class SlackController {
         const token = user_auth['token'];
         var isvalidToken = true;
 
-        await jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
-            if (err || !decoded) {
-                isvalidToken = false;
-                sendError(res, err, 'Unauthorized request, it must have a valid authorization token!', 500);
-            } else {
-                // Assigning and feeding the userId into the req object
-                BearerToken = BearerToken+token;
-            }
-        });
+        if(token && token != null){
+            jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+                if (err || !decoded) {
+                    isvalidToken = false;
+                    sendError(res, err, 'Unauthorized request, it must have a valid authorization token!', 500);
+                } else {
+                    // Assigning and feeding the userId into the req object
+                    BearerToken = BearerToken+token;
+                }
+            });
+        } else {
+            isvalidToken = false;
+        }
+        
 
         if(!isvalidToken){
             const user = user_octonius['_user']._id;
