@@ -126,6 +126,13 @@ export class BillingControllers {
                     { _workspace: workspaceId }
                 ]}).countDocuments();
 
+                // Count all the users present inside the workspace
+                const guestsCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: workspaceId },
+                    { role: 'guest'}
+                ] }).countDocuments();
+
                 let workspaceMgmt = {
                     _id: workspaceId,
                     company_name: workspaceUpdated.company_name,
@@ -136,7 +143,7 @@ export class BillingControllers {
                     _owner_remote_id: workspaceUpdated._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspaceUpdated.invited_users ? workspaceUpdated.invited_users.length : 0,
+                    num_invited_users: guestsCount,
                     num_groups: groupsCount,
                     created_date: workspaceUpdated.created_date,
                     billing: {
@@ -419,7 +426,14 @@ export class BillingControllers {
                 // Count all the users present inside the workspace
                 const usersCount: number = await User.find({ $and: [
                     { active: true },
-                    { _workspace: user['_workspace'] }
+                    { _workspace: workspace._id }
+                ] }).countDocuments();
+
+                // Count all the users present inside the workspace
+                const guestsCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: workspace._id },
+                    { role: 'guest'}
                 ] }).countDocuments();
 
                 let workspaceMgmt = {
@@ -432,7 +446,7 @@ export class BillingControllers {
                     _owner_remote_id: workspace._owner._id || workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
+                    num_invited_users: guestsCount,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
@@ -506,7 +520,14 @@ export class BillingControllers {
                 // Count all the users present inside the workspace
                 const usersCount: number = await User.find({ $and: [
                     { active: true },
-                    { _workspace: user['_workspace'] }
+                    { _workspace: workspace._id }
+                ] }).countDocuments();
+
+                // Count all the users present inside the workspace
+                const guestsCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: workspace._id },
+                    { role: 'guest'}
                 ] }).countDocuments();
 
                 let workspaceMgmt = {
@@ -519,7 +540,7 @@ export class BillingControllers {
                     _owner_remote_id: workspace._owner._id || workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
+                    num_invited_users: guestsCount,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
@@ -614,6 +635,13 @@ export class BillingControllers {
                     { _workspace: updatedWorkspace._id }
                 ]}).countDocuments();
 
+                // Count all the users present inside the workspace
+                const guestsCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: updatedWorkspace._id },
+                    { role: 'guest'}
+                ] }).countDocuments();
+
                 let workspaceMgmt = {
                     _id: updatedWorkspace._id,
                     company_name: updatedWorkspace.company_name,
@@ -624,7 +652,7 @@ export class BillingControllers {
                     _owner_remote_id: updatedWorkspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: updatedWorkspace.invited_users ? updatedWorkspace.invited_users.length : 0,
+                    num_invited_users: guestsCount,
                     num_groups: groupsCount,
                     created_date: updatedWorkspace.created_date,
                     billing: {
@@ -838,6 +866,13 @@ export class BillingControllers {
                     { _workspace: workspace._id }
                 ] }).countDocuments();
 
+                // Count all the users present inside the workspace
+                const guestsCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: workspace._id },
+                    { role: 'guest'}
+                ] }).countDocuments();
+
                 let workspaceMgmt = {
                     _id: workspace._id,
                     company_name: workspace.company_name,
@@ -848,7 +883,7 @@ export class BillingControllers {
                     _owner_remote_id: workspace._owner._id || workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
+                    num_invited_users: guestsCount,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {

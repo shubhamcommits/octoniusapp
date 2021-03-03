@@ -1,4 +1,4 @@
-import { Group, User, Workspace } from '../models';
+import { Account, Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper } from '../../utils';
 import http from 'axios';
@@ -32,10 +32,14 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
             });
 
             if (user['stats'] && user['stats']['favorite_groups']) {
@@ -53,6 +57,40 @@ export class UsersControllers {
             return res.status(200).json({
                 message: 'User found!',
                 user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the account details of the current loggedIn user
+     * @param { userId }req 
+     * @param res 
+     * @param next 
+     */
+    async getAccount(req: Request, res: Response, next: NextFunction) {
+
+        const userId = req['userId'];
+
+        try {
+
+            // Find the user based on the userId
+            const user = await User.findOne({ _id: userId })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
+
+            // If user not found
+            if (!user) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Account found!',
+                account: user._account
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -78,11 +116,16 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
             });
+
             if (user && user['stats'] && user['stats']['favorite_groups']) {
                 user['stats']['favorite_groups'].sort(function(a, b) {
                   return b.group_name - a.group_name;
@@ -135,17 +178,21 @@ export class UsersControllers {
 
             // Find the user and update it on the basis of the userId
             const user: any = await User.findByIdAndUpdate({
-                _id: userId
-            }, {
-                $set: body
-            }, {
-                new: true
-            })
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
-            .populate({
-                path: 'stats.favorite_groups',
-                select: '_id group_name group_avatar'
-            });
+                    _id: userId
+                }, {
+                    $set: body
+                }, {
+                    new: true
+                })
+                .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
 
             if (user['stats'] && user['stats']['favorite_groups']) {
                 user['stats']['favorite_groups'].sort(function(a, b) {
@@ -161,9 +208,10 @@ export class UsersControllers {
             if (process.env.NODE_ENV == 'production') {
                 let userMgmt = {
                     _id: user._id,
+                    _account_id: user._account._id,
                     active: user.active,
-                    email: user.email,
-                    password: user.password,
+                    email: user._account.email,
+                    password: user._account.password,
                     first_name: user.first_name,
                     last_name: user.last_name,
                     _remote_workspace_id: user._workspace,
@@ -200,18 +248,21 @@ export class UsersControllers {
 
         try {
 
-            const userTo = await User.findById(userToId);
+            const userTo = await User.findById(userToId)
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
             const userBY = await User.findById(userById);
             var workspace = await Workspace.findOneAndUpdate({
-                _id:workspaceId
-            },
-            {
-                owner_first_name:userTo.first_name,
-                owner_last_name:userTo.last_name,
-                owner_email:userTo.email,
-                owner_password:userTo.password,
-                _owner:userTo._id
-            });
+                    _id:workspaceId
+                },
+                {
+                    owner_first_name: userTo._account.first_name,
+                    owner_last_name:userTo._account.last_name,
+                    owner_email: userTo._account.email,
+                    _owner: userTo._id
+                });
 
             userTo.workspace_name = workspace.workspace_name;
             userTo._workspace = workspace._id;
@@ -235,17 +286,24 @@ export class UsersControllers {
                     { _workspace: workspaceId }
                 ]}).countDocuments();
 
+                // Count all the users present inside the workspace
+                const guestsCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: workspaceId },
+                    { role: 'guest'}
+                ] }).countDocuments();
+
                 let workspaceMgmt = {
                     _id: workspaceId,
                     company_name: workspace.company_name,
                     workspace_name: workspace.workspace_name,
-                    owner_email: userTo.email,
-                    owner_first_name: userTo.first_name,
-                    owner_last_name: userTo.last_name,
+                    owner_email: userTo._account.email,
+                    owner_first_name: userTo._account.first_name,
+                    owner_last_name: userTo._account.last_name,
                     _owner_remote_id: userToId,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
+                    num_invited_users: guestsCount,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
@@ -284,8 +342,8 @@ export class UsersControllers {
         const { userId, role } = req.body;
         try {
 
-            // Find the user and update their respective role
-            const user: any = await User.findOneAndUpdate({
+            // find the user
+            let user: any = await User.findOne({
                 $and: [
                     { _id: userId },
                     { active: true }
@@ -294,7 +352,63 @@ export class UsersControllers {
                 role: role
             }, {
                 new: true
-            }).select('first_name last_name profile_pic email role integrations');
+            }).select('first_name last_name profile_pic role _workspace _account integrations');
+
+            if (user.role == 'guest') {
+                // Add new user to workspace's group
+                const groupUpdate = await Group.findOneAndUpdate({
+                    group_name: 'Global',
+                    _workspace: user._workspace
+                }, {
+                    $push: {
+                        _members: user._id
+                    },
+                    $inc: { members_count: 1 }
+                });
+
+                // Error updating the group
+                if (!groupUpdate) {
+                    return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                }
+
+                // Add group to user's groups
+                user = await User.findByIdAndUpdate({
+                    _id: user._id
+                }, {
+                    $push: {
+                        _groups: groupUpdate._id,
+                        'stats.favorite_groups': groupUpdate._id
+                    },
+                    role: role
+                }, {
+                    new: true
+                });
+
+                // Since user is already a member now, remove it from invite members of workspace
+                const workspace = await Workspace.findOneAndUpdate(
+                    { _id: user._workspace },
+                    { $pull: { invited_users: { email: user._account.email }}},
+                    { multi: true }
+                );
+            } else {
+                // Find the user and update their respective role
+                user = await User.findOneAndUpdate({
+                    $and: [
+                        { _id: userId },
+                        { active: true }
+                    ]
+                }, {
+                    role: role
+                }, {
+                    new: true
+                }).select('first_name last_name profile_pic role _workspace integrations');
+            }
+
+            // Error updating the user
+            if (!user) {
+                return sendError(res, new Error('Unable to update the user, some unexpected error occured!'), 'Unable to update the user, some unexpected error occured!', 500);
+            }
+
             let groupsUpdate;
             if(role === 'member') {
                 groupsUpdate = await Group.updateMany({
@@ -352,7 +466,7 @@ export class UsersControllers {
                 profile_pic: fileName
             }, {
                 new: true
-            }).select('first_name last_name profile_pic email role integrations');
+            }).select('first_name last_name profile_pic role integrations');
 
             // Send status 200 response
             return res.status(200).json({
@@ -488,26 +602,34 @@ export class UsersControllers {
       // Find the user and update their respective role
       if (!user) {
         user = await User.findOneAndUpdate({
-          _id: userId,
-          'stats.groups._group': {$ne: groupId }
-        }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
-        )
-        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
-        .populate({
-            path: 'stats.favorite_groups',
-            select: '_id group_name group_avatar'
-        });
+            _id: userId,
+            'stats.groups._group': {$ne: groupId }
+            }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
+            )
+            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            });
       } else {
         user = await User.findOneAndUpdate({
-          _id: userId,
-          'stats.groups._group': groupId 
-        }, { $inc: { 'stats.groups.$.count': 1 }
-        })
-        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
-        .populate({
-            path: 'stats.favorite_groups',
-            select: '_id group_name group_avatar'
-        });
+            _id: userId,
+            'stats.groups._group': groupId 
+            }, { $inc: { 'stats.groups.$.count': 1 }
+            })
+            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            });
       }
       // Send status 200 response
       return res.status(200).json({
@@ -582,10 +704,14 @@ export class UsersControllers {
         let user = await User.findOneAndUpdate({
                 _id: userId
             }, update)
-            .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
             });
 
         if (user['stats'] && user['stats']['favorite_groups']) {
@@ -621,7 +747,7 @@ export class UsersControllers {
         }
 
         // remove user
-        const user = await User.findByIdAndDelete(userId).select('_workspace integrations');
+        const user = await User.findByIdAndDelete(userId).select('_account _workspace integrations');
         const workspaceId = user._workspace;
 
         const usersCount: number = await User.find({ $and: [
@@ -663,6 +789,27 @@ export class UsersControllers {
             });
         }
 
+        const accountId = user?._account?._id || user?._account;
+        if (accountId) {
+            // Count the number of workspces for the account
+            let accountUpdate = await Account.findById(accountId);
+            const numWorkspaces = accountUpdate._workspaces.length;
+
+            if (numWorkspaces < 2) {
+                // If account only has one workspace, the account is removed
+                accountUpdate = await Account.findByIdAndDelete(accountId);
+            } else {
+                // If account has more than one workspaces, the workspace is removed from the account
+                accountUpdate = await Account.findByIdAndUpdate({
+                        _id: accountId
+                    }, {
+                        $pull: {
+                            _workspaces: workspace
+                        }
+                    });
+            }
+        }
+
         // Send new workspace to the mgmt portal
         if (process.env.NODE_ENV == 'production') {
             // Count all the groups present inside the workspace
@@ -670,6 +817,13 @@ export class UsersControllers {
                 { group_name: { $ne: 'personal' } },
                 { _workspace: workspaceId }
             ]}).countDocuments();
+
+            // Count all the users present inside the workspace
+            const guestsCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId },
+                { role: 'guest'}
+            ] }).countDocuments();
 
             let workspaceMgmt = {
                 _id: workspaceId,
@@ -681,7 +835,7 @@ export class UsersControllers {
                 _owner_remote_id: workspaceUpdated._owner,
                 environment: process.env.DOMAIN,
                 num_members: usersCount,
-                num_invited_users: workspaceUpdated.invited_users ? workspaceUpdated.invited_users.length : 0,
+                num_invited_users: guestsCount,
                 num_groups: groupsCount,
                 created_date: workspaceUpdated.created_date,
                 billing: {
@@ -718,14 +872,18 @@ export class UsersControllers {
     const { iconsSidebar, userId } = req.body;
     try {
 
-      let user: any = await User.findOneAndUpdate({
-          _id: userId
-        }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
-        .select('_id active first_name last_name profile_pic email workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
-        .populate({
-            path: 'stats.favorite_groups',
-            select: '_id group_name group_avatar'
-        });
+        let user: any = await User.findOneAndUpdate({
+            _id: userId
+            }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
+            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .populate({
+                path: '_account',
+                select: '_id email _workspaces first_name last_name created_date'
+            });
 
         if (user['stats'] && user['stats']['favorite_groups']) {
             user['stats']['favorite_groups'].sort(function(a, b) {

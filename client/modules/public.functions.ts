@@ -92,6 +92,52 @@ export class PublicFunctions {
         storageService.setLocalData('userData', JSON.stringify(userData))
     }
 
+    public async getCurrentAccount() {
+        let accountData: any = await this.getAccountDetailsFromService();
+
+        if (JSON.stringify(accountData) == JSON.stringify({}))
+          accountData = await this.getAccountDetailsFromStorage();
+
+        if (JSON.stringify(accountData) == JSON.stringify({}))
+          accountData = await this.getAccountDetailsFromHTTP();
+
+        this.sendUpdatesToAccountData(accountData);
+
+        return accountData || {};
+    }
+
+    async getAccountDetailsFromService() {
+        return new Promise((resolve) => {
+            const utilityService = this.injector.get(UtilityService);
+            this.subSink.add(utilityService.currentAccountData.subscribe((res) => {
+                resolve(res)
+            })
+            )
+        })
+    }
+
+    async getAccountDetailsFromStorage() {
+        const storageService = this.injector.get(StorageService);
+        return (storageService.existData('accountData') === null) ? {} : storageService.getLocalData('accountData');
+    }
+
+    async getAccountDetailsFromHTTP() {
+        return new Promise((resolve, reject) => {
+            const userService = this.injector.get(UserService);
+            this.subSink.add(userService.getAccount()
+                .pipe(retry(3))
+                .subscribe((res) => resolve(res['account']), (err) => reject({}))
+            )
+        })
+    }
+
+    async sendUpdatesToAccountData(accountData: Object) {
+        const storageService = this.injector.get(StorageService);
+        const utilityService = this.injector.get(UtilityService);
+        utilityService.updateAccountData(accountData);
+        storageService.setLocalData('accountData', JSON.stringify(accountData))
+    }
+
     public async getCurrentWorkspace() {
         let worspaceData = await this.getWorkspaceDetailsFromService();
 
@@ -126,6 +172,7 @@ export class PublicFunctions {
             let userData = await this.getCurrentUser();
             const workspaceService = this.injector.get(WorkspaceService);
             const utilityService = this.injector.get(UtilityService);
+
             this.subSink.add(workspaceService.getWorkspace(userData['_workspace'])
                 .pipe(retry(3))
                 .subscribe((res) => { resolve(res['workspace']) },

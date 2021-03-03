@@ -1,5 +1,5 @@
 import { sendError, PasswordHelper, Auths } from '../../utils';
-import { Group, Workspace, User } from '../models';
+import { Group, Workspace, User, Account } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import { CommonService, UsersService } from '../services';
 import http from 'axios';
@@ -35,9 +35,7 @@ export class WorkspaceController {
             // Workspace name already exists
             if (workspace) {
                 return sendError(res, new Error('This Workspace name has already been taken, please pick another name!'), 'This Workspace name has already been taken, please pick another name!', 409);
-
             } else {
-
                 // Send the status 200 response 
                 return res.status(200).json({
                     message: 'This Workspace name is available!',
@@ -81,9 +79,24 @@ export class WorkspaceController {
             // Workspace Company Members Count
             const membersCount = await User.find({
                 $and: [
-                    { _workspace: workspaceId }
+                    { _workspace: workspaceId },
+                    { role: { $ne: 'guest' }},
                 ]
             }).countDocuments();
+            // Add company members count
+            workspace.company_members_count = membersCount;
+
+            // Workspace Company Members Count
+            const guestsCount = await User.find({
+                $and: [
+                    { _workspace: workspaceId },
+                    { role: { $eq: 'guest' }},
+                ]
+            }).countDocuments();
+
+            // Add company members count
+            workspace.guests_count = guestsCount;
+
 
             // If unable to find the workspace
             if (!workspace) {
@@ -92,9 +105,6 @@ export class WorkspaceController {
 
             // Add time remaining property to maintain the trial version of the user
             workspace.time_remaining = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days');
-
-            // Add company members count
-            workspace.company_members_count = membersCount;
 
             // Send the status 200 response 
             return res.status(200).json({
@@ -108,12 +118,12 @@ export class WorkspaceController {
 
     /**
      * This function is responsible for creating a new workspace
-     * @param { body: { owner_first_name, owner_last_name, owner_password, owner_email, workspace_name, company_name } }req 
+     * @param { body: { newWorkspace, accountData } }req 
      * @param res 
      * @param next 
      * 
      * It performs the following functionalities:
-     * 1. Encrypt the password.
+     * 1. Set User´s Domain.
      * 2. Create a new workspace object.
      * 3. Creates a new user object and mark it as 'owner' of this newly created workspace.
      * 4. Creates a new group named as 'Global' and adds this newly created user into that group and make them as the 'admin' of that group.
@@ -125,21 +135,16 @@ export class WorkspaceController {
      */
     async createNewWorkspace(req: Request, res: Response, next: NextFunction) {
         try {
-            // Generate hash password
-            const passEncrypted: any = await passwordHelper.encryptPassword(req.body.owner_password);
-
-            // Error creating the password
-            if (!passEncrypted) {
-                return sendError(res, new Error('Unable to encrypt the password to the server'), 'Unable to encrypt the password to the server, please try with a different password!', 401);
-            }
-
             // Prepare workspace data before creation
-            const newWorkspace = req.body;
-            newWorkspace.owner_password = passEncrypted.password;
+            const { newWorkspace, accountData } = req.body;
 
             // Pass user email domain to allowed domains
-            const userEmailDomain = req.body.owner_email.split('@')[1];
+            const userEmailDomain = accountData.email.split('@')[1];
             newWorkspace.allowed_domains = [userEmailDomain];
+            newWorkspace.access_code = await auths.generateWorkspaceAccessCode();
+            newWorkspace.owner_first_name = accountData.first_name;
+            newWorkspace.owner_last_name = accountData.last_name;
+            newWorkspace.owner_email = accountData.email;
 
             // Create new workspace
             const workspace = await Workspace.create(newWorkspace);
@@ -151,13 +156,12 @@ export class WorkspaceController {
 
             // Prepare new user data
             const newUser = {
-                first_name: req.body.owner_first_name,
-                last_name: req.body.owner_last_name,
-                full_name: `${req.body.owner_first_name} ${req.body.owner_last_name}`,
-                email: req.body.owner_email,
-                password: passEncrypted.password,
-                workspace_name: req.body.workspace_name,
-                company_name: req.body.company_name,
+                _account: accountData._id,
+                first_name: accountData.first_name,
+                last_name: accountData.last_name,
+                full_name: `${accountData.first_name} ${accountData.last_name}`,
+                workspace_name: newWorkspace.workspace_name,
+                company_name: newWorkspace.company_name,
                 _workspace: workspace,
                 role: 'owner'
             };
@@ -188,6 +192,22 @@ export class WorkspaceController {
             // Error updating the workspace
             if (!workspaceUpdate) {
                 return sendError(res, new Error('Unable to update the workspace, some unexpected error occured!'), 'Unable to update the workspace, some unexpected error occured!', 500);
+            }
+
+            // Add workspace to user account
+            const accountUpdate: any = await Account.findByIdAndUpdate({
+                _id: accountData._id
+            }, {
+                $push: {
+                    _workspaces: workspace
+                }
+            }, {
+                new: true
+            })
+
+            // Error updating the account
+            if (!accountUpdate) {
+                return sendError(res, new Error('Unable to update the account, some unexpected error occured!'), 'Unable to update the account, some unexpected error occured!', 500);
             }
 
             // Pepare global group data
@@ -299,9 +319,9 @@ export class WorkspaceController {
             let token = await auths.generateToken(userUpdate, workspaceUpdate.workspace_name);
 
             // Send signup confirmation email using mailing microservice
-            http.post(`${process.env.MAILING_SERVER_API}/sign-up`, {
-                user: userUpdate
-            })
+            // http.post(`${process.env.MAILING_SERVER_API}/sign-up`, {
+            //     user: userUpdate
+            // });
 
             // Send new workspace confirmation email
             http.post(`${process.env.MAILING_SERVER_API}/new-workspace`, {
@@ -314,9 +334,9 @@ export class WorkspaceController {
                     _id: workspace._id,
                     company_name: newWorkspace.company_name,
                     workspace_name: newWorkspace.workspace_name,
-                    owner_email: newWorkspace.owner_email,
-                    owner_first_name: newWorkspace.owner_first_name,
-                    owner_last_name: newWorkspace.owner_last_name,
+                    owner_email: accountData.email,
+                    owner_first_name: accountData.first_name,
+                    owner_last_name: accountData.last_name,
                     _owner_remote_id: user._id,
                     environment: process.env.DOMAIN,
                     num_members: 1,
@@ -327,8 +347,8 @@ export class WorkspaceController {
                 let userMgmt = {
                     _id: user._id,
                     active: user.active,
-                    email: user.email,
-                    password: user.password,
+                    email: accountData.email,
+                    password: accountData.password,
                     first_name: user.first_name,
                     last_name: user.last_name,
                     _workspace: workspace._id,
@@ -338,7 +358,7 @@ export class WorkspaceController {
                 http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
                     API_KEY: process.env.MANAGEMENT_API_KEY,
                     workspaceData: workspaceMgmt,
-                    userData: userMgmt
+                    userData: userMgmt,
                 });
             }
 
@@ -346,7 +366,8 @@ export class WorkspaceController {
             return res.status(200).json({
                 message: 'Workspace created!',
                 token: token,
-                user: userUpdate
+                user: userUpdate,
+                workspace: workspace
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -500,27 +521,85 @@ export class WorkspaceController {
             let { body: { user } } = req;
 
             // Check if the user data is not an empty object
-            if (JSON.stringify(user) == JSON.stringify({}) || JSON.stringify(req.body) == JSON.stringify({}))
+            if (JSON.stringify(user) == JSON.stringify({}) || JSON.stringify(req.body) == JSON.stringify({})) {
                 return res.status(400).json({
                     message: 'Bad request as the request body was empty!'
-                })
+                });
+            }
 
-            // Send the invite to workspace
-            let send = await usersService.inviteUserToJoin(
-                user.email, user.workspace_name, user.type, user.group_name
-            )
+            let addInvite = true;
+            const account = await Account.findOne({ email: user.email });
+            if (account) {
+                let userDB = await User.findOne({ _account: account._id, _workspaces: user.workspaceId });
+
+                if (userDB && user.type == 'group') {
+                    // if the user already exists just add it to the group
+
+                    // Add new user to group
+                    const groupUpdate = await Group.findOneAndUpdate({
+                        _id: user.groupId
+                    }, {
+                        $push: {
+                            _members: userDB._id
+                        },
+                        $inc: { members_count: 1 }
+                    });
+
+                    // Error updating the group
+                    if (!groupUpdate) {
+                        return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                    }
+
+                    // Add group to user's groups
+                    userDB = await User.findByIdAndUpdate({
+                        _id: userDB._id
+                    }, {
+                        $push: {
+                            _groups: user.groupId
+                        }
+                    });
+
+                    addInvite = false;
+                }
+            }
+            
+            const domain = user.email.split('@')[1];
+            let workspace = await Workspace.findOne({
+                $and: [
+                    { _id: user.workspaceId },
+                    { allowed_domains: domain }
+                ]
+            }).select('access_code allowed_domains');
+
+            if (!workspace) {
+                // Add the domain to the 'allowed_domains' set 
+                workspace = await Workspace.findOneAndUpdate({
+                    _id: user.workspaceId
+                }, {
+                    $addToSet: {
+                        allowed_domains: domain
+                    }
+                }, {
+                    new: true
+                }).select('access_code allowed_domains');
+            }
+
+            if (addInvite && user.type == 'group') {
+                // Add user to invite users only when is a group invite
+                await usersService.inviteUserToJoin(user.email, user.workspaceId, user.type, user.groupId)
+            }
 
             // Send signup invite to user
-            // if(send == true)
-                http.post(`${process.env.MAILING_SERVER_API}/invite-user`, {
-                    data: {
-                        from: req['userId'],
-                        email: user.email,
-                        workspace: user.workspace_name,
-                        type: user.type,
-                        group_name: user.group_name
-                    }
-                })
+            http.post(`${process.env.MAILING_SERVER_API}/invite-user`, {
+                data: {
+                    from: req['userId'],
+                    email: user.email,
+                    access_code: workspace.access_code,
+                    workspace: user.workspace_name,
+                    type: user.type,
+                    groupId: user.groupId
+                }
+            });
 
             return res.status(200).json({
                 message: 'User has been invited!'

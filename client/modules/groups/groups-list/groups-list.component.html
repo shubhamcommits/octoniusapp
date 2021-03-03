@@ -1,26 +1,20 @@
 <div class="container">
     <div class="row">
-        <ng-container *ngIf="userData && workspaceData">
-            <app-create-group 
-                class="col-md-3" 
-                [userData]="userData" 
+        <ng-container *ngIf="userData && workspaceData && userData?.role != 'guest'">
+            <app-create-group
+                class="col-md-3"
+                [userData]="userData"
                 [workspaceData]="workspaceData"
                 (group)="receiveGroupUpdates($event)">
             </app-create-group>
-            <!-- <app-create-group class="col-md-4" [userData]="userData" [state]="'agora'" [workspaceData]="workspaceData"
-                (group)="receiveGroupUpdates($event)">
-            </app-create-group>
-            <app-create-group class="col-md-4" [userData]="userData" [state]="'smart'" [workspaceData]="workspaceData"
-                (group)="receiveGroupUpdates($event)">
-            </app-create-group> -->
         </ng-container>
     </div>
     <!-- INFINITE SCROLL STARTS FOR USER GROUPS -->
     <app-infinite-scroll (scrolled)="onScroll()">
         <div class="row">
-        
+
             <ng-container *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
-              
+
                 <div class="col-md-3 col-sm-6 col-xs-12">
                 <div *ngIf="group.group_name !== 'private'" class=" card"  [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
                 [queryParams]="{ group: group?._id, myWorkplace: false  }">
@@ -31,7 +25,7 @@
                             class="material-icons">account_balance</i></a>
                     <a *ngIf="group?.type == 'smart'" class="btn btn-info btn-smart"><i
                             class="material-icons">fingerprint</i></a>
-                       
+
                     <div class="card-body">
                         <a>
                             <h2 class="card-title">{{group?.group_name}}</h2>
@@ -47,20 +41,20 @@
     <!-- INFINITE SCROLL ENDS FOR USER GROUPS -->
 
     <!-- INFINITE SCROLL STARTS FOR AGORA GROUPS -->
-    <app-infinite-scroll (scrolled)="onAgoraScroll()"  *ngIf="agoraGroups.length>0">
+    <app-infinite-scroll (scrolled)="onAgoraScroll()" *ngIf="agoraGroups.length>0 && userData.role != 'guest'">
         <h2 class="section-title">AGORA</h2>
         <div class="row">
-            
-        
+
+
             <ng-container *ngFor="let group of agoraGroups; trackBy: utilityService.trackByIndex">
-              
+
                 <div class="col-md-3 col-sm-6 col-xs-12">
                 <div *ngIf="group.group_name !== 'private'" class=" card">
                     <span class="badge badge-members">{{ group?._members.length + group?._admins.length }} Members</span>
                     <img class="card-img-top" src="{{ this.baseUrl }}/{{group.group_avatar}}"
                         onerror="this.src='assets/images/icon-new-group.svg'">
                         <a *ngIf="group?.type == 'agora'" class="btn btn-warning btn-public" (click)="joinGroup(group._id)">JOIN</a>
-                       
+
                     <div class="card-body">
                         <a>
                             <h2 class="card-title">{{group?.group_name}}</h2>
@@ -81,3 +75,4 @@
     </ng-container>
     <!-- LOADING SPINNER ENDS -->
 </div>
+

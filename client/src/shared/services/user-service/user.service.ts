@@ -34,6 +34,13 @@ export class UserService {
     return this._http.get(this.BASE_API_URL + `/${userId}`);
   }
 
+  /**
+   * This function fetches the details of the currently loggedIn account
+   */
+  getAccount() {
+    return this._http.get(this.BASE_API_URL + `/account`)
+  }
+
   /* | ======================================= USER DETAILS ========================================== | */
 
   /**

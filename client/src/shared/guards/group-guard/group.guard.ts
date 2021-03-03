@@ -37,7 +37,7 @@ export class GroupGuard implements CanActivate  {
   }
 
   private publicFunctions = new PublicFunctions(this.injector);
-  
+
 
   async checkUserGroups(currentGroupId) {
 
@@ -64,7 +64,7 @@ export class GroupGuard implements CanActivate  {
     let userId = '';
 
     this.utilityService.currentUserData.subscribe((res) => {
-      if(JSON.stringify(res) != JSON.stringify({})){
+      if(res && JSON.stringify(res) != JSON.stringify({})){
         userId = res['_id'];
       }
     });

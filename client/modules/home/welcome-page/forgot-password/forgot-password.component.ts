@@ -24,7 +24,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   // This observable is mapped with email field to recieve updates on change value
   emailChanged: Subject<Event> = new Subject<Event>();
-  
+
   // Unsubscribe the Observables using SubSink()
   private subSink = new SubSink();
 
@@ -37,8 +37,8 @@ export class ForgotPasswordComponent implements OnInit {
 
   /**
    * This function is responsible for sending the forgot password email to the user
-   * @param email 
-   * @param workspace 
+   * @param email
+   * @param workspace
    * Makes a HTTP Post request to send the email
    */
   async sendMail(email: string, workspace: string) {
@@ -47,7 +47,7 @@ export class ForgotPasswordComponent implements OnInit {
         this.utilityService.warningNotification('Insufficient data, kindly fill up the form correctly!');
       }
       else{
-        this.utilityService.asyncNotification('Please wait while we are processing your request', 
+        this.utilityService.asyncNotification('Please wait while we are processing your request',
         new Promise((resolve, reject) => {
 
           // Preparing the email data
@@ -78,7 +78,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   /**
    * This function gets the Valid Email from the @module <app-email-input></app-email-input>
-   * @param $event 
+   * @param $event
    */
   getValidEmail($event: string){
     this.user.email = $event;
@@ -88,6 +88,6 @@ export class ForgotPasswordComponent implements OnInit {
     this.subSink.unsubscribe();
     this.utilityService.clearAllNotifications();
   }
-  
+
 
 }

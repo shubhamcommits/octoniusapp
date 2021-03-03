@@ -374,6 +374,13 @@ export class GroupController {
                     { _workspace: groupData._workspace }
                 ] }).countDocuments();
 
+                // Count all the users present inside the workspace
+                const guestsCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: groupData._workspace },
+                    { role: 'guest'}
+                ] }).countDocuments();
+
                 let workspaceMgmt = {
                     _id: groupData._workspace,
                     company_name: workspace.company_name,
@@ -384,7 +391,7 @@ export class GroupController {
                     _owner_remote_id: workspace._owner._id || workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
+                    num_invited_users: guestsCount,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {
@@ -516,6 +523,13 @@ export class GroupController {
                     { _workspace: group._workspace }
                 ] }).countDocuments();
 
+                // Count all the users present inside the workspace
+                const guestsCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: group._workspace },
+                    { role: 'guest'}
+                ] }).countDocuments();
+
                 let workspaceMgmt = {
                     _id: group._workspace,
                     company_name: workspace.company_name,
@@ -526,7 +540,7 @@ export class GroupController {
                     _owner_remote_id: workspace._owner._id || workspace._owner,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
-                    num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
+                    num_invited_users: guestsCount,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
                     billing: {

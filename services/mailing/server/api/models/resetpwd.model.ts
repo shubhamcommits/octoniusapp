@@ -3,9 +3,9 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const ResetpwdSchema = new Schema({
-  user: {
+  _account: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'Account'
   }
 });
 

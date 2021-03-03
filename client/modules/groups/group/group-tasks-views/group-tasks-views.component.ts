@@ -17,7 +17,7 @@ import moment from 'moment';
 })
 export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
-  viewType = 'list';
+  viewType = 'kanban';
 
   // GroupData
   groupData: any;
@@ -223,7 +223,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
           }
           return t2.title - t1.title;
         });
-      
+
       // Find the hightes due date on the tasks of the column
       column.real_due_date = moment(Math.max(...column.tasks.map(post => moment(post.task.due_to))));
 

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Auth, User, Workspace, Group } from '../models';
+import { Auth, User, Workspace, Group, Account } from '../models';
 import { sendError, Auths, PasswordHelper } from '../../utils';
 import http from 'axios';
 
@@ -19,25 +19,48 @@ export class AuthsController {
      * @param email 
      * @param workspace_name 
      */
-    async checkUserAvailability(email: string, workspace_name: string) {
+    async checkUserAvailability(email: string) {
 
         return new Promise(async (resolve, reject) => {
 
-            // Find workspace with respective workspace_name
-            const workspace = await Workspace.findOne({ workspace_name: workspace_name });
+            // Find the user with the given details
+            const account = await Account.findOne({
+                email: email
+            });
 
-            // Workspace not found
-            if (!workspace) {
+            // If user is already a member, user must sign in
+            if (account) {
                 reject({
-                    message: 'Invalid workspace name!',
-                    error: 'Invalid workspace name!'
+                    message: 'You are already a member of Octonius, please log in!',
+                    error: 'Account already exist!'
                 })
             }
+
+            // Resolve the promise
+            resolve({});
+        })
+
+    }
+
+    /**
+    * This function checks for workspace availability and whether a already user exist in the workspace or not
+    * @param email 
+    * @param workspace_name 
+    */
+    async checkUserAvailabilityInWorkspace(email: string, workspace_name: string) {
+
+        return new Promise(async (resolve, reject) => {
+
+            // Find the user with the given details
+            const account = await Account.findOne({
+                email: email
+            });
 
             // Find the user with the given details
             const user = await User.findOne({
                 workspace_name: workspace_name,
-                email: email
+                _account: account._id,
+                active: true
             });
 
             // If user is already a member, user must sign in
@@ -50,219 +73,305 @@ export class AuthsController {
 
             // Resolve the promise
             resolve({});
-        })
+       })
 
-    }
+   }
 
     /**
-     * This function is responsible to signing up a user and creating their new account
+     * This function is responsible to signing up a user and creating the new account
      * @param req 
      * @param res 
      * @param next 
      */
     async signUp(req: Request, res: Response, next: NextFunction) {
+        // Userdata variable which stores all the details
+        const { userData } = req.body;
+
+        await new AuthsController().checkUserAvailability(userData.email)
+            .then(async () => {
+                // Encrypting user password
+                const passEncrypted: any = await passwordHelper.encryptPassword(userData.password);
+
+                // If we are unable to encrypt the password and store into the server
+                if (!passEncrypted.password) {
+                    return sendError(res, new Error('Unable to encrypt the password to the server'), 'Unable to encrypt the password to the server, please try with a different password!', 401);
+                }
+
+                // Updating the password value with the encrypted password
+                userData.password = passEncrypted.password;
+
+                // Adding _workspace property to userData variable
+                userData._workspaces = [];
+
+                // Create new user with all the properties of userData
+                let account: any = await Account.create(userData);
+
+                // Error creating the new account
+                if (!account) {
+                    return sendError(res, new Error('Unable to create the account, some unexpected error occured!'), 'Unable to create the account, some unexpected error occured!', 500);
+                }
+
+                // Generate new token and logs the auth record
+                // let token = await auths.generateToken(account);
+
+                // Send signup confirmation email using mailing microservice
+                http.post(`${process.env.MAILING_SERVER_API}/sign-up`, {
+                    user: account
+                })
+
+                // Signup user and return the token
+                return res.status(200).json({
+                    message: `Welcome to Octonius!`,
+                    // token: token,
+                    account: account
+                });
+            })
+            .catch((err) => {
+                return sendError(res, err, 'User is already a member of Octonius!', 500);
+            });
+    };
+
+    /**
+     * This function is responsible to add a user to a workspace
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async joinWorkspace(req: Request, res: Response, next: NextFunction) {
         try {
-            const { workspace_name, email, password, first_name, last_name, type, group_name } = req.body;
+            let { workspace, accountData } = req.body;
 
             // Check the Workspace and User Availability
-            await new AuthsController().checkUserAvailability(email, workspace_name)
+            await new AuthsController().checkUserAvailabilityInWorkspace(accountData.email, workspace.workspace_name)
                 .then(async () => {
-                    // Userdata variable which stores all the details
-                    const userData = req.body;
-
                     // Split the user email domain to check and verify the accession to workplace on the basis of the domain
-                    const userEmailDomain = req.body.email.split('@')[1];
+                    const userEmailDomain = accountData.email.split('@')[1];
 
-                    // Adding full_name property to userData variab;e
-                    userData.full_name = `${first_name} ${last_name}`;
-
+                    const accessCode = workspace.access_code;
                     // Check if the workspace exist with particular (workspace_name and allowed_domains) or (workspace_name and invited_users)
-                    let workspace: any = await Workspace.findOne({
-                        $or: [{
-                            workspace_name: workspace_name,
-                            allowed_domains: userEmailDomain
-                        }, {
-                            workspace_name: workspace_name,
-                            "invited_users.email": email
-                        }]
+                    workspace = await Workspace.findOne({
+                        workspace_name: workspace.workspace_name,
+                        allowed_domains: userEmailDomain
                     });
 
                     // Workspace not found!
                     if (!workspace) {
                         return sendError(res, new Error('Workspace does not exist or this email is not allowed to join this workspace!'), 'Workspace does not exist or this email is not allowed to join this workspace!', 404);
+                    } else if (workspace.access_code != accessCode) {
+                        return sendError(res, new Error('Your access code is wrong!'), 'Your access code is wrong!', 404);
                     }
 
-                    // Encrypting user password
-                    const passEncrypted: any = await passwordHelper.encryptPassword(password);
-
-                    // If we are unable to encrypt the password and store into the server
-                    if (!passEncrypted.password) {
-                        return sendError(res, new Error('Unable to encrypt the password to the server'), 'Unable to encrypt the password to the server, please try with a different password!', 401);
-                    }
-
-                    // Updating the password value with the encrypted password
-                    userData.password = passEncrypted.password;
-
-                    // Adding _workspace property to userData variable
-                    userData._workspace = workspace._id;
-
-                    // Adding role property to userData variable
-                    userData.role = 'member';
-
-                    // Create new user with all the properties of userData
-                    let user: any = await User.create(userData);
-
-                    // Error creating the new user
-                    if (!user) {
-                        return sendError(res, new Error('Unable to create the user, some unexpected error occured!'), 'Unable to create the user, some unexpected error occured!', 500);
-                    }
-
-                    // Add new user to workspace's group
-                    const groupUpdate = await Group.findOneAndUpdate({
-                        group_name: (type == 'group') ? group_name : 'Global',
-                        workspace_name: workspace_name
+                    // Add workspace to user account
+                    const accountUpdate: any = await Account.findByIdAndUpdate({
+                        _id: accountData._id
                     }, {
                         $push: {
-                            _members: user._id
-                        },
-                        $inc: { members_count: 1 }
-                    });
-
-                    // Error updating the group
-                    if (!groupUpdate) {
-                        return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
-                    }
-
-                    // Add group to user's groups
-                    let userUpdate: any = await User.findByIdAndUpdate({
-                        _id: user._id
-                    }, {
-                        $push: {
-                            _groups: groupUpdate._id,
-                            'stats.favorite_groups': groupUpdate._id
-                        }
-                    }, {
-                        new: true
-                    });
-
-                    // Error updating the user
-                    if (!userUpdate) {
-                        return sendError(res, new Error('Unable to update the user, some unexpected error occured!'), 'Unable to update the user, some unexpected error occured!', 500);
-                    }
-
-                    // personalGroupData variable to create group for my workplace
-                    const personalGroupData = {
-                        group_name: 'personal',
-                        _workspace: workspace._id,
-                        _admins: [user._id],
-                        workspace_name: workspace_name
-                    };
-
-                    // Check if personal group already exist
-                    const personalGroup = await Group.findOne({
-                        group_name: personalGroupData.group_name,
-                        _admins: personalGroupData._admins,
-                        workspace_name: personalGroupData.workspace_name,
-                    });
-
-                    // Send Error response if 'personal' group already exist
-                    if (!!personalGroup) {
-                        return sendError(res, new Error('Group name already taken, please choose another name!'), 'Group name already taken, please choose another name!', 409);
-                    } else {
-
-                        // Create new personal group
-                        let group = await Group.create(personalGroupData);
-
-                        const default_CF = {
-                            title: 'Priority',
-                            name: 'priority',
-                            values: ['Low', 'Medium', 'High']
-                        };
-            
-                        // Find the group and update their respective group avatar
-                        group = await Group.findByIdAndUpdate({
-                            _id: group._id
-                        }, {
-                            //custom_fields: newCustomField
-                            $push: { "custom_fields": default_CF }
-                        }, {
-                            new: true
-                        });
-                            
-
-                        // Add personal group to user's groups
-                        user = await User.findByIdAndUpdate({
-                            _id: personalGroupData._admins,
-                            _workspace: personalGroupData._workspace
-                        }, {
-                            $push: {
-                                _groups: group._id
-                            },
-                            $set: {
-                                _private_group: group
-                            }
-                        }, {
-                            new: true
-                        });
-                    }
-
-                    workspace = await Workspace.findOne({ _id: workspace._id })
-
-                    // Invited users
-                    let invited_users = workspace.invited_users
-
-                    // Initialise the the invited user
-                    let invited_user = invited_users[0]
-
-                    if(invited_users.length > 0){
-                        let index = invited_users.findIndex((user)=> user.email == email)
-
-                        if(index != -1){
-                            invited_user = invited_users[index]
-                        }
-
-                        await Workspace.updateOne(
-                            { _id: workspace._id, 
-                              invited_users: { $elemMatch: { email: email } }
-                            }, 
-                            {
-                                $set: { 
-                                    "invited_users.$.accepted": true,
-                                    "invited_users.$._user": user._id
-                                }
-                            },
-                            { new: true }
-                        )
-
-                        await User.updateOne(
-                            { _id: user._id },
-                            { $set: { invited: true } },
-                            { new: true }
-                        )
-                    }
-
-                    // Add new user to workspace members and remove user email
-                    workspace = await Workspace.findByIdAndUpdate({
-                        _id: workspace._id
-                    }, {
-                        $push: {
-                            members: user._id
+                            _workspaces: workspace
                         }
                     }, {
                         new: true
                     })
 
-                    // Error updating the Workspace and removing the user email
-                    if (!workspace) {
-                        return sendError(res, new Error('Unable to update the workspace, some unexpected error occured!'), 'Unable to update the workspace, some unexpected error occured!', 500);
+                    // Error updating the account
+                    if (!accountUpdate) {
+                        return sendError(res, new Error('Unable to update the account, some unexpected error occured!'), 'Unable to update the account, some unexpected error occured!', 500);
+                    }
+
+                    // Find if the user already exist in the workplace, but is inactive
+                    let user = await User.findOne({
+                        email: accountData.email,
+                        workspace_name: workspace.workspace_name,
+                        active: false
+                    });
+
+                    if (user) {
+                        // As we found that user was disabled, then enable them accordingly.
+                        user = await User.findOneAndUpdate(
+                            { email: accountData.email },
+                            { $set: { active: true } },
+                            { new: true }
+                        );
+                    } else {
+
+                        let groups = workspace.invited_users
+                            .filter(invite => invite.email == accountData.email)
+                            .map(invite => invite._group);
+
+                        if (groups && groups.length > 0) {
+
+                            let userData: Object = {
+                                _account: accountUpdate._id,
+                                first_name: accountData.first_name,
+                                last_name: accountData.last_name,
+                                full_name: `${accountData.first_name} ${accountData.last_name}`,
+                                _workspace: workspace._id,
+                                workspace_name: workspace.workspace_name,
+                                role: 'guest'
+                            };
+
+                            // Create new user with all the properties of userData
+                            user = await User.create(userData);
+
+                            for (let i = 0; i < groups.length; i++) {
+                                // Add new user to group
+                                const groupUpdate = await Group.findOneAndUpdate({
+                                    _id: groups[i]._id || groups[i]
+                                }, {
+                                    $push: {
+                                        _members: user._id
+                                    },
+                                    $inc: { members_count: 1 }
+                                });
+            
+                                // Error updating the group
+                                if (!groupUpdate) {
+                                    return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                                }
+            
+                                // Add group to user's groups
+                                user = await User.findByIdAndUpdate({
+                                    _id: user._id
+                                }, {
+                                    $push: {
+                                        _groups: groups[i]._id || groups[i]
+                                    }
+                                });
+                            }
+                        } else {
+                            let userData: Object = {
+                                _account: accountUpdate._id,
+                                first_name: accountData.first_name,
+                                last_name: accountData.last_name,
+                                full_name: `${accountData.first_name} ${accountData.last_name}`,
+                                _workspace: workspace._id,
+                                workspace_name: workspace.workspace_name,
+                                role: 'member'
+                            };
+
+                            // Create new user with all the properties of userData
+                            user = await User.create(userData);
+                        }
+    
+                        // Error creating the new user
+                        if (!user) {
+                            return sendError(res, new Error('Unable to create the user, some unexpected error occured!'), 'Unable to create the user, some unexpected error occured!', 500);
+                        }
+    
+                        // If user is invite, does not have access to global
+                        if (user.role != 'guest') {
+                            // Add new user to workspace's group
+                            const groupUpdate = await Group.findOneAndUpdate({
+                                group_name: 'Global',
+                                _workspace: workspace._id
+                            }, {
+                                $push: {
+                                    _members: user._id
+                                },
+                                $inc: { members_count: 1 }
+                            });
+        
+                            // Error updating the group
+                            if (!groupUpdate) {
+                                return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                            }
+        
+                            // Add group to user's groups
+                            user = await User.findByIdAndUpdate({
+                                _id: user._id
+                            }, {
+                                $push: {
+                                    _groups: groupUpdate._id,
+                                    'stats.favorite_groups': groupUpdate._id
+                                }
+                            }, {
+                                new: true
+                            });
+        
+                            // Error updating the user
+                            if (!user) {
+                                return sendError(res, new Error('Unable to update the user, some unexpected error occured!'), 'Unable to update the user, some unexpected error occured!', 500);
+                            }
+                        }
+
+                        // personalGroupData variable to create group for my workplace
+                        const personalGroupData = {
+                            group_name: 'personal',
+                            _workspace: workspace._id,
+                            _admins: [user._id],
+                            workspace_name: workspace.workspace_name
+                        };
+    
+                        // Check if personal group already exist
+                        const personalGroup = await Group.findOne({
+                            group_name: personalGroupData.group_name,
+                            _admins: personalGroupData._admins,
+                            workspace_name: personalGroupData.workspace_name,
+                        });
+    
+                        // Send Error response if 'personal' group already exist
+                        if (!!personalGroup) {
+                            return sendError(res, new Error('Group name already taken, please choose another name!'), 'Group name already taken, please choose another name!', 409);
+                        } else {
+    
+                            // Create new personal group
+                            let group = await Group.create(personalGroupData);
+    
+                            const default_CF = {
+                                title: 'Priority',
+                                name: 'priority',
+                                values: ['Low', 'Medium', 'High']
+                            };
+                
+                            // Find the group and update their respective group avatar
+                            group = await Group.findByIdAndUpdate({
+                                _id: group._id
+                            }, {
+                                //custom_fields: newCustomField
+                                $push: { "custom_fields": default_CF }
+                            }, {
+                                new: true
+                            });
+    
+                            // Add personal group to user's groups
+                            user = await User.findByIdAndUpdate({
+                                _id: personalGroupData._admins,
+                                _workspace: personalGroupData._workspace
+                            }, {
+                                $push: {
+                                    _groups: group._id
+                                },
+                                $set: {
+                                    _private_group: group
+                                }
+                            }, {
+                                new: true
+                            });
+                        }
+    
+                        // Add new user to workspace members and remove user email
+                        workspace = await Workspace.findByIdAndUpdate({
+                            _id: workspace._id
+                        }, {
+                            $push: {
+                                members: user._id
+                            }
+                        }, {
+                            new: true
+                        })
+    
+                        // Error updating the Workspace and removing the user email
+                        if (!workspace) {
+                            return sendError(res, new Error('Unable to update the workspace, some unexpected error occured!'), 'Unable to update the workspace, some unexpected error occured!', 500);
+                        }
                     }
 
                     // Generate new token and logs the auth record
-                    let token = await auths.generateToken(user, workspace_name);
+                    let token = await auths.generateToken(user, workspace.workspace_name);
 
                     // Send signup confirmation email using mailing microservice
-                    http.post(`${process.env.MAILING_SERVER_API}/sign-up`, {
-                        user: userUpdate
+                    http.post(`${process.env.MAILING_SERVER_API}/join-workspace`, {
+                        // TODO - send the proper data
+                        user: user
                     })
 
                     // Count all the users present inside the workspace
@@ -294,6 +403,13 @@ export class AuthsController {
                             { _workspace: workspace._id }
                         ]}).countDocuments();
 
+                        // Count all the users present inside the workspace
+                        const guestsCount: number = await User.find({ $and: [
+                            { active: true },
+                            { _workspace: workspace._id },
+                            { role: 'guest'}
+                        ] }).countDocuments();
+
                         let workspaceMgmt = {
                             _id: workspace._id,
                             company_name: workspace.company_name,
@@ -304,7 +420,7 @@ export class AuthsController {
                             _owner_remote_id: workspace._owner._id || workspace._owner,
                             environment: process.env.DOMAIN,
                             num_members: usersCount,
-                            num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
+                            num_invited_users: guestsCount,
                             num_groups: groupsCount,
                             created_date: workspace.created_date,
                             billing: {
@@ -322,9 +438,10 @@ export class AuthsController {
                         // Send user to the mgmt portal
                         let userMgmt = {
                             _id: user._id,
+                            _account_id: accountUpdate._id,
                             active: user.active,
-                            email: user.email,
-                            password: user.password,
+                            email: accountUpdate.email,
+                            password: accountUpdate.password,
                             first_name: user.first_name,
                             last_name: user.last_name,
                             _remote_workspace_id: workspace._id,
@@ -340,20 +457,21 @@ export class AuthsController {
 
                     // Signup user and return the token
                     return res.status(200).json({
-                        message: `Welcome to ${workspace_name} Workspace!`,
+                        message: `Welcome to ${workspace.workspace_name} Workspace!`,
                         token: token,
-                        user: user
+                        user: user,
+                        workspace: workspace
                     });
 
                 })
                 .catch((err) => {
-                    return sendError(res, err, 'Either workspace doesn\'t exist or user is already a member of this workspace!', 500);
-                })
+                    return sendError(res, err, err.message, 500);
+                });
 
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
-    };
+    }
 
     /**
      * This function is responsible for signing in a user
@@ -365,34 +483,23 @@ export class AuthsController {
         try {
 
             // Request Body data
-            const { email, password, workspace_name } = req.body;
+            const { email, password } = req.body;
 
-            let user;
-            if (workspace_name) {
-              // Find the active user with having the same workspace_name and email as in req.body
-              user = await User.findOne({
-                  workspace_name: workspace_name,
-                  email: email,
-                  active: true
-              });
-            } else {
-              // Find the active user with having the same email as in req.body
-              user = await User.findOne({
-                email: email,
-                active: true
-              });
-            }
+            // Find the account with having the same email as in req.body
+            let account = await Account.findOne({
+                email: email
+            }).populate('_workspaces', '_id workspace_name workspace_avatar');
 
             // If user wasn't found or user was previsously removed/disabled, return error
-            if (!user) {
-                return sendError(res, new Error('Please enter a valid combination or workspace name and user email or user might be disabled!'), 'Please enter a valid combination or workspace name and user email!', 401);
+            if (!account) {
+                return sendError(res, new Error('Email not found!'), 'Email not found!', 401);
             }
 
             // Plain password received from the req.body
             const plainPassword = password;
 
             // Decrypting Password
-            const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, user.password);
+            const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, account.password);
 
             // If we are unable to decrypt the password from the server
             if (!passDecrypted.password) {
@@ -400,7 +507,44 @@ export class AuthsController {
             }
 
             // Generate new token and logs the auth record
-            let token = await auths.generateToken(user, workspace_name);
+            // let token = await auths.generateToken(user, workspace_name);
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: `User signed in!`,
+                // token: token,
+                account: account
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for authenticate the user in the selected workspace
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async selectWorkspace(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Request Body data
+            const { accountId, workspaceId } = req.body;
+
+            // Find the account with having the same email as in req.body
+            let user = await User.findOne({
+                _account: accountId,
+                _workspace: workspaceId
+            });
+
+            // If user wasn't found or user was previsously removed/disabled, return error
+            if (!user) {
+                return sendError(res, new Error('User does not exists!'), 'User does not exists!', 401);
+            }
+
+            // Generate new token and logs the auth record
+            let token = await auths.generateToken(user, user.workspace_name);
 
             // Send the status 200 response 
             return res.status(200).json({
