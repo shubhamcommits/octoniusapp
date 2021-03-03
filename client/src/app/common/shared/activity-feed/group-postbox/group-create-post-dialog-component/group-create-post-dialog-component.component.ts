@@ -120,8 +120,17 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.userData = this.data.userData;
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
-    this.tasks = this.data.Tasks;
+    if(!this.data.Tasks){
+      this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
+    } else {
+      
+      this.tasks = this.data.Tasks;
+    }
 
+    if(this.postData?.task?._parent_task &&  this.columns){
+      this.columns = null;
+    }
+    
     this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
 
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
