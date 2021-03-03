@@ -44,7 +44,6 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   parentTask: boolean = false;
   ischild: boolean = false;
   isdependent: boolean = false;
-  isProject:boolean = false;
   tasksList: any = [];
   dependencyTask: any = [];
   searchingOn: string = 'keyword';
@@ -132,13 +131,14 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     this.allocation = this.postData?.task?.allocation;
 
     this.parentTask = await this.isParent();
+
+    this.getDependencyTask();
   }
 
   ngOnInit() {
     this.postService.getGroupTemplates(this.groupData?._id || this.postData?._group?._id || this.postData?._group).then(res => {
       this.groupTemplates = res['posts'];
     });
-    this.getDependencyTask();
   }
 
   ngAfterViewInit() {
@@ -358,14 +358,15 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
   async getDependencyTask(){
     this.dependencyTask = [] ;
-    this.tasks.forEach(task => {
+
+    this.tasks?.forEach(task => {
 
       if(typeof this.postData?.task?._dependency_task == 'object'){
-        let ispushed=false;
+        let isPushed = false;
         this.postData?.task?._dependency_task.forEach(dependecy => {
-          if(dependecy == task._id && !ispushed){
+          if(dependecy == task._id && !isPushed){
             this.dependencyTask.push(task);
-            ispushed=true;
+            isPushed = true;
           }
         });
       } else {

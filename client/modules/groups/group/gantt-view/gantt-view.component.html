@@ -1,6 +1,6 @@
 <div class="board">
   <div class="board-wrapper">
-    <div *ngIf="tasksdata?.length > 0 || projectsdata?.length > 0" id="wrapper-fixed-container"
+    <div *ngIf="tasksDataList?.length > 0 || projectsdata?.length > 0" id="wrapper-fixed-container"
       [ngStyle]="{'position': 'fixed','margin-top': '15px'}">
       <div *ngIf="projectsdata?.length > 0" style="height: 100px;overflow: hidden;">
       <div id="hideScrollbar" [ngStyle]="{'height': '120px','width':'100%','overflow':'auto'}">
@@ -111,7 +111,7 @@
 
               </div>
               <!-- </div> -->
-              <div *ngFor="let task of tasksdata; let i =index" [ngStyle]="{'left':'0px','position':'absolute','top':((tasksStartingHeight)+(60*i+100))+'px',
+              <div *ngFor="let task of tasksDataList; let i =index" [ngStyle]="{'left':'0px','position':'absolute','top':((tasksStartingHeight)+(60*i+100))+'px',
               'board':'1px solid gray','width':gantt_container_width}" cdkDropList class="example-list"
                   (cdkDropListDropped)="drop($event)">
                   <div [attr.taskIndex]="i" [attr.id]="task.id" [ngStyle]="{'left':(task.index_date*step)+'px','top':'0px','width'
@@ -146,7 +146,7 @@
         <!-- </div> -->
       </div>
     </div>
-    <div *ngIf="(!tasksdata || tasksdata?.length <= 0) && (!projectsdata || projectsdata?.length <= 0)">
+    <div *ngIf="(!tasksDataList || tasksDataList?.length <= 0) && (!projectsdata || projectsdata?.length <= 0)">
       <img src='assets/images/placeholder_timeline.svg' style="width: 60%; margin:60px 150px">
     </div>
   </div>
