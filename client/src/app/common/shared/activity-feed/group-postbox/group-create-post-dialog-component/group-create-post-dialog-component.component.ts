@@ -130,7 +130,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     if(this.postData?.task?._parent_task &&  this.columns){
       this.columns = null;
     }
-    
+
     this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
 
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
@@ -278,28 +278,45 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }
   }
 
+  /**
+   * This function is responsible to update the date if the date is valid.
+   * @param date
+   * @param property 
+   */
   async updateDate(date, property) {
     await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
       if (property === 'due_date') {
-        this.postService.changeTaskDueDate(this.postData._id, date?moment(date).format('YYYY-MM-DD'):null)
-          .then((res) => {
-            this.postData = res['post'];
-            // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise(`Date updated!`));
-          })
-          .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
-          });
+        if((!this.startDate || !date) || (this.startDate && moment(date).isAfter(moment(this.startDate).add(-1,'days')))){
+            this.postService.changeTaskDueDate(this.postData._id, date?moment(date).format('YYYY-MM-DD'):null)
+            .then((res) => {
+              this.postData = res['post'];
+              this.dueDate = moment(this.postData?.task?.due_to);
+              // Resolve with success
+              resolve(this.utilityService.resolveAsyncPromise(`Date updated!`));
+            })
+            .catch(() => {
+              reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
+            });
+        } else {
+          this.dueDate = moment(this.postData?.task?.due_to);
+          reject(this.utilityService.rejectAsyncPromise(`Invalid date, Due date should after or same the start date, please try again!`));
+        }
       } else if(property === 'start_date') {
-        this.postService.saveTaskDates(this.postData._id, date?moment(date).format('YYYY-MM-DD'):null, property)
-          .then((res) => {
-            this.postData = res['post'];
-            // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
-          })
-          .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
-          });
+        if((!this.dueDate || !date) || (this.dueDate && moment(date).isBefore(moment(this.dueDate)))){
+          this.postService.saveTaskDates(this.postData._id, date?moment(date).format('YYYY-MM-DD'):null, property)
+            .then((res) => {
+              this.postData = res['post'];
+              this.startDate = moment(this.postData?.task?.start_date);
+              // Resolve with success
+              resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+            })
+            .catch(() => {
+              reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+            });
+        } else {
+          this.startDate = moment(this.postData?.task?.start_date);
+          reject(this.utilityService.rejectAsyncPromise(`Invalid date, Start date should before or same the due date, please try again!`));
+        }
       }
     }));
   }
