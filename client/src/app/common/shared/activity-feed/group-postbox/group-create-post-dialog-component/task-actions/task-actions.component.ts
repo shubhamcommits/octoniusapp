@@ -44,6 +44,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   parentTask: boolean = false;
   ischild: boolean = false;
   isdependent: boolean = false;
+  isProject:boolean = false;
   tasksList: any = [];
   dependencyTask: any = [];
   searchingOn: string = 'keyword';

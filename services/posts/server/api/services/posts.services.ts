@@ -223,7 +223,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-        .populate({ path: 'task._column', select: '_id title' })
+        // .populate({ path: 'task._column', select: '_id title' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -244,7 +244,7 @@ export class PostService {
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
         { path: 'task._parent_task', select: '_id title _assigned_to' },
-        { path: 'task._column', select: '_id title' }
+        // { path: 'task._column', select: '_id title' }
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -2051,13 +2051,12 @@ export class PostService {
             { _id: { $ne: currentPostId } },
             { title: { $regex: query, $options: 'i' } },
             { type: 'task' },
-            { "task.is_milestone": false },
             { 'task._parent_task': null }
           ]
         })
           .sort({ title: -1 })
           .limit(5)
-          .select('_id title');
+          .select('_id title type task');
 
       } else {
         // search for dependency
@@ -2067,7 +2066,6 @@ export class PostService {
             { _id: { $ne: currentPostId } },
             { title: { $regex: query, $options: 'i' } },
             { type: 'task' },
-            { "task.is_milestone": false },
             { "task.start_date": { $ne: null } },
             { "task.due_to": { $ne: null } }
           ]
@@ -2086,6 +2084,17 @@ export class PostService {
 
       }
 
+
+      if (posts && posts.length > 0) {
+        let length = posts.length;
+        for (var i = 0; i < length; i++) {
+          if (posts[i]?.task?.is_milestone == true) {
+            posts.splice(i, 1);
+            i--;
+            length--;
+          }
+        }
+      }
 
       // Return set of posts 
       return posts;
@@ -2160,36 +2169,37 @@ export class PostService {
   async removeDependencyTask(postId: string, dependecyTaskId: string) {
 
     try {
-      
-      let oldParent = await Post.findById(dependecyTaskId);
-      
-      for (var i = 0; i < oldParent.task._dependent_child.length; i++) {
-        if (oldParent.task._dependent_child[i] + '' == postId + '') {
-          oldParent.task._dependent_child.splice(i, 1);
-          break;
+
+
+      const dependencyPost = await Post.findByIdAndUpdate({
+        _id: dependecyTaskId
+      }, {
+        $pull: {
+           "task._dependent_child": postId 
+        }},
+        {
+          new: true
         }
-      }
-
-      await oldParent.save();
+      );
       
 
-      let post = await Post.findById(postId);
-
-      for (var i = 0; i < post.task._dependency_task.length; i++) {
-        if (post.task._dependency_task[i] + '' == dependecyTaskId + '') {
-          post.task._dependency_task.splice(i, 1);
-          break;
+      let dependentPost = await Post.findByIdAndUpdate({
+        _id: postId
+      }, {
+        $pull: {
+           "task._dependency_task": dependecyTaskId 
+        }},
+        {
+          new: true
         }
-      }
-
-      await post.save();
-
+      );
+  
 
       // populate the properties of this document
-      post = await this.populatePostProperties(post);
+      dependentPost = await this.populatePostProperties(dependentPost);
 
       // Return the post
-      return post;
+      return dependentPost;
 
     } catch (err) {
       console.log(`\n⛔️ Error:\n ${err}`);
