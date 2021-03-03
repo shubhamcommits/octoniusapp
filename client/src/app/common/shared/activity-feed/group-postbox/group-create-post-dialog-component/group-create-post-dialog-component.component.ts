@@ -141,7 +141,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   formateDate(date){
-    return moment(moment.utc(date).format("YYYY-MM-DD")).toDate();
+    return moment(moment.utc(date), "YYYY-MM-DD").toDate();
   }
 
   async initPostData() {
@@ -452,7 +452,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     if(this.quillData && this.quillData?.mention){
       this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
     }
-    
+
     const post: any = {
       title: this.title,
       type: this.postData.type,
