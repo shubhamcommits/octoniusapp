@@ -105,7 +105,7 @@ const eventMailHelper = async (post: any, emailType: any) => {
     // Create Readble Stream from the Event Assignee
     userStream = Readable.from(await User.find({
       _groups: post._group
-    }).select('first_name email'))
+    }).select('first_name _account'));
   } else {
 
     // Create Readble Stream from the Event Assignee
@@ -119,9 +119,9 @@ const eventMailHelper = async (post: any, emailType: any) => {
     const emailData = {
       subject: subjects[emailType],
       toName: user.first_name,
-      toEmail: user.email,
+      toEmail: user._account.email,
       fromName: from.first_name,
-      fromEmail: from.email,
+      fromEmail: from._account.email,
       postTitle: post.title,
       // postContent: post.content,
       workspace: group.workspace_name,
