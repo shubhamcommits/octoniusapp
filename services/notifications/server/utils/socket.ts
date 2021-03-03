@@ -9,16 +9,14 @@ const globalConnections = [];
 
 function init(server: any){
 
-    const io: any = require('socket.io')(server, {
-        origins: ['*:*']
-    });
+    const io: any = require('socket.io')(server);
 
     /* =================
      * - NOTIFICATIONS -
      * =================
      */
     // Allowing all the origins to connect
-    //io.set('origins', '*:*');
+    io.set('origins', '*:*');
 
     // Initiate the connection
     io.sockets.on('connection', (socket: any) => {
