@@ -23,6 +23,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Input() groupData: any;
   @Input() userData: any;
   @Input() tasks: any;
+  @Input() columns:any;
   @Input() isNorthStar = false;
   @Input() isMilestone = false;
 
@@ -44,6 +45,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   parentTask: boolean = false;
   ischild: boolean = false;
   isdependent: boolean = false;
+  isProject:boolean = false;
   tasksList: any = [];
   dependencyTask: any = [];
   searchingOn: string = 'keyword';
@@ -77,6 +79,12 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   ) { }
 
   async ngOnChanges() {
+    
+    this.columns.forEach(column => {
+      if(column._id == this.postData?.task?._column){
+        this.isProject = column.project_type; 
+      }
+    });
 
     if (this.postData.type === 'task' && this.groupData && this.userData) {
       // Fetches the user groups from the server

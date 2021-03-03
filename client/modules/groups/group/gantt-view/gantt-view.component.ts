@@ -611,16 +611,20 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           if (sortedBefore[j].task._dependency_task) {
 
             const parenttaskID = dependencyid;
+            
             if( typeof sortedBefore[j].task._dependency_task == 'object'){
 
               if(sortedBefore[j].task._dependency_task?.length > 0){
+              
               for (let index = 0; index < sortedBefore[j].task._dependency_task.length; index++) {
                 const idi = sortedBefore[j].task._dependency_task[index]+ '';
                 const idj = parenttaskID + '';
 
                 if (idi === idj) {
 
-                  SortedTask.push(sortedBefore[j]);
+                  if(!isAlready(sortedBefore[j]._id)){
+                    SortedTask.push(sortedBefore[j]);
+                  }
 
                   if (sortedBefore[j].task && sortedBefore[j].task._dependent_child) {
 
@@ -639,7 +643,9 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   
               if (idi === idj) {
   
-                SortedTask.push(sortedBefore[j]);
+                if(!isAlready(sortedBefore[j]._id)){
+                  SortedTask.push(sortedBefore[j]);
+                }
   
                 if (sortedBefore[j].task && sortedBefore[j].task._dependent_child) {
   
@@ -655,13 +661,13 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       }
 
 
-      function isAlready() {
+      function isAlready(id:any) {
         var already = false;
 
         //Checking Task already pused or not
         for (var k = SortedTask.length - 1; k >= 0; k--) {
 
-          if (sortedBefore[i]._id == SortedTask[k]._id) {
+          if (id == SortedTask[k]._id) {
             already = true;
             break;
           }
@@ -686,7 +692,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
       for (var i = 0; i < sortedBefore.length; i++) {
         // Check bit task is already pushed or not
-        var already = isAlready();
+        var already = isAlready(sortedBefore[i]._id);
 
         //If not already pushed pushing into  SortedTask array.
         if (!already) {
