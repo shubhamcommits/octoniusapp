@@ -15,7 +15,6 @@ function init(server: any){
      * - NOTIFICATIONS -
      * =================
      */
-
     // Allowing all the origins to connect
     io.set('origins', '*:*');
 
