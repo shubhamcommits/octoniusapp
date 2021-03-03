@@ -177,8 +177,8 @@
 
         <!-- Dates starts -->
         <div class="content-box" *ngIf="postData?.type === 'task' || postData.type === 'event'">
-          <p *ngIf="groupData && groupData.project_type" class="box-title">Start date</p>
-          <div *ngIf="groupData && postData?.type === 'task' && groupData.project_type">
+          <p *ngIf="groupData && groupData.project_type && !postData?.task?.is_milestone" class="box-title">Start date</p>
+          <div *ngIf="groupData && postData?.type === 'task' && groupData.project_type && !postData?.task?.is_milestone">
             <!-- Date Picker starts -->
             <app-date-picker (date)="getDate($event, 'start_date')" [dueDate]="formateDate(postData?.task.start_date)"
               [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
@@ -297,12 +297,14 @@
           [userData]="userData"
           [tasks]="tasks"
           [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
+          [isMilestone]="(postData?.task?.is_milestone) ? true : false"
           (parentTaskSelectedEmitter)="onParentTaskSelected($event)"
           (dependencyTaskSelectedEmitter)="onDependencyTaskSelected($event)"
           (taskClonedEmitter)="onTaskClonned($event)"
           (taskFromTemplateEmitter)="openParentTask($event)"
           (taskAllocationEmitter)="onAllocationChanged($event)"
           (transformIntoNorthStarEmitter)="transformToNorthStart($event)"
+          (transformIntoMilestoneEmitter)="transformToMileStone($event)"
           ></app-task-actions>
     </div>
     <!-- Top Right Section ends -->
