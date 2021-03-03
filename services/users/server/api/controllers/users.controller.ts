@@ -247,17 +247,21 @@ export class UsersControllers {
 
         try {
 
-            const userTo = await User.findById(userToId);
+            const userTo = await User.findById(userToId)
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
             const userBY = await User.findById(userById);
             var workspace = await Workspace.findOneAndUpdate({
-                _id:workspaceId
-            },
-            {
-                owner_first_name: userTo.first_name,
-                owner_last_name:userTo.last_name,
-                owner_email: userTo.email,
-                _owner: userTo._id
-            });
+                    _id:workspaceId
+                },
+                {
+                    owner_first_name: userTo._account.first_name,
+                    owner_last_name:userTo._account.last_name,
+                    owner_email: userTo._account.email,
+                    _owner: userTo._id
+                });
 
             userTo.workspace_name = workspace.workspace_name;
             userTo._workspace = workspace._id;
@@ -292,9 +296,9 @@ export class UsersControllers {
                     _id: workspaceId,
                     company_name: workspace.company_name,
                     workspace_name: workspace.workspace_name,
-                    owner_email: userTo.email,
-                    owner_first_name: userTo.first_name,
-                    owner_last_name: userTo.last_name,
+                    owner_email: userTo._account.email,
+                    owner_first_name: userTo._account.first_name,
+                    owner_last_name: userTo._account.last_name,
                     _owner_remote_id: userToId,
                     environment: process.env.DOMAIN,
                     num_members: usersCount,
@@ -742,7 +746,7 @@ export class UsersControllers {
         }
 
         // remove user
-        const user = await User.findByIdAndDelete(userId).select('_workspace integrations');
+        const user = await User.findByIdAndDelete(userId).select('_account _workspace integrations');
         const workspaceId = user._workspace;
 
         const usersCount: number = await User.find({ $and: [
@@ -786,14 +790,23 @@ export class UsersControllers {
 
         const accountId = user?._account?._id || user?._account;
         if (accountId) {
-            // Remove workspace to user account
-            const accountUpdate: any = await Account.findByIdAndUpdate({
-                    _id: accountId
-                }, {
-                    $pull: {
-                        _workspaces: workspace
-                    }
-                });
+            // Count the number of workspces for the account
+            let accountUpdate = await Account.findById(accountId);
+            const numWorkspaces = accountUpdate._workspaces.length;
+
+            if (numWorkspaces < 2) {
+                // If account only has one workspace, the account is removed
+                accountUpdate = await Account.findByIdAndDelete(accountId);
+            } else {
+                // If account has more than one workspaces, the workspace is removed from the account
+                accountUpdate = await Account.findByIdAndUpdate({
+                        _id: accountId
+                    }, {
+                        $pull: {
+                            _workspaces: workspace
+                        }
+                    });
+            }
         }
 
         // Send new workspace to the mgmt portal
