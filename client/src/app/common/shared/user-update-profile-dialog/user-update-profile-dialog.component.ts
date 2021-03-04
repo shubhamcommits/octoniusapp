@@ -50,7 +50,7 @@ export class UserUpdateProfileDialogComponent implements OnInit {
     } else {
       this.utilityService.asyncNotification('Please wait we are updating your information...',
         new Promise((resolve, reject) => {
-          this.userService.changePassword({ password: this.password })
+          this.userService.changePassword({ _id: this.userData?._account?._id || this.userData?._account, password: this.password })
             .then(res => {
               resolve(this.utilityService.resolveAsyncPromise('Password updated sucessfully!'));
               this.mdDialogRef.close();
