@@ -157,6 +157,7 @@ export class WorkspaceController {
             // Prepare new user data
             const newUser = {
                 _account: accountData._id,
+                email: accountData.email,
                 first_name: accountData.first_name,
                 last_name: accountData.last_name,
                 full_name: `${accountData.first_name} ${accountData.last_name}`,

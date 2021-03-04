@@ -201,6 +201,7 @@ export class AuthsController {
 
                             let userData: Object = {
                                 _account: accountUpdate._id,
+                                email: accountUpdate.email,
                                 first_name: accountData.first_name,
                                 last_name: accountData.last_name,
                                 full_name: `${accountData.first_name} ${accountData.last_name}`,
@@ -240,6 +241,7 @@ export class AuthsController {
                         } else {
                             let userData: Object = {
                                 _account: accountUpdate._id,
+                                email: accountUpdate.email,
                                 first_name: accountData.first_name,
                                 last_name: accountData.last_name,
                                 full_name: `${accountData.first_name} ${accountData.last_name}`,
