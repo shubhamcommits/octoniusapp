@@ -8,16 +8,29 @@
     <!-- HOME PANEL STARTS -->
     <div class="col-md-4 shaddow">
       <div style="padding:100px 30px;">
+       
 
-        <div style="width: 100%; margin:0 auto; align-items: center; text-align: center; height: 30vh;">
+        <div style="width: 100%; margin:0 auto; align-items: center; height: 30vh;">
+
+          <h4 class="muted not_bold">
+            Welcome, Cosmin!
+          </h4>
+  
+          <h1 style="margin-bottom: 30px;">
+            Select a workplace to start.
+          </h1>
+
           <!-- SELECT A WORKPLACE -->
           <div class="form-group">
             <div *ngFor="let workspace of accountData?._workspaces"
-                class="card" (click)="selectWorkspace(workspace._id)">
-              <h3 class="card-title">
+                class="workplace-cells" (click)="selectWorkspace(workspace._id)">
+              <div class="btn-select-workplace">
                 <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}"
-                    style="height: 30px; width:30px" class="feed-avatar"
+                    style="height: 100%; width:100%"
                     onerror="this.src='assets/images/icon-new-group.svg'" />
+              </div>
+
+              <h3 class="card-title ml-3">
                   {{workspace?.workspace_name}}
               </h3>
             </div>
@@ -26,12 +39,13 @@
 
           <!-- CREATE A NEW WORKPLACE -->
           <div class="form-group">
-            <div [routerLink]="['/authentication', 'new-workplace']" routerLinkActive="router-link-active"
-                class="card">
-              <h3 class="card-title">
-                <img src="assets/images/icon_file.svg"
-                    style="height: 30px; width:30px" class="feed-avatar"
-                    onerror="this.src='assets/images/icon-new-group.svg'" />
+            <div [routerLink]="['/authentication', 'new-workplace']" routerLinkActive="router-link-active" class="workplace-cells">
+                <div class="btn-create-workplace">
+                  <i class="material-icons"> add</i>
+                </div>
+
+              <h3 class="card-title ml-3">
+                
                   Create a new workspace
               </h3>
             </div>
@@ -41,11 +55,11 @@
           <!-- JOIN AN EXISTING WORKPLACE -->
           <div class="form-group">
             <div [routerLink]="['/authentication', 'join-workplace']" routerLinkActive="router-link-active"
-                class="card">
-              <h3 class="card-title">
-                <img src="assets/images/icon_file.svg"
-                    style="height: 30px; width:30px" class="feed-avatar"
-                    onerror="this.src='assets/images/icon-new-group.svg'" />
+                class="workplace-cells">
+                <div class="btn-join-workplace">
+                  <i class="material-icons"> login</i>
+                </div>
+              <h3 class="card-title ml-3">
                   Join another workspace
               </h3>
             </div>

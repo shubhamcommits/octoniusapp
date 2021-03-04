@@ -9,14 +9,14 @@
      <div class="col-md-4 shaddow">
        <div style="padding:100px 30px;">
 
-         <div style="width: 100%; margin:0 auto; align-items: center; text-align: center; height: 30vh;">
+         <div style="width: 100%; margin:0 auto; align-items: center;height: 30vh;">
 
-          <h4 class="text-center">
+          <h1 style="margin-bottom: 30px;">
             Create new workplace
-          </h4>
+          </h1>
 
           <div class="form-group">
-            <label for="name">Choose a workplace name</label>
+            <label for="name" class="muted">Choose a workplace name</label>
             <input type="text" class="form-control" name="name" [(ngModel)]="workplace.name"
               (focusout)="checkWorkspaceAvailability()">
           </div>
@@ -24,19 +24,19 @@
 
           <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
           <div class="form-group">
-            <label for="company_name">Enter company name</label>
+            <label for="company_name" class="muted">Enter company name</label>
             <input type="text" class="form-control" name="company_name"
               [(ngModel)]="workplace.company_name" (keyup.enter)="createNewWorkplace()">
           </div>
 
-          <button type="submit" class="btn btn-primary"
+          <button type="submit" class="btn btn-primary btn-block btn_login"
               [disabled]="!validWorkspace" (click)="createNewWorkplace()">
             Create
           </button>
 
           <br/><br/>
 
-          <button type="submit" class="btn btn-danger"
+          <button type="submit" class="btn btn-outline-danger btn_login"
               [routerLink]="['/authentication', 'select-workspace']" routerLinkActive="router-link-active">
             Cancel
           </button>
