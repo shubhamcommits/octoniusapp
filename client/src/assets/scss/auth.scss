@@ -29,5 +29,73 @@
 }
 .shaddow{
   box-shadow: -13px 0px 20px rgba(0, 0, 0, 0.24);
-  background-color: rgba(255, 255, 255, 0.95);
+  // background-color: rgba(255, 255, 255, 0.95);
+  background-color: #fff;
+  overflow:scroll;
+}
+
+.forgot-password{
+  text-decoration: underline;
+  cursor: pointer;
+  color: #005fd5;
+}
+
+.btn_login{
+  border-radius: 20px;
+}
+
+.not_bold{
+  font-weight: 400 !important;
+}
+
+.btn-create-workplace{
+width: 70px;
+height: 70px;
+background: #FFFFFF;
+box-shadow: 0px 4px 5px rgba(66, 66, 66, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2);
+border-radius: 5px;
+text-align: center;
+i{
+  font-size: 40px;
+  line-height: 70px;
+  color: #005fd5;
+}
+}
+
+
+.btn-join-workplace{
+  width: 70px;
+height: 70px;
+background: #FFFFFF;
+box-shadow: 0px 4px 5px rgba(66, 66, 66, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2);
+border-radius: 5px;
+text-align: center;
+i{
+  font-size: 40px;
+  line-height: 70px;
+  color:#2AA578;
+}
+}
+
+.workplace-cells{
+  display: flex;
+  margin: 12px 0;
+  cursor: pointer;
+  h3{
+    line-height: 70px;
+    font-weight: 400;
+  }
+}
+
+.btn-select-workplace{
+  width: 70px;
+height: 70px;
+background: #FFFFFF;
+box-shadow: 0px 4px 5px rgba(66, 66, 66, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2);
+border-radius: 5px;
+text-align: center;
+img{
+  object-fit: cover;
+  border-radius: 5px;
+}
 }
