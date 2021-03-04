@@ -230,7 +230,7 @@ export class MembersControllers {
                 invited: false
             }, {
                 new: true
-            }).select('first_name last_name profile_pic email role integrations')
+            }).select('email first_name last_name profile_pic email role integrations')
             .populate({
                 path: '_account',
                 select: '_id email _workspaces first_name last_name created_date'

@@ -9,6 +9,10 @@ const UserSchema = new Schema({
         ref: 'Account',
         required: true
     },
+    email: {
+        type: String,
+        required: false
+    },
     active: {
         type: Boolean,
         required: true,

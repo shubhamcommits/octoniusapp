@@ -50,13 +50,13 @@ export class UserUpdateProfileDialogComponent implements OnInit {
     } else {
       this.utilityService.asyncNotification('Please wait we are updating your information...',
         new Promise((resolve, reject) => {
-          this.userService.updateUser({ password: this.password })
+          this.userService.changePassword({ password: this.password })
             .then(res => {
-              resolve(this.utilityService.resolveAsyncPromise('Details updated sucessfully!'));
+              resolve(this.utilityService.resolveAsyncPromise('Password updated sucessfully!'));
               this.mdDialogRef.close();
             })
             .catch(err => {
-              reject(this.utilityService.rejectAsyncPromise('An unexpected occured while updating the details, please try again!'));
+              reject(this.utilityService.rejectAsyncPromise('An unexpected occured while updating the password, please try again!'));
               this.mdDialogRef.close();
             })
         }))
