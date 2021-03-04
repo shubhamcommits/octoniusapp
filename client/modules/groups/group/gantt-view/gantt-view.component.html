@@ -103,7 +103,7 @@
                           truncatetext:2) : task.name | truncatetext:20}}</h5>
                         <h5 *ngIf="task.difference>6 " class="mt-2 task_title_text">{{task.name}}</h5>
                         <h5 *ngIf="task.difference < 2" [ngStyle]="{'width': '200px','margin-left':task.difference === 1 ?'50px':'0px'}" class="mt-2 task_title_text">{{task.name | truncatetext:30}}</h5>
-                        <i class="material-icons-outlined ml-3 menu_icon" cdkDragHandle>drag_indicator</i>
+                        <img src="assets/images/Icon/icon_drag.svg" alt="" class="menu_icon" cdkDragHandle>
                       </div>
                     </div>
                   </div>

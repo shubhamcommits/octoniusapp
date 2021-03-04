@@ -1,3 +1,5 @@
+@import "variables";
+
 .center {
   width: 30%;
   margin-top: 100px;
@@ -52,13 +54,17 @@
 width: 70px;
 height: 70px;
 background: #FFFFFF;
-box-shadow: 0px 4px 5px rgba(66, 66, 66, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2);
+border: 1px solid $border-color;
+box-shadow: 0px 4px 5px rgba(66, 66, 66, 0.14);
 border-radius: 5px;
 text-align: center;
 i{
   font-size: 40px;
   line-height: 70px;
   color: #005fd5;
+}
+&:hover{
+  box-shadow: 2px 6px 8px rgba(66, 66, 66, 0.24);
 }
 }
 
@@ -67,13 +73,17 @@ i{
   width: 70px;
 height: 70px;
 background: #FFFFFF;
-box-shadow: 0px 4px 5px rgba(66, 66, 66, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2);
+border: 1px solid $border-color;
+box-shadow: 0px 4px 5px rgba(66, 66, 66, 0.14);
 border-radius: 5px;
 text-align: center;
 i{
   font-size: 40px;
   line-height: 70px;
   color:#2AA578;
+}
+&:hover{
+  box-shadow: 2px 6px 8px rgba(66, 66, 66, 0.24);
 }
 }
 
@@ -85,17 +95,22 @@ i{
     line-height: 70px;
     font-weight: 400;
   }
+
 }
 
 .btn-select-workplace{
   width: 70px;
 height: 70px;
 background: #FFFFFF;
-box-shadow: 0px 4px 5px rgba(66, 66, 66, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2);
+border: 1px solid $border-color;
+box-shadow: 0px 4px 5px rgba(66, 66, 66, 0.14);
 border-radius: 5px;
 text-align: center;
 img{
   object-fit: cover;
   border-radius: 5px;
+}
+&:hover{
+  box-shadow: 2px 6px 8px rgba(66, 66, 66, 0.24);
 }
 }
