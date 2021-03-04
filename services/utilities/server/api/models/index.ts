@@ -1,3 +1,4 @@
+import { Account } from "./account.model";
 import { Auth } from './auth.model';
 import { User } from './user.model';
 import { Folder } from './folder.model';
@@ -9,6 +10,8 @@ import { Group } from './group.model';
  *  =====================
  * */
 export {
+
+    // Account
 
     // Auths
     Auth as Auth,

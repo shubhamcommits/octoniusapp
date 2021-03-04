@@ -120,7 +120,16 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.userData = this.data.userData;
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
-    this.tasks = this.data.Tasks;
+    if(!this.data.Tasks){
+      this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
+    } else {
+      
+      this.tasks = this.data.Tasks;
+    }
+
+    if(this.postData?.task?._parent_task &&  this.columns){
+      this.columns = null;
+    }
 
     this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
 
@@ -132,7 +141,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   formateDate(date){
-    return moment(moment.utc(date).format("YYYY-MM-DD")).toDate();
+    return moment(moment.utc(date), "YYYY-MM-DD").toDate();
   }
 
   async initPostData() {
@@ -269,28 +278,45 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }
   }
 
+  /**
+   * This function is responsible to update the date if the date is valid.
+   * @param date
+   * @param property 
+   */
   async updateDate(date, property) {
     await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
       if (property === 'due_date') {
-        this.postService.changeTaskDueDate(this.postData._id, date?moment(date).format('YYYY-MM-DD'):null)
-          .then((res) => {
-            this.postData = res['post'];
-            // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise(`Date updated!`));
-          })
-          .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
-          });
+        if((!this.startDate || !date) || (this.startDate && moment(date).isAfter(moment(this.startDate).add(-1,'days')))){
+            this.postService.changeTaskDueDate(this.postData._id, date?moment(date).format('YYYY-MM-DD'):null)
+            .then((res) => {
+              this.postData = res['post'];
+              this.dueDate = moment(this.postData?.task?.due_to);
+              // Resolve with success
+              resolve(this.utilityService.resolveAsyncPromise(`Date updated!`));
+            })
+            .catch(() => {
+              reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
+            });
+        } else {
+          this.dueDate = moment(this.postData?.task?.due_to);
+          reject(this.utilityService.rejectAsyncPromise(`Invalid date, Due date should after or same the start date, please try again!`));
+        }
       } else if(property === 'start_date') {
-        this.postService.saveTaskDates(this.postData._id, date?moment(date).format('YYYY-MM-DD'):null, property)
-          .then((res) => {
-            this.postData = res['post'];
-            // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
-          })
-          .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
-          });
+        if((!this.dueDate || !date) || (this.dueDate && moment(date).isBefore(moment(this.dueDate)))){
+          this.postService.saveTaskDates(this.postData._id, date?moment(date).format('YYYY-MM-DD'):null, property)
+            .then((res) => {
+              this.postData = res['post'];
+              this.startDate = moment(this.postData?.task?.start_date);
+              // Resolve with success
+              resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+            })
+            .catch(() => {
+              reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+            });
+        } else {
+          this.startDate = moment(this.postData?.task?.start_date);
+          reject(this.utilityService.rejectAsyncPromise(`Invalid date, Start date should before or same the due date, please try again!`));
+        }
       }
     }));
   }
@@ -423,9 +449,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async updateDetails() {
     // Prepare the normal  object
 
-    
-    this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
-    
+    if(this.quillData && this.quillData?.mention){
+      this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
+    }
+
     const post: any = {
       title: this.title,
       type: this.postData.type,
@@ -434,6 +461,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
       tags: this.tags,
       _read_by: this.postData._read_by,
       isNorthStar: this.postData.task.isNorthStar,
+      is_milestone: this.postData?.task?.is_milestone || false,
       northStar: this.postData.task.northStar,
       assigned_to: this.postData._assigned_to
     };
@@ -567,6 +595,13 @@ export class GroupCreatePostDialogComponent implements OnInit {
         });
     }));
   }
+
+  transformToMileStone(data:any){
+
+    this.postData.task.is_milestone = data;
+    this.updateDetails();
+  }
+
 
   transformToNorthStart(data) {
     this.postData.task.isNorthStar = data;

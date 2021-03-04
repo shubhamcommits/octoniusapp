@@ -19,14 +19,8 @@
  /**
  * 1. !===== COMPONENTS =====!
  */
-import { AuthCommonLayoutComponent } from './auth-common-layout/auth-common-layout.component';
 import { AuthNewWorkplaceComponent } from './auth-new-workplace/auth-new-workplace.component';
-import { AuthSignInComponent } from './auth-sign-in/auth-sign-in.component';
 import { AuthSignUpComponent } from './auth-sign-up/auth-sign-up.component';
-import { AuthUserDetailsComponent } from './auth-user-details/auth-user-details.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-
-
 
 /**
  * 2. !===== MODULES =====!
@@ -52,6 +46,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SelectWorkspaceComponent } from './select-workspace/select-workspace.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { AuthJoinWorkplaceComponent } from './auth-join-workplace/auth-join-workplace.component';
 
 
 
@@ -60,23 +55,14 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
  */
 @NgModule({
   declarations: [
-    // AUTH COMMON LAYOUT COMPONENT
-    AuthCommonLayoutComponent,
-
     // AUTH NEW WORKPLACE COMPONENT
     AuthNewWorkplaceComponent,
 
-    // AUTH SIGNIN COMPONENT
-    AuthSignInComponent,
+    // AUTH JOIN WORKPLACE COMPONENT
+    AuthJoinWorkplaceComponent,
 
     // AUTH SIGNUP COMPONENT
     AuthSignUpComponent,
-
-    // AUTH USER DETAILS COMPONENT
-    AuthUserDetailsComponent,
-
-    // FORGOT PASSWORD COMPONENT
-    ForgotPasswordComponent,
 
     SelectWorkspaceComponent,
 

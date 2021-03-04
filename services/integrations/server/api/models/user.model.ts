@@ -51,7 +51,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         default: 'member',
-        enum: ['owner', 'member', 'admin', 'manager']
+        enum: ['owner', 'member', 'admin', 'manager', 'guest']
     },
     phone_number: {
         type: String,
@@ -97,7 +97,7 @@ const UserSchema = new Schema({
     stats: {
         lastTaskView: {
             type: String,
-            default: 'list'
+            default: 'kanban'
         },
         groups: [{
             _group: {

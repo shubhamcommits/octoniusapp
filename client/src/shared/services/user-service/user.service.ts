@@ -34,6 +34,13 @@ export class UserService {
     return this._http.get(this.BASE_API_URL + `/${userId}`);
   }
 
+  /**
+   * This function fetches the details of the currently loggedIn account
+   */
+  getAccount() {
+    return this._http.get(this.BASE_API_URL + `/account`)
+  }
+
   /* | ======================================= USER DETAILS ========================================== | */
 
   /**
@@ -76,6 +83,15 @@ export class UserService {
     // Call the API
     return this._http.put(this.BASE_API_URL + '/update-role', userData)
     .toPromise();
+  }
+
+  /**
+   * This function updates the password of currently loggedIn user
+   * @param userData { password: password }
+   */
+  changePassword(userData: Object) {
+    return this._http.put(this.BASE_API_URL + `/change-password`, userData)
+      .toPromise();
   }
 
   /* | ======================================= USER SKILLS ========================================== | */

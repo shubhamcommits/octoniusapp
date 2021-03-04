@@ -1,0 +1,126 @@
+import { Component, Injector, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PublicFunctions } from 'modules/public.functions';
+import { AuthService } from 'src/shared/services/auth-service/auth.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+
+@Component({
+  selector: 'app-join-workplace',
+  templateUrl: './auth-join-workplace.component.html',
+  styleUrls: ['./auth-join-workplace.component.scss']
+})
+export class AuthJoinWorkplaceComponent implements OnInit {
+
+  // Defining User Object, which accepts the following properties
+  workplace: { name: string, access_code: string } = {
+    name: null,
+    access_code: null
+  };
+
+  accountData;
+  validWorkspace = false;
+
+  publicFunctions = new PublicFunctions(this._Injector);
+
+  constructor(
+    private utilityService: UtilityService,
+    private authenticationService: AuthService,
+    private storageService: StorageService,
+    public router: Router,
+    private _Injector: Injector
+  ) { }
+
+  async ngOnInit() {
+    this.accountData = await this.publicFunctions.getAccountDetailsFromStorage();
+    if (!this.accountData || JSON.stringify(this.accountData) == JSON.stringify({})) {
+      this.router.navigate(['']);
+    }
+  }
+
+  checkWorkspaceAvailability() {
+    if (this.workplace.name == null || this.workplace.name == '') {
+      this.utilityService.warningNotification('Workplace name can\'t be empty!');
+      this.validWorkspace = false;
+    } else {
+      this.authenticationService.checkWorkspaceName({
+          workspace_name: this.workplace.name
+        })
+        .then(() => {
+          this.validWorkspace = false;
+          this.utilityService.errorNotification('This workplace name does not exist!');
+        })
+        .catch(() => {
+          this.validWorkspace = true;
+          this.utilityService.successNotification('This workplace name is correct!');
+        });
+    }
+  }
+
+  /**
+   * This function is responsible for creating a new workplace
+   *
+   * @param name
+   * @param company_name
+   */
+  joinWorkplace() {
+    try {
+      if (!this.validWorkspace || this.workplace.access_code == null || this.workplace.access_code == '') {
+        this.utilityService.warningNotification('Insufficient or incorrect data, kindly fill up all the fields correctly!');
+      } else {
+        // PREPARING THE WORKPLACE DATA
+        let workplaceData: Object = {
+          workspace_name: this.workplace.name.trim(),
+          access_code: this.workplace.access_code.trim()
+        }
+        this.utilityService.asyncNotification('Please wait while we are setting up your new workplace and account...',
+          this.joinWorkplaceServiceFunction(workplaceData))
+      }
+    } catch (err) {
+      console.log('There\'s some unexpected error occurred, please try again later!', err);
+      this.utilityService.errorNotification('There\'s some unexpected error occurred, please try again later!');
+    }
+  }
+
+  /**
+   * This implements the service function for @function createNewWorkplace(workplaceData)
+   * @param workspaceData
+   */
+  joinWorkplaceServiceFunction(workspaceData: any) {
+    return new Promise((resolve, reject) => {
+      this.authenticationService.joinWorkspace(workspaceData, this.accountData)
+        .then((res) => {
+          this.clearUserData();
+          this.storeData(res);
+          this.router.navigate(['dashboard', 'myspace', 'inbox'])
+            .then(() => {
+              resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome to your new workplace!`))
+            })
+            .catch(() => {
+              reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
+            })
+
+        }, (err) => {
+          this.storageService.clear();
+          reject(this.utilityService.rejectAsyncPromise(err.message));
+        })
+    })
+  }
+
+  /**
+   * This function clear the user Object
+   */
+  clearUserData() {
+    this.publicFunctions.sendUpdatesToUserData({});
+  }
+
+  /**
+   * This function stores the user related data and token for future reference in the browser
+   * @param res
+   */
+  storeData(res: Object) {
+    this.publicFunctions.sendUpdatesToUserData(res['user']);
+    this.publicFunctions.sendUpdatesToWorkspaceData(res['workspace']);
+    this.storageService.setLocalData('authToken', JSON.stringify(res['token']));
+  }
+}

@@ -105,7 +105,7 @@ const eventMailHelper = async (post: any, emailType: any) => {
     // Create Readble Stream from the Event Assignee
     userStream = Readable.from(await User.find({
       _groups: post._group
-    }).select('first_name email'))
+    }).select('first_name _account'));
   } else {
 
     // Create Readble Stream from the Event Assignee
@@ -119,9 +119,9 @@ const eventMailHelper = async (post: any, emailType: any) => {
     const emailData = {
       subject: subjects[emailType],
       toName: user.first_name,
-      toEmail: user.email,
+      toEmail: user._account.email,
       fromName: from.first_name,
-      fromEmail: from.email,
+      fromEmail: from._account.email,
       postTitle: post.title,
       // postContent: post.content,
       workspace: group.workspace_name,
@@ -303,7 +303,7 @@ const resetPassword = async (req: Request, res: Response, next: NextFunction) =>
     const { workspace, user } = req.body;
 
     const resetPwdData = {
-      user: user._id
+      _account: user._id
     };
 
     // so this is a new document we create whenever a user requests a password reset
@@ -403,7 +403,8 @@ const joinWorkspace = async (req: Request, res: Response, next: NextFunction) =>
       fromName: from.first_name,
       fromEmail: from.email,
       workspace: workspace,
-      link: defaults.signupLink(workspace, data.email, data.type, data.group_name)
+      accessCode: data.access_code,
+      link: defaults.signupLink(data.email)
     };
 
     // Generate email body from template

@@ -23,10 +23,19 @@ export class UtilityService {
 
 
   /**
-   * Both of the variables listed down below are used to share the data through this common service among different components in the app
-   * @constant userDataSource
-   * @constant currentUserData
-   */
+  * Both of the variables listed down below are used to share the data through this common service among different components in the app
+  * @constant accountDataSource
+  * @constant currentAccountData
+  */
+  private accountDataSource = new BehaviorSubject<any>({});
+  currentAccountData = this.accountDataSource.asObservable();
+
+
+  /**
+  * Both of the variables listed down below are used to share the data through this common service among different components in the app
+  * @constant userDataSource
+  * @constant currentUserData
+  */
   private userDataSource = new BehaviorSubject<any>({});
   currentUserData = this.userDataSource.asObservable();
 
@@ -330,6 +339,14 @@ export class UtilityService {
    */
   trackByIndex(index, element){
     return element._id;
+  }
+
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param accountData
+   */
+  public updateAccountData(accountData: any){
+    this.accountDataSource.next(accountData);
   }
 
   /**

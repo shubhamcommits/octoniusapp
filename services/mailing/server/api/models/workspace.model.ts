@@ -13,6 +13,11 @@ const workspaceSchema = new Schema({
         unique: true,
         required: true
     },
+    access_code: {
+        type: String,
+        unique: true,
+        required: true
+    },
     workspace_avatar: {
         type: String,
         default: 'default_organization.png'
@@ -21,10 +26,6 @@ const workspaceSchema = new Schema({
         type: String,
         required: true,
         // unique : true
-    },
-    owner_password: {
-        type: String,
-        required: true
     },
     owner_first_name: {
         type: String,
@@ -49,8 +50,23 @@ const workspaceSchema = new Schema({
         required: true
     }],
     invited_users: [{
-        type: String,
-        required: true
+        email: {
+            type: String,
+            required: true
+        },
+        invited_date: {
+            type: Date,
+            required: true
+        },
+        type: {
+            type: String,
+            enum: ['group', 'workspace']
+        },
+        _group: {
+            type: Schema.Types.ObjectId,
+            ref: 'Group',
+            required: false
+        },
     }],
     created_date: {
         type: Date,

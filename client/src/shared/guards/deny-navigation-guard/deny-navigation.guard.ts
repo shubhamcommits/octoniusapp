@@ -1,6 +1,5 @@
 import Swal from 'sweetalert2';
-import {map} from 'rxjs/operators';
-import {Injectable, OnInit, Injector, } from '@angular/core';
+import {Injectable, Injector, } from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate, Router, UrlTree, CanActivateChild} from '@angular/router';
 import { Observable } from 'rxjs';
 import { AdminBillingComponent } from 'modules/admin/admin-billing/admin-billing.component';
@@ -9,7 +8,6 @@ import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
-import { resolve } from 'dns';
 
 @Injectable()
 export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDeactivate<AdminBillingComponent> {
@@ -65,7 +63,8 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
   async checkBillingStatus() {
 
     let adminUser = false;
-    let userAdminState = (this.storageService.getLocalData('userData')['role'].trim() === 'member') ? false : true;
+    const currentUser = await this.publicFunctions.getCurrentUser();
+    let userAdminState = (currentUser.role === 'member' || currentUser.role === 'guest') ? false : true;
     if(userAdminState) {
       adminUser = true;
     }

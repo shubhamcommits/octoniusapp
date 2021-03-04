@@ -340,7 +340,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     }
   }
 
-  getTaskClass(status, isNorthStar) {
+  getTaskClass(status, isNorthStar, isMilestone) {
     let taskClass = '';
     if (status === 'to do') {
       taskClass = 'status-todo';
@@ -349,6 +349,11 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     } else if (status === 'done') {
       taskClass = 'status-done';
     }
+
+    if(isMilestone){
+      taskClass = taskClass + ' milestone'  
+    }
+    
     return (isNorthStar) ? taskClass + ' north-star' : taskClass;
   }
 

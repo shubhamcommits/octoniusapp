@@ -29,6 +29,13 @@ const addUserToSubscription = async (stripe: any, subscriptionId: any, priceId: 
             { _workspace: workspaceId }
         ]}).countDocuments();
 
+        // Count all the users present inside the workspace
+        const guestsCount: number = await User.find({ $and: [
+            { active: true },
+            { _workspace: workspace._id },
+            { role: 'guest'}
+        ] }).countDocuments();
+
         let workspaceMgmt = {
             _id: workspaceId,
             company_name: workspace.company_name,
@@ -39,7 +46,7 @@ const addUserToSubscription = async (stripe: any, subscriptionId: any, priceId: 
             _owner_remote_id: workspace._owner._id || workspace._owner,
             environment: process.env.DOMAIN,
             num_members: usersCount,
-            num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
+            num_invited_users: guestsCount,
             num_groups: groupsCount,
             created_date: workspace.created_date,
             billing: {
@@ -84,6 +91,13 @@ const removeUserFromSubscription = async (stripe: any, subscriptionId: any, pric
             { _workspace: workspaceId }
         ]}).countDocuments();
 
+        // Count all the users present inside the workspace
+        const guestsCount: number = await User.find({ $and: [
+            { active: true },
+            { _workspace: workspace._id },
+            { role: 'guest'}
+        ] }).countDocuments();
+
         let workspaceMgmt = {
             _id: workspaceId,
             company_name: workspace.company_name,
@@ -94,7 +108,7 @@ const removeUserFromSubscription = async (stripe: any, subscriptionId: any, pric
             _owner_remote_id: workspace._owner._id || workspace._owner,
             environment: process.env.DOMAIN,
             num_members: usersCount,
-            num_invited_users: workspace.invited_users ? workspace.invited_users.length : 0,
+            num_invited_users: guestsCount,
             num_groups: groupsCount,
             created_date: workspace.created_date,
             billing: {

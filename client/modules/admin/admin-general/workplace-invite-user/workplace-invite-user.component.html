@@ -2,13 +2,13 @@
     <h6><b>Invite individual users by email</b></h6>
     <hr />
     <div class="form-group">
-        <app-email-input 
-        [email] = "email"
-        [label] = "label"
-        [placeholder] = "placeholder"
-        (outputEmail) = "getValidEmail($event)">
+        <app-email-input
+          [email] = "email"
+          [label] = "label"
+          [placeholder]="placeholder"
+          (outputEmail)="getValidEmail($event)">
         </app-email-input>
     </div>
-    <button class="btn btn-primary" (click)="inviteUser(workspaceData?.workspace_name, this.email)">Invite to Join</button>
+    <button class="btn btn-primary" [disabled]="!isValidEmail" (click)="inviteUser(workspaceData?._id, this.email)">Invite to Join</button>
 
 </div>

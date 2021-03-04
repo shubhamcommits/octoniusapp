@@ -4,6 +4,15 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
+    _account: {
+        type: Schema.Types.ObjectId,
+        ref: 'Account',
+        required: true
+    },
+    email: {
+        type: String,
+        required: false
+    },
     active: {
         type: Boolean,
         required: true,
@@ -21,15 +30,6 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         lowercase: true
-    },
-    email: {
-        type: String,
-        required: true,
-        // unique : true
-    },
-    password: {
-        type: String,
-        required: true
     },
     profile_pic: {
         type: String,
@@ -51,7 +51,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         default: 'member',
-        enum: ['owner', 'member', 'admin', 'manager']
+        enum: ['owner', 'member', 'admin', 'manager', 'guest']
     },
     phone_number: {
         type: String,
@@ -97,7 +97,7 @@ const UserSchema = new Schema({
     stats: {
         lastTaskView: {
             type: String,
-            default: 'list'
+            default: 'kanban'
         },
         groups: [{
             _group: {
@@ -140,10 +140,6 @@ const UserSchema = new Schema({
                 type: String,
                 default: null
             }
-        },
-        is_slack_connected: {
-            type: Boolean,
-            default: null
         }
     },
     out_of_office: [{

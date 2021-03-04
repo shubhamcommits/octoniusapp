@@ -7,55 +7,49 @@
 
       <!-- HOME PANEL STARTS -->
       <div class="col-md-4 shaddow">
-         <div style="padding:100px 30px;">
+        <div style="padding:100px 30px;">
 
-           <div style="width: 100%; margin:0 auto; align-items: center; text-align: center; border-bottom: 1px solid #005fd521; height: 30vh;">
+          <div style="width: 100%; margin:0 auto; align-items: center;height: 30vh;">
 
-            <h4 class="text-center">
-               Welcome back!
-            </h4>
-            <button type="submit" class="btn btn-primary" [routerLink]="['/authentication', 'sign-in']"
-              routerLinkActive="router-link-active">
-              Sign in
+            <h1 style="margin-bottom: 30px;">
+              Log in to your account
+            </h1>
+
+            <div class="form-group">
+              <label for="email" class="muted">Enter your work email address</label>
+              <input type="email" name="email" (focusout)="validateEmail()" class="form-control"
+                [(ngModel)]="account.email" (keyup.enter)="signIn()">
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="muted">Enter your password</label>
+              <input type="password" class="form-control" name="password"
+                [(ngModel)]="account.password" (keyup.enter)="signIn()">
+                <p class="muted">
+                  Forgot password? <span (click)="openForgotPassword(content)" class="forgot-password">Reset password</span></p>
+            </div>
+
+            <!-- FORGOT PASSWORD MODULE STARTS -->
+           
+            <ng-template #content let-modal>
+              <forgot-password></forgot-password>
+            </ng-template>
+            <!-- FORGOT PASSWORD MODULE ENDS -->
+
+            <button type="submit" class="btn btn-primary btn-block btn_login" (click)="signIn()">LOG IN</button>
+          </div>
+
+          <div style="width: 100%; margin:80px auto; align-items: center; text-align: center; border-top: 1px solid #005fd521;">
+            <p class="text-center muted" style="margin-top: 50px;">
+              First time here? Create your account.
+            </p>
+            <button type="button" class="btn btn-outline-secondary btn-block btn_login"
+                [routerLink]="['/authentication', 'sign-up']" routerLinkActive="router-link-active">
+              SIGN UP
             </button>
-           </div>
-
-           <div style="width: 100%; margin:80px auto; align-items: center; text-align: center;">
-            
-
-            <h4 class="text-center">
-               First time here? Join your organization.
-            </h4>
-            <div class="text-center">
-               <button type="button" [disabled]="isLoadingJoinWorkspace$ | async" class="btn btn-primary"
-                  [routerLink]="['/authentication', 'sign-up']" routerLinkActive="router-link-active"
-                  (click)="nextLoadingJoinWorskpaceState()">
-                  <ng-container *ngIf="isLoadingJoinWorkspace$ | async">
-                     <app-loading-spinner-small></app-loading-spinner-small>
-                  </ng-container>
-                  <ng-container *ngIf="!(isLoadingJoinWorkspace$ | async)">Join a workplace</ng-container>
-               </button>
-               <h4 class="text-center" style="margin-top: 50px;">
-                  Starting up? Add your organization.
-               </h4>
-               <button type="button" class="btn" [ngClass]="{'btn-primary': (isLoadingCreateWorkspace$ | async) === true,
-               'btn-outline-primary': !(isLoadingCreateWorkspace$ | async)}"
-                  [disabled]="isLoadingCreateWorkspace$ | async" (click)="nextLoadingCreateWorskpaceState()"
-                  [routerLink]="['/authentication', 'new-workplace']" routerLinkActive="router-link-active">
-                  <ng-container *ngIf="isLoadingCreateWorkspace$ | async">
-                     <app-loading-spinner-small></app-loading-spinner-small>
-                  </ng-container>
-                  <ng-container *ngIf="!(isLoadingCreateWorkspace$ | async)">Create new workplace</ng-container>
-               </button>
-
-
-            </div>
-            </div>
-         </div>
-      </div>
-
-
-      <!-- HOME PANEL ENDS -->
-
+          </div>
+        </div>
+    </div>
+    <!-- HOME PANEL ENDS -->
    </div>
 </div>

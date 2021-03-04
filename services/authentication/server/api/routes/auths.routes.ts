@@ -11,8 +11,14 @@ const authsHelper = new Auths();
 // Routes List
 const routes = express.Router();
 
-// POST - Signs In the user and generate a new token
+// POST - Signs In the user
 routes.post('/sign-in', auth.signIn);
+
+// POST - Signs In the user
+routes.post('/join-workspace', auth.joinWorkspace);
+
+// POST - Signs In the user in the selected workspace and generate a new token
+routes.post('/select-workspace', auth.selectWorkspace);
 
 // GET - get number of users by an email
 routes.get('/num-user-by-email-pwd', auth.getNumUsers);

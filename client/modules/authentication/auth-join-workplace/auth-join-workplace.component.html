@@ -1,0 +1,48 @@
+<div class="container-fluid h-100 welcome">
+  <div class="row h-100">
+
+     <!-- OCTONIUS LEFT BRANDING PANEL STARTS -->
+     <app-branding-panel [routerState]="'signup'" class="col-md-8 overlay"></app-branding-panel>
+     <!-- OCTONIUS LEFT BRANDING PANEL ENDS -->
+
+     <!-- HOME PANEL STARTS -->
+     <div class="col-md-4 shaddow">
+       <div style="padding:100px 30px;">
+
+         <div style="width: 100%; margin:0 auto; align-items: center; height: 30vh;">
+
+          <h1 style="margin-bottom: 30px;">
+            Join another workplace
+          </h1>
+
+          <div class="form-group">
+            <label for="name" class="muted">Enter workplace name</label>
+            <input type="text" class="form-control" name="name"
+              (focusout)="checkWorkspaceAvailability()" [(ngModel)]="workplace.name">
+          </div>
+          <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
+
+          <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
+          <div class="form-group">
+                  <label for="access_code" class="muted">Enter your invite code</label>
+                  <input type="text" class="form-control" name="access_code"
+                    (keyup.enter)="joinWorkplace()" [(ngModel)]="workplace.access_code">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn_login"
+              [disabled]="!validWorkspace" (click)="joinWorkplace()">
+            Join
+          </button>
+
+          <br/><br/>
+
+          <button type="submit" class="btn btn-outline-danger btn_login"
+              [routerLink]="['/authentication', 'select-workspace']" routerLinkActive="router-link-active">
+            Cancel
+          </button>
+        </div>
+      </div>
+   </div>
+   <!-- HOME PANEL ENDS -->
+  </div>
+</div>

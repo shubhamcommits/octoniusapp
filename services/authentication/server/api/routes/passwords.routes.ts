@@ -12,9 +12,6 @@ routes.put('/reset', passwords.resetPassword);
 // POST - send reset password email
 routes.post('/send-mail', passwords.sendResetPasswordMail);
 
-// GET - get reset password details
-routes.get('/reset-details/:userId', passwords.resetPasswordDetails);
-
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

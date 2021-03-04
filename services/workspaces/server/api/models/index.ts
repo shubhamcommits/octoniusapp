@@ -7,6 +7,7 @@ import { User } from './user.model';
 import { Notification } from './notification.model';
 import { Workspace } from './workspace.model';
 import { Comment } from './comment.model';
+import { Account } from './account.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -22,6 +23,9 @@ export {
 
     // USER
     User as User,
+
+    // ACCOUNT 
+    Account as Account,
 
     // WORKSPACE
     Workspace as Workspace,

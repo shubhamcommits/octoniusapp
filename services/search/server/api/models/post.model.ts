@@ -49,7 +49,7 @@ const PostSchema = new Schema({
         ref: 'User',
         required: true
     },
-
+    bars: [],
     created_date: {
         type: Date,
         default: Date.now
@@ -129,6 +129,11 @@ const PostSchema = new Schema({
             default: false
         },
 
+        is_milestone: {
+            type: Boolean,
+            default: false
+        },
+
         northStar: {
             target_value: {
                 type: Number,
@@ -175,10 +180,10 @@ const PostSchema = new Schema({
             type: String,
             default: null
         },
-        _dependency_task:{
+        _dependency_task:[{
             type: Schema.Types.ObjectId,
             ref: 'Post'
-        },
+        }],
         _dependent_child:[{
             type: Schema.Types.ObjectId,
             ref: 'Post'

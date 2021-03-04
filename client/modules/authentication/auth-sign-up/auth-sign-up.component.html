@@ -1,0 +1,58 @@
+<div class="container-fluid h-100 welcome">
+  <div class="row h-100">
+
+     <!-- OCTONIUS LEFT BRANDING PANEL STARTS -->
+     <app-branding-panel [routerState]="'signup'" class="col-md-8 overlay"></app-branding-panel>
+     <!-- OCTONIUS LEFT BRANDING PANEL ENDS -->
+
+     <!-- HOME PANEL STARTS -->
+     <div class="col-md-4 shaddow">
+       <div style="padding:100px 30px;">
+
+         <div style="width: 100%; margin:0 auto; align-items: center;height: 30vh;">
+
+          <h4 class="muted not_bold">
+            👍 Alright! Let’s get you started.
+          </h4>
+
+          <h1 style="margin-bottom: 30px;">
+            Sign up to Octonius
+          </h1>
+
+          <div class="form-group">
+            <label for="email" class="muted">Enter your work email address</label>
+            <input type="email" name="email" (focusout)="validateEmail()" class="form-control"
+              [(ngModel)]="account.email" (keyup.enter)="signUp()">
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="muted">Password</label>
+            <input type="password" class="form-control" name="password"
+              [(ngModel)]="account.password" (keyup.enter)="signUp()">
+          </div>
+
+          <div class="form-group">
+            <label for="repeatPassword" class="muted">Repeat your password</label>
+            <input type="password" class="form-control" name="repeatPassword"
+              [(ngModel)]="account.repeatPassword" (keyup.enter)="signUp()">
+          </div>
+
+          <div class="form-group">
+            <label for="first_name" class="muted">First Name</label>
+            <input type="text" [(ngModel)]="account.first_name" class="form-control" name="first_name">
+          </div>
+          <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
+
+          <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
+          <div class="form-group">
+                  <label for="last_name" class="muted">Last Name</label>
+                  <input type="text" [(ngModel)]="account.last_name" class="form-control" name="last_name">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn_login" (click)="signUp()">SIGN UP</button>
+        </div>
+      </div>
+   </div>
+   <!-- HOME PANEL ENDS -->
+  </div>
+</div>

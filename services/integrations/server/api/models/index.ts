@@ -1,4 +1,5 @@
 import { Auth } from './auth.model';
+import { Account } from './account.model';
 import { Column } from './column.model';
 import { Flow } from './flow.model';
 import { Group } from './group.model';
@@ -16,6 +17,9 @@ export {
 
     // AUTH
     Auth as Auth,
+
+    // Account
+    Account as Account,
 
     // COLUMN
     Column as Column,

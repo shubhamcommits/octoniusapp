@@ -1,3 +1,4 @@
+import { Account } from "./account.model";
 import { Post } from './post.model';
 import { User } from './user.model';
 import { File } from './file.model';
@@ -11,6 +12,9 @@ import { Column } from './column.model';
  *  =====================
  * */
 export {
+
+    // Account
+    Account as Account,
 
     // POST
     Post as Post,

@@ -6,6 +6,7 @@ import { Post } from './post.model';
 import { User } from './user.model';
 import { Notification } from './notification.model';
 import { Workspace } from './workspace.model';
+import { Account } from './account.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -15,6 +16,9 @@ export {
 
     // AUTH
     Auth as Auth,
+
+    // Account
+    Account as Account,
 
     // COLUMN
     Column as Column,

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthCommonLayoutComponent } from './auth-common-layout.component';
+import { AuthJoinWorkplaceComponent } from './auth-join-workplace.component';
 
-describe('AuthCommonLayoutComponent', () => {
-  let component: AuthCommonLayoutComponent;
-  let fixture: ComponentFixture<AuthCommonLayoutComponent>;
+describe('AuthJoinWorkplaceComponent', () => {
+  let component: AuthJoinWorkplaceComponent;
+  let fixture: ComponentFixture<AuthJoinWorkplaceComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AuthCommonLayoutComponent ]
+      declarations: [ AuthJoinWorkplaceComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AuthCommonLayoutComponent);
+    fixture = TestBed.createComponent(AuthJoinWorkplaceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
