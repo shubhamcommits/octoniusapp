@@ -85,6 +85,15 @@ export class UserService {
     .toPromise();
   }
 
+  /**
+   * This function updates the password of currently loggedIn user
+   * @param userData { password: password }
+   */
+  changePassword(userData: Object) {
+    return this._http.put(this.BASE_API_URL + `/change-password`, userData)
+      .toPromise();
+  }
+
   /* | ======================================= USER SKILLS ========================================== | */
 
   /**

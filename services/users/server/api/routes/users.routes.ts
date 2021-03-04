@@ -90,6 +90,9 @@ routes.put('/update-role', user.updateUserRole);
 // PUT - Updates the profileImage of the user on the basis of userId
 routes.put('/image', userFileHandler, user.updateImage);
 
+// PUT - Updates the user´s password on the basis of userId
+routes.put('/change-password', user.changePassword);
+
 // - Integrations -
 
 // Add a new token for a specific integration
