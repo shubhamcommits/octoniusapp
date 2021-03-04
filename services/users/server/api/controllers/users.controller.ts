@@ -190,7 +190,11 @@ export class UsersControllers {
             const account: any = await Account.findOneAndUpdate({
                     email: user._account.email
                 }, {
-                    $set: { email: body.email }
+                    $set: {
+                        email: body.email,
+                        first_name: body.first_name,
+                        last_name: body.last_name
+                    }
                 }, {
                     new: true
                 })
