@@ -167,14 +167,14 @@
 
   <!-- Milestone Switch starts -->
   <div *ngIf="groupData && groupData.project_type" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
-    <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
+    <img src="assets/images/Icon/icon_milestone.svg" alt="Flag"/>
    MAKE MILESTONE
     <mat-slide-toggle color="primary" style=" margin-left: 15px;"
       [checked]="isMilestone"
       [name]="'milestone'"
       (change)="transformToMilestone()">
     </mat-slide-toggle>
-    <p>About MileStone ...</p>
+    <p>Milestones mark specific points in time along a project timeline in order to track major progress points that must be reached to achieve success</p>
   </div>
   <!-- Milestone Switch ends -->
 
