@@ -32,7 +32,7 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -116,7 +116,7 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -158,19 +158,6 @@ export class UsersControllers {
         // Request Body Data
         const { body } = req;
 
-        if(body.password){
-            // Encrypting user password
-            const passEncrypted: any = await passwordHelper.encryptPassword(body.password);
-
-            // If we are unable to encrypt the password and store into the server
-            if (!passEncrypted.password) {
-                return sendError(res, new Error('Unable to encrypt the password to the server'), 'Unable to encrypt the password to the server, please try with a different password!', 401);
-            }
-
-            // Updating the password value with the encrypted password
-            body.password = passEncrypted.password;
-        }
-
         // Current loggedIn userId
         const userId = req['userId'];
 
@@ -184,7 +171,7 @@ export class UsersControllers {
                 }, {
                     new: true
                 })
-                .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -194,14 +181,32 @@ export class UsersControllers {
                     select: '_id email _workspaces first_name last_name created_date'
                 });
 
+            // If user not found
+            if (!user) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Find the user and update it on the basis of the userId
+            const account: any = await Account.findOneAndUpdate({
+                    email: user._account.email
+                }, {
+                    $set: { email: body.email }
+                }, {
+                    new: true
+                })
+                .select('_id email _workspaces first_name last_name created_date').lean();
+
+            // If user not found
+            if (!account) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            user._account.email = account.email;
+
             if (user['stats'] && user['stats']['favorite_groups']) {
                 user['stats']['favorite_groups'].sort(function(a, b) {
                   return b.group_name - a.group_name;
                 });
-            }
-            // If user not found
-            if (!user) {
-                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
             }
 
             // Send user to the mgmt portal
@@ -235,6 +240,84 @@ export class UsersControllers {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    /**
+     * This function is responsible for changing the password of the user
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async changePassword(req: Request, res: Response, next: NextFunction) {
+        // Request Body Data
+        const { body } = req;
+
+        try {
+            // Encrypting user password
+            const passEncrypted: any = await passwordHelper.encryptPassword(body.password);
+
+            // If we are unable to encrypt the password and store into the server
+            if (!passEncrypted.password) {
+                return sendError(res, new Error('Unable to encrypt the password to the server'), 'Unable to encrypt the password to the server, please try with a different password!', 401);
+            }
+
+            // Updating the password value with the encrypted password
+            // Find the user and update it on the basis of the userId
+            const account: any = await Account.findByIdAndUpdate({
+                    _id: body._id
+                }, {
+                    $set: { password: passEncrypted.password }
+                }, {
+                    new: true
+                })
+                .select('_id email _workspaces first_name last_name created_date').lean();
+
+            // If user not found
+            if (!account) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Current loggedIn userId
+            const userId = req['userId'];
+
+            // Send user to the mgmt portal
+            if (process.env.NODE_ENV == 'production' && userId) {
+                const user: any = await User.findById({
+                    _id: userId
+                })
+                .select('_id active email first_name last_name workspace_name _workspace')
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
+
+                let userMgmt = {
+                    _id: user._id,
+                    _account_id: user._account._id,
+                    active: user.active,
+                    email: user._account.email,
+                    password: user._account.password,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    _remote_workspace_id: user._workspace,
+                    workspace_name: user.workspace_name,
+                    environment: process.env.DOMAIN,
+                    created_date: user.created_date
+                }
+
+                http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
+                    API_KEY: process.env.MANAGEMENT_API_KEY,
+                    userData: userMgmt
+                });
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Password updated!'
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 
     /**
      * This function is responsible for changing the role of the other user
@@ -606,7 +689,7 @@ export class UsersControllers {
             'stats.groups._group': {$ne: groupId }
             }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
             )
-            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -621,7 +704,7 @@ export class UsersControllers {
             'stats.groups._group': groupId 
             }, { $inc: { 'stats.groups.$.count': 1 }
             })
-            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -704,7 +787,7 @@ export class UsersControllers {
         let user = await User.findOneAndUpdate({
                 _id: userId
             }, update)
-            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -875,7 +958,7 @@ export class UsersControllers {
         let user: any = await User.findOneAndUpdate({
             _id: userId
             }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
-            .select('_id active first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
