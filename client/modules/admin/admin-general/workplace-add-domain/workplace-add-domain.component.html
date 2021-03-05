@@ -6,7 +6,7 @@
         address domain to sign up.<br /> 
         (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!)</p>
     <div class="form-group">
-        <label for="domain">Using this workplace name(as "<b>{{ workspaceData?.workspace_name }}</b>"), any email adress from these domain can signup:</label>
+        <label for="domain">Using workplace name"<b>{{ workspaceData?.workspace_name }}</b>", any email adress from these domain can signup:</label>
         <input type="text" class="form-control" name="domain" [(ngModel)]="addDomain" placeholder="Please provide the domain name">
     </div>
     <button class="btn btn-primary" (click)="addDomainName(workspaceData?._id, addDomain)">Add this Domain</button>
