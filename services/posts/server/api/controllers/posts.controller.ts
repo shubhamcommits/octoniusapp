@@ -1417,30 +1417,46 @@ export class PostController {
                 if (retValue) {
                     switch (trigger.name) {
                         case 'Assigned to':
-                            const usersMatch =
-                                trigger._user.filter((triggerUser) => {
-                                    return post._assigned_to.findIndex(assignee => {
-                                        return assignee._id.toString() == triggerUser._id.toString()
-                                    }) != -1
-                                });
-                            retValue = (usersMatch && usersMatch.length > 0);
+                            if (post.task._parent_task) {
+                                retValue = false;
+                            } else {
+                                const usersMatch =
+                                    trigger._user.filter((triggerUser) => {
+                                        return post._assigned_to.findIndex(assignee => {
+                                            return assignee._id.toString() == triggerUser._id.toString()
+                                        }) != -1
+                                    });
+                                retValue = (usersMatch && usersMatch.length > 0);
+                            }
                             break;
                         case 'Custom Field':
-                            retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
+                            if (post.task._parent_task) {
+                                retValue = false;
+                            } else {
+                                retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
+                            }
                             break;
                         case 'Section is':
-                            const triggerSection = (trigger._section._id || trigger._section);
-                            const postSection = (post.task._column._id || post.task._column);
-                            retValue = triggerSection.toString() == postSection.toString();
+                            if (post.task._parent_task) {
+                                retValue = false;
+                            } else {
+                                const triggerSection = (trigger._section._id || trigger._section);
+                                const postSection = (post.task._column._id || post.task._column);
+                                retValue = triggerSection.toString() == postSection.toString();
+                            }
                             break;
                         case 'Status is':
-                            retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+                            if (post.task._parent_task) {
+                                retValue = false;
+                            } else {
+                                retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+                            }
                             break;
                         case 'Subtasks Status':
                             retValue = isChildStatusTrigger;
                             break;
                         case 'Task is CREATED':
-                            if (isCreationTaskTrigger) {
+                            if (!post.task._parent_task && isCreationTaskTrigger) {
                                 retValue = true;
                             }
                             break;
