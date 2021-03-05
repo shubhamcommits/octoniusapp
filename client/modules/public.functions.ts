@@ -1162,25 +1162,41 @@ export class PublicFunctions {
                 if (retValue) {
                     switch (trigger.name) {
                         case 'Assigned to':
-                            const usersMatch =
-                                trigger._user.filter((triggerUser) => {
-                                    return post._assigned_to.findIndex(assignee => {
-                                        return (assignee._id || assignee).toString() == (triggerUser._id || triggerUser).toString()
-                                    }) != -1
-                                });
-                            retValue = (usersMatch && usersMatch.length > 0);
+                            if (post.task._parent_task) {
+                              retValue = false;
+                            } else {
+                              const usersMatch =
+                                  trigger._user.filter((triggerUser) => {
+                                      return post._assigned_to.findIndex(assignee => {
+                                          return (assignee._id || assignee).toString() == (triggerUser._id || triggerUser).toString()
+                                      }) != -1
+                                  });
+                              retValue = (usersMatch && usersMatch.length > 0);
+                            }
                             break;
                         case 'Custom Field':
-                            retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
+                            if (post.task._parent_task) {
+                                retValue = false;
+                            } else {
+                              retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
+                            }
                             break;
                         case 'Section is':
-                            retValue = (trigger?._section?._id || trigger?._section) == (post?.task?._column?._id || post?.task?._column);
+                            if (post.task._parent_task) {
+                                retValue = false;
+                            } else {
+                              retValue = (trigger?._section?._id || trigger?._section) == (post?.task?._column?._id || post?.task?._column);
+                            }
                             break;
                         case 'Status is':
-                            retValue = trigger?.status?.toUpperCase() == post?.task?.status?.toUpperCase();
+                            if (post.task._parent_task) {
+                              retValue = false;
+                            } else {
+                              retValue = trigger?.status?.toUpperCase() == post?.task?.status?.toUpperCase();
+                            }
                             break;
                         case 'Task is CREATED':
-                            if (isCreationTaskTrigger) {
+                            if (!post.task._parent_task && isCreationTaskTrigger) {
                                 retValue = true;
                             }
                             break;
