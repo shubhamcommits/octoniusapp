@@ -60,7 +60,7 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
     readNotifications: [],
     unreadNotifications: []
   }
-  
+
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
 
@@ -71,26 +71,25 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
     // Fetch the current user
     if (!this.userData) {
       this.userData = await this.publicFunctions.getCurrentUser();
-    } 
-    if(moment.utc(this.userData['company_join_date']).isAfter(moment.utc().add(-2,'days'))){
-      window['Appcues'].identify(
-        this.userData?._id, // unique, required
-        {
-          companyJoinDate: this.userData?.company_join_date,
-          role: this.userData?.role, 
-          firstName: this.userData?.first_name, 
-          companyName: this.userData?.company_name, 
-          workSpaceName: this.userData?.workspace_name,
-          email: this.userData?.email
-        }
-      );
     }
+
+    window['Appcues'].identify(
+      this.userData?._id, // unique, required
+      {
+        createdAt: this.userData?.created_date,
+        role: this.userData?.role,
+        firstName: this.userData?.first_name,
+        companyName: this.userData?.company_name,
+        workSpaceName: this.userData?.workspace_name,
+        email: this.userData?.email
+      }
+    );
 
     if (this.groupId) {
       // Fetch current group
       this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
     }
-    
+
     if (this.groupData) {
       this.isAdmin = this.isAdminUser();
 
@@ -152,7 +151,7 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
       }
       if (propName === 'routerFromEvent') {
         this.routerFromEvent = to;
-        
+
       }
     }
   }
