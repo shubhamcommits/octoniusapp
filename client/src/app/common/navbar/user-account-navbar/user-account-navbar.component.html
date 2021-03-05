@@ -5,7 +5,7 @@
         <!-- My user avatar starts -->
         <img *ngIf="userData" class="mr-3 feed-avatar" src="{{userBaseUrl}}/{{userData?.profile_pic}}"
             onerror="this.src='assets/images/user.png'"
-            placement="bottom" ngbTooltip="Change your avatar"
+            placement="right" ngbTooltip="Change your avatar"
             (click)="openDetails(userContent)">
         <!-- My user avatar ends -->
 
