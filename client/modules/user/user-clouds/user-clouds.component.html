@@ -7,7 +7,7 @@
 
         <div class="col-md-8">
             <img *ngIf="!googleAuthSuccessful && !slackAuthSuccessful" src="assets/images/empty-clouds.svg">
-            <app-user-connected-clouds [googleUser]="googleUser" *ngIf="googleUser || slackAuthSuccessful"></app-user-connected-clouds>
+            <app-user-connected-clouds [googleUser]="googleUser" [slackAuthSuccessful]="slackAuthSuccessful" *ngIf="googleUser || slackAuthSuccessful"></app-user-connected-clouds>
         </div>
     </div>
 </div>

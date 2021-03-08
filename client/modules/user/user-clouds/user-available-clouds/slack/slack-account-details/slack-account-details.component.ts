@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnInit, SimpleChange } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UserService } from 'src/shared/services/user-service/user.service';
 
@@ -9,7 +9,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 })
 export class SlackAccountDetailsComponent implements OnInit {
 
-  slackUser: Boolean;
+  @Input() slackAuthSuccessful:boolean;
   userData: any;
 
   public publicFunctions = new PublicFunctions(this.injector);
@@ -20,9 +20,17 @@ export class SlackAccountDetailsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-
     this.userData = await this.publicFunctions.getCurrentUser();
-    this.slackUser = this.userData.integrations.is_slack_connected ? true : false
+  }
+
+  async ngOnChanges(changes: SimpleChange) {
+    for (const propName in changes) {
+      const change = changes[propName];
+      const to = change.currentValue;
+      if (propName === 'slackAuthSuccessful') {
+        this.slackAuthSuccessful=to;
+      }
+    }
   }
 
   disconnectSlackAccount() {
@@ -32,7 +40,7 @@ export class SlackAccountDetailsComponent implements OnInit {
           this.userData.integrations.is_slack_connected = false;
           this.userService.updateUser(this.userData);
           this.publicFunctions.sendUpdatesToUserData(this.userData);
-          this.slackUser = false;
+          this.slackAuthSuccessful = false;
           this.userService.slackDisconnected().emit(true);
         }
       }),
