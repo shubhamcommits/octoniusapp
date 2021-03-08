@@ -123,7 +123,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     if(!this.data.Tasks){
       this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
     } else {
-      
+
       this.tasks = this.data.Tasks;
     }
 
@@ -235,7 +235,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
    *
    */
   checkOverdue(taskPost: any) {
-    return moment(taskPost.due_to).format('YYYY-MM-DD') < moment().local().startOf('day').format('YYYY-MM-DD');
+    return (taskPost.status != 'done') &&
+      (moment(taskPost.due_to).format('YYYY-MM-DD') < moment().local().startOf('day').format('YYYY-MM-DD'));
   }
 
   /**
@@ -281,7 +282,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   /**
    * This function is responsible to update the date if the date is valid.
    * @param date
-   * @param property 
+   * @param property
    */
   async updateDate(date, property) {
     await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
@@ -296,7 +297,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
             .catch(() => {
               reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
             });
-        
+
       } else if(property === 'start_date') {
           this.postService.saveTaskDates(this.postData._id, date?moment(date).format('YYYY-MM-DD'):null, property)
             .then((res) => {
