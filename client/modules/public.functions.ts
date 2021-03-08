@@ -1273,4 +1273,8 @@ export class PublicFunctions {
         }
         return groupMembers;
     }
+
+    async isMobileDevice() {
+      return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+    }
 }

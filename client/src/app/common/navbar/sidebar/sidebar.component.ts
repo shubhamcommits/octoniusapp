@@ -18,18 +18,11 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
 
-  constructor(
-    private injector: Injector,
-    private storageService: StorageService,
-    private authService: AuthService,
-    private socketService: SocketService,
-    private userService: UserService,
-    private router: Router
-  ) { }
-
   @Input() sideNav: MatSidenav;
   @Input() iconsSidebar = false;
   @Input() userGroups: any = [];
+  @Input() isMobile = false;
+
   @Output() sidebarChange = new EventEmitter();
 
   // CURRENT USER DATA
@@ -53,6 +46,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
   // Utility Service
   public utilityService = this.injector.get(UtilityService);
 
+  constructor(
+    private injector: Injector,
+    private storageService: StorageService,
+    private authService: AuthService,
+    private userService: UserService,
+    private router: Router
+  ) { }
+
   async ngOnInit() {
     // FETCH THE USER DETAILS
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -71,6 +72,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * This functions unsubscribes all the observables subscription to avoid memory leak
+   */
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
+  }
+
   async sort(){
     this.userGroups.sort((t1, t2) => {
       const name1 = t1?.group_name.toLowerCase();
@@ -80,15 +88,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
       return 0;
     });
   }
-
-  /**
-   * This functions unsubscribes all the observables subscription to avoid memory leak
-   */
-  ngOnDestroy(): void {
-    this.subSink.unsubscribe();
-  }
-
-
 
   /**
    * This function is responsible for logging the user out

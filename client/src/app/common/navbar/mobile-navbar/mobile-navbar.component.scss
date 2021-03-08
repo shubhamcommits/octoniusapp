@@ -1,0 +1,140 @@
+@import "src/assets/scss/_variables";
+
+// resets
+h2{
+  float: left;
+  line-height: 60px;
+  .material-icons{
+    font-size: 30px;
+    color:#E0E3E6;
+  }
+}
+
+h4 {
+  margin-bottom: 0;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.navbar {
+  min-height: 84px;
+  flex-direction: row !important;
+  background-color: #fff;
+  box-shadow: 0 4px 24px 0 rgba(37, 38, 94, 0.1);
+  padding: 0;
+}
+
+.navbar-nav.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translatex(-50%);
+}
+
+a{
+  cursor: pointer;
+}
+
+.nav-link {
+  font-family: $poppins;
+  font-weight: 400;
+  font-size: 14px;
+  color:#1B1D1F;
+  text-align: center;
+  cursor: pointer;
+  &:hover {
+    text-decoration: none;
+    background: #ffffff;
+    color: $brand-primary !important;
+    border-radius: 6px;
+  }
+
+}
+
+.active {
+  text-decoration: none;
+  color:$brand-primary;
+}
+a:active{
+  text-decoration: none;
+}
+
+.form-inline {
+  span {
+    position: absolute;
+    margin-right: 5px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+  }
+  .form-control{
+    margin-right: 10px;
+  }
+}
+
+.navbar-brand .icon-octo-logo {
+  color:$brand-primary;
+}
+
+.triangle {
+	width: 0;
+	height: 0;
+	position: absolute;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-bottom: 8px solid #787878;
+	top: -8px;
+	right: 3%;
+	margin-left: -8px;
+}
+
+.notif-bullet-transparent {
+
+  color: transparent;
+  background: transparent;
+
+}
+
+.notification-back {
+  background: #005fd5;
+  color: inherit;
+}
+
+a.notifications.btn.dropdown-toggle-split.dropdown-toggle::after
+{
+  color: transparent;
+}
+.text-small{
+  font-size: 10px;
+}
+
+// Adding pointer to image
+img{
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+img:hover{
+  transform: scale(1.1);
+}
+
+
+.octonius-logo{
+  margin-right: 14px;
+}
+
+.mat-drawer {
+  overflow-y: hidden;
+}
+
+.supersticky{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+mat-drawer{
+  overflow: hidden;
+}

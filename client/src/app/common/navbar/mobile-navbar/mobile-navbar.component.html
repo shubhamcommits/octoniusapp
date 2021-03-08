@@ -1,0 +1,64 @@
+<mat-sidenav-container (backdropClick)="this.sidenav.toggle()" >
+  <mat-sidenav #sidenav (keydown.escape)="this.sidenav.toggle()" disableClose autosize>
+
+    <!-- SIDE MENU ICON STARTS -->
+    <app-sidebar class="nav navbar-nav navbar-left" (click)="sidenav.toggle()" [userGroups]="userGroups" [sideNav]="sidenav" [isMobile]="isMobile"></app-sidebar>
+    <!-- SIDE MENU ICON ENDS -->
+
+  </mat-sidenav>
+  <mat-sidenav-content style="height: 100vh;">
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg fixed-top">
+          <!-- TOGGLE MENU BUTTON STARTS -->
+          <button type="button" id="sidebarCollapse" class="btn btn-link" (click)="sidenav.toggle()">
+            <i class="material-icons">menu_open</i>
+          </button>
+          <!-- TOGGLE MENU BUTTON ENDS -->
+
+          <!-- MENU BUTTON STARTS -->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">
+              <i class="material-icons-round">more_horiz</i>
+            </span>
+          </button>
+          <!-- MENU BUTTON ENDS -->
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- MENU ITEMS STARTS -->
+
+            <app-common-navbar *ngIf="isAdminNavbar$ | async" [routerFromEvent]="routerFromEvent"></app-common-navbar>
+            <app-user-account-navbar *ngIf="isUserAccountNavbar$ | async" [routerFromEvent]="routerFromEvent"></app-user-account-navbar>
+            <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()" [groupId]="groupId" [routerFromEvent]="routerFromEvent"></app-group-navbar>
+            <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
+            <!-- MENU ITEMS ENDS -->
+
+            <ul class="navbar-nav navbar-right">
+              <li class="nav-item">
+
+                <!-- SEARCH starts -->
+                <a class="nav-link" (click)="openModal(search)">
+                  <span class="material-icons">
+                    search
+                  </span>
+                </a>
+                <!-- SEARCH ends -->
+
+              </li>
+            </ul>
+
+          </div>
+          <!-- COLLAPSABLE MENU ENDS -->
+        </nav>
+    </div>
+
+    <router-outlet *ngIf="myAuthCheck()"></router-outlet>
+
+    <!-- Search Modal -->
+    <ng-template #search let-modal>
+      <app-search-header (close)="closeModal()"></app-search-header>
+    </ng-template>
+
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

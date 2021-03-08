@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { NavbarComponent } from '../common/navbar/navbar.component';
+import { MobileNavbarComponent } from '../common/navbar/mobile-navbar/mobile-navbar.component';
 import { GroupNavbarComponent } from '../common/navbar/group-navbar/group-navbar.component';
 import { CommonNavbarComponent } from '../common/navbar/common-navbar/common-navbar.component';
 import { PushNotificationsComponent } from '../common/navbar/push-notifications/push-notifications.component';
@@ -24,6 +25,7 @@ import { UserAccountNavbarComponent } from '../common/navbar/user-account-navbar
 @NgModule({
   declarations: [
     NavbarComponent,
+    MobileNavbarComponent,
     PushNotificationsComponent,
     // TimeAgoPipe,
     GroupNavbarComponent,
@@ -46,7 +48,8 @@ import { UserAccountNavbarComponent } from '../common/navbar/user-account-navbar
     // NGX UI LOADER MODULE
   ],
   exports: [
-    NavbarComponent
+    NavbarComponent,
+    MobileNavbarComponent
   ],
 
   providers: [

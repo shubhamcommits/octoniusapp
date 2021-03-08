@@ -1,16 +1,14 @@
 <nav id="sidebar">
-    <div class="sidebar-header">
+    <div class="sidebar-header" [ngStyle]="{'top': (isMobile) ? 0 : 'none', 'left': (isMobile) ? 0 : 'none'}">
         <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
             <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
         </a>
 
-
-            <!-- MENU BUTTON STARTS -->
-            <button type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
-                <i class="material-icons">menu_open</i>
-            </button>
-            <!-- MENU BUTTON ENDS -->
-
+        <!-- MENU BUTTON STARTS -->
+        <button *ngIf="!isMobile" type="button" id="sidebarCollapse" class="btn dismiss" (click)="switchSideBar()" >
+            <i class="material-icons">menu_open</i>
+        </button>
+        <!-- MENU BUTTON ENDS -->
     </div>
 
     <div class="menu-options">
