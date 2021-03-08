@@ -9,10 +9,6 @@ const UserSchema = new Schema({
         ref: 'Account',
         required: true
     },
-    email: {
-        type: String,
-        required: false
-    },
     active: {
         type: Boolean,
         required: true,
@@ -30,6 +26,10 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         lowercase: true
+    },
+    email: {
+        type: String,
+        required: false
     },
     profile_pic: {
         type: String,
@@ -140,6 +140,10 @@ const UserSchema = new Schema({
                 type: String,
                 default: null
             }
+        },
+        is_slack_connected: {
+            type: Boolean,
+            default: null
         }
     },
     out_of_office: [{

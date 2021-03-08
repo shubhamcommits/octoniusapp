@@ -4,6 +4,11 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
+    _account: {
+        type: Schema.Types.ObjectId,
+        ref: 'Account',
+        required: true
+    },
     active: {
         type: Boolean,
         required: true,
@@ -145,7 +150,21 @@ const UserSchema = new Schema({
             type: Boolean,
             default: null
         }
-    }
+    },
+    out_of_office: [{
+        type: {
+            type: String,
+            enum: ['holidays', 'sick', 'personal']
+        },
+        date: {
+            type: Date,
+            default: moment().format()
+        },
+        approved: {
+            type: Boolean,
+            default: false
+        }
+    }]
 });
 
 const User = mongoose.model('User', UserSchema);
