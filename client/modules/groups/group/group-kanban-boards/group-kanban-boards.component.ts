@@ -351,9 +351,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     }
 
     if(isMilestone){
-      taskClass = taskClass + ' milestone'  
+      taskClass = taskClass + ' milestone'
     }
-    
+
     return (isNorthStar) ? taskClass + ' north-star' : taskClass;
   }
 
@@ -801,7 +801,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
    *
    */
   checkOverdue(taskPost: any) {
-    return (taskPost.task && moment.utc(taskPost.task.due_to).format('YYYY-MM-DD') < this.today);
+    return (taskPost.status != 'done') &&
+      (taskPost.task && moment.utc(taskPost.task.due_to).format('YYYY-MM-DD') < this.today);
   }
 
   /**
