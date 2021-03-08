@@ -45,9 +45,9 @@ export class DatePickerComponent implements OnChanges {
 
   constructor() { }
 
-  @Input('dueDate') dueDate: any;
-  @Input() dateType: string;
-  @Input() checkDate: any;
+  @Input('selectedDate') selectedDate: any;
+  @Input() checkDueDate: any;
+  @Input() checkStartDate: any;
   @Input() styleClass;
 
   // Output date event emitter
@@ -58,7 +58,7 @@ export class DatePickerComponent implements OnChanges {
   public onChange: any = Function.prototype; // Trascend the onChange event
 
   ngOnChanges() {
-    this._value = this.dueDate;
+    this._value = this.selectedDate;
   }
 
   // Control Value Accessors for ngModel
@@ -93,13 +93,13 @@ export class DatePickerComponent implements OnChanges {
    */
   myDateFilter = (d:Date): boolean => {
 
-      if (this.dateType == 'start_date' && moment(this.checkDate, 'YYYY-MM-DD', true).isValid()) {
-        
-        return moment(moment.utc(d,"YYYY-MM-DD").format('YYYY-MM-DD')).isBefore(moment.utc(this.checkDate,"YYYY-MM-DD").format('YYYY-MM-DD'))?true:false
+      if (moment(this.checkDueDate, 'YYYY-MM-DD', true).isValid()) {
+        //checking for the upper bound -> i.e start_date can not greate than due_date.
+        return moment(moment.utc(d,"YYYY-MM-DD").format('YYYY-MM-DD')).isBefore(moment.utc(this.checkDueDate,"YYYY-MM-DD").format('YYYY-MM-DD'))?true:false
       
-      } else if (this.dateType == 'due_date' && moment(this.checkDate, 'YYYY-MM-DD', true).isValid()) {
-        
-        return moment(moment.utc(d,"YYYY-MM-DD").format('YYYY-MM-DD')).isBefore(moment.utc(this.checkDate,"YYYY-MM-DD").add(-1,'days').format('YYYY-MM-DD'))?false:true
+      } else if (moment(this.checkStartDate, 'YYYY-MM-DD', true).isValid()) {
+        //checking for the lower bound -> i.e due_date can not smaller than start_date.
+        return moment(moment.utc(d,"YYYY-MM-DD").format('YYYY-MM-DD')).isBefore(moment.utc(this.checkStartDate,"YYYY-MM-DD").add(-1,'days').format('YYYY-MM-DD'))?false:true
       
       }
       else {
