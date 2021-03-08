@@ -91,11 +91,11 @@
   <div class="w400 float-right">
     <!-- Date Picker starts -->
     <app-date-picker *ngIf="type == 'task'" [styleClass]="'input-date due'"
-      (date)="getDate($event, 'due_date')" [dueDate]="postData?.task.due_to">
+      (date)="getDate($event, 'due_date')" [selectedDate]="postData?.task.due_to">
     </app-date-picker>
 
     <app-date-picker *ngIf="type == 'event'" [styleClass]="'input-date due'"
-      (date)="getDate($event, 'due_date')" [dueDate]="postData?.event.due_to">
+      (date)="getDate($event, 'due_date')" [selectedDate]="postData?.event.due_to">
     </app-date-picker>
 
     <!-- Clean field starts -->

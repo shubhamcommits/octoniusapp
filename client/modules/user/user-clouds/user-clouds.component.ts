@@ -26,7 +26,7 @@ export class UserCloudsComponent implements OnInit {
 
   // Google Authentication Variable Check
   googleAuthSuccessful = false
-  slackAuthSuccessful = false
+  slackAuthSuccessful:boolean = false
 
   // Subsink
   private subSink = new SubSink()
@@ -66,9 +66,7 @@ export class UserCloudsComponent implements OnInit {
     }
 
     this.userService.slackConnected().subscribe(event => {
-
       this.slackAuthSuccessful = true;
-
     });
 
   }

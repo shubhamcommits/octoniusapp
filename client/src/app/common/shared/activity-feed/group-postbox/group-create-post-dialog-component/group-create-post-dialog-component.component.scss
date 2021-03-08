@@ -133,3 +133,22 @@
     width:30px !important;
     height:30px !important;
 }
+
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+    /* Styles */
+    
+    .post-content {
+        width: 100% !important;
+        margin: 18px 0 !important;
+        float: none !important;
+    }
+
+    .post-properties {
+        width: 100% !important;
+        margin: 18px 0 !important;
+    }
+
+
+}

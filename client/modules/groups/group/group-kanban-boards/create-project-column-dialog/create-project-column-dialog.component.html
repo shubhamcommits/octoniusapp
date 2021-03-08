@@ -17,7 +17,7 @@
     <div class="content-box" *ngIf="column?.project_type">
       <p class="card-text">Select a START and DUE DATE for your project.</p>
       <app-date-picker class="input-date due"
-        (date)="getDate($event, 'start_date')" [dueDate]="column?.start_date">
+        (date)="getDate($event, 'start_date')" [selectedDate]="column?.start_date">
       </app-date-picker>
       <!-- Clean field starts -->
       <i (click)="getDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
@@ -26,7 +26,7 @@
       <br/><br/>
 
       <app-date-picker class="input-date due"
-        (date)="getDate($event, 'due_date')" [dueDate]="column?.due_date">
+        (date)="getDate($event, 'due_date')" [selectedDate]="column?.due_date">
       </app-date-picker>
 
       <!-- Clean field starts -->

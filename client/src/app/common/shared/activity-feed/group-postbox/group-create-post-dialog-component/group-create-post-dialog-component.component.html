@@ -180,8 +180,10 @@
           <p *ngIf="groupData && groupData.project_type && !postData?.task?.is_milestone" class="box-title">Start date</p>
           <div *ngIf="groupData && postData?.type === 'task' && groupData.project_type && !postData?.task?.is_milestone">
             <!-- Date Picker starts -->
-            <app-date-picker (date)="getDate($event, 'start_date')" [dueDate]="formateDate(postData?.task.start_date)"
-              [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+            <app-date-picker (date)="getDate($event, 'start_date')" 
+            [selectedDate]="formateDate(postData?.task.start_date)" 
+            [upperLimit]="formateDate(postData?.task.due_to)"
+            [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
             </app-date-picker>
             <!--Date Picker ends -->
 
@@ -191,8 +193,10 @@
           </div>
           <div *ngIf="postData.type === 'event'" class="btn-group">
             <!-- Date Picker starts -->
-            <app-date-picker (date)="getDate($event, 'start_date')" [dueDate]="postData?.event.start_date"
-              [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+            <app-date-picker (date)="getDate($event, 'start_date')" 
+            [selectedDate]="postData?.event.start_date" 
+            [upperLimit]="postData?.event.due_to"
+            [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
             </app-date-picker>
             <!--Date Picker ends -->
           </div>
@@ -206,7 +210,8 @@
               <!-- Date Picker starts -->
               <app-date-picker
                 (date)="getDate($event, 'due_date')"
-                [dueDate]="formateDate(postData?.task.due_to)"
+                [selectedDate]="formateDate(postData?.task.due_to)"
+                [lowerLimit]="formateDate(postData?.task.start_date)"
                 [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
               </app-date-picker>
               <!--Date Picker ends -->
@@ -219,7 +224,8 @@
               <!-- Date Picker starts -->
               <app-date-picker
                 (date)="getDate($event, 'due_date')"
-                [dueDate]="postData?.event.due_to"
+                [selectedDate]="postData?.event.due_to"
+                [lowerLimit]="postData?.event.start_date"
                 [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
               </app-date-picker>
               <!--Date Picker ends -->
