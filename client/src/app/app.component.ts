@@ -40,6 +40,8 @@ export class AppComponent {
   routerFromEvent: any;
   groupId: any;
 
+  isMobile = false;
+
   constructor(
     private injector: Injector,
     private storageService: StorageService,
@@ -62,6 +64,8 @@ export class AppComponent {
     let socketService = this.injector.get(SocketService);
     let utilityService = this.injector.get(UtilityService);
 
+    this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
+
     // this.initSocketServer(socketService)
 
     // Internet connection validity
@@ -76,6 +80,13 @@ export class AppComponent {
     // Initiate the gapi variable to confirm the check the gapi is ready to work
     this.loadGoogleAPI();
 
+  }
+
+  /**
+   * This function unsubscribes all the observables as soon as the component is destroyed
+   */
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
   }
 
   myAuthCheck() {
@@ -224,13 +235,6 @@ export class AppComponent {
   async loadGoogleAPI() {
     await gapi.load('auth', (() => {
     }));
-  }
-
-  /**
-   * This function unsubscribes all the observables as soon as the component is destroyed
-   */
-  ngOnDestroy(): void {
-    this.subSink.unsubscribe();
   }
 
 }
