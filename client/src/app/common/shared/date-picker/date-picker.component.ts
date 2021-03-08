@@ -5,6 +5,7 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/mat
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment} from 'moment';
+import { tr } from 'date-fns/locale';
 
 const moment = _rollupMoment || _moment;
 
@@ -45,6 +46,8 @@ export class DatePickerComponent implements OnChanges {
   constructor() { }
 
   @Input('dueDate') dueDate: any;
+  @Input() dateType: string;
+  @Input() checkDate: any;
   @Input() styleClass;
 
   // Output date event emitter
@@ -82,6 +85,30 @@ export class DatePickerComponent implements OnChanges {
   emitDate(dateObject: any){
     // Emit the date to the other components
     this.date.emit(dateObject.value)
+  }
+
+  /**
+   * This function is resppnsible to filter the date to disable if they are out of range of valid dates.
+   * @param dateObject
+   */
+  myDateFilter = (d:Date): boolean => {
+
+      if (this.dateType == 'start_date' && moment(this.checkDate, 'YYYY-MM-DD', true).isValid()) {
+        
+        return moment(moment.utc(d,"YYYY-MM-DD").format('YYYY-MM-DD')).isBefore(moment.utc(this.checkDate,"YYYY-MM-DD").format('YYYY-MM-DD'))?true:false
+      
+      } else if (this.dateType == 'due_date' && moment(this.checkDate, 'YYYY-MM-DD', true).isValid()) {
+        
+        return moment(moment.utc(d,"YYYY-MM-DD").format('YYYY-MM-DD')).isBefore(moment.utc(this.checkDate,"YYYY-MM-DD").add(-1,'days').format('YYYY-MM-DD'))?false:true
+      
+      }
+      else {
+        
+        return true;
+      
+      }
+      
+      
   }
 
 }
