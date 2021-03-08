@@ -182,7 +182,7 @@
             <!-- Date Picker starts -->
             <app-date-picker (date)="getDate($event, 'start_date')" 
             [selectedDate]="formateDate(postData?.task.start_date)" 
-            [checkDueDate]="formateDate(postData?.task.due_to)"
+            [upperLimit]="formateDate(postData?.task.due_to)"
             [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
             </app-date-picker>
             <!--Date Picker ends -->
@@ -195,7 +195,7 @@
             <!-- Date Picker starts -->
             <app-date-picker (date)="getDate($event, 'start_date')" 
             [selectedDate]="postData?.event.start_date" 
-            [checkDueDate]="postData?.event.due_to"
+            [upperLimit]="postData?.event.due_to"
             [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
             </app-date-picker>
             <!--Date Picker ends -->
@@ -211,7 +211,7 @@
               <app-date-picker
                 (date)="getDate($event, 'due_date')"
                 [selectedDate]="formateDate(postData?.task.due_to)"
-                [checkStartDate]="formateDate(postData?.task.start_date)"
+                [lowerLimit]="formateDate(postData?.task.start_date)"
                 [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
               </app-date-picker>
               <!--Date Picker ends -->
@@ -225,7 +225,7 @@
               <app-date-picker
                 (date)="getDate($event, 'due_date')"
                 [selectedDate]="postData?.event.due_to"
-                [checkStartDate]="postData?.event.start_date"
+                [lowerLimit]="postData?.event.start_date"
                 [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
               </app-date-picker>
               <!--Date Picker ends -->

@@ -46,8 +46,8 @@ export class DatePickerComponent implements OnChanges {
   constructor() { }
 
   @Input('selectedDate') selectedDate: any;
-  @Input() checkDueDate: any;
-  @Input() checkStartDate: any;
+  @Input() upperLimit: any;
+  @Input() lowerLimit: any;
   @Input() styleClass;
 
   // Output date event emitter
@@ -93,13 +93,13 @@ export class DatePickerComponent implements OnChanges {
    */
   myDateFilter = (d:Date): boolean => {
 
-      if (moment(this.checkDueDate, 'YYYY-MM-DD', true).isValid()) {
+      if (moment(this.upperLimit, 'YYYY-MM-DD', true).isValid()) {
         //checking for the upper bound -> i.e start_date can not greate than due_date.
-        return moment(moment.utc(d,"YYYY-MM-DD").format('YYYY-MM-DD')).isBefore(moment.utc(this.checkDueDate,"YYYY-MM-DD").format('YYYY-MM-DD'))?true:false
+        return moment(moment.utc(d,"YYYY-MM-DD")).isBefore(moment.utc(this.upperLimit,"YYYY-MM-DD"))?true:false
       
-      } else if (moment(this.checkStartDate, 'YYYY-MM-DD', true).isValid()) {
+      } else if (moment(this.lowerLimit, 'YYYY-MM-DD', true).isValid()) {
         //checking for the lower bound -> i.e due_date can not smaller than start_date.
-        return moment(moment.utc(d,"YYYY-MM-DD").format('YYYY-MM-DD')).isBefore(moment.utc(this.checkStartDate,"YYYY-MM-DD").add(-1,'days').format('YYYY-MM-DD'))?false:true
+        return moment(moment.utc(d,"YYYY-MM-DD")).isBefore(moment.utc(this.lowerLimit,"YYYY-MM-DD").add(-1,'days'))?false:true
       
       }
       else {
