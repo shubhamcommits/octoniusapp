@@ -49,7 +49,9 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   screen_height:string;
   //container height
   current_date_index: any;
-  selectedProjectIndex:number = 0;
+
+  // selected project  index bit 
+  selectedProjectIndex: number = -1;
   //Grid column width
   step = 50;
   //Card  height
