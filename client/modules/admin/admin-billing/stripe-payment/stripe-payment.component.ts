@@ -5,7 +5,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { PublicFunctions } from 'modules/public.functions';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -16,7 +16,8 @@ export class StripePaymentComponent implements OnInit {
 
   constructor(
     private injector: Injector,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   // Workspace Data Object
@@ -34,6 +35,8 @@ export class StripePaymentComponent implements OnInit {
   // Payments Array
   charges = [];
 
+  subscriptionActive = false;
+
   // Public Functions object
   publicFunctions = new PublicFunctions(this.injector);
 
@@ -50,6 +53,22 @@ export class StripePaymentComponent implements OnInit {
   isLoading$ = new BehaviorSubject(false);
 
   async ngOnInit() {
+    const sessionId = this.activatedRoute.snapshot.queryParams.session_id;
+    if (sessionId) {
+      await this.workspaceService.getStripeCheckoutSession(sessionId, this.workspaceData._id)
+        .then(res => {
+          this.subscription = res['subscription'];
+          this.workspaceData = res['workspace'];
+        })
+        .catch(function(err){
+          console.log('Error when fetching Checkout session', err);
+          this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
+        });
+
+        await this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
+
+        this.router.navigate(['/home']);
+    }
 
     // Check and fetch the subscription details
     await this.subscriptionExistCheck();
@@ -57,9 +76,19 @@ export class StripePaymentComponent implements OnInit {
     // Check if the client exists in Stripe
     await this.stripeCustomerExists();
 
+    if ((!this.workspaceData?.billing?.current_period_end
+        || !this.subscription || (!this.customer || this.customer.deleted))
+      || (this.subscription?.current_period_end < moment().unix()
+        || this.workspaceData?.billing?.current_period_end < moment().unix())) {
+      this.subscriptionActive = false;
+    } else {
+      this.subscriptionActive = true;
+    }
+
     // Obtain the client´s charges
-    await this.getCharges();
+    // await this.getCharges();
   }
+
   isWorkspaceOwner() {
     return this.workspaceData._owner == this.userData['_id'];
   }
@@ -69,14 +98,11 @@ export class StripePaymentComponent implements OnInit {
    * @param workspaceData
    */
   async subscriptionExistCheck() {
-    if (this.workspaceData.billing.client_id) {
-      this.workspaceService.getSubscription(this.workspaceData.billing.client_id)
+    if (this.workspaceData?.billing?.subscription_id && !this.subscription) {
+      await this.workspaceService.getSubscription(this.workspaceData.billing.subscription_id)
         .then((res) => {
-          let subscriptions = res['subscriptions']['data'];
-          subscriptions.sort((s1, s2) => (s1.current_period_end > s2.current_period_end) ? 1 : -1);
-
           // Initialise the suncription
-          this.subscription = subscriptions[subscriptions.length-1];
+          this.subscription = res['subscription'];
         })
         .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
     } else {
@@ -90,7 +116,7 @@ export class StripePaymentComponent implements OnInit {
    */
   async stripeCustomerExists() {
     if (this.workspaceData.billing.client_id) {
-      this.workspaceService.getStripeCustomer(this.workspaceData.billing.client_id)
+      await this.workspaceService.getStripeCustomer(this.workspaceData.billing.client_id)
         .then((res) => {
           this.customer = res['customer'];
         })
@@ -107,7 +133,7 @@ export class StripePaymentComponent implements OnInit {
   async getCharges() {
     // this.workspaceService.getSubscription()--cus_HxVc4M2XSwAoV1--cus_GvQ3XcMhLqEGLT--
     if (this.workspaceData.billing.client_id) {
-      this.workspaceService.getCharges(this.workspaceData.billing.client_id)
+      await this.workspaceService.getCharges(this.workspaceData.billing.client_id)
         .then((res) => {
           // Initialise the charges
           this.charges = res['charges'].data;
@@ -146,22 +172,7 @@ export class StripePaymentComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  isSubscriptionActive() {
-    if (!this.workspaceData.billing.current_period_end
-      || !this.subscription || (!this.customer || this.customer.deleted)) {
-      return false;
-    }
-
-    if (this.subscription.current_period_end < moment().unix()
-      || this.workspaceData.billing.current_period_end < moment().unix()) {
-      return false;
-    }
-
-    return true;
-  }
-
   createCustomerPortalSession() {
-    const parsedUrl = new URL(window.location.href);
     let redirectUrl = window.location.href;
 
     this.workspaceService.createClientPortalSession(this.workspaceData.billing.client_id, redirectUrl).then(res => {
