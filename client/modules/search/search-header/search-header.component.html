@@ -3,7 +3,7 @@
   <input type="text" name="search" id="" placeholder="Search" class="search-input" autocomplete="false"
     [(ngModel)]="searchQuery"
     (ngModelChange)="search()">
-  <div class="row">
+  <div class="row" style="overflow: hidden;">
     <div class="col-md-4" style="border-right: 2px solid #E4EDF8;">
       <p *ngIf="searchedPosts.length>0" class="octo-search-category">POSTS</p>
       <a *ngFor="let post of searchedPosts" href="#" onclick="return false"
