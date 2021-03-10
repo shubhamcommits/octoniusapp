@@ -32,6 +32,11 @@ p {
   transform: translatex(-50%);
 }
 
+.search-nav{
+  position: fixed;
+  right: 80px;
+}
+
 a{
   cursor: pointer;
 }
