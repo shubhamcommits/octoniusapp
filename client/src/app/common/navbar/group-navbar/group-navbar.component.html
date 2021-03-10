@@ -35,19 +35,19 @@
       <li class="nav-item" *ngIf="myWorkplace || !groupData">
         <a [ngClass]="activeState == 'myspace_tasks'?'nav-link active-nav':'nav-link'" (click)="changeState('myspace_tasks')" routerLink="/dashboard/myspace/tasks" [queryParams]="{myWorkplace: true }" routerLinkActive="active">Tasks</a>
       </li>
-      <li class="nav-item" *ngIf="myWorkplace">
+      <li class="nav-item" *ngIf="myWorkplace" style="margin-left: 80px;">
         <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'" (click)="changeState('groups_activity')" routerLink="/dashboard/work/groups/activity" [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
-          routerLinkActive="active">Personal Notes
+          routerLinkActive="active"> <span class="dot dot-notes"></span> Notes
         </a>
       </li>
       <li class="nav-item" *ngIf="myWorkplace">
         <a [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'" (click)="changeState('groups_tasks')" routerLink="/dashboard/work/groups/tasks" [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
-          routerLinkActive="active">Personal Tasks
+          routerLinkActive="active"><span class="dot dot-personal-tasks"></span> Personal Tasks
         </a>
       </li>
       <li class="nav-item" *ngIf="myWorkplace">
         <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'" (click)="changeState('groups_files')" routerLink="/dashboard/work/groups/files" [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
-          routerLinkActive="active">Personal Files
+          routerLinkActive="active"><span class="dot dot-personal-files"></span> Personal Files
         </a>
       </li>
 
