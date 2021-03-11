@@ -20,9 +20,6 @@ export class UsersService {
             active: false
         });
 
-        // Find the workspace
-        let workspace = await Workspace.findOne({ _id: workspaceId })
-
         if (user) {
             // As we found that user was disabled, then enable them accordingly.
             user = await User.findOneAndUpdate(
@@ -38,21 +35,33 @@ export class UsersService {
                 invited_date: moment().format()
             };
 
+            let query = {};
+
             // If type is 'group' invite
             if(type == 'group' && groupId && groupId != ''){
                 // Add the property to `_group`
                 invited_user._group = [groupId];
+
+                // check if email has already been invited
+                query = {
+                    "invited_users.email": email,
+                    "invited_users.type": type,
+                    "invited_users._group": groupId
+                };
+            } else if (type == 'workspace') {
+                query = {
+                    "invited_users.email": email,
+                    "invited_users.type": type
+                }
             }
 
             // check if email has already been invited
-            let emailExist = await Workspace.findOne({
-                "invited_users.email": email,
-                "invited_users._group": groupId
-            });
+            let emailExist = await Workspace.findOne(query);
+
 
             // Update the workspace and push into the invited_user data
             if (!emailExist) {
-                workspace = await Workspace.findOneAndUpdate(
+                await Workspace.findOneAndUpdate(
                     { _id: workspaceId },
                     { $push: { invited_users: invited_user } },
                     { new: true }

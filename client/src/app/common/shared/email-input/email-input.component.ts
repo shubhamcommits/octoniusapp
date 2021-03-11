@@ -26,7 +26,7 @@ export class EmailInputComponent implements OnInit {
 
   // OUTPUT EMAIL EMITTER
   @Output('outputEmail') outputEmail = new EventEmitter();
-  
+
   // Unsubscribe the Observables using SubSink()
   private subSink = new SubSink();
 
@@ -35,7 +35,7 @@ export class EmailInputComponent implements OnInit {
 
   /**
    * This method is binded to keyup event of email input field
-   * @param $event 
+   * @param $event
    */
   emailChange($event: Event) {
     this.emailChanged.next($event);
@@ -56,6 +56,7 @@ export class EmailInputComponent implements OnInit {
           this.utilityService.successNotification('Correct Email Format!');
           this.outputEmail.emit(this.email);
         } else {
+          this.outputEmail.emit('');
           this.utilityService.warningNotification('Kindly follow the standard format which uses user@domain nomenclature, e.g - username@example.com', 'Wrong format!')
         }
     }))

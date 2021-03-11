@@ -1139,12 +1139,6 @@ export class PostService {
     }
   }
 
-
-  /**
-   * Anish 02/04 edits start
-   */
-
-
   /**
    * This function is used to retrieve this month's tasks
    * @param userId 
