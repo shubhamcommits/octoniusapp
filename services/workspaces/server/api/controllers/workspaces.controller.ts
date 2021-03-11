@@ -570,8 +570,9 @@ export class WorkspaceController {
                     { _id: user.workspaceId },
                     { allowed_domains: domain }
                 ]
-            }).select('access_code allowed_domains');
+            }).select('workspace_name access_code allowed_domains');
 
+            /*
             if (!workspace) {
                 // Add the domain to the 'allowed_domains' set 
                 workspace = await Workspace.findOneAndUpdate({
@@ -582,10 +583,11 @@ export class WorkspaceController {
                     }
                 }, {
                     new: true
-                }).select('access_code allowed_domains');
+                }).select('workspace_name access_code allowed_domains');
             }
-
-            if (addInvite && user.type == 'group') {
+            */
+           
+            if (addInvite) {
                 // Add user to invite users only when is a group invite
                 await usersService.inviteUserToJoin(user.email, user.workspaceId, user.type, user.groupId)
             }
@@ -596,7 +598,7 @@ export class WorkspaceController {
                     from: req['userId'],
                     email: user.email,
                     access_code: workspace.access_code,
-                    workspace: user.workspace_name,
+                    workspace: workspace.workspace_name,
                     type: user.type,
                     groupId: user.groupId
                 }
