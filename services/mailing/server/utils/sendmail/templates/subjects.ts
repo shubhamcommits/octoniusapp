@@ -1,7 +1,7 @@
 export = {
-  joinWorkspace: '- You\'re invited to join a worskpace in Octonius! -',
+  joinWorkspace: '- You\'re invited to join a workplace in Octonius! -',
   joinedGroup: '- You\'ve joined a group in Octonius! -',
-  newWorkspace: '- You\'ve created a new workspace in Octonius! -',
+  newWorkspace: '- You\'ve created a new workplace in Octonius! -',
   signup: '- Welcome to Octonius! -',
   taskAssigned: '- You have a new task on Octonius -',
   taskReassigned: '- You have a new reassigned task on Octonius -',

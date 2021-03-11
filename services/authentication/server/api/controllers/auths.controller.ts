@@ -150,8 +150,13 @@ export class AuthsController {
                     const accessCode = workspace.access_code;
                     // Check if the workspace exist with particular (workspace_name and allowed_domains) or (workspace_name and invited_users)
                     workspace = await Workspace.findOne({
-                        workspace_name: workspace.workspace_name,
-                        allowed_domains: userEmailDomain
+                        $or: [{
+                                workspace_name: workspace.workspace_name,
+                                allowed_domains: userEmailDomain
+                            }, {
+                                workspace_name: workspace.workspace_name,
+                                "invited_users.email": accountData.email
+                            }]
                     });
 
                     // Workspace not found!
@@ -194,7 +199,7 @@ export class AuthsController {
                     } else {
 
                         let groups = workspace.invited_users
-                            .filter(invite => invite.email == accountData.email)
+                            .filter(invite => (invite.email == accountData.email && invite.type == 'group'))
                             .map(invite => invite._group);
 
                         if (groups && groups.length > 0) {

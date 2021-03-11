@@ -29,12 +29,12 @@ export class WorkplaceInviteUserComponent implements OnInit {
    * This function gets the Valid Email from the @module <app-email-input></app-email-input>
    * @param $event
    */
-  getValidEmail($event: string){
+  getValidEmail($event: string) {
     this.email = $event;
-    const userEmailDomain = this.email.split('@')[1];
-    this.isValidEmail = (this.workspaceData.allowed_domains.findIndex(domain => domain == userEmailDomain) >= 0);
-    if (!this.isValidEmail) {
-      this.utilityService.errorNotification('The domain of the email is not allow in the workspace!');
+    if (this.email && this.email != '') {
+      this.isValidEmail = true;
+    } else {
+      this.isValidEmail = false;
     }
   }
 
