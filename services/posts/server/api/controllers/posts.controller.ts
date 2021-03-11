@@ -374,12 +374,6 @@ export class PostController {
         }
     }
 
-
-    /**
-     * Anish 02/04 edits start
-     */
-
-
     /**
      * This function is used to retrieve all of this month's tasks
      * @param req 

@@ -68,20 +68,6 @@ const workspaceSchema = new Schema({
             required: false
         },
     }],
-
-    // Anish edit starts here 09/04
-    was_invited:[{
-        invited_user: {
-            type: String,
-            required: true
-        },
-        date_invited: {
-            type: Date,
-            required: true
-        }
-    }],
-    // Anish edit ends here
-
     created_date: {
         type: Date,
         default: moment().format()
