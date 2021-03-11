@@ -3,12 +3,15 @@
 ----------------------------------------------------- */
 @import "src/assets/scss/_variables";
 
+
+
 #sidebar {
     min-height: 100vh;
     background: #005FD5;
     color: #FFFFFF;
     padding: 0 10px;
     width: 210px;
+    overflow-y: hidden;
 }
 
 
@@ -96,8 +99,8 @@ ul ul a {
 .menu-options {
     margin-top: 50px;
     z-index: 5;
-    overflow: auto;
 }
+
 ul ul{
     width: 100%;
 }
