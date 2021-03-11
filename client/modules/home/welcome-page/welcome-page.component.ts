@@ -5,7 +5,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { SubSink } from 'subsink';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-welcome-page',
@@ -21,6 +21,8 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     repeatPassword: null
   };
 
+  queryParms:any;
+
   publicFunctions = new PublicFunctions(this._Injector);
 
   // ADD ALL SUBSCRIPTIONS HERE TO DESTROY THEM ALL TOGETHER
@@ -31,6 +33,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     private utilityService: UtilityService,
     private storageService: StorageService,
     public router: Router,
+    public activeRouter :ActivatedRoute,
     private _Injector: Injector
   ) { }
 
@@ -41,6 +44,11 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     this.publicFunctions.sendUpdatesToRouterState({});
     this.publicFunctions.sendUpdatesToUserData({});
     this.publicFunctions.sendUpdatesToWorkspaceData({});
+    // const WINDOW = window;
+    this.activeRouter.queryParams.subscribe(params => {
+      if (params['tid']) {
+        this.queryParms = params;
+    }});
   }
 
   /**
@@ -98,25 +106,38 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     return new Promise((resolve, reject) => {
       this.subSink.add(this.authenticationService.signIn(userData)
         .subscribe((res) => {
-          this.clearAccountData();
-          this.storeAccountData(res);
+          if(this.queryParms){
+            window.location.href = this.queryParms['redirect_uri']+`/#access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiNWZiYmI5YmQ4Yzc4MmU1NTgyZTY2OWI0IiwiaWF0IjoxNjE1NDUzOTk4fQ.fBIlyVcHKE-Du2maoEjFtfXQDUctHWLVHVCIh6m88vs&id_token=dcscsdvdsnsdnvnsdvsd&token_type=JWT&expires_in=1hr&state=${this.queryParms['state']}`;
+          } else { 
 
-          this.router.navigate(['authentication', 'select-workspace'])
-            .then(() => {
-              this.utilityService.successNotification(`Hi ${res['account']['first_name']}, welcome back!`);
-              resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['account']['first_name']}, welcome back!`));
-            })
-            .catch((err) => {
-              console.error('Error occured while signing in the user', err);
-              this.utilityService.errorNotification('Oops some error occured while signing you in, please try again!');
-              this.storageService.clear();
-              reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
-            })
+            this.clearAccountData();
+            this.storeAccountData(res);
+            
+            this.router.navigate(['authentication', 'select-workspace'])
+              .then(() => {
+                this.utilityService.successNotification(`Hi ${res['account']['first_name']}, welcome back!`);
+                resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['account']['first_name']}, welcome back!`));
+              })
+              .catch((err) => {
+                console.error('Error occured while signing in the user', err);
+                this.utilityService.errorNotification('Oops some error occured while signing you in, please try again!');
+                this.storageService.clear();
+                reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+              })
+          }
         }, (err) => {
           console.error('Error occured while signing in the user', err);
           reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
         }));
     });
+  }
+
+  /**
+   * This implements the service function for @function signIn(userData)
+   * @param userData
+   */
+  teamAuthServiceFunction(userData: Object){
+
   }
 
   /**
