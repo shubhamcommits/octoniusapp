@@ -978,7 +978,8 @@ export class BillingControllers {
                 customer_email: workspace.owner_email,
                 metadata: {
                     workspace_id: workspaceId.toString()
-                }
+                },
+                allow_promotion_codes: true
             });
 
             // Send the status 200 response
