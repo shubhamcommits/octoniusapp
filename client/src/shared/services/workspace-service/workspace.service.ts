@@ -162,8 +162,8 @@ export class WorkspaceService {
   /**
    * This function fetches the subscription details for the currently loggedIn user
    */
-  getSubscription(customerId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-subscription/${customerId}`)
+  getSubscription(subscriptionId: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-subscription/${subscriptionId}`)
     .toPromise()
   }
 
@@ -220,6 +220,18 @@ export class WorkspaceService {
       customer: stripeCustomerId,
       return_url: returnUrl
     }).toPromise();
+  }
+
+  createStripeCheckoutSession(priceId: string, workspaceId: string, returnUrl: string) {
+    return this._http.post(this.BASE_API_URL + `/billings/create-checkout-session`, {
+      priceId: priceId,
+      workspaceId: workspaceId,
+      return_url: returnUrl
+    }).toPromise();
+  }
+
+  getStripeCheckoutSession(sessionId: string, workspaceId: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-checkout-session/${workspaceId}/${sessionId}`).toPromise();
   }
 
   /* | ======================================= BILLING ENDS ========================================== | */
