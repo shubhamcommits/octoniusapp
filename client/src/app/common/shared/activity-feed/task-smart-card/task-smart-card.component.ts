@@ -1,18 +1,19 @@
-import {  Component, OnInit } from '@angular/core';
+import {  Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import { ChartType } from 'chart.js';
-import { Label, MultiDataSet } from 'ng2-charts';
+import { SubSink } from 'subsink';
+import { ChildActivationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-smart-card',
   templateUrl: './task-smart-card.component.html',
   styleUrls: ['./task-smart-card.component.scss']
 })
-export class TaskSmartCardComponent implements OnInit {
+export class TaskSmartCardComponent implements OnInit, OnDestroy {
 
-  constructor(
-    private userService: UserService
-  ) { }
+  activeState: string;
+
+  // Subsink Object
+  subSink = new SubSink();
 
   today_task_count = 0;
   to_do_task_count = 0;
@@ -29,7 +30,20 @@ export class TaskSmartCardComponent implements OnInit {
   doughnutChartColors;
   doughnutChartPlugins;
 
+  constructor(
+    private userService: UserService,
+    private _router: Router
+  ) { }
+
   async ngOnInit() {
+    this.subSink.add(this._router.events.subscribe((e: any) => {
+      if (e instanceof ChildActivationEnd) {
+        const segments = e.snapshot['_urlSegment'].children.primary.segments;
+        this.activeState = segments[segments.length-2].path+'_'+segments[segments.length-1].path;
+      }
+    }));
+
+
     this.todayTasks = await this.getUserTodayTasks();
     this.overdueTasks = await this.getUserOverdueTasks();
     this.markOverdueTasks();
@@ -77,6 +91,13 @@ export class TaskSmartCardComponent implements OnInit {
     }];
   }
 
+  /**
+   * Unsubscribe all the observables to avoid memory leaks
+   */
+  ngOnDestroy() {
+    this.subSink.unsubscribe()
+  }
+
   async getUserTodayTasks() {
     return new Promise((resolve, reject) => {
       this.userService.getUserTodayTasks()
@@ -106,6 +127,10 @@ export class TaskSmartCardComponent implements OnInit {
       task.overdue = true;
       return task;
     });
+  }
+
+  async changeState(state:string){
+    this.activeState = state;
   }
 
 }
