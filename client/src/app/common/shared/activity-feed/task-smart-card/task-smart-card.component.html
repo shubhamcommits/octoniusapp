@@ -1,5 +1,7 @@
 <div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card" style="padding: 10px;">
+  <!--
   <a [ngClass]="activeState == 'myspace_tasks'?'nav-link active-nav':'nav-link'" (click)="changeState('myspace_tasks')" routerLink="/dashboard/myspace/tasks" [queryParams]="{myWorkplace: true }" routerLinkActive="active">
+  -->
     <div class="row" style="margin: 0 0 20px;">
       <div class="card-title mt-1">
         Tasks
@@ -11,7 +13,7 @@
     <div class="row">
         <div class="card-first-column col-md-12">You're all done. Get some fresh air.</div>
     </div>
-    
+
 
 
     <div class="row mt-4 d-none d-sm-block">
@@ -20,12 +22,16 @@
             <img src='assets/images/inbox-tasks-card-empty.svg'>
         </div>
     </div>
+  <!--
   </a>
+  -->
 </div>
 
 <div *ngIf="today_task_count != 0 || overdueTasks.length != 0">
   <div class="smart-card" style="padding: 10px;">
+    <!--
     <a routerLink="/dashboard/myspace/tasks">
+    -->
       <div class="row" style="margin: 0 0 20px;">
         <div class="card-title mt-1">
           Tasks
@@ -57,7 +63,8 @@
             [plugins]="doughnutChartPlugins"></canvas>
         </div>
       </div>
-
+    <!--
     </a>
+    -->
   </div>
 </div>
