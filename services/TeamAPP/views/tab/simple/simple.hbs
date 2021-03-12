@@ -1,0 +1,143 @@
+<!--
+// Copyright (c) Microsoft Corporation
+// All rights reserved.
+//
+// MIT License:
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+//
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+
+<html>
+    <head>
+        <title>Simple Authentication Sample</title>
+    </head>
+    <body>
+        <p>
+            Login to octonius
+        </p>
+        {{!-- <p>
+            Click on the "Login" button below to login to Azure AD, and grant the sample app access to your profile information.
+            The app will fetch your profile using Microsoft Graph, and display information about you below.
+        </p> --}}
+
+        <!-- Login button -->
+        <button onclick="loginV1()" id="connect" style="width: 120px;height:40px;color:coral">Connect To Octonius</button>
+        <button onclick="logout()" id="disconnect" style="width: 120px;height:40px;color:red">Disonnet To Octonius</button>
+        {{!-- <button onclick="loginV2()">Login to Azure AD (V2 endpoint)</button> --}}
+
+        <!-- Result -->
+        <h2>Claims from id_token</h2>
+        <div id="divIdTokenError" style="display: none" class="auth-data"></div>
+        <div id="divIdTokenClaims" style="display: none" class="auth-data"></div>
+        <p id="divRawIdToken" style="display: none" class="auth-data"></p>
+
+        <p>
+            <h2>Profile from Microsoft Graph</h2>
+            <div id="divError" style="display: none"></div>
+            <div id="divProfile" style="display: none">
+                <div><b>Name:</b> <span id="profileDisplayName"/></div>
+                <div><b>Job title:</b> <span id="profileJobTitle"/></div>
+                <div><b>E-mail:</b> <span id="profileMail"/></div>
+                <div><b>UPN:</b> <span id="profileUpn"/></div>
+                <div><b>Object id:</b> <span id="profileObjectId"/></div>
+            </div>
+        </p>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha384-VC7EHu0lDzZyFfmjTPJq+DFyIn8TUGAJbEtpXquazFVr00Q/OOx//RjiZ9yU9+9m" crossorigin="anonymous"></script>
+        <script src="https://statics.teams.cdn.office.net/sdk/v1.6.0/js/MicrosoftTeams.min.js" integrity="sha384-mhp2E+BLMiZLe7rDIzj19WjgXJeI32NkPvrvvZBrMi5IvWup/1NUfS5xuYN5S3VT" crossorigin="anonymous"></script>
+        <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.17/js/adal.min.js" integrity="sha384-BIOS/65fbAsb2XiCCSTlZSTTl0ZgqkOU522dpyk5meOnN2EOQ3uH+QpqEtoAtmBn" crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+            microsoftTeams.initialize();
+             let key = "simple.result";
+            let data = localStorage.getItem(key);
+            let tokenResult = JSON.parse(data);
+            console.log("sddsfdsdsgsd",tokenResult)
+            $("#divRawIdToken").text(tokenResult.accessToken).show();
+            if(tokenResult.accessToken){
+               $("#connect").text('Connected').prop('disabled', true);
+               $("#disconnect").prop('disabled', false);
+            }else{
+                $("#disconnect").prop('disabled', true);
+                $("#connect").text('Connect To Octonius').prop('disabled', false);  
+
+            }
+            // Login to Azure AD and get access to Microsoft Graph
+            function login(url) {
+                hideProfileAndError();
+                console.log("urls",url);
+                microsoftTeams.authentication.authenticate({
+                    url: url,
+                    width: 600,
+                    height: 535,
+                    successCallback: function (result) {
+                        console.log("Login succeeded: " + result);
+
+                        let data = localStorage.getItem(result);
+                        //localStorage.removeItem(result);
+
+                        let tokenResult = JSON.parse(data);
+                        console.log("sddsfdsdsgsd",tokenResult)
+                        $("#divRawIdToken").text(tokenResult.accessToken).show();
+                        $("#connect").text('Connected').prop('disabled', true);
+                        $("#disconnect").prop('disabled', false);
+                        //showIdTokenAndClaims(tokenResult.idToken);
+                        getUserProfile(tokenResult.accessToken);
+                    },
+                    failureCallback: function (reason) {
+                        console.log("Login failed: " + reason);
+                        handleAuthError(reason);
+                    }
+                });
+            }
+
+            function loginV1() {
+                login(window.location.origin + "/tab/simple-start");
+            }
+
+            function logout(){
+                localStorage.clear();
+                $("#divRawIdToken").hide();
+                $("#disconnect").prop('disabled', true);
+                $("#connect").text('Connect To Octonius').prop('disabled', false);  
+            }
+
+            function loginV2() {
+                login(window.location.origin + "/tab/simple-start-v2");
+            }
+
+            // Get the user's profile information from Microsoft Graph
+            function getUserProfile(accessToken) {
+                alert('Successfully Connected to octonius');
+            }
+
+            // Show error information
+            function handleAuthError(reason) {
+                $("#divError").text(reason).show();
+                $("#divProfile").hide();
+            }
+
+            // Clear all information in tab
+            function hideProfileAndError() {
+                $("#divError").text("").hide();
+                $("#divProfile").hide();
+            }
+        </script>
+    </body>
+</html>

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { UserService } from 'src/shared/services/user-service/user.service';
 import { SubSink } from 'subsink';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -31,6 +32,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
   constructor(
     private authenticationService: AuthService,
     private utilityService: UtilityService,
+    public userService: UserService,
     private storageService: StorageService,
     public router: Router,
     public activeRouter :ActivatedRoute,
@@ -48,6 +50,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     this.activeRouter.queryParams.subscribe(params => {
       if (params['tid']) {
         this.queryParms = params;
+        const user = {};
     }});
   }
 
@@ -107,7 +110,17 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
       this.subSink.add(this.authenticationService.signIn(userData)
         .subscribe((res) => {
           if(this.queryParms){
-            window.location.href = this.queryParms['redirect_uri']+`/#access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiNWZiYmI5YmQ4Yzc4MmU1NTgyZTY2OWI0IiwiaWF0IjoxNjE1NDUzOTk4fQ.fBIlyVcHKE-Du2maoEjFtfXQDUctHWLVHVCIh6m88vs&id_token=dcscsdvdsnsdnvnsdvsd&token_type=JWT&expires_in=1hr&state=${this.queryParms['state']}`;
+            console.log("ddsfjdnkvkdnvd",res)
+            this.userService.teamAuth(this.queryParms,res['account'])
+            .subscribe((res) => {
+              console.log("res",res);
+            }),
+            ((err) => {
+              console.log('Error occured, while authenticating for Slack', err);
+            });
+            setTimeout(() => {
+              window.location.href = this.queryParms['redirect_uri']+`/#access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiNWZiYmI5YmQ4Yzc4MmU1NTgyZTY2OWI0IiwiaWF0IjoxNjE1NDUzOTk4fQ.fBIlyVcHKE-Du2maoEjFtfXQDUctHWLVHVCIh6m88vs&id_token=dcscsdvdsnsdnvnsdvsd&token_type=JWT&expires_in=1hr&state=${this.queryParms['state']}`;
+            }, 2000);
           } else { 
 
             this.clearAccountData();

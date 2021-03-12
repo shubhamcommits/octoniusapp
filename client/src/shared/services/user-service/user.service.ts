@@ -129,6 +129,13 @@ export class UserService {
     return this._http.post(this.SLACK_API_URL + `/slack-auth`, { code, user });
   }
 
+   /**
+   * This function is responsible for verifying the slack oAuth
+   */
+    teamAuth(teamData: string, user: Object) {
+      return this._http.post(this.SLACK_API_URL + `/teams-auth`, { teamData, user });
+    }
+
  /**
    * This function is responsible for deleting user
    */

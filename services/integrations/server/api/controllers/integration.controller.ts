@@ -2,7 +2,7 @@ import e, { Response, Request, NextFunction } from "express";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { IntegrationService } from "../service";
 import moment from 'moment/moment'
-import { Group, Column, Auth, SlackAuth, User } from '../models';
+import { Group, Column, Auth, SlackAuth, User ,TeamAuth } from '../models';
 import { Auths, sendError } from '../../utils';
 import FormData from 'form-data';
 // import { validateId } from "../../utils/helperFunctions";
@@ -681,5 +681,131 @@ export class IntegrationController {
     };
 
 
+    async authTeam(req: Request , res: Response, next: NextFunction){
+        console.log("reqncsjdvksd",req.body);
+        const user = await User.findOne({email:req.body.user.email});
+        console.log('user',user);
+        const teamAuth = new TeamAuth({
+            user_object_id: req.body.teamData.userObjectId,
+            tenant_id:  req.body.teamData.tid,
+            _user: user._id
+        });
+
+        await teamAuth.save();
+
+        res.status(200).json({message:"Successfully"});
+    }
+
+    async isAuthTeamUser(req: Request , res: Response, next: NextFunction){
+        console.log("reqncsjdvksd",req.body.user_object_id);
+        const {user_object_id} = req.body ;
+        const user = await TeamAuth.findOne({user_object_id}).sort({created_date:-1}).populate('_user');;
+
+        
+        if(user){
+            let groupsBYAdmin = await Group.find({_admins:user._user._id});
+            let groupsByMember = await Group.find({_members:user._user._id});
+            groupsByMember.forEach(groups => {
+                groupsBYAdmin.push(groups);
+            });
+            console.log("sdcjnscnks",user,groupsBYAdmin)
+            res.status(200).json({message:"Successfully",user,groupsBYAdmin});
+        }else{
+            res.status(200).json({message:"fails"});
+        }
+    }
+
+    async getCardData(req: Request , res: Response, next: NextFunction){
+        
+        const columnsList = await Column.find({_group:req.body.groupId});
+        const groupData = await Group.findOne({_id:req.body.groupId}).populate('_members').populate('_admins');
+        var groupMembers = groupData['_members'];
+        var groupAdmins = groupData['_admins'];
+
+        groupAdmins.forEach(member => {
+            groupMembers.push(member);
+        });
+
+        if(columnsList && columnsList.length>0 && groupMembers && groupMembers.length>0){
+            res.status(200).json({message:"Successfully",columnsList,groupMembers});
+        }else{
+            res.status(200).json({message:"fails"});
+        }
+
+
+    }
+
+    async teamTaskCreation(req: Request , res: Response, next: NextFunction){
+        
+        const {assigneeId, title, description, groupSelectionId, columnSelection, assigneeSelection, dueDate } = req.body;
+
+        const userOctonius = await  User.findById(assigneeId);
+
+        console.log('1',userOctonius);
+
+        var BearerToken = "Bearer ";
+        const user_auth = await Auth.findOne({_user:userOctonius._id}).sort({created_date:-1});
+        console.log('2',user_auth);
+        const token = user_auth['token'];
+        var isvalidToken = true;
+
+        if(token && token != null){
+            jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+                if (err || !decoded) {
+                    isvalidToken = false;
+                    sendError(res, err, 'Unauthorized request, it must have a valid authorization token!', 500);
+                } else {
+                    // Assigning and feeding the userId into the req object
+                    BearerToken = BearerToken+token;
+                }
+            });
+        } else {
+            isvalidToken = false;
+        }
+        
+
+        if(!isvalidToken){
+            const user = userOctonius._id;
+            const workspace_name = userOctonius.workspace_name;
+            
+            let tokens = await auths.generateToken(user, workspace_name);
+
+            BearerToken = BearerToken+tokens['token'];
+
+        }
+
+        
+        //form data
+        var formData = new FormData();
+
+        //Postdata
+        const postdata = {"title": title,"content": description,"type":"task","_posted_by":assigneeId,"_group": groupSelectionId,"_content_mentions":[],"_assigned_to": assigneeSelection,"task":{"status":"to do","_column": columnSelection,"due_to": moment(dueDate).format("YYYY-MM-DD")}};
+
+
+        formData.append('post',JSON.stringify(postdata));
+
+        //axios call to create task
+
+        try {
+            const responaxois = await axios({
+                url : process.env.POSTS_SERVER_API,
+                method:'POST',
+                headers:{
+                    'Content-Type': formData.getHeaders()['content-type'],
+                    'Authorization': BearerToken,
+                },
+                data:formData
+            });
+
+            res.status(200).json({message:"Successfully"});
+        } catch (error) {
+            res.status(200).json({message:"fail"});
+        }
+         
+            
+
+       
+
+    }
 
 }

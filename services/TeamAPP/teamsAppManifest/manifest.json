@@ -1,0 +1,139 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.7/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.7",
+  "version": "1.0",
+  "id": "00000000-0000-0000-0000-000000000000",
+  "packageName": "com.microsoft.teams.samples.auth",
+  "developer": {
+    "name": "Cosmin Ciobanu",
+    "websiteUrl": "https://www.octonius.com/",
+    "privacyUrl": "https://www.octonius.com/privacy-policy/",
+    "termsOfUseUrl": "https://www.octonius.com/terms/"
+  },
+  "name": {
+    "short": "Octonius"
+  },
+  "description": {
+    "short": "Authentication sample for Microsoft Teams",
+    "full": "Authentication sample for Microsoft Teams"
+  },
+  "icons": {
+    "outline": "outline.png",
+    "color": "color.png"
+  },
+  "accentColor": "#F3F4F6",
+  "configurableTabs": [
+
+  ],
+  "composeExtensions": [
+    {
+      "botId": "0f88572c-5acf-4b96-823a-1e27e04e7213",
+      "canUpdateConfiguration": true,
+      "commands": [
+        {
+          "id": "searchQuery",
+          "type": "query",
+          "title": "Search",
+          "description": "Perform a search",
+          "initialRun": false,
+          "fetchTask": false,
+          "context": [
+            "commandBox",
+            "compose",
+            "message"
+          ],
+          "parameters": [
+            {
+              "name": "searchQuery",
+              "title": "Search",
+              "description": "Your search query",
+              "inputType": "text"
+            }
+          ]
+        },
+        {
+          "id": "SHOWPROFILE",
+          "type": "action",
+          "title": "Create Task",
+          "description": "Create a task to Octonius",
+          "initialRun": false,
+          "fetchTask": true,
+          "context": [
+            "commandBox",
+            "compose",
+            "message"
+          ],
+          "parameters": [
+            {
+              "name": "param",
+              "title": "param",
+              "description": ""
+            }
+          ]
+        },
+        {
+          "id": "SignOutCommand",
+          "type": "action",
+          "title": "Sign Out",
+          "description": "Sign out from authenticated services.",
+          "initialRun": false,
+          "fetchTask": true,
+          "context": [
+            "commandBox",
+            "compose"
+          ],
+          "parameters": [
+            {
+              "name": "param",
+              "title": "param",
+              "description": ""
+            }
+          ]
+        }
+      ],
+      "messageHandlers": [
+        {
+          "type": "link",
+          "value": {
+            "domains": [
+              "*.botframework.com"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "staticTabs": [
+    {
+      "contentUrl": "https://3f6525b640ae.ngrok.io/tab/simple",
+      "entityId": "simpleAuth",
+      "name": "Simple Auth",
+      "scopes": [
+        "personal"
+      ]
+    }
+  ],
+  "bots": [
+    {
+      "botId": "0f88572c-5acf-4b96-823a-1e27e04e7213",
+      "scopes": [
+        "personal"
+      ]
+    }
+  ],
+  "permissions": [
+    "messageTeamMembers",
+    "identity"
+  ],
+  "validDomains": [
+    "3f6525b640ae.ngrok.io",
+    "token.botframework.com",
+    "*.botframework.com",
+    "*.githubusercontent.com",
+    "*.ngrok.io"
+  ],
+  "webApplicationInfo": {
+      "id": "0f88572c-5acf-4b96-823a-1e27e04e7213",
+      "resource": "api://3f6525b640ae.ngrok.io/0f88572c-5acf-4b96-823a-1e27e04e7213"
+  }
+}
