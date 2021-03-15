@@ -36,19 +36,21 @@ export class FilesService {
    * @param groupId
    * @param lastFileId
    */
-  get(groupId: string, lastFileId: string) {
+  get(groupId: string, folderId: string, lastFileId: string) {
 
     if (lastFileId) {
       return this._http.get(this.baseURL + `/files/groups`, {
         params: {
           groupId: groupId,
+          folderId: folderId,
           lastFileId: lastFileId
         }
       }).toPromise()
     } else {
       return this._http.get(this.baseURL + `/files/groups`, {
         params: {
-          groupId: groupId
+          groupId: groupId,
+          folderId: folderId
         }
       }).toPromise()
     }

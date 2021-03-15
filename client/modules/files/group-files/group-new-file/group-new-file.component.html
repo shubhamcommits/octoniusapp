@@ -6,11 +6,11 @@
 
 <!-- Menu Drawer Starts -->
 <ul class="dropdown-menu">
-    <!--
-    <li class="dropdown-item" (click)="$event.stopPropagation()">
+
+    <li class="dropdown-item" (click)="createFolder()">
         <i class="material-icons-outlined mr-2">folder</i><span>Folder</span>
     </li>
-    -->
+
     <li class="dropdown-item" (click)="file.click()">
         <i class="material-icons-outlined mr-2">cloud_upload</i> <span>File upload</span>
         <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)"/>

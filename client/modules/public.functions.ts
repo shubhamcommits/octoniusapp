@@ -15,6 +15,7 @@ import { ColumnService } from 'src/shared/services/column-service/column.service
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
 import { environment } from 'src/environments/environment';
+import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -672,15 +673,16 @@ export class PublicFunctions {
     /**
      * This function is responsible for fetching the files from the server based on the groupId
      * @param groupId
+     * @param folderId
      * @param lastFileId: optional
      */
-    getFiles(groupId: string, lastFileId?: string) {
+    getFiles(groupId: string, folderId: string, lastFileId?: string) {
 
         // Files Service Instance
         let filesService = this.injector.get(FilesService);
 
         return new Promise((resolve, reject) => {
-            filesService.get(groupId, lastFileId)
+            filesService.get(groupId, folderId, lastFileId)
                 .then((res: any) => {
 
                     // Resolve with sucess
@@ -688,6 +690,28 @@ export class PublicFunctions {
                 })
                 .catch(() => {
 
+                    // If there's an error, then reject with empty array
+                    reject([]);
+                })
+        })
+    }
+
+    /**
+     * This function is responsible for fetching the folders from the server based on the groupId
+     * @param groupId
+     */
+    getFolders(groupId: string, folderId?: string) {
+
+        // Folders Service Instance
+        let foldersService = this.injector.get(FoldersService);
+
+        return new Promise((resolve, reject) => {
+          foldersService.get(groupId, folderId)
+                .then((res: any) => {
+                    // Resolve with sucess
+                    resolve(res['folders'])
+                })
+                .catch(() => {
                     // If there's an error, then reject with empty array
                     reject([]);
                 })
