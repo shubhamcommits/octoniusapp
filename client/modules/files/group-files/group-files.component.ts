@@ -121,11 +121,11 @@ export class GroupFilesComponent implements OnInit {
     }
   }
 
-  getFile(file: any){
+  getFile(file: any) {
     this.files.unshift(file);
   }
 
-  getFolder(folder: any){
+  getFolder(folder: any) {
     this.files.unshift(folder);
   }
 
@@ -427,6 +427,57 @@ export class GroupFilesComponent implements OnInit {
   getFileIcon(fileName: string) {
     let file = fileName.split(".");
     return "assets/images/" + file[file.length-1].toLowerCase() + "-file-icon.png";
+  }
+
+  /**
+   * Methods for Drag&Drop
+   */
+  /**
+   * This function is responsible for uploading the files to the server
+   * @param files
+   */
+   fileDropped(files: FileList) {
+
+    // Loop through each file and begin the process of uploading
+    Array.prototype.forEach.call(files, (file: File) => {
+      let fileData = {
+        _group: this.groupId,
+        _folder: (this.currentFolder) ? this.currentFolder._id : null,
+        _posted_by: this.userData._id,
+        type: 'file',
+        mime_type: ''
+      }
+      // Adding Mime Type of the file uploaded
+      fileData.mime_type = file.type
+
+      // Call the Upload file service function
+      this.uploadFile(fileData, file);
+    });
+  }
+
+  /**
+   * This function is responsible for uploading a file to the server
+   * @param fileData
+   * @param file
+   */
+  uploadFile(fileData: any, file?: File) {
+    // Call the HTTP Request Asynschronously
+    this.utilityService.asyncNotification(
+      (file) ? `Please wait we are uploading your file - ${file['name']} ...` : `Please wait while we are creating a new folio`,
+      new Promise((resolve, reject) => {
+        this.filesService.addFile(fileData, file)
+          .then((res) => {
+
+            // Output the created file to the top components
+            this.getFile(res['file']);
+            resolve((file) ? this.utilityService.resolveAsyncPromise('File has been uploaded!') :
+              this.utilityService.resolveAsyncPromise('New file has been uploaded!'))
+
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise('Unexpected error occured while uploading, please try again!'))
+          })
+      }))
   }
 
 }

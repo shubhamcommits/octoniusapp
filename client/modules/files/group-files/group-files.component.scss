@@ -68,3 +68,8 @@ img:hover{
   border: none;
   border-bottom: 1px solid #000000;
 }
+
+.fileover {
+  animation: shake 1s;
+  animation-iteration-count: infinite;
+}

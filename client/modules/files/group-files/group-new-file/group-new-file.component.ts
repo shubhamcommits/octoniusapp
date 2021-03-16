@@ -235,5 +235,4 @@ export class GroupNewFileComponent implements OnChanges {
           })
       }))
   }
-
 }
