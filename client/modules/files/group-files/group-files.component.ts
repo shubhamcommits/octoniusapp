@@ -332,6 +332,9 @@ export class GroupFilesComponent implements OnInit {
       });
   }
 
+  /**
+   * Method used to open a selected folder
+   */
   async openFolder(folderId: string) {
     if (folderId == 'root') {
       await this.initRootFolder();
@@ -365,6 +368,9 @@ export class GroupFilesComponent implements OnInit {
     }
   }
 
+  /**
+   * Used to modify the title of the current folder
+   */
   changeFolderTitle(event: any) {
     // KeyCode = 13 - User hits enter
     if (event.keyCode == 13) {
@@ -394,6 +400,9 @@ export class GroupFilesComponent implements OnInit {
 
   }
 
+  /**
+   * This method is used to init the root folder in the groups files page
+   */
   async initRootFolder() {
 
     // Fetch the uploaded files from the server
@@ -410,4 +419,14 @@ export class GroupFilesComponent implements OnInit {
 
     this.currentFolder = null;
   }
+
+  /**
+   * This function is used to return the mime type icon based on the extension of the fileName
+   * @param fileName - Name of the file to obtain the icon img
+   */
+  getFileIcon(fileName: string) {
+    let file = fileName.split(".");
+    return "assets/images/" + file[file.length-1].toLowerCase() + "-file-icon.png";
+  }
+
 }

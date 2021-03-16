@@ -71,7 +71,7 @@
 
                 <a *ngIf="file?.type === 'file'" class="mt-0" target="_blank"
                   href="{{filesBaseUrl}}/{{file?.modified_name}}">
-                    <img src="assets/images/icon_file.svg"
+                    <img [src]="getFileIcon(file?.original_name)"
                       onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                     {{file?.original_name}}
                 </a>
