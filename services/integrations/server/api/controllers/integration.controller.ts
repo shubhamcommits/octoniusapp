@@ -801,10 +801,19 @@ export class IntegrationController {
         } catch (error) {
             res.status(200).json({message:"fail"});
         }
-         
-            
+    }
 
-       
+    async disconnectTeam(req: Request , res: Response, next: NextFunction){
+
+        try {
+            await TeamAuth.deleteMany({user_object_id:req.query.uid});
+            res.status(200).json({message:"Successfully"});
+        } catch (error) {
+            res.status(200).json({message:"faild"});
+        }
+
+
+        
 
     }
 

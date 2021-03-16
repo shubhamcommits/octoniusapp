@@ -90,7 +90,15 @@ export class AppComponent {
   }
 
   myAuthCheck() {
-    return this.storageService.existData('authToken');
+    let url = this._router.url;
+    let finalstate:boolean; 
+    if(this.storageService.existData('authToken') && url !== '/dashboard/user/teams'){
+      finalstate = true ;
+    } else {
+      finalstate = false ;
+    }
+
+    return finalstate;
   }
   /**
    * This function checks for the active internet connection

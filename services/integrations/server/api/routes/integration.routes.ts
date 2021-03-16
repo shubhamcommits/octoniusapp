@@ -20,6 +20,8 @@ routes.post('/team-card-required-data',integrationFunctions.getCardData);
 
 routes.post('/team-create-task',integrationFunctions.teamTaskCreation);
 
+routes.get('/disconnect-team',integrationFunctions.disconnectTeam);
+
 routes.get('/is-slack-authenticated/:userID',integrationFunctions.isSlackAuth);
 
 routes.delete('/disconnect-slack/:userID',integrationFunctions.disconnectSlack);

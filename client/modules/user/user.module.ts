@@ -15,6 +15,7 @@ import { UserConnectedCloudsComponent } from './user-clouds/user-connected-cloud
 import { GoogleCloudModule } from './user-clouds/user-available-clouds/google-cloud/google-cloud.module';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { SlackCloudModule } from './user-clouds/user-available-clouds/slack/slack.module';
+import { TeamModule } from './user-clouds/user-available-clouds/team/team.module';
 import { UserWorkloadComponent } from './user-workload/user-workload.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -43,6 +44,7 @@ import { UserPasswordUpdateComponent } from './user-profile/user-password-update
     SharedModule,
     GoogleCloudModule,
     SlackCloudModule,
+    TeamModule,
     UserRoutingModule,
     MatSelectModule,
     CalendarModule.forRoot({
