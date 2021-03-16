@@ -72,18 +72,35 @@ export class FoldersService {
             // Remove the folder
             await Folder.findByIdAndRemove({
                 _id: folderId
-            })
+            });
 
-            // Find all the folders 
+            // Find all the files 
             let filesStream = Readable.from(await File.find({
                 _folder: folderId
-            }).select('_id'))
+            }).select('_id'));
 
             // Delete all the folders present in a folder
             filesStream.on('data', async (file) => {
                 //await File.findByIdAndRemove(file._id)
                 await filesService.delete(file._id)
-            })
+            });
+
+            // Search for subfolders
+            const numSubFolders = await Folder.find({
+                _parent: folderId
+            }).countDocuments();
+
+            // Remove subfolders
+            if (numSubFolders > 0) {
+                let foldersStream = Readable.from(await Folder.find({
+                    _parent: folderId
+                }).select('_id'));
+    
+                // Delete all the folders present in a folder
+                foldersStream.on('data', async (folder) => {
+                    await this.remove(folder._id)
+                });
+            }
 
             // Return the deleted folder
             return folder;

@@ -76,8 +76,8 @@ export class GroupNewFileComponent implements OnChanges {
           })
           .catch(() => {
             reject(utilityService.rejectAsyncPromise('Unexpected error occured while creating the folder, please try again!'))
-          })
-      }))
+          });
+      }));
   }
 
   /**
@@ -95,7 +95,97 @@ export class GroupNewFileComponent implements OnChanges {
       // Call the Upload file service function
       this.uploadFile(this.fileData, file);
 
-    })
+    });
+  }
+
+  folderUpload(folderInput) {
+    // Files Service Instance
+    let folderService = this.Injector.get(FoldersService);
+
+    // Utility Service Instance
+    let utilityService = this.Injector.get(UtilityService);
+
+    // Files Service Instance
+    let fileService = this.Injector.get(FilesService);
+
+    utilityService.asyncNotification(`Please wait we are uploading the folder...`,
+      new Promise(async (resolve, reject) => {
+        try {
+          let folders = [];
+          for (let j = 0; j < folderInput.target.files.length; j++) {
+            let file: File = folderInput.target.files[j];
+
+            const relativePath = file['webkitRelativePath'];
+            const path = relativePath.split("/");
+
+            for (let i = 0; i < path.length; i++) {
+              const name = path[i];
+
+              if (i == (path.length - 1)) {
+                // upload the file
+                // Set the folder
+                const folderIndex = await folders.findIndex(folder => {
+                  return folder.folder_name == path[i-1];
+                });
+
+                if (folderIndex >= 0) {
+                  this.fileData._folder = folders[folderIndex]._id;
+                } else {
+                  this.fileData._folder = this.folderId;
+                }
+
+                // Adding Mime Type of the file uploaded
+                this.fileData.mime_type = file.type;
+
+                // Call the Upload file service function
+                // this.uploadFile(this.fileData, file);
+                await fileService.addFile(this.fileData, file)
+                  .catch((err) => {
+                    throw (err);
+                  });
+              } else {
+                // create the folder
+
+                // check if the folder was already created
+                let folderIndex = await folders.findIndex(folder => {
+                  return folder.folder_name == name;
+                });
+
+                if (folderIndex < 0) {
+                  const folder: any = {
+                    folder_name: name,
+                    _created_by: this.userData._id,
+                    _group: this.groupId,
+                  };
+
+                  if (i > 0) {
+                    // search for the parent
+                    folderIndex = await folders.findIndex(folder => {
+                      return folder.folder_name == path[i-1];
+                    });
+                    folder._parent = folders[folderIndex]._id;
+                  } else {
+                    folder._parent = this.folderId;
+                  }
+
+                  await folderService.add(folder)
+                    .then((res) => {
+                      folders.push(res['folder']);
+                    })
+                    .catch((err) => {
+                      throw (err);
+                    });
+                }
+              }
+            }
+          }
+          this.folderEmitter.emit(folders[0]);
+          resolve(utilityService.resolveAsyncPromise('Folder has been uploaded!'));
+        } catch (err) {
+          console.log('There\'s some unexpected error occured, please try again!', err);
+          reject(utilityService.rejectAsyncPromise('Unexpected error occured while creating the folder, please try again!'));
+        }
+      }));
   }
 
   /**

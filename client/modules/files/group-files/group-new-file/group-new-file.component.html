@@ -15,12 +15,12 @@
         <i class="material-icons-outlined mr-2">cloud_upload</i> <span>File upload</span>
         <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)"/>
     </li>
-    <!--
+
     <li class="dropdown-item" (click)="folderInput.click()">
         <i class="material-icons-outlined mr-2">cloud_upload</i> <span> Folder upload</span>
-        <input #folderInput type="file" placeholder="File" webkitDirectory />
+        <input #folderInput type="file" placeholder="File" webkitdirectory (change)="folderUpload($event)"/>
     </li>
-    -->
+
     <li class="dropdown-divider"></li>
     <li class="dropdown-item" (click)="createFolio()">
         <img src="assets/images/icon_folio.svg" alt="" class="mr-2"> <span>Folio</span>
