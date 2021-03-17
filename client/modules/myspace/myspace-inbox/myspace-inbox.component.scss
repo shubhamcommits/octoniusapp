@@ -56,25 +56,33 @@
         will-change: transform;
         // flex-basis: 320px;
         padding: 0 10px;
+        color: $muted-color;
 
         .notification_post_title {
-          color: #000000;
+          color:$dark-text;
+          font-weight: 700;
         }
 
         .assignment_notification {
-          color: #FFAB00;
+          color:$pumpkin-orange;
+          // work in progress to add some icons
+          // background-image: url("/assets/images/create-agora.svg");  
+          // background-size: 24px 24px;
+          // background-repeat: no-repeat;
+          // background-position: left;
+          // padding-left: 26px;
         }
 
         .mention_notification {
-          color: #5E2FE5;
+          color:$pink;
         }
 
         .completed_notification {
-          color: #4a90e2;
+          color: $dark-sky-blue;
         }
 
         .started_notification {
-          color: #0bc6a0;
+          color: $turquoise;
         }
 
         .like_comment_notification {
@@ -159,4 +167,12 @@
 
 .container{
   margin-top: 110px;
+}
+
+.card-title{
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 24px;
+  color: #242D3A;
 }
