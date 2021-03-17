@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Output, EventEmitter, Inject } from '@angular/core';
+import { Component, OnInit, Injector, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PreviewFilesDialogComponent } from 'src/app/common/shared/preview-files-dialog/preview-files-dialog.component';
 import { FilesService } from './../../../src/shared/services/files-service/files.service';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-group-files',
@@ -121,14 +122,6 @@ export class GroupFilesComponent implements OnInit {
     }
   }
 
-  getFile(file: any) {
-    this.files.unshift(file);
-  }
-
-  getFolder(folder: any) {
-    this.files.unshift(folder);
-  }
-
   ngAfterViewInit(){
     this.subSink.add(this.queryChanged
       .pipe(debounceTime(500), distinctUntilChanged())
@@ -136,6 +129,22 @@ export class GroupFilesComponent implements OnInit {
 
         this.files = await this.publicFunctions.searchFiles(this.groupId, res);
       }))
+  }
+
+  /**
+   * Unsubscribe all the observables on destroying the component
+   */
+  ngOnDestroy() {
+    this.subSink.unsubscribe()
+    this.isLoading$.complete()
+  }
+
+  getFile(file: any) {
+    this.files.unshift(file);
+  }
+
+  getFolder(folder: any) {
+    this.files.unshift(folder);
   }
 
   /**
@@ -175,14 +184,6 @@ export class GroupFilesComponent implements OnInit {
       // Stop the loading spinner
       this.isLoading$.next(false);
     }
-  }
-
-  /**
-   * Unsubscribe all the observables on destroying the component
-   */
-  ngOnDestroy() {
-    this.subSink.unsubscribe()
-    this.isLoading$.complete()
   }
 
   /**
@@ -364,7 +365,7 @@ export class GroupFilesComponent implements OnInit {
       }
 
       // Concat the files
-      this.files = [parentFolder, ...this.folders, ...this.files];
+      // this.files = [parentFolder, ...this.folders, ...this.files];
     }
   }
 
@@ -415,7 +416,7 @@ export class GroupFilesComponent implements OnInit {
     this.lastFileId = this.files[this.files.length - 1]?._id;
 
     // Concat the files
-    this.files = [...this.folders, ...this.files];
+    // this.files = [...this.folders, ...this.files];
 
     this.currentFolder = null;
   }
@@ -479,5 +480,4 @@ export class GroupFilesComponent implements OnInit {
           })
       }))
   }
-
 }

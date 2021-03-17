@@ -60,23 +60,42 @@
 
         <!-- Files array template starts -->
         <app-infinite-scroll (scrolled)="onScroll()">
+            <!-- Folder details start -->
             <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
-                *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
+                *ngFor="let folder of folders; let index = index; trackBy: utilityService.trackByIndex;">
 
-                <a *ngIf="file?.folder_name" class="mt-0" style="cursor: pointer"
-                  (click)="openFolder(file?._id)">
+                <a class="mt-0" style="cursor: pointer" (click)="openFolder(folder?._id)">
                     <img src="assets/images/add-folder-icon.png"
                       onerror="this.src='assets/images/add-folder-icon.png'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
-                    {{file?.folder_name}}
+                    {{folder?.folder_name}}
                 </a>
 
+                <div class="media-body">
+                    <div class="float-right" *ngIf="folder?.folder_name != '../'">
+                        <img src="{{ userBaseUrl }}/{{folder?._created_by?.profile_pic}}"
+                            routerLink="/dashboard/user/profile" [queryParams]="{ userId: folder?._created_by?._id || folder?._created_by?._id }"
+                            onerror="this.src='assets/images/user.png'" class="feed-avatar">
+                        <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+                        <mat-menu #menu="matMenu">
+                            <a mat-menu-item (click)="deleteItem(folder?._id, folder?.type)">
+                                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                                <span>Delete</span>
+                            </a>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+            <!-- Folder Details Ends -->
+
+            <!-- File Details Starts -->
+            <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
+                *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
                 <a *ngIf="file?.type === 'file'" class="mt-0" target="_blank"
                   href="{{filesBaseUrl}}/{{file?.modified_name}}">
                     <img [src]="getFileIcon(file?.original_name)"
                       onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                     {{file?.original_name}}
                 </a>
-
 
                 <a *ngIf="file?.type === 'folio'" class="mt-0"
                   routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id, myWorkplace: myWorkplace }">
@@ -86,7 +105,7 @@
                 </a>
 
                 <div class="media-body">
-                    <div class="float-right" *ngIf="file?.folder_name != '../'">
+                    <div class="float-right">
                         <img src="{{ userBaseUrl }}/{{file?._posted_by?.profile_pic}}"
                             routerLink="/dashboard/user/profile" [queryParams]="{ userId: file?._posted_by?._id || file?._created_by?._id }"
                             onerror="this.src='assets/images/user.png'" class="feed-avatar">
@@ -129,11 +148,10 @@
                                 <span>Delete</span>
                             </a>
                         </mat-menu>
-
                     </div>
-                    <!-- File Details Ends -->
                 </div>
             </div>
+            <!-- File Details Ends -->
         </app-infinite-scroll>
         <!-- Files array template ends -->
 
@@ -142,8 +160,5 @@
             <app-loading-spinner></app-loading-spinner>
         </ng-container>
         <!-- Loading Spinner Ends -->
-
-
     </div>
-
 </div>
