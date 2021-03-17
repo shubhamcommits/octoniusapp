@@ -195,7 +195,7 @@ export class GroupFilesComponent implements OnInit {
       .then((result) => {
         if (result.value) {
           // Remove the file
-          this.utilityService.asyncNotification('Please wait we are deleting the item...', new Promise((resolve, reject) => {
+          this.utilityService.asyncNotification('Please wait, we are deleting...', new Promise((resolve, reject) => {
             if (type == 'file' || type == 'folio') {
               this.filesService.deleteFile(itemId)
                 .then((res) => {
@@ -300,12 +300,12 @@ export class GroupFilesComponent implements OnInit {
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the item will be copied to the selected group!')
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait we are copy the item...', new Promise((resolve, reject) => {
+          await this.utilityService.asyncNotification('Please wait, we are copying the Folio...', new Promise((resolve, reject) => {
             this.filesService.transferToGroup(itemId, group, true).then((res) => {
                 resolve(this.utilityService.resolveAsyncPromise(`👍 Folio Copied!`));
               })
               .catch((error) => {
-                reject(this.utilityService.rejectAsyncPromise(`Error while copying the folio!`));
+                reject(this.utilityService.rejectAsyncPromise(`Error while copying the Folio!`));
               });
           }));
         }
@@ -317,7 +317,7 @@ export class GroupFilesComponent implements OnInit {
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the item will be moved to the selected group!')
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait we are move the item...', new Promise((resolve, reject) => {
+          await this.utilityService.asyncNotification('Please wait we are moving the item...', new Promise((resolve, reject) => {
             this.filesService.transferToGroup(itemId, groupId, false)
               .then((res) => {
                 // Redirect to the new group files page
@@ -463,7 +463,7 @@ export class GroupFilesComponent implements OnInit {
   uploadFile(fileData: any, file?: File) {
     // Call the HTTP Request Asynschronously
     this.utilityService.asyncNotification(
-      (file) ? `Please wait we are uploading your file - ${file['name']} ...` : `Please wait while we are creating a new folio`,
+      (file) ? `Please wait, we are uploading your file - ${file['name']} ...` : `Please wait while we are creating a new folio`,
       new Promise((resolve, reject) => {
         this.filesService.addFile(fileData, file)
           .then((res) => {
