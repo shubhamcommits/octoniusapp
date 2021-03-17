@@ -4,7 +4,7 @@
     position: relative;
     display: flex;
   }
-  
+
   .searchTerm {
     width: 100%;
     border: 3px solid #E4EDF8;
@@ -15,7 +15,7 @@
     outline: none;
     color: #9DBFAF;
   }
-  
+
   .searchTerm:focus{
     color: #005FD5;
     border: 3px solid #005FD5
@@ -35,11 +35,11 @@
     cursor: pointer;
     font-size: 20px;
   }
-  
+
   /*Resize the wrap to see the search bar change!*/
   .wrap{
     width: 30%;
-    
+
   }
 
   app-loading-spinner{
@@ -56,4 +56,19 @@ img{
 
 img:hover{
   transform: scale(1.1);
+}
+
+.input-search {
+  width: auto;
+  height: 38px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  border: none;
+  border-bottom: 1px solid #000000;
+}
+
+.fileover {
+  border: 3px dashed #ffab00;
 }

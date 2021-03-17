@@ -11,11 +11,6 @@ const FolderSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    _files: {
-        type: Schema.Types.ObjectId,
-        ref: 'File',
-        default: []
-    },
     _created_by: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -25,6 +20,11 @@ const FolderSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Group',
         required: true
+    },
+    _parent: {
+        type: Schema.Types.ObjectId,
+        ref: 'Folder',
+        required: false
     }
 });
 
