@@ -73,6 +73,8 @@ export class GroupFilesComponent implements OnInit {
   // Variable for lastPostId
   lastFileId: string;
 
+  workspaceId: string;
+
   // More to load maintains check if we have more to load members on scroll
   public moreToLoad: boolean = true;
 
@@ -102,6 +104,8 @@ export class GroupFilesComponent implements OnInit {
     }
 
     if (this.groupData && this.groupData._workspace && this.groupId && this.userData) {
+      this.workspaceId = this.groupData._workspace;
+
       // Fetches the user groups from the server
       await this.publicFunctions.getUserGroups(this.groupData._workspace, this.userData._id)
         .then((groups: any) => {
@@ -144,7 +148,7 @@ export class GroupFilesComponent implements OnInit {
   }
 
   getFolder(folder: any) {
-    this.files.unshift(folder);
+    this.folders.unshift(folder);
   }
 
   /**
@@ -352,20 +356,18 @@ export class GroupFilesComponent implements OnInit {
       // Fetch the uploaded files from the server
       this.folders = await this.publicFunctions.getFolders(this.groupId, folderId);
 
-      // Fetch the uploaded files from the server
-      this.files = await this.publicFunctions.getFiles(this.groupId, folderId);
-
-      // Set the lastFileId for scroll
-      this.lastFileId = this.files[this.files.length - 1]?._id;
-
       const parentFolder = {
         _id: this.currentFolder?._parent || 'root',
         folder_name: '../',
         type: undefined
       }
+      this.folders.unshift(parentFolder);
 
-      // Concat the files
-      // this.files = [parentFolder, ...this.folders, ...this.files];
+      // Fetch the uploaded files from the server
+      this.files = await this.publicFunctions.getFiles(this.groupId, folderId);
+
+      // Set the lastFileId for scroll
+      this.lastFileId = this.files[this.files.length - 1]?._id;
     }
   }
 
@@ -415,9 +417,6 @@ export class GroupFilesComponent implements OnInit {
     // Set the lastFileId for scroll
     this.lastFileId = this.files[this.files.length - 1]?._id;
 
-    // Concat the files
-    // this.files = [...this.folders, ...this.files];
-
     this.currentFolder = null;
   }
 
@@ -431,7 +430,7 @@ export class GroupFilesComponent implements OnInit {
   }
 
   /**
-   * Methods for Drag&Drop
+   * Methods for Drop files to upload
    */
   /**
    * This function is responsible for uploading the files to the server
@@ -446,7 +445,8 @@ export class GroupFilesComponent implements OnInit {
         _folder: (this.currentFolder) ? this.currentFolder._id : null,
         _posted_by: this.userData._id,
         type: 'file',
-        mime_type: ''
+        mime_type: '',
+        _workspace: this.workspaceId
       }
       // Adding Mime Type of the file uploaded
       fileData.mime_type = file.type

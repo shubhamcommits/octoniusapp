@@ -9,7 +9,7 @@
 
         <!-- Group New File starts -->
         <app-group-new-file *ngIf="groupId && userData && checkDataExist(userData)"
-          [groupId]="groupId" [userData]="userData" [folderId]="currentFolder?._id"
+          [groupId]="groupId" [userData]="userData" [folderId]="currentFolder?._id" [workspaceId]="workspaceId"
           (file)="getFile($event)" (folder)="getFolder($event)">
         </app-group-new-file>
         <!-- Group New File ends -->

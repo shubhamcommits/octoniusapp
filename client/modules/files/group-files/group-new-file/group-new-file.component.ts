@@ -20,6 +20,9 @@ export class GroupNewFileComponent implements OnChanges {
   // GroupId Variable
   @Input('groupId') groupId: any;
 
+  // WorkspaceId Variable
+  @Input('workspaceId') workspaceId: any;
+
   // GroupId Variable
   @Input() folderId: any;
 
@@ -43,7 +46,8 @@ export class GroupNewFileComponent implements OnChanges {
       _group: this.groupId,
       _folder: this.folderId,
       _posted_by: this.userData._id,
-      type: 'file'
+      type: 'file',
+      _workspace: this.workspaceId
     }
   }
 
