@@ -227,7 +227,7 @@ export class GroupNewFileComponent implements OnChanges {
             this.fileEmitter.emit(res['file']);
 
             resolve((file) ? utilityService.resolveAsyncPromise('File has been uploaded!') :
-              utilityService.resolveAsyncPromise('New file has been uploaded!'))
+              utilityService.resolveAsyncPromise('New folio has been created!'))
 
           })
           .catch(() => {
