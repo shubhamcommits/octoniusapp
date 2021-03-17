@@ -1,18 +1,43 @@
-<div class="container">
+<div class="container" dragDropFile (fileDropped)="fileDropped($event)">
 
     <div class="card-tile">
 
         <!-- Heading of the component starts -->
-        <h4>Your files. Ready when you are</h4>
+        <h4>Your files. Ready when you are.</h4>
+        <p>Drag and drop files here for easy upload. <br>Or use the NEW button for folders uploading.</p>
         <!-- Heading of the component ends -->
 
         <!-- Group New File starts -->
-        <app-group-new-file *ngIf="groupId && userData && checkDataExist(userData)" [groupId]="groupId"
-            [userData]="userData" (file)="getFile($event)">
+        <app-group-new-file *ngIf="groupId && userData && checkDataExist(userData)"
+          [groupId]="groupId" [userData]="userData" [folderId]="currentFolder?._id"
+          (file)="getFile($event)" (folder)="getFolder($event)">
         </app-group-new-file>
         <!-- Group New File ends -->
 
-        <div style="width: 200px;" class="float-right mt-n30"><img src="assets/images/files_placeholder.svg" alt="">
+        <div style="width: 200px; margin-top: -40px;" class="float-right">
+          <img src="assets/images/files_placeholder.svg" alt="">
+        </div>
+
+        <div *ngIf="currentFolder" class="mt-n30">
+          <!-- Folder Static Title starts -->
+          <span *ngIf="!editFolderTitle"
+              (click)="editFolderTitle = !editFolderTitle"
+              ngbTooltip="Click me to rename"
+              placement="bottom">
+            <h5>
+              {{currentFolder?.folder_name}}
+              <i class="material-icons muted" style="cursor: pointer; font-size: 14px;">mode</i>
+            </h5>
+          </span>
+          <!-- Folder Static Title ends -->
+
+          <!-- Folder edit title name starts -->
+          <input *ngIf="editFolderTitle" type="search"
+              autocomplete="off"
+              [(ngModel)]="currentFolder.folder_name"
+              (keyup)="changeFolderTitle($event)"
+              class="input-search" />
+          <!-- Folder edit title name ends -->
         </div>
 
         <br class="clearfix">
@@ -38,26 +63,32 @@
             <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
                 *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
 
+                <a *ngIf="file?.folder_name" class="mt-0" style="cursor: pointer"
+                  (click)="openFolder(file?._id)">
+                    <img src="assets/images/add-folder-icon.png"
+                      onerror="this.src='assets/images/add-folder-icon.png'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                    {{file?.folder_name}}
+                </a>
 
-                <a *ngIf="file?.type === 'file' || file?.type === undefined" class="mt-0" target="_blank"
-                    href="{{filesBaseUrl}}/{{file?.modified_name}}">
-                    <img src="assets/images/icon_file.svg"
-                    onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
-                    {{file?.original_name}}</a>
+                <a *ngIf="file?.type === 'file'" class="mt-0" target="_blank"
+                  href="{{filesBaseUrl}}/{{file?.modified_name}}">
+                    <img [src]="getFileIcon(file?.original_name)"
+                      onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                    {{file?.original_name}}
+                </a>
 
 
                 <a *ngIf="file?.type === 'folio'" class="mt-0"
-                    routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id, myWorkplace: myWorkplace }">
+                  routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id, myWorkplace: myWorkplace }">
                     <img src="assets/images/icon_folio.svg"
-                    onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">{{file?.original_name}}</a>
+                      onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                    {{file?.original_name}}
+                </a>
 
                 <div class="media-body">
-
-
-                    <div class="float-right">
-
-                        <img src="{{ userBaseUrl }}/{{file._posted_by?.profile_pic}}"
-                            routerLink="/dashboard/user/profile" [queryParams]="{ userId: file._posted_by._id }"
+                    <div class="float-right" *ngIf="file?.folder_name != '../'">
+                        <img src="{{ userBaseUrl }}/{{file?._posted_by?.profile_pic}}"
+                            routerLink="/dashboard/user/profile" [queryParams]="{ userId: file?._posted_by?._id || file?._created_by?._id }"
                             onerror="this.src='assets/images/user.png'" class="feed-avatar">
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
                         <mat-menu #menu="matMenu">
@@ -66,7 +97,7 @@
                                 <span>Copy Link</span>
                             </a>
 
-                            <div *ngIf="file?.type === 'folio'">
+                            <div *ngIf="file?.type == 'folio'">
                               <!--
                               <a mat-menu-item [matMenuTriggerFor]="transferMenu" (mouseover)="saveTransferAction('copy')">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
@@ -80,12 +111,12 @@
 
                               <mat-menu #transferMenu="matMenu">
                                 <ng-container *ngFor="let group of userGroups; let index = index">
-                                  <button mat-menu-item (click)="transferToGroup(file._id, userGroups[index]?._id)">{{ group.group_name }}</button>
+                                  <button mat-menu-item (click)="transferToGroup(file._id, userGroups[index]?._id, file?.type)">{{ group.group_name }}</button>
                                 </ng-container>
                               </mat-menu>
                             </div>
 
-                            <a *ngIf="file?.type === 'file' || file?.type === undefined" mat-menu-item (click)="openViewFileDialog(filesBaseUrl + '/' + file?.modified_name)">
+                            <a *ngIf="file?.type === 'file'" mat-menu-item (click)="openViewFileDialog(filesBaseUrl + '/' + file?.modified_name)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                                 <span>View</span>
                             </a>
@@ -93,7 +124,7 @@
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                                 <span>View</span>
                             </a>
-                            <a mat-menu-item (click)="deleteFile(file?._id)">
+                            <a mat-menu-item (click)="deleteItem(file?._id, file?.type)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
                                 <span>Delete</span>
                             </a>
@@ -101,7 +132,6 @@
 
                     </div>
                     <!-- File Details Ends -->
-
                 </div>
             </div>
         </app-infinite-scroll>

@@ -1,9 +1,12 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils/senderror";
-import { FilesService } from "../services";
+import { FilesService, FoldersService } from "../services";
 
 // Create instance of files service
 let filesService = new FilesService();
+
+// Create instance of folders service
+let foldersService = new FoldersService();
 
 export class FilesControllers {
 
@@ -17,17 +20,25 @@ export class FilesControllers {
         try {
 
             // Fetch the File Name From the request
-            let { query: { groupId, lastFileId } } = req;
+            let { query: { groupId, lastFileId, folderId } } = req;
 
             // Files List
-            let files: any = []
+            let files: any = [];
 
             // Get files list
-            if (lastFileId == undefined || lastFileId == 'undefined')
-                files = await filesService.get(groupId.toString());
-
-            else
-                files = await filesService.get(groupId.toString(), lastFileId.toString());
+            if (lastFileId == undefined || lastFileId == 'undefined') {
+                if (folderId == undefined || folderId == 'undefined' || folderId == null || folderId == 'null') {
+                    files = await filesService.get(groupId.toString(), null);
+                } else {
+                    files = await filesService.get(groupId.toString(), folderId.toString());
+                }
+            }else {
+                if (folderId == undefined || folderId == 'undefined' || folderId == null || folderId == 'null') {
+                    files = await filesService.get(groupId.toString(), null, lastFileId.toString());
+                } else {
+                    files = await filesService.get(groupId.toString(), folderId.toString(), lastFileId.toString());
+                }
+            }
 
             // Send Status 200 response
             return res.status(200).json({
@@ -188,7 +199,7 @@ export class FilesControllers {
                 })
 
             // Get File on the basis of the fileId
-            let file = await filesService.delete(fileId)
+            let file = await filesService.delete(fileId);
 
             // Send Status 200 response
             return res.status(200).json({

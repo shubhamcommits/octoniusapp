@@ -85,7 +85,7 @@
 
 
 
-  <div *ngIf="!parentTask && !isdependent && !isMilestone" class="set-parent">
+  <div *ngIf="!parentTask && !isDependent && !isMilestone" class="set-parent">
    MAKE SUBTASK OF
 
     <!-- INPUT BAR STARTS -->
@@ -114,7 +114,7 @@
     </div>
   </div>
 
-  <div *ngIf="groupData && !ischild && groupData.project_type" class="set-parent">
+  <div *ngIf="groupData && groupData?.project_type && !isChild" class="set-parent">
     MAKE DEPENDENCY OF
 
     <button *ngFor="let task of dependencyTask; let i = index" class="btn dependencylabel" style="margin-right: 1rem;"
