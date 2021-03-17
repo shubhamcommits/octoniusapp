@@ -17,7 +17,7 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
   baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
 
   accountData;
-
+  queryParms:any;
   publicFunctions = new PublicFunctions(this._Injector);
 
   // ADD ALL SUBSCRIPTIONS HERE TO DESTROY THEM ALL TOGETHER
@@ -28,6 +28,7 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
     private authenticationService: AuthService,
     private storageService: StorageService,
     public router: Router,
+    public activeRouter :ActivatedRoute,
     private _Injector: Injector
     ) { }
 
@@ -36,6 +37,10 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
     if (!this.accountData || JSON.stringify(this.accountData) == JSON.stringify({})) {
       this.router.navigate(['']);
     }
+    this.activeRouter.queryParams.subscribe(params => {
+      if (params['next']) {
+        this.queryParms = params;
+    }});
   }
 
   /**
@@ -66,7 +71,9 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
         .subscribe((res) => {
           this.clearUserData();
           this.storeUserData(res);
-
+          if(this.queryParms){
+            window.location.href = this.queryParms.next;
+          }
           this.router.navigate(['dashboard', 'myspace', 'inbox'])
             .then(() => {
               resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));

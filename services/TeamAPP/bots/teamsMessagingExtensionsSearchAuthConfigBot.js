@@ -244,8 +244,7 @@ class TeamsMessagingExtensionsSearchAuthConfigBot extends TeamsActivityHandler {
     }
 
     async handleTeamsMessagingExtensionFetchTask(context, action) {
-        console.log("hjbcbscss",action);
-        if (action.commandId === 'SHOWPROFILE') {
+        if (action.commandId === 'CREATETASK') {
 
             let apiResponce = await axios.post('http://127.0.0.1:13000/api/is-teams-auth-user',{user_object_id:context._activity.from.aadObjectId});
             
@@ -303,44 +302,71 @@ class TeamsMessagingExtensionsSearchAuthConfigBot extends TeamsActivityHandler {
               };
 
             }else {
-                return {}
+                console.log("failed")
+            return {
+                composeExtension:{
+                  type:"auth",
+                  suggestedActions:{
+                    actions:[
+                      {
+                        type: "openUrl",
+                        value: "https://f5a7ac0170e4.ngrok.io/tab/simple-start?userID="+context._activity.from.id,
+                        title: "Sign in to this app"
+                      }
+                    ]
+                  }
+                }
+              }
             }
         }
-        if (action.commandId === 'SignOutCommand') {
-            const adapter = context.adapter;
-            await adapter.signOutUser(context, this.connectionName);
-
-            const card = CardFactory.adaptiveCard({
-                version: '1.0.0',
-                type: 'AdaptiveCard',
-                body: [
-                    {
-                        type: 'TextBlock',
-                        text: 'You have been signed out.'
-                    },
-                ],
-                actions: [
-                    {
-                        type: 'Action.Submit',
-                        title: 'Close',
-                        data: {
-                            key: 'close'
-                        },
-                    },
-                ],
-            });
-
+        if (action.commandId === 'SIGNIN') {
+            let apiResponce = await axios.post('http://127.0.0.1:13000/api/is-teams-auth-user',{user_object_id:context._activity.from.aadObjectId});
+            let user = apiResponce.data.user;
+            if (user) {
+                const adaptiveCard = CardFactory.adaptiveCard({
+                    actions: [{
+                      data: { submitLocation: 'submited'},
+                      title: 'Ok',
+                      type: 'Action.Submit'
+                    }],
+                    body: [
+                        
+                        { text: 'User Already Connected', type: 'TextBlock', weight: 'bolder'},
+            
+                    ],
+                    type: 'AdaptiveCard',
+                    version: '1.0'
+                  });
+            
+                  return {
+                    task: {
+                      type: 'continue',
+                      value: {
+                        card: adaptiveCard,
+                        height: 150,
+                        title: 'Create Task Octonius',
+                        url: null,
+                        width: 400
+                      }
+                    }
+                  };
+            } else {
+                console.log("failed")
             return {
-                task: {
-                    type: 'continue',
-                    value: {
-                        card: card,
-                        heigth: 200,
-                        width: 400,
-                        title: 'Adaptive Card: Inputs'
-                    },
-                },
-            };
+                composeExtension:{
+                  type:"auth",
+                  suggestedActions:{
+                    actions:[
+                      {
+                        type: "openUrl",
+                        value: "https://f5a7ac0170e4.ngrok.io/tab/simple-start?userID="+context._activity.from.id,
+                        title: "Sign in to Octonius"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
         }
         return null;
     }
@@ -350,7 +376,6 @@ class TeamsMessagingExtensionsSearchAuthConfigBot extends TeamsActivityHandler {
         // 
         if(action.data.submitLocation == 'messagingExtensionFetchTask'){
             
-            console.log("sdfsdsd",action);
             const groupName = action.data.groupSelection.split('=')[1];
             const groupId = action.data.groupSelection.split('=')[0];
             let apiResponce = await axios.post('http://127.0.0.1:13000/api/team-card-required-data',{groupId:groupId});
@@ -440,13 +465,24 @@ class TeamsMessagingExtensionsSearchAuthConfigBot extends TeamsActivityHandler {
               };
         } else {
             console.log("failed")
-            return {}  
+            return {
+                composeExtension:{
+                  type:"auth",
+                  suggestedActions:{
+                    actions:[
+                      {
+                        type: "openUrl",
+                        value: "https://69dd9fd88f07.ngrok.io/tab/simple-start",
+                        title: "Sign in to this app"
+                      }
+                    ]
+                  }
+                }
+              }  
         }
         }else if (action.data.submitLocation == 'submit'){
-            console.log("final",action)
             try {
                 let apiResponce = await axios.post('http://127.0.0.1:13000/api/team-create-task',action.data);
-                console.log("apiResponce",apiResponce);
                 const adaptiveCard = CardFactory.adaptiveCard({
                     actions: [{
                       data: { submitLocation: 'submited'},

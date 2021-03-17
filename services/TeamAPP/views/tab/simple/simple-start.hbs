@@ -26,10 +26,16 @@
         <script type="text/javascript">
             microsoftTeams.initialize();
 
+            //let queryParams = getQueryParameters();
+            
+           // const userId = queryParams['userId'];
+            //alert("queryparms"+toQueryString(queryParams));
             // Get the tab context, and use the information to navigate to Azure AD login page
             microsoftTeams.getContext(function (context) {
                 // Generate random state string and store it, so we can verify it in the callback
-               
+            
+                //alert(location.search);
+
                 let state = _guid();
                 localStorage.setItem("simple.state", state);
                 localStorage.removeItem("simple.error");
@@ -51,8 +57,8 @@
                 // Go to the AzureAD authorization endpoint (tenant-specific endpoint, not "common")
                 // For guest users, we want an access token for the tenant we are currently in, not the home tenant of the guest.
                 //let authorizeEndpoint = `https://login.microsoftonline.com/${context.tid}/oauth2/authorize?${toQueryString(queryParams)}`;
-                let authorizeEndpoint = `http://127.0.0.1:4200/home?tid=${context.tid}&${toQueryString(queryParams)}`;
-                alert(authorizeEndpoint);
+                let authorizeEndpoint = `http://127.0.0.1:4200/dashboard/user/teams${location.search}&tid=${context.tid}&${toQueryString(queryParams)}`;
+                //alert(authorizeEndpoint);
                 window.location.assign(authorizeEndpoint);
             });
 
@@ -63,6 +69,17 @@
                     encodedQueryParams.push(key + "=" + encodeURIComponent(queryParams[key]));
                 }
                 return encodedQueryParams.join("&");
+            }
+
+            function getQueryParameters() {
+                let queryParams = {};
+                location.search.substr(1).split("&").forEach(function(item) {
+                    let s = item.split("="),
+                    k = s[0],
+                    v = s[1] && decodeURIComponent(s[1]);
+                    queryParams[k] = v;
+                });
+                return queryParams;
             }
 
             // Converts decimal to hex equivalent

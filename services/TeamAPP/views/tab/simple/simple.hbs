@@ -28,36 +28,18 @@
         <title>Simple Authentication Sample</title>
     </head>
     <body>
-        <p>
-            Login to octonius
-        </p>
+        <h3 style="color:cornflowerblue">
+            Connect teams to Octonius
+        </h3>
         {{!-- <p>
             Click on the "Login" button below to login to Azure AD, and grant the sample app access to your profile information.
             The app will fetch your profile using Microsoft Graph, and display information about you below.
         </p> --}}
 
         <!-- Login button -->
-        <button onclick="loginV1()" id="connect" style="width: 120px;height:40px;color:coral">Connect To Octonius</button>
-        <button onclick="logout()" id="disconnect" style="width: 120px;height:40px;color:red">Disonnet To Octonius</button>
-        {{!-- <button onclick="loginV2()">Login to Azure AD (V2 endpoint)</button> --}}
-
-        <!-- Result -->
-        <h2>Claims from id_token</h2>
-        <div id="divIdTokenError" style="display: none" class="auth-data"></div>
-        <div id="divIdTokenClaims" style="display: none" class="auth-data"></div>
-        <p id="divRawIdToken" style="display: none" class="auth-data"></p>
-
-        <p>
-            <h2>Profile from Microsoft Graph</h2>
-            <div id="divError" style="display: none"></div>
-            <div id="divProfile" style="display: none">
-                <div><b>Name:</b> <span id="profileDisplayName"/></div>
-                <div><b>Job title:</b> <span id="profileJobTitle"/></div>
-                <div><b>E-mail:</b> <span id="profileMail"/></div>
-                <div><b>UPN:</b> <span id="profileUpn"/></div>
-                <div><b>Object id:</b> <span id="profileObjectId"/></div>
-            </div>
-        </p>
+        <button onclick="loginV1()" id="connect" style="width: 120px;height:40px;color:cornflowerblue">Connect</button>
+        <button onclick="logout()" id="disconnect" style="width: 120px;height:40px;color:red">Disonnet</button>
+        
 
         <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha384-VC7EHu0lDzZyFfmjTPJq+DFyIn8TUGAJbEtpXquazFVr00Q/OOx//RjiZ9yU9+9m" crossorigin="anonymous"></script>
         <script src="https://statics.teams.cdn.office.net/sdk/v1.6.0/js/MicrosoftTeams.min.js" integrity="sha384-mhp2E+BLMiZLe7rDIzj19WjgXJeI32NkPvrvvZBrMi5IvWup/1NUfS5xuYN5S3VT" crossorigin="anonymous"></script>
@@ -65,35 +47,35 @@
 
         <script type="text/javascript">
             microsoftTeams.initialize();
-             let key = "simple.result";
+            let key = "simple.result";
             let data = localStorage.getItem(key);
-            let tokenResult = JSON.parse(data);
-            console.log("sddsfdsdsgsd",tokenResult)
-            $("#divRawIdToken").text(tokenResult.accessToken).show();
-            if(tokenResult.accessToken){
-               $("#connect").text('Connected').prop('disabled', true);
-               $("#disconnect").prop('disabled', false);
-            }else{
+            if (data !== null){
+                let tokenResult = JSON.parse(data);
+                if (tokenResult.accessToken){
+                    $("#connect").text('Connected').prop('disabled', true);
+                    $("#disconnect").prop('disabled', false);
+                 } else { 
+                    $("#disconnect").prop('disabled', true);
+                    $("#connect").text('Connect').prop('disabled', false);  
+                }
+            } else {
                 $("#disconnect").prop('disabled', true);
-                $("#connect").text('Connect To Octonius').prop('disabled', false);  
-
+                $("#connect").text('Connect').prop('disabled', false);
             }
+            
             // Login to Azure AD and get access to Microsoft Graph
             function login(url) {
                 hideProfileAndError();
-                console.log("urls",url);
                 microsoftTeams.authentication.authenticate({
                     url: url,
-                    width: 600,
-                    height: 535,
+                    width: 800,
+                    height: 700,
                     successCallback: function (result) {
-                        console.log("Login succeeded: " + result);
 
                         let data = localStorage.getItem(result);
                         //localStorage.removeItem(result);
 
                         let tokenResult = JSON.parse(data);
-                        console.log("sddsfdsdsgsd",tokenResult)
                         $("#divRawIdToken").text(tokenResult.accessToken).show();
                         $("#connect").text('Connected').prop('disabled', true);
                         $("#disconnect").prop('disabled', false);
@@ -101,7 +83,6 @@
                         getUserProfile(tokenResult.accessToken);
                     },
                     failureCallback: function (reason) {
-                        console.log("Login failed: " + reason);
                         handleAuthError(reason);
                     }
                 });
@@ -112,10 +93,31 @@
             }
 
             function logout(){
-                localStorage.clear();
-                $("#divRawIdToken").hide();
-                $("#disconnect").prop('disabled', true);
-                $("#connect").text('Connect To Octonius').prop('disabled', false);  
+                microsoftTeams.getContext(function (context) {
+                    // Go to the AzureAD authorization endpoint (tenant-specific endpoint, not "common")
+                    // For guest users, we want an access token for the tenant we are currently in, not the home tenant of the guest.
+                    //let authorizeEndpoint = `https://login.microsoftonline.com/${context.tid}/oauth2/authorize?${toQueryString(queryParams)}`;
+                    let authorizeEndpoint = `http://127.0.0.1:13000/api/disconnect-team?uid=${context.userObjectId}&${toQueryString(context)}`;
+                    $.ajax(
+                        { url: authorizeEndpoint, 
+                        success: function(result){
+                            alert(result.message);
+                            localStorage.clear();
+                            $("#disconnect").prop('disabled', true);
+                            $("#connect").text('Connect').prop('disabled', false);
+                        }
+                        })
+                });
+
+            }
+
+            // Build query string from map of query parameter
+            function toQueryString(queryParams) {
+                let encodedQueryParams = [];
+                for (let key in queryParams) {
+                    encodedQueryParams.push(key + "=" + encodeURIComponent(queryParams[key]));
+                }
+                return encodedQueryParams.join("&");
             }
 
             function loginV2() {

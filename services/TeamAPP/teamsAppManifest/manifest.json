@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.7/MicrosoftTeams.schema.json",
   "manifestVersion": "1.7",
   "version": "1.0",
-  "id": "00000000-0000-0000-0000-000000000000",
+  "id": "0f88572c-5acf-4b96-823a-1e27e04e7213",
   "packageName": "com.microsoft.teams.samples.auth",
   "developer": {
     "name": "Cosmin Ciobanu",
@@ -31,28 +31,7 @@
       "canUpdateConfiguration": true,
       "commands": [
         {
-          "id": "searchQuery",
-          "type": "query",
-          "title": "Search",
-          "description": "Perform a search",
-          "initialRun": false,
-          "fetchTask": false,
-          "context": [
-            "commandBox",
-            "compose",
-            "message"
-          ],
-          "parameters": [
-            {
-              "name": "searchQuery",
-              "title": "Search",
-              "description": "Your search query",
-              "inputType": "text"
-            }
-          ]
-        },
-        {
-          "id": "SHOWPROFILE",
+          "id": "CREATETASK",
           "type": "action",
           "title": "Create Task",
           "description": "Create a task to Octonius",
@@ -72,15 +51,16 @@
           ]
         },
         {
-          "id": "SignOutCommand",
+          "id": "SIGNIN",
           "type": "action",
-          "title": "Sign Out",
-          "description": "Sign out from authenticated services.",
+          "title": "Connect To Octonius",
+          "description": "Create a task to Octonius",
           "initialRun": false,
           "fetchTask": true,
           "context": [
             "commandBox",
-            "compose"
+            "compose",
+            "message"
           ],
           "parameters": [
             {
@@ -105,7 +85,7 @@
   ],
   "staticTabs": [
     {
-      "contentUrl": "https://3f6525b640ae.ngrok.io/tab/simple",
+      "contentUrl": "https://f5a7ac0170e4.ngrok.io/tab/simple",
       "entityId": "simpleAuth",
       "name": "Simple Auth",
       "scopes": [
@@ -117,7 +97,9 @@
     {
       "botId": "0f88572c-5acf-4b96-823a-1e27e04e7213",
       "scopes": [
-        "personal"
+        "personal",
+        "team",
+        "groupchat"
       ]
     }
   ],
@@ -126,7 +108,7 @@
     "identity"
   ],
   "validDomains": [
-    "3f6525b640ae.ngrok.io",
+    "f5a7ac0170e4.ngrok.io",
     "token.botframework.com",
     "*.botframework.com",
     "*.githubusercontent.com",
@@ -134,6 +116,6 @@
   ],
   "webApplicationInfo": {
       "id": "0f88572c-5acf-4b96-823a-1e27e04e7213",
-      "resource": "api://3f6525b640ae.ngrok.io/0f88572c-5acf-4b96-823a-1e27e04e7213"
+      "resource": "api://f5a7ac0170e4.ngrok.io/0f88572c-5acf-4b96-823a-1e27e04e7213"
   }
 }

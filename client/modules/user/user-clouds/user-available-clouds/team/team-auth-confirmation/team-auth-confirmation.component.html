@@ -1,6 +1,4 @@
-<nav class="navbar navbar-expand-md fixed-top" style="min-height: 86px;z-index: 1000000;">
 
-    <div class="collapse navbar-collapse">
         <div class="container-fluid mainDiv">
             <img src="assets/images/teamsToOctonius.png" alt="" style="width: 240px; margin-top: 30px;margin-left: 25%;">
             <h3 style="text-align: center;line-height: 1.1;margin-top: 10px;font-size: 22px;">Octonius for Microsoft Teams is requesting permission to access your Octonius account</h3>
@@ -11,11 +9,10 @@
                 <li>Create and modify tasks, projects, and comments on your behalf.</li>
             </ul>
         
-            <button style="margin-left: 32%;margin-right: 5%;">Allow</button>
-            <button>Cancel</button>
+            <button style="margin-left: 32%;margin-right: 5%;" (click)="alloweded()">Allow</button>
+            <button (click)="cancel()">Cancel</button>
         </div>
-    </div>
-</nav>
+
 
 
 

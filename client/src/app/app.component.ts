@@ -89,12 +89,19 @@ export class AppComponent {
     this.subSink.unsubscribe();
   }
 
+ /**
+   * This function is to check that the user is logged in or not and also the url is not /dashboard/user/teams
+   *  to hide the nav bars
+   */
   myAuthCheck() {
     let url = this._router.url;
     let finalstate:boolean; 
-    if(this.storageService.existData('authToken') && url !== '/dashboard/user/teams'){
+    // user is logged in and url is not /dashboard/user/teams show nav bars
+    if(this.storageService.existData('authToken') && !url.includes('/dashboard/user/teams')){
       finalstate = true ;
-    } else {
+    } 
+     // don't show nav bars
+    else {
       finalstate = false ;
     }
 

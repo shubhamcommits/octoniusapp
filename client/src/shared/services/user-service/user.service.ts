@@ -158,6 +158,13 @@ export class UserService {
     return this._http.delete(this.SLACK_API_URL + `/disconnect-slack/${user}`);
   }
 
+   /**
+   * This function is responsible for diconnecting the teams
+   */
+  disconnectTeams(user: Object): Observable<any> {
+    return this._http.get(this.SLACK_API_URL + `/disconnect-team?userId=${user}`);
+  }
+
   /**
    * This function is responsible for adding a new skill to users' current skill set
    * @param skill

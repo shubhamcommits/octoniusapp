@@ -30,6 +30,7 @@ export class IntegrationController {
     
             //Slack connected or not checking..
             const is_slack_connected = user?.integrations?.is_slack_connected || false;
+            const isTeamConnected = user?.integrations?.is_teams_connected || false;
         
             //check any integration here later
 
@@ -49,17 +50,33 @@ export class IntegrationController {
                 
                     integrationService.sendNotificationToSlack(slack,data);
 
-                } else {
+                }  else {
 
                 }
- 
+
+            } 
             
-             
-            } else {
-                    return  res.status(200).json({
-                    message: 'Slack not connected '
-                    }); 
-                }
+            if ( isTeamConnected ){
+
+                let data = await helperFunctions.parsedNotificationData(req.body);
+                const teamsUser = await TeamAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
+                
+                const queryParms = {
+                    url: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${data['group_id']}&myWorkplace=false&postId=${data['post_id']}`,
+                    name: data['name'],
+                    text: data['text'],
+                    image: `${process.env.IMAGE_PROCESS_URL}/${data['image']}`,
+                    btn_title: data['btn_title'],
+                    uid: teamsUser.user_id
+                } 
+               
+                const responce = await axios.post('https://f5a7ac0170e4.ngrok.io/api/proactive',null,{ params: queryParms});
+
+            }  else {
+                return  res.status(200).json({
+                    message: 'System can not sent Notification!'
+                });
+            } 
         } catch (error) {
             return  res.status(200).json({
                 message: 'System can not sent Notification!'
@@ -682,11 +699,26 @@ export class IntegrationController {
 
 
     async authTeam(req: Request , res: Response, next: NextFunction){
-        console.log("reqncsjdvksd",req.body);
         const user = await User.findOne({email:req.body.user.email});
-        console.log('user',user);
+       
+
+        var integration = user['integrations'];
+            
+        integration['is_teams_connected'] = true;
+
+        try {
+             
+            const update_user = await User.findOneAndUpdate({_id:user._id},{$set:{integrations:integration}},{new:true});
+            
+
+        } catch (error) {
+            console.log("error",error);
+        }
+
+        
         const teamAuth = new TeamAuth({
             user_object_id: req.body.teamData.userObjectId,
+            user_id:req.body.teamData.userID,
             tenant_id:  req.body.teamData.tid,
             _user: user._id
         });
@@ -697,18 +729,15 @@ export class IntegrationController {
     }
 
     async isAuthTeamUser(req: Request , res: Response, next: NextFunction){
-        console.log("reqncsjdvksd",req.body.user_object_id);
         const {user_object_id} = req.body ;
-        const user = await TeamAuth.findOne({user_object_id}).sort({created_date:-1}).populate('_user');;
+        const user = await TeamAuth.findOne({user_object_id}).sort({created_date:-1}).populate('_user');
 
-        
         if(user){
             let groupsBYAdmin = await Group.find({_admins:user._user._id});
             let groupsByMember = await Group.find({_members:user._user._id});
             groupsByMember.forEach(groups => {
                 groupsBYAdmin.push(groups);
             });
-            console.log("sdcjnscnks",user,groupsBYAdmin)
             res.status(200).json({message:"Successfully",user,groupsBYAdmin});
         }else{
             res.status(200).json({message:"fails"});
@@ -741,11 +770,9 @@ export class IntegrationController {
 
         const userOctonius = await  User.findById(assigneeId);
 
-        console.log('1',userOctonius);
 
         var BearerToken = "Bearer ";
         const user_auth = await Auth.findOne({_user:userOctonius._id}).sort({created_date:-1});
-        console.log('2',user_auth);
         const token = user_auth['token'];
         var isvalidToken = true;
 
@@ -804,10 +831,15 @@ export class IntegrationController {
     }
 
     async disconnectTeam(req: Request , res: Response, next: NextFunction){
-
         try {
-            await TeamAuth.deleteMany({user_object_id:req.query.uid});
-            res.status(200).json({message:"Successfully"});
+            if(req.query?.uid){
+                await TeamAuth.deleteMany({user_object_id:req.query.uid});
+                res.status(200).json({message:"Successfully"});
+            } else if(req.query?.userId){
+                await TeamAuth.deleteMany({_user:req.query.userId});
+                res.status(200).json({message:"Successfully"});
+            }
+           
         } catch (error) {
             res.status(200).json({message:"faild"});
         }

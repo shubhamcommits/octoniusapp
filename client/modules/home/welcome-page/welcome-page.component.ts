@@ -48,9 +48,8 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     this.publicFunctions.sendUpdatesToWorkspaceData({});
     // const WINDOW = window;
     this.activeRouter.queryParams.subscribe(params => {
-      if (params['tid']) {
+      if (params['next']) {
         this.queryParms = params;
-        const user = {};
     }});
   }
 
@@ -109,18 +108,21 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     return new Promise((resolve, reject) => {
       this.subSink.add(this.authenticationService.signIn(userData)
         .subscribe((res) => {
+
           if(this.queryParms){
-            console.log("ddsfjdnkvkdnvd",res)
-            this.userService.teamAuth(this.queryParms,res['account'])
-            .subscribe((res) => {
-              console.log("res",res);
-            }),
-            ((err) => {
-              console.log('Error occured, while authenticating for Slack', err);
-            });
-            setTimeout(() => {
-              window.location.href = this.queryParms['redirect_uri']+`/#access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiNWZiYmI5YmQ4Yzc4MmU1NTgyZTY2OWI0IiwiaWF0IjoxNjE1NDUzOTk4fQ.fBIlyVcHKE-Du2maoEjFtfXQDUctHWLVHVCIh6m88vs&id_token=dcscsdvdsnsdnvnsdvsd&token_type=JWT&expires_in=1hr&state=${this.queryParms['state']}`;
-            }, 2000);
+            this.clearAccountData();
+            this.storeAccountData(res);
+            this.router.navigate(['authentication', 'select-workspace'],{ queryParams: { next:this.queryParms.next }})
+            .then(() => {
+              this.utilityService.successNotification(`Hi ${res['account']['first_name']}, welcome back!`);
+              resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['account']['first_name']}, welcome back!`));
+            })
+            .catch((err) => {
+              console.error('Error occured while signing in the user', err);
+              this.utilityService.errorNotification('Oops some error occured while signing you in, please try again!');
+              this.storageService.clear();
+              reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+            })
           } else { 
 
             this.clearAccountData();

@@ -1,1 +1,8 @@
-<p>team-account-details works!</p>
+<div class="card-tile" *ngIf="teamAuthSuccessful">
+    <div class="card-title">
+        <h2 class="float-left">
+            <strong>Teams</strong>
+        </h2>
+        <button class="btn btn-danger" (click)="disconnectTeamsAccount()">Disconnect</button>
+    </div>
+</div>

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
+import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
   selector: 'app-team-account-details',
@@ -6,10 +8,36 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./team-account-details.component.scss']
 })
 export class TeamAccountDetailsComponent implements OnInit {
+  
+  teamAuthSuccessful:boolean;
+  userData: any;
 
-  constructor() { }
+  public publicFunctions = new PublicFunctions(this.injector);
+  constructor(
+    public userService: UserService,
+    private injector: Injector,
+  ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.userData = await this.publicFunctions.getCurrentUser();
+    this.teamAuthSuccessful = this.userData?.integrations?.is_teams_connected || false
+  }
+
+  async disconnectTeamsAccount(){
+    
+
+    this.userService.disconnectTeams(this.userData._id)
+      .subscribe((res) => {
+        if (!res.connect) {
+          this.userData.integrations.is_teams_connected = false;
+          this.userService.updateUser(this.userData);
+          this.publicFunctions.sendUpdatesToUserData(this.userData);
+          this.teamAuthSuccessful = false;
+        }
+      }),
+      ((err) => {
+        console.log('Error occured, while authenticating for Slack', err);
+      });
   }
 
 }

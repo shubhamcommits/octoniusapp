@@ -8,6 +8,10 @@ const TeamAuthSchema = new Schema({
         type: String,
         default: null
     },
+    user_id: {
+        type: String,
+        default: null
+    },
     tenant_id: {
         type: String,
         default: null

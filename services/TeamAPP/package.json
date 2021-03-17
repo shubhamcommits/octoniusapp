@@ -19,6 +19,7 @@
         "@microsoft/microsoft-graph-client": "~2.0.0",
         "axios": "^0.21.0",
         "botbuilder": "~4.11.0",
+        "botframework-connector": "^4.12.0",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "express-handlebars": "^5.2.1",
