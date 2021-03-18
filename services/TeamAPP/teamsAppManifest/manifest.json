@@ -85,7 +85,7 @@
   ],
   "staticTabs": [
     {
-      "contentUrl": "https://f5a7ac0170e4.ngrok.io/tab/simple",
+      "contentUrl": "https://5d7bb71376b1.ngrok.io/tab/simple",
       "entityId": "simpleAuth",
       "name": "Simple Auth",
       "scopes": [
@@ -108,7 +108,7 @@
     "identity"
   ],
   "validDomains": [
-    "f5a7ac0170e4.ngrok.io",
+    "5d7bb71376b1.ngrok.io",
     "token.botframework.com",
     "*.botframework.com",
     "*.githubusercontent.com",
@@ -116,6 +116,6 @@
   ],
   "webApplicationInfo": {
       "id": "0f88572c-5acf-4b96-823a-1e27e04e7213",
-      "resource": "api://f5a7ac0170e4.ngrok.io/0f88572c-5acf-4b96-823a-1e27e04e7213"
+      "resource": "api://5d7bb71376b1.ngrok.io/0f88572c-5acf-4b96-823a-1e27e04e7213"
   }
 }

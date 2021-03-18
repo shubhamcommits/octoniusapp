@@ -310,7 +310,7 @@ class TeamsMessagingExtensionsSearchAuthConfigBot extends TeamsActivityHandler {
                     actions:[
                       {
                         type: "openUrl",
-                        value: "https://f5a7ac0170e4.ngrok.io/tab/simple-start?userID="+context._activity.from.id,
+                        value: "https://5d7bb71376b1.ngrok.io/tab/simple-start?userID="+context._activity.from.id,
                         title: "Sign in to this app"
                       }
                     ]
@@ -359,7 +359,7 @@ class TeamsMessagingExtensionsSearchAuthConfigBot extends TeamsActivityHandler {
                     actions:[
                       {
                         type: "openUrl",
-                        value: "https://f5a7ac0170e4.ngrok.io/tab/simple-start?userID="+context._activity.from.id,
+                        value: "https://5d7bb71376b1.ngrok.io/tab/simple-start?userID="+context._activity.from.id,
                         title: "Sign in to Octonius"
                       }
                     ]
@@ -472,7 +472,7 @@ class TeamsMessagingExtensionsSearchAuthConfigBot extends TeamsActivityHandler {
                     actions:[
                       {
                         type: "openUrl",
-                        value: "https://69dd9fd88f07.ngrok.io/tab/simple-start",
+                        value: "https://5d7bb71376b1.ngrok.io/tab/simple-start",
                         title: "Sign in to this app"
                       }
                     ]
