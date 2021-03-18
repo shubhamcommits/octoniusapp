@@ -37,8 +37,10 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
     if (!this.accountData || JSON.stringify(this.accountData) == JSON.stringify({})) {
       this.router.navigate(['']);
     }
+
+    // Getting the query params teams_permission_url if exist
     this.activeRouter.queryParams.subscribe(params => {
-      if (params['next']) {
+      if (params['teams_permission_url']) {
         this.queryParms = params;
     }});
   }
@@ -71,8 +73,10 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
         .subscribe((res) => {
           this.clearUserData();
           this.storeUserData(res);
+          //if query parms exist redirect to teams permission page else normal flow 
+          // note:- Code is for teams auth popup not for octonius app and only work in that case.
           if(this.queryParms){
-            window.location.href = this.queryParms.next;
+            window.location.href = this.queryParms.teams_permission_url;
           }
           this.router.navigate(['dashboard', 'myspace', 'inbox'])
             .then(() => {

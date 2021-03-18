@@ -1,7 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
@@ -11,12 +10,12 @@ import { PublicFunctions } from 'modules/public.functions';
 })
 export class TeamAuthConfirmationComponent implements OnInit {
 
+  //connection params to connect user with team
   queryParms: any;
 
   publicFunctions = new PublicFunctions(this._Injector);
 
   constructor(
-    private utilityService: UtilityService,
     public userService: UserService,
     public router: Router,
     public activeRouter: ActivatedRoute,
@@ -31,21 +30,29 @@ export class TeamAuthConfirmationComponent implements OnInit {
     });
   }
 
+  /**
+    * This function redirect back the flow to teams authenticaiton end
+  */
   async cancel() {
     window.location.href = this.queryParms['redirect_uri'];
   }
 
+
+  /**
+    * This function is responsible to connecte teams and then redirect back the flow to teams authenticaiton end
+  */
   async alloweded() {
     const userAccount = await this.publicFunctions.getCurrentAccount();
     if (this.queryParms) {
       this.userService.teamAuth(this.queryParms, userAccount)
         .subscribe((res) => {
+          
         }),
         ((err) => {
-          console.log('Error occured, while authenticating for Slack', err);
+          console.log('Error occured, while coonecting to teams', err);
         });
       setTimeout(() => {
-        window.location.href = this.queryParms['redirect_uri'] + `/#access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0IjoiNWZiYmI5YmQ4Yzc4MmU1NTgyZTY2OWI0IiwiaWF0IjoxNjE1NDUzOTk4fQ.fBIlyVcHKE-Du2maoEjFtfXQDUctHWLVHVCIh6m88vs&id_token=dcscsdvdsnsdnvnsdvsd&token_type=JWT&expires_in=1hr&state=${this.queryParms['state']}`;
+        window.location.href = this.queryParms['redirect_uri'] + `/#access_token=&token_type=JWT&expires_in=1hr&state=${this.queryParms['state']}`;
       }, 2000);
     }
   }
