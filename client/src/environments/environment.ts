@@ -74,7 +74,7 @@ export const environment = {
   USER_BASE_API_URL: `${url.protocol}://${url.domain}:7000/api`,
 
   // Slack Auth URLs
-  SLACK_BASE_API_URL: `${url.protocol}://${url.domain}:13000/api`,
+  INTEGRATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:13000/api`,
 
   // Posts URLs
   POST_BASE_URL: `${url.protocol}://${url.domain}:8000`,

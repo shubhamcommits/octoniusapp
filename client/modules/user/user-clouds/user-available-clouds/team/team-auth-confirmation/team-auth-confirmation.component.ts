@@ -46,13 +46,13 @@ export class TeamAuthConfirmationComponent implements OnInit {
     if (this.queryParms) {
       this.userService.teamAuth(this.queryParms, userAccount)
         .subscribe((res) => {
-          
+
         }),
         ((err) => {
           console.log('Error occured, while coonecting to teams', err);
         });
       setTimeout(() => {
-        window.location.href = this.queryParms['redirect_uri'] + `/#access_token=&token_type=JWT&expires_in=1hr&state=${this.queryParms['state']}`;
+        window.location.href = this.queryParms['redirect_uri'] + `/#access_token=notrequiredonlyforcheck&token_type=JWT&expires_in=1hr&state=${this.queryParms['state']}`;
       }, 2000);
     }
   }

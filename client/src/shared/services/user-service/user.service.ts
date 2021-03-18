@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class UserService {
 
   BASE_API_URL = environment.USER_BASE_API_URL;
-  SLACK_API_URL = environment.SLACK_BASE_API_URL;
+  INTEGRATIONS_API_URL = environment.INTEGRATIONS_BASE_API_URL;
 
   constructor(private _http: HttpClient) { }
 
@@ -126,14 +126,14 @@ export class UserService {
    * This function is responsible for verifying the slack oAuth
    */
   slackAuth(code: string, user: Object): Observable<any> {
-    return this._http.post(this.SLACK_API_URL + `/slack-auth`, { code, user });
+    return this._http.post(this.INTEGRATIONS_API_URL + `/slack/slack-auth`, { code, user });
   }
 
    /**
    * This function is responsible for verifying the slack oAuth
    */
     teamAuth(teamData: string, user: Object) {
-      return this._http.post(this.SLACK_API_URL + `/teams-auth`, { teamData, user });
+      return this._http.post(this.INTEGRATIONS_API_URL + `/teams/teams-auth`, { teamData, user });
     }
 
  /**
@@ -155,14 +155,14 @@ export class UserService {
    * This function is responsible for diconnecting the slack oA
    */
   disconnectSlack(user: Object): Observable<any> {
-    return this._http.delete(this.SLACK_API_URL + `/disconnect-slack/${user}`);
+    return this._http.delete(this.INTEGRATIONS_API_URL + `/slack/disconnect-slack/${user}`);
   }
 
    /**
    * This function is responsible for diconnecting the teams
    */
   disconnectTeams(user: Object): Observable<any> {
-    return this._http.get(this.SLACK_API_URL + `/disconnect-team?userId=${user}`);
+    return this._http.get(this.INTEGRATIONS_API_URL + `/teams/disconnect-team?userId=${user}`);
   }
 
   /**
