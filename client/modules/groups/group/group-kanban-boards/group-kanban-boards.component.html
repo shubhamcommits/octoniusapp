@@ -9,7 +9,7 @@
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                 <div class="column-title">
                     <p class="text-capitalize" [ngbTooltip]="column?.title">
-                      <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type">
+                      <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type" style="cursor: auto;">
                       {{ column?.title | truncatetext:20 }}
                     </p>
                     <div class="inline-block">
