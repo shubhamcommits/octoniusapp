@@ -38,6 +38,9 @@ function prodConfigInit() {
   process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET
   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN
 
+  process.env.TEAMS_BOT_URL = process.env.TEAMS_BOT_URL || 'https://5d7bb71376b1.ngrok.io'
+
+
   // Stripe Keys
   process.env.SK_STRIPE = process.env.SK_STRIPE
   process.env.STRIPE_PLAN = process.env.STRIPE_PLAN
