@@ -96,4 +96,33 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
 
 }
 
-export { groupFileHandler, groupFileUploader }
+/**
+ * This function is the boiler plate to delete the file for files
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+const groupFileDelete = async (req: Request, res: Response, next: NextFunction) => {
+
+  if (req.body.fileName && req.body.fileName != '') {
+    // Delete the file accordingly and handle request
+    fs.unlink(process.env.FILE_UPLOAD_FOLDER + req.body.fileName, (error) => {
+      if (error) {
+        req.body.fileName = null;
+        return res.status(500).json({
+          status: '500',
+          message: 'file upload error',
+          error: error
+        });
+      }
+
+      // Pass the middleware// Pass the middleware
+      next();
+    });
+  } else {
+    next();
+  }
+
+}
+
+export { groupFileHandler, groupFileUploader, groupFileDelete }

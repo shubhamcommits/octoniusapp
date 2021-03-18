@@ -1,4 +1,5 @@
-import { Component, OnChanges, Output, Input, Injector, EventEmitter } from '@angular/core';
+import { Component, OnChanges, OnDestroy, Output, Input, Injector, EventEmitter } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -8,7 +9,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   templateUrl: './group-new-file.component.html',
   styleUrls: ['./group-new-file.component.scss']
 })
-export class GroupNewFileComponent implements OnChanges {
+export class GroupNewFileComponent implements OnChanges, OnDestroy {
 
   constructor(
     public Injector: Injector
@@ -32,6 +33,9 @@ export class GroupNewFileComponent implements OnChanges {
   // Output files event emitter
   @Output('file') fileEmitter = new EventEmitter();
 
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
+
   // File Data variable
   fileData: any = {
     _group: '',
@@ -51,7 +55,14 @@ export class GroupNewFileComponent implements OnChanges {
     }
   }
 
+  ngOnDestroy() {
+    this.isLoading$.complete()
+  }
+
   createFolder() {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
     // Files Service Instance
     let folderService = this.Injector.get(FoldersService);
 
@@ -82,6 +93,9 @@ export class GroupNewFileComponent implements OnChanges {
             reject(utilityService.rejectAsyncPromise('Unexpected error occured while creating the folder, please try again!'))
           });
       }));
+
+    // Stop the loading spinner
+    this.isLoading$.next(false);
   }
 
   /**
@@ -89,6 +103,8 @@ export class GroupNewFileComponent implements OnChanges {
    * @param files
    */
   fileInput(files: FileList) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
 
     // Loop through each file and begin the process of uploading
     Array.prototype.forEach.call(files, (file: File) => {
@@ -100,9 +116,15 @@ export class GroupNewFileComponent implements OnChanges {
       this.uploadFile(this.fileData, file);
 
     });
+
+    // Stop the loading spinner
+    this.isLoading$.next(false);
   }
 
   folderUpload(folderInput) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
     // Files Service Instance
     let folderService = this.Injector.get(FoldersService);
 
@@ -190,12 +212,18 @@ export class GroupNewFileComponent implements OnChanges {
           reject(utilityService.rejectAsyncPromise('Unexpected error occured while creating the folder, please try again!'));
         }
       }));
+
+    // Stop the loading spinner
+    this.isLoading$.next(false);
   }
 
   /**
    * This function is responsible for creating a folio
    */
   createFolio() {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
     const folio: any = {
       _group: this.groupId,
       _folder: this.folderId,
@@ -205,6 +233,9 @@ export class GroupNewFileComponent implements OnChanges {
     }
 
     this.uploadFile(folio);
+
+    // Stop the loading spinner
+    this.isLoading$.next(false);
   }
 
   /**

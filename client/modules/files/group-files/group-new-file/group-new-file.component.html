@@ -27,3 +27,9 @@
     </li>
 </ul>
 <!-- Menu Drawer Ends -->
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

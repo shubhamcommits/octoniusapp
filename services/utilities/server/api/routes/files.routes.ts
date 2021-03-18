@@ -1,6 +1,6 @@
 import express from 'express';
 import { FilesControllers } from '../controllers/files.controllers';
-import { groupFileUploader } from '../../utils/filehandlers/group.filehandler';
+import { groupFileUploader, groupFileDelete } from '../../utils/filehandlers/group.filehandler';
 
 // Files Class Object
 let files = new FilesControllers()
@@ -23,7 +23,7 @@ routes.get('/:fileId', files.getOne);
 routes.put('/:fileId', files.edit);
 
 // DELETE - Delete the file on the basis of fileId
-routes.delete('/:fileId', files.delete);
+routes.delete('/:fileId', groupFileDelete, files.delete);
 
 // POST - Handles the copy of a folio to a group
 routes.post('/:fileId/copy-to-group', files.copy);

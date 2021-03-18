@@ -194,7 +194,7 @@ export class GroupFilesComponent implements OnInit {
    * Call function to delete file or a folder
    * @param itemId
    */
-  deleteItem(itemId: string, type: string) {
+  deleteItem(itemId: string, type: string, fileName?: string) {
     // Ask User to remove this file or not
     this.utilityService.getConfirmDialogAlert()
       .then((result) => {
@@ -202,7 +202,7 @@ export class GroupFilesComponent implements OnInit {
           // Remove the file
           this.utilityService.asyncNotification('Please wait, we are deleting...', new Promise((resolve, reject) => {
             if (type == 'file' || type == 'folio') {
-              this.filesService.deleteFile(itemId)
+              this.filesService.deleteFile(itemId, fileName)
                 .then((res) => {
                   // Emit the Deleted file to all the components in order to update the UI
                   this.delete.emit(res['file']);
@@ -341,6 +341,16 @@ export class GroupFilesComponent implements OnInit {
    * Method used to open a selected folder
    */
   async openFolder(folderId: string) {
+
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    // Clean the files, folders and current folder content to retreive the new folder content
+    this.folders = [];
+    this.files = [];
+    this.currentFolder = null;
+    this.folderOriginalName = '';
+
     if (folderId == 'root') {
       await this.initRootFolder();
     } else {
@@ -349,9 +359,6 @@ export class GroupFilesComponent implements OnInit {
           this.currentFolder = res['folder'];
           this.folderOriginalName = this.currentFolder.folder_name;
         });
-
-      // Clean the files content to retreive the new folder content
-      this.files = [];
 
       // Fetch the uploaded files from the server
       this.folders = await this.publicFunctions.getFolders(this.groupId, folderId);
@@ -369,6 +376,9 @@ export class GroupFilesComponent implements OnInit {
       // Set the lastFileId for scroll
       this.lastFileId = this.files[this.files.length - 1]?._id;
     }
+
+    // Stop the loading spinner
+    this.isLoading$.next(false);
   }
 
   /**
