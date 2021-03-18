@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from "express";
-import { IntegrationService } from "../service";
+import { SlackService } from "../service";
 import { SlackAuth, User ,TeamAuth } from '../models';
 import { Auths } from '../../utils';
 // import { validateId } from "../../utils/helperFunctions";
@@ -7,7 +7,7 @@ import axios from "axios";
 import { helperFunctions } from '../../utils';
 
 // Creating Service class in order to build wrapper class
-const integrationService = new IntegrationService()
+const slackService = new SlackService()
 
 /*  ===============================
  *  -- Integration CONTROLLERS --
@@ -61,7 +61,7 @@ export class IntegrationController {
                     var slack = require('slack-notify')(userSlackWebhookUrl); 
                     
                     //Send notification to slack
-                    integrationService.sendNotificationToSlack(slack,data);
+                    slackService.sendNotificationToSlack(slack,data);
 
                 }  
             } 
@@ -87,11 +87,8 @@ export class IntegrationController {
                 
                 const responce = await axios.post(`${process.env.TEAMS_BOT_URL}/api/proactive`,null,{ params: queryParams});
 
-            }  else {
-                return  res.status(200).json({
-                    message: 'System can not sent Notification!'
-                });
-            } 
+            }
+            
         } catch (error) {
             return  res.status(200).json({
                 message: 'System can not sent Notification!'
