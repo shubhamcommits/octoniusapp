@@ -8,16 +8,16 @@
 <ul class="dropdown-menu">
 
     <li class="dropdown-item" (click)="createFolder()">
-        <i class="material-icons-outlined mr-2">folder</i><span>Folder</span>
+        <i class="material-icons-outlined mr-2">create_new_folder</i><span>Folder</span>
     </li>
 
     <li class="dropdown-item" (click)="file.click()">
-        <i class="material-icons-outlined mr-2">cloud_upload</i> <span>File upload</span>
+        <i class="material-icons-outlined mr-2">upload_file</i> <span>File upload</span>
         <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)"/>
     </li>
 
     <li class="dropdown-item" (click)="folderInput.click()">
-        <i class="material-icons-outlined mr-2">cloud_upload</i> <span> Folder upload</span>
+        <i class="material-icons-outlined mr-2">drive_folder_upload</i> <span> Folder upload</span>
         <input #folderInput type="file" placeholder="File" webkitdirectory (change)="folderUpload($event)"/>
     </li>
 
@@ -27,3 +27,9 @@
     </li>
 </ul>
 <!-- Menu Drawer Ends -->
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->
