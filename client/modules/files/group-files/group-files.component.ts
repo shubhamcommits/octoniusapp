@@ -1,4 +1,3 @@
-import { FilesService } from './../../../src/shared/services/files-service/files.service';
 import { Component, OnInit, Injector, Output, EventEmitter, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -11,6 +10,8 @@ import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { MatDialog } from '@angular/material/dialog';
 import { PreviewFilesDialogComponent } from 'src/app/common/shared/preview-files-dialog/preview-files-dialog.component';
+import { FilesService } from './../../../src/shared/services/files-service/files.service';
+import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 
 @Component({
   selector: 'app-group-files',
@@ -18,15 +19,6 @@ import { PreviewFilesDialogComponent } from 'src/app/common/shared/preview-files
   styleUrls: ['./group-files.component.scss']
 })
 export class GroupFilesComponent implements OnInit {
-
-  constructor(
-    public utilityService: UtilityService,
-    private injector: Injector,
-    private _router: Router,
-    private router: ActivatedRoute,
-    private filesService: FilesService,
-    public dialog: MatDialog,
-  ) { }
 
   // Delete Event Emitter - Emits delete event
   @Output('delete') delete = new EventEmitter();
@@ -69,6 +61,9 @@ export class GroupFilesComponent implements OnInit {
 
   myWorkplace = this.router.snapshot.queryParamMap.has('myWorkplace') ? this.router.snapshot.queryParamMap.get('myWorkplace') : false
 
+  editFolderTitle = false;
+  currentFolder: any;
+  folderOriginalName = '';
 
   userGroups = [];
   transferAction = '';
@@ -80,6 +75,16 @@ export class GroupFilesComponent implements OnInit {
   // More to load maintains check if we have more to load members on scroll
   public moreToLoad: boolean = true;
 
+  constructor(
+    public utilityService: UtilityService,
+    private injector: Injector,
+    private _router: Router,
+    private router: ActivatedRoute,
+    private filesService: FilesService,
+    private foldersService: FoldersService,
+    public dialog: MatDialog,
+  ) { }
+
   async ngOnInit() {
 
     // Fetch the current user
@@ -88,16 +93,14 @@ export class GroupFilesComponent implements OnInit {
     // Fetch the current group
     this.groupData = await this.publicFunctions.getCurrentGroup();
 
-    // Fetch the uploaded files from the server
-    this.files = await this.publicFunctions.getFiles(this.groupId);
+    const folderId = await this.router.snapshot.queryParamMap.has('folder') ? this.router.snapshot.queryParamMap.get('folder') : false
+    if (!folderId) {
+      await this.initRootFolder();
+    } else {
+      await this.openFolder(folderId);
+    }
 
-    // Set the lastFileId for scroll
-    this.lastFileId = this.files[this.files.length - 1]?._id;
-
-    // Concat the files
-    this.files = [...this.files, ...this.folders];
-
-    if (this.groupId && this.userData) {
+    if (this.groupData && this.groupData._workspace && this.groupId && this.userData) {
       // Fetches the user groups from the server
       await this.publicFunctions.getUserGroups(this.groupData._workspace, this.userData._id)
         .then((groups: any) => {
@@ -118,8 +121,12 @@ export class GroupFilesComponent implements OnInit {
     }
   }
 
-  getFile(file: any){
-    this.files.unshift(file)
+  getFile(file: any) {
+    this.files.unshift(file);
+  }
+
+  getFolder(folder: any) {
+    this.files.unshift(folder);
   }
 
   ngAfterViewInit(){
@@ -179,28 +186,43 @@ export class GroupFilesComponent implements OnInit {
   }
 
   /**
-   * Call function to delete file
-   * @param fileId
+   * Call function to delete file or a folder
+   * @param itemId
    */
-  deleteFile(fileId: string) {
+  deleteItem(itemId: string, type: string) {
     // Ask User to remove this file or not
     this.utilityService.getConfirmDialogAlert()
       .then((result) => {
         if (result.value) {
           // Remove the file
-          this.utilityService.asyncNotification('Please wait we are deleting the file...', new Promise((resolve, reject) => {
-            this.filesService.deleteFile(fileId)
-              .then((res) => {
-                // Emit the Deleted file to all the components in order to update the UI
-                this.delete.emit(res['file']);
+          this.utilityService.asyncNotification('Please wait, we are deleting...', new Promise((resolve, reject) => {
+            if (type == 'file' || type == 'folio') {
+              this.filesService.deleteFile(itemId)
+                .then((res) => {
+                  // Emit the Deleted file to all the components in order to update the UI
+                  this.delete.emit(res['file']);
 
-                // Remove the file from the list
-                this.files = this.files.filter(file => file._id !== fileId);
+                  // Remove the file from the list
+                  this.files = this.files.filter(file => file._id !== itemId);
 
-                resolve(this.utilityService.resolveAsyncPromise('File deleted!'));
-              }).catch((err) => {
-                reject(this.utilityService.rejectAsyncPromise('Unable to delete file, please try again!'));
-              });
+                  resolve(this.utilityService.resolveAsyncPromise('File deleted!'));
+                }).catch((err) => {
+                  reject(this.utilityService.rejectAsyncPromise('Unable to delete file, please try again!'));
+                });
+            } else {
+              this.foldersService.deleteFolder(itemId)
+                .then((res) => {
+                  // Emit the Deleted folder to all the components in order to update the UI
+                  this.delete.emit(res['folder']);
+
+                  // Remove the folder from the list
+                  this.files = this.files.filter(file => file._id !== itemId);
+
+                  resolve(this.utilityService.resolveAsyncPromise('Folder deleted!'));
+                }).catch((err) => {
+                  reject(this.utilityService.rejectAsyncPromise('Unable to delete folder, please try again!'));
+                });
+            }
           }));
         }
       });
@@ -263,44 +285,41 @@ export class GroupFilesComponent implements OnInit {
     this.transferAction = action;
   }
 
-  transferToGroup(fileId: string, group: string) {
-    if (this.transferAction === 'copy') {
-      this.copyToGroup(fileId, group);
+  transferToGroup(itemId: string, group: string, type: string) {
+    if (this.transferAction == 'copy') {
+      this.copyToGroup(itemId, group, type);
     }
-    if (this.transferAction === 'move') {
-      this.moveToGroup(fileId, group);
+    if (this.transferAction == 'move') {
+      this.moveToGroup(itemId, group, type);
     }
     this.transferAction = '';
   }
 
-  async copyToGroup(fileId: string, group: string) {
+  async copyToGroup(itemId: string, group: string, type: string) {
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the folio will be copied to the selected group!')
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the item will be copied to the selected group!')
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait we are copy the folio...', new Promise((resolve, reject) => {
-            this.filesService.transferToGroup(fileId, group, true).then((res) => {
+          await this.utilityService.asyncNotification('Please wait, we are copying the Folio...', new Promise((resolve, reject) => {
+            this.filesService.transferToGroup(itemId, group, true).then((res) => {
                 resolve(this.utilityService.resolveAsyncPromise(`👍 Folio Copied!`));
               })
               .catch((error) => {
-                reject(this.utilityService.rejectAsyncPromise(`Error while copying the folio!`));
+                reject(this.utilityService.rejectAsyncPromise(`Error while copying the Folio!`));
               });
           }));
         }
       });
   }
 
-  async moveToGroup(fileId: string, groupId: string) {
+  async moveToGroup(itemId: string, groupId: string, type: string) {
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the folio will be moved to the selected group!')
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the item will be moved to the selected group!')
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait we are move the folio...', new Promise((resolve, reject) => {
-            this.filesService.transferToGroup(fileId, groupId, false)
+          await this.utilityService.asyncNotification('Please wait we are moving the item...', new Promise((resolve, reject) => {
+            this.filesService.transferToGroup(itemId, groupId, false)
               .then((res) => {
-                // Remove the file from the list
-                // this.files.splice(this.files.findIndex(file => file._id == fileId), 1);
-
                 // Redirect to the new group files page
                 this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId, myWorkplace: false } });
                 resolve(this.utilityService.resolveAsyncPromise(`👍 Folio Moved!`));
@@ -312,4 +331,153 @@ export class GroupFilesComponent implements OnInit {
         }
       });
   }
+
+  /**
+   * Method used to open a selected folder
+   */
+  async openFolder(folderId: string) {
+    if (folderId == 'root') {
+      await this.initRootFolder();
+    } else {
+      this.foldersService.getOne(folderId)
+        .then(res => {
+          this.currentFolder = res['folder'];
+          this.folderOriginalName = this.currentFolder.folder_name;
+        });
+
+      // Clean the files content to retreive the new folder content
+      this.files = [];
+
+      // Fetch the uploaded files from the server
+      this.folders = await this.publicFunctions.getFolders(this.groupId, folderId);
+
+      // Fetch the uploaded files from the server
+      this.files = await this.publicFunctions.getFiles(this.groupId, folderId);
+
+      // Set the lastFileId for scroll
+      this.lastFileId = this.files[this.files.length - 1]?._id;
+
+      const parentFolder = {
+        _id: this.currentFolder?._parent || 'root',
+        folder_name: '../',
+        type: undefined
+      }
+
+      // Concat the files
+      this.files = [parentFolder, ...this.folders, ...this.files];
+    }
+  }
+
+  /**
+   * Used to modify the title of the current folder
+   */
+  changeFolderTitle(event: any) {
+    // KeyCode = 13 - User hits enter
+    if (event.keyCode == 13) {
+
+      // Set the edit title to false
+      this.editFolderTitle = false
+
+      this.foldersService.edit(this.currentFolder._id, event.target.value).then((res) => {
+        this.currentFolder.folder_name = event.target.value;
+        this.folderOriginalName = this.currentFolder.folder_name;
+        this.utilityService.resolveAsyncPromise(`👍 Folder Moved!`);
+      })
+      .catch((error) => {
+        this.utilityService.rejectAsyncPromise(`Error while moving the folder!`);
+      });
+    }
+
+    // KeyCode = 27 - User Hits Escape
+    else if (event.keyCode == 27) {
+
+      // Set the name back to previous state
+      this.currentFolder.folder_name = this.folderOriginalName
+
+      // Only Set the edit title to false
+      this.editFolderTitle = false
+    }
+
+  }
+
+  /**
+   * This method is used to init the root folder in the groups files page
+   */
+  async initRootFolder() {
+
+    // Fetch the uploaded files from the server
+    this.folders = await this.publicFunctions.getFolders(this.groupId);
+
+    // Fetch the uploaded files from the server
+    this.files = await this.publicFunctions.getFiles(this.groupId, null);
+
+    // Set the lastFileId for scroll
+    this.lastFileId = this.files[this.files.length - 1]?._id;
+
+    // Concat the files
+    this.files = [...this.folders, ...this.files];
+
+    this.currentFolder = null;
+  }
+
+  /**
+   * This function is used to return the mime type icon based on the extension of the fileName
+   * @param fileName - Name of the file to obtain the icon img
+   */
+  getFileIcon(fileName: string) {
+    let file = fileName.split(".");
+    return "assets/images/" + file[file.length-1].toLowerCase() + "-file-icon.png";
+  }
+
+  /**
+   * Methods for Drag&Drop
+   */
+  /**
+   * This function is responsible for uploading the files to the server
+   * @param files
+   */
+   fileDropped(files: FileList) {
+
+    // Loop through each file and begin the process of uploading
+    Array.prototype.forEach.call(files, (file: File) => {
+      let fileData = {
+        _group: this.groupId,
+        _folder: (this.currentFolder) ? this.currentFolder._id : null,
+        _posted_by: this.userData._id,
+        type: 'file',
+        mime_type: ''
+      }
+      // Adding Mime Type of the file uploaded
+      fileData.mime_type = file.type
+
+      // Call the Upload file service function
+      this.uploadFile(fileData, file);
+    });
+  }
+
+  /**
+   * This function is responsible for uploading a file to the server
+   * @param fileData
+   * @param file
+   */
+  uploadFile(fileData: any, file?: File) {
+    // Call the HTTP Request Asynschronously
+    this.utilityService.asyncNotification(
+      (file) ? `Please wait, we are uploading your file - ${file['name']} ...` : `Please wait while we are creating a new folio`,
+      new Promise((resolve, reject) => {
+        this.filesService.addFile(fileData, file)
+          .then((res) => {
+
+            // Output the created file to the top components
+            this.getFile(res['file']);
+            resolve((file) ? this.utilityService.resolveAsyncPromise('File has been uploaded!') :
+              this.utilityService.resolveAsyncPromise('New file has been uploaded!'))
+
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise('Unexpected error occured while uploading, please try again!'))
+          })
+      }))
+  }
+
 }

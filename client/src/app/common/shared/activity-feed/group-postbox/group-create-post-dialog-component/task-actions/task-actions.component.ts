@@ -42,8 +42,8 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   groupMembers = [];
 
   parentTask: boolean = false;
-  ischild: boolean = false;
-  isdependent: boolean = false;
+  isChild: boolean = false;
+  isDependent: boolean = false;
   tasksList: any = [];
   dependencyTask: any = [];
   searchingOn: string = 'keyword';
@@ -121,11 +121,12 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     }));
 
     if (this.postData?.task?._parent_task) {
-      this.ischild = true;
+      this.isChild = true;
     }
 
-    if (this.postData?.task?._dependency_task || this.postData?.task?._dependent_child?.length > 0) {
-      this.isdependent = true;
+    if (this.postData?.task?._dependency_task || this.postData?.task?._dependency_task?.length > 0
+        || this.postData?.task?._dependent_child || this.postData?.task?._dependent_child?.length > 0) {
+      this.isDependent = true;
     }
 
     this.allocation = this.postData?.task?.allocation;

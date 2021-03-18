@@ -21,6 +21,8 @@ export class InviteUserComponent implements OnInit {
   //  label: string = "The option is mainly for inviting external guests to this group.";
   placeholder: string = "Please provide the email";
 
+  isValidEmail = false;
+
   ngOnInit() {
   }
 
@@ -28,8 +30,13 @@ export class InviteUserComponent implements OnInit {
    * This function gets the Valid Email from the @module <app-email-input></app-email-input>
    * @param $event
    */
-  getValidEmail($event: string){
+   getValidEmail($event: string){
     this.email = $event;
+    if (this.email && this.email != '') {
+      this.isValidEmail = true;
+    } else {
+      this.isValidEmail = false;
+    }
   }
 
   /**

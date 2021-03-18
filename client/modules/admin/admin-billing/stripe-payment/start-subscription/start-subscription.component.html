@@ -11,27 +11,18 @@
 
   <hr>
 
-  <!-- Plan Details Starts -->
-  <!--
-  <h6><b>Current Plan </b></h6>
-  <h6><b>{{ subscription?.plan?.nickname }}</b></h6>
-  {{ subscription?.plan?.unit_amount/100 | currency: '$': 'symbol': '.2-2' }}/user.&nbsp;
-  Billed Every {{ subscription?.plan?.recurring?.interval_count }} Month(s).
-
-  <hr />
-  -->
-  <!-- Plan Details Ends -->
-
   <!-- Start the Subscription -->
   <div *ngFor="let price of subscription_prices">
     <h6>
-      <button (click)="handlePayment(price.id, price.amount)" class="ml-3 btn btn-md btn-primary">Purchase</button>
-      {{price.unit_amount/100 | currency: '$': 'symbol': '.2-2'}}/seat monthly
-      
+      <!-- <button (click)="handlePayment(price.id, price.amount)" class="ml-3 btn btn-md btn-primary"> -->
+      <button (click)="startStripeCheckoutSession(price.id)" class="ml-3 btn btn-md btn-primary">
+        Purchase
+      </button>
+      {{ price.unit_amount/100 | currency: '$': 'symbol': '.2-2' }} / seat / {{ price?.recurring?.interval }}
     </h6>
   </div>
 
-  
+
   <!-- Start the subscription -->
 
 </div>

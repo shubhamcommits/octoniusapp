@@ -383,10 +383,6 @@ const joinedGroup = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-
-//Anish edit ends
-
-
 // Join workspace invitation email
 const joinWorkspace = async (req: Request, res: Response, next: NextFunction) => {
   try {

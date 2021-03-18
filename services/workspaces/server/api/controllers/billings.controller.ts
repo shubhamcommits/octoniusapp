@@ -287,17 +287,14 @@ export class BillingControllers {
      */
     async getSubscription(req: Request, res: Response) {
         try {
-            const { customerId } = req.params;
+            const { subscriptionId } = req.params;
 
-            let subscriptions = await stripe.subscriptions.list({
-                customer: customerId,
-                status: 'all'
-            });
+            let subscription = await stripe.subscriptions.retrieve(subscriptionId);
 
             // Send the status 200 response
             return res.status(200).json({
                 message: 'succesfully retrieved the subscription',
-                subscriptions: subscriptions
+                subscription: subscription
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -815,6 +812,8 @@ export class BillingControllers {
                     break;
 
                 case 'invoice.payment_succeeded':
+                case 'checkout.session.completed':
+                case 'invoice.paid':
                     workspace = await Workspace.findOneAndUpdate(
                         { _id: customer.metadata.workspace_id },
                         {
@@ -847,7 +846,6 @@ export class BillingControllers {
                         }
                     ).lean();
                     break;
-
                 default:
                     console.log(`Unhandled event type ${event.type}`);
             }
@@ -940,5 +938,115 @@ export class BillingControllers {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
-}
 
+    /**
+     * This function creates a customer check-out portal session
+     * @param { body.data.price, body.data.return_url }req 
+     * @param res 
+     */
+    async createCheckoutSession(req: Request, res: Response) {
+        try {
+            let { priceId, return_url, workspaceId } = req.body;
+
+            if (!priceId || !return_url || !workspaceId) {
+                return sendError(res, new Error('You need to provide a stripe priceId, workspaceId and a return url!'), 'You need to provide a stripe priceId, workspaceId and a return url!', 403);
+            }
+
+            const workspace = await Workspace.find({_id: workspaceId}).select('owner_email').lean();
+
+            // Count all the users present inside the workspace
+            const usersCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId }
+            ] }).countDocuments();
+
+            const session = await stripe.checkout.sessions.create({
+                mode: "subscription",
+                payment_method_types: ["card"],
+                line_items: [
+                  {
+                    price: priceId,
+                    // For metered billing, do not pass quantity
+                    quantity: usersCount,
+                  },
+                ],
+                // {CHECKOUT_SESSION_ID} is a string literal; do not change it!
+                // the actual Session ID is returned in the query parameter when your customer
+                // is redirected to the success page.
+                success_url: `${return_url}?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: return_url,
+                customer_email: workspace.owner_email,
+                metadata: {
+                    workspace_id: workspaceId.toString()
+                },
+                allow_promotion_codes: true
+            });
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Session created!',
+                session: session
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * 
+     * @param req Method to featch the checkout session
+     * @param res 
+     */
+    async getCheckoutSession(req: Request, res: Response) {       
+        try {
+            const { sessionId, workspaceId } = req.params;
+
+            if (!sessionId) {
+                return sendError(res, new Error('You need to provide a stripe sessionId!'), 'You need to provide a sessionId!', 403);
+            }
+
+            const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+            let subscription = await stripe.subscriptions.retrieve(
+                session.subscription
+            );
+
+            // Count all the users present inside the workspace
+            const usersCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId }
+            ] }).countDocuments();
+
+            const workspace = await Workspace.findOneAndUpdate(
+                { _id: workspaceId },
+                {
+                    $set: {
+                        'billing.subscription_id': subscription.id,
+                        'billing.subscription_item_id': subscription.items.data[0].id,
+                        'billing.current_period_end': subscription.current_period_end,
+                        'billing.quantity': usersCount,
+                        'billing.client_id': session.customer,
+                        'billing.product_id': subscription.items.data[0].price.product,
+                        'billing.price_id':  subscription.items.data[0].price.id
+                    }
+                })
+                .populate({
+                    path: 'members',
+                    select: 'first_name last_name profile_pic role email active'
+                }).lean();
+
+                // Add time remaining property to maintain the trial version of the user
+                workspace.time_remaining = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days');
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Session found!',
+                session: session,
+                subscription: subscription,
+                workspace: workspace
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+}

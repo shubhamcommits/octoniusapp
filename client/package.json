@@ -42,6 +42,7 @@
     "@angular/platform-browser-dynamic": "^11.0.2",
     "@angular/router": "^11.0.2",
     "@ng-bootstrap/ng-bootstrap": "^9.0.2",
+    "@stripe/stripe-js": "^1.13.1",
     "@types/highlight.js": "^9.12.3",
     "@types/quill": "^2.0.3",
     "angular-calendar": "^0.28.5",

@@ -15,9 +15,15 @@ import { FilesService } from 'src/shared/services/files-service/files.service';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { FolioModule } from 'modules/folio/folio.module';
+import { FoldersService } from 'src/shared/services/folders-service/folders.service';
+import { DragDropFilesDirective } from './group-files/drag-drop-files/drag-drop-files.directive';
 
 @NgModule({
-  declarations: [GroupFilesComponent, GroupNewFileComponent],
+  declarations: [
+    GroupFilesComponent,
+    GroupNewFileComponent,
+    DragDropFilesDirective
+  ],
   imports: [
     CommonModule,
 
@@ -38,6 +44,9 @@ import { FolioModule } from 'modules/folio/folio.module';
   providers: [
     // Files Service
     FilesService,
+
+    // Folders Service
+    FoldersService
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
