@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 export const socketConfig: SocketIoConfig = {
     url: environment.NOTIFICATIONS_BASE_URL || `${window["env"]["websocket"]}://${window["env"]["domain"]}`, 
     options: {
+        secure: true,
         reconnection: true,
         reconnectionAttempts: Infinity,
         reconnectionDelay: 1000,
