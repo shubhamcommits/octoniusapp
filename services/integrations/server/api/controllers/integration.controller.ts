@@ -1,13 +1,13 @@
 import { Response, Request, NextFunction } from "express";
-import { SlackService } from "../service";
+import { SlackService , TeamService} from "../service";
 import { SlackAuth, User ,TeamAuth } from '../models';
 import { Auths } from '../../utils';
 // import { validateId } from "../../utils/helperFunctions";
-import axios from "axios";
 import { helperFunctions } from '../../utils';
 
 // Creating Service class in order to build wrapper class
-const slackService = new SlackService()
+const slackService = new SlackService();
+const teamService = new TeamService();
 
 /*  ===============================
  *  -- Integration CONTROLLERS --
@@ -61,7 +61,7 @@ export class IntegrationController {
                     var slack = require('slack-notify')(userSlackWebhookUrl); 
                     
                     //Send notification to slack
-                    slackService.sendNotificationToSlack(slack,data);
+                    await slackService.sendNotificationToSlack(slack,data);
 
                 }  
             } 
@@ -83,10 +83,9 @@ export class IntegrationController {
                     image: `${process.env.IMAGE_PROCESS_URL}/${data['image']}`,
                     btn_title: data['btn_title'],
                     uid: teamsUser.user_id
-                } 
-                
-                const responce = await axios.post(`${process.env.TEAMS_BOT_URL}/api/proactive`,null,{ params: queryParams});
+                }
 
+                await teamService.sendNotificationToTeam(queryParams);
             }
             
         } catch (error) {
