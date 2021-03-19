@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Output, EventEmitter, Inject } from '@angular/core';
+import { Component, OnInit, Injector, Output, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PreviewFilesDialogComponent } from 'src/app/common/shared/preview-files-dialog/preview-files-dialog.component';
 import { FilesService } from './../../../src/shared/services/files-service/files.service';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-group-files',
@@ -72,6 +73,8 @@ export class GroupFilesComponent implements OnInit {
   // Variable for lastPostId
   lastFileId: string;
 
+  workspaceId: string;
+
   // More to load maintains check if we have more to load members on scroll
   public moreToLoad: boolean = true;
 
@@ -101,6 +104,8 @@ export class GroupFilesComponent implements OnInit {
     }
 
     if (this.groupData && this.groupData._workspace && this.groupId && this.userData) {
+      this.workspaceId = this.groupData._workspace;
+
       // Fetches the user groups from the server
       await this.publicFunctions.getUserGroups(this.groupData._workspace, this.userData._id)
         .then((groups: any) => {
@@ -121,14 +126,6 @@ export class GroupFilesComponent implements OnInit {
     }
   }
 
-  getFile(file: any) {
-    this.files.unshift(file);
-  }
-
-  getFolder(folder: any) {
-    this.files.unshift(folder);
-  }
-
   ngAfterViewInit(){
     this.subSink.add(this.queryChanged
       .pipe(debounceTime(500), distinctUntilChanged())
@@ -136,6 +133,22 @@ export class GroupFilesComponent implements OnInit {
 
         this.files = await this.publicFunctions.searchFiles(this.groupId, res);
       }))
+  }
+
+  /**
+   * Unsubscribe all the observables on destroying the component
+   */
+  ngOnDestroy() {
+    this.subSink.unsubscribe()
+    this.isLoading$.complete()
+  }
+
+  getFile(file: any) {
+    this.files.unshift(file);
+  }
+
+  getFolder(folder: any) {
+    this.folders.unshift(folder);
   }
 
   /**
@@ -178,18 +191,10 @@ export class GroupFilesComponent implements OnInit {
   }
 
   /**
-   * Unsubscribe all the observables on destroying the component
-   */
-  ngOnDestroy() {
-    this.subSink.unsubscribe()
-    this.isLoading$.complete()
-  }
-
-  /**
    * Call function to delete file or a folder
    * @param itemId
    */
-  deleteItem(itemId: string, type: string) {
+  deleteItem(itemId: string, type: string, fileName?: string) {
     // Ask User to remove this file or not
     this.utilityService.getConfirmDialogAlert()
       .then((result) => {
@@ -197,7 +202,7 @@ export class GroupFilesComponent implements OnInit {
           // Remove the file
           this.utilityService.asyncNotification('Please wait, we are deleting...', new Promise((resolve, reject) => {
             if (type == 'file' || type == 'folio') {
-              this.filesService.deleteFile(itemId)
+              this.filesService.deleteFile(itemId, fileName)
                 .then((res) => {
                   // Emit the Deleted file to all the components in order to update the UI
                   this.delete.emit(res['file']);
@@ -336,6 +341,16 @@ export class GroupFilesComponent implements OnInit {
    * Method used to open a selected folder
    */
   async openFolder(folderId: string) {
+
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    // Clean the files, folders and current folder content to retreive the new folder content
+    this.folders = [];
+    this.files = [];
+    this.currentFolder = null;
+    this.folderOriginalName = '';
+
     if (folderId == 'root') {
       await this.initRootFolder();
     } else {
@@ -345,27 +360,25 @@ export class GroupFilesComponent implements OnInit {
           this.folderOriginalName = this.currentFolder.folder_name;
         });
 
-      // Clean the files content to retreive the new folder content
-      this.files = [];
-
       // Fetch the uploaded files from the server
       this.folders = await this.publicFunctions.getFolders(this.groupId, folderId);
-
-      // Fetch the uploaded files from the server
-      this.files = await this.publicFunctions.getFiles(this.groupId, folderId);
-
-      // Set the lastFileId for scroll
-      this.lastFileId = this.files[this.files.length - 1]?._id;
 
       const parentFolder = {
         _id: this.currentFolder?._parent || 'root',
         folder_name: '../',
         type: undefined
       }
+      this.folders.unshift(parentFolder);
 
-      // Concat the files
-      this.files = [parentFolder, ...this.folders, ...this.files];
+      // Fetch the uploaded files from the server
+      this.files = await this.publicFunctions.getFiles(this.groupId, folderId);
+
+      // Set the lastFileId for scroll
+      this.lastFileId = this.files[this.files.length - 1]?._id;
     }
+
+    // Stop the loading spinner
+    this.isLoading$.next(false);
   }
 
   /**
@@ -414,9 +427,6 @@ export class GroupFilesComponent implements OnInit {
     // Set the lastFileId for scroll
     this.lastFileId = this.files[this.files.length - 1]?._id;
 
-    // Concat the files
-    this.files = [...this.folders, ...this.files];
-
     this.currentFolder = null;
   }
 
@@ -430,7 +440,7 @@ export class GroupFilesComponent implements OnInit {
   }
 
   /**
-   * Methods for Drag&Drop
+   * Methods for Drop files to upload
    */
   /**
    * This function is responsible for uploading the files to the server
@@ -445,7 +455,8 @@ export class GroupFilesComponent implements OnInit {
         _folder: (this.currentFolder) ? this.currentFolder._id : null,
         _posted_by: this.userData._id,
         type: 'file',
-        mime_type: ''
+        mime_type: '',
+        _workspace: this.workspaceId
       }
       // Adding Mime Type of the file uploaded
       fileData.mime_type = file.type
@@ -479,5 +490,4 @@ export class GroupFilesComponent implements OnInit {
           })
       }))
   }
-
 }
