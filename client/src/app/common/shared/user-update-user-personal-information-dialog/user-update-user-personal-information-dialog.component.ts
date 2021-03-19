@@ -11,7 +11,7 @@ import moment from 'moment/moment';
   styleUrls: ['./user-update-user-personal-information-dialog.component.scss']
 })
 export class UserUpdateUserPersonalInformationDialogComponent implements OnInit {
-  
+
   // Public functions class member
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
@@ -23,7 +23,7 @@ export class UserUpdateUserPersonalInformationDialogComponent implements OnInit 
   // Is current user component
   isCurrentUser: boolean = false;
 
-  constructor( 
+  constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private injector: Injector,
     private utilityService: UtilityService,
@@ -40,14 +40,14 @@ export class UserUpdateUserPersonalInformationDialogComponent implements OnInit 
 
   updateInfo() {
     const data ={
-      current_position:this.postion,
-      company_join_date:this.joinDate,
-      bio:this.bio
+      current_position: this.postion,
+      company_join_date: this.joinDate,
+      bio: this.bio
     }
     this.utilityService.asyncNotification('Please wait we are updating your information...', new Promise((resolve, reject) => {
       this.publicFunctions.userDetailsServiceFunction(this.userService,data)
         .then((res) => {
-          
+
           this.closeEvent.emit(res);
           this.mdDialogRef.close();
 
@@ -55,7 +55,7 @@ export class UserUpdateUserPersonalInformationDialogComponent implements OnInit 
         }).catch((err) => {
           reject(this.utilityService.rejectAsyncPromise('An unexpected occured while updating the details, please try again!'));
         });
-    }));    
+    }));
   }
 
 }

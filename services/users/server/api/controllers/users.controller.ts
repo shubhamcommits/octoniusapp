@@ -186,26 +186,28 @@ export class UsersControllers {
                 return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
             }
 
-            // Find the user and update it on the basis of the userId
-            const account: any = await Account.findOneAndUpdate({
-                    email: user._account.email
-                }, {
-                    $set: {
-                        email: body.email,
-                        first_name: body.first_name,
-                        last_name: body.last_name
-                    }
-                }, {
-                    new: true
-                })
-                .select('_id email _workspaces first_name last_name created_date').lean();
-
-            // If user not found
-            if (!account) {
-                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            if (body.email && body.first_name && body.last_name) {
+                // Find the user and update it on the basis of the userId
+                const account: any = await Account.findOneAndUpdate({
+                        email: user._account.email
+                    }, {
+                        $set: {
+                            email: body.email,
+                            first_name: body.first_name,
+                            last_name: body.last_name
+                        }
+                    }, {
+                        new: true
+                    })
+                    .select('_id email _workspaces first_name last_name created_date').lean();
+    
+                // If user not found
+                if (!account) {
+                    return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+                }
+    
+                user._account.email = account.email;
             }
-
-            user._account.email = account.email;
 
             if (user['stats'] && user['stats']['favorite_groups']) {
                 user['stats']['favorite_groups'].sort(function(a, b) {
