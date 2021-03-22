@@ -18,11 +18,9 @@ function init(server: any){
     // Allowing all the origins to connect
     io.set('origins', '*:*');
 
-    try {
     // Initiate the connection
     io.sockets.on('connection', (socket: any) => {
 
-       
         // Push the socket into the array
         globalConnections.push(socket);
 
@@ -43,7 +41,7 @@ function init(server: any){
 
         // Get notifications based on the userId
         socket.on('getNotifications', async (userId: string) => {
-            console.log("am here getting notification");
+            
             // Send notification to the user
             await helperFunctions.sendNotificationsFeed(socket, userId, io);
         });
@@ -130,9 +128,6 @@ function init(server: any){
         });
     });
     return io;
-    } catch (error) {
-         console.log("Error Sockets",error);  
-    }
 };
 
 export {
