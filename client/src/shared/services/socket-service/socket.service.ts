@@ -70,6 +70,10 @@ export class SocketService {
     return this.http.get(this.baseUrl + '/', { responseType: 'text' });
   }
 
+  public getsocket(){
+    return this.socket;
+  }
+
   public changeData(data: any){
     this.dataSource.next(data);
   }
