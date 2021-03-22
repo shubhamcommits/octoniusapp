@@ -17,6 +17,10 @@ function init(server: any){
      */
     // Allowing all the origins to connect
     io.set('origins', '*:*');
+    
+    try {
+        
+    
 
     // Initiate the connection
     io.sockets.on('connection', (socket: any) => {
@@ -128,6 +132,9 @@ function init(server: any){
         });
     });
     return io;
+    } catch (error) {
+            console.log("Socket server error",error);
+    }
 };
 
 export {
