@@ -76,10 +76,8 @@ app.get("*.css", encodeResToGzip('text/css'));
   const io = sockets.init(server);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-    
-    console.log("io",io)
-    if(io.connected){
-        console.log("connected");
+    if(io){
+        console.log("io",io);
     }
     req.body.io = io; 
     next();
