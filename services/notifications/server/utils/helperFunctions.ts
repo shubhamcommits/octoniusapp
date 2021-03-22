@@ -1,6 +1,7 @@
 import { NotificationsService } from "../api/service"
 import { Post, Comment, User } from "../api/models";
 import { Readable } from 'stream';
+import SocketIO, { EngineSocket } from "socket.io";
 const ObjectId = require('mongoose').Types.ObjectId;
 
 // Create Notifications controller class
@@ -21,6 +22,8 @@ function hasProperty(object: any, property: any) {
  * @param io 
  */
 async function generateFeed(userId: string, io: any,backend?:any) {
+
+    console.log("sending notification",userId);
     try {
         const unreadNotifications = await notifications.getUnread(userId);
         const readNotifications = await notifications.getRead(userId);
