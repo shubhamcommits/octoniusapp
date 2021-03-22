@@ -27,6 +27,7 @@ function init(server: any){
 
         // -| USER NOTIFICATION CENTER |-
 
+        console.log("connected...... ",socket)
         // Join user on private user room
         socket.on('joinUser', (userId: string) => {
             // join room
