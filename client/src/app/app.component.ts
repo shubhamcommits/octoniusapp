@@ -66,7 +66,7 @@ export class AppComponent {
 
     this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
 
-    this.initSocketServer(socketService)
+    // this.initSocketServer(socketService)
 
     // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));
