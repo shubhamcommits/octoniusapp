@@ -127,4 +127,14 @@ export class FilesService {
     }
     return this._http.put(this.baseURL + `/files/${fileId}/move-to-group`, { groupId: groupId }).toPromise();
   }
+
+  /**
+   * Move a file to another folder
+   *
+   * @param fileId
+   * @param folderId
+   */
+   async moveToFolder(fileId: string, folderId: string) {
+    return this._http.put(this.baseURL + `/files/${fileId}/move-to-folder`, { folderId: folderId }).toPromise();
+  }
 }

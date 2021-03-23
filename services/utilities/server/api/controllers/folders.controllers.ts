@@ -191,4 +191,37 @@ export class FoldersControllers {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for moving a folder to another folder
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async moveToFolder(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the folderId from the request
+            const { params: { folderId }, body: { parentFolderId } } = req;
+
+            // If folderId is not found, then throw the error
+            if (!parentFolderId &&  !folderId) {
+                return res.status(400).json({
+                    message: 'Please pass the folderId and parentFolderId'
+                });
+            }
+
+            // Move the folio
+            let folderData = await foldersService.moveToFolder(folderId, parentFolderId);
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Folder moved!',
+                folder: folderData
+            })
+
+        } catch (err) {
+            return sendError(res, new Error('Internal Server Error!'), 'Internal Server Error!', 500);
+        }
+    }
 }

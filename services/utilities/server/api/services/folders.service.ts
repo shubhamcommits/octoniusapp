@@ -211,4 +211,34 @@ export class FoldersService {
             return folder;
         }
     }
+
+    /**
+     * This function is responsible for moving a folder to another folder
+     * @param folderId
+     * @param parentFolderId 
+     */
+    async moveToFolder(folderId: string, parentFolderId: string) {
+
+        if (parentFolderId) {
+            let updateAction = {};
+            if (parentFolderId == 'root') {
+                updateAction = {
+                    _parent: null
+                }
+            } else {
+                updateAction = {
+                    _parent: parentFolderId
+                }
+            }
+
+            // Find the file by Id
+            let folder: any = await Folder.findByIdAndUpdate(folderId, updateAction);
+
+            // Populate File Properties
+            folder = this.populateFolderProperties(folder)
+
+            // Return file
+            return folder;
+        }
+    }
 }
