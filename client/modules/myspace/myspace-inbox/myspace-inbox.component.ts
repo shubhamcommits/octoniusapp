@@ -133,6 +133,7 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
     return socketService.onEvent('notificationsFeed')
       .pipe(retry(Infinity))
       .subscribe((notifications) => {
+        console.log("notifications",notifications);
         this.notificationsData = notifications;
         socketService.changeData(notifications);
       })

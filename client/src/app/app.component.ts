@@ -66,8 +66,15 @@ export class AppComponent {
 
     this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
 
-    // this.initSocketServer(socketService)
+    this.initSocketServer(socketService)
 
+    const socket = socketService.getsocket();
+    try {
+      console.log("scoket connection",socket.connect());
+    } catch (error) {
+      console.log("djskfsdnjsdn",error);
+    }
+    
     // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));
 
@@ -123,6 +130,8 @@ export class AppComponent {
     return socketService.onEvent('connect')
       .pipe(retry(Infinity))
       .subscribe(() => {
+
+        console.log("connected....");
         // Socket Notifications Data Transmitter
         this.subSink.add(this.enableNotificationDataTransmitter(socketService));
 
