@@ -812,7 +812,39 @@ export class BillingControllers {
                     break;
 
                 case 'invoice.payment_succeeded':
+                    workspace = await Workspace.findOneAndUpdate(
+                        { _id: customer.metadata.workspace_id },
+                        {
+                            $addToSet: {
+                                'billing.success_payments': req.body
+                            },
+                            $set: {
+                                'billing.current_period_end': stripeObject.period_end,
+                                'billing.scheduled_cancellation': false
+                            }
+                        }, {
+                            new: true
+                        }
+                    ).lean();
+                    break;
+
                 case 'checkout.session.completed':
+                    workspace = await Workspace.findOneAndUpdate(
+                        { _id: customer.metadata.workspace_id },
+                        {
+                            $addToSet: {
+                                'billing.success_payments': req.body
+                            },
+                            $set: {
+                                'billing.current_period_end': stripeObject.period_end,
+                                'billing.scheduled_cancellation': false
+                            }
+                        }, {
+                            new: true
+                        }
+                    ).lean();
+                    break;
+
                 case 'invoice.paid':
                     workspace = await Workspace.findOneAndUpdate(
                         { _id: customer.metadata.workspace_id },
@@ -851,7 +883,7 @@ export class BillingControllers {
             }
 
             // Send new workspace to the mgmt portal
-            if (process.env.NODE_ENV == 'production') {
+            if (process.env.NODE_ENV == 'production' && workspace) {
                 // Count all the groups present inside the workspace
                 const groupsCount: number = await Group.find({ $and: [
                     { group_name: { $ne: 'personal' } },
