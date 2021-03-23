@@ -26,7 +26,7 @@ const fs = require('fs');
 
           comment = JSON.parse(comment);
           
-          console.log("comentndfvdvvsdc",comment);
+          // console.log("comentndfvdvvsdc",comment);
           // Generate comment data
           const commentData = {
             content: comment['content'],
@@ -118,7 +118,7 @@ const fs = require('fs');
 
           comment = JSON.parse(comment)
 
-          console.log("comentndfvdvvsdc",comment);
+          // console.log("comentndfvdvvsdc",comment);
       
           // Update comment
           const updatedComment = await Comment.findOneAndUpdate({

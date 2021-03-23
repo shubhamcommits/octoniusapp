@@ -29,11 +29,11 @@ export class SocketService {
   currentData = this.dataSource.asObservable();
 
   public onEvent(eventName: string): Observable<any> {
-    
+
     return new Observable<any>(observer => {
         this.socket.on(eventName, (data: any) => {
           observer.next(data);
-          console.log("on event ",eventName,data)
+          // console.log("on event ",eventName,data)
           if(eventName === 'notificationsFeed' && data.new){
             const notify = data['unreadNotifications'][0];
             let notifyData: Array < any >= [];
@@ -55,7 +55,7 @@ export class SocketService {
   }
 
   public onEmit(eventName: string, ...messageData: any) {
-    console.log("on emit ",eventName)
+    // console.log("on emit ",eventName)
     return new Observable<any>(observer=>{
       this.socket.emit(eventName, ...messageData, (data: any)=> {
         observer.next(data);
