@@ -27,7 +27,7 @@ function init(server: any){
 
         // -| USER NOTIFICATION CENTER |-
 
-        console.log("connected...... ",socket)
+        // console.log("connected...... ",socket)
         // Join user on private user room
         socket.on('joinUser', (userId: string) => {
             // join room
@@ -43,7 +43,7 @@ function init(server: any){
 
         // Get notifications based on the userId
         socket.on('getNotifications', async (userId: string) => {
-            console.log("getting data");
+            // console.log("getting data");
             // Send notification to the user
             await helperFunctions.sendNotificationsFeed(socket, userId, io);
         });

@@ -64,4 +64,14 @@ export class FoldersService {
   deleteFolder(folderId: string) {
     return this._http.delete(this.baseURL + `/folders/${folderId}`).toPromise();
   }
+
+  /**
+   * Move a folder to another folder
+   *
+   * @param folderId
+   * @param parentFolderId
+   */
+  async moveToFolder(folderId: string, parentFolderId: string) {
+    return this._http.put(this.baseURL + `/folders/${folderId}/move-to-folder`, { parentFolderId: parentFolderId }).toPromise();
+  }
 }

@@ -70,11 +70,12 @@ export class AppComponent {
 
     const socket = socketService.getsocket();
     try {
-      console.log("scoket connection",socket.connect());
+      socket.connect();
+      //console.log("scoket connection",socket.connect());
     } catch (error) {
-      console.log("djskfsdnjsdn",error);
+      //console.log("djskfsdnjsdn",error);
     }
-    
+
     // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));
 
@@ -131,7 +132,7 @@ export class AppComponent {
       .pipe(retry(Infinity))
       .subscribe(() => {
 
-        console.log("connected....");
+        // console.log("connected....");
         // Socket Notifications Data Transmitter
         this.subSink.add(this.enableNotificationDataTransmitter(socketService));
 
