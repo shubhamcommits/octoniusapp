@@ -17,7 +17,7 @@ import { CreateProjectColumnDialogComponent } from './create-project-column-dial
   styleUrls: ['./group-kanban-boards.component.scss']
 })
 export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
-
+  
   constructor(
     private router: ActivatedRoute,
     public utilityService: UtilityService,
@@ -50,6 +50,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
   unchangedColumns: any;
 
+  isMobile = false;
 
   @Output() taskClonnedEvent = new EventEmitter();
   @Output() newSectionEvent = new EventEmitter();
@@ -861,5 +862,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
   isDelay(realDueDate: any, dueDate: any) {
     return moment(realDueDate).isAfter(moment(dueDate), 'day');
+  }
+  ngAfterViewInit() {
+    this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
+
   }
 }

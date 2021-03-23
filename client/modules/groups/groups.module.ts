@@ -97,6 +97,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarModule as Calendar, DateAdapter } from 'angular-calendar';
 import { CreateProjectColumnDialogComponent } from './group/group-kanban-boards/create-project-column-dialog/create-project-column-dialog.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { KanbanTaskCardComponent } from './group/group-kanban-boards/kanban-task-card/kanban-task-card.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -195,6 +196,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 
     GanttViewComponent,
     CreateProjectColumnDialogComponent,
+    KanbanTaskCardComponent,
   ],
   imports: [
     CommonModule,
