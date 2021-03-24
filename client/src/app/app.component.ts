@@ -132,7 +132,7 @@ export class AppComponent {
       .pipe(retry(Infinity))
       .subscribe(() => {
 
-        // console.log("connected....");
+        console.log("connected....");
         // Socket Notifications Data Transmitter
         this.subSink.add(this.enableNotificationDataTransmitter(socketService));
 

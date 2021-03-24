@@ -12,6 +12,8 @@ export const socketConfig: SocketIoConfig = {
         randomizationFactor: 0.5,
         autoConnect: true,
         transports: ['websocket'],
+        allowUpgrades : true,
+        path: '/socket.io',
         upgrade: true
     }
 };

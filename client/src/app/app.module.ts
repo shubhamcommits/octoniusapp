@@ -91,6 +91,7 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
 export class SocketServer extends Socket {
  
     constructor() {
+        console.log("configurations",socketConfig);
         super(socketConfig);
     }
  
