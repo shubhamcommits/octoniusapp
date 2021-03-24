@@ -13,7 +13,7 @@ export const socketConfig: SocketIoConfig = {
         autoConnect: true,
         transports: ['websocket'],
         allowUpgrades : true,
-        path: '/socket.io',
+        path: '/notifications',
         upgrade: true
     }
 };

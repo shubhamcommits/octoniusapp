@@ -79,6 +79,7 @@ export class SocketService {
   }
 
   public disconnectSocket(){
+    console.log("disconnecting....")
     return this.socket.disconnect();
   }
 

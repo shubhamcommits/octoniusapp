@@ -27,10 +27,11 @@ function init(server: any){
 
         // -| USER NOTIFICATION CENTER |-
 
-        // console.log("connected...... ",socket)
+        console.log("connected...... ",socket)
         // Join user on private user room
         socket.on('joinUser', (userId: string) => {
             // join room
+            console.log("joinUser");
             socket.join(userId);
         });
 
@@ -43,7 +44,7 @@ function init(server: any){
 
         // Get notifications based on the userId
         socket.on('getNotifications', async (userId: string) => {
-            // console.log("getting data");
+            console.log("getting data");
             // Send notification to the user
             await helperFunctions.sendNotificationsFeed(socket, userId, io);
         });
@@ -62,7 +63,7 @@ function init(server: any){
 
         //  Joins the user to the workspace room
         socket.on("joinWorkspace", async (workspaceData: any) => {
-            
+            console.log("joinWorkspace");
             // Create the room name
             const roomName = `${workspaceData.workspace_name}`;
 
@@ -87,6 +88,8 @@ function init(server: any){
         // Join user on specific group room
         socket.on('joinGroup', (room) => {
             // generate room name
+            console.log("joinGroup");
+            
             const roomName = `${room.workspace}_${room.group}`;
 
             // join room
