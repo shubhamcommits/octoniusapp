@@ -81,6 +81,19 @@
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
                                 <span>Delete</span>
                             </a>
+
+                            <div *ngIf="folders && folders?.length > 1">
+                              <a mat-menu-item [matMenuTriggerFor]="moveFolderMenu">
+                                <i class="material-icons">arrow_forward</i>
+                                Move to Folder
+                              </a>
+
+                              <mat-menu #moveFolderMenu="matMenu">
+                                <ng-container *ngFor="let folderMenu of folders; let index = index">
+                                  <button mat-menu-item *ngIf="folder._id != folderMenu._id" (click)="moveToFolder(folder._id, folderMenu?._id, 'folder')">{{ folderMenu?.folder_name }}</button>
+                                </ng-container>
+                              </mat-menu>
+                            </div>
                         </mat-menu>
                     </div>
                 </div>
@@ -131,6 +144,19 @@
                               <mat-menu #transferMenu="matMenu">
                                 <ng-container *ngFor="let group of userGroups; let index = index">
                                   <button mat-menu-item (click)="transferToGroup(file._id, userGroups[index]?._id, file?.type)">{{ group.group_name }}</button>
+                                </ng-container>
+                              </mat-menu>
+                            </div>
+
+                            <div *ngIf="folders && folders?.length > 0">
+                              <a mat-menu-item [matMenuTriggerFor]="moveFileMenu">
+                                <i class="material-icons">arrow_forward</i>
+                                Move to Folder
+                              </a>
+
+                              <mat-menu #moveFileMenu="matMenu">
+                                <ng-container *ngFor="let folder of folders; let index = index">
+                                  <button mat-menu-item (click)="moveToFolder(file._id, folder?._id, 'file')">{{ folder?.folder_name }}</button>
                                 </ng-container>
                               </mat-menu>
                             </div>

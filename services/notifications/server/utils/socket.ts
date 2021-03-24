@@ -9,18 +9,20 @@ const globalConnections = [];
 
 function init(server: any){
 
-    const io: any = require('socket.io')(server);
+    const io: any = require('socket.io')(server,{cors: '*:*'});
 
     /* =================
      * - NOTIFICATIONS -
      * =================
      */
     // Allowing all the origins to connect
-    io.set('origins', '*:*');
-
+    // io.set('origins', '*:*');
+    
+    
+    try {
     // Initiate the connection
     io.sockets.on('connection', (socket: any) => {
-
+       
         // Push the socket into the array
         globalConnections.push(socket);
 
@@ -28,7 +30,6 @@ function init(server: any){
 
         // Join user on private user room
         socket.on('joinUser', (userId: string) => {
-            // join room
             socket.join(userId);
         });
 
@@ -41,7 +42,6 @@ function init(server: any){
 
         // Get notifications based on the userId
         socket.on('getNotifications', async (userId: string) => {
-            
             // Send notification to the user
             await helperFunctions.sendNotificationsFeed(socket, userId, io);
         });
@@ -60,7 +60,6 @@ function init(server: any){
 
         //  Joins the user to the workspace room
         socket.on("joinWorkspace", async (workspaceData: any) => {
-            
             // Create the room name
             const roomName = `${workspaceData.workspace_name}`;
 
@@ -85,6 +84,7 @@ function init(server: any){
         // Join user on specific group room
         socket.on('joinGroup', (room) => {
             // generate room name
+            
             const roomName = `${room.workspace}_${room.group}`;
 
             // join room
@@ -128,6 +128,9 @@ function init(server: any){
         });
     });
     return io;
+    } catch (error) {
+            console.log("Socket server error",error);
+    }
 };
 
 export {

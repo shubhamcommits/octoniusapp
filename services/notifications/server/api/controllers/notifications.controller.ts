@@ -192,8 +192,11 @@ export class NotificationsController {
         try {
             // Call Service Function for newTaskAssignments
             await notificationService.newTaskAssignment(postId, assigned_to, groupId, posted_by);
-            
-            await helperFunctions.sendNotificationsFeedFromService(assigned_to, io,true);
+
+            if(assigned_to && assigned_to?.length > 0){
+                await helperFunctions.sendNotificationsFeedFromService(assigned_to, io,true);
+            }
+             
 
             await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                 userid:assigned_to,

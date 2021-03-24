@@ -76,6 +76,9 @@ app.get("*.css", encodeResToGzip('text/css'));
   const io = sockets.init(server);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
+    if(io){
+        console.log("io",io);
+    }
     req.body.io = io; 
     next();
 });

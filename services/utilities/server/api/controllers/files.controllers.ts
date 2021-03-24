@@ -277,4 +277,37 @@ export class FilesControllers {
         }
     }
 
+    /**
+     * This function is responsible for moving a file to a folder
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async moveToFolder(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the fileId from the request
+            const { params: { fileId }, body: { folderId } } = req;
+
+            // If fileId is not found, then throw the error
+            if (!fileId &&  !folderId) {
+                return res.status(400).json({
+                    message: 'Please pass the fileId and folderId'
+                });
+            }
+
+            // Move the folio
+            let fileData = await filesService.moveToFolder(fileId, folderId);
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'File moved!',
+                file: fileData
+            })
+
+        } catch (err) {
+            return sendError(res, new Error('Internal Server Error!'), 'Internal Server Error!', 500);
+        }
+    }
+
 }
