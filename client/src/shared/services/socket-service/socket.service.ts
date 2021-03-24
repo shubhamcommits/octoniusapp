@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Socket, SocketIoConfig } from 'ngx-socket-io';
+// import { Socket, SocketIoConfig } from 'ngx-socket-io';
 import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { HttpClient } from '@angular/common/http';
+// import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { SocketServer } from 'src/app/app.module';
+// import { SocketServer } from 'src/app/app.module';
 import { NotificationService } from '../notification-service/notification.service';
+import { io } from 'socket.io-client';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,13 @@ import { NotificationService } from '../notification-service/notification.servic
 export class SocketService {
 
   constructor(
-    private socket: SocketServer,
-    private http: HttpClient,
+    // private socket: SocketServer,
+    // private http: HttpClient,
     private _notificationService: NotificationService) { }
 
   // Define baseurl
   public baseUrl = environment.NOTIFICATIONS_BASE_URL;
+  private socket:any;
 
   /**
    * Both of the variables listed down below are used to share the data through this common service among different components in the app
@@ -67,7 +69,36 @@ export class SocketService {
    * This function initates the request to socket server
    */
   public serverInit(){
-    return this.http.get(this.baseUrl + '/', { responseType: 'text' });
+    try {
+       this.socket = io(this.baseUrl,{
+        secure: true,
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 2000,
+        randomizationFactor: 0.5,
+        autoConnect: true,
+        transports: ['websocket'],
+        upgrade: true
+     });
+     setTimeout(() => {
+      console.log("status",this.socket,this.socket.connected)
+      if(!this.socket.connected){
+         console.log("can not connect to socket trying again.....");
+         setTimeout(() => {
+           return this.serverInit();
+         },2000);
+      }else if(this.socket.connected){
+         console.log("connected to socket server....");
+      }
+     }, 1000);
+     
+    } catch (error) {
+     console.log("error",error);
+    }
+    
+    return this.socket;
+    // return this.http.get(this.baseUrl + '/', { responseType: 'text' });
   }
 
   public getsocket(){

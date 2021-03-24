@@ -53,7 +53,8 @@
               "rxjs",
               "crypto-js",
               "chart.js",
-              "quill-delta-to-html"
+              "quill-delta-to-html",
+              "socket.io-client"
             ]
           },
           "configurations": {

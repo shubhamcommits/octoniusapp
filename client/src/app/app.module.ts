@@ -69,14 +69,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
  */
 // import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
-import { Socket, SocketIoModule } from 'ngx-socket-io';
+// import { Socket, SocketIoModule } from 'ngx-socket-io';
 // import { ChartsModule, ThemeService } from 'ng2-charts';
 
 /**
  * 7. !===== ERROR HANDLERS =====!
  */
 import { ngxUiLoaderConfig } from 'src/assets/config/ngx-ui-loader.config';
-import { socketConfig } from 'src/assets/config/socket.config';
+// import { socketConfig } from 'src/assets/config/socket.config';
 
 
 
@@ -87,15 +87,15 @@ import { GlobalErrorHandler } from 'src/shared/error-handler/global-error-handle
 import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.interceptor';
 
 // Injectable Class
-@Injectable()
-export class SocketServer extends Socket {
+// @Injectable()
+// export class SocketServer extends Socket {
  
-    constructor() {
-        console.log("configurations",socketConfig);
-        super(socketConfig);
-    }
+//     constructor() {
+//         console.log("configurations",socketConfig);
+//         super(socketConfig);
+//     }
  
-}
+// }
 
 /**
  * 9. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -141,7 +141,7 @@ export class SocketServer extends Socket {
     // SharedModule,
 
     // SOCKET MODULE AND INITIALISATION
-    SocketIoModule,
+    // SocketIoModule,
   ],
 
   providers: [
@@ -163,7 +163,7 @@ export class SocketServer extends Socket {
     },
 
     // Socket Server Class
-    SocketServer
+    // SocketServer
   ],
   bootstrap: [AppComponent]
 })
