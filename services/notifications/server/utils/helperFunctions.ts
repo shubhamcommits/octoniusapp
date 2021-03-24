@@ -22,7 +22,6 @@ function hasProperty(object: any, property: any) {
  */
 async function generateFeed(userId: string, io: any,backend?:any) {
 
-    console.log("sending notification",userId);
     try {
         const unreadNotifications = await notifications.getUnread(userId);
         const readNotifications = await notifications.getRead(userId);
