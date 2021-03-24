@@ -1,4 +1,3 @@
-<!-- <app-start-subscription *ngIf="!workspaceData?.billing?.current_period_end || !subscription; else subscriptionTemp" -->
 <app-start-subscription *ngIf="!subscriptionActive"
   [userData]="userData"
   [workspaceData]="workspaceData"
@@ -7,13 +6,13 @@
   (subscriptionCreated)="onSubscriptionChanges($event)">
 </app-start-subscription>
 
-<ng-container *ngIf="isLoading$ | async">
-  <app-loading-spinner></app-loading-spinner>
-</ng-container>
-
 <div *ngIf="subscriptionActive" class="card-tile" style="margin-top: 20px;">
   <h4>Octonius partners with Stripe to manage your payments. <br>
     <img src="assets/images/stripe_pay.svg" alt="" style="width: 240px; margin-top: 30px;">
   </h4>
   <button (click)="createCustomerPortalSession()" class="btn btn-md btn-primary mt-4">Manage subscription</button>
 </div>
+
+<ng-container *ngIf="isLoading$ | async">
+  <app-loading-spinner></app-loading-spinner>
+</ng-container>
