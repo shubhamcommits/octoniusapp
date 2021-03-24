@@ -9,7 +9,6 @@ import { NotificationService } from 'src/shared/services/notification-service/no
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
 import { Router, RouterEvent, NavigationEnd, ChildActivationEnd } from '@angular/router';
-import { environment } from 'src/environments/environment';
 
 // Google API Variable
 declare const gapi: any;
@@ -66,16 +65,7 @@ export class AppComponent {
 
     this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
 
-    this.initSocketServer(socketService)
-
-    const socket = socketService.getsocket();
-    try {
-      socket.connect();
-      //console.log("scoket connection",socket.connect());
-    } catch (error) {
-      //console.log("djskfsdnjsdn",error);
-    }
-
+    this.initSocketServer(socketService);
     // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));
 
@@ -132,7 +122,6 @@ export class AppComponent {
       .pipe(retry(Infinity))
       .subscribe(() => {
 
-        console.log("connected....");
         // Socket Notifications Data Transmitter
         this.subSink.add(this.enableNotificationDataTransmitter(socketService));
 
