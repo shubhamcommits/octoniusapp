@@ -9,14 +9,15 @@ const globalConnections = [];
 
 function init(server: any){
 
-    const io: any = require('socket.io')(server);
+    const io: any = require('socket.io')(server,{cors: '*:*'});
 
     /* =================
      * - NOTIFICATIONS -
      * =================
      */
     // Allowing all the origins to connect
-    io.set('origins', '*:*');
+    // io.set('origins', '*:*');
+    
     
     try {
     // Initiate the connection

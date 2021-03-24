@@ -1,7 +1,6 @@
 import { NotificationsService } from "../api/service"
 import { Post, Comment, User } from "../api/models";
 import { Readable } from 'stream';
-import SocketIO, { EngineSocket } from "socket.io";
 const ObjectId = require('mongoose').Types.ObjectId;
 
 // Create Notifications controller class
