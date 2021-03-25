@@ -239,7 +239,7 @@ export class TeamsController {
                 integration.teams = null;
 
                 // Update user integrations
-                const updatedUser = await User.findOneAndUpdate({ _id: req.params.userID },
+                const updatedUser = await User.findOneAndUpdate({ _id: user._id },
                     { $set: { integrations: integration }},
                     { new: true });
 
