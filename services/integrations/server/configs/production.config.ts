@@ -30,9 +30,6 @@ function prodConfigInit() {
   // Sendgrid Key
   process.env.SENDGRID_KEY = process.env.SENDGRID_KEY
 
-  // Slack WebHook URL
-  process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL
-
   // Slack Keys
   process.env.SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID
   process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET

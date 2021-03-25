@@ -1,4 +1,5 @@
 import express from 'express';
+import { Auths } from '../../utils';
 import { ColumnsController } from '../controllers';
 // import { Auths } from '../../../../posts/server/api/utils';
 
@@ -9,21 +10,18 @@ const router = express.Router();
 const columns = new ColumnsController();
 
 // Define auths helper controllers
-// const auths = new Auths();
+const auths = new Auths();
 
 // -| AUTHENTICATION |-
 
 // // Verify the token
-// router.use(auths.verifyToken);
+router.use(auths.verifyToken);
 
 // // Checks whether the current user is loggedIn or not
-// router.use(auths.isLoggedIn);
+router.use(auths.isLoggedIn);
 
 // get all existing columns
 router.get('/all', columns.getAllColumns);
-
-// initialize the basic columns
-// router.post('/init', columns.initColumns);
 
 // add a new column
 router.post('/', columns.addColumn);
