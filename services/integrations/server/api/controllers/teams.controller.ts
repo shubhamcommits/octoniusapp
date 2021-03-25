@@ -223,13 +223,11 @@ export class TeamsController {
 
                 // Find User by user_object_id
                 user = await User.findOne({'integrations.teams.user_object_id': req.query.uid}).select('integrations');
-                res.status(200).json({message:"Successfully"});
             } else if (req.query?.userId) {
                 // Else If userId exist in query params -> request from Octonius Client to disconnect user from team
 
                 // Find User by _id
                 user = await User.findById({_id: req.query.userId}).select('integrations');
-                res.status(200).json({ message: "Successfully" });
             }
 
             if (user) {
