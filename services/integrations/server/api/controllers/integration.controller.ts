@@ -1,8 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { SlackService , TeamService} from "../service";
-import { SlackAuth, User ,TeamAuth } from '../models';
+import { User } from '../models';
 import { Auths } from '../../utils';
-// import { validateId } from "../../utils/helperFunctions";
 import { helperFunctions } from '../../utils';
 
 // Creating Service class in order to build wrapper class
@@ -28,9 +27,8 @@ export class IntegrationController {
         
 
         try {
-            
             // Find user by user _id
-            const user = await User.findById(req.body.userid);
+            const user = await User.findById(req.body.userid).select('integrations');
     
             //Slack connected or not checking
             const isSlackConnected = user?.integrations?.is_slack_connected || false;
@@ -38,54 +36,22 @@ export class IntegrationController {
             //Slack connected or not checking
             const isTeamConnected = user?.integrations?.is_teams_connected || false;
         
-            //check any integration here later
+            // Parsed the notfication and extract required data and format.
+            const data = await helperFunctions.parsedNotificationData(req.body);
 
             // If Slack connected send notifcation to slack 
-            if ( isSlackConnected ) {
+            if (isSlackConnected && user.integrations.slack) {            
+                // Slack incomming webhook to send notification
+                // Slack instance
+                var slack = require('slack-notify')(user?.integrations?.slack?.incoming_webhook); 
                 
-                // Parsed the notfication and extract required data and format.
-                let data = await helperFunctions.parsedNotificationData(req.body);
-                
-                // Find slack user by _id
-                const userOctonius = await SlackAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
-                
-
-                let userSlackWebhookUrl:any;
-    
-                if(userOctonius && userOctonius != null){
-                    
-                    // Slack incomming webhook to send notification
-                    userSlackWebhookUrl = userOctonius['incoming_webhook'];
-                    
-                    // Slack instance
-                    var slack = require('slack-notify')(userSlackWebhookUrl); 
-                    
-                    //Send notification to slack
-                    await slackService.sendNotificationToSlack(slack,data);
-
-                }  
+                //Send notification to slack
+                await slackService.sendNotificationToSlack(slack, data);
             } 
             
 
-            if ( isTeamConnected ) {
-                
-                // Parsed the notfication and extract required data and format.
-                let data = await helperFunctions.parsedNotificationData(req.body);
-                
-                 // Find teams user by id
-                const teamsUser = await TeamAuth.findOne({_user:req.body.userid}).sort({created_date:-1}).populate('_user');
-                
-                // Notificaiton params
-                const queryParams = {
-                    url: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${data['group_id']}&myWorkplace=false&postId=${data['post_id']}`,
-                    name: data['name'],
-                    text: data['text'],
-                    image: `${process.env.IMAGE_PROCESS_URL}/${data['image']}`,
-                    btn_title: data['btn_title'],
-                    uid: teamsUser.user_id
-                }
-
-                await teamService.sendNotificationToTeam(queryParams);
+            if ( isTeamConnected && user.integrations.teams ) {            
+                await teamService.sendNotificationToTeam(data, user?.integrations?.teams?.user_id);
             }
             
         } catch (error) {

@@ -30,9 +30,6 @@ function devConfigInit() {
   // Sendgrid Key
   process.env.SENDGRID_KEY = process.env.SENDGRID_KEY || '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'
 
-  // Slack WebHook URL
-  process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
-
   // Slack Keys
   process.env.SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID || "2561616476.1145669381443"
   process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET || "acaf1f9b8e2c2607124c74ea9273a2ed"
