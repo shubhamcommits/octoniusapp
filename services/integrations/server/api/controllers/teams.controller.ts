@@ -1,7 +1,7 @@
 import e, { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import moment from 'moment/moment'
-import { Group, Column, Auth, User ,TeamAuth } from '../models';
+import { Group, Column, Auth, User } from '../models';
 import { Auths, sendError } from '../../utils';
 import FormData from 'form-data';
 import axios from "axios";
@@ -26,31 +26,30 @@ export class TeamsController {
         
         // Find user with email
         const user = await User.findOne({email:req.body.user.email});
+
+        // TeamAuth new record creating
+        const teamAuth = {
+            user_object_id: req.body.teamData.userObjectId,
+            user_id:req.body.teamData.userID,
+            tenant_id:  req.body.teamData.tid
+        };
+
         //Integrations object from user
         var integration = user['integrations'];
         //Update the is_teams_connected to true
         integration['is_teams_connected'] = true;
+        integration.teams = teamAuth
 
         try {
-            
             //Update user integrations
-            const update_user = await User.findOneAndUpdate({_id:user._id},{$set:{integrations:integration}},{new:true});
+            const update_user = await User.findOneAndUpdate({ _id: user._id },
+                { $set: { integrations: integration }},
+                { new: true });
             
 
         } catch (error) {
-            console.log("error",error);
+            console.log("error", error);
         }
-
-        // TeamAuth new record creating
-        const teamAuth = new TeamAuth({
-            user_object_id: req.body.teamData.userObjectId,
-            user_id:req.body.teamData.userID,
-            tenant_id:  req.body.teamData.tid,
-            _user: user._id
-        });
-        
-        // TeamAuth new record saving
-        await teamAuth.save();
 
         res.status(200).json({message:"Successfully"});
     }
@@ -67,15 +66,15 @@ export class TeamsController {
         // Teams uer's aadObjectID
         const {user_object_id} = req.body ;
 
-        // Find teams uer's  record with aadObjectID
-        const user = await TeamAuth.findOne({user_object_id}).sort({created_date:-1}).populate('_user');
+        // Find teams user's  record with aadObjectID
+        const user = await User.findOne({'integrations.teams.user_object_id': user_object_id});
 
         // If user's record found 
-        if(user){
+        if (user) {
             // Find groups by octonius user's _id where user is admin
-            let groupsBYAdmin = await Group.find({_admins:user._user._id});
+            let groupsBYAdmin = await Group.find({_admins: user._id});
             // Find groups by octonius user's _id where user is member
-            let groupsByMember = await Group.find({_members:user._user._id});
+            let groupsByMember = await Group.find({_members:user._id});
             
             // Merge groups by members to groups by admin
             groupsByMember.forEach(groups => {
@@ -83,7 +82,11 @@ export class TeamsController {
             });
 
             // Send user groups and success message
-            res.status(200).json({message:"Successfully",user,groupsBYAdmin});
+            res.status(200).json({
+                message:"Successfully",
+                user,
+                groupsBYAdmin
+            });
         }else{
             res.status(200).json({message:"fails"});
         }
@@ -214,23 +217,41 @@ export class TeamsController {
      */
     async disconnectTeam(req: Request , res: Response, next: NextFunction){
         try {
+            let user;
+            if (req.query?.uid) {
+                // If uid exist in query params -> request from team to disconnect user from team
 
-            // If uid exist in query params -> request from team to disconnect user from team
-            if(req.query?.uid){
-                await TeamAuth.deleteMany({user_object_id:req.query.uid});
+                // Find User by user_object_id
+                user = await User.findOne({'integrations.teams.user_object_id': req.query.uid}).select('integrations');
                 res.status(200).json({message:"Successfully"});
+            } else if (req.query?.userId) {
+                // Else If userId exist in query params -> request from Octonius Client to disconnect user from team
+
+                // Find User by _id
+                user = await User.findById({_id: req.query.userId}).select('integrations');
+                res.status(200).json({ message: "Successfully" });
             }
-            // Else If userId exist in query params -> request from Octonius Client to disconnect user from team
-            else if(req.query?.userId){
-                await TeamAuth.deleteMany({_user:req.query.userId});
-                res.status(200).json({message:"Successfully"});
+
+            if (user) {
+                // Extract the integrations
+                var integration = user['integrations'];
+                            
+                // update the is_slack_connected false
+                integration.is_teams_connected = false;
+                integration.teams = null;
+
+                // Update user integrations
+                const updatedUser = await User.findOneAndUpdate({ _id: req.params.userID },
+                    { $set: { integrations: integration }},
+                    { new: true });
+
+                res.status(200).json({ message: "Diconnected Successfully" });
+            } else {
+                res.status(200).json({message: "Disconnection failed"});
             }
-           
-        } catch (error) {
-            res.status(200).json({message:"faild"});
+        } catch (err){
+            res.status(400).json({ message: "Cannot disconnet", error: err });
         }
-
-
         
 
     }

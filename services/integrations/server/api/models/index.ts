@@ -6,7 +6,6 @@ import { Group } from './group.model';
 import { Post } from './post.model';
 import { User } from './user.model';
 import { Workspace } from './workspace.model';
-// import { SlackAuth } from './slack.model';
 // import { TeamAuth } from './team.model';
 import { Comment } from './comment.model';
 import { Notification } from './notification.model';
