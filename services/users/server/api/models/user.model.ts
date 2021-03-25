@@ -144,6 +144,10 @@ const UserSchema = new Schema({
         is_slack_connected: {
             type: Boolean,
             default: null
+        },
+        is_teams_connected:{
+            type: Boolean,
+            default: false
         }
     },
     out_of_office: [{

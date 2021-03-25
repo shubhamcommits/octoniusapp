@@ -60,7 +60,7 @@ export const environment = {
   SEARCH_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/search`,
 
   // Slack Auth URLs
-  SLACK_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/integrations`,
+  INTEGRATIONS_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/integrations`,
 
   // User URLs
   USER_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/users`,
