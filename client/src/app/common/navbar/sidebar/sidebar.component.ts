@@ -51,6 +51,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
     private authService: AuthService,
     private userService: UserService,
+    private socketService:SocketService,
     private router: Router
   ) { }
 
@@ -104,7 +105,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
               this.publicFunctions.sendUpdatesToUserData({})
               this.publicFunctions.sendUpdatesToAccountData({})
               this.publicFunctions.sendUpdatesToWorkspaceData({})
-              // this.socketService.clear();
+              this.socketService.disconnectSocket();
               this.router.navigate(['/home'])
               resolve(this.utilityService.resolveAsyncPromise('Successfully Logged out!'));
             }).catch((err) => {

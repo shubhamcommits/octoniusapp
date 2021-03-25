@@ -46,7 +46,7 @@ if (cluster.isMaster) {
   server.listen(port, host, () => {
     console.log(`
     
-  ⚙️  Octonius Sockets server running at: \n\t http://${host}:${port}
+  ⚙️  Octonius Integrations server running at: \n\t http://${host}:${port}
   
   🌏 Environment: \n\t ${env}
 

@@ -340,19 +340,26 @@ export class FilesService {
     }
 
     /**
-     * This function is responsible for moving a folio to a group
+     * This function is responsible for moving a file to a folder
      * @param fileId
-     * @param groupId 
+     * @param folderId 
      */
-    async moveByFolder(folderId: string, groupId: string, newFolderId?: string) {
+    async moveToFolder(fileId: string, folderId: string) {
 
-        if (folderId) {
+        if (fileId) {
+            let updateAction = {};
+            if (folderId == 'root') {
+                updateAction = {
+                    _folder: null
+                };
+            } else {
+                updateAction = {
+                    _folder: folderId
+                };
+            }
+
             // Find the file by Id
-            let file: any = await File.findAndUpdate({_folder: folderId},
-                {
-                    _group: groupId,
-                    _folder: newFolderId
-                });
+            let file: any = await File.findByIdAndUpdate(fileId, updateAction);
 
             // Populate File Properties
             file = this.populateFileProperties(file)

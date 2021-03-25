@@ -21,6 +21,9 @@ routes.put('/:folderId', folders.edit);
 // DELETE - Delete the folder on the basis of fileId
 routes.delete('/:folderId', folders.delete);
 
+// PUT - Handles the move of a folder to another folder
+routes.put('/:folderId/move-to-folder', folders.moveToFolder);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
