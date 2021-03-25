@@ -7,6 +7,7 @@ import { Post } from './post.model';
 import { User } from './user.model';
 import { Workspace } from './workspace.model';
 import { SlackAuth } from './slack.model';
+import { TeamAuth } from './team.model';
 import { Comment } from './comment.model';
 import { Notification } from './notification.model';
 /*  =====================
@@ -42,6 +43,9 @@ export {
     //SLACK AUTH
 
     SlackAuth as SlackAuth,
+    
+    //Team AUTH
+    TeamAuth as TeamAuth,
 
      // COMMENT
      Comment as Comment,
