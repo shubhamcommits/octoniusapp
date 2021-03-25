@@ -27,7 +27,7 @@ export class TeamsController {
         // Find user with email
         const user = await User.findOne({email:req.body.user.email});
 
-        // TeamAuth new record creating
+        // teams auth integration
         const teamAuth = {
             user_object_id: req.body.teamData.userObjectId,
             user_id:req.body.teamData.userID,
