@@ -38,7 +38,7 @@ function prodConfigInit() {
   process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET
   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN
 
-  process.env.TEAMS_BOT_URL = process.env.TEAMS_BOT_URL || 'https://5d7bb71376b1.ngrok.io'
+  process.env.TEAMS_BOT_URL = process.env.TEAMS_BOT_URL || 'https://connect.octonius.com'
 
 
   // Stripe Keys
