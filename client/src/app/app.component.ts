@@ -9,7 +9,6 @@ import { NotificationService } from 'src/shared/services/notification-service/no
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
 import { Router, RouterEvent, NavigationEnd, ChildActivationEnd } from '@angular/router';
-import { environment } from 'src/environments/environment';
 
 // Google API Variable
 declare const gapi: any;
@@ -66,8 +65,7 @@ export class AppComponent {
 
     this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
 
-    // this.initSocketServer(socketService)
-
+    this.initSocketServer(socketService);
     // Internet connection validity
     this.subSink.add(this.checkInternetConnectivity(utilityService));
 
@@ -89,8 +87,24 @@ export class AppComponent {
     this.subSink.unsubscribe();
   }
 
+ /**
+   * This function is to check that the user is logged in or not and also the url is not /dashboard/user/teams
+   *  to hide the nav bars
+   */
   myAuthCheck() {
-    return this.storageService.existData('authToken');
+    let url = this._router.url;
+    let finalstate:boolean; 
+    // user is logged in and url is not /dashboard/user/teams show nav bars
+    // note:- Code is for teams auth popup not for octonius app and only work in that case.
+    if(this.storageService.existData('authToken') && !url.includes('/dashboard/user/teams')){
+      finalstate = true ;
+    } 
+     // don't show nav bars
+    else {
+      finalstate = false ;
+    }
+
+    return finalstate;
   }
   /**
    * This function checks for the active internet connection
@@ -123,6 +137,7 @@ export class AppComponent {
     return socketService.onEvent('connect')
       .pipe(retry(Infinity))
       .subscribe(() => {
+
         // Socket Notifications Data Transmitter
         this.subSink.add(this.enableNotificationDataTransmitter(socketService));
 

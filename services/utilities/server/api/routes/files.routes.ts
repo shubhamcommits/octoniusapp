@@ -31,6 +31,9 @@ routes.post('/:fileId/copy-to-group', files.copy);
 // PUT - Handles the move of a folio to a group
 routes.put('/:fileId/move-to-group', files.move);
 
+// PUT - Handles the move of a file to a folder
+routes.put('/:fileId/move-to-folder', files.moveToFolder);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

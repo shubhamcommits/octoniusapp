@@ -30,13 +30,13 @@ function prodConfigInit() {
   // Sendgrid Key
   process.env.SENDGRID_KEY = process.env.SENDGRID_KEY
 
-  // Slack WebHook URL
-  process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL
-
   // Slack Keys
   process.env.SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID
   process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET
   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN
+
+  process.env.TEAMS_BOT_URL = process.env.TEAMS_BOT_URL || 'https://connect.octonius.com'
+
 
   // Stripe Keys
   process.env.SK_STRIPE = process.env.SK_STRIPE

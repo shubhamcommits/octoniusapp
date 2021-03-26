@@ -2,10 +2,11 @@ import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { UserService } from 'src/shared/services/user-service/user.service';
 import { SubSink } from 'subsink';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-welcome-page',
@@ -21,6 +22,8 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     repeatPassword: null
   };
 
+  queryParms:any;
+
   publicFunctions = new PublicFunctions(this._Injector);
 
   // ADD ALL SUBSCRIPTIONS HERE TO DESTROY THEM ALL TOGETHER
@@ -29,8 +32,10 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
   constructor(
     private authenticationService: AuthService,
     private utilityService: UtilityService,
+    public userService: UserService,
     private storageService: StorageService,
     public router: Router,
+    public activeRouter :ActivatedRoute,
     private _Injector: Injector
   ) { }
 
@@ -41,6 +46,12 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     this.publicFunctions.sendUpdatesToRouterState({});
     this.publicFunctions.sendUpdatesToUserData({});
     this.publicFunctions.sendUpdatesToWorkspaceData({});
+
+    // Getting the query params teams_permission_url if exist
+    this.activeRouter.queryParams.subscribe(params => {
+      if (params['teams_permission_url']) {
+        this.queryParms = params;
+    }});
   }
 
   /**
@@ -98,10 +109,12 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     return new Promise((resolve, reject) => {
       this.subSink.add(this.authenticationService.signIn(userData)
         .subscribe((res) => {
-          this.clearAccountData();
-          this.storeAccountData(res);
-
-          this.router.navigate(['authentication', 'select-workspace'])
+          // If query params exsit then add the teams permission page url to parms of next redirect url.
+          // note:- Code is for teams auth popup not for octonius app and only work in that case.
+          if(this.queryParms){
+            this.clearAccountData();
+            this.storeAccountData(res);
+            this.router.navigate(['authentication', 'select-workspace'],{ queryParams: { next:this.queryParms.teams_permission_url }})
             .then(() => {
               this.utilityService.successNotification(`Hi ${res['account']['first_name']}, welcome back!`);
               resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['account']['first_name']}, welcome back!`));
@@ -112,6 +125,24 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
               this.storageService.clear();
               reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
             })
+            // else normal flow
+          } else { 
+
+            this.clearAccountData();
+            this.storeAccountData(res);
+            
+            this.router.navigate(['authentication', 'select-workspace'])
+              .then(() => {
+                this.utilityService.successNotification(`Hi ${res['account']['first_name']}, welcome back!`);
+                resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['account']['first_name']}, welcome back!`));
+              })
+              .catch((err) => {
+                console.error('Error occured while signing in the user', err);
+                this.utilityService.errorNotification('Oops some error occured while signing you in, please try again!');
+                this.storageService.clear();
+                reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+              })
+          }
         }, (err) => {
           console.error('Error occured while signing in the user', err);
           reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))

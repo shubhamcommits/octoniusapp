@@ -49,7 +49,7 @@ export const environment = {
   WORKSPACE_BASE_API_URL: 'http://localhost:80/api/workspaces',
 
   // Slack Auth URLs
-  SLACK_BASE_API_URL: `http://localhost:80/api/integrations`,
+  INTEGRATIONS_BASE_API_URL: `http://localhost:80/api/integrations`,
 
   // User URLs
   USER_BASE_URL: 'http://localhost:80/users',

@@ -490,4 +490,44 @@ export class GroupFilesComponent implements OnInit {
           })
       }))
   }
+
+  /**
+   * This method move the item to a specific folder
+   *
+   * @param itemId item to move
+   * @param folderId destination folder
+   * @param type type of item to move
+   */
+  moveToFolder(itemId: string, folderId: string, type: string) {
+    // Ask User to remove this file or not
+    this.utilityService.getConfirmDialogAlert()
+      .then((result) => {
+        if (result.value) {
+          // Move the item
+          this.utilityService.asyncNotification('Please wait, we are moving the item...', new Promise((resolve, reject) => {
+            if (type == 'file') {
+              this.filesService.moveToFolder(itemId, folderId)
+                .then((res) => {
+                  // Remove the file from the list
+                  this.files = this.files.filter(file => file._id !== itemId);
+
+                  resolve(this.utilityService.resolveAsyncPromise('File moved!'));
+                }).catch((err) => {
+                  reject(this.utilityService.rejectAsyncPromise('Unable to move the file, please try again!'));
+                });
+            } else if (type == 'folder') {
+              this.foldersService.moveToFolder(itemId, folderId)
+                .then((res) => {
+                  // Remove the file from the list
+                  this.folders = this.folders.filter(folder => folder._id !== itemId);
+
+                  resolve(this.utilityService.resolveAsyncPromise('Folder moved!'));
+                }).catch((err) => {
+                  reject(this.utilityService.rejectAsyncPromise('Unable to move the folder, please try again!'));
+                });
+            }
+          }));
+        }
+      });
+  }
 }

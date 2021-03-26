@@ -6,7 +6,6 @@ import { Group } from './group.model';
 import { Post } from './post.model';
 import { User } from './user.model';
 import { Workspace } from './workspace.model';
-import { SlackAuth } from './slack.model';
 import { Comment } from './comment.model';
 import { Notification } from './notification.model';
 /*  =====================
@@ -38,10 +37,6 @@ export {
 
     // FLOW
     Flow as Flow,
-
-    //SLACK AUTH
-
-    SlackAuth as SlackAuth,
 
      // COMMENT
      Comment as Comment,

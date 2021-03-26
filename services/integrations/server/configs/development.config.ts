@@ -30,14 +30,12 @@ function devConfigInit() {
   // Sendgrid Key
   process.env.SENDGRID_KEY = process.env.SENDGRID_KEY || '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'
 
-  // Slack WebHook URL
-  process.env.SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || 'https://hooks.slack.com/services/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'
-
   // Slack Keys
   process.env.SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID || "2561616476.1145669381443"
   process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET || "acaf1f9b8e2c2607124c74ea9273a2ed"
   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN || "xoxb-2561616476-1145480914898-bFLn6YJrfzbJ9jvCTU34uNuu"
 
+  process.env.TEAMS_BOT_URL = process.env.TEAMS_BOT_URL || 'https://connect.octonius.com'
   // Stripe Keys
   process.env.SK_STRIPE = process.env.SK_STRIPE || 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
   process.env.STRIPE_PLAN = process.env.STRIPE_PLAN || 'plan_EK1uRUJLJcDS6e';
@@ -102,7 +100,7 @@ function devConfigInit() {
   process.env.CLIENT_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.CLIENT_PORT}`
 
   // Image Process URL for Notification
-  process.env.IMAGE_PROCESS_URL = process.env.IMAGE_PROCESS_URL || 'https://db0f72effff7.ngrok.io/uploads'
+  process.env.IMAGE_PROCESS_URL = process.env.IMAGE_PROCESS_URL 
 };
 
 export { devConfigInit as developmentConfig }
