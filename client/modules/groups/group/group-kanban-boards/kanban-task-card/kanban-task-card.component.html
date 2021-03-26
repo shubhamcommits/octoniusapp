@@ -1,19 +1,18 @@
-            <div class="media" (click)="openFullscreenModal(task)">
-              <div class="media-body">
-                  <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title }}</h5>
-                  <span class="small"
-                      *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
-                      [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
-                    {{ formateDate(task?.task?.due_to, "MMM D, YYYY") }}
-                    <i *ngIf="columnsList?.project_type && isDelay(task?.task?.due_to, columnsList?.due_date)" class="material-icons" style="color: #eb5757;">error</i>
-                  </span>
-                  <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
-                    *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
-                    {{ task?.task?.custom_fields['priority'] }}
-                  </div>
-                <!-- PRIORITY design added  -->
-              </div>
-              <app-assignee-avatar [post]="task" [userData]="userData" style="margin-right: 10px;"></app-assignee-avatar>
-            </div>
-   
-            
+<div class="task media" [ngClass]="getTaskClass(task?.task?.status, task?.task?.isNorthStar, task?.task?.is_milestone)">
+  <div class="media-body">
+      <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title }}</h5>
+      <span class="small"
+          *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
+          [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
+        {{ formateDate(task?.task?.due_to, "MMM D, YYYY") }}
+        <i *ngIf="column?.project_type && isDelay(task?.task?.due_to, column?.due_date)" class="material-icons" style="color: #eb5757;">error</i>
+      </span>
+      <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
+        *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+        {{ task?.task?.custom_fields['priority'] }}
+      </div>
+    <!-- PRIORITY design added  -->
+  </div>
+  <app-assignee-avatar [post]="task" [userData]="userData" style="margin-right: 10px;"></app-assignee-avatar>
+</div>
+

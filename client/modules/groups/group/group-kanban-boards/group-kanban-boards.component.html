@@ -1,7 +1,7 @@
 
 <div class="board">
     <div class="board-wrapper">
-      
+
         <!-- ALL COLUMN DETAILS STARTS -->
         <div class="board-columns" cdkDropListGroup *ngIf="this.columns">
             <div class="board-column" id="column._id" *ngFor="let column of columns; let i = index;">
@@ -76,7 +76,8 @@
                 <!-- COLUMN PROJECT SECTION ENDS -->
 
                 <!-- TASK CONTAINER STARTS -->
-                <div class="tasks-container" [id]="column._id" cdkDropList [cdkDropListData]="column.tasks"
+                <div *ngIf="!isMobile" class="tasks-container" [id]="column._id"
+                    cdkDropList [cdkDropListData]="column.tasks"
                     (cdkDropListDropped)="drop($event)">
 
                     <!-- CREATE TASK STARTS -->
@@ -85,38 +86,24 @@
                     <!-- CREATE TASK ENDS -->
 
                     <!-- TASK DETAILS STARTS -->
-                    <!-- add class="status-todo" or status-inprogress or status-done for each status accordingly -->               
-                  
-                    <div *ngIf="!isMobile">
-                       <div class="task"
-                        [ngClass]="getTaskClass(task?.task?.status, task?.task?.isNorthStar, task?.task?.is_milestone)"
-                        *ngFor="let task of column.tasks; let j = index;" cdkDrag>
-                        <app-kanban-task-card [columnsList]="this.columns" [task]="task"></app-kanban-task-card> 
-                       </div>
-                    </div>
-                    <div *ngIf = "isMobile">
-                        <div class="task"
-                        [ngClass]="getTaskClass(task?.task?.status, task?.task?.isNorthStar, task?.task?.is_milestone)"
-                        *ngFor="let task of column.tasks; let j = index;">
-                        <app-kanban-task-card [columnsList]="this.columns" [task]="task"></app-kanban-task-card> 
-                        </div>
-                    </div> 
-
+                    <app-kanban-task-card cdkDrag class="" *ngFor="let task of column.tasks; let j = index;"
+                      (click)="openFullscreenModal(task)"  [column]="column" [task]="task">
+                      <div *cdkDragPlaceholder></div>
+                    </app-kanban-task-card>
                     <!-- TASK DETAILS ENDS -->
+                </div>
+                <!-- FOR MOBILE WE DISABLE THE DRAG & DROP FUNCTIONALITY -->
+                <div *ngIf="isMobile" class="tasks-container" [id]="column._id">
+                    <!-- CREATE TASK STARTS -->
+                    <app-new-task [groupData]="groupData" [userData]="userData" [column]="column"
+                        (post)="getPost($event, column)"></app-new-task>
+                    <!-- CREATE TASK ENDS -->
 
-                    <!-- DONE TASKS -->
-                    <!--
-                    <app-done-tasks-kanban-view *ngIf="column.tasks.done"
-                      [tasks]="column.tasks.done"
-                      [columns]="columns"
-                      [groupData]="groupData"
-                      [userData]="userData"
-                      (closeModalEvent)="onModalCloseEvent($event)"
-                      (deleteEvent)="onDeleteDoneEvent($event)">
-                    </app-done-tasks-kanban-view>
-                    -->
-                    <!-- DONE TASKS ENDS -->
-
+                    <!-- TASK DETAILS STARTS -->
+                    <app-kanban-task-card class="" *ngFor="let task of column.tasks; let j = index;"
+                      (click)="openFullscreenModal(task)"  [column]="column" [task]="task">
+                    </app-kanban-task-card>
+                    <!-- TASK DETAILS ENDS -->
                 </div>
                 <!-- TASK CONTAINER ENDS -->
             </div>

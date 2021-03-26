@@ -17,7 +17,7 @@ import { CreateProjectColumnDialogComponent } from './create-project-column-dial
   styleUrls: ['./group-kanban-boards.component.scss']
 })
 export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
-  
+
   constructor(
     private router: ActivatedRoute,
     public utilityService: UtilityService,
@@ -339,23 +339,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         column.tasks.reverse();
       });
     }
-  }
-
-  getTaskClass(status, isNorthStar, isMilestone) {
-    let taskClass = '';
-    if (status === 'to do') {
-      taskClass = 'status-todo';
-    } else if (status === 'in progress') {
-      taskClass = 'status-inprogress';
-    } else if (status === 'done') {
-      taskClass = 'status-done';
-    }
-
-    if(isMilestone){
-      taskClass = taskClass + ' milestone'
-    }
-
-    return (isNorthStar) ? taskClass + ' north-star' : taskClass;
   }
 
   /**
