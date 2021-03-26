@@ -86,8 +86,11 @@
                     <!-- CREATE TASK ENDS -->
 
                     <!-- TASK DETAILS STARTS -->
-                    <app-kanban-task-card cdkDrag class="" *ngFor="let task of column.tasks; let j = index;"
-                      (click)="openFullscreenModal(task)"  [column]="column" [task]="task">
+                    <app-kanban-task-card cdkDrag *ngFor="let task of column.tasks; let j = index;"
+                        (click)="openFullscreenModal(task)"
+                        [isProject]="column?.project_type"
+                        [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
+                        [task]="task">
                       <div *cdkDragPlaceholder></div>
                     </app-kanban-task-card>
                     <!-- TASK DETAILS ENDS -->
@@ -100,8 +103,11 @@
                     <!-- CREATE TASK ENDS -->
 
                     <!-- TASK DETAILS STARTS -->
-                    <app-kanban-task-card class="" *ngFor="let task of column.tasks; let j = index;"
-                      (click)="openFullscreenModal(task)"  [column]="column" [task]="task">
+                    <app-kanban-task-card *ngFor="let task of column.tasks; let j = index;"
+                      (click)="openFullscreenModal(task)"
+                      [isProject]="column?.project_type"
+                      [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
+                      [task]="task">
                     </app-kanban-task-card>
                     <!-- TASK DETAILS ENDS -->
                 </div>

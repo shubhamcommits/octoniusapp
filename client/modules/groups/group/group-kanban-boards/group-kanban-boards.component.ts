@@ -777,27 +777,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   }
 
   /**
-   * This function checks the task board if a particular task is overdue or not
-   * @param taskPost
-   * And applies the respective ng-class
-   *
-   * -----Tip:- Don't make the date functions asynchronous-----
-   *
-   */
-  checkOverdue(taskPost: any) {
-    return (taskPost.status != 'done') &&
-      (taskPost.task && moment.utc(taskPost.task.due_to).format('YYYY-MM-DD') < this.today);
-  }
-
-  /**
    * This function is responsible for closing the modals
    */
   closeModal() {
     this.utilityService.closeAllModals()
-  }
-
-  getPriorityClass(priority: string) {
-    return 'label-priority ' + priority.toLocaleLowerCase();
   }
 
   onTaskClonned(data) {

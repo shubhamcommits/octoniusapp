@@ -11,7 +11,8 @@ import { PublicFunctions } from 'modules/public.functions';
 })
 export class KanbanTaskCardComponent {
 
-  @Input() column: any;
+  @Input() isProject: Boolean;
+  @Input() isDelay: Boolean;
   @Input() task: any;
 
   // Current User Data
@@ -47,10 +48,6 @@ export class KanbanTaskCardComponent {
 
   formateDate(date: any, format: string) {
     return date ? moment.utc(date).format(format) : '';
-  }
-
-  isDelay(realDueDate: any, dueDate: any) {
-    return moment(realDueDate).isAfter(moment(dueDate), 'day');
   }
 
   getPriorityClass(priority: string) {
