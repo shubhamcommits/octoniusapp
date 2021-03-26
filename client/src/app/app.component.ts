@@ -87,8 +87,24 @@ export class AppComponent {
     this.subSink.unsubscribe();
   }
 
+ /**
+   * This function is to check that the user is logged in or not and also the url is not /dashboard/user/teams
+   *  to hide the nav bars
+   */
   myAuthCheck() {
-    return this.storageService.existData('authToken');
+    let url = this._router.url;
+    let finalstate:boolean; 
+    // user is logged in and url is not /dashboard/user/teams show nav bars
+    // note:- Code is for teams auth popup not for octonius app and only work in that case.
+    if(this.storageService.existData('authToken') && !url.includes('/dashboard/user/teams')){
+      finalstate = true ;
+    } 
+     // don't show nav bars
+    else {
+      finalstate = false ;
+    }
+
+    return finalstate;
   }
   /**
    * This function checks for the active internet connection

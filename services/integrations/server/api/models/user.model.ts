@@ -149,6 +149,50 @@ const UserSchema = new Schema({
         is_slack_connected: {
             type: Boolean,
             default: null
+        },
+        is_teams_connected:{
+            type: Boolean,
+            default: false
+        },
+        slack: {
+            token: {
+                type: String,
+                default: null
+            },
+            bot_access_token: {
+                type: String,
+                default: null
+            },
+            slack_user_id: {
+                type: String,
+                default: null
+            },
+            team_name: {
+                type: String,
+                default: null
+            },
+            team_id: {
+                type: String,
+                default: null
+            },
+            incoming_webhook: {
+                type: String,
+                default: null
+            }
+        },
+        teams: {
+            user_object_id: {
+                type: String,
+                default: null
+            },
+            user_id: {
+                type: String,
+                default: null
+            },
+            tenant_id: {
+                type: String,
+                default: null
+            }
         }
     },
     out_of_office: [{

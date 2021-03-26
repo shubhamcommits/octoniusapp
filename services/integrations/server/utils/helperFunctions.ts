@@ -1,8 +1,4 @@
-import { IntegrationService } from "../api/service"
 import { Post, Comment, User } from "../api/models";
-
-// Create Notifications controller class
-const integrationService = new IntegrationService()
 
 /**
  * This function is responsible for generating the notifications Object

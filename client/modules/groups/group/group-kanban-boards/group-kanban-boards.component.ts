@@ -50,6 +50,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
   unchangedColumns: any;
 
+  isMobile = false;
 
   @Output() taskClonnedEvent = new EventEmitter();
   @Output() newSectionEvent = new EventEmitter();
@@ -338,23 +339,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         column.tasks.reverse();
       });
     }
-  }
-
-  getTaskClass(status, isNorthStar, isMilestone) {
-    let taskClass = '';
-    if (status === 'to do') {
-      taskClass = 'status-todo';
-    } else if (status === 'in progress') {
-      taskClass = 'status-inprogress';
-    } else if (status === 'done') {
-      taskClass = 'status-done';
-    }
-
-    if(isMilestone){
-      taskClass = taskClass + ' milestone'
-    }
-
-    return (isNorthStar) ? taskClass + ' north-star' : taskClass;
   }
 
   /**
@@ -793,27 +777,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   }
 
   /**
-   * This function checks the task board if a particular task is overdue or not
-   * @param taskPost
-   * And applies the respective ng-class
-   *
-   * -----Tip:- Don't make the date functions asynchronous-----
-   *
-   */
-  checkOverdue(taskPost: any) {
-    return (taskPost.status != 'done') &&
-      (taskPost.task && moment.utc(taskPost.task.due_to).format('YYYY-MM-DD') < this.today);
-  }
-
-  /**
    * This function is responsible for closing the modals
    */
   closeModal() {
     this.utilityService.closeAllModals()
-  }
-
-  getPriorityClass(priority: string) {
-    return 'label-priority ' + priority.toLocaleLowerCase();
   }
 
   onTaskClonned(data) {
@@ -861,5 +828,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
   isDelay(realDueDate: any, dueDate: any) {
     return moment(realDueDate).isAfter(moment(dueDate), 'day');
+  }
+  ngAfterViewInit() {
+    this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
+
   }
 }
