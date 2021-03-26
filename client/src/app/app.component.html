@@ -1,6 +1,6 @@
-<app-navbar *ngIf="myAuthCheck() && !isMobile" [groupId]="groupId" [routerFromEvent]="routerFromEvent"></app-navbar>
-<app-mobile-navbar *ngIf="myAuthCheck() && isMobile" [groupId]="groupId" [routerFromEvent]="routerFromEvent"></app-mobile-navbar>
+<app-navbar *ngIf="isAuth && !isMobile" [groupId]="groupId" [routerFromEvent]="routerFromEvent"></app-navbar>
+<app-mobile-navbar *ngIf="isAuth && isMobile" [groupId]="groupId" [routerFromEvent]="routerFromEvent"></app-mobile-navbar>
 
-<router-outlet *ngIf="!myAuthCheck()">
+<router-outlet *ngIf="!isAuth">
   <ngx-ui-loader></ngx-ui-loader>
 </router-outlet>
