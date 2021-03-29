@@ -11,7 +11,7 @@ import { UserService } from "src/shared/services/user-service/user.service";
   styleUrls: ['./user-update-user-information-dialog.component.scss']
 })
 export class UserUpdateUserInformationDialogComponent implements OnInit {
-  
+
   @Output() closeEvent = new EventEmitter();
   // Public functions class member
   publicFunctions = new PublicFunctions(this.injector);
@@ -55,15 +55,15 @@ export class UserUpdateUserInformationDialogComponent implements OnInit {
     this.utilityService.asyncNotification('Please wait we are updating your information...', new Promise((resolve, reject) => {
       this.publicFunctions.userDetailsServiceFunction(this.userService,data)
         .then((res) => {
-          
+
           this.closeEvent.emit(res);
           this.mdDialogRef.close();
 
           resolve(this.utilityService.resolveAsyncPromise('Details updated sucessfully!'));
         }).catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise('An unexpected occured while updating the details, please try again!'));
+          reject(this.utilityService.rejectAsyncPromise(err.error.message || 'An unexpected occured while updating the details, please try again!'));
         });
-    }));    
+    }));
   }
 
 }

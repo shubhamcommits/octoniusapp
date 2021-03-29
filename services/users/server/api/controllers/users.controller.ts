@@ -163,8 +163,40 @@ export class UsersControllers {
 
         try {
 
+            let user: any = await User.findById({ _id: userId }).select('email').lean();
+            
+            if (body.email && body.first_name && body.last_name) {
+
+                let account: any = await Account.findOne({
+                    email: body.email
+                }).select('email').lean();
+
+                if (account && account.email != user.email) {
+                    return sendError(res, new Error('The email already exist and assigned to other user, so it cannot be updated!'), 'The email already exist and assigned to other user, so it cannot be updated!', 404);
+                }
+
+                // Find the user and update it on the basis of the userId
+                account = await Account.findOneAndUpdate({
+                        email: user.email
+                    }, {
+                        $set: {
+                            email: body.email,
+                            first_name: body.first_name,
+                            last_name: body.last_name
+                        }
+                    }, {
+                        new: true
+                    })
+                    .select('_id email _workspaces first_name last_name created_date').lean();
+    
+                // If user not found
+                if (!account) {
+                    return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+                }
+            }
+
             // Find the user and update it on the basis of the userId
-            const user: any = await User.findByIdAndUpdate({
+            user = await User.findByIdAndUpdate({
                     _id: userId
                 }, {
                     $set: body
@@ -186,33 +218,14 @@ export class UsersControllers {
                 return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
             }
 
-            if (body.email && body.first_name && body.last_name) {
-                // Find the user and update it on the basis of the userId
-                const account: any = await Account.findOneAndUpdate({
-                        email: user._account.email
-                    }, {
-                        $set: {
-                            email: body.email,
-                            first_name: body.first_name,
-                            last_name: body.last_name
-                        }
-                    }, {
-                        new: true
-                    })
-                    .select('_id email _workspaces first_name last_name created_date').lean();
-    
-                // If user not found
-                if (!account) {
-                    return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
-                }
-    
-                user._account.email = account.email;
-            }
-
             if (user['stats'] && user['stats']['favorite_groups']) {
                 user['stats']['favorite_groups'].sort(function(a, b) {
                   return b.group_name - a.group_name;
                 });
+            }
+    
+            if (body.email) {
+                user._account.email = body.email;
             }
 
             // Send user to the mgmt portal
