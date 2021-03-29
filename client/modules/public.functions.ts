@@ -506,7 +506,7 @@ export class PublicFunctions {
         return new Promise((resolve, reject) => {
             userService.updateUser(userData)
                 .then((res) => resolve(res['user']))
-                .catch(() => reject({}))
+                .catch((error) => reject(error))
         })
     }
 
