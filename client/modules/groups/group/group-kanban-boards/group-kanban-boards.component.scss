@@ -1,5 +1,4 @@
-$box-shadow: 0 4px 24px 0 rgba(37, 38, 94, 0.1);
-$border-color: #e4edf8;
+@import "src/assets/scss/variables";
 
 .has-gradient-text {
     background: -webkit-linear-gradient(#13f7f4, #2af598);
@@ -107,16 +106,7 @@ $border-color: #e4edf8;
     width: 0 !important;
 }
 
-.task {
-    // display: flex;
-    padding: 8px;
-    background: white;
-    border: 1px solid $border-color;
-    border-radius: 4px;
-    margin-bottom: 8px;
-    // width: 320px;
-    transition: box-shadow 0.3s ease-in-out;
-}
+
 
 .cdk-drag-preview {
     box-sizing: border-box;
@@ -137,17 +127,6 @@ $border-color: #e4edf8;
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.kanban-card-title {
-    // margin-top: 15%;
-    // margin-left: -80px;
-    font-weight: 400;
-    font-size: 15px;
-    color: #242d3a;
-    cursor: pointer;
-    width: 100%;
-    white-space: normal;
-}
-
 .due-date {
     margin-left: auto;
 }
@@ -156,32 +135,13 @@ $border-color: #e4edf8;
     content: none;
 }
 
-$pumpkin-orange: #ffab00;
-$turquoise: #0bc6a0;
-$dark-sky-blue: #4a90e2;
-
-.status-todo {
-    border-left: 3px solid $pumpkin-orange;
-}
-.status-inprogress {
-    border-left: 3px solid $turquoise;
-}
-.status-done {
-    border-left: 3px solid $dark-sky-blue;
-}
-
 .milestone {
     background: #AADBC9;
 }
 
 .north-star {
-    // background: linear-gradient(90.01deg, rgba(94, 47, 229, 0.71) 0.01%, #5a206b 99.99%),
-    //     url(/assets/images/bg-north-star.jpg);
-    // background-size: cover;
     background: #E5DEFB;
     border-left: 3px solid #5E2FE5;
-
-
 
     .due {
         color: #ffffff;
@@ -212,9 +172,7 @@ img:hover {
     transform: scale(1.1);
 }
 
-.task:hover {
-    box-shadow: $box-shadow;
-}
+
 
 .dropdown-menu {
     top: 20px !important;

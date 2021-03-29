@@ -76,7 +76,8 @@
                 <!-- COLUMN PROJECT SECTION ENDS -->
 
                 <!-- TASK CONTAINER STARTS -->
-                <div class="tasks-container" [id]="column._id" cdkDropList [cdkDropListData]="column.tasks"
+                <div *ngIf="!isMobile" class="tasks-container" [id]="column._id"
+                    cdkDropList [cdkDropListData]="column.tasks"
                     (cdkDropListDropped)="drop($event)">
 
                     <!-- CREATE TASK STARTS -->
@@ -85,46 +86,30 @@
                     <!-- CREATE TASK ENDS -->
 
                     <!-- TASK DETAILS STARTS -->
-                    <!-- add class="status-todo" or status-inprogress or status-done for each status accordingly -->
-                    <div class="task"
-                        [ngClass]="getTaskClass(task?.task?.status, task?.task?.isNorthStar, task?.task?.is_milestone)"
-                        *ngFor="let task of column.tasks; let j = index;" cdkDrag>
-
-                        <div class="media" (click)="openFullscreenModal(task)">
-                          <div class="media-body">
-                              <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title }}</h5>
-                              <span class="small"
-                                  *ngIf="task?.task?.due_to != 'Invalid date' && task?.task?.status != 'done'"
-                                  [ngClass]="checkOverdue(task) === true ? 'overdue' : 'due'">
-                                {{ formateDate(task?.task?.due_to, "MMM D, YYYY") }}
-                                <i *ngIf="column?.project_type && isDelay(task?.task?.due_to, column?.due_date)" class="material-icons" style="color: #eb5757;">error</i>
-                              </span>
-                              <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
-                                *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
-                                {{ task?.task?.custom_fields['priority'] }}
-                              </div>
-                              <!-- PRIORITY design added -->
-                          </div>
-
-                          <app-assignee-avatar [post]="task" [userData]="userData" style="margin-right: 10px;"></app-assignee-avatar>
-                        </div>
-
-                    </div>
+                    <app-kanban-task-card cdkDrag *ngFor="let task of column.tasks; let j = index;"
+                        (click)="openFullscreenModal(task)"
+                        [isProject]="column?.project_type"
+                        [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
+                        [task]="task">
+                      <div *cdkDragPlaceholder></div>
+                    </app-kanban-task-card>
                     <!-- TASK DETAILS ENDS -->
+                </div>
+                <!-- FOR MOBILE WE DISABLE THE DRAG & DROP FUNCTIONALITY -->
+                <div *ngIf="isMobile" class="tasks-container" [id]="column._id">
+                    <!-- CREATE TASK STARTS -->
+                    <app-new-task [groupData]="groupData" [userData]="userData" [column]="column"
+                        (post)="getPost($event, column)"></app-new-task>
+                    <!-- CREATE TASK ENDS -->
 
-                    <!-- DONE TASKS -->
-                    <!--
-                    <app-done-tasks-kanban-view *ngIf="column.tasks.done"
-                      [tasks]="column.tasks.done"
-                      [columns]="columns"
-                      [groupData]="groupData"
-                      [userData]="userData"
-                      (closeModalEvent)="onModalCloseEvent($event)"
-                      (deleteEvent)="onDeleteDoneEvent($event)">
-                    </app-done-tasks-kanban-view>
-                    -->
-                    <!-- DONE TASKS ENDS -->
-
+                    <!-- TASK DETAILS STARTS -->
+                    <app-kanban-task-card *ngFor="let task of column.tasks; let j = index;"
+                      (click)="openFullscreenModal(task)"
+                      [isProject]="column?.project_type"
+                      [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
+                      [task]="task">
+                    </app-kanban-task-card>
+                    <!-- TASK DETAILS ENDS -->
                 </div>
                 <!-- TASK CONTAINER ENDS -->
             </div>
