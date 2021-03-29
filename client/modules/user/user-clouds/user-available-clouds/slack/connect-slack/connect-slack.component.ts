@@ -45,10 +45,10 @@ export class ConnectSlackComponent implements OnInit {
           try {
             this.utilityService.asyncNotification('Please wait, while we are authenticating the slack...', new Promise((resolve, reject) => {
               this.userService.slackAuth(params['code'], this.userData)
-                .subscribe(() => {
+              .subscribe((res) => {
                   // Resolve the promise
                   setTimeout(() => {
-                    this.updateUserData();
+                    this.updateUserData(res);
                   }, 1000);
                   
                   resolve(this.utilityService.resolveAsyncPromise('Authenticated Successfully!'))
@@ -76,12 +76,8 @@ export class ConnectSlackComponent implements OnInit {
 /**
    * This function is responsible to update user slack connection status.
    */
-  async updateUserData(){
-    this.userData = await this.publicFunctions.getCurrentUser();
-    let newuserdata = JSON.parse(JSON.stringify(this.userData));
-    newuserdata.integrations = {"is_slack_connected" : true};
-    this.userData = newuserdata;
-    await this.userService.updateUser(this.userData);
+  async updateUserData(newUserData){
+    await this.userService.updateUser(newUserData);
     await this.publicFunctions.sendUpdatesToUserData(this.userData);
     this.slackAuthSuccessful = true;
     this.userService.slackConnected().emit(true);

@@ -105,9 +105,9 @@ export class SlackController {
                         // If user get groups data
                         if (userOctonius) {
                             // Find groups admin with user _id where user is admin
-                            let groupsByAdmin = await Group.find({_admins:user._id});
+                            let groupsByAdmin = await Group.find({_admins:userOctonius._id});
                             // Find groups admin with user _id where user is member
-                            let groupsByMember = await Group.find({_members:user._id});
+                            let groupsByMember = await Group.find({_members:userOctonius._id});
                             // Merge the member groups to admin groups
                             groupsByMember.forEach(groups => {
                                 groupsByAdmin.push(groups);
@@ -617,7 +617,7 @@ export class SlackController {
                 { $set: { integrations: integration }},
                 { new: true });
 
-            res.status(200).json(slackUserData);
+            res.status(200).json(update_user);
 
         } else {
 
