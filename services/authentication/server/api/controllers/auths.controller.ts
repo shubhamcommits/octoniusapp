@@ -495,7 +495,23 @@ export class AuthsController {
             // Find the account with having the same email as in req.body
             let account = await Account.findOne({
                 email: email
-            }).populate('_workspaces', '_id workspace_name workspace_avatar');
+            }).populate('_workspaces', '_id workspace_name workspace_avatar').lean();
+
+            // TODO - workaround until we figure out where is the email set to null in Account model.
+            if (!account) {
+                // if the account doesn´t exist, we check if the email is in any user
+                const users: any = await User.find({
+                    email: email
+                }).select('_account').lean();
+
+                if (!users) {
+                    return sendError(res, new Error('Email not found!'), 'Email not found!', 401);
+                }
+
+                account = await Account.findOne({
+                    _id: (users[0]._account._id || users[0]._account)
+                }).populate('_workspaces', '_id workspace_name workspace_avatar').lean();
+            }
 
             // If user wasn't found or user was previsously removed/disabled, return error
             if (!account) {
