@@ -74,36 +74,6 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    // Return the function via stopping the loader
-    this.isLoading$.next(false);
-    this.userData = await this.publicFunctions.getCurrentUser();
-    this.router.queryParams.subscribe(params => {
-      if (params['code']) {
-        try {
-          this.utilityService.asyncNotification('Please wait, while we are authenticating the slack...', new Promise((resolve, reject) => {
-            this.userService.slackAuth(params['code'], this.userData)
-              .subscribe(() => {
-                // Resolve the promise
-                resolve(this.utilityService.resolveAsyncPromise('Authenticated Successfully!'))
-                this.userData.integrations.is_slack_connected = true
-                this.userService.updateUser(this.userData);
-                this.publicFunctions.sendUpdatesToUserData(this.userData);
-              }),
-              ((err) => {
-                console.log('Error occured, while authenticating for Slack', err);
-                reject(this.utilityService.rejectAsyncPromise('Oops, an error occured while authenticating for Slack, please try again!'))
-              });
-            this._router.navigate(['/']);
-          }));
-        }
-        catch (err) {
-          console.log('There\'s some unexpected error occured, please try again!', err);
-          this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
-          this._router.navigate(['/']);
-        }
-      }
-    });
-
     const workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     if ((this.userData?.role == 'admin' || this.userData?.role == 'owner')
@@ -114,6 +84,9 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
         && !workspaceData['billing']?.subscription_id) {
       this.utilityService.openTryOutNotification(workspaceData['time_remaining']);
     }
+
+    // Return the function via stopping the loader
+    this.isLoading$.next(false);
   }
 
   /**
