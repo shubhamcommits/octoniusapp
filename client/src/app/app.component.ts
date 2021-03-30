@@ -62,6 +62,7 @@ export class AppComponent {
         } else {
           this.isAuth = false;
         }
+        console.log("this.isAuth",this.isAuth);
       }
 
     }))

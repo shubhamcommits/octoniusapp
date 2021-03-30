@@ -244,7 +244,7 @@ export class TeamsController {
                     { $set: { integrations: integration }},
                     { new: true });
 
-                res.status(200).json({ message: "Diconnected Successfully" });
+                res.status(200).json({ message: "Diconnected Successfully" , updatedUser});
             } else {
                 res.status(200).json({message: "Disconnection failed"});
             }
