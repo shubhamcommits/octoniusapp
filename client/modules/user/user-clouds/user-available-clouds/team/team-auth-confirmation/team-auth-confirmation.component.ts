@@ -44,12 +44,14 @@ export class TeamAuthConfirmationComponent implements OnInit {
   async alloweded() {
     const userAccount = await this.publicFunctions.getCurrentAccount();
     if (this.queryParms) {
+      
       this.userService.teamAuth(this.queryParms, userAccount)
-        .subscribe((res) => {
-        }),
-        ((err) => {
+      .subscribe((res) => {
+      }),
+      ((err) => {
           console.log('Error occured, while coonecting to teams', err);
-        });
+      });
+
       setTimeout(() => {
         if (this.queryParms['redirect_uri']){
           window.location.href = this.queryParms['redirect_uri'] + `/#access_token=notrequiredonlyforcheck&token_type=JWT&expires_in=1hr&state=${this.queryParms['state']}`;
@@ -57,6 +59,7 @@ export class TeamAuthConfirmationComponent implements OnInit {
           this.router.navigate(['dashboard', 'user', 'clouds']);
         }
       }, 2000);
+      
     }
   }
 
