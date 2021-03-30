@@ -111,10 +111,10 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
         .subscribe((res) => {
           // If query params exsit then add the teams permission page url to parms of next redirect url.
           // note:- Code is for teams auth popup not for octonius app and only work in that case.
-          if(this.queryParms){
+          if ( this.queryParms ) {
             this.clearAccountData();
             this.storeAccountData(res);
-            this.router.navigate(['authentication', 'select-workspace'],{ queryParams: { next:this.queryParms.teams_permission_url }})
+            this.router.navigate(['authentication', 'select-workspace'],{ queryParams: { teams_permission_url:this.queryParms.teams_permission_url }})
             .then(() => {
               this.utilityService.successNotification(`Hi ${res['account']['first_name']}, welcome back!`);
               resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['account']['first_name']}, welcome back!`));
