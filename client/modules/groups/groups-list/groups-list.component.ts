@@ -60,11 +60,11 @@ export class GroupsListComponent implements OnInit {
   public utilityService = this.injector.get(UtilityService);
 
   async ngOnInit() {
-    
-    // Starts the spinner 
+
+    // Starts the spinner
     this.isLoading$.next(true);
     this.isLoadingAgora$.next(true);
-    
+
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
       state: 'work'
@@ -98,7 +98,7 @@ export class GroupsListComponent implements OnInit {
     if (this.agoraGroups.length>0){
       this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups.length-1]['_id'];
     }
-    
+
     // Stops the spinner and return the value with ngOnInit
     this.isLoading$.next(false);
     this.isLoadingAgora$.next(false);
@@ -129,14 +129,14 @@ export class GroupsListComponent implements OnInit {
 
       // If we have 0 groups, then stop the function immediately and set moreToLoad to false
       if (nextPulseGroups.length == 0) {
-        
+
         // Set more to load to false and stop the function
         this.moreToLoad = false;
       }
 
       // If we have groups then update the userGroups array and lastGroupId
       if (this.moreToLoad) {
-        
+
         // Adding into exisiting array
         this.userGroups = [...this.userGroups, ...nextPulseGroups];
 
@@ -158,7 +158,7 @@ export class GroupsListComponent implements OnInit {
   public async AgoraScrolled(){
 
     let nextAgoraGroups:any = await this.publicFunctions.getNextAgoraGroups(this.workspaceData['_id'], this.userData['_id'], this.lastAgoraGroupId);
-    
+
     // Adding into existing array
     this.agoraGroups = [...this.agoraGroups, ...nextAgoraGroups];
 
@@ -184,8 +184,6 @@ export class GroupsListComponent implements OnInit {
   async joinGroup(groupId: any) {
     await this.publicFunctions.joinAgora(groupId, this.userData._id).then((res) => {
       this.router.navigateByUrl('/dashboard/work/groups/activity?group=' + groupId);
-    }).catch((err) => {
-      console.log(err);
     });
 
   }

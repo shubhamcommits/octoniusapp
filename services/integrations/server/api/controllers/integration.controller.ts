@@ -51,7 +51,7 @@ export class IntegrationController {
             
 
             if ( isTeamConnected && user.integrations.teams ) {            
-                await teamService.sendNotificationToTeam(data, user?.integrations?.teams?.user_id);
+                await teamService.sendNotificationToTeam(data, user?.integrations?.teams?.user_id,user?.integrations?.teams?.tenant_id);
             }
             
         } catch (error) {

@@ -208,7 +208,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     try {
       let results = await this.searchWorkspaceMembers(this.workspaceId, query.target['value']);
     } catch (err) {
-      this.publicFunctions.catchError(err);
+      this.publicFunctions.sendError(err);
     }
   }
 
@@ -220,7 +220,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
       })
 
     } catch (err) {
-      this.publicFunctions.catchError(err);
+      this.publicFunctions.sendError(err);
     }
   }
 

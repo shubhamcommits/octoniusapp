@@ -71,7 +71,7 @@ export class PublicFunctions {
             const userService = this.injector.get(UserService);
             this.subSink.add(userService.getUser()
                 .pipe(retry(3))
-                .subscribe((res) => resolve(res['user']), (err) => reject({}))
+                .subscribe((res) => resolve(res['user']), (err) => reject(err))
             )
         })
     }
@@ -81,7 +81,7 @@ export class PublicFunctions {
             const userService = this.injector.get(UserService);
             this.subSink.add(userService.getOtherUser(userId)
                 .pipe(retry(3))
-                .subscribe((res) => resolve(res['user']), (err) => reject({}))
+                .subscribe((res) => resolve(res['user']), (err) => reject(err))
             )
         })
     }
@@ -127,7 +127,7 @@ export class PublicFunctions {
             const userService = this.injector.get(UserService);
             this.subSink.add(userService.getAccount()
                 .pipe(retry(3))
-                .subscribe((res) => resolve(res['account']), (err) => reject({}))
+                .subscribe((res) => resolve(res['account']), (err) => reject(err))
             )
         })
     }
@@ -180,7 +180,7 @@ export class PublicFunctions {
                     (err) => {
                         console.log('Error occured while fetching the workspace details!', err);
                         utilityService.errorNotification('Error occured while fetching the workspace details, please try again!');
-                        reject({})
+                        reject(err)
                     })
             )
         })
@@ -205,7 +205,7 @@ export class PublicFunctions {
                 .catch((err) => {
                     console.log('Error occured while fetching the workspace members!', err);
                     utilityService.errorNotification('Error occured while fetching the workspace members!, please try again!');
-                    reject({})
+                    reject(err)
                 })
         })
     }
@@ -302,9 +302,9 @@ export class PublicFunctions {
                 .then((res) => {
                     resolve(res['group'])
                 })
-                .catch(() => {
+                .catch((err) => {
                     this.sendError(new Error('Unable to fetch the group details, please try again!'))
-                    reject({})
+                    reject(err)
                 })
         })
     }
@@ -375,8 +375,8 @@ export class PublicFunctions {
                 .then((res) => {
                     resolve(res)
                 })
-                .catch(() => {
-                    reject({})
+                .catch((err) => {
+                    reject(err)
                 })
         })
     }
@@ -401,7 +401,7 @@ export class PublicFunctions {
             })
 
         } catch (err) {
-            this.catchError(err);
+            this.sendError(err);
         }
     }
 
@@ -425,7 +425,7 @@ export class PublicFunctions {
             })
 
         } catch (err) {
-            this.catchError(err);
+            this.sendError(err);
         }
     }
 
@@ -530,7 +530,7 @@ export class PublicFunctions {
             })
 
         } catch (err) {
-            this.catchError(err);
+            this.sendError(err);
         }
     }
 
@@ -731,7 +731,7 @@ export class PublicFunctions {
                 .catch((err) => {
 
                     // Catch the error and reject the promise
-                    reject({})
+                    reject(err)
                 })
         })
     }
@@ -756,7 +756,7 @@ export class PublicFunctions {
                 .catch((err) => {
 
                     // Catch the error and reject the promise
-                    reject({})
+                    reject(err)
                 })
         })
     }
@@ -782,10 +782,9 @@ export class PublicFunctions {
                     // Resolve with sucess
                     resolve(res['columns']);
                 })
-                .catch(() => {
-
+                .catch((err) => {
                     // If there's an error, then reject with empty object
-                    reject({});
+                    reject(err);
                 })
         })
     }
@@ -907,12 +906,6 @@ export class PublicFunctions {
         return socketService.onEmit('userData', userId, userData).pipe(retry(Infinity)).subscribe()
     }
 
-    async catchError(err: Error) {
-        let utilityService = this.injector.get(UtilityService)
-        console.log('There\'s some unexpected error occured, please try again!', err);
-        utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
-    }
-
     async sendError(err: Error) {
         let utilityService = this.injector.get(UtilityService)
         console.log('There\'s some unexpected error occured, please try again!', err);
@@ -925,8 +918,8 @@ export class PublicFunctions {
             groupService.getAgoraGroupsNotJoined(workplaceId, userId).then((res) => {
                 resolve(res['group']);
             }).catch((err) => {
-                console.log(err);
-                reject();
+                this.sendError(err);
+                reject(err);
             })
         })
     }

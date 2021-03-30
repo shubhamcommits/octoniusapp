@@ -24,7 +24,7 @@ export class TeamAuthConfirmationComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeRouter.queryParams.subscribe(params => {
-      if (params['tid']) {
+      if ( params['tid'] ) {
         this.queryParms = params;
       }
     });
@@ -44,16 +44,24 @@ export class TeamAuthConfirmationComponent implements OnInit {
   async alloweded() {
     const userAccount = await this.publicFunctions.getCurrentAccount();
     if (this.queryParms) {
+      
       this.userService.teamAuth(this.queryParms, userAccount)
-        .subscribe((res) => {
-
-        }),
-        ((err) => {
+      .subscribe(async (res) => {
+        await this.userService.updateUser(res['update_user']);
+        await this.publicFunctions.sendUpdatesToUserData(res['update_user']);
+      }),
+      ((err) => {
           console.log('Error occured, while coonecting to teams', err);
-        });
+      });
+
       setTimeout(() => {
-        window.location.href = this.queryParms['redirect_uri'] + `/#access_token=notrequiredonlyforcheck&token_type=JWT&expires_in=1hr&state=${this.queryParms['state']}`;
+        if (this.queryParms['redirect_uri']){
+          window.location.href = this.queryParms['redirect_uri'] + `/#access_token=notrequiredonlyforcheck&token_type=JWT&expires_in=1hr&state=${this.queryParms['state']}`;
+        } else {
+          this.router.navigate(['dashboard', 'user', 'clouds']);
+        }
       }, 2000);
+
     }
   }
 
