@@ -50,7 +50,8 @@
               Save template
             </button>
 
-            <button class="assignee-list-item save-template" style="line-height: inherit;" mat-menu-item [matMenuTriggerFor]="templatesMenu" (mouseover)="saveTemplateAction('delete')" (click)="saveTemplateAction('delete')">
+            <button class="assignee-list-item save-template" style="line-height: inherit;" mat-menu-item [matMenuTriggerFor]="templatesMenu" (mouseover)="saveTemplateAction('delete')" (click)="saveTemplateAction('delete')"
+                *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || postData?._posted_by == userData?._id">
               <i class="material-icons-outlined">delete</i>
               Delete template
             </button>

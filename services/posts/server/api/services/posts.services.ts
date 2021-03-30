@@ -589,8 +589,7 @@ export class PostService {
         && !post._posted_by.equals(userId)
       ) {
         // Deny access!
-        throw (null);
-        // return sendErr(res, null, 'User not allowed to remove this post!', 403);
+        throw (new Error("User not allowed to remove this post!"));
       }
 
       // remove subtasks

@@ -9,14 +9,18 @@
   <button mat-menu-item *ngIf="mode !== 'fullscreen'" (click)="openFullscreenModal()">View</button>
   <button mat-menu-item (click)="copyToClipboard()">Copy Link</button>
 
-  <li class="dropdown-divider"></li>
+  <li class="dropdown-divider" *ngIf="post?.type !== 'task'"></li>
 
   <button mat-menu-item [matMenuTriggerFor]="copyMenu" *ngIf="post?.type !== 'task'">Copy to Group</button>
   <button mat-menu-item [matMenuTriggerFor]="moveMenu" *ngIf="post?.type !== 'task'">Move to Group</button>
 
-  <li class="dropdown-divider" *ngIf="post?.type !== 'task'"></li>
+  <li class="dropdown-divider" *ngIf="post?.type == 'task' && userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by == userData?._id"></li>
 
-  <button mat-menu-item (click)="deletePost()">Delete</button>
+  <button mat-menu-item (click)="deletePost()"
+      *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by == userData?._id">
+    Delete
+  </button>
+
 </mat-menu>
 
 <mat-menu #copyMenu="matMenu">
