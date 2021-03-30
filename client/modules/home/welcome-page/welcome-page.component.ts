@@ -114,7 +114,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
           if ( this.queryParms ) {
             this.clearAccountData();
             this.storeAccountData(res);
-            this.router.navigate(['authentication', 'select-workspace'],{ queryParams: { teams_permission_url:this.queryParms.teams_permission_url }})
+            this.router.navigate(['authentication', 'select-workspace'],{ queryParams: { teams_permission_url : this.queryParms.teams_permission_url }})
             .then(() => {
               this.utilityService.successNotification(`Hi ${res['account']['first_name']}, welcome back!`);
               resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['account']['first_name']}, welcome back!`));
