@@ -75,17 +75,22 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
           this.storeUserData(res);
           //if query parms exist redirect to teams permission page else normal flow 
           // note:- Code is for teams auth popup not for octonius app and only work in that case.
-          if(this.queryParms){
-            window.location.href = this.queryParms.teams_permission_url;
-          }
-          this.router.navigate(['dashboard', 'myspace', 'inbox'])
-            .then(() => {
+          setTimeout(() => {
+          console.log("this.queryParms 2",this.queryParms)
+            if ( this.queryParms ) {
               resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
-            })
-            .catch((err) => {
-              this.storageService.clear();
-              reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
-            })
+              window.location.href = this.queryParms.teams_permission_url;
+            } else {
+              this.router.navigate(['dashboard', 'myspace', 'inbox'])
+              .then(() => {
+                resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
+              })
+              .catch((err) => {
+                this.storageService.clear();
+                reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+              })
+            }
+          }, 500);
         }, (err) => {
           reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
         }))
