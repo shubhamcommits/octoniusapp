@@ -38,7 +38,7 @@ export class TeamsController {
         var integration = user['integrations'];
         //Update the is_teams_connected to true
         integration['is_teams_connected'] = true;
-        integration.teams = teamAuth
+        integration.teams = teamAuth;
 
         try {
             //Update user integrations
@@ -46,12 +46,13 @@ export class TeamsController {
                 { $set: { integrations: integration }},
                 { new: true });
             
+            res.status(200).json({message:"Successfully", update_user});
 
         } catch (error) {
             console.log("error", error);
+            res.status(200).json({message:"Error Occured faild",});
         }
 
-        res.status(200).json({message:"Successfully"});
     }
 
 
