@@ -150,21 +150,25 @@ export class ComponentSearchBarComponent implements OnInit {
           } else {
 
             // Fetch the results from the helper function
-            if (this.type === 'workspace')
+            if (this.type === 'workspace') {
               results = await this.publicFunctions.searchWorkspaceMembers(this.workspaceId, this.query) || []
+            }
 
             // Fetch the results from the helper function
-            if (this.type === 'group' || this.type === 'bar')
+            if (this.type === 'group' || this.type === 'bar') {
               results = await this.publicFunctions.searchGroupMembers(this.groupId, this.query) || []
+            }
 
             // Update the members array
             this.members = results['users'];
           }
         }
 
+        this.separateDisabled(this.members);
+
         // Set the loading state to be false
         this.isLoading$.next(false);
-      }))
+      }));
   }
 
   /**
@@ -206,9 +210,7 @@ export class ComponentSearchBarComponent implements OnInit {
                 .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the group, please try again!')))
             }))
         }
-      })
-
-
+      });
   }
 
   /**

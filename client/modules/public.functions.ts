@@ -506,44 +506,9 @@ export class PublicFunctions {
         return new Promise((resolve, reject) => {
             userService.updateUser(userData)
                 .then((res) => resolve(res['user']))
-                .catch(() => reject({}))
+                .catch((error) => reject(error))
         })
     }
-
-    /**
-     * This function is responsible for editing the user details
-     */
-    async editUserDetails(openModal, myfun?: Function) {
-
-        // Utility Service
-        const utilityService = this.injector.get(UtilityService);
-
-        // User service
-        let userService = this.injector.get(UserService);
-
-        // Open Model Function, which opens up the modal
-        const { value: value } = await openModal;
-        if (value) {
-            utilityService.asyncNotification('Please wait we are updating your information...',
-                new Promise((resolve, reject) => {
-                    this.userDetailsServiceFunction(userService, value)
-                        .then((user) => {
-                            // Send the updates to the userData in the app for the updated data
-                            this.sendUpdatesToUserData(user);
-                            // Resolve with success
-                            myfun(value)
-                            resolve(utilityService.resolveAsyncPromise('Details updated sucessfully!'))
-                        })
-                        .catch(() =>
-                            reject(utilityService.rejectAsyncPromise('An unexpected occured while updating the details, please try again!')))
-                }))
-        } else if (JSON.stringify(value) == '') {
-            utilityService.warningNotification('Kindly fill up all the details properly!');
-        }
-
-
-    }
-
 
     /**
      * This function is responsible for fetching the users present inside a workspace

@@ -40,21 +40,17 @@ export class PostController {
         // Fetch userId from the request
         const userId = req['userId'];
 
-        try {
-            // Call servide function for adding the post
-            const postData = await this.callAddPostService(post, userId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
+        // Call servide function for adding the post
+        const postData = await this.callAddPostService(post, userId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
 
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Post Added Successfully!',
-                post: postData
-            });
-        } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Post Added Successfully!',
+            post: postData
+        });
     }
 
     async callAddPostService(post: any, userId: string) {
@@ -82,25 +78,20 @@ export class PostController {
         // Post Object From request
         const { body: { post }, params: { postId } } = req;
 
-        try {
+        // Call service function to edit
+        const updatedPost = await postService.editPost(post, postId)
+            .catch((err) => {
+                if (err == null) {
+                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                }
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
 
-            // Call service function to edit
-            const updatedPost = await postService.editPost(post, postId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
-
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Post Edited Successfully!',
-                post: updatedPost
-            });
-        } catch (error) {
-            if (error == null) {
-                sendErr(res, null, 'User not allowed to edit this post!', 403);
-            }
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Post Edited Successfully!',
+            post: updatedPost
+        });
     }
 
     /**
@@ -173,40 +164,34 @@ export class PostController {
             type = 'all'
         }
 
-        try {
-
-            // If groupId is not present, then return error
-            if (!groupId) {
-                return sendErr(res, new Error('Please provide the groupId as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
-            }
-
-            // Fetch the next 5 recent posts
-            await postService.getPosts(groupId, type, lastPostId)
-                .then((posts) => {
-
-                    // If lastPostId is there then, send status 200 response
-                    if (lastPostId)
-                        return res.status(200).json({
-                            message: `The next ${posts.length} most recent posts!`,
-                            posts: posts
-                        });
-
-                    // If lastPostId is not there then, send status 200 response
-                    else
-                        return res.status(200).json({
-                            message: `The first ${posts.length} most recent posts!`,
-                            posts: posts
-                        });
-                })
-                .catch((err) => {
-
-                    // If there's an error send bad request
-                    return sendErr(res, new Error(err), 'Unable to fetch the posts, kindly check the stack trace for error', 400)
-                })
-
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        // If groupId is not present, then return error
+        if (!groupId) {
+            return sendErr(res, new Error('Please provide the groupId as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
         }
+
+        // Fetch the next 5 recent posts
+        await postService.getPosts(groupId, type, lastPostId)
+            .then((posts) => {
+
+                // If lastPostId is there then, send status 200 response
+                if (lastPostId)
+                    return res.status(200).json({
+                        message: `The next ${posts.length} most recent posts!`,
+                        posts: posts
+                    });
+
+                // If lastPostId is not there then, send status 200 response
+                else
+                    return res.status(200).json({
+                        message: `The first ${posts.length} most recent posts!`,
+                        posts: posts
+                    });
+            })
+            .catch((err) => {
+
+                // If there's an error send bad request
+                return sendErr(res, new Error(err), 'Unable to fetch the posts, kindly check the stack trace for error', 400)
+            });
     }
 
     /**
@@ -219,29 +204,23 @@ export class PostController {
         // Fetch groupId and lastPostId from request
         var { groups } = req.query;
 
-        try {
-
-            // If groupId is not present, then return error
-            if (!groups) {
-                return sendErr(res, new Error('Please provide the groups as the query parameter'), 'Please provide the groups as the query paramater!', 400);
-            }
-
-            await postService.getNorthStarTasks(groups)
-                .then((posts) => {
-                    // If lastPostId is there then, send status 200 response
-                    return res.status(200).json({
-                        message: `The North Star Tasks!`,
-                        posts: posts
-                    });
-                })
-                .catch((err) => {
-                    // If there's an error send bad request
-                    return sendErr(res, new Error(err), 'Unable to fetch the north star tasks, kindly check the stack trace for error', 400)
-                })
-
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        // If groupId is not present, then return error
+        if (!groups) {
+            return sendErr(res, new Error('Please provide the groups as the query parameter'), 'Please provide the groups as the query paramater!', 400);
         }
+
+        await postService.getNorthStarTasks(groups)
+            .then((posts) => {
+                // If lastPostId is there then, send status 200 response
+                return res.status(200).json({
+                    message: `The North Star Tasks!`,
+                    posts: posts
+                });
+            })
+            .catch((err) => {
+                // If there's an error send bad request
+                return sendErr(res, new Error(err), 'Unable to fetch the north star tasks, kindly check the stack trace for error', 400)
+            });
     }
 
 
@@ -252,29 +231,24 @@ export class PostController {
      * @param next 
      */
     async like(req: Request, res: Response, next: NextFunction) {
-        try {
+        // Fetch postId from request
+        const { params: { postId } } = req;
 
-            // Fetch postId from request
-            const { params: { postId } } = req;
+        // Fetch userId from the request
+        const userId = req['userId'];
 
-            // Fetch userId from the request
-            const userId = req['userId'];
+        // Call Service function to like a post
+        let data: any = await postService.like(userId, postId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
 
-            // Call Service function to like a post
-            let data: any = await postService.like(userId, postId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Post Successfully Liked',
-                post: data.post,
-                user: data.user
-            });
-        } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Post Successfully Liked',
+            post: data.post,
+            user: data.user
+        });
     }
 
 
@@ -285,29 +259,24 @@ export class PostController {
      * @param next 
      */
     async unlike(req: Request, res: Response, next: NextFunction) {
-        try {
+        // Fetch postId from the request
+        const { params: { postId } } = req;
 
-            // Fetch postId from the request
-            const { params: { postId } } = req;
+        // Fetch userId from the request
+        const userId = req['userId'];
 
-            // Fetch userId from the request
-            const userId = req['userId'];
+        // Call Service function to unlike a post
+        let data: any = await postService.unlike(userId, postId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
 
-            // Call Service function to unlike a post
-            let data: any = await postService.unlike(userId, postId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Post Successfully Unliked',
-                post: data.post,
-                user: data.user
-            });
-        } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Post Successfully Unliked',
+            post: data.post,
+            user: data.user
+        });
     }
 
 
@@ -318,28 +287,23 @@ export class PostController {
      * @param next 
      */
     async follow(req: Request, res: Response, next: NextFunction) {
-        try {
+        // Fetch postId from request
+        const { params: { postId } } = req;
 
-            // Fetch postId from request
-            const { params: { postId } } = req;
+        // Fetch userId from the request
+        const userId = req['userId'];
 
-            // Fetch userId from the request
-            const userId = req['userId'];
+        // Call Service function to like a post
+        let data: any = await postService.follow(userId, postId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
 
-            // Call Service function to like a post
-            let data: any = await postService.follow(userId, postId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Post Successfully Liked',
-                follow: 'OK'
-            });
-        } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Post Successfully Liked',
+            follow: 'OK'
+        });
     }
 
 
@@ -350,28 +314,23 @@ export class PostController {
      * @param next 
      */
     async unfollow(req: Request, res: Response, next: NextFunction) {
-        try {
+        // Fetch postId from the request
+        const { params: { postId } } = req;
 
-            // Fetch postId from the request
-            const { params: { postId } } = req;
+        // Fetch userId from the request
+        const userId = req['userId'];
 
-            // Fetch userId from the request
-            const userId = req['userId'];
+        // Call Service function to unlike a post
+        await postService.unfollow(userId, postId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
 
-            // Call Service function to unlike a post
-            let data: any = await postService.unfollow(userId, postId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Post Successfully Unliked',
-                unfollow: 'OK'
-            });
-        } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Post Successfully Unliked',
+            unfollow: 'OK'
+        });
     }
 
     /**
@@ -515,21 +474,17 @@ export class PostController {
         // Fetch userId from the request
         const userId = req['userId'];
 
-        try {
-            // Call Service function to remove the assignee
-            const post = await postService.removeAssignee(postId, assigneeId, userId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
+        // Call Service function to remove the assignee
+        const post = await postService.removeAssignee(postId, assigneeId, userId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
 
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Task assignee updated!',
-                post: post
-            });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
-        }
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Task assignee updated!',
+            post: post
+        });
     }
 
     /**
@@ -546,20 +501,16 @@ export class PostController {
         // Fetch userId from the request
         const userId = req['userId'];
 
-        try {
-            const post = await this.callAddAssigneeService(postId, assigneeId, userId, groupId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
+        const post = await this.callAddAssigneeService(postId, assigneeId, userId, groupId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
 
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Task assignee updated!',
-                post: post
-            });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
-        }
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Task assignee updated!',
+            post: post
+        });
     }
 
     async callAddAssigneeService(postId: string, assigneeId: string, userId: string, groupId: string) {
@@ -598,20 +549,16 @@ export class PostController {
         // Fetch userId from the request
         const userId = req['userId'];
 
-        try {
-            const post = await this.callChangeTaskAssigneeService(postId, assigneeId, userId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
+        const post = await this.callChangeTaskAssigneeService(postId, assigneeId, userId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
 
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Task assignee updated!',
-                post: post
-            });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
-        }
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Task assignee updated!',
+            post: post
+        });
     }
 
     async callChangeTaskAssigneeService(postId: string, assigneeId: string, userId: string) {
@@ -639,22 +586,17 @@ export class PostController {
         // Fetch Data from request
         const { params: { postId }, body: { date_due_to } } = req;
 
-        try {
+        // Call Service function to change the assignee
+        const post = await postService.changeTaskDueDate(postId, date_due_to)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
 
-            // Call Service function to change the assignee
-            const post = await postService.changeTaskDueDate(postId, date_due_to)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Task due date updated!',
-                post: post
-            });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
-        }
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Task due date updated!',
+            post: post
+        });
     }
 
     /**
@@ -727,22 +669,18 @@ export class PostController {
 
         // Fetch Data from request
         const { params: { postId }, body: { newDate, date_field } } = req;
-        try {
 
-            // Call Service function to change the assignee
-            const post = await postService.changeTaskDate(postId, date_field, newDate)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
+        // Call Service function to change the assignee
+        const post = await postService.changeTaskDate(postId, date_field, newDate)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
 
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Task date updated!',
-                post: post
-            });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
-        }
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Task date updated!',
+            post: post
+        });
     }
 
     /**
@@ -756,21 +694,16 @@ export class PostController {
         // Fetch Data from request
         const { params: { postId }, body: { status, userId, groupId } } = req;
 
-        try {
-            // Call Service function to change the assignee
-            let post = await this.callChangeTaskStatusService(postId, status, userId, groupId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                });
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Task status updated!',
-                //post: post
+        // Call Service function to change the assignee
+        await this.callChangeTaskStatusService(postId, status, userId, groupId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
-        }
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Task status updated!'
+        });
     }
 
     async callChangeTaskStatusService(postId: string, status: string, userId: string, groupId: string) {
@@ -801,25 +734,20 @@ export class PostController {
         // Fetch Data from request
         const { params: { postId }, body: { columnId, userId, groupId } } = req;
 
-        try {
-
-            if (!postId || !columnId || !userId) {
-                return sendErr(res, new Error('Please provide the post, title and user as parameters'), 'Please provide the post, title and user as paramaters!', 400);
-            }
-
-            const post = this.changeTaskSection(postId, columnId, userId, groupId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                });
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Task column updated!',
-                post: post
-            });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        if (!postId || !columnId || !userId) {
+            return sendErr(res, new Error('Please provide the post, title and user as parameters'), 'Please provide the post, title and user as paramaters!', 400);
         }
+
+        const post = this.changeTaskSection(postId, columnId, userId, groupId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            });
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Task column updated!',
+            post: post
+        });
     }
 
     async changeTaskSection(postId: string, columnId: string, userId: string, groupId: string) {
@@ -845,22 +773,17 @@ export class PostController {
         // Fetch Data from request
         const { groupId, tag } = req.query;
 
-        try {
+        // Call Service function to fetch the tags
+        const tags = await tagsService.getTagsSearchResults(groupId, tag)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
 
-            // Call Service function to fetch the tags
-            const tags = await tagsService.getTagsSearchResults(groupId, tag)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
-
-            // // Send status 200 response
-            return res.status(200).json({
-                message: 'Tags list fetched!',
-                tags: tags
-            });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
-        }
+        // // Send status 200 response
+        return res.status(200).json({
+            message: 'Tags list fetched!',
+            tags: tags
+        });
     }
 
     async getRecentActivity(req: Request, res: Response, next: NextFunction) {
@@ -934,21 +857,16 @@ export class PostController {
         const customFieldName = req.body['customFieldName'];
         const groupId = req.body['groupId'];
 
-        try {
-
-            const post = await this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldValue, userId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                });
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Custom Field updated!',
-                post: post
+        const post = await this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldValue, userId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
-        } catch (err) {
-            return sendErr(res, err, 'Internal Server Error!', 500);
-        }
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Custom Field updated!',
+            post: post
+        });
     }
 
     async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfValue: string, userId: string) {
@@ -965,38 +883,32 @@ export class PostController {
     async addBarToPost(req: Request, res: Response, next: NextFunction) {
         const { postId } = req.params;
         const { bar } = req.body;
-        try {
-            const post = await postService.addBar(postId, bar)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
 
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Task bar updated!',
-                post: post
-            });
-        } catch (err) {
-            return sendErr(res, err, 'Internal Server Error!', 500);
-        }
+        const post = await postService.addBar(postId, bar)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Task bar updated!',
+            post: post
+        });
     }
     async removeBarFromPost(req: Request, res: Response, next: NextFunction) {
         const { postId } = req.params;
         const { bar } = req.body;
-        try {
-            const post = await postService.removeBar(postId, bar)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                });
 
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Task bar updated!',
-                post: post
+        const post = await postService.removeBar(postId, bar)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
-        } catch (err) {
-            return sendErr(res, err, 'Internal Server Error!', 500);
-        }
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Task bar updated!',
+            post: post
+        });
     }
 
     /**
@@ -1010,30 +922,25 @@ export class PostController {
         // Fetch Data from request
         const { workspaceId, type, numDays, overdue, isNorthStar } = req.query;
 
-        try {
+        // Call Service function to fetch the posts
+        let posts: any = [];
 
-            // Call Service function to fetch the posts
-            let posts: any = [];
-
-            if (isNorthStar) {
-                posts = await postService.getWorspaceNorthStars(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"))
-                    .catch((err) => {
-                        return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                    })
-            } else {
-                posts = await postService.getWorspacePostsResults(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"))
-                    .catch((err) => {
-                        return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                    })
-            }
-            // // Send status 200 response
-            return res.status(200).json({
-                message: 'Posts fetched!',
-                posts: posts
-            });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        if (isNorthStar) {
+            posts = await postService.getWorspaceNorthStars(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"))
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
+        } else {
+            posts = await postService.getWorspacePostsResults(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"))
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                })
         }
+        // // Send status 200 response
+        return res.status(200).json({
+            message: 'Posts fetched!',
+            posts: posts
+        });
     }
 
     /**
@@ -1047,31 +954,26 @@ export class PostController {
         // Fetch Data from request
         const { groupId, type, numDays, overdue } = req.query;
 
-        try {
+        // Call Service function to fetch the posts
+        let posts: any = [];
 
-            // Call Service function to fetch the posts
-            let posts: any = [];
-
-            if (type === 'task') {
-                posts = await postService.getGroupTasksResults(groupId, type, +numDays, (overdue == "true"))
-                    .catch((err) => {
-                        return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                    });
-            } else {
-                posts = await postService.getGroupPostsResults(groupId, +numDays)
-                    .catch((err) => {
-                        return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                    });
-            }
-
-            // // Send status 200 response
-            return res.status(200).json({
-                message: 'Posts fetched!',
-                posts: posts
-            });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        if (type === 'task') {
+            posts = await postService.getGroupTasksResults(groupId, type, +numDays, (overdue == "true"))
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                });
+        } else {
+            posts = await postService.getGroupPostsResults(groupId, +numDays)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+                });
         }
+
+        // // Send status 200 response
+        return res.status(200).json({
+            message: 'Posts fetched!',
+            posts: posts
+        });
     }
 
     /**
@@ -1085,22 +987,17 @@ export class PostController {
         // Fetch Data from request
         const { groupId, period } = req.query;
 
-        try {
-
-            // Call Service function to fetch the posts
-            const posts = await postService.getAllGroupTasks(groupId, period)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                });
-            
-            // // Send status 200 response
-            return res.status(200).json({
-                message: 'Group Tasks fetched!',
-                posts: posts
+        // Call Service function to fetch the posts
+        const posts = await postService.getAllGroupTasks(groupId, period)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
-        }
+        
+        // // Send status 200 response
+        return res.status(200).json({
+            message: 'Group Tasks fetched!',
+            posts: posts
+        });
     }
 
     /**
@@ -1114,24 +1011,19 @@ export class PostController {
         // Fetch Data from request
         const { parentId } = req.query;
 
-        try {
+        // Call Service function to fetch the posts
+        let subtasks: any = [];
 
-            // Call Service function to fetch the posts
-            let subtasks: any = [];
-
-            subtasks = await postService.getSubtasks(parentId.toString())
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                });
-
-            // // Send status 200 response
-            return res.status(200).json({
-                message: 'Subtasks fetched!',
-                subtasks: subtasks
+        subtasks = await postService.getSubtasks(parentId.toString())
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
-        }
+
+        // // Send status 200 response
+        return res.status(200).json({
+            message: 'Subtasks fetched!',
+            subtasks: subtasks
+        });
     }
 
     /**
@@ -1173,25 +1065,20 @@ export class PostController {
         // Post Object From request
         const { body: { groupId, oldGroupId, userId, columnId }, params: { postId } } = req;
 
-        try {
+        // Call service function to edit
+        const updatedPost = await postService.moveToGroup(postId, groupId, columnId, oldGroupId, userId)
+            .catch((err) => {
+                if (err == null) {
+                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                }
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
 
-            // Call service function to edit
-            const updatedPost = await postService.moveToGroup(postId, groupId, columnId, oldGroupId, userId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
-
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Post Moved Successfully!',
-                post: updatedPost
-            });
-        } catch (error) {
-            if (error == null) {
-                sendErr(res, null, 'User not allowed to edit this post!', 403);
-            }
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Post Moved Successfully!',
+            post: updatedPost
+        });
     }
 
     /**
@@ -1205,21 +1092,17 @@ export class PostController {
         // Post Object From request
         const { postId, groupId, columnId, oldGroupId, userId } = req.body;
 
-        try {
-            // Call servide function for adding the post
-            const postData = await postService.copyToGroup(postId, groupId, columnId, oldGroupId, userId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
+        // Call servide function for adding the post
+        const postData = await postService.copyToGroup(postId, groupId, columnId, oldGroupId, userId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
 
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Post Copied Successfully!',
-                post: postData
-            });
-        } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Post Copied Successfully!',
+            post: postData
+        });
     }
 
     /**
@@ -1233,28 +1116,24 @@ export class PostController {
         // Fetch groupId and lastPostId from request
         var { groupId, query, field } = req.query;
         var { currentPostId } = req.params
-        try {
-            // If groupId or currentPostId are not present, then return error
-            if (!groupId || !currentPostId) {
-                return sendErr(res, new Error('Please provide the group and the current post as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
-            }
 
-            // Fetch the 10 possible posts
-            await postService.searchPossibleParents(groupId, currentPostId, query, field)
-                .then((posts) => {
-                    return res.status(200).json({
-                        message: `The ${posts.length} possible parent tasks!`,
-                        posts: posts
-                    });
-                })
-                .catch((err) => {
-                    // If there's an error send bad request
-                    return sendErr(res, new Error(err), 'Unable to fetch the tasks, kindly check the stack trace for error', 400)
-                })
-
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        // If groupId or currentPostId are not present, then return error
+        if (!groupId || !currentPostId) {
+            return sendErr(res, new Error('Please provide the group and the current post as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
         }
+
+        // Fetch the 10 possible posts
+        await postService.searchPossibleParents(groupId, currentPostId, query, field)
+            .then((posts) => {
+                return res.status(200).json({
+                    message: `The ${posts.length} possible parent tasks!`,
+                    posts: posts
+                });
+            })
+            .catch((err) => {
+
+                return sendErr(res, new Error(err), 'Unable to fetch the tasks, kindly check the stack trace for error', 400)
+            });
     }
 
     /**
@@ -1268,25 +1147,20 @@ export class PostController {
         // Post Object From request
         const { body: { parentTaskId }, params: { postId } } = req;
 
-        try {
+        // Call service function to edit
+        const updatedPost = await postService.setParentTask(postId, parentTaskId)
+            .catch((err) => {
+                if (err == null) {
+                    sendErr(res, null, 'User not allowed to edit this post!', 403);
+                }
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
 
-            // Call service function to edit
-            const updatedPost = await postService.setParentTask(postId, parentTaskId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
-
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Post assigned to a parent Successfully!',
-                post: updatedPost
-            });
-        } catch (error) {
-            if (error == null) {
-                sendErr(res, null, 'User not allowed to edit this post!', 403);
-            }
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Post assigned to a parent Successfully!',
+            post: updatedPost
+        });
     }
     
     /**
@@ -1300,25 +1174,20 @@ export class PostController {
         // Post Object From request
         const { body: { dependencyTaskId }, params: { postId } } = req;
 
-        try {
+        // Call service function to edit
+        const updatedPost = await postService.setDependencyTask(postId, dependencyTaskId)
+            .catch((err) => {
+                if (err == null) {
+                    sendErr(res, null, 'User not allowed to edit this post!', 403);
+                }
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
 
-            // Call service function to edit
-            const updatedPost = await postService.setDependencyTask(postId, dependencyTaskId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
-
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Post assigned to a parent Successfully!',
-                post: updatedPost
-            });
-        } catch (error) {
-            if (error == null) {
-                sendErr(res, null, 'User not allowed to edit this post!', 403);
-            }
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Post assigned to a parent Successfully!',
+            post: updatedPost
+        });
     }
 
     /**
@@ -1332,25 +1201,20 @@ export class PostController {
         // Post Object From request
         const { body: { dependencyTaskId }, params: { postId } } = req;
 
-        try {
+        // Call service function to edit
+        const updatedPost = await postService.removeDependencyTask(postId, dependencyTaskId)
+            .catch((err) => {
+                if (err == null) {
+                    return sendErr(res, null, 'User not allowed to edit this post!', 403);
+                }
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
 
-            // Call service function to edit
-            const updatedPost = await postService.removeDependencyTask(postId, dependencyTaskId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
-
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Dependency removed Successfully!',
-                post: updatedPost
-            });
-        } catch (error) {
-            if (error == null) {
-                sendErr(res, null, 'User not allowed to edit this post!', 403);
-            }
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Dependency removed Successfully!',
+            post: updatedPost
+        });
     }
 
     /**
@@ -1499,22 +1363,18 @@ export class PostController {
         // Post Object From request
         const { postId, assignees } = req.body;
 
-        try {
-            // Call servide function for adding the post
-            assignees.forEach(async assigneeId => {
-                const postData = await postService.cloneToAssignee(postId, assigneeId)
-                    .catch((err) => {
-                        return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                    });
-            });
+        // Call servide function for adding the post
+        assignees.forEach(async assigneeId => {
+            const postData = await postService.cloneToAssignee(postId, assigneeId)
+                .catch((err) => {
+                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+                });
+        });
 
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Post Clonned Successfully!',
-            });
-        } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Post Clonned Successfully!',
+        });
     }
 
     /**
@@ -1528,29 +1388,23 @@ export class PostController {
         // Fetch groupId and lastPostId from request
         var { groupId } = req.query;
 
-        try {
-
-            // If groupId is not present, then return error
-            if (!groupId) {
-                return sendErr(res, new Error('Please provide the groupId as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
-            }
-
-            await postService.getGroupTemplates(groupId)
-                .then((posts) => {
-                    return res.status(200).json({
-                        message: `The group templates!`,
-                        posts: posts
-                    });
-                })
-                .catch((err) => {
-
-                    // If there's an error send bad request
-                    return sendErr(res, new Error(err), 'Unable to fetch the templates, kindly check the stack trace for error', 400)
-                })
-
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        // If groupId is not present, then return error
+        if (!groupId) {
+            return sendErr(res, new Error('Please provide the groupId as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
         }
+
+        await postService.getGroupTemplates(groupId)
+            .then((posts) => {
+                return res.status(200).json({
+                    message: `The group templates!`,
+                    posts: posts
+                });
+            })
+            .catch((err) => {
+
+                // If there's an error send bad request
+                return sendErr(res, new Error(err), 'Unable to fetch the templates, kindly check the stack trace for error', 400)
+            });
     }
 
     /**
@@ -1564,21 +1418,17 @@ export class PostController {
         // Post Object From request
         const { postId, groupId, templateName } = req.body;
 
-        try {
-            // Call servide function for creating the template
-            const postData = await postService.createTemplate(postId, groupId, templateName)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
+        // Call servide function for creating the template
+        const postData = await postService.createTemplate(postId, groupId, templateName)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
 
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Template Created Successfully!',
-                post: postData
-            });
-        } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Template Created Successfully!',
+            post: postData
+        });
     }
 
     /**
@@ -1592,25 +1442,20 @@ export class PostController {
         // Post Object From request
         const { body: { templateName, templateId }, params: { postId } } = req;
 
-        try {
+        // Call service function to edit
+        const updatedPost = await postService.overwriteTemplate(postId, templateId, templateName)
+            .catch((err) => {
+                if (err == null) {
+                    sendErr(res, null, 'User not allowed to edit this post!', 403);
+                }
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
 
-            // Call service function to edit
-            const updatedPost = await postService.overwriteTemplate(postId, templateId, templateName)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
-
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Template Overwritten Successfully!',
-                post: updatedPost
-            });
-        } catch (error) {
-            if (error == null) {
-                sendErr(res, null, 'User not allowed to edit this post!', 403);
-            }
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Template Overwritten Successfully!',
+            post: updatedPost
+        });
     }
 
     /**
@@ -1624,21 +1469,17 @@ export class PostController {
         // Post Object From request
         const { templatePostId, postId } = req.body;
 
-        try {
-            // Call servide function for creating the template
-            const postData = await postService.createTaskFromTemplate(templatePostId, postId)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
-                })
+        // Call servide function for creating the template
+        const postData = await postService.createTaskFromTemplate(templatePostId, postId)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Insufficient Data, please check into error stack!', 400);
+            })
 
-            // Send Status 200 response
-            return res.status(200).json({
-                message: 'Task Created Successfully!',
-                post: postData
-            });
-        } catch (error) {
-            return sendErr(res, new Error(error), 'Internal Server Error!', 500);
-        }
+        // Send Status 200 response
+        return res.status(200).json({
+            message: 'Task Created Successfully!',
+            post: postData
+        });
     }
 
     /**
@@ -1652,21 +1493,16 @@ export class PostController {
         // Fetch Data from request
         const { params: { postId }, body: { allocation } } = req;
 
-        try {
+        // Call Service function to change the assignee
+        const post = await postService.saveAllocation(postId, +allocation)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
 
-            // Call Service function to change the assignee
-            const post = await postService.saveAllocation(postId, +allocation)
-                .catch((err) => {
-                    return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-                })
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Task allocation updated!',
-                post: post
-            });
-        } catch (err) {
-            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
-        }
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Task allocation updated!',
+            post: post
+        });
     }
 }
