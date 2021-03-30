@@ -31,9 +31,8 @@ export class TeamAccountDetailsComponent implements OnInit {
     this.userService.disconnectTeams(this.userData._id)
       .subscribe((res) => {
         if (!res.connect) {
-          this.userData.integrations.is_teams_connected = false;
-          this.userService.updateUser(this.userData);
-          this.publicFunctions.sendUpdatesToUserData(this.userData);
+          this.userService.updateUser(res.updatedUser);
+          this.publicFunctions.sendUpdatesToUserData(res.updatedUser);
           this.isTeamConnected = false;
         }
       }),

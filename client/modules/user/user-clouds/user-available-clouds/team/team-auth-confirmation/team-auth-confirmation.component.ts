@@ -43,12 +43,12 @@ export class TeamAuthConfirmationComponent implements OnInit {
   */
   async alloweded() {
     const userAccount = await this.publicFunctions.getCurrentAccount();
-    console.log("this.queryParms 3",this.queryParms)
     if (this.queryParms) {
       
       this.userService.teamAuth(this.queryParms, userAccount)
-      .subscribe((res) => {
-        console.log("responce",res);
+      .subscribe(async (res) => {
+        await this.userService.updateUser(res['update_user']);
+        await this.publicFunctions.sendUpdatesToUserData(res['update_user']);
       }),
       ((err) => {
           console.log('Error occured, while coonecting to teams', err);
