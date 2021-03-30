@@ -76,6 +76,7 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
           //if query parms exist redirect to teams permission page else normal flow 
           // note:- Code is for teams auth popup not for octonius app and only work in that case.
           setTimeout(() => {
+          console.log("this.queryParms 2",this.queryParms)
             if ( this.queryParms ) {
               resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
               window.location.href = this.queryParms.teams_permission_url;

@@ -24,7 +24,7 @@ export class TeamAuthConfirmationComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeRouter.queryParams.subscribe(params => {
-      if (params['tid']) {
+      if ( params['tid'] ) {
         this.queryParms = params;
       }
     });
@@ -43,10 +43,12 @@ export class TeamAuthConfirmationComponent implements OnInit {
   */
   async alloweded() {
     const userAccount = await this.publicFunctions.getCurrentAccount();
+    console.log("this.queryParms 3",this.queryParms)
     if (this.queryParms) {
       
       this.userService.teamAuth(this.queryParms, userAccount)
       .subscribe((res) => {
+        console.log("responce",res);
       }),
       ((err) => {
           console.log('Error occured, while coonecting to teams', err);
@@ -59,7 +61,7 @@ export class TeamAuthConfirmationComponent implements OnInit {
           this.router.navigate(['dashboard', 'user', 'clouds']);
         }
       }, 2000);
-      
+
     }
   }
 
