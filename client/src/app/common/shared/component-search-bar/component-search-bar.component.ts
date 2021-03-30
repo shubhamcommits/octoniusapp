@@ -318,7 +318,7 @@ export class ComponentSearchBarComponent implements OnInit {
 
 
     } catch (err) {
-      this.publicFunctions.catchError(err);
+      this.publicFunctions.sendError(err);
     }
   }
 

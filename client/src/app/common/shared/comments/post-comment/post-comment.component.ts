@@ -108,10 +108,7 @@ export class PostCommentComponent implements OnInit {
     }
 
 
-    commentService.edit(formData, this.comment._id)
-      .catch((err)=>{
-        console.log(err);
-      })
+    commentService.edit(formData, this.comment._id);
   }
 
   deleteComment(index: number) {
