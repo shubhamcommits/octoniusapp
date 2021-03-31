@@ -46,7 +46,8 @@ export class FolioGuard implements CanActivate  {
     const userGroupsIndex = userData._groups.findIndex((group: any) => group == currentGroupId);
 
     if (groupMembersIndex >= 0 || groupAdminsIndex >= 0
-        || userGroupsIndex >= 0 || userData._private_group == currentGroupId) {
+        || userGroupsIndex >= 0 || userData._private_group == currentGroupId
+        || currentGroup.share_files) {
       return true;
     } else {
       this.utilityService.warningNotification('Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!');

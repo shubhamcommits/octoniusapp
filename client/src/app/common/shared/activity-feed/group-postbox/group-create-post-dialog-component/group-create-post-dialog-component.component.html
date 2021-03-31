@@ -211,7 +211,7 @@
               <app-date-picker
                 (date)="getDate($event, 'due_date')"
                 [selectedDate]="formateDate(postData?.task.due_to)"
-                [lowerLimit]="formateDate(postData?.task.start_date)"
+                [lowerLimit]=" (postData?.task?.is_milestone)? '' : formateDate(postData?.task.start_date)"
                 [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
               </app-date-picker>
               <!--Date Picker ends -->

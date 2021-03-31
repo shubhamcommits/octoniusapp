@@ -605,6 +605,28 @@ export class WorkspaceController {
                 return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
             }
 
+            // Remove the workspace from user´s account
+            let users = await User.find({_workspace: workspaceId}).select('_account').lean();
+            users.forEach(async user => {
+                // Count the number of workspces for the account
+                let accountUpdate = await Account.findById(user._account);
+                const numWorkspaces = accountUpdate._workspaces.length;
+
+                if (numWorkspaces < 2) {
+                    // If account only has one workspace, the account is removed
+                    accountUpdate = await Account.findByIdAndDelete(user._account);
+                } else {
+                    // If account has more than one workspaces, the workspace is removed from the account
+                    accountUpdate = await Account.findByIdAndUpdate({
+                            _id: user._account
+                        }, {
+                            $pull: {
+                                _workspaces: workspaceId
+                            }
+                        });
+                }
+            });
+
             // Delete the users related
             await User.deleteMany({_workspace: workspaceId});
 

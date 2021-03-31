@@ -64,6 +64,10 @@ export class CommonNavbarComponent implements OnInit {
 
     const segments = this.routerFromEvent._urlSegment.children.primary.segments;
     this.activeState = segments[segments.length-1].path;
+    
+    this.utilityService.handleActiveStateTopNavBar().subscribe(event => {
+      this.activeState = event;
+    });
   }
 
   async changeState(state:string){

@@ -906,7 +906,7 @@ export class UsersControllers {
                         _id: accountId
                     }, {
                         $pull: {
-                            _workspaces: workspace
+                            _workspaces: workspaceId
                         }
                     });
             }
