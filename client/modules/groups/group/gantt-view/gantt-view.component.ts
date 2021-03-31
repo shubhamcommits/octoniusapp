@@ -5,7 +5,6 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { ResizeEvent } from 'angular-resizable-element';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { DatePipe } from '@angular/common';
-import { reduce } from 'rxjs/operators';
 import moment from 'moment/moment'
 declare var LeaderLine: any;
 
@@ -64,7 +63,6 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
 
-    
     await this.parsedTasks(this.tasks);
     this.datesToShow.start = await this.min_date(this.tasksDataList);
     this.datesToShow.end = await this.max_date(this.tasksDataList)
@@ -122,23 +120,28 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         for (let i = 0; i < project.tasks.length; i++) {
           if (project.tasks[i] && project.tasks[i].dependency) {
             if(typeof project.tasks[i].dependency == 'object'){
-              project.tasks[i].dependency.forEach(dependency => {
-                this.linesArray.push(new LeaderLine(document.getElementById(dependency), document.getElementById(project.tasks[i]?.id), {
+              project.tasks[i]?.dependency?.forEach(dependency => {
+                if(document.getElementById(dependency) && document.getElementById(project.tasks[i]?.id)){
+                  this.linesArray.push(new LeaderLine(document.getElementById(dependency), document.getElementById(project.tasks[i]?.id), {
+                    startPlug: 'disc',
+                    startSocket: 'right',
+                    endSocket: 'left',
+                    size: 2,
+                    color: '#4a90e2',
+                  }));
+                }
+              });
+            } else {
+              if(document.getElementById(project.tasks[i]?.dependency) && document.getElementById(project.tasks[i]?.id)){
+                this.linesArray.push(new LeaderLine(document.getElementById(project.tasks[i]?.dependency), document.getElementById(project.tasks[i]?.id), {
                   startPlug: 'disc',
                   startSocket: 'right',
                   endSocket: 'left',
                   size: 2,
                   color: '#4a90e2',
                 }));
-              });
-            } else {
-              this.linesArray.push(new LeaderLine(document.getElementById(project.tasks[i]?.dependency), document.getElementById(project.tasks[i]?.id), {
-                startPlug: 'disc',
-                startSocket: 'right',
-                endSocket: 'left',
-                size: 2,
-                color: '#4a90e2',
-              }));
+              }
+              
             }
           }
         }
@@ -719,6 +722,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         var Difference_In_Days = moment(endate).diff(startdate,'days');
         // var Difference_In_Days = Math.round(Difference_In_Time / (1000 * 3600 * 24));
 
+        //if a task have start and end date and it is not a sub task.
         if (sortedTask.task.due_to && sortedTask.task.start_date && !(sortedTask.task._parent_task)) {
           this.tasksDataList.push({
             id: sortedTask._id,
@@ -728,7 +732,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             is_milestone: sortedTask.task.is_milestone,
             progress: '0',
             dependent_tasks: sortedTask?.task?._dependent_child,
-            difference: Difference_In_Days,
+            difference: sortedTask.task.is_milestone? 0 : Difference_In_Days,
             dependency_index: sortedTask?.parentIndex,
             custom_class: sortedTask?.task.status,
             _groupid: sortedTask?._group._id,
@@ -739,7 +743,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             task: sortedTask
           });
         } else {
-          if (sortedTask.task._dependency_task || sortedTask?.task?.is_milestone ) {
+          if (sortedTask.task.due_to && sortedTask?.task?.is_milestone ) {
             this.tasksDataList.push({
               id: sortedTask._id,
               name: sortedTask.title,
