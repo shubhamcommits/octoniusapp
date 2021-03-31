@@ -129,4 +129,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.iconsSidebar = !this.iconsSidebar;
     this.sidebarChange.emit();
   }
+
+  async changeState(state:string){
+    this.utilityService.handleActiveStateTopNavBar().emit(state);
+  }
+
 }
