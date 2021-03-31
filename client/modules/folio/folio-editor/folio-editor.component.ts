@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
+import { Component, OnInit, Input, Injector, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -55,34 +55,7 @@ import { FilesService } from 'src/shared/services/files-service/files.service';
   templateUrl: './folio-editor.component.html',
   styleUrls: ['./folio-editor.component.scss']
 })
-export class FolioEditorComponent implements OnInit {
-
-  constructor(
-    private _Injector: Injector,
-    private _ActivatedRoute: ActivatedRoute
-  ) {
-
-    // Get the State of the ReadOnly
-    this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get('readOnly') == 'true' || false
-
-    // Initialise the modules in constructor
-    this.modules = {
-      syntax: true,
-      toolbar: this.toolbar,
-      cursors: {
-        hideDelayMs: 5000,
-        hideSpeedMs: 0,
-        transformOnTextChange: true,
-        autoRegisterListener: false
-      },
-      history: {
-        delay: 2500,
-        userOnly: true
-      },
-      autoformat: true,
-      mention: {}
-    }
-  }
+export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // EditorId variable
   @Input('editorId') editorId: any = 'normal-editor'
@@ -136,7 +109,34 @@ export class FolioEditorComponent implements OnInit {
   quillEditorComponent = new QuillEditorComponent(this._Injector)
 
   // Uploads url for Files
-  filesBaseUrl = environment.UTILITIES_FILES_UPLOADS
+  filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
+
+  constructor(
+    private _Injector: Injector,
+    private _ActivatedRoute: ActivatedRoute
+  ) {
+
+    // Get the State of the ReadOnly
+    this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get('readOnly') == 'true' || false
+
+    // Initialise the modules in constructor
+    this.modules = {
+      syntax: true,
+      toolbar: this.toolbar,
+      cursors: {
+        hideDelayMs: 5000,
+        hideSpeedMs: 0,
+        transformOnTextChange: true,
+        autoRegisterListener: false
+      },
+      history: {
+        delay: 2500,
+        userOnly: true
+      },
+      autoformat: true,
+      mention: {}
+    }
+  }
 
   async ngOnInit() {
 
@@ -187,6 +187,14 @@ export class FolioEditorComponent implements OnInit {
     //
     this.initializeFolio(this.folio, this.quill)
 
+  }
+
+  /**
+   * This function is responsible for closing the socket on destroying the component
+   */
+  ngOnDestroy() {
+    this.subSink.unsubscribe();
+    this.shareDBSocket?.close();
   }
 
   /**
@@ -408,13 +416,4 @@ export class FolioEditorComponent implements OnInit {
     // Return the Array without duplicates
     return Array.from(new Set(filesList))
   }
-
-  /**
-   * This function is responsible for closing the socket on destroying the component
-   */
-  ngOnDestroy() {
-    this.subSink.unsubscribe();
-    this.shareDBSocket?.close();
-  }
-
 }
