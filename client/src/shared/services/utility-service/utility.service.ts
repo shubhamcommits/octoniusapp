@@ -20,6 +20,7 @@ export class UtilityService {
 
    groupDeleteEvent: EventEmitter<any> = new EventEmitter();
    groupUpdateEvent: EventEmitter<any> = new EventEmitter();
+   activeStateTopNavBarEvent: EventEmitter<any> = new EventEmitter();
 
 
   /**
@@ -508,5 +509,9 @@ export class UtilityService {
 
   handleUpdateGroupData() {
     return this.groupUpdateEvent;
+  }
+
+  handleActiveStateTopNavBar(){
+    return this.activeStateTopNavBarEvent;
   }
 }
