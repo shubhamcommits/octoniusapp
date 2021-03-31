@@ -2,6 +2,7 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { Title } from "@angular/platform-browser";
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-folio-header',
@@ -9,13 +10,6 @@ import { Title } from "@angular/platform-browser";
   styleUrls: ['./folio-header.component.scss']
 })
 export class FolioHeaderComponent implements OnInit {
-
-  constructor(
-    private router: Router,
-    private _ActivatedRoute: ActivatedRoute,
-    private _Injector: Injector,
-    private titleService: Title
-  ) { }
 
   // GroupID Variable
   groupId: any;
@@ -35,6 +29,16 @@ export class FolioHeaderComponent implements OnInit {
   // Global File Original Name Varibale
   fileOriginalName: string;
 
+  // Public functions class member
+  publicFunctions = new PublicFunctions(this._Injector);
+
+  constructor(
+    private router: Router,
+    private _ActivatedRoute: ActivatedRoute,
+    private _Injector: Injector,
+    private titleService: Title
+  ) { }
+
   async ngOnInit() {
 
     // Set the groupId
@@ -42,6 +46,11 @@ export class FolioHeaderComponent implements OnInit {
 
     // Set the readOnly
     this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get('readOnly') == 'true' || false
+
+    const userData = await this.publicFunctions.getCurrentUser()
+    // check if the user is part of the group of the folio
+    const groupIndex = await userData?._groups?.findIndex(group => { return (group._id || group) == this.groupId });
+    this.readOnly = this.readOnly || (groupIndex < 0);
 
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.firstChild.paramMap.get('id')

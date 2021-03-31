@@ -138,7 +138,7 @@ export class FolioEditorComponent implements OnInit {
   // Uploads url for Files
   filesBaseUrl = environment.UTILITIES_FILES_UPLOADS
 
-  ngOnInit() {
+  async ngOnInit() {
 
     // Initialise the connection for folio
     this.folio = this.initializeConnection()
@@ -158,14 +158,18 @@ export class FolioEditorComponent implements OnInit {
 
     // Set the White as the background color for quill
     // document.body.style.setProperty('background', '#ffffff', 'important')
-
   }
 
   async ngAfterViewInit() {
 
     // Fetch User Data
-    if(!this.readOnly)
+    if(!this.readOnly) {
       this.userData = await this.publicFunctions.getCurrentUser()
+
+      // check if the user is part of the group of the folio
+      const groupIndex = await this.userData?._groups?.findIndex(group => { return (group._id || group) == this.groupId });
+      this.readOnly = this.readOnly || (groupIndex < 0);
+    }
 
     // Set the Status of the toolbar
     this.modules.toolbar = (this.toolbar === false) ? false : this.quillEditorComponent.quillFullToolbar()
@@ -410,7 +414,7 @@ export class FolioEditorComponent implements OnInit {
    */
   ngOnDestroy() {
     this.subSink.unsubscribe();
-    this.shareDBSocket.close();
+    this.shareDBSocket?.close();
   }
 
 }
