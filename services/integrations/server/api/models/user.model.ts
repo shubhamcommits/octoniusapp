@@ -154,6 +154,10 @@ const UserSchema = new Schema({
             type: Boolean,
             default: false
         },
+        is_zapier_connected:{
+            type: Boolean,
+            default: false
+        },
         slack: {
             token: {
                 type: String,

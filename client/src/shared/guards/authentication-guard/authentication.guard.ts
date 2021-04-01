@@ -44,7 +44,7 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild, CanLo
       else {
         //If route is to teams but user is not logged In
         // note:- Code is for teams auth popup not for octonius app and only work in that case.
-        if(state.url.includes('/dashboard/user/teams')){
+        if(state.url.includes('/dashboard/user/teams') || state.url.includes('/dashboard/user/zap')){
           this.router.navigate(['/home'], { queryParams: { teams_permission_url:state.url } })
         } 
         // else for any other route
