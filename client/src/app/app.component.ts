@@ -57,7 +57,7 @@ export class AppComponent {
       }
       if (e instanceof NavigationEnd) {
         window['Appcues'].page();
-        if (this.storageService.existData('authToken') && !e.url.includes('/dashboard/user/teams')) {
+        if (this.storageService.existData('authToken') && !e.url.includes('/dashboard/user/teams') && !e.url.includes('/dashboard/user/zap')) {
           this.isAuth = true;
         } else {
           this.isAuth = false;

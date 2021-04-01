@@ -136,6 +136,14 @@ export class UserService {
       return this._http.post(this.INTEGRATIONS_API_URL + `/teams/teams-auth`, { teamData, user });
     }
 
+  /**
+   * This function is responsible for verifying the slack oAuth
+   */
+   zapierAuth(userId: Object) {
+    return this._http.post(this.INTEGRATIONS_API_URL + `/zapier/auth`, { userId });
+  }
+    
+
  /**
    * This function is responsible for deleting user
    */
