@@ -6,7 +6,7 @@ import { sendErr } from '../utils/sendError';
 import { CommentsService } from './comments.services';
 import { GroupsService } from './groups.services';
 const fs = require('fs');
-
+import axios from 'axios';
 /*  ===============================
  *  -- POSTS Service --
  *  ===============================
@@ -2633,4 +2633,52 @@ export class PostService {
     });
     return post;
 }
+
+  /**
+   * Execute the actions from the automator
+   * 
+   * @param postId 
+   * @param userId 
+   * @param trigger 
+   */
+  async triggerToZap(postId: string, userId: string, trigger: string) {
+    const post = await Post.findById(postId)
+    .populate('_assigned_to').select(this.userFields )
+    .populate('_group').select(this.groupFields )
+    .populate('_posted_by').select(this.userFields )
+    .populate({path:'task._column',select:'_id title'}).select('task title content tags');
+
+    const user = await User.findById(userId);
+    if(user && post){
+      const postData = {
+          title: post.title,
+          content: post.content,
+          due: post?.task?.due_to,
+          status: post?.task?.status,
+          groupName: post?._group?.group_name,
+          workspaceName: post?._group?.workspace_name,
+          section: post?.task?._column?.title,
+          assigneeEmail: user?.email,
+          assigneeName: user?.full_name,
+          postByEmail: post?._posted_by?.email, 
+          postByName:post?._posted_by?.full_name,
+          tags:post?.tags,
+          customfields:post?.task?.custom_fields
+      }
+
+      user?.integrations?.zapier?.webhook.forEach(async (webhook) => {
+        if(webhook.trigger == trigger){
+          await axios.post(webhook.webhookURl,postData);
+        }
+      });
+    }
+    
+
+  }
+
+
 }
+
+
+
+

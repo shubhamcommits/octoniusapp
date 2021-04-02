@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { SlackService, TeamService } from "../service";
-import { User, Auth } from '../models'
+import { User, Auth, Post} from '../models'
 import jwt from "jsonwebtoken";
 import { Auths, sendError } from '../../utils';
 import { helperFunctions } from '../../utils';
@@ -129,5 +129,44 @@ export class IntegrationController {
     */
     async refreshToken(req: Request, res: Response, next: NextFunction) {
         res.send({hhh:'sdcsfssdsdds'});
+    }
+
+    /** 
+     * This function is to get the refresh token
+     * @param req 
+     * @param res 
+     * @param next 
+    */
+     async newTask(req: Request, res: Response, next: NextFunction) {
+     
+        const post = await Post.findOne({_assigned_to:req['userId'],type:'task'})
+        .populate('_assigned_to').select('first_name last_name profile_pic role email' )
+        .populate('_group').select('group_name group_avatar workspace_name')
+        .populate('_posted_by').select('first_name last_name profile_pic role email')
+        .populate({path:'task._column',select:'_id title'}).select('task title content tags').sort({created_date:-1});
+
+        const user = await User.findById(req['userId']);
+        
+        if(user && post){
+
+            const postData = {
+                title: post.title,
+                content: post.content,
+                due: post?.task?.due_to,
+                status: post?.task?.status,
+                groupName: post?._group?.group_name,
+                workspaceName: post?._group?.workspace_name,
+                section: post?.task?._column?.title,
+                assigneeEmail: user?.email,
+                assigneeName: user?.full_name,
+                postByEmail: post?._posted_by?.email, 
+                postByName:post?._posted_by?.full_name,
+                tags:post?.tags,
+                customfields:post?.task?.custom_fields
+            }
+            res.status(200).json([postData]);
+        } else {
+            res.status(200).json([]);
+        }
     }
 }
