@@ -1,16 +1,20 @@
-<div class="container-fluid rootDiv">
+<div class="d-flex justify-content-center rootDiv">
 <div class="mainDiv">
-    <img src="assets/images/zapierlogo.png" alt="" style="float:left;margin-top: 5%;margin-left: 5%;">
-    <h3 style="text-align: left;margin-left: 4%;line-height: 1.1;margin-top: 6%;font-size: 22px;">Zapier is requesting permission to access your Octonius account</h3>
-    <h4 style="text-align: left;margin-left: 10%;margin-top: 30px;margin-bottom: 30px;">If you authorize this app, you will give it
+    <img src="assets/images/zapierlogo.png" alt="" style="float:left;margin-top: 5%;">
+    <h3 style="line-height: 1.1;margin-top: 6%;font-size: 22px;">Zapier is requesting permission to access your Octonius account</h3>
+    <h4 style="margin-top: 30px;margin-bottom: 30px;">If you authorize this app, you will give it
         permission to:</h4>
-    <ul style="margin-left: 10%;margin-bottom: 45px;">
+    <ul style="margin-bottom: 45px;">
         <li>Access your name and email address.</li>
         <li>Access your tasks, projects, and workplace.</li>
         <li>Create and modify tasks, projects, and comments on your behalf.</li>
     </ul>
 
-    <button style="margin-left: 32%;margin-right: 5%;" (click)="alloweded()">Allow</button>
-    <button (click)="cancel()">Cancel</button>
+    <div class="d-flex justify-content-around">
+
+        <button class="btn btn-primary" (click)="alloweded()">Allow</button>
+        <button class="btn btn-danger" (click)="cancel()">Cancel</button>
+
+    </div>
 </div>
 </div>
