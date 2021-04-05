@@ -142,7 +142,6 @@ export class IntegrationController {
 
             const postData = {
                 title: post.title,
-                content: post.content,
                 due: post?.task?.due_to,
                 status: post?.task?.status,
                 groupName: post?._group?.group_name,
@@ -151,9 +150,7 @@ export class IntegrationController {
                 assigneeEmail: user?.email,
                 assigneeName: user?.full_name,
                 postByEmail: post?._posted_by?.email,
-                postByName: post?._posted_by?.full_name,
-                tags: post?.tags,
-                customfields: post?.task?.custom_fields
+                postByName: post?._posted_by?.full_name
             }
             res.status(200).json([postData]);
         } else {
