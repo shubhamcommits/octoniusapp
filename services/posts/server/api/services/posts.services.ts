@@ -2652,7 +2652,6 @@ export class PostService {
     if(user && post){
       const postData = {
           title: post.title,
-          content: post.content,
           due: post?.task?.due_to,
           status: post?.task?.status,
           groupName: post?._group?.group_name,
@@ -2662,8 +2661,6 @@ export class PostService {
           assigneeName: user?.full_name,
           postByEmail: post?._posted_by?.email, 
           postByName:post?._posted_by?.full_name,
-          tags:post?.tags,
-          customfields:post?.task?.custom_fields
       }
 
       user?.integrations?.zapier?.webhook.forEach(async (webhook) => {
