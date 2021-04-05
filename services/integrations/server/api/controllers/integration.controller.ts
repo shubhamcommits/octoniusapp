@@ -1,10 +1,11 @@
 import { Response, Request, NextFunction } from "express";
 import { SlackService, TeamService } from "../service";
-import { User, Auth, Post} from '../models'
+import { User, Auth, Post, Group, Column } from '../models'
 import jwt from "jsonwebtoken";
+import FormData from 'form-data';
 import { Auths, sendError } from '../../utils';
 import { helperFunctions } from '../../utils';
-
+import axios from 'axios'
 // Creating Service class in order to build wrapper class
 const slackService = new SlackService();
 const teamService = new TeamService();
@@ -128,7 +129,7 @@ export class IntegrationController {
      * @param next 
     */
     async refreshToken(req: Request, res: Response, next: NextFunction) {
-        res.send({hhh:'sdcsfssdsdds'});
+        res.send({ hhh: 'sdcsfssdsdds' });
     }
 
     /** 
@@ -137,17 +138,17 @@ export class IntegrationController {
      * @param res 
      * @param next 
     */
-     async newTask(req: Request, res: Response, next: NextFunction) {
-     
-        const post = await Post.findOne({_assigned_to:req['userId'],type:'task'})
-        .populate('_assigned_to').select('first_name last_name profile_pic role email' )
-        .populate('_group').select('group_name group_avatar workspace_name')
-        .populate('_posted_by').select('first_name last_name profile_pic role email')
-        .populate({path:'task._column',select:'_id title'}).select('task title content tags').sort({created_date:-1});
+    async newTask(req: Request, res: Response, next: NextFunction) {
+
+        const post = await Post.findOne({ _assigned_to: req['userId'], type: 'task' })
+            .populate('_assigned_to').select('first_name last_name profile_pic role email')
+            .populate('_group').select('group_name group_avatar workspace_name')
+            .populate('_posted_by').select('first_name last_name profile_pic role email')
+            .populate({ path: 'task._column', select: '_id title' }).select('task title content tags').sort({ created_date: -1 });
 
         const user = await User.findById(req['userId']);
-        
-        if(user && post){
+
+        if (user && post) {
 
             const postData = {
                 title: post.title,
@@ -159,14 +160,101 @@ export class IntegrationController {
                 section: post?.task?._column?.title,
                 assigneeEmail: user?.email,
                 assigneeName: user?.full_name,
-                postByEmail: post?._posted_by?.email, 
-                postByName:post?._posted_by?.full_name,
-                tags:post?.tags,
-                customfields:post?.task?.custom_fields
+                postByEmail: post?._posted_by?.email,
+                postByName: post?._posted_by?.full_name,
+                tags: post?.tags,
+                customfields: post?.task?.custom_fields
             }
             res.status(200).json([postData]);
         } else {
             res.status(200).json([]);
         }
+    }
+
+    /** 
+     * This function is to user's groups for zapier action form
+     * @param req 
+     * @param res 
+     * @param next 
+    */
+    async groups(req: Request, res: Response, next: NextFunction) {
+        const groups = await Group.find({ $or: [{ _members: req['userId'] }, { _admins: req['userId'] }] });
+        if (groups && groups?.length > 0) {
+            var dataList: any = [];
+            groups.forEach(group => {
+                dataList.push({
+                    id: group._id,
+                    label: group.group_name,
+                    value: group._id
+                });
+            });
+
+            res.status(200).json(dataList);
+        } else {
+            res.status(200).json([]);
+        }
+    }
+
+    /** 
+     * This function is to get the columns of group for zapier action form
+     * @param req 
+     * @param res 
+     * @param next 
+    */
+    async columns(req: Request, res: Response, next: NextFunction) {
+        const columns = await Column.find({ _group: req.query.groupID });
+        if (columns && columns?.length > 0) {
+            var dataList: any = [];
+            columns.forEach(column => {
+                dataList.push({
+                    id: column._id,
+                    label: column.title,
+                    value: column._id
+                });
+            });
+
+            res.status(200).json(dataList);
+        } else {
+            res.status(200).json([]);
+        }
+    }
+
+    /** 
+     * This function is to create task
+     * @param req 
+     * @param res 
+     * @param next 
+    */
+    async createTask(req: Request, res: Response, next: NextFunction) {
+
+        // Form data
+        var formData = new FormData();
+        
+        // Postdata
+        const postdata = { "title": req.body?.title, "content": req.body?.content, "type": "task", "_posted_by": req['userId'], "_group": req.body?.group, "_content_mentions": [], "_assigned_to": undefined, "task": { "status": "to do", "_column": req.body?.colums } };
+        
+        formData.append('post', JSON.stringify(postdata));
+        
+        // Split the authorization header
+        const token = req.headers.authorization;
+
+        try {
+
+            //Sending request to post service to create a task.
+            const responaxois = await axios({
+                url: process.env.POSTS_SERVER_API,
+                method: 'POST',
+                headers: {
+                    'Content-Type': formData.getHeaders()['content-type'],
+                    'Authorization': token,
+                },
+                data: formData
+            });
+
+            res.status(200).json({ message: "Successfully" });
+        } catch (error) {
+            res.status(200).json({ message: "fail" });
+        }
+
     }
 }
