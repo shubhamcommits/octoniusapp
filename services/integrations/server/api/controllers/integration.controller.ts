@@ -70,11 +70,11 @@ export class IntegrationController {
 
 
     /** 
- * This function is to get the access token
- * @param req 
- * @param res 
- * @param next 
- */
+     * This function is to get the access token
+     * @param req 
+     * @param res 
+     * @param next 
+     */
     async token(req: Request, res: Response, next: NextFunction) {
 
         //find the user by id
@@ -120,16 +120,6 @@ export class IntegrationController {
             res.status(502).json({ error: ' Can not find token' });
         }
 
-    }
-
-    /** 
-     * This function is to get the refresh token
-     * @param req 
-     * @param res 
-     * @param next 
-    */
-    async refreshToken(req: Request, res: Response, next: NextFunction) {
-        res.send({ hhh: 'sdcsfssdsdds' });
     }
 
     /** 

@@ -13,8 +13,6 @@ routes.post('/notify', integrationFunctions.notify);
 
 routes.post('/token', integrationFunctions.token);
 
-routes.post('/refresh-token', integrationFunctions.refreshToken);
-
 routes.get('/new-task', auths.verifyToken, integrationFunctions.newTask);
 
 routes.get('/groups', auths.verifyToken, integrationFunctions.groups);
