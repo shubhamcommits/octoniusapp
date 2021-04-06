@@ -19,7 +19,7 @@ export class Auths {
             var query = url_parts.query;
 
             // Allow this situation for when selecting a workplace where user is not login yet
-            if (query.noAuth && url_parts.pathname.includes('/workspaces/')) {
+            if (query.noAuth) {
                 next();
             } else {
 
@@ -73,7 +73,10 @@ export class Auths {
             var query = url_parts.query;
 
             // Allow this situation for when selecting a workplace where user is not login yet
-            if (query.noAuth && url_parts.pathname.includes('/workspaces/')) {
+            // and in the highlight directive
+            // TODO - find a solution to secure this calls
+            // if (query.noAuth && url_parts.pathname.includes('/workspaces/')) {
+            if (query.noAuth) {
                 next();
             } else {
                 // Find the authentication logs
