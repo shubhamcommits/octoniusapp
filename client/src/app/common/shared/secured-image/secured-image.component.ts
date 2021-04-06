@@ -43,10 +43,6 @@ export class SecuredImageComponent implements OnChanges  {
   ngOnChanges(): void {
     this.isLocalImg = this.src && this.src.includes('assets/images');
 
-    if (!this.src) {
-      this.isLocalImg = true;
-    }
-
     if (!this.isLocalImg) {
       switch (this.service) {
         case 'workspace':
