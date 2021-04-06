@@ -15,14 +15,14 @@ export class SecuredImageComponent implements OnChanges  {
   // this makes sure that we can handle source changes
   // or even when the component gets destroyed
   // So basically turn src into src$
-  @Input() src: string = 'assets/images/user.png';
-  @Input() tooltip: string = '';
-  @Input() service: string = 'user';
-  @Input() placement: string = '';
-  @Input() styleClass: string = '';
-  @Input() alt: string = '';
-  @Input() inlineStyle: string = '';
-  @Input() noAuth: boolean = false;
+  @Input() src: string = 'assets/images/user.png'; // url of the file
+  @Input() tooltip: string = ''; // tooltip
+  @Input() service: string = 'user'; // service where the file is part of ['workspace', 'group', 'user']
+  @Input() placement: string = ''; // placement
+  @Input() styleClass: string = ''; // css class used
+  @Input() alt: string = ''; // alternative text
+  @Input() inlineStyle: string = ''; // inline styles
+  @Input() noAuth: boolean = false; // in case we need a work around for security (only valid for selecting workplace because the user is not logged in yet)
 
   onErrorUrl: string = 'assets/images/user.png';
 
