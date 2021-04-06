@@ -44,7 +44,7 @@ export class SecuredImageComponent implements OnChanges  {
     this.isLocalImg = this.src && this.src.includes('assets/images');
     if (!this.isLocalImg) {
       switch (this.service) {
-        case 'worksapce':
+        case 'workspace':
           this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.src);
           this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
           this.onErrorUrl = "assets/images/default_organization.png";
