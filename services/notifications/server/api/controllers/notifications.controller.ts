@@ -343,9 +343,10 @@ export class NotificationsController {
             if (assigned_to && assigned_to?.length>0) {
                 const index = assigned_to.findIndex(assignee => assignee._id == posted_by);
                 if (index < 0) {
-                    await helperFunctions.sendNotificationsFeedFromService(posted_by?._id, io, true);
+                    
                     assigned_to.forEach( async assignedTo => {
                         if(assignedTo._id !== userId){
+                            await helperFunctions.sendNotificationsFeedFromService(assignedTo._id, io, true);
                             await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                                 userid: assignedTo._id,
                                 postId, 
@@ -362,6 +363,7 @@ export class NotificationsController {
 
             if(posted_by._id !== userId){
                 await notificationService.taskStatusChanged(postId, status, userId, assigned_to, posted_by,req.body.io);
+                await helperFunctions.sendNotificationsFeedFromService(posted_by?._id, io, true);
                 await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                     userid: posted_by._id,
                     postId, 
@@ -375,6 +377,7 @@ export class NotificationsController {
                 const index = assigned_to.findIndex(assignee => assignee._id == follower);
                 if (index < 0 && follower !== posted_by._id && follower !== userId) {
                     await notificationService.taskStatusChanged(postId, status, userId, null, followers,req.body.io);
+                    await helperFunctions.sendNotificationsFeedFromService(follower, io, true);
                     await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
                         userid: follower,
                         postId, 

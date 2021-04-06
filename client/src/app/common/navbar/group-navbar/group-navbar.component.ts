@@ -110,38 +110,6 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
     this.utilityService.handleActiveStateTopNavBar().subscribe(event => {
       this.activeState = event;
     });
-    await this.initNotifications();
-  }
-
-  async initNotifications() {
-    // Subscribe to the change in notifications data from the server
-    this.subSink.add(this.socketService.currentData.subscribe((res) => {
-      if (JSON.stringify(res) != JSON.stringify({}))
-        this.notificationsData = res;
-    }));
-
-    /**
-     * emitting the @event joinUser to let the server know that user has joined
-     */
-    this.subSink.add(this.socketService.onEmit('joinUser', this.userData['_id'])
-      .pipe(retry(Infinity))
-      .subscribe());
-
-    /**
-     * emitting the @event joinWorkspace to let the server know that user has joined
-     */
-    this.subSink.add(this.socketService.onEmit('joinWorkspace', {
-      workspace_name: this.userData['workspace_name']
-    })
-      .pipe(retry(Infinity))
-      .subscribe());
-
-    /**
-     * emitting the @event getNotifications to let the server know to give back the push notifications
-     */
-    this.subSink.add(this.socketService.onEmit('getNotifications', this.userData['_id'])
-      .pipe(retry(Infinity))
-      .subscribe());
   }
 
   ngOnChanges(changes: SimpleChanges) {

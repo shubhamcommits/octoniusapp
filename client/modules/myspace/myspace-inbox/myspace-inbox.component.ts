@@ -87,6 +87,8 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
 
     // Return the function via stopping the loader
     this.isLoading$.next(false);
+
+    await this.initNotifications();
   }
 
   /**
@@ -109,6 +111,32 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
         this.notificationsData = notifications;
         socketService.changeData(notifications);
       })
+  }
+
+  async initNotifications() {
+    
+    /**
+     * emitting the @event joinUser to let the server know that user has joined
+     */
+    this.subSink.add(this.socketService.onEmit('joinUser', this.userData['_id'])
+      .pipe(retry(Infinity))
+      .subscribe());
+
+    /**
+     * emitting the @event joinWorkspace to let the server know that user has joined
+     */
+    this.subSink.add(this.socketService.onEmit('joinWorkspace', {
+      workspace_name: this.userData['workspace_name']
+    })
+      .pipe(retry(Infinity))
+      .subscribe());
+
+    /**
+     * emitting the @event getNotifications to let the server know to give back the push notifications
+     */
+    this.subSink.add(this.socketService.onEmit('getNotifications', this.userData['_id'])
+      .pipe(retry(Infinity))
+      .subscribe());
   }
 
   /**
