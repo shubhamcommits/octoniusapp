@@ -446,7 +446,11 @@ export class GroupFilesComponent implements OnInit {
    */
   getFileIcon(fileName: string) {
     let file = fileName.split(".");
-    return "assets/images/" + file[file.length-1].toLowerCase() + "-file-icon.png";
+    let fileType = file[file.length-1].toLowerCase();
+    if (fileType == 'mp4') {
+      fileType = 'mov';
+    }
+    return "assets/images/" + fileType + "-file-icon.png";
   }
 
   /**
