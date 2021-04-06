@@ -22,16 +22,19 @@ export class Auths {
             if (query.noAuth) {
                 next();
             } else {
-
+console.log(query.authToken);
+                let token = query?.authToken?.split(' ')[1];
                 // Authorization header is not present on request
-                if (!req.headers.authorization) {
+                if (!req.headers.authorization && !token) {
                     return res.status(401).json({
                         message: 'Unauthorized request, it must include an authorization header!'
                     })
                 }
 
-                // Split the authorization header
-                const token = req.headers.authorization.split(' ')[1]
+                if (!token) {
+                    // Split the authorization header
+                    token = req.headers.authorization.split(' ')[1]
+                }
 
                 // Token is not present on authorization header
                 if (!token) {
@@ -76,7 +79,7 @@ export class Auths {
             // and in the highlight directive
             // TODO - find a solution to secure this calls
             // if (query.noAuth && url_parts.pathname.includes('/workspaces/')) {
-            if (query.noAuth) {
+            if (query.noAuth || query.authToken) {
                 next();
             } else {
                 // Find the authentication logs

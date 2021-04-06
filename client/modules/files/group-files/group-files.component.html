@@ -107,7 +107,7 @@
             <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
                 *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
                 <a *ngIf="file?.type === 'file'" class="mt-0" target="_blank"
-                  href="{{filesBaseUrl}}/{{file?.modified_name}}">
+                  href="{{filesBaseUrl}}/{{file?.modified_name}}?authToken={{authToken}}">
                     <img [src]="getFileIcon(file?.original_name)"
                       onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                     {{file?.original_name}}

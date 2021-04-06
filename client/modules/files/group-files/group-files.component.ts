@@ -13,6 +13,7 @@ import { PreviewFilesDialogComponent } from 'src/app/common/shared/preview-files
 import { FilesService } from './../../../src/shared/services/files-service/files.service';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-group-files',
@@ -75,6 +76,8 @@ export class GroupFilesComponent implements OnInit {
 
   workspaceId: string;
 
+  authToken: string;
+
   // More to load maintains check if we have more to load members on scroll
   public moreToLoad: boolean = true;
 
@@ -86,6 +89,7 @@ export class GroupFilesComponent implements OnInit {
     private filesService: FilesService,
     private foldersService: FoldersService,
     public dialog: MatDialog,
+    public storageService: StorageService
   ) { }
 
   async ngOnInit() {
@@ -124,6 +128,8 @@ export class GroupFilesComponent implements OnInit {
           this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
         });
     }
+
+    this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`
   }
 
   ngAfterViewInit(){
