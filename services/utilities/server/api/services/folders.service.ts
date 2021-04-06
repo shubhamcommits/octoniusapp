@@ -27,7 +27,7 @@ export class FoldersService {
         // Populate folder properties
         folder = await Folder.populate(folder, [
             { path: '_group', select: this.groupFields },
-            { path: '_posted_by', select: this.userFields }
+            { path: '_created_by', select: this.userFields }
         ])
 
         // Return folder with populated properties
@@ -134,7 +134,7 @@ export class FoldersService {
             .sort('folder_name')
             .populate([
                 { path: '_group', select: this.groupFields },
-                { path: '_posted_by', select: this.userFields }
+                { path: '_created_by', select: this.userFields }
             ])
             .lean();
 
@@ -158,7 +158,7 @@ export class FoldersService {
             .sort('folder_name')
             .populate([
                 { path: '_group', select: this.groupFields },
-                { path: '_posted_by', select: this.userFields }
+                { path: '_created_by', select: this.userFields }
             ])
             .lean();
 
