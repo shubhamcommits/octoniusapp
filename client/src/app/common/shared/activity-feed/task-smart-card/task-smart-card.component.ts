@@ -2,6 +2,7 @@ import {  Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { SubSink } from 'subsink';
 import { ChildActivationEnd, Router } from '@angular/router';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-task-smart-card',
@@ -9,8 +10,6 @@ import { ChildActivationEnd, Router } from '@angular/router';
   styleUrls: ['./task-smart-card.component.scss']
 })
 export class TaskSmartCardComponent implements OnInit, OnDestroy {
-
-  activeState: string;
 
   // Subsink Object
   subSink = new SubSink();
@@ -32,18 +31,12 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
+    private utilityService: UtilityService,
     private _router: Router
   ) { }
 
   async ngOnInit() {
-    this.subSink.add(this._router.events.subscribe((e: any) => {
-      if (e instanceof ChildActivationEnd) {
-        const segments = e.snapshot['_urlSegment'].children.primary.segments;
-        this.activeState = segments[segments.length-2].path+'_'+segments[segments.length-1].path;
-      }
-    }));
-
-
+    
     this.todayTasks = await this.getUserTodayTasks();
     this.overdueTasks = await this.getUserOverdueTasks();
     this.markOverdueTasks();
@@ -130,7 +123,7 @@ export class TaskSmartCardComponent implements OnInit, OnDestroy {
   }
 
   async changeState(state:string){
-    this.activeState = state;
+    this.utilityService.handleActiveStateTopNavBar().emit(state);
   }
 
 }

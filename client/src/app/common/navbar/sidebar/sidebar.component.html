@@ -30,7 +30,7 @@
 
                 <ul class="collapse list-unstyled show" id="pageSubmenu">
                     <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
-                        <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
+                        <a (click)="changeState('groups_activity')" [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
                             [queryParams]="{ group: group?._id, myWorkplace: false  }" routerLinkActive="active">
 
                             <app-secured-image
@@ -53,7 +53,7 @@
 
             <li> <hr class="divider-line"></li>
             <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
-                <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
+                <a (click)="changeState('general')" class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
                     <i class="material-icons-outlined">settings</i>
                     Administration<span class="sr-only">(current)</span>
                 </a>
@@ -62,8 +62,9 @@
                 <li>
                     <!-- USER PROFILE BADGE STARTS -->
                     <a class="nav-link" *ngIf="this.userData"
-                        [routerLink]="['/dashboard', 'user', 'profile']"
-                        [queryParams]="{ userId: userData?._id}" routerLinkActive="active" >
+                      [routerLink]="['/dashboard', 'user', 'profile']"
+                      [queryParams]="{ userId: userData?._id}" routerLinkActive="active"
+                      (click)="changeState('profile')">
                         <app-secured-image
                             [src]="userData?.profile_pic"
                             [service]="'user'"

@@ -19,6 +19,7 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
   constructor(
     private injector: Injector,
     private router: ActivatedRoute,
+    private utilityService: UtilityService,
     private socketService: SocketService,
     private _router: Router
   ) {
@@ -105,7 +106,10 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
 
     const segments = this.routerFromEvent._urlSegment.children.primary.segments;
     this.activeState = segments[segments.length-2].path+'_'+segments[segments.length-1].path;
-
+    
+    this.utilityService.handleActiveStateTopNavBar().subscribe(event => {
+      this.activeState = event;
+    });
     await this.initNotifications();
   }
 

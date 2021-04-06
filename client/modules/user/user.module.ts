@@ -16,6 +16,7 @@ import { GoogleCloudModule } from './user-clouds/user-available-clouds/google-cl
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { SlackCloudModule } from './user-clouds/user-available-clouds/slack/slack.module';
 import { TeamModule } from './user-clouds/user-available-clouds/team/team.module';
+import { ZapModule } from './user-clouds/user-available-clouds/zapier/zapier.module';
 import { UserWorkloadComponent } from './user-workload/user-workload.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -23,6 +24,7 @@ import { UserWorkloadCalendarComponent } from './user-workload/user-workload-cal
 import { UserAvailabilityDayDialogComponent } from './user-workload/user-availability-day-dialog/user-availability-day-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
 import { UserPasswordUpdateComponent } from './user-profile/user-password-update/user-password-update.component';
+
 
 @NgModule({
   declarations: [
@@ -37,7 +39,7 @@ import { UserPasswordUpdateComponent } from './user-profile/user-password-update
     UserWorkloadComponent,
     UserWorkloadCalendarComponent,
     UserAvailabilityDayDialogComponent,
-    UserPasswordUpdateComponent
+    UserPasswordUpdateComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +47,7 @@ import { UserPasswordUpdateComponent } from './user-profile/user-password-update
     GoogleCloudModule,
     SlackCloudModule,
     TeamModule,
+    ZapModule,
     UserRoutingModule,
     MatSelectModule,
     CalendarModule.forRoot({
