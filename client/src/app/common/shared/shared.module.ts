@@ -97,11 +97,10 @@ import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/
 import { SectionStatusCardComponent } from './dashboard/section-status-card/section-status-card.component';
 import { MemberDialogComponent } from './member-dialog/member-dialog.component';
 
-import { CalendarModule as Calendar, CalendarUtils, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { UserUpdateProfileDialogComponent } from './user-update-profile-dialog/user-update-profile-dialog.component';
 import { UserUpdateUserInformationDialogComponent } from './user-update-user-information-dialog/user-update-user-information-dialog.component';
 import { UserUpdateUserPersonalInformationDialogComponent } from './user-update-user-personal-information-dialog/user-update-user-personal-information-dialog.component';
+import { SecuredImageComponent } from './secured-image/secured-image.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +112,7 @@ import { UserUpdateUserPersonalInformationDialogComponent } from './user-update-
     LoadingSpinnerComponent,
     ComponentSearchBarComponent,
     SectionSeparatorComponent,
+    SecuredImageComponent,
     ComponentSearchInputBoxComponent,
     QuillEditorComponent,
     TimePickerComponent,
@@ -268,6 +268,7 @@ import { UserUpdateUserPersonalInformationDialogComponent } from './user-update-
     PostViewComponent,
     PostTagsComponent,
     SectionSeparatorComponent,
+    SecuredImageComponent,
     SelectAssigneeComponent,
     QuillEditorComponent,
     TimePickerComponent,
@@ -311,6 +312,7 @@ import { UserUpdateUserPersonalInformationDialogComponent } from './user-update-
     InlineInputComponent,
     GroupCreatePostDialogComponent,
     TruncateTextPipe,
+    SafePipe,
     ChartsModule,
 
     WorkStatisticsCardComponent,

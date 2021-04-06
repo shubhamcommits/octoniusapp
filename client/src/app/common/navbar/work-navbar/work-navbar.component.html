@@ -1,9 +1,11 @@
 <ul class="nav mr-auto">
   <li class="nav-item mr-3">
     <!-- <i class="material-icons-outlined float-left mr-2">dashboard</i> -->
-    <img class="mr-3 feed-avatar"
-    src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}"
-    onerror="this.src='assets/images/organization.png'">
+    <app-secured-image
+      [src]="workspaceData?.workspace_avatar"
+      [service]="'workspace'"
+      [styleClass]="'mr-3 feed-avatar'"
+      style="float: left;"></app-secured-image>
     <h2>Work</h2>
     <!-- <h2>{{workspaceData?.workspace_name}} </h2> -->
   </li>

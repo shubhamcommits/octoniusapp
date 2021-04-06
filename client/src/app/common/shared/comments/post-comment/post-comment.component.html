@@ -3,9 +3,10 @@
         <div class="row card-title ">
             <div class="col-md-1">
 
-              <img src="{{baseUrl}}/{{comment._commented_by?.profile_pic}}"
-                  onerror="this.src='assets/images/user.png'" class="feed-avatar">
-
+              <app-secured-image
+                  [src]="comment?._commented_by?.profile_pic"
+                  [service]="'user'"
+                  [styleClass]="'feed-avatar'"></app-secured-image>
             </div>
             <div class="col-md-11 ">
                 <h6 class="ml-2"> {{comment?._commented_by?.first_name || 'Deleted'}} {{comment?._commented_by?.last_name || 'User'}}

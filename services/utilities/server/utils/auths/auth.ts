@@ -14,44 +14,46 @@ export class Auths {
      */
     async verifyToken(req: Request, res: Response, next: NextFunction) {
         try {
+            var url = require('url');
+            var url_parts = url.parse(req.url, true);
+            var query = url_parts.query;
 
-            // Authorization header is not present on request
-            if (!req.headers.authorization) {
-                return res.status(401).json({
-                    message: 'Unauthorized request, it must include an authorization header!'
-                })
-            }
+            // Allow this situation for when selecting a workplace where user is not login yet
+            if (query.noAuth && url_parts.pathname.includes('/workspaces/')) {
+                next();
+            } else {
 
-            // Split the authorization header
-            const token = req.headers.authorization.split(' ')[1]
-
-            // Token is not present on authorization header
-            if (!token) {
-                return res.status(401).json({
-                    message: 'Unauthorized request, it must include an authorization token!'
-                })
-            }
-
-            // Verify the token
-            jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
-                if (err || !decoded) {
-
-                    // Send status 401 response
+                // Authorization header is not present on request
+                if (!req.headers.authorization) {
                     return res.status(401).json({
-                        message: 'Unauthorized request, it must have a valid authorization token!'
-                    })
-                } else {
-
-                    // Assigning and feeding the userId into the req object
-                    req['userId'] = decoded['subject']
-
-                    // Send status 200 response
-                    return res.status(200).json({
-                        message: 'Request is authorized!',
-                        userId: req['userId']
+                        message: 'Unauthorized request, it must include an authorization header!'
                     })
                 }
-            });
+
+                // Split the authorization header
+                const token = req.headers.authorization.split(' ')[1]
+
+                // Token is not present on authorization header
+                if (!token) {
+                    return res.status(401).json({
+                        message: 'Unauthorized request, it must include an authorization token!'
+                    })
+                }
+
+                // Verify the token
+                jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+                    if (err || !decoded) {
+                        // Send status 401 response
+                        return res.status(401).json({
+                            message: 'Unauthorized request, it must have a valid authorization token!'
+                        })
+                    } else {
+                        // Assigning and feeding the userId into the req object
+                        req['userId'] = decoded['subject']
+                        next();
+                    }
+                });
+            }
         } catch (err) {
             return sendError(res, err);
         }
@@ -66,30 +68,35 @@ export class Auths {
     async isLoggedIn(req: Request, res: Response, next: NextFunction) {
         try {
 
-            // Find the authentication logs
-            const auth = await Auth.findOne({
-                _user: req['userId'],
-                isLoggedIn: true,
-                token: req.headers.authorization.split(' ')[1]
-            });
+            var url = require('url');
+            var url_parts = url.parse(req.url, true);
+            var query = url_parts.query;
 
-            // If logs are found
-            if (!!auth) {
-
-                // Send status 200 response
-                return res.status(200).json({
-                    message: 'User is logged In!',
-                    auth: auth
-                })
+            // Allow this situation for when selecting a workplace where user is not login yet
+            if (query.noAuth && url_parts.pathname.includes('/workspaces/')) {
+                next();
             } else {
+                // Find the authentication logs
+                const auth = await Auth.findOne({
+                    _user: req['userId'],
+                    isLoggedIn: true,
+                    token: req.headers.authorization.split(' ')[1]
+                });
 
-                // Send status 200 response
-                return res.status(401).json({
-                    message: 'Unauthorized request, Please signIn to continue!',
-                })
+                // If logs are found
+                if (!!auth) {
 
+                    // Send status 200 response
+                    next();
+                } else {
+
+                    // Send status 200 response
+                    return res.status(401).json({
+                        message: 'Unauthorized request, Please signIn to continue!',
+                    })
+
+                }
             }
-
         } catch (err) {
             return sendError(res, err, 'Unauthorized request, Please sign In to continue!', 401)
         }

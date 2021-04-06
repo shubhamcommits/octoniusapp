@@ -72,9 +72,12 @@
 
                 <div class="media-body">
                     <div class="float-right" *ngIf="folder?.folder_name != '../'">
-                        <img src="{{ userBaseUrl }}/{{folder?._created_by?.profile_pic}}"
-                            routerLink="/dashboard/user/profile" [queryParams]="{ userId: folder?._created_by?._id || folder?._created_by?._id }"
-                            onerror="this.src='assets/images/user.png'" class="feed-avatar">
+                        <app-secured-image
+                            routerLink="/dashboard/user/profile"
+                            [queryParams]="{ userId: folder?._created_by?._id || folder?._created_by?._id }"
+                            [src]="folder?._created_by?.profile_pic"
+                            [service]="'user'"
+                            [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
                         <mat-menu #menu="matMenu">
                             <a mat-menu-item (click)="deleteItem(folder?._id, folder?.type)">
@@ -119,9 +122,12 @@
 
                 <div class="media-body">
                     <div class="float-right">
-                        <img src="{{ userBaseUrl }}/{{file?._posted_by?.profile_pic}}"
-                            routerLink="/dashboard/user/profile" [queryParams]="{ userId: file?._posted_by?._id || file?._created_by?._id }"
-                            onerror="this.src='assets/images/user.png'" class="feed-avatar">
+                        <app-secured-image
+                            routerLink="/dashboard/user/profile"
+                            [queryParams]="{ userId: file?._posted_by?._id || file?._created_by?._id }"
+                            [src]="file?._posted_by?.profile_pic"
+                            [service]="'user'"
+                            [styleClass]="'feed-avatar'"></app-secured-image>
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
                         <mat-menu #menu="matMenu">
                             <a *ngIf="file?.type === 'folio'" mat-menu-item (click)="copyToClipboard(file?._id)">

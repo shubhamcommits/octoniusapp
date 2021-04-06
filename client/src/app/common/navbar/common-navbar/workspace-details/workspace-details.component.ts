@@ -13,13 +13,6 @@ import { retry } from 'rxjs/internal/operators/retry';
 })
 export class WorkspaceDetailsComponent implements OnInit {
 
-  constructor(
-    private utilityService: UtilityService,
-    private workspaceService: WorkspaceService,
-    private injector: Injector,
-    private socketService: SocketService
-  ) { }
-
   // User Data Variable
   @Input('userData') userData: any;
 
@@ -36,9 +29,23 @@ export class WorkspaceDetailsComponent implements OnInit {
   private subSink = new SubSink();
 
   // Public Functions
-  private publicFunctions = new PublicFunctions(this.injector);
+  public publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private utilityService: UtilityService,
+    private workspaceService: WorkspaceService,
+    private injector: Injector,
+    private socketService: SocketService
+  ) { }
 
   ngOnInit() {
+  }
+
+  /**
+   * This function unsubscribes the data from the observables
+   */
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
   }
 
   /**
@@ -87,12 +94,5 @@ export class WorkspaceDetailsComponent implements OnInit {
    */
   emitWorkspaceData(socketService: SocketService, workspaceData: any){
     return socketService.onEmit('workspaceData', workspaceData).pipe(retry(Infinity)).subscribe()
-  }
-
-  /**
-   * This function unsubscribes the data from the observables
-   */
-  ngOnDestroy(): void {
-    this.subSink.unsubscribe();
   }
 }

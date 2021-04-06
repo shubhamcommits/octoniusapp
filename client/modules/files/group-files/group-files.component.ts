@@ -171,18 +171,20 @@ export class GroupFilesComponent implements OnInit {
 
       const files: any = await this.publicFunctions.getFiles(this.groupId, this.lastFileId);
 
-      this.files = [...this.files, ...files];
+      if(files) {
+        this.files = [...this.files, ...files];
 
-      // Removing duplicates from the array if any
-      this.utilityService.removeDuplicates(this.files, '_id').then((files) => {
-        this.files = files;
-      });
+        // Removing duplicates from the array if any
+        this.utilityService.removeDuplicates(this.files, '_id').then((files) => {
+          this.files = files;
+        });
 
-      // Set the lastFileId for scroll
-      this.lastFileId = files[files.length - 1]?._id;
+        // Set the lastFileId for scroll
+        this.lastFileId = files[files.length - 1]?._id;
 
-      if (files.length < 5) {
-        this.moreToLoad = false;
+        if (files.length < 5) {
+          this.moreToLoad = false;
+        }
       }
 
       // Stop the loading spinner
@@ -424,8 +426,10 @@ export class GroupFilesComponent implements OnInit {
     // Fetch the uploaded files from the server
     this.files = await this.publicFunctions.getFiles(this.groupId, null);
 
-    // Set the lastFileId for scroll
-    this.lastFileId = this.files[this.files.length - 1]?._id;
+    if (this.files) {
+      // Set the lastFileId for scroll
+      this.lastFileId = this.files[this.files.length - 1]?._id;
+    }
 
     this.currentFolder = null;
   }

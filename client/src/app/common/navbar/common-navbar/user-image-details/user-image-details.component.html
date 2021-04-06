@@ -9,7 +9,9 @@
 <!-- USER MODAL CHANGE IMAGE STARTS -->
 <div class="modal-body">
     <div class="form-group">
-        <img src="{{ baseUrl }}/{{ userData?.profile_pic }}"  onerror="this.src='assets/images/user.png'">
+        <app-secured-image *ngIf="workspaceData"
+          [src]="workspaceData?.workspace_avatar"
+          [service]="'user'"></app-secured-image>
         <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>
 </div>

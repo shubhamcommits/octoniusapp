@@ -1,11 +1,21 @@
 import express from 'express';
 import { FilesControllers } from '../controllers/files.controllers';
 import { groupFileUploader, groupFileDelete } from '../../utils/filehandlers/group.filehandler';
+import { Auths } from '../../utils/auths';
 
 // Files Class Object
 let files = new FilesControllers()
 
 const routes = express.Router();
+
+// Auths Helper Function
+const authsHelper = new Auths();
+
+// Verify the token
+routes.use(authsHelper.verifyToken);
+
+// Checks whether the current user is loggedIn or not
+routes.use(authsHelper.isLoggedIn);
 
 // POST - Handles the adding files inside a group
 routes.post('/groups', groupFileUploader, files.add);

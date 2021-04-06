@@ -1,3 +1,8 @@
-<img [src]="getAssigneePic(post?._assigned_to)" [ngbTooltip]="getAssigneeTooltip(post?._assigned_to)" onerror="this.src='assets/images/user.png'" class="feed-avatar">
+<app-secured-image
+  [src]="getAssigneePic(post?._assigned_to)"
+  [service]="'user'"
+  [styleClass]="'assignee-avatar'"
+  [tooltip]="getAssigneeTooltip(post?._assigned_to)"></app-secured-image>
+
 <span *ngIf="post?._assigned_to && (post?._assigned_to?.length - 1) > 0" style="margin-left: -5px;"
   [matBadge]="numberAssignees" matBadgePosition="before" class="assigneeinfo"></span>

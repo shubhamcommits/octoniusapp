@@ -1,7 +1,17 @@
 import express from 'express';
+import { Auths } from '../../utils/auths';
 import { groupFileHandler, postFileHandler, userFileHandler, workspaceFileHandler } from '../../utils/filehandlers';
 
 const routes = express.Router();
+
+// Auths Helper Function
+const authsHelper = new Auths();
+
+// Verify the token
+routes.use(authsHelper.verifyToken);
+
+// Checks whether the current user is loggedIn or not
+routes.use(authsHelper.isLoggedIn);
 
 // GET - Handles the file attachment(group_avatar, group files) for the groups
 routes.get('/groups/:file', groupFileHandler);
