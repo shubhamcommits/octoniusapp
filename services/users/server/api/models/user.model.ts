@@ -188,6 +188,18 @@ const UserSchema = new Schema({
                 type: String,
                 default: null
             }
+        },
+        zapier:{
+            webhook:[{
+                trigger: {
+                    type: String,
+                    default: null
+                },
+                webhookURl: {
+                    type: String,
+                    default: null
+                }
+            }]
         }
     },
     out_of_office: [{

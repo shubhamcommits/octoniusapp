@@ -149,6 +149,10 @@ const UserSchema = new Schema({
             type: Boolean,
             default: false
         },
+        is_zapier_connected:{
+            type: Boolean,
+            default: false
+        },
         slack: {
             token: {
                 type: String,
@@ -188,6 +192,18 @@ const UserSchema = new Schema({
                 type: String,
                 default: null
             }
+        },
+        zapier:{
+            webhook:[{
+                trigger: {
+                    type: String,
+                    default: null
+                },
+                webhookURl: {
+                    type: String,
+                    default: null
+                }
+            }]
         }
     },
     out_of_office: [{

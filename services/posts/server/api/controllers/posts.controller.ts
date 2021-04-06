@@ -2,6 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import { FlowService, PostService, TagsService } from '../services';
 import moment from "moment/moment";
 import { sendErr } from '../utils/sendError';
+
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const postService = new PostService();
@@ -505,6 +506,8 @@ export class PostController {
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             })
+        
+        await postService.triggerToZap(postId,assigneeId,'new_task');
 
         // Send status 200 response
         return res.status(200).json({
