@@ -9,6 +9,7 @@ import { NotificationService } from 'src/shared/services/notification-service/no
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
 import { Router, RouterEvent, NavigationEnd, ChildActivationEnd } from '@angular/router';
+import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -46,7 +47,8 @@ export class AppComponent {
     private injector: Injector,
     private storageService: StorageService,
     private _router: Router,
-    private _notificationService: NotificationService
+    private _notificationService: NotificationService,
+    private routeStateService: RouteStateService
   ) {
     this._notificationService.requestPermission();
 
@@ -54,6 +56,7 @@ export class AppComponent {
       if (e instanceof ChildActivationEnd) {
         this.groupId = e.snapshot.queryParamMap.get('group');
         this.routerFromEvent = e.snapshot;
+        this.routeStateService.updatePathParamState(e.snapshot.queryParams);
       }
       if (e instanceof NavigationEnd) {
         window['Appcues'].page();

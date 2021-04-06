@@ -8,6 +8,7 @@ import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import moment from 'moment/moment';
+import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 
 @Component({
   selector: 'app-group-navbar',
@@ -21,7 +22,8 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
     private router: ActivatedRoute,
     private utilityService: UtilityService,
     private socketService: SocketService,
-    private _router: Router
+    private _router: Router,
+    private routeStateService: RouteStateService,
   ) {
     this.publicFunctions.getCurrentUser().then(user => {
       this.userData = user;
@@ -69,6 +71,12 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
 
   async ngOnInit() {
 
+    this.subSink.add(this.routeStateService?.pathParams.subscribe((res) => {
+      if (JSON.stringify(res) != JSON.stringify({})) {
+        console.log("Query Parms in group nav bar from service",res);
+      }
+    }));
+    
     // Fetch the current user
     if (!this.userData) {
       this.userData = await this.publicFunctions.getCurrentUser();
