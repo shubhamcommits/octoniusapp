@@ -13,6 +13,7 @@ import { PreviewFilesDialogComponent } from 'src/app/common/shared/preview-files
 import { FilesService } from './../../../src/shared/services/files-service/files.service';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-group-files',
@@ -75,6 +76,8 @@ export class GroupFilesComponent implements OnInit {
 
   workspaceId: string;
 
+  authToken: string;
+
   // More to load maintains check if we have more to load members on scroll
   public moreToLoad: boolean = true;
 
@@ -86,6 +89,7 @@ export class GroupFilesComponent implements OnInit {
     private filesService: FilesService,
     private foldersService: FoldersService,
     public dialog: MatDialog,
+    public storageService: StorageService
   ) { }
 
   async ngOnInit() {
@@ -124,6 +128,8 @@ export class GroupFilesComponent implements OnInit {
           this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
         });
     }
+
+    this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`
   }
 
   ngAfterViewInit(){
@@ -171,18 +177,20 @@ export class GroupFilesComponent implements OnInit {
 
       const files: any = await this.publicFunctions.getFiles(this.groupId, this.lastFileId);
 
-      this.files = [...this.files, ...files];
+      if(files) {
+        this.files = [...this.files, ...files];
 
-      // Removing duplicates from the array if any
-      this.utilityService.removeDuplicates(this.files, '_id').then((files) => {
-        this.files = files;
-      });
+        // Removing duplicates from the array if any
+        this.utilityService.removeDuplicates(this.files, '_id').then((files) => {
+          this.files = files;
+        });
 
-      // Set the lastFileId for scroll
-      this.lastFileId = files[files.length - 1]?._id;
+        // Set the lastFileId for scroll
+        this.lastFileId = files[files.length - 1]?._id;
 
-      if (files.length < 5) {
-        this.moreToLoad = false;
+        if (files.length < 5) {
+          this.moreToLoad = false;
+        }
       }
 
       // Stop the loading spinner
@@ -424,8 +432,10 @@ export class GroupFilesComponent implements OnInit {
     // Fetch the uploaded files from the server
     this.files = await this.publicFunctions.getFiles(this.groupId, null);
 
-    // Set the lastFileId for scroll
-    this.lastFileId = this.files[this.files.length - 1]?._id;
+    if (this.files) {
+      // Set the lastFileId for scroll
+      this.lastFileId = this.files[this.files.length - 1]?._id;
+    }
 
     this.currentFolder = null;
   }

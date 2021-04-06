@@ -63,7 +63,7 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
   }
 
   // PUBLIC FUNCTIONS
-  private publicFunctions = new PublicFunctions(this.injector);
+  public publicFunctions = new PublicFunctions(this.injector);
 
   private userService = this.injector.get(UserService);
 

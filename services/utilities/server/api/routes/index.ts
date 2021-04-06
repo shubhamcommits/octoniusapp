@@ -1,4 +1,3 @@
-import { authRoutes } from './auths.routes';
 import { fileHandlerRoutes } from "./filehandler.routes";
 import { filesRoutes } from './files.routes';
 import { foldersRoutes } from './folders.routes';
@@ -10,7 +9,7 @@ import { foldersRoutes } from './folders.routes';
 export {
 
     // Auth Routes
-    authRoutes as authRoutes,
+    // authRoutes as authRoutes,
 
     // Files Handler Routes
     fileHandlerRoutes as fileHandlerRoutes,

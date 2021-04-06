@@ -44,7 +44,6 @@
 
 **PORT 10000** - `http://localhost:10000/api` -> `/api/utilities`
 
-*   `/api/auths`
 *   `/api/files`
 *   `/api/folders`
 *   `/uploads`

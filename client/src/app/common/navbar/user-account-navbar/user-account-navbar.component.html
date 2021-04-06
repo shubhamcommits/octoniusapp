@@ -3,10 +3,13 @@
     <ul class="nav">
       <li class="nav-item mr-3 d-none d-sm-block">
         <!-- My user avatar starts -->
-        <img *ngIf="userData" class="mr-3 feed-avatar" src="{{userBaseUrl}}/{{userData?.profile_pic}}"
-            onerror="this.src='assets/images/user.png'"
-            placement="right" ngbTooltip="Change your avatar"
-            (click)="openDetails(userContent)">
+        <app-secured-image *ngIf="userData"
+            [src]="userData?.profile_pic"
+            [service]="'user'"
+            [styleClass]="'mr-3 feed-avatar'"
+            [placement]="'right'"
+            [tooltip]="'Change your avatar'"
+            (click)="openDetails(userContent)"></app-secured-image>
         <!-- My user avatar ends -->
 
         <h2> <i class="material-icons">arrow_forward_ios

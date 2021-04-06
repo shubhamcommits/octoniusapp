@@ -1,0 +1,37 @@
+img{
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+img:hover{
+  transform: scale(1.1);
+}
+
+.avatar{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.assignee-avatar {
+  //avatar image for in-feed display
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 5px 10px;
+}
+
+.card-img-top{
+  width: 100%;
+  height: 160px;
+  border-radius: 4px 4px 0 0 ;
+  object-fit: cover;
+}
+
+.group-avatar{
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+}
