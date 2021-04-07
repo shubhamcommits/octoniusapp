@@ -22,9 +22,11 @@
         *ngFor="let member of ActiveMembers; let index = index; trackBy: utilityService.trackByIndex;">
 
         <!-- Avatar Image of the member -->
-        <img *ngIf="member.active || type == 'group'" src="{{ baseUrl }}/{{member?.profile_pic}}"
-            (click)="openFullscreenModal(member._id)"
-            onerror="this.src='assets/images/user.png'" class="feed-avatar">
+        <app-secured-image  *ngIf="member.active || type == 'group'"
+            [src]="member?.profile_pic"
+            [service]="'user'"
+            [styleClass]="'feed-avatar'"
+            (click)="openFullscreenModal(member._id)"></app-secured-image>
         <!-- Avatar Image of the member -->
 
         <div *ngIf="member.active || type == 'group'" class="media-body">
@@ -99,10 +101,11 @@
                 *ngFor="let member of DisabledMembers; let index = index; trackBy: utilityService.trackByIndex;">
 
                 <!-- Avatar Image of the member -->
-
-                <img *ngIf="!member.active" class="inactive-person" src="{{ baseUrl }}/{{member?.profile_pic}}"
-                    (click)="openFullscreenModal(member._id)"
-                    onerror="this.src='assets/images/user.png'" class="feed-avatar">
+                <app-secured-image *ngIf="!member.active"
+                    [src]="member?.profile_pic"
+                    [service]="'user'"
+                    [styleClass]="'inactive-person feed-avatar'"
+                    (click)="openFullscreenModal(member._id)"></app-secured-image>
                 <!-- Avatar Image of the member -->
 
                 <div class="media-body">

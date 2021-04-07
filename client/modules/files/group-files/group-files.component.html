@@ -72,9 +72,12 @@
 
                 <div class="media-body">
                     <div class="float-right" *ngIf="folder?.folder_name != '../'">
-                        <img src="{{ userBaseUrl }}/{{folder?._created_by?.profile_pic}}"
-                            routerLink="/dashboard/user/profile" [queryParams]="{ userId: folder?._created_by?._id || folder?._created_by?._id }"
-                            onerror="this.src='assets/images/user.png'" class="feed-avatar">
+                        <app-secured-image
+                            routerLink="/dashboard/user/profile"
+                            [queryParams]="{ userId: folder?._created_by?._id || folder?._created_by?._id }"
+                            [src]="folder?._created_by?.profile_pic"
+                            [service]="'user'"
+                            [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
                         <mat-menu #menu="matMenu">
                             <a mat-menu-item (click)="deleteItem(folder?._id, folder?.type)">
@@ -104,7 +107,7 @@
             <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
                 *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
                 <a *ngIf="file?.type === 'file'" class="mt-0" target="_blank"
-                  href="{{filesBaseUrl}}/{{file?.modified_name}}">
+                  href="{{filesBaseUrl}}/{{file?.modified_name}}?authToken={{authToken}}">
                     <img [src]="getFileIcon(file?.original_name)"
                       onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                     {{file?.original_name}}
@@ -119,9 +122,12 @@
 
                 <div class="media-body">
                     <div class="float-right">
-                        <img src="{{ userBaseUrl }}/{{file?._posted_by?.profile_pic}}"
-                            routerLink="/dashboard/user/profile" [queryParams]="{ userId: file?._posted_by?._id || file?._created_by?._id }"
-                            onerror="this.src='assets/images/user.png'" class="feed-avatar">
+                        <app-secured-image
+                            routerLink="/dashboard/user/profile"
+                            [queryParams]="{ userId: file?._posted_by?._id || file?._created_by?._id }"
+                            [src]="file?._posted_by?.profile_pic"
+                            [service]="'user'"
+                            [styleClass]="'feed-avatar'"></app-secured-image>
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
                         <mat-menu #menu="matMenu">
                             <a *ngIf="file?.type === 'folio'" mat-menu-item (click)="copyToClipboard(file?._id)">

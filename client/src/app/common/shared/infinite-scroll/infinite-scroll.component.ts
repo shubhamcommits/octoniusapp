@@ -30,7 +30,7 @@ export class InfiniteScrollComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     /**
-     * The root property indicates the element that is used as the viewport for checking the visibility of the target. 
+     * The root property indicates the element that is used as the viewport for checking the visibility of the target.
      * When set to null it defaults to the browser viewport.
      */
     const options = {
@@ -63,6 +63,6 @@ export class InfiniteScrollComponent implements OnInit, OnDestroy {
    * Since we don’t want memory leaks in our application, so we’ll disconnect the observer when the component destroyed
    */
   ngOnDestroy() {
-    this.observer.disconnect();
+    this.observer?.disconnect();
   }
 }

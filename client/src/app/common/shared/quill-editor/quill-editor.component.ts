@@ -317,12 +317,12 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   async suggestFiles(groupId: string, searchTerm: string) {
 
     // Storage Service Instance
-    let storageService = this.Injector.get(StorageService)
+    let storageService = this.Injector.get(StorageService);
 
     // Fetch the users list from the server
-    let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm, 'true')
+    let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm, 'true');
 
-    let googleFilesList: any = []
+    let googleFilesList: any = [];
 
     // Fetch Access Token
     if (storageService.existData('googleUser')) {
@@ -341,14 +341,13 @@ export class QuillEditorComponent implements OnInit, OnChanges {
         }))
     }
 
-
     // Map the users list
     filesList = filesList.map((file: any) => ({
       id: file._id,
       value:
         (file.type == 'folio')
           ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-          : `<a href="${this.filesBaseUrl}/${file.modified_name}" style="color: inherit" target="_blank">${file.original_name}</a>`
+          : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData('authToken')['token']}" style="color: inherit" target="_blank">${file.original_name}</a>`
     }))
 
     // Return the Array without duplicates

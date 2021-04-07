@@ -28,7 +28,7 @@ export class GroupImageDetailsComponent implements OnInit {
   private subSink = new SubSink();
 
   // Public Functions
-  private publicFunctions = new PublicFunctions(this.injector);
+  public publicFunctions = new PublicFunctions(this.injector);
 
   ngOnInit() {
   }
@@ -66,4 +66,7 @@ export class GroupImageDetailsComponent implements OnInit {
       }))
   }
 
+  getGroupAvatarURL(fileName: string) {
+    return this.baseUrl + '/' + fileName;
+  }
 }

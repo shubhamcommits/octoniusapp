@@ -1,16 +1,18 @@
 <!-- Assignee section for tasks starts -->
 <section [id]="post?._id" *ngIf="type === 'task'">
-    <img src="{{baseUrl}}/{{taskAssignee?.profile_pic}}" onerror="this.src='assets/images/user.png'"
-        class="feed-avatar">
+    <app-secured-image
+        [src]="taskAssignee?.profile_pic"
+        [service]="'user'"
+        [styleClass]="'feed-avatar'"></app-secured-image>
     <p *ngIf="assigned"> {{taskAssignee?.first_name}} <span *ngIf="!showBar">{{ taskAssignee?.last_name }}</span></p>
     <p *ngIf="!assigned">Unassigned</p>
     <app-component-search-input-box
         *ngIf="type === 'task' && userData && checkDataExist(userData) && showBar"
-        [placeholder]="'Assign...'" 
-        [groupId]="groupId" 
+        [placeholder]="'Assign...'"
+        [groupId]="groupId"
         [workspaceId]="userData._workspace"
-        [userData]="userData" 
-        [type]="type" 
+        [userData]="userData"
+        [type]="type"
         (member)="getMemberDetails($event)">
     </app-component-search-input-box>
 </section>
@@ -20,14 +22,14 @@
 <section [id]="post?._id" *ngIf="type === 'event'">
     <p *ngIf="!eventAssignedToAll(eventMembersMap)" style="padding-top: 20px;">Assigned to {{ eventMembersMap.size }}</p>
     <p *ngIf="eventAssignedToAll(eventMembersMap)" style="padding-top: 20px;">Assigned to all</p>
-    
-    <app-component-search-input-box 
+
+    <app-component-search-input-box
         *ngIf="type === 'event' && userData && checkDataExist(userData) && showBar"
-        [placeholder]="'Assign...'" 
-        [groupId]="groupId" 
+        [placeholder]="'Assign...'"
+        [groupId]="groupId"
         [workspaceId]="userData._workspace"
-        [userData]="userData" 
-        [type]="type" 
+        [userData]="userData"
+        [type]="type"
         (member)="getMemberDetails($event)">
     </app-component-search-input-box>
 </section>

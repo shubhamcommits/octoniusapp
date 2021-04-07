@@ -29,9 +29,9 @@ export class AssigneeAvatarComponent implements OnChanges {
     if (_assigned_to && _assigned_to.length > 0) {
       const index = _assigned_to.findIndex(assignee => assignee._id == this.userData._id);
       if (index < 0) {
-        profilePic = this.baseUrl + '/' + _assigned_to[0].profile_pic;
+        profilePic = _assigned_to[0].profile_pic;
       } else {
-        profilePic = this.baseUrl + '/' + _assigned_to[index].profile_pic;
+        profilePic = _assigned_to[index].profile_pic;
       }
     } else {
       profilePic = 'assets/images/user.png';

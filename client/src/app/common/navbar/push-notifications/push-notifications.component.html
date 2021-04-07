@@ -23,9 +23,11 @@
                 <button class="dropdown-item"
                 (click)="$event.stopPropagation()"
                 *ngFor="let notifications of notificationsData?.unreadNotifications;">
-                        <img src="{{ baseUrl }}/{{notifications?._actor?.profile_pic}}"
-                            onerror="this.src='assets/images/user.png'" alt="" class="topnav-avatar"
-                            style="margin-right:15px">
+                        <app-secured-image
+                            [src]="notifications?._actor?.profile_pic"
+                            [service]="'user'"
+                            [styleClass]="'topnav-avatar'"
+                            style="margin-right:15px"></app-secured-image>
                         {{notifications?._actor?.first_name}} {{notifications?.message}}
                     <br />
                     <span class="mark-notification-read tootip" data-toggle="tooltip"
@@ -57,9 +59,11 @@
         <!-- NOTIFICATION ITEM STARTS-->
         <div class="notification-item" *ngIf="this.notificationsData?.readNotifications?.length != 0">
                 <button (click)="$event.stopPropagation()" class="dropdown-item notification-item" *ngFor="let notifications of notificationsData?.readNotifications;">
-                        <img src="{{ baseUrl }}/{{ notifications?._actor?.profile_pic }}"
-                            onerror="this.src='assets/images/user.png'" alt="" class="topnav-avatar"
-                            style="margin-right:15px">
+                        <app-secured-image
+                            [src]="notifications?._actor?.profile_pic"
+                            [service]="'user'"
+                            [styleClass]="'topnav-avatar'"
+                            style="margin-right:15px"></app-secured-image>
                         {{notifications?._actor?.first_name}} {{notifications?.message}}
                     <br />
                     <!-- <span class="muted text-small float-right">{{notifications?.created_date | timeAgo}}</span> -->
