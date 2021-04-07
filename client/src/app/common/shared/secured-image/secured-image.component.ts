@@ -52,7 +52,7 @@ export class SecuredImageComponent implements OnChanges  {
           this.src$.next(this.imgURL);
         }
         this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
-        this.onErrorUrl = "assets/images/default_organization.png";
+        this.onErrorUrl = "assets/images/organization.png";
         break;
       case 'group':
         if (!this.isLocalImg) {
@@ -70,7 +70,7 @@ export class SecuredImageComponent implements OnChanges  {
           this.src$.next(this.imgURL);
         }
         this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
-        this.onErrorUrl = "assets/images/default_user.png";
+        this.onErrorUrl = "assets/images/user.png";
         break;
       default:
         break;
