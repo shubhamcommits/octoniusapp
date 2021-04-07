@@ -38,7 +38,7 @@ const UserSchema = new Schema({
     },
     profile_pic: {
         type: String,
-        default: 'assets/images/default_user.png'
+        default: 'assets/images/user.png'
     },
     search_history: {
         type: Array,

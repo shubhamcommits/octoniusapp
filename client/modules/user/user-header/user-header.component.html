@@ -4,12 +4,12 @@
 
       <li class="nav-item mr-3 d-none d-sm-block">
         <app-secured-image *ngIf="!isCurrentUser && userData"
-            [src]="userData?.profile_pic"
+            [imgURL]="userData?.profile_pic"
             [service]="'user'"
             [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
 
         <app-secured-image *ngIf="isCurrentUser && userData"
-          [src]="userData?.profile_pic"
+          [imgURL]="userData?.profile_pic"
           [service]="'user'"
           [placement]="'bottom'"
           [tooltip]="'Change your avatar'"

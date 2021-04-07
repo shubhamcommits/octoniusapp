@@ -4,7 +4,7 @@
       <li class="nav-item mr-3 d-none d-sm-block">
         <!-- Octonius Avatar starts -->
         <app-secured-image *ngIf="workspaceData"
-          [src]="workspaceData?.workspace_avatar"
+          [imgURL]="workspaceData?.workspace_avatar"
           [service]="'workspace'"
           [tooltip]="'Change workplace avatar'"
           [placement]="'right'"

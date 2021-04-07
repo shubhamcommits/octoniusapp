@@ -46,7 +46,7 @@
         <div class="notification-item" *ngFor="let notification of notificationsData?.unreadNotifications; let index = index">
           <div class="notification_actor">
             <app-secured-image
-              [src]="notification?._actor?.profile_pic"
+              [imgURL]="notification?._actor?.profile_pic"
               [service]="'user'"
               [styleClass]="'avatar'"
               style="margin-right:15px"></app-secured-image>

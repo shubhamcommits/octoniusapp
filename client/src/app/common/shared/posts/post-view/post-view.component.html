@@ -6,7 +6,7 @@
             <!-- Image Avatar Starts -->
             <div class="col-md-1 ">
                 <app-secured-image
-                    [src]="post?._posted_by?.profile_pic"
+                    [imgURL]="post?._posted_by?.profile_pic"
                     [service]="'user'"
                     [styleClass]="'ml-2 feed-avatar'"
                     (click)="openFullscreenModal(post?._posted_by?._id)"></app-secured-image>

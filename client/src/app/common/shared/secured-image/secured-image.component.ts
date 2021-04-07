@@ -15,7 +15,7 @@ export class SecuredImageComponent implements OnChanges  {
   // this makes sure that we can handle source changes
   // or even when the component gets destroyed
   // So basically turn src into src$
-  @Input() src: string = 'assets/images/user.png'; // url of the file
+  @Input() imgURL: string = ''; // url of the file
   @Input() tooltip: string = ''; // tooltip
   @Input() service: string = 'user'; // service where the file is part of ['workspace', 'group', 'user']
   @Input() placement: string = ''; // placement
@@ -24,14 +24,14 @@ export class SecuredImageComponent implements OnChanges  {
   @Input() inlineStyle: string = ''; // inline styles
   @Input() noAuth: boolean = false; // in case we need a work around for security (only valid for selecting workplace because the user is not logged in yet)
 
-  onErrorUrl: string = 'assets/images/user.png';
+  onErrorUrl: string = '';
 
-  private src$ = new BehaviorSubject<string>(this.src);
+  private src$ = new BehaviorSubject<string>(this.imgURL);
 
   // this stream will contain the actual url that our img tag will load
   // everytime the src changes, the previous call would be canceled and the
   // new resource would be loaded
-  dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+  dataUrl$;
 
   isLocalImg: boolean = false;
 
@@ -41,28 +41,39 @@ export class SecuredImageComponent implements OnChanges  {
   }
 
   ngOnChanges(): void {
-    this.isLocalImg = this.src && this.src.includes('assets/images');
 
-    if (!this.isLocalImg) {
-      switch (this.service) {
-        case 'workspace':
-          this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.src);
-          this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
-          this.onErrorUrl = "assets/images/default_organization.png";
-          break;
-        case 'group':
-          this.src$.next(environment.UTILITIES_GROUPS_UPLOADS + '/' + this.src);
-          this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
-          this.onErrorUrl = "assets/images/icon-new-group.svg";
-          break;
-        case 'user':
-          this.src$.next(environment.UTILITIES_USERS_UPLOADS + '/' + this.src);
-          this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
-          this.onErrorUrl = "assets/images/default_user.png";
-          break;
-        default:
-          break;
-      }
+    this.isLocalImg = this.imgURL && this.imgURL.includes('assets/images');
+
+    switch (this.service) {
+      case 'workspace':
+        if (!this.isLocalImg) {
+          this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.imgURL);
+        } else {
+          this.src$.next(this.imgURL);
+        }
+        this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+        this.onErrorUrl = "assets/images/organization.png";
+        break;
+      case 'group':
+        if (!this.isLocalImg) {
+          this.src$.next(environment.UTILITIES_GROUPS_UPLOADS + '/' + this.imgURL);
+        } else {
+          this.src$.next(this.imgURL);
+        }
+        this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+        this.onErrorUrl = "assets/images/icon-new-group.svg";
+        break;
+      case 'user':
+        if (!this.isLocalImg) {
+          this.src$.next(environment.UTILITIES_USERS_UPLOADS + '/' + this.imgURL);
+        } else {
+          this.src$.next(this.imgURL);
+        }
+        this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+        this.onErrorUrl = "assets/images/user.png";
+        break;
+      default:
+        break;
     }
   }
 

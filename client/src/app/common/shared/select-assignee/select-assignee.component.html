@@ -1,7 +1,7 @@
 <!-- Assignee section for tasks starts -->
 <section [id]="post?._id" *ngIf="type === 'task'">
     <app-secured-image
-        [src]="taskAssignee?.profile_pic"
+        [imgURL]="taskAssignee?.profile_pic"
         [service]="'user'"
         [styleClass]="'feed-avatar'"></app-secured-image>
     <p *ngIf="assigned"> {{taskAssignee?.first_name}} <span *ngIf="!showBar">{{ taskAssignee?.last_name }}</span></p>

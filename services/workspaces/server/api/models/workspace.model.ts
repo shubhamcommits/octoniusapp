@@ -20,7 +20,7 @@ const workspaceSchema = new Schema({
     },
     workspace_avatar: {
         type: String,
-        default: 'assets/images/default_organization.png'
+        default: 'assets/images/organization.png'
     },
     owner_email: {
         type: String,

@@ -4,7 +4,7 @@
       <li class="nav-item mr-3 d-none d-sm-block">
         <!-- My user avatar starts -->
         <app-secured-image *ngIf="userData"
-            [src]="userData?.profile_pic"
+            [imgURL]="userData?.profile_pic"
             [service]="'user'"
             [styleClass]="'mr-3 feed-avatar'"
             [placement]="'right'"

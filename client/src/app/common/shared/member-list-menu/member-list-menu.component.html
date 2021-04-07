@@ -1,7 +1,7 @@
 <button [matMenuTriggerFor]="cloneTaskSearchMenu" #trigger="matMenuTrigger" *ngIf="menuFor==='Filter'" [ngStyle]="{'cursor': 'pointer','color':filterfor==='users'?'green':'black'}" class="dropdownbtn">
     Users
     <app-secured-image *ngIf="filterfor==='users'"
-      [src]="picsUrl"
+      [imgURL]="picsUrl"
       [service]="'user'"
       [styleClass]="'feed-avatar'"></app-secured-image>
 </button>

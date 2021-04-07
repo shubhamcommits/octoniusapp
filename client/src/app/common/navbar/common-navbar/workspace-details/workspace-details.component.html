@@ -10,7 +10,7 @@
 <div class="modal-body">
     <div class="form-group">
         <app-secured-image *ngIf="workspaceData"
-          [src]="workspaceData?.workspace_avatar"
+          [imgURL]="workspaceData?.workspace_avatar"
           [service]="'workspace'"></app-secured-image>
         <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>

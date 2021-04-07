@@ -20,7 +20,7 @@
                 [queryParams]="{ group: group?._id, myWorkplace: false  }">
                     <span class="badge badge-members">{{ group?._members.length + group?._admins.length  }} Members</span>
                     <app-secured-image
-                        [src]="group?.group_avatar"
+                        [imgURL]="group?.group_avatar"
                         [service]="'group'"
                         [styleClass]="'card-img-top'"></app-secured-image>
                         <a *ngIf="group?.type == 'agora'" class="btn btn-light btn-public"><i
@@ -54,7 +54,7 @@
                 <div *ngIf="group.group_name !== 'private'" class=" card">
                     <span class="badge badge-members">{{ group?._members.length + group?._admins.length }} Members</span>
                     <app-secured-image
-                        [src]="group?.group_avatar"
+                        [imgURL]="group?.group_avatar"
                         [service]="'group'"
                         [styleClass]="'card-img-top'"></app-secured-image>
                         <a *ngIf="group?.type == 'agora'" class="btn btn-warning btn-public" (click)="joinGroup(group._id)">JOIN</a>

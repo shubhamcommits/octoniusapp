@@ -10,7 +10,7 @@
 <div class="modal-body">
     <div class="form-group">
         <app-secured-image
-          [src]="groupData?.group_avatar"
+          [imgURL]="groupData?.group_avatar"
           [service]="'group'"></app-secured-image>
         <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>

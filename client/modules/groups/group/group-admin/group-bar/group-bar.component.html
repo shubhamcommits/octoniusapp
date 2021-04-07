@@ -28,7 +28,7 @@
 
             <div class="useravatar" *ngFor="let member of bar.members">
                 <app-secured-image
-                  [src]="member?.profile_pic"
+                  [imgURL]="member?.profile_pic"
                   [service]="'user'"
                   [styleClass]="'feed-avatar'"
                   (click)="removeUserFromBar(member,bar)"></app-secured-image>

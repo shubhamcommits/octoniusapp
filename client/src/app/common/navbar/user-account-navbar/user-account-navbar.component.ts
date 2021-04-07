@@ -35,12 +35,11 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
     private injector: Injector,
     private utilityService: UtilityService,
     private routeStateService : RouteStateService
-  ) { 
+  ) {
 
     this.subSink.add(this.routeStateService?.pathParams.subscribe(async (res) => {
       if(res){
         this.routerFromEvent = res;
-        console.log("sjncsnkcsdnk",res);
         await this.ngOnInit();
       }
     }));
@@ -60,7 +59,7 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
       const segments = this.routerFromEvent?._urlSegment?.children?.primary?.segments;
       this.activeState = segments? segments[segments.length-1].path: '';
     }
-    
+
     this.utilityService.handleActiveStateTopNavBar().subscribe(event => {
       this.activeState = event;
     });

@@ -1,7 +1,7 @@
 <!-- Assignee section for tasks starts -->
 <section>
   <app-secured-image *ngFor="let assignee of assigned_to"
-    [src]="assignee?.profile_pic"
+    [imgURL]="assignee?.profile_pic"
     [service]="'user'"
     [alt]="assignee?.first_name + ' ' + assignee?.last_name"
     [styleClass]="'feed-avatar-small'"
