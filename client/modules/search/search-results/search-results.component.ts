@@ -2,6 +2,7 @@ import { Component, OnInit, Input, SimpleChanges, Injector } from '@angular/core
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-search-results',
@@ -11,10 +12,9 @@ import { PublicFunctions } from 'modules/public.functions';
 export class SearchResultsComponent implements OnInit {
 
   @Input() data: any;
-
   @Input() type: string;
 
-  constructor() { }
+  constructor(public storageService: StorageService) { }
 
   ngOnInit() {
   }
@@ -57,6 +57,6 @@ export class SearchResultsComponent implements OnInit {
   }
 
   generateFileURL() {
-    return environment.UTILITIES_FILES_UPLOADS + '/' + this.data.modified_name;
+    return environment.UTILITIES_FILES_UPLOADS + '/' + this.data.modified_name + '?authToken=Bearer ' + this.storageService.getLocalData('authToken')['token'];
   }
 }

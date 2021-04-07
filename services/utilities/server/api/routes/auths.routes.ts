@@ -7,17 +7,17 @@ const routes = express.Router();
 const auths = new Auths()
 
 // GET - Verifies the request for authorization
-routes.get('/check-authorization', auths.verifyToken);
+// routes.get('/check-authorization', auths.verifyToken);
 
 // GET - Verifies if the current user is authenticated or not
-routes.get('/check-authentication', auths.isLoggedIn);
+// routes.get('/check-authentication', auths.isLoggedIn);
 
 // POST - Generates a token for the user
-routes.post('/generate-token', auths.generateToken);
+// routes.post('/generate-token', auths.generateToken);
 
 
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
  * */
-export { routes as authRoutes }
+// export { routes as authRoutes }

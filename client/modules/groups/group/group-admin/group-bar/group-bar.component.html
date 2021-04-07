@@ -16,7 +16,7 @@
         <div class="customFieldsList" *ngIf="barList.length <= 0">
             <h3 class="text-center muted mt-3">🎉 Always strive for transparency...</h3>
         </div>
-      
+
         <div class="bar" *ngFor="let bar of barList">
             <div class="d-flex">
                 <p class=""><span class="tag">{{bar.bar_tag}}</span> tasks are visible for: </p>
@@ -25,14 +25,16 @@
             </div>
             <div class="d-flex">
 
-           
+
             <div class="useravatar" *ngFor="let member of bar.members">
-                <img src="{{ userBaseUrl }}/{{member?.profile_pic}}"
-                onerror="this.src='assets/images/user.png'" class="feed-avatar"
-                (click)="removeUserFromBar(member,bar)">
-            </div> 
-           
-            
+                <app-secured-image
+                  [imgURL]="member?.profile_pic"
+                  [service]="'user'"
+                  [styleClass]="'feed-avatar'"
+                  (click)="removeUserFromBar(member,bar)"></app-secured-image>
+            </div>
+
+
             <app-component-search-input-box class="ml-2" *ngIf="groupData"
                 [placeholder]="'add member'"
                 [groupId]="groupId" [groupData]="groupData" [type]="'barMembers'"

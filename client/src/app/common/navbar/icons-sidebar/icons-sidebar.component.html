@@ -11,9 +11,9 @@
           <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
       </a>
 
-     
-       
-     
+
+
+
   </div>
 
   <div class="menu-options">
@@ -33,15 +33,18 @@
           <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
             <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
                 [queryParams]="{ group: group?._id, myWorkplace: false  }">
-                <img class="avatar" src="{{ this.groupBaseUrl }}/{{group.group_avatar}}"
-                    onerror="this.src='assets/images/icon-new-group.svg'">
+                <app-secured-image
+                    [imgURL]="group?.group_avatar"
+                    [service]="'group'"
+                    [tooltip]="'Change workplace avatar'"
+                    [styleClass]="'avatar'"></app-secured-image>
             </a>
         </li>
         <li> <hr class="divider-line"></li>
         <li>
           <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" class="explore-work">
             <i class="material-icons-outlined carret">groups</i>
-          
+
           </a>
         </li>
         <li> <hr class="divider-line"></li>
@@ -50,15 +53,16 @@
               <i class="material-icons">settings</i>
             </a>
         </li>
-        
+
         <li>
             <!-- USER PROFILE BADGE STARTS -->
             <a class="nav-link" *ngIf="this.userData"
                 [routerLink]="['/dashboard', 'user', 'profile']"
                 [queryParams]="{ userId: userData?._id}" >
-                <img src="{{userBaseUrl}}/{{userData?.profile_pic}}"
-                onerror="this.src='assets/images/user.png'"
-                class="avatar">
+                <app-secured-image
+                  [imgURL]="userData?.profile_pic"
+                  [service]="'user'"
+                  [styleClass]="'avatar'"></app-secured-image>
             </a>
             <!-- USER PROFILE BADGE ENDS -->
         </li>

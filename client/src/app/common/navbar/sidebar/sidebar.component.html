@@ -33,8 +33,11 @@
                         <a (click)="changeState('groups_activity')" [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
                             [queryParams]="{ group: group?._id, myWorkplace: false  }" routerLinkActive="active">
 
-                            <img class="avatar" src="{{ this.groupBaseUrl }}/{{group.group_avatar}}"
-                                onerror="this.src='assets/images/icon-new-group.svg'">
+                            <app-secured-image
+                              [imgURL]="group?.group_avatar"
+                              [service]="'group'"
+                              [tooltip]="'Change workplace avatar'"
+                              [styleClass]="'avatar'"></app-secured-image>
                             {{ group?.group_name | truncatetext: 16 }}
                         </a>
                     </li>
@@ -59,11 +62,13 @@
                 <li>
                     <!-- USER PROFILE BADGE STARTS -->
                     <a class="nav-link" *ngIf="this.userData"
-                        [routerLink]="['/dashboard', 'user', 'profile']"
-                        [queryParams]="{ userId: userData?._id}" routerLinkActive="active"  (click)="changeState('profile')">
-                        <img src="{{userBaseUrl}}/{{userData?.profile_pic}}"
-                        onerror="this.src='assets/images/user.png'"
-                        class="avatar">
+                      [routerLink]="['/dashboard', 'user', 'profile']"
+                      [queryParams]="{ userId: userData?._id}" routerLinkActive="active"
+                      (click)="changeState('profile')">
+                        <app-secured-image
+                            [imgURL]="userData?.profile_pic"
+                            [service]="'user'"
+                            [styleClass]="'avatar'"></app-secured-image>
                         My Account
                     </a>
                     <!-- USER PROFILE BADGE ENDS -->

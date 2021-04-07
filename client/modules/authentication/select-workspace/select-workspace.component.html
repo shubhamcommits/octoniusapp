@@ -8,14 +8,14 @@
     <!-- HOME PANEL STARTS -->
     <div class="col-md-4 shaddow">
       <div style="padding:100px 30px;">
-       
+
 
         <div style="width: 100%; margin:0 auto; align-items: center; height: 30vh;">
 
           <h4 class="muted not_bold">
             Welcome, {{ accountData?.first_name }} {{ accountData?.last_name }}!
           </h4>
-  
+
           <h1 style="margin-bottom: 30px;">
             Select a workplace to start.
           </h1>
@@ -25,9 +25,16 @@
             <div *ngFor="let workspace of accountData?._workspaces"
                 class="workplace-cells" (click)="selectWorkspace(workspace._id)">
               <div class="btn-select-workplace">
-                <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}"
+                <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}?noAuth=true"
                     style="height: 100%; width:100%"
                     onerror="this.src='assets/images/icon-new-group.svg'" />
+                <!--
+                <app-secured-image
+                    [imgURL]="workspace?.workspace_avatar"
+                    [service]="'workspace'"
+                    [inlineStyle]="'height: 100%; width:100%'"
+                    [noAuth]="true"></app-secured-image>
+                -->
               </div>
 
               <h3 class="card-title ml-3">
@@ -45,7 +52,7 @@
                 </div>
 
               <h3 class="card-title ml-3">
-                
+
                   Create a new workspace
               </h3>
             </div>

@@ -9,7 +9,9 @@
 <!-- WORKSPACE MODAL CHANGE IMAGE STARTS -->
 <div class="modal-body">
     <div class="form-group">
-        <img src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}" onerror="this.src='assets/images/organization.png'" >
+        <app-secured-image *ngIf="workspaceData"
+          [imgURL]="workspaceData?.workspace_avatar"
+          [service]="'workspace'"></app-secured-image>
         <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>
 </div>

@@ -3,11 +3,13 @@
     <ul class="nav">
       <li class="nav-item mr-3 d-none d-sm-block">
         <!-- Octonius Avatar starts -->
-        <img *ngIf="workspaceData" class="mr-3 feed-avatar"
-          src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}"
-          onerror="this.src='assets/images/organization.png'"
-          placement="right" ngbTooltip="Change workplace avatar"
-          (click)="openDetails(workspaceContent)">
+        <app-secured-image *ngIf="workspaceData"
+          [imgURL]="workspaceData?.workspace_avatar"
+          [service]="'workspace'"
+          [tooltip]="'Change workplace avatar'"
+          [placement]="'right'"
+          [styleClass]="'mr-3 feed-avatar'"
+          (click)="openDetails(workspaceContent)"></app-secured-image>
         <!-- Octonius Avatar ends -->
 
         <h2> <i class="material-icons">arrow_forward_ios

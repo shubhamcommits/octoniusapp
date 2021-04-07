@@ -9,6 +9,7 @@ import { NotificationService } from 'src/shared/services/notification-service/no
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
 import { Router, RouterEvent, NavigationEnd, ChildActivationEnd } from '@angular/router';
+import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -36,9 +37,6 @@ export class AppComponent {
    * 4. Enabling and calling the @event workspaceData from the socket server
    */
 
-  routerFromEvent: any;
-  groupId : any;
-
   isMobile = false;
   isAuth : boolean = false;
 
@@ -46,14 +44,18 @@ export class AppComponent {
     private injector: Injector,
     private storageService: StorageService,
     private _router: Router,
-    private _notificationService: NotificationService
+    private _notificationService: NotificationService,
+    private routeStateService: RouteStateService
   ) {
     this._notificationService.requestPermission();
 
     this.subSink.add(this._router.events.subscribe((e: any) => {
       if (e instanceof ChildActivationEnd) {
-        this.groupId = e.snapshot.queryParamMap.get('group');
-        this.routerFromEvent = e.snapshot;
+        const data = {
+          _urlSegment : e.snapshot['_urlSegment'],
+          queryParams : e.snapshot['queryParams'],
+        }
+        this.routeStateService.updatePathParamState(data);
       }
       if (e instanceof NavigationEnd) {
         window['Appcues'].page();

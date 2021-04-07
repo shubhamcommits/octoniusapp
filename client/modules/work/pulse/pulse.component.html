@@ -3,11 +3,11 @@
 <!-- Work Navigation Bar ends -->
 
 <div class="container">
-  <div class="media" style="margin-top: 140px; margin-bottom: 30px;"> 
+  <div class="media" style="margin-top: 140px; margin-bottom: 30px;">
     <img src="assets/images/hero-pulse.svg" class="mr-3" style="width: 200px">
     <div class="media-body">
       <h5 class="mt-0"> <i class="material-icons-outlined">whatshot</i> What is a pulse?</h5>
-     
+
       A pulse is a micro announcement from a Group.
       It’s like twitter for Enterprise. <br>Even if you don’t have access to a group, you can still see what’s happening there.
       <br>Pulses create transparency and a sense of mission for your organization.
@@ -18,11 +18,15 @@
   <app-infinite-scroll (scrolled)="onScroll()">
 
     <div *ngFor="let group of pulseGroups; let i = index; trackBy: utilityService.trackByIndex" class="pulse_card" (click)="openModal(group.group_name, this.baseUrl + '/' + group.group_avatar, group.pulse_description ? group.pulse_description: 'Waiting for a new Pulse...', pulseToDoTasks[group._id], pulseInProgressTasks[group._id], pulseDoneTasks[group._id])">
-      
+
 
         <!-- GROUP DETAILS STARTS -->
-        <div class="pulse_avatar"><img class="feed-avatar" src="{{ this.baseUrl }}/{{group?.group_avatar}}"
-            onerror="this.src='assets/images/group.png'" alt="group_avatar">
+        <div class="pulse_avatar">
+          <app-secured-image
+            [imgURL]="group?.group_avatar"
+            [service]="'group'"
+            [alt]="'group_avatar'"
+            [styleClass]="'feed-avatar'"></app-secured-image>
         </div>
         <div class="pulse_actor"> {{ group.group_name }} </div>
         <div class="pulse_tweet">
@@ -30,11 +34,11 @@
         </div>
         <!-- GROUP DETAILS ENDS -->
 
-       
+
 
         <!-- TOTAL TASKS STARTS -->
         <!-- <div class="col-md-2 pulse-desc">
-         
+
           {{ pulseTotalTasks[group?._id] || 0 }}
         </div> -->
         <!-- TOTAL TASKS ENDS -->
@@ -62,5 +66,5 @@
   <!-- SECTION SEPARATOR INDICATOR STARTS -->
   <app-section-separator *ngIf="!moreToLoad"></app-section-separator>
   <!-- SECTION SEPARATOR INDICATOR ENDS -->
-  
+
 </div>

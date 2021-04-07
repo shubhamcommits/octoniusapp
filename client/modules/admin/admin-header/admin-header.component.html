@@ -1,10 +1,11 @@
 <div class="container" style="margin-bottom: 30px">
    <div class="media user-sticky-card">
-      <img class="mr-3 feed-avatar"
-         src="{{ baseUrl }}/{{ workspaceData?.workspace_avatar }}"
-         onerror="this.src='assets/images/organization.png'"
-         placement="right" ngbTooltip="Change workplace avatar"> 
-         <!-- (click)="openWorkspaceDetails(content)" -->
+      <app-secured-image *ngIf="workspaceData"
+        [imgURL]="workspaceData?.workspace_avatar"
+        [service]="'workspace'"
+        [tooltip]="'Change workplace avatar'"
+        [placement]="'right'"
+        [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
       <div class="media-body">
          <div>
             <h2>Workplace settings</h2>

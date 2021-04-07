@@ -129,6 +129,12 @@ export class FolioHeaderComponent implements OnInit {
     })
   }
 
+  enableEdit() {
+    if (!this.readOnly) {
+      this.editTitle = !this.editTitle;
+    }
+  }
+
   /**
    * This function is responsible for handling the changeTitle functionlaity
    * @param event

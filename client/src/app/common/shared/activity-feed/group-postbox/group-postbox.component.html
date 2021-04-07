@@ -2,9 +2,12 @@
     <div class="card-block" style="padding: 0;">
         <div class="row card-title">
             <div class="col-md-1">
-              <img src="{{baseUrl}}/{{userData?.profile_pic}}"
-                [routerLink]="['/dashboard', 'user', 'profile']" [queryParams]="{ userId: userData?._id}"
-                onerror="this.src='assets/images/user.png'" class="feed-avatar">
+              <app-secured-image
+                [routerLink]="['/dashboard', 'user', 'profile']"
+                [queryParams]="{ userId: userData?._id}"
+                [imgURL]="userData?.profile_pic"
+                [service]="'user'"
+                [styleClass]="'feed-avatar'"></app-secured-image>
             </div>
             <div class="col-md-11" *ngIf="!showPostBox">
               <button type="text" class="form-control btn-md noborder-btn postbox"

@@ -15,14 +15,17 @@
 
 
                   <div class="card-block">
-                    <img class="feed-avatar" src="{{userBaseUrl}}/{{userData?.profile_pic}}"
-                        onerror="this.src='assets/images/user.png'" placement="bottom">
+                      <app-secured-image
+                        [imgURL]="userData?.profile_pic"
+                        [service]="'user'"
+                        [styleClass]="'feed-avatar'"
+                        [placement]="'bottom'"></app-secured-image>
                       <h6 class="user-name">
                         <b>{{ userData?.first_name }} {{ userData?.last_name }}</b>
                       </h6>
                       <p class="card-text blue job-title">
                         <span id="userData_current_position"> {{ userData?.current_position}} </span></p>
-                        
+
                       <hr />
 
                       <p class="card-text blue"><strong>Email:</strong>
@@ -48,13 +51,13 @@
                 <p class="card-text"><strong>Biography:</strong></p>
                   <span id="userData_bio" class="muted">  {{ userData?.bio }} </span>
 
-                
 
-                  
+
+
               </div>
             </div>
             <hr />
-            <div class="card-tile"> 
+            <div class="card-tile">
               <div class="card-block">
 
                   <!-- Template Heading starts -->

@@ -14,17 +14,17 @@
             <li class="nav-item active" *ngIf="file">
 
                 <!-- Folio Static Title starts -->
-                <span *ngIf="!editTitle" 
-                    (click)="editTitle = !editTitle"
-                    ngbTooltip="Click me to rename" 
+                <span *ngIf="!editTitle"
+                    (click)="enableEdit()"
+                    ngbTooltip="Click me to rename"
                     placement="bottom">{{file?.original_name}}
                 </span>
                 <!-- Folio Static Title ends -->
-                
+
                 <!-- Folio edit title name starts -->
-                <input *ngIf="editTitle" type="search" 
-                    autocomplete="off" 
-                    [(ngModel)]="file.original_name" 
+                <input *ngIf="editTitle" type="search"
+                    autocomplete="off"
+                    [(ngModel)]="file.original_name"
                     (keyup)="changeTitle($event)"
                     placeholder="Give me a name"
                     class="input-search" />

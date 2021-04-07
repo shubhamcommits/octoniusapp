@@ -3,13 +3,17 @@
     <ul class="nav">
 
       <li class="nav-item mr-3 d-none d-sm-block">
-        <img *ngIf="!isCurrentUser && userData" class="mr-3 feed-avatar" src="{{BASE_URL}}/{{userData?.profile_pic}}"
-            onerror="this.src='assets/images/user.png'">
+        <app-secured-image *ngIf="!isCurrentUser && userData"
+            [imgURL]="userData?.profile_pic"
+            [service]="'user'"
+            [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
 
-        <img *ngIf="isCurrentUser && userData" class="mr-3 feed-avatar" src="{{BASE_URL}}/{{userData?.profile_pic}}"
-          onerror="this.src='assets/images/user.png'"
-          placement="bottom" ngbTooltip="Change your avatar"><!--(click)="openUserDetails(content)"-->
-
+        <app-secured-image *ngIf="isCurrentUser && userData"
+          [imgURL]="userData?.profile_pic"
+          [service]="'user'"
+          [placement]="'bottom'"
+          [tooltip]="'Change your avatar'"
+          [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
       </li>
 
       <li class="nav-item">

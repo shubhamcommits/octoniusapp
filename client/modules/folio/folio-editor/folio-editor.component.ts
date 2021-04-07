@@ -49,6 +49,7 @@ import { SubSink } from 'subsink';
 // Import Quill Editor Component
 import { QuillEditorComponent } from 'src/app/common/shared/quill-editor/quill-editor.component';
 import { FilesService } from 'src/shared/services/files-service/files.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-folio-editor',
@@ -401,6 +402,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   async suggestFiles(groupId: string, searchTerm: string) {
 
+    // Storage Service Instance
+    let storageService = this._Injector.get(StorageService);
+
     // Fetch the users list from the server
     let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm, 'true');
 
@@ -410,7 +414,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       value:
         (file.type == 'folio')
           ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-          : `<a href="${this.filesBaseUrl}/${file.modified_name}" style="color: inherit" target="_blank">${file.original_name}</a>`
+          : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData('authToken')['token']}" style="color: inherit" target="_blank">${file.original_name}</a>`
     }))
 
     // Return the Array without duplicates

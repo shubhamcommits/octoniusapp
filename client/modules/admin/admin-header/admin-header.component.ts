@@ -31,7 +31,7 @@ export class AdminHeaderComponent implements OnInit {
   private subSink = new SubSink();
 
   // PUBLIC FUNCTIONS
-  private publicFunctions = new PublicFunctions(this.injector);
+  public publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
 

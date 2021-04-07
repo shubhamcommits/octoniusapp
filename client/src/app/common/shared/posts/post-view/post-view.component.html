@@ -5,8 +5,11 @@
 
             <!-- Image Avatar Starts -->
             <div class="col-md-1 ">
-                <img src="{{ baseUrl }}/{{post?._posted_by?.profile_pic}}" onerror="this.src='assets/images/user.png'"
-                    class="feed-avatar ml-2" (click)="openFullscreenModal(post?._posted_by?._id)" />
+                <app-secured-image
+                    [imgURL]="post?._posted_by?.profile_pic"
+                    [service]="'user'"
+                    [styleClass]="'ml-2 feed-avatar'"
+                    (click)="openFullscreenModal(post?._posted_by?._id)"></app-secured-image>
             </div>
             <!-- Image Avatar Ends -->
 

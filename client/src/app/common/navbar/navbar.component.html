@@ -29,9 +29,9 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- MENU ITEMS STARTS -->
 
-          <app-common-navbar *ngIf="isAdminNavbar$ | async" [routerFromEvent]="routerFromEvent"></app-common-navbar>
-          <app-user-account-navbar *ngIf="isUserAccountNavbar$ | async" [routerFromEvent]="routerFromEvent"></app-user-account-navbar>
-          <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()" [groupId]="groupId" [routerFromEvent]="routerFromEvent"></app-group-navbar>
+          <app-common-navbar *ngIf="isAdminNavbar$ | async" ></app-common-navbar>
+          <app-user-account-navbar *ngIf="isUserAccountNavbar$ | async" ></app-user-account-navbar>
+          <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()"></app-group-navbar>
           <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
           <!-- MENU ITEMS ENDS -->
 

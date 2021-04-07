@@ -8,9 +8,10 @@
     <section id="results" *ngIf="!(isLoading$ | async)" class="user-results" onfocusout="">
         <div class="media card-tile user-list mb-0" *ngFor=" let item of itemList; let index = index;">
             <!-- User Profile Image for type 'group' and 'workspace' -->
-            <img *ngIf="type != 'skill' && type != 'tag' && type !== 'barTag'" src="{{ userBaseUrl }}/{{item?.profile_pic}}"
-                onerror="this.src='assets/images/user.png'" class="feed-avatar-search">
-
+            <app-secured-image *ngIf="type != 'skill' && type != 'tag' && type !== 'barTag'"
+                [imgURL]="item?.profile_pic"
+                [service]="'user'"
+                [styleClass]="'feed-avatar-search'"></app-secured-image>
             <div class="media-body mt-2">
                 <div class="float-left ml-0 mt-1">
                     <!-- Display full name of the member starts -->
@@ -51,7 +52,7 @@
                         </button>
                         <!-- Add tags ends -->
                     </section>
-                    
+
                     <!-- Tag section ends -->
 
                     <!-- Group section starts -->

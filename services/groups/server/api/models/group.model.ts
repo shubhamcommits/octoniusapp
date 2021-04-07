@@ -11,7 +11,7 @@ const GroupSchema = new Schema({
     },
     group_avatar: {
         type: String,
-        default: 'default_group.png'
+        default: 'assets/images/icon-new-group.svg'
     },
     workspace_name: {
         type: String,

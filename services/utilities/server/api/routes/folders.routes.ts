@@ -1,10 +1,20 @@
 import express from 'express';
+import { Auths } from '../../utils/auths';
 import { FoldersControllers } from '../controllers/folders.controllers';
 
 // Files Class Object
 let folders = new FoldersControllers()
 
 const routes = express.Router();
+
+// Auths Helper Function
+const authsHelper = new Auths();
+
+// Verify the token
+routes.use(authsHelper.verifyToken);
+
+// Checks whether the current user is loggedIn or not
+routes.use(authsHelper.isLoggedIn);
 
 // POST - Handles the adding folders inside a group
 routes.post('/groups', folders.add);

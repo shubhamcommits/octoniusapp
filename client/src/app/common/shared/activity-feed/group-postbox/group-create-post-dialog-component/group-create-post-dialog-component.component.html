@@ -180,8 +180,8 @@
           <p *ngIf="groupData && groupData.project_type && !postData?.task?.is_milestone" class="box-title">Start date</p>
           <div *ngIf="groupData && postData?.type === 'task' && groupData.project_type && !postData?.task?.is_milestone">
             <!-- Date Picker starts -->
-            <app-date-picker (date)="getDate($event, 'start_date')" 
-            [selectedDate]="formateDate(postData?.task.start_date)" 
+            <app-date-picker (date)="getDate($event, 'start_date')"
+            [selectedDate]="formateDate(postData?.task.start_date)"
             [upperLimit]="formateDate(postData?.task.due_to)"
             [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
             </app-date-picker>
@@ -193,8 +193,8 @@
           </div>
           <div *ngIf="postData.type === 'event'" class="btn-group">
             <!-- Date Picker starts -->
-            <app-date-picker (date)="getDate($event, 'start_date')" 
-            [selectedDate]="postData?.event.start_date" 
+            <app-date-picker (date)="getDate($event, 'start_date')"
+            [selectedDate]="postData?.event.start_date"
             [upperLimit]="postData?.event.due_to"
             [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
             </app-date-picker>
@@ -255,8 +255,11 @@
 
             <div *ngIf="lastAssignedBy" id="avatar-assignee" style="margin-bottom: 30px;">
               <p class="box-title" style="padding-top: 20px;">Assigned by</p>
-              <img src="{{ baseUrl + '/' + lastAssignedBy.profile_pic }}" style="float: left; cursor: auto;"
-                onerror="this.src='assets/images/user.png'" class="feed-avatar">
+              <app-secured-image
+                [imgURL]="lastAssignedBy.profile_pic"
+                [service]="'user'"
+                [styleClass]="'feed-avatar-small'"
+                style="float: left; cursor: auto;"></app-secured-image>
               <div style="padding-top: 10px;" class="ml-1">
                 {{lastAssignedBy?.first_name}}
                 {{ lastAssignedBy?.last_name }}
