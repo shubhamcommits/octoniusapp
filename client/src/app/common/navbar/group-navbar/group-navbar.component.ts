@@ -1,39 +1,48 @@
-import { Component, SimpleChanges, OnInit, OnChanges, Injector, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Injector, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
-import { ActivatedRoute, NavigationEnd, Router, RouterEvent, ChildActivationEnd, RouteConfigLoadEnd } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
-import moment from 'moment/moment';
+import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 
 @Component({
   selector: 'app-group-navbar',
   templateUrl: './group-navbar.component.html',
   styleUrls: ['./group-navbar.component.scss']
 })
-export class GroupNavbarComponent implements OnInit, OnChanges{
+export class GroupNavbarComponent implements OnInit{
 
   constructor(
     private injector: Injector,
-    private router: ActivatedRoute,
     private utilityService: UtilityService,
-    private socketService: SocketService,
-    private _router: Router
+    private routeStateService: RouteStateService,
   ) {
     this.publicFunctions.getCurrentUser().then(user => {
       this.userData = user;
     });
+
+    this.subSink.add(this.routeStateService?.pathParams.subscribe(async (res) => {
+      if(res){
+        this.groupId = res.queryParams.group;
+        this.routerFromEvent = res;
+        await this.ngOnInit();
+      }
+    }));
+
   }
 
   @Output() favoriteGroupSaved = new EventEmitter();
-  @Input() groupId: any;
-  @Input() routerFromEvent: any;
+  // @Input() groupId: any;
+  // @Input() routerFromEvent: any;
 
   isAdmin: boolean = false;
 
+  groupId: any;
+
+  routerFromEvent: any;
   // baseUrl for uploads
   baseUrl = environment.UTILITIES_GROUPS_UPLOADS
 
@@ -104,60 +113,14 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
 
     this.isFavoriteGroup = this.checkIsFavoriteGroup();
 
-    const segments = this.routerFromEvent._urlSegment.children.primary.segments;
-    this.activeState = segments[segments.length-2].path+'_'+segments[segments.length-1].path;
-    
+    if(this.routerFromEvent && this.routerFromEvent?._urlSegment){
+      const segments = this.routerFromEvent?._urlSegment?.children?.primary?.segments;
+      this.activeState = segments?segments[segments.length-2]?.path+'_'+segments[segments.length-1]?.path:'';
+    }
+   
     this.utilityService.handleActiveStateTopNavBar().subscribe(event => {
       this.activeState = event;
     });
-    await this.initNotifications();
-  }
-
-  async initNotifications() {
-    // Subscribe to the change in notifications data from the server
-    this.subSink.add(this.socketService.currentData.subscribe((res) => {
-      if (JSON.stringify(res) != JSON.stringify({}))
-        this.notificationsData = res;
-    }));
-
-    /**
-     * emitting the @event joinUser to let the server know that user has joined
-     */
-    this.subSink.add(this.socketService.onEmit('joinUser', this.userData['_id'])
-      .pipe(retry(Infinity))
-      .subscribe());
-
-    /**
-     * emitting the @event joinWorkspace to let the server know that user has joined
-     */
-    this.subSink.add(this.socketService.onEmit('joinWorkspace', {
-      workspace_name: this.userData['workspace_name']
-    })
-      .pipe(retry(Infinity))
-      .subscribe());
-
-    /**
-     * emitting the @event getNotifications to let the server know to give back the push notifications
-     */
-    this.subSink.add(this.socketService.onEmit('getNotifications', this.userData['_id'])
-      .pipe(retry(Infinity))
-      .subscribe());
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    for (const propName in changes) {
-      const change = changes[propName];
-      const to = change.currentValue;
-      const from = change.previousValue;
-      if (propName === 'groupId') {
-        this.groupId = to;
-        this.ngOnInit();
-      }
-      if (propName === 'routerFromEvent') {
-        this.routerFromEvent = to;
-
-      }
-    }
   }
 
   async changeState(state:string){

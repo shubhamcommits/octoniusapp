@@ -4,8 +4,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { SocketService } from 'src/shared/services/socket-service/socket.service';
+import { NavigationEnd, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -25,15 +24,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private userService: UserService,
     private utilityService: UtilityService,
-    private _ActivatedRoute: ActivatedRoute,
     private storageService: StorageService,
-    private socketService: SocketService,
     private injector: Injector,
     private _router: Router
   ) { }
-
-  @Input() groupId: any;
-  @Input() routerFromEvent: any;
 
   // CURRENT USER DATA
   userData: any
