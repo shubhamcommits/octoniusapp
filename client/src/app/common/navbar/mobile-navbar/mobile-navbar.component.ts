@@ -20,9 +20,6 @@ import moment from 'moment';
 
 export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @Input() groupId: any;
-  @Input() routerFromEvent: any;
-
   @ViewChild('search') search: ElementRef;
 
   // CURRENT USER DATA

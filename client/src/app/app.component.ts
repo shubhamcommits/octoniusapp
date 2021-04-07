@@ -37,9 +37,6 @@ export class AppComponent {
    * 4. Enabling and calling the @event workspaceData from the socket server
    */
 
-  routerFromEvent: any;
-  groupId : any;
-
   isMobile = false;
   isAuth : boolean = false;
 
@@ -54,9 +51,11 @@ export class AppComponent {
 
     this.subSink.add(this._router.events.subscribe((e: any) => {
       if (e instanceof ChildActivationEnd) {
-        this.groupId = e.snapshot.queryParamMap.get('group');
-        this.routerFromEvent = e.snapshot;
-        this.routeStateService.updatePathParamState(e.snapshot.queryParams);
+        const data = {
+          _urlSegment : e.snapshot['_urlSegment'],
+          queryParams : e.snapshot['queryParams'],
+        }
+        this.routeStateService.updatePathParamState(data);
       }
       if (e instanceof NavigationEnd) {
         window['Appcues'].page();

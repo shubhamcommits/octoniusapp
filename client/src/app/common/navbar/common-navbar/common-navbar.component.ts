@@ -2,6 +2,7 @@ import { Component, OnInit, Injector ,Input} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
+import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 
@@ -15,7 +16,8 @@ export class CommonNavbarComponent implements OnInit {
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
   userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
-  @Input() routerFromEvent: any;
+  
+  routerFromEvent: any;
   activeState:string;
   // SUBSINK
   private subSink = new SubSink();
@@ -31,8 +33,16 @@ export class CommonNavbarComponent implements OnInit {
   constructor(
     private injector: Injector,
     private router: ActivatedRoute,
-    private utilityService: UtilityService
-  ) { }
+    private utilityService: UtilityService,
+    private routeStateService: RouteStateService
+  ) { 
+    this.subSink.add(this.routeStateService?.pathParams.subscribe(async (res) => {
+      if(res){
+        this.routerFromEvent = res;
+        await this.ngOnInit();
+      }
+    }));
+  }
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
@@ -61,9 +71,12 @@ export class CommonNavbarComponent implements OnInit {
         this.workspaceData = res;
       }
     }));
-
-    const segments = this.routerFromEvent._urlSegment.children.primary.segments;
-    this.activeState = segments[segments.length-1].path;
+    
+    if(this.routerFromEvent && this.routerFromEvent._urlSegment){
+      const segments = this.routerFromEvent?._urlSegment?.children?.primary?.segments;
+      this.activeState = segments?segments[segments.length-1].path:'';
+    }
+    
     
     this.utilityService.handleActiveStateTopNavBar().subscribe(event => {
       this.activeState = event;

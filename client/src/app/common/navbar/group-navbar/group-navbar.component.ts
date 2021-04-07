@@ -1,13 +1,11 @@
-import { Component, SimpleChanges, OnInit, OnChanges, Injector, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Injector, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
-import { ActivatedRoute, NavigationEnd, Router, RouterEvent, ChildActivationEnd, RouteConfigLoadEnd } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
-import moment from 'moment/moment';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 
 @Component({
@@ -15,27 +13,36 @@ import { RouteStateService } from 'src/shared/services/router-service/route-stat
   templateUrl: './group-navbar.component.html',
   styleUrls: ['./group-navbar.component.scss']
 })
-export class GroupNavbarComponent implements OnInit, OnChanges{
+export class GroupNavbarComponent implements OnInit{
 
   constructor(
     private injector: Injector,
-    private router: ActivatedRoute,
     private utilityService: UtilityService,
-    private socketService: SocketService,
-    private _router: Router,
     private routeStateService: RouteStateService,
   ) {
     this.publicFunctions.getCurrentUser().then(user => {
       this.userData = user;
     });
+
+    this.subSink.add(this.routeStateService?.pathParams.subscribe(async (res) => {
+      if(res){
+        this.groupId = res.queryParams.group;
+        this.routerFromEvent = res;
+        await this.ngOnInit();
+      }
+    }));
+
   }
 
   @Output() favoriteGroupSaved = new EventEmitter();
-  @Input() groupId: any;
-  @Input() routerFromEvent: any;
+  // @Input() groupId: any;
+  // @Input() routerFromEvent: any;
 
   isAdmin: boolean = false;
 
+  groupId: any;
+
+  routerFromEvent: any;
   // baseUrl for uploads
   baseUrl = environment.UTILITIES_GROUPS_UPLOADS
 
@@ -71,12 +78,6 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
 
   async ngOnInit() {
 
-    this.subSink.add(this.routeStateService?.pathParams.subscribe((res) => {
-      if (JSON.stringify(res) != JSON.stringify({})) {
-        console.log("Query Parms in group nav bar from service",res);
-      }
-    }));
-    
     // Fetch the current user
     if (!this.userData) {
       this.userData = await this.publicFunctions.getCurrentUser();
@@ -112,28 +113,14 @@ export class GroupNavbarComponent implements OnInit, OnChanges{
 
     this.isFavoriteGroup = this.checkIsFavoriteGroup();
 
-    const segments = this.routerFromEvent._urlSegment.children.primary.segments;
-    this.activeState = segments[segments.length-2].path+'_'+segments[segments.length-1].path;
-    
+    if(this.routerFromEvent && this.routerFromEvent?._urlSegment){
+      const segments = this.routerFromEvent?._urlSegment?.children?.primary?.segments;
+      this.activeState = segments?segments[segments.length-2]?.path+'_'+segments[segments.length-1]?.path:'';
+    }
+   
     this.utilityService.handleActiveStateTopNavBar().subscribe(event => {
       this.activeState = event;
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    for (const propName in changes) {
-      const change = changes[propName];
-      const to = change.currentValue;
-      const from = change.previousValue;
-      if (propName === 'groupId') {
-        this.groupId = to;
-        this.ngOnInit();
-      }
-      if (propName === 'routerFromEvent') {
-        this.routerFromEvent = to;
-
-      }
-    }
   }
 
   async changeState(state:string){
