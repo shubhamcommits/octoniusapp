@@ -9,7 +9,7 @@
         <div class="media card-tile user-list mb-0" *ngFor=" let item of itemList; let index = index;">
             <!-- User Profile Image for type 'group' and 'workspace' -->
             <app-secured-image *ngIf="type != 'skill' && type != 'tag' && type !== 'barTag'"
-                [src]="item?.profile_pic"
+                [imgURL]="item?.profile_pic"
                 [service]="'user'"
                 [styleClass]="'feed-avatar-search'"></app-secured-image>
             <div class="media-body mt-2">

@@ -23,7 +23,7 @@
 
         <!-- Avatar Image of the member -->
         <app-secured-image  *ngIf="member.active || type == 'group'"
-            [src]="member?.profile_pic"
+            [imgURL]="member?.profile_pic"
             [service]="'user'"
             [styleClass]="'feed-avatar'"
             (click)="openFullscreenModal(member._id)"></app-secured-image>
@@ -102,7 +102,7 @@
 
                 <!-- Avatar Image of the member -->
                 <app-secured-image *ngIf="!member.active"
-                    [src]="member?.profile_pic"
+                    [imgURL]="member?.profile_pic"
                     [service]="'user'"
                     [styleClass]="'inactive-person feed-avatar'"
                     (click)="openFullscreenModal(member._id)"></app-secured-image>

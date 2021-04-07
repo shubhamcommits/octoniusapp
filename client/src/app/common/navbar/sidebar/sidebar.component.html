@@ -34,7 +34,7 @@
                             [queryParams]="{ group: group?._id, myWorkplace: false  }" routerLinkActive="active">
 
                             <app-secured-image
-                              [src]="group?.group_avatar"
+                              [imgURL]="group?.group_avatar"
                               [service]="'group'"
                               [tooltip]="'Change workplace avatar'"
                               [styleClass]="'avatar'"></app-secured-image>
@@ -66,7 +66,7 @@
                       [queryParams]="{ userId: userData?._id}" routerLinkActive="active"
                       (click)="changeState('profile')">
                         <app-secured-image
-                            [src]="userData?.profile_pic"
+                            [imgURL]="userData?.profile_pic"
                             [service]="'user'"
                             [styleClass]="'avatar'"></app-secured-image>
                         My Account

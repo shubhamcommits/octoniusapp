@@ -39,7 +39,7 @@
               <div class="member">
                 <div>
                   <app-secured-image
-                    [src]="member?.profile_pic"
+                    [imgURL]="member?.profile_pic"
                     [service]="'user'"
                     [styleClass]="'ml-2 feed-avatar'"
                     (click)="openFullscreenModal(member?._id)"></app-secured-image>

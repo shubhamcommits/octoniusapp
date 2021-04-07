@@ -256,7 +256,7 @@
             <div *ngIf="lastAssignedBy" id="avatar-assignee" style="margin-bottom: 30px;">
               <p class="box-title" style="padding-top: 20px;">Assigned by</p>
               <app-secured-image
-                [src]="lastAssignedBy.profile_pic"
+                [imgURL]="lastAssignedBy.profile_pic"
                 [service]="'user'"
                 [styleClass]="'feed-avatar-small'"
                 style="float: left; cursor: auto;"></app-secured-image>

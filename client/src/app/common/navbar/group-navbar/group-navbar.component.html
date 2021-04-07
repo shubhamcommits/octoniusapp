@@ -7,7 +7,7 @@
 
         <!-- Group Avatar starts -->
         <app-secured-image *ngIf="groupData && !myWorkplace"
-          [src]="groupData?.group_avatar"
+          [imgURL]="groupData?.group_avatar"
           [service]="'group'"
           [tooltip]="'Change group avatar'"
           [placement]="'right'"
@@ -17,7 +17,7 @@
 
         <!-- My workplace avatar starts -->
         <app-secured-image *ngIf="userData && (myWorkplace || !groupData)"
-          [src]="userData?.profile_pic"
+          [imgURL]="userData?.profile_pic"
           [service]="'user'"
           [tooltip]="'This is your workplace'"
           [placement]="'right'"

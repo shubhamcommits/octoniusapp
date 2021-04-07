@@ -75,7 +75,7 @@
                         <app-secured-image
                             routerLink="/dashboard/user/profile"
                             [queryParams]="{ userId: folder?._created_by?._id || folder?._created_by?._id }"
-                            [src]="folder?._created_by?.profile_pic"
+                            [imgURL]="folder?._created_by?.profile_pic"
                             [service]="'user'"
                             [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
@@ -125,7 +125,7 @@
                         <app-secured-image
                             routerLink="/dashboard/user/profile"
                             [queryParams]="{ userId: file?._posted_by?._id || file?._created_by?._id }"
-                            [src]="file?._posted_by?.profile_pic"
+                            [imgURL]="file?._posted_by?.profile_pic"
                             [service]="'user'"
                             [styleClass]="'feed-avatar'"></app-secured-image>
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>

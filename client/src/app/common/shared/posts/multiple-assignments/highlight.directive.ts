@@ -18,7 +18,7 @@ export class HighlightDirective implements OnChanges {
     }
 
     if (!this.searchedWord || !this.searchedWord.length) {
-      // const memberHTML = `<app-secured-image [src]="'${this.content.profile_pic}'" [style]="'width:30px !important;height:30px !important;'" [styleClass]="feed-avatar"></app-secured-image>`
+      // const memberHTML = `<app-secured-image [imgURL]="'${this.content.profile_pic}'" [style]="'width:30px !important;height:30px !important;'" [styleClass]="feed-avatar"></app-secured-image>`
       const memberHTML = `<img src="${this.baseUrl}/${this.content.profile_pic}?noAuth=true" onerror="this.src='assets/images/user.png'" style="width:30px !important;height:30px !important;" class="feed-avatar">`
         + this.content.first_name + ' ' + this.content.last_name + '  <span class="muted">' + this.content.email + '</span> ';
       this.renderer.setProperty(this.el.nativeElement, 'innerHTML', memberHTML);

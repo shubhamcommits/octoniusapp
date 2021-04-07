@@ -1,5 +1,5 @@
 <app-secured-image
-  [src]="getAssigneePic(post?._assigned_to)"
+  [imgURL]="getAssigneePic(post?._assigned_to)"
   [service]="'user'"
   [styleClass]="'assignee-avatar'"
   [tooltip]="getAssigneeTooltip(post?._assigned_to)"></app-secured-image>

@@ -5,7 +5,7 @@
               <app-secured-image
                 [routerLink]="['/dashboard', 'user', 'profile']"
                 [queryParams]="{ userId: userData?._id}"
-                [src]="userData?.profile_pic"
+                [imgURL]="userData?.profile_pic"
                 [service]="'user'"
                 [styleClass]="'feed-avatar'"></app-secured-image>
             </div>
