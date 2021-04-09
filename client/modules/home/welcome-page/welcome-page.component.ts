@@ -130,7 +130,6 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
 
             this.clearAccountData();
             this.storeAccountData(res);
-            
             this.router.navigate(['authentication', 'select-workspace'])
               .then(() => {
                 this.utilityService.successNotification(`Hi ${res['account']['first_name']}, welcome back!`);
