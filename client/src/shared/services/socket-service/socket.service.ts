@@ -92,6 +92,7 @@ export class SocketService {
   }
 
   public disconnectSocket() {
+    this.dataSource.next({});
     return this.socket.disconnect();
   }
 
