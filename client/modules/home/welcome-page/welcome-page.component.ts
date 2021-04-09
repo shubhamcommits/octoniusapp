@@ -7,7 +7,6 @@ import { SubSink } from 'subsink';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SocketService } from 'src/shared/services/socket-service/socket.service';
 
 @Component({
   selector: 'app-welcome-page',
@@ -35,7 +34,6 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     private utilityService: UtilityService,
     public userService: UserService,
     private storageService: StorageService,
-    private socketService: SocketService,
     public router: Router,
     public activeRouter :ActivatedRoute,
     private _Injector: Injector
@@ -132,7 +130,6 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
 
             this.clearAccountData();
             this.storeAccountData(res);
-            this.socketService.serverInit();
             this.router.navigate(['authentication', 'select-workspace'])
               .then(() => {
                 this.utilityService.successNotification(`Hi ${res['account']['first_name']}, welcome back!`);
