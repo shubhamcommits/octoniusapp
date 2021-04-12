@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
+import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -28,6 +29,7 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
     private authenticationService: AuthService,
     private storageService: StorageService,
     public router: Router,
+    private socketService: SocketService,
     public activeRouter :ActivatedRoute,
     private _Injector: Injector
     ) { }
@@ -80,6 +82,7 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
               resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
               window.location.href = this.queryParms.teams_permission_url;
             } else {
+              this.socketService.serverInit();
               this.router.navigate(['dashboard', 'myspace', 'inbox'])
               .then(() => {
                 resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
