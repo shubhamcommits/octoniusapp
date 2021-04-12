@@ -1,5 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../senderror";
+import { File } from '../../api/models';
 
 const fs = require("fs");
 
@@ -104,7 +105,10 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
  */
 const groupFileDelete = async (req: Request, res: Response, next: NextFunction) => {
 
-  if (req.body.fileName && req.body.fileName != '') {
+  const { fileId } = req.params;
+  let deletedFile: any = await File.findById({ _id: fileId });
+  
+  if (req.body.fileName && req.body.fileName != '' && deletedFile.type == 'file') {
     // Delete the file accordingly and handle request
     fs.unlink(process.env.FILE_UPLOAD_FOLDER + req.body.fileName, (error) => {
       if (error) {
