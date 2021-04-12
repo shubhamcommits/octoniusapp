@@ -14,7 +14,7 @@ const AnswerSchema = new Schema({
     },
     answers:[{
         answer: { type: String },
-        _question: {type: Schema.Types.ObjectId,ref: 'User'}
+        _question: {type: Schema.Types.ObjectId,ref: 'Question'}
     }],
     created_date: {
         type: Date,
