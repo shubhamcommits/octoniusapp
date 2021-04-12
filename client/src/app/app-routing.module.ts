@@ -55,6 +55,16 @@ const routes: Routes = [
     canActivate: [AuthenticationGuard, FolioGuard]
   },
 
+  // 'document' ROUTE - LAZY LOAD THE OCTODOC MODULE
+  {
+    path: 'form',
+    loadChildren: () => import('modules/form/form.module')
+      .then((module) => module.FormModule),
+    canActivate: [AuthenticationGuard, FolioGuard]
+  },
+
+
+
   // NOT FOUND ROUTE
   {
     path: '**',
