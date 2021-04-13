@@ -51,19 +51,23 @@ export class PostActionsComponent implements OnInit {
   async ngOnInit() {
     await this.post._liked_by.forEach(user => {
       if(user._id) {
-        this.likedByUsers.push(user['first_name'] + ' ' + user['last_name']);
+        this.likedByUsers.push(user['first_name'] || 'Deleted' + ' ' + user['last_name'] || 'User');
       } else {
         this.publicFunctions.getOtherUser(user).then(otherUser => {
           this.likedByUsers.push(otherUser['first_name'] + ' ' + otherUser['last_name']);
+        }).catch(err => {
+          this.likedByUsers.push('Deleted User');
         });
       }
     });
 
     await this.post._followers.forEach(user => {
       (user['first_name'] && user['last_name'])
-        ? this.followedByUsers.push(user['first_name'] + ' ' + user['last_name'])
-        : this.publicFunctions.getOtherUser(user._id || user).then(user => {
-            this.followedByUsers.push(user['first_name'] + ' ' + user['last_name']);
+        ? this.followedByUsers.push(user['first_name'] || 'Deleted' + ' ' + user['last_name'] || 'User')
+        : this.publicFunctions.getOtherUser(user._id || user).then(otherUser => {
+            this.followedByUsers.push(otherUser['first_name'] + ' ' + otherUser['last_name']);
+          }).catch(err => {
+            this.likedByUsers.push('Deleted User');
           });
     });
 
