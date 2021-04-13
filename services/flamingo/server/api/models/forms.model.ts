@@ -6,7 +6,6 @@ const { Schema } = mongoose;
 const FormSchema = new Schema({
     name: {
         type: String,
-        required: true
     },
     _owner: { 
         type: Schema.Types.ObjectId,
@@ -15,6 +14,10 @@ const FormSchema = new Schema({
     _group: {
         type: Schema.Types.ObjectId,
         ref: 'Group'
+    },
+    _folder:{
+        type: Schema.Types.ObjectId,
+        ref: 'Folder'
     },
     questions:[{
         type: Schema.Types.ObjectId,

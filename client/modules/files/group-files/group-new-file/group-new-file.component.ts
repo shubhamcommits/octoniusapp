@@ -1,6 +1,7 @@
 import { Component, OnChanges, OnDestroy, Output, Input, Injector, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { FilesService } from 'src/shared/services/files-service/files.service';
+import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -32,6 +33,8 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
 
   // Output files event emitter
   @Output('file') fileEmitter = new EventEmitter();
+
+  @Output('form') formEmitter = new EventEmitter();
 
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
@@ -236,6 +239,47 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
 
     // Stop the loading spinner
     this.isLoading$.next(false);
+  }
+
+  /**
+  * This function is responsible for creating a flamingo
+  */
+  createFlamingo(){
+    
+    this.isLoading$.next(true);
+
+    const flamingoData: any = {
+      _group: this.groupId,
+      _folder: this.folderId,
+      _owner: this.userData._id,
+      name: "New Form"
+    }
+
+    // Files Service Instance
+    let flamingoService = this.Injector.get(FlamingoService)
+
+    // Utility Service Instance
+    let utilityService = this.Injector.get(UtilityService)
+
+    // Call the HTTP Request Asynschronously
+    utilityService.asyncNotification(
+      `Please wait while we are creating a new form`,
+      new Promise((resolve, reject) => {
+        flamingoService.createForm(flamingoData)
+          .then((res) => {
+
+            // Output the created file to the top components
+            this.formEmitter.emit(res['form']);
+
+            this.isLoading$.next(false);
+
+            resolve(utilityService.resolveAsyncPromise('New Form has been created!'))
+
+          })
+          .catch(() => {
+            reject(utilityService.rejectAsyncPromise('Unexpected error occured while uploading, please try again!'))
+          })
+      }))
   }
 
   /**

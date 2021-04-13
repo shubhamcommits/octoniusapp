@@ -55,6 +55,9 @@ export class GroupFilesComponent implements OnInit {
   // Folders Array variable
   folders: any = [];
 
+  // Folders Array variable
+  forms: any = [];
+
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
@@ -155,6 +158,10 @@ export class GroupFilesComponent implements OnInit {
 
   getFolder(folder: any) {
     this.folders.unshift(folder);
+  }
+
+  getForm(form: any){
+    this.forms.unshift(form);
   }
 
   /**

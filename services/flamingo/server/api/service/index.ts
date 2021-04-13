@@ -5,6 +5,6 @@ import { FlamingoService } from "./flamingo.service";
  * */
 export {
 
-    FlamingoService as SlacFlamingoServicekService,
+    FlamingoService as FlamingoService,
     
 }

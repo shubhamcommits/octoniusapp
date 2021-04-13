@@ -8,6 +8,9 @@ import { User } from './user.model';
 import { Workspace } from './workspace.model';
 import { Comment } from './comment.model';
 import { Notification } from './notification.model';
+import { Form } from './forms.model';
+import { Answer } from './answers.model';
+import { Question } from './questions.model';
 /*  =====================
  *  -- EXPORTS MODELS --
  *  =====================
@@ -43,4 +46,13 @@ export {
 
      // NOTIFICATION 
      Notification as Notification,
+
+     //FORM
+     Form as Form,
+
+     //ANSWER
+     Answer as Answer,
+
+    //QUESTION
+    Question as Question
 };

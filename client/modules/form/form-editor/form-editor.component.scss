@@ -1,0 +1,229 @@
+.form-container{
+    padding-top: 90px;
+    height: 100vh;
+    background-color: #ffffff !important;
+    // -webkit-font-smoothing: antialiased;
+    width: 100%;
+    overflow-y: auto;
+    position: relative;
+    display: table;
+}
+.btn-menu-container{
+    width: 100%;
+    height: 60px;
+    padding-top: 30px;
+}
+.questions-container-active{
+    width: 100%;
+    height: 86px;
+    background-color:#f3f4f6
+}
+.questions-container{
+    width: 100%;
+    height: 86px;
+}
+.question-menu{
+    min-height: 300px;
+}
+.menu-button{
+    background-color:#f3f4f6;
+    border: none;
+    margin-left: 20px;
+}
+.question-icon{
+    float: left;
+    min-width: 40px;
+    min-height: 40px;
+    background-color: #E4EDF8;
+    width: 40px;
+    height: 40px;
+    margin-left: 10%;
+    margin-top: 20px;
+    border-radius: 4px;
+}
+.question-txt{
+    margin-left: 20%;
+    padding-top: 6%;
+}
+.btn-icon{
+    float: left;
+    min-width: 40px;
+    min-height: 40px;
+    background-color: #E4EDF8;
+    width: 40px;
+    height: 40px;
+    margin-left: 5%;
+    margin-top: 5px;
+    border-radius: 4px;
+}
+.btn-txt{
+    margin-left: 16%;
+    padding-top: 3%;
+}
+
+//welcome
+.welcome-screen{
+    min-height: 50px;
+    cursor: pointer;
+}
+.welcome-screen:hover{
+   background-color: #F3F4F6;
+}
+.welcome-screen:hover .hovered-welcome {
+    display: block !important;
+}
+.hovered-welcome {
+    display: none;
+    position: absolute;
+    left: 199px;
+    top: 10px;
+    min-width: 231px;
+    min-height: 361px;
+    background: #F3F4F6;
+    font-family: Nunito;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
+    border-radius: 0px 4px 4px 0px;
+
+}
+
+//thank
+.thank-screen{
+    min-height: 50px;
+    cursor: pointer;
+}
+.thank-screen:hover{
+   background-color: #F3F4F6;
+}
+.thank-screen:hover .hovered-thank {
+    display: block !important;
+}
+.hovered-thank {
+    display: none;
+    position: absolute;
+    left: 199px;
+    top: 10px;
+    min-width: 231px;
+    min-height: 361px;
+    background: #F3F4F6;
+    font-family: Nunito;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
+    border-radius: 0px 4px 4px 0px;
+}
+
+// short text
+.short-text{
+    min-height: 50px;
+    cursor: pointer;
+}
+.short-text:hover{
+   background-color: #F3F4F6;
+}
+.short-text:hover .hovered-short {
+    display: block !important;
+}
+.hovered-short {
+    display: none;
+    position: absolute;
+    left: 199px;
+    top: 10px;
+    min-width: 231px;
+    min-height: 361px;
+    background: #F3F4F6;
+    font-family: Nunito;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
+    border-radius: 0px 4px 4px 0px;
+}
+
+//yes/no
+.yes-no{
+    min-height: 50px;
+    cursor: pointer;
+}
+.yes-no:hover{
+   background-color: #F3F4F6;
+}
+.yes-no:hover .hovered-yes-no {
+    display: block !important;
+
+}
+.hovered-yes-no {
+    display: none;
+    position: absolute;
+    left: 199px;
+    top: 10px;
+    min-width: 231px;
+    min-height: 361px;
+    background: #F3F4F6;
+    font-family: Nunito;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
+    border-radius: 0px 4px 4px 0px;
+
+}
+
+//scale
+.scale{
+    min-height: 50px;
+    cursor: pointer;
+}
+.scale:hover{
+   background-color: #F3F4F6;
+}
+.scale:hover .hovered-scale {
+    display: block !important;
+
+}
+.hovered-scale {
+    display: none;
+    position: absolute;
+    left: 199px;
+    top: 10px;
+    min-width: 231px;
+    min-height: 361px;
+    background: #F3F4F6;
+    font-family: Nunito;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
+    border-radius: 0px 4px 4px 0px;
+
+}
+
+// dropdown
+.dropdown-question{
+    min-height: 50px;
+    cursor: pointer;
+}
+.dropdown-question:hover{
+   background-color: #F3F4F6;
+}
+.dropdown-question:hover .hovered-dropdown {
+    display: block !important;
+}
+.hovered-dropdown {
+    display: none;
+    position: absolute;
+    left: 199px;
+    top: 10px;
+    min-width: 231px;
+    min-height: 361px;
+    background: #F3F4F6;
+    font-family: Nunito;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
+    border-radius: 0px 4px 4px 0px;
+}

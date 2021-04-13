@@ -10,4 +10,7 @@ const auths = new Auths();
 
 routes.post('/create-form', auths.verifyToken, flamingoFunctions.createForm);
 
+routes.get('/', auths.verifyToken, flamingoFunctions.get);
+
+
 export { routes as flamingoRoutes };
