@@ -1,4 +1,4 @@
-import { Form } from '../models';
+import { Flamingo } from '../models';
 
 
 /*  ===============================
@@ -8,6 +8,9 @@ import { Form } from '../models';
 
 export class FlamingoService {
     
+    // Select File Fields on population
+    fileFields: any = 'original_name modified_name type created_date';
+
     // Select User Fields on population
     userFields: any = 'first_name last_name profile_pic role email';
 
@@ -18,91 +21,100 @@ export class FlamingoService {
     questionFields: any = 'type text options image_url created_date';
 
     /**
-     * This function is used to populate a form with all the possible properties
+     * This function is used to populate a flamingo with all the possible properties
      * @param file
      */
-     async populateFileProperties(form: any) {
+     async populateFileProperties(flamingo: any) {
 
         // Populate file properties
-        form = await Form.populate(form, [
-            { path: '_group', select: this.groupFields },
-            { path: '_owner', select: this.userFields },
+        flamingo = await Flamingo.populate(flamingo, [
+            { path: '_file', select: this.fileFields },
+            {
+                path: '_file',
+                populate: {
+                    path: '_posted_by',
+                    model: 'User',
+                    select: this.userFields 
+                },
+            },
+            {
+                path: '_file',
+                populate: {
+                    path: '_group',
+                    model: 'Group',
+                    select: this.groupFields 
+                },
+            },
+            {
+                path: '_file',
+                populate: {
+                    path: '_folder',
+                    model: 'Folder'
+                },
+            },
             { path: 'questions', select: this.questionFields },
         ])
 
         // Return file with populated properties
-        return form
+        return flamingo
     }
 
     /** 
      * This function is responsible to create new flamingo form
      * @param data 
      */
-    async createForm(flamingoData:any){
+    async createFlamingo(flamingoData:any){
 
         // Preparing File Data
-        let form: any = {
-            _group: flamingoData._group,
-            _owner: flamingoData._owner,
-            _folder: flamingoData._folder,
-            name: flamingoData.name,
+        let flamingo: any = {
+            _file: flamingoData._file,
             questions: flamingoData.questions,
         }
 
         // Create the new File
-        form = await Form.create(form);
+        flamingo = await Flamingo.create(flamingo);
 
         // Populate File Properties
-        form = this.populateFileProperties(form);
+        flamingo = this.populateFileProperties(flamingo);
 
         // Return file
-        return form
+        return flamingo
     }
 
      /**
-     * This function is responsible to get the forms
+     * This function is responsible to get the flamingo data
      * @param groupId 
      * @param lastFormId 
      */
-      async get(groupId: string, lastFormId?: string) {
+      async get(fileId: string) {
 
-        let forms: any = []
-
-        let query = {};
+        const flamingo = await Flamingo.findOne({_file:fileId})
+        .populate({ path: '_file', select: this.fileFields })
+        .populate({
+            path: '_file',
+            populate: {
+                path: '_posted_by',
+                model: 'User',
+                select: this.userFields 
+            },
+        })
+        .populate({
+            path: '_file',
+            populate: {
+                path: '_group',
+                model: 'Group',
+                select: this.groupFields 
+            },
+        })
+        .populate({
+            path: '_file',
+            populate: {
+                path: '_folder',
+                model: 'Folder'
+            },
+        })
+        .populate({ path: 'questions', select: this.questionFields })
         
-        // Fetch files on the basis of the params @lastPostId
-        if (lastFormId) {
-            query = {
-                $and: [
-                    { _group: groupId },
-                    { _id: { $lt: lastFormId } }
-                ]
-            };   
-            forms = await Form.find(query)
-            .sort('-_id')
-            .limit(5)
-            .populate([
-                { path: '_group', select: this.groupFields },
-                { path: '_posted_by', select: this.userFields },
-                { path: 'questions', select: this.questionFields }
-            ])
-            .lean();
-
-        } else {
-                query = { _group: groupId};
-                forms = await Form.find(query)
-                .sort('-_id')
-                .limit(10)
-                .populate([
-                    { path: '_group', select: this.groupFields },
-                    { path: '_posted_by', select: this.userFields },
-                    { path: 'questions', select: this.questionFields }
-                ])
-                .lean();
-        }
-
-        // Return all the forms with the populated properties
-        return forms;
-
+        return flamingo;
     }
 }

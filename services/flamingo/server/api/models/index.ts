@@ -8,9 +8,13 @@ import { User } from './user.model';
 import { Workspace } from './workspace.model';
 import { Comment } from './comment.model';
 import { Notification } from './notification.model';
-import { Form } from './forms.model';
+import { Flamingo } from './flamingo.model';
 import { Answer } from './answers.model';
 import { Question } from './questions.model';
+import { File } from './file.model';
+import { Folder } from './folder.model';
+
+
 /*  =====================
  *  -- EXPORTS MODELS --
  *  =====================
@@ -38,6 +42,12 @@ export {
     // WORKSPACE
     Workspace as Workspace,
 
+    // FILE
+    File as File,
+    
+    // FOLDER
+    Folder as Folder,
+
     // FLOW
     Flow as Flow,
 
@@ -47,8 +57,8 @@ export {
      // NOTIFICATION 
      Notification as Notification,
 
-     //FORM
-     Form as Form,
+     //FLAMINGO
+     Flamingo as Flamingo,
 
      //ANSWER
      Answer as Answer,

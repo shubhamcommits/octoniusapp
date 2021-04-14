@@ -1,21 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { FormRoutingModule } from './form-routing.module';
-import { FormHeaderComponent } from './form-header/form-header.component';
-import { FormEditorComponent } from './form-editor/form-editor.component';
-
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
-
+import { FlamingoEditorComponent } from './flamingo-editor/flamingo-editor.component';
+import { FlamingoHeaderComponent } from './flamingo-header/flamingo-header.component';
+import {FlamingoRoutingModule} from './flamingo-routing.module';
 
 @NgModule({
-  declarations: [FormHeaderComponent, FormEditorComponent],
+  declarations: [ FlamingoEditorComponent, FlamingoHeaderComponent],
   imports: [
     CommonModule,
 
-    FormRoutingModule,
+    FlamingoRoutingModule,
     MatMenuModule,
     // Forms Module
     FormsModule,
@@ -24,4 +21,4 @@ import { MatMenuModule } from '@angular/material/menu';
     NgbTooltipModule,
   ]
 })
-export class FormModule { }
+export class FlamingoModule { }

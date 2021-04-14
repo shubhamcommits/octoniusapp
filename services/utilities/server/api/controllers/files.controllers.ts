@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils/senderror";
 import { FilesService, FoldersService } from "../services";
-
+import axios from 'axios';
 // Create instance of files service
 let filesService = new FilesService();
 
@@ -130,6 +130,11 @@ export class FilesControllers {
             // Create the file
             fileData = await filesService.add(fileData);
 
+            if(fileData && fileData.type==='flamingo'){
+                await axios.post(`${process.env.FLAMINGO_SERVER_API}/create-flamingo`, { flamingoData: { _file: fileData._id}} , { headers: {
+                    Authorization: req.headers.authorization
+                  }});
+            }
             // Send Status 200 response
             return res.status(200).json({
                 message: 'File has been uploaded!',

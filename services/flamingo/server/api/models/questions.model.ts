@@ -16,6 +16,20 @@ const QuestionSchema = new Schema({
     options: [{
         type: String
     }],
+    scale: {
+        size:{
+            type: Number
+        },
+        left_side_label: {
+            type: String
+        },
+        center_label:{
+            type: String
+        },
+        right_side_label: {
+            type: String
+        }
+    },
     image_url: {
         type: String
     },

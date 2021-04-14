@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormHeaderComponent } from './form-header.component';
+import { FlamingoHeaderComponent } from './flamingo-header.component';
 
-describe('FormHeaderComponent', () => {
-  let component: FormHeaderComponent;
-  let fixture: ComponentFixture<FormHeaderComponent>;
+describe('FlamingoHeaderComponent', () => {
+  let component: FlamingoHeaderComponent;
+  let fixture: ComponentFixture<FlamingoHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FormHeaderComponent ]
+      declarations: [ FlamingoHeaderComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FormHeaderComponent);
+    fixture = TestBed.createComponent(FlamingoHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

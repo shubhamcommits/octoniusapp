@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Injector } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FilesService } from 'src/shared/services/files-service/files.service';
@@ -5,11 +6,11 @@ import { Title } from "@angular/platform-browser";
 import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
-  selector: 'app-form-header',
-  templateUrl: './form-header.component.html',
-  styleUrls: ['./form-header.component.scss']
+  selector: 'app-flamingo-header',
+  templateUrl: './flamingo-header.component.html',
+  styleUrls: ['./flamingo-header.component.scss']
 })
-export class FormHeaderComponent implements OnInit {
+export class FlamingoHeaderComponent implements OnInit {
 
   activeState: any = 'create_form';
   // GroupID Variable
@@ -76,11 +77,13 @@ export class FormHeaderComponent implements OnInit {
     const myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.has('myWorkplace') ? this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') : false;
     this.router.navigate(
       ['/dashboard', 'work', 'groups', 'files'],
-      { queryParams: {
-        group: this.groupId,
-        folder: this.file?._folder?._id || this.file?._folder,
-        myWorkplace: myWorkplace
-      }}
+      {
+        queryParams: {
+          group: this.groupId,
+          folder: this.file?._folder?._id || this.file?._folder,
+          myWorkplace: myWorkplace
+        }
+      }
     );
 
     // Change the title of the tab
@@ -176,7 +179,7 @@ export class FormHeaderComponent implements OnInit {
     this.titleService.setTitle('Octonius');
   }
 
-  changeState(state:any){
+  changeState(state: any) {
     this.activeState = state;
   }
 

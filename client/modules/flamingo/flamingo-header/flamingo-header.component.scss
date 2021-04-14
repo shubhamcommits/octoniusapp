@@ -11,18 +11,18 @@ span {
     line-height: 21px;
     border: none;
     border-bottom: 1px solid #000000;
-  }
-  
-  input:focus {
+}
+
+input:focus {
     outline: none;
     border-bottom: 1px solid royalblue;
-  }
-  
-  nav {
+}
+
+nav {
     min-height: 80px;
     background-color: #fff;
     box-shadow: 0 4px 24px 0 rgba(37, 38, 94, 0.1);
-  }
+}
 
 .nav-link {
     font-family: $poppins;
@@ -38,14 +38,22 @@ span {
       color: $brand-primary !important;
     }
 
-  }
+}
 
-  .center-align{
-      position: absolute;
-      left: 45%;
-  }
+.center-align{
+    position: absolute;
+    left: 45%;  
+}
 
-  .right-align{
+.right-align{
     position: absolute;
     left: 90%;
-  }
+}
+
+.icons-color{
+    color: #9D9FA2;
+}
+
+.icons-color:hover{
+    color: #005fd5 !important;
+}

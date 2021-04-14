@@ -8,9 +8,8 @@ const flamingoFunctions = new FlamingoController();
 
 const auths = new Auths();
 
-routes.post('/create-form', auths.verifyToken, flamingoFunctions.createForm);
+routes.post('/create-flamingo', auths.verifyToken, flamingoFunctions.createFlamingo);
 
 routes.get('/', auths.verifyToken, flamingoFunctions.get);
-
 
 export { routes as flamingoRoutes };

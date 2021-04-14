@@ -20,7 +20,7 @@ export class FlamingoController {
      * @param res 
      * @param next 
      */
-    async createForm(req: Request, res: Response, next: NextFunction) {
+    async createFlamingo(req: Request, res: Response, next: NextFunction) {
         try {
 
             // Fetch the File Name From the request
@@ -28,12 +28,12 @@ export class FlamingoController {
             let { body: { flamingoData } } = req;
 
             // Create the file
-            flamingoData = await flamingoService.createForm(flamingoData);
+            flamingoData = await flamingoService.createFlamingo(flamingoData);
 
             // Send Status 200 response
             return res.status(200).json({
-                message: 'Form has been Created!',
-                form: flamingoData
+                message: 'Flamingo has been Created!',
+                flamingo: flamingoData
             });
 
         } catch (err) {
@@ -51,22 +51,17 @@ export class FlamingoController {
         try {
 
             // Fetch the File Name From the request
-            let { query: { groupId, lastFormId } } = req;
+            let { query: { fileId } } = req;
 
-            // Files List
-            let forms: any = [];
-
-            // Get files list
-            if (lastFormId == undefined || lastFormId == 'undefined') {
-                forms = await flamingoService.get(groupId.toString(), null);  
-            }else {
-                forms = await flamingoService.get(groupId.toString(), lastFormId.toString());  
-            }
-
+            // flamingo 
+            let flamingo: any;
+            
+            flamingo = await flamingoService.get(fileId.toString());  
+           
             // Send Status 200 response
             return res.status(200).json({
-                message: 'Forms list fetched!',
-                forms: forms
+                message: 'Flamingos data fetched!',
+                flamingo: flamingo
             });
 
         } catch (err) {

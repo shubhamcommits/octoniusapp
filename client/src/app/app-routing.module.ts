@@ -57,9 +57,9 @@ const routes: Routes = [
 
   // 'document' ROUTE - LAZY LOAD THE OCTODOC MODULE
   {
-    path: 'form',
-    loadChildren: () => import('modules/form/form.module')
-      .then((module) => module.FormModule),
+    path: 'flamingo',
+    loadChildren: () => import('modules/flamingo/flamingo.module')
+      .then((module) => module.FlamingoModule),
     canActivate: [AuthenticationGuard, FolioGuard]
   },
 

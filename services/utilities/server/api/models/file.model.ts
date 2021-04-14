@@ -15,7 +15,7 @@ const FileSchema = new Schema({
         type: String,
         default: 'folio',
         required: false,
-        enum: ['file', 'folio']
+        enum: ['file', 'folio' , 'flamingo']
     },
     mime_type: {
         type: String,

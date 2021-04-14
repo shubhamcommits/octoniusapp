@@ -251,35 +251,17 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
     const flamingoData: any = {
       _group: this.groupId,
       _folder: this.folderId,
-      _owner: this.userData._id,
-      name: "New Form"
+      _posted_by: this.userData._id,
+      original_name: 'New Flamingo',
+      modified_name:'New Flamingo',
+      type: 'flamingo',
+      mime_type: 'flamingo'
     }
 
-    // Files Service Instance
-    let flamingoService = this.Injector.get(FlamingoService)
+    this.uploadFile(flamingoData);
 
-    // Utility Service Instance
-    let utilityService = this.Injector.get(UtilityService)
-
-    // Call the HTTP Request Asynschronously
-    utilityService.asyncNotification(
-      `Please wait while we are creating a new form`,
-      new Promise((resolve, reject) => {
-        flamingoService.createForm(flamingoData)
-          .then((res) => {
-
-            // Output the created file to the top components
-            this.formEmitter.emit(res['form']);
-
-            this.isLoading$.next(false);
-
-            resolve(utilityService.resolveAsyncPromise('New Form has been created!'))
-
-          })
-          .catch(() => {
-            reject(utilityService.rejectAsyncPromise('Unexpected error occured while uploading, please try again!'))
-          })
-      }))
+    // Stop the loading spinner
+    this.isLoading$.next(false);
   }
 
   /**
