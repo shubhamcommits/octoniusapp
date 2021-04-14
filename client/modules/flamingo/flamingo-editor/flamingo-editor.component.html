@@ -13,12 +13,15 @@
                     placeholder="Please Enter question text" 
                     [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
                     <!-- ...... -->
-                    <div *ngFor="let currentOption of question.options; let j=index">
-                       - <input [(ngModel)]="updatedOption"
-                        value="currentOption"
-                        placeholder="Enter Option" 
-                        [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
+                    <div *ngIf="question.type==='Dropdown'" >
+                        <div *ngFor="let currentOption of question.options; let j=index">
+                            - <input [value]="currentOption"
+                             placeholder="Enter Option" 
+                             (change)="changeOptionText($event,i,j)"
+                             [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
+                         </div>
                     </div>
+                    
                     <!-- /....... -->
                     <div *ngIf="question.type==='Dropdown'">
                         - <input [(ngModel)]="newOption" (change)="changeOptionText($event,i,null)" 
@@ -170,10 +173,10 @@
                 <h2 style="margin-bottom: 50px;">{{activeQuestion.text}}</h2>
                 <input *ngIf="activeQuestion.type==='ShortText'" placeholder="Type your answer here..." class="input-answer" />
                 <div *ngIf="activeQuestion.type==='Yes/No'">
-                    <button>Yes</button>
+                    <button class="btn btn-success">Yes</button>
                     <br/>
                     <br/>
-                    <button>No</button>
+                    <button class="btn btn-danger">No</button>
                 </div>
                 <div *ngIf="activeQuestion.type==='Scale'">
                     <button *ngIf="activeQuestion.scale.size > 0" class="scale-button" ng>0</button>
@@ -188,6 +191,16 @@
                     <button *ngIf="activeQuestion.scale.size > 9" class="scale-button">9</button>
                     <button *ngIf="activeQuestion.scale.size > 10" class="scale-button">10</button>  
                 </div>
+
+             
+                <button *ngIf="activeQuestion.type === 'Dropdown'" class="btn btn-primary mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
+                   Please Select an Option
+                </button>
+                <ul *ngIf="activeQuestion.type === 'Dropdown'" class="dropdown-menu">
+                    <li *ngFor="let currentOption of activeQuestion.options; let j=index" class="dropdown-item">
+                        {{currentOption}}
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
