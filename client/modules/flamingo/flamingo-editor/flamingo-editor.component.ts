@@ -20,34 +20,10 @@ export class FlamingoEditorComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.questions.push({
-      type: "ShortText",
-      text: "What is your name?"
-    })
-    this.questions.push({
-      type: "Yes/No",
-      text: "Is this your first job?"
-    })
-    this.questions.push({
-      type: "Scale",
-      text: "How much you are satisfied by the service?",
-      scale:{
-        size: 11,
-      }
-    })
-    this.questions.push({
-      type: "Dropdown",
-      text: "Where are you from?",
-      options:["new text"]
-    })
+
     this.questions.push({
       type: "Welcome",
       text: "Welcome to new Survey?",
-      options:["new text"]
-    })
-    this.questions.push({
-      type: "Thanks",
-      text: "Thank you for your time!!!",
       options:["new text"]
     })
     this.questions.push({
@@ -68,11 +44,6 @@ export class FlamingoEditorComponent implements OnInit {
     this.questions.push({
       type: "Dropdown",
       text: "Where are you from?",
-      options:["new text"]
-    })
-    this.questions.push({
-      type: "Welcome",
-      text: "Welcome to new Survey?",
       options:["new text"]
     })
     this.questions.push({
