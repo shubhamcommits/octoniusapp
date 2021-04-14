@@ -67,7 +67,7 @@ export class PostActionsComponent implements OnInit {
         : this.publicFunctions.getOtherUser(user._id || user).then(otherUser => {
             this.followedByUsers.push(otherUser['first_name'] + ' ' + otherUser['last_name']);
           }).catch(err => {
-            this.likedByUsers.push('Deleted User');
+            this.followedByUsers.push('Deleted User');
           });
     });
 
