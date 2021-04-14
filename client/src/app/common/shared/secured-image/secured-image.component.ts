@@ -46,6 +46,11 @@ export class SecuredImageComponent implements OnChanges  {
 
     switch (this.service) {
       case 'workspace':
+        if(!this.imgURL) {
+          this.imgURL = "assets/images/organization.png";
+          this.isLocalImg = true;
+        }
+
         if (!this.isLocalImg) {
           this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.imgURL);
         } else {
@@ -55,6 +60,11 @@ export class SecuredImageComponent implements OnChanges  {
         this.onErrorUrl = "assets/images/organization.png";
         break;
       case 'group':
+        if(!this.imgURL) {
+          this.imgURL = "assets/images/icon-new-group.svg";
+          this.isLocalImg = true;
+        }
+
         if (!this.isLocalImg) {
           this.src$.next(environment.UTILITIES_GROUPS_UPLOADS + '/' + this.imgURL);
         } else {
@@ -64,6 +74,11 @@ export class SecuredImageComponent implements OnChanges  {
         this.onErrorUrl = "assets/images/icon-new-group.svg";
         break;
       case 'user':
+        if(!this.imgURL) {
+          this.imgURL = "assets/images/user.png";
+          this.isLocalImg = true;
+        }
+
         if (!this.isLocalImg) {
           this.src$.next(environment.UTILITIES_USERS_UPLOADS + '/' + this.imgURL);
         } else {
