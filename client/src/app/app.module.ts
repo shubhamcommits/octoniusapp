@@ -83,6 +83,9 @@ import { ngxUiLoaderConfig } from 'src/assets/config/ngx-ui-loader.config';
  */
 import { GlobalErrorHandler } from 'src/shared/error-handler/global-error-handler';
 import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.interceptor';
+import { HttpCancelService } from 'src/shared/services/httpcancel-service/httpcancel.service';
+import { ManageHttpInterceptor } from 'src/shared/services/manage-http-interceptor-service/manage-http-interceptor.service';
+
 
 /**
  * 9. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -129,6 +132,8 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
   ],
 
   providers: [
+    HttpCancelService,
+
     // HASH LOCATION STRATEGY
     {
       provide: LocationStrategy,
@@ -144,7 +149,8 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
       provide: HTTP_INTERCEPTORS,
       useClass: ServerErrorInterceptor,
       multi: true
-    }
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: ManageHttpInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
