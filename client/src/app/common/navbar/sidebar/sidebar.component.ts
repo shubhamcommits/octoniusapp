@@ -100,8 +100,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
           this.authService.signout().toPromise()
             .then((res) => {
               this.storageService.clear();
-              this.publicFunctions.sendUpdatesToGroupData({})
               this.publicFunctions.sendUpdatesToRouterState({})
+              this.publicFunctions.sendUpdatesToGroupData({})
               this.publicFunctions.sendUpdatesToUserData({})
               this.publicFunctions.sendUpdatesToAccountData({})
               this.publicFunctions.sendUpdatesToWorkspaceData({})

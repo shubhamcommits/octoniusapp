@@ -8,8 +8,9 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { NotificationService } from 'src/shared/services/notification-service/notification.service';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
-import { Router, RouterEvent, NavigationEnd, ChildActivationEnd } from '@angular/router';
+import { Router, RouterEvent, NavigationEnd, ChildActivationEnd, ActivationEnd } from '@angular/router';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
+import { HttpCancelService } from 'src/shared/services/httpcancel-service/httpcancel.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -45,7 +46,8 @@ export class AppComponent {
     private storageService: StorageService,
     private _router: Router,
     private _notificationService: NotificationService,
-    private routeStateService: RouteStateService
+    private routeStateService: RouteStateService,
+    private httpCancelService: HttpCancelService
   ) {
     this._notificationService.requestPermission();
 
@@ -66,7 +68,12 @@ export class AppComponent {
         }
       }
 
-    }))
+      // An event triggered at the end of the activation part of the Resolve phase of routing.
+      if (e instanceof ActivationEnd) {
+        // Cancel pending calls
+        this.httpCancelService.cancelPendingRequests();
+      }
+    }));
 
     let socketService = this.injector.get(SocketService);
     let utilityService = this.injector.get(UtilityService);
