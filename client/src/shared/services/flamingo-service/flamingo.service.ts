@@ -42,4 +42,44 @@ export class FlamingoService {
       }).toPromise()
     }
   }
+
+  /**
+   * This function is responsible for fetching the flamingo details on the basis of the fileId
+   * @param fileId
+   */
+   getOne(fileId: string){
+    if(fileId)
+      return this._http.get(this.baseURL + `/?fileId=${fileId}`).toPromise()
+  }
+
+  /**
+   * This function is responsible to create questiona and add it to flamingo
+   * @param questionData
+   */
+   createQuestion(flamingoId: string, questionData:any){
+    if(flamingoId)
+      return this._http.post(this.baseURL + `/create-add-question/?flamingoId=${flamingoId}`,{questionData}).toPromise()
+  }
+
+
+  /**
+   * This function is responsible to delete question and remove it from flamingo
+   * @param flamingoId
+   * @param questionId
+   */
+   deleteQuestion(flamingoId: string,questionId:object){
+    if(flamingoId)
+      return this._http.delete(this.baseURL + `/question/?flamingoId=${flamingoId}&questionId=${questionId}`).toPromise()
+  }
+
+   /**
+   * This function is responsible to delete question and remove it from flamingo
+   * @param questionData
+   * @param questionId
+   */
+    updateQuestion(questionId:object, questionData: any){
+      if(questionId)
+        return this._http.put(this.baseURL + `/question/?questionId=${questionId}`,{questionData}).toPromise()
+    }
+
 }

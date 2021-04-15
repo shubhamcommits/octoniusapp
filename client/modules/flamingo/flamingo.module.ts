@@ -6,7 +6,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { FlamingoEditorComponent } from './flamingo-editor/flamingo-editor.component';
 import { FlamingoHeaderComponent } from './flamingo-header/flamingo-header.component';
 import {FlamingoRoutingModule} from './flamingo-routing.module';
-
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSliderModule} from '@angular/material/slider';
 @NgModule({
   declarations: [ FlamingoEditorComponent, FlamingoHeaderComponent],
   imports: [
@@ -16,7 +17,8 @@ import {FlamingoRoutingModule} from './flamingo-routing.module';
     MatMenuModule,
     // Forms Module
     FormsModule,
-
+    MatSlideToggleModule,
+    MatSliderModule,
     // Tooltip Module
     NgbTooltipModule,
   ]

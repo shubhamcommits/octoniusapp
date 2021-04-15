@@ -1,6 +1,6 @@
 <div class="form-container">
     <div class="row" style="height: 100%;width: 100%;">
-        <div class="col-md-4" style="border-right: 1px solid #E4EDF8;padding: 0px;">
+        <div class="col-md-4" [ngStyle]="{'border-right': '1px solid #E4EDF8','padding': '0px','height': questionListHeight,'overflow-y':'auto','overflow-x':'hidden'}">
             <div *ngFor="let question of questions; let i = index;" 
             [ngClass]="i==activeQuestionIndex?'questions-container-active':'questions-container'"
             (click)="changeActiveIndex(i)"
@@ -10,7 +10,8 @@
                 <div class="question-txt">
                     {{i+1}} - 
                     <input [(ngModel)]="question.text"
-                    placeholder="Please Enter question text" 
+                    placeholder="Please Enter question text"
+                    (change)="changeQuestionText($event,i)"
                     [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
                     <!-- ...... -->
                     <div *ngIf="question.type==='Dropdown'" >
@@ -28,13 +29,45 @@
                         placeholder="Enter Option" 
                         [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
                     </div>
+
+                    <div *ngIf="question.type==='Scale' && i==activeQuestionIndex" class="scale-setting">
+                        
+                        <div class="form-group row">
+                            <label for="Steps" class="col-sm-4 col-form-label">Steps</label>
+                            <div class="col-sm-8" style="padding-right: 20px;">
+                                <mat-slider [max]="11" [min]="5" [value]="question?.scale?.size || 5" (change)="setScaleSize($event,i)"></mat-slider>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="Steps" class="col-sm-4 col-form-label">Show Label</label>
+                            <div class="col-sm-8" style="padding-right: 20px;">
+                                <mat-slide-toggle [color]="'#9B9B9B'" [checked]="(question?.show_scale_labels)? true: false" (change)="enabelDisableLabel($event,i)"></mat-slide-toggle>
+                            </div>
+                        </div>
+                        <div *ngIf="question?.show_scale_labels">
+                            <input placeholder="left label"
+                            (change)="setLable($event,i,'left')" 
+                            [value]="question?.scale?.left_side_label || '' "                 
+                            [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'"/>
+                            <br/>
+                            <input placeholder="centre label"                         
+                            (change)="setLable($event,i,'centre')"
+                            [value]="question?.scale?.center_label || '' "
+                            [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'"/>
+                            <br/>
+                            <input placeholder="right label"                         
+                            [value]="question?.scale?.right_side_label || '' "
+                            (change)="setLable($event,i,'right') "
+                            [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'"/>
+                        </div>
+                    </div>
                    
                 </div>
                 <div class="settings" *ngIf="i==activeQuestionIndex" >
                     <div class="setting-icons-div">
                         <i class="material-icons icons-color" >image_outlined</i>
                     </div>
-                    <div class="setting-icons-div">
+                    <div class="setting-icons-div" (click)="deleteQuestion(question._id)">
                         <i class="material-icons icons-color" >delete_sweep_outlined</i>
                     </div>
                 </div>
@@ -47,10 +80,10 @@
                     <span> NEW QUESTION</span>
                 </button>
                 <mat-menu #menu="matMenu" class="question-menu">
-                    <div>
+                    <div style="position: relative;">
                         <p style="height: 45px;padding-top: 10px;padding-left: 15px;color: #9B9B9B;">Choose a question
                             type</p>
-                        <div class="welcome-screen">
+                        <div class="welcome-screen" (click)="createQuestion('Welcome')">
                             <div class="btn-icon"></div>
                             <div class="btn-txt">Welcome screen</div>
                             <div class="hovered-welcome">
@@ -69,7 +102,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="thank-screen">
+                        <div class="thank-screen" (click)="createQuestion('Thanks')">
                             <div class="btn-icon"></div>
                             <div class="btn-txt">Thank you screen</div>
                             <div class="hovered-thank">
@@ -88,7 +121,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="short-text">
+                        <div class="short-text" (click)="createQuestion('ShortText')">
                             <div class="btn-icon"></div>
                             <div class="btn-txt">Short text</div>
                             <div class="hovered-short">
@@ -107,7 +140,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="yes-no">
+                        <div class="yes-no" (click)="createQuestion('Yes/No')">
                             <div class="btn-icon"></div>
                             <div class="btn-txt">YES/NO</div>
                             <div class="hovered-yes-no">
@@ -126,7 +159,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="scale">
+                        <div class="scale" (click)="createQuestion('Scale')">
                             <div class="btn-icon"></div>
                             <div class="btn-txt">Scale</div>
                             <div class="hovered-scale">
@@ -145,7 +178,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="dropdown-question">
+                        <div class="dropdown-question" (click)="createQuestion('Dropdown')">
                             <div class="btn-icon"></div>
                             <div class="btn-txt">Dropdown</div>
                             <div class="hovered-dropdown">
@@ -169,35 +202,47 @@
             </div>
         </div>
         <div class="col-md-8">
-            <div class="question-preview-container">
-                <h2 style="margin-bottom: 50px;">{{activeQuestion.text}}</h2>
-                <input *ngIf="activeQuestion.type==='ShortText'" placeholder="Type your answer here..." class="input-answer" />
-                <div *ngIf="activeQuestion.type==='Yes/No'">
+            
+            <div *ngIf="activeQuestion?.type==='Welcome' || activeQuestion?.type==='Thanks'" style="margin-top: 10%;margin-left:20%;">
+                <h2 style="margin-bottom: 50px; margin-left: 15%;">{{activeQuestion?.text}}</h2>
+                <button *ngIf="activeQuestion?.type==='Thanks'" style="margin-bottom: 50px; margin-left: 25%;" class="btn btn-success">Submit</button>
+                <button *ngIf="activeQuestion?.type==='Welcome'" style="margin-bottom: 50px; margin-left: 25%;" class="btn btn-primary">Start</button>
+            </div>
+            
+            <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'" class="question-preview-container">
+                <h2   style="margin-bottom: 50px;">{{activeQuestion?.text}}</h2>
+                <input *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..." class="input-answer" />
+                <div *ngIf="activeQuestion?.type==='Yes/No'">
                     <button class="btn btn-success">Yes</button>
                     <br/>
                     <br/>
                     <button class="btn btn-danger">No</button>
                 </div>
-                <div *ngIf="activeQuestion.type==='Scale'">
-                    <button *ngIf="activeQuestion.scale.size > 0" class="scale-button" ng>0</button>
-                    <button *ngIf="activeQuestion.scale.size > 1" class="scale-button">1</button>
-                    <button *ngIf="activeQuestion.scale.size > 2" class="scale-button">2</button>
-                    <button *ngIf="activeQuestion.scale.size > 3" class="scale-button">3</button>
-                    <button *ngIf="activeQuestion.scale.size > 4" class="scale-button">4</button>
-                    <button *ngIf="activeQuestion.scale.size > 5" class="scale-button">5</button>
-                    <button *ngIf="activeQuestion.scale.size > 6" class="scale-button">6</button>
-                    <button *ngIf="activeQuestion.scale.size > 7" class="scale-button" >7</button>
-                    <button *ngIf="activeQuestion.scale.size > 8" class="scale-button">8</button>
-                    <button *ngIf="activeQuestion.scale.size > 9" class="scale-button">9</button>
-                    <button *ngIf="activeQuestion.scale.size > 10" class="scale-button">10</button>  
+                <div *ngIf="activeQuestion?.type==='Scale'">
+                    <button *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" ng>0</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 1" class="scale-button">1</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 2" class="scale-button">2</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 3" class="scale-button">3</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 4" class="scale-button">4</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 5" class="scale-button">5</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 6" class="scale-button">6</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 7" class="scale-button" >7</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 8" class="scale-button">8</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 9" class="scale-button">9</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 10" class="scale-button">10</button>  
+                    
+                    <div *ngIf="activeQuestion.show_scale_labels" [ngStyle]="{'position':'relative','width': (activeQuestion.scale.size * 63)+'px'}">
+                        <p style="left: 0px;position: absolute;">{{activeQuestion?.scale?.left_side_label}}</p>
+                        <p style="left: 46%;position: absolute;">{{activeQuestion?.scale?.center_label}}</p>
+                        <p style="right: 0px;position: absolute;">{{activeQuestion?.scale?.right_side_label}}</p>
+                    </div>
                 </div>
 
-             
-                <button *ngIf="activeQuestion.type === 'Dropdown'" class="btn btn-primary mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
+                <button *ngIf="activeQuestion?.type === 'Dropdown'" class="btn btn-primary mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
                    Please Select an Option
                 </button>
-                <ul *ngIf="activeQuestion.type === 'Dropdown'" class="dropdown-menu">
-                    <li *ngFor="let currentOption of activeQuestion.options; let j=index" class="dropdown-item">
+                <ul *ngIf="activeQuestion?.type === 'Dropdown'" class="dropdown-menu">
+                    <li *ngFor="let currentOption of activeQuestion?.options; let j=index" class="dropdown-item">
                         {{currentOption}}
                     </li>
                 </ul>

@@ -1,4 +1,5 @@
 import { Flamingo } from '../models';
+import { Question } from '../models';
 
 
 /*  ===============================
@@ -18,7 +19,7 @@ export class FlamingoService {
     groupFields: any = 'group_name group_avatar workspace_name'; 
     
     // Select Group Fileds on population
-    questionFields: any = 'type text options image_url created_date';
+    questionFields: any = 'type text options image_url created_date scale show_scale_labels';
 
     /**
      * This function is used to populate a flamingo with all the possible properties
@@ -113,8 +114,69 @@ export class FlamingoService {
                 model: 'Folder'
             },
         })
-        .populate({ path: 'questions', select: this.questionFields })
+        .populate({ path: 'questions', select: this.questionFields });
         
         return flamingo;
     }
+
+    /** 
+     * This function is responsible to add new question to flamingo form
+     * @param questionId 
+     * @param flamingoId 
+     */
+    async addQuestion(questionId:any,flamingoId:any){
+        let query = {_id: flamingoId};
+        let data = { $push: { questions: questionId }}
+
+        let flamigoupdated = await Flamingo.findByIdAndUpdate(query,data,{new:true});
+
+        flamigoupdated = this.populateFileProperties(flamigoupdated);
+
+        return flamigoupdated;
+    }
+
+    /** 
+     * This function is responsible to create new question
+     * @param data 
+     */
+    async createQuestion(data:any){
+        return await Question.create(data) ;
+    }
+
+     /** 
+     * This function is responsible to add new question to flamingo form
+     * @param questionId 
+     * @param flamingoId 
+     */
+      async removeQuestion(questionId:any,flamingoId:any){
+        let query = {_id: flamingoId};
+        let data = { $pull: { questions: questionId }}
+
+        let flamigoupdated = await Flamingo.findByIdAndUpdate(query,data,{new:true});
+
+        flamigoupdated = this.populateFileProperties(flamigoupdated);
+
+        return flamigoupdated;
+    }
+
+    /** 
+     * This function is responsible to create new question
+     * @param questionId 
+     */
+    async deleteQuestion(questionId:any){
+        return await Question.findOneAndDelete({_id:questionId}) ;
+    }
+
+    /** 
+     * This function is responsible to create new question
+     * @param questionId 
+     * @param data 
+     */
+     async updateQuestion(questionId:any,data:any){
+        let query = { _id: questionId};
+        return await Question.findOneAndUpdate(query,data,{new : true});
+    }
+
+
+
 }

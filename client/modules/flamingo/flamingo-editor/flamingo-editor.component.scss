@@ -120,7 +120,10 @@ input:focus {
     margin-left: 16%;
     padding-top: 3%;
 }
-
+.scale-setting{
+    position: relative;
+    margin-top: 15px;
+}
 //welcome
 .welcome-screen{
     min-height: 50px;
@@ -135,8 +138,8 @@ input:focus {
 .hovered-welcome {
     display: none;
     position: absolute;
-    left: 199px;
-    top: 10px;
+    left: 190px;
+    top: -8px;
     min-width: 231px;
     min-height: 361px;
     background: #F3F4F6;
@@ -163,8 +166,8 @@ input:focus {
 .hovered-thank {
     display: none;
     position: absolute;
-    left: 199px;
-    top: 10px;
+    left: 190px;
+    top: -8px;
     min-width: 231px;
     min-height: 361px;
     background: #F3F4F6;
@@ -190,8 +193,8 @@ input:focus {
 .hovered-short {
     display: none;
     position: absolute;
-    left: 199px;
-    top: 10px;
+    left: 190px;
+    top: -8px;
     min-width: 231px;
     min-height: 361px;
     background: #F3F4F6;
@@ -218,8 +221,8 @@ input:focus {
 .hovered-yes-no {
     display: none;
     position: absolute;
-    left: 199px;
-    top: 10px;
+    left: 190px;
+    top: -8px;
     min-width: 231px;
     min-height: 361px;
     background: #F3F4F6;
@@ -247,8 +250,8 @@ input:focus {
 .hovered-scale {
     display: none;
     position: absolute;
-    left: 199px;
-    top: 10px;
+    left: 190px;
+    top: -8px;
     min-width: 231px;
     min-height: 361px;
     background: #F3F4F6;
@@ -275,8 +278,8 @@ input:focus {
 .hovered-dropdown {
     display: none;
     position: absolute;
-    left: 199px;
-    top: 10px;
+    left: 190px;
+    top: -8px;
     min-width: 231px;
     min-height: 361px;
     background: #F3F4F6;

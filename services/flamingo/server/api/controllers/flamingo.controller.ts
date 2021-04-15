@@ -23,8 +23,7 @@ export class FlamingoController {
     async createFlamingo(req: Request, res: Response, next: NextFunction) {
         try {
 
-            // Fetch the File Name From the request
-
+            // Fetch the flamingoData From the request
             let { body: { flamingoData } } = req;
 
             // Create the file
@@ -42,7 +41,7 @@ export class FlamingoController {
     }
 
     /**
-     * This function is used to fetch list of the forms
+     * This function is used to fetch flamingo details
      * @param req 
      * @param res 
      * @param next 
@@ -50,13 +49,15 @@ export class FlamingoController {
      async get(req: Request, res: Response, next: NextFunction) {
         try {
 
-            // Fetch the File Name From the request
+            // Fetch the fileId From the request
             let { query: { fileId } } = req;
 
             // flamingo 
             let flamingo: any;
             
+
             flamingo = await flamingoService.get(fileId.toString());  
+            
            
             // Send Status 200 response
             return res.status(200).json({
@@ -69,5 +70,87 @@ export class FlamingoController {
         }
     }
 
+    /** 
+     * This function is responsible to create question and add it to flamingo form
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async createAndAddQuestion(req: Request, res: Response, next: NextFunction) {
+        try {
 
+            // Fetch the questionData From the request
+            let { body: { questionData } } = req;
+            
+            // Fetch the flamingoId From the request
+            let { query: { flamingoId } } = req;
+
+            let question = await flamingoService.createQuestion(questionData);
+
+            let updatedFlamingo = await flamingoService.addQuestion(question._id,flamingoId);
+            
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Question Created and add to Flamingos Success',
+                flamingo: updatedFlamingo
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /** 
+     * This function is responsible to delete question and remove it from flamingo form
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async deleteAndRemoveQuestion(req: Request, res: Response, next: NextFunction) {
+        try {
+    
+            // Fetch the flamingoId , questionId From the request
+            let { query: { flamingoId ,questionId } } = req;
+
+            let question = await flamingoService.deleteQuestion(questionId);
+
+            let updatedFlamingo = await flamingoService.removeQuestion(questionId,flamingoId);
+            
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Question Deleted and removed from Flamingos Success',
+                flamingo: updatedFlamingo
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /** 
+     * This function is responsible to update the question
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+     async updateQuestion(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Fetch the questionData From the request
+            let { body: { questionData } } = req;
+            
+            // Fetch the questionId From the request
+            let { query: { questionId } } = req;
+
+
+            let updatedQuestion= await flamingoService.updateQuestion(questionId, questionData);
+                
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Question updated Success',
+                question: updatedQuestion
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+     }
 }

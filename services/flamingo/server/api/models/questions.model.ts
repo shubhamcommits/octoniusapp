@@ -11,7 +11,6 @@ const QuestionSchema = new Schema({
     },
     text: {
         type : String,
-        required: true,
     },
     options: [{
         type: String
@@ -20,7 +19,7 @@ const QuestionSchema = new Schema({
         size:{
             type: Number
         },
-        left_side_label: {
+        left_side_label : {
             type: String
         },
         center_label:{
@@ -29,6 +28,10 @@ const QuestionSchema = new Schema({
         right_side_label: {
             type: String
         }
+    },
+    show_scale_labels:{
+        type: Boolean,
+        default: false
     },
     image_url: {
         type: String

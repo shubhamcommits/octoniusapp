@@ -10,6 +10,12 @@ const auths = new Auths();
 
 routes.post('/create-flamingo', auths.verifyToken, flamingoFunctions.createFlamingo);
 
+routes.post('/create-add-question', auths.verifyToken, flamingoFunctions.createAndAddQuestion);
+
 routes.get('/', auths.verifyToken, flamingoFunctions.get);
+
+routes.put('/question', auths.verifyToken, flamingoFunctions.updateQuestion);
+
+routes.delete('/question', auths.verifyToken, flamingoFunctions.deleteAndRemoveQuestion);
 
 export { routes as flamingoRoutes };
