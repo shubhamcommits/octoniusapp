@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'
 import { environment } from 'src/environments/environment'
 import { PostService } from 'src/shared/services/post-service/post.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 // Google API Variables
 declare var gapi: any
@@ -12,8 +13,6 @@ declare var google: any
   styleUrls: ['./attach-files.component.scss']
 })
 export class AttachFilesComponent implements OnInit {
-
-  constructor(private postService: PostService) { }
 
   // Post Object Input
   @Input('post') post: any;
@@ -39,9 +38,17 @@ export class AttachFilesComponent implements OnInit {
   baseUrl = environment.UTILITIES_POSTS_UPLOADS
 
   // Google picker state management
-  pickerApiLoaded = false
+  pickerApiLoaded = false;
+
+  authToken: string;
+
+  constructor(
+    private postService: PostService,
+    public storageService: StorageService
+  ) { }
 
   ngOnInit() {
+    this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`
   }
 
   /**

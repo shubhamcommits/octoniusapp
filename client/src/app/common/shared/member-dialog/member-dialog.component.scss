@@ -45,9 +45,11 @@
     background-color: #fff;
     border-radius: 10px;
 }
-.feed-avatar{
-    width: 120px;
-    height: 120px;
+.peoplecard-avatar{
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 50% !important;
+    object-fit: cover;
 }
 
 .blue{

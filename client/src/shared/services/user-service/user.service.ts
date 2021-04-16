@@ -57,11 +57,16 @@ export class UserService {
    * @param workspaceId
    * @param workspaceAvatar
    */
-  updateUserProfileImage(fileToUpload: File): Observable<any> {
+  updateUserProfileImage(fileToUpload: File, workspaceId: string): Observable<any> {
 
     // PREPARING FORM DATA
     let formData = new FormData();
-    formData.append('profileImage', fileToUpload)
+    formData.append('profileImage', fileToUpload);
+
+    const fileData = {
+      _workspace: workspaceId
+    }
+    formData.append('fileData', JSON.stringify(fileData));
 
     return this._http.put(this.BASE_API_URL + `/image`, formData);
   }
@@ -142,7 +147,7 @@ export class UserService {
    zapierAuth(userId: Object) {
     return this._http.post(this.INTEGRATIONS_API_URL + `/zapier/auth`, { userId });
   }
-    
+
 
  /**
    * This function is responsible for deleting user

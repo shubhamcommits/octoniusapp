@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MemberDialogComponent } from '../../member-dialog/member-dialog.component';
 
@@ -12,12 +13,6 @@ import { MemberDialogComponent } from '../../member-dialog/member-dialog.compone
   styleUrls: ['./post-view.component.scss']
 })
 export class PostViewComponent implements OnInit {
-
-  constructor(
-    private injector: Injector,
-    private flowService: FlowService,
-    public utilityService: UtilityService,
-    public dialog: MatDialog) { }
 
   // Base Url for uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -50,10 +45,22 @@ export class PostViewComponent implements OnInit {
 
   flows = [];
 
+  authToken: string;
+
+  constructor(
+    private injector: Injector,
+    private flowService: FlowService,
+    public utilityService: UtilityService,
+    public dialog: MatDialog,
+    public storageService: StorageService
+  ) { }
+
   ngOnInit() {
     this.flowService.getGroupAutomationFlows((this.post._group._id || this.post._group)).then(res => {
       this.flows = res['flows'];
     });
+
+    this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`
   }
 
   /**

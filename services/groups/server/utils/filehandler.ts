@@ -11,15 +11,25 @@ const groupFileHandler = (req: Request, res: Response, next: NextFunction) => {
     if (!req.files) {
         next();
     } else {
-
-        /// Instantiate the fileName variable and add the date object in the name
-        let fileName: any = Date.now().toString() + req['files'].groupAvatar['name'];
+        const groupId = req.params.groupId;
+        req.body.fileData = JSON.parse(req.body.fileData);
 
         // Get the file from the request
         const file: any = req['files'].groupAvatar;
 
         // Get the folder link from the environment
-        const folder = process.env.FILE_UPLOAD_FOLDER;
+        let folder = process.env.FILE_UPLOAD_FOLDER;
+
+        // Instantiate the fileName variable and add the date object in the name
+        let fileName = '';
+        if (req.body.fileData._workspace) {
+            fileName += req.body.fileData._workspace +  '_';
+      
+            if (groupId) {
+                fileName += groupId +  '_';
+            }
+        }
+        fileName += Date.now().toString() + req['files'].groupAvatar['name'];
 
         // Modify the file accordingly and handle request
         file.mv(folder + fileName, (error) => {

@@ -146,7 +146,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
     // Open Modal
     utilityService.openModal(content, {
-      size: 'xl',
+      size: 'md',
       centered: true
     });
   }
