@@ -50,7 +50,7 @@ export class GroupImageDetailsComponent implements OnInit {
     utilityService.asyncNotification('Please wait while we are updating the group avatar...',
       new Promise((resolve, reject) => {
 
-        groupService.updateGroupAvatar(this.groupData._id, this.croppedImage)
+        groupService.updateGroupAvatar(this.groupData._id, this.croppedImage, (this.groupData._workspace._id || this.groupData._workspace))
         .then((res)=>{
 
           this.groupData.group_avatar = res['group']['group_avatar'];

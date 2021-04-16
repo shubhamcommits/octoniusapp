@@ -43,11 +43,17 @@ export class GroupService {
    * This function is responsible for updating the group avatar
    * @param groupId
    */
-  updateGroupAvatar(groupId: any, fileToUpload: File) {
+  updateGroupAvatar(groupId: any, fileToUpload: File, workspaceId: string) {
 
     // PREPARING FORM DATA
     let formData = new FormData();
-    formData.append('groupAvatar', fileToUpload)
+    formData.append('groupAvatar', fileToUpload);
+
+    const fileData = {
+      _workspace: workspaceId,
+      _group: groupId
+    }
+    formData.append('fileData', JSON.stringify(fileData));
 
     return this._http.put(this.baseURL + `/${groupId}/image`, formData).toPromise()
   }

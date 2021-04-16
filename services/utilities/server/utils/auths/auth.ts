@@ -22,7 +22,6 @@ export class Auths {
             if (query.noAuth) {
                 next();
             } else {
-console.log(query.authToken);
                 let token = query?.authToken?.split(' ')[1];
                 // Authorization header is not present on request
                 if (!req.headers.authorization && !token) {
