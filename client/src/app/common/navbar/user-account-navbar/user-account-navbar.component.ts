@@ -82,7 +82,7 @@ export class UserAccountNavbarComponent implements OnInit, OnDestroy {
     */
    async openDetails(content) {
     this.utilityService.openModal(content, {
-      size: 'xl',
+      size: 'md',
       centered: true
     });
   }
