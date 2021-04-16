@@ -100,7 +100,7 @@ export class CommonNavbarComponent implements OnInit {
     */
    async openDetails(content) {
     this.utilityService.openModal(content, {
-      size: 'xl',
+      size: 'md',
       centered: true
     });
   }
