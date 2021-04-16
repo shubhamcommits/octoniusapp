@@ -104,7 +104,7 @@
 
         <!-- Attached Files Starts -->
         <div *ngIf="post" class="ml-2 mt-2">
-            <a href="{{ fileBaseUrl }}/{{ file?.modified_name }}" target="_blank"
+            <a href="{{ fileBaseUrl }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank"
                 *ngFor="let file of post.files; let index = index">
                 <span class="fileslabel">{{ file?.original_name }}</span>
             </a>
