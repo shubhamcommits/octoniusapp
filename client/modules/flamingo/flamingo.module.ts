@@ -8,8 +8,9 @@ import { FlamingoHeaderComponent } from './flamingo-header/flamingo-header.compo
 import {FlamingoRoutingModule} from './flamingo-routing.module';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSliderModule} from '@angular/material/slider';
+import { FlamingoPreviewComponent } from './flamingo-preview/flamingo-preview.component';
 @NgModule({
-  declarations: [ FlamingoEditorComponent, FlamingoHeaderComponent],
+  declarations: [ FlamingoEditorComponent, FlamingoHeaderComponent, FlamingoPreviewComponent],
   imports: [
     CommonModule,
 

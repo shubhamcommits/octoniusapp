@@ -13,22 +13,35 @@
                     placeholder="Please Enter question text"
                     (change)="changeQuestionText($event,i)"
                     [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
-                    <!-- ...... -->
-                    <div *ngIf="question.type==='Dropdown'" >
+                    
+                    <div *ngIf="question.type==='Yes/No' && i==activeQuestionIndex">
+                        <input [(ngModel)]="question.positive_option_text"
+                        placeholder="Please Enter Positive Option"
+                        (change)="changeYesNoText($event,i,'yes')"
+                        [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
+                    
+                        <input [(ngModel)]="question.negative_option_text"
+                        placeholder="Please Enter Negative Option"
+                        (change)="changeYesNoText($event,i,'no')"
+                        [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
+                    </div>
+                    
+                    <div *ngIf="question.type==='Dropdown' && i==activeQuestionIndex" >
                         <div *ngFor="let currentOption of question.options; let j=index">
                             - <input [value]="currentOption"
                              placeholder="Enter Option" 
                              (change)="changeOptionText($event,i,j)"
                              [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
                          </div>
+
+                        <div *ngIf="question.type==='Dropdown'">
+                            - <input [(ngModel)]="newOption" (change)="changeOptionText($event,i,null)" 
+                            placeholder="Enter Option" 
+                            [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
+                        </div>
                     </div>
                     
-                    <!-- /....... -->
-                    <div *ngIf="question.type==='Dropdown'">
-                        - <input [(ngModel)]="newOption" (change)="changeOptionText($event,i,null)" 
-                        placeholder="Enter Option" 
-                        [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
-                    </div>
+                    
 
                     <div *ngIf="question.type==='Scale' && i==activeQuestionIndex" class="scale-setting">
                         
@@ -213,10 +226,10 @@
                 <h2   style="margin-bottom: 50px;">{{activeQuestion?.text}}</h2>
                 <input *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..." class="input-answer" />
                 <div *ngIf="activeQuestion?.type==='Yes/No'">
-                    <button class="btn btn-success">Yes</button>
+                    <button class="btn btn-success">{{activeQuestion?.positive_option_text || Positive}}</button>
                     <br/>
                     <br/>
-                    <button class="btn btn-danger">No</button>
+                    <button class="btn btn-danger">{{activeQuestion?.negative_option_text || Negative}}</button>
                 </div>
                 <div *ngIf="activeQuestion?.type==='Scale'">
                     <button *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" ng>0</button>

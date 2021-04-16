@@ -19,7 +19,6 @@ export class FlamingoService {
     groupFields: any = 'group_name group_avatar workspace_name'; 
     
     // Select Group Fileds on population
-    questionFields: any = 'type text options image_url created_date scale show_scale_labels';
 
     /**
      * This function is used to populate a flamingo with all the possible properties
@@ -53,7 +52,7 @@ export class FlamingoService {
                     model: 'Folder'
                 },
             },
-            { path: 'questions', select: this.questionFields },
+            { path: 'questions' },
         ])
 
         // Return file with populated properties
@@ -114,7 +113,7 @@ export class FlamingoService {
                 model: 'Folder'
             },
         })
-        .populate({ path: 'questions', select: this.questionFields });
+        .populate({ path: 'questions'});
         
         return flamingo;
     }

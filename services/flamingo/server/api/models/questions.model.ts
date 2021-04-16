@@ -12,6 +12,12 @@ const QuestionSchema = new Schema({
     text: {
         type : String,
     },
+    positive_option_text: {
+        type : String,
+    },
+    negative_option_text: {
+        type : String,
+    },
     options: [{
         type: String
     }],

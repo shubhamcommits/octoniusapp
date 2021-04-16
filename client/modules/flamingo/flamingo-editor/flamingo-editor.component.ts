@@ -52,17 +52,46 @@ export class FlamingoEditorComponent implements OnInit {
 }
 
 
-changeQuestionText(event:any, index:number){
+/**
+* This function is responsible to set the question's text.
+* @param event
+* @param index
+*/
+async changeQuestionText(event:any, index:number){
   this.updateQuestion(this.questions[index]._id,{text: this.questions[index].text})
 }
 
-changeActiveIndex(index:number){
+/**
+* This function is responsible to change the active index
+* @param event
+* @param index
+*/
+async changeActiveIndex(index:number){
   this.activeQuestionIndex = index;
   this.activeQuestion = this.questions[this.activeQuestionIndex];
 
 }
 
-changeOptionText(event:any,i:number,j:number){
+/**
+* This function is responsible to change the active index
+* @param event
+* @param index
+* @param index
+*/
+async changeYesNoText(event: any, index:any, option: string){
+  if(option==='yes'){
+    this.updateQuestion(this.questions[index]._id,{positive_option_text: this.questions[index].positive_option_text})
+  } else if(option==='no'){
+    this.updateQuestion(this.questions[index]._id,{negative_option_text: this.questions[index].negative_option_text})
+  }
+}
+
+/**
+* This function is responsible to set the options of dropdown question.
+* @param event
+* @param index
+*/
+async changeOptionText(event:any,i:number,j:number){
   if(j == null){
       this.questions[i].options.push(this.newOption);
       this.newOption='';
