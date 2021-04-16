@@ -91,7 +91,7 @@ export class UtilityService {
       toast: true,
       position: 'bottom',
       showConfirmButton: false,
-      // timer: 3000,
+      timer: 3000,
       timerProgressBar: true
     })
 
