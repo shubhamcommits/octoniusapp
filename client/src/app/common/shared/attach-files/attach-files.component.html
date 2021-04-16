@@ -19,7 +19,7 @@
 <div *ngIf="post" class="ml-2 mt-2">
     <p><strong *ngIf="post.files">Attached Files </strong></p>
     <div *ngFor="let file of post.files; let index = index">
-      <a href="{{ baseUrl }}/{{ file?.modified_name }}" target="_blank">
+      <a href="{{ baseUrl }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank">
           {{ file?.original_name }}
       </a>
       <span class="material-icons" (click)="removeFile(index)">
@@ -34,7 +34,7 @@
 <div *ngIf="comment" class="ml-2 mt-2">
   <p><strong *ngIf="comment.files">Attached Files </strong></p>
   <div *ngFor="let file of comment.files; let index = index">
-    <a href="{{ baseUrl }}/{{ file?.modified_name }}" target="_blank">
+    <a href="{{ baseUrl }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank">
         {{ file?.original_name }}
     </a>
     <span *ngIf="showIcons" class="material-icons" (click)="removeFile(index)">
