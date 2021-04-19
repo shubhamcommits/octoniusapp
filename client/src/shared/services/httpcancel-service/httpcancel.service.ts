@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class HttpCancelService {
 
-  private pendingHTTPRequests$ = new Subject<void>();
+    private pendingHTTPRequests$ = new Subject<void>();
 
   constructor() { }
 

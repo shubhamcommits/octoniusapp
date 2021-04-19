@@ -300,7 +300,9 @@ export class PublicFunctions {
             let groupService = this.injector.get(GroupService);
             groupService.getGroup(groupId)
                 .then((res) => {
-                    resolve(res['group'])
+                  if (res) {
+                    resolve(res['group']);
+                  }
                 })
                 .catch((err) => {
                     this.sendError(new Error('Unable to fetch the group details, please try again!'))

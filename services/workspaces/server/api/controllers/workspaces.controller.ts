@@ -530,6 +530,7 @@ export class WorkspaceController {
 
             let addInvite = true;
             const account = await Account.findOne({ email: user.email });
+
             if (account) {
                 let userDB = await User.findOne({ _account: account._id, _workspaces: user.workspaceId });
 

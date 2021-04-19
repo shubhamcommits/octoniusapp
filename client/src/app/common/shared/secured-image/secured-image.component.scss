@@ -1,11 +1,11 @@
 img{
   cursor: pointer;
-  transition: transform .2s ease;
+  // transition: transform .2s ease;
 }
 
-img:hover{
-  transform: scale(1.1);
-}
+// img:hover{
+//   transform: scale(1.1);
+// }
 
 .avatar{
   width: 30px;
@@ -34,4 +34,11 @@ img:hover{
   border-radius: 8px;
   width: 40px;
   height: 40px;
+}
+
+.peoplecard-avatar{
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 50% !important;
+  object-fit: cover;
 }

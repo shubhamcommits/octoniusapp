@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,26 +13,7 @@ import { RouteStateService } from 'src/shared/services/router-service/route-stat
   templateUrl: './group-navbar.component.html',
   styleUrls: ['./group-navbar.component.scss']
 })
-export class GroupNavbarComponent implements OnInit{
-
-  constructor(
-    private injector: Injector,
-    private utilityService: UtilityService,
-    private routeStateService: RouteStateService,
-  ) {
-    this.publicFunctions.getCurrentUser().then(user => {
-      this.userData = user;
-    });
-
-    this.subSink.add(this.routeStateService?.pathParams.subscribe(async (res) => {
-      if(res){
-        this.groupId = res.queryParams.group;
-        this.routerFromEvent = res;
-        await this.ngOnInit();
-      }
-    }));
-
-  }
+export class GroupNavbarComponent implements OnInit, OnDestroy {
 
   @Output() favoriteGroupSaved = new EventEmitter();
   // @Input() groupId: any;
@@ -76,6 +57,25 @@ export class GroupNavbarComponent implements OnInit{
 
   private userService = this.injector.get(UserService);
 
+  constructor(
+    private injector: Injector,
+    private utilityService: UtilityService,
+    private routeStateService: RouteStateService,
+  ) {
+    this.publicFunctions.getCurrentUser().then(user => {
+      this.userData = user;
+    });
+
+    this.subSink.add(this.routeStateService?.pathParams.subscribe(async (res) => {
+      if(res){
+        this.groupId = res.queryParams.group;
+        this.routerFromEvent = res;
+        await this.ngOnInit();
+      }
+    }));
+
+  }
+
   async ngOnInit() {
 
     // Fetch the current user
@@ -102,10 +102,6 @@ export class GroupNavbarComponent implements OnInit{
 
     if (this.groupData) {
       this.isAdmin = this.isAdminUser();
-
-      this.userService.increaseGroupVisit(this.userData._id, this.groupId || this.groupData._id).then(res => {
-        this.publicFunctions.sendUpdatesToUserData(res['user']);
-      });
     }
 
     // My Workplace variable check
@@ -117,10 +113,17 @@ export class GroupNavbarComponent implements OnInit{
       const segments = this.routerFromEvent?._urlSegment?.children?.primary?.segments;
       this.activeState = segments?segments[segments.length-2]?.path+'_'+segments[segments.length-1]?.path:'';
     }
-   
+
     this.utilityService.handleActiveStateTopNavBar().subscribe(event => {
       this.activeState = event;
     });
+  }
+
+  /**
+   * This function unsubscribes all the observables as soon as the component is destroyed
+   */
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
   }
 
   async changeState(state:string){
@@ -143,7 +146,7 @@ export class GroupNavbarComponent implements OnInit{
 
     // Open Modal
     utilityService.openModal(content, {
-      size: 'xl',
+      size: 'md',
       centered: true
     });
   }

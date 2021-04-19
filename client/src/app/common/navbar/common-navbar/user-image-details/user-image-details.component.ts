@@ -56,7 +56,7 @@ export class UserImageDetailsComponent implements OnInit {
     try {
       this.utilityService.asyncNotification('Please wait while we are updating your avatar ...',
         new Promise((resolve, reject) => {
-          this.subSink.add(this.userService.updateUserProfileImage(userAvatar)
+          this.subSink.add(this.userService.updateUserProfileImage(userAvatar, this.workspaceData._id)
             .subscribe((res) => {
               this.userData['profile_pic'] = res['user']['profile_pic'];
 

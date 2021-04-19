@@ -10,7 +10,7 @@ import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
 import { Router, RouterEvent, NavigationEnd, ChildActivationEnd, ActivationEnd } from '@angular/router';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
-import { HttpCancelService } from 'src/shared/services/cancel-service/cancel.service';
+import { HttpCancelService } from 'src/shared/services/httpcancel-service/httpcancel.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -73,8 +73,7 @@ export class AppComponent {
         // Cancel pending calls
         this.httpCancelService.cancelPendingRequests();
       }
-
-    }))
+    }));
 
     let socketService = this.injector.get(SocketService);
     let utilityService = this.injector.get(UtilityService);

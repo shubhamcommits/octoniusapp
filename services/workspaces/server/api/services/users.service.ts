@@ -27,7 +27,7 @@ export class UsersService {
                 { $set: { active: true } },
                 { new: true }
             );
-        }   else {
+        } else {
             // Invited User Object
             let invited_user: any = {
                 email: email,
@@ -38,18 +38,20 @@ export class UsersService {
             let query = {};
 
             // If type is 'group' invite
-            if(type == 'group' && groupId && groupId != ''){
+            if(type == 'group' && groupId && groupId != '') {
                 // Add the property to `_group`
                 invited_user._group = [groupId];
 
                 // check if email has already been invited
                 query = {
+                    "_id": workspaceId,
                     "invited_users.email": email,
                     "invited_users.type": type,
                     "invited_users._group": groupId
                 };
             } else if (type == 'workspace') {
                 query = {
+                    "_id": workspaceId,
                     "invited_users.email": email,
                     "invited_users.type": type
                 }
@@ -57,7 +59,6 @@ export class UsersService {
 
             // check if email has already been invited
             let emailExist = await Workspace.findOne(query);
-
 
             // Update the workspace and push into the invited_user data
             if (!emailExist) {
