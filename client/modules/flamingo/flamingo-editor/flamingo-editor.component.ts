@@ -2,6 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-flamingo-editor',
@@ -15,7 +16,10 @@ export class FlamingoEditorComponent implements OnInit {
   flamingo: any;
   
   fileId: string;
-  
+
+   // GroupID Variable
+   groupId: any;
+
   activeQuestionIndex = 0;
 
   questionListHeight:String;
@@ -30,6 +34,8 @@ export class FlamingoEditorComponent implements OnInit {
 
   showLabels: boolean = false;
 
+  FLAMINGO_UPLOADS = environment.FLAMINGO_BASE_URL+'/uploads/'
+
   constructor(
     private router: Router,
     private _ActivatedRoute: ActivatedRoute,
@@ -41,6 +47,8 @@ export class FlamingoEditorComponent implements OnInit {
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.params['id'];
 
+    this.groupId = this._ActivatedRoute.snapshot.queryParamMap.get('group');
+    
     // Fetch Files Details
     this.flamingo = await this.getFile(this.fileId);
 
@@ -189,6 +197,21 @@ async createQuestion(type: any) {
     }))
 }
 
+ /**
+    * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
+    * @param content
+    */
+  async openDetails(content) {
+
+    // Utility Service
+    let utilityService = this._Injector.get(UtilityService)
+
+    // Open Modal
+    utilityService.openModal(content, {
+      size: 'md',
+      centered: true
+    });
+  }
 
 
 

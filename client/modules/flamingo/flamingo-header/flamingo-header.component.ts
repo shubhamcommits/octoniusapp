@@ -44,14 +44,14 @@ export class FlamingoHeaderComponent implements OnInit {
   async ngOnInit() {
 
     // Set the groupId
-    this.groupId = this._ActivatedRoute.snapshot.queryParamMap.get('group')
+    this.groupId = this._ActivatedRoute.snapshot.queryParamMap.get('group');
 
-    // Set the readOnly
     this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get('readOnly') == 'true' || false
 
     const userData = await this.publicFunctions.getCurrentUser()
     // check if the user is part of the group of the folio
     const groupIndex = await userData?._groups?.findIndex(group => { return (group._id || group) == this.groupId });
+    
     this.readOnly = this.readOnly || (groupIndex < 0);
 
     // Set the fileId variable

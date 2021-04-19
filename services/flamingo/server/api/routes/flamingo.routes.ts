@@ -1,6 +1,6 @@
 import express from 'express';
 import { FlamingoController } from '../controllers'
-import { Auths } from '../../utils';
+import { Auths ,flamingoFileHandler} from '../../utils';
 
 const routes = express.Router();
 
@@ -13,6 +13,8 @@ routes.post('/create-flamingo', auths.verifyToken, flamingoFunctions.createFlami
 routes.post('/create-add-question', auths.verifyToken, flamingoFunctions.createAndAddQuestion);
 
 routes.get('/', auths.verifyToken, flamingoFunctions.get);
+
+routes.put('/question/image', auths.verifyToken , flamingoFileHandler , flamingoFunctions.updloadQuestionImage);
 
 routes.put('/question', auths.verifyToken, flamingoFunctions.updateQuestion);
 

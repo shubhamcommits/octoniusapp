@@ -58,7 +58,6 @@ export class FlamingoController {
 
             flamingo = await flamingoService.get(fileId.toString());  
             
-           
             // Send Status 200 response
             return res.status(200).json({
                 message: 'Flamingos data fetched!',
@@ -143,6 +142,29 @@ export class FlamingoController {
 
 
             let updatedQuestion= await flamingoService.updateQuestion(questionId, questionData);
+                
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Question updated Success',
+                question: updatedQuestion
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+     }
+
+     /** 
+     * This function is responsible to update the question
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+      async updloadQuestionImage(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Fetch the questionData From the request
+            let imageUrl = req['fileName'];
+            
+            let updatedQuestion= await flamingoService.updateQuestion(req.body.fileData.questionId, {image_url: imageUrl});
                 
             // Send Status 200 response
             return res.status(200).json({

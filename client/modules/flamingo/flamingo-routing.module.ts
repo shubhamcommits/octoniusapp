@@ -7,10 +7,11 @@ import { FlamingoPreviewComponent } from './flamingo-preview/flamingo-preview.co
 const routes: Routes = [
   {
     path: '', component: FlamingoHeaderComponent, children: [
-      { path: ':id', component: FlamingoEditorComponent },
       {
-        path:'/preview', component:FlamingoPreviewComponent
-      }
+        path:'preview/:id', component:FlamingoPreviewComponent
+      },
+      { path: ':id', component: FlamingoEditorComponent },
+      
     ]
   }
 ];

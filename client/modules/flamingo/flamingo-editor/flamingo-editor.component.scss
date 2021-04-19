@@ -59,6 +59,13 @@ input:focus {
 .question-preview-container {
     margin-top: 25%;
     margin-left: 10%;
+    height: 66%;
+    background-repeat: round
+}
+.image-wrapper-container{
+    width: 100%;
+    height: 100%;
+    position: absolute;
 }
 .menu-button{
     background-color:#f3f4f6;

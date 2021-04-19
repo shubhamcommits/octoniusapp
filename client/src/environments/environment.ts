@@ -85,7 +85,7 @@ export const environment = {
   NOTIFICATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:9000/api`,
 
    // Notifications URLs
-   FLAMINGO_BASE_URL: `ws://${url.domain}:14000`,
+   FLAMINGO_BASE_URL: `${url.protocol}://${url.domain}:14000`,
    FLAMINGO_BASE_API_URL: `${url.protocol}://${url.domain}:14000/api`,
 
   // Utilities URLs

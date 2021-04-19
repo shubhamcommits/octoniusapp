@@ -30,7 +30,7 @@
     <ul class="nav center-align">
         <li class="nav-item">
             <a [ngClass]="activeState == 'create_form'?'nav-link active-nav':'nav-link'"
-                (click)="changeState('create_form')" routerLink="#" [queryParams]="{myWorkplace: true }"
+                (click)="changeState('create_form')" routerLink="/flamingo/{{fileId}}" [queryParams]="{ group:groupId}"
                 routerLinkActive="active">Create</a>
         </li>
         <li class="nav-item">
@@ -45,7 +45,7 @@
 
     <ul class="nav right-align">
         <li class="nav-item">
-            <a class="nav-link" routerLink="#" [queryParams]="{myWorkplace: true }" routerLinkActive="active">
+            <a class="nav-link" routerLink="/flamingo/preview/{{fileId}}" [queryParams]="{group: groupId,readOnly: true}" routerLinkActive="active">
                 <i class="material-icons icons-color" >remove_red_eye</i>
             </a>
         </li>

@@ -1,0 +1,25 @@
+<!-- QUESTION IMAGE DETAIL MODAL STARTS -->
+
+<!-- QUESTION IMAGE DETAIL HEADER STARTS -->
+<div class="modal-header">
+    <h4 class="modal-title">Upload your Question Image</h4>
+</div>
+<!-- QUESTION IMAGE DETAIL HEADER ENDS -->
+
+<!-- QUESTION IMAGE DETAIL MODAL CHANGE IMAGE STARTS -->
+<div class="modal-body">
+    <div class="form-group">
+        <img src="{{FLAMINGO_UPLOADS}}{{activeQuestion.image_url}}"/>
+        
+        <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
+    </div>
+</div>
+<!-- QUESTION IMAGE DETAIL MODAL CHANGE IMAGE ENDS -->
+
+<!-- QUESTION IMAGE DETAIL FOOTER STARTS -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="uploadImage()">Upload your Image!</button>
+</div>
+<!-- QUESTION IMAGE DETAIL FOOTER ENDS -->
+
+<!-- QUESTION IMAGE DETAIL DETAIL MODAL ENDS -->

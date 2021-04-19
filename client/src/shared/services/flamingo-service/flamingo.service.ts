@@ -82,4 +82,29 @@ export class FlamingoService {
         return this._http.put(this.baseURL + `/question/?questionId=${questionId}`,{questionData}).toPromise()
     }
 
+  /**
+   * This function is responsible for updating the group avatar
+   * @param groupId
+   */
+  uploadQuestionImage(groupId: any, fileToUpload: File, flamingoId: string,questionId: string,) {
+
+    
+    // PREPARING FORM DATA
+    let formData = new FormData();
+    formData.append('questionImage', fileToUpload);
+   
+   
+
+    const fileData = {
+      _groupId: groupId,
+      flamingoId: flamingoId,
+      questionId: questionId
+    }
+    formData.append('fileData', JSON.stringify(fileData));
+
+    console.log("sdsdssdfdsgeewerwf",formData);
+
+    return this._http.put(this.baseURL + `/question/image`, formData).toPromise()
+  }
+
 }

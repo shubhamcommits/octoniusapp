@@ -1,1 +1,72 @@
-<p>flamingo-preview works!</p>
+<div>
+    <div *ngIf="!again">
+        <div *ngIf="activeQuestion?.type==='Welcome' || activeQuestion?.type==='Thanks'" class="preview-container">
+            <div style="margin-left:20%;">
+
+                <img *ngIf="activeQuestion.image_url"
+                    style="margin-bottom: 25px;margin-left: 25%;width: 360px;height: 400px;"
+                    src="{{FLAMINGO_UPLOADS}}{{activeQuestion.image_url}}" />
+                <h2 style="margin-bottom: 50px; margin-left: 30%;">{{activeQuestion?.text}}</h2>
+                <button *ngIf="activeQuestion?.type==='Thanks'" style="margin-bottom: 50px; margin-left: 35%;"
+                    class="btn btn-success" (click)="nextQuestion()">Submit</button>
+                <button *ngIf="activeQuestion?.type==='Welcome'" style="margin-bottom: 50px; margin-left: 35%;"
+                    class="btn btn-primary" (click)="nextQuestion()">Start</button>
+            </div>
+        </div>
+        <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
+            style="background-image: url({{FLAMINGO_UPLOADS}}{{activeQuestion.image_url}});"
+            class="image-wrapper-container">
+            <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
+                class="question-preview-container">
+                <h2 style="margin-bottom: 50px;">{{activeQuestion?.text}}</h2>
+                <input *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..."
+                    class="input-answer" (change)="nextQuestion()" />
+                <div *ngIf="activeQuestion?.type==='Yes/No'">
+                    <button class="btn btn-success" (click)="nextQuestion()">{{activeQuestion?.positive_option_text || Positive}}</button>
+                    <br />
+                    <br />
+                    <button class="btn btn-danger" (click)="nextQuestion()">{{activeQuestion?.negative_option_text || Negative}}</button>
+                </div>
+                <div *ngIf="activeQuestion?.type==='Scale'">
+                    <button *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" (click)="nextQuestion()">0</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 1" class="scale-button" (click)="nextQuestion()">1</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 2" class="scale-button" (click)="nextQuestion()">2</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 3" class="scale-button" (click)="nextQuestion()">3</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 4" class="scale-button" (click)="nextQuestion()">4</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 5" class="scale-button" (click)="nextQuestion()">5</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 6" class="scale-button" (click)="nextQuestion()">6</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 7" class="scale-button" (click)="nextQuestion()">7</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 8" class="scale-button" (click)="nextQuestion()">8</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 9" class="scale-button" (click)="nextQuestion()">9</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 10" class="scale-button" (click)="nextQuestion()">10</button>
+
+                    <div *ngIf="activeQuestion.show_scale_labels"
+                        [ngStyle]="{'position':'relative','width': (activeQuestion.scale.size * 63)+'px'}">
+                        <p style="left: 0px;position: absolute;">{{activeQuestion?.scale?.left_side_label}}</p>
+                        <p style="left: 46%;position: absolute;">{{activeQuestion?.scale?.center_label}}</p>
+                        <p style="right: 0px;position: absolute;">{{activeQuestion?.scale?.right_side_label}}</p>
+                    </div>
+                </div>
+
+                <button *ngIf="activeQuestion?.type === 'Dropdown'" class="btn btn-primary mb-3 mt-3 dropdown-toggle"
+                    type="button" data-toggle="dropdown">
+                    Please Select an Option
+                </button>
+                <ul *ngIf="activeQuestion?.type === 'Dropdown'" class="dropdown-menu">
+                    <li *ngFor="let currentOption of activeQuestion?.options; let j=index" class="dropdown-item" (click)="nextQuestion()">
+                        {{currentOption}} 
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="again">
+        <div class="preview-container">
+            <h3 style="margin-bottom: 50px;margin-left: 40%;">Want to play again?</h3>
+            <button style="margin-bottom: 50px; margin-left: 45%;" class="btn btn-success"
+                (click)="againPreview()">Again</button>
+        </div>
+        
+    </div>
+
+</div>
