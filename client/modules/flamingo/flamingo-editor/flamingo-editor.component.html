@@ -254,17 +254,15 @@
         <div class="col-md-8">
 
             <!-- welcome and thanks question type preview div start-->
-            <div *ngIf="activeQuestion?.type==='Welcome' || activeQuestion?.type==='Thanks'"
-                style="margin-top: 10%;margin-left:20%;">
+            <div *ngIf="activeQuestion?.type==='Welcome' || activeQuestion?.type==='Thanks'" class="preview-container">
 
-                <img *ngIf="activeQuestion?.image_url"
-                    style="margin-bottom: 25px;margin-left: 10%;width: 360px;height: 400px;"
+                <img *ngIf="activeQuestion?.image_url" class="welcome-img"
                     src="{{FLAMINGO_UPLOADS}}{{activeQuestion?.image_url}}" />
-                <h2 style="margin-bottom: 50px; margin-left: 15%;">{{activeQuestion?.text}}</h2>
+                <h2>{{activeQuestion?.text}}</h2>
                 
-                <button *ngIf="activeQuestion?.type==='Thanks'" style="margin-bottom: 50px; margin-left: 25%;"
+                <button *ngIf="activeQuestion?.type==='Thanks'" 
                     class="btn btn-success">Submit</button>
-                <button *ngIf="activeQuestion?.type==='Welcome'" style="margin-bottom: 50px; margin-left: 25%;"
+                <button *ngIf="activeQuestion?.type==='Welcome'" 
                     class="btn btn-primary">Start</button>
             </div>
             <!-- welcome and thanks question type preview div end-->

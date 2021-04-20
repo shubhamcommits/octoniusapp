@@ -4,15 +4,15 @@
         
         <!-- container for welcome and thanks question type start-->
         <div *ngIf="activeQuestion?.type==='Welcome' || activeQuestion?.type==='Thanks'" class="preview-container">
-            <div style="margin-left:20%;">
+            <div>
 
                 <img *ngIf="activeQuestion?.image_url"
-                    style="margin-bottom: 25px;margin-left: 25%;width: 360px;height: 400px;"
+                    class="welcome-img"
                     src="{{FLAMINGO_UPLOADS}}{{activeQuestion?.image_url}}" />
-                <h2 style="margin-bottom: 50px; margin-left: 30%;">{{activeQuestion?.text}}</h2>
-                <button *ngIf="activeQuestion?.type==='Thanks'" style="margin-bottom: 50px; margin-left: 35%;"
+                <h2>{{activeQuestion?.text}}</h2>
+                <button *ngIf="activeQuestion?.type==='Thanks'"
                     class="btn btn-success" (click)="nextQuestion()">Submit</button>
-                <button *ngIf="activeQuestion?.type==='Welcome'" style="margin-bottom: 50px; margin-left: 35%;"
+                <button *ngIf="activeQuestion?.type==='Welcome'"
                     class="btn btn-primary" (click)="nextQuestion()">Start</button>
             </div>
         </div>
@@ -83,8 +83,8 @@
     <!-- again div start => when all the question ends again button comes -->
     <div *ngIf="again">
         <div class="preview-container">
-            <h3 style="margin-bottom: 50px;margin-left: 40%;">Want to play again?</h3>
-            <button style="margin-bottom: 50px; margin-left: 45%;" class="btn btn-success"
+            <h3>Want to play again?</h3>
+            <button class="btn btn-success"
                 (click)="againPreview()">Again</button>
         </div>
         

@@ -81,6 +81,19 @@ input:focus {
     background-size: cover;
     background-repeat: no-repeat;
 }
+.welcome-img{
+    margin: 30px auto;
+    width: 360px;
+    height: auto;
+}
+
+.preview-container{
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+    text-align: center;
+}
+
 .menu-button{
     background-color:#f3f4f6;
     border: none;
