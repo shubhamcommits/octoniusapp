@@ -801,11 +801,18 @@ export class BillingControllers {
                     break;
 
                 case 'customer.subscription.deleted':
+                    let subscriptionEndDate;
+                    // Check if the subscription is directly canceled or will wait until the period ends.
+                    if (stripeObject.cancel_at_period_end) {
+                        subscriptionEndDate = stripeObject.current_period_end;
+                    } else {
+                        subscriptionEndDate = stripeObject.canceled_at;
+                    }
                     workspace = await Workspace.findOneAndUpdate(
                         { _id: customer.metadata.workspace_id },
                         {
                             $set: {
-                                'billing.current_period_end': stripeObject.current_period_end,
+                                'billing.current_period_end': subscriptionEndDate,
                                 'billing.scheduled_cancellation': stripeObject.cancel_at_period_end
                             }
                         }, {
@@ -886,7 +893,12 @@ export class BillingControllers {
             }
 
             // Send new workspace to the mgmt portal
-            if (process.env.NODE_ENV == 'production' && workspace) {
+            if (process.env.NODE_ENV == 'production' && customer.metadata.workspace_id) {
+
+                workspace = await Workspace.findOne(
+                    { _id: customer.metadata.workspace_id }
+                ).lean();
+
                 // Count all the groups present inside the workspace
                 const groupsCount: number = await Group.find({ $and: [
                     { group_name: { $ne: 'personal' } },
