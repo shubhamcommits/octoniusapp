@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-md fixed-top" style="min-height: 86px;">
+<nav *ngIf="!this.readOnly" class="navbar navbar-expand-md fixed-top" style="min-height: 86px;">
 
     <!-- Go Back starts -->
-    <span *ngIf="!this.readOnly" class="navbar-brand ml-5 mr-5" ngbTooltip="Go Back to Files" placement="bottom"
+    <span *ngIf="!this.readOnly && !(activeState=='publish' || activeState=='result')" class="navbar-brand ml-5 mr-5" ngbTooltip="Go Back to Files" placement="bottom"
         (click)="goBackToFiles()">
         <i class="material-icons">
             arrow_back
@@ -11,10 +11,10 @@
 
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto ml-4">
-            <li class="nav-item active" *ngIf="file && !this.readOnly">
+            <li class="nav-item active" *ngIf="file && !this.readOnly ">
 
                 <!-- Flamingo Static Title starts -->
-                <span *ngIf="!editTitle" (click)="enableEdit()" ngbTooltip="Click me to rename"
+                <span *ngIf="!editTitle " (click)="enableEdit()" ngbTooltip="Click me to rename"
                     placement="bottom">{{file?.original_name}}
                 </span>
 
@@ -40,18 +40,18 @@
                 routerLinkActive="active">Create</a>
         </li>
         <li class="nav-item">
-            <a [ngClass]="activeState == 'publish_form'?'nav-link active-nav':'nav-link'"
-                (click)="changeState('publish_form')" routerLink="#" [queryParams]="{myWorkplace: true }">Publish</a>
+            <a [ngClass]="activeState == 'publish'?'nav-link active-nav':'nav-link'"
+                (click)="changeState('publish')" routerLink="/flamingo/publish/{{fileId}}" [queryParams]="{group: groupId}">Publish</a>
         </li>
         <li class="nav-item">
-            <a [ngClass]="activeState == 'result_form'?'nav-link active-nav':'nav-link'"
-                (click)="changeState('result_form')" routerLink="#" [queryParams]="{myWorkplace: true }">Results</a>
+            <a [ngClass]="activeState == 'result'?'nav-link active-nav':'nav-link'"
+                (click)="changeState('result')" routerLink="#" [queryParams]="{myWorkplace: true }">Results</a>
         </li>
     </ul>
 
     <ul *ngIf="!this.readOnly" class="nav right-align">
         <li class="nav-item">
-            <a class="nav-link" target="_blank" routerLink="/flamingo/preview/{{fileId}}" [queryParams]="{group: groupId,readOnly: true}" routerLinkActive="active">
+            <a class="nav-link" target="_blank" routerLink="/flamingo/preview/{{fileId}}" [queryParams]="{group: groupId, readOnly: true}" routerLinkActive="active">
                 <i class="material-icons icons-color" >remove_red_eye</i>
             </a>
         </li>

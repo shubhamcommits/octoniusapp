@@ -68,6 +68,9 @@ export class FlamingoHeaderComponent implements OnInit {
 
     // Change the title of the tab
     this.titleService.setTitle('Octonius | Folio - ' + (this.file.original_name || 'New Folio'));
+
+    const segments = this._ActivatedRoute?.snapshot['_urlSegment']?.segments;
+    this.activeState = segments[2]?.path?segments[1]?.path : 'create_form';
   }
 
   /**
@@ -134,7 +137,7 @@ export class FlamingoHeaderComponent implements OnInit {
   }
 
   enableEdit() {
-    if (!this.readOnly) {
+    if (!this.readOnly && !(this.activeState=='publish' || this.activeState=='result')) {
       this.editTitle = !this.editTitle;
     }
   }

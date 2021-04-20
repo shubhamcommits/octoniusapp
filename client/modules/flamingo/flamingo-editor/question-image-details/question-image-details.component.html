@@ -9,8 +9,14 @@
 <!-- QUESTION IMAGE DETAIL MODAL CHANGE IMAGE STARTS -->
 <div class="modal-body">
     <div class="form-group">
-        <img src="{{FLAMINGO_UPLOADS}}{{activeQuestion.image_url}}"/>
-        <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
+        <img *ngIf="!imageSrc" src="{{FLAMINGO_UPLOADS}}{{activeQuestion.image_url}}"/>
+        <img *ngIf="imageSrc" [src]="imageSrc || 'http://placehold.it/180'" alt="your image" />
+        <div class="input-group mb-3">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" accept="image/*" (change)="fileChangeEvent($event)" />
+                <label class="custom-file-label">Choose file</label>
+            </div>
+        </div>
     </div>
 </div>
 <!-- QUESTION IMAGE DETAIL MODAL CHANGE IMAGE ENDS -->

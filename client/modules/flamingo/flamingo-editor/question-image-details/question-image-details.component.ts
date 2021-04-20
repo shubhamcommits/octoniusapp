@@ -36,6 +36,7 @@ export class QuestionImageDetailsComponent implements OnInit {
   // Cropped Image of the Input Image File
   croppedImage: File;
 
+  imageSrc: any;
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -43,19 +44,22 @@ export class QuestionImageDetailsComponent implements OnInit {
   }
 
   /**
-   * This function recieves the @Output from @module <app-crop-image></app-crop-image>
-   * @param $event - as the cropped image File
+   * This function recieves the image file
+   * @param $event - as the image File
    */
-  getCroppedImage($event: File) {
-    this.croppedImage = $event;
-  }
+   fileChangeEvent(event:any){
+    this.croppedImage = event.target['files'][0];
+    const reader = new FileReader();
+        reader.onload = e => this.imageSrc = reader.result;
+
+        reader.readAsDataURL(event.target['files'][0]);
+   }
 
   uploadImage() {
 
    // Flamingo Service
     let flamingoService = this.injector.get(FlamingoService);
     let utilityService = this.injector.get(UtilityService)
-
     utilityService.asyncNotification('Please wait while we are uploading the Question Image...',
       new Promise((resolve, reject) => {
         flamingoService.uploadQuestionImage(this.groupId, this.croppedImage,this.flamingoId,this.activeQuestion?._id, this.workspaceId)
