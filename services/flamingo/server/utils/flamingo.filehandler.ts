@@ -9,7 +9,6 @@ import { Response, Request, NextFunction } from "express";
 const flamingoFileHandler = (req: Request, res: Response, next: NextFunction) => {
 
   // Get the file from the request
-  console.log("sdcsdsf",req['files'],req['questionImage'])
   const file: any = req['files'].questionImage;
   req.body.fileData = JSON.parse(req.body.fileData);
 
@@ -18,6 +17,9 @@ const flamingoFileHandler = (req: Request, res: Response, next: NextFunction) =>
 
   // Instantiate the fileName variable and add the date object in the name
   let fileName = '';
+  if (req.body.fileData.workspaceId) {
+    fileName += req.body.fileData.workspaceId +  '_';
+  }
   if (req.body.fileData._groupId) {
     fileName += req.body.fileData._groupId +  '_';
   }

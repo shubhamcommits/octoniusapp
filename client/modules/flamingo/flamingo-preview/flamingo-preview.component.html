@@ -3,9 +3,9 @@
         <div *ngIf="activeQuestion?.type==='Welcome' || activeQuestion?.type==='Thanks'" class="preview-container">
             <div style="margin-left:20%;">
 
-                <img *ngIf="activeQuestion.image_url"
+                <img *ngIf="activeQuestion?.image_url"
                     style="margin-bottom: 25px;margin-left: 25%;width: 360px;height: 400px;"
-                    src="{{FLAMINGO_UPLOADS}}{{activeQuestion.image_url}}" />
+                    src="{{FLAMINGO_UPLOADS}}{{activeQuestion?.image_url}}" />
                 <h2 style="margin-bottom: 50px; margin-left: 30%;">{{activeQuestion?.text}}</h2>
                 <button *ngIf="activeQuestion?.type==='Thanks'" style="margin-bottom: 50px; margin-left: 35%;"
                     class="btn btn-success" (click)="nextQuestion()">Submit</button>
@@ -14,7 +14,7 @@
             </div>
         </div>
         <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
-            style="background-image: url({{FLAMINGO_UPLOADS}}{{activeQuestion.image_url}});"
+            style="background-image: url({{FLAMINGO_UPLOADS}}{{activeQuestion?.image_url}});"
             class="image-wrapper-container">
             <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
                 class="question-preview-container">

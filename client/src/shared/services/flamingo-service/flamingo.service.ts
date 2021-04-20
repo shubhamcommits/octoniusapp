@@ -86,7 +86,7 @@ export class FlamingoService {
    * This function is responsible for updating the group avatar
    * @param groupId
    */
-  uploadQuestionImage(groupId: any, fileToUpload: File, flamingoId: string,questionId: string,) {
+  uploadQuestionImage(groupId: any, fileToUpload: File, flamingoId: string,questionId: string, workspaceId : string) {
 
     
     // PREPARING FORM DATA
@@ -98,7 +98,8 @@ export class FlamingoService {
     const fileData = {
       _groupId: groupId,
       flamingoId: flamingoId,
-      questionId: questionId
+      questionId: questionId,
+      workspaceId: workspaceId
     }
     formData.append('fileData', JSON.stringify(fileData));
 

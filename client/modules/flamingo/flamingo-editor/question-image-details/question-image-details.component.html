@@ -10,7 +10,6 @@
 <div class="modal-body">
     <div class="form-group">
         <img src="{{FLAMINGO_UPLOADS}}{{activeQuestion.image_url}}"/>
-        
         <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>
 </div>

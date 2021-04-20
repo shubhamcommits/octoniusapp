@@ -1,7 +1,5 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
-import { SubSink } from 'subsink';
+import { Component, OnInit, Input,Output, EventEmitter, ViewChild,  Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { environment } from 'src/environments/environment';
@@ -26,20 +24,22 @@ export class QuestionImageDetailsComponent implements OnInit {
   @Input('flamingoId') flamingoId: any;
 
   @Input('activeQuestion') activeQuestion: any;
+  
+  @Input('workspaceId') workspaceId: any;
+  
+  // Emitter to notify that the view is changing
+  @Output() uploadImageEmitter: EventEmitter<any> = new EventEmitter<any>();
 
   
   FLAMINGO_UPLOADS = environment.FLAMINGO_BASE_URL+'/uploads/'
+  
   // Cropped Image of the Input Image File
   croppedImage: File;
-
-  // Unsubscribe the Data
-  private subSink = new SubSink();
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 
   ngOnInit() {
-    console.log('sdsddf',this.activeQuestion);
   }
 
   /**
@@ -58,9 +58,13 @@ export class QuestionImageDetailsComponent implements OnInit {
 
     utilityService.asyncNotification('Please wait while we are uploading the Question Image...',
       new Promise((resolve, reject) => {
-        flamingoService.uploadQuestionImage(this.groupId, this.croppedImage,this.flamingoId,this.activeQuestion?._id)
+        flamingoService.uploadQuestionImage(this.groupId, this.croppedImage,this.flamingoId,this.activeQuestion?._id, this.workspaceId)
         .then((res)=>{
+
           this.activeQuestion = res['question'];
+
+          this.uploadImageEmitter.emit(res['question']);
+          utilityService.closeAllModals();
           resolve(utilityService.resolveAsyncPromise('Question Image upload success!!!'))
         })
         .catch(()=>{

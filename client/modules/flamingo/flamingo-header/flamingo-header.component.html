@@ -11,12 +11,13 @@
 
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto ml-4">
-            <li class="nav-item active" *ngIf="file">
+            <li class="nav-item active" *ngIf="file && !this.readOnly">
 
                 <!-- Flamingo Static Title starts -->
                 <span *ngIf="!editTitle" (click)="enableEdit()" ngbTooltip="Click me to rename"
                     placement="bottom">{{file?.original_name}}
                 </span>
+
                 <!-- Flamingo Static Title ends -->
 
                 <!-- Flamingo edit title name starts -->
@@ -24,10 +25,15 @@
                     (keyup)="changeTitle($event)" placeholder="Give me a name" class="input-search" />
                 <!-- Flamingo edit title name ends -->
             </li>
+            <li *ngIf="this.readOnly" style="position: absolute;left: 45%;"> 
+                <span >
+                    <strong>{{file?.original_name}}</strong>
+                </span>
+            </li>
         </ul>
     </div>
 
-    <ul class="nav center-align">
+    <ul *ngIf="!this.readOnly" class="nav center-align">
         <li class="nav-item">
             <a [ngClass]="activeState == 'create_form'?'nav-link active-nav':'nav-link'"
                 (click)="changeState('create_form')" routerLink="/flamingo/{{fileId}}" [queryParams]="{ group:groupId}"
@@ -43,9 +49,9 @@
         </li>
     </ul>
 
-    <ul class="nav right-align">
+    <ul *ngIf="!this.readOnly" class="nav right-align">
         <li class="nav-item">
-            <a class="nav-link" routerLink="/flamingo/preview/{{fileId}}" [queryParams]="{group: groupId,readOnly: true}" routerLinkActive="active">
+            <a class="nav-link" target="_blank" routerLink="/flamingo/preview/{{fileId}}" [queryParams]="{group: groupId,readOnly: true}" routerLinkActive="active">
                 <i class="material-icons icons-color" >remove_red_eye</i>
             </a>
         </li>
