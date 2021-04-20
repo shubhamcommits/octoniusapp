@@ -248,7 +248,7 @@ export class BillingControllers {
                         workspace.billing.subscription_id
                     );
 
-                    if (subscription.current_period_end < moment().unix()) {
+                    if (subscription.current_period_end < moment().unix() || (subscription.cancel_at && subscription.cancel_at < moment().unix())) {
                         message = 'Your subscription is no longer valid';
                         stripeStatus = false;
                     } else {
