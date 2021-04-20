@@ -221,39 +221,39 @@ export class BillingControllers {
                 .select('billing created_date');
 
             let message = '';
-            let status = true;
+            let dbStatus = false;
+            let stripeStatus = false;
 
             if (!workspace) {
-                message = 'Workspace does not exist',
-                status = false
+                message = 'Workspace does not exist'
             } else {
                 // Check the state of the current_period_end value
                 if (workspace.billing.current_period_end) {
                     if (workspace.billing.current_period_end < moment().unix()) {
                         message = 'Your subscription is no longer valid';
-                        status = false;
+                        dbStatus = false;
                     } else {
                         message = 'You have a valid subscription';
-                        status = true;
+                        dbStatus = true;
                     }
                 } else {
                     message = 'No payment yet';
-                    status = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days') >= 0;
+                    dbStatus = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days') >= 0;
                 }
 
                 // Check to stripe if the payment was done in stripe
-                if (!status && workspace.billing.subscription_id) {
+                if (workspace.billing.subscription_id) {
 
                     const subscription = await stripe.subscriptions.retrieve(
                         workspace.billing.subscription_id
                     );
 
-                    if (subscription.current_period_end < moment().unix()) {
+                    if (subscription.current_period_end < moment().unix() || (subscription.cancel_at && subscription.cancel_at < moment().unix())) {
                         message = 'Your subscription is no longer valid';
-                        status = false;
+                        stripeStatus = false;
                     } else {
                         message = 'You have a valid subscription';
-                        status = true;
+                        stripeStatus = true;
                     }
 
                     // update the workspace data in the database
@@ -267,13 +267,16 @@ export class BillingControllers {
                     }, {
                         new: true
                     }).select('billing')
+                } else {
+                    message = 'No payment yet';
+                    stripeStatus = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days') >= 0;
                 }
             }
 
             // Send the status 200 response 
             res.status(200).json({
                 message: message,
-                status: status
+                status: (dbStatus && stripeStatus)
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -798,11 +801,18 @@ export class BillingControllers {
                     break;
 
                 case 'customer.subscription.deleted':
+                    let subscriptionEndDate;
+                    // Check if the subscription is directly canceled or will wait until the period ends.
+                    if (stripeObject.cancel_at_period_end) {
+                        subscriptionEndDate = stripeObject.current_period_end;
+                    } else {
+                        subscriptionEndDate = stripeObject.canceled_at;
+                    }
                     workspace = await Workspace.findOneAndUpdate(
                         { _id: customer.metadata.workspace_id },
                         {
                             $set: {
-                                'billing.current_period_end': stripeObject.current_period_end,
+                                'billing.current_period_end': subscriptionEndDate,
                                 'billing.scheduled_cancellation': stripeObject.cancel_at_period_end
                             }
                         }, {
@@ -883,7 +893,12 @@ export class BillingControllers {
             }
 
             // Send new workspace to the mgmt portal
-            if (process.env.NODE_ENV == 'production' && workspace) {
+            if (process.env.NODE_ENV == 'production' && customer.metadata.workspace_id) {
+
+                workspace = await Workspace.findOne(
+                    { _id: customer.metadata.workspace_id }
+                ).lean();
+
                 // Count all the groups present inside the workspace
                 const groupsCount: number = await Group.find({ $and: [
                     { group_name: { $ne: 'personal' } },
