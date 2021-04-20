@@ -221,28 +221,28 @@ export class BillingControllers {
                 .select('billing created_date');
 
             let message = '';
-            let status = true;
+            let dbStatus = false;
+            let stripeStatus = false;
 
             if (!workspace) {
-                message = 'Workspace does not exist',
-                status = false
+                message = 'Workspace does not exist'
             } else {
                 // Check the state of the current_period_end value
                 if (workspace.billing.current_period_end) {
                     if (workspace.billing.current_period_end < moment().unix()) {
                         message = 'Your subscription is no longer valid';
-                        status = false;
+                        dbStatus = false;
                     } else {
                         message = 'You have a valid subscription';
-                        status = true;
+                        dbStatus = true;
                     }
                 } else {
                     message = 'No payment yet';
-                    status = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days') >= 0;
+                    dbStatus = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days') >= 0;
                 }
 
                 // Check to stripe if the payment was done in stripe
-                if (!status && workspace.billing.subscription_id) {
+                if (workspace.billing.subscription_id) {
 
                     const subscription = await stripe.subscriptions.retrieve(
                         workspace.billing.subscription_id
@@ -250,10 +250,10 @@ export class BillingControllers {
 
                     if (subscription.current_period_end < moment().unix()) {
                         message = 'Your subscription is no longer valid';
-                        status = false;
+                        stripeStatus = false;
                     } else {
                         message = 'You have a valid subscription';
-                        status = true;
+                        stripeStatus = true;
                     }
 
                     // update the workspace data in the database
@@ -267,13 +267,16 @@ export class BillingControllers {
                     }, {
                         new: true
                     }).select('billing')
+                } else {
+                    message = 'No payment yet';
+                    stripeStatus = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days') >= 0;
                 }
             }
 
             // Send the status 200 response 
             res.status(200).json({
                 message: message,
-                status: status
+                status: (dbStatus && stripeStatus)
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
