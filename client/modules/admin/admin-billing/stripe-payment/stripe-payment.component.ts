@@ -76,15 +76,14 @@ export class StripePaymentComponent implements OnInit {
     // Check if the client exists in Stripe
     await this.stripeCustomerExists();
 
-    if ((!this.workspaceData?.billing?.current_period_end
-        || !this.subscription || (!this.customer || this.customer.deleted))
-      || (this.subscription?.current_period_end < moment().unix()
-        || this.workspaceData?.billing?.current_period_end < moment().unix())) {
-      this.subscriptionActive = false;
-    } else {
-      this.subscriptionActive = true;
-    }
-
+    await this.workspaceService.getBillingStatus(this.workspaceData?._id).then(
+      (res) => {
+        if ( !res['status'] || !this.subscription || (!this.customer || this.customer.deleted)) {
+          this.subscriptionActive = false;
+        } else {
+          this.subscriptionActive = true;
+        }
+      });
     // Obtain the client´s charges
     // await this.getCharges();
   }
