@@ -248,7 +248,7 @@ export class BillingControllers {
                         workspace.billing.subscription_id
                     );
 
-                    if (subscription.current_period_end < moment().unix() || (subscription.cancel_at && subscription.cancel_at < moment().unix())) {
+                    if (subscription.current_period_end < moment().unix() || (subscription.ended_at && subscription.ended_at < moment().unix())) {
                         message = 'Your subscription is no longer valid';
                         stripeStatus = false;
                     } else {
@@ -801,18 +801,13 @@ export class BillingControllers {
                     break;
 
                 case 'customer.subscription.deleted':
-                    let subscriptionEndDate;
-                    // Check if the subscription is directly canceled or will wait until the period ends.
-                    if (stripeObject.cancel_at_period_end) {
-                        subscriptionEndDate = stripeObject.current_period_end;
-                    } else {
-                        subscriptionEndDate = stripeObject.canceled_at;
-                    }
                     workspace = await Workspace.findOneAndUpdate(
                         { _id: customer.metadata.workspace_id },
                         {
                             $set: {
-                                'billing.current_period_end': subscriptionEndDate,
+                                'billing.current_period_end': (stripeObject.cancel_at_period_end == true) 
+                                    ? stripeObject.current_period_end
+                                    : stripeObject.canceled_at,
                                 'billing.scheduled_cancellation': stripeObject.cancel_at_period_end
                             }
                         }, {
