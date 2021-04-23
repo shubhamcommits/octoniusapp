@@ -175,17 +175,31 @@ export class DomainsControllers {
             // Generate an array of user ids
             const idsToRemove = [];
 
-            membersToRemove.forEach((member) => {
+            membersToRemove.forEach(async (member) => {
                 // Don't push workspace owner
                 if (!workspace._owner.equals(member._id)) {
                     idsToRemove.push(member._id);
 
                     // Remove the user from the mgmt portal
                     if (process.env.NODE_ENV == 'production') {
-                        http.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {
-                            data: {
-                                API_KEY: process.env.MANAGEMENT_API_KEY
-                            }
+                        const user = await User.find({_id: member}).lean()
+                        let userMgmt = {
+                            _id: user._id,
+                            _account_id: user._account._id,
+                            active: false,
+                            email: user._account.email,
+                            password: user._account.password,
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            _remote_workspace_id: user._workspace,
+                            workspace_name: user.workspace_name,
+                            environment: process.env.DOMAIN,
+                            created_date: user.created_date
+                        }
+        
+                        http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
+                            API_KEY: process.env.MANAGEMENT_API_KEY,
+                            userData: userMgmt
                         });
                     }
                 }
