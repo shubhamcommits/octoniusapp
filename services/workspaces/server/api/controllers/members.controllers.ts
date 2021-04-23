@@ -1,5 +1,5 @@
 import { sendError } from '../../utils';
-import { User, Workspace, Group } from '../models';
+import { User, Workspace, Group, Account } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
 
@@ -165,17 +165,21 @@ export class MembersControllers {
         const { userId, workspaceId } = req.body;
         try {
             const user: any = await User.findOneAndUpdate({
-                $and: [
-                    { _id: userId },
-                    // { active: false },
-                    // { workspace: workspaceId },
-                ]
+                _id: userId
             }, {
                 active: true,
                 invited: false,
             }, {
                 new: true
-            }).select('first_name last_name profile_pic active email role integrations');
+            }).select('first_name last_name profile_pic active email role integrations').lean();
+
+            await Account.findOneAndUpdate({
+                email: user.email
+            }, {
+                $push: {
+                    _workspaces: workspaceId
+                }
+            });
 
             const workspace = await Workspace.findById(workspaceId);
 
@@ -234,7 +238,16 @@ export class MembersControllers {
             .populate({
                 path: '_account',
                 select: '_id email _workspaces first_name last_name created_date'
-            });;
+            });
+
+            // Remove the workplaces from the accounts with the workplace
+            await Account.findByIdAndUpdate({
+                _id: user._account._id
+            }, {
+                $pull: {
+                    _workspaces: workspaceId
+                }
+            });
 
             // User found
             if (user) {
