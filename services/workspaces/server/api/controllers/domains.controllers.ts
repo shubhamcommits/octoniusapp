@@ -1,6 +1,10 @@
 import { sendError } from '../../utils';
-import { Group, Workspace, User } from '../models';
+import { Group, Workspace, User, Account } from '../models';
 import { Request, Response, NextFunction } from 'express';
+import http from 'axios';
+
+// Create Stripe Object
+const stripe = require('stripe')(process.env.SK_STRIPE);
 
 export class DomainsControllers {
     /**
@@ -147,6 +151,18 @@ export class DomainsControllers {
                 $set: { active: false }
             });
 
+            // Remove the workplaces from the accounts with the workplace
+            await Account.findByIdAndUpdate({
+                $and: [
+                    { workspace_name: workspace.workspace_name },
+                    { email: { $regex: new RegExp(domain.toString(), 'i') } }
+                ]
+            }, {
+                $pull: {
+                    _workspaces: workspaceId
+                }
+            });
+
             // Fetch the list of workspace members that must be deleted
             const membersToRemove = await User.find({
                 $and: [
@@ -163,6 +179,15 @@ export class DomainsControllers {
                 // Don't push workspace owner
                 if (!workspace._owner.equals(member._id)) {
                     idsToRemove.push(member._id);
+
+                    // Remove the user from the mgmt portal
+                    if (process.env.NODE_ENV == 'production') {
+                        http.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {
+                            data: {
+                                API_KEY: process.env.MANAGEMENT_API_KEY
+                            }
+                        });
+                    }
                 }
             })
 
@@ -181,6 +206,17 @@ export class DomainsControllers {
                 new: true
             }).select('allowed_domains');
 
+            // Count all the users present inside the workspace
+            const usersCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId }
+            ] }).countDocuments();
+            
+           // Update the subscription details
+           let subscription = stripe.subscriptionItems.update(workspace['billing'].subscription_item_id, {
+                quantity: usersCount
+            });
+
             // Remove users from all group's _members & _admins
             await Group.updateMany({
                 $or: [
@@ -195,6 +231,47 @@ export class DomainsControllers {
             }, {
                 multi: true
             });
+
+            // Send workspace to the mgmt portal
+            if (process.env.NODE_ENV == 'production') {
+                // Count all the groups present inside the workspace
+                const groupsCount: number = await Group.find({ $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { _workspace: workspace._id }
+                ]}).countDocuments();
+
+                // Count all the users present inside the workspace
+                const guestsCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: workspace._id },
+                    { role: 'guest'}
+                ] }).countDocuments();
+
+                let workspaceMgmt = {
+                    _id: workspace._id,
+                    company_name: workspace.company_name,
+                    workspace_name: workspace.workspace_name,
+                    owner_email: workspace.owner_email,
+                    owner_first_name: workspace.owner_first_name,
+                    owner_last_name: workspace.owner_last_name,
+                    _owner_remote_id: workspace._owner._id || workspace._owner,
+                    environment: process.env.DOMAIN,
+                    num_members: usersCount,
+                    num_invited_users: guestsCount,
+                    num_groups: groupsCount,
+                    created_date: workspace.created_date,
+                    billing: {
+                        subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
+                        current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
+                        scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
+                        quantity: usersCount
+                    }
+                }
+                http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                    API_KEY: process.env.MANAGEMENT_API_KEY,
+                    workspaceData: workspaceMgmt
+                }).then().catch(err => console.log(err));
+            }
 
             // Send the status 200 response
             return res.status(200).json({

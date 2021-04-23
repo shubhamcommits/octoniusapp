@@ -558,7 +558,8 @@ export class AuthsController {
             // Find the account with having the same email as in req.body
             let user = await User.findOne({
                 _account: accountId,
-                _workspace: workspaceId
+                _workspace: workspaceId,
+                active: true
             });
 
             // If user wasn't found or user was previsously removed/disabled, return error

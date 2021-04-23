@@ -3,7 +3,7 @@
     <h6><b>Workplace signup mode</b></h6>
     <hr />
     <p>Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email
-        address domain to sign up.<br /> 
+        address domain to sign up.<br />
         (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!)</p>
     <div class="form-group">
         <label for="domain">Using workplace name"<b>{{ workspaceData?.workspace_name }}</b>", any email adress from these domain can signup:</label>
@@ -19,9 +19,9 @@
     <p>List of all allowed domains from where user can sign up to this workplace.</p>
     <hr />
     <ng-container *ngIf="isLoading$ | async">
-            <app-loading-spinner></app-loading-spinner>
+      <app-loading-spinner></app-loading-spinner>
     </ng-container>
-    
+
     <div *ngIf="!(isLoading$ | async)">
     <div class="container" *ngFor="let domain of allowedDomains; trackBy: utilityService.trackByIndex;">
         <div class="row">

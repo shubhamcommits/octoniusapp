@@ -75,22 +75,27 @@ export class WorkplaceAddDomainComponent implements OnInit {
 
   async removeDomain(workspaceId: string, domain: string) {
     try {
-      this.utilityService.getConfirmDialogAlert()
-        .then((result) => {
-          if (result.value) {
-            this.utilityService.asyncNotification('Please wait, while we are removing the domain for you', new Promise((resolve, reject)=>{
-              this.adminService.removeDomain(workspaceId, domain)
-              .subscribe((res) => {
-                let index = this.allowedDomains.findIndex(domainName => domainName.trim().toLowerCase() === domain.trim().toLowerCase());
-                this.allowedDomains.splice(index, 1);
-                resolve(this.utilityService.resolveAsyncPromise(`${domain} has been removed from the allowed domains!`));
-              }, (err) => {
-                console.log('Error occured, while removing the domain', err);
-                resolve(this.utilityService.rejectAsyncPromise('Oops, an error occured while removing the domain, please try again!'));
-              })
-            }))
-          }
-        })
+      const ownerDomain = this.workspaceData.owner_email.split('@')[1];
+      if (domain == ownerDomain) {
+        this.utilityService.errorNotification('The owner uses this domain, it cannot be removed!');
+      } else {
+        this.utilityService.getConfirmDialogAlert()
+          .then((result) => {
+            if (result.value) {
+              this.utilityService.asyncNotification('Please wait, while we are removing the domain for you', new Promise((resolve, reject)=>{
+                this.adminService.removeDomain(workspaceId, domain)
+                .subscribe((res) => {
+                  let index = this.allowedDomains.findIndex(domainName => domainName.trim().toLowerCase() === domain.trim().toLowerCase());
+                  this.allowedDomains.splice(index, 1);
+                  resolve(this.utilityService.resolveAsyncPromise(`${domain} has been removed from the allowed domains!`));
+                }, (err) => {
+                  console.log('Error occured, while removing the domain', err);
+                  resolve(this.utilityService.rejectAsyncPromise('Oops, an error occured while removing the domain, please try again!'));
+                })
+              }))
+            }
+          });
+        }
     } catch (err) {
       console.log('There\'s some unexpected error occured, please try again!', err);
       this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
