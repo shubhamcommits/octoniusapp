@@ -152,7 +152,7 @@ export class DomainsControllers {
             });
 
             // Remove the workplaces from the accounts with the workplace
-            await Account.findAndUpdate({
+            await Account.updateMany({
                 $and: [
                     { workspace_name: workspace.workspace_name },
                     { email: { $regex: new RegExp(domain.toString(), 'i') } }
