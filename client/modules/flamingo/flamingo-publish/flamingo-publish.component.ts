@@ -11,7 +11,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 export class FlamingoPublishComponent implements OnInit {
 
   flamingo: any;
-  flamingoId: string;
+  fileId: string;
 
   constructor(
     private _ActivatedRoute: ActivatedRoute,
@@ -22,10 +22,10 @@ export class FlamingoPublishComponent implements OnInit {
   async ngOnInit() {
 
     // Set the fileId variable
-    this.flamingoId = this._ActivatedRoute.snapshot.params['id'];
+    this.fileId = this._ActivatedRoute.snapshot.params['id'];
 
     // Fetch Flamingo Details
-    await this.flamingoService.getOne(this.flamingoId).then((res) => {
+    await this.flamingoService.getOne(this.fileId).then((res) => {
       this.flamingo = res['flamingo'];
     });
   }
