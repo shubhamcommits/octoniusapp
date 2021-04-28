@@ -4,18 +4,26 @@ import { FlamingoHeaderComponent } from './flamingo-header/flamingo-header.compo
 import { FlamingoEditorComponent } from './flamingo-editor/flamingo-editor.component';
 import { FlamingoPreviewComponent } from './flamingo-preview/flamingo-preview.component';
 import { FlamingoPublishComponent } from './flamingo-publish/flamingo-publish.component';
+import { FlamingoAnswerComponent } from './flamingo-answer/flamingo-answer.component';
 
 const routes: Routes = [
   {
     path: '', component: FlamingoHeaderComponent, children: [
       {
-        path:'preview/:id', component:FlamingoPreviewComponent
+        path: ':id', component: FlamingoEditorComponent
       },
       {
-        path:'publish/:id', component:FlamingoPublishComponent
+        path:':id/preview', component: FlamingoPreviewComponent
       },
-      { path: ':id', component: FlamingoEditorComponent },
-      
+      {
+        path:':id/publish', component: FlamingoPublishComponent
+      },
+      {
+        path:':id/answer', component: FlamingoAnswerComponent
+      },
+      {
+        path:':id/result', component: FlamingoPreviewComponent
+      }
     ]
   }
 ];

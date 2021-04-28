@@ -1,0 +1,92 @@
+<div>
+    <!-- not again div start => when the questions starts or again starts-->
+    <div *ngIf="!again">
+
+        <!-- container for welcome and thanks question type start-->
+        <div *ngIf="activeQuestion?.type==='Welcome' || activeQuestion?.type==='Thanks'" class="answer-container">
+            <div>
+
+                <img *ngIf="activeQuestion?.image_url"
+                    class="welcome-img"
+                    src="{{FLAMINGO_UPLOADS}}{{activeQuestion?.image_url}}" />
+                <h2>{{activeQuestion?.text}}</h2>
+                <button *ngIf="activeQuestion?.type==='Thanks'"
+                    class="btn btn-success" (click)="nextQuestion()">Submit</button>
+                <button *ngIf="activeQuestion?.type==='Welcome'"
+                    class="btn btn-primary" (click)="nextQuestion()">Start</button>
+            </div>
+        </div>
+        <!-- container for welcome and thanks question type end-->
+
+        <!-- container for all other question except welcome and thanks question type start-->
+        <!-- background image div -->
+        <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
+            style="background-image: url({{FLAMINGO_UPLOADS}}{{activeQuestion?.image_url}});"
+            class="image-wrapper-container">
+
+            <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
+                class="question-answer-container">
+
+                <!-- question text -->
+                <h2 style="margin-bottom: 50px;">{{activeQuestion?.text}}</h2>
+
+                <!-- ShortText text input field -->
+                <input *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..."
+                    class="input-answer" (change)="nextQuestion()" />
+                <!-- yes/no buttons -->
+                <div *ngIf="activeQuestion?.type==='Yes/No'">
+                    <button class="btn btn-success" (click)="nextQuestion()">{{activeQuestion?.positive_option_text || 'Positive'}}</button>
+                    <br />
+                    <br />
+                    <button class="btn btn-danger" (click)="nextQuestion()">{{activeQuestion?.negative_option_text || 'Negative'}}</button>
+                </div>
+
+                <!-- scale question scale and scale labels-->
+                <div *ngIf="activeQuestion?.type==='Scale'">
+                    <button *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" (click)="nextQuestion()">0</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 1" class="scale-button" (click)="nextQuestion()">1</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 2" class="scale-button" (click)="nextQuestion()">2</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 3" class="scale-button" (click)="nextQuestion()">3</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 4" class="scale-button" (click)="nextQuestion()">4</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 5" class="scale-button" (click)="nextQuestion()">5</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 6" class="scale-button" (click)="nextQuestion()">6</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 7" class="scale-button" (click)="nextQuestion()">7</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 8" class="scale-button" (click)="nextQuestion()">8</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 9" class="scale-button" (click)="nextQuestion()">9</button>
+                    <button *ngIf="activeQuestion?.scale?.size > 10" class="scale-button" (click)="nextQuestion()">10</button>
+
+                    <div *ngIf="activeQuestion.show_scale_labels" [ngStyle]="{'position':'relative','width': (activeQuestion.scale.size * 63)+'px'}">
+                        <p style="left: 0px;position: absolute;">{{activeQuestion?.scale?.left_side_label}}</p>
+                        <p style="left: 46%;position: absolute;">{{activeQuestion?.scale?.center_label}}</p>
+                        <p style="right: 0px;position: absolute;">{{activeQuestion?.scale?.right_side_label}}</p>
+                    </div>
+                </div>
+
+                 <!-- dropdown question dropdown -->
+                <button *ngIf="activeQuestion?.type === 'Dropdown'" class="btn btn-primary mb-3 mt-3 dropdown-toggle"
+                    type="button" data-toggle="dropdown">
+                    Please Select an Option
+                </button>
+                <ul *ngIf="activeQuestion?.type === 'Dropdown'" class="dropdown-menu">
+                    <li *ngFor="let currentOption of activeQuestion?.options; let j=index" class="dropdown-item" (click)="nextQuestion()">
+                        {{currentOption}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- container for all other question except welcome and thanks question type end-->
+
+    </div>
+    <!-- not again div start-->
+
+    <!-- again div start => when all the question ends again button comes -->
+    <div *ngIf="again">
+        <div class="answer-container">
+            <h3>Want to play again?</h3>
+            <button class="btn btn-success"
+                (click)="againAnswer()">Again</button>
+        </div>
+
+    </div>
+    <!-- again div end-->
+</div>

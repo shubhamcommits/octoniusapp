@@ -114,7 +114,7 @@ export class FlamingoController {
             let question = await flamingoService.deleteQuestion(questionId);
 
             let updatedFlamingo = await flamingoService.removeQuestion(questionId,flamingoId);
-            
+
             // Send Status 200 response
             return res.status(200).json({
                 message: 'Question Deleted and removed from Flamingos Success',
@@ -171,6 +171,34 @@ export class FlamingoController {
                 message: 'Question updated Success',
                 question: updatedQuestion
             });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+     }
+
+     /** 
+     * This function is responsible to publish/unpublish the flamingo
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+      async publish(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the publish From the request
+            let { body: { publish } } = req;
+            
+            // Fetch the flamingoId From the request
+            let { query: { flamingoId } } = req;
+
+            let updatedFlamingo = await flamingoService.publish(flamingoId, publish);
+console.log(updatedFlamingo);
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Flamingo Published/Unpublished correctly',
+                flamingo: updatedFlamingo
+            });
+
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }

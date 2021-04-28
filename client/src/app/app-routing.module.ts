@@ -10,6 +10,7 @@ import { AuthenticationGuard } from 'src/shared/guards/authentication-guard/auth
 import { RoutingGuard } from 'src/shared/guards/routing-guard/routing.guard';
 import { DenyNavigationGuard } from 'src/shared/guards/deny-navigation-guard/deny-navigation.guard';
 import { FolioGuard } from 'src/shared/guards/folio-guard/folio.guard';
+import { FlamingoGuard } from 'src/shared/guards/flamingo-guard/flamingo.guard';
 
 // Preloading Routes Strategy
 // import { QuicklinkStrategy, QuicklinkModule } from 'ngx-quicklink';
@@ -60,7 +61,7 @@ const routes: Routes = [
     path: 'flamingo',
     loadChildren: () => import('modules/flamingo/flamingo.module')
       .then((module) => module.FlamingoModule),
-    canActivate: [AuthenticationGuard, FolioGuard]
+    canActivate: [AuthenticationGuard, FlamingoGuard]
   },
 
 
@@ -84,7 +85,14 @@ const routes: Routes = [
 }),
 
   ],
-  exports: [RouterModule],
-  providers: [AuthenticationGuard, DenyNavigationGuard, FolioGuard]
+  exports: [
+    RouterModule
+  ],
+  providers: [
+    AuthenticationGuard,
+    DenyNavigationGuard,
+    FolioGuard,
+    FlamingoGuard
+  ]
 })
 export class AppRoutingModule { }

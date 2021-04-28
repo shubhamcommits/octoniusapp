@@ -12,6 +12,11 @@ const FlamingoSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Question'
     }],
+    publish: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     created_date: {
         type: Date,
         default: moment().format()

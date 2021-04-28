@@ -16,8 +16,8 @@ export class FlamingoHeaderComponent implements OnInit {
   // GroupID Variable
   groupId: any;
 
-  // ReadOnly Variable
-  readOnly = true;
+  // showHeader variable
+  showHeader: any;
 
   // fileId Variable
   fileId: any;
@@ -43,16 +43,11 @@ export class FlamingoHeaderComponent implements OnInit {
 
   async ngOnInit() {
 
+    this.showHeader = this.router.url.includes('preview') || this.router.url.includes('answer');
+
     // Set the groupId
     this.groupId = this._ActivatedRoute.snapshot.queryParamMap.get('group');
-
-    this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get('readOnly') == 'true' || false
-
-    const userData = await this.publicFunctions.getCurrentUser()
-    // check if the user is part of the group of the folio
-    const groupIndex = await userData?._groups?.findIndex(group => { return (group._id || group) == this.groupId });
-    
-    this.readOnly = this.readOnly || (groupIndex < 0);
+console.log(this.groupId);
 
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.firstChild.paramMap.get('id')
@@ -67,7 +62,7 @@ export class FlamingoHeaderComponent implements OnInit {
     document.body.style.background = '#ffffff'
 
     // Change the title of the tab
-    this.titleService.setTitle('Octonius | Folio - ' + (this.file.original_name || 'New Folio'));
+    this.titleService.setTitle('Octonius | Flamingo - ' + (this.file.original_name || 'New Flamingo'));
 
     const segments = this._ActivatedRoute?.snapshot['_urlSegment']?.segments;
     this.activeState = segments[2]?.path?segments[1]?.path : 'create_form';
@@ -137,7 +132,7 @@ export class FlamingoHeaderComponent implements OnInit {
   }
 
   enableEdit() {
-    if (!this.readOnly && !(this.activeState=='publish' || this.activeState=='result')) {
+    if (!(this.activeState=='publish' || this.activeState=='result')) {
       this.editTitle = !this.editTitle;
     }
   }

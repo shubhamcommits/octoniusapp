@@ -88,32 +88,8 @@ export class FlamingoService {
      */
       async get(fileId: string) {
 
-        const flamingo = await Flamingo.findOne({_file:fileId})
-        .populate({ path: '_file', select: this.fileFields })
-        .populate({
-            path: '_file',
-            populate: {
-                path: '_posted_by',
-                model: 'User',
-                select: this.userFields 
-            },
-        })
-        .populate({
-            path: '_file',
-            populate: {
-                path: '_group',
-                model: 'Group',
-                select: this.groupFields 
-            },
-        })
-        .populate({
-            path: '_file',
-            populate: {
-                path: '_folder',
-                model: 'Folder'
-            },
-        })
-        .populate({ path: 'questions'});
+        let flamingo = await Flamingo.findOne({_file:fileId})
+        flamingo = this.populateFileProperties(flamingo);
         
         return flamingo;
     }
@@ -162,7 +138,7 @@ export class FlamingoService {
      * This function is responsible to create new question
      * @param questionId 
      */
-    async deleteQuestion(questionId:any){
+    async deleteQuestion(questionId: any) {
         return await Question.findOneAndDelete({_id:questionId}) ;
     }
 
@@ -171,11 +147,25 @@ export class FlamingoService {
      * @param questionId 
      * @param data 
      */
-     async updateQuestion(questionId:any,data:any){
-        let query = { _id: questionId};
-        return await Question.findOneAndUpdate(query,data,{new : true});
+     async updateQuestion(questionId: any, data: any) {
+        let query = { _id: questionId };
+        let flamingoUpdated = await Question.findOneAndUpdate(query,data,{new : true});
+        return this.populateFileProperties(flamingoUpdated);
     }
 
 
+    /** 
+    * This function is responsible to publish/unpublish the flamingo
+    * @param flamingoId 
+    * @param publish
+    */
+    async publish(flamingoId, publish) {
 
+        let flamingoUpdated = await Flamingo.findOneAndUpdate(
+           { _id: flamingoId },
+           { $set: {publish: publish }},
+           { new: true}).lean();
+
+        return this.populateFileProperties(flamingoUpdated);
+   }
 }

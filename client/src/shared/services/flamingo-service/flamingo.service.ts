@@ -16,7 +16,7 @@ export class FlamingoService {
    * @param flamingoData
    */
   createForm(flamingoData: any, ) {
-    
+
     return this._http.post(this.baseURL + `/create-form`, {flamingoData}).toPromise()
   }
 
@@ -47,9 +47,10 @@ export class FlamingoService {
    * This function is responsible for fetching the flamingo details on the basis of the fileId
    * @param fileId
    */
-   getOne(fileId: string){
-    if(fileId)
-      return this._http.get(this.baseURL + `/?fileId=${fileId}`).toPromise()
+   getOne(fileId: string) {
+    if(fileId) {
+      return this._http.get(this.baseURL + `/?fileId=${fileId}`).toPromise();
+    }
   }
 
   /**
@@ -72,15 +73,15 @@ export class FlamingoService {
       return this._http.delete(this.baseURL + `/question/?flamingoId=${flamingoId}&questionId=${questionId}`).toPromise()
   }
 
-   /**
+  /**
    * This function is responsible to delete question and remove it from flamingo
    * @param questionData
    * @param questionId
    */
-    updateQuestion(questionId:object, questionData: any){
-      if(questionId)
-        return this._http.put(this.baseURL + `/question/?questionId=${questionId}`,{questionData}).toPromise()
-    }
+  updateQuestion(questionId:object, questionData: any){
+    if(questionId)
+      return this._http.put(this.baseURL + `/question/?questionId=${questionId}`,{questionData}).toPromise()
+  }
 
   /**
    * This function is responsible for updating the group avatar
@@ -88,12 +89,12 @@ export class FlamingoService {
    */
   uploadQuestionImage(groupId: any, fileToUpload: File, flamingoId: string,questionId: string, workspaceId : string) {
 
-    
+
     // PREPARING FORM DATA
     let formData = new FormData();
     formData.append('questionImage', fileToUpload);
-   
-   
+
+
 
     const fileData = {
       _groupId: groupId,
@@ -106,6 +107,15 @@ export class FlamingoService {
     console.log("sdsdssdfdsgeewerwf",formData);
 
     return this._http.put(this.baseURL + `/question/image`, formData).toPromise()
+  }
+
+  /**
+   * This function is responsible to publish/unpublish the flamingo
+   * @param questionData
+   * @param flamingoId
+   */
+  publish(flamingoId: string, publish: any){
+    return this._http.put(this.baseURL + `/publish/?flamingoId=${flamingoId}`, { publish: publish }).toPromise()
   }
 
 }

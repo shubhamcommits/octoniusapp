@@ -1,14 +1,14 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-flamingo-preview',
-  templateUrl: './flamingo-preview.component.html',
-  styleUrls: ['./flamingo-preview.component.scss']
+  selector: 'app-flamingo-answer',
+  templateUrl: './flamingo-answer.component.html',
+  styleUrls: ['./flamingo-answer.component.scss']
 })
-export class FlamingoPreviewComponent implements OnInit {
+export class FlamingoAnswerComponent implements OnInit {
 
   questions: any = [];
 
@@ -27,6 +27,7 @@ export class FlamingoPreviewComponent implements OnInit {
   constructor(
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,
+    private router: Router
   ) { }
 
   async ngOnInit() {
@@ -35,6 +36,12 @@ export class FlamingoPreviewComponent implements OnInit {
 
     // Fetch Files Details
     this.flamingo = await this.getFlamingo(this.fileId);
+
+    // if the flamingo is not publish, we send the user to the home page.
+    // -- Should do this on the guard, but I am not able to obtain the flamingo ID
+    if (!this.flamingo.publish) {
+      this.router.navigate(['/',]);
+    }
 
     this.questions = this.flamingo.questions;
 
@@ -55,9 +62,9 @@ export class FlamingoPreviewComponent implements OnInit {
   }
 
   /**
-  * This function is responsible to start preview again
+  * This function is responsible to start answer again
   */
-  againPreview(){
+  againAnswer(){
       this.again = false;
       this.activeQuestionIndex = 0;
       this.activeQuestion = this.questions[this.activeQuestionIndex];

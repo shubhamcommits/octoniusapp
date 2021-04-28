@@ -31,7 +31,7 @@ export class SecuredImageComponent implements OnChanges  {
   // this stream will contain the actual url that our img tag will load
   // everytime the src changes, the previous call would be canceled and the
   // new resource would be loaded
-  
+
   dataUrl$;
 
   isLocalImg: boolean = false;
@@ -102,7 +102,6 @@ export class SecuredImageComponent implements OnChanges  {
         // create an object url of that blob that we can use in the src attribute
         .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
     } else {
-      console.log("URL",url);
       return this.httpClient
         // load the image as a blob
 

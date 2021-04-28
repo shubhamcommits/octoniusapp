@@ -10,10 +10,18 @@ import {FlamingoRoutingModule} from './flamingo-routing.module';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSliderModule} from '@angular/material/slider';
 import { FlamingoPreviewComponent } from './flamingo-preview/flamingo-preview.component';
+import { FlamingoAnswerComponent } from './flamingo-answer/flamingo-answer.component';
 import { QuestionImageDetailsComponent } from './flamingo-editor/question-image-details/question-image-details.component';
 import { FlamingoPublishComponent } from './flamingo-publish/flamingo-publish.component';
 @NgModule({
-  declarations: [ FlamingoEditorComponent, FlamingoHeaderComponent, FlamingoPreviewComponent, QuestionImageDetailsComponent, FlamingoPublishComponent],
+  declarations: [
+    FlamingoEditorComponent,
+    FlamingoHeaderComponent,
+    FlamingoPreviewComponent,
+    FlamingoAnswerComponent,
+    QuestionImageDetailsComponent,
+    FlamingoPublishComponent
+  ],
   imports: [
     CommonModule,
 

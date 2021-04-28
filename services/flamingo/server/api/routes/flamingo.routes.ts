@@ -8,16 +8,18 @@ const flamingoFunctions = new FlamingoController();
 
 const auths = new Auths();
 
-routes.post('/create-flamingo', auths.verifyToken, flamingoFunctions.createFlamingo);
+routes.post('/create-flamingo', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.createFlamingo);
 
-routes.post('/create-add-question', auths.verifyToken, flamingoFunctions.createAndAddQuestion);
+routes.post('/create-add-question', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.createAndAddQuestion);
 
-routes.get('/', auths.verifyToken, flamingoFunctions.get);
+routes.get('/', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.get);
 
-routes.put('/question/image', auths.verifyToken , flamingoFileHandler , flamingoFunctions.updloadQuestionImage);
+routes.put('/publish', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.publish);
 
-routes.put('/question', auths.verifyToken, flamingoFunctions.updateQuestion);
+routes.put('/question/image', auths.verifyToken, auths.isLoggedIn, flamingoFileHandler , flamingoFunctions.updloadQuestionImage);
 
-routes.delete('/question', auths.verifyToken, flamingoFunctions.deleteAndRemoveQuestion);
+routes.put('/question', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.updateQuestion);
+
+routes.delete('/question', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.deleteAndRemoveQuestion);
 
 export { routes as flamingoRoutes };
