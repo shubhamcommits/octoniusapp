@@ -17,7 +17,7 @@ export class FlamingoService {
    */
   createForm(flamingoData: any, ) {
 
-    return this._http.post(this.baseURL + `/create-form`, {flamingoData}).toPromise()
+    return this._http.post(this.baseURL + `/create-form`, {flamingoData}).toPromise();
   }
 
   /**
@@ -33,13 +33,13 @@ export class FlamingoService {
           groupId: groupId,
           lastFileId: lastFormId
         }
-      }).toPromise()
+      }).toPromise();
     } else {
       return this._http.get(this.baseURL + `/`, {
         params: {
           groupId: groupId,
         }
-      }).toPromise()
+      }).toPromise();
     }
   }
 
@@ -59,7 +59,7 @@ export class FlamingoService {
    */
    createQuestion(flamingoId: string, questionData:any){
     if(flamingoId)
-      return this._http.post(this.baseURL + `/create-add-question/?flamingoId=${flamingoId}`,{questionData}).toPromise()
+      return this._http.post(this.baseURL + `/create-add-question/?flamingoId=${flamingoId}`,{questionData}).toPromise();
   }
 
 
@@ -70,7 +70,7 @@ export class FlamingoService {
    */
    deleteQuestion(flamingoId: string,questionId:object){
     if(flamingoId)
-      return this._http.delete(this.baseURL + `/question/?flamingoId=${flamingoId}&questionId=${questionId}`).toPromise()
+      return this._http.delete(this.baseURL + `/question/?flamingoId=${flamingoId}&questionId=${questionId}`).toPromise();
   }
 
   /**
@@ -80,7 +80,7 @@ export class FlamingoService {
    */
   updateQuestion(questionId:object, questionData: any){
     if(questionId)
-      return this._http.put(this.baseURL + `/question/?questionId=${questionId}`,{questionData}).toPromise()
+      return this._http.put(this.baseURL + `/question/?questionId=${questionId}`,{questionData}).toPromise();
   }
 
   /**
@@ -106,16 +106,24 @@ export class FlamingoService {
 
     console.log("sdsdssdfdsgeewerwf",formData);
 
-    return this._http.put(this.baseURL + `/question/image`, formData).toPromise()
+    return this._http.put(this.baseURL + `/question/image`, formData).toPromise();
   }
 
   /**
    * This function is responsible to publish/unpublish the flamingo
-   * @param questionData
    * @param flamingoId
+   * @param publish
    */
   publish(flamingoId: string, publish: any){
-    return this._http.put(this.baseURL + `/publish/?flamingoId=${flamingoId}`, { publish: publish }).toPromise()
+    return this._http.put(this.baseURL + `/publish/?flamingoId=${flamingoId}`, { publish: publish }).toPromise();
   }
 
+  /**
+   * This function is responsible to submitting the answers of a user
+   * @param flamingoId
+   * @param responses
+   */
+  submit(flamingoId: string, responses: any) {
+    return this._http.put(this.baseURL + `/submit/?flamingoId=${flamingoId}`, { responses: responses }).toPromise();
+  }
 }

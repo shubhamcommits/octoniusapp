@@ -64,7 +64,7 @@ export class FlamingoEditorComponent implements OnInit {
     // Fetch Files Details
     this.flamingo = await this.getFile(this.fileId);
 
-    this.questions = this.flamingo.questions;
+    this.questions = this.flamingo._questions;
 
     this.activeQuestion = this.questions[this.activeQuestionIndex];
 
@@ -276,7 +276,7 @@ export class FlamingoEditorComponent implements OnInit {
 
             this.flamingo = res['flamingo'];
 
-            this.questions = this.flamingo.questions;
+            this.questions = this.flamingo._questions;
             if (this.activeQuestionIndex > 0) {
               this.activeQuestionIndex = this.activeQuestionIndex - 1;
             } else if (this.activeQuestionIndex < this.questions.length - 1) {

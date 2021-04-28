@@ -1,3 +1,4 @@
+import { text } from 'body-parser';
 import moment from 'moment';
 import mongoose from 'mongoose';
 
@@ -8,7 +9,7 @@ const FlamingoSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'File'
     },
-    questions:[{
+    _questions:[{
         type: Schema.Types.ObjectId,
         ref: 'Question'
     }],
@@ -17,6 +18,27 @@ const FlamingoSchema = new Schema({
         required: true,
         default: false
     },
+    responses: [[{
+        _question: {
+          type: Schema.Types.ObjectId,
+          ref: 'Question'
+        },
+        text_answer: {
+            type : String,
+        },
+        positive_answer: {
+            type: Boolean
+        },
+        negative_answer: {
+            type: Boolean
+        },
+        scale_answer: {
+            type: Number
+        },
+        dropdown_answer: {
+            type: String
+        }
+    }]],
     created_date: {
         type: Date,
         default: moment().format()

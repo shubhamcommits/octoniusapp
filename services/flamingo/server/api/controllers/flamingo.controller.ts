@@ -192,11 +192,38 @@ export class FlamingoController {
             let { query: { flamingoId } } = req;
 
             let updatedFlamingo = await flamingoService.publish(flamingoId, publish);
-console.log(updatedFlamingo);
+
             // Send Status 200 response
             return res.status(200).json({
                 message: 'Flamingo Published/Unpublished correctly',
                 flamingo: updatedFlamingo
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+     }
+
+     /** 
+     * This function is responsible to submit the answers of a user
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+      async submit(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the publish From the request
+            let { body: { responses } } = req;
+            
+            // Fetch the flamingoId From the request
+            let { query: { flamingoId } } = req;
+
+            await flamingoService.submit(flamingoId, responses);
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Flamingo Submited correctly'
             });
 
         } catch (err) {

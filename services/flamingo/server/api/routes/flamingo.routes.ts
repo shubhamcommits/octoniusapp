@@ -22,4 +22,6 @@ routes.put('/question', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.u
 
 routes.delete('/question', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.deleteAndRemoveQuestion);
 
+routes.put('/submit', flamingoFunctions.submit);
+
 export { routes as flamingoRoutes };

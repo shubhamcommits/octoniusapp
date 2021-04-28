@@ -2,6 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { environment } from 'src/environments/environment';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-flamingo-answer',
@@ -20,11 +21,11 @@ export class FlamingoAnswerComponent implements OnInit {
 
   activeQuestion: any;
 
-  again: boolean = false;
-
   FLAMINGO_UPLOADS = environment.FLAMINGO_BASE_URL+'/uploads/'
 
   constructor(
+    private utilityService: UtilityService,
+    private flamingoService: FlamingoService,
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,
     private router: Router
@@ -43,31 +44,109 @@ export class FlamingoAnswerComponent implements OnInit {
       this.router.navigate(['/',]);
     }
 
-    this.questions = this.flamingo.questions;
+    this.questions = this.flamingo._questions;
 
     this.activeQuestion = this.questions[this.activeQuestionIndex];
 
   }
 
   /**
-  * This function is responsible to change the question
+   * This function is responsible for saving the answer
+   */
+  answerQuestion(value) {
+
+    this.activeQuestion.answer = value;
+
+    // Go to Next Question
+    this.nextQuestion();
+  }
+
+  /**
+  * This function is responsible to change to the next question
   */
-  nextQuestion(){
-    if(this.activeQuestionIndex < this.questions.length-1){
+  nextQuestion() {
+    if (this.activeQuestionIndex < this.questions.length-1) {
       this.activeQuestionIndex = this.activeQuestionIndex+1;
       this.activeQuestion = this.questions[this.activeQuestionIndex];
-    } else if(this.activeQuestionIndex == this.questions.length-1){
-      this.again = true;
     }
   }
 
   /**
-  * This function is responsible to start answer again
+  * This function is responsible to change to the previous question
   */
-  againAnswer(){
-      this.again = false;
-      this.activeQuestionIndex = 0;
-      this.activeQuestion = this.questions[this.activeQuestionIndex];
+  previousQuestion() {
+    this.activeQuestionIndex = this.activeQuestionIndex-1;
+    this.activeQuestion = this.questions[this.activeQuestionIndex];
+  }
+
+  /**
+   * This functin is responsible for submitting the answer
+   */
+  submitAnswers() {
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the flamingo will be submited!')
+      .then((result) => {
+        if (result.value) {
+          this.callSubmitAnswersService();
+        }
+      });
+  }
+
+  callSubmitAnswersService() {
+    let responses = [];
+    for (let i = 0; i < this.questions.length; i++) {
+      const question = this.questions[i];
+      switch (question.type) {
+        case 'ShortText':
+          responses.push({
+            _question: question._id,
+            text_answer: question.answer
+          });
+          break;
+
+        case 'Yes/No':
+          if (question.answer == 'positive') {
+            responses.push({
+              _question: question._id,
+              positive_answer: true,
+              negative_answer: false
+            });
+          } else if (question.answer == 'negative') {
+            responses.push({
+              _question: question._id,
+              positive_answer: false,
+              negative_answer: true
+            });
+          }
+          break;
+
+        case 'Scale':
+          responses.push({
+            _question: question._id,
+            scale_answer: question.answer
+          });
+          break;
+
+        case 'Dropdown':
+          responses.push({
+            _question: question._id,
+            dropdown_answer: question.answer
+          });
+          break;
+      }
+    }
+
+    // Call the HTTP Request Asynschronously
+    this.utilityService.asyncNotification(
+      'Please wait while we are submitting the flamingo',
+      new Promise((resolve, reject) => {
+        this.flamingoService.submit(this.flamingo._id, responses)
+          .then((res) => {
+            resolve(this.utilityService.resolveAsyncPromise('Flamingo has been submited!'));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise('Unexpected error occured while submitting Flamingo, please try again!'));
+          });
+    }));
   }
 
   /**

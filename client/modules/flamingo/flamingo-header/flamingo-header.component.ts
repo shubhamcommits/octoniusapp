@@ -47,7 +47,6 @@ export class FlamingoHeaderComponent implements OnInit {
 
     // Set the groupId
     this.groupId = this._ActivatedRoute.snapshot.queryParamMap.get('group');
-console.log(this.groupId);
 
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.firstChild.paramMap.get('id')

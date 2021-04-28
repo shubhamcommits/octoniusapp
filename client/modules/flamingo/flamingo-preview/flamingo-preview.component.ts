@@ -36,7 +36,7 @@ export class FlamingoPreviewComponent implements OnInit {
     // Fetch Files Details
     this.flamingo = await this.getFlamingo(this.fileId);
 
-    this.questions = this.flamingo.questions;
+    this.questions = this.flamingo._questions;
 
     this.activeQuestion = this.questions[this.activeQuestionIndex];
 

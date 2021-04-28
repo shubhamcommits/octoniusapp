@@ -15,9 +15,12 @@ export class FlamingoService {
     // Select User Fields on population
     userFields: any = 'first_name last_name profile_pic role email';
 
-    // Select Group Fileds on population
-    groupFields: any = 'group_name group_avatar workspace_name'; 
-    
+    // Select Group Fields on population
+    groupFields: any = 'group_name group_avatar workspace_name';
+
+    // Select Question Fields on population
+    questionFields: any = 'type'; 
+
     // Select Group Fileds on population
 
     /**
@@ -52,7 +55,15 @@ export class FlamingoService {
                     model: 'Folder'
                 },
             },
-            { path: 'questions' },
+            { path: '_questions' },
+            {
+                path: 'responses',
+                populate: {
+                    path: '_question',
+                    model: 'Question',
+                    select: this.questionFields
+                }
+            }
         ])
 
         // Return file with populated properties
@@ -68,7 +79,7 @@ export class FlamingoService {
         // Preparing File Data
         let flamingo: any = {
             _file: flamingoData._file,
-            questions: flamingoData.questions,
+            questions: flamingoData._questions,
         }
 
         // Create the new File
@@ -168,4 +179,21 @@ export class FlamingoService {
 
         return this.populateFileProperties(flamingoUpdated);
    }
+
+
+   /** 
+   * This function is responsible to submit the answers of a user
+   * @param flamingoId 
+   * @param responses
+   */
+   async submit(flamingoId, responses) {
+        await Flamingo.findOneAndUpdate(
+            { _id: flamingoId },
+            {
+                $push: {
+                    responses: responses
+                }
+            },
+            { new: true}).lean();
+  }
 }
