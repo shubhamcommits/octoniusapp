@@ -18,7 +18,8 @@ const FlamingoSchema = new Schema({
         required: true,
         default: false
     },
-    responses: [[{
+    responses: [{
+      answers: [{
         _question: {
           type: Schema.Types.ObjectId,
           ref: 'Question'
@@ -38,7 +39,12 @@ const FlamingoSchema = new Schema({
         dropdown_answer: {
             type: String
         }
-    }]],
+      }],
+      created_date: {
+          type: Date,
+          default: moment().format()
+      }
+    }],
     created_date: {
         type: Date,
         default: moment().format()

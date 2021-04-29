@@ -5,6 +5,7 @@ import { FlamingoEditorComponent } from './flamingo-editor/flamingo-editor.compo
 import { FlamingoPreviewComponent } from './flamingo-preview/flamingo-preview.component';
 import { FlamingoPublishComponent } from './flamingo-publish/flamingo-publish.component';
 import { FlamingoAnswerComponent } from './flamingo-answer/flamingo-answer.component';
+import { FlamingoResultComponent } from './flamingo-result/flamingo-result.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,7 @@ const routes: Routes = [
         path:':id/answer', component: FlamingoAnswerComponent
       },
       {
-        path:':id/result', component: FlamingoPreviewComponent
+        path:':id/result', component: FlamingoResultComponent
       }
     ]
   }

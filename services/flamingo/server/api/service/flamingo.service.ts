@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { Flamingo } from '../models';
 import { Question } from '../models';
 
@@ -56,14 +57,7 @@ export class FlamingoService {
                 },
             },
             { path: '_questions' },
-            {
-                path: 'responses',
-                populate: {
-                    path: '_question',
-                    model: 'Question',
-                    select: this.questionFields
-                }
-            }
+            { path: 'responses.answers._question' }
         ])
 
         // Return file with populated properties
@@ -164,7 +158,6 @@ export class FlamingoService {
         return this.populateFileProperties(flamingoUpdated);
     }
 
-
     /** 
     * This function is responsible to publish/unpublish the flamingo
     * @param flamingoId 
@@ -178,22 +171,24 @@ export class FlamingoService {
            { new: true}).lean();
 
         return this.populateFileProperties(flamingoUpdated);
-   }
+    }
 
-
-   /** 
-   * This function is responsible to submit the answers of a user
-   * @param flamingoId 
-   * @param responses
-   */
-   async submit(flamingoId, responses) {
+    /** 
+     * This function is responsible to submit the answers of a user
+     * @param flamingoId 
+     * @param responses
+     */
+    async submit(flamingoId, responses) {
         await Flamingo.findOneAndUpdate(
             { _id: flamingoId },
             {
                 $push: {
-                    responses: responses
+                    responses: {
+                        answers: responses,
+                        created_date: moment().format()
+                    }
                 }
             },
             { new: true}).lean();
-  }
+    }
 }

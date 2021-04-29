@@ -2,6 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { environment } from 'src/environments/environment';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-flamingo-preview',
@@ -20,11 +21,10 @@ export class FlamingoPreviewComponent implements OnInit {
 
   activeQuestion: any;
 
-  again: boolean = false;
-
   FLAMINGO_UPLOADS = environment.FLAMINGO_BASE_URL+'/uploads/'
 
   constructor(
+    private utilityService: UtilityService,
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,
   ) { }
@@ -49,18 +49,27 @@ export class FlamingoPreviewComponent implements OnInit {
     if(this.activeQuestionIndex < this.questions.length-1){
       this.activeQuestionIndex = this.activeQuestionIndex+1;
       this.activeQuestion = this.questions[this.activeQuestionIndex];
-    } else if(this.activeQuestionIndex == this.questions.length-1){
-      this.again = true;
     }
   }
 
   /**
-  * This function is responsible to start preview again
+  * This function is responsible to change to the previous question
   */
-  againPreview(){
-      this.again = false;
-      this.activeQuestionIndex = 0;
-      this.activeQuestion = this.questions[this.activeQuestionIndex];
+  previousQuestion() {
+    this.activeQuestionIndex = this.activeQuestionIndex-1;
+    this.activeQuestion = this.questions[this.activeQuestionIndex];
+  }
+
+  /**
+   * This functin is responsible for submitting the answer
+   */
+  submitAnswers() {
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the flamingo will be submited!')
+      .then((result) => {
+        if (result.value) {
+          open('', '_self').close();
+        }
+      });
   }
 
   /**

@@ -1,0 +1,23 @@
+<div class="insights-container">
+  <div class="row question">
+      <div class="col-md-6">
+        <div class="muted">
+          Responses
+        </div>
+        <div>
+          {{ flamingo?.responses?.length }}
+        </div>
+      </div>
+      <div class="col-md-6">
+
+      </div>
+  </div>
+
+  <div class="row question" *ngFor="let question of flamingo?._questions; let index = index">
+    <div class="col-md-6">
+      <div class="question-title">
+        <span class="badge">{{ index + 1 }}</span> {{ question?.text }}
+      </div>
+    </div>
+  </div>
+</div>

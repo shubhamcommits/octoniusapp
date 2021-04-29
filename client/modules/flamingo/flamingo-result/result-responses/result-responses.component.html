@@ -1,0 +1,43 @@
+<div class="responses-container">
+  <div class="row response">
+      <div class="col-md-2" [ngStyle]="{'border-right': '1px solid #000000','padding': '0px','height': responseListHeight,'overflow-y':'auto','overflow-x':'hidden'}">
+        <div *ngFor="let response of responses; let i = index;"
+            [ngClass]="i==activeResponseIndex?'responses-container-active':'responses-container-inactive'"
+            (click)="changeActiveIndex(i)" style="position: relative;">
+            {{ i }} - {{ response?.created_date | date: 'MMM d, y' }}
+        </div>
+      </div>
+      <div class="col-md-10 answer-container">
+        <div class="active-answer-container">
+          <div class="row active-answer-header">
+            {{ activeResponse?.created_date | date: 'MMM d, y' }}
+          </div>
+          <div *ngFor="let answer of activeResponse?.answers; let index = index" class="row active-answer-body">
+            <div class="col-md-1">
+              <div [ngClass]="getQuestionTypeClass(answer?._question?.type)">
+                <i class="material-icons">{{ getQuestionTypeIcon(answer?._question?.type) }}</i>&nbsp;&nbsp;{{ index + 1 }}
+              </div>
+            </div>
+            <div class="col-md-11 question">
+              <div class="question-title muted">
+                {{ answer?._question?.text }}
+              </div>
+              <div class="answer-short-text" *ngIf="answer?._question?.type == 'ShortText'">
+                {{ answer?.text_answer }}
+              </div>
+              <div class="answer-yes-no" *ngIf="answer?._question?.type == 'Yes/No'">
+                <span *ngIf="answer?.positive_answer">{{ answer?._question?.positive_option_text }}</span>
+                <span *ngIf="answer?.negative_answer">{{ answer?._question?.negative_option_text }}</span>
+              </div>
+              <div class="answer-scale" *ngIf="answer?._question?.type == 'Scale'">
+                {{ answer?.scale_answer }} of {{ answer?._question?.scale?.size }}
+              </div>
+              <div class="answer-dropdown" *ngIf="answer?._question?.type == 'Dropdown'">
+                {{ answer?.dropdown_answer }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
