@@ -1,22 +1,47 @@
 <div class="insights-container">
   <div class="row question">
-      <div class="col-md-6">
+      <div class="col-md-2">
         <div class="muted">
           Responses
         </div>
         <div>
-          {{ flamingo?.responses?.length }}
+          {{ responses?.length }}
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col">
 
       </div>
   </div>
 
-  <div class="row question" *ngFor="let question of flamingo?._questions; let index = index">
-    <div class="col-md-6">
-      <div class="question-title">
-        <span class="badge">{{ index + 1 }}</span> {{ question?.text }}
+  <div *ngFor="let question of questions; let index = index" class="row">
+    <div class="col" class="question">
+      <div class="row">
+        <div class="question-title">
+          <span class="badge">{{ index + 1 }}</span>&nbsp;&nbsp;{{ question?.text }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col question-body">
+          <div class="answer-yes-no" *ngIf="question?.type == 'Yes/No'">
+            <div class="row answer-response">
+              <div class="col-md-1">{{ question?.positive_option_text }}</div>
+              <div class="col response"> {{ getPositiveResponsesStats(question?._id) }}&nbsp;responses</div>
+            </div>
+            <div class="row answer-response">
+              <div class="col-md-1">{{ question?.negative_option_text }}</div>
+              <div class="col response"> {{ getNegativeResponsesStats(question?._id) }}&nbsp;responses</div>
+            </div>
+          </div>
+          <div class="answer-scale" *ngIf="question?.type == 'Scale'">
+            <app-scale-responses-graph [question]="question" [responses]="scaleResponses.get(question?._id)"></app-scale-responses-graph>
+          </div>
+          <div class="answer-dropdown" *ngIf="question?.type == 'Dropdown'">
+            <div *ngFor="let option of question?.options" class="row answer-response">
+              <div class="col-md">{{ option }}</div>
+              <div class="col response"> {{ getDropdawnResponsesStats(question?._id, option) }}&nbsp;responses</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

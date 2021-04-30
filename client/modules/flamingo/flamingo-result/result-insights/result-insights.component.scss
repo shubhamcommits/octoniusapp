@@ -2,7 +2,7 @@
   font-family: Nunito,sans-serif;
   font-style: normal;
   font-weight: 700!important;
-  font-size: 12px;
+  font-size: 20px;
 
   width: 94%;
   margin-left: auto;
@@ -15,20 +15,46 @@
 
     .question-title {
       font-size: 17px;
-      line-height: 20px;
+      line-height: 27px;
     }
 
     .badge {
       background-color: #FBB732;
       margin: 0 1px !important;
-      font-size: 13px;
-      line-height: 15px;
+      font-size: 20px;
+      line-height: 20px;
       display: inline;
       align-items: center;
       color: #ffffff;
-      border-radius: 10px;
-      padding: 2px 5px !important;
+      border-radius: 30px;
+      padding: 5px ​10px !important;
       float: left;
+    }
+
+    .question-body {
+
+      .answer-response {
+        text-align: center;
+        height: 27px;
+        border-bottom: 1px solid #bab6b6;
+
+        .response {
+          color: #FBB732;
+        }
+      }
+
+      .answer-short-text {
+        margin: 10px;
+      }
+      .answer-yes-no {
+        margin: 10px;
+      }
+      .answer-scale {
+        margin: 10px;
+      }
+      .answer-dropdown {
+        margin: 10px;
+      }
     }
   }
 }

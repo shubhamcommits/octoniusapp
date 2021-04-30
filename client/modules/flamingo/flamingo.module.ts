@@ -17,6 +17,7 @@ import { FlamingoPublishComponent } from './flamingo-publish/flamingo-publish.co
 import { FlamingoResultComponent } from './flamingo-result/flamingo-result.component';
 import { ResultInsightsComponent } from './flamingo-result/result-insights/result-insights.component';
 import { ResultResponsesComponent } from './flamingo-result/result-responses/result-responses.component';
+import { ScaleResponsesGraphComponent } from './flamingo-result/result-insights/scale-responses-graph/scale-responses-graph.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ResultResponsesComponent } from './flamingo-result/result-responses/res
     FlamingoPublishComponent,
     FlamingoResultComponent,
     ResultInsightsComponent,
-    ResultResponsesComponent
+    ResultResponsesComponent,
+    ScaleResponsesGraphComponent
   ],
   imports: [
     CommonModule,

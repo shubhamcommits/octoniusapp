@@ -1,7 +1,7 @@
 <div class="result-container">
   <mat-tab-group mat-align-tabs="start">
     <mat-tab label="INSIGHTS">
-      <app-result-insights [flamingo]="flamingo"></app-result-insights>
+      <app-result-insights [responses]="flamingo?.responses" [questions]="flamingo?._questions"></app-result-insights>
     </mat-tab>
     <mat-tab label="RESPONSES">
       <app-result-responses [responses]="flamingo?.responses"></app-result-responses>
