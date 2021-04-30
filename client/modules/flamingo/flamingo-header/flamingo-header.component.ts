@@ -64,7 +64,7 @@ export class FlamingoHeaderComponent implements OnInit {
     this.titleService.setTitle('Octonius | Flamingo - ' + (this.file.original_name || 'New Flamingo'));
 
     const segments = this._ActivatedRoute?.snapshot['_urlSegment']?.segments;
-    this.activeState = segments[2]?.path?segments[1]?.path : 'create_form';
+    this.activeState = segments[2]?.path ? segments[2]?.path : 'create_form';
   }
 
   /**
