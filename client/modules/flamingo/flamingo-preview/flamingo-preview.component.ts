@@ -38,6 +38,11 @@ export class FlamingoPreviewComponent implements OnInit {
 
     this.questions = this.flamingo._questions;
 
+    // Add a last question as a thank you screen after submitting the flamingo
+    this.questions.push({
+      type: 'LastScreen'
+    });
+
     this.activeQuestion = this.questions[this.activeQuestionIndex];
 
   }
@@ -67,7 +72,7 @@ export class FlamingoPreviewComponent implements OnInit {
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the flamingo will be submited!')
       .then((result) => {
         if (result.value) {
-          open('', '_self').close();
+          this.nextQuestion();
         }
       });
   }

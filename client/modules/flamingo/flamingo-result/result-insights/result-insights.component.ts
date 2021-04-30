@@ -45,7 +45,7 @@ export class ResultInsightsComponent implements OnChanges, OnInit  {
       const answerIndex = response?.answers?.findIndex(answer => answer._question._id == questionId);
       const answer = response?.answers[answerIndex];
 
-      if (answer._question.type == 'Yes/No' && answer.positive_answer) {
+      if (answer?._question?.type == 'Yes/No' && answer?.positive_answer) {
         responsesMatch.push({
           positive_answer: answer.positive_answer
         });
@@ -63,12 +63,12 @@ export class ResultInsightsComponent implements OnChanges, OnInit  {
     let responsesMatch = []
     this.responses?.forEach(response => {
 
-      const answerIndex = response?.answers?.findIndex(answer => answer._question._id == questionId);
+      const answerIndex = response?.answers?.findIndex(answer => answer?._question?._id == questionId);
       const answer = response?.answers[answerIndex];
 
-      if (answer._question.type == 'Yes/No' && answer.negative_answer) {
+      if (answer?._question.type == 'Yes/No' && answer?.negative_answer) {
         responsesMatch.push({
-          negative_answer: answer.negative_answer
+          negative_answer: answer?.negative_answer
         });
       }
     });
@@ -101,10 +101,10 @@ export class ResultInsightsComponent implements OnChanges, OnInit  {
     let responsesMatch = []
     this.responses?.forEach(response => {
 
-      const answerIndex = response?.answers?.findIndex(answer => answer._question._id == questionId);
+      const answerIndex = response?.answers?.findIndex(answer => answer?._question?._id == questionId);
       const answer = response?.answers[answerIndex];
       responsesMatch.push({
-        scale_answer: answer.scale_answer
+        scale_answer: answer?.scale_answer
       });
     });
     return responsesMatch;

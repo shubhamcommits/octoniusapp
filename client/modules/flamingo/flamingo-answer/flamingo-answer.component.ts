@@ -41,10 +41,16 @@ export class FlamingoAnswerComponent implements OnInit {
     // if the flamingo is not publish, we send the user to the home page.
     // -- Should do this on the guard, but I am not able to obtain the flamingo ID
     if (!this.flamingo.publish) {
+      this.utilityService.errorNotification('The Flamingo you are trying to access is not published yet, please try again later!')
       this.router.navigate(['/',]);
     }
 
     this.questions = this.flamingo._questions;
+
+    // Add a last question as a thank you screen after submitting the flamingo
+    this.questions.push({
+      type: 'LastScreen'
+    });
 
     this.activeQuestion = this.questions[this.activeQuestionIndex];
 
@@ -141,6 +147,7 @@ export class FlamingoAnswerComponent implements OnInit {
       new Promise((resolve, reject) => {
         this.flamingoService.submit(this.flamingo._id, responses)
           .then((res) => {
+            this.nextQuestion();
             resolve(this.utilityService.resolveAsyncPromise('Flamingo has been submited!'));
           })
           .catch(() => {

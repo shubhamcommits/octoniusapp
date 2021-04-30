@@ -78,7 +78,8 @@ export class ScaleResponsesGraphComponent implements OnChanges {
    */
   private async getPercentagesData() {
     this.percentages = [];
-    this.countsData.forEach(count => {this.percentages?.push((count*100/this.responses?.length))});
+
+    this.countsData.forEach(count => {this.percentages?.push((Math.round(((count*100/this.responses?.length) + Number.EPSILON) * 100) / 100))});
   }
 
   /**
