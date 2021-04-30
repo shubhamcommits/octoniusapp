@@ -1,22 +1,27 @@
 <div *ngIf="activeQuestion?.type != 'LastScreen'">
-    <!-- container for welcome and thanks question type start-->
+    <!-- Action buttons-->
     <div class="answer-container">
-        <button *ngIf="activeQuestionIndex > 0"
-          class="btn btn-danger" (click)="previousQuestion()">Previous</button>
-        <button *ngIf="activeQuestionIndex == questions?.length-2"
-            class="btn btn-success" (click)="submitAnswers()">Submit</button>
-        <button *ngIf="activeQuestion?.type==='Welcome' && activeQuestionIndex == 0"
-            class="btn btn-primary" (click)="nextQuestion()">Start</button>
-        <button *ngIf="activeQuestionIndex > 0 && activeQuestionIndex < questions?.length-2"
-            class="btn btn-primary" (click)="nextQuestion()">Next</button>
+      <button *ngIf="activeQuestionIndex > 0"
+        class="btn btn-danger" (click)="previousQuestion()">Previous</button>
+      &nbsp;&nbsp;
+      <button *ngIf="activeQuestionIndex == questions?.length-2"
+          class="btn btn-success" (click)="submitAnswers()">Submit</button>
+      &nbsp;&nbsp;
+      <button *ngIf="activeQuestion?.type==='Welcome' && activeQuestionIndex == 0"
+          class="btn btn-primary" (click)="nextQuestion()">Start</button>
+      &nbsp;&nbsp;
+      <button *ngIf="activeQuestionIndex > 0 && activeQuestionIndex < questions?.length-2"
+          class="btn btn-primary" (click)="nextQuestion()">Next</button>
+    </div>
 
-
-        <img *ngIf="activeQuestion?.image_url && (activeQuestion?.type == 'Welcome' || activeQuestion?.type == 'Thanks')"
+    <!-- container for welcome and thanks question type end-->
+    <div *ngIf="activeQuestion?.type == 'Welcome' || activeQuestion?.type == 'Thanks'"
+      class="answer-container">
+        <img *ngIf="activeQuestion?.image_url"
             class="welcome-img"
             src="{{FLAMINGO_UPLOADS}}{{activeQuestion?.image_url}}" />
-        <h2 *ngIf="activeQuestion?.type == 'Welcome' || activeQuestion?.type == 'Thanks'">{{activeQuestion?.text}}</h2>
+        <h2>{{activeQuestion?.text}}</h2>
     </div>
-    <!-- container for welcome and thanks question type end-->
 
     <!-- container for all other question except welcome and thanks question type start-->
     <!-- background image div -->
