@@ -202,8 +202,7 @@ export class FlamingoEditorComponent implements OnInit {
           .then((res) => {
 
             this.flamingo = res['flamingo'];
-
-            this.questions = this.flamingo.questions;
+            this.questions = this.flamingo._questions;
 
             resolve(utilityService.resolveAsyncPromise('Question has been created and added to Flamingo'))
 

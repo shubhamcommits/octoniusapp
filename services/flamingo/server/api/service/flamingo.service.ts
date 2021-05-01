@@ -73,7 +73,7 @@ export class FlamingoService {
         // Preparing File Data
         let flamingo: any = {
             _file: flamingoData._file,
-            questions: flamingoData._questions,
+            _questions: flamingoData._questions,
         }
 
         // Create the new File
@@ -106,7 +106,7 @@ export class FlamingoService {
      */
     async addQuestion(questionId:any,flamingoId:any){
         let query = {_id: flamingoId};
-        let data = { $push: { questions: questionId }}
+        let data = { $push: { _questions: questionId }}
 
         let flamigoupdated = await Flamingo.findByIdAndUpdate(query,data,{new:true});
 
@@ -120,7 +120,7 @@ export class FlamingoService {
      * @param data 
      */
     async createQuestion(data:any){
-        return await Question.create(data) ;
+        return await Question.create(data);
     }
 
      /** 
@@ -130,7 +130,7 @@ export class FlamingoService {
      */
       async removeQuestion(questionId:any,flamingoId:any){
         let query = {_id: flamingoId};
-        let data = { $pull: { questions: questionId }}
+        let data = { $pull: { _questions: questionId }}
 
         let flamigoupdated = await Flamingo.findByIdAndUpdate(query,data,{new:true});
 
