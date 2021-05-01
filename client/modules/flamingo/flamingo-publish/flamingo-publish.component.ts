@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -13,6 +14,8 @@ export class FlamingoPublishComponent implements OnInit {
   flamingo: any;
   fileId: string;
 
+  flamingoURL;
+
   constructor(
     private _ActivatedRoute: ActivatedRoute,
     private flamingoService: FlamingoService,
@@ -23,6 +26,7 @@ export class FlamingoPublishComponent implements OnInit {
 
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.params['id'];
+    this.flamingoURL = environment.clientUrl + '/flamingo/' + this.fileId + '/answer';
 
     // Fetch Flamingo Details
     await this.flamingoService.getOne(this.fileId).then((res) => {
@@ -53,5 +57,37 @@ export class FlamingoPublishComponent implements OnInit {
           }));
         }
       });
+  }
+
+  /**
+   * This function is responsible for copying the flamingo answers link to the clipboard
+   */
+  copyToClipboard() {
+
+    // Create Selection Box
+    let selBox = document.createElement('textarea');
+
+    // Set the CSS Properties
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+
+    selBox.value = this.flamingoURL;
+    // Append the element to the DOM
+    document.body.appendChild(selBox);
+
+    // Set the focus and Child
+    selBox.focus();
+    selBox.select();
+
+    // Execute Copy Command
+    document.execCommand('copy');
+
+    // Once Copied remove the child from the dom
+    document.body.removeChild(selBox);
+
+    // Show Confirmed notification
+    this.utilityService.simpleNotification(`Copied to Clipboard!`);
   }
 }
