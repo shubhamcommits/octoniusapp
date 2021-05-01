@@ -36,8 +36,11 @@
             font-family: 'Nunito', sans-serif;
         }
 
-        a {
-            color: #336699;
+        .btn {
+            color: #ffffff !important;
+            padding: 10px;
+            background: #005fd5;
+            border-radius: 8px;
         }
 
         textarea {
@@ -146,16 +149,18 @@
                 <h1 class="title"> <img src="https://www.octonius.com/wp-content/uploads/2020/10/octonius-icon.png"
                     alt="user avatar" style="width: 42px; height: 42px; border-radius: 24px" /> <br> 👋 Hi!
             </h1>
-                <span class="byline"> <%= fromName %> invited you to join '<%= workspace %>' workplace! </span>
+                <span class="byline"> <%= fromName %> invited you to join<br> <span style="color:#005df5"><%= workspace %></span> workplace! </span>
             </div>
             <div class="description">
-                <p style="text-align: center">
-                    It's really easy. Click the link bellow to signup, and follow the steps using the workplace name <strong><%= workspace %></strong> and access code <strong><%= accessCode %></strong>.
+                <p style="text-align: left">
+                   <strong> It's really easy:</strong> <br><br>
+                    1. click the link bellow to signup. <br>
+                    2. In the next screen, click the <strong>JOIN ANOTHER WORKPLACE</strong> and enter the workplace name <strong style="color:#005fd5"><%= workspace %></strong> and access code <strong style="color:#005fd5"><%= accessCode %></strong> in the form.
                 </p>
-
+               
                 <div class="task-button" style="margin-top: 30px; text-align: center;">
-                    <a class="btn btn-primary" href="<%= link %>">
-                        Accept invite
+                    <a href="<%= link %>" class="btn">
+                        SIGN UP
                     </a>
                 </div>
                 <p style="text-align: center">
