@@ -66,7 +66,7 @@ export class ResultResponsesComponent implements OnChanges {
   getQuestionTypeIcon(questionType: string) {
     switch (questionType) {
       case 'ShortText':
-        return 'textsms';
+        return 'text_snippet';
       case 'Yes/No':
         return 'rule';
       case 'Scale':
