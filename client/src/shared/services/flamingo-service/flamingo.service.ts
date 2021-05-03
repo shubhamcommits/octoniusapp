@@ -104,8 +104,6 @@ export class FlamingoService {
     }
     formData.append('fileData', JSON.stringify(fileData));
 
-    console.log("sdsdssdfdsgeewerwf",formData);
-
     return this._http.put(this.baseURL + `/question/image`, formData).toPromise();
   }
 

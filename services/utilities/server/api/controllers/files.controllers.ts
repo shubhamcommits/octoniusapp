@@ -195,7 +195,7 @@ export class FilesControllers {
         try {
 
             // Fetch the fileId from the request
-            let { fileId } = req.params
+            const { params: { fileId }, body: { flamingoType } } = req;
 
             // If fileId is not found, then throw the error
             if (!fileId)
@@ -204,7 +204,7 @@ export class FilesControllers {
                 })
 
             // Get File on the basis of the fileId
-            let file = await filesService.delete(fileId);
+            let file = await filesService.delete(fileId, flamingoType);
 
             // Send Status 200 response
             return res.status(200).json({

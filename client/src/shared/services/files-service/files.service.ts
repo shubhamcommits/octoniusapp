@@ -98,10 +98,11 @@ export class FilesService {
    * @param fileId
    * @param fileName
    */
-  deleteFile(fileId: string, fileName: any) {
+  deleteFile(fileId: string, fileName: any, flamingoType?: boolean) {
     return this._http.request('delete', this.baseURL + `/files/${fileId}`, {
       body: {
-        fileName: fileName
+        fileName: fileName,
+        flamingoType: flamingoType
       }
     }).toPromise();
   }

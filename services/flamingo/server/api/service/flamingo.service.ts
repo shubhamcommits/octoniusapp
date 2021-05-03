@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { Flamingo } from '../models';
 import { Question } from '../models';
+import { Readable } from 'stream';
 
 
 /*  ===============================
@@ -28,7 +29,7 @@ export class FlamingoService {
      * This function is used to populate a flamingo with all the possible properties
      * @param file
      */
-     async populateFileProperties(flamingo: any) {
+    async populateFlamingoProperties(flamingo: any) {
 
         // Populate file properties
         flamingo = await Flamingo.populate(flamingo, [
@@ -80,7 +81,7 @@ export class FlamingoService {
         flamingo = await Flamingo.create(flamingo);
 
         // Populate File Properties
-        flamingo = this.populateFileProperties(flamingo);
+        flamingo = this.populateFlamingoProperties(flamingo);
 
         // Return file
         return flamingo
@@ -94,7 +95,7 @@ export class FlamingoService {
       async get(fileId: string) {
 
         let flamingo = await Flamingo.findOne({_file:fileId})
-        flamingo = this.populateFileProperties(flamingo);
+        flamingo = this.populateFlamingoProperties(flamingo);
         
         return flamingo;
     }
@@ -110,7 +111,7 @@ export class FlamingoService {
 
         let flamigoupdated = await Flamingo.findByIdAndUpdate(query,data,{new:true});
 
-        flamigoupdated = this.populateFileProperties(flamigoupdated);
+        flamigoupdated = this.populateFlamingoProperties(flamigoupdated);
 
         return flamigoupdated;
     }
@@ -123,18 +124,18 @@ export class FlamingoService {
         return await Question.create(data);
     }
 
-     /** 
+    /** 
      * This function is responsible to add new question to flamingo form
      * @param questionId 
      * @param flamingoId 
      */
-      async removeQuestion(questionId:any,flamingoId:any){
+    async removeQuestion(questionId:any,flamingoId:any){
         let query = {_id: flamingoId};
         let data = { $pull: { _questions: questionId }}
 
         let flamigoupdated = await Flamingo.findByIdAndUpdate(query,data,{new:true});
 
-        flamigoupdated = this.populateFileProperties(flamigoupdated);
+        flamigoupdated = this.populateFlamingoProperties(flamigoupdated);
 
         return flamigoupdated;
     }
@@ -152,10 +153,10 @@ export class FlamingoService {
      * @param questionId 
      * @param data 
      */
-     async updateQuestion(questionId: any, data: any) {
+    async updateQuestion(questionId: any, data: any) {
         let query = { _id: questionId };
         let flamingoUpdated = await Question.findOneAndUpdate(query,data,{new : true});
-        return this.populateFileProperties(flamingoUpdated);
+        return this.populateFlamingoProperties(flamingoUpdated);
     }
 
     /** 
@@ -170,7 +171,7 @@ export class FlamingoService {
            { $set: {publish: publish }},
            { new: true}).lean();
 
-        return this.populateFileProperties(flamingoUpdated);
+        return this.populateFlamingoProperties(flamingoUpdated);
     }
 
     /** 

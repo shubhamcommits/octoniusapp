@@ -35,8 +35,6 @@ export class FlamingoEditorComponent implements OnInit {
 
   scaleSize = 5;
 
-  flamingoId: any;
-
   showLabels: boolean = false;
 
   FLAMINGO_UPLOADS = environment.FLAMINGO_BASE_URL + '/uploads/'
@@ -64,12 +62,15 @@ export class FlamingoEditorComponent implements OnInit {
     // Fetch Files Details
     this.flamingo = await this.getFile(this.fileId);
 
-    this.questions = this.flamingo._questions;
+    if (this.flamingo) {
+      this.questions = this.flamingo._questions;
 
-    this.activeQuestion = this.questions[this.activeQuestionIndex];
-
-    this.flamingoId = this.activeQuestion?._id;
-
+      if (this.questions) {
+        this.activeQuestion = this.questions[this.activeQuestionIndex];
+      } else {
+        this.questions = [];
+      }
+    }
     this.questionListHeight = (window.innerHeight - 90) + 'px';
 
   }
@@ -92,8 +93,6 @@ export class FlamingoEditorComponent implements OnInit {
   async changeActiveIndex(index: number) {
     this.activeQuestionIndex = index;
     this.activeQuestion = this.questions[this.activeQuestionIndex];
-    this.flamingoId = this.activeQuestion?._id;
-
   }
 
   /**
@@ -270,7 +269,7 @@ export class FlamingoEditorComponent implements OnInit {
     utilityService.asyncNotification(
       `Please wait while we are deleting question`,
       new Promise((resolve, reject) => {
-        flamingoService.deleteQuestion(this.flamingo._id, questionId)
+        flamingoService.deleteQuestion(this.flamingo?._id, questionId)
           .then((res) => {
 
             this.flamingo = res['flamingo'];
@@ -285,7 +284,6 @@ export class FlamingoEditorComponent implements OnInit {
             }
 
             this.activeQuestion = this.questions[this.activeQuestionIndex];
-            this.flamingoId = this.activeQuestion?._id;
 
             resolve(utilityService.resolveAsyncPromise('Question has been deleted and removed from Flamingo!'))
 
