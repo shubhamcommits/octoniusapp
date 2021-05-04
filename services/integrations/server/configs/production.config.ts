@@ -84,6 +84,10 @@ function prodConfigInit() {
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/utilities`
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/utilities`
 
+  // Flamingo Microservice
+  process.env.FLAMINGO_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/flamingo`
+  process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/flamingo`
+
   // Client Server
   process.env.CLIENT_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/`
 

@@ -88,6 +88,11 @@ function devConfigInit() {
   process.env.UTILITIES_PORT = process.env.UTILITIES_PORT || '10000'
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}`
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}/api`
+
+  // Flamingo Microservice
+  process.env.FLAMINGO_PORT = process.env.FLAMINGO_PORT || '14000'
+  process.env.FLAMINGO_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}`
+  process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}/api`
 };
 
 export { devConfigInit as developmentConfig }
