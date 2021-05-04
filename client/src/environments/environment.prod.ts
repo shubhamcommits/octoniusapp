@@ -71,6 +71,10 @@ export const environment = {
   POST_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/posts`,
 
   // Notifications URLs
+  FLAMINGO_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/flamingo`,
+  FLAMINGO_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/flamingo`,
+
+  // Notifications URLs
   NOTIFICATIONS_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}`,
   NOTIFICATIONS_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/notifications`,
 
