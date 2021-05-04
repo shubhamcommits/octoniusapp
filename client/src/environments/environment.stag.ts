@@ -10,7 +10,7 @@ export const environment = {
 
   //slack redirect url for authentication
   slack_redirect_url:`https://slack.com/oauth/v2/authorize?client_id=2561616476.1793890184164&scope=commands,incoming-webhook`,
-  
+
   // Browser Storage Key
   storageKey: 'storageKey@20xx',
 
@@ -69,5 +69,6 @@ export const environment = {
   UTILITIES_GROUPS_UPLOADS: 'http://localhost:80/uploads/groups',
   UTILITIES_POSTS_UPLOADS: 'http://localhost:80/uploads/posts',
   UTILITIES_USERS_UPLOADS: 'http://localhost:80/uploads/users',
-  UTILITIES_WORKSPACES_UPLOADS: 'http://localhost:80/uploads/workspaces'
+  UTILITIES_WORKSPACES_UPLOADS: 'http://localhost:80/uploads/workspaces',
+  UTILITIES_FLAMINGOS_UPLOADS: 'http://localhost:80/uploads/flamingo',
 };
