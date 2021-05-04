@@ -15,7 +15,7 @@
               <div class="url-box" *ngIf="fileId && flamingo?.publish">
                 {{ flamingoURL }}
               </div>
-              <i (click)="copyToClipboard()"
+              <i (click)="copyToClipboard()" *ngIf="fileId && flamingo?.publish"
                 class="material-icons-outlined" style="cursor: pointer; margin-top: 20px;margin-left: 20px;">
                 content_copy
               </i>

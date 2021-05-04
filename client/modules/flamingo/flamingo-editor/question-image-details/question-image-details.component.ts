@@ -24,19 +24,20 @@ export class QuestionImageDetailsComponent implements OnInit {
   @Input('flamingoId') flamingoId: any;
 
   @Input('activeQuestion') activeQuestion: any;
-  
+
   @Input('workspaceId') workspaceId: any;
-  
+
   // Emitter to notify that the view is changing
   @Output() uploadImageEmitter: EventEmitter<any> = new EventEmitter<any>();
 
-  
-  FLAMINGO_UPLOADS = environment.FLAMINGO_BASE_URL+'/uploads/'
-  
+
+  FLAMINGO_UPLOADS = environment.UTILITIES_FLAMINGOS_UPLOADS;
+
   // Cropped Image of the Input Image File
   croppedImage: File;
 
   imageSrc: any;
+
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 

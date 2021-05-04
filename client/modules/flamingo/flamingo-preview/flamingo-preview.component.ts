@@ -21,7 +21,7 @@ export class FlamingoPreviewComponent implements OnInit {
 
   activeQuestion: any;
 
-  FLAMINGO_UPLOADS = environment.FLAMINGO_BASE_URL+'/uploads/'
+  FLAMINGO_UPLOADS = environment.UTILITIES_FLAMINGOS_UPLOADS;
 
   constructor(
     private utilityService: UtilityService,

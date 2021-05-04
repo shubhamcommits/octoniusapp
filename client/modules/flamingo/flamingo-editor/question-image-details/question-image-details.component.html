@@ -9,8 +9,10 @@
 <!-- QUESTION IMAGE DETAIL MODAL CHANGE IMAGE STARTS -->
 <div class="modal-body">
     <div class="form-group">
-        <img *ngIf="!imageSrc" src="{{FLAMINGO_UPLOADS}}{{activeQuestion?.image_url}}"/>
-        <img *ngIf="imageSrc" [src]="imageSrc || 'http://placehold.it/180'" alt="your image" />
+        <app-secured-image *ngIf="!imageSrc && activeQuestion?.image_url"
+          [imgURL]="activeQuestion?.image_url"
+          [service]="'flamingo'"></app-secured-image>
+        <img *ngIf="imageSrc" [src]="imageSrc" />
         <div class="input-group mb-3">
             <div class="custom-file">
                 <input type="file" class="custom-file-input" accept="image/*" (change)="fileChangeEvent($event)" />

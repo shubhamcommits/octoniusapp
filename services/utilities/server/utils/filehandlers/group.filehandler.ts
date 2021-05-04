@@ -1,7 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../senderror";
 import { File, Flamingo } from '../../api/models';
-import { Question } from "../../api/models/questions.model";
 
 const fs = require("fs");
 

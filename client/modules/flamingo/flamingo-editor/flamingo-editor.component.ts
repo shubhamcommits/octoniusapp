@@ -37,7 +37,7 @@ export class FlamingoEditorComponent implements OnInit {
 
   showLabels: boolean = false;
 
-  FLAMINGO_UPLOADS = environment.FLAMINGO_BASE_URL + '/uploads/'
+  FLAMINGO_UPLOADS = environment.UTILITIES_FLAMINGOS_UPLOADS;
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this._Injector);
