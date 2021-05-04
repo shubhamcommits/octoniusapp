@@ -1,7 +1,4 @@
-import { Folder, File, Group, Flamingo } from '../models';
-import { Readable } from 'stream';
-import { FoldersService } from '.';
-import http from 'axios';
+import { File, Group, Flamingo } from '../models';
 import { Question } from '../models/questions.model';
 
 export class FilesService {
@@ -390,5 +387,18 @@ export class FilesService {
             // Return file
             return file;
         }
+    }
+
+    /** 
+     * This function is responsible to create new flamingo form
+     * @param data 
+     */
+    async createFlamingo(fileId: string){
+
+        // Create the new File
+        return await Flamingo.create({
+            _file: fileId,
+            _questions: []
+        });
     }
 }

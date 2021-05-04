@@ -74,7 +74,7 @@ export class FlamingoService {
         // Preparing File Data
         let flamingo: any = {
             _file: flamingoData._file,
-            _questions: flamingoData._questions,
+            _questions: flamingoData._questions || []
         }
 
         // Create the new File
