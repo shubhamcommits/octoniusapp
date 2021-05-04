@@ -133,7 +133,7 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
     flamingo._questions.forEach(async question => {
       if (question.image_url && question.image_url != '') {
         // Delete the file accordingly and handle request
-        fs.unlink(process.env.FLAMINGO_UPLOADS + question.image_url, (error) => {
+        fs.unlink(process.env.FILE_UPLOAD_FOLDER + question.image_url, (error) => {
           if (error) {
             return res.status(500).json({
               status: '500',
