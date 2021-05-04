@@ -1,0 +1,32 @@
+<!-- QUESTION IMAGE DETAIL MODAL STARTS -->
+
+<!-- QUESTION IMAGE DETAIL HEADER STARTS -->
+<div class="modal-header">
+    <h4 class="modal-title">Upload your Question Image</h4>
+</div>
+<!-- QUESTION IMAGE DETAIL HEADER ENDS -->
+
+<!-- QUESTION IMAGE DETAIL MODAL CHANGE IMAGE STARTS -->
+<div class="modal-body">
+    <div class="form-group">
+        <app-secured-image *ngIf="!imageSrc && activeQuestion?.image_url"
+          [imgURL]="activeQuestion?.image_url"
+          [service]="'flamingo'"></app-secured-image>
+        <img *ngIf="imageSrc" [src]="imageSrc" />
+        <div class="input-group mb-3">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" accept="image/*" (change)="fileChangeEvent($event)" />
+                <label class="custom-file-label">Choose file</label>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- QUESTION IMAGE DETAIL MODAL CHANGE IMAGE ENDS -->
+
+<!-- QUESTION IMAGE DETAIL FOOTER STARTS -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="uploadImage()">Upload your Image!</button>
+</div>
+<!-- QUESTION IMAGE DETAIL FOOTER ENDS -->
+
+<!-- QUESTION IMAGE DETAIL DETAIL MODAL ENDS -->

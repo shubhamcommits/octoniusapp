@@ -1,0 +1,17 @@
+@import "src/assets/scss/variables";
+
+.answer-response {
+  text-align: center;
+  height: 23px;
+  font-size: 17px;
+  border-bottom: 1px solid #bab6b6;
+
+  .response {
+    color: #FBB732;
+  }
+}
+
+.label {
+  position: absolute;
+  font-size: 15px;
+}

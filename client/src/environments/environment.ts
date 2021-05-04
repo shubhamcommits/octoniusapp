@@ -84,6 +84,10 @@ export const environment = {
   NOTIFICATIONS_BASE_URL: `ws://${url.domain}:9000`,
   NOTIFICATIONS_BASE_API_URL: `${url.protocol}://${url.domain}:9000/api`,
 
+  // Notifications URLs
+  FLAMINGO_BASE_URL: `${url.protocol}://${url.domain}:14000`,
+  FLAMINGO_BASE_API_URL: `${url.protocol}://${url.domain}:14000/api`,
+
   // Utilities URLs
   UTILITIES_BASE_URL: `${url.protocol}://${url.domain}:10000`,
   UTILITIES_BASE_API_URL: `${url.protocol}://${url.domain}:10000/api`,
@@ -92,6 +96,7 @@ export const environment = {
   UTILITIES_POSTS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/posts`,
   UTILITIES_USERS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/users`,
   UTILITIES_WORKSPACES_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/workspaces`,
+  UTILITIES_FLAMINGOS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/flamingo`,
 
   // Folio URLs
   FOLIO_BASE_URL: `${url.websocket}://${url.domain}:11000`

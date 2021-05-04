@@ -352,7 +352,38 @@ services:
       - mongodb
     networks:
       - acc
-          
+      
+  flamingo-server:
+    container_name: octonius_flamingo-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:flamingo-server
+    ports:
+      - ${FLAMINGO_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - acc_flamingo_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - SENDGRID_KEY=${SENDGRID_KEY}
+      - SK_STRIPE=${SK_STRIPE}
+      - STRIPE_PLAN=${STRIPE_PLAN}
+      - WEBHOOK_PS_SECRET=${WEBHOOK_PS_SECRET}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    networks:
+      - acc
+
   client:
     container_name: octonius_client
     image: ${DOCKER_USER}/${DOCKER_REPO}:client
@@ -374,6 +405,7 @@ services:
       - utilities-server
       - folio-server
       - search-server
+      - flamingo-server
     networks:
       - acc
     
@@ -395,6 +427,7 @@ services:
       - utilities-server
       - folio-server
       - search-server
+      - flamingo-server
       - client
     networks:
       - acc
@@ -440,6 +473,13 @@ volumes:
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/utilities
+      o: bind
+
+  acc_flamingo_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/flamingo
       o: bind
 
   acc_search_uploads_data:

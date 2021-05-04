@@ -1,6 +1,7 @@
 import { Component, OnChanges, OnDestroy, Output, Input, Injector, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { FilesService } from 'src/shared/services/files-service/files.service';
+import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -233,6 +234,29 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
     }
 
     this.uploadFile(folio);
+
+    // Stop the loading spinner
+    this.isLoading$.next(false);
+  }
+
+  /**
+  * This function is responsible for creating a flamingo
+  */
+  createFlamingo(){
+
+    this.isLoading$.next(true);
+
+    const flamingoData: any = {
+      _group: this.groupId,
+      _folder: this.folderId,
+      _posted_by: this.userData._id,
+      original_name: 'New Flamingo',
+      modified_name:'New Flamingo',
+      type: 'flamingo',
+      mime_type: 'flamingo'
+    }
+
+    this.uploadFile(flamingoData);
 
     // Stop the loading spinner
     this.isLoading$.next(false);

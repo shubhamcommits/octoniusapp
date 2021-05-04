@@ -55,6 +55,9 @@ export class GroupFilesComponent implements OnInit {
   // Folders Array variable
   folders: any = [];
 
+  // Folders Array variable
+  forms: any = [];
+
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
@@ -209,8 +212,8 @@ export class GroupFilesComponent implements OnInit {
         if (result.value) {
           // Remove the file
           this.utilityService.asyncNotification('Please wait, we are deleting...', new Promise((resolve, reject) => {
-            if (type == 'file' || type == 'folio') {
-              this.filesService.deleteFile(itemId, fileName)
+            if (type == 'file' || type == 'folio' || type == 'flamingo') {
+              this.filesService.deleteFile(itemId, fileName, type == 'flamingo')
                 .then((res) => {
                   // Emit the Deleted file to all the components in order to update the UI
                   this.delete.emit(res['file']);

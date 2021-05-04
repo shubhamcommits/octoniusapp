@@ -61,6 +61,10 @@ pm2 stop folio-server
 
 pm2 delete folio-server
 
+# Stops and kills the folio server from port 11000
+pm2 stop flamingo-server
+
+pm2 delete flamingo-server
 
 # Stops and kills the search server from port 12000
 pm2 stop search-server

@@ -31,6 +31,7 @@ export class SecuredImageComponent implements OnChanges  {
   // this stream will contain the actual url that our img tag will load
   // everytime the src changes, the previous call would be canceled and the
   // new resource would be loaded
+
   dataUrl$;
 
   isLocalImg: boolean = false;
@@ -87,6 +88,20 @@ export class SecuredImageComponent implements OnChanges  {
         this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
         this.onErrorUrl = "assets/images/user.png";
         break;
+      case 'flamingo':
+          if(!this.imgURL) {
+            this.imgURL = "http://placehold.it/180";
+            this.isLocalImg = true;
+          }
+
+          if (!this.isLocalImg) {
+            this.src$.next(environment.UTILITIES_FLAMINGOS_UPLOADS + '/' + this.imgURL);
+          } else {
+            this.src$.next(this.imgURL);
+          }
+          this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+          this.onErrorUrl = "http://placehold.it/180";
+          break;
       default:
         break;
     }
@@ -103,6 +118,7 @@ export class SecuredImageComponent implements OnChanges  {
     } else {
       return this.httpClient
         // load the image as a blob
+
         .get(url, { responseType: 'blob' })
         // create an object url of that blob that we can use in the src attribute
         .pipe(map(e => this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(e))));
