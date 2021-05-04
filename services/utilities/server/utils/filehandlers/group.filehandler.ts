@@ -129,20 +129,22 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
       { path: '_questions' }
     ]);
 
-    flamingo._questions.forEach(async question => {
-      if (question.image_url && question.image_url != '') {
-        // Delete the file accordingly and handle request
-        fs.unlink(process.env.FILE_UPLOAD_FOLDER + question.image_url, (error) => {
-          if (error) {
-            return res.status(500).json({
-              status: '500',
-              message: 'file upload error',
-              error: error
-            });
-          }
-        });
-      }
-    });
+    if (flamingo) {
+      flamingo._questions.forEach(async question => {
+        if (question.image_url && question.image_url != '') {
+          // Delete the file accordingly and handle request
+          fs.unlink(process.env.FILE_UPLOAD_FOLDER + question.image_url, (error) => {
+            if (error) {
+              return res.status(500).json({
+                status: '500',
+                message: 'file upload error',
+                error: error
+              });
+            }
+          });
+        }
+      });
+    }
   }
 
   // Pass the middleware// Pass the middleware
