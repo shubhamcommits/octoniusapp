@@ -227,14 +227,16 @@ export class FilesService {
                     { path: '_questions' }
                 ]);
 
-                flamingo = await Flamingo.findByIdAndDelete({_id: flamingo._id});
+                if (flamingo) {
+                    flamingo = await Flamingo.findByIdAndDelete({_id: flamingo._id});
 
-                // Delete the questions
-                flamingo._questions.forEach(async question => {
-                    await Question.findByIdAndDelete({
-                        _id: question._id || question
+                    // Delete the questions
+                    flamingo._questions.forEach(async question => {
+                        await Question.findByIdAndDelete({
+                            _id: question._id || question
+                        });
                     });
-                });
+                }
             }
 
             await File.findByIdAndDelete(fileId);
