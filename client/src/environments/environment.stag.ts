@@ -61,7 +61,7 @@ export const environment = {
 
   // Notifications URLs
   FLAMINGO_BASE_URL: 'http://localhost:80/flamingo',
-  FLAMINGO_BASE_API_URL: 'http://localhost:80/flamingo/api',
+  FLAMINGO_BASE_API_URL: 'http://localhost:80/api/flamingo',
 
   // Notifications URLs
   NOTIFICATIONS_BASE_URL: 'ws://localhost:80',

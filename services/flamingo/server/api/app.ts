@@ -80,10 +80,6 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 // Routes to handle notifications
 app.use('/api', flamingoRoutes);
 
-// // Correct REST naming
-// app.use('/api/billings', billingRoutes);
-// app.use('/api/workspaces', workspaceRoutes);
-
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
     const error = new Error('404 not found');

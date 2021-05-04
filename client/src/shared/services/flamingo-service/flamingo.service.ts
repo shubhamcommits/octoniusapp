@@ -12,15 +12,6 @@ export class FlamingoService {
   baseURL = environment.FLAMINGO_BASE_API_URL;
 
   /**
-   * This function is responsible for uploding a file to the group
-   * @param flamingoData
-   */
-  createForm(flamingoData: any, ) {
-
-    return this._http.post(this.baseURL + `/create-form`, {flamingoData}).toPromise();
-  }
-
-  /**
    * This function is responsible for fetching list of files
    * @param groupId
    * @param lastFormId

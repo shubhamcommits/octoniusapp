@@ -40,8 +40,6 @@ if (cluster.isMaster) {
   // Creating Sockets Microservice Server
   const server = http.createServer(app);
 
-  // Initializing the sockets
-
   // Exposing the server to the desired port
   server.listen(port, host, () => {
     console.log(`
