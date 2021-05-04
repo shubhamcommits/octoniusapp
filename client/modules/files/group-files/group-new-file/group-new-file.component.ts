@@ -34,8 +34,6 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
   // Output files event emitter
   @Output('file') fileEmitter = new EventEmitter();
 
-  @Output('form') formEmitter = new EventEmitter();
-
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
@@ -245,7 +243,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
   * This function is responsible for creating a flamingo
   */
   createFlamingo(){
-    
+
     this.isLoading$.next(true);
 
     const flamingoData: any = {

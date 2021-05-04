@@ -160,10 +160,6 @@ export class GroupFilesComponent implements OnInit {
     this.folders.unshift(folder);
   }
 
-  getForm(form: any){
-    this.forms.unshift(form);
-  }
-
   /**
    * This function observes the change in the search query variable
    * @param fileQuery
