@@ -60,6 +60,10 @@ export const environment = {
   POST_BASE_API_URL: 'http://localhost:80/api/posts',
 
   // Notifications URLs
+  FLAMINGO_BASE_URL: 'http://localhost:80/flamingo',
+  FLAMINGO_BASE_API_URL: 'http://localhost:80/flamingo/api',
+
+  // Notifications URLs
   NOTIFICATIONS_BASE_URL: 'ws://localhost:80',
   NOTIFICATIONS_BASE_API_URL: 'http://localhost:80/api/notifications',
 
