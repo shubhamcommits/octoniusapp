@@ -30,6 +30,7 @@ pipelines:
           - export FOLIO_IMAGE_NAME=octoniusapp/octonius-prod:folio-server
           - export SEARCH_IMAGE_NAME=octoniusapp/octonius-prod:search-server
           - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius-prod:integrations-server
+          - export FLAMINGO_IMAGE_NAME=octoniusapp/octonius-prod:flamingo-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius-prod:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
@@ -45,6 +46,7 @@ pipelines:
           - docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
           - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
           - docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
+          - docker build -t $FLAMINGO_IMAGE_NAME --compress=true --force-rm=true ./services/flamingo/server
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
           # Clear unnecessary Image build
@@ -66,6 +68,7 @@ pipelines:
           - docker push $FOLIO_IMAGE_NAME
           - docker push $SEARCH_IMAGE_NAME
           - docker push $INTEGRATIONS_IMAGE_NAME
+          - docker push $FLAMINGO_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
     - step:
@@ -102,6 +105,7 @@ pipelines:
           - export FOLIO_IMAGE_NAME=octoniusapp/octonius:folio-server
           - export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
           - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius:integrations-server
+          - export FLAMINGO_IMAGE_NAME=octoniusapp/octonius:flamingo-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
@@ -117,6 +121,7 @@ pipelines:
           - docker build -t $FOLIO_IMAGE_NAME --compress=true --force-rm=true ./services/folio/server
           - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
           - docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
+          - docker build -t $FLAMINGO_IMAGE_NAME --compress=true --force-rm=true ./services/flamingo/server
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
           # Clear unnecessary Image build
@@ -138,6 +143,7 @@ pipelines:
           - docker push $FOLIO_IMAGE_NAME
           - docker push $SEARCH_IMAGE_NAME
           - docker push $INTEGRATIONS_IMAGE_NAME
+          - docker push $FLAMINGO_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
     - step:
