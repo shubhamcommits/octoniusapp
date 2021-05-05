@@ -370,6 +370,38 @@ services:
         condition: on-failure
     networks:
       - octonius_production
+  
+  flamingo-server:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:flamingo-server
+    ports:
+      - ${FLAMINGO_SERVER_PORT}:${MACHINE_PORT}
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+      - octonius_production_flamingo_uploads_data:${VOLUME_UPLOADS}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - SENDGRID_KEY=${SENDGRID_KEY}
+      - SK_STRIPE=${SK_STRIPE}
+      - STRIPE_PLAN=${STRIPE_PLAN}
+      - WEBHOOK_PS_SECRET=${WEBHOOK_PS_SECRET}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - octonius_production
       
   client:
     image: ${DOCKER_USER}/${DOCKER_REPO}:client
@@ -444,6 +476,13 @@ volumes:
     driver_opts:
       type: none
       device: ${PWD}/data/uploads/utilities
+      o: bind
+
+  octonius_production_flamingo_uploads_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/uploads/flamingo
       o: bind
   
   octonius_production_search_uploads_data:
