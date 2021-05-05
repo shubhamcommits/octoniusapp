@@ -163,4 +163,33 @@ export class Auths {
         }
         return result;
     }
+
+    /**
+     * This function verifies the API key coming from the request authorization headers
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async verifyMgmtAPIKey(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Authorization header is not present on request
+            
+            const { API_KEY } = req.body;
+
+            if (!API_KEY) {
+                return res.status(401).json({
+                    message: 'Unauthorized request, it must include an API key!'
+                });
+            }
+
+            // If we are unable to decrypt the password from the server
+            if (API_KEY != process.env.MANAGEMENT_API_KEY) {
+                return sendError(res, new Error('Wrong API key!'), 'Please include a valid API key!', 401);
+            } else {
+                next();
+            }            
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
 }

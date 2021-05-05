@@ -1,18 +1,14 @@
-import { sendError, PasswordHelper, Auths } from '../../utils';
+import { sendError, Auths } from '../../utils';
 import { Group, Workspace, User, Account } from '../models';
 import { Request, Response, NextFunction } from 'express';
-import { CommonService, UsersService } from '../services';
+import { UsersService, WorkspaceService } from '../services';
 import http from 'axios';
 import moment from 'moment';
-import mongoose from "mongoose";
-
-// Password Helper Class
-const passwordHelper = new PasswordHelper();
 
 // User Service Instance
 const usersService = new UsersService();
 
-const commonService = new CommonService();
+const workspaceService = new WorkspaceService();
 
 const auths = new Auths();
 
@@ -606,56 +602,7 @@ export class WorkspaceController {
                 return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
             }
 
-            // Remove the workspace from user´s account
-            let users = await User.find({_workspace: workspaceId}).select('_account').lean();
-            users.forEach(async user => {
-                // Count the number of workspces for the account
-                let accountUpdate = await Account.findById(user._account);
-                const numWorkspaces = accountUpdate._workspaces.length;
-
-                if (numWorkspaces < 2) {
-                    // If account only has one workspace, the account is removed
-                    accountUpdate = await Account.findByIdAndDelete(user._account);
-                } else {
-                    // If account has more than one workspaces, the workspace is removed from the account
-                    accountUpdate = await Account.findByIdAndUpdate({
-                            _id: user._account
-                        }, {
-                            $pull: {
-                                _workspaces: workspaceId
-                            }
-                        });
-                }
-            });
-
-            // Delete the users related
-            await User.deleteMany({_workspace: workspaceId});
-
-            // Delete the groups
-            const groups = await Group.find({ _workspace: workspaceId });
-            groups.forEach(async group => {
-                await commonService.removeGroup(group._id);
-            });
-
-            let workspace = await Workspace.findOne({_id: workspaceId}).select('billing');
-
-            if (workspace && workspace['billing'] && workspace['billing']['client_id']) {
-                // Remove stripe client
-                const stripe = require('stripe')(process.env.SK_STRIPE);
-                stripe.customers.del(workspace['billing']['client_id']);
-            }
-
-            // Delete the workspace
-            workspace = await Workspace.findByIdAndDelete(workspaceId);
-
-            // Send new workspace to the mgmt portal
-            if (process.env.NODE_ENV == 'production') {
-                http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
-                    data: {
-                        API_KEY: process.env.MANAGEMENT_API_KEY
-                    }
-                });
-            }
+            await workspaceService.remove(workspaceId);
 
             // Send the status 200 response 
             return res.status(200).json({
