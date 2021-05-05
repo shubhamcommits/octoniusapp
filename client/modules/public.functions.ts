@@ -21,7 +21,9 @@ import { FoldersService } from 'src/shared/services/folders-service/folders.serv
 declare const gapi: any;
 declare const google: any;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PublicFunctions {
 
     constructor(
