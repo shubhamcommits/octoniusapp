@@ -130,14 +130,16 @@ export class FilesControllers {
             // Create the file
             fileData = await filesService.add(fileData);
 
-            /*
-            if(fileData && fileData.type==='flamingo'){
-                await axios.post(`${process.env.FLAMINGO_SERVER_API}/create-flamingo`, { flamingoData: { _file: fileData._id}} , { headers: {
-                    Authorization: req.headers.authorization
-                  }});
+            if(fileData && fileData.type == 'flamingo'){
+                await axios.post(`${process.env.FLAMINGO_SERVER_API}/create-flamingo`,
+                    {
+                        flamingoData: { _file: fileData._id }
+                    },
+                    {
+                        headers: { Authorization: req.headers.authorization }
+                    });
             }
-            */
-            filesService.createFlamingo(fileData._id)
+
             // Send Status 200 response
             return res.status(200).json({
                 message: 'File has been uploaded!',

@@ -388,17 +388,4 @@ export class FilesService {
             return file;
         }
     }
-
-    /** 
-     * This function is responsible to create new flamingo form
-     * @param data 
-     */
-    async createFlamingo(fileId: string){
-
-        // Create the new File
-        return await Flamingo.create({
-            _file: fileId,
-            _questions: []
-        });
-    }
 }
