@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import {
   CanActivate,
   Router,
@@ -8,6 +8,7 @@ import {
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class FlamingoGuard implements CanActivate  {
     private groupService: GroupService,
     private utilityService: UtilityService,
     private storageService: StorageService,
+    private injector: Injector,
     private router: Router
   ) {
 
@@ -27,25 +29,45 @@ export class FlamingoGuard implements CanActivate  {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
+
+    // Public Functions Instance
+    let publicFunctions = this.injector.get(PublicFunctions);
+
+
+    const currentGroupId = state.root.queryParamMap.get('group');
+    const currentWorkspace = await publicFunctions.getCurrentWorkspace();
+    const currentUser = await publicFunctions.getCurrentUser();
+
+    if (!currentWorkspace['allowed_modules'] || !currentWorkspace['allowed_modules']['flamingo']) {
+      this.utilityService.warningNotification('Oops seems like your subscription doesn\´t have Folio Module available!');
+      if (currentUser) {
+        this.router.navigate(['dashboard', 'work', 'groups', 'files'], {
+          queryParams: {
+            group: currentGroupId,
+            myWorkplace: (currentUser._private_group == currentGroupId)
+          }
+        });
+      } else {
+        this.router.navigate(['dashboard', 'myspace', 'inbox']);
+      }
+      return false;
+    }
+
     if (state.url.includes('/answer')) {
       return true;
     }
-
-    const currentGroupId = state.root.queryParamMap.get('group');
-
-    let userData = (this.storageService.existData('userData') === null) ? {} : this.storageService.getLocalData('userData');
 
     let currentGroup;
     await this.groupService.getGroup(currentGroupId).then(res => {
       currentGroup = res['group'];
     });
 
-    const groupMembersIndex = currentGroup._members.findIndex((member: any) => member._id == userData._id);
-    const groupAdminsIndex = currentGroup._admins.findIndex((admin: any) => admin._id == userData._id);
-    const userGroupsIndex = userData._groups.findIndex((group: any) => group == currentGroupId);
+    const groupMembersIndex = currentGroup._members.findIndex((member: any) => member._id == currentUser._id);
+    const groupAdminsIndex = currentGroup._admins.findIndex((admin: any) => admin._id == currentUser._id);
+    const userGroupsIndex = currentUser._groups.findIndex((group: any) => group == currentGroupId);
 
     if (groupMembersIndex >= 0 || groupAdminsIndex >= 0
-        || userGroupsIndex >= 0 || userData._private_group == currentGroupId) {
+        || userGroupsIndex >= 0 || currentUser._private_group == currentGroupId) {
       return true;
     } else {
       this.utilityService.warningNotification('Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!');
