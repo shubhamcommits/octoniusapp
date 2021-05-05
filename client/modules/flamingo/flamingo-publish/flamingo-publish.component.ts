@@ -26,7 +26,7 @@ export class FlamingoPublishComponent implements OnInit {
 
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.params['id'];
-    this.flamingoURL = environment.clientUrl + '/flamingo/' + this.fileId + '/answer';
+    this.flamingoURL = environment.clientUrl + '/document/flamingo/' + this.fileId + '/answer';
 
     // Fetch Flamingo Details
     await this.flamingoService.getOne(this.fileId).then((res) => {

@@ -48,7 +48,7 @@ const routes: Routes = [
     canActivate: [RoutingGuard]
   },
 
-  // 'document' ROUTE - LAZY LOAD THE OCTODOC MODULE
+  // 'document' ROUTE - LAZY LOAD THE FOLIO MODULE
   {
     path: 'document',
     loadChildren: () => import('modules/folio/folio.module')
@@ -56,12 +56,12 @@ const routes: Routes = [
     canActivate: [AuthenticationGuard, FolioGuard]
   },
 
-  // 'document' ROUTE - LAZY LOAD THE OCTODOC MODULE
+  // 'flamingo' ROUTE - LAZY LOAD THE FLAMINGO MODULE
   {
-    path: 'flamingo',
+    path: 'document/flamingo',
     loadChildren: () => import('modules/flamingo/flamingo.module')
       .then((module) => module.FlamingoModule),
-    canActivate: [AuthenticationGuard, FlamingoGuard]
+      canActivate: [AuthenticationGuard, FlamingoGuard]
   },
 
 
