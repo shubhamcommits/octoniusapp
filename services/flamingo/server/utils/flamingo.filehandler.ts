@@ -31,7 +31,7 @@ const flamingoFileHandler = (req: Request, res: Response, next: NextFunction) =>
 
   }
   
-  fileName += Date.now().toString() + '_' + req['files'].questionImage['name'];
+  fileName += Date.now().toString() + '_' + req['files'].questionImage['name'].replace(/\s/g, "");
 
   // Modify the file accordingly and handle request
   file.mv(folder + fileName, (error: Error) => {
