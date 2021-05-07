@@ -39,7 +39,7 @@
     background-color: #f3f4f6;
 }
 .input-answer {
-    width: auto;
+    width: 100%;
     height: 38px;
     font-family: Nunito;
     font-style: normal;
@@ -47,20 +47,23 @@
     font-size: 24px;
     line-height: 33px;
     border: none;
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid #242d3a;
+    background-color: transparent;
 }
 input:focus {
     outline: none;
-    border-bottom: 1px solid royalblue;
+    border-bottom: 1px solid #005fd5;
 }
 .question-menu{
     min-height: 300px;
 }
 .question-preview-container {
-    margin-top: 25%;
-    margin-left: 10%;
-    height: 66%;
-    background-repeat: round
+    margin: 200px auto;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px 0 rgba(37, 38, 94, 0.1);
+    width: 80%;
 }
 .removeImageBtn{
     font-family: "Nunito", sans-serif;
@@ -116,13 +119,14 @@ input:focus {
     color: #005fd5 !important;
 }
 .scale-button{
-    background-color: cornflowerblue;
+    background-color: #005fd5;
     width: 60px;
     margin: 2px;
     height: 50px;
     border: none;
     font-size: 20px;
     color: #ffffff;
+    border-radius: 4px;
 }
 .question-icon{
     float: left;
