@@ -20,7 +20,7 @@
 
                     <input *ngIf="!flamingo?.publish" [(ngModel)]="question.text" placeholder="Please Enter question text"
                         (change)="changeQuestionText($event,i)"
-                        [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
+                        [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'"/>
                     <br/>
                     <br/>
                     <!-- question image remove start-->

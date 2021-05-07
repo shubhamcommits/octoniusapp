@@ -1,8 +1,10 @@
 <div *ngIf="activeQuestion?.type != 'LastScreen'">
     <!-- Action buttons-->
-    <div class="preview-container">
+    <div class="action-header">
       <button *ngIf="activeQuestionIndex > 0"
-        class="btn btn-danger" (click)="previousQuestion()">Previous</button>
+        class="btn btn-outline-secondary" (click)="previousQuestion()"><span class="material-icons">
+          chevron_left
+          </span> Previous </button>
       &nbsp;&nbsp;
       <button *ngIf="activeQuestionIndex == questions?.length-2"
           class="btn btn-success" (click)="submitAnswers()">Submit</button>
@@ -11,7 +13,10 @@
           class="btn btn-primary" (click)="nextQuestion()">Start</button>
       &nbsp;&nbsp;
       <button *ngIf="activeQuestionIndex > 0 && activeQuestionIndex < questions?.length-2"
-          class="btn btn-primary" (click)="nextQuestion()">Next</button>
+          class="btn btn-outline-secondary" (click)="nextQuestion()"> 
+            Next <span class="material-icons">
+              chevron_right
+              </span></button>
     </div>
 
     <!-- container for welcome and thanks question type end-->
