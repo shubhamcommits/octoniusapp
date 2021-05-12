@@ -328,6 +328,7 @@ export class MembersControllers {
                 }
                 http.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
                     API_KEY: workspace.management_private_api_key,
+                    workspaceId: workspace._id,
                     userData: userMgmt
                 }).then().catch(err => console.log(err));
             } else {

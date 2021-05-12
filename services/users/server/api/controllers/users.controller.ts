@@ -249,6 +249,7 @@ export class UsersControllers {
 
             http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
                 API_KEY: workspace.management_private_api_key,
+                workspaceId: workspace._id,
                 userData: userMgmt
             });
 
@@ -331,6 +332,7 @@ export class UsersControllers {
 
                 http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
                     API_KEY: workspace.management_private_api_key,
+                    workspaceId: workspace._id,
                     userData: userMgmt
                 });
             }
@@ -962,7 +964,8 @@ export class UsersControllers {
 
         http.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {
             data: {
-                API_KEY: workspace.management_private_api_key
+                API_KEY: workspace.management_private_api_key,
+                workspaceId: workspace._id,
             }
         });
 
