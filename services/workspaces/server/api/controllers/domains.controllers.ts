@@ -181,27 +181,25 @@ export class DomainsControllers {
                     idsToRemove.push(member._id);
 
                     // Remove the user from the mgmt portal
-                    if (process.env.NODE_ENV == 'production') {
-                        const user = await User.find({_id: member}).lean()
-                        let userMgmt = {
-                            _id: user._id,
-                            _account_id: user._account._id,
-                            active: false,
-                            email: user._account.email,
-                            password: user._account.password,
-                            first_name: user.first_name,
-                            last_name: user.last_name,
-                            _remote_workspace_id: user._workspace,
-                            workspace_name: user.workspace_name,
-                            environment: process.env.DOMAIN,
-                            created_date: user.created_date
-                        }
-        
-                        http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
-                            API_KEY: process.env.MANAGEMENT_API_KEY,
-                            userData: userMgmt
-                        });
+                    const user = await User.find({_id: member}).lean()
+                    let userMgmt = {
+                        _id: user._id,
+                        _account_id: user._account._id,
+                        active: false,
+                        email: user._account.email,
+                        password: user._account.password,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        _remote_workspace_id: user._workspace,
+                        workspace_name: user.workspace_name,
+                        environment: process.env.DOMAIN,
+                        created_date: user.created_date
                     }
+    
+                    http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
+                        API_KEY: process.env.MANAGEMENT_API_KEY,
+                        userData: userMgmt
+                    });
                 }
             })
 
@@ -247,45 +245,43 @@ export class DomainsControllers {
             });
 
             // Send workspace to the mgmt portal
-            if (process.env.NODE_ENV == 'production') {
-                // Count all the groups present inside the workspace
-                const groupsCount: number = await Group.find({ $and: [
-                    { group_name: { $ne: 'personal' } },
-                    { _workspace: workspace._id }
-                ]}).countDocuments();
+            // Count all the groups present inside the workspace
+            const groupsCount: number = await Group.find({ $and: [
+                { group_name: { $ne: 'personal' } },
+                { _workspace: workspace._id }
+            ]}).countDocuments();
 
-                // Count all the users present inside the workspace
-                const guestsCount: number = await User.find({ $and: [
-                    { active: true },
-                    { _workspace: workspace._id },
-                    { role: 'guest'}
-                ] }).countDocuments();
+            // Count all the users present inside the workspace
+            const guestsCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspace._id },
+                { role: 'guest'}
+            ] }).countDocuments();
 
-                let workspaceMgmt = {
-                    _id: workspace._id,
-                    company_name: workspace.company_name,
-                    workspace_name: workspace.workspace_name,
-                    owner_email: workspace.owner_email,
-                    owner_first_name: workspace.owner_first_name,
-                    owner_last_name: workspace.owner_last_name,
-                    _owner_remote_id: workspace._owner._id || workspace._owner,
-                    environment: process.env.DOMAIN,
-                    num_members: usersCount,
-                    num_invited_users: guestsCount,
-                    num_groups: groupsCount,
-                    created_date: workspace.created_date,
-                    billing: {
-                        subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
-                        current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
-                        scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
-                        quantity: usersCount
-                    }
+            let workspaceMgmt = {
+                _id: workspace._id,
+                company_name: workspace.company_name,
+                workspace_name: workspace.workspace_name,
+                owner_email: workspace.owner_email,
+                owner_first_name: workspace.owner_first_name,
+                owner_last_name: workspace.owner_last_name,
+                _owner_remote_id: workspace._owner._id || workspace._owner,
+                environment: process.env.DOMAIN,
+                num_members: usersCount,
+                num_invited_users: guestsCount,
+                num_groups: groupsCount,
+                created_date: workspace.created_date,
+                billing: {
+                    subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
+                    current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
+                    scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
+                    quantity: usersCount
                 }
-                http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                    API_KEY: process.env.MANAGEMENT_API_KEY,
-                    workspaceData: workspaceMgmt
-                }).then().catch(err => console.log(err));
             }
+            http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                API_KEY: process.env.MANAGEMENT_API_KEY,
+                workspaceData: workspaceMgmt
+            }).then().catch(err => console.log(err));
 
             // Send the status 200 response
             return res.status(200).json({

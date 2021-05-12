@@ -60,13 +60,11 @@ export class WorkspaceService {
       workspace = await Workspace.findByIdAndDelete(workspaceId);
 
       // Send new workspace to the mgmt portal
-      if (process.env.NODE_ENV == 'production') {
-          http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
-              data: {
-                  API_KEY: process.env.MANAGEMENT_API_KEY
-              }
-          });
-      }
+      http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
+          data: {
+              API_KEY: process.env.MANAGEMENT_API_KEY
+          }
+      });
 
     } catch (err) {
       throw (err);
