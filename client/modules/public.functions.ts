@@ -1263,4 +1263,17 @@ export class PublicFunctions {
     async isMobileDevice() {
       return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
     }
+
+    async checkFlamingoStatus(workspaceId: string) {
+      const workspaceService = this.injector.get(WorkspaceService);
+      return workspaceService.getFlamingoStatus(workspaceId).then(
+        (res) => {
+          if ( !res || !res['status'] ) {
+            return false;
+          }
+          return true;
+        }).catch((err) => {
+          return false;
+        });
+    }
 }

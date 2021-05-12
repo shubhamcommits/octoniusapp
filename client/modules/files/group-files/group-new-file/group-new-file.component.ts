@@ -54,7 +54,8 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
   async ngOnChanges() {
 
     const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
-    this.flamingoModuleAvailable = currentWorkspace['allowed_modules'] && currentWorkspace['allowed_modules']['flamingo'];
+
+    this.flamingoModuleAvailable = await this.publicFunctions.checkFlamingoStatus(currentWorkspace['_id']);
 
     // Set the File Credentials after view initialization
     this.fileData = {

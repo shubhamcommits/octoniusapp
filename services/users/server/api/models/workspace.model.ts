@@ -117,13 +117,6 @@ const workspaceSchema = new Schema({
             type: Number,
             default: 1
         }
-    },
-    allowed_modules: {
-        flamingo: {
-            type: Boolean,
-            required: true,
-            default: false
-        }
     }
 });
 

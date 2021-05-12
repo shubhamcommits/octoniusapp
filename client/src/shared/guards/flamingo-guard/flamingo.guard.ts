@@ -19,8 +19,6 @@ export class FlamingoGuard implements CanActivate  {
   constructor(
     private groupService: GroupService,
     private utilityService: UtilityService,
-    private storageService: StorageService,
-    private workspaceService: WorkspaceService,
     private injector: Injector,
     private router: Router
   ) {
@@ -39,9 +37,10 @@ export class FlamingoGuard implements CanActivate  {
     const currentGroupId = state.root.queryParamMap.get('group');
     const currentWorkspace = await publicFunctions.getCurrentWorkspace();
     const currentUser = await publicFunctions.getCurrentUser();
+    const flamingoStatus = await publicFunctions.checkFlamingoStatus(currentWorkspace['_id']);
 
-    if (!this.checkFlamingoStatus(currentWorkspace['_id'])) {
-      this.utilityService.warningNotification('Oops seems like your subscription doesn\´t have Folio Module available!');
+    if (!flamingoStatus) {
+      this.utilityService.warningNotification('Oops seems like your subscription doesn\´t have Flamingo Module available!');
       if (currentUser) {
         this.router.navigate(['dashboard', 'work', 'groups', 'files'], {
           queryParams: {
@@ -76,16 +75,5 @@ export class FlamingoGuard implements CanActivate  {
       this.router.navigate(['dashboard', 'myspace', 'inbox']);
       return false;
     }
-  }
-
-  async checkFlamingoStatus(workspaceId: string) {
-
-    return this.workspaceService.getFlamingoStatus(workspaceId).then(
-      (res) => {
-        if ( !res['status'] ) {
-          return false;
-        }
-        return true;
-      });
   }
 }
