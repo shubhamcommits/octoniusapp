@@ -9,6 +9,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { PublicFunctions } from 'modules/public.functions';
+import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class FlamingoGuard implements CanActivate  {
     private groupService: GroupService,
     private utilityService: UtilityService,
     private storageService: StorageService,
+    private workspaceService: WorkspaceService,
     private injector: Injector,
     private router: Router
   ) {
@@ -38,7 +40,7 @@ export class FlamingoGuard implements CanActivate  {
     const currentWorkspace = await publicFunctions.getCurrentWorkspace();
     const currentUser = await publicFunctions.getCurrentUser();
 
-    if (!currentWorkspace['allowed_modules'] || !currentWorkspace['allowed_modules']['flamingo']) {
+    if (!this.checkFlamingoStatus(currentWorkspace['_id'])) {
       this.utilityService.warningNotification('Oops seems like your subscription doesn\´t have Folio Module available!');
       if (currentUser) {
         this.router.navigate(['dashboard', 'work', 'groups', 'files'], {
@@ -48,7 +50,7 @@ export class FlamingoGuard implements CanActivate  {
           }
         });
       } else {
-        this.router.navigate(['dashboard', 'myspace', 'inbox']);
+        this.router.navigate(['/home']);
       }
       return false;
     }
@@ -74,5 +76,16 @@ export class FlamingoGuard implements CanActivate  {
       this.router.navigate(['dashboard', 'myspace', 'inbox']);
       return false;
     }
+  }
+
+  async checkFlamingoStatus(workspaceId: string) {
+
+    return this.workspaceService.getFlamingoStatus(workspaceId).then(
+      (res) => {
+        if ( !res['status'] ) {
+          return false;
+        }
+        return true;
+      });
   }
 }

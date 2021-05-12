@@ -75,4 +75,7 @@ export const environment = {
   UTILITIES_USERS_UPLOADS: 'http://localhost:80/uploads/users',
   UTILITIES_WORKSPACES_UPLOADS: 'http://localhost:80/uploads/workspaces',
   UTILITIES_FLAMINGOS_UPLOADS: 'http://localhost:80/uploads/flamingo',
+
+  MANAGEMENT_URL: 'https://management.octonius.com',
+  MANAGEMENT_API_KEY: 'TZCDAC3CDCJILSRGA2II'
 };
