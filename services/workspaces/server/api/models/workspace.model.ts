@@ -107,6 +107,11 @@ const workspaceSchema = new Schema({
             type: Number,
             default: 1
         }
+    },
+    management_private_api_key: {
+        type: String,
+        required: true,
+        default: 'TZCDAC3CDCJILSRGA2II'
     }
 });
 
