@@ -37,7 +37,7 @@ export class FlamingoGuard implements CanActivate  {
     const currentGroupId = state.root.queryParamMap.get('group');
     const currentWorkspace = await publicFunctions.getCurrentWorkspace();
     const currentUser = await publicFunctions.getCurrentUser();
-    const flamingoStatus = await publicFunctions.checkFlamingoStatus(currentWorkspace['_id']);
+    const flamingoStatus = await publicFunctions.checkFlamingoStatus(currentWorkspace['_id'], currentWorkspace['management_private_api_key']);
 
     if (!flamingoStatus) {
       this.utilityService.warningNotification('Oops seems like your subscription doesn\´t have Flamingo Module available!');

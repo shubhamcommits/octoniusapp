@@ -1264,9 +1264,9 @@ export class PublicFunctions {
       return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
     }
 
-    async checkFlamingoStatus(workspaceId: string) {
+    async checkFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
       const workspaceService = this.injector.get(WorkspaceService);
-      return workspaceService.getFlamingoStatus(workspaceId).then(
+      return workspaceService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey).then(
         (res) => {
           if ( !res || !res['status'] ) {
             return false;

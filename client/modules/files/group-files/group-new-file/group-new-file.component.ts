@@ -55,7 +55,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
 
     const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
 
-    this.flamingoModuleAvailable = await this.publicFunctions.checkFlamingoStatus(currentWorkspace['_id']);
+    this.flamingoModuleAvailable = await this.publicFunctions.checkFlamingoStatus(currentWorkspace['_id'], currentWorkspace['management_private_api_key']);
 
     // Set the File Credentials after view initialization
     this.fileData = {

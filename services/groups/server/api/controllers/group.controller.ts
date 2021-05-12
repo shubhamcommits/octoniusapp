@@ -393,6 +393,8 @@ export class GroupController {
                 num_invited_users: guestsCount,
                 num_groups: groupsCount,
                 created_date: workspace.created_date,
+                access_code: workspace.access_code,
+                management_private_api_key: workspace.management_private_api_key,
                 billing: {
                     subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
                     current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
@@ -401,7 +403,7 @@ export class GroupController {
                 }
             }
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
+                API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt
             }).then().catch(err => console.log(err));
 
@@ -540,6 +542,8 @@ export class GroupController {
                 num_invited_users: guestsCount,
                 num_groups: groupsCount,
                 created_date: workspace.created_date,
+                access_code: workspace.access_code,
+                management_private_api_key: workspace.management_private_api_key,
                 billing: {
                     subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
                     current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
@@ -548,7 +552,7 @@ export class GroupController {
                 }
             }
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
+                API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt
             }).then().catch(err => console.log(err));
 

@@ -102,7 +102,6 @@ export class BillingControllers {
                     }
                 }, {
             });
-            //}).select('billing');
 
             // Prepare adjustedSubscription Object
             const adjustedSubscription = {
@@ -145,6 +144,8 @@ export class BillingControllers {
                 num_invited_users: guestsCount,
                 num_groups: groupsCount,
                 created_date: workspaceUpdated.created_date,
+                access_code: workspaceUpdated.access_code,
+                management_private_api_key: workspaceUpdated.management_private_api_key,
                 billing: {
                     subscription_id: subscription.id || '',
                     current_period_end: subscription.current_period_end || '',
@@ -153,7 +154,7 @@ export class BillingControllers {
                 }
             }
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
+                API_KEY: workspaceUpdated.management_private_api_key,
                 workspaceData: workspaceMgmt
             });
 
@@ -446,6 +447,8 @@ export class BillingControllers {
                 num_invited_users: guestsCount,
                 num_groups: groupsCount,
                 created_date: workspace.created_date,
+                access_code: workspace.access_code,
+                management_private_api_key: workspace.management_private_api_key,
                 billing: {
                     subscription_id: updatedSubscription.id || '',
                     current_period_end: updatedSubscription.current_period_end || '',
@@ -454,7 +457,7 @@ export class BillingControllers {
                 }
             }
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
+                API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt
             });
 
@@ -538,6 +541,8 @@ export class BillingControllers {
                 num_invited_users: guestsCount,
                 num_groups: groupsCount,
                 created_date: workspace.created_date,
+                access_code: workspace.access_code,
+                management_private_api_key: workspace.management_private_api_key,
                 billing: {
                     subscription_id: updatedSubscription.id || '',
                     current_period_end: updatedSubscription.current_period_end || '',
@@ -546,7 +551,7 @@ export class BillingControllers {
                 }
             }
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
+                API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt
             });
 
@@ -648,6 +653,8 @@ export class BillingControllers {
                 num_invited_users: guestsCount,
                 num_groups: groupsCount,
                 created_date: updatedWorkspace.created_date,
+                access_code: updatedWorkspace.access_code,
+                management_private_api_key: updatedWorkspace.management_private_api_key,
                 billing: {
                     subscription_id: subscription.id || '',
                     current_period_end: subscription.current_period_end || '',
@@ -656,7 +663,7 @@ export class BillingControllers {
                 }
             }
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${updatedWorkspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
+                API_KEY: updatedWorkspace.management_private_api_key,
                 workspaceData: workspaceMgmt
             });
 
@@ -880,7 +887,7 @@ export class BillingControllers {
             }
 
             // Send new workspace to the mgmt portal
-            if (process.env.NODE_ENV == 'production' && customer.metadata.workspace_id) {
+            if (customer.metadata.workspace_id) {
 
                 workspace = await Workspace.findOne(
                     { _id: customer.metadata.workspace_id }
@@ -918,6 +925,8 @@ export class BillingControllers {
                     num_invited_users: guestsCount,
                     num_groups: groupsCount,
                     created_date: workspace.created_date,
+                    access_code: workspace.access_code,
+                    management_private_api_key: workspace.management_private_api_key,
                     billing: {
                         subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
                         current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
@@ -926,7 +935,7 @@ export class BillingControllers {
                     }
                 }
                 http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                    API_KEY: process.env.MANAGEMENT_API_KEY,
+                    API_KEY: workspace.management_private_api_key,
                     workspaceData: workspaceMgmt
                 });
             }
