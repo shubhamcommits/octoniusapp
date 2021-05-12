@@ -198,6 +198,7 @@ export class DomainsControllers {
     
                     http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
                         API_KEY: workspace.management_private_api_key,
+                        workspaceId: workspace._id,
                         userData: userMgmt
                     });
                 }
