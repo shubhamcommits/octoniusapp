@@ -1,16 +1,22 @@
 <div class="form-container">
     <!-- row start -->
-    <div class="row" style="height: 100%;width: 100%;">
+    <div class="row" style="height: 100%;width: 100%; margin:0">
         <!-- question list and add new question start -->
         <div class="col-md-4"
-            [ngStyle]="{'border-right': '1px solid #E4EDF8','padding': '0px','height': questionListHeight,'overflow-y':'auto','overflow-x':'hidden'}">
+            [ngStyle]="{'border-right': '1px solid #E4EDF8','padding': '5px','height': questionListHeight,'overflow-y':'auto','overflow-x':'hidden'}">
 
             <!-- Questions list container start -->
             <div *ngFor="let question of questions; let i = index;"
                 [ngClass]="i==activeQuestionIndex?'questions-container-active':'questions-container'"
                 (click)="changeActiveIndex(i)" style="position: relative;">
                 <!-- question icon div -->
-                <div class="question-icon"></div>
+                <div class="question-icon"><span class="material-icons" style="font-size: 40px;">
+                    category
+                    </span>
+                    
+                    
+                    
+                    </div>
 
                 <!-- question text input and others settings start-->
                 <div class="question-txt">
@@ -133,127 +139,99 @@
 
             <!-- Add new question dropdown start -->
             <div class="btn-menu-container" *ngIf="!flamingo?.publish">
-                <button class="menu-button" mat-button [matMenuTriggerFor]="myMenu">
+                <button class="btn btn-warning" mat-button [matMenuTriggerFor]="myMenu">
                     <span>
                         <i class="material-icons">add_circle</i>
                     </span>
-                    <span> NEW QUESTION</span>
+                    <span> New question</span>
                 </button>
                 <mat-menu #myMenu="matMenu" class="question-menu">
                     <div style="position: relative;">
                         <p style="height: 45px;padding-top: 10px;padding-left: 15px;color: #9B9B9B;">Choose a question
                             type</p>
                         <div class="welcome-screen" (click)="createQuestion('Welcome')">
-                            <div class="btn-icon"></div>
+                            <div class="btn-icon"><span class="material-icons">
+                                play_arrow
+                                </span>
+                                
+                                </div>
                             <div class="btn-txt">Welcome screen</div>
                             <div class="hovered-welcome">
                                 <p style="margin-left: 10%;margin-top: 25%;">
                                     <strong>Welcome screen</strong>
                                     <br />
-                                    It is a long established
-                                    <br />
-                                    fact that a reader will be
-                                    <br />
-                                    distracted by the readable
-                                    <br />
-                                    content of a page when
-                                    <br />
-                                    looking at its layout.
+                                  Simple text with an optional image / logo
                                 </p>
                             </div>
                         </div>
                         <div class="thank-screen" (click)="createQuestion('Thanks')">
-                            <div class="btn-icon"></div>
+                            <div class="btn-icon"><span class="material-icons">
+                                check_circle_outline
+                                </span></div>
                             <div class="btn-txt">Thank you screen</div>
                             <div class="hovered-thank">
                                 <p style="margin-left: 10%;margin-top: 25%;">
                                     <strong>Thank you screen</strong>
                                     <br />
-                                    It is a long established
-                                    <br />
-                                    fact that a reader will be
-                                    <br />
-                                    distracted by the readable
-                                    <br />
-                                    content of a page when
-                                    <br />
-                                    looking at its layout.
+                                    Simple thank you text with optional image / logo
                                 </p>
                             </div>
                         </div>
                         <div class="short-text" (click)="createQuestion('ShortText')">
-                            <div class="btn-icon"></div>
+                            <div class="btn-icon"><span class="material-icons">
+                                text_snippet
+                                </span>
+                                
+                                </div>
                             <div class="btn-txt">Short text</div>
                             <div class="hovered-short">
                                 <p style="margin-left: 10%;margin-top: 25%;">
                                     <strong>Short text</strong>
                                     <br />
-                                    It is a long established
-                                    <br />
-                                    fact that a reader will be
-                                    <br />
-                                    distracted by the readable
-                                    <br />
-                                    content of a page when
-                                    <br />
-                                    looking at its layout.
+                                    A simple question with a short answer. 
                                 </p>
                             </div>
                         </div>
                         <div class="yes-no" (click)="createQuestion('Yes/No')">
-                            <div class="btn-icon"></div>
+                            <div class="btn-icon"><span class="material-icons">
+                                rule
+                                </span>
+                                
+                                </div>
                             <div class="btn-txt">YES/NO</div>
                             <div class="hovered-yes-no">
                                 <p style="margin-left: 10%;margin-top: 25%;">
                                     <strong>YES/NO</strong>
                                     <br />
-                                    It is a long established
-                                    <br />
-                                    fact that a reader will be
-                                    <br />
-                                    distracted by the readable
-                                    <br />
-                                    content of a page when
-                                    <br />
-                                    looking at its layout.
+                                   Binary question.
                                 </p>
                             </div>
                         </div>
                         <div class="scale" (click)="createQuestion('Scale')">
-                            <div class="btn-icon"></div>
+                            <div class="btn-icon"><span class="material-icons">
+                                align_horizontal_left
+                                </span>
+                                
+                                </div>
                             <div class="btn-txt">Scale</div>
                             <div class="hovered-scale">
                                 <p style="margin-left: 10%;margin-top: 25%;">
                                     <strong>Scale</strong>
                                     <br />
-                                    It is a long established
-                                    <br />
-                                    fact that a reader will be
-                                    <br />
-                                    distracted by the readable
-                                    <br />
-                                    content of a page when
-                                    <br />
-                                    looking at its layout.
+                                  Use this for feedback options.
                                 </p>
                             </div>
                         </div>
                         <div class="dropdown-question" (click)="createQuestion('Dropdown')">
-                            <div class="btn-icon"></div>
+                            <div class="btn-icon"><span class="material-icons">
+                                list
+                                </span></div>
                             <div class="btn-txt">Dropdown</div>
                             <div class="hovered-dropdown">
                                 <p style="margin-left: 10%;margin-top: 25%;">
                                     <strong>Dropdown</strong>
                                     <br />
-                                    It is a long established
-                                    <br />
-                                    fact that a reader will be
-                                    <br />
-                                    distracted by the readable
-                                    <br />
-                                    content of a page when
-                                    <br />
-                                    looking at its layout.
+                                    A list of options to select
                                 </p>
                             </div>
                         </div>

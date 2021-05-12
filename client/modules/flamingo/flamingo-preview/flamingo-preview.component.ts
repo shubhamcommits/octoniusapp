@@ -51,7 +51,7 @@ export class FlamingoPreviewComponent implements OnInit {
   * This function is responsible to change the question
   */
   nextQuestion(){
-    if(this.activeQuestionIndex < this.questions.length-1){
+    if(this.activeQuestionIndex < this.questions.length-2){
       this.activeQuestionIndex = this.activeQuestionIndex+1;
       this.activeQuestion = this.questions[this.activeQuestionIndex];
     }
