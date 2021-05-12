@@ -1,21 +1,22 @@
 <div *ngIf="activeQuestion?.type != 'LastScreen'">
     <!-- Action buttons-->
     <div class="action-header">
-      <button *ngIf="activeQuestionIndex > 0"
-        class="btn btn-outline-secondary" (click)="previousQuestion()"><span class="material-icons">
-          chevron_left
-          </span> Previous</button>
-      &nbsp;&nbsp;
-      <button *ngIf="activeQuestionIndex == questions?.length-2"
-          class="btn btn-success" (click)="submitAnswers()">Submit</button>
-      &nbsp;&nbsp;
-      <button *ngIf="activeQuestion?.type==='Welcome' && activeQuestionIndex == 0"
-          class="btn btn-primary" (click)="nextQuestion()">Start</button>
-      &nbsp;&nbsp;
-      <button *ngIf="activeQuestionIndex > 0 && activeQuestionIndex < questions?.length-2"
-          class="btn btn-outline-secondary" (click)="nextQuestion()">Next  <span class="material-icons">
-            chevron_right
-            </span></button>
+      <div class="btn-group">
+        <button *ngIf="activeQuestionIndex > 0"
+          class="btn btn-light" (click)="previousQuestion()"><span class="material-icons">
+            chevron_left
+            </span> Previous</button>
+            <button *ngIf="activeQuestionIndex > 0 && activeQuestionIndex < questions?.length-2"
+              class="btn btn-light" (click)="nextQuestion()">Next  <span class="material-icons">
+                chevron_right
+                </span></button>
+        <button *ngIf="activeQuestionIndex == questions?.length-2"
+            class="btn btn-success" (click)="submitAnswers()">Submit</button>
+        <button *ngIf="activeQuestion?.type==='Welcome' && activeQuestionIndex == 0"
+            class="btn btn-primary" (click)="nextQuestion()">Start</button>
+        
+      </div>
+      
     </div>
 
     <!-- container for welcome and thanks question type end-->
@@ -94,7 +95,8 @@
       <img class="publish-image" src="assets/images/publish_flamingo.svg"/>
     </div>
     <div class="col-md-4">
-      <p class="publish-note">Thank you for submitting your opinion!</p>
+      <h3 class="publish-note">Thank you!</h3>
+      <p>You can close this window now.</p>
     </div>
     <div class="col-md-2"></div>
   </div>
