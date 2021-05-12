@@ -16,6 +16,7 @@
     text-align: center;
     position: absolute;
     z-index: 100;
+    bottom: 0;
 }
 
 .answer-container{
@@ -23,6 +24,7 @@
     height: 100%;
     padding: 30px;
     text-align: center;
+    margin: 200px auto;
 }
 .question-answer-container {
     margin: 200px auto;
@@ -58,6 +60,6 @@
 
 .welcome-img{
     margin: 30px auto;
-    width: 360px;
+    width: 50%;
     height: auto;
 }
