@@ -141,6 +141,7 @@ export class WorkspaceController {
             newWorkspace.owner_first_name = accountData.first_name;
             newWorkspace.owner_last_name = accountData.last_name;
             newWorkspace.owner_email = accountData.email;
+            newWorkspace.management_private_api_key = await auths.generateMgmtPrivateApiKey();
 
             // Create new workspace
             const workspace = await Workspace.create(newWorkspace);
@@ -354,7 +355,7 @@ export class WorkspaceController {
                 created_date: user.created_date
             }
             http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
-                API_KEY: workspace.management_private_api_key,
+                API_KEY: 'TZCDAC3CDCJILSRGA2II',
                 workspaceData: workspaceMgmt,
                 userData: userMgmt,
             });
