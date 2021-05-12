@@ -91,6 +91,7 @@ export const environment = {
   // Folio URLs
   FOLIO_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}/folio`,
 
-  MANAGEMENT_URL: 'https://management.octonius.com',
+  // MANAGEMENT_URL: 'https://management.octonius.com',
+  MANAGEMENT_URL: `${window["env"]["protocol"]}://${window["env"]["mgmt_portal_domain"]}`,
   MANAGEMENT_API_KEY: 'TZCDAC3CDCJILSRGA2II'
 };
