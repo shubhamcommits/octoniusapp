@@ -16,9 +16,6 @@ const routes = express.Router();
 // Verify the token
 routes.use(authsHelper.verifyMgmtAPIKey);
 
-// PUT - change flamingo module availability
-routes.put('/:workspaceId/flamingo', controller.setFlamingo);
-
 // DELETE - Removes the specify workspace
 routes.delete('/:workspaceId', controller.removeWorkspace);
 
