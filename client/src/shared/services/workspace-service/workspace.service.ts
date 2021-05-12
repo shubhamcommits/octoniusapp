@@ -342,10 +342,10 @@ export class WorkspaceService {
    * @param workspaceId
    */
   getFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(`${environment.MANAGEMENT_URL}/api/workspace/flamingo`, {
+    return this._http.get(`${environment.MANAGEMENT_URL}/api/workspace/${workspaceId}/flamingo`, {
       params: {
-        API_KEY: mgmtApiPrivateKey,
-        workspaceId: workspaceId
-      }}).toPromise();
+        API_KEY: mgmtApiPrivateKey
+      }
+    }).toPromise();
   }
 }
