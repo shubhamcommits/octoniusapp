@@ -229,6 +229,10 @@ export class UsersControllers {
             }
 
             // Send user to the mgmt portal
+            const workspace = await Workspace.find({
+                _id: user._workspace
+            }).select('management_private_api_key');
+
             let userMgmt = {
                 _id: user._id,
                 _account_id: user._account._id,
@@ -244,7 +248,7 @@ export class UsersControllers {
             }
 
             http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
+                API_KEY: workspace.management_private_api_key,
                 userData: userMgmt
             });
 
@@ -297,7 +301,7 @@ export class UsersControllers {
             const userId = req['userId'];
 
             // Send user to the mgmt portal
-            if (process.env.NODE_ENV == 'production' && userId) {
+            if (userId) {
                 const user: any = await User.findById({
                     _id: userId
                 })
@@ -306,6 +310,10 @@ export class UsersControllers {
                     path: '_account',
                     select: '_id email _workspaces first_name last_name created_date'
                 });
+
+                const workspace = await Workspace.find({
+                    _id: user._workspace
+                }).select('management_private_api_key');
 
                 let userMgmt = {
                     _id: user._id,
@@ -322,7 +330,7 @@ export class UsersControllers {
                 }
 
                 http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
-                    API_KEY: process.env.MANAGEMENT_API_KEY,
+                    API_KEY: workspace.management_private_api_key,
                     userData: userMgmt
                 });
             }
@@ -405,6 +413,8 @@ export class UsersControllers {
                 num_invited_users: guestsCount,
                 num_groups: groupsCount,
                 created_date: workspace.created_date,
+                access_code: workspace.access_code,
+                management_private_api_key: workspace.management_private_api_key,
                 billing: {
                     subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
                     current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
@@ -414,7 +424,7 @@ export class UsersControllers {
             }
 
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
+                API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt
             });
             
@@ -935,6 +945,8 @@ export class UsersControllers {
             num_invited_users: guestsCount,
             num_groups: groupsCount,
             created_date: workspaceUpdated.created_date,
+            access_code: workspace.access_code,
+            management_private_api_key: workspace.management_private_api_key,
             billing: {
                 subscription_id: (workspaceUpdated.billing) ? workspaceUpdated.billing.subscription_id : '',
                 current_period_end: (workspaceUpdated.billing) ? workspaceUpdated.billing.current_period_end : '',
@@ -944,13 +956,13 @@ export class UsersControllers {
         }
 
         http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
-            API_KEY: process.env.MANAGEMENT_API_KEY,
+            API_KEY: workspace.management_private_api_key,
             workspaceData: workspaceMgmt
         });
 
         http.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {
             data: {
-                API_KEY: process.env.MANAGEMENT_API_KEY
+                API_KEY: workspace.management_private_api_key
             }
         });
 

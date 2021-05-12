@@ -1,5 +1,5 @@
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
-import { Auth } from "../api/models";
+import { Auth, Workspace } from "../api/models";
 import { Request, Response, NextFunction } from 'express';
 import { sendError } from ".";
 
@@ -175,6 +175,7 @@ export class Auths {
             // Authorization header is not present on request
             
             const { API_KEY } = req.body;
+            const { params: { workspaceId } } = req;
 
             if (!API_KEY) {
                 return res.status(401).json({
@@ -182,8 +183,16 @@ export class Auths {
                 });
             }
 
-            // If we are unable to decrypt the password from the server
-            if (API_KEY != process.env.MANAGEMENT_API_KEY) {
+            // Find the workspace based on the workspaceId and the API_KEY
+            const workspace = await Workspace.find({
+                $and: [
+                    { _id: workspaceId },
+                    { management_private_api_key: API_KEY},
+                ]
+            }).select('management_private_api_key');
+            
+            // If there is no workspace matching the api key and the id send error
+            if (!workspace) {
                 return sendError(res, new Error('Wrong API key!'), 'Please include a valid API key!', 401);
             } else {
                 next();

@@ -48,7 +48,7 @@ export class WorkspaceService {
           await commonService.removeGroup(group._id);
       });
 
-      let workspace = await Workspace.findOne({_id: workspaceId}).select('billing');
+      let workspace = await Workspace.findOne({_id: workspaceId}).select('billing management_private_api_key');
 
       if (workspace && workspace['billing'] && workspace['billing']['client_id']) {
           // Remove stripe client
@@ -62,7 +62,7 @@ export class WorkspaceService {
       // Send new workspace to the mgmt portal
       http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
           data: {
-              API_KEY: process.env.MANAGEMENT_API_KEY
+              API_KEY: workspace.management_private_api_key
           }
       });
 

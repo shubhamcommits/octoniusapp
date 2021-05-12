@@ -82,7 +82,6 @@ function prodConfigInit() {
 
   // MANAGEMENT PORTAL API
   process.env.MANAGEMENT_URL = 'https://management.octonius.com'
-  process.env.MANAGEMENT_API_KEY = "TZCDAC3CDCJILSRGA2II"
 };
 
 export { prodConfigInit as productionConfig } 

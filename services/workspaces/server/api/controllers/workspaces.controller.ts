@@ -338,7 +338,9 @@ export class WorkspaceController {
                 num_members: 1,
                 num_invited_users: 0,
                 num_groups: 1,
-                created_date: workspace.created_date
+                created_date: workspace.created_date,
+                access_code: workspace.access_code,
+                management_private_api_key: workspace.management_private_api_key,
             }
             let userMgmt = {
                 _id: user._id,
@@ -352,7 +354,7 @@ export class WorkspaceController {
                 created_date: user.created_date
             }
             http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
-                API_KEY: process.env.MANAGEMENT_API_KEY,
+                API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt,
                 userData: userMgmt,
             });

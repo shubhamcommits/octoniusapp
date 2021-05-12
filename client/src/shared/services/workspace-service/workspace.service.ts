@@ -341,10 +341,10 @@ export class WorkspaceService {
    * This function is responsible for check if the workspace has flamingo active
    * @param workspaceId
    */
-   getFlamingoStatus(workspaceId: string) {
+  getFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(`${environment.MANAGEMENT_URL}/api/workspace/flamingo`, {
       params: {
-        API_KEY: environment.MANAGEMENT_API_KEY,
+        API_KEY: mgmtApiPrivateKey,
         workspaceId: workspaceId
       }}).toPromise();
   }

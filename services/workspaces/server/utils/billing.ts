@@ -48,6 +48,8 @@ const addUserToSubscription = async (stripe: any, subscriptionId: any, priceId: 
         num_invited_users: guestsCount,
         num_groups: groupsCount,
         created_date: workspace.created_date,
+        access_code: workspace.access_code,
+        management_private_api_key: workspace.management_private_api_key,
         billing: {
             subscription_id: subscription.id || '',
             current_period_end: subscription.current_period_end || '',
@@ -56,7 +58,7 @@ const addUserToSubscription = async (stripe: any, subscriptionId: any, priceId: 
         }
     }
     http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-        API_KEY: process.env.MANAGEMENT_API_KEY,
+        API_KEY: workspace.management_private_api_key,
         workspaceData: workspaceMgmt
     });
 }
@@ -108,6 +110,8 @@ const removeUserFromSubscription = async (stripe: any, subscriptionId: any, pric
         num_invited_users: guestsCount,
         num_groups: groupsCount,
         created_date: workspace.created_date,
+        access_code: workspace.access_code,
+        management_private_api_key: workspace.management_private_api_key,
         billing: {
             subscription_id: subscription.id || '',
             current_period_end: subscription.current_period_end || '',
@@ -116,7 +120,7 @@ const removeUserFromSubscription = async (stripe: any, subscriptionId: any, pric
         }
     }
     http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
-        API_KEY: process.env.MANAGEMENT_API_KEY,
+        API_KEY: workspace.management_private_api_key,
         workspaceData: workspaceMgmt
     });
 }
