@@ -68,10 +68,10 @@ export class FlamingoAnswerComponent implements OnInit {
   }
 
   /**
-  * This function is responsible to change to the next question
-  */
+   * This function is responsible to change to the next question
+   */
   nextQuestion() {
-    if (this.activeQuestionIndex < this.questions.length-1) {
+    if (this.activeQuestionIndex < this.questions.length-2) {
       this.activeQuestionIndex = this.activeQuestionIndex+1;
       this.activeQuestion = this.questions[this.activeQuestionIndex];
     }
