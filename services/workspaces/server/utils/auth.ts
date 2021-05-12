@@ -165,6 +165,20 @@ export class Auths {
     }
 
     /**
+     * This method is used to generate a random API Key for each workspace to send information to mgmt portal
+     */
+    async generateMgmtPrivateApiKey() {
+        const resultLength = 20;
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        for ( var i = 0; i < resultLength; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    /**
      * This function verifies the API key coming from the request authorization headers
      * @param req 
      * @param res 
