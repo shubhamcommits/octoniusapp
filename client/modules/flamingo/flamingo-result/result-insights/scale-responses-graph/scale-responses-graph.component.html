@@ -1,5 +1,12 @@
 <div class="row">
-  <div class="col-md-6" style="width: 1100px;">
+  <div class="col-md-3">
+    <div *ngFor="let size of sizes; let index = index" class="row answer-response">
+      <div class="col-md-1 muted">{{ size }}: </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-2"> {{ percentages[index] }}&nbsp;%</div>
+    </div>
+  </div>
+  <div class="col-md-7">
     <div class="row" style="padding: 10px;" *ngIf="chartReady">
       <canvas
         baseChart
@@ -17,12 +24,6 @@
       <div class="label" style="right: 0px;">{{question?.scale?.right_side_label}}</div>
     </div>
   </div>
-  <div class="col-md-1"></div>
-  <div class="">
-    <div *ngFor="let size of sizes; let index = index" class="row answer-response">
-      <div class="col-md-1">{{ size }}: </div>
-      <div class="col-md-1"></div>
-      <div class="col-md-2 response"> {{ percentages[index] }}&nbsp;%</div>
-    </div>
-  </div>
+  
+ 
 </div>
