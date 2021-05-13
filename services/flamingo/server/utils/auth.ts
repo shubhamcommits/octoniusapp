@@ -14,7 +14,6 @@ export class Auths {
      */
     async verifyToken(req: Request, res: Response, next: NextFunction) {
         try {
-
             // Authorization header is not present on request
             if (!req.headers.authorization) {
                 return res.status(401).json({
@@ -66,7 +65,6 @@ export class Auths {
             if (!!auth) {
                 next();
             }
-
         } catch (err) {
             return sendError(res, err, 'Unauthorized request, Please sign In to continue!', 401)
         }
