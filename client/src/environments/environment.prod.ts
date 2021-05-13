@@ -71,6 +71,10 @@ export const environment = {
   POST_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/posts`,
 
   // Notifications URLs
+  FLAMINGO_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/flamingo`,
+  FLAMINGO_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/flamingo`,
+
+  // Notifications URLs
   NOTIFICATIONS_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}`,
   NOTIFICATIONS_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/notifications`,
 
@@ -82,6 +86,7 @@ export const environment = {
   UTILITIES_POSTS_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/posts`,
   UTILITIES_USERS_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/users`,
   UTILITIES_WORKSPACES_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/workspaces`,
+  UTILITIES_FLAMINGOS_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/flamingo`,
 
   // Folio URLs
   FOLIO_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}/folio`

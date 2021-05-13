@@ -1,6 +1,5 @@
-import { Folder, File, Group } from '../models';
-import { Readable } from 'stream';
-import { FoldersService } from '.';
+import { File, Group, Flamingo } from '../models';
+import { Question } from '../models/questions.model';
 
 export class FilesService {
 
@@ -205,18 +204,39 @@ export class FilesService {
      * This function is responsible for deleting a file
      * @param fileId 
      */
-    async delete(fileId: string) {
+    async delete(fileId: string, flamingoType?: boolean) {
 
         if (fileId) {
 
             // Find the file by Id
             let deletedFile: any = await File.findById({ _id: fileId });
 
-            deletedFile = this.populateFileProperties(deletedFile);
-
-            await File.findByIdAndDelete(fileId);
+            deletedFile = await this.populateFileProperties(deletedFile);
 
             // TODO - check if it is deleting the content of the folio
+
+
+            // Remove flamingo in case of flamingo type
+            if (flamingoType) {
+                // Delete the flamingo
+                let flamingo = await Flamingo.findOne({_file:fileId});
+                flamingo = await Flamingo.populate(flamingo, [
+                    { path: '_questions' }
+                ]);
+
+                if (flamingo) {
+                    flamingo = await Flamingo.findByIdAndDelete({_id: flamingo._id});
+
+                    // Delete the questions
+                    flamingo._questions.forEach(async question => {
+                        await Question.findByIdAndDelete({
+                            _id: question._id || question
+                        });
+                    });
+                }
+            }
+
+            await File.findByIdAndDelete(fileId);
 
             // Return file
             return deletedFile;

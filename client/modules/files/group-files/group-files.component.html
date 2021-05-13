@@ -120,6 +120,13 @@
                     {{file?.original_name}}
                 </a>
 
+                <a *ngIf="file?.type === 'flamingo'" class="mt-0"
+                  [routerLink]="['/document/flamingo', file?._id]" [queryParams]="{ group: file?._group?._id }">
+                    <img src="assets/images/icon_flamingo.svg"
+                      onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                    {{file?.original_name}}
+                </a>
+
                 <div class="media-body">
                     <div class="float-right">
                         <app-secured-image

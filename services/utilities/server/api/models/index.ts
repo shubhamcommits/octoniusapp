@@ -4,6 +4,8 @@ import { User } from './user.model';
 import { Folder } from './folder.model';
 import { File } from './file.model';
 import { Group } from './group.model';
+import { Flamingo } from "./flamingo.model";
+import { Question } from "./questions.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -26,5 +28,11 @@ export {
     Folder as Folder,
 
     // Users
-    User as User
+    User as User,
+
+    // Flamingo
+    Flamingo as Flamingo,
+
+    // Question
+    Question as Questions
 };

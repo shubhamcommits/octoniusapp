@@ -1,0 +1,103 @@
+<div *ngIf="activeQuestion?.type != 'LastScreen'">
+    <!-- Action buttons-->
+    <div class="action-header">
+      <div class="btn-group">
+        <button *ngIf="activeQuestionIndex > 0"
+          class="btn btn-light" (click)="previousQuestion()"><span class="material-icons">
+            chevron_left
+            </span> Previous</button>
+            <button *ngIf="activeQuestionIndex > 0 && activeQuestionIndex < questions?.length-2"
+              class="btn btn-light" (click)="nextQuestion()">Next  <span class="material-icons">
+                chevron_right
+                </span></button>
+        <button *ngIf="activeQuestionIndex == questions?.length-2"
+            class="btn btn-success" (click)="submitAnswers()">Submit</button>
+        <button *ngIf="activeQuestion?.type==='Welcome' && activeQuestionIndex == 0"
+            class="btn btn-primary" (click)="nextQuestion()">Start</button>
+        
+      </div>
+      
+    </div>
+
+    <!-- container for welcome and thanks question type end-->
+    <div *ngIf="activeQuestion?.type == 'Welcome' || activeQuestion?.type == 'Thanks'"
+      class="answer-container">
+        <app-secured-image *ngIf="activeQuestion?.image_url"
+            [imgURL]="activeQuestion?.image_url" [noAuth]="true"
+            [service]="'flamingo'" [styleClass]="'welcome-img'"></app-secured-image>
+        <h2>{{activeQuestion?.text}}</h2>
+    </div>
+
+    <!-- container for all other question except welcome and thanks question type start-->
+    <!-- background image div -->
+    <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
+        style="background-image: url({{FLAMINGO_UPLOADS}}/{{activeQuestion?.image_url}}?noAuth=true);"
+        class="image-wrapper-container">
+
+        <div class="question-answer-container">
+
+            <!-- question text -->
+            <h2 style="margin-bottom: 50px;">{{activeQuestion?.text}}</h2>
+
+            <!-- ShortText text input field -->
+            <input *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..."
+                class="input-answer" [(ngModel)]="activeQuestion.answer"
+                (change)="answerQuestion($event.target.value)" />
+            <!-- yes/no buttons -->
+            <div *ngIf="activeQuestion?.type==='Yes/No'">
+                <button class="btn btn-success" (click)="answerQuestion('positive')">{{activeQuestion?.positive_option_text || 'Positive'}}</button>
+                <br />
+                <br />
+                <button class="btn btn-danger" (click)="answerQuestion('negative')">{{activeQuestion?.negative_option_text || 'Negative'}}</button>
+            </div>
+
+            <!-- scale question scale and scale labels-->
+            <div *ngIf="activeQuestion?.type==='Scale'">
+                <button *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" (click)="answerQuestion(0)">0</button>
+                <button *ngIf="activeQuestion?.scale?.size > 1" class="scale-button" (click)="answerQuestion(1)">1</button>
+                <button *ngIf="activeQuestion?.scale?.size > 2" class="scale-button" (click)="answerQuestion(2)">2</button>
+                <button *ngIf="activeQuestion?.scale?.size > 3" class="scale-button" (click)="answerQuestion(3)">3</button>
+                <button *ngIf="activeQuestion?.scale?.size > 4" class="scale-button" (click)="answerQuestion(4)">4</button>
+                <button *ngIf="activeQuestion?.scale?.size > 5" class="scale-button" (click)="answerQuestion(5)">5</button>
+                <button *ngIf="activeQuestion?.scale?.size > 6" class="scale-button" (click)="answerQuestion(6)">6</button>
+                <button *ngIf="activeQuestion?.scale?.size > 7" class="scale-button" (click)="answerQuestion(7)">7</button>
+                <button *ngIf="activeQuestion?.scale?.size > 8" class="scale-button" (click)="answerQuestion(8)">8</button>
+                <button *ngIf="activeQuestion?.scale?.size > 9" class="scale-button" (click)="answerQuestion(9)">9</button>
+                <button *ngIf="activeQuestion?.scale?.size > 10" class="scale-button" (click)="answerQuestion(10)">10</button>
+
+                <div *ngIf="activeQuestion.show_scale_labels" [ngStyle]="{'position':'relative','width': (activeQuestion.scale.size * 63)+'px'}">
+                    <p style="left: 0px;position: absolute;">{{activeQuestion?.scale?.left_side_label}}</p>
+                    <p style="left: 46%;position: absolute;">{{activeQuestion?.scale?.center_label}}</p>
+                    <p style="right: 0px;position: absolute;">{{activeQuestion?.scale?.right_side_label}}</p>
+                </div>
+            </div>
+
+              <!-- dropdown question dropdown -->
+            <button *ngIf="activeQuestion?.type === 'Dropdown'" class="btn btn-primary mb-3 mt-3 dropdown-toggle"
+                type="button" data-toggle="dropdown">
+                Please Select an Option
+            </button>
+            <ul *ngIf="activeQuestion?.type === 'Dropdown'" class="dropdown-menu">
+                <li *ngFor="let currentOption of activeQuestion?.options; let j=index" class="dropdown-item" (click)="answerQuestion(currentOption)">
+                    {{currentOption}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- container for all other question except welcome and thanks question type end-->
+</div>
+
+<!-- Last page, only for Thanking for submitting a flamingo to octonius -->
+<div *ngIf="activeQuestion?.type == 'LastScreen'" class="answer-container">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+      <img class="publish-image" src="assets/images/publish_flamingo.svg"/>
+    </div>
+    <div class="col-md-4">
+      <h3 class="publish-note">Thank you!</h3>
+      <p>You can close this window now.</p>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+</div>

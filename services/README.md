@@ -60,3 +60,8 @@
 **PORT 13000** - `http://localhost:13000/api` -> `/api/integrations`
 
 *   `/api`
+
+
+**PORT 14000** - `http://localhost:14000/api` -> `/api/flamingo`
+
+*   `/api`

@@ -1,6 +1,6 @@
 import express from 'express';
 import { Auths } from '../../utils/auths';
-import { groupFileHandler, postFileHandler, userFileHandler, workspaceFileHandler } from '../../utils/filehandlers';
+import { flamingoFileHandler, groupFileHandler, postFileHandler, userFileHandler, workspaceFileHandler } from '../../utils/filehandlers';
 
 const routes = express.Router();
 
@@ -24,6 +24,9 @@ routes.get('/users/:file', userFileHandler);
 
 // GET - Handles the file attachment(workspace_avatar) for the workspace
 routes.get('/workspaces/:file', workspaceFileHandler);
+
+// GET - Handles the file added in the flamingo forms
+routes.get('/flamingo/:file', flamingoFileHandler);
 
 
 /*  ===================
