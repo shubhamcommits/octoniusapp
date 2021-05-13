@@ -14,18 +14,18 @@ const routes: Routes = [
         path: ':id', component: FlamingoEditorComponent
       },
       {
-        path:':id/preview', component: FlamingoPreviewComponent
-      },
-      {
         path:':id/publish', component: FlamingoPublishComponent
-      },
-      {
-        path:':id/answer', component: FlamingoAnswerComponent
       },
       {
         path:':id/result', component: FlamingoResultComponent
       }
     ]
+  },
+  {
+    path:':id/preview', component: FlamingoPreviewComponent
+  },
+  {
+    path:':id/answer', component: FlamingoAnswerComponent
   }
 ];
 
