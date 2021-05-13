@@ -94,7 +94,7 @@ function devConfigInit() {
   process.env.FLAMINGO_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}`
   process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}/api`
 
-  process.env.MANAGEMENT_URL = 'https://management.octonius.com'
+  process.env.MANAGEMENT_URL = 'http://localhost:3300'
   process.env.MANAGEMENT_API_KEY = "TZCDAC3CDCJILSRGA2II"
 };
 
