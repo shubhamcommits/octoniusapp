@@ -2,6 +2,7 @@ import { sendError } from '../../utils';
 import { User, Workspace, Group, Account } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
+import moment from 'moment';
 
 // Create Stripe Object
 const stripe = require('stripe')(process.env.SK_STRIPE);
@@ -303,7 +304,7 @@ export class MembersControllers {
                     billing: {
                         client_id: (workspace.billing) ? workspace.billing.client_id : '',
                         subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
-                        current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
+                        current_period_end: (workspace.billing) ? workspace.billing.current_period_end : moment().format(),
                         scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
                         quantity: usersCount
                     }
