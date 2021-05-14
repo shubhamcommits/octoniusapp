@@ -96,7 +96,6 @@ function devConfigInit() {
 
   // MANAGEMENT PORTAL API
   process.env.MANAGEMENT_URL = 'http://localhost:3300'
-  process.env.MANAGEMENT_API_KEY = "TZCDAC3CDCJILSRGA2II"
 };
 
 export { devConfigInit as developmentConfig }
