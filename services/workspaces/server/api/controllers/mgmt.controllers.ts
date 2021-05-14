@@ -1,8 +1,6 @@
 import { sendError } from '../../utils';
-import { Workspace } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import { WorkspaceService } from '../services';
-import http from 'axios';
 
 const workspaceService = new WorkspaceService();
 
