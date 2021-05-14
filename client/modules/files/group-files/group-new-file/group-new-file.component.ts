@@ -54,7 +54,6 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
   async ngOnChanges() {
 
     const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
-console.log(currentWorkspace['_id'], currentWorkspace['management_private_api_key']);
     this.flamingoModuleAvailable = await this.publicFunctions.checkFlamingoStatus(currentWorkspace['_id'], currentWorkspace['management_private_api_key']);
 
     // Set the File Credentials after view initialization
@@ -296,8 +295,9 @@ console.log(currentWorkspace['_id'], currentWorkspace['management_private_api_ke
             // Output the created file to the top components
             this.fileEmitter.emit(res['file']);
 
-            resolve((file) ? utilityService.resolveAsyncPromise('File has been uploaded!') :
-              utilityService.resolveAsyncPromise('New folio has been created!'))
+            resolve((file) ? utilityService.resolveAsyncPromise('File has been uploaded!')
+              : (fileData.type == 'flamingo' ? utilityService.resolveAsyncPromise('New flamingo has been created!')
+                : utilityService.resolveAsyncPromise('New folio has been created!')))
 
           })
           .catch(() => {
