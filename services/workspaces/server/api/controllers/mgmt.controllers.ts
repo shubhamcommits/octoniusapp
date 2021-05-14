@@ -22,8 +22,8 @@ export class ManagementControllers {
             if (!workspaceId) {
                 return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
             }
-console.log("WORKSPACE DELETED!!!");
-            //await workspaceService.remove(workspaceId.toString(), false);
+
+            await workspaceService.remove(workspaceId.toString(), false);
 
             // Send the status 200 response 
             return res.status(200).json({
