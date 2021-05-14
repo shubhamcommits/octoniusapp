@@ -84,7 +84,7 @@ function prodConfigInit() {
   process.env.FLAMINGO_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/flamingo`
   process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/flamingo`
 
-  process.env.MANAGEMENT_URL = 'https://management.octonius.com'
+  process.env.MANAGEMENT_URL = process.env.MANAGEMENT_URL 
 };
 
 export { prodConfigInit as productionConfig } 
