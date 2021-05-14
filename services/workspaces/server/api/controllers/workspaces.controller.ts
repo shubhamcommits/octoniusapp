@@ -603,7 +603,7 @@ export class WorkspaceController {
                 return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
             }
 
-            await workspaceService.remove(workspaceId);
+            await workspaceService.remove(workspaceId, true);
 
             // Send the status 200 response 
             return res.status(200).json({

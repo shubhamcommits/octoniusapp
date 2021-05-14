@@ -147,6 +147,7 @@ export class BillingControllers {
                 access_code: workspaceUpdated.access_code,
                 management_private_api_key: workspaceUpdated.management_private_api_key,
                 billing: {
+                    client_id: subscription.customer || '',
                     subscription_id: subscription.id || '',
                     current_period_end: subscription.current_period_end || '',
                     scheduled_cancellation: false,
@@ -450,6 +451,7 @@ export class BillingControllers {
                 access_code: workspace.access_code,
                 management_private_api_key: workspace.management_private_api_key,
                 billing: {
+                    client_id: updatedSubscription.customer || '',
                     subscription_id: updatedSubscription.id || '',
                     current_period_end: updatedSubscription.current_period_end || '',
                     scheduled_cancellation: true,
@@ -544,6 +546,7 @@ export class BillingControllers {
                 access_code: workspace.access_code,
                 management_private_api_key: workspace.management_private_api_key,
                 billing: {
+                    client_id: updatedSubscription.customer || '',
                     subscription_id: updatedSubscription.id || '',
                     current_period_end: updatedSubscription.current_period_end || '',
                     scheduled_cancellation: false,
@@ -656,6 +659,7 @@ export class BillingControllers {
                 access_code: updatedWorkspace.access_code,
                 management_private_api_key: updatedWorkspace.management_private_api_key,
                 billing: {
+                    client_id: subscription.customer || '',
                     subscription_id: subscription.id || '',
                     current_period_end: subscription.current_period_end || '',
                     scheduled_cancellation: false,
@@ -928,6 +932,7 @@ export class BillingControllers {
                     access_code: workspace.access_code,
                     management_private_api_key: workspace.management_private_api_key,
                     billing: {
+                        client_id: (workspace.billing) ? workspace.billing.client_id : '',
                         subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
                         current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
                         scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,

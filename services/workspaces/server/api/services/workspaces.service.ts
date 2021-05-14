@@ -12,9 +12,10 @@ export class WorkspaceService {
 
   /**
    * This function is used to remove a workspace
-   * @param { workspaceId }
+   * @param workspaceId
+   * @param callMgmtPortal This property is used to identify if the call to the method is already made from the mgmt portal, so then it is not needed to call it again.
    */
-  async remove(workspaceId: string ) {
+  async remove(workspaceId: string, callMgmtPortal: boolean) {
     try {
 
       // Remove the workspace from user´s account
@@ -59,12 +60,14 @@ export class WorkspaceService {
       // Delete the workspace
       workspace = await Workspace.findByIdAndDelete(workspaceId);
 
-      // Send new workspace to the mgmt portal
-      http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
-          data: {
-              API_KEY: workspace.management_private_api_key
-          }
-      });
+      if (callMgmtPortal) {
+        // Remove the workspace in the mgmt portal
+        http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
+            data: {
+                API_KEY: workspace.management_private_api_key
+            }
+        });
+    }
 
     } catch (err) {
       throw (err);

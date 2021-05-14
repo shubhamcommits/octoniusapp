@@ -418,6 +418,7 @@ export class UsersControllers {
                 access_code: workspace.access_code,
                 management_private_api_key: workspace.management_private_api_key,
                 billing: {
+                    client_id: (workspace.billing) ? workspace.billing.client_id : '',
                     subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
                     current_period_end: (workspace.billing) ? workspace.billing.current_period_end : '',
                     scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
@@ -950,6 +951,7 @@ export class UsersControllers {
             access_code: workspace.access_code,
             management_private_api_key: workspace.management_private_api_key,
             billing: {
+                client_id: (workspaceUpdated.billing) ? workspaceUpdated.billing.client_id : '',
                 subscription_id: (workspaceUpdated.billing) ? workspaceUpdated.billing.subscription_id : '',
                 current_period_end: (workspaceUpdated.billing) ? workspaceUpdated.billing.current_period_end : '',
                 scheduled_cancellation: (workspaceUpdated.billing) ? workspaceUpdated.billing.scheduled_cancellation : false,

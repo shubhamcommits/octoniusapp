@@ -51,6 +51,7 @@ const addUserToSubscription = async (stripe: any, subscriptionId: any, priceId: 
         access_code: workspace.access_code,
         management_private_api_key: workspace.management_private_api_key,
         billing: {
+            client_id: subscription.customer || '',
             subscription_id: subscription.id || '',
             current_period_end: subscription.current_period_end || '',
             scheduled_cancellation: false,
@@ -113,6 +114,7 @@ const removeUserFromSubscription = async (stripe: any, subscriptionId: any, pric
         access_code: workspace.access_code,
         management_private_api_key: workspace.management_private_api_key,
         billing: {
+            client_id: subscription.customer || '',
             subscription_id: subscription.id || '',
             current_period_end: subscription.current_period_end || '',
             scheduled_cancellation: false,
