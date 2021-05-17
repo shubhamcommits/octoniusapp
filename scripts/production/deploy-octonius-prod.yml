@@ -72,6 +72,7 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
     deploy:
       replicas: 2
       update_config:
@@ -104,6 +105,7 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
     deploy:
       replicas: 2
       update_config:
@@ -136,6 +138,7 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
     deploy:
       replicas: 2
       update_config:
@@ -168,6 +171,7 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
     deploy:
       replicas: 2
       update_config:

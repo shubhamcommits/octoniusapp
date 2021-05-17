@@ -66,6 +66,7 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
     depends_on:
       - mongodb
     links:
@@ -97,6 +98,7 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
     depends_on:
       - mongodb
     links:
@@ -128,6 +130,7 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
     depends_on:
       - mongodb
     links:
@@ -159,6 +162,7 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
     depends_on:
       - mongodb
     links:

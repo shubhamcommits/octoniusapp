@@ -89,5 +89,8 @@ export const environment = {
   UTILITIES_FLAMINGOS_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/flamingo`,
 
   // Folio URLs
-  FOLIO_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}/folio`
+  FOLIO_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}/folio`,
+
+  // MANAGEMENT_URL: 'https://management.octonius.com',
+  MANAGEMENT_URL: `${window["env"]["protocol"]}://${window["env"]["mgmt_portal_domain"]}`
 };

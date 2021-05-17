@@ -336,4 +336,16 @@ export class WorkspaceService {
   removeWorkspace(workspaceId: string) {
     return this._http.delete<any>(`${this.BASE_API_URL}/${workspaceId}`).toPromise();
   }
+
+  /**
+   * This function is responsible for check if the workspace has flamingo active
+   * @param workspaceId
+   */
+  getFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(`${environment.MANAGEMENT_URL}/api/workspace/${workspaceId}/flamingo`, {
+      params: {
+        API_KEY: mgmtApiPrivateKey
+      }
+    }).toPromise();
+  }
 }

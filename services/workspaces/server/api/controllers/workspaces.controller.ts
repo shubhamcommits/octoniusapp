@@ -1,18 +1,14 @@
-import { sendError, PasswordHelper, Auths } from '../../utils';
+import { sendError, Auths } from '../../utils';
 import { Group, Workspace, User, Account } from '../models';
 import { Request, Response, NextFunction } from 'express';
-import { CommonService, UsersService } from '../services';
+import { UsersService, WorkspaceService } from '../services';
 import http from 'axios';
 import moment from 'moment';
-import mongoose from "mongoose";
-
-// Password Helper Class
-const passwordHelper = new PasswordHelper();
 
 // User Service Instance
 const usersService = new UsersService();
 
-const commonService = new CommonService();
+const workspaceService = new WorkspaceService();
 
 const auths = new Auths();
 
@@ -145,6 +141,7 @@ export class WorkspaceController {
             newWorkspace.owner_first_name = accountData.first_name;
             newWorkspace.owner_last_name = accountData.last_name;
             newWorkspace.owner_email = accountData.email;
+            newWorkspace.management_private_api_key = await auths.generateMgmtPrivateApiKey();
 
             // Create new workspace
             const workspace = await Workspace.create(newWorkspace);
@@ -329,39 +326,39 @@ export class WorkspaceController {
                 workspace: workspaceUpdate
             })
 
-            if (process.env.NODE_ENV == 'production') {
-                // Send new workspace and user to the mgmt portal
-                let workspaceMgmt = {
-                    _id: workspace._id,
-                    company_name: newWorkspace.company_name,
-                    workspace_name: newWorkspace.workspace_name,
-                    owner_email: accountData.email,
-                    owner_first_name: accountData.first_name,
-                    owner_last_name: accountData.last_name,
-                    _owner_remote_id: user._id,
-                    environment: process.env.DOMAIN,
-                    num_members: 1,
-                    num_invited_users: 0,
-                    num_groups: 1,
-                    created_date: workspace.created_date
-                }
-                let userMgmt = {
-                    _id: user._id,
-                    active: user.active,
-                    email: accountData.email,
-                    password: accountData.password,
-                    first_name: user.first_name,
-                    last_name: user.last_name,
-                    _workspace: workspace._id,
-                    environment: process.env.DOMAIN,
-                    created_date: user.created_date
-                }
-                http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
-                    API_KEY: process.env.MANAGEMENT_API_KEY,
-                    workspaceData: workspaceMgmt,
-                    userData: userMgmt,
-                });
+            // Send new workspace and user to the mgmt portal
+            let workspaceMgmt = {
+                _id: workspace._id,
+                company_name: newWorkspace.company_name,
+                workspace_name: newWorkspace.workspace_name,
+                owner_email: accountData.email,
+                owner_first_name: accountData.first_name,
+                owner_last_name: accountData.last_name,
+                _owner_remote_id: user._id,
+                environment: process.env.DOMAIN,
+                num_members: 1,
+                num_invited_users: 0,
+                num_groups: 1,
+                created_date: workspace.created_date,
+                access_code: workspace.access_code,
+                management_private_api_key: workspace.management_private_api_key,
             }
+            let userMgmt = {
+                _id: user._id,
+                active: user.active,
+                email: accountData.email,
+                password: accountData.password,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                _workspace: workspace._id,
+                environment: process.env.DOMAIN,
+                created_date: user.created_date
+            }
+            http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
+                API_KEY: 'TZCDAC3CDCJILSRGA2II',
+                workspaceData: workspaceMgmt,
+                userData: userMgmt,
+            });
 
             // Send the status 200 response
             return res.status(200).json({
@@ -606,56 +603,7 @@ export class WorkspaceController {
                 return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
             }
 
-            // Remove the workspace from user´s account
-            let users = await User.find({_workspace: workspaceId}).select('_account').lean();
-            users.forEach(async user => {
-                // Count the number of workspces for the account
-                let accountUpdate = await Account.findById(user._account);
-                const numWorkspaces = accountUpdate._workspaces.length;
-
-                if (numWorkspaces < 2) {
-                    // If account only has one workspace, the account is removed
-                    accountUpdate = await Account.findByIdAndDelete(user._account);
-                } else {
-                    // If account has more than one workspaces, the workspace is removed from the account
-                    accountUpdate = await Account.findByIdAndUpdate({
-                            _id: user._account
-                        }, {
-                            $pull: {
-                                _workspaces: workspaceId
-                            }
-                        });
-                }
-            });
-
-            // Delete the users related
-            await User.deleteMany({_workspace: workspaceId});
-
-            // Delete the groups
-            const groups = await Group.find({ _workspace: workspaceId });
-            groups.forEach(async group => {
-                await commonService.removeGroup(group._id);
-            });
-
-            let workspace = await Workspace.findOne({_id: workspaceId}).select('billing');
-
-            if (workspace && workspace['billing'] && workspace['billing']['client_id']) {
-                // Remove stripe client
-                const stripe = require('stripe')(process.env.SK_STRIPE);
-                stripe.customers.del(workspace['billing']['client_id']);
-            }
-
-            // Delete the workspace
-            workspace = await Workspace.findByIdAndDelete(workspaceId);
-
-            // Send new workspace to the mgmt portal
-            if (process.env.NODE_ENV == 'production') {
-                http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
-                    data: {
-                        API_KEY: process.env.MANAGEMENT_API_KEY
-                    }
-                });
-            }
+            await workspaceService.remove(workspaceId, true);
 
             // Send the status 200 response 
             return res.status(200).json({
