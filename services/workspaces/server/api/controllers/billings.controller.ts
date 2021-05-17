@@ -94,7 +94,7 @@ export class BillingControllers {
                     $set: {
                         'billing.subscription_id': subscription.id,
                         'billing.subscription_item_id': subscription.items.data[0].id,
-                        'billing.current_period_end': subscription.current_period_end,
+                        'billing.current_period_end': moment(subscription.current_period_end),
                         'billing.quantity': subscription.quantity,
                         'billing.client_id': customerId,
                         'billing.product_id': req.body.product_id,
@@ -106,7 +106,7 @@ export class BillingControllers {
             // Prepare adjustedSubscription Object
             const adjustedSubscription = {
                 created: subscription.created,
-                current_period_end: subscription.current_period_end,
+                current_period_end: moment(subscription.current_period_end),
                 current_period_start: subscription.current_period_start,
                 object: subscription.object,
                 amount: subscription.plan.amount,
@@ -149,7 +149,7 @@ export class BillingControllers {
                 billing: {
                     client_id: subscription.customer || '',
                     subscription_id: subscription.id || '',
-                    current_period_end: subscription.current_period_end || moment().format(),
+                    current_period_end: moment(subscription.current_period_end) || moment().format(),
                     scheduled_cancellation: false,
                     quantity: subscription.quantity || 0
                 }
@@ -261,7 +261,7 @@ export class BillingControllers {
                         _id: workspaceId
                     }, {
                         $set: {
-                            'billing.current_period_end': subscription.current_period_end,
+                            'billing.current_period_end': moment(subscription.current_period_end),
                             'billing.subscription_id': subscription.id
                         }
                     }, {
@@ -453,7 +453,7 @@ export class BillingControllers {
                 billing: {
                     client_id: updatedSubscription.customer || '',
                     subscription_id: updatedSubscription.id || '',
-                    current_period_end: updatedSubscription.current_period_end || moment().format(),
+                    current_period_end: moment(updatedSubscription.current_period_end) || moment().format(),
                     scheduled_cancellation: true,
                     quantity: updatedSubscription.quantity || 0
                 }
@@ -548,7 +548,7 @@ export class BillingControllers {
                 billing: {
                     client_id: updatedSubscription.customer || '',
                     subscription_id: updatedSubscription.id || '',
-                    current_period_end: updatedSubscription.current_period_end || moment().format(),
+                    current_period_end: moment(updatedSubscription.current_period_end) || moment().format(),
                     scheduled_cancellation: false,
                     quantity: updatedSubscription.quantity || 0
                 }
@@ -619,7 +619,7 @@ export class BillingControllers {
                 _id: user._workspace
             }, {
                 $set: {
-                    'billing.current_period_end': subscription.current_period_end,
+                    'billing.current_period_end': moment(subscription.current_period_end),
                     'billing.failed_payments': [],
                     'billing.quantity': usersCount,
                     'billing.subscription_id': subscription.id
@@ -661,7 +661,7 @@ export class BillingControllers {
                 billing: {
                     client_id: subscription.customer || '',
                     subscription_id: subscription.id || '',
-                    current_period_end: subscription.current_period_end || moment().format(),
+                    current_period_end: moment(subscription.current_period_end) || moment().format(),
                     scheduled_cancellation: false,
                     quantity: subscription.quantity || 0
                 }
@@ -674,7 +674,7 @@ export class BillingControllers {
             // Prepare adjustedSubscription Object
             const adjustedSubscription = {
                 created: subscription.created,
-                current_period_end: subscription.current_period_end,
+                current_period_end: moment(subscription.current_period_end),
                 current_period_start: subscription.current_period_start,
                 object: subscription.object,
                 amount: subscription.plan.amount,
@@ -809,9 +809,9 @@ export class BillingControllers {
                         {
                             $set: {
                                 'billing.current_period_end': (stripeObject.cancel_at_period_end == true) 
-                                    ? stripeObject.current_period_end
-                                    : stripeObject.canceled_at,
-                                'billing.scheduled_cancellation': stripeObject.cancel_at_period_end
+                                    ? moment(stripeObject.current_period_end)
+                                    : moment(stripeObject.canceled_at),
+                                'billing.scheduled_cancellation': moment(stripeObject.cancel_at_period_end)
                             }
                         }, {
                             new: true
@@ -827,7 +827,7 @@ export class BillingControllers {
                                 'billing.success_payments': req.body
                             },
                             $set: {
-                                'billing.current_period_end': stripeObject.period_end,
+                                'billing.current_period_end': moment(stripeObject.period_end),
                                 'billing.scheduled_cancellation': false
                             }
                         }, {
@@ -844,7 +844,7 @@ export class BillingControllers {
                                 'billing.success_payments': req.body
                             },
                             $set: {
-                                'billing.current_period_end': stripeObject.period_end,
+                                'billing.current_period_end': moment(stripeObject.period_end),
                                 'billing.scheduled_cancellation': false
                             }
                         }, {
@@ -861,7 +861,7 @@ export class BillingControllers {
                                 'billing.success_payments': req.body
                             },
                             $set: {
-                                'billing.current_period_end': stripeObject.period_end,
+                                'billing.current_period_end': moment(stripeObject.period_end),
                                 'billing.scheduled_cancellation': false
                             }
                         }, {
@@ -879,7 +879,7 @@ export class BillingControllers {
                             },
                             $set: {
                                 'billing.scheduled_cancellation': true,
-                                'billing.current_period_end': stripeObject.period_end,
+                                'billing.current_period_end': moment(stripeObject.period_end),
                             }
                         }, {
                             new: true
@@ -1071,7 +1071,7 @@ export class BillingControllers {
                     $set: {
                         'billing.subscription_id': subscription.id,
                         'billing.subscription_item_id': subscription.items.data[0].id,
-                        'billing.current_period_end': subscription.current_period_end,
+                        'billing.current_period_end': moment(subscription.current_period_end),
                         'billing.quantity': usersCount,
                         'billing.client_id': session.customer,
                         'billing.product_id': subscription.items.data[0].price.product,

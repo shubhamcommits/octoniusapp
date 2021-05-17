@@ -54,7 +54,7 @@ const addUserToSubscription = async (stripe: any, subscriptionId: any, priceId: 
         billing: {
             client_id: subscription.customer || '',
             subscription_id: subscription.id || '',
-            current_period_end: subscription.current_period_end || moment().format(),
+            current_period_end: moment(subscription.current_period_end) || moment().format(),
             scheduled_cancellation: false,
             quantity: usersCount || 0
         }
@@ -117,7 +117,7 @@ const removeUserFromSubscription = async (stripe: any, subscriptionId: any, pric
         billing: {
             client_id: subscription.customer || '',
             subscription_id: subscription.id || '',
-            current_period_end: subscription.current_period_end || moment().format(),
+            current_period_end: moment(subscription.current_period_end) || moment().format(),
             scheduled_cancellation: false,
             quantity: usersCount || 0
         }
