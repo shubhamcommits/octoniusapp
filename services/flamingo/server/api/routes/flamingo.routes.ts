@@ -12,7 +12,7 @@ routes.post('/create-flamingo', auths.verifyToken, auths.isLoggedIn, flamingoFun
 
 routes.post('/create-add-question', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.createAndAddQuestion);
 
-routes.get('/', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.get);
+routes.get('/', flamingoFunctions.get);
 
 routes.put('/publish', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.publish);
 
