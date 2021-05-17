@@ -53,6 +53,9 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
               Swal.fire("Access restricted", "Please start your subscription.")
             }
             return res['status'];
+          }).catch((err) => {
+            this.router.navigate(['/home']);
+            return false;
           });
       } else {
         return true;
@@ -93,6 +96,9 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
           }
           // return res['status'];
           return true;
+        }).catch((err) => {
+          this.router.navigate(['/home']);
+          return false;
         });
     } else {
       return false;

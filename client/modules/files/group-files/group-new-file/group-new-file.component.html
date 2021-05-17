@@ -25,7 +25,7 @@
     <li class="dropdown-item" (click)="createFolio()">
         <img src="assets/images/icon_folio.svg" alt="" class="mr-2"> <span>Folio</span>
     </li>
-    <li class="dropdown-item" (click)="createFlamingo()">
+    <li class="dropdown-item" *ngIf="flamingoModuleAvailable" (click)="createFlamingo()">
         <img src="assets/images/icon_flamingo.svg" alt="" class="mr-2"> <span>Flamingo</span>
     </li>
 </ul>

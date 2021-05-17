@@ -89,7 +89,8 @@ const workspaceSchema = new Schema({
             type: String
         },
         current_period_end: {
-            type: Number
+            type: Date,
+            default: moment().format()
         },
         scheduled_cancellation: {
             type: Boolean,
@@ -107,6 +108,11 @@ const workspaceSchema = new Schema({
             type: Number,
             default: 1
         }
+    },
+    management_private_api_key: {
+        type: String,
+        required: true,
+        default: 'TZCDAC3CDCJILSRGA2II'
     }
 });
 

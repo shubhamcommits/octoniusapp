@@ -1,4 +1,5 @@
 import { Component, OnChanges, OnDestroy, Output, Input, Injector, EventEmitter } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
@@ -34,8 +35,14 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
   // Output files event emitter
   @Output('file') fileEmitter = new EventEmitter();
 
+  // Property to check if the workspace has the flamingo module available
+  flamingoModuleAvailable = false;
+
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
+
+  // Public Functions Instance
+  public publicFunctions = this.Injector.get(PublicFunctions);
 
   // File Data variable
   fileData: any = {
@@ -44,7 +51,10 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
     type: 'file'
   }
 
-  ngOnChanges() {
+  async ngOnChanges() {
+
+    const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
+    this.flamingoModuleAvailable = await this.publicFunctions.checkFlamingoStatus(currentWorkspace['_id'], currentWorkspace['management_private_api_key']);
 
     // Set the File Credentials after view initialization
     this.fileData = {
@@ -285,8 +295,9 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
             // Output the created file to the top components
             this.fileEmitter.emit(res['file']);
 
-            resolve((file) ? utilityService.resolveAsyncPromise('File has been uploaded!') :
-              utilityService.resolveAsyncPromise('New folio has been created!'))
+            resolve((file) ? utilityService.resolveAsyncPromise('File has been uploaded!')
+              : (fileData.type == 'flamingo' ? utilityService.resolveAsyncPromise('New flamingo has been created!')
+                : utilityService.resolveAsyncPromise('New folio has been created!')))
 
           })
           .catch(() => {

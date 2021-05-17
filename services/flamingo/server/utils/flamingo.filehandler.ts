@@ -28,7 +28,6 @@ const flamingoFileHandler = (req: Request, res: Response, next: NextFunction) =>
   } 
   if(req.body.fileData.questionId){
     fileName += req.body.fileData.questionId +  '_';
-
   }
   
   fileName += Date.now().toString() + '_' + req['files'].questionImage['name'].replace(/\s/g, "");

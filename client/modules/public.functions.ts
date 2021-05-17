@@ -21,7 +21,9 @@ import { FoldersService } from 'src/shared/services/folders-service/folders.serv
 declare const gapi: any;
 declare const google: any;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PublicFunctions {
 
     constructor(
@@ -1260,5 +1262,18 @@ export class PublicFunctions {
 
     async isMobileDevice() {
       return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+    }
+
+    async checkFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+      const workspaceService = this.injector.get(WorkspaceService);
+      return workspaceService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey).then(
+        (res) => {
+          if ( !res || !res['status'] ) {
+            return false;
+          }
+          return true;
+        }).catch((err) => {
+          return false;
+        });
     }
 }
