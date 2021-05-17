@@ -2,7 +2,8 @@
 const url = {
   protocol: window["env"]["protocol"], // standard protocol
   domain: window["env"]["domain"], // your domain name where application is supposed to be visible
-  websocket: window["env"]["websocket"]  // wss in case of https protocol, else pass ws here
+  websocket: window["env"]["websocket"],  // wss in case of https protocol, else pass ws here
+  mgmt_portal_domain: window["env"]["mgmt_portal_domain"]
 }
 
 // Export Environment variables
@@ -91,6 +92,6 @@ export const environment = {
   // Folio URLs
   FOLIO_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}/folio`,
 
-  // MANAGEMENT_URL: 'https://management.octonius.com',
+  // MANAGEMENT_URL
   MANAGEMENT_URL: `${window["env"]["protocol"]}://${window["env"]["mgmt_portal_domain"]}`
 };

@@ -415,6 +415,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
       - WEBSOCKET=${WEBSOCKET}
+      - mgmt_portal_domain=${mgmt_portal_domain}
     deploy:
       replicas: 3
       update_config:

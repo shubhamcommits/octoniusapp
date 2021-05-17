@@ -397,6 +397,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
       - WEBSOCKET=${WEBSOCKET}
+      - mgmt_portal_domain=${mgmt_portal_domain}
     depends_on:
       - mongodb
       - mailing-server
