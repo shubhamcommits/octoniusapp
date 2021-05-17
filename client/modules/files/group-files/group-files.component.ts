@@ -133,8 +133,6 @@ export class GroupFilesComponent implements OnInit {
     }
 
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`
-
-    console.log('url', environment.MANAGEMENT_URL)
   }
 
   ngAfterViewInit(){
