@@ -62,7 +62,7 @@ export class WorkspaceService {
 
       if (callMgmtPortal) {
         // Remove the workspace in the mgmt portal
-        http.delete(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
+        http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
             data: {
                 API_KEY: workspace.management_private_api_key
             }
