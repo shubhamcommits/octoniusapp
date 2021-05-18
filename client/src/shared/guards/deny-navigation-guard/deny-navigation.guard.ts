@@ -8,6 +8,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Injectable()
 export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDeactivate<AdminBillingComponent> {
@@ -23,6 +24,7 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
     private socketService: SocketService,
     private injector: Injector,
     private workspaceService: WorkspaceService,
+    private managementPortalService: ManagementPortalService,
     private router: Router
   ) {}
 
@@ -46,8 +48,9 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
       if (localStorage.length > 0 && !currentState.url.match('/logout*')) {
         const userData = await this.publicFunctions.getCurrentUser();
         this.workspaceId = userData._workspace;
+        const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
 
-        return this.workspaceService.getBillingStatus(this.workspaceId).then(
+        return this.managementPortalService.getBillingStatus(this.workspaceId, currentWorkspace['management_private_api_key']).then(
           (res) => {
             if ( !res['status'] ) {
               Swal.fire("Access restricted", "Please start your subscription.")
@@ -73,10 +76,10 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
     }
 
     if (localStorage.length > 0) {
+      const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
       const userData = await this.publicFunctions.getCurrentUser();
       this.workspaceId = userData._workspace;
-
-      return this.workspaceService.getBillingStatus(this.workspaceId).then(
+      return this.managementPortalService.getBillingStatus(this.workspaceId, currentWorkspace['management_private_api_key']).then(
         (res) => {
           if ( !res['status'] ) {
             if (!adminUser || res['message'] == 'Workspace does not exist') {

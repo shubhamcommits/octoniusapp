@@ -64,14 +64,14 @@ export class StripePaymentComponent implements OnInit {
           this.subscription = res['subscription'];
           this.workspaceData = res['workspace'];
         })
-        .catch(function(err){
+        .catch(function (err) {
           console.log('Error when fetching Checkout session', err);
           this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
         });
 
-        await this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
+      await this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
 
-        this.router.navigate(['/home']);
+      this.router.navigate(['/home']);
     }
 
     // Check and fetch the subscription details
@@ -80,16 +80,14 @@ export class StripePaymentComponent implements OnInit {
     // Check if the client exists in Stripe
     await this.stripeCustomerExists();
 
-    await this.workspaceService.getBillingStatus(this.workspaceData?._id).then(
+    await this.managementPortalService.getBillingStatus(this.workspaceData?._id, this.workspaceData?.management_private_api_key).then(
       (res) => {
-        if ( !res['status'] || !this.subscription || (!this.customer || this.customer.deleted)) {
+        if (!res['status'] || !this.subscription || (!this.customer || this.customer.deleted)) {
           this.subscriptionActive = false;
         } else {
           this.subscriptionActive = true;
         }
       });
-    // Obtain the client´s charges
-    // await this.getCharges();
   }
 
   isWorkspaceOwner() {
@@ -129,47 +127,6 @@ export class StripePaymentComponent implements OnInit {
     }
   }
 
-  /**
-   * This function is responsible for fetching the list of charges
-   * @param workspaceData
-   */
-  async getCharges() {
-    // this.workspaceService.getSubscription()--cus_HxVc4M2XSwAoV1--cus_GvQ3XcMhLqEGLT--
-    if (this.workspaceData.billing.client_id) {
-      await this.workspaceService.getCharges(this.workspaceData.billing.client_id)
-        .then((res) => {
-          // Initialise the charges
-          this.charges = res['charges'].data;
-        })
-        .catch(() => this.utilityService.errorNotification('Unable to fetch the list os Charges, please try again!')
-      );
-    }
-  }
-
-  /**
-   * This function is responsible to renewing the subscription and start it from fresh
-   */
-  async renewSubscription() {
-
-    // Renew the subscription
-    return this.workspaceService.renewSubscription()
-      .then((res) => {
-
-        // display the new subscription information
-        this.subscription = res['subscription'];
-
-        // Update the subscription amount
-        this.subscription.amount = (this.subscription.amount / 100);
-
-        // update the workspace data
-        this.workspaceData = res['workspace'];
-
-        // Send notification to the user
-        this.utilityService.successNotification('Subscription renewed successfully!');
-      })
-      .catch(() => this.utilityService.errorNotification('Unable to renew the Subscription, please try again!'))
-  }
-
   onSubscriptionChanges(subscription) {
     this.subscription = subscription;
     this.router.navigate(['/home']);
@@ -180,7 +137,7 @@ export class StripePaymentComponent implements OnInit {
 
     this.managementPortalService.createClientPortalSession(this.workspaceData.billing.client_id, redirectUrl, this.workspaceData.management_private_api_key).then(res => {
       window.location.href = res['session']['url'];
-    }).catch((err)=> {
+    }).catch((err) => {
       this.utilityService.errorNotification('There is an error with your Subscription, please contact support!');
     });
   }

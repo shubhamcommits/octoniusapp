@@ -47,6 +47,19 @@ export class ManagementPortalService {
       }).toPromise();
   }
 
+  /**
+   * This function is responsible for getting the current billing status
+   * @param workspaceId
+   */
+  getBillingStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-billing-status/${workspaceId}`, {
+      params: {
+        API_KEY: mgmtApiPrivateKey
+      }
+    })
+    .toPromise()
+  }
+
   /* | ======================================= BILLING ENDS ========================================== | */
 
   /**

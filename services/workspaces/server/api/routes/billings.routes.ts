@@ -16,26 +16,17 @@ const routes = express.Router();
 // POST - create a subscription
 routes.post('/create-subscription', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.createSubscription);
 
-// GET - get billing status
-routes.get('/get-billing-status/:workspaceId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getBillingStatus);
-
 // GET - get subscription details
 routes.get('/get-subscription/:subscriptionId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getSubscription);
 
 // GET - get customer details
 routes.get('/get-customer/:customerId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getCustomer);
 
-// GET - get chargegs
-routes.get('/get-charges/:customerId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getCharges);
-
 // GET - get subscription prices
 routes.get('/get-subscription-prices/:workspaceId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getSubscriptionPrices);
 
 // GET - Cancel subscription
 routes.get('/cancel-subscription', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.cancelSubscription);
-
-// GET - Renew subscription
-routes.get('/renew-subscription', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.renewSubscription);
 
 // GET - Resume subscription
 routes.get('/resume-subscription', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.resumeSubscription);
