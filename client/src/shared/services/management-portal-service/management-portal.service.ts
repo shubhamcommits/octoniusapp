@@ -60,6 +60,20 @@ export class ManagementPortalService {
     .toPromise()
   }
 
+  /**
+   * This function is responsible for know if the workspace can access the billing page
+   * Normally knowing if the environment is on-premise or on the cloud
+   * @param workspaceId
+   */
+   canActivateBilling(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/can-activate-billing/${workspaceId}`, {
+      params: {
+        API_KEY: mgmtApiPrivateKey
+      }
+    })
+    .toPromise()
+  }
+
   /* | ======================================= BILLING ENDS ========================================== | */
 
   /**

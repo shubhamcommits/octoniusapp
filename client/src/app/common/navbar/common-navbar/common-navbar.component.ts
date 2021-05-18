@@ -2,6 +2,7 @@ import { Component, OnInit, Injector ,Input} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -16,7 +17,7 @@ export class CommonNavbarComponent implements OnInit {
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
   userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
-  
+
   routerFromEvent: any;
   activeState:string;
   // SUBSINK
@@ -30,12 +31,15 @@ export class CommonNavbarComponent implements OnInit {
   // WORKSPACE DATA
   workspaceData: any;
 
+  canActivateBilling: boolean = false;
+
   constructor(
     private injector: Injector,
     private router: ActivatedRoute,
     private utilityService: UtilityService,
+    private managementPortalService: ManagementPortalService,
     private routeStateService: RouteStateService
-  ) { 
+  ) {
     this.subSink.add(this.routeStateService?.pathParams.subscribe(async (res) => {
       if(res){
         this.routerFromEvent = res;
@@ -71,16 +75,18 @@ export class CommonNavbarComponent implements OnInit {
         this.workspaceData = res;
       }
     }));
-    
+
     if(this.routerFromEvent && this.routerFromEvent._urlSegment){
       const segments = this.routerFromEvent?._urlSegment?.children?.primary?.segments;
       this.activeState = segments?segments[segments.length-1].path:'';
     }
-    
-    
+
+
     this.utilityService.handleActiveStateTopNavBar().subscribe(event => {
       this.activeState = event;
     });
+
+    this.checkCanActivateBilling();
   }
 
   async changeState(state:string){
@@ -103,5 +109,16 @@ export class CommonNavbarComponent implements OnInit {
       size: 'md',
       centered: true
     });
+  }
+
+  async checkCanActivateBilling() {
+    const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
+    this.managementPortalService.canActivateBilling(currentWorkspace['_id'], currentWorkspace['management_private_api_key']).then(
+      (res) => {
+console.log(res);
+        this.canActivateBilling = res['status'] || false;
+      }).catch((err) => {
+        this.canActivateBilling = false;
+      });
   }
 }
