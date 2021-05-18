@@ -6,6 +6,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -43,6 +44,9 @@ export class StripePaymentComponent implements OnInit {
   // Workspace Service Object
   workspaceService = this.injector.get(WorkspaceService);
 
+  // Management Portal Service Object
+  managementPortalService = this.injector.get(ManagementPortalService);
+
   // Utility Service Object
   utilityService = this.injector.get(UtilityService);
 
@@ -55,7 +59,7 @@ export class StripePaymentComponent implements OnInit {
   async ngOnInit() {
     const sessionId = this.activatedRoute.snapshot.queryParams.session_id;
     if (sessionId) {
-      await this.workspaceService.getStripeCheckoutSession(sessionId, this.workspaceData._id)
+      await this.managementPortalService.getStripeCheckoutSession(sessionId, this.workspaceData._id, this.workspaceData.management_private_api_key)
         .then(res => {
           this.subscription = res['subscription'];
           this.workspaceData = res['workspace'];
@@ -174,7 +178,7 @@ export class StripePaymentComponent implements OnInit {
   createCustomerPortalSession() {
     let redirectUrl = window.location.href;
 
-    this.workspaceService.createClientPortalSession(this.workspaceData.billing.client_id, redirectUrl).then(res => {
+    this.managementPortalService.createClientPortalSession(this.workspaceData.billing.client_id, redirectUrl, this.workspaceData.management_private_api_key).then(res => {
       window.location.href = res['session']['url'];
     }).catch((err)=> {
       this.utilityService.errorNotification('There is an error with your Subscription, please contact support!');

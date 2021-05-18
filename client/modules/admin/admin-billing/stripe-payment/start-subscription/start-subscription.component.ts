@@ -4,6 +4,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { loadStripe } from '@stripe/stripe-js';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-start-subscription',
@@ -40,6 +41,9 @@ export class StartSubscriptionComponent implements OnInit {
   // Utility Service Object
   utilityService = this.injector.get(UtilityService)
 
+  // Management Portal Service Object
+  managementPortalService = this.injector.get(ManagementPortalService)
+
   amount = 0;
   priceId;
 
@@ -63,7 +67,7 @@ export class StartSubscriptionComponent implements OnInit {
   }
 
   startStripeCheckoutSession(priceId: string) {
-    this.workspaceService.createStripeCheckoutSession(priceId, this.workspaceData._id, window.location.href).then(async res => {
+    this.managementPortalService.createStripeCheckoutSession(priceId, this.workspaceData._id, window.location.href, this.workspaceData.management_private_api_key).then(async res => {
       var stripe = await loadStripe(environment.pk_stripe);
       stripe.redirectToCheckout({
         sessionId: res['session'].id

@@ -215,25 +215,6 @@ export class WorkspaceService {
     .toPromise()
   }
 
-  createClientPortalSession(stripeCustomerId: string, returnUrl: string) {
-    return this._http.post(this.BASE_API_URL + `/billings/create-client-portal-session`, {
-      customer: stripeCustomerId,
-      return_url: returnUrl
-    }).toPromise();
-  }
-
-  createStripeCheckoutSession(priceId: string, workspaceId: string, returnUrl: string) {
-    return this._http.post(this.BASE_API_URL + `/billings/create-checkout-session`, {
-      priceId: priceId,
-      workspaceId: workspaceId,
-      return_url: returnUrl
-    }).toPromise();
-  }
-
-  getStripeCheckoutSession(sessionId: string, workspaceId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-checkout-session/${workspaceId}/${sessionId}`).toPromise();
-  }
-
   /* | ======================================= BILLING ENDS ========================================== | */
 
   /**
@@ -335,17 +316,5 @@ export class WorkspaceService {
    */
   removeWorkspace(workspaceId: string) {
     return this._http.delete<any>(`${this.BASE_API_URL}/${workspaceId}`).toPromise();
-  }
-
-  /**
-   * This function is responsible for check if the workspace has flamingo active
-   * @param workspaceId
-   */
-  getFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(`${environment.MANAGEMENT_URL}/api/workspace/${workspaceId}/flamingo`, {
-      params: {
-        API_KEY: mgmtApiPrivateKey
-      }
-    }).toPromise();
   }
 }
