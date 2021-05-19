@@ -4,9 +4,6 @@ import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
 import moment from 'moment';
 
-// Create Stripe Object
-const stripe = require('stripe')(process.env.SK_STRIPE);
-
 export class DomainsControllers {
     /**
       * This function add's the domain to the allowed_domain set which allows those specific domains to signup to the workspace
@@ -225,12 +222,7 @@ export class DomainsControllers {
                 { active: true },
                 { _workspace: workspaceId }
             ] }).countDocuments();
-            
-           // Update the subscription details
-           let subscription = stripe.subscriptionItems.update(workspace['billing'].subscription_item_id, {
-                quantity: usersCount
-            });
-
+           
             // Remove users from all group's _members & _admins
             await Group.updateMany({
                 $or: [
