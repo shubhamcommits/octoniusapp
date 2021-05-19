@@ -52,14 +52,11 @@ export class StartSubscriptionComponent implements OnInit {
   stripeSessionId;
 
   async ngOnInit() {
-    // Configure the payment handler
-    // this.handler = await this.configureHandler(this.workspaceService, this.socketService, this.utilityService);
-
     await this.getSubscriptionPrices();
   }
 
   async getSubscriptionPrices() {
-    await this.managementPortalService.getSubscriptionPrices(environment.product_stripe)
+    await this.managementPortalService.getSubscriptionPrices(this.workspaceData.management_private_api_key)
       .then(res => {
         this.subscription_prices = res['prices'].data;
       });
@@ -67,7 +64,7 @@ export class StartSubscriptionComponent implements OnInit {
 
   startStripeCheckoutSession(priceId: string) {
     this.managementPortalService.createStripeCheckoutSession(priceId, this.workspaceData._id, window.location.href, this.workspaceData.management_private_api_key).then(async res => {
-      var stripe = await loadStripe(environment.pk_stripe);
+      var stripe = await loadStripe(res['pk_stripe']);
       stripe.redirectToCheckout({
         sessionId: res['session'].id
       });

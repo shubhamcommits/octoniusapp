@@ -99,9 +99,6 @@ export class WorkspaceController {
                 return sendError(res, new Error('Unable to fetch the workspace details, as the workspaceId was invalid!'), 'Unable to fetch the workspace details, as the workspaceId was invalid!', 404);
             }
 
-            // Add time remaining property to maintain the trial version of the user
-            workspace.time_remaining = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days');
-
             // Send the status 200 response 
             return res.status(200).json({
                 message: `${workspace.workspace_name} workspace found!`,

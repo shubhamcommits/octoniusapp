@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import moment from 'moment';
 import { retry } from 'rxjs/internal/operators/retry';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-myspace-inbox',
@@ -43,7 +44,7 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private router: ActivatedRoute,
+    private managementPortalService: ManagementPortalService,
     private _router: Router,
     private injector: Injector,
     public utilityService: UtilityService,
@@ -76,14 +77,12 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
 
     const workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    if ((this.userData?.role == 'admin' || this.userData?.role == 'owner')
-        && (workspaceData['time_remaining'] <= 0
-          || !workspaceData['billing']?.current_period_end
-          || (workspaceData['time_remaining'] > 0
-            && moment(workspaceData['billing']?.current_period_end).isBefore(moment())))
-        && !workspaceData['billing']?.subscription_id) {
-      this.utilityService.openTryOutNotification(workspaceData['time_remaining']);
-    }
+    this.managementPortalService.isInTryOut(workspaceData['_id'], workspaceData['management_private_api_key']).then(res => {
+      if ((this.userData?.role == 'admin' || this.userData?.role == 'owner')
+          && res['status']) {
+        this.utilityService.openTryOutNotification(res['time_remaining']);
+      }
+    });
 
     // Return the function via stopping the loader
     this.isLoading$.next(false);
@@ -114,7 +113,7 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
   }
 
   async initNotifications() {
-    
+
     /**
      * emitting the @event joinUser to let the server know that user has joined
      */

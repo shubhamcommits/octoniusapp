@@ -22,9 +22,9 @@ export class ManagementPortalService {
 
   /* | ======================================= BILLING ========================================== | */
 
-  createClientPortalSession(stripeCustomerId: string, returnUrl: string, mgmtApiPrivateKey: string) {
+  createClientPortalSession(workspaceId: string, returnUrl: string, mgmtApiPrivateKey: string) {
     return this._http.post(`${this.BASE_API_URL}/billings/create-client-portal-session`, {
-      customer: stripeCustomerId,
+      workspaceId: workspaceId,
       return_url: returnUrl,
       API_KEY: mgmtApiPrivateKey
     }).toPromise();
@@ -77,25 +77,45 @@ export class ManagementPortalService {
   /**
    * This function fetches the subscription details for the currently loggedIn user
    */
-   getSubscription(subscriptionId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-subscription/${subscriptionId}`)
+   getSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-subscription/${workspaceId}`, {
+      params: {
+        API_KEY: mgmtApiPrivateKey
+      }
+    })
     .toPromise()
   }
 
   /**
    * This function fetches the stripe customer details for the currently loggedIn user
    */
-  getStripeCustomer(customerId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-customer/${customerId}`)
+  getStripeCustomer(customerId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-customer/${customerId}`, {
+      params: {
+        API_KEY: mgmtApiPrivateKey
+      }
+    })
     .toPromise()
   }
 
   /**
    * This function fetches the prices for the subscription for the currently loggedIn user
    */
-  getSubscriptionPrices(productId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-subscription-prices/${productId}`)
+  getSubscriptionPrices(mgmtApiPrivateKey: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-subscription-prices`, {
+      params: {
+        API_KEY: mgmtApiPrivateKey
+      }
+    })
     .toPromise()
+  }
+
+  isInTryOut(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(`${this.BASE_API_URL}/billings/${workspaceId}/inTryOut`, {
+      params: {
+        API_KEY: mgmtApiPrivateKey
+      }
+    }).toPromise();
   }
 
   /* | ======================================= BILLING ENDS ========================================== | */

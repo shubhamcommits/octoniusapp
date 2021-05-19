@@ -266,14 +266,7 @@ export class DomainsControllers {
                 num_groups: groupsCount,
                 created_date: workspace.created_date,
                 access_code: workspace.access_code,
-                management_private_api_key: workspace.management_private_api_key,
-                billing: {
-                    client_id: (workspace.billing) ? workspace.billing.client_id : '',
-                    subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
-                    current_period_end: (workspace.billing) ? workspace.billing.current_period_end : moment().format(),
-                    scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
-                    quantity: usersCount
-                }
+                management_private_api_key: workspace.management_private_api_key
             }
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                 API_KEY: workspace.management_private_api_key,

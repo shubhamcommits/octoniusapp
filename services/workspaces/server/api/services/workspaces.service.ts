@@ -49,10 +49,8 @@ export class WorkspaceService {
           await commonService.removeGroup(group._id);
       });
 
-      let workspace = await Workspace.findOne({_id: workspaceId}).select('billing management_private_api_key');
-
       // Delete the workspace
-      workspace = await Workspace.findByIdAndDelete(workspaceId);
+      const workspace = await Workspace.findByIdAndDelete(workspaceId);
 
       if (callMgmtPortal) {
         // Remove the workspace in the mgmt portal

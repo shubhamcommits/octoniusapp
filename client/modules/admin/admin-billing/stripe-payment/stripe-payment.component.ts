@@ -99,8 +99,8 @@ export class StripePaymentComponent implements OnInit {
    * @param workspaceData
    */
   async subscriptionExistCheck() {
-    if (this.workspaceData?.billing?.subscription_id && !this.subscription) {
-      await this.managementPortalService.getSubscription(this.workspaceData.billing.subscription_id)
+    if (!this.subscription) {
+      await this.managementPortalService.getSubscription(this.workspaceData._id, this.workspaceData.management_private_api_key)
         .then((res) => {
           // Initialise the suncription
           this.subscription = res['subscription'];
@@ -116,15 +116,16 @@ export class StripePaymentComponent implements OnInit {
    * @param workspaceData
    */
   async stripeCustomerExists() {
-    if (this.workspaceData.billing.client_id) {
-      await this.managementPortalService.getStripeCustomer(this.workspaceData.billing.client_id)
-        .then((res) => {
-          this.customer = res['customer'];
-        })
-        .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
-    } else {
-      this.subscription = null;
-    }
+    await this.managementPortalService.getStripeCustomer(this.workspaceData._id, this.workspaceData.management_private_api_key)
+      .then((res) => {
+        this.customer = res['customer'];
+
+        if (!this.customer) {
+          this.subscription = null;
+        }
+      })
+      .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
+
   }
 
   onSubscriptionChanges(subscription) {
@@ -135,7 +136,7 @@ export class StripePaymentComponent implements OnInit {
   createCustomerPortalSession() {
     let redirectUrl = window.location.href;
 
-    this.managementPortalService.createClientPortalSession(this.workspaceData.billing.client_id, redirectUrl, this.workspaceData.management_private_api_key).then(res => {
+    this.managementPortalService.createClientPortalSession(this.workspaceData._id, redirectUrl, this.workspaceData.management_private_api_key).then(res => {
       window.location.href = res['session']['url'];
     }).catch((err) => {
       this.utilityService.errorNotification('There is an error with your Subscription, please contact support!');
