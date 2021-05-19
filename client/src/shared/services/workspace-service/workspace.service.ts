@@ -133,34 +133,6 @@ export class WorkspaceService {
     }).toPromise();
   }
 
-  /* | ======================================= BILLING ========================================== | */
-
-  /**
-   * This function fetches the subscription details for the currently loggedIn user
-   */
-  getSubscription(subscriptionId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-subscription/${subscriptionId}`)
-    .toPromise()
-  }
-
-  /**
-   * This function fetches the stripe customer details for the currently loggedIn user
-   */
-  getStripeCustomer(customerId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-customer/${customerId}`)
-    .toPromise()
-  }
-
-  /**
-   * This function fetches the prices for the subscription for the currently loggedIn user
-   */
-  getSubscriptionPrices(productId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-subscription-prices/${productId}`)
-    .toPromise()
-  }
-
-  /* | ======================================= BILLING ENDS ========================================== | */
-
   /**
    * Fetches unique email domains that exist within the given workspace
    * that match the given query.

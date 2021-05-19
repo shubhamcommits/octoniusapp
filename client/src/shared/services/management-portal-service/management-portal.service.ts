@@ -74,6 +74,30 @@ export class ManagementPortalService {
     .toPromise()
   }
 
+  /**
+   * This function fetches the subscription details for the currently loggedIn user
+   */
+   getSubscription(subscriptionId: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-subscription/${subscriptionId}`)
+    .toPromise()
+  }
+
+  /**
+   * This function fetches the stripe customer details for the currently loggedIn user
+   */
+  getStripeCustomer(customerId: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-customer/${customerId}`)
+    .toPromise()
+  }
+
+  /**
+   * This function fetches the prices for the subscription for the currently loggedIn user
+   */
+  getSubscriptionPrices(productId: string) {
+    return this._http.get(this.BASE_API_URL + `/billings/get-subscription-prices/${productId}`)
+    .toPromise()
+  }
+
   /* | ======================================= BILLING ENDS ========================================== | */
 
   /**
@@ -82,6 +106,18 @@ export class ManagementPortalService {
    */
   getFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(`${this.BASE_API_URL}/workspace/${workspaceId}/flamingo`, {
+      params: {
+        API_KEY: mgmtApiPrivateKey
+      }
+    }).toPromise();
+  }
+
+  /**
+   * This function is responsible for check if the workspace has excel import active
+   * @param workspaceId
+   */
+   getExcelImportStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(`${this.BASE_API_URL}/workspace/${workspaceId}/excelImport`, {
       params: {
         API_KEY: mgmtApiPrivateKey
       }

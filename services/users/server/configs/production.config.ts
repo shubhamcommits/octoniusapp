@@ -30,11 +30,6 @@ function prodConfigInit() {
   // Sendgrid Key
   process.env.SENDGRID_KEY = process.env.SENDGRID_KEY
 
-  // Stripe Keys
-  process.env.SK_STRIPE = process.env.SK_STRIPE
-  process.env.STRIPE_PLAN = process.env.STRIPE_PLAN
-  process.env.WEBHOOK_PS_SECRET = process.env.WEBHOOK_PS_SECRET
-
   // External Key
   process.env.HEADER_EXTERNAL_KEY = process.env.HEADER_EXTERNAL_KEY
 

@@ -11,9 +11,6 @@ import { mgmtRoutes } from './mgmt.routes';
  * */
 export {
 
-    // BILLINGS
-    billingRoutes as billingRoutes,
-
     // MEMBERS
     memberRoutes as memberRoutes,
 

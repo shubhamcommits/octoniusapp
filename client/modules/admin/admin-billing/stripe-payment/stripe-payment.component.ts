@@ -100,7 +100,7 @@ export class StripePaymentComponent implements OnInit {
    */
   async subscriptionExistCheck() {
     if (this.workspaceData?.billing?.subscription_id && !this.subscription) {
-      await this.workspaceService.getSubscription(this.workspaceData.billing.subscription_id)
+      await this.managementPortalService.getSubscription(this.workspaceData.billing.subscription_id)
         .then((res) => {
           // Initialise the suncription
           this.subscription = res['subscription'];
@@ -117,7 +117,7 @@ export class StripePaymentComponent implements OnInit {
    */
   async stripeCustomerExists() {
     if (this.workspaceData.billing.client_id) {
-      await this.workspaceService.getStripeCustomer(this.workspaceData.billing.client_id)
+      await this.managementPortalService.getStripeCustomer(this.workspaceData.billing.client_id)
         .then((res) => {
           this.customer = res['customer'];
         })

@@ -59,8 +59,7 @@ export class StartSubscriptionComponent implements OnInit {
   }
 
   async getSubscriptionPrices() {
-    // await this.workspaceService.getSubscriptionPrices(this.workspaceData.billing.product_id)
-    await this.workspaceService.getSubscriptionPrices(environment.product_stripe)
+    await this.managementPortalService.getSubscriptionPrices(environment.product_stripe)
       .then(res => {
         this.subscription_prices = res['prices'].data;
       });
