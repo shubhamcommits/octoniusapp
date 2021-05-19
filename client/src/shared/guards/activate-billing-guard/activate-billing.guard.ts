@@ -26,7 +26,6 @@ export class ActivateBillingGuard implements CanActivate {
     const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
     return this.managementPortalService.canActivateBilling(currentWorkspace['_id'], currentWorkspace['management_private_api_key']).then(
       (res) => {
-console.log(res);
         if ( !res['status'] ) {
           this.router.navigate(['/home']);
         }
