@@ -11,7 +11,7 @@ import { ActivateBillingGuard } from 'src/shared/guards/activate-billing-guard/a
 const routes: Routes = [
   { path: 'general', component: AdminGeneralComponent, canActivate: [DenyNavigationGuard] },
   { path: 'members', component: AdminMembersComponent, canActivate: [DenyNavigationGuard] },
-  { path: 'billing', component: AdminBillingComponent, canActivate: [ActivateBillingGuard], canDeactivate: [DenyNavigationGuard] }
+  { path: 'billing', component: AdminBillingComponent, canActivate: [ActivateBillingGuard, DenyNavigationGuard], canDeactivate: [DenyNavigationGuard] }
 ];
 
 @NgModule({
