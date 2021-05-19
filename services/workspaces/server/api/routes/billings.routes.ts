@@ -13,9 +13,6 @@ const routes = express.Router();
 
 // -| Workspace Billings |-
 
-// POST - create a subscription
-routes.post('/create-subscription', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.createSubscription);
-
 // GET - get subscription details
 routes.get('/get-subscription/:subscriptionId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getSubscription);
 
@@ -24,33 +21,6 @@ routes.get('/get-customer/:customerId', authsHelper.verifyToken, authsHelper.isL
 
 // GET - get subscription prices
 routes.get('/get-subscription-prices/:workspaceId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getSubscriptionPrices);
-
-// GET - Cancel subscription
-routes.get('/cancel-subscription', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.cancelSubscription);
-
-// GET - Resume subscription
-routes.get('/resume-subscription', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.resumeSubscription);
-
-// GET - Check Subscription Validity
-routes.get('/subscription-validity', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.checkSubscriptionValidity);
-
-// PUT - Adds the user to the subscription (quantity = quatity++)
-routes.put('/add-user', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.addUserToSubscription);
-
-// PUT - Removes the user from the subscription (quantity = quatity--)
-routes.put('/remove-user', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.removeUserFromSubscription);
-
-// POST - Create a customer client portal session
-routes.post('/create-client-portal-session', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.createClientPortalSession);
-
-// POST - Create a checkout portal session
-routes.post('/create-checkout-session', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.createCheckoutSession);
-
-// GET - get chargegs
-routes.get('/get-checkout-session/:workspaceId/:sessionId', authsHelper.verifyToken, authsHelper.isLoggedIn, billing.getCheckoutSession);
-
-// POST - Webhook event which is receiving the updates from Stripe
-routes.post('/webhooks/subscription-updates', billing.subscriptionUpdates);
 
 /*  ===================
  *  -- EXPORT ROUTES --

@@ -136,21 +136,6 @@ export class WorkspaceService {
   /* | ======================================= BILLING ========================================== | */
 
   /**
-   * This function is responsible for creating the subscription
-   * @param { id, email }token
-   * @param amount
-   */
-  // createSubscription(token: any, amount) {
-    createSubscription(token: any, priceId, product_id) {
-
-    // Preparing the token data
-    const data = { token, priceId, product_id };
-
-    return this._http.post(this.BASE_API_URL + `/billings/create-subscription`, data)
-    .toPromise()
-  }
-
-  /**
    * This function fetches the subscription details for the currently loggedIn user
    */
   getSubscription(subscriptionId: string) {
@@ -171,22 +156,6 @@ export class WorkspaceService {
    */
   getSubscriptionPrices(productId: string) {
     return this._http.get(this.BASE_API_URL + `/billings/get-subscription-prices/${productId}`)
-    .toPromise()
-  }
-
-  /**
-   * This function cancels the current subscription for the currently loggedIn user
-   */
-  cancelSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billings/cancel-subscription`)
-    .toPromise()
-  }
-
-  /**
-   * This function resumes the cancelled subscription
-   */
-  resumeSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billings/resume-subscription`)
     .toPromise()
   }
 
