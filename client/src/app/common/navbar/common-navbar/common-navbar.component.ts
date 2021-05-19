@@ -115,7 +115,6 @@ export class CommonNavbarComponent implements OnInit {
     const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
     this.managementPortalService.canActivateBilling(currentWorkspace['_id'], currentWorkspace['management_private_api_key']).then(
       (res) => {
-console.log(res);
         this.canActivateBilling = res['status'] || false;
       }).catch((err) => {
         this.canActivateBilling = false;
