@@ -4,9 +4,6 @@ import { sendError, Auths, PasswordHelper } from '../../utils';
 import http from 'axios';
 import moment from 'moment';
 
-// Create Stripe Object
-const stripe = require('stripe')(process.env.SK_STRIPE);
-
 // Password Helper Class
 const passwordHelper = new PasswordHelper();
 
@@ -387,22 +384,7 @@ export class AuthsController {
                         { active: true },
                         { _workspace: workspace._id }
                     ] }).countDocuments();
-
-                    if (workspace.billing.subscription_id) {
-                        // Update the subscription details
-                        let subscription = stripe.subscriptions.update(workspace.billing.subscription_id, {
-                            price: workspace.billing.price_id,
-                            quantity: usersCount
-                        });
-                    }
-
-                    // Update the4 workspace details
-                    await Workspace.findOneAndUpdate({
-                        _id: workspace._id
-                    }, {
-                        'billing.quantity': usersCount
-                    });
-
+                    
                     // Send workspace to the mgmt portal
                     // Count all the groups present inside the workspace
                     const groupsCount: number = await Group.find({ $and: [

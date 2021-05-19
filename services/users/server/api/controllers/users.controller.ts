@@ -892,14 +892,6 @@ export class UsersControllers {
                 'billing.quantity': usersCount
             });
 
-        // Update stripe subscription
-        if (workspaceUpdated['billing'].subscription_item_id) {
-            const stripe = require('stripe')(process.env.SK_STRIPE);
-            stripe.subscriptionItems.update(workspaceUpdated['billing'].subscription_item_id, {
-                quantity: usersCount
-            });
-        }
-
         const accountId = user?._account?._id || user?._account;
         if (accountId) {
             // Count the number of workspces for the account

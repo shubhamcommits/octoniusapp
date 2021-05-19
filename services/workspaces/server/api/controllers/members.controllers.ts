@@ -4,9 +4,6 @@ import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
 import moment from 'moment';
 
-// Create Stripe Object
-const stripe = require('stripe')(process.env.SK_STRIPE);
-
 export class MembersControllers {
 
     /**
@@ -189,11 +186,6 @@ export class MembersControllers {
                 { active: true },
                 { _workspace: workspaceId }
             ] }).countDocuments();
-            
-           // Update the subscription details
-           let subscription = stripe.subscriptionItems.update(workspace['billing'].subscription_item_id, {
-                quantity: usersCount
-            });
 
             // Update the workspace details
             await Workspace.findOneAndUpdate({
@@ -201,6 +193,68 @@ export class MembersControllers {
             }, {
                 'billing.quantity': usersCount
             });
+
+            // Send workspace to the mgmt portal
+            // Count all the users present inside the workspace
+            const guestsCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId },
+                { role: 'guest'}
+            ] }).countDocuments();
+
+            // Count all the groups present inside the workspace
+            const groupsCount: number = await Group.find({ $and: [
+                { group_name: { $ne: 'personal' } },
+                { _workspace: workspace._id }
+            ]}).countDocuments();
+
+            let workspaceMgmt = {
+                _id: workspace._id,
+                company_name: workspace.company_name,
+                workspace_name: workspace.workspace_name,
+                owner_email: workspace.owner_email,
+                owner_first_name: workspace.owner_first_name,
+                owner_last_name: workspace.owner_last_name,
+                _owner_remote_id: workspace._owner._id || workspace._owner,
+                environment: process.env.DOMAIN,
+                num_members: usersCount,
+                num_invited_users: guestsCount,
+                num_groups: groupsCount,
+                created_date: workspace.created_date,
+                access_code: workspace.access_code,
+                management_private_api_key: workspace.management_private_api_key,
+                billing: {
+                    client_id: (workspace.billing) ? workspace.billing.client_id : '',
+                    subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
+                    current_period_end: (workspace.billing) ? workspace.billing.current_period_end : moment().format(),
+                    scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
+                    quantity: usersCount
+                }
+            }
+            http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                API_KEY: workspace.management_private_api_key,
+                workspaceData: workspaceMgmt
+            }).then().catch(err => console.log(err));
+
+            // Send user to the mgmt portal
+            let userMgmt = {
+                _id: user._id,
+                _account_id: user._account._id,
+                active: user.active,
+                email: user._account.email,
+                password: user._account.password,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                _remote_workspace_id: workspace._id,
+                workspace_name: workspace.workspace_name,
+                environment: process.env.DOMAIN,
+                created_date: user.created_date
+            }
+            http.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
+                API_KEY: workspace.management_private_api_key,
+                workspaceId: workspace._id,
+                userData: userMgmt
+            }).then().catch(err => console.log(err));
 
             // Send status 200 response
             return res.status(200).json({
@@ -259,11 +313,6 @@ export class MembersControllers {
                     { active: true },
                     { _workspace: workspaceId }
                 ] }).countDocuments();
-
-                // Update the subscription details
-                let subscription = stripe.subscriptionItems.update(workspace['billing'].subscription_item_id, {
-                    quantity: usersCount
-                });
 
                 // Update the workspace details
                 await Workspace.findOneAndUpdate({

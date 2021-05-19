@@ -51,12 +51,6 @@ export class WorkspaceService {
 
       let workspace = await Workspace.findOne({_id: workspaceId}).select('billing management_private_api_key');
 
-      if (workspace && workspace['billing'] && workspace['billing']['client_id']) {
-          // Remove stripe client
-          const stripe = require('stripe')(process.env.SK_STRIPE);
-          stripe.customers.del(workspace['billing']['client_id']);
-      }
-
       // Delete the workspace
       workspace = await Workspace.findByIdAndDelete(workspaceId);
 
