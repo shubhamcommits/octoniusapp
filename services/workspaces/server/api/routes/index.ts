@@ -1,4 +1,3 @@
-import { billingRoutes } from './billings.routes';
 import { domainRoutes } from './domains.routes';
 
 import { workspaceRoutes } from './workspaces.routes';
