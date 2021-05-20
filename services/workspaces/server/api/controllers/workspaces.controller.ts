@@ -337,12 +337,14 @@ export class WorkspaceController {
             }
             let userMgmt = {
                 _id: user._id,
+                _account_id: accountData._id,
                 active: user.active,
                 email: accountData.email,
                 password: accountData.password,
                 first_name: user.first_name,
                 last_name: user.last_name,
-                _workspace: workspace._id,
+                _remote_workspace_id: workspace._id,
+                workspace_name: workspace.workspace_name,
                 environment: process.env.DOMAIN,
                 created_date: user.created_date
             }
