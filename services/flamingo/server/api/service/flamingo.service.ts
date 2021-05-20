@@ -18,7 +18,7 @@ export class FlamingoService {
     userFields: any = 'first_name last_name profile_pic role email';
 
     // Select Group Fields on population
-    groupFields: any = 'group_name group_avatar workspace_name';
+    groupFields: any = 'group_name group_avatar workspace_name _workspace';
 
     // Select Question Fields on population
     questionFields: any = 'type'; 
@@ -40,7 +40,7 @@ export class FlamingoService {
                     path: '_posted_by',
                     model: 'User',
                     select: this.userFields 
-                },
+                }
             },
             {
                 path: '_file',
@@ -48,14 +48,25 @@ export class FlamingoService {
                     path: '_group',
                     model: 'Group',
                     select: this.groupFields 
-                },
+                }
+            },
+            {
+                path: '_file',
+                populate: {
+                    path: '_group',
+                    populate: {
+                        path: '_workspace',
+                        model: 'Workspace',
+                        select: '_id management_private_api_key'
+                    }
+                }
             },
             {
                 path: '_file',
                 populate: {
                     path: '_folder',
                     model: 'Folder'
-                },
+                }
             },
             { path: '_questions' },
             { path: 'responses.answers._question' }
