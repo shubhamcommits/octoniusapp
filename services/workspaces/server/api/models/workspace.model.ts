@@ -72,43 +72,6 @@ const workspaceSchema = new Schema({
         type: Date,
         default: moment().format()
     },
-    billing: {
-        client_id: {
-            type: String
-        },
-        product_id: {
-            type: String
-        },
-        price_id: {
-            type: String
-        },
-        subscription_id: {
-            type: String
-        },
-        subscription_item_id: {
-            type: String
-        },
-        current_period_end: {
-            type: Date,
-            default: moment().format()
-        },
-        scheduled_cancellation: {
-            type: Boolean,
-            default: false
-        },
-        failed_payments: {
-            type: Array,
-            default: []
-        },
-        success_payments: {
-            type: Array,
-            default: []
-        },
-        quantity: {
-            type: Number,
-            default: 1
-        }
-    },
     management_private_api_key: {
         type: String,
         required: true,

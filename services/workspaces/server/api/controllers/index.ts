@@ -1,4 +1,3 @@
-import { BillingControllers } from "./billings.controller";
 import { DomainsControllers } from "./domains.controllers";
 import { MembersControllers } from "./members.controllers";
 import { WorkspaceController } from "./workspaces.controller";
@@ -8,9 +7,6 @@ import { WorkspaceController } from "./workspaces.controller";
  *  =========================
  * */
 export {
-
-    // BILLING
-    BillingControllers as BillingControllers,
 
     // DOMAINS
     DomainsControllers as DomainControllers,

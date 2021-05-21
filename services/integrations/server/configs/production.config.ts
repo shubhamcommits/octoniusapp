@@ -37,12 +37,6 @@ function prodConfigInit() {
 
   process.env.TEAMS_BOT_URL = process.env.TEAMS_BOT_URL || 'https://connect.octonius.com'
 
-
-  // Stripe Keys
-  process.env.SK_STRIPE = process.env.SK_STRIPE
-  process.env.STRIPE_PLAN = process.env.STRIPE_PLAN
-  process.env.WEBHOOK_PS_SECRET = process.env.WEBHOOK_PS_SECRET
-
   // External Key
   process.env.HEADER_EXTERNAL_KEY = process.env.HEADER_EXTERNAL_KEY
 

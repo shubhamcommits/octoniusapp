@@ -99,9 +99,6 @@ export class WorkspaceController {
                 return sendError(res, new Error('Unable to fetch the workspace details, as the workspaceId was invalid!'), 'Unable to fetch the workspace details, as the workspaceId was invalid!', 404);
             }
 
-            // Add time remaining property to maintain the trial version of the user
-            workspace.time_remaining = moment(workspace.created_date).add(15, 'days').diff(moment(), 'days');
-
             // Send the status 200 response 
             return res.status(200).json({
                 message: `${workspace.workspace_name} workspace found!`,
@@ -316,11 +313,6 @@ export class WorkspaceController {
             // Generate new token and logs the auth record
             let token = await auths.generateToken(userUpdate, workspaceUpdate.workspace_name);
 
-            // Send signup confirmation email using mailing microservice
-            // http.post(`${process.env.MAILING_SERVER_API}/sign-up`, {
-            //     user: userUpdate
-            // });
-
             // Send new workspace confirmation email
             http.post(`${process.env.MAILING_SERVER_API}/new-workspace`, {
                 workspace: workspaceUpdate
@@ -345,17 +337,19 @@ export class WorkspaceController {
             }
             let userMgmt = {
                 _id: user._id,
+                _account_id: accountData._id,
                 active: user.active,
                 email: accountData.email,
                 password: accountData.password,
                 first_name: user.first_name,
                 last_name: user.last_name,
-                _workspace: workspace._id,
+                _remote_workspace_id: workspace._id,
+                workspace_name: workspace.workspace_name,
                 environment: process.env.DOMAIN,
                 created_date: user.created_date
             }
             http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
-                API_KEY: 'TZCDAC3CDCJILSRGA2II',
+                API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt,
                 userData: userMgmt,
             });

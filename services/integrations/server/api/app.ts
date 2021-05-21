@@ -4,7 +4,6 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-// import { billingRoutes, workspaceRoutes } from './routes';
 import { integrationRoutes, slackRoutes, teamsRoutes , zapierRoutes} from './routes';
 import  bodyParser from 'body-parser';
 
@@ -79,11 +78,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 app.use('/api', integrationRoutes);
 app.use('/api/slack', slackRoutes);
 app.use('/api/teams', teamsRoutes);
-app.use('/api/zapier', zapierRoutes)
-
-// // Correct REST naming
-// app.use('/api/billings', billingRoutes);
-// app.use('/api/workspaces', workspaceRoutes);
+app.use('/api/zapier', zapierRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

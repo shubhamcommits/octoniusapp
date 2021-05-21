@@ -416,14 +416,7 @@ export class UsersControllers {
                 num_groups: groupsCount,
                 created_date: workspace.created_date,
                 access_code: workspace.access_code,
-                management_private_api_key: workspace.management_private_api_key,
-                billing: {
-                    client_id: (workspace.billing) ? workspace.billing.client_id : '',
-                    subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
-                    current_period_end: (workspace.billing) ? workspace.billing.current_period_end : moment().format(),
-                    scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
-                    quantity: usersCount || 0
-                }
+                management_private_api_key: workspace.management_private_api_key
             }
 
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
@@ -888,17 +881,8 @@ export class UsersControllers {
             , {
                 $pull: {
                     _members: userId
-                },
-                'billing.quantity': usersCount
+                }
             });
-
-        // Update stripe subscription
-        if (workspaceUpdated['billing'].subscription_item_id) {
-            const stripe = require('stripe')(process.env.SK_STRIPE);
-            stripe.subscriptionItems.update(workspaceUpdated['billing'].subscription_item_id, {
-                quantity: usersCount
-            });
-        }
 
         const accountId = user?._account?._id || user?._account;
         if (accountId) {
@@ -949,14 +933,7 @@ export class UsersControllers {
             num_groups: groupsCount,
             created_date: workspaceUpdated.created_date,
             access_code: workspace.access_code,
-            management_private_api_key: workspace.management_private_api_key,
-            billing: {
-                client_id: (workspaceUpdated.billing) ? workspaceUpdated.billing.client_id : '',
-                subscription_id: (workspaceUpdated.billing) ? workspaceUpdated.billing.subscription_id : '',
-                current_period_end: (workspaceUpdated.billing) ? workspaceUpdated.billing.current_period_end : moment().format(),
-                scheduled_cancellation: (workspaceUpdated.billing) ? workspaceUpdated.billing.scheduled_cancellation : false,
-                quantity: usersCount || 0
-            }
+            management_private_api_key: workspace.management_private_api_key
         }
 
         http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
