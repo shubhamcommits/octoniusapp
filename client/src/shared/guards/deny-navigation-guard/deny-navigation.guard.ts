@@ -82,7 +82,7 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
       return this.managementPortalService.getBillingStatus(this.workspaceId, currentWorkspace['management_private_api_key']).then(
         (res) => {
           if (res['blocked'] ) {
-            this.utilityService.warningNotification(res['message']);
+            this.utilityService.warningNotification('Your workspace is not available, please contact your administrator!');
             this.authService.signout().subscribe((res) => {
               this.storageService.clear();
               this.publicFunctions.sendUpdatesToGroupData({});
