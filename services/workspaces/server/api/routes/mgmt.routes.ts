@@ -16,8 +16,11 @@ const routes = express.Router();
 // Verify the token
 routes.use(authsHelper.verifyMgmtAPIKey);
 
-// DELETE - Removes the specify workspace
+// DELETE - Removes the specify workspace remotelly from the mgmt portal
 routes.delete('/:workspaceId', controller.removeWorkspace);
+
+// GET - Obtain all the information needed for the mgmt portal
+routes.get('/:workspaceId', controller.getWorkspace);
 
 /*  ===================
  *  -- EXPORT ROUTES --

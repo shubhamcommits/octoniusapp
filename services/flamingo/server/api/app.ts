@@ -4,7 +4,6 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-// import { billingRoutes, workspaceRoutes } from './routes';
 import { flamingoRoutes} from './routes';
 import fileUpload from 'express-fileupload';
 

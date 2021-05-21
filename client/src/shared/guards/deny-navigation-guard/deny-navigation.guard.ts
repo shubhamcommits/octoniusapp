@@ -3,11 +3,12 @@ import {Injectable, Injector, } from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate, Router, UrlTree, CanActivateChild} from '@angular/router';
 import { Observable } from 'rxjs';
 import { AdminBillingComponent } from 'modules/admin/admin-billing/admin-billing.component';
-import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Injectable()
 export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDeactivate<AdminBillingComponent> {
@@ -22,7 +23,8 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
     private authService: AuthService,
     private socketService: SocketService,
     private injector: Injector,
-    private workspaceService: WorkspaceService,
+    private utilityService: UtilityService,
+    private managementPortalService: ManagementPortalService,
     private router: Router
   ) {}
 
@@ -46,11 +48,12 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
       if (localStorage.length > 0 && !currentState.url.match('/logout*')) {
         const userData = await this.publicFunctions.getCurrentUser();
         this.workspaceId = userData._workspace;
+        const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
 
-        return this.workspaceService.getBillingStatus(this.workspaceId).then(
+        return this.managementPortalService.getBillingStatus(this.workspaceId, currentWorkspace['management_private_api_key']).then(
           (res) => {
             if ( !res['status'] ) {
-              Swal.fire("Access restricted", "Please start your subscription.")
+              Swal.fire("Access restricted", "Please start your subscription.");
             }
             return res['status'];
           }).catch((err) => {
@@ -73,13 +76,27 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
     }
 
     if (localStorage.length > 0) {
+      const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
       const userData = await this.publicFunctions.getCurrentUser();
       this.workspaceId = userData._workspace;
-
-      return this.workspaceService.getBillingStatus(this.workspaceId).then(
+      return this.managementPortalService.getBillingStatus(this.workspaceId, currentWorkspace['management_private_api_key']).then(
         (res) => {
-          if ( !res['status'] ) {
-            if (!adminUser || res['message'] == 'Workspace does not exist') {
+          if (res['blocked'] ) {
+            this.utilityService.warningNotification('Your workspace is not available, please contact your administrator!');
+            this.authService.signout().subscribe((res) => {
+              this.storageService.clear();
+              this.publicFunctions.sendUpdatesToGroupData({});
+              this.publicFunctions.sendUpdatesToRouterState({});
+              this.publicFunctions.sendUpdatesToUserData({});
+              this.publicFunctions.sendUpdatesToWorkspaceData({});
+              this.socketService.disconnectSocket();
+              this.router.navigate(['/home']);
+            });
+            return false;
+          }
+
+          if ( !res['status']) {
+            if (!adminUser || res['onPremise'] || res['message'] == 'Workspace does not exist') {
               this.authService.signout().subscribe((res) => {
                 this.storageService.clear();
                 this.publicFunctions.sendUpdatesToGroupData({});
@@ -90,11 +107,13 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
                 this.router.navigate(['/home']);
               });
             } else {
-              this.router.navigate(['dashboard', 'admin', 'billing']);
+              if (adminUser && !res['onPremise']) {
+                this.router.navigate(['dashboard', 'admin', 'billing']);
+              }
             }
             return false;
           }
-          // return res['status'];
+
           return true;
         }).catch((err) => {
           this.router.navigate(['/home']);

@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { StripePaymentComponent } from './admin-billing/stripe-payment/stripe-payment.component';
 import { StartSubscriptionComponent } from './admin-billing/stripe-payment/start-subscription/start-subscription.component';
 import { TransferOwnershipComponent } from './admin-general/transfer-ownership/transfer-ownership.component';
+import { ActivateBillingGuard } from 'src/shared/guards/activate-billing-guard/activate-billing.guard';
 
 
 @NgModule({
@@ -39,6 +40,6 @@ import { TransferOwnershipComponent } from './admin-general/transfer-ownership/t
     FormsModule,
     SharedModule
   ],
-  providers:[WorkspaceService, AdminService]
+  providers:[WorkspaceService, AdminService, ActivateBillingGuard]
 })
 export class AdminModule { }

@@ -4,7 +4,6 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-// import { billingRoutes, workspaceRoutes } from './routes';
 import { notificationRoutes } from './routes/notifications.routes';
 import bodyParser from 'body-parser';
 import { sockets } from '../utils';
@@ -90,10 +89,6 @@ app.use('/uploads', express.static(process.env.FILE_UPLOAD_FOLDER));
 
 // Routes to handle notifications
 app.use('/api', notificationRoutes);
-
-// // Correct REST naming
-// app.use('/api/billings', billingRoutes);
-// app.use('/api/workspaces', workspaceRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -133,109 +133,6 @@ export class WorkspaceService {
     }).toPromise();
   }
 
-  /* | ======================================= BILLING ========================================== | */
-
-  /**
-   * This function is responsible for creating the subscription
-   * @param { id, email }token
-   * @param amount
-   */
-  // createSubscription(token: any, amount) {
-    createSubscription(token: any, priceId, product_id) {
-
-    // Preparing the token data
-    const data = { token, priceId, product_id };
-
-    return this._http.post(this.BASE_API_URL + `/billings/create-subscription`, data)
-    .toPromise()
-  }
-
-  /**
-   * This function is responsible for getting the current billing status
-   * @param workspaceId
-   */
-  getBillingStatus(workspaceId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-billing-status/${workspaceId}`)
-    .toPromise()
-  }
-
-  /**
-   * This function fetches the subscription details for the currently loggedIn user
-   */
-  getSubscription(subscriptionId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-subscription/${subscriptionId}`)
-    .toPromise()
-  }
-
-  /**
-   * This function fetches the stripe customer details for the currently loggedIn user
-   */
-  getStripeCustomer(customerId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-customer/${customerId}`)
-    .toPromise()
-  }
-
-  /**
-   * This function fetches the subscription details for the currently loggedIn user
-   */
-  getCharges(customerId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-charges/${customerId}`)
-    .toPromise()
-  }
-
-  /**
-   * This function fetches the prices for the subscription for the currently loggedIn user
-   */
-  getSubscriptionPrices(productId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-subscription-prices/${productId}`)
-    .toPromise()
-  }
-
-  /**
-   * This function cancels the current subscription for the currently loggedIn user
-   */
-  cancelSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billings/cancel-subscription`)
-    .toPromise()
-  }
-
-  /**
-   * This function renews ths current subscription
-   */
-  renewSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billings/renew-subscription`)
-    .toPromise()
-  }
-
-  /**
-   * This function resumes the cancelled subscription
-   */
-  resumeSubscription() {
-    return this._http.get(this.BASE_API_URL + `/billings/resume-subscription`)
-    .toPromise()
-  }
-
-  createClientPortalSession(stripeCustomerId: string, returnUrl: string) {
-    return this._http.post(this.BASE_API_URL + `/billings/create-client-portal-session`, {
-      customer: stripeCustomerId,
-      return_url: returnUrl
-    }).toPromise();
-  }
-
-  createStripeCheckoutSession(priceId: string, workspaceId: string, returnUrl: string) {
-    return this._http.post(this.BASE_API_URL + `/billings/create-checkout-session`, {
-      priceId: priceId,
-      workspaceId: workspaceId,
-      return_url: returnUrl
-    }).toPromise();
-  }
-
-  getStripeCheckoutSession(sessionId: string, workspaceId: string) {
-    return this._http.get(this.BASE_API_URL + `/billings/get-checkout-session/${workspaceId}/${sessionId}`).toPromise();
-  }
-
-  /* | ======================================= BILLING ENDS ========================================== | */
-
   /**
    * Fetches unique email domains that exist within the given workspace
    * that match the given query.
@@ -335,17 +232,5 @@ export class WorkspaceService {
    */
   removeWorkspace(workspaceId: string) {
     return this._http.delete<any>(`${this.BASE_API_URL}/${workspaceId}`).toPromise();
-  }
-
-  /**
-   * This function is responsible for check if the workspace has flamingo active
-   * @param workspaceId
-   */
-  getFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(`${environment.MANAGEMENT_URL}/api/workspace/${workspaceId}/flamingo`, {
-      params: {
-        API_KEY: mgmtApiPrivateKey
-      }
-    }).toPromise();
   }
 }

@@ -36,11 +36,7 @@ function devConfigInit() {
   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN || "xoxb-2561616476-1145480914898-bFLn6YJrfzbJ9jvCTU34uNuu"
 
   process.env.TEAMS_BOT_URL = process.env.TEAMS_BOT_URL || 'https://connect.octonius.com'
-  // Stripe Keys
-  process.env.SK_STRIPE = process.env.SK_STRIPE || 'sk_test_dvebbZQPA4Vk8kKZaEuN32sD';
-  process.env.STRIPE_PLAN = process.env.STRIPE_PLAN || 'plan_EK1uRUJLJcDS6e';
-  process.env.WEBHOOK_PS_SECRET = process.env.WEBHOOK_PS_SECRET || 'whsec_pmcLdxoYxBAdZswT2ZzWYep2WmnBW8Sn';
-
+  
   // External Key
   process.env.HEADER_EXTERNAL_KEY = process.env.HEADER_EXTERNAL_KEY || 'HEADERIDSHAREDFOROCTONIUS'
 

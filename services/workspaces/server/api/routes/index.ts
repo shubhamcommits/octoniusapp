@@ -1,4 +1,3 @@
-import { billingRoutes } from './billings.routes';
 import { domainRoutes } from './domains.routes';
 
 import { workspaceRoutes } from './workspaces.routes';
@@ -10,9 +9,6 @@ import { mgmtRoutes } from './mgmt.routes';
  *  =====================
  * */
 export {
-
-    // BILLINGS
-    billingRoutes as billingRoutes,
 
     // MEMBERS
     memberRoutes as memberRoutes,

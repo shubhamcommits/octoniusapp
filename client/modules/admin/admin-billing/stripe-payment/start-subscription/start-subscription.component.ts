@@ -4,6 +4,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { loadStripe } from '@stripe/stripe-js';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-start-subscription',
@@ -40,6 +41,9 @@ export class StartSubscriptionComponent implements OnInit {
   // Utility Service Object
   utilityService = this.injector.get(UtilityService)
 
+  // Management Portal Service Object
+  managementPortalService = this.injector.get(ManagementPortalService)
+
   amount = 0;
   priceId;
 
@@ -48,23 +52,19 @@ export class StartSubscriptionComponent implements OnInit {
   stripeSessionId;
 
   async ngOnInit() {
-    // Configure the payment handler
-    // this.handler = await this.configureHandler(this.workspaceService, this.socketService, this.utilityService);
-
     await this.getSubscriptionPrices();
   }
 
   async getSubscriptionPrices() {
-    // await this.workspaceService.getSubscriptionPrices(this.workspaceData.billing.product_id)
-    await this.workspaceService.getSubscriptionPrices(environment.product_stripe)
+    await this.managementPortalService.getSubscriptionPrices(this.workspaceData.management_private_api_key)
       .then(res => {
         this.subscription_prices = res['prices'].data;
       });
   }
 
   startStripeCheckoutSession(priceId: string) {
-    this.workspaceService.createStripeCheckoutSession(priceId, this.workspaceData._id, window.location.href).then(async res => {
-      var stripe = await loadStripe(environment.pk_stripe);
+    this.managementPortalService.createStripeCheckoutSession(priceId, this.workspaceData._id, window.location.href, this.workspaceData.management_private_api_key).then(async res => {
+      var stripe = await loadStripe(res['pk_stripe']);
       stripe.redirectToCheckout({
         sessionId: res['session'].id
       });

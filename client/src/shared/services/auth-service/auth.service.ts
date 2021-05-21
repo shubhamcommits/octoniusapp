@@ -62,13 +62,6 @@ export class AuthService {
   }
 
   /**
-   * This function is responsible for requesting the check subscription validity API from the server
-   */
-  checkSubscriptionValidity() {
-    return this.httpClient.get(this.WORKSPACE_BASE_API_URL + `/billings/subscription-validity`);
-  }
-
-  /**
    * This function is responsible for requesting the check workspace name availability API from the server
    * @param workspaceData - needs to be passed as the functional parameter with the following @properties to be used in the request body
    * @name workspace_name

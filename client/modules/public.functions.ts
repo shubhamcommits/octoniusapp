@@ -16,6 +16,7 @@ import { FilesService } from 'src/shared/services/files-service/files.service';
 import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
 import { environment } from 'src/environments/environment';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -1265,8 +1266,8 @@ export class PublicFunctions {
     }
 
     async checkFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
-      const workspaceService = this.injector.get(WorkspaceService);
-      return workspaceService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey).then(
+      const managementPortalService = this.injector.get(ManagementPortalService);
+      return managementPortalService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey).then(
         (res) => {
           if ( !res || !res['status'] ) {
             return false;

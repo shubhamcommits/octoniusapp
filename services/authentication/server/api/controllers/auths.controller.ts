@@ -4,9 +4,6 @@ import { sendError, Auths, PasswordHelper } from '../../utils';
 import http from 'axios';
 import moment from 'moment';
 
-// Create Stripe Object
-const stripe = require('stripe')(process.env.SK_STRIPE);
-
 // Password Helper Class
 const passwordHelper = new PasswordHelper();
 
@@ -387,22 +384,7 @@ export class AuthsController {
                         { active: true },
                         { _workspace: workspace._id }
                     ] }).countDocuments();
-
-                    if (workspace.billing.subscription_id) {
-                        // Update the subscription details
-                        let subscription = stripe.subscriptions.update(workspace.billing.subscription_id, {
-                            price: workspace.billing.price_id,
-                            quantity: usersCount
-                        });
-                    }
-
-                    // Update the4 workspace details
-                    await Workspace.findOneAndUpdate({
-                        _id: workspace._id
-                    }, {
-                        'billing.quantity': usersCount
-                    });
-
+                    
                     // Send workspace to the mgmt portal
                     // Count all the groups present inside the workspace
                     const groupsCount: number = await Group.find({ $and: [
@@ -431,14 +413,7 @@ export class AuthsController {
                         num_groups: groupsCount,
                         created_date: workspace.created_date,
                         access_code: workspace.access_code,
-                        management_private_api_key: workspace.management_private_api_key,
-                        billing: {
-                            client_id: (workspace.billing) ? workspace.billing.client_id : '',
-                            subscription_id: (workspace.billing) ? workspace.billing.subscription_id : '',
-                            current_period_end: (workspace.billing) ? workspace.billing.current_period_end : moment().format(),
-                            scheduled_cancellation: (workspace.billing) ? workspace.billing.scheduled_cancellation : false,
-                            quantity: usersCount
-                        }
+                        management_private_api_key: workspace.management_private_api_key
                     }
                     http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                         API_KEY: workspace.management_private_api_key,

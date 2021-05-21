@@ -6,6 +6,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 
 @Component({
   selector: 'app-stripe-payment',
@@ -43,6 +44,9 @@ export class StripePaymentComponent implements OnInit {
   // Workspace Service Object
   workspaceService = this.injector.get(WorkspaceService);
 
+  // Management Portal Service Object
+  managementPortalService = this.injector.get(ManagementPortalService);
+
   // Utility Service Object
   utilityService = this.injector.get(UtilityService);
 
@@ -55,19 +59,19 @@ export class StripePaymentComponent implements OnInit {
   async ngOnInit() {
     const sessionId = this.activatedRoute.snapshot.queryParams.session_id;
     if (sessionId) {
-      await this.workspaceService.getStripeCheckoutSession(sessionId, this.workspaceData._id)
+      await this.managementPortalService.getStripeCheckoutSession(sessionId, this.workspaceData._id, this.workspaceData.management_private_api_key)
         .then(res => {
           this.subscription = res['subscription'];
           this.workspaceData = res['workspace'];
         })
-        .catch(function(err){
+        .catch(function (err) {
           console.log('Error when fetching Checkout session', err);
           this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
         });
 
-        await this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
+      await this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
 
-        this.router.navigate(['/home']);
+      this.router.navigate(['/home']);
     }
 
     // Check and fetch the subscription details
@@ -76,16 +80,14 @@ export class StripePaymentComponent implements OnInit {
     // Check if the client exists in Stripe
     await this.stripeCustomerExists();
 
-    await this.workspaceService.getBillingStatus(this.workspaceData?._id).then(
+    await this.managementPortalService.getBillingStatus(this.workspaceData?._id, this.workspaceData?.management_private_api_key).then(
       (res) => {
-        if ( !res['status'] || !this.subscription || (!this.customer || this.customer.deleted)) {
+        if (!res['status'] || !this.subscription || (!this.customer || this.customer.deleted)) {
           this.subscriptionActive = false;
         } else {
           this.subscriptionActive = true;
         }
       });
-    // Obtain the client´s charges
-    // await this.getCharges();
   }
 
   isWorkspaceOwner() {
@@ -97,8 +99,8 @@ export class StripePaymentComponent implements OnInit {
    * @param workspaceData
    */
   async subscriptionExistCheck() {
-    if (this.workspaceData?.billing?.subscription_id && !this.subscription) {
-      await this.workspaceService.getSubscription(this.workspaceData.billing.subscription_id)
+    if (!this.subscription) {
+      await this.managementPortalService.getSubscription(this.workspaceData._id, this.workspaceData.management_private_api_key)
         .then((res) => {
           // Initialise the suncription
           this.subscription = res['subscription'];
@@ -114,56 +116,16 @@ export class StripePaymentComponent implements OnInit {
    * @param workspaceData
    */
   async stripeCustomerExists() {
-    if (this.workspaceData.billing.client_id) {
-      await this.workspaceService.getStripeCustomer(this.workspaceData.billing.client_id)
-        .then((res) => {
-          this.customer = res['customer'];
-        })
-        .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
-    } else {
-      this.subscription = null;
-    }
-  }
-
-  /**
-   * This function is responsible for fetching the list of charges
-   * @param workspaceData
-   */
-  async getCharges() {
-    // this.workspaceService.getSubscription()--cus_HxVc4M2XSwAoV1--cus_GvQ3XcMhLqEGLT--
-    if (this.workspaceData.billing.client_id) {
-      await this.workspaceService.getCharges(this.workspaceData.billing.client_id)
-        .then((res) => {
-          // Initialise the charges
-          this.charges = res['charges'].data;
-        })
-        .catch(() => this.utilityService.errorNotification('Unable to fetch the list os Charges, please try again!')
-      );
-    }
-  }
-
-  /**
-   * This function is responsible to renewing the subscription and start it from fresh
-   */
-  async renewSubscription() {
-
-    // Renew the subscription
-    return this.workspaceService.renewSubscription()
+    await this.managementPortalService.getStripeCustomer(this.workspaceData._id, this.workspaceData.management_private_api_key)
       .then((res) => {
+        this.customer = res['customer'];
 
-        // display the new subscription information
-        this.subscription = res['subscription'];
-
-        // Update the subscription amount
-        this.subscription.amount = (this.subscription.amount / 100);
-
-        // update the workspace data
-        this.workspaceData = res['workspace'];
-
-        // Send notification to the user
-        this.utilityService.successNotification('Subscription renewed successfully!');
+        if (!this.customer) {
+          this.subscription = null;
+        }
       })
-      .catch(() => this.utilityService.errorNotification('Unable to renew the Subscription, please try again!'))
+      .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
+
   }
 
   onSubscriptionChanges(subscription) {
@@ -174,9 +136,9 @@ export class StripePaymentComponent implements OnInit {
   createCustomerPortalSession() {
     let redirectUrl = window.location.href;
 
-    this.workspaceService.createClientPortalSession(this.workspaceData.billing.client_id, redirectUrl).then(res => {
+    this.managementPortalService.createClientPortalSession(this.workspaceData._id, redirectUrl, this.workspaceData.management_private_api_key).then(res => {
       window.location.href = res['session']['url'];
-    }).catch((err)=> {
+    }).catch((err) => {
       this.utilityService.errorNotification('There is an error with your Subscription, please contact support!');
     });
   }
