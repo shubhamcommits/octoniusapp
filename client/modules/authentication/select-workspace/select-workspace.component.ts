@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
+import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -26,7 +27,8 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
 
   constructor(
     private utilityService: UtilityService,
-    private authenticationService: AuthService,
+    private managementPortalService: ManagementPortalService,
+    private authService: AuthService,
     private storageService: StorageService,
     public router: Router,
     private socketService: SocketService,
@@ -70,33 +72,59 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
    * @param userData
    */
   selectWorkspaceServiceFunction(accountId: string, workspaceId: string) {
-    return new Promise((resolve, reject) => {
-      this.subSink.add(this.authenticationService.selectWorkspace(accountId, workspaceId)
-        .subscribe((res) => {
-          this.clearUserData();
-          this.storeUserData(res);
-          //if query parms exist redirect to teams permission page else normal flow 
-          // note:- Code is for teams auth popup not for octonius app and only work in that case.
-          setTimeout(() => {
-            if ( this.queryParms ) {
-              resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
-              window.location.href = this.queryParms.teams_permission_url;
-            } else {
-              this.socketService.serverInit();
-              this.router.navigate(['dashboard', 'myspace', 'inbox'])
-              .then(() => {
-                resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
-              })
-              .catch((err) => {
+    return new Promise(async (resolve, reject) => {
+
+
+
+        this.subSink.add(this.authService.selectWorkspace(accountId, workspaceId)
+          .subscribe(async (res) => {
+            this.clearUserData();
+            await this.storeUserData(res);
+
+            const workspaceData = await this.publicFunctions.getCurrentWorkspace()
+
+            let workspaceBlocked = false;
+            await this.managementPortalService.getBillingStatus(workspaceId, workspaceData['management_private_api_key']).then(res => {
+              if (res['blocked'] ) {
+                workspaceBlocked = res['blocked'];
+              }
+            });
+
+            if (workspaceBlocked) {
+              this.utilityService.errorNotification('Your workspace is not available, please contact your administrator!');
+              this.authService.signout().subscribe((res) => {
                 this.storageService.clear();
-                reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
-              })
+                this.publicFunctions.sendUpdatesToGroupData({});
+                this.publicFunctions.sendUpdatesToRouterState({});
+                this.publicFunctions.sendUpdatesToUserData({});
+                this.publicFunctions.sendUpdatesToWorkspaceData({});
+                this.socketService.disconnectSocket();
+                this.router.navigate(['/home']);
+              });
+            } else {
+              //if query parms exist redirect to teams permission page else normal flow
+              // note:- Code is for teams auth popup not for octonius app and only work in that case.
+              setTimeout(() => {
+                if ( this.queryParms ) {
+                  resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
+                  window.location.href = this.queryParms.teams_permission_url;
+                } else {
+                  this.socketService.serverInit();
+                  this.router.navigate(['dashboard', 'myspace', 'inbox'])
+                  .then(() => {
+                    resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
+                  })
+                  .catch((err) => {
+                    this.storageService.clear();
+                    reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+                  })
+                }
+              }, 500);
             }
-          }, 500);
-        }, (err) => {
-          reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
-        }))
-    })
+          }, (err) => {
+            reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+          }));
+      });
   }
 
   /**
