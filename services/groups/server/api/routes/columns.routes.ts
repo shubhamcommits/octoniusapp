@@ -41,4 +41,7 @@ router.put('/changeColumnProjectType', columns.changeColumnProjectType);
 // PUT - Save custom field to show
 router.put('/saveColumnProjectDates', columns.saveColumnProjectDates);
 
+// PUT - Save amount planned for the budget
+router.put('/saveAmountBudget', columns.saveAmountBudget);
+
 export { router as columnRoutes };

@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Injector, Input, OnChanges, AfterViewInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
@@ -16,7 +16,7 @@ import { CreateProjectColumnDialogComponent } from './create-project-column-dial
   templateUrl: './group-kanban-boards.component.html',
   styleUrls: ['./group-kanban-boards.component.scss']
 })
-export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
+export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(
     private router: ActivatedRoute,
@@ -63,6 +63,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
   flows = [];
 
+  canSeeBudget = false;
 
   async ngOnInit() {
     let col = [];
@@ -72,6 +73,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
       this.flows = res['flows'];
     });
+
+    this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin' || this.userData?.role == 'manager'
+                        || (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id)>=0);
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -94,6 +98,11 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  ngAfterViewInit() {
+    this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
+
   }
 
   formateDate(date: any, format: string) {
@@ -801,8 +810,21 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   isDelay(realDueDate: any, dueDate: any) {
     return moment(realDueDate).isAfter(moment(dueDate), 'day');
   }
-  ngAfterViewInit() {
-    this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
 
+  newBudget(columnId: string, initialBudget: number) {
+
+    this.utilityService.asyncNotification('Please wait we are updating the project...', new Promise((resolve, reject) => {
+      this.columnService.saveAmountBudget(columnId, initialBudget)
+        .then((res) => {
+          const index = this.columns.findIndex(col => col._id == columnId);
+          this.columns[index].budget = {
+            amount_planned: initialBudget
+          }
+          resolve(this.utilityService.resolveAsyncPromise('Project updated!'));
+        })
+        .catch((err) => {
+          reject(this.utilityService.rejectAsyncPromise('Unable to update the column, please try again!'))
+        })
+    }));
   }
 }

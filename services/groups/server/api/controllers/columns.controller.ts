@@ -4,40 +4,7 @@ import { sendError } from '../../utils';
 import moment from 'moment';
 
 export class ColumnsController {
-    /*
-    // initialize the basic columns
-    async initColumns(req: Request, res: Response, next: NextFunction) {
-        try {
-
-            // Fetch GroupId from the request
-            const { groupId } = req.body;
-
-            const groupColumns = new Column({
-                groupId: groupId
-            });
-            await Column.findOne({
-                _group: groupId
-            }, (err, col) => {
-                if (err) {
-                    return res.status(200).json({ "err": "Error in recieving columns" });
-                } else if (!col) {
-                    groupColumns.save((err, success) => {
-                        if (err) return res.status(200).json(err);
-                        else {
-                            return res.status(200).json(success);
-                        }
-                    });
-                } else if (col) {
-                    return res.status(200).json({ "err": "Already initialized" });
-                }
-            });
-
-        } catch (err) {
-            return sendError(res, new Error(err), 'Internal Server Error!', 500);
-        }
-    };
-    */
-
+    
     // get all existing columns
     async getAllColumns(req: Request, res: Response, next: NextFunction) {
         try {
@@ -227,6 +194,33 @@ export class ColumnsController {
                 "$set": {
                     start_date: startDate ? moment(startDate).hours(12).format('YYYY-MM-DD') : null,
                     due_date: dueDate ? moment(dueDate).hours(12).format('YYYY-MM-DD') : null,
+                }
+            }, {
+                new: true
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Column project dates saved!',
+                column: column
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async saveAmountBudget(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the columnId and amountPlanned
+        const { columnId, amountPlanned } = req.body;
+
+        try {
+            // Find the group and update their respective group avatar
+            const column = await Column.updateOne({
+                _id: columnId
+            }, {
+                "$set": {
+                    'budget.amount_planned': amountPlanned
                 }
             }, {
                 new: true

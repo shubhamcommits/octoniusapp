@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import moment from 'moment/moment';
- 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,20 +11,6 @@ export class ColumnService {
   constructor(private _http: HttpClient) { }
 
   baseUrl = environment.GROUPS_BASE_API_URL;
-
-  /**
-   * This function is responsible for initializing the columns
-   * @param groupId
-   */
-  /*
-  initColumns(groupId: string) {
-    const group = {
-      groupId: groupId
-    }
-    return this._http.post(this.baseUrl + `/columns/init/`, group)
-    .toPromise()
-  }
-  */
 
   /**
    * This function is responsible for fetching all the columns present in a board
@@ -107,4 +93,11 @@ export class ColumnService {
     return this._http.put(this.baseUrl + `/columns/saveColumnProjectDates`, column).toPromise();
   }
 
+  saveAmountBudget(columnId: string, amountPlanned: Number) {
+    const column = {
+      columnId: columnId,
+      amountPlanned: amountPlanned
+    };
+    return this._http.put(this.baseUrl + `/columns/saveAmountBudget`, column).toPromise();
+  }
 }
