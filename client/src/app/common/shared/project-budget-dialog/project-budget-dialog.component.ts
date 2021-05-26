@@ -48,6 +48,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
 
   async ngOnInit() {
     this.currentUser = await this.publicFunctions.getCurrentUser();
+    this.resetExpense();
 
     if (!this.budget.expenses) {
       this.budget.expenses = [];
@@ -82,7 +83,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
       this.utilityService.errorNotification('Amount and Description are mandatory fields.');
     } else {
       if (!this.expense._id) {
-        this.expense._user = this.currentUser._id;
+        this.expense._user = this.currentUser;
         this.utilityService.asyncNotification('Please wait we are saving the new expense...', new Promise((resolve, reject) => {
           this.columnService.addBudgetExpense(this.columnId, this.expense)
             .then((res) => {
@@ -144,7 +145,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
       amount: 0,
       reason: '',
       date: moment().format(),
-      _user: this.currentUser._id
+      _user: this.currentUser
     };
   }
 

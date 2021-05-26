@@ -803,31 +803,33 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   }
 
   openBudgetDialog(column) {
-    const data = {
-      columnId: column?._id,
-      budget: column?.budget,
-      columnTitle: column?.title
-    }
-
-    const dialogRef = this.dialog.open(ProjectBudgetDialogComponent, {
-      data: data,
-      panelClass: 'groupCreatePostDialog',
-      width: '100%',
-      height: '100%',
-      disableClose: true,
-      hasBackdrop: true
-    });
-
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      const index = this.columns.findIndex(col => col._id == column._id);
-      if (index >= 0) {
-        this.columns[index].budget = data['budget'];
+    if (this.canSeeBudget) {
+      const data = {
+        columnId: column?._id,
+        budget: column?.budget,
+        columnTitle: column?.title
       }
-    });
+
+      const dialogRef = this.dialog.open(ProjectBudgetDialogComponent, {
+        data: data,
+        panelClass: 'groupCreatePostDialog',
+        width: '100%',
+        height: '100%',
+        disableClose: true,
+        hasBackdrop: true
+      });
+
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        const index = this.columns.findIndex(col => col._id == column._id);
+        if (index >= 0) {
+          this.columns[index].budget = data['budget'];
+        }
+      });
 
 
-    dialogRef.afterClosed().subscribe(result => {
-      closeEventSubs.unsubscribe();
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+      });
+    }
   }
 }
