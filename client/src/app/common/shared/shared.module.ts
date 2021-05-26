@@ -101,6 +101,7 @@ import { UserUpdateProfileDialogComponent } from './user-update-profile-dialog/u
 import { UserUpdateUserInformationDialogComponent } from './user-update-user-information-dialog/user-update-user-information-dialog.component';
 import { UserUpdateUserPersonalInformationDialogComponent } from './user-update-user-personal-information-dialog/user-update-user-personal-information-dialog.component';
 import { SecuredImageComponent } from './secured-image/secured-image.component';
+import { ProjectBudgetDialogComponent } from './project-budget-dialog/project-budget-dialog.component';
 
 @NgModule({
   declarations: [
@@ -210,7 +211,8 @@ import { SecuredImageComponent } from './secured-image/secured-image.component';
     MemberDialogComponent,
     UserUpdateProfileDialogComponent,
     UserUpdateUserInformationDialogComponent,
-    UserUpdateUserPersonalInformationDialogComponent
+    UserUpdateUserPersonalInformationDialogComponent,
+    ProjectBudgetDialogComponent
   ],
   imports: [
     CommonModule,
@@ -339,7 +341,8 @@ import { SecuredImageComponent } from './secured-image/secured-image.component';
     MemberDialogComponent,
     UserUpdateUserInformationDialogComponent,
     UserUpdateProfileDialogComponent,
-    UserUpdateUserPersonalInformationDialogComponent
+    UserUpdateUserPersonalInformationDialogComponent,
+    ProjectBudgetDialogComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
@@ -355,7 +358,8 @@ import { SecuredImageComponent } from './secured-image/secured-image.component';
     MemberDialogComponent,
     UserUpdateProfileDialogComponent,
     UserUpdateUserInformationDialogComponent,
-    UserUpdateUserPersonalInformationDialogComponent
+    UserUpdateUserPersonalInformationDialogComponent,
+    ProjectBudgetDialogComponent
   ]
 })
 export class SharedModule { }

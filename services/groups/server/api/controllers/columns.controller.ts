@@ -4,7 +4,7 @@ import { sendError } from '../../utils';
 import moment from 'moment';
 
 export class ColumnsController {
-    
+
     // get all existing columns
     async getAllColumns(req: Request, res: Response, next: NextFunction) {
         try {
@@ -12,9 +12,13 @@ export class ColumnsController {
             // Fetch GroupId from the query
             const { groupId } = req.query;
 
-            const columns = await Column.find({
+            let columns = await Column.find({
                 _group: groupId
             }).lean() || [];
+
+            columns = await Column.populate(columns, [
+                { path: 'budget.expenses._user' }
+            ]);
 
             // Send the status 200 response
             return res.status(200).json({
@@ -89,7 +93,7 @@ export class ColumnsController {
 
             const column = await Column.findOneAndUpdate({
                 _id: columnId
-            },{
+            }, {
                 title: newColumnName
             });
 
@@ -110,8 +114,8 @@ export class ColumnsController {
             const id = req.body.columnId;
 
             await Post.deleteMany({ 'task._column': id });
-            
-            await Column.findOneAndDelete({_id: id});
+
+            await Column.findOneAndDelete({ _id: id });
 
             // Send the status 200 response
             return res.status(200).json({
@@ -212,18 +216,111 @@ export class ColumnsController {
     async saveAmountBudget(req: Request, res: Response, next: NextFunction) {
 
         // Fetch the columnId and amountPlanned
-        const { columnId, amountPlanned } = req.body;
+        let { columnId, amountPlanned, currency } = req.body;
 
         try {
+
+            if (!currency) {
+                currency = 'EUR'
+            }
+
             // Find the group and update their respective group avatar
             const column = await Column.updateOne({
                 _id: columnId
             }, {
                 "$set": {
-                    'budget.amount_planned': amountPlanned
+                    'budget.amount_planned': amountPlanned,
+                    'budget.currency': currency
                 }
             }, {
                 new: true
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Column project dates saved!',
+                column: column
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async addBudgetExpense(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the columnId and amountPlanned
+        let { columnId, expense } = req.body;
+
+        try {
+
+            // Find the group and update their respective group avatar
+            const column = await Column.updateOne({
+                _id: columnId
+            }, {
+                $push: {
+                    'budget.expenses': expense
+                }
+            }, {
+                new: true
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Column project dates saved!',
+                column: column
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async updateBudgetExpense(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the columnId and amountPlanned
+        let { columnId, expense } = req.body;
+
+        try {
+
+            // Find the group and update their respective group avatar
+            const column = await Column.updateOne({
+              _id: columnId
+            }, {
+              $set: {
+                "budget.expenses.$[expense].amount": expense.amount,
+                "budget.expenses.$[expense].reason": expense.reason
+              }
+            }, {
+              arrayFilters: [{ "expense._id": expense._id }],
+              new: true
+            });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Column project dates saved!',
+                column: column
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async deleteBudgetExpense(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the columnId and amountPlanned
+        let { columnId, expenseId } = req.body;
+
+        try {
+
+            // Find the group and update their respective group avatar
+            const column = await Column.updateOne({
+                _id: columnId
+            }, 
+            { 
+              $pull: {
+                'budget.expenses': { _id: expenseId }}
+            }, {
+              safe: true,
+              new: true
             });
 
             // Send status 200 response

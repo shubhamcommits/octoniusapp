@@ -44,4 +44,13 @@ router.put('/saveColumnProjectDates', columns.saveColumnProjectDates);
 // PUT - Save amount planned for the budget
 router.put('/saveAmountBudget', columns.saveAmountBudget);
 
+// PUT - Add an expense to a budget
+router.put('/addBudgetExpense', columns.addBudgetExpense);
+
+// PUT - Update an expense in a budget
+router.put('/updateBudgetExpense', columns.updateBudgetExpense);
+
+// PUT - Remove an expense from a budget
+router.put('/deleteBudgetExpense', columns.deleteBudgetExpense);
+
 export { router as columnRoutes };

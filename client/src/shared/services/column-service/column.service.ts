@@ -93,11 +93,36 @@ export class ColumnService {
     return this._http.put(this.baseUrl + `/columns/saveColumnProjectDates`, column).toPromise();
   }
 
-  saveAmountBudget(columnId: string, amountPlanned: Number) {
+  saveAmountBudget(columnId: string, amountPlanned: Number, currency?: string) {
     const column = {
       columnId: columnId,
-      amountPlanned: amountPlanned
+      amountPlanned: amountPlanned,
+      currency: currency
     };
     return this._http.put(this.baseUrl + `/columns/saveAmountBudget`, column).toPromise();
+  }
+
+  addBudgetExpense(columnId: string, expense: any) {
+    const column = {
+      columnId: columnId,
+      expense: expense
+    };
+    return this._http.put(this.baseUrl + `/columns/addBudgetExpense`, column).toPromise();
+  }
+
+  updateBudgetExpense(columnId: string, expense: any) {
+    const column = {
+      columnId: columnId,
+      expense: expense
+    };
+    return this._http.put(this.baseUrl + `/columns/updateBudgetExpense`, column).toPromise();
+  }
+
+  deleteBudgetExpense(columnId: string, expenseId: string) {
+    const column = {
+      columnId: columnId,
+      expenseId: expenseId
+    };
+    return this._http.put(this.baseUrl + `/columns/deleteBudgetExpense`, column).toPromise();
   }
 }

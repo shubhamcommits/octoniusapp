@@ -34,6 +34,11 @@ const ColumnSchema = new Schema({
         amount_planned: {
             type: Number
         },
+        currency: {
+          type: String,
+          default: 'EUR',
+          enum: ['USD', 'EUR']
+        },
         expenses: [{
             amount: {
                 type: Number
@@ -44,6 +49,11 @@ const ColumnSchema = new Schema({
             date: {
                 type: Date,
                 default: moment().format()
+            },
+            _user: {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
             }
         }]
     }

@@ -7,9 +7,9 @@ import { ColumnService } from 'src/shared/services/column-service/column.service
 import { environment } from 'src/environments/environment';
 import moment from 'moment/moment';
 import { MatDialog } from '@angular/material/dialog';
-import { PostService } from 'src/shared/services/post-service/post.service';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { CreateProjectColumnDialogComponent } from './create-project-column-dialog/create-project-column-dialog.component';
+import { ProjectBudgetDialogComponent } from 'src/app/common/shared/project-budget-dialog/project-budget-dialog.component';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -479,12 +479,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       this.utilityService.asyncNotification('Please wait we are renaming your column...', new Promise((resolve, reject) => {
         columnService.editColumnName(columnId, newColTitle)
           .then((res) => {
-            /*
-            // rename the column in the tasks
-            oldCol['tasks'].forEach(task => {
-              task.task._column.title = newColTitle;
-            });
-            */
             resolve(this.utilityService.resolveAsyncPromise('Column Renamed!'));
           })
           .catch((err) => {
@@ -708,26 +702,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   }
 
   /**
-   * This function is responsible for changing the due date
-   * @param task
-   * @param dueDate
-   */
-  /*
-  changeDueDate(task: any, dueDate: any) {
-
-    dueDate = moment.utc(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
-
-    dueDate = moment.utc(dueDate).format('YYYY-MM-DD')
-
-    // Call the HTTP Request to change the due date
-    this.publicFunctions.changeTaskDueDate(task._id, dueDate)
-
-    // Set the task due date on the UI
-    task.task.due_to = moment.utc(dueDate).format('YYYY-MM-DD')
-  }
-  */
-
-  /**
    * This function changes the details on the UI
    * @param task
    * @param post
@@ -796,9 +770,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       const index = this.columns.findIndex(col => col._id == column._id);
-    if (index >= 0) {
-      this.columns[index] = column;
-    }
+      if (index >= 0) {
+        this.columns[index] = column;
+      }
     });
 
 
@@ -826,5 +800,34 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
           reject(this.utilityService.rejectAsyncPromise('Unable to update the column, please try again!'))
         })
     }));
+  }
+
+  openBudgetDialog(column) {
+    const data = {
+      columnId: column?._id,
+      budget: column?.budget,
+      columnTitle: column?.title
+    }
+
+    const dialogRef = this.dialog.open(ProjectBudgetDialogComponent, {
+      data: data,
+      panelClass: 'groupCreatePostDialog',
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      hasBackdrop: true
+    });
+
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+      const index = this.columns.findIndex(col => col._id == column._id);
+      if (index >= 0) {
+        this.columns[index].budget = data['budget'];
+      }
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      closeEventSubs.unsubscribe();
+    });
   }
 }
