@@ -86,12 +86,12 @@
                     </span>
                   </div>
 
-                  <div class="project-container" style="cursor: pointer;" (click)="openBudgetDialog(column)"
+                  <div class="project-container budget" (click)="openBudgetDialog(column)"
                       *ngIf="canSeeBudget && column?.project_type && column?.budget?.amount_planned">
                     Budget
                     <span class="float-right">
                       {{ column?.budget?.amount_planned }}
-                      <span class="material-icons">monetization_on</span>
+                      <span class="material-icons" style="line-height: 1px;">monetization_on</span>
                     </span>
                   </div>
                 </div>

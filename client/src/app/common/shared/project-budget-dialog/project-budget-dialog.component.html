@@ -47,7 +47,7 @@
 
         <div>
           <span>
-            {{ formateDate(expense.date, 'Do, MMM') }}
+            {{ formateDate(expense.date, 'MMM Do, YYYY') }}
           </span>
           <span>
             <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
@@ -100,7 +100,7 @@
             <div class="col">
               <label for="target">Planned</label>
             </div>
-            <div class="col" style="padding-left: 0;">
+            <div class="col" style="text-align: center;">
               <input class="target" name="target" type="number" [(ngModel)]="budget.amount_planned"
                 (keyup.enter)="saveBudget()" (focusout)="saveBudget()">
             </div>
@@ -109,16 +109,18 @@
             <div class="col">
               <label for="value">Total spent</label>
             </div>
-            <div class="col" style="padding-left: 0;">
-              {{ totalSpent }}
+            <div class="col" style="text-align: center; line-height: 30px;">
+              <span *ngIf="budget.currency === 'USD'">{{ totalSpent | currency: '$' }}</span>
+              <span *ngIf="budget.currency === 'EUR'">{{ totalSpent | currency: '€' }}</span>
             </div>
             <div class="w-100"></div>
 
             <div class="col">
               <label for="value">Available</label>
             </div>
-            <div class="col" style="padding-left: 0;">
-              {{ budget.amount_planned - totalSpent }}
+            <div class="col" style="text-align: center; line-height: 30px;" [ngClass]="getBudgetStyle()">
+              <span *ngIf="budget.currency === 'USD'">{{ budget.amount_planned - totalSpent | currency: '$' }}</span>
+              <span *ngIf="budget.currency === 'EUR'">{{ budget.amount_planned - totalSpent | currency: '€' }}</span>
             </div>
           </div>
         </div>
@@ -142,9 +144,9 @@
           <div class="w-100"></div>
         </div>
 
-        <div class="row">
-          <div class="col save" (click)="saveExpense()">Save</div>
-          <div class="col cancel" (click)="resetExpense()">Cancel</div>
+        <div style="display: flex; justify-content: center;">
+          <div class="save" (click)="saveExpense()">Save</div>
+          <div class="cancel" (click)="resetExpense()">Cancel</div>
         </div>
       </div>
     </div>

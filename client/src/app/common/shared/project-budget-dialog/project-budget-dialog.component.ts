@@ -159,4 +159,12 @@ export class ProjectBudgetDialogComponent implements OnInit {
       this.totalSpent += expense.amount;
     });
   }
+
+  getBudgetStyle() {
+    if (this.budget.amount_planned - this.totalSpent < 0) {
+      return 'over-budget';
+    } else if (this.budget.amount_planned - this.totalSpent > 0) {
+      return 'under-budget';
+    }
+  }
 }
