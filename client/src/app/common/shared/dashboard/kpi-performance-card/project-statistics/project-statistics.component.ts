@@ -10,7 +10,6 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 })
 export class ProjectStatisticsComponent implements OnChanges {
 
-  @Input() type: string; // column or group
   @Input() project: any;
 
   chartReady = false;
@@ -115,12 +114,12 @@ export class ProjectStatisticsComponent implements OnChanges {
 
   async getTasks(overdue: boolean) {
     let tasks = [];
-    if (this.type == 'column') {
+    if (this.project?.type == 'column') {
       await this.postService.getColumnPosts(this.project?._id, overdue)
       .then((res) => {
         tasks = res['posts'];
       });
-    } else if (this.type == 'group') {
+    } else if (this.project?.type == 'group') {
       await this.postService.getProjectTasks(this.project?._id, overdue)
         .then((res) => {
           tasks = res['posts'];

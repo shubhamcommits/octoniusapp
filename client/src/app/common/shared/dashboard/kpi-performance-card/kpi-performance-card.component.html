@@ -9,18 +9,18 @@
       <div *ngFor="let project of projects" class="kpi_card">
         <div class="project_title">
           <div>{{ project?.title }}</div>
-          <div class="muted" *ngIf="type == 'group'">{{ project.group_name }}</div>
+          <div class="muted" *ngIf="project?.type == 'group'">{{ project.group_name }}</div>
         </div>
 
         <!-- PROJECT STATUS STARTS -->
         <div [class]="project.projectStatusClass" class="project_status">
-          <app-project-statistics [type]="type" [project]="project"></app-project-statistics>
+          <app-project-statistics [project]="project"></app-project-statistics>
         </div>
         <!-- PROJECT STATUS ENDS -->
 
         <!-- PROJECT BUDGET STARTS -->
         <div class="project_budget">
-          <app-project-budget [type]="type" [project]="project"></app-project-budget>
+          <app-project-budget [project]="project"></app-project-budget>
         </div>
         <!-- PROJECT BUDGET ENDS -->
       </div>

@@ -14,7 +14,8 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 export class KpiPerformanceCardComponent implements OnChanges {
 
   @Input() groupId;
-  @Input() type; // column or group
+
+  type = 'column'; // column or group
 
   groupName = '';
 
@@ -77,6 +78,8 @@ export class KpiPerformanceCardComponent implements OnChanges {
 
     if (!this.projects) {
       this.projects = [];
+    } else {
+      await this.setProjectType();
     }
 
     // Stops the spinner and return the value with ngOnInit
@@ -101,5 +104,11 @@ export class KpiPerformanceCardComponent implements OnChanges {
           .catch(() => reject([]))
       });
     }
+  }
+
+  setProjectType() {
+    this.projects.forEach(project => {
+      project.type = (project._group) ? 'column' : 'group';
+    });
   }
 }

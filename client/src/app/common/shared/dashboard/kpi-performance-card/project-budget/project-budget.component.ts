@@ -1,7 +1,5 @@
-import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
-import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-project-budget',
@@ -10,7 +8,6 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 })
 export class ProjectBudgetComponent implements OnChanges {
 
-  @Input() type: string; // column or group
   @Input() project: any;
 
   chartReady = false;
@@ -69,23 +66,6 @@ export class ProjectBudgetComponent implements OnChanges {
         '#2AA578'
       ]
     }];
-    /*
-    this.doughnutChartPlugins = [{
-      beforeDraw(chart) {
-        const ctx = chart.ctx;
-
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-        const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
-
-        ctx.font = '25px Nunito';
-        ctx.fillStyle = '#262628';
-
-        ctx.fillText(Math.round(percentageDone) + '%', centerX, centerY);
-      }
-    }];
-    */
 
     this.chartReady = true;
   }
