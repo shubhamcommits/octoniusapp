@@ -492,44 +492,16 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   deleteColumn(column: any) {
 
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this all the tasks from this column will be transfered to the default column!')
+    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this all the tasks from this column will be deleted!')
       .then((res) => {
         if (res.value) {
           // Find the index of the column to check if the same named column exist or not
-          let index = this.columns.findIndex((col: any) => col._id === column._id)
+          let index = this.columns.findIndex((col: any) => col._id === column._id);
+          // Remove the column from the array
+          this.columns.splice(index, 1)
 
-          // If index is found or it is the last column, then throw error notification
-          if (index === -1 || this.columns.length === 1) {
-            this.utilityService.warningNotification('Unable to delete the column, please try again!')
-          }
-
-          // If not found, then remove the element
-          else if (index != -1 && this.columns.length > 1) {
-
-            // Move All the columns' task to other column
-            if (this.columns[index]['tasks'].length > 0) {
-
-              // Call for each task present in the board
-              this.columns[index]['tasks'].forEach((task) => {
-                let newColumnId = 'to do';
-                if (index - 1 >= 0) {
-                  newColumnId = this.columns[index - 1]._id;
-                } else if (index + 1 < this.columns.length) {
-                  newColumnId = this.columns[index + 1]._id;
-                } else {
-                  newColumnId = this.columns[0]._id;
-                }
-
-                // Call the HTTP Request to move the task
-                this.moveTaskToNewColumn(task, this.columns[index]['_id'], newColumnId);
-              })
-            }
-            // Remove the column from the array
-            this.columns.splice(index, 1)
-
-            // This function removes the column
-            this.removeColumn(column._id)
-          }
+          // This function removes the column
+          this.removeColumn(column._id)
         }
       })
   }
