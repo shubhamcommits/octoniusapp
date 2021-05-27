@@ -1717,6 +1717,54 @@ export class PostService {
     return posts;
   }
 
+  async getColumnTasksResults(columnId: any, overdue: boolean) {
+
+    let posts = [];
+
+    if (overdue) {
+
+      // Generate the actual time
+      const today = moment().subtract(1, 'days').endOf('day').format()
+
+      // Fetch the tasks posts
+      posts = await Post.find({
+        $and: [
+          { 'task._column': columnId },
+          { type: 'task' },
+          {
+            $or: [
+              { 'task.status': 'to do' },
+              { 'task.status': 'in progress' }
+            ]
+          }
+        ]
+      })
+        .sort('-task.due_to')
+        .populate('_group', this.groupFields)
+        .populate('_posted_by', this.userFields)
+        .populate('_assigned_to', this.userFields)
+        .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .lean();
+
+    } else {
+      posts = await Post.find({
+        $and: [
+          { 'task._column': columnId },
+          { type: 'task' },
+        ]
+      })
+        .sort('-task.due_to')
+        .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_posted_by', select: this.userFields })
+        .populate({ path: '_assigned_to', select: this.userFields })
+        .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+        .lean();
+    }
+
+    return posts;
+  }
+
   async getAllGroupTasks(groupId: any, period: any) {
 
     let posts = [];
@@ -1788,6 +1836,55 @@ export class PostService {
     return posts;
   }
 
+  async getAllProjectTasks(groupId: any, overdue: boolean) {
+
+    let posts = [];
+
+    if (overdue) {
+
+      // Generate the actual time
+      const today = moment().subtract(1, 'days').endOf('day').format()
+
+      // Fetch the tasks posts
+      posts = await Post.find({
+        $and: [
+          { _group: groupId },
+          { type: 'task' },
+          { 'task.due_to': { $lt: today } },
+          {
+            $or: [
+              { 'task.status': 'to do' },
+              { 'task.status': 'in progress' }
+            ]
+          }
+        ]
+      })
+        .sort('-task.due_to')
+        .populate('_group', this.groupFields)
+        .populate('_posted_by', this.userFields)
+        .populate('_assigned_to', this.userFields)
+        .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .lean();
+
+    } else {
+      posts = await Post.find({
+        $and: [
+          { _group: groupId },
+          { type: 'task' }
+        ]
+      })
+        .sort('-task.due_to')
+        .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_posted_by', select: this.userFields })
+        .populate({ path: '_assigned_to', select: this.userFields })
+        .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+        .lean();
+    }
+
+    return posts;
+  }
+  
   async getGroupPostsResults(groupId: any, numDays: number) {
 
     const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');

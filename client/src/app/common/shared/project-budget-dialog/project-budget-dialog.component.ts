@@ -155,7 +155,7 @@ export class ProjectBudgetDialogComponent implements OnInit {
 
   calculateTotalSpent() {
     this.totalSpent = 0;
-    this.budget.expenses.forEach(expense => {
+    this.budget?.expenses?.forEach(expense => {
       this.totalSpent += expense.amount;
     });
   }

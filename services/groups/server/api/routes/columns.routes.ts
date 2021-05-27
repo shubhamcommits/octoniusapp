@@ -23,6 +23,9 @@ router.use(auths.isLoggedIn);
 // get all existing columns
 router.get('/all', columns.getAllColumns);
 
+// get all existing project columns
+router.get('/projects', columns.getAllProjectColumns);
+
 // add a new column
 router.post('/', columns.addColumn);
 

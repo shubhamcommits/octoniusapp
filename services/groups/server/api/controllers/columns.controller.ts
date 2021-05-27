@@ -30,6 +30,32 @@ export class ColumnsController {
         }
     }
 
+    // get all existing project columns
+    async getAllProjectColumns(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch GroupId from the query
+            const { groupId } = req.query;
+
+            let columns = await Column.find({
+                _group: groupId,
+                project_type: true
+            }).lean() || [];
+
+            columns = await Column.populate(columns, [
+                { path: 'budget.expenses._user' }
+            ]);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Column obtained Successfully!',
+                columns: columns
+            });
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
     // add a new column
 
     async addColumn(req: Request, res: Response, next: NextFunction) {

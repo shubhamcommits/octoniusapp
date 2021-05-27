@@ -102,6 +102,9 @@ import { UserUpdateUserInformationDialogComponent } from './user-update-user-inf
 import { UserUpdateUserPersonalInformationDialogComponent } from './user-update-user-personal-information-dialog/user-update-user-personal-information-dialog.component';
 import { SecuredImageComponent } from './secured-image/secured-image.component';
 import { ProjectBudgetDialogComponent } from './project-budget-dialog/project-budget-dialog.component';
+import { KpiPerformanceCardComponent } from './dashboard/kpi-performance-card/kpi-performance-card.component';
+import { ProjectStatisticsComponent } from './dashboard/kpi-performance-card/project-statistics/project-statistics.component';
+import { ProjectBudgetComponent } from './dashboard/kpi-performance-card/project-budget/project-budget.component';
 
 @NgModule({
   declarations: [
@@ -191,6 +194,9 @@ import { ProjectBudgetDialogComponent } from './project-budget-dialog/project-bu
     OrganizationalStructureCardComponent,
     EngagementCardComponent,
     GlobalPerformanceCardComponent,
+    KpiPerformanceCardComponent,
+    ProjectStatisticsComponent,
+    ProjectBudgetComponent,
     MembersWorkloadCardComponent,
     SectionStatusCardComponent,
 
@@ -325,6 +331,9 @@ import { ProjectBudgetDialogComponent } from './project-budget-dialog/project-bu
     OrganizationalStructureCardComponent,
     EngagementCardComponent,
     GlobalPerformanceCardComponent,
+    KpiPerformanceCardComponent,
+    ProjectStatisticsComponent,
+    ProjectBudgetComponent,
     MembersWorkloadCardComponent,
     SectionStatusCardComponent,
 

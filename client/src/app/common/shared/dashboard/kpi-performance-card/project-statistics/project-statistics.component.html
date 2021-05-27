@@ -1,0 +1,38 @@
+<span [class]="projectStatusClass">
+  {{ project?.project_status }}
+</span>
+&nbsp;
+<span [class]="completitionPercentageClass">
+  {{ completitionPercentage }} %
+</span>
+<div class="smart-card">
+  <div>
+    <div class="project_stats">
+      <div class="muted">Planned: {{ formateDate(project.start_date, 'Do, MMM') }} - {{ formateDate(project.due_date, 'Do, MMM') }}</div>
+      <div class="estimation">Estimation: {{ formateDate(project.estimation_due_date, 'Do, MMM') }}</div>
+      <!-- TO DO, IN PROGRESS AND DONE TASKS STARTS -->
+      <div>
+        <span class="muted">Work by completition status</span>
+        <div class="task_counts">
+          <span class="kpi-overdue-tasks">{{ overdue_task_count || 0 }}</span>
+          <span class="kpi-todo-tasks">{{ to_do_task_count || 0 }}</span>
+          <span class="kpi-in-progress-tasks">{{ in_progress_task_count || 0 }}</span>
+          <span class="kpi-done-tasks">{{ done_task_count || 0 }}</span>
+        </div>
+      </div>
+      <!-- TO DO, IN PROGRESS AND DONE TASKS ENDS -->
+    </div>
+  </div>
+
+  <div class="" *ngIf="chartReady">
+    <canvas
+      baseChart
+      height="150"
+      [data]="doughnutChartData"
+      [labels]="doughnutChartLabels"
+      [chartType]="doughnutChartType"
+      [options]="doughnutChartOptions"
+      [colors]="doughnutChartColors"
+      [plugins]="doughnutChartPlugins"></canvas>
+  </div>
+</div>

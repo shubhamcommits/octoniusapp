@@ -25,6 +25,18 @@ export class ColumnService {
   }
 
   /**
+   * This function is responsible for fetching all the columns present in a board
+   * @param groupId
+   */
+  getAllProjectColumns(groupId: string) {
+    return this._http.get(this.baseUrl + `/columns/projects`, {
+      params:{
+        groupId: groupId
+      }
+    }).toPromise()
+  }
+
+  /**
    * This function is responsible for adding a column to the board
    * @param groupId
    * @param columnName
