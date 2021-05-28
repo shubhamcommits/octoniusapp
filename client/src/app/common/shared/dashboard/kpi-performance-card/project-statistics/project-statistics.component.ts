@@ -108,13 +108,19 @@ export class ProjectStatisticsComponent implements OnChanges {
     this.completitionPercentage = Math.round(percentageDone);
 
     //this.project.estimation_due_date = moment(Math.max(...tasks.map(post => moment(post.task.due_to))));
-    this.project.estimation_due_date = this.project.due_date;
+    const allTasks = tasks.concat(overdueTasks);
+    this.project.estimation_due_date = (allTasks && allTasks.length > 0) ? this.publicFunctions.getHighestDate(allTasks) : this.project?.due_date;
 
     return [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdue_task_count];
   }
 
   async getTasks(overdue: boolean) {
     let tasks = [];
+    await this.postService.getColumnPosts(this.project?._id, overdue)
+      .then((res) => {
+        tasks = res['posts'];
+      });
+    /*
     if (this.project?.type == 'column') {
       await this.postService.getColumnPosts(this.project?._id, overdue)
       .then((res) => {
@@ -126,6 +132,7 @@ export class ProjectStatisticsComponent implements OnChanges {
           tasks = res['posts'];
         });
     }
+    */
     return tasks;
   }
 

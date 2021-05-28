@@ -629,7 +629,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
           }
         }
         // Find the hightes due date on the tasks of the column
-        col.real_due_date = moment(Math.max(...col.tasks.map(post => moment(post.task.due_to))));
+        //col.real_due_date = moment(Math.max(...col.tasks.map(post => moment(post.task.due_to))));
+        col.real_due_date = this.publicFunctions.getHighestDate(col.tasks);
 
         // Calculate number of done tasks
         col.numDoneTasks = col.tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;
@@ -659,7 +660,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     if (this.columns[oldColumnIndex]['tasks'].length == 0) {
       this.columns[oldColumnIndex].real_due_date = null;
     } else {
-      this.columns[oldColumnIndex].real_due_date = moment(Math.max(...this.columns[oldColumnIndex].tasks.map(post => moment(post.task.due_to))));
+      //this.columns[oldColumnIndex].real_due_date = moment(Math.max(...this.columns[oldColumnIndex].tasks.map(post => moment(post.task.due_to))));
+      this.columns[oldColumnIndex].real_due_date = this.publicFunctions.getHighestDate(this.columns[oldColumnIndex].tasks);
     }
 
     // Add the task into the new column
@@ -668,7 +670,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     if (this.columns[newColumnIndex]['tasks'].length == 0) {
       this.columns[newColumnIndex].real_due_date = null;
     } else {
-      this.columns[newColumnIndex].real_due_date = moment(Math.max(...this.columns[newColumnIndex].tasks.map(post => moment(post.task.due_to))));
+      //this.columns[newColumnIndex].real_due_date = moment(Math.max(...this.columns[newColumnIndex].tasks.map(post => moment(post.task.due_to))));
+      this.columns[newColumnIndex].real_due_date = this.publicFunctions.getHighestDate(this.columns[newColumnIndex].tasks);
     }
 
     // Calculate number of done tasks

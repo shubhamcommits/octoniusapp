@@ -50,7 +50,7 @@ export class ProjectBudgetComponent implements OnChanges {
 
 
     /* Chart Setup */
-    this.doughnutChartLabels = ['Budget', 'Real cost'];
+    this.doughnutChartLabels = ['Budget left', 'Real cost'];
     this.doughnutChartData = [this.project?.budget?.amount_planned - this.project?.budget?.real_cost, this.project?.budget?.real_cost];
     this.doughnutChartType = 'doughnut';
     this.doughnutChartOptions = {

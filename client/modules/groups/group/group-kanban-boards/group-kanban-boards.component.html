@@ -64,7 +64,7 @@
                     </span>
                   </div>
 
-                  <div class="project-container bold">
+                  <div class="project-container bold" *ngIf="column?.real_due_date">
                     Real
                     <span *ngIf="column?.real_due_date" class="float-right">
                       <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757;">arrow_right_alt</i>
