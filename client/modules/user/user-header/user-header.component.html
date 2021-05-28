@@ -11,7 +11,7 @@
         <app-secured-image *ngIf="isCurrentUser && userData"
           [imgURL]="userData?.profile_pic"
           [service]="'user'"
-          [placement]="'bottom'"
+          [placement]="'below'"
           [tooltip]="'Change your avatar'"
           [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
       </li>

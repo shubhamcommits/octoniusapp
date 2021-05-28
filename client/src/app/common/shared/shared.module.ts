@@ -7,7 +7,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 // import { QuicklinkModule } from 'ngx-quicklink';
 
-import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { SafePipe } from 'src/shared/pipes/safe.pipe';
 
@@ -60,7 +60,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
@@ -241,9 +242,6 @@ import { ProjectBudgetComponent } from './dashboard/kpi-performance-card/project
     // ANGULAR BOOTSTRAP MODAL MODULE
     NgbModalModule,
 
-    // ANGULAR TOOLTIP MODULE
-    NgbTooltipModule,
-
     // MAT SIDE MODULE
     MatSidenavModule,
 
@@ -262,7 +260,8 @@ import { ProjectBudgetComponent } from './dashboard/kpi-performance-card/project
     MatMenuModule,
     MatBadgeModule,
     MatPaginatorModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTooltipModule
   ],
   exports: [
     AttachFilesComponent,
@@ -310,8 +309,6 @@ import { ProjectBudgetComponent } from './dashboard/kpi-performance-card/project
 
     AgendaSmartCardComponent,
 
-    NgbTooltipModule,
-
     NgbModalModule,
 
     LikeCommentComponent,
@@ -351,7 +348,8 @@ import { ProjectBudgetComponent } from './dashboard/kpi-performance-card/project
     UserUpdateUserInformationDialogComponent,
     UserUpdateProfileDialogComponent,
     UserUpdateUserPersonalInformationDialogComponent,
-    ProjectBudgetDialogComponent
+    ProjectBudgetDialogComponent,
+    MatTooltipModule
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
