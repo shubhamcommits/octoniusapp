@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Column, Flow, Post } from '../models';
+import { Column, Flow, Group, Post } from '../models';
 import { sendError } from '../../utils';
 import moment from 'moment';
 
@@ -35,16 +35,36 @@ export class ColumnsController {
         try {
 
             // Fetch GroupId from the query
-            const { groupId } = req.query;
+            const { groupId, workspaceId } = req.query;
 
-            let columns = await Column.find({
-                _group: groupId,
-                project_type: true
-            }).lean() || [];
+            let columns = [];
+            if (groupId) {
+              columns = await Column.find({
+                  _group: groupId,
+                  project_type: true
+              }).lean() || [];
 
-            columns = await Column.populate(columns, [
+              columns = await Column.populate(columns, [
+                { path: '_group' },
                 { path: 'budget.expenses._user' }
-            ]);
+              ]);
+            } else if (workspaceId) {
+              const groups = await Group.find({
+                _workspace: workspaceId
+              })
+              .select('_id')
+              .lean() || [];
+
+              columns = await Column.find({
+                '_group': { $in: groups },
+                project_type: true
+              }).lean() || [];
+
+              columns = await Column.populate(columns, [
+                  { path: '_group' },
+                  { path: 'budget.expenses._user' }
+              ]);
+            }
 
             // Send the status 200 response
             return res.status(200).json({

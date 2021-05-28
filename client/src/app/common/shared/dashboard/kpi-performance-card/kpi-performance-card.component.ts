@@ -1,10 +1,8 @@
-import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
-import { GroupsService } from 'src/shared/services/groups-service/groups.service';
-import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
   selector: 'app-kpi-performance-card',
@@ -13,9 +11,8 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 })
 export class KpiPerformanceCardComponent implements OnChanges {
 
-  @Input() groupId;
-
-  type = 'column'; // column or group
+  @Input() parentId; // This could be a groupId or a workspaceId
+  @Input() type = 'group'; // workspace or group
 
   groupName = '';
 
@@ -50,8 +47,6 @@ export class KpiPerformanceCardComponent implements OnChanges {
   public isLoading$ = new BehaviorSubject(false);
 
   constructor(
-    private groupService: GroupsService,
-    private postService: PostService,
     private columnService: ColumnService,
     private injector: Injector
   ) { }
@@ -65,21 +60,18 @@ export class KpiPerformanceCardComponent implements OnChanges {
 
   async initView() {
 
-    // Fetches the workspace data
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-
-    // Fetches the groups from the server
-    this.projects = await this.getAllProjectColumns(this.groupId)
-      .catch(() => {
-        // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
-        this.isLoading$.next(false);
-      })
+    if (this.parentId) {
+      // Fetches the groups from the server
+      this.projects = await this.getProjectColumns(this.parentId)
+        .catch(() => {
+          // If the function breaks, then catch the error and console to the application
+          this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+          this.isLoading$.next(false);
+        });
+    }
 
     if (!this.projects) {
       this.projects = [];
-    } else {
-      await this.setProjectType();
     }
 
     // Stops the spinner and return the value with ngOnInit
@@ -90,25 +82,19 @@ export class KpiPerformanceCardComponent implements OnChanges {
    * This function is resposible for fetching first 10 groups present in the workplace
    * @param workspaceId
    */
-  public async getAllProjectColumns(parentId: string) {
-    if (this.type == 'column') {
+  public async getProjectColumns(parentId: string) {
+    if (this.type == 'group') {
       return new Promise((resolve, reject) => {
-        this.columnService.getAllProjectColumns(parentId)
+        this.columnService.getGroupProjectColumns(parentId)
           .then((res) => resolve(res['columns']))
           .catch(() => reject([]))
       });
-    } else if (this.type == 'group') {
+    } else if (this.type == 'workspace') {
       return new Promise((resolve, reject) => {
         this.columnService.getAllProjectColumns(parentId)
           .then((res) => resolve(res['columns']))
           .catch(() => reject([]))
       });
     }
-  }
-
-  setProjectType() {
-    this.projects.forEach(project => {
-      project.type = (project._group) ? 'column' : 'group';
-    });
   }
 }

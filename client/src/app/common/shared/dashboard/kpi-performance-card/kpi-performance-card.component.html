@@ -9,7 +9,7 @@
       <div *ngFor="let project of projects" class="kpi_card">
         <div class="project_title">
           <div>{{ project?.title }}</div>
-          <div class="muted" *ngIf="project?.type == 'group'">{{ project.group_name }}</div>
+          <div class="muted" *ngIf="type == 'workspace'">{{ project?._group?.group_name }}</div>
         </div>
 
         <!-- PROJECT STATUS STARTS -->
