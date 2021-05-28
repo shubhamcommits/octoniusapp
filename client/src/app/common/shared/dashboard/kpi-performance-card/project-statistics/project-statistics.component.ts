@@ -106,8 +106,9 @@ export class ProjectStatisticsComponent implements OnChanges {
 
     const percentageDone = (this.task_count + this.overdue_task_count > 0) ? ((this.done_task_count*100)/(this.task_count + this.overdue_task_count)) : 0;
     this.completitionPercentage = Math.round(percentageDone);
-//console.log(tasks.map(post => moment(post.task.due_to)));
-    this.project.estimation_due_date = moment(Math.max(...tasks.map(post => moment(post.task.due_to))));
+
+    //this.project.estimation_due_date = moment(Math.max(...tasks.map(post => moment(post.task.due_to))));
+    this.project.estimation_due_date = this.project.due_date;
 
     return [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdue_task_count];
   }
