@@ -1,6 +1,6 @@
 <span *ngIf="userData && comment">
     <button class="btn btn-link">
-        <i matTooltipPosition="top" matTooltip="Unlike Comment" class="material-icons-outlined active" *ngIf="liked; else likeif" (click)="unlikeComment()">thumb_up</i>
-        <ng-template #likeif><i class="material-icons-outlined muted" matTooltipPosition="top" matTooltip="Like Comment" (click)="likeComment()">thumb_up</i></ng-template>
+        <i matTooltipPosition="above" matTooltip="Unlike Comment" class="material-icons-outlined active" *ngIf="liked; else likeif" (click)="unlikeComment()">thumb_up</i>
+        <ng-template #likeif><i class="material-icons-outlined muted" matTooltipPosition="above" matTooltip="Like Comment" (click)="likeComment()">thumb_up</i></ng-template>
     </button>
 </span>

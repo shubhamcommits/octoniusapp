@@ -1,9 +1,9 @@
 <span *ngIf="userData && post">
     <button class="btn btn-link">
-        <i class="material-icons-outlined muted" *ngIf="!isFollowedByUser; else followIf" matTooltipPosition="top"
+        <i class="material-icons-outlined muted" *ngIf="!isFollowedByUser; else followIf" matTooltipPosition="above"
             matTooltip="Follow Post" (click)="followPost()">star</i>
         <ng-template #followIf>
-          <i class="material-icons-outlined active" matTooltipPosition="top"
+          <i class="material-icons-outlined active" matTooltipPosition="above"
             matTooltip="Unfollow Post" (click)="unfollowPost()">star</i>
         </ng-template>
     </button>
