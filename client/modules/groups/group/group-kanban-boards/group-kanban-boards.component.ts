@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Injector, Input, OnChanges, AfterViewInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
@@ -7,16 +7,16 @@ import { ColumnService } from 'src/shared/services/column-service/column.service
 import { environment } from 'src/environments/environment';
 import moment from 'moment/moment';
 import { MatDialog } from '@angular/material/dialog';
-import { PostService } from 'src/shared/services/post-service/post.service';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { CreateProjectColumnDialogComponent } from './create-project-column-dialog/create-project-column-dialog.component';
+import { ProjectBudgetDialogComponent } from 'src/app/common/shared/project-budget-dialog/project-budget-dialog.component';
 
 @Component({
   selector: 'app-group-kanban-boards',
   templateUrl: './group-kanban-boards.component.html',
   styleUrls: ['./group-kanban-boards.component.scss']
 })
-export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
+export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(
     private router: ActivatedRoute,
@@ -63,6 +63,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
 
   flows = [];
 
+  canSeeBudget = false;
 
   async ngOnInit() {
     let col = [];
@@ -72,6 +73,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
       this.flows = res['flows'];
     });
+
+    this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin' || this.userData?.role == 'manager'
+                        || (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id)>=0);
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -94,6 +98,11 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  ngAfterViewInit() {
+    this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
+
   }
 
   formateDate(date: any, format: string) {
@@ -470,12 +479,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
       this.utilityService.asyncNotification('Please wait we are renaming your column...', new Promise((resolve, reject) => {
         columnService.editColumnName(columnId, newColTitle)
           .then((res) => {
-            /*
-            // rename the column in the tasks
-            oldCol['tasks'].forEach(task => {
-              task.task._column.title = newColTitle;
-            });
-            */
             resolve(this.utilityService.resolveAsyncPromise('Column Renamed!'));
           })
           .catch((err) => {
@@ -626,7 +629,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
           }
         }
         // Find the hightes due date on the tasks of the column
-        col.real_due_date = moment(Math.max(...col.tasks.map(post => moment(post.task.due_to))));
+        //col.real_due_date = moment(Math.max(...col.tasks.map(post => moment(post.task.due_to))));
+        col.real_due_date = this.publicFunctions.getHighestDate(col.tasks);
 
         // Calculate number of done tasks
         col.numDoneTasks = col.tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;
@@ -656,7 +660,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     if (this.columns[oldColumnIndex]['tasks'].length == 0) {
       this.columns[oldColumnIndex].real_due_date = null;
     } else {
-      this.columns[oldColumnIndex].real_due_date = moment(Math.max(...this.columns[oldColumnIndex].tasks.map(post => moment(post.task.due_to))));
+      //this.columns[oldColumnIndex].real_due_date = moment(Math.max(...this.columns[oldColumnIndex].tasks.map(post => moment(post.task.due_to))));
+      this.columns[oldColumnIndex].real_due_date = this.publicFunctions.getHighestDate(this.columns[oldColumnIndex].tasks);
     }
 
     // Add the task into the new column
@@ -665,7 +670,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     if (this.columns[newColumnIndex]['tasks'].length == 0) {
       this.columns[newColumnIndex].real_due_date = null;
     } else {
-      this.columns[newColumnIndex].real_due_date = moment(Math.max(...this.columns[newColumnIndex].tasks.map(post => moment(post.task.due_to))));
+      //this.columns[newColumnIndex].real_due_date = moment(Math.max(...this.columns[newColumnIndex].tasks.map(post => moment(post.task.due_to))));
+      this.columns[newColumnIndex].real_due_date = this.publicFunctions.getHighestDate(this.columns[newColumnIndex].tasks);
     }
 
     // Calculate number of done tasks
@@ -697,26 +703,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     // Set the assigned_to variable
     task._assigned_to = memberMap
   }
-
-  /**
-   * This function is responsible for changing the due date
-   * @param task
-   * @param dueDate
-   */
-  /*
-  changeDueDate(task: any, dueDate: any) {
-
-    dueDate = moment.utc(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
-
-    dueDate = moment.utc(dueDate).format('YYYY-MM-DD')
-
-    // Call the HTTP Request to change the due date
-    this.publicFunctions.changeTaskDueDate(task._id, dueDate)
-
-    // Set the task due date on the UI
-    task.task.due_to = moment.utc(dueDate).format('YYYY-MM-DD')
-  }
-  */
 
   /**
    * This function changes the details on the UI
@@ -787,9 +773,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
     });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       const index = this.columns.findIndex(col => col._id == column._id);
-    if (index >= 0) {
-      this.columns[index] = column;
-    }
+      if (index >= 0) {
+        this.columns[index] = column;
+      }
     });
 
 
@@ -801,8 +787,52 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges {
   isDelay(realDueDate: any, dueDate: any) {
     return moment(realDueDate).isAfter(moment(dueDate), 'day');
   }
-  ngAfterViewInit() {
-    this.publicFunctions.isMobileDevice().then(res => this.isMobile = res);
 
+  newBudget(columnId: string, initialBudget: number) {
+
+    this.utilityService.asyncNotification('Please wait we are updating the project...', new Promise((resolve, reject) => {
+      this.columnService.saveAmountBudget(columnId, initialBudget)
+        .then((res) => {
+          const index = this.columns.findIndex(col => col._id == columnId);
+          this.columns[index].budget = {
+            amount_planned: initialBudget
+          }
+          resolve(this.utilityService.resolveAsyncPromise('Project updated!'));
+        })
+        .catch((err) => {
+          reject(this.utilityService.rejectAsyncPromise('Unable to update the column, please try again!'))
+        })
+    }));
+  }
+
+  openBudgetDialog(column) {
+    if (this.canSeeBudget) {
+      const data = {
+        columnId: column?._id,
+        budget: column?.budget,
+        columnTitle: column?.title
+      }
+
+      const dialogRef = this.dialog.open(ProjectBudgetDialogComponent, {
+        data: data,
+        panelClass: 'groupCreatePostDialog',
+        width: '100%',
+        height: '100%',
+        disableClose: true,
+        hasBackdrop: true
+      });
+
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        const index = this.columns.findIndex(col => col._id == column._id);
+        if (index >= 0) {
+          this.columns[index].budget = data['budget'];
+        }
+      });
+
+
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+      });
+    }
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import moment from 'moment/moment';
- 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,20 +13,6 @@ export class ColumnService {
   baseUrl = environment.GROUPS_BASE_API_URL;
 
   /**
-   * This function is responsible for initializing the columns
-   * @param groupId
-   */
-  /*
-  initColumns(groupId: string) {
-    const group = {
-      groupId: groupId
-    }
-    return this._http.post(this.baseUrl + `/columns/init/`, group)
-    .toPromise()
-  }
-  */
-
-  /**
    * This function is responsible for fetching all the columns present in a board
    * @param groupId
    */
@@ -34,6 +20,30 @@ export class ColumnService {
     return this._http.get(this.baseUrl + `/columns/all`, {
       params:{
         groupId: groupId
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching all the columns present in a board
+   * @param groupId
+   */
+  getGroupProjectColumns(groupId: string) {
+    return this._http.get(this.baseUrl + `/columns/projects`, {
+      params:{
+        groupId: groupId
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching all the columns present in a board
+   * @param groupId
+   */
+  getAllProjectColumns(workspaceId: string) {
+    return this._http.get(this.baseUrl + `/columns/projects`, {
+      params:{
+        workspaceId: workspaceId
       }
     }).toPromise()
   }
@@ -107,4 +117,36 @@ export class ColumnService {
     return this._http.put(this.baseUrl + `/columns/saveColumnProjectDates`, column).toPromise();
   }
 
+  saveAmountBudget(columnId: string, amountPlanned: Number, currency?: string) {
+    const column = {
+      columnId: columnId,
+      amountPlanned: amountPlanned,
+      currency: currency
+    };
+    return this._http.put(this.baseUrl + `/columns/saveAmountBudget`, column).toPromise();
+  }
+
+  addBudgetExpense(columnId: string, expense: any) {
+    const column = {
+      columnId: columnId,
+      expense: expense
+    };
+    return this._http.put(this.baseUrl + `/columns/addBudgetExpense`, column).toPromise();
+  }
+
+  updateBudgetExpense(columnId: string, expense: any) {
+    const column = {
+      columnId: columnId,
+      expense: expense
+    };
+    return this._http.put(this.baseUrl + `/columns/updateBudgetExpense`, column).toPromise();
+  }
+
+  deleteBudgetExpense(columnId: string, expenseId: string) {
+    const column = {
+      columnId: columnId,
+      expenseId: expenseId
+    };
+    return this._http.put(this.baseUrl + `/columns/deleteBudgetExpense`, column).toPromise();
+  }
 }

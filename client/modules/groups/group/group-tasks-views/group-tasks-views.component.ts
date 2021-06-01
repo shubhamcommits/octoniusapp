@@ -225,7 +225,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         });
 
       // Find the hightes due date on the tasks of the column
-      column.real_due_date = moment(Math.max(...column.tasks.map(post => moment(post.task.due_to))));
+      // column.real_due_date = moment(Math.max(...column.tasks.map(post => moment(post.task.due_to))));
+      column.real_due_date = this.publicFunctions.getHighestDate(column.tasks);
 
       // Calculate number of done tasks
       column.numDoneTasks = column.tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;

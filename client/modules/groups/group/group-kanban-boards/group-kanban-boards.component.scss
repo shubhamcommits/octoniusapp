@@ -56,6 +56,20 @@
                         text-transform: uppercase !important;
                     }
                 }
+
+                .budget {
+                  cursor: pointer;
+                  padding-top: 10px;
+                  padding-bottom: 10px;
+                  margin-top: -16px;
+                }
+
+                .budget:hover {
+                  color: #fff;
+                  background: #4a90e2;
+                  border: 1px solid $border-color;
+                  border-radius: 4px;
+                }
             }
         }
     }
@@ -92,6 +106,8 @@
   width: 310px;
   border-bottom: 1px solid $border-color;
   margin-bottom: 16px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .tasks-container {
