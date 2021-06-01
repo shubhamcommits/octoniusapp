@@ -1671,10 +1671,10 @@ export class PostService {
 
     let posts = [];
 
-    if (overdue) {
+    // Generate the actual time
+    const today = moment().subtract(1, 'days').endOf('day').format()
 
-      // Generate the actual time
-      const today = moment().subtract(1, 'days').endOf('day').format()
+    if (overdue) {
 
       // Fetch the tasks posts
       posts = await Post.find({
@@ -1702,7 +1702,13 @@ export class PostService {
         $and: [
           { _group: groupId },
           { type: type },
-          { 'task.due_to': { $gte: comparingDate } }
+          { 'task.due_to': { $gte: comparingDate } },
+          {
+            $or: [
+              { 'task.due_to': { $gte: today } },
+              { 'task.status': 'done' }
+            ]
+          }
         ]
       })
         .sort('-task.due_to')
@@ -1721,16 +1727,17 @@ export class PostService {
 
     let posts = [];
 
-    if (overdue) {
+    // Generate the actual time
+    const today = moment().subtract(1, 'days').endOf('day').format()
 
-      // Generate the actual time
-      const today = moment().subtract(1, 'days').endOf('day').format()
+    if (overdue) {
 
       // Fetch the tasks posts
       posts = await Post.find({
         $and: [
           { 'task._column': columnId },
           { type: 'task' },
+          { 'task.due_to': { $lt: today } },
           {
             $or: [
               { 'task.status': 'to do' },
@@ -1751,6 +1758,12 @@ export class PostService {
         $and: [
           { 'task._column': columnId },
           { type: 'task' },
+          {
+            $or: [
+              { 'task.due_to': { $gte: today } },
+              { 'task.status': 'done' }
+            ]
+          }
         ]
       })
         .sort('-task.due_to')
