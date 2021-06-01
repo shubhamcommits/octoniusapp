@@ -19,6 +19,9 @@ routes.use(authsHelper.verifyMgmtAPIKey);
 // DELETE - Removes the specify workspace remotelly from the mgmt portal
 routes.delete('/:workspaceId', controller.removeWorkspace);
 
+// DELETE - Removes the specify workspace remotelly from the mgmt portal
+routes.delete('/removeUser/:userId', controller.removeUser);
+
 // GET - Obtain all the information needed for the mgmt portal
 routes.get('/:workspaceId', controller.getWorkspace);
 
