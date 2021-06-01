@@ -362,6 +362,27 @@ export class PostService {
   }
 
   /**
+   * Column's posts
+   */
+   getColumnPosts(columnId: string, overdue?: boolean) {
+    let params = {};
+
+    if (overdue !== undefined) {
+      params = {
+        columnId: columnId.toString().trim(),
+        overdue: overdue.toString().trim()
+      };
+    } else {
+      params = {
+        columnId: columnId.toString().trim()
+      };
+    }
+    return this._http.get(this.baseURL + `/column/posts`, {
+      params: params
+    }).toPromise();
+  }
+
+  /**
    * Group's tasks
    */
   getAllGroupTasks(groupId: string, period: string) {
@@ -372,6 +393,21 @@ export class PostService {
       period: period.toString().trim()
     };
     return this._http.get(this.baseURL + `/group/tasks`, {
+      params: params
+    }).toPromise();
+  }
+
+  /**
+   * Project's tasks
+   */
+   getProjectTasks(groupId: string, overdue: boolean) {
+    let params = {};
+
+    params = {
+      groupId: groupId.toString().trim(),
+      overdue: overdue.toString().trim()
+    };
+    return this._http.get(this.baseURL + `/project/tasks`, {
       params: params
     }).toPromise();
   }

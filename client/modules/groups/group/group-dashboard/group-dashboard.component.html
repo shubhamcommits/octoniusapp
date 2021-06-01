@@ -40,15 +40,13 @@
     </div>
   </div>
 
-  <!-- Sections Realtime Status Card Starts -->
-  <!--
   <div class="row">
     <div class="col-md-12 box">
-      <app-section-status-card></app-section-status-card>
+      <!-- KPI Performance Card Starts -->
+      <app-kpi-performance-card [parentId]="groupData?._id" [type]="'group'"></app-kpi-performance-card>
+      <!-- KPI Performance Card Ends -->
     </div>
   </div>
-  -->
-  <!-- Sections Realtime Status Card Ends -->
 
   <div class="row">
     <div class="col-md-12 box">

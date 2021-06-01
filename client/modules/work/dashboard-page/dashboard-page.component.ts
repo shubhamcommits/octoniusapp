@@ -28,6 +28,7 @@ export class DashboardPageComponent implements OnInit {
   ];
 
   userData: any;
+  workspaceData: any;
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -42,6 +43,7 @@ export class DashboardPageComponent implements OnInit {
 
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.period = (this.userData.stats.dashboard_period) ? this.userData.stats.dashboard_period : 7;
   }

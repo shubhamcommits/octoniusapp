@@ -7,7 +7,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 // import { QuicklinkModule } from 'ngx-quicklink';
 
-import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { SafePipe } from 'src/shared/pipes/safe.pipe';
 
@@ -60,7 +60,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
@@ -101,6 +102,10 @@ import { UserUpdateProfileDialogComponent } from './user-update-profile-dialog/u
 import { UserUpdateUserInformationDialogComponent } from './user-update-user-information-dialog/user-update-user-information-dialog.component';
 import { UserUpdateUserPersonalInformationDialogComponent } from './user-update-user-personal-information-dialog/user-update-user-personal-information-dialog.component';
 import { SecuredImageComponent } from './secured-image/secured-image.component';
+import { ProjectBudgetDialogComponent } from './project-budget-dialog/project-budget-dialog.component';
+import { KpiPerformanceCardComponent } from './dashboard/kpi-performance-card/kpi-performance-card.component';
+import { ProjectStatisticsComponent } from './dashboard/kpi-performance-card/project-statistics/project-statistics.component';
+import { ProjectBudgetComponent } from './dashboard/kpi-performance-card/project-budget/project-budget.component';
 
 @NgModule({
   declarations: [
@@ -190,6 +195,9 @@ import { SecuredImageComponent } from './secured-image/secured-image.component';
     OrganizationalStructureCardComponent,
     EngagementCardComponent,
     GlobalPerformanceCardComponent,
+    KpiPerformanceCardComponent,
+    ProjectStatisticsComponent,
+    ProjectBudgetComponent,
     MembersWorkloadCardComponent,
     SectionStatusCardComponent,
 
@@ -210,7 +218,8 @@ import { SecuredImageComponent } from './secured-image/secured-image.component';
     MemberDialogComponent,
     UserUpdateProfileDialogComponent,
     UserUpdateUserInformationDialogComponent,
-    UserUpdateUserPersonalInformationDialogComponent
+    UserUpdateUserPersonalInformationDialogComponent,
+    ProjectBudgetDialogComponent
   ],
   imports: [
     CommonModule,
@@ -233,9 +242,6 @@ import { SecuredImageComponent } from './secured-image/secured-image.component';
     // ANGULAR BOOTSTRAP MODAL MODULE
     NgbModalModule,
 
-    // ANGULAR TOOLTIP MODULE
-    NgbTooltipModule,
-
     // MAT SIDE MODULE
     MatSidenavModule,
 
@@ -254,7 +260,8 @@ import { SecuredImageComponent } from './secured-image/secured-image.component';
     MatMenuModule,
     MatBadgeModule,
     MatPaginatorModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTooltipModule
   ],
   exports: [
     AttachFilesComponent,
@@ -302,8 +309,6 @@ import { SecuredImageComponent } from './secured-image/secured-image.component';
 
     AgendaSmartCardComponent,
 
-    NgbTooltipModule,
-
     NgbModalModule,
 
     LikeCommentComponent,
@@ -323,6 +328,9 @@ import { SecuredImageComponent } from './secured-image/secured-image.component';
     OrganizationalStructureCardComponent,
     EngagementCardComponent,
     GlobalPerformanceCardComponent,
+    KpiPerformanceCardComponent,
+    ProjectStatisticsComponent,
+    ProjectBudgetComponent,
     MembersWorkloadCardComponent,
     SectionStatusCardComponent,
 
@@ -339,7 +347,9 @@ import { SecuredImageComponent } from './secured-image/secured-image.component';
     MemberDialogComponent,
     UserUpdateUserInformationDialogComponent,
     UserUpdateProfileDialogComponent,
-    UserUpdateUserPersonalInformationDialogComponent
+    UserUpdateUserPersonalInformationDialogComponent,
+    ProjectBudgetDialogComponent,
+    MatTooltipModule
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
@@ -355,7 +365,8 @@ import { SecuredImageComponent } from './secured-image/secured-image.component';
     MemberDialogComponent,
     UserUpdateProfileDialogComponent,
     UserUpdateUserInformationDialogComponent,
-    UserUpdateUserPersonalInformationDialogComponent
+    UserUpdateUserPersonalInformationDialogComponent,
+    ProjectBudgetDialogComponent
   ]
 })
 export class SharedModule { }

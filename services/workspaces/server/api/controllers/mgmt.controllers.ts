@@ -1,8 +1,7 @@
 import { sendError } from '../../utils';
 import { Request, Response, NextFunction } from 'express';
 import { WorkspaceService } from '../services';
-import { Group, User, Workspace } from '../models';
-import moment from 'moment';
+import { Account, Group, User, Workspace } from '../models';
 
 const workspaceService = new WorkspaceService();
 
@@ -118,6 +117,92 @@ export class ManagementControllers {
             // Send the status 200 response 
             return res.status(200).json({
                 message: 'Workspace Deleted.'
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for deleting the user remotely from the mgmt portal
+     * @param { params: { userId } }req 
+     * @param res 
+     * @param next 
+     */
+    async removeUser(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { params: { userId } } = req;
+
+            if (!userId) {
+                return sendError(res, new Error('Please provide the workspaceId property!'), 'Please provide the workspaceId property!', 500);
+            }
+
+            // Find if the user is owner of a workspace, in this case we will not delete him unless we remove the workspace
+            const workspace = await Workspace.findOne({ _owner: userId });
+
+            if (workspace) {
+                return sendError(res, new Error('Could not delete the user. User is owner of a workspace!'), 'Could not delete the user. User is owner of a workspace!', 404);
+            }
+
+            // remove user
+            const user = await User.findByIdAndDelete(userId).select('_account _workspace integrations');
+            const workspaceId = user._workspace;
+
+            const usersCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId }
+            ] }).countDocuments();
+
+            // Remove user from groups
+            await Group.updateMany({
+                    _members: userId
+                }, {
+                    $pull: {
+                        _members: userId
+                    }
+                });
+            await Group.updateMany({
+                    _admins: userId
+                }, {
+                    $pull: {
+                        _admins: userId
+                    }
+                });
+
+            // Remove user from workspaces
+            const workspaceUpdated = await Workspace.findByIdAndUpdate(
+                    workspaceId
+                , {
+                    $pull: {
+                        _members: userId
+                    }
+                });
+
+            const accountId = user?._account?._id || user?._account;
+            if (accountId) {
+                // Count the number of workspces for the account
+                let accountUpdate = await Account.findById(accountId);
+                const numWorkspaces = accountUpdate._workspaces.length;
+
+                if (numWorkspaces < 2) {
+                    // If account only has one workspace, the account is removed
+                    accountUpdate = await Account.findByIdAndDelete(accountId);
+                } else {
+                    // If account has more than one workspaces, the workspace is removed from the account
+                    accountUpdate = await Account.findByIdAndUpdate({
+                            _id: accountId
+                        }, {
+                            $pull: {
+                                _workspaces: workspaceId
+                            }
+                        });
+                }
+            } 
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'User Deleted.'
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

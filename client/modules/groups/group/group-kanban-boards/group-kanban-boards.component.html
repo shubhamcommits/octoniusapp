@@ -8,7 +8,7 @@
 
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                 <div class="column-title">
-                    <p class="text-capitalize" [ngbTooltip]="column?.title">
+                    <p class="text-capitalize" [matTooltip]="column?.title">
                       <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type" style="cursor: auto;">
                       {{ column?.title | truncatetext:20 }}
                     </p>
@@ -64,12 +64,34 @@
                     </span>
                   </div>
 
-                  <div class="project-container bold">
+                  <div class="project-container bold" *ngIf="column?.real_due_date">
                     Real
                     <span *ngIf="column?.real_due_date" class="float-right">
                       <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757;">arrow_right_alt</i>
                       {{ formateDate(column?.real_due_date, "Do, MMM") }}
                       <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757; margin-top: -6px;">error</i>
+                    </span>
+                  </div>
+
+                  <div class="project-container" style="height: 40px;" *ngIf="canSeeBudget && column?.project_type && !(column?.budget?.amount_planned)">
+                    <button class="btn muted" (click)="column.addBudget = true" *ngIf="!column.addBudget">
+                      <i class="material-icons-outlined">add</i>Add budget
+                    </button>
+                    <div style="width: 75%;" class="float-left" *ngIf="column.addBudget">
+                        <input class="form-control" type="text" placeholder="Enter initial planned budget"
+                          [(ngModel)]="column.initial_budget" (keyup.enter)="newBudget(column._id, $event.target.value)" (keyup.esc)="column.addBudget = false">
+                    </div>
+                    <span class="float-right">
+                      <span class="material-icons" style="line-height: 35px;">monetization_on</span>
+                    </span>
+                  </div>
+
+                  <div class="project-container budget" (click)="openBudgetDialog(column)"
+                      *ngIf="canSeeBudget && column?.project_type && column?.budget?.amount_planned">
+                    Budget
+                    <span class="float-right">
+                      {{ column?.budget?.amount_planned }}
+                      <span class="material-icons" style="line-height: 1px;">monetization_on</span>
                     </span>
                   </div>
                 </div>

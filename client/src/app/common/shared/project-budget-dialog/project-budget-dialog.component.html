@@ -1,0 +1,158 @@
+<div class="budget-dialog-content">
+  <mat-dialog-actions align="end">
+      <div class="action-box">
+          <a (click)="cancel()" mat-dialog-close>
+          <i  class="material-icons" style="cursor: pointer">close</i>
+          </a>
+      </div>
+  </mat-dialog-actions>
+
+  <div class="budget-content">
+    <div class="">
+        <div class="modal-header">
+          <h4 class="modal-title">
+            {{ columnTitle }} budget
+          </h4>
+          
+        </div>
+        <p class="ml-3">Add a budget for your project and track the expenses as you advance through the workload.</p>
+        <div style="width: 200px; margin-top: -40px;" class="float-right">
+          <img src="assets/images/budget-placeholder.svg" alt="" style="width: 143px;">
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div style="margin-top: 30px;" *ngIf="budget?.expenses && budget?.expenses.length > 0">
+      <div class="expense content-box" *ngFor="let expense of budget?.expenses; let index = index">
+        <div>
+          <app-secured-image
+            [imgURL]="expense?._user?.profile_pic"
+            [service]="'user'"
+            [styleClass]="'avatar'"
+            style="margin-right:15px"></app-secured-image>
+          &nbsp;
+          {{ expense?._user?.first_name || 'Deleted' }} {{ expense?._user?.last_name || 'User' }}
+          &nbsp;
+          <span style="color: #f51616;">
+            &nbsp;added&nbsp;
+            <span *ngIf="budget.currency === 'USD'">
+              {{ expense.amount | currency: '$' }}
+            </span>
+            <span  *ngIf="budget.currency === 'EUR'">
+              {{ expense.amount | currency: '€' }}
+            </span>
+            &nbsp;-&nbsp;
+            <span style="font-weight: 900;">
+              {{ expense.reason }}
+            </span>
+          </span>
+        </div>
+
+        <div>
+          <span>
+            {{ formateDate(expense.date, 'MMM Do, YYYY') }}
+          </span>
+          <span>
+            <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+            <mat-menu #menu="matMenu">
+              <a mat-menu-item (click)="editExpense(expense)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">edit</i>
+                <span>Edit</span>
+              </a>
+              <a mat-menu-item (click)="removeExpense(expense)">
+                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                <span>Delete</span>
+            </a>
+            </mat-menu>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Top Right Section starts -->
+  <div class="budget-properties budget-box">
+    <div>
+      <p class="box-title">
+        <span class="material-icons" style="line-height: 35px;">monetization_on</span>
+        Budget
+      </p>
+      <p> Your budget for the project.</p>
+
+      <br/>
+      <div class="focus" style="margin-top: 24px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 2px solid;">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <label for="target">Currency:</label>
+            </div>
+            <div class="col" style="padding-left: 0;">
+              <mat-form-field style="width:100%; margin-top: -20px;">
+                <mat-select ngDefaultControl
+                  (selectionChange)="saveBudget()"
+                  (click)="$event.stopPropagation()"
+                  [(ngModel)]="budget.currency"
+                  name="new_type">
+                    <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="w-100"></div>
+
+            <div class="col">
+              <label for="target" class="bold">Planned</label>
+            </div>
+            <div class="col" style="text-align: center;">
+              <input class="target" name="target" type="number" [(ngModel)]="budget.amount_planned"
+                (keyup.enter)="saveBudget()" (focusout)="saveBudget()">
+            </div>
+            <div class="w-100"></div>
+
+            <div class="col">
+              <label for="value" class="bold">Total spent</label>
+            </div>
+            <div class="col" style="text-align: center; line-height: 30px;">
+              <span *ngIf="budget.currency === 'USD'">{{ totalSpent | currency: '$' }}</span>
+              <span *ngIf="budget.currency === 'EUR'">{{ totalSpent | currency: '€' }}</span>
+            </div>
+            <div class="w-100"></div>
+
+            <div class="col">
+              <label for="value" class="bold">Available</label>
+            </div>
+            <div class="col" style="text-align: center; line-height: 30px;" [ngClass]="getBudgetStyle()">
+              <span *ngIf="budget.currency === 'USD'">{{ budget.amount_planned - totalSpent | currency: '$' }}</span>
+              <span *ngIf="budget.currency === 'EUR'">{{ budget.amount_planned - totalSpent | currency: '€' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="row">
+          <div class="col">
+            <label for="target">Add expense</label>
+          </div>
+          <div class="col" style="padding-left: 0;">
+            <input class="target" name="target" type="number" [(ngModel)]="expense.amount" (keyup.enter)="saveExpense()">
+          </div>
+          <div class="w-100"></div>
+
+          <div class="col">
+            <label for="target">What did you spend it on?</label>
+          </div>
+          <div class="col" style="padding-left: 0;">
+            <input class="target" name="target" type="text" [(ngModel)]="expense.reason" (keyup.enter)="saveExpense()">
+          </div>
+          <div class="w-100"></div>
+        </div>
+
+        <div style="display: flex; justify-content: center;">
+          <div class="save" (click)="saveExpense()">Save</div>
+          <div class="cancel" (click)="resetExpense()">Cancel</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Top Right Section ends -->
+</div>

@@ -41,6 +41,9 @@ routes.get('/global-performance', pulse.getGlobalPerformanceGroups);
 // GET - Get list of groups present in the workspace
 routes.get('/global-performance-tasks', pulse.getGlobalPerformanceTasks);
 
+// GET - Get list of tasks present in a project
+routes.get('/kpi-performance-tasks', pulse.getKpiPerformanceTasks);
+
 // GET - Get count of pulse in a period
 routes.get('/count', pulse.getPulseCount);
 

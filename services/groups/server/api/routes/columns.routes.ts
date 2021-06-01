@@ -23,6 +23,9 @@ router.use(auths.isLoggedIn);
 // get all existing columns
 router.get('/all', columns.getAllColumns);
 
+// get all existing project columns
+router.get('/projects', columns.getAllProjectColumns);
+
 // add a new column
 router.post('/', columns.addColumn);
 
@@ -40,5 +43,17 @@ router.put('/changeColumnProjectType', columns.changeColumnProjectType);
 
 // PUT - Save custom field to show
 router.put('/saveColumnProjectDates', columns.saveColumnProjectDates);
+
+// PUT - Save amount planned for the budget
+router.put('/saveAmountBudget', columns.saveAmountBudget);
+
+// PUT - Add an expense to a budget
+router.put('/addBudgetExpense', columns.addBudgetExpense);
+
+// PUT - Update an expense in a budget
+router.put('/updateBudgetExpense', columns.updateBudgetExpense);
+
+// PUT - Remove an expense from a budget
+router.put('/deleteBudgetExpense', columns.deleteBudgetExpense);
 
 export { router as columnRoutes };

@@ -18,7 +18,7 @@ export class SecuredImageComponent implements OnChanges  {
   @Input() imgURL: string = ''; // url of the file
   @Input() tooltip: string = ''; // tooltip
   @Input() service: string = 'user'; // service where the file is part of ['workspace', 'group', 'user']
-  @Input() placement: string = ''; // placement
+  @Input() placement: string = 'right'; // placement
   @Input() styleClass: string = ''; // css class used
   @Input() alt: string = ''; // alternative text
   @Input() inlineStyle: string = ''; // inline styles

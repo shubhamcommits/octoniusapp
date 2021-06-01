@@ -355,6 +355,60 @@ export class PulseController {
     }
 
     /**
+     * This function fetches the task count for a project on the basis of groupId and task status
+     * @param { groupId, status } req 
+     * @param res 
+     */
+    async getKpiPerformanceTasks(req: Request, res: Response) {
+        try {
+            const { columnId, status } = req.query;
+
+            // Posts array
+            let numTasks = 0;
+            
+            if (status) {
+                if (status === 'done') {
+                    numTasks = await Post.find({
+                        $and: [
+                            { type: 'task' },
+                            { 'task._column': columnId },
+                            {
+                                $or: [
+                                    { 'task.status': 'done' },
+                                    { 'task.status': 'completed' },
+                                ]
+                            }
+                        ]
+                    }).countDocuments()
+                } else {
+                    numTasks = await Post.find({
+                        $and: [
+                            { type: 'task' },
+                            { 'task.status': status },
+                            { 'task._column': columnId }
+                        ]
+                    }).countDocuments();
+                }
+            } else {
+                numTasks = await Post.find({
+                    $and: [
+                        { type: 'task' },
+                        { 'task._column': columnId }
+                    ]
+                }).countDocuments()
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `Found ${numTasks} total tasks!`,
+                numTasks: numTasks,
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
+
+    /**
     * This function fetches the pulse count for a workspace on a period
     * @param { workspaceId, period } req 
     * @param res 

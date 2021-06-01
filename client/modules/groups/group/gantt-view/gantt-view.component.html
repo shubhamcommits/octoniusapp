@@ -5,10 +5,10 @@
       <div *ngIf="projectsdata?.length > 0" style="height: 100px;overflow: hidden;">
       <div id="hideScrollbar" [ngStyle]="{'height': '120px','width':'100%','overflow':'auto'}">
         <div  class="projects-row" [ngStyle]="{'height': '100px','width':gantt_header_width,'padding-bottom':'30px'}">
-          <div *ngFor="let item of projectsdata;let i = index" [ngClass]="i==selectedProjectIndex?'project-card is-clicked':'project-card'"  
+          <div *ngFor="let item of projectsdata;let i = index" [ngClass]="i==selectedProjectIndex?'project-card is-clicked':'project-card'"
             [ngStyle]="{'left': (i*333+30)+'px','cursor':'pointer'}" (click)="scroll(item.id,i)">
             <div style="position: relative;width: 293px;height: 75px;">
-              <p class="text-capitalize project-title" [ngbTooltip]="item?.title">
+              <p class="text-capitalize project-title" [matTooltip]="item?.title">
                 <img src="assets/images/Icon/icon_project.svg" alt="" *ngIf="item?.data?.project_type">
                 {{ item?.data?.title | truncatetext:20 }}
               </p>

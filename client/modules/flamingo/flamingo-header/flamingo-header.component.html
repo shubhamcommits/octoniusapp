@@ -1,10 +1,7 @@
 <nav *ngIf="!this.showHeader" class="navbar navbar-expand-md fixed-top" style="min-height: 86px;">
 
     <!-- Go Back starts -->
-    <!--
-    <span *ngIf="!this.readOnly && !(activeState=='publish' || activeState=='result')" class="navbar-brand ml-5 mr-5" ngbTooltip="Go Back to Files" placement="bottom"
-    -->
-    <span (click)="goBackToFiles()" class="navbar-brand ml-5 mr-5" ngbTooltip="Go Back to Files" placement="bottom">
+    <span (click)="goBackToFiles()" class="navbar-brand ml-5 mr-5" matTooltip="Go Back to Files" matTooltipPosition="below">
         <i class="material-icons">
             arrow_back
         </i>
@@ -16,8 +13,8 @@
             <li class="nav-item active" *ngIf="file">
 
                 <!-- Flamingo Static Title starts -->
-                <span *ngIf="!editTitle " (click)="enableEdit()" ngbTooltip="Click me to rename"
-                    placement="bottom">{{file?.original_name}}
+                <span *ngIf="!editTitle " (click)="enableEdit()" matTooltip="Click me to rename"
+                    matTooltipPosition="below">{{file?.original_name}}
                 </span>
 
                 <!-- Flamingo Static Title ends -->

@@ -22,8 +22,8 @@
           <!-- Folder Static Title starts -->
           <span *ngIf="!editFolderTitle"
               (click)="editFolderTitle = !editFolderTitle"
-              ngbTooltip="Click me to rename"
-              placement="bottom">
+              matTooltip="Click me to rename"
+              matTooltipPosition="below">
             <h5>
               {{currentFolder?.folder_name}}
               <i class="material-icons muted" style="cursor: pointer; font-size: 14px;">mode</i>

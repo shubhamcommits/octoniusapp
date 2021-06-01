@@ -1,4 +1,6 @@
+import moment from 'moment';
 import mongoose from 'mongoose';
+
 const { Schema } = mongoose;
 
 const ColumnSchema = new Schema({
@@ -27,6 +29,33 @@ const ColumnSchema = new Schema({
     due_date: {
         type: Date,
         default: null
+    },
+    budget:{
+        amount_planned: {
+            type: Number
+        },
+        currency: {
+          type: String,
+          default: 'EUR',
+          enum: ['USD', 'EUR']
+        },
+        expenses: [{
+            amount: {
+                type: Number
+            },
+            reason: {
+                type: String
+            },
+            date: {
+                type: Date,
+                default: moment().format()
+            },
+            _user: {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            }
+        }]
     }
 });
 

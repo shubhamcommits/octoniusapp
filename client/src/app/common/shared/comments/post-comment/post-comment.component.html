@@ -67,7 +67,7 @@
               <p *ngFor="let liked_by of likedByUsers">{{ liked_by }}</p>
             </ng-template>
             <div class="col-md-6">
-                <span class="stats" [ngbTooltip]="likedContent"><b>{{likedByUsers.length || 0 }}</b> Likes </span>
+                <span class="stats" [matTooltip]="likedContent"><b>{{likedByUsers.length || 0 }}</b> Likes </span>
             </div>
             <!-- Likes Placeholder ends -->
 

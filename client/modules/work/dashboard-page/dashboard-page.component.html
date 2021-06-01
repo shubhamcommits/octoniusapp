@@ -68,10 +68,20 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12">
-      <!-- Global Performance Card Starts -->
-      <app-global-performance-card [period]="period"></app-global-performance-card>
-      <!-- Global Performance Card Ends -->
+    <div class="col-md-12 box">
+      <!-- KPI Performance Card Starts -->
+      <app-kpi-performance-card [parentId]="workspaceData?._id" [type]="'workspace'"></app-kpi-performance-card>
+      <!-- KPI Performance Card Ends -->
     </div>
   </div>
+
+  <!--
+  Global Performance Card Starts
+  <div class="row">
+    <div class="col-md-12">
+      <app-global-performance-card [period]="period"></app-global-performance-card>
+    </div>
+  </div>
+  Global Performance Card Ends
+  -->
 </div>

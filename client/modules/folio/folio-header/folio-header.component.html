@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md fixed-top" style="min-height: 86px;">
 
     <!-- Go Back starts -->
-    <span *ngIf="!this.readOnly" class="navbar-brand ml-5 mr-5" ngbTooltip="Go Back to Files" placement="bottom"
+    <span *ngIf="!this.readOnly" class="navbar-brand ml-5 mr-5" matTooltip="Go Back to Files" matTooltipPosition="below"
         (click)="goBackToFiles()">
         <i class="material-icons">
             arrow_back
@@ -16,8 +16,8 @@
                 <!-- Folio Static Title starts -->
                 <span *ngIf="!editTitle"
                     (click)="enableEdit()"
-                    ngbTooltip="Click me to rename"
-                    placement="bottom">{{file?.original_name}}
+                    matTooltip="Click me to rename"
+                    matTooltipPosition="below">{{file?.original_name}}
                 </span>
                 <!-- Folio Static Title ends -->
 

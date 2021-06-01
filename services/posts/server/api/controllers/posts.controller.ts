@@ -980,6 +980,32 @@ export class PostController {
     }
 
     /**
+     * This function is responsible for fetching the posts of a column
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getColumnPosts(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { columnId, overdue } = req.query;
+
+        // Call Service function to fetch the posts
+        let posts: any = [];
+
+        posts = await postService.getColumnTasksResults(columnId, (overdue == "true"))
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            });
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Posts fetched!',
+            posts: posts
+        });
+    }
+
+    /**
      * This function is responsible for fetching the posts of a group
      * @param req 
      * @param res 
@@ -1003,6 +1029,30 @@ export class PostController {
         });
     }
 
+    /**
+     * This function is responsible for fetching the tasks of a project group
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getAllProjectTasks(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { groupId, overdue } = req.query;
+
+        // Call Service function to fetch the posts
+        const posts = await postService.getAllProjectTasks(groupId, (overdue == 'true'))
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            });
+        
+        // // Send status 200 response
+        return res.status(200).json({
+            message: 'Group Tasks fetched!',
+            posts: posts
+        });
+    }
+    
     /**
      * This function is responsible for fetching the subtasks of a task
      * @param req 

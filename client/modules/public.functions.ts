@@ -1277,4 +1277,13 @@ export class PublicFunctions {
           return false;
         });
     }
+
+    /**
+     * This method returns the highest date of the posts passed by parameter
+     * @param posts
+     * @returns
+     */
+    getHighestDate(posts: any) {
+      return moment(Math.max(...posts.map(post => moment(post.task.due_to))));
+    }
 }

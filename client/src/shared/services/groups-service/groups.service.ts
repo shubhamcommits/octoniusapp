@@ -203,6 +203,19 @@ export class GroupsService {
   }
 
   /**
+   * This function is responsible for fetching tasks present in a project
+   * @param workspaceId
+   */
+   getKpiPerformanceTasks(columnId: string, status: string) {
+    return this._http.get(this.baseURL + `/pulse/kpi-performance-tasks`, {
+      params: {
+        columnId: columnId,
+        status: status
+      }
+    }).toPromise()
+  }
+
+  /**
    * This function is responsible for sending the pulse information
    * @param workspaceId
    * @param lastGroupId
