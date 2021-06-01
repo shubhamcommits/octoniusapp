@@ -23,11 +23,21 @@ export class ProjectBudgetComponent implements OnChanges {
   completitionPercentageClass = '';
   projectStatusClass = '';
 
-  doughnutChartLabels;
-  doughnutChartData;
-  doughnutChartType;
-  doughnutChartOptions;
-  doughnutChartColors;
+  doughnutChartLabels = ['Real cost'];
+  doughnutChartData = [0];
+  doughnutChartType = 'doughnut';
+  doughnutChartOptions = {
+    cutoutPercentage: 75,
+    responsive: true,
+    legend: {
+      display: false
+    }
+  };
+  doughnutChartColors = [{
+    backgroundColor: [
+      '#2AA578'
+    ]
+  }];
   //doughnutChartPlugins;
 
   // Public Functions Object
@@ -42,7 +52,14 @@ export class ProjectBudgetComponent implements OnChanges {
   }
 
   async initView() {
-    this.project.budget.real_cost = await this.calculateRealCost();
+    if (!this.project.budget) {
+      this.project.budget  = {
+        real_cost: 0,
+        amount_planned: 0
+      }
+    } else {
+      this.project.budget.real_cost = await this.calculateRealCost();
+    }
     this.completitionPercentage = await this.getPercentageExpense();
 
     this.completitionPercentageClass = "badge " + this.setStatusClass(true);
@@ -58,7 +75,7 @@ export class ProjectBudgetComponent implements OnChanges {
           '#EB5757'
         ]
       }];
-    } else {
+    } else if(this.completitionPercentage > 0) {
       this.doughnutChartLabels = ['Budget left', 'Real cost'];
       this.doughnutChartData = [this.project?.budget?.amount_planned - this.project?.budget?.real_cost, this.project?.budget?.real_cost];
       this.doughnutChartColors = [{
@@ -68,14 +85,6 @@ export class ProjectBudgetComponent implements OnChanges {
         ]
       }];
     }
-    this.doughnutChartType = 'doughnut';
-    this.doughnutChartOptions = {
-      cutoutPercentage: 75,
-      responsive: true,
-      legend: {
-        display: false
-      }
-    };
 
     this.chartReady = true;
   }
