@@ -998,7 +998,7 @@ export class PostController {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
 
-        // // Send status 200 response
+        // Send status 200 response
         return res.status(200).json({
             message: 'Posts fetched!',
             posts: posts

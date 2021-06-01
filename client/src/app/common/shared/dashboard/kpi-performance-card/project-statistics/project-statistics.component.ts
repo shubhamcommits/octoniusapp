@@ -120,19 +120,6 @@ export class ProjectStatisticsComponent implements OnChanges {
       .then((res) => {
         tasks = res['posts'];
       });
-    /*
-    if (this.project?.type == 'column') {
-      await this.postService.getColumnPosts(this.project?._id, overdue)
-      .then((res) => {
-        tasks = res['posts'];
-      });
-    } else if (this.project?.type == 'group') {
-      await this.postService.getProjectTasks(this.project?._id, overdue)
-        .then((res) => {
-          tasks = res['posts'];
-        });
-    }
-    */
     return tasks;
   }
 

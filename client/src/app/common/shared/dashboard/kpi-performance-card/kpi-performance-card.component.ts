@@ -25,21 +25,6 @@ export class KpiPerformanceCardComponent implements OnChanges {
   // Pulse groups
   public projects: any = [];
 
-  // Pulse total tasks
-  public totalTasks = [];
-
-  // Pulse to do tasks
-  public toDoTasks = [];
-
-  // Pulse in progress tasks
-  public inProgressTasks = [];
-
-  // Pulse done tasks
-  public doneTasks = [];
-
-  // Pulse done tasks
-  public overdueTasks = [];
-
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
 
