@@ -35,7 +35,7 @@ export class ColumnsController {
         try {
 
             // Fetch GroupId from the query
-            const { groupId, workspaceId } = req.query;
+            const { groupId, workspaceId, userId } = req.query;
 
             let columns = [];
             if (groupId) {
@@ -50,7 +50,11 @@ export class ColumnsController {
               ]);
             } else if (workspaceId) {
               const groups = await Group.find({
-                _workspace: workspaceId
+                $and: [
+                    { _workspace: workspaceId },
+                    { $or: [{ _members: userId }, { _admins: userId }] },
+                ]
+                
               })
               .select('_id')
               .lean() || [];

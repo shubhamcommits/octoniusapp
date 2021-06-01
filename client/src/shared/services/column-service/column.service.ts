@@ -40,10 +40,11 @@ export class ColumnService {
    * This function is responsible for fetching all the columns present in a board
    * @param groupId
    */
-  getAllProjectColumns(workspaceId: string) {
+  getAllProjectColumns(workspaceId: string, userId: string) {
     return this._http.get(this.baseUrl + `/columns/projects`, {
       params:{
-        workspaceId: workspaceId
+        workspaceId: workspaceId,
+        userId: userId
       }
     }).toPromise()
   }

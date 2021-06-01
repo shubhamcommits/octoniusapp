@@ -75,8 +75,9 @@ export class KpiPerformanceCardComponent implements OnChanges {
           .catch(() => reject([]))
       });
     } else if (this.type == 'workspace') {
-      return new Promise((resolve, reject) => {
-        this.columnService.getAllProjectColumns(parentId)
+      return new Promise(async (resolve, reject) => {
+        const currentUser = await this.publicFunctions.getCurrentUser();
+        this.columnService.getAllProjectColumns(parentId, currentUser._id)
           .then((res) => resolve(res['columns']))
           .catch(() => reject([]))
       });
