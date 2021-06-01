@@ -11,11 +11,14 @@
     <div class="">
         <div class="modal-header">
           <h4 class="modal-title">
-            {{ columnTitle }} Budget
+            {{ columnTitle }} budget
           </h4>
-
+          
         </div>
-        <p class="box-title">Add a budget for your project and track the expenses and you advance through the workload.</p>
+        <p class="ml-3">Add a budget for your project and track the expenses as you advance through the workload.</p>
+        <div style="width: 200px; margin-top: -40px;" class="float-right">
+          <img src="assets/images/budget-placeholder.svg" alt="" style="width: 143px;">
+        </div>
         <div class="clearfix"></div>
     </div>
 
@@ -98,7 +101,7 @@
             <div class="w-100"></div>
 
             <div class="col">
-              <label for="target">Planned</label>
+              <label for="target" class="bold">Planned</label>
             </div>
             <div class="col" style="text-align: center;">
               <input class="target" name="target" type="number" [(ngModel)]="budget.amount_planned"
@@ -107,7 +110,7 @@
             <div class="w-100"></div>
 
             <div class="col">
-              <label for="value">Total spent</label>
+              <label for="value" class="bold">Total spent</label>
             </div>
             <div class="col" style="text-align: center; line-height: 30px;">
               <span *ngIf="budget.currency === 'USD'">{{ totalSpent | currency: '$' }}</span>
@@ -116,7 +119,7 @@
             <div class="w-100"></div>
 
             <div class="col">
-              <label for="value">Available</label>
+              <label for="value" class="bold">Available</label>
             </div>
             <div class="col" style="text-align: center; line-height: 30px;" [ngClass]="getBudgetStyle()">
               <span *ngIf="budget.currency === 'USD'">{{ budget.amount_planned - totalSpent | currency: '$' }}</span>
