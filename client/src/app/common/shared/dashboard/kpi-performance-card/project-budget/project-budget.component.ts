@@ -50,8 +50,24 @@ export class ProjectBudgetComponent implements OnChanges {
 
 
     /* Chart Setup */
-    this.doughnutChartLabels = ['Budget left', 'Real cost'];
-    this.doughnutChartData = [this.project?.budget?.amount_planned - this.project?.budget?.real_cost, this.project?.budget?.real_cost];
+    if (this.completitionPercentage > 100) {
+      this.doughnutChartLabels = ['Real cost'];
+      this.doughnutChartData = [this.project?.budget?.real_cost];
+      this.doughnutChartColors = [{
+        backgroundColor: [
+          '#EB5757'
+        ]
+      }];
+    } else {
+      this.doughnutChartLabels = ['Budget left', 'Real cost'];
+      this.doughnutChartData = [this.project?.budget?.amount_planned - this.project?.budget?.real_cost, this.project?.budget?.real_cost];
+      this.doughnutChartColors = [{
+        backgroundColor: [
+          '#E4EDF8',
+          '#2AA578'
+        ]
+      }];
+    }
     this.doughnutChartType = 'doughnut';
     this.doughnutChartOptions = {
       cutoutPercentage: 75,
@@ -60,12 +76,6 @@ export class ProjectBudgetComponent implements OnChanges {
         display: false
       }
     };
-    this.doughnutChartColors = [{
-      backgroundColor: [
-        '#E4EDF8',
-        '#2AA578'
-      ]
-    }];
 
     this.chartReady = true;
   }
