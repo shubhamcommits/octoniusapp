@@ -38,7 +38,7 @@ export class ProjectBudgetComponent implements OnChanges {
       '#2AA578'
     ]
   }];
-  //doughnutChartPlugins;
+  doughnutChartPlugins = [];
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
@@ -58,6 +58,21 @@ export class ProjectBudgetComponent implements OnChanges {
         real_cost: 0,
         amount_planned: 0
       }
+      this.doughnutChartPlugins = [{
+        beforeDraw(chart) {
+          const ctx = chart.ctx;
+
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+          const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+
+          ctx.font = '25px Nunito';
+          ctx.fillStyle = '#9d9fa1';
+
+          ctx.fillText('No Budget', centerX, centerY);
+        }
+      }];
       noBudget = true;
     } else {
       this.project.budget.real_cost = await this.calculateRealCost();
@@ -65,7 +80,7 @@ export class ProjectBudgetComponent implements OnChanges {
     this.completitionPercentage = await this.getPercentageExpense();
 
     this.completitionPercentageClass = "badge " + this.setStatusClass(true);
-    this.projectStatusClass = this.setStatusClass( false);
+    this.projectStatusClass = this.setStatusClass(false);
 
 
     /* Chart Setup */
