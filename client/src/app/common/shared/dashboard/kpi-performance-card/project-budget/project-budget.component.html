@@ -12,11 +12,13 @@
         Budget:
         <span *ngIf="project?.budget?.currency == 'EUR'">{{ project?.budget?.amount_planned | currency: '€'}}</span>
         <span *ngIf="project?.budget?.currency == 'USD'">{{ project?.budget?.amount_planned | currency: '$'}}</span>
+        <span *ngIf="project?.budget?.currency != 'USD' && project?.budget?.currency != 'EUR'">{{ project?.budget?.amount_planned}}</span>
       </div>
       <div class="real_cost" [class]="projectStatusClass">
         Real cost:
         <span *ngIf="project?.budget?.currency == 'EUR'">{{ project?.budget?.real_cost | currency: '€'}}</span>
         <span *ngIf="project?.budget?.currency == 'USD'">{{ project?.budget?.real_cost | currency: '$'}}</span>
+        <span *ngIf="project?.budget?.currency != 'USD' && project?.budget?.currency != 'EUR'">{{ project?.budget?.real_cost}}</span>
       </div>
     </div>
   </div>
@@ -29,6 +31,7 @@
       [labels]="doughnutChartLabels"
       [chartType]="doughnutChartType"
       [options]="doughnutChartOptions"
-      [colors]="doughnutChartColors"></canvas>
+      [colors]="doughnutChartColors"
+      [plugins]="doughnutChartPlugins"></canvas>
   </div>
 </div>
