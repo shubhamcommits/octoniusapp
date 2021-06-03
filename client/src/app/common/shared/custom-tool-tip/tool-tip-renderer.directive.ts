@@ -20,6 +20,8 @@ export class ToolTipRendererDirective {
   //If this is specified then specified template will be rendered in the tooltip
   @Input() contentTemplate: TemplateRef<any>;
 
+  @Input() contentArray: [];
+
   private _overlayRef: OverlayRef;
 
   constructor(private _overlay: Overlay,
@@ -62,6 +64,7 @@ export class ToolTipRendererDirective {
       const tooltipRef: ComponentRef<CustomToolTipComponent> = this._overlayRef.attach(new ComponentPortal(CustomToolTipComponent));
       tooltipRef.instance.text = this.text;
       tooltipRef.instance.contentTemplate = this.contentTemplate;
+      tooltipRef.instance.contentArray = this.contentArray;
     }
   }
 

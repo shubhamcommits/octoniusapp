@@ -1,9 +1,9 @@
-<div>
+<div *ngIf="contentTemplate || contentArray.length > 0">
   <div class="tooltip-conatiner">
-    <ng-template #simpleText>
-      {{ text }}
+    <ng-template #arrayTemplate>
+      <p *ngFor="let element of contentArray">{{ element }}</p>
     </ng-template>
-    <ng-container *ngTemplateOutlet="contentTemplate || simpleText">
+    <ng-container *ngTemplateOutlet="contentTemplate || arrayTemplate">
     </ng-container>
   </div>
 </div>
