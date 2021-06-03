@@ -18,7 +18,7 @@ import { Component, OnInit, Input, TemplateRef } from '@angular/core';
 @Component({
   selector: 'app-custom-tool-tip',
   templateUrl: './custom-tool-tip.component.html',
-  styleUrls: ['./custom-tool-tip.component.css']
+  styleUrls: ['./custom-tool-tip.component.scss']
 })
 export class CustomToolTipComponent implements OnInit {
 
@@ -36,9 +36,17 @@ export class CustomToolTipComponent implements OnInit {
    */
   @Input() contentTemplate: TemplateRef<any>;
 
+  /**
+   * This will display the list of strings.
+   */
+  @Input() contentArray: any[] = [];
+
   constructor() { }
 
   ngOnInit() {
+    if (this.contentArray.length == 0 && this.text) {
+      this.contentArray.push(this.text);
+    }
   }
 
 }

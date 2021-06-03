@@ -3,16 +3,9 @@
 <div class="card-footer action-post" *ngIf="post">
     <div class="row ">
         <div class="col-md-6">
-            <ng-template #likedContent>
-                <p *ngFor="let liked_by of likedByUsers">{{ liked_by.toString() }}</p>
-            </ng-template>
-            <span class="stats" matTooltipPosition="right" customToolTip [contentTemplate]="likedContent"><b>{{post?._liked_by.length || 0 }}</b> Likes </span>
+            <span class="stats" matTooltipPosition="right" customToolTip [contentArray]="likedByUsers"><b>{{post?._liked_by.length || 0 }}</b> Likes </span>
             <span class="stats" *ngIf="!fullscreen" (click)="displayComments(!showComments)"><b>{{ post?.comments_count || 0 }}</b> Comments</span>
-
-            <ng-template #followContent>
-                <p *ngFor="let followed_by of followedByUsers">{{ followed_by }}</p>
-            </ng-template>
-            <span class="stats" matTooltipPosition="right" customToolTip [contentTemplate]="followContent"><b>{{post?._followers?.length || 0 }}</b> Followers</span>
+            <span class="stats" matTooltipPosition="right" customToolTip [contentArray]="followedByUsers"><b>{{post?._followers?.length || 0 }}</b> Followers</span>
         </div>
         <div class="col-md-6 text-right">
 
