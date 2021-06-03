@@ -1,5 +1,7 @@
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
+import { WidgetSelectorDialogComponent } from 'src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -40,7 +42,8 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private injector: Injector,
-    private utilityService: UtilityService) { }
+    private utilityService: UtilityService,
+    public dialog: MatDialog) { }
 
   async ngOnInit() {
     // Send Updates to router state
@@ -62,6 +65,12 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
     this.period = (this.userData.stats.group_dashboard_period) ? this.userData.stats.group_dashboard_period : 7;
   }
 
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.subSink.unsubscribe();
+  }
+
   async periodSelected(event) {
     this.period = event.value;
     this.userData.stats.group_dashboard_period = this.period;
@@ -73,10 +82,31 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
     await this.publicFunctions.sendUpdatesToUserData(this.userData);
   }
 
-  ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-    this.subSink.unsubscribe();
+  openWidgetSelectorDialog() {
+
+    const data = {
+      groupId: this.groupData._id,
+      selectedWidgets: this.groupData.selected_widgets
+    }
+
+    const dialogRef = this.dialog.open(WidgetSelectorDialogComponent, {
+      data: data,
+      panelClass: 'groupCreatePostDialog',
+      width: '50%',
+      //height: '80%',
+      disableClose: true,
+      hasBackdrop: true
+    });
+
+    const saveEventSubs = dialogRef.componentInstance.saveEvent.subscribe((data) => {
+console.log({data});
+      this.groupData.selected_widgets = data;
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      saveEventSubs.unsubscribe();
+    });
   }
 
 }

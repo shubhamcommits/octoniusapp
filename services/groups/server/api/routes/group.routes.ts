@@ -111,6 +111,9 @@ routes.get('/:groupId/postsCount', group.getPostsCount);
 // GET - Get group tasks between two dates
 routes.get('/:groupId/tasks-between-days', group.getTasksBetweenDates);
 
+// PUT - Updates the widgets to show in the group
+routes.put('/:groupId/saveSelectedWidgets', group.saveSelectedWidgets);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

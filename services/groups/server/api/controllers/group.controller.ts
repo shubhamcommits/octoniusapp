@@ -1392,4 +1392,25 @@ export class GroupController {
             return sendError(res, err);
         }
     };
+
+    /**
+     * Save the widgets selected for the group.
+     */
+    async saveSelectedWidgets(req: Request, res: Response, next: NextFunction) {
+        const { groupId } = req.params;
+        const { selectedWidgets } = req.body;
+
+        try {
+            const group = await Group.findByIdAndUpdate(groupId, {
+                $set: { 'selected_widgets': selectedWidgets }
+            }).lean();
+
+            return res.status(200).json({
+                message: 'Group updated!',
+                group: group
+            });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    };
 }

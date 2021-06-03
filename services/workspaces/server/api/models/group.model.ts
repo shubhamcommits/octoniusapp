@@ -97,6 +97,10 @@ const GroupSchema = new Schema({
         type: Number,
         default: 0
     },
+    selected_widgets: {
+        type: [String],
+        default: []
+    },
     custom_fields: {
         type: [{
             name: {

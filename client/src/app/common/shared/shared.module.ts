@@ -106,6 +106,7 @@ import { ProjectStatisticsComponent } from './dashboard/kpi-performance-card/pro
 import { ProjectBudgetComponent } from './dashboard/kpi-performance-card/project-budget/project-budget.component';
 import { CustomToolTipComponent } from './custom-tool-tip/custom-tool-tip.component';
 import { ToolTipRendererDirective } from './custom-tool-tip/tool-tip-renderer.directive';
+import { WidgetSelectorDialogComponent } from './dashboard/widget-selector-dialog/widget-selector-dialog.component';
 
 @NgModule({
   declarations: [
@@ -221,7 +222,8 @@ import { ToolTipRendererDirective } from './custom-tool-tip/tool-tip-renderer.di
     UserUpdateUserPersonalInformationDialogComponent,
     ProjectBudgetDialogComponent,
     CustomToolTipComponent,
-    ToolTipRendererDirective
+    ToolTipRendererDirective,
+    WidgetSelectorDialogComponent
   ],
   imports: [
     CommonModule,
@@ -352,7 +354,8 @@ import { ToolTipRendererDirective } from './custom-tool-tip/tool-tip-renderer.di
     UserUpdateUserPersonalInformationDialogComponent,
     ProjectBudgetDialogComponent,
     MatTooltipModule,
-    CustomToolTipComponent
+    CustomToolTipComponent,
+    WidgetSelectorDialogComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
@@ -370,7 +373,8 @@ import { ToolTipRendererDirective } from './custom-tool-tip/tool-tip-renderer.di
     UserUpdateUserInformationDialogComponent,
     UserUpdateUserPersonalInformationDialogComponent,
     ProjectBudgetDialogComponent,
-    CustomToolTipComponent
+    CustomToolTipComponent,
+    WidgetSelectorDialogComponent
   ]
 })
 export class SharedModule { }
