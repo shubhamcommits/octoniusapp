@@ -44,7 +44,6 @@ export class CustomToolTipComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-console.log(this.contentArray);
     if (this.contentArray.length == 0 && this.text) {
       this.contentArray.push(this.text);
     }
