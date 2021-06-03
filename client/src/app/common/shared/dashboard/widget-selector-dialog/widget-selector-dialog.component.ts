@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angu
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -14,10 +15,14 @@ export class WidgetSelectorDialogComponent implements OnInit {
   @Output() saveEvent = new EventEmitter();
 
   groupId;
+  userId;
+
   selectedWidgets = [];
   newSelectedWidgets = [];
 
-  availableWidgets = [
+  availableWidgets= [];
+
+  groupAvailableWidgets = [
     {
       code: 'WORK_STATISTICS',
       name: 'Work statistics'
@@ -39,22 +44,62 @@ export class WidgetSelectorDialogComponent implements OnInit {
     }
   ];
 
+  globalAvailableWidgets = [
+    {
+      code: 'WORK_STATISTICS',
+      name: 'Work statistics'
+    }, {
+      code: 'WORKLOAD',
+      name: 'Workload by completition status'
+    }, {
+      code: 'VELOCITY',
+      name: 'Velocity over time'
+    }, {
+      code: 'PULSE',
+      name: 'Pulse'
+    }, {
+      code: 'PEOPLE_DIRECTORY',
+      name: 'People directory'
+    }, {
+      code: 'ORGANIZATIONAL_STRUCTURE',
+      name: 'Organizational Structure'
+    }, {
+      code: 'WORK_STATISTICS_NORTH_STAR',
+      name: 'Work statistics North Stars'
+    }, {
+      code: 'ENGAGEMENT',
+      name: 'Engagement'
+    }, {
+      code: 'KPI_PERFORMANCE',
+      name: 'KPI Performance'
+    }
+  ];
+
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     private groupService: GroupService,
+    private userService: UserService,
     public utilityService: UtilityService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<WidgetSelectorDialogComponent>,
     private injector: Injector
   ) {
-    this.groupId = this.data.groupId,
+    this.groupId = this.data.groupId;
+    this.userId = this.data.userId;
     this.selectedWidgets = this.data.selectedWidgets || [];
   }
 
   async ngOnInit() {
 
+    if (this.groupId) {
+      this.availableWidgets = this.groupAvailableWidgets;
+    }
+
+    if (this.userId) {
+      this.availableWidgets = this.globalAvailableWidgets;
+    }
   }
 
 
@@ -90,20 +135,39 @@ export class WidgetSelectorDialogComponent implements OnInit {
     this.selectedWidgets = this.selectedWidgets.concat(this.newSelectedWidgets);
 
     this.utilityService.asyncNotification('Please wait we are saving the widgets...', new Promise((resolve, reject) => {
-      this.groupService.saveSelectedWidgets(this.groupId, this.selectedWidgets)
-        .then((res) => {
-          this.selectedWidgets = res['group'].selected_widgets || [];
-          this.newSelectedWidgets = [];
-          this.saveEvent.emit(this.selectedWidgets);
+      if (this.groupId) {
+        this.groupService.saveSelectedWidgets(this.groupId, this.selectedWidgets)
+          .then((res) => {
+            this.selectedWidgets = res['group'].selected_widgets || [];
+            this.newSelectedWidgets = [];
+            this.saveEvent.emit(this.selectedWidgets);
 
-          // Close the modal
-          this.mdDialogRef.close();
+            // Close the modal
+            this.mdDialogRef.close();
 
-          resolve(this.utilityService.resolveAsyncPromise('Group updated!'));
-        })
-        .catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise('Unable to update the group, please try again!'))
-        });
+            resolve(this.utilityService.resolveAsyncPromise('Group updated!'));
+          })
+          .catch((err) => {
+            reject(this.utilityService.rejectAsyncPromise('Unable to update the group, please try again!'))
+          });
+      }
+
+      if (this.userId) {
+        this.userService.saveSelectedWidgets(this.userId, this.selectedWidgets)
+          .then((res) => {
+            this.selectedWidgets = res['user'].selected_widgets || [];
+            this.newSelectedWidgets = [];
+            this.saveEvent.emit(this.selectedWidgets);
+
+            // Close the modal
+            this.mdDialogRef.close();
+
+            resolve(this.utilityService.resolveAsyncPromise('User updated!'));
+          })
+          .catch((err) => {
+            reject(this.utilityService.rejectAsyncPromise('Unable to update the user, please try again!'))
+          });
+      }
     }));
   }
 }

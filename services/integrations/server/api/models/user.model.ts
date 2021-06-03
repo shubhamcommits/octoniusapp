@@ -99,6 +99,10 @@ const UserSchema = new Schema({
         ref: 'Group',
         // unique : true
     }],
+    selected_widgets: {
+        type: [String],
+        default: []
+    },
     stats: {
         lastTaskView: {
             type: String,

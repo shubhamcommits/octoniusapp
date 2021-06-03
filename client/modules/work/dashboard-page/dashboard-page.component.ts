@@ -1,6 +1,8 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs';
+import { WidgetSelectorDialogComponent } from 'src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component';
 import { UserService } from 'src/shared/services/user-service/user.service';
 
 @Component({
@@ -33,7 +35,9 @@ export class DashboardPageComponent implements OnInit {
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
 
-  constructor(private injector: Injector) { }
+  constructor(
+    private injector: Injector,
+    public dialog: MatDialog) { }
 
   async ngOnInit() {
     // Send Updates to router state
@@ -43,6 +47,10 @@ export class DashboardPageComponent implements OnInit {
 
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
+    if (!this.userData.selected_widgets) {
+      this.userData.selected_widgets = [];
+    }
+
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.period = (this.userData.stats.dashboard_period) ? this.userData.stats.dashboard_period : 7;
@@ -57,6 +65,31 @@ export class DashboardPageComponent implements OnInit {
     // Update user´s period
     await userService.updateUser(this.userData);
     await this.publicFunctions.sendUpdatesToUserData(this.userData);
+  }
+
+  openWidgetSelectorDialog() {
+
+    const data = {
+      userId: this.userData._id,
+      selectedWidgets: this.userData.selected_widgets
+    }
+
+    const dialogRef = this.dialog.open(WidgetSelectorDialogComponent, {
+      data: data,
+      panelClass: 'groupCreatePostDialog',
+      width: '50%',
+      disableClose: true,
+      hasBackdrop: true
+    });
+
+    const saveEventSubs = dialogRef.componentInstance.saveEvent.subscribe((data) => {
+      this.userData.selected_widgets = data;
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      saveEventSubs.unsubscribe();
+    });
   }
 
 }

@@ -1055,4 +1055,25 @@ export class UsersControllers {
         return sendError(res, err, 'Internal Server Error!', 500);
     }
   }
+
+  /**
+   * Save the widgets selected for the global dashboard.
+   */
+  async saveSelectedWidgets(req: Request, res: Response, next: NextFunction) {
+      const { userId } = req.params;
+      const { selectedWidgets } = req.body;
+
+      try {
+          const user = await User.findByIdAndUpdate(userId, {
+              $set: { 'selected_widgets': selectedWidgets }
+          }).select('selected_widgets').lean();
+
+          return res.status(200).json({
+              message: 'User updated!',
+              user: user
+          });
+      } catch (error) {
+          return sendError(res, error, 'Internal Server Error!', 500);
+      }
+  };
 }

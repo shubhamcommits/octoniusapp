@@ -11,56 +11,55 @@
             <mat-option *ngFor="let p of periods" [value]="p.key">{{ p.value }}</mat-option>
         </mat-select>
       </mat-form-field>
+      <span class="material-icons muted" style="margin-left: 30px; cursor: pointer;" (click)="openWidgetSelectorDialog()">settings</span>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('WORK_STATISTICS')">
       <!-- Work Statistics Card Starts -->
       <app-work-statistics-card [period]="period" [northStar]="false"></app-work-statistics-card>
       <!-- Work Statistics Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('WORKLOAD')">
       <!-- Workload Card Starts -->
       <app-workload-card [period]="period"></app-workload-card>
       <!-- Workload Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('VELOCITY')">
       <!-- Velocity Card Starts -->
       <app-velocity-card [period]="period"></app-velocity-card>
       <!-- Velocity Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('PULSE')">
       <!-- Pulse Card Starts -->
       <app-pulse-card [period]="period"></app-pulse-card>
       <!-- Pulse Card Ends -->
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('PEOPLE_DIRECTORY')">
       <!-- People Directory Card Starts -->
       <app-people-directory-card></app-people-directory-card>
       <!-- People Directory Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('ORGANIZATIONAL_STRUCTURE')">
       <!-- Organizational Structure Card Starts -->
       <app-organizational-structure-card></app-organizational-structure-card>
       <!-- Organizational Structure Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('WORK_STATISTICS_NORTH_STAR')">
       <!-- Company Objectives Card Starts -->
       <app-work-statistics-card [period]="period" [northStar]="true"></app-work-statistics-card>
       <!--<app-company-objectives-card [period]="period"></app-company-objectives-card>-->
       <!-- Company Objectives Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('ENGAGEMENT')">
       <!-- Engagement Card Card Starts -->
       <app-engagement-card [period]="period"></app-engagement-card>
       <!-- Engagement Card Card Ends -->
@@ -68,7 +67,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12 box">
+    <div class="col-md-12 box" *ngIf="userData?.selected_widgets?.includes('KPI_PERFORMANCE')">
       <!-- KPI Performance Card Starts -->
       <app-kpi-performance-card [parentId]="workspaceData?._id" [type]="'workspace'"></app-kpi-performance-card>
       <!-- KPI Performance Card Ends -->

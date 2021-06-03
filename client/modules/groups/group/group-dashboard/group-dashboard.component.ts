@@ -56,6 +56,9 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
 
         // Assign the GroupData
         this.groupData = res;
+        if (!this.groupData.selected_widgets) {
+          this.groupData.selected_widgets = [];
+        }
       }
     }))
 
@@ -93,7 +96,6 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
       data: data,
       panelClass: 'groupCreatePostDialog',
       width: '50%',
-      //height: '80%',
       disableClose: true,
       hasBackdrop: true
     });

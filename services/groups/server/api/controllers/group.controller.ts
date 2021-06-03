@@ -1403,7 +1403,7 @@ export class GroupController {
         try {
             const group = await Group.findByIdAndUpdate(groupId, {
                 $set: { 'selected_widgets': selectedWidgets }
-            }).lean();
+            }).select('selected_widgets').lean();
 
             return res.status(200).json({
                 message: 'Group updated!',
