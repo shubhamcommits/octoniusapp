@@ -99,7 +99,6 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
     });
 
     const saveEventSubs = dialogRef.componentInstance.saveEvent.subscribe((data) => {
-console.log({data});
       this.groupData.selected_widgets = data;
     });
 
