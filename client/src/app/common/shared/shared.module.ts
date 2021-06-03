@@ -5,8 +5,6 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgbTimepickerModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
-// import { QuicklinkModule } from 'ngx-quicklink';
-
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { SafePipe } from 'src/shared/pipes/safe.pipe';
@@ -106,6 +104,8 @@ import { ProjectBudgetDialogComponent } from './project-budget-dialog/project-bu
 import { KpiPerformanceCardComponent } from './dashboard/kpi-performance-card/kpi-performance-card.component';
 import { ProjectStatisticsComponent } from './dashboard/kpi-performance-card/project-statistics/project-statistics.component';
 import { ProjectBudgetComponent } from './dashboard/kpi-performance-card/project-budget/project-budget.component';
+import { CustomToolTipComponent } from './custom-tool-tip/custom-tool-tip.component';
+import { ToolTipRendererDirective } from './custom-tool-tip/tool-tip-renderer.directive';
 
 @NgModule({
   declarations: [
@@ -219,7 +219,9 @@ import { ProjectBudgetComponent } from './dashboard/kpi-performance-card/project
     UserUpdateProfileDialogComponent,
     UserUpdateUserInformationDialogComponent,
     UserUpdateUserPersonalInformationDialogComponent,
-    ProjectBudgetDialogComponent
+    ProjectBudgetDialogComponent,
+    CustomToolTipComponent,
+    ToolTipRendererDirective
   ],
   imports: [
     CommonModule,
@@ -349,7 +351,8 @@ import { ProjectBudgetComponent } from './dashboard/kpi-performance-card/project
     UserUpdateProfileDialogComponent,
     UserUpdateUserPersonalInformationDialogComponent,
     ProjectBudgetDialogComponent,
-    MatTooltipModule
+    MatTooltipModule,
+    CustomToolTipComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
@@ -366,7 +369,8 @@ import { ProjectBudgetComponent } from './dashboard/kpi-performance-card/project
     UserUpdateProfileDialogComponent,
     UserUpdateUserInformationDialogComponent,
     UserUpdateUserPersonalInformationDialogComponent,
-    ProjectBudgetDialogComponent
+    ProjectBudgetDialogComponent,
+    CustomToolTipComponent
   ]
 })
 export class SharedModule { }

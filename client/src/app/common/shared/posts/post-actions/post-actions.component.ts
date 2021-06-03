@@ -32,7 +32,9 @@ export class PostActionsComponent implements OnInit {
   showCommentQuillEditor = false;
 
   likedByUsers = [];
+  likedByUsersStr = '';
   followedByUsers = [];
+  followedByUsersStr = '';
   newComment;
 
   // Public Functions class object
