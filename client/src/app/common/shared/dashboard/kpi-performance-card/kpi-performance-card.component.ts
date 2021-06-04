@@ -13,6 +13,7 @@ export class KpiPerformanceCardComponent implements OnChanges {
 
   @Input() parentId; // This could be a groupId or a workspaceId
   @Input() type = 'group'; // workspace or group
+  @Input() filteringProjects; // For workspace type we will filter the
 
   groupName = '';
 
@@ -76,10 +77,14 @@ export class KpiPerformanceCardComponent implements OnChanges {
       });
     } else if (this.type == 'workspace') {
       return new Promise(async (resolve, reject) => {
-        const currentUser = await this.publicFunctions.getCurrentUser();
-        this.columnService.getAllProjectColumns(parentId, currentUser._id)
-          .then((res) => resolve(res['columns']))
-          .catch(() => reject([]))
+        if (this.filteringProjects && this.filteringProjects.length > 0) {
+          resolve(this.filteringProjects);
+        } else {
+          const currentUser = await this.publicFunctions.getCurrentUser();
+          this.columnService.getAllProjectColumns(parentId, currentUser._id)
+            .then((res) => resolve(res['columns']))
+            .catch(() => reject([]));
+        }
       });
     }
   }

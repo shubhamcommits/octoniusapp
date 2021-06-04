@@ -16,7 +16,7 @@
         <mat-label>Groups</mat-label>
         <mat-select [formControl]="filteringGroups" multiple (selectionChange)="groupsSelected($event)">
           <mat-select-trigger>
-            {{filteringGroups?.length > 1 ? filteringGroups[0].group_name : ''}}
+            {{ (filteringGroups && filteringGroups[0]) ? filteringGroups[0].group_name : '' }}
             <span *ngIf="filteringGroups?.length > 1" class="example-additional-selection">
               (+{{filteringGroups.length - 1}} {{filteringGroups?.length === 2 ? 'other' : 'others'}})
             </span>
@@ -87,7 +87,7 @@
         <mat-label>Projects</mat-label>
         <mat-select [formControl]="filteringProjects" multiple (selectionChange)="projectsSelected($event)">
           <mat-select-trigger>
-            {{filteringProjects?.length > 1 ? filteringProjects[0].title : ''}}
+            {{ (filteringProjects && filteringProjects[0]) ? filteringProjects[0].title : '' }}
             <span *ngIf="filteringProjects?.length > 1" class="example-additional-selection">
               (+{{filteringProjects.length - 1}} {{filteringProjects?.length === 2 ? 'other' : 'others'}})
             </span>
@@ -101,7 +101,7 @@
   <div class="row" *ngIf="userData?.selected_widgets?.includes('KPI_PERFORMANCE')">
     <div class="col-md-12 box">
       <!-- KPI Performance Card Starts -->
-      <app-kpi-performance-card [parentId]="workspaceData?._id" [type]="'workspace'"></app-kpi-performance-card>
+      <app-kpi-performance-card [parentId]="workspaceData?._id" [type]="'workspace'" [filteringProjects]="filteringProjects"></app-kpi-performance-card>
       <!-- KPI Performance Card Ends -->
     </div>
   </div>
