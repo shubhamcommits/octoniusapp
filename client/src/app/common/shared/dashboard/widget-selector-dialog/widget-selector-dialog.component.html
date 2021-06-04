@@ -21,10 +21,14 @@
 
     <div style="margin-top: 30px;">
       <div class="content-box" style="cursor: pointer;" *ngFor="let widget of availableWidgets" (click)="selectWidget(widget)">
-        <span class="material-icons-outlined float-left" style="color:#119b11;" *ngIf="isSelected(widget.code)">check_circle</span>
-        <div>
-          {{ widget.name }}
-        </div>
+        <span class="material-icons-outlined mr-4 mt-3" style="color:#119b11;" *ngIf="isSelected(widget.code)">check_circle</span>
+
+        <img src="assets/images/widgets/widget-work-stats.png" alt="" class="widget-img">
+       
+       <h4 class="ml-3 mt-4"> {{ widget.name }}</h4>
+         
+       
+        
       </div>
     </div>
 
