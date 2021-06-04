@@ -99,7 +99,7 @@ const GroupSchema = new Schema({
     },
     selected_widgets: {
         type: [String],
-        default: []
+        default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT']
     },
     custom_fields: {
         type: [{
