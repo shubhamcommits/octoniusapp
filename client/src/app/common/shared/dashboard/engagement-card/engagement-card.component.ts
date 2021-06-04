@@ -15,6 +15,7 @@ export class EngagementCardComponent implements OnChanges {
 
   @Input() period;
   @Input() group: string;
+  @Input() filteringGroups;
 
   // Current Workspace Data
   workspaceData: any
@@ -43,8 +44,9 @@ export class EngagementCardComponent implements OnChanges {
   }
 
   async initView() {
+
     // Call the HTTP API to fetch the current workspace details
-    this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.num_agoras = 0;
     this.num_highly_engaged = 0;
@@ -70,24 +72,26 @@ export class EngagementCardComponent implements OnChanges {
         if (group.type === 'agora' && (moment(group.created_date).add(-1,'days')).isAfter(comparingDate)) {
           this.num_agoras++;
         }
-        // if (group.type === 'normal') this.num_groups++;
-        // else this.num_groups++;
 
-        this.getTopicsCount(group._id);
+        this.getTopicsCount(group._id || group);
       }
     }
   }
 
   async getGroups() {
     return new Promise((resolve, reject) => {
-      this.groupsService.getWorkspaceGroups(this.workspaceData._id)
-        .then((res) => {
-          resolve(res['groups'])
-        })
-        .catch(() => {
-          reject([])
-        });
-    })
+      if (this.filteringGroups && this.filteringGroups.length > 0) {
+        resolve(this.filteringGroups);
+      } else {
+        this.groupsService.getWorkspaceGroups(this.workspaceData._id)
+          .then((res) => {
+            resolve(res['groups'])
+          })
+          .catch(() => {
+            reject([])
+          });
+      }
+    });
   }
 
   /**

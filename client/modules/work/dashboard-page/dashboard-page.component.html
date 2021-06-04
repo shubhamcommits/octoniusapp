@@ -11,66 +11,97 @@
             <mat-option *ngFor="let p of periods" [value]="p.key">{{ p.value }}</mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field style="margin-left: 30px;">
+        <mat-label>Groups</mat-label>
+        <mat-select [formControl]="filteringGroups" multiple (selectionChange)="groupsSelected($event)">
+          <mat-select-trigger>
+            {{ (filteringGroups && filteringGroups[0]) ? filteringGroups[0].group_name : '' }}
+            <span *ngIf="filteringGroups?.length > 1" class="example-additional-selection">
+              (+{{filteringGroups.length - 1}} {{filteringGroups?.length === 2 ? 'other' : 'others'}})
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let group of groupsList" [value]="group">{{ group.group_name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <span class="material-icons muted" style="margin-left: 30px; cursor: pointer;" (click)="openWidgetSelectorDialog()">settings</span>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('WORK_STATISTICS')">
       <!-- Work Statistics Card Starts -->
-      <app-work-statistics-card [period]="period" [northStar]="false"></app-work-statistics-card>
+      <app-work-statistics-card [period]="period" [filteringGroups]="filteringGroups" [northStar]="false"></app-work-statistics-card>
       <!-- Work Statistics Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('WORKLOAD')">
       <!-- Workload Card Starts -->
-      <app-workload-card [period]="period"></app-workload-card>
+      <app-workload-card [period]="period" [filteringGroups]="filteringGroups"></app-workload-card>
       <!-- Workload Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('VELOCITY')">
       <!-- Velocity Card Starts -->
-      <app-velocity-card [period]="period"></app-velocity-card>
+      <app-velocity-card [period]="period" [filteringGroups]="filteringGroups"></app-velocity-card>
       <!-- Velocity Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('PULSE')">
       <!-- Pulse Card Starts -->
-      <app-pulse-card [period]="period"></app-pulse-card>
+      <app-pulse-card [period]="period" [filteringGroups]="filteringGroups"></app-pulse-card>
       <!-- Pulse Card Ends -->
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('PEOPLE_DIRECTORY')">
       <!-- People Directory Card Starts -->
       <app-people-directory-card></app-people-directory-card>
       <!-- People Directory Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('ORGANIZATIONAL_STRUCTURE')">
       <!-- Organizational Structure Card Starts -->
       <app-organizational-structure-card></app-organizational-structure-card>
       <!-- Organizational Structure Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('WORK_STATISTICS_NORTH_STAR')">
       <!-- Company Objectives Card Starts -->
-      <app-work-statistics-card [period]="period" [northStar]="true"></app-work-statistics-card>
+      <app-work-statistics-card [period]="period" [filteringGroups]="filteringGroups" [northStar]="true"></app-work-statistics-card>
       <!--<app-company-objectives-card [period]="period"></app-company-objectives-card>-->
       <!-- Company Objectives Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('ENGAGEMENT')">
       <!-- Engagement Card Card Starts -->
-      <app-engagement-card [period]="period"></app-engagement-card>
+      <app-engagement-card [period]="period" [filteringGroups]="filteringGroups"></app-engagement-card>
       <!-- Engagement Card Card Ends -->
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" style="justify-content: space-between;" *ngIf="userData?.selected_widgets?.includes('KPI_PERFORMANCE')">
+    <div></div>
+    <div class="float-right">
+      <mat-form-field>
+        <mat-label>Projects</mat-label>
+        <mat-select [formControl]="filteringProjects" multiple (selectionChange)="projectsSelected($event)">
+          <mat-select-trigger>
+            {{ (filteringProjects && filteringProjects[0]) ? filteringProjects[0].title : '' }}
+            <span *ngIf="filteringProjects?.length > 1" class="example-additional-selection">
+              (+{{filteringProjects.length - 1}} {{filteringProjects?.length === 2 ? 'other' : 'others'}})
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let project of projects" [value]="project">{{ project.title }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="userData?.selected_widgets?.includes('KPI_PERFORMANCE')">
     <div class="col-md-12 box">
       <!-- KPI Performance Card Starts -->
-      <app-kpi-performance-card [parentId]="workspaceData?._id" [type]="'workspace'"></app-kpi-performance-card>
+      <app-kpi-performance-card [parentId]="workspaceData?._id" [type]="'workspace'" [filteringProjects]="filteringProjects"></app-kpi-performance-card>
       <!-- KPI Performance Card Ends -->
     </div>
   </div>

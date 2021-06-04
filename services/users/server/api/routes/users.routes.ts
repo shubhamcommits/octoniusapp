@@ -124,6 +124,9 @@ routes.put('/:userId/out-of-office-days', user.saveOutOfOfficeDays);
 // GET - Get the out of the office days 
 routes.get('/:userId/out-of-office-days', user.getOutOfOfficeDays);
 
+// PUT - Updates the widgets to show in the global dashboard
+routes.put('/:userId/saveSelectedWidgets', user.saveSelectedWidgets);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

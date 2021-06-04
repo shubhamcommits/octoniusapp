@@ -353,5 +353,13 @@ export class UserService {
     return this.slackConnectedEvent;
   }
 
-
+  /**
+   * This method is responsible for saving the widgets to display in the global dashboard page
+   * @param userId
+   * @param selectedWidgets
+   * @returns
+   */
+  saveSelectedWidgets(userId: string, selectedWidgets: string[]) {
+    return this._http.put<any>(`${this.BASE_API_URL}/${userId}/saveSelectedWidgets`, {selectedWidgets: selectedWidgets}).toPromise();
+  }
 }

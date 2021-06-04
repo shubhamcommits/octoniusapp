@@ -264,4 +264,14 @@ export class GroupService {
       }
     }).toPromise()
   }
+
+  /**
+   * This method is responsible for saving the widgets to display in the group dashboard page
+   * @param groupId
+   * @param selectedWidgets
+   * @returns
+   */
+  saveSelectedWidgets(groupId: string, selectedWidgets: string[]) {
+    return this._http.put<any>(`${this.baseURL}/${groupId}/saveSelectedWidgets`, {selectedWidgets: selectedWidgets}).toPromise();
+  }
 }

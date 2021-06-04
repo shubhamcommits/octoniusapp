@@ -1549,17 +1549,17 @@ export class PostService {
     task.save();
   }
 
-  async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean) {
+  async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean, filteringGroups: any) {
 
     const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
-
-    const groups = await Group.find({ _workspace: workspaceId }).select('_id').lean();
-
-    let groupsIds = [];
-
-    groups.forEach(group => {
-      groupsIds.push(group._id);
-    })
+console.log({filteringGroups});
+    let groups = [];
+    if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {
+      groups = filteringGroups;
+    } else {
+      groups = await Group.find({ _workspace: workspaceId }).select('_id').lean();
+      groups = groups.map(group => group._id);
+    }
 
     let posts = [];
 
@@ -1571,7 +1571,7 @@ export class PostService {
       // Fetch the tasks posts
       posts = await Post.find({
         $and: [
-          { _group: { $in: groupsIds } },
+          { _group: { $in: groups } },
           { type: type },
           { 'task.due_to': { $gte: comparingDate, $lt: today } },
           {
@@ -1592,7 +1592,7 @@ export class PostService {
     } else {
       posts = await Post.find({
         $and: [
-          { _group: { $in: groupsIds } },
+          { _group: { $in: groups } },
           { type: type },
           { 'task.due_to': { $gte: comparingDate } }
         ]
@@ -1609,17 +1609,17 @@ export class PostService {
     return posts;
   }
 
-  async getWorspaceNorthStars(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean) {
+  async getWorspaceNorthStars(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean, filteringGroups: any) {
 
     const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
 
-    const groups = await Group.find({ _workspace: workspaceId }).select('_id').lean();
-
-    let groupsIds = [];
-
-    groups.forEach(group => {
-      groupsIds.push(group._id);
-    })
+    let groups = [];
+    if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {
+      groups = filteringGroups;
+    } else {
+      groups = await Group.find({ _workspace: workspaceId }).select('_id').lean();
+      groups = groups.map(group => group._id);
+    }
 
     let posts = [];
 
@@ -1631,7 +1631,7 @@ export class PostService {
       // Fetch the tasks posts
       posts = await Post.find({
         $and: [
-          { _group: { $in: groupsIds } },
+          { _group: { $in: groups } },
           { type: type },
           { 'task.isNorthStar': isNorthStar },
           { 'task.due_to': { $gte: comparingDate, $lt: today } }
@@ -1647,7 +1647,7 @@ export class PostService {
     } else {
       posts = await Post.find({
         $and: [
-          { _group: { $in: groupsIds } },
+          { _group: { $in: groups } },
           { type: type },
           { 'task.isNorthStar': isNorthStar },
           { 'task.due_to': { $gte: comparingDate } }

@@ -11,29 +11,31 @@
             <mat-option *ngFor="let p of periods" [value]="p.key">{{ p.value }}</mat-option>
         </mat-select>
       </mat-form-field>
+
+      <span class="material-icons muted" style="margin-left: 30px; cursor: pointer;" (click)="openWidgetSelectorDialog()">settings</span>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="groupData?.selected_widgets?.includes('WORK_STATISTICS')">
       <!-- Work Statistics Card Starts -->
       <app-work-statistics-card [period]="period" [northStar]="false" [group]="groupData?._id"></app-work-statistics-card>
       <!-- Work Statistics Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="groupData?.selected_widgets?.includes('WORKLOAD')">
       <!-- Workload Card Starts -->
       <app-workload-card [period]="period" [group]="groupData?._id"></app-workload-card>
       <!-- Workload Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="groupData?.selected_widgets?.includes('VELOCITY')">
       <!-- Velocity Card Starts -->
       <app-velocity-card [period]="period" [group]="groupData?._id"></app-velocity-card>
       <!-- Velocity Card Ends -->
     </div>
 
-    <div class="col-md-3 box">
+    <div class="col-md-3 box" *ngIf="groupData?.selected_widgets?.includes('ENGAGEMENT')">
       <!-- Engagement Card Starts -->
       <app-engagement-card [period]="period" [group]="groupData?._id"></app-engagement-card>
       <!-- Engagement Card Ends -->
@@ -41,7 +43,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12 box">
+    <div class="col-md-12 box" *ngIf="groupData?.selected_widgets?.includes('KPI_PERFORMANCE')">
       <!-- KPI Performance Card Starts -->
       <app-kpi-performance-card [parentId]="groupData?._id" [type]="'group'"></app-kpi-performance-card>
       <!-- KPI Performance Card Ends -->
@@ -49,7 +51,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12 box">
+    <div class="col-md-12 box" *ngIf="groupData?.selected_widgets?.includes('RESOURCE_MANAGEMENT')">
       <!-- Members Workload Card Starts -->
       <app-members-workload-card [groupId]="groupData?._id"></app-members-workload-card>
       <!-- Members Workload Card Ends -->
