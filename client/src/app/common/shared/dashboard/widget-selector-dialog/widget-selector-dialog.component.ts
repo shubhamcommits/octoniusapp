@@ -25,53 +25,68 @@ export class WidgetSelectorDialogComponent implements OnInit {
   groupAvailableWidgets = [
     {
       code: 'WORK_STATISTICS',
-      name: 'Work statistics'
+      name: 'Work statistics',
+      img: 'assets/images/widgets/widget-work-stats.png'
     }, {
       code: 'WORKLOAD',
-      name: 'Workload by completition status'
+      name: 'Workload by completition status',
+      img: 'assets/images/widgets/widget-workload.png'
     }, {
       code: 'VELOCITY',
-      name: 'Velocity over time'
+      name: 'Velocity over time',
+      img: 'assets/images/widgets/widget-velocity.png'
     }, {
       code: 'ENGAGEMENT',
-      name: 'Engagement'
+      name: 'Engagement',
+      img: 'assets/images/widgets/widget-engagement.png'
     }, {
       code: 'KPI_PERFORMANCE',
-      name: 'KPI Performance'
+      name: 'KPI Performance',
+      img: 'assets/images/widgets/widget-kpi.png'
     }, {
       code: 'RESOURCE_MANAGEMENT',
-      name: 'Resource management'
+      name: 'Resource management',
+      img: 'assets/images/widgets/widget-resources.png'
     }
   ];
 
   globalAvailableWidgets = [
     {
       code: 'WORK_STATISTICS',
-      name: 'Work statistics'
+      name: 'Work statistics',
+      img: 'assets/images/widgets/widget-work-stats.png'
     }, {
       code: 'WORKLOAD',
-      name: 'Workload by completition status'
+      name: 'Workload by completition status',
+      img: 'assets/images/widgets/widget-workload.png'
     }, {
       code: 'VELOCITY',
-      name: 'Velocity over time'
+      name: 'Velocity over time',
+      img: 'assets/images/widgets/widget-velocity.png'
     }, {
       code: 'PULSE',
-      name: 'Pulse'
+      name: 'Pulse',
+      img: 'assets/images/widgets/widget-pulse.png'
     }, {
       code: 'PEOPLE_DIRECTORY',
-      name: 'People directory'
+      name: 'People directory',
+      img: 'assets/images/widgets/widget-people.png'
     }, {
       code: 'ORGANIZATIONAL_STRUCTURE',
-      name: 'Organizational Structure'
+      name: 'Organizational Structure',
+      img: 'assets/images/widgets/widget-organizational.png'
     }, {
       code: 'WORK_STATISTICS_NORTH_STAR',
-      name: 'Work statistics North Stars'
+      name: 'Work statistics North Stars',
+      img: 'assets/images/widgets/widget-northstars.png'
     }, {
       code: 'ENGAGEMENT',
-      name: 'Engagement'
+      name: 'Engagement',
+      img: 'assets/images/widgets/widget-engagement.png'
     }, {
       code: 'KPI_PERFORMANCE',
-      name: 'KPI Performance'
+      name: 'KPI Performance',
+      img: 'assets/images/widgets/widget-kpi.png'
     }
   ];
 
