@@ -22,7 +22,7 @@ export class KpiPerformanceCardComponent implements OnChanges {
   // Workspace data
   public workspaceData: Object = {};
 
-  // Pulse groups
+  // Projects
   public projects: any = [];
 
   // Public functions

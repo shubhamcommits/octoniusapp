@@ -31,7 +31,7 @@ export class OrganizationalStructureCardComponent implements OnInit {
 
   async initView() {
     // Call the HTTP API to fetch the current workspace details
-    this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.num_groups = 0;
     this.num_agoras = 0;
@@ -40,7 +40,6 @@ export class OrganizationalStructureCardComponent implements OnInit {
 
     for (let group of this.groups) {
       if (group.type === 'agora') this.num_agoras++;
-      // if (group.type === 'normal') this.num_groups++;
       else this.num_groups++;
     }
   }

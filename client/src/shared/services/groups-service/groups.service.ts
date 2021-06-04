@@ -232,11 +232,12 @@ export class GroupsService {
    * @param workspaceId
    * @param period
    */
-  getPulseCount(workspaceId: string, period?: string) {
+  getPulseCount(workspaceId: string, filteringGroups: any, period?: string) {
     return this._http.get(this.baseURL + `/pulse/count`, {
         params: {
           workspaceId,
-          period
+          period,
+          filteringGroups
         }
       }).toPromise()
   }

@@ -181,7 +181,7 @@ export class WorkspaceService {
   /**
    * This function is responsible for retreiving and calculating the velocity of the workspace
    */
-  async getVelocityGroups(workspaceId: string, dates: any, groupId?: string) {
+  async getVelocityGroups(workspaceId: string, dates: any, filteringGroups: any, groupId?: string) {
     let groupsVelocities = [];
     let groups = [];
 
@@ -191,6 +191,12 @@ export class WorkspaceService {
       await this.groupsService.getWorkspaceGroups(workspaceId).then((res) => {
         groups = res['groups'];
       });
+
+      if (filteringGroups) {
+        groups.filter((group) => {
+          return filteringGroups.findIndex(filterGroup => filterGroup == group._id) != -1
+        });
+      }
     }
 
     for (let i = 0; i < (dates.length - 1); i++) {

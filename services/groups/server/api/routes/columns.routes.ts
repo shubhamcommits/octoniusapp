@@ -26,6 +26,9 @@ router.get('/all', columns.getAllColumns);
 // get all existing project columns
 router.get('/projects', columns.getAllProjectColumns);
 
+// get all existing project columns filtering by groups
+router.get('/projectsByGroups', columns.getGroupProjectColumnsByGroups);
+
 // add a new column
 router.post('/', columns.addColumn);
 

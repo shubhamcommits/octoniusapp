@@ -415,21 +415,35 @@ export class PulseController {
     */
    async getPulseCount(req: Request, res: Response) {
        try {
-            const { workspaceId, period } = req.query;
+            const { workspaceId, filteringGroups, period } = req.query;
 
             const comparingDate = moment().local().subtract(+period, 'days').toDate();
 
             let numPulse = 0;
+
+            let groups = [];
             
             if (period !== 'undefined') {
-                const groups = await Group.find({
-                    $and: [
-                        { group_name: { $ne: 'personal' } },
-                        { group_name: { $ne: 'private' } },
-                        { _workspace: workspaceId },
-                        { pulse_description: { $nin:[null,""] } }
-                    ]
-                }).select("_id pulse_description records");
+                if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {
+                    groups = await Group.find({
+                        $and: [
+                            { _id: { $in: filteringGroups }},
+                            { group_name: { $ne: 'personal' } },
+                            { group_name: { $ne: 'private' } },
+                            { _workspace: workspaceId },
+                            { pulse_description: { $nin:[null,""] } }
+                        ]
+                    }).select("_id pulse_description records");
+                } else {
+                    groups = await Group.find({
+                        $and: [
+                            { group_name: { $ne: 'personal' } },
+                            { group_name: { $ne: 'private' } },
+                            { _workspace: workspaceId },
+                            { pulse_description: { $nin:[null,""] } }
+                        ]
+                    }).select("_id pulse_description records");
+                }
 
                 for (let group of groups) {
                     for (let pulse of group['records']['pulses']) {
@@ -440,14 +454,26 @@ export class PulseController {
                 }
 
             } else {
-                numPulse = await Group.find({
-                    $and: [
-                        { group_name: { $ne: 'personal' } },
-                        { group_name: { $ne: 'private' } },
-                        { _workspace: workspaceId },
-                        { pulse_description: { $nin:[null,""] } }
-                    ]
-                }).countDocuments();
+                if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {
+                    numPulse = await Group.find({
+                        $and: [
+                            { _id: { $in: filteringGroups }},
+                            { group_name: { $ne: 'personal' } },
+                            { group_name: { $ne: 'private' } },
+                            { _workspace: workspaceId },
+                            { pulse_description: { $nin:[null,""] } }
+                        ]
+                    }).countDocuments();
+                } else {
+                    numPulse = await Group.find({
+                        $and: [
+                            { group_name: { $ne: 'personal' } },
+                            { group_name: { $ne: 'private' } },
+                            { _workspace: workspaceId },
+                            { pulse_description: { $nin:[null,""] } }
+                        ]
+                    }).countDocuments();
+                }
             }
 
             // Send the status 200 response

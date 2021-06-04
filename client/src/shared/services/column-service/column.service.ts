@@ -50,6 +50,21 @@ export class ColumnService {
   }
 
   /**
+   * This function is responsible for fetching all the columns present in a board filtering by groups
+   * @param workspaceId
+   * @param filteringGroups
+   * @returns
+   */
+  getGroupProjectColumnsByGroups(workspaceId: string, filteringGroups: []) {
+    return this._http.get(this.baseUrl + `/columns/projectsByGroups`, {
+      params:{
+        workspaceId: workspaceId,
+        filteringGroups: filteringGroups
+      }
+    }).toPromise()
+  }
+
+  /**
    * This function is responsible for adding a column to the board
    * @param groupId
    * @param columnName

@@ -80,6 +80,40 @@ export class ColumnsController {
         }
     }
 
+    // get all existing project columns filtering by groups
+    async getGroupProjectColumnsByGroups(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch GroupId from the query
+            const { workspaceId, filteringGroups } = req.query;
+
+            if (!workspaceId) {
+
+            }
+
+            let columns = [];
+            if (workspaceId) {
+              columns = await Column.find({
+                '_group': { $in: filteringGroups },
+                project_type: true
+              }).lean() || [];
+
+              columns = await Column.populate(columns, [
+                  { path: '_group' },
+                  { path: 'budget.expenses._user' }
+              ]);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Column obtained Successfully!',
+                columns: columns
+            });
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
     // add a new column
 
     async addColumn(req: Request, res: Response, next: NextFunction) {
