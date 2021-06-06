@@ -83,6 +83,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
 
+    /*
     window['Appcues'].identify(
       this.userData?._id, // unique, required
       {
@@ -94,6 +95,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
         email: this.userData?.email
       }
     );
+    */
 
     if (this.groupId) {
       // Fetch current group
