@@ -16,6 +16,10 @@
     </div>
   </div>
 
+  <div *ngIf="!groupData?.selected_widgets || groupData?.selected_widgets?.length == 0" style="width: 100%; text-align: center;">
+    <img src='assets/images/widgets/placeholder-dashboard.svg' style="width: 390px; text-align: center;">
+  </div>
+
   <div class="row">
     <div class="col-md-3 box" *ngIf="groupData?.selected_widgets?.includes('WORK_STATISTICS')">
       <!-- Work Statistics Card Starts -->
