@@ -57,7 +57,7 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
         // Assign the GroupData
         this.groupData = res;
         if (!this.groupData.selected_widgets) {
-          this.groupData.selected_widgets = [];
+          this.groupData.selected_widgets = ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT'];
         }
       }
     }))
