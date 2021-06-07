@@ -17,6 +17,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
 
 
   groupId;
+  groupProjectType;
   userId;
 
   selectedWidgets = [];
@@ -42,10 +43,6 @@ export class WidgetSelectorDialogComponent implements OnInit {
       code: 'ENGAGEMENT',
       name: 'Engagement',
       img: 'assets/images/widgets/widget-engagement.png'
-    }, {
-      code: 'KPI_PERFORMANCE',
-      name: 'KPI Performance',
-      img: 'assets/images/widgets/widget-kpi.png'
     }, {
       code: 'RESOURCE_MANAGEMENT',
       name: 'Resource management',
@@ -105,6 +102,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
     private injector: Injector
   ) {
     this.groupId = this.data.groupId;
+    this.groupProjectType = this.data.groupProjectType;
     this.userId = this.data.userId;
     this.selectedWidgets = this.data.selectedWidgets || [];
     this.initSelectedWidgets = [...this.selectedWidgets];
@@ -114,6 +112,13 @@ export class WidgetSelectorDialogComponent implements OnInit {
 
     if (this.groupId) {
       this.availableWidgets = this.groupAvailableWidgets;
+      if (this.groupProjectType) {
+        this.availableWidgets.push({
+          code: 'KPI_PERFORMANCE',
+          name: 'KPI Performance',
+          img: 'assets/images/widgets/widget-kpi.png'
+        });
+      }
     }
 
     if (this.userId) {
