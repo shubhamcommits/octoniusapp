@@ -6,7 +6,7 @@
           </a>
       </div>
   </mat-dialog-actions>
-
+  <mat-dialog-content>
   <div class="content">
     <div class="">
         <div class="modal-header">
@@ -19,7 +19,6 @@
         <div class="clearfix"></div>
     </div>
 
-    <div style="margin-top: 30px;">
       <div class="content-box" style="cursor: pointer;" *ngFor="let widget of availableWidgets" (click)="selectWidget(widget)">
         <span class="material-icons-outlined mr-4 mt-3" style="color:#119b11;" *ngIf="isSelected(widget.code)">check_circle</span>
         <span class="material-icons-outlined mr-4 mt-3" style="color:#c7c7c7;" *ngIf="!isSelected(widget.code)">check_circle</span>
@@ -31,11 +30,15 @@
 
 
       </div>
-    </div>
 
-    <button class="btn btn-danger float-left" (click)="cancel()">Cancel</button>
-    <button class="btn btn-primary float-right" (click)="save()">Update settings</button>
+ 
+  
 
   </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button class="btn btn-danger mr-4" (click)="cancel()">Cancel</button>
+  <button class="btn btn-primary" (click)="save()">Update settings</button>
+</mat-dialog-actions>
   <!-- Top Right Section ends -->
 </div>
