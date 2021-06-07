@@ -36,7 +36,7 @@ export class PeopleDirectoryCardComponent implements OnInit {
 
   async initView() {
     // Call the HTTP API to fetch the current workspace details
-    this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.num_users = 0;
     this.num_global_managers = 0;

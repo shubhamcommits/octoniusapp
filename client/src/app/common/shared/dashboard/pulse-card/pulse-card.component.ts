@@ -10,6 +10,7 @@ import { GroupsService } from 'src/shared/services/groups-service/groups.service
 export class PulseCardComponent implements OnChanges {
 
   @Input() period;
+  @Input() filteringGroups;
 
   // Workspace data
   public workspaceData: Object = {};
@@ -34,6 +35,11 @@ export class PulseCardComponent implements OnChanges {
   }
 
   async initView() {
+
+    if (this.filteringGroups) {
+      this.filteringGroups = this.filteringGroups.map(group => group._id);
+    }
+
     this.num_updates = 0;
     this.num_updates_period = 0;
 
@@ -46,7 +52,7 @@ export class PulseCardComponent implements OnChanges {
    */
   public async getPulseCount() {
     return new Promise((resolve, reject) => {
-      this.groupService.getPulseCount(this.workspaceData['_id'])
+      this.groupService.getPulseCount(this.workspaceData['_id'], this.filteringGroups)
         .then((res) => {
           this.num_updates = res['numPulse'];
           resolve(res['numPulse'])
@@ -60,7 +66,7 @@ export class PulseCardComponent implements OnChanges {
    */
   public async getPulseCountPeriod() {
     return new Promise((resolve, reject) => {
-      this.groupService.getPulseCount(this.workspaceData['_id'], this.period.toString())
+      this.groupService.getPulseCount(this.workspaceData['_id'], this.filteringGroups, this.period.toString())
         .then((res) => {
           this.num_updates_period = res['numPulse'];
           resolve(res['numPulse'])

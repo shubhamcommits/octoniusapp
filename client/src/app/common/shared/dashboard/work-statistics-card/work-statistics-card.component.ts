@@ -13,6 +13,7 @@ export class WorkStatisticsCardComponent implements OnChanges {
   @Input() period;
   @Input() northStar: boolean;
   @Input() group: string;
+  @Input() filteringGroups;
 
   // Current Workspace Data
   workspaceData: any
@@ -42,8 +43,12 @@ export class WorkStatisticsCardComponent implements OnChanges {
 
   async initView() {
 
+    if (this.filteringGroups) {
+      this.filteringGroups = this.filteringGroups.map(group => group._id);
+    }
+
     // Call the HTTP API to fetch the current workspace details
-    this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     /* Chart Setup */
     // this.barChartLabels = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdue_task_count];
@@ -163,7 +168,7 @@ export class WorkStatisticsCardComponent implements OnChanges {
         tasks = res['posts'];
       });
     } else {
-      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false, this.northStar)
+      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, false, this.northStar, this.filteringGroups)
         .then((res) => {
           tasks = res['posts'];
         });
@@ -180,7 +185,7 @@ export class WorkStatisticsCardComponent implements OnChanges {
         overdueTasks = res['posts'];
       });
     } else {
-      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, true, this.northStar)
+      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, true, this.northStar, this.filteringGroups)
       .then((res) => {
         overdueTasks = res['posts'];
       });

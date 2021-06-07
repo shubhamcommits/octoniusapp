@@ -12,6 +12,7 @@ export class VelocityCardComponent implements OnChanges {
 
   @Input() period;
   @Input() group: string;
+  @Input() filteringGroups;
 
   // Current Workspace Data
   workspaceData: any
@@ -40,8 +41,12 @@ export class VelocityCardComponent implements OnChanges {
 
   async initView() {
 
+    if (this.filteringGroups) {
+      this.filteringGroups = this.filteringGroups.map(group => group._id);
+    }
+
     // Call the HTTP API to fetch the current workspace details
-    this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     const dates = this.getDates();
     const velocityData = await this.getData(dates);
@@ -118,6 +123,6 @@ export class VelocityCardComponent implements OnChanges {
   }
 
   getData(dates) {
-    return this.workspaceService.getVelocityGroups(this.workspaceData._id, dates, this.group);
+    return this.workspaceService.getVelocityGroups(this.workspaceData._id, dates, this.filteringGroups, this.group);
   }
 }

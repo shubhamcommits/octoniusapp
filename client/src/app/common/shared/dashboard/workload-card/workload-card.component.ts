@@ -12,6 +12,7 @@ export class WorkloadCardComponent implements OnChanges {
 
   @Input() period;
   @Input() group: string;
+  @Input() filteringGroups;
 
   // Current Workspace Data
   workspaceData: any;
@@ -41,8 +42,12 @@ export class WorkloadCardComponent implements OnChanges {
 
   async initView() {
 
+    if (this.filteringGroups) {
+      this.filteringGroups = this.filteringGroups.map(group => group._id);
+    }
+
     // Call the HTTP API to fetch the current workspace details
-    this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     /* Chart Setup */
     const tasksData = await this.getTasksData();
@@ -115,7 +120,7 @@ export class WorkloadCardComponent implements OnChanges {
         tasks = res['posts'];
       });
     } else {
-      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, overdue, false)
+      await this.postService.getWorkspacePosts(this.workspaceData._id, 'task', this.period, overdue, false, this.filteringGroups)
         .then((res) => {
           tasks = res['posts'];
         });

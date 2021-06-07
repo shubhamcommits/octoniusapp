@@ -26,7 +26,7 @@
             (newSectionEvent)="newSectionAdded($event)">
         </app-group-kanban-boards>
 
-        <app-group-tasks-list-view *ngIf="viewType === 'list'"
+        <app-group-tasks-list-view *ngIf="viewType === 'table'"
             [groupData]="groupData"
             [userData]="userData"
             [sections]="columns"

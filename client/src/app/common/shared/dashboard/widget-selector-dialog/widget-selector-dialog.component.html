@@ -1,0 +1,44 @@
+<div class="dialog-content">
+  <mat-dialog-actions align="end">
+      <div class="action-box">
+          <a (click)="cancel()" mat-dialog-close>
+          <i  class="material-icons" style="cursor: pointer">close</i>
+          </a>
+      </div>
+  </mat-dialog-actions>
+  <mat-dialog-content>
+  <div class="content">
+    <div class="">
+        <div class="modal-header">
+          <h4 class="modal-title">
+            Customize your dashboard
+          </h4>
+        </div>
+
+        <p class="ml-3">Select what widgets should be displayed in the dashboard.</p>
+        <div class="clearfix"></div>
+    </div>
+
+      <div class="content-box" style="cursor: pointer;" *ngFor="let widget of availableWidgets" (click)="selectWidget(widget)">
+        <span class="material-icons-outlined mr-4 mt-3" style="color:#119b11;" *ngIf="isSelected(widget.code)">check_circle</span>
+        <span class="material-icons-outlined mr-4 mt-3" style="color:#c7c7c7;" *ngIf="!isSelected(widget.code)">check_circle</span>
+
+        <img [src]="widget.img" alt="" class="widget-img">
+
+       <h4 class="ml-3 mt-4"> {{ widget.name }}</h4>
+
+
+
+      </div>
+
+ 
+  
+
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button class="btn btn-danger mr-4" (click)="cancel()">Cancel</button>
+  <button class="btn btn-primary" (click)="save()">Update settings</button>
+</mat-dialog-actions>
+  <!-- Top Right Section ends -->
+</div>

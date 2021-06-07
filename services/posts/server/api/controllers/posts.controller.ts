@@ -923,18 +923,18 @@ export class PostController {
     async getWorspacePosts(req: Request, res: Response, next: NextFunction) {
 
         // Fetch Data from request
-        const { workspaceId, type, numDays, overdue, isNorthStar } = req.query;
+        const { workspaceId, type, numDays, overdue, isNorthStar, filteringGroups } = req.query;
 
         // Call Service function to fetch the posts
         let posts: any = [];
 
         if (isNorthStar) {
-            posts = await postService.getWorspaceNorthStars(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"))
+            posts = await postService.getWorspaceNorthStars(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"), filteringGroups)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
         } else {
-            posts = await postService.getWorspacePostsResults(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"))
+            posts = await postService.getWorspacePostsResults(workspaceId, type, +numDays, (overdue == "true"), (isNorthStar == "true"), filteringGroups)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 })
