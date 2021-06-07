@@ -153,7 +153,6 @@ export class WidgetSelectorDialogComponent implements OnInit {
       if (this.groupId) {
         this.groupService.saveSelectedWidgets(this.groupId, this.selectedWidgets)
           .then((res) => {
-            this.selectedWidgets = res['group'].selected_widgets || [];
             this.newSelectedWidgets = [];
             this.saveEvent.emit(this.selectedWidgets);
 
@@ -170,7 +169,6 @@ export class WidgetSelectorDialogComponent implements OnInit {
       if (this.userId) {
         this.userService.saveSelectedWidgets(this.userId, this.selectedWidgets)
           .then((res) => {
-            this.selectedWidgets = res['user'].selected_widgets || [];
             this.newSelectedWidgets = [];
             this.saveEvent.emit(this.selectedWidgets);
 
