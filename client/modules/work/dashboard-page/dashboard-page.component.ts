@@ -125,9 +125,14 @@ export class DashboardPageComponent implements OnInit {
       this.userData.selected_widgets = data;
     });
 
+    const closeEventSubs = dialogRef.componentInstance.cancelEvent.subscribe(async (data) => {
+      this.userData.selected_widgets = data;
+    });
+
 
     dialogRef.afterClosed().subscribe(result => {
       saveEventSubs.unsubscribe();
+      closeEventSubs.unsubscribe();
     });
   }
 

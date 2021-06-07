@@ -104,8 +104,13 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
       this.groupData.selected_widgets = data;
     });
 
+    const closeEventSubs = dialogRef.componentInstance.cancelEvent.subscribe(async (data) => {
+      this.groupData.selected_widgets = data;
+    });
+
 
     dialogRef.afterClosed().subscribe(result => {
+      closeEventSubs.unsubscribe();
       saveEventSubs.unsubscribe();
     });
   }

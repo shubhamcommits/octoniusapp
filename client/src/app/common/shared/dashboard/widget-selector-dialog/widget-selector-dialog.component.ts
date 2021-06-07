@@ -13,12 +13,15 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 export class WidgetSelectorDialogComponent implements OnInit {
 
   @Output() saveEvent = new EventEmitter();
+  @Output() cancelEvent = new EventEmitter();
+
 
   groupId;
   userId;
 
   selectedWidgets = [];
   newSelectedWidgets = [];
+  initSelectedWidgets = [];
 
   availableWidgets= [];
 
@@ -104,6 +107,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
     this.groupId = this.data.groupId;
     this.userId = this.data.userId;
     this.selectedWidgets = this.data.selectedWidgets || [];
+    this.initSelectedWidgets = [...this.selectedWidgets];
   }
 
   async ngOnInit() {
@@ -119,8 +123,9 @@ export class WidgetSelectorDialogComponent implements OnInit {
 
 
   cancel() {
-    this.selectedWidgets = this.data.selectedWidgets || [];
+    this.selectedWidgets = [...this.initSelectedWidgets];
     this.newSelectedWidgets = [];
+    this.cancelEvent.emit(this.initSelectedWidgets);
 
     // Close the modal
     this.mdDialogRef.close();
@@ -153,6 +158,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
       if (this.groupId) {
         this.groupService.saveSelectedWidgets(this.groupId, this.selectedWidgets)
           .then((res) => {
+            this.publicFunctions.sendUpdatesToGroupData(res['group']);
             this.newSelectedWidgets = [];
             this.saveEvent.emit(this.selectedWidgets);
 
@@ -169,6 +175,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
       if (this.userId) {
         this.userService.saveSelectedWidgets(this.userId, this.selectedWidgets)
           .then((res) => {
+            this.publicFunctions.sendUpdatesToUserData(res['user']);
             this.newSelectedWidgets = [];
             this.saveEvent.emit(this.selectedWidgets);
 
