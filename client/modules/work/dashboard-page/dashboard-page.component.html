@@ -29,7 +29,7 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="!userData?.selected_widgets || userData?.selected_widgets?.length == 0">
+  <div *ngIf="!userData?.selected_widgets || userData?.selected_widgets?.length == 0" style="width: 100%; text-align: center;">
     <img src='assets/images/widgets/placeholder-dashboard.svg' style="width: 390px; text-align: center;">
   </div>
 
