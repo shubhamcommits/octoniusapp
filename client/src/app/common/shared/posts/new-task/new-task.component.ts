@@ -88,7 +88,9 @@ export class NewTaskComponent implements OnInit {
           status: 'to do',
           _column: null,
           custom_fields: [],
-          _parent_task: this.parentId
+          _parent_task: this.parentId,
+          isNorthStar: false,
+          is_milestone: false
         }
       }
     } else {
@@ -105,7 +107,9 @@ export class NewTaskComponent implements OnInit {
             _assigned_to: this.userData._id,
             status: 'to do',
             custom_fields: [],
-            _column: this.column._id
+            _column: this.column._id,
+            isNorthStar: false,
+            is_milestone: false
           }
         }
       }
@@ -121,7 +125,9 @@ export class NewTaskComponent implements OnInit {
             _assigned_to: null,
             status: 'to do',
             custom_fields: [],
-            _column: this.column._id
+            _column: this.column._id,
+            isNorthStar: false,
+            is_milestone: false
           }
         }
       }

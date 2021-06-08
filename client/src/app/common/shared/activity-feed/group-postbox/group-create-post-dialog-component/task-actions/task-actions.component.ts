@@ -124,8 +124,8 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       this.isChild = true;
     }
 
-    if (this.postData?.task?._dependency_task || this.postData?.task?._dependency_task?.length > 0
-        || this.postData?.task?._dependent_child || this.postData?.task?._dependent_child?.length > 0) {
+    if ((this.postData?.task?._dependency_task && this.postData?.task?._dependency_task?.length > 0)
+        || (this.postData?.task?._dependent_child && this.postData?.task?._dependent_child?.length > 0)) {
       this.isDependent = true;
     }
 
