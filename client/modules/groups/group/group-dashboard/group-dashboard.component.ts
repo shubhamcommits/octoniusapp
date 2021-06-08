@@ -89,6 +89,7 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
 
     const data = {
       groupId: this.groupData._id,
+      groupProjectType: this.groupData.project_type,
       selectedWidgets: this.groupData.selected_widgets
     }
 
