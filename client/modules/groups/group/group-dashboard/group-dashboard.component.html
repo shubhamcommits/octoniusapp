@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <div *ngIf="!groupData?.selected_widgets || groupData?.selected_widgets?.length == 0" style="width: 100%; text-align: center;">
+  <div *ngIf="!groupData?.selected_widgets || groupData?.selected_widgets?.length == 0 || (!groupData?.project_type && groupData?.selected_widgets?.length <= 1 && groupData?.selected_widgets?.includes('KPI_PERFORMANCE'))" style="width: 100%; text-align: center;">
     <img src='assets/images/widgets/placeholder-dashboard.svg' style="width: 390px; text-align: center;">
   </div>
 
@@ -47,7 +47,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12 box" *ngIf="groupData?.selected_widgets?.includes('KPI_PERFORMANCE')">
+    <div class="col-md-12 box" *ngIf="groupData?.project_type && groupData?.selected_widgets?.includes('KPI_PERFORMANCE')">
       <!-- KPI Performance Card Starts -->
       <app-kpi-performance-card [parentId]="groupData?._id" [type]="'group'"></app-kpi-performance-card>
       <!-- KPI Performance Card Ends -->
