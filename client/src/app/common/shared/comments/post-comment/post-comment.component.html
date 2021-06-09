@@ -63,11 +63,8 @@
         <!-- TODO -> this 'if' will be removed when we fix that new comments are added with the ID to the array -->
         <div *ngIf="comment._id" class="row card-footer innercard action-post clearfix ml-0 mr-0">
             <!-- Likes Placeholder starts -->
-            <ng-template #likedContent>
-              <p *ngFor="let liked_by of likedByUsers">{{ liked_by }}</p>
-            </ng-template>
             <div class="col-md-6">
-                <span class="stats" [matTooltip]="likedContent"><b>{{likedByUsers.length || 0 }}</b> Likes </span>
+              <span class="stats" matTooltipPosition="right" customToolTip [contentArray]="likedByUsers"><b>{{ likedByUsers?.length || 0 }}</b> Likes </span>
             </div>
             <!-- Likes Placeholder ends -->
 
