@@ -211,26 +211,75 @@ export class ManagementControllers {
         }
     }
 
-    /**************/
+    /**
+     * Mgmt Calls
+     */
+
     /* | ======================================= BILLING ========================================== | */
 
     async createClientPortalSession(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId, returnUrl, mgmtApiPrivateKey } = req.body;
+        
+        try {
+            const { workspaceId, returnUrl, mgmtApiPrivateKey } = req.body;
 
-        return await managementService.createClientPortalSession(workspaceId, returnUrl, mgmtApiPrivateKey);
+            let session;
+            await managementService.createClientPortalSession(workspaceId, returnUrl, mgmtApiPrivateKey).then(res => {
+                session = res['session'];
+            });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                session: session
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 
     async createStripeCheckoutSession(req: Request, res: Response, next: NextFunction) {
-        const { priceId, workspaceId, returnUrl, mgmtApiPrivateKey } = req.body;
+        try {
+            
+            const { priceId, workspaceId, returnUrl, mgmtApiPrivateKey } = req.body;
 
-        return await managementService.createStripeCheckoutSession(priceId, workspaceId, returnUrl, mgmtApiPrivateKey);
+            let session;
+            let pk_stripe;
+            await managementService.createStripeCheckoutSession(priceId, workspaceId, returnUrl, mgmtApiPrivateKey).then(res => {
+                session = res['session'];
+                pk_stripe = res['pk_stripe'];
+            });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                session: session,
+                pk_stripe: pk_stripe
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 
     async getStripeCheckoutSession(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId, sessionId } = req.params;
-        const { mgmtApiPrivateKey } = req.body;
+        try {
+            
+            const { workspaceId, sessionId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
 
-        return await managementService.getStripeCheckoutSession(sessionId, workspaceId, mgmtApiPrivateKey);
+            let workspace;
+            let subscription;
+            await managementService.getStripeCheckoutSession(sessionId, workspaceId, mgmtApiPrivateKey)
+                .then(res => {
+                    subscription = res['subscription'];
+                    workspace = res['workspace'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                workspace: workspace,
+                subscription: subscription
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 
     /**
@@ -238,10 +287,32 @@ export class ManagementControllers {
      * @param workspaceId
      */
     async getBillingStatus(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId } = req.params;
-        const { mgmtApiPrivateKey } = req.body;
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
 
-        return await managementService.getBillingStatus(workspaceId, mgmtApiPrivateKey);
+            let message;
+            let status;
+            let blocked;
+            let onPremise;
+            await managementService.getBillingStatus(workspaceId, mgmtApiPrivateKey)
+                .then(res => {
+                    message = res['message'];
+                    status = res['status'];
+                    blocked = res['blocked'];
+                    onPremise = res['onPremise'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status,
+                blocked: blocked,
+                onPremise: onPremise
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 
     /**
@@ -250,45 +321,120 @@ export class ManagementControllers {
      * @param workspaceId
      */
     async canActivateBilling(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId } = req.params;
-        const { mgmtApiPrivateKey } = req.body;
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
 
-        return await managementService.canActivateBilling(workspaceId, mgmtApiPrivateKey);
+            let message;
+            let status;
+            await managementService.canActivateBilling(workspaceId, mgmtApiPrivateKey)
+            .then(res => {
+                message = res['message'];
+                status = res['status'];
+            });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 
     /**
      * This function fetches the subscription details for the currently loggedIn user
      */
     async getSubscription(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId } = req.params;
-        const { mgmtApiPrivateKey } = req.body;
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
 
-        return await managementService.getSubscription(workspaceId, mgmtApiPrivateKey);
+            let subscription;
+            await managementService.getSubscription(workspaceId, mgmtApiPrivateKey)
+                .then(res => {
+                    subscription = res['subscription'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                subscription: subscription
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 
     /**
      * This function fetches the stripe customer details for the currently loggedIn user
      */
     async getStripeCustomer(req: Request, res: Response, next: NextFunction) {
-        const { customerId } = req.params;
-        const { mgmtApiPrivateKey } = req.body;
+        try {
+            const { customerId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
 
-        return await managementService.getStripeCustomer(customerId, mgmtApiPrivateKey);
+            let customer;
+            await managementService.getStripeCustomer(customerId, mgmtApiPrivateKey)
+                .then(res => {
+                    customer = res['customer'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                customer: customer
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 
     /**
      * This function fetches the prices for the subscription for the currently loggedIn user
      */
     async getSubscriptionPrices(req: Request, res: Response, next: NextFunction) {
-        const { mgmtApiPrivateKey } = req.body;
+        try {
+            const { mgmtApiPrivateKey } = req.body;
 
-        return await managementService.getSubscriptionPrices(mgmtApiPrivateKey);
+            let prices;
+            await managementService.getSubscriptionPrices(mgmtApiPrivateKey)
+                .then(res => {
+                    prices = res['prices'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                prices: prices
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 
     async isInTryOut(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId, mgmtApiPrivateKey } = req.body;
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
 
-        return await managementService.isInTryOut(workspaceId, mgmtApiPrivateKey);
+            let message;
+            let status;
+            let time_remaining;
+            await managementService.isInTryOut(workspaceId, mgmtApiPrivateKey)
+                .then(res => {
+                    message = res['message'];
+                    status = res['status'];
+                    time_remaining = res['time_remaining'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status,
+                time_remaining: time_remaining
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 
     /* | ======================================= BILLING ENDS ========================================== | */
@@ -298,10 +444,26 @@ export class ManagementControllers {
      * @param workspaceId
      */
     async getFlamingoStatus(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId } = req.params;
-        const { mgmtApiPrivateKey } = req.body;
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
 
-        return await managementService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey);
+            let message;
+            let status;
+            await managementService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey)
+                .then(res => {
+                    message = res['message'];
+                    status = res['status'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 
     /**
@@ -309,10 +471,26 @@ export class ManagementControllers {
      * @param workspaceId
      */
     async getExcelImportStatus(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId } = req.params;
-        const { mgmtApiPrivateKey } = req.body;
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
 
-        return await managementService.getExcelImportStatus(workspaceId, mgmtApiPrivateKey);
+            let message;
+            let status;
+            await managementService.getExcelImportStatus(workspaceId, mgmtApiPrivateKey)
+                .then(res => {
+                    message = res['message'];
+                    status = res['status'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 }
 
