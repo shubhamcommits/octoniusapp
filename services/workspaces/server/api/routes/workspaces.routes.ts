@@ -77,7 +77,7 @@ routes.get('/can-activate-billing/:workspaceId', mgmt.canActivateBilling);
 routes.get('/get-subscription/:workspaceId', mgmt.getSubscription);
 
 // GET - get customer details
-routes.get('/get-customer/:workspaceId', mgmt.getStripeCustomer);
+routes.get('/get-customer/:customerId', mgmt.getStripeCustomer);
 
 // GET - get subscription prices
 routes.get('/get-subscription-prices', mgmt.getSubscriptionPrices);

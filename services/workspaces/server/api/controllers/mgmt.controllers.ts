@@ -227,7 +227,8 @@ export class ManagementControllers {
     }
 
     async getStripeCheckoutSession(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId, sessionId, mgmtApiPrivateKey } = req.body;
+        const { workspaceId, sessionId } = req.params;
+        const { mgmtApiPrivateKey } = req.body;
 
         return await managementService.getStripeCheckoutSession(sessionId, workspaceId, mgmtApiPrivateKey);
     }
@@ -237,7 +238,8 @@ export class ManagementControllers {
      * @param workspaceId
      */
     async getBillingStatus(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId, mgmtApiPrivateKey } = req.body;
+        const { workspaceId } = req.params;
+        const { mgmtApiPrivateKey } = req.body;
 
         return await managementService.getBillingStatus(workspaceId, mgmtApiPrivateKey);
     }
@@ -248,7 +250,8 @@ export class ManagementControllers {
      * @param workspaceId
      */
     async canActivateBilling(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId, mgmtApiPrivateKey } = req.body;
+        const { workspaceId } = req.params;
+        const { mgmtApiPrivateKey } = req.body;
 
         return await managementService.canActivateBilling(workspaceId, mgmtApiPrivateKey);
     }
@@ -257,7 +260,8 @@ export class ManagementControllers {
      * This function fetches the subscription details for the currently loggedIn user
      */
     async getSubscription(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId, mgmtApiPrivateKey } = req.body;
+        const { workspaceId } = req.params;
+        const { mgmtApiPrivateKey } = req.body;
 
         return await managementService.getSubscription(workspaceId, mgmtApiPrivateKey);
     }
@@ -266,7 +270,8 @@ export class ManagementControllers {
      * This function fetches the stripe customer details for the currently loggedIn user
      */
     async getStripeCustomer(req: Request, res: Response, next: NextFunction) {
-        const { customerId, mgmtApiPrivateKey } = req.body;
+        const { customerId } = req.params;
+        const { mgmtApiPrivateKey } = req.body;
 
         return await managementService.getStripeCustomer(customerId, mgmtApiPrivateKey);
     }
@@ -293,7 +298,8 @@ export class ManagementControllers {
      * @param workspaceId
      */
     async getFlamingoStatus(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId, mgmtApiPrivateKey } = req.body;
+        const { workspaceId } = req.params;
+        const { mgmtApiPrivateKey } = req.body;
 
         return await managementService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey);
     }
@@ -303,7 +309,8 @@ export class ManagementControllers {
      * @param workspaceId
      */
     async getExcelImportStatus(req: Request, res: Response, next: NextFunction) {
-        const { workspaceId, mgmtApiPrivateKey } = req.body;
+        const { workspaceId } = req.params;
+        const { mgmtApiPrivateKey } = req.body;
 
         return await managementService.getExcelImportStatus(workspaceId, mgmtApiPrivateKey);
     }

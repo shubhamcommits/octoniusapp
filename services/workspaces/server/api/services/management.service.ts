@@ -14,28 +14,43 @@ export class ManagementService {
     /* | ======================================= BILLING ========================================== | */
 
     createClientPortalSession(workspaceId: string, returnUrl: string, mgmtApiPrivateKey: string) {
-        return http.post(`${process.env.MANAGEMENT_URL}/billings/create-client-portal-session`, {
-        workspaceId: workspaceId,
-        return_url: returnUrl,
-        API_KEY: mgmtApiPrivateKey
-        });
+        try {
+            return http.post(`${process.env.MANAGEMENT_URL}/billings/create-client-portal-session`, {
+                workspaceId: workspaceId,
+                return_url: returnUrl,
+                API_KEY: mgmtApiPrivateKey
+            });
+
+        } catch (err) {
+         throw (err);
+        }
     }
 
     createStripeCheckoutSession(priceId: string, workspaceId: string, returnUrl: string, mgmtApiPrivateKey: string) {
-        return http.post(`${process.env.MANAGEMENT_URL}/billings/create-checkout-session`, {
-        priceId: priceId,
-        workspaceId: workspaceId,
-        return_url: returnUrl,
-        API_KEY: mgmtApiPrivateKey
-        });
+        try {
+                return http.post(`${process.env.MANAGEMENT_URL}/billings/create-checkout-session`, {
+                priceId: priceId,
+                workspaceId: workspaceId,
+                return_url: returnUrl,
+                API_KEY: mgmtApiPrivateKey
+            });
+
+        } catch (err) {
+            throw (err);
+        }
     }
 
     getStripeCheckoutSession(sessionId: string, workspaceId: string, mgmtApiPrivateKey: string) {
-        return http.get(`${process.env.MANAGEMENT_URL}/billings/get-checkout-session/${workspaceId}/${sessionId}`, {
-            params: {
-            API_KEY: mgmtApiPrivateKey
-            }
-        });
+        try {
+                return http.get(`${process.env.MANAGEMENT_URL}/billings/get-checkout-session/${workspaceId}/${sessionId}`, {
+                params: {
+                    API_KEY: mgmtApiPrivateKey
+                    }
+            });
+
+        } catch (err) {
+            throw (err);
+        }
     }
 
     /**
@@ -43,12 +58,15 @@ export class ManagementService {
      * @param workspaceId
      */
     getBillingStatus(workspaceId: string, mgmtApiPrivateKey: string) {
-        return http.get(process.env.MANAGEMENT_URL + `/billings/get-billing-status/${workspaceId}`, {
-        params: {
-            API_KEY: mgmtApiPrivateKey
+        try {
+                return http.get(process.env.MANAGEMENT_URL + `/billings/get-billing-status/${workspaceId}`, {
+                params: {
+                    API_KEY: mgmtApiPrivateKey
+                }
+            })
+        } catch (err) {
+            throw (err);
         }
-        })
-        
     }
 
     /**
@@ -57,56 +75,77 @@ export class ManagementService {
      * @param workspaceId
      */
     canActivateBilling(workspaceId: string, mgmtApiPrivateKey: string) {
-        return http.get(process.env.MANAGEMENT_URL + `/billings/can-activate-billing/${workspaceId}`, {
-        params: {
-            API_KEY: mgmtApiPrivateKey
+        try {
+                return http.get(process.env.MANAGEMENT_URL + `/billings/can-activate-billing/${workspaceId}`, {
+                params: {
+                    API_KEY: mgmtApiPrivateKey
+                }
+            })
+
+        } catch (err) {
+            throw (err);
         }
-        })
-        
     }
 
     /**
      * This function fetches the subscription details for the currently loggedIn user
      */
     getSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
-        return http.get(process.env.MANAGEMENT_URL + `/billings/get-subscription/${workspaceId}`, {
-        params: {
-            API_KEY: mgmtApiPrivateKey
-        }
-        })
-        
+        try {
+                return http.get(process.env.MANAGEMENT_URL + `/billings/get-subscription/${workspaceId}`, {
+                params: {
+                    API_KEY: mgmtApiPrivateKey
+                }
+            })
+
+        } catch (err) {
+            throw (err);
+        }   
     }
 
     /**
      * This function fetches the stripe customer details for the currently loggedIn user
      */
     getStripeCustomer(customerId: string, mgmtApiPrivateKey: string) {
-        return http.get(process.env.MANAGEMENT_URL + `/billings/get-customer/${customerId}`, {
-        params: {
-            API_KEY: mgmtApiPrivateKey
+        try {
+            return http.get(process.env.MANAGEMENT_URL + `/billings/get-customer/${customerId}`, {
+                params: {
+                    API_KEY: mgmtApiPrivateKey
+                }
+            })
+
+        } catch (err) {
+            throw (err);
         }
-        })
-        
     }
 
     /**
      * This function fetches the prices for the subscription for the currently loggedIn user
      */
     getSubscriptionPrices(mgmtApiPrivateKey: string) {
-        return http.get(process.env.MANAGEMENT_URL + `/billings/get-subscription-prices`, {
-        params: {
-            API_KEY: mgmtApiPrivateKey
+        try {
+            return http.get(process.env.MANAGEMENT_URL + `/billings/get-subscription-prices`, {
+                params: {
+                    API_KEY: mgmtApiPrivateKey
+                }
+            })
+
+        } catch (err) {
+            throw (err);
         }
-        })
-        
     }
 
     isInTryOut(workspaceId: string, mgmtApiPrivateKey: string) {
-        return http.get(`${process.env.MANAGEMENT_URL}/billings/${workspaceId}/inTryOut`, {
-        params: {
-            API_KEY: mgmtApiPrivateKey
+        try {
+            return http.get(`${process.env.MANAGEMENT_URL}/billings/${workspaceId}/inTryOut`, {
+                params: {
+                    API_KEY: mgmtApiPrivateKey
+                }
+            });
+
+        } catch (err) {
+            throw (err);
         }
-        });
     }
 
     /* | ======================================= BILLING ENDS ========================================== | */
@@ -116,11 +155,16 @@ export class ManagementService {
      * @param workspaceId
      */
     getFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
-        return http.get(`${process.env.MANAGEMENT_URL}/workspace/${workspaceId}/flamingo`, {
-        params: {
-            API_KEY: mgmtApiPrivateKey
+        try {
+            return http.get(`${process.env.MANAGEMENT_URL}/workspace/${workspaceId}/flamingo`, {
+                params: {
+                    API_KEY: mgmtApiPrivateKey
+                }
+            });
+
+        } catch (err) {
+            throw (err);
         }
-        });
     }
 
     /**
@@ -128,10 +172,15 @@ export class ManagementService {
      * @param workspaceId
      */
     getExcelImportStatus(workspaceId: string, mgmtApiPrivateKey: string) {
-        return http.get(`${process.env.MANAGEMENT_URL}/workspace/${workspaceId}/excelImport`, {
-            params: {
+        try {
+            return http.get(`${process.env.MANAGEMENT_URL}/workspace/${workspaceId}/excelImport`, {
+                params: {
                     API_KEY: mgmtApiPrivateKey
                 }
             });
+
+        } catch (err) {
+            throw (err);
+        }
     }
 }
