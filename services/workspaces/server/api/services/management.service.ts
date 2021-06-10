@@ -15,11 +15,11 @@ export class ManagementService {
 
     /* | ======================================= BILLING ========================================== | */
 
-    createClientPortalSession(workspaceId: string, returnUrl: string, mgmtApiPrivateKey: string) {
+    createClientPortalSession(workspaceId: string, return_url: string, mgmtApiPrivateKey: string) {
         try {
             return http.post(`${this.MANAGEMENT_BASE_API_URL}/billings/create-client-portal-session`, {
                 workspaceId: workspaceId,
-                return_url: returnUrl,
+                return_url: return_url,
                 API_KEY: mgmtApiPrivateKey
             });
 
@@ -28,12 +28,12 @@ export class ManagementService {
         }
     }
 
-    createStripeCheckoutSession(priceId: string, workspaceId: string, returnUrl: string, mgmtApiPrivateKey: string) {
+    createStripeCheckoutSession(priceId: string, workspaceId: string, return_url: string, mgmtApiPrivateKey: string) {
         try {
-                return http.post(`${this.MANAGEMENT_BASE_API_URL}/billings/create-checkout-session`, {
+            return http.post(`${this.MANAGEMENT_BASE_API_URL}/billings/create-checkout-session`, {
                 priceId: priceId,
                 workspaceId: workspaceId,
-                return_url: returnUrl,
+                return_url: return_url,
                 API_KEY: mgmtApiPrivateKey
             });
 
@@ -44,7 +44,7 @@ export class ManagementService {
 
     getStripeCheckoutSession(sessionId: string, workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-                return http.get(`${this.MANAGEMENT_BASE_API_URL}/billings/get-checkout-session/${workspaceId}/${sessionId}`, {
+            return http.get(`${this.MANAGEMENT_BASE_API_URL}/billings/get-checkout-session/${workspaceId}/${sessionId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                     }
@@ -61,7 +61,7 @@ export class ManagementService {
      */
     getBillingStatus(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-                return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-billing-status/${workspaceId}`, {
+            return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-billing-status/${workspaceId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                 }
@@ -78,7 +78,7 @@ export class ManagementService {
      */
     canActivateBilling(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-                return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/can-activate-billing/${workspaceId}`, {
+            return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/can-activate-billing/${workspaceId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                 }
@@ -94,7 +94,7 @@ export class ManagementService {
      */
     getSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-                return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription/${workspaceId}`, {
+            return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription/${workspaceId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                 }

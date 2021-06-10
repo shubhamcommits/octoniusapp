@@ -16,27 +16,27 @@ export class ManagementPortalService {
 
   /* | ======================================= BILLING ========================================== | */
 
-  createClientPortalSession(workspaceId: string, returnUrl: string, mgmtApiPrivateKey: string) {
+  createClientPortalSession(workspaceId: string, return_url: string, mgmtApiPrivateKey: string) {
     return this._http.post(`${this.WORKSPACE_BASE_API_URL}/create-client-portal-session`, {
       workspaceId: workspaceId,
-      return_url: returnUrl,
-      API_KEY: mgmtApiPrivateKey
+      return_url: return_url,
+      mgmtApiPrivateKey: mgmtApiPrivateKey
     }).toPromise();
   }
 
-  createStripeCheckoutSession(priceId: string, workspaceId: string, returnUrl: string, mgmtApiPrivateKey: string) {
+  createStripeCheckoutSession(priceId: string, workspaceId: string, return_url: string, mgmtApiPrivateKey: string) {
     return this._http.post(`${this.WORKSPACE_BASE_API_URL}/create-checkout-session`, {
       priceId: priceId,
       workspaceId: workspaceId,
-      return_url: returnUrl,
-      API_KEY: mgmtApiPrivateKey
+      return_url: return_url,
+      mgmtApiPrivateKey: mgmtApiPrivateKey
     }).toPromise();
   }
 
   getStripeCheckoutSession(sessionId: string, workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(`${this.WORKSPACE_BASE_API_URL}/get-checkout-session/${workspaceId}/${sessionId}`, {
         params: {
-          API_KEY: mgmtApiPrivateKey
+          mgmtApiPrivateKey: mgmtApiPrivateKey
         }
       }).toPromise();
   }
@@ -48,7 +48,7 @@ export class ManagementPortalService {
   getBillingStatus(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(this.WORKSPACE_BASE_API_URL + `/get-billing-status/${workspaceId}`, {
       params: {
-        API_KEY: mgmtApiPrivateKey
+        mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     })
     .toPromise()
@@ -62,7 +62,7 @@ export class ManagementPortalService {
    canActivateBilling(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(this.WORKSPACE_BASE_API_URL + `/can-activate-billing/${workspaceId}`, {
       params: {
-        API_KEY: mgmtApiPrivateKey
+        mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     })
     .toPromise()
@@ -74,7 +74,7 @@ export class ManagementPortalService {
    getSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(this.WORKSPACE_BASE_API_URL + `/get-subscription/${workspaceId}`, {
       params: {
-        API_KEY: mgmtApiPrivateKey
+        mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     })
     .toPromise()
@@ -86,7 +86,7 @@ export class ManagementPortalService {
   getStripeCustomer(customerId: string, mgmtApiPrivateKey: string) {
     return this._http.get(this.WORKSPACE_BASE_API_URL + `/get-customer/${customerId}`, {
       params: {
-        API_KEY: mgmtApiPrivateKey
+        mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     })
     .toPromise()
@@ -96,9 +96,9 @@ export class ManagementPortalService {
    * This function fetches the prices for the subscription for the currently loggedIn user
    */
   getSubscriptionPrices(mgmtApiPrivateKey: string) {
-    return this._http.get(this.WORKSPACE_BASE_API_URL + `/get-subscription-prices`, {
+    return this._http.get(this.WORKSPACE_BASE_API_URL + `/billing/get-subscription-prices`, {
       params: {
-        API_KEY: mgmtApiPrivateKey
+        mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     })
     .toPromise()
@@ -107,7 +107,7 @@ export class ManagementPortalService {
   isInTryOut(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/inTryOut`, {
       params: {
-        API_KEY: mgmtApiPrivateKey
+        mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     }).toPromise();
   }
@@ -121,7 +121,7 @@ export class ManagementPortalService {
   getFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/flamingo`, {
       params: {
-        API_KEY: mgmtApiPrivateKey
+        mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     }).toPromise();
   }
@@ -133,7 +133,7 @@ export class ManagementPortalService {
    getExcelImportStatus(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/excelImport`, {
       params: {
-        API_KEY: mgmtApiPrivateKey
+        mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     }).toPromise();
   }

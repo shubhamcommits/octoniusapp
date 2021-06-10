@@ -220,11 +220,11 @@ export class ManagementControllers {
     async createClientPortalSession(req: Request, res: Response, next: NextFunction) {
         
         try {
-            const { workspaceId, returnUrl, mgmtApiPrivateKey } = req.body;
+            const { workspaceId, return_url, mgmtApiPrivateKey } = req.body;
 
             let session;
-            await managementService.createClientPortalSession(workspaceId, returnUrl, mgmtApiPrivateKey).then(res => {
-                session = res['session'];
+            await managementService.createClientPortalSession(workspaceId, return_url, mgmtApiPrivateKey).then(res => {
+                session = res['data']['session'];
             });
 
             // Send the status 200 response 
@@ -238,14 +238,13 @@ export class ManagementControllers {
 
     async createStripeCheckoutSession(req: Request, res: Response, next: NextFunction) {
         try {
-            
-            const { priceId, workspaceId, returnUrl, mgmtApiPrivateKey } = req.body;
+            const { priceId, workspaceId, return_url, mgmtApiPrivateKey } = req.body;
 
             let session;
             let pk_stripe;
-            await managementService.createStripeCheckoutSession(priceId, workspaceId, returnUrl, mgmtApiPrivateKey).then(res => {
-                session = res['session'];
-                pk_stripe = res['pk_stripe'];
+            await managementService.createStripeCheckoutSession(priceId, workspaceId, return_url, mgmtApiPrivateKey).then(res => {
+                session = res['data']['session'];
+                pk_stripe = res['data']['pk_stripe'];
             });
 
             // Send the status 200 response 
@@ -268,8 +267,8 @@ export class ManagementControllers {
             let subscription;
             await managementService.getStripeCheckoutSession(sessionId, workspaceId, mgmtApiPrivateKey)
                 .then(res => {
-                    subscription = res['subscription'];
-                    workspace = res['workspace'];
+                    subscription = res['data']['subscription'];
+                    workspace = res['data']['workspace'];
                 });
 
             // Send the status 200 response 
@@ -297,10 +296,10 @@ export class ManagementControllers {
             let onPremise;
             await managementService.getBillingStatus(workspaceId, mgmtApiPrivateKey)
                 .then(res => {
-                    message = res['message'];
-                    status = res['status'];
-                    blocked = res['blocked'];
-                    onPremise = res['onPremise'];
+                    message = res['data']['message'];
+                    status = res['data']['status'];
+                    blocked = res['data']['blocked'];
+                    onPremise = res['data']['onPremise'];
                 });
 
             // Send the status 200 response 
@@ -329,8 +328,8 @@ export class ManagementControllers {
             let status;
             await managementService.canActivateBilling(workspaceId, mgmtApiPrivateKey)
             .then(res => {
-                message = res['message'];
-                status = res['status'];
+                message = res['data']['message'];
+                status = res['data']['status'];
             });
 
             // Send the status 200 response 
@@ -354,7 +353,7 @@ export class ManagementControllers {
             let subscription;
             await managementService.getSubscription(workspaceId, mgmtApiPrivateKey)
                 .then(res => {
-                    subscription = res['subscription'];
+                    subscription = res['data']['subscription'];
                 });
 
             // Send the status 200 response 
@@ -372,12 +371,12 @@ export class ManagementControllers {
     async getStripeCustomer(req: Request, res: Response, next: NextFunction) {
         try {
             const { customerId } = req.params;
-            const { mgmtApiPrivateKey } = req.body;
+            const { mgmtApiPrivateKey } = req.query;
 
             let customer;
-            await managementService.getStripeCustomer(customerId, mgmtApiPrivateKey)
+            await managementService.getStripeCustomer(customerId, mgmtApiPrivateKey.toString())
                 .then(res => {
-                    customer = res['customer'];
+                    customer = res['data']['customer'];
                 });
 
             // Send the status 200 response 
@@ -394,12 +393,12 @@ export class ManagementControllers {
      */
     async getSubscriptionPrices(req: Request, res: Response, next: NextFunction) {
         try {
-            const { mgmtApiPrivateKey } = req.body;
+            const { mgmtApiPrivateKey } = req.query;
 
             let prices;
-            await managementService.getSubscriptionPrices(mgmtApiPrivateKey)
+            await managementService.getSubscriptionPrices(mgmtApiPrivateKey.toString())
                 .then(res => {
-                    prices = res['prices'];
+                    prices = res['data']['prices'];
                 });
 
             // Send the status 200 response 
@@ -452,8 +451,8 @@ export class ManagementControllers {
             let status;
             await managementService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey)
                 .then(res => {
-                    message = res['message'];
-                    status = res['status'];
+                    message = res['data']['message'];
+                    status = res['data']['status'];
                 });
 
             // Send the status 200 response 
@@ -479,8 +478,8 @@ export class ManagementControllers {
             let status;
             await managementService.getExcelImportStatus(workspaceId, mgmtApiPrivateKey)
                 .then(res => {
-                    message = res['message'];
-                    status = res['status'];
+                    message = res['data']['message'];
+                    status = res['data']['status'];
                 });
 
             // Send the status 200 response 

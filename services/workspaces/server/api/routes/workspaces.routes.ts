@@ -80,7 +80,7 @@ routes.get('/get-subscription/:workspaceId', mgmt.getSubscription);
 routes.get('/get-customer/:customerId', mgmt.getStripeCustomer);
 
 // GET - get subscription prices
-routes.get('/get-subscription-prices', mgmt.getSubscriptionPrices);
+routes.get('/billing/get-subscription-prices', mgmt.getSubscriptionPrices);
 
 // GET - 
 routes.get('/:workspaceId/inTryOut', mgmt.isInTryOut);
