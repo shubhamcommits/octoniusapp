@@ -1,9 +1,11 @@
 import { sendError } from '../../utils';
 import { Request, Response, NextFunction } from 'express';
-import { WorkspaceService } from '../services';
+import { ManagementService, WorkspaceService } from '../services';
 import { Account, Group, User, Workspace } from '../models';
+import http from 'axios';
 
 const workspaceService = new WorkspaceService();
+const managementService = new ManagementService();
 
 export class ManagementControllers {
 
@@ -207,6 +209,103 @@ export class ManagementControllers {
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
+    }
+
+    /**************/
+    /* | ======================================= BILLING ========================================== | */
+
+    async createClientPortalSession(req: Request, res: Response, next: NextFunction) {
+        const { workspaceId, returnUrl, mgmtApiPrivateKey } = req.body;
+
+        return await managementService.createClientPortalSession(workspaceId, returnUrl, mgmtApiPrivateKey);
+    }
+
+    async createStripeCheckoutSession(req: Request, res: Response, next: NextFunction) {
+        const { priceId, workspaceId, returnUrl, mgmtApiPrivateKey } = req.body;
+
+        return await managementService.createStripeCheckoutSession(priceId, workspaceId, returnUrl, mgmtApiPrivateKey);
+    }
+
+    async getStripeCheckoutSession(req: Request, res: Response, next: NextFunction) {
+        const { workspaceId, sessionId, mgmtApiPrivateKey } = req.body;
+
+        return await managementService.getStripeCheckoutSession(sessionId, workspaceId, mgmtApiPrivateKey);
+    }
+
+    /**
+     * This function is responsible for getting the current billing status
+     * @param workspaceId
+     */
+    async getBillingStatus(req: Request, res: Response, next: NextFunction) {
+        const { workspaceId, mgmtApiPrivateKey } = req.body;
+
+        return await managementService.getBillingStatus(workspaceId, mgmtApiPrivateKey);
+    }
+
+    /**
+     * This function is responsible for know if the workspace can access the billing page
+     * Normally knowing if the environment is on-premise or on the cloud
+     * @param workspaceId
+     */
+    async canActivateBilling(req: Request, res: Response, next: NextFunction) {
+        const { workspaceId, mgmtApiPrivateKey } = req.body;
+
+        return await managementService.canActivateBilling(workspaceId, mgmtApiPrivateKey);
+    }
+
+    /**
+     * This function fetches the subscription details for the currently loggedIn user
+     */
+    async getSubscription(req: Request, res: Response, next: NextFunction) {
+        const { workspaceId, mgmtApiPrivateKey } = req.body;
+
+        return await managementService.getSubscription(workspaceId, mgmtApiPrivateKey);
+    }
+
+    /**
+     * This function fetches the stripe customer details for the currently loggedIn user
+     */
+    async getStripeCustomer(req: Request, res: Response, next: NextFunction) {
+        const { customerId, mgmtApiPrivateKey } = req.body;
+
+        return await managementService.getStripeCustomer(customerId, mgmtApiPrivateKey);
+    }
+
+    /**
+     * This function fetches the prices for the subscription for the currently loggedIn user
+     */
+    async getSubscriptionPrices(req: Request, res: Response, next: NextFunction) {
+        const { mgmtApiPrivateKey } = req.body;
+
+        return await managementService.getSubscriptionPrices(mgmtApiPrivateKey);
+    }
+
+    async isInTryOut(req: Request, res: Response, next: NextFunction) {
+        const { workspaceId, mgmtApiPrivateKey } = req.body;
+
+        return await managementService.isInTryOut(workspaceId, mgmtApiPrivateKey);
+    }
+
+    /* | ======================================= BILLING ENDS ========================================== | */
+
+    /**
+     * This function is responsible for check if the workspace has flamingo active
+     * @param workspaceId
+     */
+    async getFlamingoStatus(req: Request, res: Response, next: NextFunction) {
+        const { workspaceId, mgmtApiPrivateKey } = req.body;
+
+        return await managementService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey);
+    }
+
+    /**
+     * This function is responsible for check if the workspace has excel import active
+     * @param workspaceId
+     */
+    async getExcelImportStatus(req: Request, res: Response, next: NextFunction) {
+        const { workspaceId, mgmtApiPrivateKey } = req.body;
+
+        return await managementService.getExcelImportStatus(workspaceId, mgmtApiPrivateKey);
     }
 }
 

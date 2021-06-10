@@ -3,7 +3,6 @@ import { Group, Workspace, User, Account } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import { UsersService, WorkspaceService } from '../services';
 import http from 'axios';
-import moment from 'moment';
 
 // User Service Instance
 const usersService = new UsersService();

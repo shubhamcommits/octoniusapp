@@ -1,9 +1,13 @@
 import express from 'express';
 import { Auths, workspaceFileHandler } from '../../utils';
 import { WorkspaceController } from '../controllers';
+import { ManagementControllers } from '../controllers/mgmt.controllers';
 
 // Create Workspace controller Class
-const workspaces = new WorkspaceController()
+const workspaces = new WorkspaceController();
+
+// Create Management controller Class
+const mgmt = new ManagementControllers();
 
 // Auths Helper Function
 const authsHelper = new Auths();
@@ -50,6 +54,36 @@ routes.get('/skills/:workspaceId/:query', workspaces.getUniqueSkills);
 
 // DELETE - Removes the workspace from the database
 routes.delete('/:workspaceId', workspaces.remove);
+
+/**
+ * MGMT calls
+*/
+// POST - Create a customer client portal session
+routes.post('/create-client-portal-session', mgmt.createClientPortalSession);
+
+// POST - Create a checkout portal session
+routes.post('/create-checkout-session', mgmt.createStripeCheckoutSession);
+
+// GET - 
+routes.get('/get-checkout-session/:workspaceId/:sessionId', mgmt.getStripeCheckoutSession);
+
+// GET - 
+routes.get('/get-billing-status/:workspaceId', mgmt.getBillingStatus);
+
+// GET - To check if the workspace is on-premise or on the cloud
+routes.get('/can-activate-billing/:workspaceId', mgmt.canActivateBilling);
+
+// GET - get subscription details
+routes.get('/get-subscription/:workspaceId', mgmt.getSubscription);
+
+// GET - get customer details
+routes.get('/get-customer/:workspaceId', mgmt.getStripeCustomer);
+
+// GET - get subscription prices
+routes.get('/get-subscription-prices', mgmt.getSubscriptionPrices);
+
+// GET - 
+routes.get('/:workspaceId/inTryOut', mgmt.isInTryOut);
 
 /*  ===================
  *  -- EXPORT ROUTES --
