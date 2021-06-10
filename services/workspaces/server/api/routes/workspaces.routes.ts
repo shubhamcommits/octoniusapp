@@ -85,6 +85,12 @@ routes.get('/get-subscription-prices', mgmt.getSubscriptionPrices);
 // GET - 
 routes.get('/:workspaceId/inTryOut', mgmt.isInTryOut);
 
+// GET - obtain if the flamingo module is availability in the workspace
+routes.get('/:workspaceId/flamingo', mgmt.getFlamingoStatus);
+
+// GET - obtain if the excelImport module is availability in the workspace
+routes.get('/:workspaceId/excelImport', mgmt.getExcelImportStatus);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
