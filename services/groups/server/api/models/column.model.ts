@@ -57,6 +57,9 @@ const ColumnSchema = new Schema({
                 required: true
             }
         }]
+    },
+    kanban_order: {
+        type: Number
     }
 });
 

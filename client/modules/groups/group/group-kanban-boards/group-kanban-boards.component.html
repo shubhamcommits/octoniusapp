@@ -1,11 +1,11 @@
-
 <div class="board">
     <div class="board-wrapper">
 
         <!-- ALL COLUMN DETAILS STARTS -->
-        <div class="board-columns" cdkDropListGroup *ngIf="this.columns">
-            <div class="board-column" id="column._id" *ngFor="let column of columns; let i = index;">
+        <div class="board-columns" cdkDropListGroup *ngIf="columns"
+          cdkDropList [cdkDropListData]="columns" (cdkDropListDropped)="dropColumn($event)">
 
+            <div class="board-column" id="column._id" cdkDrag *ngFor="let column of columns; let i = index;">
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                 <div class="column-title">
                     <p class="text-capitalize" [matTooltip]="column?.title">
@@ -142,6 +142,5 @@
 
         </div>
         <!-- ALL COLUMN DETAILS ENDS -->
-
     </div>
 </div>

@@ -22,9 +22,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     private router: ActivatedRoute,
     public utilityService: UtilityService,
     private columnService: ColumnService,
+    private flowService: FlowService,
     private injector: Injector,
-    public dialog: MatDialog,
-    private flowService: FlowService
+    public dialog: MatDialog
   ) { }
 
   // Base URL of the uploads
@@ -54,6 +54,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
   @Output() taskClonnedEvent = new EventEmitter();
   @Output() newSectionEvent = new EventEmitter();
+  @Output() moveSectionEvent = new EventEmitter();
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -351,7 +352,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   }
 
   /**
-   * Standard Angular CDK Event which monitors the drop functionality between different columns
+   * Standard Angular CDK Event which monitors the drop functionality of tasks
    * @param event
    */
   drop(event: CdkDragDrop<string[]>) {
@@ -369,6 +370,30 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       // Call move task to a new column
       this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
     }
+  }
+
+  /**
+   * Standard Angular CDK Event which monitors the drop functionality of different columns
+   * @param event
+   */
+  dropColumn(event: CdkDragDrop<string[]>) {
+    // Utility Service Instance
+    let utilityService = this.injector.get(UtilityService)
+
+    // Call the HTTP Service function
+    utilityService.asyncNotification('Please wait we are save the column order...', new Promise((resolve, reject) => {
+      // Move items in array
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+
+      const columnsMap = event.container.data.map((col, index) => { return { _id: col['_id'], position: index }});
+      this.columnService.updateColumnsPosition(columnsMap)
+        .then((res) => {
+          resolve(utilityService.resolveAsyncPromise('Order saved!'));
+        })
+        .catch((err) => {
+          reject(utilityService.rejectAsyncPromise('Unable to save the order of the columns at the moment, please try again!'));
+        });
+    }));
   }
 
   /**
@@ -425,8 +450,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         })
         .catch((err) => {
           reject(utilityService.rejectAsyncPromise('Unable to create the column at the moment, please try again!'))
-        })
-    }))
+        });
+    }));
   }
 
   /**
