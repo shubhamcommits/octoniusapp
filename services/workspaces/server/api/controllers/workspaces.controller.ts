@@ -1,4 +1,4 @@
-import { sendError, Auths } from '../../utils';
+import { sendError, Auths, config } from '../../utils';
 import { Group, Workspace, User, Account } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import { UsersService, WorkspaceService } from '../services';
@@ -352,7 +352,7 @@ export class WorkspaceController {
                 API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt,
                 userData: userMgmt,
-            });
+            }, config);
 
             // Send the status 200 response
             return res.status(200).json({
