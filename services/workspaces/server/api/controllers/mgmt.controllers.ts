@@ -421,9 +421,9 @@ export class ManagementControllers {
             let time_remaining;
             await managementService.isInTryOut(workspaceId, mgmtApiPrivateKey)
                 .then(res => {
-                    message = res['message'];
-                    status = res['status'];
-                    time_remaining = res['time_remaining'];
+                    message = res['data']['message'];
+                    status = res['data']['status'];
+                    time_remaining = res['data']['time_remaining'];
                 });
 
             // Send the status 200 response 
