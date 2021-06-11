@@ -1,9 +1,11 @@
 import { sendError } from '../../utils';
 import { Request, Response, NextFunction } from 'express';
-import { WorkspaceService } from '../services';
+import { ManagementService, WorkspaceService } from '../services';
 import { Account, Group, User, Workspace } from '../models';
+import http from 'axios';
 
 const workspaceService = new WorkspaceService();
+const managementService = new ManagementService();
 
 export class ManagementControllers {
 
@@ -203,6 +205,287 @@ export class ManagementControllers {
             // Send the status 200 response 
             return res.status(200).json({
                 message: 'User Deleted.'
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * Mgmt Calls
+     */
+
+    /* | ======================================= BILLING ========================================== | */
+
+    async createClientPortalSession(req: Request, res: Response, next: NextFunction) {
+        
+        try {
+            const { workspaceId, return_url, mgmtApiPrivateKey } = req.body;
+
+            let session;
+            await managementService.createClientPortalSession(workspaceId, return_url, mgmtApiPrivateKey).then(res => {
+                session = res['data']['session'];
+            });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                session: session
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async createStripeCheckoutSession(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { priceId, workspaceId, return_url, mgmtApiPrivateKey } = req.body;
+
+            let session;
+            let pk_stripe;
+            await managementService.createStripeCheckoutSession(priceId, workspaceId, return_url, mgmtApiPrivateKey).then(res => {
+                session = res['data']['session'];
+                pk_stripe = res['data']['pk_stripe'];
+            });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                session: session,
+                pk_stripe: pk_stripe
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getStripeCheckoutSession(req: Request, res: Response, next: NextFunction) {
+        try {
+            
+            const { workspaceId, sessionId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
+
+            let workspace;
+            let subscription;
+            await managementService.getStripeCheckoutSession(sessionId, workspaceId, mgmtApiPrivateKey)
+                .then(res => {
+                    subscription = res['data']['subscription'];
+                    workspace = res['data']['workspace'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                workspace: workspace,
+                subscription: subscription
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for getting the current billing status
+     * @param workspaceId
+     */
+    async getBillingStatus(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
+
+            let message;
+            let status;
+            let blocked;
+            let onPremise;
+            await managementService.getBillingStatus(workspaceId, mgmtApiPrivateKey)
+                .then(res => {
+                    message = res['data']['message'];
+                    status = res['data']['status'];
+                    blocked = res['data']['blocked'];
+                    onPremise = res['data']['onPremise'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status,
+                blocked: blocked,
+                onPremise: onPremise
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for know if the workspace can access the billing page
+     * Normally knowing if the environment is on-premise or on the cloud
+     * @param workspaceId
+     */
+    async canActivateBilling(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
+
+            let message;
+            let status;
+            await managementService.canActivateBilling(workspaceId, mgmtApiPrivateKey)
+            .then(res => {
+                message = res['data']['message'];
+                status = res['data']['status'];
+            });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function fetches the subscription details for the currently loggedIn user
+     */
+    async getSubscription(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
+
+            let subscription;
+            await managementService.getSubscription(workspaceId, mgmtApiPrivateKey)
+                .then(res => {
+                    subscription = res['data']['subscription'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                subscription: subscription
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function fetches the stripe customer details for the currently loggedIn user
+     */
+    async getStripeCustomer(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { customerId } = req.params;
+            const { mgmtApiPrivateKey } = req.query;
+
+            let customer;
+            await managementService.getStripeCustomer(customerId, mgmtApiPrivateKey.toString())
+                .then(res => {
+                    customer = res['data']['customer'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                customer: customer
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function fetches the prices for the subscription for the currently loggedIn user
+     */
+    async getSubscriptionPrices(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { mgmtApiPrivateKey } = req.query;
+
+            let prices;
+            await managementService.getSubscriptionPrices(mgmtApiPrivateKey.toString())
+                .then(res => {
+                    prices = res['data']['prices'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                prices: prices
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async isInTryOut(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
+
+            let message;
+            let status;
+            let time_remaining;
+            await managementService.isInTryOut(workspaceId, mgmtApiPrivateKey)
+                .then(res => {
+                    message = res['data']['message'];
+                    status = res['data']['status'];
+                    time_remaining = res['data']['time_remaining'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status,
+                time_remaining: time_remaining
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /* | ======================================= BILLING ENDS ========================================== | */
+
+    /**
+     * This function is responsible for check if the workspace has flamingo active
+     * @param workspaceId
+     */
+    async getFlamingoStatus(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
+
+            let message;
+            let status;
+            await managementService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey)
+                .then(res => {
+                    message = res['data']['message'];
+                    status = res['data']['status'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for check if the workspace has excel import active
+     * @param workspaceId
+     */
+    async getExcelImportStatus(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { workspaceId } = req.params;
+            const { mgmtApiPrivateKey } = req.body;
+
+            let message;
+            let status;
+            await managementService.getExcelImportStatus(workspaceId, mgmtApiPrivateKey)
+                .then(res => {
+                    message = res['data']['message'];
+                    status = res['data']['status'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
