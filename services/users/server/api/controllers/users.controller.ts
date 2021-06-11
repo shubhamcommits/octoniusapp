@@ -1,6 +1,6 @@
 import { Account, Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
-import { sendError,PasswordHelper } from '../../utils';
+import { sendError,PasswordHelper, config } from '../../utils';
 import http from 'axios';
 import moment from 'moment';
 
@@ -251,7 +251,7 @@ export class UsersControllers {
                 API_KEY: workspace.management_private_api_key,
                 workspaceId: workspace._id,
                 userData: userMgmt
-            });
+            }, config);
 
             // Send status 200 response
             return res.status(200).json({
@@ -334,7 +334,7 @@ export class UsersControllers {
                     API_KEY: workspace.management_private_api_key,
                     workspaceId: workspace._id,
                     userData: userMgmt
-                });
+                }, config);
             }
 
             // Send status 200 response
@@ -422,7 +422,7 @@ export class UsersControllers {
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                 API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt
-            });
+            }, config);
             
             // Send status 200 response
             return res.status(200).json({
@@ -939,7 +939,7 @@ export class UsersControllers {
         http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
             API_KEY: workspace.management_private_api_key,
             workspaceData: workspaceMgmt
-        });
+        }, config);
 
         http.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {
             data: {

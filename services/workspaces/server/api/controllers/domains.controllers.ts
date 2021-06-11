@@ -1,4 +1,4 @@
-import { sendError } from '../../utils';
+import { sendError, config } from '../../utils';
 import { Group, Workspace, User, Account } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
@@ -198,7 +198,7 @@ export class DomainsControllers {
                         API_KEY: workspace.management_private_api_key,
                         workspaceId: workspace._id,
                         userData: userMgmt
-                    });
+                    }, config);
                 }
             })
 
@@ -271,7 +271,7 @@ export class DomainsControllers {
             http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                 API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt
-            }).then().catch(err => console.log(err));
+            }, config).then().catch(err => console.log(err));
 
             // Send the status 200 response
             return res.status(200).json({

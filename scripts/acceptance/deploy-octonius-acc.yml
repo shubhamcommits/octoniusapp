@@ -61,6 +61,10 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
       - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
     depends_on:
       - mongodb
     links:
@@ -90,6 +94,10 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
       - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
     depends_on:
       - mongodb
     links:
@@ -119,6 +127,10 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
       - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
     depends_on:
       - mongodb
     links:
@@ -148,6 +160,10 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
       - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
     depends_on:
       - mongodb
     links:

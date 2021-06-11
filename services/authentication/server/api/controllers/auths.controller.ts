@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Auth, User, Workspace, Group, Account } from '../models';
-import { sendError, Auths, PasswordHelper } from '../../utils';
+import { sendError, Auths, PasswordHelper, config } from '../../utils';
 import http from 'axios';
 import moment from 'moment';
 
@@ -418,7 +418,7 @@ export class AuthsController {
                     http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                         API_KEY: workspace.management_private_api_key,
                         workspaceData: workspaceMgmt
-                    }).then().catch(err => console.log(err));
+                    }, config).then().catch(err => console.log(err));
 
                     // Send user to the mgmt portal
                     let userMgmt = {
@@ -438,7 +438,7 @@ export class AuthsController {
                         API_KEY: workspace.management_private_api_key,
                         workspaceId: workspace._id,
                         userData: userMgmt
-                    }).then().catch(err => console.log(err));
+                    }, config).then().catch(err => console.log(err));
 
                     // Signup user and return the token
                     return res.status(200).json({

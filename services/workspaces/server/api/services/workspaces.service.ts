@@ -1,6 +1,7 @@
 import { CommonService } from '.';
 import { Account, Group, User, Workspace } from '../models';
 import http from "axios";
+import { config } from '../../utils';
 
 const commonService = new CommonService();
 
@@ -57,7 +58,8 @@ export class WorkspaceService {
         http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
             data: {
                 API_KEY: workspace.management_private_api_key
-            }
+            },
+            config
         });
     }
 
