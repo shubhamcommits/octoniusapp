@@ -1,9 +1,6 @@
 import { CommonService } from '.';
-import { Account, Group, User, Workspace } from '../models';
 import http from "axios";
-import { config } from '../../utils';
-
-const commonService = new CommonService();
+import { config, proxy } from '../../utils';
 
 /*  ===============================
  *  -- Management Service --
@@ -21,7 +18,7 @@ export class ManagementService {
                 workspaceId: workspaceId,
                 return_url: return_url,
                 API_KEY: mgmtApiPrivateKey
-            });
+            }, config);
 
         } catch (err) {
          throw (err);
@@ -35,7 +32,7 @@ export class ManagementService {
                 workspaceId: workspaceId,
                 return_url: return_url,
                 API_KEY: mgmtApiPrivateKey
-            });
+            }, config);
 
         } catch (err) {
             throw (err);
@@ -47,7 +44,8 @@ export class ManagementService {
             return http.get(`${this.MANAGEMENT_BASE_API_URL}/billings/get-checkout-session/${workspaceId}/${sessionId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
-                    }
+                },
+                proxy: proxy
             });
 
         } catch (err) {
@@ -64,7 +62,8 @@ export class ManagementService {
             return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-billing-status/${workspaceId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
-                }
+                },
+                proxy: proxy
             })
         } catch (err) {
             throw (err);
@@ -81,7 +80,8 @@ export class ManagementService {
             return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/can-activate-billing/${workspaceId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
-                }
+                },
+                proxy: proxy
             })
 
         } catch (err) {
@@ -97,7 +97,8 @@ export class ManagementService {
             return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription/${workspaceId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
-                }
+                },
+                proxy: proxy
             })
 
         } catch (err) {
@@ -113,7 +114,8 @@ export class ManagementService {
             return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-customer/${customerId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
-                }
+                },
+                proxy: proxy
             })
 
         } catch (err) {
@@ -129,7 +131,8 @@ export class ManagementService {
             return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription-prices`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
-                }
+                },
+                proxy: proxy
             })
 
         } catch (err) {
@@ -142,7 +145,8 @@ export class ManagementService {
             return http.get(`${this.MANAGEMENT_BASE_API_URL}/billings/${workspaceId}/inTryOut`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
-                }
+                },
+                proxy: proxy
             });
 
         } catch (err) {
@@ -161,7 +165,8 @@ export class ManagementService {
             return http.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/flamingo`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
-                }
+                },
+                proxy: proxy
             });
 
         } catch (err) {
@@ -178,7 +183,8 @@ export class ManagementService {
             return http.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/excelImport`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
-                }
+                },
+                proxy: proxy
             });
 
         } catch (err) {

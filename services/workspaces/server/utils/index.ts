@@ -2,7 +2,7 @@ import { Auths } from './auth';
 import { Password } from './password';
 import { sendErr } from './sendError';
 import { workspaceFileHandler } from "./filehandler";
-import { config } from './proxy'
+import { config, proxy } from './proxy'
 
 /*  =====================
  *  -- UTILS EXPORTS --
@@ -23,5 +23,6 @@ export {
     workspaceFileHandler as workspaceFileHandler,
 
     // PROXY CONFIGS
-    config as config
+    config as config,
+    proxy as proxy
 }
