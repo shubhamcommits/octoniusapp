@@ -22,21 +22,7 @@
 import { GroupsListComponent } from './groups-list/groups-list.component';
 import { CreateGroupComponent } from './groups-list/create-group/create-group.component';
 import { GroupComponent } from './group/group.component';
-// import { GroupHeaderComponent } from './group/group-header/group-header.component';
-// import { GroupActivityComponent } from './group/group-activity/group-activity.component';
-// import { GroupActivityFiltersComponent } from './group/group-activity/group-activity-filters/group-activity-filters.component';
-// import { GroupActivityProgressComponent } from './group/group-activity/group-activity-progress/group-activity-progress.component';
-// import { GroupAdminComponent } from './group/group-admin/group-admin.component';
-// import { GroupCalendarComponent } from './group/group-calendar/group-calendar.component';
-// import { GroupEditComponent } from './group/group-edit/group-edit.component';
-// import { GroupFilesComponent } from './group/group-files/group-files.component';
-// import { GroupTasksComponent } from './group/group-tasks/group-tasks.component';
-// import { GroupKanbanBoardsComponent } from './group/group-kanban-boards/group-kanban-boards.component';
-// import { GroupKanbanTaskAssignmentComponent } from './group/group-kanban-boards/group-kanban-task-assignment/group-kanban-task-assignment.component';
-// import { GroupKanbanTaskViewComponent } from './group/group-kanban-boards/group-kanban-task-view/group-kanban-task-view.component';
 import { GroupMembersComponent } from './group/group-members/group-members.component';
-// import { GroupPostComponent } from './group/group-post/group-post.component';
-// import { GroupImageDetailsComponent } from './group/group-header/group-image-details/group-image-details.component';
 import { GroupAdminComponent } from './group/group-admin/group-admin.component';
 import { GroupActivityComponent } from './group/group-activity/group-activity.component';
 import { DeleteGroupComponent } from './group/group-admin/delete-group/delete-group.component';
@@ -65,9 +51,7 @@ import { FormsModule } from '@angular/forms';
 
 import { GroupsRoutingModule } from './groups-routing.module';
 import { SharedModule } from 'src/app/common/shared/shared.module';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-// import { MomentModule } from "ngx-moment";
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -98,6 +82,7 @@ import { CalendarModule as Calendar, DateAdapter } from 'angular-calendar';
 import { CreateProjectColumnDialogComponent } from './group/group-kanban-boards/create-project-column-dialog/create-project-column-dialog.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { KanbanTaskCardComponent } from './group/group-kanban-boards/kanban-task-card/kanban-task-card.component';
+import { ColumnProjectSectionComponent } from './group/group-kanban-boards/column-project-section/column-project-section.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -105,6 +90,7 @@ import { KanbanTaskCardComponent } from './group/group-kanban-boards/kanban-task
 @NgModule({
   declarations: [
     GroupBarComponent,
+    ColumnProjectSectionComponent,
     // Groups List Component
     GroupsListComponent,
 
