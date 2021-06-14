@@ -30,7 +30,7 @@
     </span>
   </div>
 
-  <div class="project-container budget" (click)="openBudgetDialog(column)"
+  <div class="project-container budget" style="cursor: pointer;" (click)="openBudgetDialog(column)"
       *ngIf="canSeeBudget && column?.project_type && column?.budget?.amount_planned">
     Budget
     <span class="float-right">
