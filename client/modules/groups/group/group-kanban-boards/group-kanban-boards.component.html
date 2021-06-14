@@ -9,7 +9,7 @@
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                 <div class="column-title">
                     <p class="text-capitalize" [matTooltip]="column?.title">
-                      <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type" style="cursor: auto;">
+                      <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type">
                       {{ column?.title | truncatetext:20 }}
                     </p>
                     <div class="inline-block">
@@ -60,7 +60,6 @@
                       {{ formateDate(column?.start_date, "Do, MMM") }}
                       <i class="material-icons">arrow_right_alt</i>
                       {{ formateDate(column?.due_date, "Do, MMM") }}
-
                     </span>
                   </div>
 
@@ -74,7 +73,7 @@
                   </div>
 
                   <div class="project-container" style="height: 40px;" *ngIf="canSeeBudget && column?.project_type && !(column?.budget?.amount_planned)">
-                    <button class="btn muted" (click)="column.addBudget = true" *ngIf="!column.addBudget">
+                    <button class="btn muted" (click)="column.addBudget = true" *ngIf="!column.addBudget" style="width: 90%; text-align: left;">
                       <i class="material-icons-outlined">add</i>Add budget
                     </button>
                     <div style="width: 75%;" class="float-left" *ngIf="column.addBudget">

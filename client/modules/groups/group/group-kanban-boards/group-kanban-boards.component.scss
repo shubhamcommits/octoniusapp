@@ -29,17 +29,13 @@
 
             .board-column {
                 display: flex;
-                // cursor: grab;
+                cursor: move;
                 flex-direction: column;
                 flex-grow: 1;
                 flex-basis: 0; // to force the columns to all be the same size, regardless of content
                 width: 340px;
                 margin: 0px;
                 padding: 0px;
-
-                // border-radius: 4px;
-
-                // background: rgba(white, 0.5);
 
                 &:not(:first-child) {
                     margin-left: 0;
