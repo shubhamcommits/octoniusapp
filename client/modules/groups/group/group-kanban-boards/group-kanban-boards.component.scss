@@ -25,16 +25,15 @@
         .board-columns {
             display: flex;
             flex-grow: 1;
-            position: absolute;
 
             .board-column {
                 display: flex;
                 cursor: move;
                 flex-direction: column;
-                flex-grow: 1;
+                flex-grow: 0;
                 flex-basis: 0; // to force the columns to all be the same size, regardless of content
                 width: 340px;
-                margin: 0px;
+                margin: 0px 15px;
                 padding: 0px;
 
                 &:not(:first-child) {
