@@ -1,4 +1,4 @@
-import { sendError, config } from '../../utils';
+import { sendError, axios } from '../../utils';
 import { Group, Workspace, User, Account } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
@@ -194,11 +194,11 @@ export class DomainsControllers {
                         created_date: user.created_date
                     }
     
-                    http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
+                    axios.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
                         API_KEY: workspace.management_private_api_key,
                         workspaceId: workspace._id,
                         userData: userMgmt
-                    }, config);
+                    });
                 }
             })
 
@@ -268,10 +268,10 @@ export class DomainsControllers {
                 access_code: workspace.access_code,
                 management_private_api_key: workspace.management_private_api_key
             }
-            http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+            axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                 API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt
-            }, config).then().catch(err => console.log(err));
+            }).then().catch(err => console.log(err));
 
             // Send the status 200 response
             return res.status(200).json({

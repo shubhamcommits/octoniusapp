@@ -3,7 +3,7 @@ import { sendErr } from './sendError';
 import { hasProperty } from './helperFunctions';
 import { userFileHandler } from "./filehandler";
 import { Password } from './password';
-import { config } from './proxy'
+import { axios } from './proxy'
 
 export {
 
@@ -22,5 +22,5 @@ export {
     Password as PasswordHelper,
 
     // PROXY CONFIGS
-    config as config
+    axios as axios
 }
