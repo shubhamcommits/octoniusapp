@@ -1,6 +1,6 @@
 import { CommonService } from '.';
 import http from "axios";
-import { config, proxy } from '../../utils';
+import { axios } from '../../utils';
 
 /*  ===============================
  *  -- Management Service --
@@ -14,11 +14,11 @@ export class ManagementService {
 
     createClientPortalSession(workspaceId: string, return_url: string, mgmtApiPrivateKey: string) {
         try {
-            return http.post(`${this.MANAGEMENT_BASE_API_URL}/billings/create-client-portal-session`, {
+            return axios.post(`${this.MANAGEMENT_BASE_API_URL}/billings/create-client-portal-session`, {
                 workspaceId: workspaceId,
                 return_url: return_url,
                 API_KEY: mgmtApiPrivateKey
-            }, config);
+            });
 
         } catch (err) {
          throw (err);
@@ -27,12 +27,12 @@ export class ManagementService {
 
     createStripeCheckoutSession(priceId: string, workspaceId: string, return_url: string, mgmtApiPrivateKey: string) {
         try {
-            return http.post(`${this.MANAGEMENT_BASE_API_URL}/billings/create-checkout-session`, {
+            return axios.post(`${this.MANAGEMENT_BASE_API_URL}/billings/create-checkout-session`, {
                 priceId: priceId,
                 workspaceId: workspaceId,
                 return_url: return_url,
                 API_KEY: mgmtApiPrivateKey
-            }, config);
+            });
 
         } catch (err) {
             throw (err);
@@ -41,11 +41,11 @@ export class ManagementService {
 
     getStripeCheckoutSession(sessionId: string, workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return http.get(`${this.MANAGEMENT_BASE_API_URL}/billings/get-checkout-session/${workspaceId}/${sessionId}`, {
+            return axios.get(`${this.MANAGEMENT_BASE_API_URL}/billings/get-checkout-session/${workspaceId}/${sessionId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                 },
-                proxy: proxy
+                
             });
 
         } catch (err) {
@@ -59,11 +59,11 @@ export class ManagementService {
      */
     getBillingStatus(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-billing-status/${workspaceId}`, {
+            return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-billing-status/${workspaceId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                 },
-                proxy: proxy
+                
             })
         } catch (err) {
             throw (err);
@@ -77,11 +77,11 @@ export class ManagementService {
      */
     canActivateBilling(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/can-activate-billing/${workspaceId}`, {
+            return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/can-activate-billing/${workspaceId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                 },
-                proxy: proxy
+                
             })
 
         } catch (err) {
@@ -94,11 +94,11 @@ export class ManagementService {
      */
     getSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription/${workspaceId}`, {
+            return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription/${workspaceId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                 },
-                proxy: proxy
+                
             })
 
         } catch (err) {
@@ -111,11 +111,11 @@ export class ManagementService {
      */
     getStripeCustomer(customerId: string, mgmtApiPrivateKey: string) {
         try {
-            return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-customer/${customerId}`, {
+            return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-customer/${customerId}`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                 },
-                proxy: proxy
+                
             })
 
         } catch (err) {
@@ -128,11 +128,11 @@ export class ManagementService {
      */
     getSubscriptionPrices(mgmtApiPrivateKey: string) {
         try {
-            return http.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription-prices`, {
+            return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-subscription-prices`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                 },
-                proxy: proxy
+                
             })
 
         } catch (err) {
@@ -142,11 +142,11 @@ export class ManagementService {
 
     isInTryOut(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return http.get(`${this.MANAGEMENT_BASE_API_URL}/billings/${workspaceId}/inTryOut`, {
+            return axios.get(`${this.MANAGEMENT_BASE_API_URL}/billings/${workspaceId}/inTryOut`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                 },
-                proxy: proxy
+                
             });
 
         } catch (err) {
@@ -162,11 +162,11 @@ export class ManagementService {
      */
     getFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return http.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/flamingo`, {
+            return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/flamingo`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                 },
-                proxy: proxy
+                
             });
 
         } catch (err) {
@@ -180,11 +180,11 @@ export class ManagementService {
      */
     getExcelImportStatus(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return http.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/excelImport`, {
+            return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/excelImport`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
                 },
-                proxy: proxy
+                
             });
 
         } catch (err) {

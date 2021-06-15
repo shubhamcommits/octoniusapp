@@ -1,7 +1,7 @@
 import { CommonService } from '.';
 import { Account, Group, User, Workspace } from '../models';
 import http from "axios";
-import { config } from '../../utils';
+import { axios } from '../../utils';
 
 const commonService = new CommonService();
 
@@ -55,11 +55,10 @@ export class WorkspaceService {
 
       if (callMgmtPortal) {
         // Remove the workspace in the mgmt portal
-        http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
+        axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}`, {
             data: {
                 API_KEY: workspace.management_private_api_key
-            },
-            config
+            }
         });
     }
 
