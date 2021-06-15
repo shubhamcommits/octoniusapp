@@ -1,13 +1,13 @@
 <div class="board">
-    <div class="board-wrapper">
+    <div class="board-wrapper" *ngIf="!isMobile"
+        cdkDropList [cdkDropListData]="columns" cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropColumn($event)">
 
         <!-- ALL COLUMN DETAILS FOR NO-MOBILE STARTS -->
-        <div class="board-columns" cdkDropListGroup *ngIf="columns && !isMobile"
-          cdkDropList [cdkDropListData]="columns" (cdkDropListDropped)="dropColumn($event)">
+        <div class="board-columns" cdkDropListGroup *ngIf="columns">
 
             <div class="board-column" id="column._id" cdkDrag *ngFor="let column of columns; let i = index;">
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
-                <div class="column-title">
+                <div class="column-title" cdkDragHandle>
                     <p class="text-capitalize" [matTooltip]="column?.title">
                       <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type">
                       {{ column?.title | truncatetext:20 }}
@@ -88,7 +88,8 @@
 
         </div>
         <!-- ALL COLUMN DETAILS FOR NO-MOBILE ENDS -->
-
+      </div>
+      <div class="board-wrapper" *ngIf="isMobile">
         <!-- ALL COLUMN DETAILS FOR MOBILE STARTS -->
         <div class="board-columns" *ngIf="columns && isMobile">
 

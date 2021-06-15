@@ -16,11 +16,7 @@
     min-height: 0;
 
     .board-wrapper {
-        // display: flex;
-        // flex-grow: 1;
         margin-top: 2rem;
-        // overflow-x: auto;
-        // white-space: nowrap;
 
         .board-columns {
             display: flex;
@@ -28,7 +24,6 @@
 
             .board-column {
                 display: flex;
-                cursor: move;
                 flex-direction: column;
                 flex-grow: 0;
                 flex-basis: 0; // to force the columns to all be the same size, regardless of content
@@ -45,6 +40,7 @@
                     justify-content: space-between;
                     margin: 24px 0;
                     width: 310px;
+                    cursor: move;
                     p {
                         font-size: 15px;
                         font-weight: 400;
