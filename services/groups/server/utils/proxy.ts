@@ -1,15 +1,22 @@
-// Config for the proxy   
-let config = {}
+// Import axios
+var axios = require('axios')
 
-// Check for proxy available   
+// Import Agent
+var HttpsProxyAgent = require('https-proxy-agent')
+
 if (process.env.PROXY_AVAILABLE == 'true') {
-    config = {
-        proxy: {
-            protocol: process.env.PROXY_PROTOCOL,
-            host: process.env.PROXY_HOST,
-            port: process.env.PROXY_PORT
-        }
-    }
+    
+    // Create Agent
+    const agent = new HttpsProxyAgent({
+        host: process.env.PROXY_HOST,
+        port: process.env.PROXY_PORT
+    })
+
+    // Update the agent
+    axios = axios.create({
+        httpsAgent: agent
+    })
 }
 
-export { config }
+
+export { axios }
