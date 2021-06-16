@@ -312,6 +312,36 @@ export class NotificationsService {
         throw err;
       }
   };
+    
+  /**
+  * This function is responsible for notifying the user getting a new post in one of his/her groups
+  * @param { postId, groupId, posted_by } comment 
+  */
+ async newPost(postId: any, groupId:any, posted_by: string, io: any) {
+    try {
+console.log(postId);
+      // Let usersStream
+      let userStream = Readable.from(await User.find({
+              _groups: groupId
+          }).select('first_name email'))
+      
+      await userStream.on('data', async (user: any) => {
+          const notification = await Notification.create({
+            _actor: posted_by,
+            _owner: user,
+            _origin_post: postId,
+            _origin_group: groupId,
+            message: 'posted',
+            type: 'new-post'
+          });
+
+          await helperFunctions.sendNotificationsFeedFromService(user, io, true);
+      });
+
+    } catch (err) {
+      throw err;
+    }
+ };
 
   /**
    * This function is responsible for fetching the latest first 5 read notifications

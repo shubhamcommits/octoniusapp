@@ -10,8 +10,8 @@ routes.post('/new-comment-mention', notificationFunctions.newCommentMentions);
 //This route is responsible to notifying all the user on assigning of a new event to them
 routes.post('/new-event', notificationFunctions.newEventAssignments);
 
-//This route is responsible for notifying the user on mention on new post
-routes.post('/new-mention', notificationFunctions.newPostMentions);
+// This route is responsible for notifying the user of a new post in on of his/her groups
+routes.post('/new-post', notificationFunctions.newPost);
 
 //This route is responsible for notifying the user on mention on new Folio
 routes.post('/new-folio-mention', notificationFunctions.newFolioMention);
@@ -36,5 +36,8 @@ routes.post('/new-like-post', notificationFunctions.likePost);
 
 //This route is responsible for notifying the user when his comment is liked
 routes.post('/new-like-comment', notificationFunctions.likeComment);
+
+// This route is responsible for notifying the user on mention on new post
+routes.post('/new-mention', notificationFunctions.newPostMentions);
 
 export { routes as notificationRoutes };

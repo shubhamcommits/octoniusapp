@@ -52,7 +52,7 @@ async function sendNotificationsFeed(socket: any, userId: string, io: any) {
  * @param userId 
  * @param io 
  */
-async function sendNotificationsFeedFromService(userId: string, io: any,backend?:any) {
+async function sendNotificationsFeedFromService(userId: string, io: any, backend?:any) {
     //  here the same as before, I deleted the emit code
     generateFeed(userId, io,backend);
 }

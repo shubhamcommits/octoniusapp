@@ -613,4 +613,25 @@ export class NotificationsController {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This route is responsible for notifying the user on mention on new post
+     * @param { postId, groupId, posted_by, io } post 
+     */
+    async newPost(req: Request, res: Response, next: NextFunction) {
+
+        const { postId, groupId, posted_by, io } = req.body;
+        try {
+            // Call Service Function for newEventAssignments
+            await notificationService.newPost(postId, groupId, posted_by, io);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Event Assignments Succeeded!`,
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    };
 }

@@ -122,9 +122,9 @@
         <div class="notification_title">
           {{ notification?._actor?.first_name || 'Deleted' }} {{ notification?._actor?.last_name || 'User' }}
           <span class="completed_notification">
-            posted
+            {{ notification?.message }}
           </span>
-          <span class="notification_post_title">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
+          <span class="notification_post_title">{{ notification?._origin_post?.title | truncatetext: 45 }}</span>
         </div>
 
         <div class="notification_date_time">
