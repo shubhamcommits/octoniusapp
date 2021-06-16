@@ -445,11 +445,11 @@ export class ManagementControllers {
     async getFlamingoStatus(req: Request, res: Response, next: NextFunction) {
         try {
             const { workspaceId } = req.params;
-            const { mgmtApiPrivateKey } = req.body;
+            const { mgmtApiPrivateKey } = req.query;
 
             let message;
             let status;
-            await managementService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey)
+            await managementService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey.toString())
                 .then(res => {
                     message = res['data']['message'];
                     status = res['data']['status'];
@@ -472,11 +472,11 @@ export class ManagementControllers {
     async getExcelImportStatus(req: Request, res: Response, next: NextFunction) {
         try {
             const { workspaceId } = req.params;
-            const { mgmtApiPrivateKey } = req.body;
+            const { mgmtApiPrivateKey } = req.query;
 
             let message;
             let status;
-            await managementService.getExcelImportStatus(workspaceId, mgmtApiPrivateKey)
+            await managementService.getExcelImportStatus(workspaceId, mgmtApiPrivateKey.toString())
                 .then(res => {
                     message = res['data']['message'];
                     status = res['data']['status'];
