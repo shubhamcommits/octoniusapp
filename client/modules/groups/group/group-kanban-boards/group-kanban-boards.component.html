@@ -1,15 +1,15 @@
-
 <div class="board">
-    <div class="board-wrapper">
+    <div class="board-wrapper" *ngIf="!isMobile"
+        cdkDropList [cdkDropListData]="columns" cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropColumn($event)">
 
-        <!-- ALL COLUMN DETAILS STARTS -->
-        <div class="board-columns" cdkDropListGroup *ngIf="this.columns">
-            <div class="board-column" id="column._id" *ngFor="let column of columns; let i = index;">
+        <!-- ALL COLUMN DETAILS FOR NO-MOBILE STARTS -->
+        <div class="board-columns" cdkDropListGroup *ngIf="columns">
 
+            <div class="board-column" id="column._id" cdkDrag *ngFor="let column of columns; let i = index;">
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
-                <div class="column-title">
+                <div class="column-title" cdkDragHandle>
                     <p class="text-capitalize" [matTooltip]="column?.title">
-                      <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type" style="cursor: auto;">
+                      <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type">
                       {{ column?.title | truncatetext:20 }}
                     </p>
                     <div class="inline-block">
@@ -53,52 +53,14 @@
                 <!-- COLUMN STATS SECTION ENDS -->
 
                 <!-- COLUMN PROJECT SECTION STARTS -->
-                <div *ngIf="column?.project_type">
-                  <div class="project-container">
-                    Planned
-                    <span class="float-right">
-                      {{ formateDate(column?.start_date, "Do, MMM") }}
-                      <i class="material-icons">arrow_right_alt</i>
-                      {{ formateDate(column?.due_date, "Do, MMM") }}
-
-                    </span>
-                  </div>
-
-                  <div class="project-container bold" *ngIf="column?.real_due_date">
-                    Real
-                    <span *ngIf="column?.real_due_date" class="float-right">
-                      <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757;">arrow_right_alt</i>
-                      {{ formateDate(column?.real_due_date, "Do, MMM") }}
-                      <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757; margin-top: -6px;">error</i>
-                    </span>
-                  </div>
-
-                  <div class="project-container" style="height: 40px;" *ngIf="canSeeBudget && column?.project_type && !(column?.budget?.amount_planned)">
-                    <button class="btn muted" (click)="column.addBudget = true" *ngIf="!column.addBudget">
-                      <i class="material-icons-outlined">add</i>Add budget
-                    </button>
-                    <div style="width: 75%;" class="float-left" *ngIf="column.addBudget">
-                        <input class="form-control" type="text" placeholder="Enter initial planned budget"
-                          [(ngModel)]="column.initial_budget" (keyup.enter)="newBudget(column._id, $event.target.value)" (keyup.esc)="column.addBudget = false">
-                    </div>
-                    <span class="float-right">
-                      <span class="material-icons" style="line-height: 35px;">monetization_on</span>
-                    </span>
-                  </div>
-
-                  <div class="project-container budget" (click)="openBudgetDialog(column)"
-                      *ngIf="canSeeBudget && column?.project_type && column?.budget?.amount_planned">
-                    Budget
-                    <span class="float-right">
-                      {{ column?.budget?.amount_planned }}
-                      <span class="material-icons" style="line-height: 1px;">monetization_on</span>
-                    </span>
-                  </div>
-                </div>
+                <app-column-project-section *ngIf="column?.project_type"
+                  [column]="column"
+                  [userData]="userData"
+                  [groupData]="groupData"></app-column-project-section>
                 <!-- COLUMN PROJECT SECTION ENDS -->
 
                 <!-- TASK CONTAINER STARTS -->
-                <div *ngIf="!isMobile" class="tasks-container" [id]="column._id"
+                <div class="tasks-container" [id]="column._id"
                     cdkDropList [cdkDropListData]="column.tasks"
                     (cdkDropListDropped)="drop($event)">
 
@@ -117,8 +79,76 @@
                     </app-kanban-task-card>
                     <!-- TASK DETAILS ENDS -->
                 </div>
-                <!-- FOR MOBILE WE DISABLE THE DRAG & DROP FUNCTIONALITY -->
-                <div *ngIf="isMobile" class="tasks-container" [id]="column._id">
+                <!-- TASK CONTAINER ENDS -->
+            </div>
+
+            <!-- CREATE NEW SECTION START -->
+            <app-create-column (column)="addColumn($event)"></app-create-column>
+            <!-- CREATE NEW SECTION ENDS -->
+
+        </div>
+        <!-- ALL COLUMN DETAILS FOR NO-MOBILE ENDS -->
+      </div>
+      <div class="board-wrapper" *ngIf="isMobile">
+        <!-- ALL COLUMN DETAILS FOR MOBILE STARTS -->
+        <div class="board-columns" *ngIf="columns">
+
+            <div class="board-column" *ngFor="let column of columns; let i = index;">
+                <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
+                <div class="column-title">
+                    <p class="text-capitalize" [matTooltip]="column?.title">
+                      <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type">
+                      {{ column?.title | truncatetext:20 }}
+                    </p>
+                    <div class="inline-block">
+                        <div class="dropdown">
+                            <i class="material-icons action dropdown-toggle"
+                                data-toggle="dropdown">more_horiz</i>
+
+                            <!-- Menu Drawer Starts -->
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item" (click)="column.editColumn = !column.editColumn">
+                                  <span class="material-icons-outlined">create</span>
+                                  Edit
+                                </li>
+                                <li class="dropdown-item" *ngIf="columns.length > 1" (click)="deleteColumn(column)">
+                                  <span class="material-icons-outlined">delete</span>
+                                  Delete
+                                </li>
+                                <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(column)">
+                                  <img src="assets/images/Icon/icon_launch_project.svg" alt="" >
+                                  Launch Project
+                                </li>
+                            </ul>
+                            <!-- Menu Drawer Ends -->
+                        </div>
+                    </div>
+                </div>
+                <!-- COLUMN TITLE AND EDIT/DELETE DETAILS ENDS -->
+
+                <!-- EDIT COLUMN STARTS -->
+                <app-edit-column *ngIf="column" [column]="column" (column)="editColumn(column, $event)">
+                </app-edit-column>
+                <!-- EDIT COLUMN ENDS -->
+
+                <!-- COLUMN STATS SECTION STARTS -->
+                <div class="project-container">
+                  {{ column?.tasks?.length }} Tasks
+                  <span class="float-right done">
+                    {{ column?.numDoneTasks || 0 }} Done
+                  </span>
+                </div>
+                <!-- COLUMN STATS SECTION ENDS -->
+
+                <!-- COLUMN PROJECT SECTION STARTS -->
+                <app-column-project-section *ngIf="column?.project_type"
+                  [column]="column"
+                  [userData]="userData"
+                  [groupData]="groupData"></app-column-project-section>
+                <!-- COLUMN PROJECT SECTION ENDS -->
+
+                <!-- TASK CONTAINER STARTS -->
+                <div class="tasks-container" [id]="column._id">
                     <!-- CREATE TASK STARTS -->
                     <app-new-task [groupData]="groupData" [userData]="userData" [column]="column"
                         (post)="getPost($event, column)"></app-new-task>
@@ -136,12 +166,11 @@
                 <!-- TASK CONTAINER ENDS -->
             </div>
 
-            <!-- CREATE NEW COLUMN START -->
+            <!-- CREATE NEW SECTION START -->
             <app-create-column (column)="addColumn($event)"></app-create-column>
-            <!-- CREATE NEW COLUMN ENDS -->
+            <!-- CREATE NEW SECTION ENDS -->
 
         </div>
-        <!-- ALL COLUMN DETAILS ENDS -->
-
+        <!-- ALL COLUMN DETAILS FOR MOBILE ENDS -->
     </div>
 </div>

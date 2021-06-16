@@ -22,9 +22,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     private router: ActivatedRoute,
     public utilityService: UtilityService,
     private columnService: ColumnService,
+    private flowService: FlowService,
     private injector: Injector,
-    public dialog: MatDialog,
-    private flowService: FlowService
+    public dialog: MatDialog
   ) { }
 
   // Base URL of the uploads
@@ -54,6 +54,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
   @Output() taskClonnedEvent = new EventEmitter();
   @Output() newSectionEvent = new EventEmitter();
+  @Output() moveSectionEvent = new EventEmitter();
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -351,7 +352,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   }
 
   /**
-   * Standard Angular CDK Event which monitors the drop functionality between different columns
+   * Standard Angular CDK Event which monitors the drop functionality of tasks
    * @param event
    */
   drop(event: CdkDragDrop<string[]>) {
@@ -372,6 +373,30 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   }
 
   /**
+   * Standard Angular CDK Event which monitors the drop functionality of different columns
+   * @param event
+   */
+  dropColumn(event: CdkDragDrop<string[]>) {
+    // Utility Service Instance
+    let utilityService = this.injector.get(UtilityService)
+
+    // Call the HTTP Service function
+    utilityService.asyncNotification('Please wait we are save the column order...', new Promise((resolve, reject) => {
+      // Move items in array
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+
+      const columnsMap = event.container.data.map((col, index) => { return { _id: col['_id'], position: index }});
+      this.columnService.updateColumnsPosition(columnsMap)
+        .then((res) => {
+          resolve(utilityService.resolveAsyncPromise('Order saved!'));
+        })
+        .catch((err) => {
+          reject(utilityService.rejectAsyncPromise('Unable to save the order of the columns at the moment, please try again!'));
+        });
+    }));
+  }
+
+  /**
    * This function recieves the output from the other component for creating column
    * @param column
    */
@@ -382,7 +407,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
     // If index is found, then throw error notification
     if (index != -1) {
-      this.utilityService.warningNotification('Column with the same title aready exist, please try with different name!')
+      this.utilityService.warningNotification('Section with the same title aready exist, please try with different name!')
     }
 
     // If not found, then push the element
@@ -408,7 +433,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     let utilityService = this.injector.get(UtilityService)
 
     // Call the HTTP Service function
-    utilityService.asyncNotification('Please wait we are creating a new column...', new Promise((resolve, reject) => {
+    utilityService.asyncNotification('Please wait we are creating a new section...', new Promise((resolve, reject) => {
       columnService.addColumn(groupId, columnName)
         .then((res) => {
           let column = res['column'];
@@ -421,12 +446,12 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
           this.newSectionEvent.emit(column);
 
-          resolve(utilityService.resolveAsyncPromise('New Column Created!'));
+          resolve(utilityService.resolveAsyncPromise('New Section Created!'));
         })
         .catch((err) => {
-          reject(utilityService.rejectAsyncPromise('Unable to create the column at the moment, please try again!'))
-        })
-    }))
+          reject(utilityService.rejectAsyncPromise('Unable to create the section at the moment, please try again!'))
+        });
+    }));
   }
 
   /**
@@ -786,53 +811,5 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
   isDelay(realDueDate: any, dueDate: any) {
     return moment(realDueDate).isAfter(moment(dueDate), 'day');
-  }
-
-  newBudget(columnId: string, initialBudget: number) {
-
-    this.utilityService.asyncNotification('Please wait we are updating the project...', new Promise((resolve, reject) => {
-      this.columnService.saveAmountBudget(columnId, initialBudget)
-        .then((res) => {
-          const index = this.columns.findIndex(col => col._id == columnId);
-          this.columns[index].budget = {
-            amount_planned: initialBudget
-          }
-          resolve(this.utilityService.resolveAsyncPromise('Project updated!'));
-        })
-        .catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise('Unable to update the column, please try again!'))
-        })
-    }));
-  }
-
-  openBudgetDialog(column) {
-    if (this.canSeeBudget) {
-      const data = {
-        columnId: column?._id,
-        budget: column?.budget,
-        columnTitle: column?.title
-      }
-
-      const dialogRef = this.dialog.open(ProjectBudgetDialogComponent, {
-        data: data,
-        panelClass: 'groupCreatePostDialog',
-        width: '100%',
-        height: '100%',
-        disableClose: true,
-        hasBackdrop: true
-      });
-
-      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-        const index = this.columns.findIndex(col => col._id == column._id);
-        if (index >= 0) {
-          this.columns[index].budget = data['budget'];
-        }
-      });
-
-
-      dialogRef.afterClosed().subscribe(result => {
-        closeEventSubs.unsubscribe();
-      });
-    }
   }
 }
