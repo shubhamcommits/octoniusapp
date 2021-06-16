@@ -1,6 +1,6 @@
 import { Account, Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
-import { sendError,PasswordHelper } from '../../utils';
+import { sendError,PasswordHelper, axios } from '../../utils';
 import http from 'axios';
 import moment from 'moment';
 
@@ -247,7 +247,7 @@ export class UsersControllers {
                 created_date: user.created_date
             }
 
-            http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
+            axios.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
                 API_KEY: workspace.management_private_api_key,
                 workspaceId: workspace._id,
                 userData: userMgmt
@@ -330,7 +330,7 @@ export class UsersControllers {
                     created_date: user.created_date
                 }
 
-                http.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
+                axios.put(`${process.env.MANAGEMENT_URL}/api/user/${userMgmt._id}/update`, {
                     API_KEY: workspace.management_private_api_key,
                     workspaceId: workspace._id,
                     userData: userMgmt
@@ -419,7 +419,7 @@ export class UsersControllers {
                 management_private_api_key: workspace.management_private_api_key
             }
 
-            http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+            axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                 API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt
             });
@@ -936,12 +936,12 @@ export class UsersControllers {
             management_private_api_key: workspace.management_private_api_key
         }
 
-        http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
+        axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
             API_KEY: workspace.management_private_api_key,
             workspaceData: workspaceMgmt
         });
 
-        http.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {
+        axios.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {
             data: {
                 API_KEY: workspace.management_private_api_key,
                 workspaceId: workspace._id,

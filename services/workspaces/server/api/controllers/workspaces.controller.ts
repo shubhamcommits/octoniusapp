@@ -1,9 +1,8 @@
-import { sendError, Auths } from '../../utils';
+import { sendError, Auths, axios } from '../../utils';
 import { Group, Workspace, User, Account } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import { UsersService, WorkspaceService } from '../services';
 import http from 'axios';
-import moment from 'moment';
 
 // User Service Instance
 const usersService = new UsersService();
@@ -348,11 +347,12 @@ export class WorkspaceController {
                 environment: process.env.DOMAIN,
                 created_date: user.created_date
             }
-            http.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
+
+            axios.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
                 API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt,
                 userData: userMgmt,
-            });
+            })
 
             // Send the status 200 response
             return res.status(200).json({

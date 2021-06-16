@@ -1,6 +1,6 @@
 import { Column, Flow, Group, Post, User, Notification, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
-import { sendError, hasProperty } from '../../utils';
+import { sendError, hasProperty, axios } from '../../utils';
 import http from 'axios';
 import moment from 'moment';
 
@@ -396,7 +396,7 @@ export class GroupController {
                 access_code: workspace.access_code,
                 management_private_api_key: workspace.management_private_api_key
             }
-            http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+            axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                 API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt
             }).then().catch(err => console.log(err));
@@ -539,7 +539,7 @@ export class GroupController {
                 access_code: workspace.access_code,
                 management_private_api_key: workspace.management_private_api_key
             }
-            http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+            axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                 API_KEY: workspace.management_private_api_key,
                 workspaceData: workspaceMgmt
             }).then().catch(err => console.log(err));

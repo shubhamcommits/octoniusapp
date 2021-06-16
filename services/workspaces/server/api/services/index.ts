@@ -1,4 +1,5 @@
 import { CommonService } from "./common.services";
+import { ManagementService } from "./management.service";
 import { UsersService } from "./users.service";
 import { WorkspaceService } from "./workspaces.service";
 
@@ -15,5 +16,8 @@ export {
     CommonService as CommonService,
 
     // Workspaces Service
-    WorkspaceService as WorkspaceService
+    WorkspaceService as WorkspaceService,
+
+    // Management Service
+    ManagementService as ManagementService
 }

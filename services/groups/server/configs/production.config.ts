@@ -77,6 +77,18 @@ function prodConfigInit() {
 
   // MANAGEMENT PORTAL API
   process.env.MANAGEMENT_URL = process.env.MANAGEMENT_URL 
+
+  // Proxy Available
+  process.env.PROXY_AVAILABLE = process.env.PROXY_AVAILABLE
+
+  // Proxy Protocol
+  process.env.PROXY_PROTOCOL = process.env.PROXY_PROTOCOL
+
+  // Proxy Host
+  process.env.PROXY_HOST = process.env.PROXY_HOST
+
+  // Proxy Port
+  process.env.PROXY_PORT = process.env.PROXY_PORT
 };
 
-export { prodConfigInit as productionConfig } 
+export { prodConfigInit as productionConfig }

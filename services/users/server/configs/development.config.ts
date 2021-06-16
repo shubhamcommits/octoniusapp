@@ -89,7 +89,20 @@ function devConfigInit() {
   process.env.FLAMINGO_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}`
   process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}/api`
 
+  // Management URL
   process.env.MANAGEMENT_URL = 'http://localhost:3300'
+
+  // Proxy Available
+  process.env.PROXY_AVAILABLE = process.env.PROXY_AVAILABLE || 'false'
+
+  // Proxy Protocol
+  process.env.PROXY_PROTOCOL = process.env.PROXY_PROTOCOL
+
+  // Proxy Host
+  process.env.PROXY_HOST = process.env.PROXY_HOST
+
+  // Proxy Port
+  process.env.PROXY_PORT = process.env.PROXY_PORT
 };
 
 export { devConfigInit as developmentConfig }

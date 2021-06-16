@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Auth, User, Workspace, Group, Account } from '../models';
-import { sendError, Auths, PasswordHelper } from '../../utils';
+import { sendError, Auths, PasswordHelper, axios } from '../../utils';
 import http from 'axios';
 import moment from 'moment';
 
@@ -415,7 +415,7 @@ export class AuthsController {
                         access_code: workspace.access_code,
                         management_private_api_key: workspace.management_private_api_key
                     }
-                    http.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
+                    axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspace._id}/update`, {
                         API_KEY: workspace.management_private_api_key,
                         workspaceData: workspaceMgmt
                     }).then().catch(err => console.log(err));
@@ -434,7 +434,7 @@ export class AuthsController {
                         environment: process.env.DOMAIN,
                         created_date: user.created_date
                     }
-                    http.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
+                    axios.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
                         API_KEY: workspace.management_private_api_key,
                         workspaceId: workspace._id,
                         userData: userMgmt

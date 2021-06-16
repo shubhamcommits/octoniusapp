@@ -2,7 +2,8 @@ import { Auths } from './auth';
 import { sendErr } from './sendError';
 import { hasProperty } from './helperFunctions';
 import { userFileHandler } from "./filehandler";
-import {Password} from './password';
+import { Password } from './password';
+import { axios } from './proxy'
 
 export {
 
@@ -19,4 +20,7 @@ export {
     userFileHandler as userFileHandler,
 
     Password as PasswordHelper,
+
+    // PROXY CONFIGS
+    axios as axios
 }
