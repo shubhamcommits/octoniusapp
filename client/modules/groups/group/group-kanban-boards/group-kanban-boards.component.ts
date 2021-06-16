@@ -407,7 +407,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
     // If index is found, then throw error notification
     if (index != -1) {
-      this.utilityService.warningNotification('Column with the same title aready exist, please try with different name!')
+      this.utilityService.warningNotification('Section with the same title aready exist, please try with different name!')
     }
 
     // If not found, then push the element
@@ -433,7 +433,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     let utilityService = this.injector.get(UtilityService)
 
     // Call the HTTP Service function
-    utilityService.asyncNotification('Please wait we are creating a new column...', new Promise((resolve, reject) => {
+    utilityService.asyncNotification('Please wait we are creating a new section...', new Promise((resolve, reject) => {
       columnService.addColumn(groupId, columnName)
         .then((res) => {
           let column = res['column'];
@@ -446,10 +446,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
           this.newSectionEvent.emit(column);
 
-          resolve(utilityService.resolveAsyncPromise('New Column Created!'));
+          resolve(utilityService.resolveAsyncPromise('New Section Created!'));
         })
         .catch((err) => {
-          reject(utilityService.rejectAsyncPromise('Unable to create the column at the moment, please try again!'))
+          reject(utilityService.rejectAsyncPromise('Unable to create the section at the moment, please try again!'))
         });
     }));
   }

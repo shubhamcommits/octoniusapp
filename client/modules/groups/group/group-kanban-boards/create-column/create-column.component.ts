@@ -26,8 +26,8 @@ export class CreateColumnComponent implements OnInit {
 
   /**
    * This function is responsible for enabling enter and espace function keys
-   * @param $event 
-   * @param column 
+   * @param $event
+   * @param column
    */
   enableFunctionKeys($event: any){
     if($event.keyCode == 13){
@@ -49,8 +49,8 @@ export class CreateColumnComponent implements OnInit {
 
 /**
  * This function opens the Swal modal to create Columns
- * @param title 
- * @param imageUrl 
+ * @param title
+ * @param imageUrl
  */
   openModal(title: string, imageUrl: string) {
     return this.utilityService.getSwalModal({
@@ -82,7 +82,7 @@ export class CreateColumnComponent implements OnInit {
       this.newColumn = undefined
 
     } else if (this.newColumn == '') {
-      this.utilityService.warningNotification('Column name can\'t be empty!');
+      this.utilityService.warningNotification('Section name can\'t be empty!');
     }
   }
 
