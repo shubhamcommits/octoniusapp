@@ -19,54 +19,24 @@ import { ManagementPortalService } from 'src/shared/services/management-portal-s
 })
 export class MyspaceInboxComponent implements OnInit, OnDestroy {
 
-  // Subsink Object
-  subSink = new SubSink();
-
-  // Global Feed Variable check
-  // globalFeed: boolean = (this.router.snapshot.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true;
-
   // Current User Data
   userData: any;
 
-  // NOTIFICATIONS DATA
-  public notificationsData: any = {
-    readNotifications: [],
-    unreadNotifications: []
-  }
-
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_USERS_UPLOADS
-
-  // IsLoading behaviou subject maintains the state for loading spinner
-  public isLoading$ = new BehaviorSubject(false);
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     private managementPortalService: ManagementPortalService,
-    private _router: Router,
     private injector: Injector,
     public utilityService: UtilityService,
-    public userService: UserService,
-    private socketService: SocketService
+    public userService: UserService
   ) {
-    // Subscribe to the change in notifications data from the server
-    this.subSink.add(this.socketService.currentData.subscribe((res) => {
-      if (JSON.stringify(res) != JSON.stringify({})) {
-        this.notificationsData = res;
-      }
-    }));
-
-     // Notifications Feed Socket
-     this.subSink.add(this.enableNotificationsFeedSocket(socketService));
-
   }
 
   async ngOnInit() {
-    // Start the loading spinner
-    this.isLoading$.next(true);
-
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
       state: 'home'
@@ -83,113 +53,11 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
         this.utilityService.openTryOutNotification(res['time_remaining']);
       }
     });
-
-    // Return the function via stopping the loader
-    this.isLoading$.next(false);
-
-    await this.initNotifications();
   }
 
   /**
    * Unsubscribe all the observables to avoid memory leaks
    */
   ngOnDestroy() {
-    this.subSink.unsubscribe()
-    this.isLoading$.complete()
-  }
-
-  /**
-   * This function enables the notifications feed for the user
-   * @param socketService
-   * calling the @event notificationsFeed to get the notifications for the user
-   */
-  enableNotificationsFeedSocket(socketService: SocketService) {
-    return socketService.onEvent('notificationsFeed')
-      .pipe(retry(Infinity))
-      .subscribe((notifications) => {
-        this.notificationsData = notifications;
-        socketService.changeData(notifications);
-      })
-  }
-
-  async initNotifications() {
-
-    /**
-     * emitting the @event joinUser to let the server know that user has joined
-     */
-    this.subSink.add(this.socketService.onEmit('joinUser', this.userData['_id'])
-      .pipe(retry(Infinity))
-      .subscribe());
-
-    /**
-     * emitting the @event joinWorkspace to let the server know that user has joined
-     */
-    this.subSink.add(this.socketService.onEmit('joinWorkspace', {
-      workspace_name: this.userData['workspace_name']
-    })
-      .pipe(retry(Infinity))
-      .subscribe());
-
-    /**
-     * emitting the @event getNotifications to let the server know to give back the push notifications
-     */
-    this.subSink.add(this.socketService.onEmit('getNotifications', this.userData['_id'])
-      .pipe(retry(Infinity))
-      .subscribe());
-  }
-
-  /**
-   * This function is responsible for marking all the notification as read
-   */
-  markAllNotificationAsRead() {
-    this.notificationsData.unreadNotifications.forEach((notification, index) => {
-      this.subSink.add(this.socketService.onEmit('markRead', notification['_id'], this.userData._id).subscribe())
-      notification['read'] = true
-    })
-
-    this.notificationsData.unreadNotifications = []
-  }
-
-  /**
-   * This function is responsible for marking the notification as read
-   * @param notificationId - notification object Id
-   * @param userId - userId of the current user
-   */
-  markNotificationAsRead(notificationId: string, userId: string, index: any) {
-    this.subSink.add(this.socketService.onEmit('markRead', notificationId, userId)
-      .pipe(take(1))
-      .subscribe());
-    this.notificationsData.unreadNotifications[index]['read'] = true
-    this.notificationsData.unreadNotifications.splice(index, 1)
-  }
-
-  /**
-   * This function routes the user to the particular post where notification has occured
-   * @param postId - userId of the current user
-   * @param postType - post type
-   * @param group - group Id
-   */
-  viewNotification(notificationId: string, postId: string, postType: string, group: any) {
-
-    // mark notification as read
-    // this.markNotificationAsRead(notificationId, this.userData._id);
-
-    // redirect the user to the post
-    const groupId = (group._id) ? group._id : group;
-    // Set the Value of element selection box to be the url of the post
-    if (postType === 'task') {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, myWorkplace: false, postId: postId } });
-    } else {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, myWorkplace: false, postId: postId } });
-    }
-  }
-
-  viewFolioNotification(notificationId: string, folioId: string, group: any) {
-
-    // mark notification as read
-    // this.markNotificationAsRead(notificationId, this.userData._id);
-
-    const groupId = (group._id) ? group._id : group;
-    this._router.navigate(['/document', folioId], { queryParams: { group: groupId } });
   }
 }

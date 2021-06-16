@@ -1,0 +1,9 @@
+@import "src/assets/scss/variables";
+
+.project-container {
+  width: 310px;
+  border-bottom: 1px solid $border-color;
+  margin-bottom: 16px;
+  padding-left: 10px;
+  padding-right: 10px;
+}

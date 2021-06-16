@@ -165,4 +165,13 @@ export class ColumnService {
     };
     return this._http.put(this.baseUrl + `/columns/deleteBudgetExpense`, column).toPromise();
   }
+
+  /**
+   * Saves the order of the sections in the board views
+   * @param columns
+   * @returns
+   */
+  updateColumnsPosition(columns: any) {
+    return this._http.put<any>(this.baseUrl + `/columns/updateColumnsPosition`, {columns: columns}).toPromise();
+  }
 }

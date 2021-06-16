@@ -14,7 +14,7 @@ export class ColumnsController {
 
             let columns = await Column.find({
                 _group: groupId
-            }).lean() || [];
+            }).sort({kanban_order: 1}).lean() || [];
 
             columns = await Column.populate(columns, [
                 { path: 'budget.expenses._user' }
@@ -414,6 +414,31 @@ export class ColumnsController {
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * Saves the order of the sections in the board views
+     * @param req 
+     * @param res 
+     * @param next 
+     * @returns 
+     */
+    async updateColumnsPosition(req: Request, res: Response, next: NextFunction) {
+        const { columns } = req.body;
+
+        try {
+            columns.forEach(async col => {
+                await Column.findByIdAndUpdate(col._id, {
+                    $set: { 'kanban_order': col.position }
+                }).lean();
+            });
+
+            return res.status(200).json({
+                message: 'Columns reordered!'
+            });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
         }
     };
 }
