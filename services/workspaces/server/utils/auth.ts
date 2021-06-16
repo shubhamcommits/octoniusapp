@@ -14,36 +14,41 @@ export class Auths {
      */
     async verifyToken(req: Request, res: Response, next: NextFunction) {
         try {
+            let { mgmtApiPrivateKey } = req.query;
 
             // Authorization header is not present on request
-            if (!req.headers.authorization) {
+            if (!req.headers.authorization && !mgmtApiPrivateKey) {
                 return res.status(401).json({
                     message: 'Unauthorized request, it must include an authorization header!'
                 });
             }
 
-            // Split the authorization header
-            const token = req.headers.authorization.split(' ')[1];
+            if (req.headers.authorization) {
+              // Split the authorization header
+              const token = req.headers.authorization.split(' ')[1];
 
-            // Token is not present on authorization header
-            if (!token) {
-                return res.status(401).json({
-                    message: 'Unauthorized request, it must include an authorization token!'
-                });
+              // Token is not present on authorization header
+              if (!token) {
+                  return res.status(401).json({
+                      message: 'Unauthorized request, it must include an authorization token!'
+                  });
+              }
+
+              // Verify the token
+              jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+                  if (err || !decoded) {
+                      return res.status(401).json({
+                          message: 'Unauthorized request, it must have a valid authorization token!'
+                      });
+                  } else {
+                      // Assigning and feeding the userId into the req object
+                      req['userId'] = decoded['subject'];
+                      next();
+                  }
+              });
+            } else if (mgmtApiPrivateKey) {
+              next();
             }
-
-            // Verify the token
-            jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
-                if (err || !decoded) {
-                    return res.status(401).json({
-                        message: 'Unauthorized request, it must have a valid authorization token!'
-                    });
-                } else {
-                    // Assigning and feeding the userId into the req object
-                    req['userId'] = decoded['subject'];
-                    next();
-                }
-            });
         } catch (err) {
             return sendError(res, err);
         }
@@ -57,16 +62,22 @@ export class Auths {
      */
     async isLoggedIn(req: Request, res: Response, next: NextFunction) {
         try {
-            const auth = await Auth.findOne({
-                _user: req['userId'],
-                isLoggedIn: true,
-                token: req.headers.authorization.split(' ')[1]
-            });
+            let { mgmtApiPrivateKey } = req.query;
+            
+            if (!req.headers.authorization && mgmtApiPrivateKey) {
+              next();
+            } else {
 
-            if (!!auth) {
-                next();
+              const auth = await Auth.findOne({
+                  _user: req['userId'],
+                  isLoggedIn: true,
+                  token: req.headers.authorization.split(' ')[1]
+              });
+
+              if (!!auth) {
+                  next();
+              }
             }
-
         } catch (err) {
             return sendError(res, err, 'Unauthorized request, Please sign In to continue!', 401)
         }
