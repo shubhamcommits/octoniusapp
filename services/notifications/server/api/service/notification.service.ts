@@ -320,9 +320,11 @@ export class NotificationsService {
   async getRead(userId: string) {
       try {
           const notifications = await Notification.find({
-              _owner: userId,
-              read: true
-          })
+            $and: [
+                { _owner: userId },
+                { read: true },
+                { type: { $ne: 'new-post' } }
+            ]})
               .limit(5)
               .sort('-created_date')
               .populate('_actor', 'first_name last_name profile_pic')
@@ -345,9 +347,38 @@ export class NotificationsService {
   async getUnread(userId: string) {
       try {
           const notifications = await Notification.find({
-              _owner: userId,
-              read: false
-          })
+            $and: [
+                { _owner: userId },
+                { read: false },
+                { type: { $ne: 'new-post' } }
+            ]})
+              .sort('-created_date')
+              .populate('_actor', 'first_name last_name profile_pic')
+              .populate({ path: '_origin_post', populate: { path: '_group' } })
+              .populate('_origin_comment')
+              .populate('_owner', 'first_name last_name profile_pic')
+              .populate('_origin_folio')
+              .populate({ path: '_origin_folio', populate: { path: '_group' } })
+              .lean();
+
+          return notifications;
+      } catch (err) {
+        throw err;
+      }
+  };
+
+  /**
+   * This function is responsible for fetching the latest new post notifications
+   * @param userId 
+   */
+  async getNewPost(userId: string) {
+      try {
+          const notifications = await Notification.find({
+            $and: [
+                { _owner: userId },
+                { read: false },
+                { type: 'new-post' }
+            ]})
               .sort('-created_date')
               .populate('_actor', 'first_name last_name profile_pic')
               .populate({ path: '_origin_post', populate: { path: '_group' } })

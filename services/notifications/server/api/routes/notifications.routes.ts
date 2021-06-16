@@ -22,15 +22,6 @@ routes.post('/new-task', notificationFunctions.newTaskAssignment);
 //This route is responsible to notifying all the user on re-assigning of a new task to them
 routes.post('/task-reassign', notificationFunctions.newTaskReassignment);
 
-//This route is responsible for fetching the latest first 5 read notifications
-routes.get('/read', notificationFunctions.getRead);
-
-//This route is responsible for fetching the latest first 5 un-read notifications
-routes.get('/unread', notificationFunctions.getUnread);
-
-//This function is responsible for fetching the marking the notifications to read
-routes.post('/mark-read', notificationFunctions.markRead);
-
 //This route is responsible for notifying the user when the status changes
 routes.post('/status-change', notificationFunctions.taskStatusChanged);
 

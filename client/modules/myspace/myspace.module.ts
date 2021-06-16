@@ -39,6 +39,9 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MyspaceRoutingModule } from './myspace-routing.module';
 import { SharedModule } from 'src/app/common/shared/shared.module';
 import { MatMenuModule } from '@angular/material/menu';
+import { RecentActivityComponent } from './myspace-inbox/recent-activity/recent-activity.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatBadgeModule } from '@angular/material/badge';
 // import { MomentModule } from "ngx-moment";
 
 /**
@@ -62,24 +65,16 @@ import { MatMenuModule } from '@angular/material/menu';
     // Myspace Workplace Component
     MyspaceWorkplaceComponent,
 
-    RecentGroupsComponent
+    RecentGroupsComponent,
+    RecentActivityComponent
   ],
   imports: [
-
-    // Common Module
     CommonModule,
-
-    // Myspace Routing Module
     MyspaceRoutingModule,
-
-    // MomentModule,
-
-    // Shared Module
     SharedModule,
-
-    // MatGridListModule,
-
-    MatMenuModule
+    MatMenuModule,
+    MatTabsModule,
+    MatBadgeModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
