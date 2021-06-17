@@ -136,6 +136,7 @@ export class FlamingoEditorComponent implements OnInit {
     this.questions[index].scale.size = event.value;
     this.updateQuestion(this.questions[index]._id, { 'scale.size': event.value })
   }
+
   /**
   * This function is responsible to enabel disable question scale label
   * @param event
@@ -151,6 +152,21 @@ export class FlamingoEditorComponent implements OnInit {
     }
   }
 
+
+  /**
+  * This function is responsible to make the question mandatory or not
+  * @param event
+  * @param index
+  */
+  async makeMandatory(event: any, index: any) {
+    if (event.checked) {
+      this.questions[index].mandatory = true;
+      this.updateQuestion(this.questions[index]._id, { mandatory: true })
+    } else {
+      this.questions[index].mandatory = false;
+      this.updateQuestion(this.questions[index]._id, { mandatory: false })
+    }
+  }
   /**
   * This function is responsible to set question scale label
   * @param event

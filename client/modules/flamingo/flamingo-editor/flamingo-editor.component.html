@@ -10,13 +10,11 @@
                 [ngClass]="i==activeQuestionIndex?'questions-container-active':'questions-container'"
                 (click)="changeActiveIndex(i)" style="position: relative;">
                 <!-- question icon div -->
-                <div class="question-icon"><span class="material-icons" style="font-size: 40px;">
+                <div class="question-icon">
+                  <span class="material-icons" style="font-size: 40px;">
                     category
-                    </span>
-                    
-                    
-                    
-                    </div>
+                  </span>
+                </div>
 
                 <!-- question text input and others settings start-->
                 <div class="question-txt">
@@ -116,6 +114,13 @@
 
                 <!-- Question delete and image upload button start -->
                 <div class="settings" *ngIf="i==activeQuestionIndex && !flamingo?.publish">
+                    <div class="setting-icons-div" style="width: 110px;" *ngIf="activeQuestion?.type !='Welcome' && activeQuestion?.type !='Thanks'">
+                        Mandatory
+                        <mat-slide-toggle [color]="'#9B9B9B'"
+                          [disabled]="flamingo?.publish"
+                          [checked]="(question?.markeMandatory) ? true: false"
+                          (change)="makeMandatory($event,i)"></mat-slide-toggle>
+                    </div>
                     <div class="setting-icons-div">
                         <i class="material-icons icons-color" (click)="openDetails(content)">image_outlined</i>
                     </div>
@@ -153,7 +158,7 @@
                             <div class="btn-icon"><span class="material-icons">
                                 play_arrow
                                 </span>
-                                
+
                                 </div>
                             <div class="btn-txt">Welcome screen</div>
                             <div class="hovered-welcome">
@@ -181,14 +186,14 @@
                             <div class="btn-icon"><span class="material-icons">
                                 text_snippet
                                 </span>
-                                
+
                                 </div>
                             <div class="btn-txt">Short text</div>
                             <div class="hovered-short">
                                 <p style="margin-left: 10%;margin-top: 25%;">
                                     <strong>Short text</strong>
                                     <br />
-                                    A simple question with a short answer. 
+                                    A simple question with a short answer.
                                 </p>
                             </div>
                         </div>
@@ -196,7 +201,7 @@
                             <div class="btn-icon"><span class="material-icons">
                                 rule
                                 </span>
-                                
+
                                 </div>
                             <div class="btn-txt">YES/NO</div>
                             <div class="hovered-yes-no">
@@ -211,7 +216,7 @@
                             <div class="btn-icon"><span class="material-icons">
                                 align_horizontal_left
                                 </span>
-                                
+
                                 </div>
                             <div class="btn-txt">Scale</div>
                             <div class="hovered-scale">

@@ -39,6 +39,10 @@ const QuestionSchema = new Schema({
         type: Boolean,
         default: false
     },
+    mandatory:{
+        type: Boolean,
+        default: false
+    },
     image_url: {
         type: String
     },
