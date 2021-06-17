@@ -23,7 +23,15 @@
                     <span *ngIf="flamingo?.publish">{{ question.text }}</span>
 
                     <input *ngIf="!flamingo?.publish" [(ngModel)]="question.text" placeholder="Please Enter question text"
-                        (change)="changeQuestionText($event,i)"
+                        (change)="changeQuestionText($event, i)"
+                        [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'"/>
+                    <br/>
+                    <br/>
+                    <!-- question secondary text input -->
+                    <span *ngIf="flamingo?.publish">{{ question.secondary_text }}</span>
+
+                    <input *ngIf="!flamingo?.publish" [(ngModel)]="question.secondary_text" placeholder="Please Enter question secondary text"
+                        (change)="changeQuestionSecondaryText($event, i)"
                         [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'"/>
                     <br/>
                     <br/>
@@ -258,6 +266,10 @@
                   [service]="'flamingo'" [styleClass]="'welcome-img'"></app-secured-image>
 
                 <h2>{{activeQuestion?.text}}</h2>
+                <div *ngIf="activeQuestion?.mandatory" class="mandatory-text">* This question is mandatory</div>
+
+                <!-- question secondary text-->
+                <span>{{ activeQuestion?.secondary_text }}</span>
 
                 <button *ngIf="activeQuestion?.type==='Thanks'"
                     class="btn btn-success">Submit</button>
@@ -276,12 +288,17 @@
                     class="question-preview-container">
 
                     <!-- question text -->
-                    <h2 style="margin-bottom: 50px;">{{activeQuestion?.text}}</h2>
+                    <h2>{{activeQuestion?.text}}</h2>
+                    <div *ngIf="activeQuestion?.mandatory" class="mandatory-text">* This question is mandatory</div>
+
+                    <!-- question secondary text-->
+                    <span>{{activeQuestion?.secondary_text}}</span>
+
                     <!-- short question input field -->
-                    <input *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..."
+                    <input style="margin-top: 50px;" *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..."
                         class="input-answer" />
                     <!-- yes/no question button -->
-                    <div *ngIf="activeQuestion?.type==='Yes/No'">
+                    <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Yes/No'">
                         <button class="btn btn-success">{{activeQuestion?.positive_option_text || 'Positive'}}</button>
                         <br />
                         <br />
@@ -289,7 +306,7 @@
                     </div>
 
                     <!-- question scale scale buttons and labels -->
-                    <div *ngIf="activeQuestion?.type==='Scale'">
+                    <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Scale'">
                         <button *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" ng>0</button>
                         <button *ngIf="activeQuestion?.scale?.size > 1" class="scale-button">1</button>
                         <button *ngIf="activeQuestion?.scale?.size > 2" class="scale-button">2</button>
@@ -311,7 +328,8 @@
                     </div>
 
                     <!-- question dropdown dropdown -->
-                    <button *ngIf="activeQuestion?.type === 'Dropdown'"
+                    <br *ngIf="activeQuestion?.type === 'Dropdown'"/>
+                    <button style="margin-top: 50px;" *ngIf="activeQuestion?.type === 'Dropdown'"
                         class="btn btn-primary mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
                         Please Select an Option
                     </button>

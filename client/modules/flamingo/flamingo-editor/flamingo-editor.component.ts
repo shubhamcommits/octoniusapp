@@ -75,7 +75,6 @@ export class FlamingoEditorComponent implements OnInit {
 
   }
 
-
   /**
   * This function is responsible to set the question's text.
   * @param event
@@ -83,6 +82,15 @@ export class FlamingoEditorComponent implements OnInit {
   */
   async changeQuestionText(event: any, index: number) {
     this.updateQuestion(this.questions[index]._id, { text: this.questions[index].text })
+  }
+
+  /**
+  * This function is responsible to set the question's secondary text.
+  * @param event
+  * @param index
+  */
+  async changeQuestionSecondaryText(event: any, index: number) {
+    this.updateQuestion(this.questions[index]._id, { secondary_text: this.questions[index].secondary_text })
   }
 
   /**
