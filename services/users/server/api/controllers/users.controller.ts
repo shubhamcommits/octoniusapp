@@ -98,6 +98,40 @@ export class UsersControllers {
     }
 
     /**
+     * This function is responsible for fetching the account details of the  user
+     * @param { userId } req.params
+     * @param res
+     * @param next
+     */
+    async getOtherAccount(req: Request, res: Response, next: NextFunction) {
+
+        const { params: { userId } } = req;
+
+        try {
+
+            // Find the user based on the userId
+            const user = await User.findOne({ _id: userId })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
+
+            // If user not found
+            if (!user) {
+                return sendError(res, new Error('Unable to find the user, either userId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Account found!',
+                account: user._account
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for fetching the current loggedIn user details
      * @param { params.userId }req 
      * @param res 
