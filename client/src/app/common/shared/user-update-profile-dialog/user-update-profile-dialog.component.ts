@@ -19,6 +19,7 @@ export class UserUpdateProfileDialogComponent implements OnInit {
   repeatPassword: string;
   // Is current user component
   isCurrentUser: boolean = false;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private injector: Injector,
@@ -41,13 +42,20 @@ export class UserUpdateProfileDialogComponent implements OnInit {
     }
   }
 
-  updatePassword() {
+  async updatePassword() {
     if (this.password != this.repeatPassword) {
       this.utilityService.asyncNotification('Please wait we are updating your information...',
         new Promise((resolve, reject) => {
           reject(this.utilityService.rejectAsyncPromise('Password did not match, please try again!'))
         }))
     } else {
+
+      if (!this.userData?._account) {
+        await this.userService.getOtherAccount(this.userData?._id).then(res => {
+          this.userData._account = res['account'];
+        });
+      }
+
       this.utilityService.asyncNotification('Please wait we are updating your information...',
         new Promise((resolve, reject) => {
           this.userService.changePassword({ _id: this.userData?._account?._id || this.userData?._account, password: this.password })

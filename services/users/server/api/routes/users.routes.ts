@@ -78,6 +78,9 @@ routes.get('/', user.get);
 // GET - Get account of the current loggedIn user on the basis of userId
 routes.get('/account', user.getAccount);
 
+// GET - Get account of the user on the basis of userId
+routes.get('/:userId/otherAccount', user.getOtherAccount);
+
 // GET - Get other user details on the basis of userId
 routes.get('/:userId', user.getOtherUser);
 
