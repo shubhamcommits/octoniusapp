@@ -113,7 +113,7 @@
                 <!-- question text input and others settings end-->
 
                 <!-- Question delete and image upload button start -->
-                <div class="settings" *ngIf="i==activeQuestionIndex && !flamingo?.publish">
+                <div class="settings" *ngIf="i==activeQuestionIndex">
                     <div class="setting-icons-div" style="width: 110px;" *ngIf="activeQuestion?.type !='Welcome' && activeQuestion?.type !='Thanks'">
                         Mandatory
                         <mat-slide-toggle [color]="'#9B9B9B'"
@@ -121,10 +121,10 @@
                           [checked]="(question?.mandatory) ? true: false"
                           (change)="makeMandatory($event,i)"></mat-slide-toggle>
                     </div>
-                    <div class="setting-icons-div">
+                    <div *ngIf="!flamingo?.publish" class="setting-icons-div">
                         <i class="material-icons icons-color" (click)="openDetails(content)">image_outlined</i>
                     </div>
-                    <div class="setting-icons-div" (click)="deleteQuestion(question._id)">
+                    <div *ngIf="!flamingo?.publish" class="setting-icons-div" (click)="deleteQuestion(question._id)">
                         <i class="material-icons icons-color">delete_sweep_outlined</i>
                     </div>
                 </div>
