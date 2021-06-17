@@ -20,6 +20,7 @@ export class FlamingoPreviewComponent implements OnInit {
   activeQuestionIndex = 0;
 
   activeQuestion: any;
+  disableNext = false;
 
   FLAMINGO_UPLOADS = environment.UTILITIES_FLAMINGOS_UPLOADS;
 
@@ -45,6 +46,25 @@ export class FlamingoPreviewComponent implements OnInit {
 
     this.activeQuestion = this.questions[this.activeQuestionIndex];
 
+    this.disableNext = this.checkMandatoryQuestion();
+
+  }
+
+  /**
+   * This function is responsible for saving the answer
+   */
+  answerQuestion(value) {
+
+    this.activeQuestion.answer = value;
+
+    this.disableNext = this.checkMandatoryQuestion();
+
+    // Go to Next Question
+    if ((!this.activeQuestion?.mandatory)
+        || (!(this.activeQuestion?.type != 'Scale' && !this.activeQuestion?.answer))
+        || (this.activeQuestion?.type == 'Scale' && this.activeQuestion?.answer >= 0)) {
+      this.nextQuestion();
+    }
   }
 
   /**
@@ -54,6 +74,8 @@ export class FlamingoPreviewComponent implements OnInit {
     if(this.activeQuestionIndex < this.questions.length-2){
       this.activeQuestionIndex = this.activeQuestionIndex+1;
       this.activeQuestion = this.questions[this.activeQuestionIndex];
+
+      this.disableNext = this.checkMandatoryQuestion();
     }
   }
 
@@ -96,6 +118,21 @@ export class FlamingoPreviewComponent implements OnInit {
           resolve({})
         })
       })
+  }
+
+  checkMandatoryQuestion() {
+    if (this.activeQuestion?.mandatory) {
+      if (this.activeQuestion?.type == 'Scale') {
+        if (this.activeQuestion?.answer >= 0) {
+          return false;
+        } else {
+          return true;
+        }
+      } else  if (!this.activeQuestion?.answer) {
+        return true;
+      }
     }
+    return false;
+  }
 
 }

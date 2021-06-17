@@ -2,21 +2,29 @@
     <!-- Action buttons-->
     <div class="action-header">
       <div class="btn-group">
-        <button *ngIf="activeQuestionIndex > 0"
-          class="btn btn-light" (click)="previousQuestion()"><span class="material-icons">
+        <button *ngIf="activeQuestionIndex > 0" class="btn btn-light" (click)="previousQuestion()">
+          <span class="material-icons">
             chevron_left
-            </span> Previous</button>
-            <button *ngIf="activeQuestionIndex > 0 && activeQuestionIndex < questions?.length-2"
-              class="btn btn-light" (click)="nextQuestion()">Next  <span class="material-icons">
-                chevron_right
-                </span></button>
-        <button *ngIf="activeQuestionIndex == questions?.length-2"
-            class="btn btn-success" (click)="submitAnswers()">Submit</button>
+          </span>
+          Previous
+        </button>
+
+        <button *ngIf="activeQuestionIndex > 0 && activeQuestionIndex < questions?.length-2" class="btn btn-light"
+            [disabled]="disableNext" (click)="nextQuestion()">
+          Next
+          <span class="material-icons">chevron_right</span>
+        </button>
+
+        <button *ngIf="activeQuestionIndex == questions?.length-2" class="btn btn-success"
+            [disabled]="disableNext" (click)="submitAnswers()">
+          Submit
+        </button>
+
         <button *ngIf="activeQuestion?.type==='Welcome' && activeQuestionIndex == 0"
-            class="btn btn-primary" (click)="nextQuestion()">Start</button>
-        
+            class="btn btn-primary" (click)="nextQuestion()">
+          Start
+        </button>
       </div>
-      
     </div>
 
     <!-- container for welcome and thanks question type end-->
@@ -37,14 +45,16 @@
         <div class="question-answer-container">
 
             <!-- question text -->
-            <h2 style="margin-bottom: 50px;">{{activeQuestion?.text}}</h2>
+            <h2>{{activeQuestion?.text}}</h2>
+            <div *ngIf="activeQuestion?.mandatory" class="mandatory-text">* This question is mandatory</div>
 
             <!-- ShortText text input field -->
-            <input *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..."
+            <input style="margin-top: 50px;" *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..."
                 class="input-answer" [(ngModel)]="activeQuestion.answer"
                 (change)="answerQuestion($event.target.value)" />
+
             <!-- yes/no buttons -->
-            <div *ngIf="activeQuestion?.type==='Yes/No'">
+            <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Yes/No'">
                 <button class="btn btn-success" (click)="answerQuestion('positive')">{{activeQuestion?.positive_option_text || 'Positive'}}</button>
                 <br />
                 <br />
@@ -52,7 +62,7 @@
             </div>
 
             <!-- scale question scale and scale labels-->
-            <div *ngIf="activeQuestion?.type==='Scale'">
+            <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Scale'">
                 <button *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" (click)="answerQuestion(0)">0</button>
                 <button *ngIf="activeQuestion?.scale?.size > 1" class="scale-button" (click)="answerQuestion(1)">1</button>
                 <button *ngIf="activeQuestion?.scale?.size > 2" class="scale-button" (click)="answerQuestion(2)">2</button>
@@ -73,7 +83,7 @@
             </div>
 
               <!-- dropdown question dropdown -->
-            <button *ngIf="activeQuestion?.type === 'Dropdown'" class="btn btn-primary mb-3 mt-3 dropdown-toggle"
+            <button style="margin-top: 50px;" *ngIf="activeQuestion?.type === 'Dropdown'" class="btn btn-primary mb-3 mt-3 dropdown-toggle"
                 type="button" data-toggle="dropdown">
                 Please Select an Option
             </button>

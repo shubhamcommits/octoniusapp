@@ -118,7 +118,7 @@
                         Mandatory
                         <mat-slide-toggle [color]="'#9B9B9B'"
                           [disabled]="flamingo?.publish"
-                          [checked]="(question?.markeMandatory) ? true: false"
+                          [checked]="(question?.mandatory) ? true: false"
                           (change)="makeMandatory($event,i)"></mat-slide-toggle>
                     </div>
                     <div class="setting-icons-div">
