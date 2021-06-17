@@ -13,6 +13,7 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MemberDialogComponent } from '../member-dialog/member-dialog.component';
+import { UserUpdateProfileDialogComponent } from '../user-update-profile-dialog/user-update-profile-dialog.component';
 
 @Component({
   selector: 'app-component-search-bar',
@@ -485,5 +486,20 @@ export class ComponentSearchBarComponent implements OnInit {
    */
   openFullscreenModal(userId: string): void {
     this.utilityService.openFullscreenModal(userId);
+  }
+
+  /**
+   * This function is responsible for opening a dialog to update User password.
+   */
+  openUpdatePasswordModal(member: any){
+    const data = {
+      userData: member,
+    };
+
+    this.dialog.open(UserUpdateProfileDialogComponent, {
+      width: '460px',
+      hasBackdrop: true,
+      data: data
+    });
   }
 }

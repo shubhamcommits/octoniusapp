@@ -43,37 +43,44 @@
 
                 <!-- Changing role functionality starts -->
                 <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
-                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage
-                        User
-                        <span class="caret"></span>
-                    </button>
+                  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage
+                      User
+                      <span class="caret"></span>
+                  </button>
 
-                    <!-- Menu Drawer Starts -->
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-item" *ngIf="member.role != 'admin'"
-                            (click)="changeRole(member._id, 'admin', member.index)">Change to Admin</li>
-                        <li class="dropdown-item" *ngIf="member.role != 'manager'"
-                            (click)="changeRole(member._id, 'manager', member.index)">Change to Group Manager</li>
-                        <li class="dropdown-item" *ngIf="member.role != 'member'"
-                            (click)="changeRole(member._id, 'member', member.index)">Change to Member</li>
-                        <li class="dropdown-divider"></li>
-                        <li class="dropdown-item" (click)="removeUserFromWorkplace(member._id, workspaceId, member.index)">
-                            Deactivate user</li>
-                    </ul>
-                    <!-- Menu Drawer Ends -->
+                  <!-- Menu Drawer Starts -->
+                  <ul class="dropdown-menu">
+                      <li class="dropdown-item" *ngIf="member.role != 'admin'"
+                          (click)="changeRole(member._id, 'admin', member.index)">Change to Admin</li>
+                      <li class="dropdown-item" *ngIf="member.role != 'manager'"
+                          (click)="changeRole(member._id, 'manager', member.index)">Change to Group Manager</li>
+                      <li class="dropdown-item" *ngIf="member.role != 'member'"
+                          (click)="changeRole(member._id, 'member', member.index)">Change to Member</li>
+                      <li class="dropdown-divider"></li>
+                      <li class="dropdown-item" (click)="removeUserFromWorkplace(member._id, workspaceId, member.index)">
+                          Deactivate user</li>
+                  </ul>
+                  <!-- Menu Drawer Ends -->
 
-                </div>
+              </div>
 
                 <!-- Remove from Group -->
                 <div class="dropdown"
                     *ngIf="(userData?.role === 'owner' || isGroupManager(userData?._id)) && type == 'group'">
-                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Manage
-                        User
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                        Manage User
                         <span class="caret"></span>
                     </button>
 
                     <!-- Menu Drawer Starts -->
                     <ul class="dropdown-menu">
+                        <li class="dropdown-item" *ngIf="isGroupManager(userData._id)"
+                            (click)="openUpdatePasswordModal(member)">
+                          <button type="button" name="button" class="btn btn-warning">
+                              <i class="material-icons">lock</i> Reset Password
+                          </button>
+                        </li>
+                        <li class="dropdown-divider" *ngIf="isGroupManager(userData._id)"></li>
                         <li class="dropdown-item" *ngIf="!isGroupManager(member._id)"
                             (click)="changeGroupRole(member, 'manager', groupId)">Change to Group Manager</li>
                         <li class="dropdown-item" *ngIf="isGroupManager(member._id)"

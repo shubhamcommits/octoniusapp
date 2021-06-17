@@ -41,6 +41,13 @@ export class UserService {
     return this._http.get(this.BASE_API_URL + `/account`)
   }
 
+  /**
+   * This function fetches the details of the currently loggedIn account
+   */
+  getOtherAccount(userId: string) {
+    return this._http.get(this.BASE_API_URL + `/${userId}/otherAccount`).toPromise()
+  }
+
   /* | ======================================= USER DETAILS ========================================== | */
 
   /**
