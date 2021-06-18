@@ -25,8 +25,9 @@ async function generateFeed(userId: string, io: any,backend?:any) {
     try {
         const unreadNotifications = await notifications.getUnread(userId);
         const readNotifications = await notifications.getRead(userId);
+        const unreadPosts = await notifications.getNewPost(userId);
 
-        const feed = { unreadNotifications, readNotifications , new:backend};
+        const feed = { unreadNotifications, readNotifications, unreadPosts, new:backend};
         // I moved this line from outside this function to inside
         io.sockets.in(userId).emit('notificationsFeed', feed);
     } catch (err) {
@@ -51,7 +52,7 @@ async function sendNotificationsFeed(socket: any, userId: string, io: any) {
  * @param userId 
  * @param io 
  */
-async function sendNotificationsFeedFromService(userId: string, io: any,backend?:any) {
+async function sendNotificationsFeedFromService(userId: string, io: any, backend?:any) {
     //  here the same as before, I deleted the emit code
     generateFeed(userId, io,backend);
 }

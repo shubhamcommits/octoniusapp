@@ -59,4 +59,7 @@ router.put('/updateBudgetExpense', columns.updateBudgetExpense);
 // PUT - Remove an expense from a budget
 router.put('/deleteBudgetExpense', columns.deleteBudgetExpense);
 
+// PUT - Updates the order of the sections in the board views
+router.put('/updateColumnsPosition', columns.updateColumnsPosition);
+
 export { router as columnRoutes };

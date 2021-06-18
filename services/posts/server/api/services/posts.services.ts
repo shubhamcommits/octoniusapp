@@ -388,6 +388,19 @@ export class PostService {
   }
 
   /**
+   * This function is responsible for sending the related real time notifications/emails to the user(s)
+   * @param post 
+   */
+  async sendNewPostNotification(post: any) {
+console.log(post);
+    return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-post`, {
+        postId: post._id,
+        groupId: post._group._id || post._group,
+        posted_by: post._posted_by
+      });
+  }
+
+  /**
    * This function is responsible for adding a new post
    * @param { title, content, type, _posted_by, _group, _content_mentions } postData 
    */
@@ -427,6 +440,10 @@ export class PostService {
 
       // Send all the required emails and notifications
       await this.sendNotifications(post)
+
+      if (post.type == 'normal') {
+        await this.sendNewPostNotification(post);
+      }
 
       // Return Post Object
       return post;

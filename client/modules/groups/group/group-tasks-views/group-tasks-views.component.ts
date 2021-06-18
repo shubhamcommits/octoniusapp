@@ -134,12 +134,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
      */
     this.columns = await this.publicFunctions.getAllColumns(this.groupId);
 
-    /*
-    if (this.columns == null) {
-      this.columns = await this.initialiseColumns(this.groupId);
-    }
-    */
-
     /**
      * Adding the property of tasks in every column
      */
