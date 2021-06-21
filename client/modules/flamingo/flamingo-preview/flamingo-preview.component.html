@@ -22,7 +22,7 @@
 
     <!-- container for welcome and thanks question type end-->
     <div *ngIf="activeQuestion?.type == 'Welcome' || activeQuestion?.type == 'Thanks'"
-      class="preview-container">
+      class="preview-container" style="background-color: {{activeQuestion?.background_color}}">
         <app-secured-image *ngIf="activeQuestion?.image_url"
             [imgURL]="activeQuestion?.image_url"
             [service]="'flamingo'" [styleClass]="'welcome-img'"></app-secured-image>
@@ -35,7 +35,7 @@
     <!-- container for all other question except welcome and thanks question type start-->
     <!-- background image div -->
     <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
-        style="background-image: url({{FLAMINGO_UPLOADS}}/{{activeQuestion?.image_url}}?noAuth=true);"
+        style="background-color: {{activeQuestion?.background_color}}; background-image: url({{FLAMINGO_UPLOADS}}/{{activeQuestion?.image_url}}?noAuth=true);"
         class="image-wrapper-container">
 
         <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"

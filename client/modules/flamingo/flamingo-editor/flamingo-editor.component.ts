@@ -4,6 +4,8 @@ import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.s
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
+import { MatDialog } from '@angular/material/dialog';
+import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
 
 @Component({
   selector: 'app-flamingo-editor',
@@ -46,6 +48,7 @@ export class FlamingoEditorComponent implements OnInit {
     private router: Router,
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,
+    public dialog: MatDialog
   ) { }
 
   async ngOnInit() {
@@ -254,6 +257,25 @@ export class FlamingoEditorComponent implements OnInit {
   }
 
   /**
+   * This function opens up the dialog to select a color
+   */
+  openColorPicker(index: any) {
+    const dialogRef = this.dialog.open(ColorPickerDialogComponent, {
+      width: '67%',
+      height: '50%',
+      disableClose: false,
+      hasBackdrop: true,
+      data: { colorSelected: this.activeQuestion?.background_color }
+    });
+
+    const colorPickedSubs = dialogRef.componentInstance.colorPickedEvent.subscribe(async (data) => {
+      await this.updateQuestion(this.questions[index]._id, { background_color: data });
+      this.questions[index].background_color = data;
+      this.activeQuestion.background_color = data;
+    });
+  }
+
+  /**
   * This function is responsible to handle change on upload image.
   * @param data
   */
@@ -275,6 +297,16 @@ export class FlamingoEditorComponent implements OnInit {
     await this.updateQuestion(this.questions[index]._id, { image_url: '' });
     this.questions[index].image_url = '';
     this.activeQuestion.image_url = '';
+  }
+
+  /**
+  * This function is responsible to remove the background color from question
+  * @param index
+  */
+  async removeBackgroundColor(index: any) {
+    await this.updateQuestion(this.questions[index]._id, { background_color: '' });
+    this.questions[index].background_color = '';
+    this.activeQuestion.background_color = '';
   }
 
   /**

@@ -49,6 +49,9 @@ const QuestionSchema = new Schema({
     image_url: {
         type: String
     },
+    background_color: {
+        type: String
+    },
     created_date: {
         type: Date,
         default: moment().format()
