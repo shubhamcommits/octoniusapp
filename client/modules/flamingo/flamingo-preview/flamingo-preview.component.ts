@@ -99,7 +99,8 @@ export class FlamingoPreviewComponent implements OnInit {
     this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the flamingo will be submited!')
       .then((result) => {
         if (result.value) {
-          this.nextQuestion();
+          // go to last screen
+          this.activeQuestion = this.questions[this.questions.length-1];
         }
       });
   }

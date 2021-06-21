@@ -163,7 +163,8 @@ export class FlamingoAnswerComponent implements OnInit {
       new Promise((resolve, reject) => {
         this.flamingoService.submit(this.flamingo._id, responses)
           .then((res) => {
-            this.nextQuestion();
+            // go to last screen
+            this.activeQuestion = this.questions[this.questions.length-1];
             resolve(this.utilityService.resolveAsyncPromise('Flamingo has been submited!'));
           })
           .catch(() => {
