@@ -20,6 +20,9 @@ export class FlamingoAnswerComponent implements OnInit {
   activeQuestionIndex = 0;
 
   activeQuestion: any;
+  disableNext = false;
+
+  progressValue = 0;
 
   FLAMINGO_UPLOADS = environment.UTILITIES_FLAMINGOS_UPLOADS;
 
@@ -54,6 +57,9 @@ export class FlamingoAnswerComponent implements OnInit {
 
     this.activeQuestion = this.questions[this.activeQuestionIndex];
 
+    this.disableNext = this.checkMandatoryQuestion();
+    this.calculateProgressValues();
+
   }
 
   /**
@@ -63,8 +69,14 @@ export class FlamingoAnswerComponent implements OnInit {
 
     this.activeQuestion.answer = value;
 
+    this.disableNext = this.checkMandatoryQuestion();
+
     // Go to Next Question
-    this.nextQuestion();
+    if ((!this.activeQuestion?.mandatory)
+        || (!(this.activeQuestion?.type != 'Scale' && !this.activeQuestion?.answer))
+        || (this.activeQuestion?.type == 'Scale' && this.activeQuestion?.answer >= 0)) {
+      this.nextQuestion();
+    }
   }
 
   /**
@@ -74,6 +86,9 @@ export class FlamingoAnswerComponent implements OnInit {
     if (this.activeQuestionIndex < this.questions.length-2) {
       this.activeQuestionIndex = this.activeQuestionIndex+1;
       this.activeQuestion = this.questions[this.activeQuestionIndex];
+
+      this.disableNext = this.checkMandatoryQuestion();
+      this.calculateProgressValues();
     }
   }
 
@@ -83,6 +98,7 @@ export class FlamingoAnswerComponent implements OnInit {
   previousQuestion() {
     this.activeQuestionIndex = this.activeQuestionIndex-1;
     this.activeQuestion = this.questions[this.activeQuestionIndex];
+    this.calculateProgressValues();
   }
 
   /**
@@ -177,4 +193,22 @@ export class FlamingoAnswerComponent implements OnInit {
       })
     }
 
+    checkMandatoryQuestion() {
+      if (this.activeQuestion?.mandatory) {
+        if (this.activeQuestion?.type == 'Scale') {
+          if (this.activeQuestion?.answer >= 0) {
+            return false;
+          } else {
+            return true;
+          }
+        } else  if (!this.activeQuestion?.answer) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    calculateProgressValues() {
+      this.progressValue = ((this.activeQuestionIndex + 1) * 100) / this.questions.length;
+    }
 }

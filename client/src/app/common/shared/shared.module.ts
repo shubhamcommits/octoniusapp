@@ -107,6 +107,7 @@ import { ProjectBudgetComponent } from './dashboard/kpi-performance-card/project
 import { CustomToolTipComponent } from './custom-tool-tip/custom-tool-tip.component';
 import { ToolTipRendererDirective } from './custom-tool-tip/tool-tip-renderer.directive';
 import { WidgetSelectorDialogComponent } from './dashboard/widget-selector-dialog/widget-selector-dialog.component';
+import { ColorPickerDialogComponent } from './color-picker-dialog/color-picker-dialog.component';
 
 @NgModule({
   declarations: [
@@ -223,7 +224,8 @@ import { WidgetSelectorDialogComponent } from './dashboard/widget-selector-dialo
     ProjectBudgetDialogComponent,
     CustomToolTipComponent,
     ToolTipRendererDirective,
-    WidgetSelectorDialogComponent
+    WidgetSelectorDialogComponent,
+    ColorPickerDialogComponent
   ],
   imports: [
     CommonModule,
@@ -355,7 +357,8 @@ import { WidgetSelectorDialogComponent } from './dashboard/widget-selector-dialo
     ProjectBudgetDialogComponent,
     MatTooltipModule,
     CustomToolTipComponent,
-    WidgetSelectorDialogComponent
+    WidgetSelectorDialogComponent,
+    ColorPickerDialogComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
@@ -374,7 +377,8 @@ import { WidgetSelectorDialogComponent } from './dashboard/widget-selector-dialo
     UserUpdateUserPersonalInformationDialogComponent,
     ProjectBudgetDialogComponent,
     CustomToolTipComponent,
-    WidgetSelectorDialogComponent
+    WidgetSelectorDialogComponent,
+    ColorPickerDialogComponent
   ]
 })
 export class SharedModule { }
