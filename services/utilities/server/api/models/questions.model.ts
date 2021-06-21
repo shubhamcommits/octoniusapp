@@ -52,6 +52,9 @@ const QuestionSchema = new Schema({
     background_color: {
         type: String
     },
+    text_color: {
+        type: String
+    },
     created_date: {
         type: Date,
         default: moment().format()

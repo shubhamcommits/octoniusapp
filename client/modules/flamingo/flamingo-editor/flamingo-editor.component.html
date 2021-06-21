@@ -46,13 +46,28 @@
                     <!-- question image remove end-->
 
                     <!-- background color remove start-->
-                    <div>
-                      <div *ngIf="i==activeQuestionIndex && question?.background_color"
-                          style="width: 30px; height: 30px; float:left; background-color: {{question?.background_color}}"></div>
-                      <button *ngIf="i==activeQuestionIndex && question?.background_color && !flamingo?.publish" class="btn removeImageBtn" style="width: 30px;height: 30px;margin: 0px !important;"
+                    <div *ngIf="i==activeQuestionIndex && question?.background_color">
+                      <div style="width: 30px; height: 30px; float:left; background-color: {{question?.background_color}}"></div>
+                      <button *ngIf="!flamingo?.publish"
+                          class="btn removeImageBtn"
+                          style="width: 30px;height: 30px;margin: 0px !important;"
                           (click)="removeBackgroundColor(i)">
                         <b>X</b>
                       </button>
+                      Background Color
+                    </div>
+                    <!-- background color remove end-->
+
+                    <!-- background color remove start-->
+                    <div *ngIf="i==activeQuestionIndex && question?.text_color">
+                      <div style="width: 30px; height: 30px; float:left; background-color: {{question?.text_color || '#000000' }}"></div>
+                      <button *ngIf="!flamingo?.publish"
+                          class="btn removeImageBtn"
+                          style="width: 30px;height: 30px;margin: 0px !important;"
+                          (click)="removeTextColor(i)">
+                        <b>X</b>
+                      </button>
+                      Text Color
                     </div>
                     <!-- background color remove end-->
 
@@ -144,7 +159,10 @@
                         <i class="material-icons icons-color" (click)="openDetails(content)">image_outlined</i>
                     </div>
                     <div *ngIf="!flamingo?.publish" class="setting-icons-div">
-                      <i class="material-icons icons-color" (click)="openColorPicker(i)">color_lens</i>
+                      <i class="material-icons icons-color" (click)="openColorPicker(i, 'background')">color_lens</i>
+                    </div>
+                    <div *ngIf="!flamingo?.publish" class="setting-icons-div">
+                      <i class="material-icons icons-color" (click)="openColorPicker(i, 'text')">format_color_text</i>
                     </div>
                     <div *ngIf="!flamingo?.publish" class="setting-icons-div" (click)="deleteQuestion(question._id)">
                         <i class="material-icons icons-color">delete_sweep_outlined</i>
@@ -274,13 +292,13 @@
 
             <!-- welcome and thanks question type preview div start-->
             <div *ngIf="activeQuestion?.type==='Welcome' || activeQuestion?.type==='Thanks'"
-              style="background-color: {{activeQuestion?.background_color}}" class="preview-container">
+              style="background-color: {{activeQuestion?.background_color}}; color: {{ activeQuestion?.text_color || '#000000' }}" class="preview-container">
 
                 <app-secured-image *ngIf="activeQuestion?.image_url"
                   [imgURL]="activeQuestion?.image_url"
                   [service]="'flamingo'" [styleClass]="'welcome-img'"></app-secured-image>
 
-                <h2>{{activeQuestion?.text}}</h2>
+                <h2 style="color: {{ activeQuestion?.text_color || '#000000' }}">{{activeQuestion?.text}}</h2>
                 <div *ngIf="activeQuestion?.mandatory" class="mandatory-text">* This question is mandatory</div>
 
                 <!-- question secondary text-->
@@ -298,14 +316,14 @@
             <!-- all other questions except welcome and thanks div start -->
             <!-- Background image div -->
             <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
-                style="background-color: {{activeQuestion?.background_color}}; background-image: url({{FLAMINGO_UPLOADS}}/{{activeQuestion?.image_url}}?noAuth=true);"
+                style="background-color: {{activeQuestion?.background_color}}; background-image: url({{FLAMINGO_UPLOADS}}/{{activeQuestion?.image_url}}?noAuth=true); color: {{ activeQuestion?.text_color || '#000000' }}"
                 class="image-wrapper-container">
 
                 <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
                     class="question-preview-container">
 
                     <!-- question text -->
-                    <h2>{{activeQuestion?.text}}</h2>
+                    <h2 style="color: {{ activeQuestion?.text_color || '#000000' }}">{{activeQuestion?.text}}</h2>
                     <div *ngIf="activeQuestion?.mandatory" class="mandatory-text">* This question is mandatory</div>
 
                     <!-- question secondary text-->

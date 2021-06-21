@@ -259,19 +259,27 @@ export class FlamingoEditorComponent implements OnInit {
   /**
    * This function opens up the dialog to select a color
    */
-  openColorPicker(index: any) {
+  openColorPicker(index: any, type: string) {
     const dialogRef = this.dialog.open(ColorPickerDialogComponent, {
       width: '67%',
       height: '50%',
       disableClose: false,
       hasBackdrop: true,
-      data: { colorSelected: this.activeQuestion?.background_color }
+      data: { colorSelected: (type == 'background') ? this.activeQuestion?.background_color : this.activeQuestion?.text_color }
     });
 
     const colorPickedSubs = dialogRef.componentInstance.colorPickedEvent.subscribe(async (data) => {
-      await this.updateQuestion(this.questions[index]._id, { background_color: data });
-      this.questions[index].background_color = data;
-      this.activeQuestion.background_color = data;
+      if (type == 'background') {
+        await this.updateQuestion(this.questions[index]._id, { background_color: data });
+        this.questions[index].background_color = data;
+        this.activeQuestion.background_color = data;
+      }
+
+      if (type == 'text') {
+        await this.updateQuestion(this.questions[index]._id, { text_color: data });
+        this.questions[index].text_color = data;
+        this.activeQuestion.text_color = data;
+      }
     });
   }
 
@@ -307,6 +315,16 @@ export class FlamingoEditorComponent implements OnInit {
     await this.updateQuestion(this.questions[index]._id, { background_color: '' });
     this.questions[index].background_color = '';
     this.activeQuestion.background_color = '';
+  }
+
+  /**
+  * This function is responsible to remove the background color from question
+  * @param index
+  */
+  async removeTextColor(index: any) {
+    await this.updateQuestion(this.questions[index]._id, { text_color: '' });
+    this.questions[index].text_color = '';
+    this.activeQuestion.text_color = '';
   }
 
   /**

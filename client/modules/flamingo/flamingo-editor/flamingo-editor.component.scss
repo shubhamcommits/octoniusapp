@@ -105,7 +105,7 @@ input:focus {
 }
 .settings{
     height: 40px;
-    padding-left: 40%;
+    padding-left: 30%;
     padding-top: 10px;
 }
 .setting-icons-div{
@@ -328,4 +328,8 @@ input:focus {
     line-height: 19px;
     color: #000000;
     border-radius: 0px 4px 4px 0px;
+}
+
+.mandatory-text {
+  color: #000000;
 }
