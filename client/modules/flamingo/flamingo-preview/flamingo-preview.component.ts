@@ -22,6 +22,8 @@ export class FlamingoPreviewComponent implements OnInit {
   activeQuestion: any;
   disableNext = false;
 
+  progressValue = 0;
+
   FLAMINGO_UPLOADS = environment.UTILITIES_FLAMINGOS_UPLOADS;
 
   constructor(
@@ -47,6 +49,7 @@ export class FlamingoPreviewComponent implements OnInit {
     this.activeQuestion = this.questions[this.activeQuestionIndex];
 
     this.disableNext = this.checkMandatoryQuestion();
+    this.calculateProgressValues();
 
   }
 
@@ -70,12 +73,13 @@ export class FlamingoPreviewComponent implements OnInit {
   /**
   * This function is responsible to change the question
   */
-  nextQuestion(){
+  nextQuestion() {
     if(this.activeQuestionIndex < this.questions.length-2){
       this.activeQuestionIndex = this.activeQuestionIndex+1;
       this.activeQuestion = this.questions[this.activeQuestionIndex];
 
       this.disableNext = this.checkMandatoryQuestion();
+      this.calculateProgressValues();
     }
   }
 
@@ -85,6 +89,7 @@ export class FlamingoPreviewComponent implements OnInit {
   previousQuestion() {
     this.activeQuestionIndex = this.activeQuestionIndex-1;
     this.activeQuestion = this.questions[this.activeQuestionIndex];
+    this.calculateProgressValues();
   }
 
   /**
@@ -133,6 +138,10 @@ export class FlamingoPreviewComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  calculateProgressValues() {
+    this.progressValue = ((this.activeQuestionIndex + 1) * 100) / this.questions.length;
   }
 
 }

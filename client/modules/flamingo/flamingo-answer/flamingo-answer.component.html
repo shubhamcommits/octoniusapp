@@ -1,6 +1,15 @@
 <div *ngIf="activeQuestion?.type != 'LastScreen'">
     <!-- Action buttons-->
     <div class="action-header">
+
+      <mat-progress-bar
+          color="primary"
+          mode="determinate"
+          [value]="progressValue">
+      </mat-progress-bar>
+
+      <br/><br/>
+
       <div class="btn-group">
         <button *ngIf="activeQuestionIndex > 0" class="btn btn-light" (click)="previousQuestion()">
           <span class="material-icons">

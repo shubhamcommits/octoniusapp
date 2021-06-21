@@ -2,6 +2,15 @@
     <!-- Action buttons-->
 
     <div class="action-header">
+
+      <mat-progress-bar
+          color="primary"
+          mode="determinate"
+          [value]="progressValue">
+      </mat-progress-bar>
+
+      <br/><br/>
+
       <div class="btn-group">
         <button *ngIf="activeQuestionIndex > 0"
           class="btn btn-light" (click)="previousQuestion()"><span class="material-icons">
@@ -15,9 +24,7 @@
             class="btn btn-success" [disabled]="disableNext" (click)="submitAnswers()">Submit</button>
         <button *ngIf="activeQuestion?.type==='Welcome' && activeQuestionIndex == 0"
             class="btn btn-primary" (click)="nextQuestion()">Start</button>
-
       </div>
-
     </div>
 
     <!-- container for welcome and thanks question type end-->

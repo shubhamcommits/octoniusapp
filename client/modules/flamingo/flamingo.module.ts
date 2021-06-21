@@ -6,6 +6,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SharedModule } from 'src/app/common/shared/shared.module';
 import { FlamingoEditorComponent } from './flamingo-editor/flamingo-editor.component';
 import { FlamingoHeaderComponent } from './flamingo-header/flamingo-header.component';
@@ -41,7 +42,8 @@ import { ScaleResponsesGraphComponent } from './flamingo-result/result-insights/
     SharedModule,
     MatSlideToggleModule,
     MatSliderModule,
-    MatTabsModule
+    MatTabsModule,
+    MatProgressBarModule
   ]
 })
 export class FlamingoModule { }
