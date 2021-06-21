@@ -9,6 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class ColorPickerDialogComponent implements OnInit {
 
   colorSelected;
+  colorSelectedInput = '';
 
   @Output() colorPickedEvent = new EventEmitter();
 
@@ -22,6 +23,7 @@ export class ColorPickerDialogComponent implements OnInit {
 
   ngOnInit() {
     this.colorSelected = this.data.colorSelected;
+    this.colorSelectedInput = this.data.colorSelected;
 
     this.colors = this.buildColors();
   }
