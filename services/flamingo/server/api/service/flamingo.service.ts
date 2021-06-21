@@ -166,7 +166,10 @@ export class FlamingoService {
      */
     async updateQuestion(questionId: any, data: any) {
         let query = { _id: questionId };
-        let flamingoUpdated = await Question.findOneAndUpdate(query,data,{new : true});
+        let flamingoUpdated = await Question.findOneAndUpdate(
+            query,
+            data,
+            { new : true });
         return this.populateFlamingoProperties(flamingoUpdated);
     }
 

@@ -21,10 +21,10 @@
 
 .answer-container{
     width: 100%;
-    height: 100%;
+    height: 100vh;
     padding: 30px;
     text-align: center;
-    margin: 200px auto;
+    margin: 0px auto;
 }
 .question-answer-container {
     margin: 200px auto;
@@ -63,3 +63,8 @@
     width: 50%;
     height: auto;
 }
+
+.mandatory-text {
+  color: #000000;
+}
+

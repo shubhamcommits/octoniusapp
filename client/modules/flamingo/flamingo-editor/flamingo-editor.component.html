@@ -10,13 +10,11 @@
                 [ngClass]="i==activeQuestionIndex?'questions-container-active':'questions-container'"
                 (click)="changeActiveIndex(i)" style="position: relative;">
                 <!-- question icon div -->
-                <div class="question-icon"><span class="material-icons" style="font-size: 40px;">
+                <div class="question-icon">
+                  <span class="material-icons" style="font-size: 40px;">
                     category
-                    </span>
-                    
-                    
-                    
-                    </div>
+                  </span>
+                </div>
 
                 <!-- question text input and others settings start-->
                 <div class="question-txt">
@@ -25,7 +23,15 @@
                     <span *ngIf="flamingo?.publish">{{ question.text }}</span>
 
                     <input *ngIf="!flamingo?.publish" [(ngModel)]="question.text" placeholder="Please Enter question text"
-                        (change)="changeQuestionText($event,i)"
+                        (change)="changeQuestionText($event, i)"
+                        [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'"/>
+                    <br/>
+                    <br/>
+                    <!-- question secondary text input -->
+                    <span *ngIf="flamingo?.publish">{{ question.secondary_text }}</span>
+
+                    <input *ngIf="!flamingo?.publish" [(ngModel)]="question.secondary_text" placeholder="Please Enter question secondary text"
+                        (change)="changeQuestionSecondaryText($event, i)"
                         [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'"/>
                     <br/>
                     <br/>
@@ -36,8 +42,34 @@
                     <button *ngIf="i==activeQuestionIndex && question?.image_url && !flamingo?.publish" class="btn removeImageBtn" style="width: 30px;height: 30px;margin: 0px !important;"
                         (click)="removeImage(i)">
                        <b>X</b>
-                     </button>
+                    </button>
                     <!-- question image remove end-->
+
+                    <!-- background color remove start-->
+                    <div *ngIf="i==activeQuestionIndex && question?.background_color" style="height: 30px">
+                      <div style="width: 30px; height: 30px; float:left; background-color: {{question?.background_color}};"></div>
+                      <button *ngIf="!flamingo?.publish"
+                          class="btn removeImageBtn"
+                          style="width: 30px;height: 30px;margin: 0px !important;"
+                          (click)="removeBackgroundColor(i)">
+                        <b>X</b>
+                      </button>
+                      Background Color
+                    </div>
+                    <!-- background color remove end-->
+
+                    <!-- background color remove start-->
+                    <div *ngIf="i==activeQuestionIndex && question?.text_color" style="height: 30px">
+                      <div style="width: 30px; height: 30px; float:left; background-color: {{question?.text_color || '#000000' }}"></div>
+                      <button *ngIf="!flamingo?.publish"
+                          class="btn removeImageBtn"
+                          style="width: 30px;height: 30px;margin: 0px !important;"
+                          (click)="removeTextColor(i)">
+                        <b>X</b>
+                      </button>
+                      Text Color
+                    </div>
+                    <!-- background color remove end-->
 
                     <!-- yes/no question button text input fields start-->
                     <div *ngIf="question.type==='Yes/No' && i==activeQuestionIndex">
@@ -115,11 +147,24 @@
                 <!-- question text input and others settings end-->
 
                 <!-- Question delete and image upload button start -->
-                <div class="settings" *ngIf="i==activeQuestionIndex && !flamingo?.publish">
-                    <div class="setting-icons-div">
+                <div class="settings" *ngIf="i==activeQuestionIndex">
+                    <div class="setting-icons-div" style="width: 110px;" *ngIf="activeQuestion?.type !='Welcome' && activeQuestion?.type !='Thanks'">
+                        Mandatory
+                        <mat-slide-toggle [color]="'#9B9B9B'"
+                          [disabled]="flamingo?.publish"
+                          [checked]="(question?.mandatory) ? true: false"
+                          (change)="makeMandatory($event,i)"></mat-slide-toggle>
+                    </div>
+                    <div *ngIf="!flamingo?.publish" class="setting-icons-div">
                         <i class="material-icons icons-color" (click)="openDetails(content)">image_outlined</i>
                     </div>
-                    <div class="setting-icons-div" (click)="deleteQuestion(question._id)">
+                    <div *ngIf="!flamingo?.publish" class="setting-icons-div">
+                      <i class="material-icons icons-color" (click)="openColorPicker(i, 'background')">color_lens</i>
+                    </div>
+                    <div *ngIf="!flamingo?.publish" class="setting-icons-div">
+                      <i class="material-icons icons-color" (click)="openColorPicker(i, 'text')">format_color_text</i>
+                    </div>
+                    <div *ngIf="!flamingo?.publish" class="setting-icons-div" (click)="deleteQuestion(question._id)">
                         <i class="material-icons icons-color">delete_sweep_outlined</i>
                     </div>
                 </div>
@@ -153,7 +198,7 @@
                             <div class="btn-icon"><span class="material-icons">
                                 play_arrow
                                 </span>
-                                
+
                                 </div>
                             <div class="btn-txt">Welcome screen</div>
                             <div class="hovered-welcome">
@@ -181,14 +226,14 @@
                             <div class="btn-icon"><span class="material-icons">
                                 text_snippet
                                 </span>
-                                
+
                                 </div>
                             <div class="btn-txt">Short text</div>
                             <div class="hovered-short">
                                 <p style="margin-left: 10%;margin-top: 25%;">
                                     <strong>Short text</strong>
                                     <br />
-                                    A simple question with a short answer. 
+                                    A simple question with a short answer.
                                 </p>
                             </div>
                         </div>
@@ -196,7 +241,7 @@
                             <div class="btn-icon"><span class="material-icons">
                                 rule
                                 </span>
-                                
+
                                 </div>
                             <div class="btn-txt">YES/NO</div>
                             <div class="hovered-yes-no">
@@ -211,7 +256,7 @@
                             <div class="btn-icon"><span class="material-icons">
                                 align_horizontal_left
                                 </span>
-                                
+
                                 </div>
                             <div class="btn-txt">Scale</div>
                             <div class="hovered-scale">
@@ -246,13 +291,20 @@
         <div class="col-md-8">
 
             <!-- welcome and thanks question type preview div start-->
-            <div *ngIf="activeQuestion?.type==='Welcome' || activeQuestion?.type==='Thanks'" class="preview-container">
+            <div *ngIf="activeQuestion?.type==='Welcome' || activeQuestion?.type==='Thanks'"
+              style="background-color: {{activeQuestion?.background_color}}; color: {{ activeQuestion?.text_color || '#000000' }}" class="preview-container">
 
                 <app-secured-image *ngIf="activeQuestion?.image_url"
                   [imgURL]="activeQuestion?.image_url"
                   [service]="'flamingo'" [styleClass]="'welcome-img'"></app-secured-image>
 
-                <h2>{{activeQuestion?.text}}</h2>
+                <h2 style="color: {{ activeQuestion?.text_color || '#000000' }}">{{activeQuestion?.text}}</h2>
+                <div *ngIf="activeQuestion?.mandatory" class="mandatory-text">* This question is mandatory</div>
+
+                <!-- question secondary text-->
+                <span>{{ activeQuestion?.secondary_text }}</span>
+
+                <br/><br/>
 
                 <button *ngIf="activeQuestion?.type==='Thanks'"
                     class="btn btn-success">Submit</button>
@@ -264,19 +316,26 @@
             <!-- all other questions except welcome and thanks div start -->
             <!-- Background image div -->
             <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
-                style="background-image: url({{FLAMINGO_UPLOADS}}/{{activeQuestion?.image_url}}?noAuth=true);"
+                style="background-color: {{activeQuestion?.background_color}}; background-image: url({{FLAMINGO_UPLOADS}}/{{activeQuestion?.image_url}}?noAuth=true); color: {{ activeQuestion?.text_color || '#000000' }}"
                 class="image-wrapper-container">
 
                 <div *ngIf="activeQuestion?.type !=='Welcome' && activeQuestion?.type!=='Thanks'"
                     class="question-preview-container">
 
                     <!-- question text -->
-                    <h2 style="margin-bottom: 50px;">{{activeQuestion?.text}}</h2>
+                    <h2 style="color: {{ activeQuestion?.text_color || '#000000' }}">{{activeQuestion?.text}}</h2>
+                    <div *ngIf="activeQuestion?.mandatory" class="mandatory-text">* This question is mandatory</div>
+
+                    <!-- question secondary text-->
+                    <span>{{activeQuestion?.secondary_text}}</span>
+
+                    <br/><br/>
+
                     <!-- short question input field -->
-                    <input *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..."
+                    <input style="margin-top: 50px;" *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..."
                         class="input-answer" />
                     <!-- yes/no question button -->
-                    <div *ngIf="activeQuestion?.type==='Yes/No'">
+                    <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Yes/No'">
                         <button class="btn btn-success">{{activeQuestion?.positive_option_text || 'Positive'}}</button>
                         <br />
                         <br />
@@ -284,7 +343,7 @@
                     </div>
 
                     <!-- question scale scale buttons and labels -->
-                    <div *ngIf="activeQuestion?.type==='Scale'">
+                    <div style="margin-top: 50px;" *ngIf="activeQuestion?.type==='Scale'">
                         <button *ngIf="activeQuestion?.scale?.size > 0" class="scale-button" ng>0</button>
                         <button *ngIf="activeQuestion?.scale?.size > 1" class="scale-button">1</button>
                         <button *ngIf="activeQuestion?.scale?.size > 2" class="scale-button">2</button>
@@ -306,7 +365,8 @@
                     </div>
 
                     <!-- question dropdown dropdown -->
-                    <button *ngIf="activeQuestion?.type === 'Dropdown'"
+                    <br *ngIf="activeQuestion?.type === 'Dropdown'"/>
+                    <button style="margin-top: 50px;" *ngIf="activeQuestion?.type === 'Dropdown'"
                         class="btn btn-primary mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
                         Please Select an Option
                     </button>
