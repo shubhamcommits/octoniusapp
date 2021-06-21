@@ -46,8 +46,8 @@
                     <!-- question image remove end-->
 
                     <!-- background color remove start-->
-                    <div *ngIf="i==activeQuestionIndex && question?.background_color">
-                      <div style="width: 30px; height: 30px; float:left; background-color: {{question?.background_color}}"></div>
+                    <div *ngIf="i==activeQuestionIndex && question?.background_color" style="height: 30px">
+                      <div style="width: 30px; height: 30px; float:left; background-color: {{question?.background_color}};"></div>
                       <button *ngIf="!flamingo?.publish"
                           class="btn removeImageBtn"
                           style="width: 30px;height: 30px;margin: 0px !important;"
@@ -59,7 +59,7 @@
                     <!-- background color remove end-->
 
                     <!-- background color remove start-->
-                    <div *ngIf="i==activeQuestionIndex && question?.text_color">
+                    <div *ngIf="i==activeQuestionIndex && question?.text_color" style="height: 30px">
                       <div style="width: 30px; height: 30px; float:left; background-color: {{question?.text_color || '#000000' }}"></div>
                       <button *ngIf="!flamingo?.publish"
                           class="btn removeImageBtn"
