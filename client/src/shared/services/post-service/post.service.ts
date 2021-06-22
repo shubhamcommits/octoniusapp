@@ -456,9 +456,10 @@ export class PostService {
     return this._http.put(this.baseURL + `/${postId}/move-to-group`, { groupId: groupId, columnId: columnId || '', oldGroupId: oldGroupId, userId: userId }).toPromise();
   }
 
-  removeAttachedFile(fileName: string) {
+  removeAttachedFile(fileName: string, postId?: string) {
     return this._http.post(this.baseURL + `/delete-attached`, {
-      fileName: fileName
+      fileName: fileName,
+      postId: postId
     }).toPromise();
   }
 

@@ -1,4 +1,5 @@
 import { Response, Request, NextFunction } from "express";
+import { Post } from "../models";
 import { FilesService } from "../services";
 import { sendErr } from '../utils/sendError';
 
@@ -27,6 +28,16 @@ export class FilesControllers {
 
             // Get File on the basis of the fileName
             let file = await filesService.deleteAttachedFiles(fileName);
+
+            if (postId) {
+                await Post.findOneAndUpdate({
+                    _id: postId
+                  }, {
+                    $pull: { files: { modified_name: fileName }}
+                  }, {
+                    new: true
+                  });
+            }
 
             // Send Status 200 response
             return res.status(200).json({

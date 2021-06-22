@@ -966,19 +966,19 @@ export class UsersControllers {
             num_invited_users: guestsCount,
             num_groups: groupsCount,
             created_date: workspaceUpdated.created_date,
-            access_code: workspace.access_code,
-            management_private_api_key: workspace.management_private_api_key
+            access_code: workspaceUpdated.access_code,
+            management_private_api_key: workspaceUpdated.management_private_api_key
         }
 
         axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
-            API_KEY: workspace.management_private_api_key,
+            API_KEY: workspaceUpdated.management_private_api_key,
             workspaceData: workspaceMgmt
         });
 
         axios.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {
             data: {
-                API_KEY: workspace.management_private_api_key,
-                workspaceId: workspace._id,
+                API_KEY: workspaceUpdated.management_private_api_key,
+                workspaceId: workspaceId,
             }
         });
 
