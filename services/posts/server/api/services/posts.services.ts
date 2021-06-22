@@ -392,7 +392,6 @@ export class PostService {
    * @param post 
    */
   async sendNewPostNotification(post: any) {
-console.log(post);
     return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-post`, {
         postId: post._id,
         groupId: post._group._id || post._group,
@@ -467,6 +466,7 @@ console.log(post);
       // Parse the String to JSON Object
       
       post = JSON.parse(post)
+      const files = post.files;
 
       // Post Data Object
       var postData: any = {
@@ -475,7 +475,6 @@ console.log(post);
         _content_mentions: post._content_mentions,
         tags: post.tags,
         _read_by: [],
-        files: post.files,
         _assigned_to: post.assigned_to
       }
 
@@ -537,12 +536,34 @@ console.log(post);
 
       // Update the post
       post = await Post.findOneAndUpdate({
-        _id: postId
-      }, {
-        $set: postData
-      }, {
-        new: true
-      })
+          _id: postId
+        }, {
+          $set: postData
+        }, {
+          new: true
+        });
+
+      // Update attatched files
+
+      if (files) {
+        if (!post.files) {
+          post = await Post.findOneAndUpdate({
+              _id: postId
+            }, {
+              files: []
+            }, {
+              new: true
+            });
+        }
+        
+        post = await Post.findOneAndUpdate({
+            _id: postId
+          }, {
+            $push: { "files": { $each: files }}
+          }, {
+            new: true
+          });
+      }
 
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
@@ -1569,7 +1590,7 @@ console.log(post);
   async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean, filteringGroups: any) {
 
     const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
-console.log({filteringGroups});
+
     let groups = [];
     if (filteringGroups && filteringGroups != 'undefined' && filteringGroups.length > 0) {
       groups = filteringGroups;

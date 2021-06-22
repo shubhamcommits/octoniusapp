@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'
 import { environment } from 'src/environments/environment'
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 // Google API Variables
 declare var gapi: any
@@ -30,7 +31,7 @@ export class AttachFilesComponent implements OnInit {
   @Output('cloudFiles') cloudFiles = new EventEmitter();
 
   // Files Array
-  filesArray = new Array<File>()
+  filesArray = [];
 
   googleDriveFiles: any = [];
 
@@ -44,11 +45,12 @@ export class AttachFilesComponent implements OnInit {
 
   constructor(
     private postService: PostService,
+    private utilityService: UtilityService,
     public storageService: StorageService
   ) { }
 
   ngOnInit() {
-    this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`
+    this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
   }
 
   /**
@@ -58,7 +60,9 @@ export class AttachFilesComponent implements OnInit {
   onAttach(files: any) {
 
     // Set the files array to the incoming output
-    this.filesArray = files.target.files;
+    for (let i = 0; i < files.target.files.length; i++) {
+      this.filesArray.push(files.target.files[i]);
+    }
 
     // Emit the value to other components
     return this.files.emit(this.filesArray)
@@ -78,7 +82,7 @@ export class AttachFilesComponent implements OnInit {
    * This function is responsible for removing the specific file attached
    * @param index
    */
-  removeFile(index: number) {
+  async removeFile(index: number) {
 
     let arr = [];
 
@@ -92,8 +96,6 @@ export class AttachFilesComponent implements OnInit {
 
     const file = arr[index];
 
-    this.postService.removeAttachedFile(file['modified_name']);
-
     // Remove the element
     arr.splice(index, 1)
 
@@ -105,7 +107,16 @@ export class AttachFilesComponent implements OnInit {
       this.comment.files = arr
     }
 
-    return this.removeFileInArray(file['modified_name']);
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.postService.removeAttachedFile(file['modified_name'], this.post._id)
+        .then((res) => {
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
   }
 
   /**
@@ -124,21 +135,6 @@ export class AttachFilesComponent implements OnInit {
 
     // Updated array
     this.filesArray = arr
-  }
-
-  removeFileInArray(fileName: string) {
-    // Remove element at the specific index
-    let arr = Array.from(this.filesArray)
-
-    const index = arr.findIndex(file => file['modified_name'] == fileName);
-    // Remove the element
-    arr.splice(index, 1);
-
-    // Updated array
-    this.filesArray = arr;
-
-    // Emit the value to other components
-    return this.files.emit(this.filesArray)
   }
 
   loadGoogleCloudFiles() {
