@@ -21,6 +21,8 @@ export class GroupPostComponent implements OnInit {
   // User Data Object
   userData: any
 
+  groupData: any;
+
   // Post Object
   post: any
 
@@ -36,10 +38,13 @@ export class GroupPostComponent implements OnInit {
     this.isLoading$.next(true);
 
     // Fetch the post details via calling the HTTP Request
-    this.post = await this.publicFunctions.getPost(this.postId)
+    this.post = await this.publicFunctions.getPost(this.postId);
 
     // Fetch Current User
     this.userData = await this.publicFunctions.getCurrentUser();
+
+    // Fetch Current Group
+    this.groupData = await this.publicFunctions.getCurrentGroup();
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);

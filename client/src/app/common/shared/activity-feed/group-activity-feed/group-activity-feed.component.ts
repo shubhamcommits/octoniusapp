@@ -268,7 +268,7 @@ export class GroupActivityFeedComponent implements OnInit {
       this.postService.deletePost(post._id).then((res)=>{
          // Find the key(postId) and remove the post
         this.posts.delete(post._id);
-        if (post.pin) {
+        if (post.pin_to_top) {
           const postIndex = this.pinnedPosts.findIndex((postTmp) => postTmp._id == post._id);
           this.pinnedPosts.splice(postIndex, 1);
         }

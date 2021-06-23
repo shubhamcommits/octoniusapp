@@ -21,6 +21,8 @@ export class PostUtilsComponent implements OnInit {
 
   @Input() mode: string = 'normal';
 
+  @Input() groupData: any;
+
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter();
   @Output() closeModalEvent = new EventEmitter();
@@ -42,7 +44,6 @@ export class PostUtilsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-
     // Fetch the current workspace data
     const workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
@@ -205,5 +206,9 @@ export class PostUtilsComponent implements OnInit {
         this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
       }
     }
+  }
+
+  isGroupManager() {
+    return (this.groupData && this.groupData._admins) ? this.groupData._admins.find(admin => admin._id === this.userData._id) : false;
   }
 }

@@ -20,10 +20,10 @@
   <button mat-menu-item [matMenuTriggerFor]="copyMenu" *ngIf="post?.type !== 'task'">Copy to Group</button>
   <button mat-menu-item [matMenuTriggerFor]="moveMenu" *ngIf="post?.type !== 'task'">Move to Group</button>
 
-  <li class="dropdown-divider" *ngIf="post?.type == 'task' && userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by == userData?._id"></li>
+  <li class="dropdown-divider" *ngIf="post?.type == 'task' && userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id"></li>
 
   <button mat-menu-item (click)="deletePost()"
-      *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by == userData?._id">
+      *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id || isGroupManager()">
     Delete
   </button>
 

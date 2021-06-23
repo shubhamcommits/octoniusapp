@@ -73,6 +73,7 @@
                       [post]="post.value"
                       [userData]="userData"
                       [globalFeed]="globalFeed"
+                      [groupData]="groupData"
                       (delete)="deletePost($event)"
                       (pinEvent)="onPostPin($event)"
                       (closeModalEvent)="editedPost($event)"></app-post-view>
@@ -91,6 +92,7 @@
                             [post]="post.value"
                             [userData]="userData"
                             [globalFeed]="globalFeed"
+                            [groupData]="groupData"
                             (delete)="deletePost($event)"
                             (pinEvent)="onPostPin($event)"
                             (closeModalEvent)="editedPost($event)"></app-post-view>

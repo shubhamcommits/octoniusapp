@@ -30,6 +30,9 @@ export class PostViewComponent implements OnInit {
 
   @Input('globalFeed') isGlobal: boolean = false;
 
+  // Group Data Object
+  @Input() groupData: any;
+
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
 

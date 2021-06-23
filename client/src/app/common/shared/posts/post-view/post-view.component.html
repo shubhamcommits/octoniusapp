@@ -122,6 +122,7 @@
         <app-post-actions *ngIf="post && userData"
             [post]="post"
             [userData]="userData"
+            [groupData]="groupData"
             (delete)="deletePost($event)"
             (pinEvent)="onPostPin($event)"
             (closeModalEvent)="postModalCloseEvent($event)">

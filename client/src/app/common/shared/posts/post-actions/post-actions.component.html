@@ -30,6 +30,7 @@
             <app-post-utils *ngIf="!fullscreen"
                 [post]="post"
                 [userData]="userData"
+                [groupData]="groupData"
                 (delete)="deletePost($event)"
                 (pinEvent)="onPostPin($event)"
                 (closeModalEvent)="postModalCloseEvent($event)">
