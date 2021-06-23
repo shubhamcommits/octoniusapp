@@ -51,18 +51,35 @@
 
             <!-- Activity posts section starts -->
             <!-- Pinned posts starts -->
-            <div *ngIf="pinnedPosts.length > 0" [ngClass]="{'mt-3': this.globalFeed === false }">
-              <ul class="list-group"
-                  *ngFor="let post of pinnedPosts | keyvalue: compare; let index = index ; trackBy: this.utilityService.trackByIndex">
-                  <app-post-view *ngIf="post && userData && checkDataExist(userData)"
+            <mat-accordion>
+              <mat-expansion-panel style="background-color: #FBB732; margin-top: 10px;">
+                <mat-expansion-panel-header class="column-title">
+                  <mat-panel-title>
+                    <div style="color: #FFFFFF;">
+                      <i class="material-icons-outlined">push_pin</i>
+                      {{ pinnedPosts?.length }} Pinned posts
+                    </div>
+                  </mat-panel-title>
+
+                  <mat-panel-description>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <div *ngIf="pinnedPosts.length > 0"
+                    style="width: 98%; margin-left: auto; margin-right: auto;"
+                    [ngClass]="{'mt-3': this.globalFeed === false }">
+                  <ul class="list-group" *ngFor="let post of pinnedPosts | keyvalue: compare; let index = index ; trackBy: this.utilityService.trackByIndex">
+                    <app-post-view *ngIf="post && userData && checkDataExist(userData)"
                       [post]="post.value"
                       [userData]="userData"
                       [globalFeed]="globalFeed"
                       (delete)="deletePost($event)"
                       (pinEvent)="onPostPin($event)"
                       (closeModalEvent)="editedPost($event)"></app-post-view>
-              </ul>
-            </div>
+                  </ul>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
             <!-- Pinned posts ends -->
 
             <!-- Infinite scroll for posts starts -->
