@@ -73,8 +73,6 @@ export class GroupActivityFeedComponent implements OnInit {
     this.subSink.add(this._router.events.subscribe(async (e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
-        // this.ngOnInit()
-
         // Fetch groupId from router snapshot or as an input parameter
         this.groupId = this._router.routerState.snapshot.root.queryParamMap.get('group')
 
@@ -88,11 +86,9 @@ export class GroupActivityFeedComponent implements OnInit {
 
         this.posts.clear()
 
-        this.showNewPosts = false
+        this.showNewPosts = false;
 
-        this.moreToLoad = true
-
-        // await this.ngOnInit();
+        this.moreToLoad = true;
       }
     }));
   }
@@ -142,7 +138,7 @@ export class GroupActivityFeedComponent implements OnInit {
     await this.fetchPosts(this.groupId);
 
     // pinned/unpinned posts
-    this.postService.getPosts(this.groupId, 'pinned', true).then(res => {
+    await this.postService.getPosts(this.groupId, 'pinned', true).then(res => {
       this.pinnedPosts = res['posts'];
     });
 
@@ -163,7 +159,8 @@ export class GroupActivityFeedComponent implements OnInit {
         closeEventSubs.unsubscribe();
       });
     }
-
+console.log(this.posts);
+console.log(this.pinnedPosts);
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
   }
@@ -275,13 +272,6 @@ export class GroupActivityFeedComponent implements OnInit {
         if (post.pin) {
           const postIndex = this.pinnedPosts.findIndex((postTmp) => postTmp._id == post._id);
           this.pinnedPosts.splice(postIndex, 1);
-        /*
-        } else {
-          const postIndex = this.pinnedPosts.findIndex((post) => post._id == postData._id);
-          const post = this.posts[postIndex];
-          this.pinnedPosts.splice(postIndex, 1);
-          this.posts.set(post._id, post);
-        */
         }
 
         resolve({});
