@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { retry } from 'rxjs/internal/operators/retry';
 import { PostService } from 'src/shared/services/post-service/post.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-group-activity-feed',
@@ -15,6 +16,50 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 })
 export class GroupActivityFeedComponent implements OnInit {
 
+  // Fetch groupId from router snapshot or as an input parameter
+  @Input('groupId') groupId = this.router.snapshot.queryParamMap.get('group');
+
+  // My Workplace variable check
+  myWorkplace: boolean = this.router.snapshot.queryParamMap.has('myWorkplace')
+    ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
+    : false
+
+  // Global Feed Variable check
+  globalFeed: boolean = (this.router.snapshot.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true
+
+  // Current Group Data
+  groupData: any;
+
+  isProjectType = false;
+
+  // Current User Data
+  userData: any;
+
+  // Posts map
+  posts = new Map();
+
+  // Pinned posts
+  pinnedPosts = [];
+
+  // More to load maintains check if we have more to load members on scroll
+  public moreToLoad: boolean = true;
+
+  // Variable for lastPostId
+  lastPostId: string;
+
+  // Show New posts variable
+  showNewPosts = false
+
+  // PUBLIC FUNCTIONS
+  public publicFunctions = new PublicFunctions(this.injector);
+
+  // Subsink Object
+  subSink = new SubSink();
+
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
+
+  columns;
 
   constructor(
     private router: ActivatedRoute,
@@ -51,48 +96,6 @@ export class GroupActivityFeedComponent implements OnInit {
       }
     }));
   }
-
-  // Fetch groupId from router snapshot or as an input parameter
-  @Input('groupId') groupId = this.router.snapshot.queryParamMap.get('group');
-
-  // My Workplace variable check
-  myWorkplace: boolean = this.router.snapshot.queryParamMap.has('myWorkplace')
-    ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-    : false
-
-  // Global Feed Variable check
-  globalFeed: boolean = (this.router.snapshot.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true
-
-  // Current Group Data
-  groupData: any;
-
-  isProjectType = false;
-
-  // Current User Data
-  userData: any;
-
-  // Posts map
-  posts = new Map()
-
-  // More to load maintains check if we have more to load members on scroll
-  public moreToLoad: boolean = true;
-
-  // Variable for lastPostId
-  lastPostId: string;
-
-  // Show New posts variable
-  showNewPosts = false
-
-  // PUBLIC FUNCTIONS
-  public publicFunctions = new PublicFunctions(this.injector);
-
-  // Subsink Object
-  subSink = new SubSink();
-
-  // IsLoading behaviou subject maintains the state for loading spinner
-  public isLoading$ = new BehaviorSubject(false);
-
-  columns;
 
   async ngOnInit() {
     this._router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -136,7 +139,12 @@ export class GroupActivityFeedComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetch the first 5 posts from the server
-    await this.fetchPosts(this.groupId)
+    await this.fetchPosts(this.groupId);
+
+    // pinned/unpinned posts
+    this.postService.getPosts(this.groupId, 'pinned', true).then(res => {
+      this.pinnedPosts = res['posts'];
+    });
 
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
       const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
@@ -158,6 +166,14 @@ export class GroupActivityFeedComponent implements OnInit {
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
+  }
+
+  /**
+   * Unsubscribe all the observables to avoid memory leaks
+   */
+  ngOnDestroy() {
+    this.subSink.unsubscribe()
+    this.isLoading$.complete()
   }
 
   // Check if the data provided is not empty{}
@@ -208,7 +224,7 @@ export class GroupActivityFeedComponent implements OnInit {
     return socketService.onEvent('postEditedInGroup')
       .pipe(retry(Infinity))
       .subscribe((post) => {
-      })
+      });
   }
 
   /**
@@ -221,7 +237,7 @@ export class GroupActivityFeedComponent implements OnInit {
     return socketService.onEvent('postDeletedInGroup')
       .pipe(retry(Infinity))
       .subscribe((post) => {
-      })
+      });
   }
 
   /**
@@ -230,9 +246,9 @@ export class GroupActivityFeedComponent implements OnInit {
   async fetchCurrentGroupData() {
 
     // Fetch the group data from HTTP Request
-    if(this.groupId != null || this.groupId != undefined)
-      this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId)
-
+    if(this.groupId != null || this.groupId != undefined) {
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
+    }
   }
 
   /**
@@ -244,8 +260,7 @@ export class GroupActivityFeedComponent implements OnInit {
     // Set the Show New Posts to be true
     this.showNewPosts = true;
 
-    this.emitNewPostSocket(post)
-
+    this.emitNewPostSocket(post);
   }
 
   /**
@@ -257,6 +272,18 @@ export class GroupActivityFeedComponent implements OnInit {
       this.postService.deletePost(post._id).then((res)=>{
          // Find the key(postId) and remove the post
         this.posts.delete(post._id);
+        if (post.pin) {
+          const postIndex = this.pinnedPosts.findIndex((postTmp) => postTmp._id == post._id);
+          this.pinnedPosts.splice(postIndex, 1);
+        /*
+        } else {
+          const postIndex = this.pinnedPosts.findIndex((post) => post._id == postData._id);
+          const post = this.posts[postIndex];
+          this.pinnedPosts.splice(postIndex, 1);
+          this.posts.set(post._id, post);
+        */
+        }
+
         resolve({});
       }).catch((err)=>{
         reject();
@@ -302,8 +329,9 @@ export class GroupActivityFeedComponent implements OnInit {
     let posts: any;
 
     // If the activity feed is not the global feed
-    if (!this.globalFeed)
-      posts = await this.publicFunctions.getPosts(groupId, 'normal', lastPostId)
+    if (!this.globalFeed) {
+      posts = await this.publicFunctions.getPosts(groupId, 'normal', false, lastPostId);
+    }
 
     // If the acitvity feed is the global feed
     else if (this.globalFeed) {
@@ -323,7 +351,7 @@ export class GroupActivityFeedComponent implements OnInit {
 
     // Else if moreToLoad is true
     if (this.moreToLoad) {
-      for (let post of posts){
+      for (let post of posts) {
         this.posts.set(post._id, post);
       }
 
@@ -334,7 +362,6 @@ export class GroupActivityFeedComponent implements OnInit {
       if (this.globalFeed)
         this.moreToLoad = false
     }
-
   }
 
   /**
@@ -367,11 +394,25 @@ export class GroupActivityFeedComponent implements OnInit {
       (parseInt(a.key, 20) > parseInt(b.key, 20) ? 1 : 0);
   }
 
-  /**
-   * Unsubscribe all the observables to avoid memory leaks
-   */
-  ngOnDestroy() {
-    this.subSink.unsubscribe()
-    this.isLoading$.complete()
+  onPostPin(postData: any) {
+    if (postData.pin) {
+      const post = this.posts.get(postData._id);
+      this.posts.delete(postData._id);
+      this.pinnedPosts.push(post);
+    } else {
+      const postIndex = this.pinnedPosts.findIndex((post) => post._id == postData._id);
+      const post = this.pinnedPosts[postIndex];
+      this.pinnedPosts.splice(postIndex, 1);
+      if (post) {
+        this.posts.set(post._id, post);
+      }
+    }
+    this.pinnedPosts.sort((p1, p2) => {
+        return (moment.utc(p1.created_date).isBefore(p2.created_date)) ? -1 : 1;
+      });
+
+    this.posts = new Map([...this.posts.entries()].sort((p1, p2) => {
+        return (moment.utc(p1['created_date']).isBefore(p2['created_date'])) ? -1 : 1;
+      }));
   }
 }

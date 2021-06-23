@@ -123,6 +123,7 @@
             [post]="post"
             [userData]="userData"
             (delete)="deletePost($event)"
+            (pinEvent)="onPostPin($event)"
             (closeModalEvent)="postModalCloseEvent($event)">
         </app-post-actions>
         <!-- Post Actions ends -->

@@ -25,6 +25,8 @@ export class PostActionsComponent implements OnInit {
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()
 
+  @Output() pinEvent = new EventEmitter();
+
   // Show Comment State
   showComments: boolean = false;
 
@@ -138,5 +140,9 @@ export class PostActionsComponent implements OnInit {
 
   onCommentRemoved($event) {
     this.post.comments_count--;
+  }
+
+  onPostPin(pin: any) {
+    this.pinEvent.emit(pin);
   }
 }

@@ -50,6 +50,20 @@
             <!-- Group activity postbox ends -->
 
             <!-- Activity posts section starts -->
+            <!-- Pinned posts starts -->
+            <div *ngIf="pinnedPosts.length > 0" [ngClass]="{'mt-3': this.globalFeed === false }">
+              <ul class="list-group"
+                  *ngFor="let post of pinnedPosts | keyvalue: compare; let index = index ; trackBy: this.utilityService.trackByIndex">
+                  <app-post-view *ngIf="post && userData && checkDataExist(userData)"
+                      [post]="post.value"
+                      [userData]="userData"
+                      [globalFeed]="globalFeed"
+                      (delete)="deletePost($event)"
+                      (pinEvent)="onPostPin($event)"
+                      (closeModalEvent)="editedPost($event)"></app-post-view>
+              </ul>
+            </div>
+            <!-- Pinned posts ends -->
 
             <!-- Infinite scroll for posts starts -->
             <app-infinite-scroll (scrolled)="onScroll()">
@@ -61,6 +75,7 @@
                             [userData]="userData"
                             [globalFeed]="globalFeed"
                             (delete)="deletePost($event)"
+                            (pinEvent)="onPostPin($event)"
                             (closeModalEvent)="editedPost($event)"></app-post-view>
                     </ul>
                 </div>

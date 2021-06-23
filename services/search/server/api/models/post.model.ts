@@ -31,6 +31,10 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+    pin_to_top: {
+        type: Boolean,
+        default: false
+    },
     comments_count: {
         type: Number,
         default: 0

@@ -29,7 +29,7 @@ export class PostService {
    * @param groupId 
    * @param lastPostId 
    */
-  async getPosts(groupId: any, type?: any, lastPostId?: any) {
+  async getPosts(groupId: any, pinned: boolean, type?: any, lastPostId?: any) {
 
     try {
 
@@ -47,7 +47,8 @@ export class PostService {
               Post.find({
                 $and: [
                   { _group: groupId },
-                  { _id: { $lt: lastPostId } }
+                  { _id: { $lt: lastPostId } },
+                  { pin_to_top: pinned }
                 ]
               }), type)
 
@@ -60,7 +61,8 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { type: { $ne: 'task' } },
-                  { _id: { $lt: lastPostId } }
+                  { _id: { $lt: lastPostId } },
+                  { pin_to_top: pinned }
                 ]
               }), 'all')
 
@@ -73,7 +75,8 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { type: type },
-                  { _id: { $lt: lastPostId } }
+                  { _id: { $lt: lastPostId } },
+                  { pin_to_top: pinned }
                 ]
               }), type)
 
@@ -104,7 +107,6 @@ export class PostService {
               }), type)
 
             break;
-
         }
       }
 
@@ -129,7 +131,8 @@ export class PostService {
               Post.find({
                 $and: [
                   { _group: groupId },
-                  { type: { $ne: 'task' } }
+                  { type: { $ne: 'task' } },
+                  { pin_to_top: pinned }
                 ]
               }), 'all')
 
@@ -141,7 +144,8 @@ export class PostService {
               Post.find({
                 $and: [
                   { _group: groupId },
-                  { type: type }
+                  { type: type },
+                  { pin_to_top: pinned }
                 ]
               }), type)
 
@@ -169,6 +173,17 @@ export class PostService {
                 ]
               }), type)
 
+            break;
+
+          case 'pinned':
+            posts = await this.filterGroupPosts(
+              Post.find({
+                $and: [
+                  { _group: groupId },
+                  { type: 'normal' },
+                  { pin_to_top: pinned }
+                ]
+              }), type);
             break;
         }
       }
@@ -224,6 +239,16 @@ export class PostService {
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         // .populate({ path: 'task._column', select: '_id title' })
+        .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+        .lean();
+
+    else if (type == 'pinned')
+      filteredPosts = posts
+        .sort('-created_date')
+        .populate({ path: '_group', select: this.groupFields })
+        .populate({ path: '_posted_by', select: this.userFields })
+        .populate({ path: '_assigned_to', select: this.userFields })
+        .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -2709,6 +2734,29 @@ export class PostService {
         _id: postId
       }, {
         "task.allocation": allocation
+      }, {
+        new: true
+      });
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      throw (err);
+    }
+  }
+
+  async pinToTop(postId: string, pin: boolean) {
+
+    try {
+      // Get post data
+      var post: any = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        "pin_to_top": pin
       }, {
         new: true
       });

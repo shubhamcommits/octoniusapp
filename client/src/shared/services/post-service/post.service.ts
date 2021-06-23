@@ -112,7 +112,7 @@ export class PostService {
    * @param { groupId, type, lastPostId } query
    * @param lastPostId - optional
    */
-  getPosts(groupId: string, type: string, lastPostId?: string) {
+  getPosts(groupId: string, type: string, pinned: boolean = false, lastPostId?: string) {
 
     // Create the request variable
     let request: any;
@@ -121,7 +121,8 @@ export class PostService {
       request = this._http.get(this.baseURL + `/`, {
         params: {
           groupId: groupId,
-          type: type
+          type: type,
+          pinned: pinned.toString()
         }
       }).toPromise()
 
@@ -130,7 +131,8 @@ export class PostService {
         params: {
           groupId: groupId,
           type: type,
-          lastPostId: lastPostId
+          lastPostId: lastPostId,
+          pinned: pinned.toString()
         }
       }).toPromise()
     }
@@ -533,6 +535,18 @@ export class PostService {
   saveAllocation(allocation: string, postId: string) {
     return this._http.put(this.baseURL + `/${postId}/save-allocation`, {
       allocation: allocation
+    }).toPromise();
+  }
+
+  /**
+   * This method is used to pin/unpin a post to the top
+   * @param postId
+   * @param pin
+   * @returns
+   */
+  pinToTop(postId: string, pin: boolean) {
+    return this._http.put(this.baseURL + `/${postId}/pin-to-top`, {
+      pin: pin
     }).toPromise();
   }
 }

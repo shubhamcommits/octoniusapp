@@ -158,7 +158,7 @@ export class PostController {
     async getPosts(req: Request, res: Response, next: NextFunction) {
 
         // Fetch groupId and lastPostId from request
-        var { groupId, lastPostId, type } = req.query;
+        var { groupId, lastPostId, type, pinned } = req.query;
 
         // If type is not defined, then fetch all the posts by default
         if (!type || type == '' || type === "") {
@@ -171,7 +171,7 @@ export class PostController {
         }
 
         // Fetch the next 5 recent posts
-        await postService.getPosts(groupId, type, lastPostId)
+        await postService.getPosts(groupId, pinned == 'true', type, lastPostId)
             .then((posts) => {
 
                 // If lastPostId is there then, send status 200 response
@@ -649,7 +649,7 @@ export class PostController {
 
             await update(postId,date_due_to,start_date,s_days,e_days,false);
         
-            var postlist = await postService.getPosts(group_id,'task');
+            var postlist = await postService.getPosts(group_id, false, 'task');
             
             // Send status 200 response
             return res.status(200).json({
@@ -1555,6 +1555,24 @@ export class PostController {
         // Send status 200 response
         return res.status(200).json({
             message: 'Task allocation updated!',
+            post: post
+        });
+    }
+
+    async pinToTop(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { pin } } = req;
+
+        // Call Service function to change the assignee
+        const post = await postService.pinToTop(postId, pin)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Post pinned/unpinned!',
             post: post
         });
     }

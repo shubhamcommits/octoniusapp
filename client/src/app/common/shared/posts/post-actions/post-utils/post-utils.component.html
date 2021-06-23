@@ -8,6 +8,12 @@
 <mat-menu #postOptions="matMenu">
   <button mat-menu-item *ngIf="mode !== 'fullscreen'" (click)="openFullscreenModal()">View</button>
   <button mat-menu-item (click)="copyToClipboard()">Copy Link</button>
+  <button mat-menu-item *ngIf="post?.type == 'normal' && !post?.pin_to_top" (click)="pinToTop(true)">
+    <span class="material-icons-outlined">push_pin</span> Pin
+  </button>
+  <button mat-menu-item *ngIf="post?.type == 'normal' && post?.pin_to_top" (click)="pinToTop(false)">
+    <span class="material-icons-outlined">push_pin</span> Unpin
+  </button>
 
   <li class="dropdown-divider" *ngIf="post?.type !== 'task'"></li>
 
