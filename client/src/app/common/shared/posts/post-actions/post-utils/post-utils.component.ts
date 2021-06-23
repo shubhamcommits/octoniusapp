@@ -77,8 +77,12 @@ export class PostUtilsComponent implements OnInit {
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.closeModalEvent.emit(data);
     });
+    const pinEventSubs = dialogRef.componentInstance.pinEvent.subscribe((data) => {
+      this.pinEvent.emit(data);
+    });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
+      pinEventSubs.unsubscribe();
     });
   }
 
