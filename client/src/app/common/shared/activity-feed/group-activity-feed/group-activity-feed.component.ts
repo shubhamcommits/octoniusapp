@@ -138,9 +138,7 @@ export class GroupActivityFeedComponent implements OnInit {
     await this.fetchPosts(this.groupId);
 
     // pinned/unpinned posts
-    await this.postService.getPosts(this.groupId, 'pinned', true).then(res => {
-      this.pinnedPosts = res['posts'];
-    });
+    await this.fetchPinnedPosts();
 
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
       const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
@@ -298,7 +296,10 @@ export class GroupActivityFeedComponent implements OnInit {
     this.isLoading$.next(true);
 
     // Fetch the posts on scroll load
-    await this.fetchPosts(this.groupId)
+    await this.fetchPosts(this.groupId);
+
+    // pinned/unpinned posts
+    await this.fetchPinnedPosts();
 
     // Set the Loading State of ShowNewposts to be false
     this.showNewPosts = !this.showNewPosts
@@ -351,6 +352,12 @@ export class GroupActivityFeedComponent implements OnInit {
       if (this.globalFeed)
         this.moreToLoad = false
     }
+  }
+
+  async fetchPinnedPosts() {
+    await this.postService.getPosts(this.groupId, 'pinned', true).then(res => {
+      this.pinnedPosts = res['posts'];
+    });
   }
 
   /**
