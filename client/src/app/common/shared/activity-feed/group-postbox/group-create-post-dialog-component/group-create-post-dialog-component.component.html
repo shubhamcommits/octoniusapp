@@ -26,6 +26,7 @@
                 <app-post-utils
                     [post]="postData"
                     [userData]="userData"
+                    [groupData]="groupData"
                     mode="fullscreen"
                     (delete)="deletePost()">
                 </app-post-utils>
@@ -59,6 +60,8 @@
                 [post]="postData"
                 [userData]="userData"
                 [fullscreen]="true"
+                [groupData]="groupData"
+                (pinEvent)="onPostPin($event)"
                 (newCommentEmitter)="newCommentAdded($event)">
             </app-post-actions>
 

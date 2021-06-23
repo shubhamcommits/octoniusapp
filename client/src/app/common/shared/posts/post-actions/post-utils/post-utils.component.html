@@ -8,16 +8,22 @@
 <mat-menu #postOptions="matMenu">
   <button mat-menu-item *ngIf="mode !== 'fullscreen'" (click)="openFullscreenModal()">View</button>
   <button mat-menu-item (click)="copyToClipboard()">Copy Link</button>
+  <button mat-menu-item *ngIf="post?.type == 'normal' && !post?.pin_to_top" (click)="pinToTop(true)">
+    <span class="material-icons-outlined">push_pin</span> Pin
+  </button>
+  <button mat-menu-item *ngIf="post?.type == 'normal' && post?.pin_to_top" (click)="pinToTop(false)">
+    <span class="material-icons-outlined">push_pin</span> Unpin
+  </button>
 
   <li class="dropdown-divider" *ngIf="post?.type !== 'task'"></li>
 
   <button mat-menu-item [matMenuTriggerFor]="copyMenu" *ngIf="post?.type !== 'task'">Copy to Group</button>
   <button mat-menu-item [matMenuTriggerFor]="moveMenu" *ngIf="post?.type !== 'task'">Move to Group</button>
 
-  <li class="dropdown-divider" *ngIf="post?.type == 'task' && userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by == userData?._id"></li>
+  <li class="dropdown-divider" *ngIf="post?.type == 'task' && userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id"></li>
 
   <button mat-menu-item (click)="deletePost()"
-      *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by == userData?._id">
+      *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id || isGroupManager()">
     Delete
   </button>
 

@@ -222,6 +222,8 @@
   <app-post-actions *ngIf="edit"
     [post]="postData"
     [userData]="userData"
+    [groupData]="groupData"
+    (pinEvent)="onPostPin($event)"
     (closeModalEvent)="postModalCloseEvent()"></app-post-actions>
 
 </div>

@@ -24,6 +24,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   @Output() deleteEvent = new EventEmitter();
   @Output() parentAssignEvent = new EventEmitter();
   @Output() taskClonnedEvent = new EventEmitter();
+  @Output() pinEvent = new EventEmitter();
 
   postData: any;
   userData: any;
@@ -390,6 +391,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
   newCommentAdded(comment) {
     // this.comments.unshift(comment);
     this.newComment = comment;
+  }
+
+  onPostPin(pin: any) {
+    this.postData.pin_to_top = pin;
+    this.pinEvent.emit({pin: pin, _id: this.postData._id});
   }
 
   /**

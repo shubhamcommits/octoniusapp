@@ -268,7 +268,7 @@ export class GroupFilesComponent implements OnInit {
   /**
    * This function is responsible for copying the folio link to the clipboard
    */
-  copyToClipboard(fileId: string) {
+  copyToClipboard(file: any) {
 
     // Create Selection Box
     let selBox = document.createElement('textarea');
@@ -279,7 +279,16 @@ export class GroupFilesComponent implements OnInit {
     selBox.style.top = '0';
     selBox.style.opacity = '0';
 
-    selBox.value = environment.clientUrl + '/document/' + fileId + '?group=' + this.groupId + '&readOnly=true';
+    let url = '';
+    if (file?.type == 'folio') {
+      url = environment.clientUrl + '/document/' + file?._id + '?group=' + this.groupId + '&readOnly=true';
+    } else if (file?.type == 'flamingo') {
+      url = environment.clientUrl + '/document/flamingo/' + file?._id + '?group=' + this.groupId;
+    } else if (file?.type == 'file') {
+      url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
+    }
+
+    selBox.value = url;
     // Append the element to the DOM
     document.body.appendChild(selBox);
 

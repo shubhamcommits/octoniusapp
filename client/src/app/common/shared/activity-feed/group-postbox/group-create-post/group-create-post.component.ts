@@ -76,6 +76,8 @@ export class GroupCreatePostComponent implements OnInit {
   // Output the task due date
   @Output('date') date = new EventEmitter()
 
+  @Output() pinEvent = new EventEmitter();
+
   // Asignees
   eventAssignees: any = [];
 
@@ -203,7 +205,7 @@ export class GroupCreatePostComponent implements OnInit {
     this.quillData = quillData
 
     // Filter the Mention users content and map them into arrays of Ids
-    
+
     if(this.quillData && this.quillData?.mention){
       this._content_mentions = this.quillData?.mention?.users?.map((user) => user.insert.mention.id);
     }
@@ -276,6 +278,10 @@ export class GroupCreatePostComponent implements OnInit {
     if (this.edit) {
       this.showUpdateDetails = true
     }
+  }
+
+  onPostPin(pin: any) {
+    this.pinEvent.emit(pin);
   }
 
   /**

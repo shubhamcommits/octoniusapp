@@ -13,13 +13,6 @@ import { Router } from '@angular/router';
 })
 export class PostUtilsComponent implements OnInit {
 
-  constructor(
-    public utilityService: UtilityService,
-    private injector: Injector,
-    private _router: Router,
-    private postService: PostService
-  ) { }
-
   // Post Object
   @Input('post') post: any;
 
@@ -28,10 +21,12 @@ export class PostUtilsComponent implements OnInit {
 
   @Input() mode: string = 'normal';
 
+  @Input() groupData: any;
+
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter();
-
   @Output() closeModalEvent = new EventEmitter();
+  @Output() pinEvent = new EventEmitter();
 
   // Array of user groups
   public userGroups: any = [];
@@ -40,8 +35,15 @@ export class PostUtilsComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   groupId = '';
-  async ngOnInit() {
 
+  constructor(
+    public utilityService: UtilityService,
+    private injector: Injector,
+    private _router: Router,
+    private postService: PostService
+  ) { }
+
+  async ngOnInit() {
     // Fetch the current workspace data
     const workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
@@ -76,8 +78,12 @@ export class PostUtilsComponent implements OnInit {
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.closeModalEvent.emit(data);
     });
+    const pinEventSubs = dialogRef.componentInstance.pinEvent.subscribe((data) => {
+      this.pinEvent.emit(data);
+    });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
+      pinEventSubs.unsubscribe();
     });
   }
 
@@ -118,6 +124,14 @@ export class PostUtilsComponent implements OnInit {
 
     // Show Confirmed notification
     this.utilityService.simpleNotification(`Copied to Clipboard!`);
+  }
+
+  async pinToTop(pin: boolean) {
+    this.postService.pinToTop(this.post._id, pin).then((res) => {
+      this.pinEvent.emit(pin);
+    }).catch((error) => {
+      this.utilityService.errorNotification(`Error while pin/unpin the post!`);
+    });
   }
 
   /**
@@ -192,5 +206,9 @@ export class PostUtilsComponent implements OnInit {
         this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
       }
     }
+  }
+
+  isGroupManager() {
+    return (this.groupData && this.groupData._admins) ? this.groupData._admins.find(admin => admin._id === this.userData._id) : false;
   }
 }

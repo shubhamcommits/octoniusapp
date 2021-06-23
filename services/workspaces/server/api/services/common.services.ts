@@ -27,7 +27,7 @@ export class CommonService {
       await Notification.deleteMany({ _origin_group: groupId });
 
       // Delete the columns of the group
-      await Column.deleteMany({ groupId: groupId });
+      await Column.deleteMany({ _group: groupId });
 
       // Delete the flows
       await Flow.deleteMany({ _group: groupId});
