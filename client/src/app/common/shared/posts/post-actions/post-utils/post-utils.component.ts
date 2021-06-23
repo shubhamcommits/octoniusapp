@@ -13,13 +13,6 @@ import { Router } from '@angular/router';
 })
 export class PostUtilsComponent implements OnInit {
 
-  constructor(
-    public utilityService: UtilityService,
-    private injector: Injector,
-    private _router: Router,
-    private postService: PostService
-  ) { }
-
   // Post Object
   @Input('post') post: any;
 
@@ -30,8 +23,8 @@ export class PostUtilsComponent implements OnInit {
 
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter();
-
   @Output() closeModalEvent = new EventEmitter();
+  @Output() pinEvent = new EventEmitter();
 
   // Array of user groups
   public userGroups: any = [];
@@ -40,6 +33,14 @@ export class PostUtilsComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   groupId = '';
+
+  constructor(
+    public utilityService: UtilityService,
+    private injector: Injector,
+    private _router: Router,
+    private postService: PostService
+  ) { }
+
   async ngOnInit() {
 
     // Fetch the current workspace data
@@ -118,6 +119,14 @@ export class PostUtilsComponent implements OnInit {
 
     // Show Confirmed notification
     this.utilityService.simpleNotification(`Copied to Clipboard!`);
+  }
+
+  async pinToTop(pin: boolean) {
+    this.postService.pinToTop(this.post._id, pin).then((res) => {
+      this.pinEvent.emit(pin);
+    }).catch((error) => {
+      this.utilityService.errorNotification(`Error while pin/unpin the post!`);
+    });
   }
 
   /**

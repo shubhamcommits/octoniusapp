@@ -5,7 +5,6 @@ import { environment } from 'src/environments/environment';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { MemberDialogComponent } from '../../member-dialog/member-dialog.component';
 
 @Component({
   selector: 'app-post-view',
@@ -39,6 +38,8 @@ export class PostViewComponent implements OnInit {
 
   // Fullscreen modal closed
   @Output() closeModalEvent = new EventEmitter();
+
+  @Output() pinEvent = new EventEmitter();
 
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
@@ -105,5 +106,10 @@ export class PostViewComponent implements OnInit {
    */
   openFullscreenModal(userId: string): void {
     this.utilityService.openFullscreenModal(userId);
+  }
+
+  onPostPin(pin: any) {
+    this.post.pin_to_top = pin;
+    this.pinEvent.emit({pin: pin, _id: this.post._id});
   }
 }

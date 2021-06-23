@@ -215,4 +215,7 @@ routes.post('/create-task-from-template', postController.createTaskFromTemplate)
 // PUT - Change task allocation
 routes.put('/:postId/save-allocation', postController.saveAllocation);
 
+// PUT - Change post pin/unpin
+routes.put('/:postId/pin-to-top', postController.pinToTop);
+
 export { routes as postRoutes };
