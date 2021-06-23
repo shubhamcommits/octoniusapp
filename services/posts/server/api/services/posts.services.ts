@@ -32,13 +32,23 @@ export class PostService {
   async getPosts(groupId: any, pinned: boolean, type?: any, lastPostId?: any) {
 
     try {
-console.log({groupId});
-console.log({pinned});
-console.log({type});
-console.log({lastPostId});
-      // Posts Variable
-      var posts = []
 
+      // Posts Variable
+      var posts = [];
+
+      let pinnedQuery = {};
+      if (pinned) {
+        pinnedQuery = 
+          { pin_to_top: true }
+      } else {
+        pinnedQuery = {
+          $or: [
+            { pin_to_top: false },
+            { pin_to_top: null }
+          ]
+        }
+      }
+      
       // Fetch posts on the basis of the params @lastPostId
       if (lastPostId) {
 
@@ -51,7 +61,7 @@ console.log({lastPostId});
                 $and: [
                   { _group: groupId },
                   { _id: { $lt: lastPostId } },
-                  { pin_to_top: pinned }
+                  pinnedQuery
                 ]
               }), type)
 
@@ -65,7 +75,7 @@ console.log({lastPostId});
                   { _group: groupId },
                   { type: { $ne: 'task' } },
                   { _id: { $lt: lastPostId } },
-                  { pin_to_top: pinned }
+                  pinnedQuery
                 ]
               }), 'all')
 
@@ -79,7 +89,7 @@ console.log({lastPostId});
                   { _group: groupId },
                   { type: type },
                   { _id: { $lt: lastPostId } },
-                  { pin_to_top: pinned }
+                  pinnedQuery
                 ]
               }), type)
 
@@ -135,7 +145,7 @@ console.log({lastPostId});
                 $and: [
                   { _group: groupId },
                   { type: { $ne: 'task' } },
-                  { pin_to_top: pinned }
+                  pinnedQuery
                 ]
               }), 'all')
 
@@ -148,7 +158,7 @@ console.log({lastPostId});
                 $and: [
                   { _group: groupId },
                   { type: type },
-                  { pin_to_top: pinned }
+                  pinnedQuery
                 ]
               }), type)
 
@@ -184,13 +194,12 @@ console.log({lastPostId});
                 $and: [
                   { _group: groupId },
                   { type: 'normal' },
-                  { pin_to_top: pinned }
+                  pinnedQuery
                 ]
               }), type);
             break;
         }
       }
-console.log({posts});
 
       // Return set of posts 
       return posts;

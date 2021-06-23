@@ -159,8 +159,7 @@ export class GroupActivityFeedComponent implements OnInit {
         closeEventSubs.unsubscribe();
       });
     }
-console.log(this.posts);
-console.log(this.pinnedPosts);
+
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
   }
