@@ -169,7 +169,10 @@ export class PostController {
         if (!groupId) {
             return sendErr(res, new Error('Please provide the groupId as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
         }
-
+console.log({groupId});
+console.log({pinned});
+console.log({type});
+console.log({lastPostId});
         // Fetch the next 5 recent posts
         await postService.getPosts(groupId, pinned == 'true', type, lastPostId)
             .then((posts) => {

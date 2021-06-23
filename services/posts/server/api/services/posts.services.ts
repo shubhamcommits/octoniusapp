@@ -32,7 +32,10 @@ export class PostService {
   async getPosts(groupId: any, pinned: boolean, type?: any, lastPostId?: any) {
 
     try {
-
+console.log({groupId});
+console.log({pinned});
+console.log({type});
+console.log({lastPostId});
       // Posts Variable
       var posts = []
 
@@ -187,6 +190,7 @@ export class PostService {
             break;
         }
       }
+console.log({posts});
 
       // Return set of posts 
       return posts;
