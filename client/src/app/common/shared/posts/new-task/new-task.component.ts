@@ -80,8 +80,8 @@ export class NewTaskComponent implements OnInit {
    */
   createPost() {
 
-    var postData: any;
     // Prepare Post Data
+    var postData: any;
 
     if (this.subtask) {
       postData = {
@@ -118,6 +118,15 @@ export class NewTaskComponent implements OnInit {
             custom_fields: [],
             _column: this.column._id,
             isNorthStar: this.saveAsNorthStar,
+            northStar: (this.saveAsNorthStar) ? {
+                target_value: 0,
+                values: [{
+                  date: Date.now(),
+                  value: 0
+                }],
+                type: 'Currency $',
+                status: 'ON TRACK'
+              } : null,
             is_milestone: false,
             is_idea: this.saveAsIdea
           }
@@ -137,6 +146,15 @@ export class NewTaskComponent implements OnInit {
             custom_fields: [],
             _column: this.column._id,
             isNorthStar: this.saveAsNorthStar,
+            northStar: (this.saveAsNorthStar) ? {
+                target_value: 0,
+                values: [{
+                  date: Date.now(),
+                  value: 0
+                }],
+                type: 'Currency $',
+                status: 'ON TRACK'
+              } : null,
             is_milestone: false,
             is_idea: this.saveAsIdea
           }
@@ -154,7 +172,9 @@ export class NewTaskComponent implements OnInit {
     this.onCreatePost(formData, this.post)
 
     // Clear the postTitle
-    this.postTitle = undefined
+    this.postTitle = undefined;
+    this.saveAsNorthStar = false;
+    this.saveAsIdea = false;
 
   }
 

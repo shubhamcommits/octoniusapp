@@ -1576,4 +1576,22 @@ export class PostController {
             post: post
         });
     }
+
+    async voteIdea(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { vote } } = req;
+
+        // Call Service function to change the assignee
+        const post = await postService.voteIdea(postId, vote)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Idea Voted!',
+            post: post
+        });
+    }
 }

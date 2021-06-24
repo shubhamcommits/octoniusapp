@@ -549,4 +549,10 @@ export class PostService {
       pin: pin
     }).toPromise();
   }
+
+  voteIdea(postId: string, voteValue: number) {
+    return this._http.put(this.baseURL + `/${postId}/vote-idea`, {
+      vote: voteValue
+    }).toPromise();
+  }
 }

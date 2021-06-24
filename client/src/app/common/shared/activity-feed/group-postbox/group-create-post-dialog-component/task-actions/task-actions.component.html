@@ -151,9 +151,9 @@
 
 
   <!-- North Start Switch starts -->
-  <div class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="!isIdea" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
-   MAKE NORTH STAR
+    MAKE NORTH STAR
     <mat-slide-toggle color="primary" style=" margin-left: 15px;"
       [checked]="isNorthStar"
       [name]="'north_star'"
@@ -164,6 +164,18 @@
     <p>North Stars are goals for you or your team.</p>
   </div>
   <!-- North Start Switch ends -->
+
+  <!-- Idea Switch starts -->
+  <div *ngIf="!isNorthStar" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+    <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
+    Idea
+    <mat-slide-toggle color="primary" style=" margin-left: 15px;"
+      [checked]="isIdea"
+      [name]="'idea'"
+      (change)="transformToIdea()">
+    </mat-slide-toggle>
+  </div>
+  <!-- Idea Switch ends -->
 
 
   <!-- Milestone Switch starts -->

@@ -1,9 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Injector, Input, OnDestroy, OnChanges, OnInit, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { settings } from 'cluster';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
@@ -25,6 +23,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Input() tasks: any;
   @Input() isNorthStar = false;
   @Input() isMilestone = false;
+  @Input() isIdea = false;
 
   @Output() parentTaskSelectedEmitter = new EventEmitter();
   @Output() dependencyTaskSelectedEmitter = new EventEmitter();
@@ -33,6 +32,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Output() taskAllocationEmitter = new EventEmitter();
   @Output() transformIntoNorthStarEmitter = new EventEmitter();
   @Output() transformIntoMilestoneEmitter = new EventEmitter();
+  @Output() transformIntoIdeaEmitter = new EventEmitter();
 
   userGroups = [];
   transferAction = '';
@@ -523,6 +523,11 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   transformToNorthStart() {
     this.isNorthStar = !this.isNorthStar;
     this.transformIntoNorthStarEmitter.emit(this.isNorthStar);
+  }
+
+  transformToIdea() {
+    this.isIdea = !this.isIdea;
+    this.transformIntoIdeaEmitter.emit(this.isIdea);
   }
 
   transformToMilestone() {

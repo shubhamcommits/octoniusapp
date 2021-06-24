@@ -459,6 +459,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
       tags: this.tags,
       _read_by: this.postData._read_by,
       isNorthStar: this.postData.task.isNorthStar,
+      is_idea: this.postData.task.is_idea,
       is_milestone: this.postData?.task?.is_milestone || false,
       northStar: this.postData.task.northStar,
       assigned_to: this.postData._assigned_to
@@ -597,6 +598,12 @@ export class GroupCreatePostDialogComponent implements OnInit {
   transformToMileStone(data:any){
 
     this.postData.task.is_milestone = data;
+    this.updateDetails();
+  }
+
+  transformToIdea(data:any){
+
+    this.postData.task.is_idea = data;
     this.updateDetails();
   }
 
