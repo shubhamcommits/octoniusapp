@@ -41,6 +41,9 @@ export class NewTaskComponent implements OnInit {
 
   flows = [];
 
+  saveAsNorthStar = false;
+  saveAsIdea = false;
+
   ngOnInit() {
     if (this.subtask) {
       this.column = null;
@@ -67,6 +70,11 @@ export class NewTaskComponent implements OnInit {
     }
   }
 
+  changeTaskType(isNorthStar: boolean, isIdea: boolean) {
+    this.saveAsNorthStar = isNorthStar;
+    this.saveAsIdea = isIdea;
+  }
+
   /**
    * This function creates a new post in the activity
    */
@@ -90,7 +98,8 @@ export class NewTaskComponent implements OnInit {
           custom_fields: [],
           _parent_task: this.parentId,
           isNorthStar: false,
-          is_milestone: false
+          is_milestone: false,
+          is_idea: false
         }
       }
     } else {
@@ -108,8 +117,9 @@ export class NewTaskComponent implements OnInit {
             status: 'to do',
             custom_fields: [],
             _column: this.column._id,
-            isNorthStar: false,
-            is_milestone: false
+            isNorthStar: this.saveAsNorthStar,
+            is_milestone: false,
+            is_idea: this.saveAsIdea
           }
         }
       }
@@ -126,8 +136,9 @@ export class NewTaskComponent implements OnInit {
             status: 'to do',
             custom_fields: [],
             _column: this.column._id,
-            isNorthStar: false,
-            is_milestone: false
+            isNorthStar: this.saveAsNorthStar,
+            is_milestone: false,
+            is_idea: this.saveAsIdea
           }
         }
       }
