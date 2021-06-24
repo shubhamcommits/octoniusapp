@@ -23,6 +23,7 @@ export class BoardBarComponent implements OnInit {
   @Input() customFields = [];
   @Input() userData;
   @Input() viewType;
+  @Input() isIdeaModuleAvailable;
 
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
@@ -47,7 +48,6 @@ export class BoardBarComponent implements OnInit {
   groupMembers:any = []
 
   async ngOnInit() {
-
     this.groupMembers = await this.publicFunctions.getCurrentGroupMembers();
   }
 

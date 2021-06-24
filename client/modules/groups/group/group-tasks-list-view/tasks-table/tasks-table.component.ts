@@ -25,6 +25,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   @Input() filteringData: any;
   @Input() isAdmin = false;
   @Input() customFields = [];
+  @Input() isIdeaModuleAvailable;
 
   @Output() taskChangeSectionEmitter = new EventEmitter();
   @Output() taskClonnedEvent = new EventEmitter();
@@ -381,7 +382,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData._id, this.sections,this.tasks);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData._id, this.isIdeaModuleAvailable, this.sections,this.tasks);
 
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);

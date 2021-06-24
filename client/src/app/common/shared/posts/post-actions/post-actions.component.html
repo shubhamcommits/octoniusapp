@@ -9,7 +9,7 @@
         </div>
         <div class="col-md-6 text-right">
 
-            <app-idea-actions *ngIf="post?.task?.is_idea"
+            <app-idea-actions *ngIf="isIdeaModuleAvailable && post?.task?.is_idea"
               [post]="post"
               [userData]="userData"></app-idea-actions>
 

@@ -17,7 +17,7 @@
     <app-assignee-avatar [post]="task" [userData]="userData" style="margin-right: 10px;"></app-assignee-avatar>
   </div>
 
-  <div class="badge-idea" *ngIf="task?.task?.is_idea">
+  <div class="badge-idea" *ngIf="isIdeaModuleAvailable && task?.task?.is_idea">
     <i class="material-icons-outlined ml-2">emoji_objects</i>
     {{ (task?.task?.idea?.positive_votes || 0) - (task?.task?.idea?.negative_votes || 0) }}
   </div>

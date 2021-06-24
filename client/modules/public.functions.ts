@@ -1278,6 +1278,32 @@ export class PublicFunctions {
         });
     }
 
+    async checkIdeaStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+      const managementPortalService = this.injector.get(ManagementPortalService);
+      return managementPortalService.getIdeaStatus(workspaceId, mgmtApiPrivateKey).then(
+        (res) => {
+          if ( !res || !res['status'] ) {
+            return false;
+          }
+          return true;
+        }).catch((err) => {
+          return false;
+        });
+    }
+
+    async checkExcelImportStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+      const managementPortalService = this.injector.get(ManagementPortalService);
+      return managementPortalService.getExcelImportStatus(workspaceId, mgmtApiPrivateKey).then(
+        (res) => {
+          if ( !res || !res['status'] ) {
+            return false;
+          }
+          return true;
+        }).catch((err) => {
+          return false;
+        });
+    }
+
     /**
      * This method returns the highest date of the posts passed by parameter
      * @param posts

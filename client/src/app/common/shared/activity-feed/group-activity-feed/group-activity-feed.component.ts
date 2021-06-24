@@ -16,6 +16,8 @@ import moment from 'moment';
 })
 export class GroupActivityFeedComponent implements OnInit {
 
+  @Input() isIdeaModuleAvailable;
+
   // Fetch groupId from router snapshot or as an input parameter
   @Input('groupId') groupId = this.router.snapshot.queryParamMap.get('group');
 
@@ -145,9 +147,9 @@ export class GroupActivityFeedComponent implements OnInit {
       const post = await this.publicFunctions.getPost(postId);
       let dialogRef;
       if (post['type'] === 'task') {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.columns);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.isIdeaModuleAvailable, this.columns);
       } else {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.isIdeaModuleAvailable);
       }
 
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {

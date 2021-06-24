@@ -19,9 +19,6 @@ export class NewTaskComponent implements OnInit {
   // Column as the Input object
   @Input('column') column: any;
 
-  // Post Title Variable
-  postTitle: any
-
   // User Data Object
   @Input('userData') userData: any;
 
@@ -31,18 +28,23 @@ export class NewTaskComponent implements OnInit {
   @Input() subtask: boolean;
   @Input() parentId: string;
 
+  @Input() isIdeaModuleAvailable;
+
   // Post Event Emitter
   @Output('post') post = new EventEmitter()
 
-  addSubTask = false;
+  // Post Title Variable
+  postTitle: any
 
-  // Public Functions class object
-  publicFunctions = new PublicFunctions(this.injector)
+  addSubTask = false;
 
   flows = [];
 
   saveAsNorthStar = false;
   saveAsIdea = false;
+
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
 
   ngOnInit() {
     if (this.subtask) {

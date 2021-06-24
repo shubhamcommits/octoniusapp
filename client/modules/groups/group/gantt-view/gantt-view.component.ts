@@ -19,6 +19,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   @Input() tasks;
   @Input() userData;
   @Input() columns: any;
+  @Input() isIdeaModuleAvailable;
 
   @Output() taskClonnedEvent = new EventEmitter();
 
@@ -49,7 +50,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   //container height
   current_date_index: any;
 
-  // selected project  index bit 
+  // selected project  index bit
   selectedProjectIndex: number = -1;
   //Grid column width
   step = 50;
@@ -112,7 +113,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             }));
           }
 
-          
+
         }
       }
 
@@ -141,13 +142,13 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
                   color: '#4a90e2',
                 }));
               }
-              
+
             }
           }
         }
       });
 
-      document.getElementById('fixed-container-gantt').addEventListener('scroll', this.linePotionsListener.bind(this), false);
+      document.getElementById('fixed-container-gantt')?.addEventListener('scroll', this.linePotionsListener.bind(this), false);
     }, 50);
   };
 
@@ -172,7 +173,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   }
 
   lineRemove() {
-    document.getElementById('fixed-container-gantt').removeEventListener('scroll', this.linePotionsListener.bind(this), false);
+    document.getElementById('fixed-container-gantt')?.removeEventListener('scroll', this.linePotionsListener.bind(this), false);
     this.linesArray.forEach(line => {
       line.remove();
     });
@@ -404,7 +405,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   //open model
   openFullscreenModal(postData: any,): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.columns ,this.tasks);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.isIdeaModuleAvailable, this.columns ,this.tasks);
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
     });
@@ -617,11 +618,11 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           if (sortedBefore[j].task._dependency_task) {
 
             const parenttaskID = dependencyid;
-            
+
             if( typeof sortedBefore[j].task._dependency_task == 'object'){
 
               if(sortedBefore[j].task._dependency_task?.length > 0){
-              
+
               for (let index = 0; index < sortedBefore[j].task._dependency_task.length; index++) {
                 const idi = sortedBefore[j].task._dependency_task[index]+ '';
                 const idj = parenttaskID + '';
@@ -639,29 +640,29 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
                     }
                   }
 
-                } 
+                }
               }
             }
 
             } else {
               const idi = sortedBefore[j].task._dependency_task + '';
               const idj = parenttaskID + '';
-  
+
               if (idi === idj) {
-  
+
                 if(!isAlready(sortedBefore[j]._id)){
                   SortedTask.push(sortedBefore[j]);
                 }
-  
+
                 if (sortedBefore[j].task && sortedBefore[j].task._dependent_child) {
-  
+
                   if (sortedBefore[j].task._dependent_child.length > 0) {
                     findchilds(index, sortedBefore[j]._id, true);
                   }
                 }
-  
+
               }
-            } 
+            }
           }
         }
       }
@@ -716,7 +717,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
       //Saving the only required fields of the task in tasksData array.
 
       SortedTask.map(sortedTask => {
-        
+
         const startdate: any = moment(moment.utc(sortedTask.task.start_date).format("YYYY-MM-DD"));
         const endate: any = moment(moment.utc(sortedTask.task.due_to).format("YYYY-MM-DD"));
         var Difference_In_Days = moment(endate).diff(startdate,'days');

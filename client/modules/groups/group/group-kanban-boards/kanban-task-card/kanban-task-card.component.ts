@@ -14,6 +14,7 @@ export class KanbanTaskCardComponent {
   @Input() isProject: Boolean;
   @Input() isDelay: Boolean;
   @Input() task: any;
+  @Input() isIdeaModuleAvailable;
 
   // Current User Data
   userData : any = {};

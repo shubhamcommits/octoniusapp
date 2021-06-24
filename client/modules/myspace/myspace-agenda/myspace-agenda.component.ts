@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, TemplateRef, Injector } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Injector, Input } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import moment from 'moment/moment';
 import { PublicFunctions } from 'modules/public.functions';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -12,6 +11,10 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 })
 export class MyspaceAgendaComponent implements OnInit {
 
+  @Input() isIdeaModuleAvailable;
+
+  // Modal Content
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
 
   todayTimelineEvents: any = [];
 
@@ -22,9 +25,6 @@ export class MyspaceAgendaComponent implements OnInit {
   userData: any
 
   post: any;
-
-  // Modal Content
-  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector)
@@ -55,7 +55,7 @@ export class MyspaceAgendaComponent implements OnInit {
 
   openModal(event) {
     this.post = event;
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.isIdeaModuleAvailable);
 
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateEvent(data);

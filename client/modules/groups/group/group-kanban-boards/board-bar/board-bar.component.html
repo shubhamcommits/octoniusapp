@@ -94,7 +94,7 @@
           <span>Status</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('ideas')"
+        <a mat-menu-item (click)="sortTasks('ideas')" *ngIf="isIdeaModuleAvailable"
           [ngStyle]="{'color' : (sortby==='due_date') ? 'green' : 'black'}">
           <span>Ideas</span>
         </a>
@@ -184,14 +184,12 @@
               filterfor==='priority_medium' ||
               filterfor==='priority_low') ? 'green' : 'black'}">Priority</span>
 
-                <div class="label-priority high selectedPriority" *ngIf="filterfor==='priority_high'">High</div>
-                <div class="label-priority medium selectedPriority" *ngIf="filterfor==='priority_medium'">Medium</div>
-                <div class="label-priority low selectedPriority" *ngIf="filterfor==='priority_low'">Low</div>
-
+              <div class="label-priority high selectedPriority" *ngIf="filterfor==='priority_high'">High</div>
+              <div class="label-priority medium selectedPriority" *ngIf="filterfor==='priority_medium'">Medium</div>
+              <div class="label-priority low selectedPriority" *ngIf="filterfor==='priority_low'">Low</div>
             </button>
 
             <mat-menu #menuPriority="matMenu">
-
               <a mat-menu-item (click)="filterTask('priority_high')" style="margin: 10px;text-decoration: none;">
                 <span>
                   <div class="label-priority high" (click)="filterTask('priority_high')">
@@ -219,7 +217,7 @@
           </div>
         </span>
 
-        <a mat-menu-item (click)="filterTask('ideas')"
+        <a mat-menu-item (click)="filterTask('ideas')" *ngIf="isIdeaModuleAvailable"
           [ngStyle]="{'color' : (filterfor==='ideas') ? 'green' : 'black'}">
           <span>Ideas</span>
         </a>

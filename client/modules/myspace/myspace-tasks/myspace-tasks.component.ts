@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild, TemplateRef, Input } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
@@ -12,11 +12,10 @@ import moment from 'moment/moment';
 })
 export class MyspaceTasksComponent implements OnInit {
 
-  constructor(
-    private injector: Injector,
-    private utilityService: UtilityService,
-    private modal: NgbModal,
-  ) { }
+  @Input() isIdeaModuleAvailable;
+
+  // Modal Content
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
   todayTasks: any = [];
   thisWeekTasks: any = [];
@@ -29,13 +28,16 @@ export class MyspaceTasksComponent implements OnInit {
 
   post: any;
 
-  // Modal Content
-  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
-
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector)
 
   columns;
+
+  constructor(
+    private injector: Injector,
+    private utilityService: UtilityService,
+    private modal: NgbModal,
+  ) { }
 
   async ngOnInit() {
 
@@ -166,7 +168,7 @@ export class MyspaceTasksComponent implements OnInit {
     let dialogRef;
     if (this.post.type === 'task' && !this.post.task._parent_task) {
       await this.publicFunctions.getAllColumns(this.post._group._id).then(data => this.columns = data);
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.columns);
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.isIdeaModuleAvailable, this.columns);
     } else {
       // for subtasks it is not returning the parent information, so need to make a workaround
       if (this.post.task._parent_task && !this.post.task._parent_task._id) {
@@ -174,7 +176,7 @@ export class MyspaceTasksComponent implements OnInit {
             this.post.task._parent_task = post;
           });
       }
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id);
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.isIdeaModuleAvailable);
     }
 
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {

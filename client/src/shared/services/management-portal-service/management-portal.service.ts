@@ -127,6 +127,18 @@ export class ManagementPortalService {
   }
 
   /**
+   * This function is responsible for check if the workspace has idea active
+   * @param workspaceId
+   */
+  getIdeaStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/idea`, {
+      params: {
+        mgmtApiPrivateKey: mgmtApiPrivateKey
+      }
+    }).toPromise();
+  }
+
+  /**
    * This function is responsible for check if the workspace has excel import active
    * @param workspaceId
    */

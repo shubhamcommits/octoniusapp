@@ -8,9 +8,7 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import moment from 'moment';
 // ShareDB Client
 import { BehaviorSubject } from 'rxjs';
-import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
-import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-group-create-post-dialog-component',
@@ -37,6 +35,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   // Title of the Post
   title: string = '';
   barTags = [];
+  isIdeaModuleAvailable;
 
   // Quill Data Object
   quillData: any;
@@ -121,6 +120,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.userData = this.data.userData;
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
+    this.isIdeaModuleAvailable = this.data.isIdeaModuleAvailable;
     if(!this.data.Tasks){
       this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
     } else {
