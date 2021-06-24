@@ -261,11 +261,17 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         })
       }
       this.unchangedColumns = tasks;
+    } else if (to == "ideas") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          task.task.is_idea == true));
+      }
+      this.unchangedColumns = tasks;
     } else {
       this.columns = this.unchangedColumns.columns;
     }
-
-
   }
 
   async sorting() {

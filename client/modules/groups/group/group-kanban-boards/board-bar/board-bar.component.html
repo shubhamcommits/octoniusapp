@@ -213,12 +213,12 @@
               </a>
             </mat-menu>
           </div>
-
-
-
-
         </span>
 
+        <a mat-menu-item (click)="filterTask('ideas')"
+          [ngStyle]="{'color' : (filterfor==='ideas') ? 'green' : 'black'}">
+          <span>Ideas</span>
+        </a>
       </mat-menu>
     </div>
 </nav>
