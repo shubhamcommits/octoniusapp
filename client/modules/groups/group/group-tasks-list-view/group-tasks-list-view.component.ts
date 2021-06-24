@@ -66,19 +66,11 @@ export class GroupTasksListViewComponent implements OnChanges {
     for (const propName in changes) {
       const change = changes[propName];
       const to = change.currentValue;
-      const from = change.previousValue;
       if (propName === 'sortingBit') {
         this.sortingBit = to;
       }
-      if (propName === 'filteringBit') {
-        // this.filtering(to);
-      }
       if (propName === 'filteringData') {
         this.filteringData = to;
-        if(this.filteringData){
-          // this.filtering(this.filteringBit);
-
-        }
       }
     }
   }

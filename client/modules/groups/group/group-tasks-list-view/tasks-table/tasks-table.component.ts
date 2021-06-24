@@ -247,8 +247,13 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
         return bit;
       })
       this.unchangedTasks = tasks;
-    }
-    else {
+    } else if (to == "ideas") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => (
+        task.task.is_idea == true))
+      this.unchangedTasks = tasks;
+    } else {
       this.tasks = this.unchangedTasks.tasksList;
     }
 
