@@ -526,6 +526,7 @@ export class PostService {
             _column: post._column,
             custom_fields: post.task.custom_fields,
             isNorthStar: post.task.isNorthStar,
+            is_idea: post.task.is_idea,
             northStar: post.task.northStar,
             is_milestone: post?.task?.is_milestone || false,
             _parent_task: post.task._parent_task
@@ -2773,6 +2774,37 @@ export class PostService {
       }, {
         new: true
       });
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      throw (err);
+    }
+  }
+
+  async voteIdea(postId: string, vote: number) {
+
+    try {
+      let post;
+
+      if (vote > 0) {
+        post = await Post.findOneAndUpdate(
+          {_id: postId },
+          { $inc: { 'task.idea.positive_votes': 1 } },
+          { new: true }
+          ).lean();
+      } else {
+        post = await Post.findOneAndUpdate(
+          { _id: postId },
+          { $inc: { 'task.idea.negative_votes': 1 } },
+          { new: true }
+        )
+        .lean();
+      }
 
       // Populate the post properties
       post = await this.populatePostProperties(post);

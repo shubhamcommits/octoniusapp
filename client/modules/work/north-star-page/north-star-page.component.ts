@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class NorthStarPageComponent implements OnInit {
 
+  isIdeaModuleAvailable;
   userData;
   northStarTasks: any = [];
   // Base URL of the uploads
@@ -86,7 +87,7 @@ export class NorthStarPageComponent implements OnInit {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.isIdeaModuleAvailable);
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
     });

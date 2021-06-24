@@ -1,12 +1,39 @@
 <div *ngIf="!subtask">
-  <button class="btn btn-block task muted" (click)="column.addTask = true" *ngIf="!column.addTask">
-    <i class="material-icons-outlined">add</i> New Task
-  </button>
+  <div class="task-box" *ngIf="!column.addTask">
+    <button class="btn btn-block task muted" (click)="column.addTask = true">
+      <i class="material-icons-outlined">add</i>
+      <span *ngIf="!saveAsNorthStar && !saveAsIdea">New Task</span>
+      <span *ngIf="saveAsNorthStar">New North Star</span>
+      <span *ngIf="saveAsIdea">New Idea</span>
+    </button>
+
+    <i class="material-icons-outlined ml-2" *ngIf="saveAsNorthStar" style="color: #5E2FE5; line-height: 38px;">explore</i>
+    <i class="material-icons-outlined ml-2" *ngIf="saveAsIdea" style="color: #FBB732; line-height: 38px;">emoji_objects</i>
+
+    <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer; line-height: 38px;">more_horiz</i>
+    <mat-menu #menu="matMenu">
+      <a mat-menu-item (click)="changeTaskType(false, false)">
+        <span>Task</span>
+      </a>
+      <li class="dropdown-divider"></li>
+      <a mat-menu-item (click)="changeTaskType(true, false)">
+        <span>North Star</span>
+      </a>
+      <li class="dropdown-divider" *ngIf="isIdeaModuleAvailable"></li>
+      <a mat-menu-item (click)="changeTaskType(false, true)" *ngIf="isIdeaModuleAvailable">
+        <span>Idea</span>
+      </a>
+    </mat-menu>
+  </div>
+
   <div class="add-task" *ngIf="column.addTask">
-      <input class="form-control" type="text" placeholder="Enter task title"
-        [(ngModel)]="postTitle"
-        (keyup.enter)="newTask()"
-        (keyup.esc)="column.addTask = false">
+    <input class="form-control" type="text" placeholder="Enter title"
+      [(ngModel)]="postTitle"
+      (keyup.enter)="newTask()"
+      (keyup.esc)="column.addTask = false">
+
+    <i class="material-icons-outlined ml-2" *ngIf="saveAsNorthStar" style="color: #5E2FE5; line-height: 38px;">explore</i>
+    <i class="material-icons-outlined ml-2" *ngIf="saveAsIdea" style="color: #FBB732; line-height: 38px;">emoji_objects</i>
   </div>
 </div>
 
@@ -15,9 +42,9 @@
     <i class="material-icons-outlined">add</i> New Task
   </button>
   <div class="add-task" *ngIf="subtask && addSubTask">
-      <input class="form-control" type="text" placeholder="Enter task title"
-        [(ngModel)]="postTitle"
-        (keyup.enter)="newTask()"
-        (keyup.esc)="column.addTask = false">
+    <input class="form-control" type="text" placeholder="Enter task title"
+      [(ngModel)]="postTitle"
+      (keyup.enter)="newTask()"
+      (keyup.esc)="column.addTask = false">
   </div>
 </div>

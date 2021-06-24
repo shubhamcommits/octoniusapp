@@ -19,9 +19,6 @@ export class NewTaskComponent implements OnInit {
   // Column as the Input object
   @Input('column') column: any;
 
-  // Post Title Variable
-  postTitle: any
-
   // User Data Object
   @Input('userData') userData: any;
 
@@ -31,15 +28,23 @@ export class NewTaskComponent implements OnInit {
   @Input() subtask: boolean;
   @Input() parentId: string;
 
+  @Input() isIdeaModuleAvailable;
+
   // Post Event Emitter
   @Output('post') post = new EventEmitter()
 
+  // Post Title Variable
+  postTitle: any
+
   addSubTask = false;
 
-  // Public Functions class object
-  publicFunctions = new PublicFunctions(this.injector)
-
   flows = [];
+
+  saveAsNorthStar = false;
+  saveAsIdea = false;
+
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
 
   ngOnInit() {
     if (this.subtask) {
@@ -67,13 +72,18 @@ export class NewTaskComponent implements OnInit {
     }
   }
 
+  changeTaskType(isNorthStar: boolean, isIdea: boolean) {
+    this.saveAsNorthStar = isNorthStar;
+    this.saveAsIdea = isIdea;
+  }
+
   /**
    * This function creates a new post in the activity
    */
   createPost() {
 
-    var postData: any;
     // Prepare Post Data
+    var postData: any;
 
     if (this.subtask) {
       postData = {
@@ -90,7 +100,8 @@ export class NewTaskComponent implements OnInit {
           custom_fields: [],
           _parent_task: this.parentId,
           isNorthStar: false,
-          is_milestone: false
+          is_milestone: false,
+          is_idea: false
         }
       }
     } else {
@@ -108,8 +119,18 @@ export class NewTaskComponent implements OnInit {
             status: 'to do',
             custom_fields: [],
             _column: this.column._id,
-            isNorthStar: false,
-            is_milestone: false
+            isNorthStar: this.saveAsNorthStar,
+            northStar: (this.saveAsNorthStar) ? {
+                target_value: 0,
+                values: [{
+                  date: Date.now(),
+                  value: 0
+                }],
+                type: 'Currency $',
+                status: 'ON TRACK'
+              } : null,
+            is_milestone: false,
+            is_idea: this.saveAsIdea
           }
         }
       }
@@ -126,8 +147,18 @@ export class NewTaskComponent implements OnInit {
             status: 'to do',
             custom_fields: [],
             _column: this.column._id,
-            isNorthStar: false,
-            is_milestone: false
+            isNorthStar: this.saveAsNorthStar,
+            northStar: (this.saveAsNorthStar) ? {
+                target_value: 0,
+                values: [{
+                  date: Date.now(),
+                  value: 0
+                }],
+                type: 'Currency $',
+                status: 'ON TRACK'
+              } : null,
+            is_milestone: false,
+            is_idea: this.saveAsIdea
           }
         }
       }
@@ -143,7 +174,9 @@ export class NewTaskComponent implements OnInit {
     this.onCreatePost(formData, this.post)
 
     // Clear the postTitle
-    this.postTitle = undefined
+    this.postTitle = undefined;
+    this.saveAsNorthStar = false;
+    this.saveAsIdea = false;
 
   }
 

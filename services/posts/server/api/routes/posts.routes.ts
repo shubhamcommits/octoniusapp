@@ -218,4 +218,7 @@ routes.put('/:postId/save-allocation', postController.saveAllocation);
 // PUT - Change post pin/unpin
 routes.put('/:postId/pin-to-top', postController.pinToTop);
 
+// PUT - Vote an idea
+routes.put('/:postId/vote-idea', postController.voteIdea);
+
 export { routes as postRoutes };

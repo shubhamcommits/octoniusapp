@@ -1,0 +1,5 @@
+<span style="color: #005FD5;">
+  <i style="color: #F67B99;" class="material-icons-outlined active" (click)="vote(false)">arrow_downward</i>
+  {{ (post?.task?.idea?.positive_votes || 0) - (post?.task?.idea?.negative_votes || 0) }} votes
+  <i class="material-icons-outlined active" (click)="vote(true)">arrow_upward</i>
+</span>

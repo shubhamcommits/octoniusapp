@@ -270,7 +270,7 @@ export class UtilityService {
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openCreatePostFullscreenModal(postData: any, userData: any, groupId: string, columns?: any,tasks?:any) {
+  openCreatePostFullscreenModal(postData: any, userData: any, groupId: string, isIdeaModuleAvailable: boolean, columns?: any, tasks?: any) {
 
     const data = (columns) ?
       {
@@ -278,13 +278,15 @@ export class UtilityService {
         userData: userData,
         groupId: groupId,
         columns: columns,
-        Tasks:tasks
+        Tasks:tasks,
+        isIdeaModuleAvailable: isIdeaModuleAvailable
       }
     :
       {
         postData: postData,
         userData: userData,
-        groupId: groupId
+        groupId: groupId,
+        isIdeaModuleAvailable: isIdeaModuleAvailable
       }
 
     return this.dialog.open(GroupCreatePostDialogComponent, {

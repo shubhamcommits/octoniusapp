@@ -2,13 +2,10 @@ import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
-import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { PostService } from 'src/shared/services/post-service/post.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import moment from 'moment';
 
 @Component({
   selector: 'app-group-tasks-views',
@@ -25,7 +22,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   tasks: any = [];
   userData: any;
   customFields: any = [];
-  sortingBit:String = 'none'
+  sortingBit:String = 'none';
+  currentWorkspace: any;
+  ideaModuleAvailable = false;
 
   filteringBit:String = 'none'
   filteringData:String = ''
@@ -88,7 +87,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   }
 
   async onSortTaskEmitter(bit:string){
-    // let task = this.columns;
     this.sortingBit = bit;
   }
 
@@ -119,6 +117,10 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         this.groupData = res;
       }
     }));
+
+    this.currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
+
+    this.ideaModuleAvailable = await this.publicFunctions.checkIdeaStatus(this.currentWorkspace?._id, this.currentWorkspace?.management_private_api_key);
 
     // Set the initial view
     if (this.userData && this.userData.stats && this.userData.stats.lastTaskView) {
@@ -164,7 +166,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
       const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
       const post = await this.publicFunctions.getPost(postId);
-      this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.columns);
+      this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.ideaModuleAvailable, this.columns);
     }
   }
 

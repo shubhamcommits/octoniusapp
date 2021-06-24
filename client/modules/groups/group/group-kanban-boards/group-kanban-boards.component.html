@@ -66,7 +66,7 @@
 
                     <!-- CREATE TASK STARTS -->
                     <app-new-task [groupData]="groupData" [userData]="userData" [column]="column"
-                        (post)="getPost($event, column)"></app-new-task>
+                        (post)="getPost($event, column)" [isIdeaModuleAvailable]="isIdeaModuleAvailable"></app-new-task>
                     <!-- CREATE TASK ENDS -->
 
                     <!-- TASK DETAILS STARTS -->
@@ -74,7 +74,8 @@
                         (click)="openFullscreenModal(task)"
                         [isProject]="column?.project_type"
                         [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
-                        [task]="task">
+                        [task]="task"
+                        [isIdeaModuleAvailable]="isIdeaModuleAvailable">
                       <div *cdkDragPlaceholder></div>
                     </app-kanban-task-card>
                     <!-- TASK DETAILS ENDS -->
@@ -151,7 +152,7 @@
                 <div class="tasks-container" [id]="column._id">
                     <!-- CREATE TASK STARTS -->
                     <app-new-task [groupData]="groupData" [userData]="userData" [column]="column"
-                        (post)="getPost($event, column)"></app-new-task>
+                        (post)="getPost($event, column)" [isIdeaModuleAvailable]="isIdeaModuleAvailable"></app-new-task>
                     <!-- CREATE TASK ENDS -->
 
                     <!-- TASK DETAILS STARTS -->
@@ -159,7 +160,8 @@
                       (click)="openFullscreenModal(task)"
                       [isProject]="column?.project_type"
                       [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
-                      [task]="task">
+                      [task]="task"
+                      [isIdeaModuleAvailable]="isIdeaModuleAvailable">
                     </app-kanban-task-card>
                     <!-- TASK DETAILS ENDS -->
                 </div>

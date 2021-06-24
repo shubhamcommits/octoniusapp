@@ -14,6 +14,7 @@ export class KanbanTaskCardComponent {
   @Input() isProject: Boolean;
   @Input() isDelay: Boolean;
   @Input() task: any;
+  @Input() isIdeaModuleAvailable;
 
   // Current User Data
   userData : any = {};
@@ -64,7 +65,7 @@ export class KanbanTaskCardComponent {
       taskClass = 'status-done';
     }
 
-    if(isMilestone){
+    if (isMilestone) {
       taskClass = taskClass + ' milestone'
     }
 

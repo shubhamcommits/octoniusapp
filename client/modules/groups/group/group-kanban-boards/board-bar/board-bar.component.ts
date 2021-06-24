@@ -23,6 +23,7 @@ export class BoardBarComponent implements OnInit {
   @Input() customFields = [];
   @Input() userData;
   @Input() viewType;
+  @Input() isIdeaModuleAvailable;
 
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
@@ -47,7 +48,6 @@ export class BoardBarComponent implements OnInit {
   groupMembers:any = []
 
   async ngOnInit() {
-
     this.groupMembers = await this.publicFunctions.getCurrentGroupMembers();
   }
 
@@ -75,13 +75,13 @@ export class BoardBarComponent implements OnInit {
 
   filterTask(bit: string){
     this.filterfor = bit;
-    const obj={bit:bit,data:''}
+    const obj = { bit: bit, data: '' }
     this.filterTaskEmitter.emit(obj);
   }
 
   async onUserSelctionEmitter(userId:string){
     this.filterfor='users';
-    const obj={bit:'users',data:userId}
+    const obj={ bit: 'users', data: userId }
     this.filterTaskEmitter.emit(obj);
 
   }

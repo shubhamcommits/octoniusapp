@@ -88,6 +88,9 @@ routes.get('/:workspaceId/inTryOut', mgmt.isInTryOut);
 // GET - obtain if the flamingo module is availability in the workspace
 routes.get('/:workspaceId/flamingo', mgmt.getFlamingoStatus);
 
+// GET - obtain if the idea module is availability in the workspace
+routes.get('/:workspaceId/idea', mgmt.getIdeaStatus);
+
 // GET - obtain if the excelImport module is availability in the workspace
 routes.get('/:workspaceId/excelImport', mgmt.getExcelImportStatus);
 

@@ -23,6 +23,7 @@ export class PostActionsComponent implements OnInit {
   @Input() fullscreen: boolean = false;
 
   @Input() groupData: any;
+  @Input() isIdeaModuleAvailable;
 
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()

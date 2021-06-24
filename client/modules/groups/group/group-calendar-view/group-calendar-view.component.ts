@@ -25,15 +25,15 @@ const colors: any = {
 })
 export class GroupCalendarViewComponent implements OnInit {
 
-  constructor(
-    private injector: Injector,
-    private utilityService: UtilityService,
-    public dialog: MatDialog) { }
-
   // Fetch groupId from router snapshot
   @Input() groupId
 
   @Input() tasks:any;
+
+  @Input() isIdeaModuleAvailable;
+
+  // Modal Content
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector)
@@ -54,9 +54,6 @@ export class GroupCalendarViewComponent implements OnInit {
   events: any = []
 
   columns;
-
-  // Modal Content
-  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
 
   // Define the month view
   view: CalendarView = CalendarView.Month
@@ -96,7 +93,12 @@ export class GroupCalendarViewComponent implements OnInit {
   refresh: Subject<any> = new Subject()
 
   // Open the current active day automatically
-  activeDayIsOpen: boolean = true
+  activeDayIsOpen: boolean = true;
+
+  constructor(
+    private injector: Injector,
+    private utilityService: UtilityService,
+    public dialog: MatDialog) { }
 
   async ngOnInit() {
 
@@ -225,14 +227,14 @@ export class GroupCalendarViewComponent implements OnInit {
     let dialogRef;
     if (this.post) {
       if (this.post.type === 'task' && !this.post.task._parent_task) {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.columns,this.tasks);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.isIdeaModuleAvailable, this.columns,this.tasks);
       } else {
         if (this.post.task._parent_task && !this.post.task._parent_task._id) {
           this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
             this.post.task._parent_task = post;
           });
         }
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.isIdeaModuleAvailable);
       }
     }
 

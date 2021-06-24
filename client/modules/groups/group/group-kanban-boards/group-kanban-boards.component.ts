@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, Input, OnChanges, AfterViewInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute } from '@angular/router';
@@ -9,7 +9,6 @@ import moment from 'moment/moment';
 import { MatDialog } from '@angular/material/dialog';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { CreateProjectColumnDialogComponent } from './create-project-column-dialog/create-project-column-dialog.component';
-import { ProjectBudgetDialogComponent } from 'src/app/common/shared/project-budget-dialog/project-budget-dialog.component';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -17,6 +16,45 @@ import { ProjectBudgetDialogComponent } from 'src/app/common/shared/project-budg
   styleUrls: ['./group-kanban-boards.component.scss']
 })
 export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewInit {
+
+  // Current Group Data
+  @Input() groupData: any;
+  // Current User Data
+  @Input() userData: any;
+  @Input() columns: any;
+  // Task Posts array variable
+  @Input() tasks: any;
+
+  @Input() isIdeaModuleAvailable;
+
+  @Input() filteringData: any;
+  @Input() sortingBit: String;
+  @Input() filteringBit: String;
+
+  @Output() taskClonnedEvent = new EventEmitter();
+  @Output() newSectionEvent = new EventEmitter();
+  @Output() moveSectionEvent = new EventEmitter();
+
+  // PUBLIC FUNCTIONS
+  public publicFunctions = new PublicFunctions(this.injector);
+  // Base URL of the uploads
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
+
+  // Fetch groupId from router snapshot
+  groupId = this.router.snapshot.queryParamMap.get('group');
+
+  // Today's date object
+  today = moment().startOf('day').format('YYYY-MM-DD');
+
+  flows = [];
+
+  canSeeBudget = false;
+
+  tasktest: any;
+
+  unchangedColumns: any;
+
+  isMobile = false;
 
   constructor(
     private router: ActivatedRoute,
@@ -26,45 +64,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     private injector: Injector,
     public dialog: MatDialog
   ) { }
-
-  // Base URL of the uploads
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
-  // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.queryParamMap.get('group');
-
-  // Current Group Data
-  @Input() groupData: any;
-  // Current User Data
-  @Input() userData: any;
-  @Input() columns: any;
-  // Task Posts array variable
-  @Input() tasks: any;
-  @Input() filteringData: any;
-
-  @Input() sortingBit: String
-
-  @Input() filteringBit: String
-
-  tasktest: any;
-
-  unchangedColumns: any;
-
-  isMobile = false;
-
-  @Output() taskClonnedEvent = new EventEmitter();
-  @Output() newSectionEvent = new EventEmitter();
-  @Output() moveSectionEvent = new EventEmitter();
-
-  // PUBLIC FUNCTIONS
-  public publicFunctions = new PublicFunctions(this.injector);
-
-  // Today's date object
-  today = moment().startOf('day').format('YYYY-MM-DD');
-
-  flows = [];
-
-  canSeeBudget = false;
 
   async ngOnInit() {
     let col = [];
@@ -84,7 +83,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     for (const propName in changes) {
       const change = changes[propName];
       const to = change.currentValue;
-      const from = change.previousValue;
       if (propName === 'sortingBit') {
         this.sortingBit = to;
         await this.sorting();
@@ -261,11 +259,17 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         })
       }
       this.unchangedColumns = tasks;
+    } else if (to == "ideas") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          task.task.is_idea == true));
+      }
+      this.unchangedColumns = tasks;
     } else {
       this.columns = this.unchangedColumns.columns;
     }
-
-
   }
 
   async sorting() {
@@ -337,6 +341,15 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
             : ((t1?.task?.status && !t2?.task?.status)
               ? -1 : ((!t1?.task?.status && t2?.task?.status))
                 ? 1 : 0);
+        });
+        this.columns[index].tasks = task;
+      }
+    } else if (this.sortingBit == 'ideas') {
+
+      for (let index = 0; index < this.columns.length; index++) {
+        let task = this.columns[index].tasks;
+        task.sort((t1, t2) => {
+          return ((t1?.task?.idea?.positive_votes || 0 - t1?.task?.idea?.negative_votes || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes || 0)) ? 1 : 0;
         });
         this.columns[index].tasks = task;
       }
@@ -607,14 +620,13 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.columns,this.tasks);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupId, this.isIdeaModuleAvailable, this.columns,this.tasks);
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
       this.sorting();
     });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateTask(data);
-      // this.sorting();
     });
     const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
       this.onDeleteEvent(data._id);

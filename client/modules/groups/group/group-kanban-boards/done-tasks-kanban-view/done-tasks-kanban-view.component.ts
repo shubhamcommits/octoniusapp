@@ -14,6 +14,7 @@ export class DoneTasksKanbanViewComponent implements OnInit {
   @Input() tasks = [];
   @Input() groupData;
   @Input() userData;
+  @Input() isIdeaModuleAvailable;
 
   @Output() closeModalEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
@@ -32,7 +33,7 @@ export class DoneTasksKanbanViewComponent implements OnInit {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.columns);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.isIdeaModuleAvailable, this.columns);
 
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.deleteEvent.emit(data);
