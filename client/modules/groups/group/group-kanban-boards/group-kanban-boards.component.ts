@@ -84,7 +84,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     for (const propName in changes) {
       const change = changes[propName];
       const to = change.currentValue;
-      const from = change.previousValue;
       if (propName === 'sortingBit') {
         this.sortingBit = to;
         await this.sorting();
@@ -343,6 +342,15 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
             : ((t1?.task?.status && !t2?.task?.status)
               ? -1 : ((!t1?.task?.status && t2?.task?.status))
                 ? 1 : 0);
+        });
+        this.columns[index].tasks = task;
+      }
+    } else if (this.sortingBit == 'ideas') {
+
+      for (let index = 0; index < this.columns.length; index++) {
+        let task = this.columns[index].tasks;
+        task.sort((t1, t2) => {
+          return ((t1?.task?.idea?.positive_votes || 0 - t1?.task?.idea?.negative_votes || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes || 0)) ? 1 : 0;
         });
         this.columns[index].tasks = task;
       }
@@ -620,7 +628,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateTask(data);
-      // this.sorting();
     });
     const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
       this.onDeleteEvent(data._id);

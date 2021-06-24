@@ -316,6 +316,10 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
             ? -1 : ((!t1?.task?.status && t2?.task?.status))
               ? 1 : 0);
       });
+    } else if (this.sortingBit == 'ideas') {
+      this.tasks.sort((t1, t2) => {
+        return ((t1?.task?.idea?.positive_votes || 0 - t1?.task?.idea?.negative_votes || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes || 0)) ? 1 : 0;
+      });
     }
   }
 

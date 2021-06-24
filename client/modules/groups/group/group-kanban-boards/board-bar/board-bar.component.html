@@ -94,6 +94,10 @@
           <span>Status</span>
         </a>
 
+        <a mat-menu-item (click)="sortTasks('ideas')"
+          [ngStyle]="{'color' : (sortby==='due_date') ? 'green' : 'black'}">
+          <span>Ideas</span>
+        </a>
       </mat-menu>
 
       <mat-menu #menuFilter="matMenu" style="overflow: visible !important;" class="filter-menu">

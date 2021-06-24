@@ -88,7 +88,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   }
 
   async onSortTaskEmitter(bit:string){
-    // let task = this.columns;
     this.sortingBit = bit;
   }
 
