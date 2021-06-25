@@ -126,6 +126,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         })
       }
       this.unchangedColumns = tasks;
+    /*
     } else if (to == "priority_high") {
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
@@ -150,6 +151,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
           task.task.custom_fields?.priority === "Low"))
       }
       this.unchangedColumns = tasks;
+    */
     } else if (to == 'due_before_today'){
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
@@ -257,6 +259,17 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
           }
           return bit;
         })
+      }
+      this.unchangedColumns = tasks;
+    } else if (to == "custom_field") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      const cfName = this.filteringData.name;
+      const cfValue = this.filteringData.value;
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+          return task.task.custom_fields[cfName] == cfValue
+        });
       }
       this.unchangedColumns = tasks;
     } else if (to == "ideas") {

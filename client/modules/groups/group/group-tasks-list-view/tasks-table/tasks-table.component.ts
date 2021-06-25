@@ -136,25 +136,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       })
       this.unchangedTasks = tasks;
     }
-    else if (to == "priority_high") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => (
-        task.task.custom_fields?.priority === "High"))
-      this.unchangedTasks = tasks;
-    } else if (to == "priority_medium") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => (
-        task.task.custom_fields?.priority === "Medium"))
-      this.unchangedTasks = tasks;
-    } else if (to == "priority_low") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => (
-        task.task.custom_fields?.priority === "Low"))
-      this.unchangedTasks = tasks;
-    }
     else if (to == 'due_before_today') {
       let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
@@ -247,6 +228,15 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
         }
         return bit;
       })
+      this.unchangedTasks = tasks;
+    }
+    else if (to == "custom_field") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      const cfName = this.filteringData.name;
+      const cfValue = this.filteringData.value;
+      this.tasks = tasks.tasksList.filter((task: any) => (
+        task.task.custom_fields[cfName] == cfValue))
       this.unchangedTasks = tasks;
     } else if (to == "ideas") {
       let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
