@@ -47,8 +47,7 @@
 }
 
 .badge-idea {
-  margin: 0 1px !important;
-  display: inline;
+  margin: 0 5px !important;
   font-family: Nunito, sans-serif;
   font-style: normal;
   font-weight: 700 !important;
@@ -56,6 +55,17 @@
   align-items: center;
   color: #ffffff;
   background-color: #FBB732;
-  border-radius: 15px;
-  padding: 5px 15px 5px 5px !important;
+  border-radius: 10px;
+  padding: 0 5px !important;
+  .material-icons-outlined{
+    font-size:18px;
+  }
+}
+
+.badges-bar{
+  display: flex;
+  justify-content:flex-start;
+  .label-priority{
+    align-self: center;
+  }
 }
