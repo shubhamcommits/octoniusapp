@@ -8,18 +8,21 @@
           {{ formateDate(task?.task?.due_to, "MMM D, YYYY") }}
           <i *ngIf="isProject && isDelay" class="material-icons" style="color: #eb5757;">error</i>
         </span>
+       <div class="badges-bar">
         <div [ngClass]="getPriorityClass(task?.task?.custom_fields['priority'])"
-          *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
-          {{ task?.task?.custom_fields['priority'] }}
-        </div>
-      <!-- PRIORITY design added  -->
+        *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
+        {{ task?.task?.custom_fields['priority'] }}
+      </div>
+    <!-- PRIORITY design added  -->
+    <div class="badge-idea" *ngIf="isIdeaModuleAvailable && task?.task?.is_idea">
+      <i class="material-icons-outlined ml-1">emoji_objects</i>
+      {{ (task?.task?.idea?.positive_votes || 0) - (task?.task?.idea?.negative_votes || 0) }}
+    </div>
+       </div>
     </div>
     <app-assignee-avatar [post]="task" [userData]="userData" style="margin-right: 10px;"></app-assignee-avatar>
   </div>
 
-  <div class="badge-idea" *ngIf="isIdeaModuleAvailable && task?.task?.is_idea">
-    <i class="material-icons-outlined ml-2">emoji_objects</i>
-    {{ (task?.task?.idea?.positive_votes || 0) - (task?.task?.idea?.negative_votes || 0) }}
-  </div>
+
 </div>
 
