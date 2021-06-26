@@ -29,7 +29,7 @@ export class PostService {
    * @param groupId 
    * @param lastPostId 
    */
-  async getPosts(groupId: any, pinned: boolean, type?: any, lastPostId?: any) {
+  async getPosts(groupId: any, pinned: boolean, type?: any, lastPostId?: any, filters?: any) {
 
     try {
 
@@ -48,7 +48,26 @@ export class PostService {
           ]
         }
       }
+
       
+      let postedByFilter = {};
+      let tagsFilter = {};
+      if (filters) {
+        filters = JSON.parse(filters)
+
+        if (filters && filters.user) {
+console.log(filters.user);
+          postedByFilter = {
+            _posted_by: filters.user
+          };
+        }
+console.log(filters.filters);        
+        if (filters && filters.tags && filters.tags.length > 0) {
+          tagsFilter = {
+            tags: { $in: filters.tags }
+          }
+        }
+      }
       // Fetch posts on the basis of the params @lastPostId
       if (lastPostId) {
 
@@ -61,7 +80,9 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { _id: { $lt: lastPostId } },
-                  pinnedQuery
+                  pinnedQuery,
+                  postedByFilter,
+                  tagsFilter
                 ]
               }), type)
 
@@ -75,7 +96,9 @@ export class PostService {
                   { _group: groupId },
                   { type: { $ne: 'task' } },
                   { _id: { $lt: lastPostId } },
-                  pinnedQuery
+                  pinnedQuery,
+                  postedByFilter,
+                  tagsFilter
                 ]
               }), 'all')
 
@@ -89,7 +112,9 @@ export class PostService {
                   { _group: groupId },
                   { type: type },
                   { _id: { $lt: lastPostId } },
-                  pinnedQuery
+                  pinnedQuery,
+                  postedByFilter,
+                  tagsFilter
                 ]
               }), type)
 
@@ -145,7 +170,9 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { type: { $ne: 'task' } },
-                  pinnedQuery
+                  pinnedQuery,
+                  postedByFilter,
+                  tagsFilter
                 ]
               }), 'all')
 
@@ -158,7 +185,9 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { type: type },
-                  pinnedQuery
+                  pinnedQuery,
+                  postedByFilter,
+                  tagsFilter
                 ]
               }), type)
 
@@ -194,13 +223,15 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { type: 'normal' },
-                  pinnedQuery
+                  pinnedQuery,
+                  postedByFilter,
+                  tagsFilter
                 ]
               }), type);
             break;
         }
       }
-
+console.log(posts);
       // Return set of posts 
       return posts;
 

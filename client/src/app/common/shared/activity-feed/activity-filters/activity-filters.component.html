@@ -1,0 +1,27 @@
+<div class="card sideinnercard">
+    <div class="card-block">
+        <h6 class="card-title">
+          <strong>Filters</strong>
+          <i class="material-icons-outlined float-right">filter_alt</i>
+        </h6>
+        <hr />
+        <span mat-menu-item class="cursordefault overflowvisible">
+          <app-member-list-menu
+            [groupMembers]="groupMembers"
+            [menuLable]="'Filter Posts For'"
+            [menuFor]="'Filter'"
+            [filterfor]="'users'"
+            (userSelctionEmitter)="onUserSelctionEmitter($event)">
+          </app-member-list-menu>
+        </span>
+        <p class="box-title">Tags</p>
+        <!-- Post Tags starts -->
+        <app-post-tags
+            [userData]="userData"
+            [post]="post"
+            [groupId]="groupData?._id"
+            (tags)="onTagSelctionEmitter($event)">
+        </app-post-tags>
+        <!-- Post Tags ends -->
+    </div>
+</div>

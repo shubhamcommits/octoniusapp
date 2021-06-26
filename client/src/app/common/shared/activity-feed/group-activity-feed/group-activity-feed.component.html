@@ -17,16 +17,14 @@
                 [myWorkplace]="myWorkplace"></app-group-task-progress>
             <!-- Task Progress Count ends -->
 
-            <!-- Project status starts -->
-            <!--
-            <app-project-status *ngIf="groupId && myWorkplace === false && globalFeed == false && isProjectType" [groupId]="groupId">
-            </app-project-status>
-            -->
-            <!-- Project status ends -->
-
             <!-- Send pulse starts -->
             <app-send-pulse *ngIf="groupId && myWorkplace === false && globalFeed == false" [groupId]="groupId">
             </app-send-pulse>
+            <!-- Send pulse ends -->
+
+            <!-- Send pulse starts -->
+            <app-activity-filters *ngIf="groupData && globalFeed == false" [group]="groupData" (filterPostsEmitter)="applyFilters($event)">
+            </app-activity-filters>
             <!-- Send pulse ends -->
 
             <!-- Task Smart Card Starts -->
