@@ -55,13 +55,12 @@ export class PostService {
       if (filters) {
         filters = JSON.parse(filters)
 
-        if (filters && filters.user) {
-console.log(filters.user);
+        if (filters && filters.users && filters.users.length > 0) {
           postedByFilter = {
-            _posted_by: filters.user
+            _posted_by: { $in: filters.users }
           };
         }
-console.log(filters.filters);        
+
         if (filters && filters.tags && filters.tags.length > 0) {
           tagsFilter = {
             tags: { $in: filters.tags }
@@ -231,7 +230,7 @@ console.log(filters.filters);
             break;
         }
       }
-console.log(posts);
+
       // Return set of posts 
       return posts;
 

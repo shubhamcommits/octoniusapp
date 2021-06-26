@@ -97,6 +97,10 @@ export class MultipleAssignmentsComponent implements OnChanges {
       }));
     } else if (this.type == 'flow') {
       this.assigneeRemovedEmiter.emit({assigneeId: assigneeId});
+    } else if (this.type == 'filter') {
+      const index = this.assigned_to.findIndex((assignee) => { assignee._id === assigneeId });
+      this.assigned_to.splice(index, 1);
+      this.assigneeRemovedEmiter.emit(assigneeId);
     }
   }
 
@@ -142,6 +146,9 @@ export class MultipleAssignmentsComponent implements OnChanges {
         } else if (this.type == 'flow') {
           //this.trigger.closeMenu();
           this.assigneeAddedEmiter.emit({assignee: member});
+        } else if (this.type == 'filter') {
+          this.assigned_to.push(member);
+          this.assigneeAddedEmiter.emit(member);
         }
       }
     });

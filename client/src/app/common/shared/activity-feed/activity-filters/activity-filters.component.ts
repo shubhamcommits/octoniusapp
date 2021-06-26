@@ -22,7 +22,8 @@ export class ActivityFiltersComponent implements OnInit {
     tags: []
   };
 
-  filterUserId = '';
+  filterUsers = [];
+  usersIds = [];
   filterTags = [];
 
   public publicFunctions = new PublicFunctions(this.injector);
@@ -37,14 +38,22 @@ export class ActivityFiltersComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
   }
 
-  async onUserSelctionEmitter(userId:string){
-    this.filterUserId = userId;
-    this.filterPostsEmitter.emit({ tags: this.filterTags, user: this.filterUserId });
+  async onUserSelctionEmitter(user: any) {
+    this.filterUsers.push(user);
+    this.usersIds.push(user._id);
+    this.filterPostsEmitter.emit({ tags: this.filterTags, users: this.usersIds });
+  }
+
+  async assigneeRemovedEmiter(userId: string) {
+    this.filterUsers.splice(this.filterUsers.findIndex(user => user._id == userId), 1);
+    this.usersIds.splice(this.usersIds.findIndex(user => user == userId), 1);
+
+    this.filterPostsEmitter.emit({ tags: this.filterTags, users: this.usersIds });
   }
 
   async onTagSelctionEmitter(tags: any){
     this.filterTags = tags;
     this.post.tags = this.filterTags;
-    this.filterPostsEmitter.emit({ tags: this.filterTags, user: this.filterUserId });
+    this.filterPostsEmitter.emit({ tags: this.filterTags, users: this.usersIds });
   }
 }
