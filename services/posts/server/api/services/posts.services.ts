@@ -52,7 +52,7 @@ export class PostService {
       
       let postedByFilter = {};
       let tagsFilter = {};
-      if (filters) {
+      if (filters && filters != 'undefined') {
         filters = JSON.parse(filters)
 
         if (filters && filters.users && filters.users.length > 0) {
