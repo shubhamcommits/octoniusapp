@@ -112,7 +112,7 @@ export class PostService {
    * @param { groupId, type, lastPostId } query
    * @param lastPostId - optional
    */
-  getPosts(groupId: string, type: string, pinned: boolean = false, lastPostId?: string) {
+  getPosts(groupId: string, type: string, pinned: boolean = false, lastPostId?: string, filters?: any) {
 
     // Create the request variable
     let request: any;
@@ -122,7 +122,8 @@ export class PostService {
         params: {
           groupId: groupId,
           type: type,
-          pinned: pinned.toString()
+          pinned: pinned.toString(),
+          filters: JSON.stringify(filters)
         }
       }).toPromise()
 
@@ -132,7 +133,8 @@ export class PostService {
           groupId: groupId,
           type: type,
           lastPostId: lastPostId,
-          pinned: pinned.toString()
+          pinned: pinned.toString(),
+          filters: JSON.stringify(filters)
         }
       }).toPromise()
     }

@@ -570,13 +570,13 @@ export class PublicFunctions {
      * @param groupId
      * @param lastPostId: optional
      */
-    getPosts(groupId: string, type: string, pinned: boolean = false, lastPostId?: string) {
+    getPosts(groupId: string, type: string, pinned: boolean = false, lastPostId?: string, filters?: any) {
 
         // Post Service Instance
         let postService = this.injector.get(PostService);
 
         return new Promise((resolve, reject) => {
-            postService.getPosts(groupId, type, pinned, lastPostId)
+            postService.getPosts(groupId, type, pinned, lastPostId, filters)
                 .then((res: any) => {
 
                     // Resolve with sucess

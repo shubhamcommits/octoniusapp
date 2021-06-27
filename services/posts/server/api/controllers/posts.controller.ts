@@ -158,7 +158,7 @@ export class PostController {
     async getPosts(req: Request, res: Response, next: NextFunction) {
 
         // Fetch groupId and lastPostId from request
-        var { groupId, lastPostId, type, pinned } = req.query;
+        var { groupId, lastPostId, type, pinned, filters } = req.query;
 
         // If type is not defined, then fetch all the posts by default
         if (!type || type == '' || type === "") {
@@ -171,7 +171,7 @@ export class PostController {
         }
 
         // Fetch the next 5 recent posts
-        await postService.getPosts(groupId, pinned == 'true', type, lastPostId)
+        await postService.getPosts(groupId, pinned == 'true', type, lastPostId, filters)
             .then((posts) => {
 
                 // If lastPostId is there then, send status 200 response
