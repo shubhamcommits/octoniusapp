@@ -25,6 +25,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   @Input() filteringData: any;
   @Input() isAdmin = false;
   @Input() customFields = [];
+  @Input() isIdeaModuleAvailable;
 
   @Output() taskChangeSectionEmitter = new EventEmitter();
   @Output() taskClonnedEvent = new EventEmitter();
@@ -135,25 +136,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       })
       this.unchangedTasks = tasks;
     }
-    else if (to == "priority_high") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => (
-        task.task.custom_fields?.priority === "High"))
-      this.unchangedTasks = tasks;
-    } else if (to == "priority_medium") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => (
-        task.task.custom_fields?.priority === "Medium"))
-      this.unchangedTasks = tasks;
-    } else if (to == "priority_low") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => (
-        task.task.custom_fields?.priority === "Low"))
-      this.unchangedTasks = tasks;
-    }
     else if (to == 'due_before_today') {
       let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
@@ -248,7 +230,21 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       })
       this.unchangedTasks = tasks;
     }
-    else {
+    else if (to == "custom_field") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      const cfName = this.filteringData.name;
+      const cfValue = this.filteringData.value;
+      this.tasks = tasks.tasksList.filter((task: any) => (
+        task.task.custom_fields[cfName] == cfValue))
+      this.unchangedTasks = tasks;
+    } else if (to == "ideas") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      this.tasks = tasks.tasksList.filter((task: any) => (
+        task.task.is_idea == true))
+      this.unchangedTasks = tasks;
+    } else {
       this.tasks = this.unchangedTasks.tasksList;
     }
 
@@ -311,6 +307,10 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
             ? -1 : ((!t1?.task?.status && t2?.task?.status))
               ? 1 : 0);
       });
+    } else if (this.sortingBit == 'ideas') {
+      this.tasks.sort((t1, t2) => {
+        return ((t1?.task?.idea?.positive_votes || 0 - t1?.task?.idea?.negative_votes || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes || 0)) ? 1 : 0;
+      });
     }
   }
 
@@ -372,7 +372,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData._id, this.sections,this.tasks);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData._id, this.isIdeaModuleAvailable, this.sections,this.tasks);
 
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);

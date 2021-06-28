@@ -3,7 +3,6 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
-import moment from 'moment';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,6 +21,8 @@ export class PostUtilsComponent implements OnInit {
   @Input() mode: string = 'normal';
 
   @Input() groupData: any;
+
+  @Input() isIdeaModuleAvailable;
 
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter();
@@ -73,7 +74,7 @@ export class PostUtilsComponent implements OnInit {
    */
   openFullscreenModal(): void {
     const group = (this.post._group._id) ? this.post._group._id : this.post._group;
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, group);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, group, this.isIdeaModuleAvailable);
 
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.closeModalEvent.emit(data);

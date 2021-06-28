@@ -158,7 +158,7 @@ export class PostController {
     async getPosts(req: Request, res: Response, next: NextFunction) {
 
         // Fetch groupId and lastPostId from request
-        var { groupId, lastPostId, type, pinned } = req.query;
+        var { groupId, lastPostId, type, pinned, filters } = req.query;
 
         // If type is not defined, then fetch all the posts by default
         if (!type || type == '' || type === "") {
@@ -171,7 +171,7 @@ export class PostController {
         }
 
         // Fetch the next 5 recent posts
-        await postService.getPosts(groupId, pinned == 'true', type, lastPostId)
+        await postService.getPosts(groupId, pinned == 'true', type, lastPostId, filters)
             .then((posts) => {
 
                 // If lastPostId is there then, send status 200 response
@@ -1573,6 +1573,24 @@ export class PostController {
         // Send status 200 response
         return res.status(200).json({
             message: 'Post pinned/unpinned!',
+            post: post
+        });
+    }
+
+    async voteIdea(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch Data from request
+        const { params: { postId }, body: { vote } } = req;
+
+        // Call Service function to change the assignee
+        const post = await postService.voteIdea(postId, vote)
+            .catch((err) => {
+                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+            })
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Idea Voted!',
             post: post
         });
     }

@@ -9,6 +9,10 @@
         </div>
         <div class="col-md-6 text-right">
 
+            <app-idea-actions *ngIf="isIdeaModuleAvailable && post?.task?.is_idea"
+              [post]="post"
+              [userData]="userData"></app-idea-actions>
+
             <app-comment-on-post (showCommentEditor)="showCommentEditor($event)"></app-comment-on-post>
 
             <!-- Like Post starts-->

@@ -83,6 +83,7 @@ import { CreateProjectColumnDialogComponent } from './group/group-kanban-boards/
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { KanbanTaskCardComponent } from './group/group-kanban-boards/kanban-task-card/kanban-task-card.component';
 import { ColumnProjectSectionComponent } from './group/group-kanban-boards/column-project-section/column-project-section.component';
+import { AdvancedFilterDialogComponent } from './group/group-kanban-boards/board-bar/advanced-filter-dialog/advanced-filter-dialog.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -168,6 +169,7 @@ import { ColumnProjectSectionComponent } from './group/group-kanban-boards/colum
 
     GroupTasksViewsComponent,
     CustomFieldsDialogComponent,
+    AdvancedFilterDialogComponent,
     DoneTasksListViewComponent,
     DoneTasksKanbanViewComponent,
 
@@ -224,6 +226,7 @@ import { ColumnProjectSectionComponent } from './group/group-kanban-boards/colum
   ],
   entryComponents: [
     CustomFieldsDialogComponent,
+    AdvancedFilterDialogComponent,
     AutomationFlowsDialogComponent,
     AutomationFlowDetailsDialogComponent,
     CreateProjectColumnDialogComponent,

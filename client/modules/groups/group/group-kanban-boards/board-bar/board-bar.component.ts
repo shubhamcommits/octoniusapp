@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { AutomationFlowsDialogComponent } from '../../automation-flows-dialog/automation-flows-dialog.component';
 import { CustomFieldsDialogComponent } from '../../custom-fields-dialog/custom-fields-dialog.component';
+import { AdvancedFilterDialogComponent } from './advanced-filter-dialog/advanced-filter-dialog.component';
 
 @Component({
   selector: 'app-board-bar',
@@ -23,6 +24,7 @@ export class BoardBarComponent implements OnInit {
   @Input() customFields = [];
   @Input() userData;
   @Input() viewType;
+  @Input() isIdeaModuleAvailable;
 
   // Emitter to notify that the view is changing
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
@@ -43,11 +45,11 @@ export class BoardBarComponent implements OnInit {
   menuLable: string='Filter Task For';
   menuFor: string='Filter';
   reverse: boolean = false;
+  cfFilter: any = {}
 
-  groupMembers:any = []
+  groupMembers:any = [];
 
   async ngOnInit() {
-
     this.groupMembers = await this.publicFunctions.getCurrentGroupMembers();
   }
 
@@ -73,17 +75,17 @@ export class BoardBarComponent implements OnInit {
 
   }
 
-  filterTask(bit: string){
+  filterTask(bit: string, cf?: any) {
     this.filterfor = bit;
-    const obj={bit:bit,data:''}
+    this.cfFilter = (cf) ? cf : {};
+    const obj = { bit: bit, data: this.cfFilter || '' }
     this.filterTaskEmitter.emit(obj);
   }
 
   async onUserSelctionEmitter(userId:string){
     this.filterfor='users';
-    const obj={bit:'users',data:userId}
+    const obj={ bit: 'users', data: userId }
     this.filterTaskEmitter.emit(obj);
-
   }
 
 
@@ -109,6 +111,26 @@ export class BoardBarComponent implements OnInit {
       height: '100%',
       disableClose: true,
       data: { groupId: this.groupData._id, groupSections: this.sections, customFields: this.customFields }
+    });
+  }
+
+  openAdvancedFilterDialog() {
+    const dialogRef = this.dialog.open(AdvancedFilterDialogComponent, {
+      width: '50%',
+      height: '75%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: { groupData: this.groupData, cf: this.cfFilter }
+    });
+    const sub = dialogRef.componentInstance.customFieldEvent.subscribe((data) => {
+      if (data.name != '' && data.valu != '') {
+        this.filterTask('custom_field', data);
+      } else {
+        this.filterTask('none');
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      sub.unsubscribe();
     });
   }
 }

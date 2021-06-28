@@ -29,7 +29,7 @@ export class PostService {
    * @param groupId 
    * @param lastPostId 
    */
-  async getPosts(groupId: any, pinned: boolean, type?: any, lastPostId?: any) {
+  async getPosts(groupId: any, pinned: boolean, type?: any, lastPostId?: any, filters?: any) {
 
     try {
 
@@ -48,7 +48,25 @@ export class PostService {
           ]
         }
       }
+
       
+      let postedByFilter = {};
+      let tagsFilter = {};
+      if (filters && filters != 'undefined') {
+        filters = JSON.parse(filters)
+
+        if (filters && filters.users && filters.users.length > 0) {
+          postedByFilter = {
+            _posted_by: { $in: filters.users }
+          };
+        }
+
+        if (filters && filters.tags && filters.tags.length > 0) {
+          tagsFilter = {
+            tags: { $in: filters.tags }
+          }
+        }
+      }
       // Fetch posts on the basis of the params @lastPostId
       if (lastPostId) {
 
@@ -61,7 +79,9 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { _id: { $lt: lastPostId } },
-                  pinnedQuery
+                  pinnedQuery,
+                  postedByFilter,
+                  tagsFilter
                 ]
               }), type)
 
@@ -75,7 +95,9 @@ export class PostService {
                   { _group: groupId },
                   { type: { $ne: 'task' } },
                   { _id: { $lt: lastPostId } },
-                  pinnedQuery
+                  pinnedQuery,
+                  postedByFilter,
+                  tagsFilter
                 ]
               }), 'all')
 
@@ -89,7 +111,9 @@ export class PostService {
                   { _group: groupId },
                   { type: type },
                   { _id: { $lt: lastPostId } },
-                  pinnedQuery
+                  pinnedQuery,
+                  postedByFilter,
+                  tagsFilter
                 ]
               }), type)
 
@@ -145,7 +169,9 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { type: { $ne: 'task' } },
-                  pinnedQuery
+                  pinnedQuery,
+                  postedByFilter,
+                  tagsFilter
                 ]
               }), 'all')
 
@@ -158,7 +184,9 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { type: type },
-                  pinnedQuery
+                  pinnedQuery,
+                  postedByFilter,
+                  tagsFilter
                 ]
               }), type)
 
@@ -194,7 +222,9 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { type: 'normal' },
-                  pinnedQuery
+                  pinnedQuery,
+                  postedByFilter,
+                  tagsFilter
                 ]
               }), type);
             break;
@@ -526,6 +556,7 @@ export class PostService {
             _column: post._column,
             custom_fields: post.task.custom_fields,
             isNorthStar: post.task.isNorthStar,
+            is_idea: post.task.is_idea,
             northStar: post.task.northStar,
             is_milestone: post?.task?.is_milestone || false,
             _parent_task: post.task._parent_task
@@ -2773,6 +2804,37 @@ export class PostService {
       }, {
         new: true
       });
+
+      // Populate the post properties
+      post = await this.populatePostProperties(post);
+
+      // Return the post
+      return post;
+
+    } catch (err) {
+      throw (err);
+    }
+  }
+
+  async voteIdea(postId: string, vote: number) {
+
+    try {
+      let post;
+
+      if (vote > 0) {
+        post = await Post.findOneAndUpdate(
+          {_id: postId },
+          { $inc: { 'task.idea.positive_votes': 1 } },
+          { new: true }
+          ).lean();
+      } else {
+        post = await Post.findOneAndUpdate(
+          { _id: postId },
+          { $inc: { 'task.idea.negative_votes': 1 } },
+          { new: true }
+        )
+        .lean();
+      }
 
       // Populate the post properties
       post = await this.populatePostProperties(post);

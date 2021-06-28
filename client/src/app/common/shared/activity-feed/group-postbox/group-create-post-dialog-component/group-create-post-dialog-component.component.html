@@ -23,6 +23,8 @@
                     <!-- Post Title ends -->
                 </h4>
 
+                <i class="material-icons-outlined ml-2" *ngIf="isIdeaModuleAvailable && postData?.task?.is_idea" style="color: #FBB732;">emoji_objects</i>
+
                 <app-post-utils
                     [post]="postData"
                     [userData]="userData"
@@ -61,6 +63,7 @@
                 [userData]="userData"
                 [fullscreen]="true"
                 [groupData]="groupData"
+                [isIdeaModuleAvailable]="isIdeaModuleAvailable"
                 (pinEvent)="onPostPin($event)"
                 (newCommentEmitter)="newCommentAdded($event)">
             </app-post-actions>
@@ -309,6 +312,8 @@
           [userData]="userData"
           [tasks]="tasks"
           [isNorthStar]="(postData?.task?.isNorthStar) ? postData?.task?.isNorthStar : false"
+          [isIdea]="(postData?.task?.is_idea) ? postData?.task?.is_idea : false"
+          [isIdeaModuleAvailable]="isIdeaModuleAvailable"
           [isMilestone]="(postData?.task?.is_milestone) ? postData?.task?.is_milestone : false"
           (parentTaskSelectedEmitter)="onParentTaskSelected($event)"
           (dependencyTaskSelectedEmitter)="onDependencyTaskSelected($event)"
@@ -317,6 +322,7 @@
           (taskAllocationEmitter)="onAllocationChanged($event)"
           (transformIntoNorthStarEmitter)="transformToNorthStart($event)"
           (transformIntoMilestoneEmitter)="transformToMileStone($event)"
+          (transformIntoIdeaEmitter)="transformToIdea($event)"
           ></app-task-actions>
     </div>
     <!-- Top Right Section ends -->

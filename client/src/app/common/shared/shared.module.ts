@@ -108,6 +108,8 @@ import { CustomToolTipComponent } from './custom-tool-tip/custom-tool-tip.compon
 import { ToolTipRendererDirective } from './custom-tool-tip/tool-tip-renderer.directive';
 import { WidgetSelectorDialogComponent } from './dashboard/widget-selector-dialog/widget-selector-dialog.component';
 import { ColorPickerDialogComponent } from './color-picker-dialog/color-picker-dialog.component';
+import { IdeaActionsComponent } from './posts/post-actions/idea-actions/idea-actions.component';
+import { ActivityFiltersComponent } from './activity-feed/activity-filters/activity-filters.component';
 
 @NgModule({
   declarations: [
@@ -126,6 +128,7 @@ import { ColorPickerDialogComponent } from './color-picker-dialog/color-picker-d
     PostViewComponent,
     PostActionsComponent,
     LikePostComponent,
+    IdeaActionsComponent,
     CommentOnPostComponent,
     FollowPostComponent,
     PostUtilsComponent,
@@ -151,6 +154,8 @@ import { ColorPickerDialogComponent } from './color-picker-dialog/color-picker-d
     ActivityFeedComponent,
 
     SendPulseComponent,
+
+    ActivityFiltersComponent,
 
     ProjectStatusComponent,
 
@@ -293,6 +298,7 @@ import { ColorPickerDialogComponent } from './color-picker-dialog/color-picker-d
     ProgressBarComponent,
     SelectMemberComponent,
     SendPulseComponent,
+    ActivityFiltersComponent,
     ProjectStatusComponent,
 
     GroupInformationComponent,

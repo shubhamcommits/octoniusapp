@@ -570,13 +570,13 @@ export class PublicFunctions {
      * @param groupId
      * @param lastPostId: optional
      */
-    getPosts(groupId: string, type: string, pinned: boolean = false, lastPostId?: string) {
+    getPosts(groupId: string, type: string, pinned: boolean = false, lastPostId?: string, filters?: any) {
 
         // Post Service Instance
         let postService = this.injector.get(PostService);
 
         return new Promise((resolve, reject) => {
-            postService.getPosts(groupId, type, pinned, lastPostId)
+            postService.getPosts(groupId, type, pinned, lastPostId, filters)
                 .then((res: any) => {
 
                     // Resolve with sucess
@@ -1268,6 +1268,32 @@ export class PublicFunctions {
     async checkFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
       const managementPortalService = this.injector.get(ManagementPortalService);
       return managementPortalService.getFlamingoStatus(workspaceId, mgmtApiPrivateKey).then(
+        (res) => {
+          if ( !res || !res['status'] ) {
+            return false;
+          }
+          return true;
+        }).catch((err) => {
+          return false;
+        });
+    }
+
+    async checkIdeaStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+      const managementPortalService = this.injector.get(ManagementPortalService);
+      return managementPortalService.getIdeaStatus(workspaceId, mgmtApiPrivateKey).then(
+        (res) => {
+          if ( !res || !res['status'] ) {
+            return false;
+          }
+          return true;
+        }).catch((err) => {
+          return false;
+        });
+    }
+
+    async checkExcelImportStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+      const managementPortalService = this.injector.get(ManagementPortalService);
+      return managementPortalService.getExcelImportStatus(workspaceId, mgmtApiPrivateKey).then(
         (res) => {
           if ( !res || !res['status'] ) {
             return false;

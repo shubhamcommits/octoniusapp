@@ -94,6 +94,10 @@
           <span>Status</span>
         </a>
 
+        <a mat-menu-item (click)="sortTasks('ideas')" *ngIf="isIdeaModuleAvailable"
+          [ngStyle]="{'color' : (sortby==='due_date') ? 'green' : 'black'}">
+          <span>Ideas</span>
+        </a>
       </mat-menu>
 
       <mat-menu #menuFilter="matMenu" style="overflow: visible !important;" class="filter-menu">
@@ -173,52 +177,15 @@
           </div>
         </span>
 
-        <span mat-menu-item class="cursordefault overflowvisible">
-          <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-            <button [matMenuTriggerFor]="menuPriority" class="dropdownbtn">
-              <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='priority_high' ||
-              filterfor==='priority_medium' ||
-              filterfor==='priority_low') ? 'green' : 'black'}">Priority</span>
+        <a mat-menu-item (click)="filterTask('ideas')" *ngIf="isIdeaModuleAvailable"
+          [ngStyle]="{'color' : (filterfor==='ideas') ? 'green' : 'black'}">
+          <span>Ideas</span>
+        </a>
 
-                <div class="label-priority high selectedPriority" *ngIf="filterfor==='priority_high'">High</div>
-                <div class="label-priority medium selectedPriority" *ngIf="filterfor==='priority_medium'">Medium</div>
-                <div class="label-priority low selectedPriority" *ngIf="filterfor==='priority_low'">Low</div>
-
-            </button>
-
-            <mat-menu #menuPriority="matMenu">
-
-              <a mat-menu-item (click)="filterTask('priority_high')" style="margin: 10px;text-decoration: none;">
-                <span>
-                  <div class="label-priority high" (click)="filterTask('priority_high')">
-                    High
-                  </div>
-                </span>
-              </a>
-
-              <a mat-menu-item (click)="filterTask('priority_medium')" style="margin: 10px;text-decoration: none;">
-                <span>
-                  <div class="label-priority medium" (click)="filterTask('priority_medium')">
-                    Medium
-                  </div>
-                </span>
-              </a>
-
-              <a mat-menu-item (click)="filterTask('priority_low')" style="margin: 10px;text-decoration: none;">
-                <span>
-                  <div class="label-priority low" (click)="filterTask('priority_low')">
-                    Low
-                  </div>
-                </span>
-              </a>
-            </mat-menu>
-          </div>
-
-
-
-
-        </span>
-
+        <a mat-menu-item (click)="openAdvancedFilterDialog()" *ngIf="isIdeaModuleAvailable"
+          [ngStyle]="{'color' : (filterfor==='custom_field') ? 'green' : 'black'}">
+          <span>Advanced Filters</span>
+        </a>
       </mat-menu>
     </div>
 </nav>

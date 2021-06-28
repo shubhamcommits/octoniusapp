@@ -133,6 +133,11 @@ const PostSchema = new Schema({
             default: false
         },
 
+        is_idea: {
+            type: Boolean,
+            default: false
+        },
+
         is_milestone: {
             type: Boolean,
             default: false
@@ -164,6 +169,17 @@ const PostSchema = new Schema({
             type: {
                 type: String,
                 enum: ['Currency $', 'Currency €', 'Percent', 'Number']
+            }
+        },
+
+        idea: {
+            negative_votes: {
+                type: Number,
+                default: 0
+            },
+            positive_votes: {
+                type: Number,
+                default: 0
             }
         },
         

@@ -16,6 +16,8 @@ import moment from 'moment';
 })
 export class GroupActivityFeedComponent implements OnInit {
 
+  @Input() isIdeaModuleAvailable;
+
   // Fetch groupId from router snapshot or as an input parameter
   @Input('groupId') groupId = this.router.snapshot.queryParamMap.get('group');
 
@@ -40,6 +42,8 @@ export class GroupActivityFeedComponent implements OnInit {
 
   // Pinned posts
   pinnedPosts = [];
+
+  filters = {};
 
   // More to load maintains check if we have more to load members on scroll
   public moreToLoad: boolean = true;
@@ -145,9 +149,9 @@ export class GroupActivityFeedComponent implements OnInit {
       const post = await this.publicFunctions.getPost(postId);
       let dialogRef;
       if (post['type'] === 'task') {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.columns);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.isIdeaModuleAvailable, this.columns);
       } else {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.isIdeaModuleAvailable);
       }
 
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
@@ -240,7 +244,7 @@ export class GroupActivityFeedComponent implements OnInit {
   async fetchCurrentGroupData() {
 
     // Fetch the group data from HTTP Request
-    if(this.groupId != null || this.groupId != undefined) {
+    if (this.groupId != null || this.groupId != undefined) {
       this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
     }
   }
@@ -320,7 +324,7 @@ export class GroupActivityFeedComponent implements OnInit {
 
     // If the activity feed is not the global feed
     if (!this.globalFeed) {
-      posts = await this.publicFunctions.getPosts(groupId, 'normal', false, lastPostId);
+      posts = await this.publicFunctions.getPosts(groupId, 'normal', false, lastPostId, this.filters);
     }
 
     // If the acitvity feed is the global feed
@@ -355,7 +359,7 @@ export class GroupActivityFeedComponent implements OnInit {
   }
 
   async fetchPinnedPosts() {
-    await this.postService.getPosts(this.groupId, 'pinned', true).then(res => {
+    await this.postService.getPosts(this.groupId, 'pinned', true, null, this.filters).then(res => {
       this.pinnedPosts = res['posts'];
     });
   }
@@ -410,5 +414,30 @@ export class GroupActivityFeedComponent implements OnInit {
     this.posts = new Map([...this.posts.entries()].sort((p1, p2) => {
         return (moment.utc(p1['created_date']).isBefore(p2['created_date'])) ? -1 : 1;
       }));
+  }
+
+  async applyFilters(filters: any) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    this.filters = filters;
+
+    // Fetch the posts
+    this.posts.clear();
+    let postsTmp: any = [];
+    postsTmp = await this.publicFunctions.getPosts(this.groupId, 'normal', false, null, this.filters);
+    postsTmp.forEach(post => {
+      this.posts.set(post._id, post);
+    });
+
+    // pinned/unpinned posts
+    await this.fetchPinnedPosts();
+
+    // Stop the loading spinner
+    this.isLoading$.next(false);
+  }
+
+  checker(arr, target) {
+    return target.every(v => arr.includes(v));
   }
 }

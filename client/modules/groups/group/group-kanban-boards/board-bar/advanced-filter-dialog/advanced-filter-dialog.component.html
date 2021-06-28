@@ -1,0 +1,46 @@
+<div class="customFieldsDialog">
+    <mat-dialog-actions align="end">
+        <i mat-dialog-close class="material-icons" style="cursor: pointer">close</i>
+    </mat-dialog-actions>
+
+    <h2>
+      <img src="assets/images/placeholder_filtercf.svg" alt="" style="margin-bottom: 30px;"><br>
+      <span class="muted">
+        Filter by Custom Fields
+      </span>
+    </h2>
+    <p class="mb-4"><i class="material-icons">auto_awesome</i> Custom fields are are a powerful way to manage tasks and workload.</p>
+
+    <mat-dialog-content class="customFieldsDialogContent">
+      <mat-form-field class="mr-3">
+        <mat-select ngDefaultControl class="select-field"
+            (selectionChange)="customFieldSelected($event.value)"
+            (click)="$event.stopPropagation()"
+            [(value)]="cfName"
+            name="names">
+          <mat-option 
+          *ngFor="let cf of customFields" [value]="cf.name">{{ cf.title }}</mat-option>
+        </mat-select>
+        <mat-label>Select Custom Field</mat-label>
+
+      </mat-form-field>
+
+
+      <mat-form-field>
+     
+        <mat-select ngDefaultControl class="select-field"
+            (click)="$event.stopPropagation()"
+            [(value)]="cfValue"
+            [disabled]="cfValues.length <= 0"
+            name="values">
+          <mat-option *ngFor="let value of cfValues" [value]="value">{{ value }}</mat-option>
+        </mat-select>
+        <mat-label>Select Value</mat-label>
+      </mat-form-field>
+
+      <div style="display: flex; justify-content:space-between; margin: 100px auto; width: 60%">
+        <button class="btn btn-danger" (click)="cancel()">X Cancel</button>
+        <button class="btn btn-primary" (click)="filter()">Filter</button>
+      </div>
+    </mat-dialog-content>
+</div>

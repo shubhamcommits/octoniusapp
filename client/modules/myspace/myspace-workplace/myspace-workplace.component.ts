@@ -13,6 +13,8 @@ export class MyspaceWorkplaceComponent implements OnInit {
   // Current User Data
   userData: any;
 
+  isIdeaModuleAvailable;
+
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -20,6 +22,9 @@ export class MyspaceWorkplaceComponent implements OnInit {
 
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
+
+    const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
+    this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus(currentWorkspace['_id'], currentWorkspace['management_private_api_key']);
 
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({

@@ -175,6 +175,24 @@ export class ManagementService {
     }
 
     /**
+     * This function is responsible for check if the workspace has idea active
+     * @param workspaceId
+     */
+    getIdeaStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+        try {
+            return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/idea`, {
+                params: {
+                    API_KEY: mgmtApiPrivateKey
+                },
+                
+            });
+
+        } catch (err) {
+            throw (err);
+        }
+    }
+
+    /**
      * This function is responsible for check if the workspace has excel import active
      * @param workspaceId
      */

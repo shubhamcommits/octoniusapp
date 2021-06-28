@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, Injector } from '@angular/core';
-import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours } from 'date-fns';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, Injector, Input } from '@angular/core';
+import { isSameDay, isSameMonth } from 'date-fns';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
@@ -8,7 +8,6 @@ import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment/moment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatDialog } from '@angular/material/dialog';
-import { GroupCreatePostComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post/group-create-post.component';
 
 // Define Set of hexcodes of colors
 const colors: any = {
@@ -26,12 +25,10 @@ const colors: any = {
 })
 export class GroupCalendarComponent implements OnInit {
 
-  constructor(
-    private router: ActivatedRoute,
-    private modal: NgbModal,
-    private injector: Injector,
-    private utilityService: UtilityService,
-    public dialog: MatDialog) { }
+  @Input() isIdeaModuleAvailable;
+
+  // Modal Content
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot.queryParamMap.get('group')
@@ -55,9 +52,6 @@ export class GroupCalendarComponent implements OnInit {
   events: any = []
 
   columns;
-
-  // Modal Content
-  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
 
   // Define the month view
   view: CalendarView = CalendarView.Month
@@ -98,6 +92,13 @@ export class GroupCalendarComponent implements OnInit {
 
   // Open the current active day automatically
   activeDayIsOpen: boolean = true
+
+  constructor(
+    private router: ActivatedRoute,
+    private modal: NgbModal,
+    private injector: Injector,
+    private utilityService: UtilityService,
+    public dialog: MatDialog) { }
 
   async ngOnInit() {
 
@@ -226,14 +227,14 @@ export class GroupCalendarComponent implements OnInit {
     let dialogRef;
     if (this.post) {
       if (this.post.type === 'task' && !this.post.task._parent_task) {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.columns);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.isIdeaModuleAvailable, this.columns);
       } else {
         if (this.post.task._parent_task && !this.post.task._parent_task._id) {
           this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
             this.post.task._parent_task = post;
           });
         }
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.isIdeaModuleAvailable);
       }
     }
 

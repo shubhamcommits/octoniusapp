@@ -7,6 +7,7 @@
             [isAdmin]="isAdminUser()"
             [customFields]="customFields"
             [viewType]="viewType"
+            [isIdeaModuleAvailable]="ideaModuleAvailable"
             (changeViewEmitter)='onChangeViewEmitter($event)'
             (customFieldEmitter)="onCustomFieldEmitter($event)"
             (sortTaskEmitter)="onSortTaskEmitter($event)"
@@ -19,6 +20,7 @@
             [userData]="userData"
             [columns]="columns"
             [tasks]="tasks"
+            [isIdeaModuleAvailable]="ideaModuleAvailable"
             [sortingBit]="sortingBit"
             [filteringBit]="filteringBit"
             [filteringData]="filteringData"
@@ -33,6 +35,7 @@
             [tasks]="tasks"
             [customFields]="customFields"
             [isAdmin]="isAdminUser()"
+            [isIdeaModuleAvailable]="ideaModuleAvailable"
             [sortingBit]="sortingBit"
             [filteringBit]="filteringBit"
             [filteringData]="filteringData"
@@ -44,12 +47,14 @@
           [tasks]="tasks"
           [userData]="userData"
           [columns]="columns"
+          [isIdeaModuleAvailable]="ideaModuleAvailable"
           (taskClonnedEvent)="onTaskClonned($event)"
           >
         </app-gantt-view>
 
         <app-group-calendar-view *ngIf="viewType === 'calendar'"
-          [groupId]="groupData._id" [tasks]="tasks">
+          [groupId]="groupData._id" [tasks]="tasks"
+          [isIdeaModuleAvailable]="ideaModuleAvailable">
         </app-group-calendar-view>
 
 </div>
