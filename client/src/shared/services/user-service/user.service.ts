@@ -369,4 +369,16 @@ export class UserService {
   saveSelectedWidgets(userId: string, selectedWidgets: string[]) {
     return this._http.put<any>(`${this.BASE_API_URL}/${userId}/saveSelectedWidgets`, {selectedWidgets: selectedWidgets}).toPromise();
   }
+
+  /**
+   * This function is used to save a custom field value
+   * @param userId
+   */
+  saveCustomField(userId: string, customFieldName: string, customFieldValue: string) {
+    // Call the HTTP Request
+    return this._http.put(this.BASE_API_URL + `/${userId}/customField`, {
+      customFieldName: customFieldName,
+      customFieldValue: customFieldValue
+    }).toPromise();
+  }
 }

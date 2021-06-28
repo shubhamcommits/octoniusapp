@@ -248,7 +248,7 @@ export class WorkspaceService {
     return this._http.put(this.BASE_API_URL + `/${workspaceId}/customFields`, { newCustomField }).toPromise();
   }
 
-  getProfileGroupCustomFields(workspaceId: string) {
+  getProfileCustomFields(workspaceId: string) {
     return this._http.get(this.BASE_API_URL + `/${workspaceId}/customFields`).toPromise();
   }
 

@@ -28,7 +28,7 @@ export class ProfileCustomFieldsDialogComponent implements OnInit {
   async ngOnInit() {
     this.workspaceData = this.data.workspaceData;
 
-    await this.workspaceService.getProfileGroupCustomFields(this.workspaceData._id).then((res) => {
+    await this.workspaceService.getProfileCustomFields(this.workspaceData._id).then((res) => {
       res['workspace']['profile_custom_fields']?.forEach(field => {
         this.customFields.push(field);
       });

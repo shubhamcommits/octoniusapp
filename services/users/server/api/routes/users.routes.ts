@@ -130,6 +130,10 @@ routes.get('/:userId/out-of-office-days', user.getOutOfOfficeDays);
 // PUT - Updates the widgets to show in the global dashboard
 routes.put('/:userId/saveSelectedWidgets', user.saveSelectedWidgets);
 
+// -| CUSTOM FIELDS |-
+// PUT - Change custom field value
+routes.put('/:userId/customField', user.saveCustomField);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
