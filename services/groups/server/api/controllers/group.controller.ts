@@ -1178,15 +1178,14 @@ export class GroupController {
                     const user = users[i];
                     for (let j = 0; j < customFields.length; j++) {
                         const cf = customFields[j];
-                        if (user.profile_custom_fields.has(cf.name) && user.profile_custom_fields[cf.name] == cf.value) {
+                        if (user.profile_custom_fields.has(cf.name) && user.profile_custom_fields.get(cf.name) == cf.value) {
                             validUsers.add(user._id.toString());
                         }
                     }
                 }
-console.log(validUsers);
             }
 
-            const group = await Group.findById(groupId);
+            let group = await Group.findById(groupId);
 
             if (group.group_name.toLowerCase() != 'global') {
                 // Remove owner/admin from prospective members
@@ -1208,7 +1207,7 @@ console.log(validUsers);
                     $set: { _members: [] }
                 });
 
-                if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0) {
+                if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0 || customFields.length > 0) {
                     // Add new members
                     Array.from(validUsers).map(async (userId) => {
                         // Add the user to the group
@@ -1224,8 +1223,11 @@ console.log(validUsers);
                 }
             }
 
+            group = await Group.findById(groupId).lean();
+
             return res.status(200).json({
-                message: 'Group members successfully updated!'
+                message: 'Group members successfully updated!',
+                group: group
             });
         } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);

@@ -269,8 +269,6 @@ export class GroupSmartAdminComponent implements OnInit {
       name: this.cfName,
       value: this.cfValue
     };
-
-    //this.onAddNewRule();
   }
 
   /**
@@ -286,7 +284,9 @@ export class GroupSmartAdminComponent implements OnInit {
       this.group._id,
       data
     ).subscribe(
-      res =>
+      res => {
+        this.publicFunctions.sendUpdatesToGroupData(res['group']);
+      },
       error => {
         this.utilityService.errorNotification('An error occurred whilst modifying the members of the group.');
         console.error('Could not auto add members!');
