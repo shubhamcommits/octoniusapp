@@ -239,4 +239,31 @@ export class WorkspaceService {
   removeWorkspace(workspaceId: string) {
     return this._http.delete<any>(`${this.BASE_API_URL}/${workspaceId}`).toPromise();
   }
+
+  /**
+   * Start Profile Custom Fields
+   */
+
+  saveNewCustomField(newCustomField: { name: string; title: string; values: any[]; }, workspaceId: any) {
+    return this._http.put(this.BASE_API_URL + `/${workspaceId}/customFields`, { newCustomField }).toPromise();
+  }
+
+  getProfileGroupCustomFields(workspaceId: string) {
+    return this._http.get(this.BASE_API_URL + `/${workspaceId}/customFields`).toPromise();
+  }
+
+  removeCustomField(fieldId: string, workspaceId: string) {
+    return this._http.delete(this.BASE_API_URL + `/${workspaceId}/customFields/${fieldId}`).toPromise();
+  }
+
+  addCustomFieldNewValue(value: string, fieldId: string, workspaceId: string) {
+    return this._http.put(this.BASE_API_URL + `/${workspaceId}/customFields/addValue`, { fieldId, value }).toPromise();
+  }
+
+  removeCustomFieldValue(value: string, fieldId: string, workspaceId: string) {
+    return this._http.put(this.BASE_API_URL + `/${workspaceId}/customFields/removeValue`, { fieldId, value }).toPromise();
+  }
+  /**
+   * End Profile Custom Fields
+   */
 }

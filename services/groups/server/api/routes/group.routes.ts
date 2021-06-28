@@ -67,6 +67,9 @@ routes.delete('/:groupId/customFields/:fieldId', group.removeCustomField);
 // PUT - Add new value to a custom field
 routes.put('/:groupId/customFields/addValue', group.addCustomFieldValue);
 
+// PUT - Remove custom field value
+routes.put('/:groupId/customFields/removeValue', group.removeCustomFieldValue);
+
 // PUT - Add new value to a custom field
 routes.put('/:groupId/settings/shareFiles', group.saveShareFilesSettings);
 
@@ -75,9 +78,6 @@ routes.put('/:groupId/settings/enableRights', group.enableRights);
 
 // PUT - Enable/Disable Group Project Type
 routes.put('/:groupId/settings/enabledProjectType', group.enabledProjectType);
-
-// PUT - Remove custom field value
-routes.put('/:groupId/customFields/removeValue', group.removeCustomFieldValue);
 
 // PUT - Add bar to group
 routes.put('/:groupId/addBar', group.addBar);

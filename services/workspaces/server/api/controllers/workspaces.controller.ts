@@ -607,4 +607,157 @@ export class WorkspaceController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for adding a new custom field for the particular workspace
+     * @param { customFiel } req 
+     * @param res 
+     */
+    async addCustomField(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { workspaceId } = req.params;
+
+        // Fetch the newCustomField from fileHandler middleware
+        const newCustomField = req.body['newCustomField'];
+
+        try {
+
+            // Find the workspace and add a new custom field
+            const workspace = await Workspace.findByIdAndUpdate({
+                _id: workspaceId
+            }, {
+                $push: { "profile_custom_fields": newCustomField }
+            }, {
+                new: true
+            }).select('profile_custom_fields');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Workspace custom fields updated!',
+                workspace: workspace
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function fetches the custom fields of the workspace corresponding to the @constant workspaceId 
+     * @param req - @constant workspaceId
+     */
+    async getCustomFields(req: Request, res: Response) {
+        try {
+
+            const { workspaceId } = req.params;
+
+            // Find the workspace based on the workspaceId
+            const workspace = await Workspace.findOne({
+                _id: workspaceId
+            }).select('profile_custom_fields').lean();
+
+            // Check if workspace already exist with the same workspaceId
+            if (!workspace) {
+                return sendError(res, new Error('Oops, workspace not found!'), 'Workspace not found, Invalid workspaceId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Workspace found!',
+                workspace: workspace
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    async removeCustomField(req: Request, res: Response, next: NextFunction) {
+        // Fetch the workspaceId & fieldId
+        const { workspaceId, fieldId } = req.params;
+
+        try {
+            // Find the workspace and remove a respective custom field
+            const workspace = await Workspace.findByIdAndUpdate({
+                _id: workspaceId
+            },
+                {
+                    $pull:
+                    {
+                        profile_custom_fields: {
+                            _id: fieldId
+                        }
+                    }
+                }).lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Workspace custom fields updated!',
+                workspace: workspace
+            });
+        } catch (err) {
+            console.log(err);
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async addCustomFieldValue(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the workspaceId
+        const { workspaceId } = req.params;
+
+        // Fetch the field and value from fileHandler middleware
+        const fieldId = req.body['fieldId'];
+        const value = req.body['value'];
+
+        try {
+            // Find the custom field in a workspace and add the value
+            const workspace = await Workspace.findByIdAndUpdate({
+                _id: workspaceId
+            }, {
+                $push: { "profile_custom_fields.$[field].values": value }
+            }, {
+                arrayFilters: [{ "field._id": fieldId }],
+                new: true
+            }).select('profile_custom_fields').lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Workspace custom fields updated!',
+                workspace: workspace
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async removeCustomFieldValue(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the workspaceId
+        const { workspaceId } = req.params;
+
+        // Find the custom field in a workspace and remove the value
+        const fieldId = req.body['fieldId'];
+        const value = req.body['value'];
+
+        try {
+            // Find the workspace and remove a custom field value
+            const workspace = await Workspace.findByIdAndUpdate({
+                _id: workspaceId
+            }, {
+                $pull: { "profile_custom_fields.$[field].values": value }
+            }, {
+                arrayFilters: [{ "field._id": fieldId }],
+                new: true
+            }).select('profile_custom_fields');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Workspace custom fields updated!',
+                workspace: workspace
+            });
+        } catch (err) {
+            console.log(err);
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }

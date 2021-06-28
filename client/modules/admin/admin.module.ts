@@ -19,6 +19,9 @@ import { StripePaymentComponent } from './admin-billing/stripe-payment/stripe-pa
 import { StartSubscriptionComponent } from './admin-billing/stripe-payment/start-subscription/start-subscription.component';
 import { TransferOwnershipComponent } from './admin-general/transfer-ownership/transfer-ownership.component';
 import { ActivateBillingGuard } from 'src/shared/guards/activate-billing-guard/activate-billing.guard';
+import { WorkplaceProfileCustomFieldsComponent } from './admin-general/workplace-profile-custom-fields/workplace-profile-custom-fields.component';
+import { ProfileCustomFieldsDialogComponent } from './admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -32,14 +35,20 @@ import { ActivateBillingGuard } from 'src/shared/guards/activate-billing-guard/a
     WorkplaceInviteUserComponent,
     StripePaymentComponent,
     StartSubscriptionComponent,
-    TransferOwnershipComponent
+    TransferOwnershipComponent,
+    WorkplaceProfileCustomFieldsComponent,
+    ProfileCustomFieldsDialogComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    MatDialogModule
   ],
-  providers:[WorkspaceService, AdminService, ActivateBillingGuard]
+  providers:[WorkspaceService, AdminService, ActivateBillingGuard],
+  entryComponents: [
+    ProfileCustomFieldsDialogComponent
+  ]
 })
 export class AdminModule { }

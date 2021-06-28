@@ -90,6 +90,11 @@ const UserSchema = new Schema({
         type: String,
         default: null
     }],
+    // Custom Fields
+    profile_custom_fields: {
+        type: Map,
+        of: String
+    },
     files: [{
         type: String,
         default: null
