@@ -95,7 +95,7 @@ routes.post('/smart/:groupId', group.updateSmartGroup);
 routes.get('/smart/:groupId/settings', group.getSmartGroupSettings);
 
 // Delete a smart group's rule
-routes.put('/smart/:groupId/:rule', group.deleteSmartGroupRule);
+routes.put('/smart/:groupId/:rule/:customFieldId', group.deleteSmartGroupRule);
 
 // Update a smart group's members
 routes.put('/smart/:groupId', group.updateSmartGroupMembers);

@@ -156,6 +156,17 @@ export class WorkspaceService {
   }
 
   /**
+   * Fetches unique custom fields that exist within the given workspace
+   * that match the given query.
+   *
+   * @param workspaceId The workspace to search within.
+   * @param query The job positions to search for.
+   */
+   getUniqueCustomFields(workspaceId: string, query: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/customFields/${workspaceId}/${query}`);
+  }
+
+  /**
    * Fetches unique skills that exist within the given workspace
    * that match the given query.
    *
