@@ -260,7 +260,7 @@ export class GroupSmartAdminComponent implements OnInit {
   }
 
   customFieldSelected(cfName: string) {
-    const index = this.customFields.findIndex(cf => cf.name = this.cfName);
+    const index = this.customFields.findIndex(cf => cf.name == this.cfName);
     this.selectedCustomField = this.customFields[index];
   }
 
