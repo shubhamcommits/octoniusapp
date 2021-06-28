@@ -67,7 +67,11 @@ export class FlamingoAnswerComponent implements OnInit {
    */
   answerQuestion(value) {
 
-    this.activeQuestion.answer = value;
+    if (this.activeQuestion.type == 'Multiple') {
+      this.activeQuestion.answer_multiple = value;
+    } else {
+      this.activeQuestion.answer = value;
+    }
 
     this.disableNext = this.checkMandatoryQuestion();
 
@@ -152,6 +156,13 @@ export class FlamingoAnswerComponent implements OnInit {
           responses.push({
             _question: question._id,
             dropdown_answer: question.answer
+          });
+          break;
+
+        case 'Multiple':
+          responses.push({
+            _question: question._id,
+            answer_multiple: question.answer_multiple
           });
           break;
       }

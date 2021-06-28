@@ -105,6 +105,25 @@
                     </div>
                     <!-- question dropdown option input fields end -->
 
+                    <!-- question multiselect option input fields start-->
+                    <div *ngIf="question.type==='Multiple' && i==activeQuestionIndex">
+                        <div *ngFor="let currentOption of question.options; let j=index">
+                            -
+                              <span *ngIf="flamingo?.publish">{{ currentOption }}</span>
+                              <input *ngIf="!flamingo?.publish"
+                                [value]="currentOption" placeholder="Enter Option"
+                                (change)="changeOptionText($event,i,j)"
+                                [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
+                        </div>
+
+                        <div *ngIf="question.type==='Multiple' && !flamingo?.publish">
+                            - <input [(ngModel)]="newOption" (change)="changeOptionText($event,i,null)"
+                                placeholder="Enter Option"
+                                [ngClass]="i==activeQuestionIndex?'input-search-active input-search':'input-search'" />
+                        </div>
+                    </div>
+                    <!-- question multiselect option input fields end -->
+
                     <!-- question scale scale size and scale label settings start -->
                     <div *ngIf="question.type==='Scale' && i==activeQuestionIndex" class="scale-setting">
 
@@ -280,6 +299,19 @@
                                 </p>
                             </div>
                         </div>
+                        <div class="dropdown-question" (click)="createQuestion('Multiple')">
+                            <div class="btn-icon">
+                              <span class="material-icons">list</span>
+                            </div>
+                            <div class="btn-txt">Multiple Options</div>
+                            <div class="hovered-dropdown">
+                                <p style="margin-left: 10%;margin-top: 25%;">
+                                    <strong>Multiple Options</strong>
+                                    <br />
+                                    A list of options to select multiple options
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </mat-menu>
             </div>
@@ -365,7 +397,8 @@
                     </div>
 
                     <!-- question dropdown dropdown -->
-                    <br *ngIf="activeQuestion?.type === 'Dropdown'"/>
+                    <br *ngIf="activeQuestion?.type === 'Dropdown' || activeQuestion?.type === 'Multiple'"/>
+
                     <button style="margin-top: 50px;" *ngIf="activeQuestion?.type === 'Dropdown'"
                         class="btn btn-primary mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
                         Please Select an Option
@@ -375,6 +408,12 @@
                             {{currentOption}}
                         </li>
                     </ul>
+
+                    <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Multiple'">
+                      <mat-select multiple>
+                        <mat-option *ngFor="let currentOption of activeQuestion?.options">{{ currentOption }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
             <!-- all other questions except welcome and thanks div start -->

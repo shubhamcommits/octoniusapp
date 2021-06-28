@@ -99,7 +99,8 @@
             </div>
 
             <!-- dropdown question dropdown -->
-            <br *ngIf="activeQuestion?.type === 'Dropdown'"/>
+            <br *ngIf="activeQuestion?.type === 'Dropdown' || activeQuestion?.type === 'Multiple'"/>
+
             <button style="margin-top: 50px;" *ngIf="activeQuestion?.type === 'Dropdown'" class="btn btn-primary mb-3 mt-3 dropdown-toggle"
                 type="button" data-toggle="dropdown">
                 Please Select an Option
@@ -109,6 +110,15 @@
                     {{currentOption}}
                 </li>
             </ul>
+
+            <!-- Multiple options -->
+            <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Multiple'">
+              <mat-select multiple
+                  (selectionChange)="answerQuestion($event.value)"
+                  [(value)]="activeQuestion.answer_multiple">
+                <mat-option *ngFor="let currentOption of activeQuestion?.options" [value]="currentOption">{{ currentOption }}</mat-option>
+              </mat-select>
+            </mat-form-field>
         </div>
     </div>
     <!-- container for all other question except welcome and thanks question type end-->

@@ -57,7 +57,6 @@ export class FlamingoPreviewComponent implements OnInit {
    * This function is responsible for saving the answer
    */
   answerQuestion(value) {
-
     this.activeQuestion.answer = value;
 
     this.disableNext = this.checkMandatoryQuestion();

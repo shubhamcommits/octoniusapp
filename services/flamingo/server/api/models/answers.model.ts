@@ -14,6 +14,7 @@ const AnswerSchema = new Schema({
     },
     answers:[{
         answer: { type: String },
+        answer_multiple: { type: [String]},
         _question: {type: Schema.Types.ObjectId,ref: 'Question'}
     }],
     created_date: {
