@@ -398,8 +398,13 @@
 
                     <!-- question dropdown dropdown -->
                     <br *ngIf="activeQuestion?.type === 'Dropdown' || activeQuestion?.type === 'Multiple'"/>
+                    <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Dropdown'">
+                        <mat-select>
+                          <mat-option *ngFor="let currentOption of activeQuestion?.options; let j=index">{{ currentOption }}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
 
-                    <button style="margin-top: 50px;" *ngIf="activeQuestion?.type === 'Dropdown'"
+                    <!-- <button style="margin-top: 50px;" *ngIf="activeQuestion?.type === 'Dropdown'"
                         class="btn btn-primary mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
                         Please Select an Option
                     </button>
@@ -407,7 +412,7 @@
                         <li *ngFor="let currentOption of activeQuestion?.options; let j=index" class="dropdown-item">
                             {{currentOption}}
                         </li>
-                    </ul>
+                    </ul> -->
 
                     <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Multiple'">
                       <mat-select multiple>

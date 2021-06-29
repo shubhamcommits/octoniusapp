@@ -8,13 +8,13 @@
         <span class="badge badge-cf">
             <i class="material-icons">label</i>
         </span>
-        Custom Fields
+       Profile Fields
     </h2>
 
     <mat-dialog-content>
         <div class="description">
-            <img src="assets/images/placeholder_cf.svg" alt="" style="width: 300px; margin-bottom: 24px">
-            <p>Create custom fields to improve how you organize your workflows in task boards.</p>
+            <img src="assets/images/placeholder_profile_fields.svg" alt="" style="width: 300px; margin-bottom: 24px">
+            <p>Create Profile Fields to improve how you organize your teams based on user's profile.</p>
         </div>
 
         <div class="customFieldsList" *ngIf="customFields.length <= 0">
@@ -54,7 +54,7 @@
         </div>
         <div class="newCustomFieldForm" style="padding: 10px; margin-top: 30px">
             <button class="btn badge-cf" (click)="showNewCustomField = !showNewCustomField">
-                <i class="material-icons">label</i> ADD CUSTOM FIELD
+                <i class="material-icons">label</i> ADD PROFILE FIELD
              </button>
              <div class="add-field" *ngIf="showNewCustomField">
                  <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
