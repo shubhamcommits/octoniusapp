@@ -76,9 +76,10 @@ export class FlamingoAnswerComponent implements OnInit {
     this.disableNext = this.checkMandatoryQuestion();
 
     // Go to Next Question
-    if ((!this.activeQuestion?.mandatory) || (this.activeQuestion?.type != 'Multiple')
-        || (!(this.activeQuestion?.type != 'Scale' && !this.activeQuestion?.answer))
-        || (this.activeQuestion?.type == 'Scale' && this.activeQuestion?.answer >= 0)) {
+    if (((!this.activeQuestion?.mandatory)
+          || (!(this.activeQuestion?.type != 'Scale' && !this.activeQuestion?.answer))
+          || (this.activeQuestion?.type == 'Scale' && this.activeQuestion?.answer >= 0))
+        && (this.activeQuestion?.type != 'Multiple')) {
       this.nextQuestion();
     }
   }
@@ -103,6 +104,7 @@ export class FlamingoAnswerComponent implements OnInit {
     this.activeQuestionIndex = this.activeQuestionIndex-1;
     this.activeQuestion = this.questions[this.activeQuestionIndex];
     this.calculateProgressValues();
+console.log(this.activeQuestion);
   }
 
   /**

@@ -95,7 +95,7 @@
                         <mat-select
                             (selectionChange)="answerQuestion($event.value)"
                             [(value)]="activeQuestion.answer">
-                          <mat-option *ngFor="let currentOption of activeQuestion?.options; let j=index">{{ currentOption }}</mat-option>
+                            <mat-option *ngFor="let currentOption of activeQuestion?.options; let j=index" [value]="currentOption">{{ currentOption }}</mat-option>
                         </mat-select>
                       </mat-form-field>
 
@@ -104,7 +104,7 @@
                           (selectionChange)="answerQuestion($event.value)"
                           (closed)="nextQuestion()"
                           [(value)]="activeQuestion.answer_multiple">
-                        <mat-option *ngFor="let currentOption of activeQuestion?.options">{{ currentOption }}</mat-option>
+                        <mat-option *ngFor="let currentOption of activeQuestion?.options" [value]="currentOption">{{ currentOption }}</mat-option>
                       </mat-select>
                     </mat-form-field>
         </div>
