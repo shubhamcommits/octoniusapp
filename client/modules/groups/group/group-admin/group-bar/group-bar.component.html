@@ -30,6 +30,7 @@
                 <app-secured-image
                   [imgURL]="member?.profile_pic"
                   [service]="'user'"
+                  [tooltip]="member?.first_name + ' ' + member?.last_name"
                   [styleClass]="'feed-avatar'"
                   (click)="removeUserFromBar(member,bar)"></app-secured-image>
             </div>
