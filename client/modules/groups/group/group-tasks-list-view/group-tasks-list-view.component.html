@@ -8,6 +8,9 @@
               <mat-expansion-panel-header class="column-title">
                 <!-- COLUMN TITLE -->
                 <mat-panel-title>
+                  <!-- SHUTTLE COLUMN -->
+                  <i *ngIf="section?._id == (groupData?._shuttle_column?._id || groupData?._shuttle_column)" class="material-icons-outlined">published_with_changes</i>
+
                   <p class="muted"> {{ section?.title }}</p>
                 </mat-panel-title>
                 <!-- COLUMN TITLE -->
