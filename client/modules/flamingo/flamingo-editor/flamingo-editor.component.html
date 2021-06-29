@@ -404,18 +404,9 @@
                         </mat-select>
                       </mat-form-field>
 
-                    <!-- <button style="margin-top: 50px;" *ngIf="activeQuestion?.type === 'Dropdown'"
-                        class="btn btn-primary mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
-                        Please Select an Option
-                    </button>
-                    <ul *ngIf="activeQuestion?.type === 'Dropdown'" class="dropdown-menu">
-                        <li *ngFor="let currentOption of activeQuestion?.options; let j=index" class="dropdown-item">
-                            {{currentOption}}
-                        </li>
-                    </ul> -->
-
                     <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Multiple'">
-                      <mat-select multiple>
+                      <mat-select multiple
+                          [(value)]="activeQuestion.answer_multiple">
                         <mat-option *ngFor="let currentOption of activeQuestion?.options">{{ currentOption }}</mat-option>
                       </mat-select>
                     </mat-form-field>
