@@ -1178,7 +1178,9 @@ export class GroupController {
                     const user = users[i];
                     for (let j = 0; j < customFields.length; j++) {
                         const cf = customFields[j];
-                        if (user.profile_custom_fields.has(cf.name) && user.profile_custom_fields.get(cf.name) == cf.value) {
+                        if (user && user.profile_custom_fields
+                                && user.profile_custom_fields.has(cf.name)
+                                && user.profile_custom_fields.get(cf.name) == cf.value) {
                             validUsers.add(user._id.toString());
                         }
                     }
