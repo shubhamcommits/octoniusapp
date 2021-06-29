@@ -14,13 +14,6 @@ import { GroupBarDialogComponent } from './group-bar-dialog/group-bar-dialog.com
 })
 export class GroupAdminComponent implements OnInit {
 
-  constructor(
-    private injector: Injector,
-    private utilityService: UtilityService,
-    public dialog: MatDialog,
-    private router: ActivatedRoute) { }
-
-
   // User Data Object
   userData: any;
 
@@ -40,6 +33,15 @@ export class GroupAdminComponent implements OnInit {
 
   enabledProjectType: boolean;
 
+  enabledShuttleType: boolean;
+
+  groupColumns: any = [];
+
+  constructor(
+    private injector: Injector,
+    private utilityService: UtilityService,
+    public dialog: MatDialog,
+    private router: ActivatedRoute) { }
 
   async ngOnInit() {
 
@@ -52,6 +54,8 @@ export class GroupAdminComponent implements OnInit {
 
     // Fetch Current Workspace
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    this.groupColumns = await this.publicFunctions.getAllColumns(this.groupId);
   }
 
   // Check if the data provided is not empty{}
@@ -100,6 +104,7 @@ export class GroupAdminComponent implements OnInit {
 
     // Group Service
     let groupService = this.injector.get(GroupService);
+
     if (selected.source.name === 'enabled_rights') {
       this.enabledRights = selected.checked;
       this.groupData.enabled_rights = selected.checked;
@@ -108,6 +113,11 @@ export class GroupAdminComponent implements OnInit {
     if (selected.source.name === 'enabled_project_type') {
       this.enabledProjectType = selected.checked;
       this.groupData.project_type = selected.checked;
+    }
+
+    if (selected.source.name === 'enabled_shuttle_type') {
+      this.enabledShuttleType = selected.checked;
+      this.groupData.shuttle_type = selected.checked;
     }
 
     utilityService.asyncNotification('Please wait we are saving the new setting...',
@@ -120,6 +130,26 @@ export class GroupAdminComponent implements OnInit {
         .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
       }));
   }
+
+  selectShuttleColumn(column: any) {
+
+    // Utility Service
+    let utilityService = this.injector.get(UtilityService);
+
+    // Group Service
+    let groupService = this.injector.get(GroupService);
+
+    utilityService.asyncNotification('Please wait we are saving the new setting...',
+      new Promise((resolve, reject)=>{
+        groupService.changeShuttleColumn(this.groupId, column)
+        .then(()=> {
+          this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+          resolve(utilityService.resolveAsyncPromise('Settings saved to your group!'));
+        })
+        .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+      }));
+  }
+
   openBarModal(groupId){
     const dialogRef = this.dialog.open(GroupBarDialogComponent, {
       width: '100%',

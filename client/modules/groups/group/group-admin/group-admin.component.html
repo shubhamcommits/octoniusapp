@@ -14,7 +14,7 @@
       <img src="assets/images/add-user.svg" alt="Invite a guest" style="float: right; margin-top: -10px; margin-right: 30px; width: 200px"/>
       <div class="form-group">
         <!-- Template Heading starts -->
-        <h6><b>Add users</b></h6> 
+        <h6><b>Add users</b></h6>
         <p>Search for other employees within the organization and add them to your Group. <br> This is how you usually create your team.</p>
         <br>
         <!-- Template Heading ends -->
@@ -39,10 +39,10 @@
 
    <!-- Invite guest -->
    <app-invite-user *ngIf="groupData && workspaceData && groupData?.group_name?.toLowerCase() != 'global'"
-   [workspaceData]="workspaceData"
-   [groupData]="groupData">
+    [workspaceData]="workspaceData"
+    [groupData]="groupData">
  </app-invite-user>
-  
+
 
   <!-- Settings -->
   <div class="card-tile" style="height: 350px;">
@@ -51,37 +51,56 @@
 
         <div class="mt-5 mb-5 pt-3">
           <mat-slide-toggle color="primary"
-            [checked]="groupData.share_files"
-            [name]="'share_files'"
-            (change)="saveSettings($event)">
+              [checked]="groupData.share_files"
+              [name]="'share_files'"
+              (change)="saveSettings($event)">
             <h6><b>Share files with the organization?</b></h6>
             <p class="card-text">This option makes all the files from this group accessible to the entire organization</p>
           </mat-slide-toggle>
         </div>
-        <div class="mt-5 mb-5 pt-3">
 
+        <div class="mt-5 mb-5 pt-3">
           <mat-slide-toggle color="primary"
-          [checked]="groupData.enabled_rights"
-          [name]="'enabled_rights'"
-          (change)="saveSettings($event)"
-          [(ngModel)]="enabledRights">
+              [checked]="groupData.enabled_rights"
+              [name]="'enabled_rights'"
+              (change)="saveSettings($event)"
+              [(ngModel)]="enabledRights">
             <h6><b>Enable board access rights?</b></h6>
             <p class="card-text">BARs allow admins to chose who can see and work on specific tasks.<br> Sometimes this is necessary for transversal projects.</p>
             <button button class="btn btn-primary btn-sm" (click)="openBarModal(groupId)" *ngIf="enabledRights">Manage BAR</button>
           </mat-slide-toggle><br>
-
         </div>
 
         <div class="mt-5 mb-5 pt-3">
           <mat-slide-toggle color="primary"
-          [checked]="groupData.project_type"
-          [name]="'enabled_project_type'"
-          (change)="saveSettings($event)"
-          [(ngModel)]="enabledProjectType">
+              [checked]="groupData.project_type"
+              [name]="'enabled_project_type'"
+              (change)="saveSettings($event)"
+              [(ngModel)]="enabledProjectType">
             <h6><b>Enable Project Features?</b></h6>
             <p class="card-text"> This will enable all advanced project related funtionalities like: timeline, project planning etc.</p>
           </mat-slide-toggle><br>
+        </div>
 
+        <div class="mt-5 mb-5 pt-3">
+          <mat-slide-toggle color="primary"
+              [checked]="groupData.shuttle_type"
+              [name]="'enabled_shuttle_type'"
+              (change)="saveSettings($event)"
+              [(ngModel)]="enabledShuttleType">
+            <h6><b>Enable Shuttle Features?</b></h6>
+            <p class="card-text"> This will enable all advanced project related funtionalities like: timeline, project planning etc.</p>
+          </mat-slide-toggle>
+
+          <br *ngIf="groupData?.shuttle_type" /><br *ngIf="groupData?.shuttle_type" />
+
+          <mat-form-field appearance="fill" style="margin-left: 40px;" *ngIf="groupData?.shuttle_type">
+            <mat-select
+                (selectionChange)="selectShuttleColumn($event.value)"
+                [(value)]="groupData._shuttle_column">
+              <mat-option *ngFor="let column of groupColumns; let j=index" [value]="column._id">{{ column.title }}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
     </div>
 

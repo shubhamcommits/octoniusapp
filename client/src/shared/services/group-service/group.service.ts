@@ -199,8 +199,14 @@ export class GroupService {
     if(propertyName === "enabled_project_type"){
       return this._http.put(this.baseURL + `/${groupId}/settings/enabledProjectType`, { propertyName, value }).toPromise();
     }
+    if(propertyName === "enabled_shuttle_type"){
+      return this._http.put(this.baseURL + `/${groupId}/settings/enabledShuttleType`, { propertyName, value }).toPromise();
+    }
   }
 
+  changeShuttleColumn(groupId: string, columnId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/settings/changeShuttleColumn`, { columnId: columnId }).toPromise();
+  }
 
   /**
    * Makes an HTTP POST request to update a smart group's

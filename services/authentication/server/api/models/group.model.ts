@@ -55,6 +55,14 @@ const GroupSchema = new Schema({
         type: String,
         enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
     },
+    shuttle_type: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
+    _shuttle_column: {
+        type: Schema.Types.ObjectId,
+        ref: 'Column'
+    },
     description: {
         type: String,
         default: null
