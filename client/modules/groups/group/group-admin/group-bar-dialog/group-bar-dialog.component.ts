@@ -6,17 +6,17 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 
 @Component({
-    selector: 'app-group-bar',
-    templateUrl: './group-bar.component.html',
-    styleUrls: ['./group-bar.component.scss']
+    selector: 'app-group-bar-dialog',
+    templateUrl: './group-bar-dialog.component.html',
+    styleUrls: ['./group-bar-dialog.component.scss']
   })
-  export class GroupBarComponent implements OnInit {
+  export class GroupBarDialogComponent implements OnInit {
     constructor(
         private injector: Injector,
         private utilityService: UtilityService,
-        private groupService: GroupService, 
+        private groupService: GroupService,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        private mdDialogRef: MatDialogRef<GroupBarComponent>
+        private mdDialogRef: MatDialogRef<GroupBarDialogComponent>
         ) { }
     @Output() closeEvent = new EventEmitter();
       // Base Url of the users uploads
@@ -31,7 +31,7 @@ import { environment } from 'src/environments/environment';
     membersLoaded = false;
     addNewBar = false;
     searchBarPlaceHolder= 'Add a member to tag';
-    ngOnInit(): void {      
+    ngOnInit(): void {
         this.members = this.data.groupData._members;
         this.groupData = this.data.groupData;
         this.barList = this.groupData.bars;
@@ -78,7 +78,7 @@ import { environment } from 'src/environments/environment';
                 if(barItem.bar_tag === bar.bar_tag){
                     barItem.members = barItem.members.filter(member => member._id !== event._id);
                     barItem.tag_members = barItem.tag_members.filter(memberId => memberId !== event._id);
-                }    
+                }
             });
         })
         .catch(() => this.utilityService.rejectAsyncPromise(`Unable to remove ${event.first_name} from ${bar.bar_tag}`));

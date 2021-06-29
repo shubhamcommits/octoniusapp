@@ -111,8 +111,10 @@ export class ComponentSearchInputBoxComponent implements OnInit {
                 let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase()
                 return item.includes(this.itemValue.toLowerCase());
               });
+
               this.itemList.forEach(item => {
-                if(this.barMemberList.includes(item.toLowerCase())){
+                const index = this.barMemberList.findIndex(member => member._id == item._id);
+                if(index >= 0) {
                   item.showAddMem = true;
                 } else {
                   item.showAddMem = false;

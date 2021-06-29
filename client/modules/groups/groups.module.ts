@@ -39,7 +39,7 @@ import { GroupSmartAdminComponent } from './group/group-admin/group-smart-admin/
 import { CreateSectionComponent } from './group/group-tasks-list-view/create-section/create-section.component';
 import { DoneTasksListViewComponent } from './group/group-tasks-list-view/done-tasks-list-view/done-tasks-list-view.component';
 import { DoneTasksKanbanViewComponent } from './group/group-kanban-boards/done-tasks-kanban-view/done-tasks-kanban-view.component';
-import { GroupBarComponent } from './group/group-admin/group-bar/group-bar.component';
+import { GroupBarDialogComponent } from './group/group-admin/group-bar-dialog/group-bar-dialog.component';
 import { GanttViewComponent } from './group/gantt-view/gantt-view.component';
 
  /**
@@ -90,7 +90,7 @@ import { AdvancedFilterDialogComponent } from './group/group-kanban-boards/board
  */
 @NgModule({
   declarations: [
-    GroupBarComponent,
+    GroupBarDialogComponent,
     ColumnProjectSectionComponent,
     // Groups List Component
     GroupsListComponent,
@@ -230,7 +230,7 @@ import { AdvancedFilterDialogComponent } from './group/group-kanban-boards/board
     AutomationFlowsDialogComponent,
     AutomationFlowDetailsDialogComponent,
     CreateProjectColumnDialogComponent,
-    GroupBarComponent
+    GroupBarDialogComponent
   ]
 })
 export class GroupsModule { }

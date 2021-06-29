@@ -298,25 +298,6 @@ export class UtilityService {
     });
   }
 
-  /*
-  openCreateBARModal(groupData: any, groupId: string) {
-
-    const data =
-      {
-        groupData: groupData,
-        groupId: groupId
-      }
-
-    return this.dialog.open(GroupBarComponent, {
-      width: '100%',
-      height: '100%',
-      disableClose: true,
-      panelClass: 'groupBarComponent',
-      data: data
-    });
-  }
-  */
-
   /**
    * This function removes/dismiss all the modals that are opened
    */

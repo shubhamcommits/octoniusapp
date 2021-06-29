@@ -5,7 +5,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { CustomFieldsDialogComponent } from '../custom-fields-dialog/custom-fields-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { GroupBarComponent } from './group-bar/group-bar.component';
+import { GroupBarDialogComponent } from './group-bar-dialog/group-bar-dialog.component';
 
 @Component({
   selector: 'app-group-admin',
@@ -121,7 +121,7 @@ export class GroupAdminComponent implements OnInit {
       }));
   }
   openBarModal(groupId){
-    const dialogRef = this.dialog.open(GroupBarComponent, {
+    const dialogRef = this.dialog.open(GroupBarDialogComponent, {
       width: '100%',
       height: '100%',
       disableClose: true,
