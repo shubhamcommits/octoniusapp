@@ -57,12 +57,17 @@ export class FlamingoPreviewComponent implements OnInit {
    * This function is responsible for saving the answer
    */
   answerQuestion(value) {
-    this.activeQuestion.answer = value;
+
+    if (this.activeQuestion.type == 'Multiple') {
+      this.activeQuestion.answer_multiple = value;
+    } else {
+      this.activeQuestion.answer = value;
+    }
 
     this.disableNext = this.checkMandatoryQuestion();
 
     // Go to Next Question
-    if ((!this.activeQuestion?.mandatory)
+    if ((!this.activeQuestion?.mandatory) || (this.activeQuestion?.type != 'Multiple')
         || (!(this.activeQuestion?.type != 'Scale' && !this.activeQuestion?.answer))
         || (this.activeQuestion?.type == 'Scale' && this.activeQuestion?.answer >= 0)) {
       this.nextQuestion();

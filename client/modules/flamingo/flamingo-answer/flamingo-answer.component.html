@@ -103,6 +103,7 @@
             <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Dropdown'">
                 <mat-select
                     (selectionChange)="answerQuestion($event.value)"
+                    (closed)="nextQuestion()"
                     [(value)]="activeQuestion.answer">
                   <mat-option *ngFor="let currentOption of activeQuestion?.options; let j=index">{{ currentOption }}</mat-option>
                 </mat-select>
@@ -111,6 +112,7 @@
             <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Multiple'">
               <mat-select multiple
                   (selectionChange)="answerQuestion($event.value)"
+                  (closed)="nextQuestion()"
                   [(value)]="activeQuestion.answer_multiple">
                 <mat-option *ngFor="let currentOption of activeQuestion?.options">{{ currentOption }}</mat-option>
               </mat-select>

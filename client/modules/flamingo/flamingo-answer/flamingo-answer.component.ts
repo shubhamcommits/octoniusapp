@@ -76,7 +76,7 @@ export class FlamingoAnswerComponent implements OnInit {
     this.disableNext = this.checkMandatoryQuestion();
 
     // Go to Next Question
-    if ((!this.activeQuestion?.mandatory)
+    if ((!this.activeQuestion?.mandatory) || (this.activeQuestion?.type != 'Multiple')
         || (!(this.activeQuestion?.type != 'Scale' && !this.activeQuestion?.answer))
         || (this.activeQuestion?.type == 'Scale' && this.activeQuestion?.answer >= 0)) {
       this.nextQuestion();
