@@ -8,6 +8,8 @@
         <div class="col-md-8">
             <app-user-professional-information [userData]="userData" [currentUser]="isCurrentUser" (updateData)="onUpdateUserEmitter($event)"></app-user-professional-information>
 
+            <app-user-profile-custom-fields [userData]="userData" [currentUser]="isCurrentUser"></app-user-profile-custom-fields>
+
             <app-user-skills [userData]="userData" [currentUser]="isCurrentUser"></app-user-skills>
 
             <app-user-password-update [userData]="userData" [currentUser]="isCurrentUser"></app-user-password-update>

@@ -38,6 +38,12 @@
               <div class="col response"> {{ getDropdawnResponsesStats(question?._id, option) }}&nbsp;responses</div>
             </div>
           </div>
+          <div class="answer-dropdown" *ngIf="question?.type == 'Multiple'">
+            <div *ngFor="let option of question?.options" class="row answer-response">
+              <div class="col-md-3">{{ option }}</div>
+              <div class="col response"> {{ getMultipleResponsesStats(question?._id, option) }}&nbsp;responses</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

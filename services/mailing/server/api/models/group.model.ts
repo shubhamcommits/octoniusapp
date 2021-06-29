@@ -87,6 +87,16 @@ const GroupSchema = new Schema({
         skills: {
             type: [String],
             default: []
+        },
+        custom_fields: {
+            type: [{
+                name: {
+                    type: String
+                },
+                value: {
+                    type: String
+                }
+            }]
         }
     },
     share_files: {

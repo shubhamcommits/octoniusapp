@@ -35,6 +35,11 @@
               <div class="answer-dropdown" *ngIf="answer?._question?.type == 'Dropdown'">
                 {{ answer?.dropdown_answer }}
               </div>
+              <div class="answer-dropdown" *ngIf="answer?._question?.type == 'Multiple'">
+                <span *ngFor="let answer of answer?.answer_multiple">
+                  {{ answer }} <br />
+                </span>
+              </div>
             </div>
           </div>
         </div>

@@ -32,7 +32,7 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -150,7 +150,7 @@ export class UsersControllers {
                     { active: true }
                 ]
             })
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields profile_custom_fields')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -237,7 +237,7 @@ export class UsersControllers {
                 }, {
                     new: true
                 })
-                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
                 .populate({
                     path: 'stats.favorite_groups',
                     select: '_id group_name group_avatar'
@@ -744,7 +744,7 @@ export class UsersControllers {
             'stats.groups._group': {$ne: groupId }
             }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
             )
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -759,7 +759,7 @@ export class UsersControllers {
             'stats.groups._group': groupId 
             }, { $inc: { 'stats.groups.$.count': 1 }
             })
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -842,7 +842,7 @@ export class UsersControllers {
         let user = await User.findOneAndUpdate({
                 _id: userId
             }, update)
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -999,7 +999,7 @@ export class UsersControllers {
         let user: any = await User.findOneAndUpdate({
             _id: userId
             }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations')
+            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
             .populate({
                 path: 'stats.favorite_groups',
                 select: '_id group_name group_avatar'
@@ -1110,4 +1110,38 @@ export class UsersControllers {
           return sendError(res, error, 'Internal Server Error!', 500);
       }
   };
+
+  async saveCustomField(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { userId } = req.params;
+
+        // Fetch the newCustomField from fileHandler middleware
+        const customFieldValue = req.body['customFieldValue'];
+        const customFieldName = req.body['customFieldName'];
+
+        let user = await User.findById(userId);
+
+        if (!user['profile_custom_fields']) {
+            user['profile_custom_fields'] = new Map<string, string>();
+        }
+        user['profile_custom_fields'].set(customFieldName, customFieldValue);
+
+        // Find the post and update the custom field
+        user = await User.findByIdAndUpdate({
+            _id: userId
+        }, {
+            $set: { "profile_custom_fields": user['profile_custom_fields'] }
+        }), {
+            new: true
+        };
+
+        // user.custom_fields[customFieldName] = customFieldValue;
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: 'Custom Field updated!',
+            user: user
+        });
+  }
 }

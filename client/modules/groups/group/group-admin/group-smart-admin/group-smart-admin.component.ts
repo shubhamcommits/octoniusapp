@@ -13,7 +13,7 @@ export class GroupSmartAdminComponent implements OnInit {
 
   // The currently selected rule and condition
   rule: string;
-  condition: string;
+  condition: any;
 
   // Conditions populated from the DB for the dropdown
   conditions: string[];
@@ -23,6 +23,11 @@ export class GroupSmartAdminComponent implements OnInit {
   currentSettings: any;
 
   group: any;
+
+  customFields = [];
+  selectedCustomField;
+  cfName = '';
+  cfValue = '';
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
@@ -37,17 +42,26 @@ export class GroupSmartAdminComponent implements OnInit {
     this.rule = '';
     this.condition = '';
     this.conditions = [];
-    this.rules = ['Email domain', 'Job position', 'Skills'];
+    this.rules = ['Email domain', 'Job position', 'Skills', 'Custom Fields'];
     this.currentSettings = {
       emailDomains: [],
       jobPositions: [],
-      skills: []
+      skills: [],
+      customFields: []
     };
 
     // Fetch current group from the service
     this.group = await this.publicFunctions.getCurrentGroup();
 
     this.getCurrentSettings();
+
+    this.workspaceService.getProfileCustomFields(this.group._workspace).then((res) => {
+      if (res['workspace']['profile_custom_fields']) {
+        res['workspace']['profile_custom_fields'].forEach(field => {
+          this.customFields.push(field);
+        });
+      }
+    });
   }
 
   /**
@@ -127,45 +141,53 @@ export class GroupSmartAdminComponent implements OnInit {
       return;
     }
 
+    let data;
+
     if (this.rule === 'Email domain') {
-      // @ts-ignore
       if (this.currentSettings.emailDomains.includes(this.condition)) {
         this.utilityService.infoNotification('That domain has already been added.');
         return;
       };
 
       // Update UI
-      // @ts-ignore
       this.currentSettings.emailDomains.push(this.condition);
 
       // Setup payload for DB
-      var data = { type: 'email_domain', payload: this.condition };
+      data = { type: 'email_domain', payload: this.condition };
     } else if (this.rule === 'Job position') {
-      // @ts-ignore
       if (this.currentSettings.jobPositions.includes(this.condition)) {
         this.utilityService.infoNotification('That position has already been added.');
         return;
       };
 
       // Update UI
-      // @ts-ignore
       this.currentSettings.jobPositions.push(this.condition);
 
       // Setup payload for DB
-      var data = { type: 'job_position', payload: this.condition };
+      data = { type: 'job_position', payload: this.condition };
     } else if (this.rule === 'Skills') {
-      // @ts-ignore
       if (this.currentSettings.skills.includes(this.condition)) {
         this.utilityService.infoNotification('That skill has already been added.');
         return;
       };
 
       // Update UI
-      // @ts-ignore
       this.currentSettings.skills.push(this.condition);
 
       // Setup payload for DB
-      var data = { type: 'skills', payload: this.condition };
+      data = { type: 'skills', payload: this.condition };
+    } else if (this.rule === 'Custom Fields') {
+      const index = this.currentSettings.customFields.findIndex(cf => cf.name == this.condition.name);
+      if (index >= 0) {
+        this.utilityService.infoNotification('That field has already been added.');
+        return;
+      };
+
+      // Update UI
+      this.currentSettings.customFields.push(this.condition);
+
+      // Setup payload for DB
+      data = { type: 'custom_fields', payload: this.condition };
     }
 
     // Update DB
@@ -192,12 +214,10 @@ export class GroupSmartAdminComponent implements OnInit {
   getCurrentSettings(): void {
     this.groupService.getSmartGroupSettings(this.group._id).subscribe(
       res => {
-        // @ts-ignore
         this.currentSettings.emailDomains = res.domains;
-        // @ts-ignore
         this.currentSettings.jobPositions = res.positions;
-        // @ts-ignore
         this.currentSettings.skills = res.skills;
+        this.currentSettings.customFields = res.custom_fields;
       },
       error => {
         this.utilityService.errorNotification('An error occurred whilst fetching existing smart group settings.');
@@ -212,21 +232,21 @@ export class GroupSmartAdminComponent implements OnInit {
    *
    * @param rule The rule to delete.
    */
-  onDeleteRule(rule: string): void {
-    this.groupService.deleteSmartGroupRule(this.group._id, rule).subscribe(
+  onDeleteRule(rule: string, customFieldId?: string): void {
+    this.groupService.deleteSmartGroupRule(this.group._id, rule, customFieldId).subscribe(
       res => {
         this.utilityService.successNotification('The rule has been successfully deleted!');
 
         // Update UI
         if (rule === 'email_domains') {
-          // @ts-ignore
           this.currentSettings.emailDomains = [];
         } else if (rule === 'job_positions') {
-          // @ts-ignore
           this.currentSettings.jobPositions = [];
         } else if (rule === 'skills') {
-          // @ts-ignore
           this.currentSettings.skills = [];
+        }else if (rule === 'custom_field') {
+          const index = this.currentSettings.customFields.findIndex(cf => cf.name = this.cfName);
+          this.currentSettings.customFields.splice(index, 1);
         }
 
         this.autoAdd();
@@ -237,6 +257,18 @@ export class GroupSmartAdminComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+  customFieldSelected(cfName: string) {
+    const index = this.customFields.findIndex(cf => cf.name == this.cfName);
+    this.selectedCustomField = this.customFields[index];
+  }
+
+  customFieldValueSelected(cfValue: string) {
+    this.condition = {
+      name: this.cfName,
+      value: this.cfValue
+    };
   }
 
   /**
@@ -252,7 +284,9 @@ export class GroupSmartAdminComponent implements OnInit {
       this.group._id,
       data
     ).subscribe(
-      res => //this.utilityService.infoNotification('The members of the group have been successfully modified!'),
+      res => {
+        this.publicFunctions.sendUpdatesToGroupData(res['group']);
+      },
       error => {
         this.utilityService.errorNotification('An error occurred whilst modifying the members of the group.');
         console.error('Could not auto add members!');

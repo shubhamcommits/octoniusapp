@@ -1032,6 +1032,10 @@ export class GroupController {
                 await Group.findByIdAndUpdate(groupId, {
                     $addToSet: { 'conditions.skills': payload }
                 });
+            } else if (type === 'custom_fields') {
+                await Group.findByIdAndUpdate(groupId, {
+                    $addToSet: { 'conditions.custom_fields': payload }
+                });
             }
 
             return res.status(200).json({
@@ -1057,7 +1061,8 @@ export class GroupController {
                 message: 'Rules successfully found!',
                 domains: groupDoc['conditions'].email_domains ? groupDoc['conditions'].email_domains : [],
                 positions: groupDoc['conditions'].job_positions ? groupDoc['conditions'].job_positions : [],
-                skills: groupDoc['conditions'].skills ? groupDoc['conditions'].skills : []
+                skills: groupDoc['conditions'].skills ? groupDoc['conditions'].skills : [],
+                custom_fields: groupDoc['conditions'].custom_fields ? groupDoc['conditions'].custom_fields : []
             });
         } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);
@@ -1068,7 +1073,7 @@ export class GroupController {
      * Deletes a smart group's rule.
      */
     async deleteSmartGroupRule(req: Request, res: Response, next: NextFunction) {
-        const { groupId, rule } = req.params;
+        const { groupId, rule, customFieldId } = req.params;
 
         try {
             if (rule === 'email_domains') {
@@ -1083,6 +1088,22 @@ export class GroupController {
                 await Group.findByIdAndUpdate(groupId, {
                     $unset: { 'conditions.skills': '' }
                 });
+            } else if (rule === 'custom_field' && customFieldId) {
+                // Find the workspace and remove a respective custom field
+                await Group.findByIdAndUpdate({
+                        _id: groupId
+                    },
+                    {
+                        $pull:
+                        {
+                            'conditions.custom_fields': {
+                                _id: customFieldId
+                            }
+                        }
+                    },
+                   {
+                       new: true
+                   } ).lean();
             }
 
             return res.status(200).json({
@@ -1111,6 +1132,7 @@ export class GroupController {
             const emailDomains = groupDoc['conditions'].email_domains ? groupDoc['conditions'].email_domains : [];
             const jobPositions = groupDoc['conditions'].job_positions ? groupDoc['conditions'].job_positions : [];
             const skills = groupDoc['conditions'].skills ? groupDoc['conditions'].skills : [];
+            const customFields = groupDoc['conditions'].custom_fields ? groupDoc['conditions'].custom_fields : [];
 
             // Get users in the group's workspace
             const users = await User.find({
@@ -1150,7 +1172,20 @@ export class GroupController {
                 });
             }
 
-            const group = await Group.findById(groupId);
+            if (customFields.length > 0) {
+                // Filter users by customFields
+                for (let i = 0; i < users.length; i++) {
+                    const user = users[i];
+                    for (let j = 0; j < customFields.length; j++) {
+                        const cf = customFields[j];
+                        if (user.profile_custom_fields.has(cf.name) && user.profile_custom_fields.get(cf.name) == cf.value) {
+                            validUsers.add(user._id.toString());
+                        }
+                    }
+                }
+            }
+
+            let group = await Group.findById(groupId);
 
             if (group.group_name.toLowerCase() != 'global') {
                 // Remove owner/admin from prospective members
@@ -1172,7 +1207,7 @@ export class GroupController {
                     $set: { _members: [] }
                 });
 
-                if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0) {
+                if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0 || customFields.length > 0) {
                     // Add new members
                     Array.from(validUsers).map(async (userId) => {
                         // Add the user to the group
@@ -1188,8 +1223,11 @@ export class GroupController {
                 }
             }
 
+            group = await Group.findById(groupId).lean();
+
             return res.status(200).json({
-                message: 'Group members successfully updated!'
+                message: 'Group members successfully updated!',
+                group: group
             });
         } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);

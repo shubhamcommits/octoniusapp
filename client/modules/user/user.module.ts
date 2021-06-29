@@ -24,6 +24,7 @@ import { UserWorkloadCalendarComponent } from './user-workload/user-workload-cal
 import { UserAvailabilityDayDialogComponent } from './user-workload/user-availability-day-dialog/user-availability-day-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
 import { UserPasswordUpdateComponent } from './user-profile/user-password-update/user-password-update.component';
+import { UserProfileCustomFieldsComponent } from './user-profile/user-profile-custom-fields/user-profile-custom-fields.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { UserPasswordUpdateComponent } from './user-profile/user-password-update
     UserWorkloadCalendarComponent,
     UserAvailabilityDayDialogComponent,
     UserPasswordUpdateComponent,
+    UserProfileCustomFieldsComponent
   ],
   imports: [
     CommonModule,
