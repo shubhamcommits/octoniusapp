@@ -399,7 +399,7 @@
                     <!-- question dropdown dropdown -->
                     <br *ngIf="activeQuestion?.type === 'Dropdown' || activeQuestion?.type === 'Multiple'"/>
                     <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Dropdown'">
-                        <mat-select>
+                        <mat-select [(value)]="activeQuestion.answer">
                           <mat-option *ngFor="let currentOption of activeQuestion?.options; let j=index">{{ currentOption }}</mat-option>
                         </mat-select>
                       </mat-form-field>
