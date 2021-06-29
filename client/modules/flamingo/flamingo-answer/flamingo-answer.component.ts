@@ -67,14 +67,19 @@ export class FlamingoAnswerComponent implements OnInit {
    */
   answerQuestion(value) {
 
-    this.activeQuestion.answer = value;
+    if (this.activeQuestion.type == 'Multiple') {
+      this.activeQuestion.answer_multiple = value;
+    } else {
+      this.activeQuestion.answer = value;
+    }
 
     this.disableNext = this.checkMandatoryQuestion();
 
     // Go to Next Question
-    if ((!this.activeQuestion?.mandatory)
-        || (!(this.activeQuestion?.type != 'Scale' && !this.activeQuestion?.answer))
-        || (this.activeQuestion?.type == 'Scale' && this.activeQuestion?.answer >= 0)) {
+    if (((!this.activeQuestion?.mandatory)
+          || (!(this.activeQuestion?.type != 'Scale' && !this.activeQuestion?.answer))
+          || (this.activeQuestion?.type == 'Scale' && this.activeQuestion?.answer >= 0))
+        && (this.activeQuestion?.type != 'Multiple')) {
       this.nextQuestion();
     }
   }
@@ -99,6 +104,7 @@ export class FlamingoAnswerComponent implements OnInit {
     this.activeQuestionIndex = this.activeQuestionIndex-1;
     this.activeQuestion = this.questions[this.activeQuestionIndex];
     this.calculateProgressValues();
+console.log(this.activeQuestion);
   }
 
   /**
@@ -152,6 +158,13 @@ export class FlamingoAnswerComponent implements OnInit {
           responses.push({
             _question: question._id,
             dropdown_answer: question.answer
+          });
+          break;
+
+        case 'Multiple':
+          responses.push({
+            _question: question._id,
+            answer_multiple: question.answer_multiple
           });
           break;
       }

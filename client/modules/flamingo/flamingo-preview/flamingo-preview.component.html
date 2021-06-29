@@ -90,16 +90,23 @@
             </div>
 
             <!-- dropdown question dropdown -->
-            <br *ngIf="activeQuestion?.type === 'Dropdown'"/>
-            <button style="margin-top: 50px;" *ngIf="activeQuestion?.type === 'Dropdown'" class="btn btn-primary mb-3 mt-3 dropdown-toggle"
-                type="button" data-toggle="dropdown">
-                Please Select an Option
-            </button>
-            <ul *ngIf="activeQuestion?.type === 'Dropdown'" class="dropdown-menu">
-                <li *ngFor="let currentOption of activeQuestion?.options; let j=index" class="dropdown-item" (click)="answerQuestion(currentOption)">
-                    {{currentOption}}
-                </li>
-            </ul>
+            <br *ngIf="activeQuestion?.type === 'Dropdown' || activeQuestion?.type === 'Multiple'"/>
+                    <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Dropdown'">
+                        <mat-select
+                            (selectionChange)="answerQuestion($event.value)"
+                            [(value)]="activeQuestion.answer">
+                            <mat-option *ngFor="let currentOption of activeQuestion?.options; let j=index" [value]="currentOption">{{ currentOption }}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                    <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Multiple'">
+                      <mat-select multiple
+                          (selectionChange)="answerQuestion($event.value)"
+                          (closed)="nextQuestion()"
+                          [(value)]="activeQuestion.answer_multiple">
+                        <mat-option *ngFor="let currentOption of activeQuestion?.options" [value]="currentOption">{{ currentOption }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
         </div>
     </div>
     <!-- container for all other question except welcome and thanks question type end-->

@@ -230,8 +230,8 @@ export class GroupService {
    * @param groupId The ID of the smart group.
    * @param rule The rule to delete.
    */
-  deleteSmartGroupRule(groupId: string, rule: string): Observable<any> {
-    return this._http.put<any>(`${this.baseURL}/smart/${groupId}/${rule}`, null);
+  deleteSmartGroupRule(groupId: string, rule: string, customFieldId?: string): Observable<any> {
+    return this._http.put<any>(`${this.baseURL}/smart/${groupId}/${rule}/${customFieldId}`, null);
   }
 
   /**

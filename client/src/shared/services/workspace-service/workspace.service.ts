@@ -156,6 +156,17 @@ export class WorkspaceService {
   }
 
   /**
+   * Fetches unique custom fields that exist within the given workspace
+   * that match the given query.
+   *
+   * @param workspaceId The workspace to search within.
+   * @param query The job positions to search for.
+   */
+   getUniqueCustomFields(workspaceId: string, query: string): Observable<any> {
+    return this._http.get<any>(`${this.BASE_API_URL}/customFields/${workspaceId}/${query}`);
+  }
+
+  /**
    * Fetches unique skills that exist within the given workspace
    * that match the given query.
    *
@@ -239,4 +250,31 @@ export class WorkspaceService {
   removeWorkspace(workspaceId: string) {
     return this._http.delete<any>(`${this.BASE_API_URL}/${workspaceId}`).toPromise();
   }
+
+  /**
+   * Start Profile Custom Fields
+   */
+
+  saveNewCustomField(newCustomField: { name: string; title: string; values: any[]; }, workspaceId: any) {
+    return this._http.put(this.BASE_API_URL + `/${workspaceId}/customFields`, { newCustomField }).toPromise();
+  }
+
+  getProfileCustomFields(workspaceId: string) {
+    return this._http.get(this.BASE_API_URL + `/${workspaceId}/customFields`).toPromise();
+  }
+
+  removeCustomField(fieldId: string, workspaceId: string) {
+    return this._http.delete(this.BASE_API_URL + `/${workspaceId}/customFields/${fieldId}`).toPromise();
+  }
+
+  addCustomFieldNewValue(value: string, fieldId: string, workspaceId: string) {
+    return this._http.put(this.BASE_API_URL + `/${workspaceId}/customFields/addValue`, { fieldId, value }).toPromise();
+  }
+
+  removeCustomFieldValue(value: string, fieldId: string, workspaceId: string) {
+    return this._http.put(this.BASE_API_URL + `/${workspaceId}/customFields/removeValue`, { fieldId, value }).toPromise();
+  }
+  /**
+   * End Profile Custom Fields
+   */
 }

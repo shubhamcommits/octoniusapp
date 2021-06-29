@@ -58,14 +58,19 @@ export class FlamingoPreviewComponent implements OnInit {
    */
   answerQuestion(value) {
 
-    this.activeQuestion.answer = value;
+    if (this.activeQuestion.type == 'Multiple') {
+      this.activeQuestion.answer_multiple = value;
+    } else {
+      this.activeQuestion.answer = value;
+    }
 
     this.disableNext = this.checkMandatoryQuestion();
 
     // Go to Next Question
-    if ((!this.activeQuestion?.mandatory)
-        || (!(this.activeQuestion?.type != 'Scale' && !this.activeQuestion?.answer))
-        || (this.activeQuestion?.type == 'Scale' && this.activeQuestion?.answer >= 0)) {
+    if (((!this.activeQuestion?.mandatory)
+          || (!(this.activeQuestion?.type != 'Scale' && !this.activeQuestion?.answer))
+          || (this.activeQuestion?.type == 'Scale' && this.activeQuestion?.answer >= 0))
+        && (this.activeQuestion?.type != 'Multiple')) {
       this.nextQuestion();
     }
   }

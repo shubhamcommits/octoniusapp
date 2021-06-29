@@ -103,7 +103,9 @@ export class UserSkillsComponent implements OnInit {
               workspaceId: workspaceId
             }
           ).subscribe(
-            res => {},
+            res => {
+              this.publicFunctions.sendUpdatesToGroupData(res['group']);
+            },
             error => {
               this.utilityService.errorNotification('An error occurred whilst modifying the members of the group.');
               console.error('Could not auto update members!');

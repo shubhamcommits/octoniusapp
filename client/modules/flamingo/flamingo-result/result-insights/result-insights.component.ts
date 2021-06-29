@@ -24,8 +24,8 @@ export class ResultInsightsComponent implements OnChanges, OnInit  {
     });
 
     this.questions?.forEach(question => {
-      const resonses = this.getScaleResponses(question._id);
-      this.scaleResponses.set(question._id, resonses);
+      const responses = this.getScaleResponses(question._id);
+      this.scaleResponses.set(question._id, responses);
     });
   }
 
@@ -108,5 +108,22 @@ export class ResultInsightsComponent implements OnChanges, OnInit  {
       });
     });
     return responsesMatch;
+  }
+
+  getMultipleResponsesStats(questionId: string, selectedOption: string) {
+    let responsesMatch = []
+
+    this.responses?.forEach(response => {
+
+      const answerIndex = response?.answers?.findIndex(answer => answer._question._id == questionId);
+      const answer = response?.answers[answerIndex];
+
+      if (answer?._question?.type == 'Multiple' && answer?.answer_multiple?.findIndex(answer => answer == selectedOption) >= 0) {
+        responsesMatch.push({
+          answer_multiple: answer?.answer_multiple
+        });
+      }
+    });
+    return responsesMatch?.length;
   }
 }

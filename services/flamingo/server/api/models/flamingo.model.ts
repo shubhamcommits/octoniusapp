@@ -38,6 +38,9 @@ const FlamingoSchema = new Schema({
         },
         dropdown_answer: {
             type: String
+        },
+        answer_multiple: {
+            type: [String]
         }
       }],
       created_date: {

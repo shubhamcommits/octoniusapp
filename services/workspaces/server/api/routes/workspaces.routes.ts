@@ -94,6 +94,24 @@ routes.get('/:workspaceId/idea', mgmt.getIdeaStatus);
 // GET - obtain if the excelImport module is availability in the workspace
 routes.get('/:workspaceId/excelImport', mgmt.getExcelImportStatus);
 
+/**
+ * Profile Custom Fields
+ */
+// PUT - Save custom field
+routes.put('/:workspaceId/customFields', workspaces.addCustomField);
+
+// GET - Get custom fields
+routes.get('/:workspaceId/customFields', workspaces.getCustomFields);
+
+// DELETE - Delete custom field
+routes.delete('/:workspaceId/customFields/:fieldId', workspaces.removeCustomField);
+
+// PUT - Add new value to a custom field
+routes.put('/:workspaceId/customFields/addValue', workspaces.addCustomFieldValue);
+
+// PUT - Remove custom field value
+routes.put('/:workspaceId/customFields/removeValue', workspaces.removeCustomFieldValue);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

@@ -2,6 +2,7 @@
   <div class="card-block">
     <h4>Group rules</h4>
     <p>This group will automatically add people with the following rules:</p>
+
     <div *ngIf="currentSettings.emailDomains.length > 0" class="row">
       <div class="col-md-2">
         <p style="font-weight: bold; font-size: 14px; font-family: Poppins;">Email domains</p>
@@ -16,6 +17,7 @@
           (click)="onDeleteRule('email_domains')">close</i>
       </div>
     </div>
+
     <div *ngIf="currentSettings.jobPositions.length > 0" class="row">
       <div class="col-md-2">
         <p style="font-weight: bold; font-size: 14px; font-family: Poppins;">Job positions</p>
@@ -30,6 +32,7 @@
           (click)="onDeleteRule('job_positions')">close</i>
       </div>
     </div>
+
     <div *ngIf="currentSettings.skills.length > 0" class="row">
       <div class="col-md-2">
         <p style="font-weight: bold; font-size: 14px; font-family: Poppins;">Skills</p>
@@ -44,9 +47,25 @@
           (click)="onDeleteRule('skills')">close</i>
       </div>
     </div>
+
+    <div *ngIf="currentSettings.customFields.length > 0" class="row">
+      <div class="col-md-2">
+        <p style="font-weight: bold; font-size: 14px; font-family: Poppins;">Custom Fields</p>
+      </div>
+      <div class="col-md-5">
+        <span *ngFor="let cf of currentSettings.customFields; let i = index;"
+          style="font-weight: bold; font-size: 14px; font-family: Poppins; border-bottom: 1px solid #005FD5;">
+          {{ cf.name }} - {{ cf.value }}
+          <i class="material-icons" style="font-size: 14px; color: #FF6584; cursor: pointer !important;"
+            (click)="onDeleteRule('custom_field', cf._id)">close</i>
+          <span *ngIf="currentSettings.customFields.length > 0 && currentSettings.customFields.length - 1 !== i">,</span>
+        </span>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-md-2">
-        <button class="btn btn-link" (click)="onAddNewRule()">
+        <button class="btn btn-link" [disabled]="condition == ''" (click)="onAddNewRule()">
           <span id="btn-content">
             <i class="material-icons mr-2">add</i> <span style="vertical-align: 6px;">New rule</span>
           </span>
@@ -63,13 +82,36 @@
         </div>
       </div>
       <div class="col-md-3">
-        <div class="dropdown">
+        <div class="dropdown" *ngIf="rule != 'Custom Fields'">
           <input type="text" id="condition-select" placeholder="Select a condition" class="dropdown-toggle"
             data-toggle="dropdown" (keyup)="search($event.target.value)" [(ngModel)]="condition">
           <div class="dropdown-menu">
             <li *ngFor="let _condition of conditions" (click)="onConditionSelect(_condition)"
               [ngClass]="{'active': _condition === condition}">{{_condition}}</li>
           </div>
+        </div>
+
+        <div class="dropdown" *ngIf="rule == 'Custom Fields'">
+          <mat-form-field>
+            <mat-select ngDefaultControl class="select-field"
+                (selectionChange)="customFieldSelected($event.value)"
+                (click)="$event.stopPropagation()"
+                [(value)]="cfName"
+                name="names">
+              <mat-option *ngFor="let cf of customFields" [value]="cf.name">{{ cf.title }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-select ngDefaultControl class="select-field"
+                (selectionChange)="customFieldValueSelected($event.value)"
+                (click)="$event.stopPropagation()"
+                [(value)]="cfValue"
+                [disabled]="cfName == ''"
+                name="values">
+              <mat-option *ngFor="let value of selectedCustomField?.values" [value]="value">{{ value }}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
     </div>

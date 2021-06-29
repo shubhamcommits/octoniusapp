@@ -49,6 +49,23 @@ const workspaceSchema = new Schema({
         type: String,
         required: true
     }],
+    profile_custom_fields: {
+        type: [{
+            name: {
+                type: String,
+                required: true
+            },
+            title: {
+                type: String,
+                required: true
+            },
+            values: {
+                type: [String],
+                required: true,
+                default: []
+            }
+        }]
+    },
     invited_users: [{
         email: {
             type: String,
