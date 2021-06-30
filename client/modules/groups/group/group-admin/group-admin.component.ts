@@ -35,7 +35,7 @@ export class GroupAdminComponent implements OnInit {
 
   enabledShuttleType: boolean;
 
-  groupColumns: any = [];
+  groupSections: any = [];
 
   constructor(
     private injector: Injector,
@@ -55,7 +55,7 @@ export class GroupAdminComponent implements OnInit {
     // Fetch Current Workspace
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    this.groupColumns = await this.publicFunctions.getAllColumns(this.groupId);
+    this.groupSections = await this.publicFunctions.getAllColumns(this.groupId);
   }
 
   // Check if the data provided is not empty{}
@@ -131,7 +131,7 @@ export class GroupAdminComponent implements OnInit {
       }));
   }
 
-  selectShuttleColumn(column: any) {
+  selectShuttleSection(column: any) {
 
     // Utility Service
     let utilityService = this.injector.get(UtilityService);
@@ -141,7 +141,7 @@ export class GroupAdminComponent implements OnInit {
 
     utilityService.asyncNotification('Please wait we are saving the new setting...',
       new Promise((resolve, reject)=>{
-        groupService.changeShuttleColumn(this.groupId, column)
+        groupService.selectShuttleSection(this.groupId, column)
         .then(()=> {
           this.publicFunctions.sendUpdatesToGroupData(this.groupData);
           resolve(utilityService.resolveAsyncPromise('Settings saved to your group!'));

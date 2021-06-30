@@ -1036,7 +1036,7 @@ export class GroupController {
         }
     };
 
-    async changeShuttleColumn(req: Request, res: Response, next: NextFunction) {
+    async selectShuttleSection(req: Request, res: Response, next: NextFunction) {
         // Fetch the groupId
         const { groupId } = req.params;
 
@@ -1048,7 +1048,7 @@ export class GroupController {
             const group = await Group.findByIdAndUpdate({
                 _id: groupId
             }, {
-                _shuttle_column: columnId
+                _shuttle_section: columnId
             }, {
                 new: true
             }).lean();

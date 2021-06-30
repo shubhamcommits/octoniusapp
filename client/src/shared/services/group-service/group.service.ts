@@ -204,8 +204,8 @@ export class GroupService {
     }
   }
 
-  changeShuttleColumn(groupId: string, columnId: string) {
-    return this._http.put(this.baseURL + `/${groupId}/settings/changeShuttleColumn`, { columnId: columnId }).toPromise();
+  selectShuttleSection(groupId: string, columnId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/settings/selectShuttleSection`, { columnId: columnId }).toPromise();
   }
 
   /**

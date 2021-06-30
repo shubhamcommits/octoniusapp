@@ -83,7 +83,7 @@ routes.put('/:groupId/settings/enabledProjectType', group.enabledProjectType);
 routes.put('/:groupId/settings/enabledShuttleType', group.enabledShuttleType);
 
 // PUT - Enable/Disable Group Shuttle Type
-routes.put('/:groupId/settings/changeShuttleColumn', group.changeShuttleColumn);
+routes.put('/:groupId/settings/selectShuttleSection', group.selectShuttleSection);
 
 // PUT - Add bar to group
 routes.put('/:groupId/addBar', group.addBar);

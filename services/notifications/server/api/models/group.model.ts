@@ -59,7 +59,7 @@ const GroupSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false,
     },
-    _shuttle_column: {
+    _shuttle_section: {
         type: Schema.Types.ObjectId,
         ref: 'Column'
     },

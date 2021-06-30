@@ -96,9 +96,9 @@
 
           <mat-form-field appearance="fill" style="margin-left: 40px;" *ngIf="groupData?.shuttle_type">
             <mat-select
-                (selectionChange)="selectShuttleColumn($event.value)"
-                [(value)]="groupData._shuttle_column">
-              <mat-option *ngFor="let column of groupColumns; let j=index" [value]="column._id">{{ column.title }}</mat-option>
+                (selectionChange)="selectShuttleSection($event.value)"
+                [(value)]="groupData._shuttle_section">
+              <mat-option *ngFor="let section of groupSections; let j=index" [value]="section._id">{{ section.title }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
