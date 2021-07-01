@@ -569,4 +569,10 @@ export class PostService {
         shuttleSectionId: shuttleSectionId
       }).toPromise();
   }
+
+  selectShuttleStatus(postId: string, shuttleStatus: string) {
+    return this._http.put(this.baseURL + `/${postId}/selectShuttleStatus`, {
+      shuttleStatus: shuttleStatus
+      }).toPromise();
+  }
 }

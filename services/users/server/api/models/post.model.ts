@@ -219,6 +219,10 @@ const PostSchema = new Schema({
         _shuttle_section: {
             type: Schema.Types.ObjectId,
             ref: 'Column'
+        },
+        shuttle_status: {
+            type: String,
+            default: 'to do'
         }
     },
 

@@ -541,6 +541,22 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData);
   }
 
+  async changeShuttleTaskStatus(event) {
+    // Set the status
+    this.postData.task.shuttle_status = event;
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise(async (resolve, reject) => {
+      await this.postService.selectShuttleStatus(this.postData?._id, event)
+        .then((res) => {
+          // Resolve with success
+          this.postData.task._shuttle_section = event;
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
   async moveTaskToColumn(event) {
     const columnId = event.post.task._column._id || event.post.task._column;
     await this.publicFunctions.changeTaskColumn(this.postData._id, columnId, this.userData._id, this.groupId);
@@ -550,8 +566,18 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   async moveShuttleTaskToSection(event) {
-    const shuttleSectionId = event.post.task._shuttle_group._shuttle_section;
-    await this.postService.selectShuttleGroup(this.postData?._id, this.postData?.task?._shuttle_group?._shuttle_section);
+    const shuttleSectionId = event.newColumn._id;
+    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise(async (resolve, reject) => {
+      await this.postService.selectShuttleSection(this.postData?._id, shuttleSectionId)
+        .then((res) => {
+          // Resolve with success
+          this.postData.task._shuttle_section = shuttleSectionId;
+          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+        });
+    }));
   }
 
   async onAssigned(res) {
@@ -701,7 +727,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     await this.initPostData();
 
-    this.parentAssignEvent.emit(post); // 2
+    this.parentAssignEvent.emit(post);
   }
 
   async onDependencyTaskSelected(post) {
@@ -711,8 +737,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.postData = post;
 
     await this.initPostData();
-
-    // this.parentAssignEvent.emit(post); // 2
   }
 
   onTaskClonned ($event) {

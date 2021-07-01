@@ -1615,7 +1615,8 @@ export class PostController {
                     }, {
                         'task.shuttle_type': true,
                         'task._shuttle_group': shuttleGroupId,
-                        'task._shuttle_section': group._shuttle_section
+                        'task._shuttle_section': group._shuttle_section,
+                        'task.shuttle_status': 'to do'
                     }, {
                         new: true
                     }).lean();
@@ -1625,7 +1626,8 @@ export class PostController {
                     }, {
                         'task.shuttle_type': false,
                         'task._shuttle_group': null,
-                        'task._shuttle_section': null
+                        'task._shuttle_section': null,
+                        'task.shuttle_status': ''
                     }, {
                         new: true
                     }).lean();
@@ -1659,6 +1661,38 @@ export class PostController {
                 }, {
                     'task.shuttle_type': true,
                     'task._shuttle_section': shuttleSectionId
+                }, {
+                    new: true
+                }).lean();
+
+            post = await postService.populatePostProperties(post);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async selectShuttleStatus(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId
+        const { postId } = req.params;
+
+        // Fetch the value from fileHandler middleware
+        const shuttleStatus = req.body['shuttleStatus'];
+
+        try {
+            // Find the group and update
+            let post;
+            
+            post = await Post.findByIdAndUpdate({
+                    _id: postId
+                }, {
+                    'task.shuttle_type': true,
+                    'task.shuttle_status': shuttleStatus
                 }, {
                     new: true
                 }).lean();

@@ -555,7 +555,8 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
           this.shuttleGroupEmitter.emit({
               shuttle_group: (this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group),
               shuttle_section: this.postData?.task?._shuttle_section,
-              shuttle_type: this.postData?.task?.shuttle_type
+              shuttle_type: this.postData?.task?.shuttle_type,
+              shuttle_status: this.postData?.task?.shuttle_status
             });
           this.postData.task._shuttle_group = this.postData?.task?._shuttle_group?._id;
           resolve(this.utilityService.resolveAsyncPromise(`👍 Task saved!`));

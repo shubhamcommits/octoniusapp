@@ -143,6 +143,8 @@
                 [groupId]="postData?._group?._id || postData?._group"
                 [userId]="userData?._id"
                 [status]="postData?.task?.status"
+                [disabled]="postData?.task?._shuttle_group == groupId"
+                [shuttleType]="false"
                 (status)="changeTaskStatus($event)">
             </app-task-status>
             <!-- Change task status ends -->
@@ -185,10 +187,22 @@
 
         <!-- Shuttle Status starts -->
         <div class="content-box" *ngIf="postData?.type === 'task' && postData?.task?.shuttle_type">
+          <!-- Change shuttle task status starts -->
           <p class="box-title">Shuttle Status</p>
+          <app-task-status
+              class="ml-1"
+              [postId]="postData?._id"
+              [groupId]="postData?.task?._shuttle_group"
+              [userId]="userData?._id"
+              [status]="postData?.task?.shuttle_status"
+              [disabled]="postData?.task?._shuttle_group != groupId"
+              [shuttleType]="true"
+              (status)="changeShuttleTaskStatus($event)">
+          </app-task-status>
+          <!-- Change shuttle task status ends -->
 
 
-          <p class="box-title" *ngIf="columns" style="margin-top: 18px;">Section</p>
+          <p class="box-title" *ngIf="shuttleColumns" style="margin-top: 18px;">Shuttle Section</p>
           <!-- Change task column starts -->
           <app-change-column
               class="ml-1"
