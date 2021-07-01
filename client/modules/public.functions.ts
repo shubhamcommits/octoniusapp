@@ -474,6 +474,15 @@ export class PublicFunctions {
         })
     }
 
+    async getShuttleGroups(workspaceId: string, groupId: string) {
+      return new Promise((resolve, reject) => {
+          let workspaceService = this.injector.get(WorkspaceService);
+          workspaceService.getShuttleGroups(workspaceId, groupId)
+              .then((res) => resolve(res['groups']))
+              .catch(() => reject([]))
+      })
+    }
+
     /**
      * Fetch list of user´s favorite groups
      * @param userId
@@ -588,7 +597,31 @@ export class PublicFunctions {
                     reject([]);
                 })
         })
-    }
+      }
+
+      /**
+       * This function is responsible for fetching the shuttle tasks from the server based on the groupId
+       * @param groupId
+       */
+       getShuttleTasks(groupId: string) {
+
+          // Group Service Instance
+          let groupService = this.injector.get(GroupService);
+
+          return new Promise((resolve, reject) => {
+              groupService.getShuttleTasks(groupId)
+                  .then((res: any) => {
+
+                      // Resolve with sucess
+                      resolve(res['posts'])
+                  })
+                  .catch(() => {
+
+                      // If there's an error, then reject with empty array
+                      reject([]);
+                  })
+          })
+      }
 
     /**
      * This function is responsible for fetching the tasks from the server based on the groupId

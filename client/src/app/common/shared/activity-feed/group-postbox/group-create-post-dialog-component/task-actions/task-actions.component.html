@@ -192,5 +192,21 @@
   <!-- Milestone Switch ends -->
 
 
+  <!-- Select Shuttle group starts -->
+  <div *ngIf="groupData?.shuttle_type" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+    <i class="material-icons-outlined">published_with_changes</i>
+    <mat-form-field appearance="fill" style="margin-left: 40px;">
+      <mat-select
+          [disabled]="postData?.task?._shuttle_group == groupData._id"
+          (selectionChange)="shuttleTask($event.value)"
+          [(value)]="postData.task._shuttle_group">
+        <mat-option *ngFor="let group of shuttleGroups; let j=index" [value]="group._id">{{ group.group_name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
+    <!-- Clean field starts -->
+    <i *ngIf="postData?.task?._shuttle_group" (click)="shuttleTask(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <!-- Clean field ends -->
+  </div>
+  <!-- Select Shuttle group ends -->
 </div>

@@ -280,4 +280,8 @@ export class GroupService {
   saveSelectedWidgets(groupId: string, selectedWidgets: string[]) {
     return this._http.put<any>(`${this.baseURL}/${groupId}/saveSelectedWidgets`, {selectedWidgets: selectedWidgets}).toPromise();
   }
+
+  getShuttleTasks(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}/shuttleTasks`).toPromise();
+  }
 }

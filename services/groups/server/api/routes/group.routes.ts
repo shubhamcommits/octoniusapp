@@ -120,6 +120,8 @@ routes.get('/:groupId/tasks-between-days', group.getTasksBetweenDates);
 // PUT - Updates the widgets to show in the group
 routes.put('/:groupId/saveSelectedWidgets', group.saveSelectedWidgets);
 
+// GET - Get group shuttle tasks
+routes.get('/:groupId/shuttleTasks', group.getShuttleTasks);
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

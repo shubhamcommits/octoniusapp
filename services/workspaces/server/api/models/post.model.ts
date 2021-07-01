@@ -207,7 +207,19 @@ const PostSchema = new Schema({
         _dependent_child:[{
             type: Schema.Types.ObjectId,
             ref: 'Post'
-        }]
+        }],
+        shuttle_type: {
+            type: Boolean,
+            default: false
+        },
+        _shuttle_group: {
+            type: Schema.Types.ObjectId,
+            ref: 'Group'
+        },
+        _shuttle_section: {
+            type: Schema.Types.ObjectId,
+            ref: 'Column'
+        }
     },
 
     // PERFORMANCE TASK

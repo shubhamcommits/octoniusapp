@@ -146,6 +146,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // Fetch all the tasks posts from the server
     this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
 
+    if (this.groupData.shuttle_type) {
+      const shuttleTasks = await this.publicFunctions.getShuttleTasks(this.groupId);
+      this.tasks = this.tasks.concat(shuttleTasks);
+    }
+
     /**
      * Sort the tasks into their respective columns
      */
@@ -170,30 +175,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * This function initialises the default column - todo
-   * @param groupId
-   */
-  /*
-  async initialiseColumns(groupId: string) {
-
-    // Column Service Instance
-    const columnService = this.injector.get(ColumnService);
-
-    // Call the HTTP Put request
-    return new Promise((resolve, reject) => {
-      columnService.initColumns(groupId)
-        .then((res) => {
-          resolve(res['columns']);
-        })
-        .catch((err) => {
-          this.utilityService.errorNotification('Unable to initialize the columns, please try again later!');
-          reject({});
-        });
-    });
-  }
-  */
-
   isAdminUser() {
     const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
     return index >= 0;
@@ -205,13 +186,13 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
    * @param tasks
    */
   sortTasksInColumns(columns: any, tasks: any) {
-
     columns.forEach(async (column: any) => {
       // Feed the tasks into that column which has matching property _column with the column title
       column.tasks = await tasks
-        .filter((post: any) => post.task.hasOwnProperty('_column') === true
-          && post.task._column
-          && (post.task._column._id || post.task._column) == column['_id']
+        .filter((post: any) => ((post.task.hasOwnProperty('_column') === true
+            && post.task._column
+            && (post.task._column._id || post.task._column) == column['_id'])
+          || post.task._shuttle_section == column['_id'])
         )
         .sort(function(t1, t2) {
           if (t1.task.status != t2.task.status) {
@@ -221,7 +202,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         });
 
       // Find the hightes due date on the tasks of the column
-      // column.real_due_date = moment(Math.max(...column.tasks.map(post => moment(post.task.due_to))));
       column.real_due_date = this.publicFunctions.getHighestDate(column.tasks);
 
       // Calculate number of done tasks

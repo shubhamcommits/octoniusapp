@@ -28,6 +28,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   userData: any;
   groupId: string;
   columns: any;
+  shuttleColumns: any;
   tasks:any;
   customFields = [];
   selectedCFValues = [];
@@ -130,6 +131,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     if(this.postData?.task?._parent_task &&  this.columns){
       this.columns = null;
+    }
+
+    // If this is a shuttle task from other group, we will need to switch the sections
+    if (this.postData?.task?.shuttle_type && this.groupId == this.postData?.task?._shuttle_group) {
+      this.shuttleColumns = await this.publicFunctions.getAllColumns(this.groupId);
+      this.columns = await this.publicFunctions.getAllColumns(this.postData?._group?._id || this.postData?._group);
+    } else if (this.postData?.task?.shuttle_type && this.postData?.task?._shuttle_group) {
+      this.shuttleColumns = await this.publicFunctions.getAllColumns(this.postData?.task?._shuttle_group);
     }
 
     this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
@@ -540,6 +549,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData);
   }
 
+  async moveShuttleTaskToSection(event) {
+    const shuttleSectionId = event.post.task._shuttle_group._shuttle_section;
+    await this.postService.selectShuttleGroup(this.postData?._id, this.postData?.task?._shuttle_group?._shuttle_section);
+  }
+
   async onAssigned(res) {
     this.postData = res['post'];
     this.setAssignedBy(this.postData);
@@ -602,11 +616,15 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   transformToIdea(data:any){
-
     this.postData.task.is_idea = data;
     this.updateDetails();
   }
 
+  setShuttleGroup(data: any) {
+    this.postData.task.shuttle_type = data.shuttle_type;
+    this.postData.task._shuttle_group = data.shuttle_group;
+    this.postData.task._shuttle_section = data.shuttle_section;
+  }
 
   transformToNorthStart(data) {
     this.postData.task.isNorthStar = data;
@@ -671,38 +689,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one
      */
     this.columns = await this.publicFunctions.getAllColumns(this.groupId);
-    /*
-    if (this.columns == null) {
-      this.columns = await this.initialiseColumns(this.groupId);
-    }
-    */
 
     await this.initPostData();
   }
-
-  /**
-   * This function initialises the default column - todo
-   * @param groupId
-   */
-  /*
-  async initialiseColumns(groupId: string) {
-
-    // Column Service Instance
-    const columnService = this.injector.get(ColumnService);
-
-    // Call the HTTP Put request
-    return new Promise((resolve, reject) => {
-      columnService.initColumns(groupId)
-        .then((res) => {
-          resolve(res['columns']);
-        })
-        .catch((err) => {
-          this.utilityService.errorNotification('Unable to initialize the columns, please try again later!');
-          reject({});
-        });
-    });
-  }
-  */
 
   async onParentTaskSelected(post) {
     // Set loading state to be true

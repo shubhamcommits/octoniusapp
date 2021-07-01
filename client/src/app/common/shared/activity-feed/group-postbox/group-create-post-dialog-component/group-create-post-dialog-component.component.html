@@ -154,6 +154,8 @@
                 *ngIf="columns"
                 [post]="postData"
                 [columns]="columns"
+                [disabled]="postData?.task?._shuttle_group == groupId"
+                [shuttle]="false"
                 (moveTask)="moveTaskToColumn($event)">
             </app-change-column>
             <!-- Change task column ends -->
@@ -180,6 +182,26 @@
 
         </div>
         <!-- Status ends -->
+
+        <!-- Shuttle Status starts -->
+        <div class="content-box" *ngIf="postData?.type === 'task' && postData?.task?.shuttle_type">
+          <p class="box-title">Shuttle Status</p>
+
+
+          <p class="box-title" *ngIf="columns" style="margin-top: 18px;">Section</p>
+          <!-- Change task column starts -->
+          <app-change-column
+              class="ml-1"
+              *ngIf="shuttleColumns"
+              [post]="postData"
+              [columns]="shuttleColumns"
+              [disabled]="postData?.task?._shuttle_group != groupId"
+              [shuttle]="true"
+              (moveTask)="moveShuttleTaskToSection($event)">
+          </app-change-column>
+          <!-- Change task column ends -->
+        </div>
+        <!-- Shuttle Status ends -->
 
         <!-- Dates starts -->
         <div class="content-box" *ngIf="postData?.type === 'task' || postData.type === 'event'">
@@ -323,7 +345,8 @@
           (transformIntoNorthStarEmitter)="transformToNorthStart($event)"
           (transformIntoMilestoneEmitter)="transformToMileStone($event)"
           (transformIntoIdeaEmitter)="transformToIdea($event)"
-          ></app-task-actions>
+          (shuttleGroupEmitter)="setShuttleGroup($event)">
+        </app-task-actions>
     </div>
     <!-- Top Right Section ends -->
 </div>

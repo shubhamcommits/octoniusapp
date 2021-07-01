@@ -33,6 +33,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Output() transformIntoNorthStarEmitter = new EventEmitter();
   @Output() transformIntoMilestoneEmitter = new EventEmitter();
   @Output() transformIntoIdeaEmitter = new EventEmitter();
+  @Output() shuttleGroupEmitter = new EventEmitter();
 
   userGroups = [];
   transferAction = '';
@@ -40,6 +41,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   menuFor:string='Task';
   searchText = '';
   groupMembers = [];
+  shuttleGroups: any = [];
 
   parentTask: boolean = false;
   isChild: boolean = false;
@@ -99,6 +101,16 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
             this.userGroups = groups;
           });
         })
+        .catch(() => {
+          // If the function breaks, then catch the error and console to the application
+          this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        });
+    }
+
+    if (this.postData.type === 'task' && this.groupData && this.groupData?.shuttle_type) {
+      const groupId = (this.groupData?._id == this.postData?.task?._shuttle_group) ? null : this.groupData?._id;
+      // Fetches shuttle groups from the server
+      this.shuttleGroups = await this.publicFunctions.getShuttleGroups(this.groupData?._workspace, groupId)
         .catch(() => {
           // If the function breaks, then catch the error and console to the application
           this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
@@ -535,5 +547,22 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     this.transformIntoMilestoneEmitter.emit(this.isMilestone);
   }
 
-
+  async shuttleTask(groupId) {
+    this.utilityService.asyncNotification('Please wait we are saving the task...', new Promise((resolve, reject) => {
+      this.postService.selectShuttleGroup(this.postData?._id, groupId)
+        .then(async (res) => {
+          this.postData = res['post'];
+          this.shuttleGroupEmitter.emit({
+              shuttle_group: (this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group),
+              shuttle_section: this.postData?.task?._shuttle_section,
+              shuttle_type: this.postData?.task?.shuttle_type
+            });
+          this.postData.task._shuttle_group = this.postData?.task?._shuttle_group?._id;
+          resolve(this.utilityService.resolveAsyncPromise(`👍 Task saved!`));
+        })
+        .catch((error) => {
+          reject(this.utilityService.rejectAsyncPromise(`Error while saving the task!`));
+        });
+    }));
+  }
 }

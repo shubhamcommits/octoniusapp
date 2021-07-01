@@ -557,4 +557,16 @@ export class PostService {
       vote: voteValue
     }).toPromise();
   }
+
+  selectShuttleGroup(postId: string, shuttleGroupId: string) {
+    return this._http.put(this.baseURL + `/${postId}/selectShuttleGroup`, {
+        shuttleGroupId: shuttleGroupId
+      }).toPromise();
+  }
+
+  selectShuttleSection(postId: string, shuttleSectionId: string) {
+    return this._http.put(this.baseURL + `/${postId}/selectShuttleSection`, {
+        shuttleSectionId: shuttleSectionId
+      }).toPromise();
+  }
 }
