@@ -82,7 +82,7 @@
           </mat-slide-toggle><br>
         </div>
 
-        <div class="mt-5 mb-5 pt-3">
+        <div class="mt-5 mb-5 pt-3" *ngIf="shuttleTasksModuleAvailable">
           <mat-slide-toggle color="primary"
               [checked]="groupData.shuttle_type"
               [name]="'enabled_shuttle_type'"

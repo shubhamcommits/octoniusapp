@@ -1345,4 +1345,18 @@ export class PublicFunctions {
     getHighestDate(posts: any) {
       return moment(Math.max(...posts.map(post => moment(post.task.due_to))));
     }
+
+    async isShuttleTasksModuleAvailable() {
+      const workspace: any = await this.getCurrentWorkspace();
+      const managementPortalService = this.injector.get(ManagementPortalService);
+      return managementPortalService.isShuttleTasksModuleAvailable(workspace?._id, workspace?.management_private_api_key).then(
+        (res) => {
+          if ( !res || !res['status'] ) {
+            return false;
+          }
+          return true;
+        }).catch((err) => {
+          return false;
+        });
+    }
 }

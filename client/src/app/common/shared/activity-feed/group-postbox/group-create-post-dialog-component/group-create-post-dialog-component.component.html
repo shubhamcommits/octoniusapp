@@ -186,7 +186,7 @@
         <!-- Status ends -->
 
         <!-- Shuttle Status starts -->
-        <div class="content-box" *ngIf="postData?.type === 'task' && postData?.task?.shuttle_type">
+        <div class="content-box" *ngIf="isShuttleTasksModuleAvailable && postData?.type === 'task' && postData?.task?.shuttle_type">
           <p class="box-title" *ngIf="groupData?._id == shuttleGroup?._id" style="float: left; margin-top: 10px;">Shuttle from {{ shuttleGroup?.group_name }}</p>
           <p class="box-title" *ngIf="groupData?._id != shuttleGroup?._id" style="float: left; margin-top: 10px;">Shuttle to {{ shuttleGroup?.group_name }}</p>
           <app-secured-image
@@ -359,6 +359,7 @@
           [isNorthStar]="(postData?.task?.isNorthStar) ? postData?.task?.isNorthStar : false"
           [isIdea]="(postData?.task?.is_idea) ? postData?.task?.is_idea : false"
           [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+          [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
           [isMilestone]="(postData?.task?.is_milestone) ? postData?.task?.is_milestone : false"
           (parentTaskSelectedEmitter)="onParentTaskSelected($event)"
           (dependencyTaskSelectedEmitter)="onDependencyTaskSelected($event)"

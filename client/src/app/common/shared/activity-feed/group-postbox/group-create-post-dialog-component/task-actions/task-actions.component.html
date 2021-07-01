@@ -166,7 +166,7 @@
   <!-- North Start Switch ends -->
 
   <!-- Idea Switch starts -->
-  <div class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="isIdeaModuleAvailable" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
     Idea
     <mat-slide-toggle color="primary" style=" margin-left: 15px;"
@@ -193,7 +193,7 @@
 
 
   <!-- Select Shuttle group starts -->
-  <div *ngIf="groupData?.shuttle_type" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <i class="material-icons-outlined">published_with_changes</i>
     <mat-form-field appearance="fill" style="margin-left: 40px;">
       <mat-select

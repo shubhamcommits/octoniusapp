@@ -38,6 +38,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   title: string = '';
   barTags = [];
   isIdeaModuleAvailable;
+  isShuttleTasksModuleAvailable;
 
   // Quill Data Object
   quillData: any;
@@ -134,16 +135,20 @@ export class GroupCreatePostDialogComponent implements OnInit {
       this.columns = null;
     }
 
-    // If this is a shuttle task from other group, we will need to switch the sections
-    if (this.postData?.task?.shuttle_type && this.groupId == this.postData?.task?._shuttle_group) {
-      this.shuttleColumns = await this.publicFunctions.getAllColumns(this.groupId);
-      this.columns = await this.publicFunctions.getAllColumns(this.postData?._group?._id || this.postData?._group);
-    } else if (this.postData?.task?.shuttle_type && this.postData?.task?._shuttle_group) {
-      this.shuttleColumns = await this.publicFunctions.getAllColumns(this.postData?.task?._shuttle_group);
-    }
+    this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
 
-    if (this.postData?.task?.shuttle_type) {
-      this.shuttleGroup = await this.publicFunctions.getGroupDetails(this.postData?.task?._shuttle_group);
+    if (this.isShuttleTasksModuleAvailable) {
+      // If this is a shuttle task from other group, we will need to switch the sections
+      if (this.postData?.task?.shuttle_type && this.groupId == this.postData?.task?._shuttle_group) {
+        this.shuttleColumns = await this.publicFunctions.getAllColumns(this.groupId);
+        this.columns = await this.publicFunctions.getAllColumns(this.postData?._group?._id || this.postData?._group);
+      } else if (this.postData?.task?.shuttle_type && this.postData?.task?._shuttle_group) {
+        this.shuttleColumns = await this.publicFunctions.getAllColumns(this.postData?.task?._shuttle_group);
+      }
+
+      if (this.postData?.task?.shuttle_type) {
+        this.shuttleGroup = await this.publicFunctions.getGroupDetails(this.postData?.task?._shuttle_group);
+      }
     }
 
     this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);

@@ -34,6 +34,8 @@ export class GroupAdminComponent implements OnInit {
 
   enabledShuttleType: boolean;
 
+  shuttleTasksModuleAvailable: boolean = false;
+
   groupSections: any = [];
 
   constructor(
@@ -56,6 +58,8 @@ export class GroupAdminComponent implements OnInit {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.groupSections = await this.publicFunctions.getAllColumns(this.groupId);
+
+    this.shuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
   }
 
   // Check if the data provided is not empty{}

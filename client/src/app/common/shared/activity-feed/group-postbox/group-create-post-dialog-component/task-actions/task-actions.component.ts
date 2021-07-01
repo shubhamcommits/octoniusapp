@@ -24,6 +24,8 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   @Input() isNorthStar = false;
   @Input() isMilestone = false;
   @Input() isIdea = false;
+  @Input() isIdeaModuleAvailable = false;
+  @Input() isShuttleTasksModuleAvailable = false;
 
   @Output() parentTaskSelectedEmitter = new EventEmitter();
   @Output() dependencyTaskSelectedEmitter = new EventEmitter();

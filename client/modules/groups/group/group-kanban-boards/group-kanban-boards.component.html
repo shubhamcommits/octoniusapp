@@ -10,7 +10,7 @@
                 <div class="column-title" cdkDragHandle>
                     <p class="text-capitalize" [matTooltip]="column?.title">
                       <!-- SHUTTLE COLUMN -->
-                      <i *ngIf="column?._id == (groupData?._shuttle_section?._id || groupData?._shuttle_section)" class="material-icons-outlined">published_with_changes</i>
+                      <i *ngIf="isShuttleTasksModuleAvailable && column?._id == (groupData?._shuttle_section?._id || groupData?._shuttle_section)" class="material-icons-outlined">published_with_changes</i>
 
                       <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type">
                       {{ column?.title | truncatetext:20 }}
