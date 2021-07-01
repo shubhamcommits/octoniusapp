@@ -486,4 +486,31 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   onTaskClonned(data) {
     this.taskClonnedEvent.emit(data);
   }
+
+  getTaskClass(status: string, isNorthStar: boolean, isMilestone: boolean, isShuttleTask: boolean, shuttleStatus: string) {
+    let taskClass = '';
+    if (isShuttleTask) {
+      if (shuttleStatus === 'to do') {
+        taskClass = 'status-todo';
+      } else if (shuttleStatus === 'in progress') {
+        taskClass = 'status-inprogress';
+      } else if (shuttleStatus === 'done') {
+        taskClass = 'status-done';
+      }
+    } else {
+      if (status === 'to do') {
+        taskClass = 'status-todo';
+      } else if (status === 'in progress') {
+        taskClass = 'status-inprogress';
+      } else if (status === 'done') {
+        taskClass = 'status-done';
+      }
+    }
+
+    if (isMilestone) {
+      taskClass = taskClass + ' milestone'
+    }
+
+    return (isNorthStar) ? taskClass + ' north-star' : taskClass;
+  }
 }

@@ -1,4 +1,4 @@
-<div class="task media" [ngClass]="getTaskClass(task?.task?.status, task?.task?.isNorthStar, task?.task?.is_milestone)">
+<div class="task media" [ngClass]="getTaskClass(task?.task?.status, task?.task?.isNorthStar, task?.task?.is_milestone, (task?.task?.shuttle_type && task?.task?._shuttle_group == groupId), task?.task?.shuttle_status)">
   <div style="display: flex;">
     <div class="media-body">
         <h5 class="mt-0 mb-1 kanban-card-title">{{ task?.title }}</h5>
