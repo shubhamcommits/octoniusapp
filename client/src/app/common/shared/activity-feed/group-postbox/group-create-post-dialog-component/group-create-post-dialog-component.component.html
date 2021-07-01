@@ -187,8 +187,17 @@
 
         <!-- Shuttle Status starts -->
         <div class="content-box" *ngIf="postData?.type === 'task' && postData?.task?.shuttle_type">
+          <p class="box-title" *ngIf="groupData?._id == shuttleGroup?._id" style="float: left; margin-top: 10px;">Shuttle from {{ shuttleGroup?.group_name }}</p>
+          <p class="box-title" *ngIf="groupData?._id != shuttleGroup?._id" style="float: left; margin-top: 10px;">Shuttle to {{ shuttleGroup?.group_name }}</p>
+          <app-secured-image
+            [imgURL]="shuttleGroup?.group_avatar"
+            [service]="'group'"
+            [styleClass]="'feed-avatar-small'"></app-secured-image>
+
+          <br /><br />
+
           <!-- Change shuttle task status starts -->
-          <p class="box-title">Shuttle Status</p>
+          <p class="box-title">Status</p>
           <app-task-status
               class="ml-1"
               [postId]="postData?._id"
@@ -202,7 +211,7 @@
           <!-- Change shuttle task status ends -->
 
 
-          <p class="box-title" *ngIf="shuttleColumns" style="margin-top: 18px;">Shuttle Section</p>
+          <p class="box-title" *ngIf="shuttleColumns" style="margin-top: 18px;">Section</p>
           <!-- Change task column starts -->
           <app-change-column
               class="ml-1"

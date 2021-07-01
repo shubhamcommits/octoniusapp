@@ -33,6 +33,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   customFields = [];
   selectedCFValues = [];
   groupData: any;
+  shuttleGroup: any;
   // Title of the Post
   title: string = '';
   barTags = [];
@@ -139,6 +140,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
       this.columns = await this.publicFunctions.getAllColumns(this.postData?._group?._id || this.postData?._group);
     } else if (this.postData?.task?.shuttle_type && this.postData?.task?._shuttle_group) {
       this.shuttleColumns = await this.publicFunctions.getAllColumns(this.postData?.task?._shuttle_group);
+    }
+
+    if (this.postData?.task?.shuttle_type) {
+      this.shuttleGroup = await this.publicFunctions.getGroupDetails(this.postData?.task?._shuttle_group);
     }
 
     this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
