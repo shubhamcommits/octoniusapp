@@ -151,14 +151,14 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
       this.tasks = this.tasks.concat(shuttleTasks);
     }
 
-    if (this.groupData.enabled_rights) {
-      this.initSections();
-    }
-
     /**
      * Sort the tasks into their respective columns
      */
-    this.sortTasksInColumns(this.columns, this.tasks);
+    await this.sortTasksInColumns(this.columns, this.tasks);
+
+    if (this.groupData.enabled_rights) {
+      this.initSections();
+    }
 
     /**
      * Obtain the custom fields
@@ -235,7 +235,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
       let tasks = [];
 
       // Filtering other tasks
-      this.tasks.forEach(task => {
+      column.tasks.forEach(task => {
         if (task.bars !== undefined && task.bars.length > 0) {
           task.bars.forEach(bar => {
             if (bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
