@@ -50,6 +50,7 @@ export class GroupAdminComponent implements OnInit {
     this.groupData = await this.publicFunctions.getCurrentGroup();
     this.enabledRights = this.groupData.enabled_rights;
     this.enabledProjectType = this.groupData.project_type;
+    this.enabledShuttleType = this.groupData.shuttle_type;
 
     // Fetch Current User
     this.userData = await this.publicFunctions.getCurrentUser();

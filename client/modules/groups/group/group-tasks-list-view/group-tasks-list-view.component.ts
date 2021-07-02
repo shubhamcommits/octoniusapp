@@ -68,7 +68,7 @@ export class GroupTasksListViewComponent implements OnInit, OnChanges {
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    this.initSections();
+    //this.initSections();
     for (const propName in changes) {
       const change = changes[propName];
       const to = change.currentValue;
@@ -80,7 +80,7 @@ export class GroupTasksListViewComponent implements OnInit, OnChanges {
       }
     }
   }
-
+/*
   initSections() {
     this.sections.forEach(section => {
       let tasks = [];
@@ -101,7 +101,7 @@ export class GroupTasksListViewComponent implements OnInit, OnChanges {
     });
 
   }
-
+*/
   /**
    * This function is responsible for fetching the post
    * @param post
@@ -199,7 +199,7 @@ export class GroupTasksListViewComponent implements OnInit, OnChanges {
         }
       }
 
-      this.initSections()
+      //this.initSections()
     }
   }
 
