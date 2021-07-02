@@ -25,7 +25,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   @Input() filteringData: any;
   @Input() isAdmin = false;
   @Input() customFields = [];
-  @Input() isIdeaModuleAvailable;
+  @Input() isIdeaModuleAvailable = false;
 
   @Output() taskChangeSectionEmitter = new EventEmitter();
   @Output() taskClonnedEvent = new EventEmitter();

@@ -24,7 +24,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   customFields: any = [];
   sortingBit:String = 'none';
   currentWorkspace: any;
-  ideaModuleAvailable = false;
+  isIdeaModuleAvailable = false;
+  isShuttleTasksModuleAvailable = false;
 
   filteringBit:String = 'none'
   filteringData:String = ''
@@ -120,7 +121,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
     this.currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
 
-    this.ideaModuleAvailable = await this.publicFunctions.checkIdeaStatus(this.currentWorkspace?._id, this.currentWorkspace?.management_private_api_key);
+    this.isIdeaModuleAvailable = await this.publicFunctions.checkIdeaStatus(this.currentWorkspace?._id, this.currentWorkspace?.management_private_api_key);
+    this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
 
     // Set the initial view
     if (this.userData && this.userData.stats && this.userData.stats.lastTaskView) {
@@ -175,7 +177,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
       const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
       const post = await this.publicFunctions.getPost(postId);
-      this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.ideaModuleAvailable, this.columns);
+      this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.isIdeaModuleAvailable, this.columns);
     }
   }
 

@@ -13,7 +13,7 @@ import { ColumnService } from 'src/shared/services/column-service/column.service
   templateUrl: './group-tasks-list-view.component.html',
   styleUrls: ['./group-tasks-list-view.component.scss']
 })
-export class GroupTasksListViewComponent implements OnInit, OnChanges {
+export class GroupTasksListViewComponent implements OnChanges {
 
   // Current Group Data
   @Input() groupData: any;
@@ -27,6 +27,8 @@ export class GroupTasksListViewComponent implements OnInit, OnChanges {
   @Input() filteringBit:any;
   @Input() filteringData:any;
   @Input() isAdmin = false;
+  @Input() isIdeaModuleAvailable = false;
+  @Input() isShuttleTasksModuleAvailable = false;
 
   @Output() taskClonnedEvent = new EventEmitter();
   @Output() newSectionEvent = new EventEmitter();
@@ -51,8 +53,6 @@ export class GroupTasksListViewComponent implements OnInit, OnChanges {
 
   displayedColumns = ['title', 'tags', 'asignee', 'due_to', 'nsPercent', 'star'];
 
-  isShuttleTasksModuleAvailable = false;
-
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -62,10 +62,6 @@ export class GroupTasksListViewComponent implements OnInit, OnChanges {
     private router: ActivatedRoute,
     public dialog: MatDialog
   ) { }
-
-  async ngOnInit() {
-    this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
-  }
 
   async ngOnChanges(changes: SimpleChanges) {
     //this.initSections();
@@ -80,28 +76,7 @@ export class GroupTasksListViewComponent implements OnInit, OnChanges {
       }
     }
   }
-/*
-  initSections() {
-    this.sections.forEach(section => {
-      let tasks = [];
 
-      // Filtering other tasks
-      section.tasks.forEach(task => {
-        if (task.bars !== undefined && task.bars.length > 0) {
-          task.bars.forEach(bar => {
-            if (bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
-              tasks.push(task);
-            }
-          });
-        } else {
-          tasks.push(task);
-        }
-      });
-      section.tasks = tasks;
-    });
-
-  }
-*/
   /**
    * This function is responsible for fetching the post
    * @param post
