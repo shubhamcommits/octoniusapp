@@ -27,6 +27,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   @Input() filteringData: any;
   @Input() sortingBit: String;
   @Input() filteringBit: String;
+  @Input() isIdeaModuleAvailable = false;
+  @Input() isShuttleTasksModuleAvailable = false;
 
   @Output() taskClonnedEvent = new EventEmitter();
   @Output() newSectionEvent = new EventEmitter();
@@ -52,8 +54,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   unchangedColumns: any;
 
   isMobile = false;
-  isIdeaModuleAvailable = false;
-  isShuttleTasksModuleAvailable = false;
 
   constructor(
     private router: ActivatedRoute,
@@ -72,8 +72,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
       this.flows = res['flows'];
     });
-
-    this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
 
     this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin' || this.userData?.role == 'manager'
                         || (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id)>=0);
