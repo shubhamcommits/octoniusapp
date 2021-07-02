@@ -46,7 +46,7 @@
 
   <!-- Settings -->
   <div class="card-tile">
-    <div class="card-block" style="float: left;">
+    <div class="card-block">
         <h6><b>Settings</b></h6>
 
         <div class="mt-5 mb-5 pt-3">
@@ -89,7 +89,7 @@
               (change)="saveSettings($event)"
               [(ngModel)]="enabledShuttleType">
             <h6><b>Enable Shuttle Features?</b></h6>
-            <p class="card-text"> This will enable all advanced project related funtionalities like: timeline, project planning etc.</p>
+            <p class="card-text"> <img src="assets/images/icon-task-shuttle.svg" style="width: 32px"> Task Shuttle allows your group to receive tasks from other groups. Select the section that will receive all Shuttle Tasks.</p>
           </mat-slide-toggle>
 
           <br *ngIf="groupData?.shuttle_type" /><br *ngIf="groupData?.shuttle_type" />
@@ -104,8 +104,6 @@
         </div>
     </div>
 
-    <img src="assets/images/group_settings_placeholder.svg" alt="Invite a guest" style="float: right;"/>
-    <div style="clear: both;"></div>
   </div>
 
   <!-- Delete Group Component starts -->
