@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, Injector, ViewChild, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Injector, ViewChild, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import moment from 'moment/moment';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -13,7 +13,7 @@ import { ColumnService } from 'src/shared/services/column-service/column.service
   templateUrl: './group-tasks-list-view.component.html',
   styleUrls: ['./group-tasks-list-view.component.scss']
 })
-export class GroupTasksListViewComponent implements OnChanges {
+export class GroupTasksListViewComponent implements OnInit, OnChanges {
 
   // Current Group Data
   @Input() groupData: any;
@@ -38,9 +38,6 @@ export class GroupTasksListViewComponent implements OnChanges {
   // Today's date object
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
-  // PUBLIC FUNCTIONS
-  public publicFunctions = new PublicFunctions(this.injector);
-
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot.queryParamMap.get('group');
 
@@ -54,6 +51,11 @@ export class GroupTasksListViewComponent implements OnChanges {
 
   displayedColumns = ['title', 'tags', 'asignee', 'due_to', 'nsPercent', 'star'];
 
+  isShuttleTasksModuleAvailable = false;
+
+  // PUBLIC FUNCTIONS
+  public publicFunctions = new PublicFunctions(this.injector);
+
   constructor(
     public utilityService: UtilityService,
     private injector: Injector,
@@ -61,8 +63,12 @@ export class GroupTasksListViewComponent implements OnChanges {
     public dialog: MatDialog
   ) { }
 
+  async ngOnInit() {
+    this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+  }
+
   async ngOnChanges(changes: SimpleChanges) {
-    this.initSections();
+    //this.initSections();
     for (const propName in changes) {
       const change = changes[propName];
       const to = change.currentValue;
@@ -74,7 +80,7 @@ export class GroupTasksListViewComponent implements OnChanges {
       }
     }
   }
-
+/*
   initSections() {
     this.sections.forEach(section => {
       let tasks = [];
@@ -95,7 +101,7 @@ export class GroupTasksListViewComponent implements OnChanges {
     });
 
   }
-
+*/
   /**
    * This function is responsible for fetching the post
    * @param post
@@ -193,7 +199,7 @@ export class GroupTasksListViewComponent implements OnChanges {
         }
       }
 
-      this.initSections()
+      //this.initSections()
     }
   }
 

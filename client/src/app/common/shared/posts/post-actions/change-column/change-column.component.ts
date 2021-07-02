@@ -1,4 +1,5 @@
-import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter, Injector } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-change-column',
@@ -7,22 +8,34 @@ import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core
 })
 export class ChangeColumnComponent implements OnChanges {
 
-  constructor() { }
-
   // Post Input Variable
   @Input('post') post: any;
 
   // Columns Input Variable
   @Input('columns') columns: any;
 
+  @Input() disabled: boolean = false;
+
+  @Input() shuttle: boolean = false;
+
   // Move Task Output Emitter
   @Output('moveTask') moveTask = new EventEmitter();
 
   selectedColumn: any;
 
-  ngOnChanges() {
-    const columnInex = this.columns.findIndex(column => column._id == (this.post?.task?._column._id || this.post?.task?._column));
-    this.selectedColumn = this.columns[columnInex];
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(private injector: Injector) { }
+
+  async ngOnChanges() {
+    let columnIndex = -1;
+    if (this.shuttle) {
+      columnIndex = this.columns.findIndex(column => column._id == this.post?.task?._shuttle_section);
+    } else {
+      columnIndex = this.columns.findIndex(column => column._id == (this.post?.task?._column._id || this.post?.task?._column));
+    }
+    this.selectedColumn = this.columns[columnIndex];
   }
 
   /**

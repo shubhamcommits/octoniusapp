@@ -79,6 +79,12 @@ routes.put('/:groupId/settings/enableRights', group.enableRights);
 // PUT - Enable/Disable Group Project Type
 routes.put('/:groupId/settings/enabledProjectType', group.enabledProjectType);
 
+// PUT - Enable/Disable Group Shuttle Type
+routes.put('/:groupId/settings/enabledShuttleType', group.enabledShuttleType);
+
+// PUT - Enable/Disable Group Shuttle Type
+routes.put('/:groupId/settings/selectShuttleSection', group.selectShuttleSection);
+
 // PUT - Add bar to group
 routes.put('/:groupId/addBar', group.addBar);
 
@@ -114,6 +120,8 @@ routes.get('/:groupId/tasks-between-days', group.getTasksBetweenDates);
 // PUT - Updates the widgets to show in the group
 routes.put('/:groupId/saveSelectedWidgets', group.saveSelectedWidgets);
 
+// GET - Get group shuttle tasks
+routes.get('/:groupId/shuttleTasks', group.getShuttleTasks);
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

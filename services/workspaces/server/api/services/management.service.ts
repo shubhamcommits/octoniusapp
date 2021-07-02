@@ -209,4 +209,22 @@ export class ManagementService {
             throw (err);
         }
     }
+
+    /**
+     * This function is responsible for check if the workspace has shuttel tasks mofule active
+     * @param workspaceId
+     */
+     isShuttleTasksModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
+        try {
+            return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/shuttle`, {
+                params: {
+                    API_KEY: mgmtApiPrivateKey
+                },
+                
+            });
+
+        } catch (err) {
+            throw (err);
+        }
+    }
 }

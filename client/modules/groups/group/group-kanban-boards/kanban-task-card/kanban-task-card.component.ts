@@ -15,6 +15,7 @@ export class KanbanTaskCardComponent {
   @Input() isDelay: Boolean;
   @Input() task: any;
   @Input() isIdeaModuleAvailable;
+  @Input() groupId: string
 
   // Current User Data
   userData : any = {};
@@ -55,14 +56,24 @@ export class KanbanTaskCardComponent {
     return 'label-priority ' + priority.toLocaleLowerCase();
   }
 
-  getTaskClass(status, isNorthStar, isMilestone) {
+  getTaskClass(status: string, isNorthStar: boolean, isMilestone: boolean, isShuttleTask: boolean, shuttleStatus: string) {
     let taskClass = '';
-    if (status === 'to do') {
-      taskClass = 'status-todo';
-    } else if (status === 'in progress') {
-      taskClass = 'status-inprogress';
-    } else if (status === 'done') {
-      taskClass = 'status-done';
+    if (isShuttleTask) {
+      if (shuttleStatus === 'to do') {
+        taskClass = 'status-todo';
+      } else if (shuttleStatus === 'in progress') {
+        taskClass = 'status-inprogress';
+      } else if (shuttleStatus === 'done') {
+        taskClass = 'status-done';
+      }
+    } else {
+      if (status === 'to do') {
+        taskClass = 'status-todo';
+      } else if (status === 'in progress') {
+        taskClass = 'status-inprogress';
+      } else if (status === 'done') {
+        taskClass = 'status-done';
+      }
     }
 
     if (isMilestone) {

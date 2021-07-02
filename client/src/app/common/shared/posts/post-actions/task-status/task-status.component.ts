@@ -19,6 +19,8 @@ export class TaskStatusComponent implements OnInit {
   @Input() groupId: string;
   @Input() userId: string;
   @Input() status: string;
+  @Input() disabled: string;
+  @Input() shuttleType: boolean = false;
 
   // Move Task Output Emitter
   @Output('status') statusEmitter = new EventEmitter();
@@ -33,23 +35,26 @@ export class TaskStatusComponent implements OnInit {
    * This function is used to change the status of a task post
    * @param status
    */
-  changeStatus(status: string){
-
-    this.utilityService.asyncNotification('Please wait we are updating the status of the task...',
-      new Promise((resolve, reject) => {
-        // Call HTTP Request to change the request
-        this.publicFunctions.changeTaskStatus(this.postId, status, this.userId, this.groupId)
-          .then((res) => {
-            this.status = status;
-            // Emit the status to other parent components
-            this.statusEmitter.emit(status)
-            resolve(this.utilityService.resolveAsyncPromise(`Task status marked as ${status}!`))
-          })
-          .catch(() => {
-            this.statusEmitter.emit(this.status)
-            reject(this.utilityService.rejectAsyncPromise(`Unable to change the status, please try again!`))
-          });
-      }));
+  changeStatus(status: string) {
+    if (!this.shuttleType) {
+      this.utilityService.asyncNotification('Please wait we are updating the status of the task...',
+        new Promise((resolve, reject) => {
+          // Call HTTP Request to change the request
+          this.publicFunctions.changeTaskStatus(this.postId, status, this.userId, this.groupId)
+            .then((res) => {
+              this.status = status;
+              // Emit the status to other parent components
+              this.statusEmitter.emit(status)
+              resolve(this.utilityService.resolveAsyncPromise(`Task status marked as ${status}!`))
+            })
+            .catch(() => {
+              this.statusEmitter.emit(this.status)
+              reject(this.utilityService.rejectAsyncPromise(`Unable to change the status, please try again!`))
+            });
+        }));
+    } else {
+      this.statusEmitter.emit(status)
+    }
   }
 
 }

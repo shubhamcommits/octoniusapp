@@ -166,7 +166,7 @@
   <!-- North Start Switch ends -->
 
   <!-- Idea Switch starts -->
-  <div class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="isIdeaModuleAvailable" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
     Idea
     <mat-slide-toggle color="primary" style=" margin-left: 15px;"
@@ -192,5 +192,22 @@
   <!-- Milestone Switch ends -->
 
 
+  <!-- Select Shuttle group starts -->
+  <div *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8; margin-left: 15px;">
+    <img src="assets/images/icon-task-shuttle.svg" style="width: 24px"> 
+    <mat-form-field appearance="fill" style="margin-left: 15px;">
+      <mat-select
+          [disabled]="postData?.task?._shuttle_group == groupData._id"
+          (selectionChange)="shuttleTask($event.value)"
+          [(value)]="postData.task._shuttle_group">
+        <mat-option *ngFor="let group of shuttleGroups; let j=index" [value]="group._id">{{ group.group_name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
+    <!-- Clean field starts -->
+    <i *ngIf="postData?.task?._shuttle_group" (click)="shuttleTask(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <!-- Clean field ends -->
+    <p>With Task Shuttle you can assign the task to another group.</p>
+  </div>
+  <!-- Select Shuttle group ends -->
 </div>

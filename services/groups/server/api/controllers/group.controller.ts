@@ -255,9 +255,6 @@ export class GroupController {
                 .populate({
                     path: '_members',
                     select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
-                    // options: {
-                    //     limit: 10
-                    // },
                     match: {
                         active: true
                     }
@@ -265,9 +262,6 @@ export class GroupController {
                 .populate({
                     path: '_admins',
                     select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
-                    // options: {
-                    //     limit: 10
-                    // },
                     match: {
                         active: true
                     }
@@ -933,8 +927,6 @@ export class GroupController {
         // Fetch the value from fileHandler middleware
         const value = req.body['value'];
 
-        const property = { propertyName: value };
-
         try {
 
             // Find the group and update their respective group avatar
@@ -944,7 +936,7 @@ export class GroupController {
                 share_files: value
             }, {
                 new: true
-            }).select('settings');
+            }).lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -963,8 +955,6 @@ export class GroupController {
         // Fetch the value from fileHandler middleware
         const value = req.body['value'];
 
-        const property = { propertyName: value };
-
         try {
 
             // Find the group and update their respective group avatar
@@ -974,7 +964,7 @@ export class GroupController {
                 enabled_rights: value
             }, {
                 new: true
-            }).select('settings');
+            }).lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -993,8 +983,6 @@ export class GroupController {
         // Fetch the value from fileHandler middleware
         const value = req.body['value'];
 
-        const property = { propertyName: value };
-
         try {
             // Find the group and update their respective group avatar
             const group = await Group.findByIdAndUpdate({
@@ -1003,7 +991,61 @@ export class GroupController {
                 project_type: value
             }, {
                 new: true
-            }).select('settings');
+            }).lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group settings updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async enabledShuttleType(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the value from fileHandler middleware
+        const value = req.body['value'];
+
+        try {
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                shuttle_type: value
+            }, {
+                new: true
+            }).lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group settings updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async selectShuttleSection(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the value from fileHandler middleware
+        const columnId = req.body['columnId'];
+
+        try {
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                _shuttle_section: columnId
+            }, {
+                new: true
+            }).lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -1451,6 +1493,40 @@ export class GroupController {
             });
         } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function fetches the posts of the group with specific dates
+     * @param req
+     */
+    async getShuttleTasks(req: Request, res: Response) {
+        try {
+
+            const { groupId } = req.params;
+
+            // Find the Group based on the groupId
+            const posts = await Post.find({
+                $and: [
+                    { type: 'task' },
+                    { 'task.shuttle_type': true },
+                    { 'task._shuttle_group': groupId }
+                ]
+            })
+            .populate({ path: '_group', select: 'group_name group_avatar workspace_name' })
+            .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role email' })
+            .populate({ path: '_assigned_to', select: 'first_name last_name profile_pic role email' })
+            .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+            .populate({ path: '_followers', select: 'first_name last_name profile_pic role email' })
+            .lean() || [];
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Posts found!',
+                posts: posts
+            });
+        } catch (err) {
+            return sendError(res, err);
         }
     };
 }

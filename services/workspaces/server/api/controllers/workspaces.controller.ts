@@ -760,4 +760,62 @@ export class WorkspaceController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    async getShuttleGroups(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { workspaceId } = req.params;
+            const { groupId } = req.query;
+
+            // If either workspaceId or userId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide both workspaceId and userId as the query parameter!'
+                });
+            }
+            
+            let groups;
+            if (groupId != 'null') {
+                // Finding groups for the user of which they are a part of
+                groups = await Group.find({
+                    $and: [
+                        { group_name: { $ne: 'personal' } },
+                        { group_name: { $ne: 'private' } },
+                        { _workspace: workspaceId, },
+                        { shuttle_type: true },
+                        { _shuttle_section: { $ne: null } },
+                        { _id: { $ne: groupId } }
+                    ]
+                })
+                .sort('group_name')
+                .lean() || [];
+            } else {
+                // Finding groups for the user of which they are a part of
+                groups = await Group.find({
+                    $and: [
+                        { group_name: { $ne: 'personal' } },
+                        { group_name: { $ne: 'private' } },
+                        { _workspace: workspaceId, },
+                        { shuttle_type: true },
+                        { _shuttle_section: { $ne: null } }
+                    ]
+                })
+                .sort('group_name')
+                .lean() || [];
+            }
+
+            // If there are no groups then we send error response
+            if (!groups) {
+                return sendError(res, new Error('Oops, no groups found!'), 'Group not found, Invalid workspaceId or userId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `${groups.length} groups found.`,
+                groups
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
 }

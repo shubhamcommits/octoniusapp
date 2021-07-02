@@ -2,6 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import { FlowService, PostService, TagsService } from '../services';
 import moment from "moment/moment";
 import { sendErr } from '../utils/sendError';
+import { Group, Post } from "../models";
 
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -1594,4 +1595,117 @@ export class PostController {
             post: post
         });
     }
+
+    async selectShuttleGroup(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId
+        const { postId } = req.params;
+
+        // Fetch the value from fileHandler middleware
+        const shuttleGroupId = req.body['shuttleGroupId'];
+
+        try {
+            // Find the group and update
+            let post;
+            
+            if (shuttleGroupId) {
+                const group = await Group.findById({ _id: shuttleGroupId }).lean();
+
+                post = await Post.findByIdAndUpdate({
+                        _id: postId
+                    }, {
+                        'task.shuttle_type': true,
+                        'task._shuttle_group': shuttleGroupId,
+                        'task._shuttle_section': group._shuttle_section,
+                        'task.shuttle_status': 'to do'
+                    }, {
+                        new: true
+                    }).lean();
+            } else {
+                post = await Post.findByIdAndUpdate({
+                        _id: postId
+                    }, {
+                        'task.shuttle_type': false,
+                        'task._shuttle_group': null,
+                        'task._shuttle_section': null,
+                        'task.shuttle_status': ''
+                    }, {
+                        new: true
+                    }).lean();
+            }
+
+            post = await postService.populatePostProperties(post);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async selectShuttleSection(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId
+        const { postId } = req.params;
+
+        // Fetch the value from fileHandler middleware
+        const shuttleSectionId = req.body['shuttleSectionId'];
+
+        try {
+            // Find the group and update
+            let post;
+            
+            post = await Post.findByIdAndUpdate({
+                    _id: postId
+                }, {
+                    'task.shuttle_type': true,
+                    'task._shuttle_section': shuttleSectionId
+                }, {
+                    new: true
+                }).lean();
+
+            post = await postService.populatePostProperties(post);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async selectShuttleStatus(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId
+        const { postId } = req.params;
+
+        // Fetch the value from fileHandler middleware
+        const shuttleStatus = req.body['shuttleStatus'];
+
+        try {
+            // Find the group and update
+            let post;
+            
+            post = await Post.findByIdAndUpdate({
+                    _id: postId
+                }, {
+                    'task.shuttle_type': true,
+                    'task.shuttle_status': shuttleStatus
+                }, {
+                    new: true
+                }).lean();
+
+            post = await postService.populatePostProperties(post);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }

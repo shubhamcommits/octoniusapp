@@ -3,9 +3,8 @@ import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { CustomFieldsDialogComponent } from '../custom-fields-dialog/custom-fields-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { GroupBarComponent } from './group-bar/group-bar.component';
+import { GroupBarDialogComponent } from './group-bar-dialog/group-bar-dialog.component';
 
 @Component({
   selector: 'app-group-admin',
@@ -13,13 +12,6 @@ import { GroupBarComponent } from './group-bar/group-bar.component';
   styleUrls: ['./group-admin.component.scss']
 })
 export class GroupAdminComponent implements OnInit {
-
-  constructor(
-    private injector: Injector,
-    private utilityService: UtilityService,
-    public dialog: MatDialog,
-    private router: ActivatedRoute) { }
-
 
   // User Data Object
   userData: any;
@@ -40,6 +32,17 @@ export class GroupAdminComponent implements OnInit {
 
   enabledProjectType: boolean;
 
+  enabledShuttleType: boolean;
+
+  shuttleTasksModuleAvailable: boolean = false;
+
+  groupSections: any = [];
+
+  constructor(
+    private injector: Injector,
+    private utilityService: UtilityService,
+    public dialog: MatDialog,
+    private router: ActivatedRoute) { }
 
   async ngOnInit() {
 
@@ -47,11 +50,17 @@ export class GroupAdminComponent implements OnInit {
     this.groupData = await this.publicFunctions.getCurrentGroup();
     this.enabledRights = this.groupData.enabled_rights;
     this.enabledProjectType = this.groupData.project_type;
+    this.enabledShuttleType = this.groupData.shuttle_type;
+
     // Fetch Current User
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetch Current Workspace
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    this.groupSections = await this.publicFunctions.getAllColumns(this.groupId);
+
+    this.shuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
   }
 
   // Check if the data provided is not empty{}
@@ -100,6 +109,7 @@ export class GroupAdminComponent implements OnInit {
 
     // Group Service
     let groupService = this.injector.get(GroupService);
+
     if (selected.source.name === 'enabled_rights') {
       this.enabledRights = selected.checked;
       this.groupData.enabled_rights = selected.checked;
@@ -108,6 +118,11 @@ export class GroupAdminComponent implements OnInit {
     if (selected.source.name === 'enabled_project_type') {
       this.enabledProjectType = selected.checked;
       this.groupData.project_type = selected.checked;
+    }
+
+    if (selected.source.name === 'enabled_shuttle_type') {
+      this.enabledShuttleType = selected.checked;
+      this.groupData.shuttle_type = selected.checked;
     }
 
     utilityService.asyncNotification('Please wait we are saving the new setting...',
@@ -120,8 +135,28 @@ export class GroupAdminComponent implements OnInit {
         .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
       }));
   }
+
+  selectShuttleSection(column: any) {
+
+    // Utility Service
+    let utilityService = this.injector.get(UtilityService);
+
+    // Group Service
+    let groupService = this.injector.get(GroupService);
+
+    utilityService.asyncNotification('Please wait we are saving the new setting...',
+      new Promise((resolve, reject)=>{
+        groupService.selectShuttleSection(this.groupId, column)
+        .then((res)=> {
+          this.publicFunctions.sendUpdatesToGroupData(res['group']);
+          resolve(utilityService.resolveAsyncPromise('Settings saved to your group!'));
+        })
+        .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+      }));
+  }
+
   openBarModal(groupId){
-    const dialogRef = this.dialog.open(GroupBarComponent, {
+    const dialogRef = this.dialog.open(GroupBarDialogComponent, {
       width: '100%',
       height: '100%',
       disableClose: true,

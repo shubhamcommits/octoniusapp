@@ -149,4 +149,16 @@ export class ManagementPortalService {
       }
     }).toPromise();
   }
+
+  /**
+   * This function is responsible for check if the workspace has shuttle module active
+   * @param workspaceId
+   */
+   isShuttleTasksModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/shuttle`, {
+      params: {
+        mgmtApiPrivateKey: mgmtApiPrivateKey
+      }
+    }).toPromise();
+  }
 }
