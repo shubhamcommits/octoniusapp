@@ -28,6 +28,7 @@ export class GroupTasksListViewComponent implements OnChanges {
   @Input() filteringData:any;
   @Input() isAdmin = false;
   @Input() isIdeaModuleAvailable = false;
+  @Input() isShuttleTasksModuleAvailable = false;
 
   @Output() taskClonnedEvent = new EventEmitter();
   @Output() newSectionEvent = new EventEmitter();
