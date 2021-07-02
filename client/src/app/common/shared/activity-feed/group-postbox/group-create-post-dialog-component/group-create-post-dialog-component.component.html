@@ -135,10 +135,12 @@
 
         <!-- Status starts -->
         <div class="content-box" *ngIf="!postData?.task?.isNorthStar && postData?.type === 'task'">
-            <p class="box-title">Status</p>
+          <p class="box-title"> Task Status</p>
+            <div class="shuttle-box mb-2">
+              <p class=" mt-1" style="width:70px">Status</p>
             <!-- Change task status starts -->
             <app-task-status
-                class="ml-1"
+                class="ml-2"
                 [postId]="postData?._id"
                 [groupId]="postData?._group?._id || postData?._group"
                 [userId]="userData?._id"
@@ -148,11 +150,13 @@
                 (status)="changeTaskStatus($event)">
             </app-task-status>
             <!-- Change task status ends -->
+            </div>
 
-            <p class="box-title" *ngIf="columns" style="margin-top: 18px;">Section</p>
+          <div class="shuttle-box">
+            <p class="mt-1" *ngIf="columns" style="margin-top: 18px; width:70px">Section</p>
             <!-- Change task column starts -->
             <app-change-column
-                class="ml-1"
+                class="ml-2"
                 *ngIf="columns"
                 [post]="postData"
                 [columns]="columns"
@@ -161,6 +165,7 @@
                 (moveTask)="moveTaskToColumn($event)">
             </app-change-column>
             <!-- Change task column ends -->
+          </div>
 
             <p *ngIf="groupData && groupData.enabled_rights" class="box-title" style="margin-top: 18px;">BAR</p>
             <div *ngIf="groupData && groupData.enabled_rights" class="ml-1">
@@ -187,19 +192,24 @@
 
         <!-- Shuttle Status starts -->
         <div class="content-box" *ngIf="isShuttleTasksModuleAvailable && postData?.type === 'task' && postData?.task?.shuttle_type">
-          <p class="box-title" *ngIf="groupData?._id == shuttleGroup?._id" style="float: left; margin-top: 10px;">Shuttle from {{ shuttleGroup?.group_name }}</p>
-          <p class="box-title" *ngIf="groupData?._id != shuttleGroup?._id" style="float: left; margin-top: 10px;">Shuttle to {{ shuttleGroup?.group_name }}</p>
+          <p class="box-title"> <img src="assets/images/icon-task-shuttle.svg" style="width: 32px">  Task Shuttle</p>
+         
+          <div class="shuttle-box mt-2">
+            <p  *ngIf="groupData?._id == shuttleGroup?._id" style="margin-top: 7px;"> From <span class="text-primary">{{ shuttleGroup?.group_name }}</span></p>
+            <p  *ngIf="groupData?._id != shuttleGroup?._id" style="margin-top: 7px;"> To <span class="text-primary">{{ shuttleGroup?.group_name }}</span></p>
           <app-secured-image
             [imgURL]="shuttleGroup?.group_avatar"
             [service]="'group'"
             [styleClass]="'feed-avatar-small'"></app-secured-image>
 
-          <br /><br />
-
+          </div>
+        
+          <hr>
           <!-- Change shuttle task status starts -->
-          <p class="box-title">Status</p>
+          <div class="shuttle-box mb-2">
+            <p class=" mt-1" style="width:70px">Status</p>
           <app-task-status
-              class="ml-1"
+              class="ml-2"
               [postId]="postData?._id"
               [groupId]="postData?.task?._shuttle_group"
               [userId]="userData?._id"
@@ -208,13 +218,14 @@
               [shuttleType]="true"
               (status)="changeShuttleTaskStatus($event)">
           </app-task-status>
+          </div>
           <!-- Change shuttle task status ends -->
 
-
-          <p class="box-title" *ngIf="shuttleColumns" style="margin-top: 18px;">Section</p>
+          <div class="shuttle-box">
+            <p class="mt-1" *ngIf="shuttleColumns" style="width:70px">Section</p>
           <!-- Change task column starts -->
           <app-change-column
-              class="ml-1"
+              class="ml-2"
               *ngIf="shuttleColumns"
               [post]="postData"
               [columns]="shuttleColumns"
@@ -222,6 +233,8 @@
               [shuttle]="true"
               (moveTask)="moveShuttleTaskToSection($event)">
           </app-change-column>
+          </div>
+          
           <!-- Change task column ends -->
         </div>
         <!-- Shuttle Status ends -->
