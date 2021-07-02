@@ -135,28 +135,37 @@
 
         <!-- Status starts -->
         <div class="content-box" *ngIf="!postData?.task?.isNorthStar && postData?.type === 'task'">
-            <p class="box-title">Status</p>
+          <p class="box-title"> Task Status</p>
+            <div class="shuttle-box mb-2">
+              <p class=" mt-1" style="width:70px">Status</p>
             <!-- Change task status starts -->
             <app-task-status
-                class="ml-1"
+                class="ml-2"
                 [postId]="postData?._id"
                 [groupId]="postData?._group?._id || postData?._group"
                 [userId]="userData?._id"
                 [status]="postData?.task?.status"
+                [disabled]="postData?.task?._shuttle_group == groupId"
+                [shuttleType]="false"
                 (status)="changeTaskStatus($event)">
             </app-task-status>
             <!-- Change task status ends -->
+            </div>
 
-            <p class="box-title" *ngIf="columns" style="margin-top: 18px;">Section</p>
+          <div class="shuttle-box">
+            <p class="mt-1" *ngIf="columns" style="margin-top: 18px; width:70px">Section</p>
             <!-- Change task column starts -->
             <app-change-column
-                class="ml-1"
+                class="ml-2"
                 *ngIf="columns"
                 [post]="postData"
                 [columns]="columns"
+                [disabled]="postData?.task?._shuttle_group == groupId"
+                [shuttle]="false"
                 (moveTask)="moveTaskToColumn($event)">
             </app-change-column>
             <!-- Change task column ends -->
+          </div>
 
             <p *ngIf="groupData && groupData.enabled_rights" class="box-title" style="margin-top: 18px;">BAR</p>
             <div *ngIf="groupData && groupData.enabled_rights" class="ml-1">
@@ -180,6 +189,55 @@
 
         </div>
         <!-- Status ends -->
+
+        <!-- Shuttle Status starts -->
+        <div class="content-box" *ngIf="isShuttleTasksModuleAvailable && postData?.type === 'task' && postData?.task?.shuttle_type">
+          <p class="box-title"> <img src="assets/images/icon-task-shuttle.svg" style="width: 32px">  Task Shuttle</p>
+         
+          <div class="shuttle-box mt-2">
+            <p  *ngIf="groupData?._id == shuttleGroup?._id" style="margin-top: 7px;"> From <span class="text-primary">{{ shuttleGroup?.group_name }}</span></p>
+            <p  *ngIf="groupData?._id != shuttleGroup?._id" style="margin-top: 7px;"> To <span class="text-primary">{{ shuttleGroup?.group_name }}</span></p>
+          <app-secured-image
+            [imgURL]="shuttleGroup?.group_avatar"
+            [service]="'group'"
+            [styleClass]="'feed-avatar-small'"></app-secured-image>
+
+          </div>
+        
+          <hr>
+          <!-- Change shuttle task status starts -->
+          <div class="shuttle-box mb-2">
+            <p class=" mt-1" style="width:70px">Status</p>
+          <app-task-status
+              class="ml-2"
+              [postId]="postData?._id"
+              [groupId]="postData?.task?._shuttle_group"
+              [userId]="userData?._id"
+              [status]="postData?.task?.shuttle_status"
+              [disabled]="postData?.task?._shuttle_group != groupId"
+              [shuttleType]="true"
+              (status)="changeShuttleTaskStatus($event)">
+          </app-task-status>
+          </div>
+          <!-- Change shuttle task status ends -->
+
+          <div class="shuttle-box">
+            <p class="mt-1" *ngIf="shuttleColumns" style="width:70px">Section</p>
+          <!-- Change task column starts -->
+          <app-change-column
+              class="ml-2"
+              *ngIf="shuttleColumns"
+              [post]="postData"
+              [columns]="shuttleColumns"
+              [disabled]="postData?.task?._shuttle_group != groupId"
+              [shuttle]="true"
+              (moveTask)="moveShuttleTaskToSection($event)">
+          </app-change-column>
+          </div>
+          
+          <!-- Change task column ends -->
+        </div>
+        <!-- Shuttle Status ends -->
 
         <!-- Dates starts -->
         <div class="content-box" *ngIf="postData?.type === 'task' || postData.type === 'event'">
@@ -314,6 +372,7 @@
           [isNorthStar]="(postData?.task?.isNorthStar) ? postData?.task?.isNorthStar : false"
           [isIdea]="(postData?.task?.is_idea) ? postData?.task?.is_idea : false"
           [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+          [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
           [isMilestone]="(postData?.task?.is_milestone) ? postData?.task?.is_milestone : false"
           (parentTaskSelectedEmitter)="onParentTaskSelected($event)"
           (dependencyTaskSelectedEmitter)="onDependencyTaskSelected($event)"
@@ -323,7 +382,8 @@
           (transformIntoNorthStarEmitter)="transformToNorthStart($event)"
           (transformIntoMilestoneEmitter)="transformToMileStone($event)"
           (transformIntoIdeaEmitter)="transformToIdea($event)"
-          ></app-task-actions>
+          (shuttleGroupEmitter)="setShuttleGroup($event)">
+        </app-task-actions>
     </div>
     <!-- Top Right Section ends -->
 </div>

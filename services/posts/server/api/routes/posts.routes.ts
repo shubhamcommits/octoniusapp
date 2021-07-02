@@ -221,4 +221,13 @@ routes.put('/:postId/pin-to-top', postController.pinToTop);
 // PUT - Vote an idea
 routes.put('/:postId/vote-idea', postController.voteIdea);
 
+// PUT - Enable/Disable Shuttle Type on a task
+routes.put('/:postId/selectShuttleGroup', postController.selectShuttleGroup);
+
+// PUT - Change the section of the Shuttle task
+routes.put('/:postId/selectShuttleSection', postController.selectShuttleSection);
+
+// PUT - Change the status of the Shuttle task
+routes.put('/:postId/selectShuttleStatus', postController.selectShuttleStatus);
+
 export { routes as postRoutes };

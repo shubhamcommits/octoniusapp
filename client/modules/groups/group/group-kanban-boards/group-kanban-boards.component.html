@@ -9,6 +9,8 @@
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                 <div class="column-title" cdkDragHandle>
                     <p class="text-capitalize" [matTooltip]="column?.title">
+                      <!-- SHUTTLE COLUMN -->
+                      <img *ngIf="isShuttleTasksModuleAvailable && column?._id == (groupData?._shuttle_section?._id || groupData?._shuttle_section)" src="assets/images/icon-task-shuttle.svg" alt="" style="width: 24px;">
                       <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type">
                       {{ column?.title | truncatetext:20 }}
                     </p>
@@ -75,7 +77,8 @@
                         [isProject]="column?.project_type"
                         [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
                         [task]="task"
-                        [isIdeaModuleAvailable]="isIdeaModuleAvailable">
+                        [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+                        [groupId]="groupId">
                       <div *cdkDragPlaceholder></div>
                     </app-kanban-task-card>
                     <!-- TASK DETAILS ENDS -->
@@ -161,7 +164,8 @@
                       [isProject]="column?.project_type"
                       [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
                       [task]="task"
-                      [isIdeaModuleAvailable]="isIdeaModuleAvailable">
+                      [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+                      [groupId]="groupId">
                     </app-kanban-task-card>
                     <!-- TASK DETAILS ENDS -->
                 </div>

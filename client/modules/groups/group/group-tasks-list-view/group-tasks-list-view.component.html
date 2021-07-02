@@ -8,6 +8,9 @@
               <mat-expansion-panel-header class="column-title">
                 <!-- COLUMN TITLE -->
                 <mat-panel-title>
+                  <!-- SHUTTLE COLUMN -->
+                  <img *ngIf="isShuttleTasksModuleAvailable && section?._id == (groupData?._shuttle_section?._id || groupData?._shuttle_section)" src="assets/images/icon-task-shuttle.svg" alt="" style="width: 32px;">
+
                   <p class="muted"> {{ section?.title }}</p>
                 </mat-panel-title>
                 <!-- COLUMN TITLE -->

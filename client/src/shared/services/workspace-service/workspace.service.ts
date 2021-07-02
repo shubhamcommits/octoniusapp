@@ -277,4 +277,12 @@ export class WorkspaceService {
   /**
    * End Profile Custom Fields
    */
+
+  getShuttleGroups(workspaceId: string, groupId: string) {
+    return this._http.get(this.BASE_API_URL + `/${workspaceId}/shuttleGroups`, {
+      params: {
+        groupId
+      }
+    }).toPromise();
+  }
 }
