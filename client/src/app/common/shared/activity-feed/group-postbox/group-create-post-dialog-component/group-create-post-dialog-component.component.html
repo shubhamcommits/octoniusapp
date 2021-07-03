@@ -197,10 +197,14 @@
           <div class="shuttle-box mt-2">
             <p  *ngIf="groupData?._id == shuttleGroup?._id" style="margin-top: 7px;"> From <span class="text-primary">{{ postData?._group?.group_name }}</span></p>
             <p  *ngIf="groupData?._id != shuttleGroup?._id" style="margin-top: 7px;"> To <span class="text-primary">{{ shuttleGroup?.group_name }}</span></p>
-          <app-secured-image
-            [imgURL]="shuttleGroup?.group_avatar"
-            [service]="'group'"
-            [styleClass]="'feed-avatar-small'"></app-secured-image>
+            <app-secured-image  *ngIf="groupData?._id == shuttleGroup?._id"
+              [imgURL]="postData?._group?.group_avatar"
+              [service]="'group'"
+              [styleClass]="'feed-avatar-small'"></app-secured-image>
+            <app-secured-image  *ngIf="groupData?._id != shuttleGroup?._id"
+              [imgURL]="shuttleGroup?.group_avatar"
+              [service]="'group'"
+              [styleClass]="'feed-avatar-small'"></app-secured-image>
 
           </div>
 
