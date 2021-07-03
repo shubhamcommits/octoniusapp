@@ -61,7 +61,9 @@ export class PostViewComponent implements OnInit {
 
   ngOnInit() {
     this.flowService.getGroupAutomationFlows((this.post._group._id || this.post._group)).then(res => {
-      this.flows = res['flows'];
+      if (res) {
+        this.flows = res['flows'];
+      }
     });
 
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`

@@ -193,9 +193,9 @@
         <!-- Shuttle Status starts -->
         <div class="content-box" *ngIf="isShuttleTasksModuleAvailable && postData?.type === 'task' && postData?.task?.shuttle_type">
           <p class="box-title"> <img src="assets/images/icon-task-shuttle.svg" style="width: 32px">  Task Shuttle</p>
-         
+
           <div class="shuttle-box mt-2">
-            <p  *ngIf="groupData?._id == shuttleGroup?._id" style="margin-top: 7px;"> From <span class="text-primary">{{ shuttleGroup?.group_name }}</span></p>
+            <p  *ngIf="groupData?._id == shuttleGroup?._id" style="margin-top: 7px;"> From <span class="text-primary">{{ postData?._group?.group_name }}</span></p>
             <p  *ngIf="groupData?._id != shuttleGroup?._id" style="margin-top: 7px;"> To <span class="text-primary">{{ shuttleGroup?.group_name }}</span></p>
           <app-secured-image
             [imgURL]="shuttleGroup?.group_avatar"
@@ -203,7 +203,7 @@
             [styleClass]="'feed-avatar-small'"></app-secured-image>
 
           </div>
-        
+
           <hr>
           <!-- Change shuttle task status starts -->
           <div class="shuttle-box mb-2">
@@ -234,7 +234,7 @@
               (moveTask)="moveShuttleTaskToSection($event)">
           </app-change-column>
           </div>
-          
+
           <!-- Change task column ends -->
         </div>
         <!-- Shuttle Status ends -->
