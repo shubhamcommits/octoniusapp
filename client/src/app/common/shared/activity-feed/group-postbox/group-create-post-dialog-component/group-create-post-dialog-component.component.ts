@@ -656,10 +656,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.updateDetails();
   }
 
-  setShuttleGroup(data: any) {
+  async setShuttleGroup(data: any) {
     this.postData.task.shuttle_type = data.shuttle_type;
     this.postData.task._shuttle_group = data.shuttle_group;
     this.postData.task._shuttle_section = data.shuttle_section;
+
+    if (this.postData?.task?._shuttle_group) {
+      this.shuttleColumns = await this.publicFunctions.getAllColumns(this.postData?.task?._shuttle_group);
+    }
   }
 
   transformToNorthStart(data) {

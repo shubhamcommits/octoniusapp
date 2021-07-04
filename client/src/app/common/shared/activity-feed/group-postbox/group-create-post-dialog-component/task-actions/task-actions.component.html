@@ -86,7 +86,7 @@
 
 
 
-  <div *ngIf="!parentTask && !isDependent && !isMilestone" class="set-parent">
+  <div *ngIf="!parentTask && !isDependent && !isMilestone" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
    MAKE SUBTASK OF
 
     <!-- INPUT BAR STARTS -->
@@ -115,7 +115,7 @@
     </div>
   </div>
 
-  <div *ngIf="groupData && groupData?.project_type && !isChild" class="set-parent">
+  <div *ngIf="groupData && groupData?.project_type && !isChild" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     MAKE DEPENDENCY OF
 
     <button *ngFor="let task of dependencyTask; let i = index" class="btn dependencylabel" style="margin-right: 1rem;"
@@ -194,7 +194,7 @@
 
   <!-- Select Shuttle group starts -->
   <div *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8; margin-left: 15px;">
-    <img src="assets/images/icon-task-shuttle.svg" style="width: 24px"> 
+    <img src="assets/images/icon-task-shuttle.svg" style="width: 24px">
     <mat-form-field appearance="fill" style="margin-left: 15px;">
       <mat-select
           [disabled]="postData?.task?._shuttle_group == groupData._id"
@@ -205,7 +205,7 @@
     </mat-form-field>
 
     <!-- Clean field starts -->
-    <i *ngIf="postData?.task?._shuttle_group" (click)="shuttleTask(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <i *ngIf="postData?.task?._shuttle_group && postData?.task?._shuttle_group != groupData._id" (click)="shuttleTask(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
     <!-- Clean field ends -->
     <p>With Task Shuttle you can assign the task to another group.</p>
   </div>
