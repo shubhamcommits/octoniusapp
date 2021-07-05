@@ -74,6 +74,21 @@ function prodConfigInit() {
   // Flamingo Microservice
   process.env.FLAMINGO_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/flamingo`
   process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/flamingo`
+
+  // Management URL
+  process.env.MANAGEMENT_URL = process.env.MANAGEMENT_URL 
+
+  // Proxy Available
+  process.env.PROXY_AVAILABLE = process.env.PROXY_AVAILABLE
+
+  // Proxy Protocol
+  process.env.PROXY_PROTOCOL = process.env.PROXY_PROTOCOL
+
+  // Proxy Host
+  process.env.PROXY_HOST = process.env.PROXY_HOST
+
+  // Proxy Port
+  process.env.PROXY_PORT = process.env.PROXY_PORT
 };
 
 export { prodConfigInit as productionConfig } 
