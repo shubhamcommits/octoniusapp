@@ -38,6 +38,11 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
     deploy:
       replicas: 2
       update_config:
