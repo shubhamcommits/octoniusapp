@@ -2,7 +2,8 @@ import subjects from "./templates/subjects";
 import defaults from "./defaults";
 import ejs from 'ejs';
 import fs from 'fs';
-import http from 'axios';
+// import http from 'axios';
+import { axios } from '../proxy';
 import moment from "moment";
 import { Resetpwd, User, Group, Workspace } from "../../api/models";
 import { Response, Request, NextFunction } from "express";
@@ -202,7 +203,7 @@ const sendMail = async (emailBody: any, emailData: any, scheduled: any = {}) => 
     }
 
     // Fire the request to sendgrid server, check the reponse
-    const res = await http.request(config);
+    const res = await axios.request(config);
     return res;
   } catch (err) {
     // eslint-disable-next-line no-console
