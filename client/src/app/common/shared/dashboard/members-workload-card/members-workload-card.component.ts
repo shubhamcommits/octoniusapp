@@ -59,7 +59,6 @@ export class MembersWorkloadCardComponent implements OnInit {
   async initTable() {
     this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
       this.groupMembers = res['users'];
-      // this.membersIds = this.groupMembers.map(member => member._id);
     });
 
     this.generateNavDates();
@@ -78,6 +77,8 @@ export class MembersWorkloadCardComponent implements OnInit {
     this.groupMembers.forEach(async member => {
 
       member.workload = [];
+
+      // filter member´s tasks
       const memberTasks = tasks.filter(post => { return post._assigned_to.includes(member?._id); });
 
       this.dates.forEach(async date => {
@@ -111,12 +112,12 @@ export class MembersWorkloadCardComponent implements OnInit {
               });
           }
 
+          // filter done/to do/in progress tasks count
           workloadDay.numDoneTasks = tasksTmp.filter(post => { return post.task.status == 'done'; }).length;
           workloadDay.todo_tasks = tasksTmp.filter(post => { return post?.task?.status == 'to do'}).length;
           workloadDay.inprogress_tasks = tasksTmp.filter(post => { return post?.task?.status == 'in progress'}).length;
         } else {
           workloadDay.allocation = 0;
-
           workloadDay.numDoneTasks = 0;
           workloadDay.todo_tasks = 0;
           workloadDay.inprogress_tasks = 0;
@@ -180,7 +181,7 @@ export class MembersWorkloadCardComponent implements OnInit {
   }
 
   isCurrentDay(day) {
-    return day.startOf('day').isSame(moment().startOf('day'));
+    return moment(day).isSame(moment(), 'day');
   }
 
   isWeekend(date) {
