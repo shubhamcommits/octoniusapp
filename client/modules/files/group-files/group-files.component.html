@@ -8,8 +8,8 @@
         <!-- Heading of the component ends -->
 
         <!-- Group New File starts -->
-        <app-group-new-file *ngIf="groupId && userData && checkDataExist(userData)"
-          [groupId]="groupId" [userData]="userData" [folderId]="currentFolder?._id" [workspaceId]="workspaceId"
+        <app-group-new-file *ngIf="groupId && userData && checkDataExist(userData) && groupData && checkDataExist(groupData)"
+          [groupId]="groupId" [userData]="userData" [folderId]="currentFolder?._id" [workspaceId]="workspaceId" [groupData]="groupData"
           (file)="getFile($event)" (folder)="getFolder($event)">
         </app-group-new-file>
         <!-- Group New File ends -->

@@ -1359,4 +1359,22 @@ export class PublicFunctions {
           return false;
         });
     }
+
+    /**
+     * This function is responsible for fetching the status of the campaign module
+     * @returns status
+     */
+    async isCampaignModuleAvailable() {
+        const workspace: any = await this.getCurrentWorkspace()
+        const managementPortalService = this.injector.get(ManagementPortalService);
+        return managementPortalService.isExcelModuleAvailable(workspace?._id, workspace?.management_private_api_key).then(
+          (res) => {
+            if ( !res || !res['status'] ) {
+              return false;
+            }
+            return true;
+          }).catch((err) => {
+            return false;
+          });
+      }
 }
