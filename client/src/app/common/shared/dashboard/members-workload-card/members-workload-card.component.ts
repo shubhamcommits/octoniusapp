@@ -91,12 +91,19 @@ export class MembersWorkloadCardComponent implements OnInit {
           overdue_tasks: 0,
           done_tasks: 0,
           todo_tasks: 0,
-          inprogress_tasks: 0
+          inprogress_tasks: 0,
+          isCurrentDay: false
         };
 
         if (this.isCurrentDay(date)) {
-          const overdueTasks: any = await this.getUserOverdueTasks(member?._id);
-          workloadDay.overdue_tasks = overdueTasks.length;
+          this.userService.getWorkloadOverdueTasks(member?._id, this.groupId)
+            .then((res) => {
+              workloadDay.overdue_tasks = res['tasks'].length;
+            })
+            .catch(() => {
+              workloadDay.overdue_tasks = 0;
+            });
+          workloadDay.isCurrentDay = true;
         }
 
         const tasksTmp = await memberTasks.filter(post => {return moment(date).isSame(moment(post.task.due_to), 'day') });
@@ -121,6 +128,7 @@ export class MembersWorkloadCardComponent implements OnInit {
           workloadDay.numDoneTasks = 0;
           workloadDay.todo_tasks = 0;
           workloadDay.inprogress_tasks = 0;
+          workloadDay.isCurrentDay = false;
         }
 
         const index = member?.out_of_office?.findIndex(outOfficeDay => moment.utc(outOfficeDay.date).isSame(date, 'day'));
@@ -157,18 +165,6 @@ export class MembersWorkloadCardComponent implements OnInit {
     return dates;
   }
 
-  async getUserOverdueTasks(userId: string) {
-    return new Promise((resolve, reject) => {
-      this.userService.getWorkloadOverdueTasks(userId, this.groupId)
-        .then((res) => {
-          resolve(res['tasks'])
-        })
-        .catch(() => {
-          reject([])
-        })
-    })
-  }
-
   changeDates(numDays: number, type: string) {
     if (type == 'add') {
       this.currentDate = moment(this.currentDate).add(numDays, 'd');
@@ -181,7 +177,7 @@ export class MembersWorkloadCardComponent implements OnInit {
   }
 
   isCurrentDay(day) {
-    return moment(day).isSame(moment(), 'day');
+    return moment(day).isSame(this.currentDate, 'day');
   }
 
   isWeekend(date) {
