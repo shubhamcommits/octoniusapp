@@ -79,6 +79,9 @@ routes.put('/:groupId/settings/enableRights', group.enableRights);
 // PUT - Enable/Disable Group Project Type
 routes.put('/:groupId/settings/enabledProjectType', group.enabledProjectType);
 
+// PUT - Enable/Disable Group Campaign Type
+routes.put('/:groupId/settings/enabledCampaign', group.enabledCampaign);
+
 // PUT - Enable/Disable Group Shuttle Type
 routes.put('/:groupId/settings/enabledShuttleType', group.enabledShuttleType);
 

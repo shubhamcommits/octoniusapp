@@ -202,6 +202,9 @@ export class GroupService {
     if(propertyName === "enabled_shuttle_type"){
       return this._http.put(this.baseURL + `/${groupId}/settings/enabledShuttleType`, { propertyName, value }).toPromise();
     }
+    if(propertyName === "enabled_campaign"){
+      return this._http.put(this.baseURL + `/${groupId}/settings/enabledCampaign`, { propertyName, value }).toPromise();
+    }
   }
 
   selectShuttleSection(groupId: string, columnId: string) {

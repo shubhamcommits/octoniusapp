@@ -1003,6 +1003,34 @@ export class GroupController {
         }
     };
 
+    async enabledCampaign(req: Request, res: Response, next: NextFunction) {
+        
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the value from body
+        const value = req.body['value'];
+
+        try {
+            // Find the group and update their setting status
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                enabled_campaign: value
+            }, {
+                new: true
+            }).lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group settings updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
     async enabledShuttleType(req: Request, res: Response, next: NextFunction) {
         // Fetch the groupId
         const { groupId } = req.params;

@@ -53,6 +53,7 @@
           <mat-slide-toggle color="primary"
               [checked]="groupData.share_files"
               [name]="'share_files'"
+              [disabled]="groupData.enabled_campaign"
               (change)="saveSettings($event)">
             <h6><b>Share files with the organization?</b></h6>
             <p class="card-text">This option makes all the files from this group accessible to the entire organization</p>
@@ -63,6 +64,7 @@
           <mat-slide-toggle color="primary"
               [checked]="groupData.enabled_rights"
               [name]="'enabled_rights'"
+              [disabled]="groupData.enabled_campaign"
               (change)="saveSettings($event)"
               [(ngModel)]="enabledRights">
             <h6><b>Enable board access rights?</b></h6>
@@ -75,12 +77,27 @@
           <mat-slide-toggle color="primary"
               [checked]="groupData.project_type"
               [name]="'enabled_project_type'"
+              [disabled]="groupData.enabled_campaign"
               (change)="saveSettings($event)"
               [(ngModel)]="enabledProjectType">
             <h6><b>Enable Project Features?</b></h6>
             <p class="card-text"> This will enable all advanced project related funtionalities like: timeline, project planning etc.</p>
           </mat-slide-toggle><br>
         </div>
+
+        <!-- Campaign Module -->
+        <div class="mt-5 mb-5 pt-3"> 
+          <mat-slide-toggle color="primary"
+              [checked]="groupData.enabled_campaign"
+              [disabled]="!campaignModuleAvailable"
+              [name]="'enabled_campaign'"
+              (change)="saveSettings($event)"
+              [(ngModel)]="enabledCampaign">
+            <h6><b>Enable Campaign Features?</b></h6>
+            <p class="card-text"> This will enable all the campaign related functionalities.</p>
+          </mat-slide-toggle><br>
+        </div>
+        <!-- Campaign Module -->
 
         <div class="mt-5 mb-5 pt-3" *ngIf="shuttleTasksModuleAvailable">
           <mat-slide-toggle color="primary"

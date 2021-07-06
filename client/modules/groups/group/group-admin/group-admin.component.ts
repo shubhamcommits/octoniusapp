@@ -34,9 +34,15 @@ export class GroupAdminComponent implements OnInit {
 
   enabledShuttleType: boolean;
 
+  // Campaign Status
+  enabledCampaign: boolean
+
   shuttleTasksModuleAvailable: boolean = false;
 
   groupSections: any = [];
+
+  // Campaign Module Available
+  campaignModuleAvailable: boolean = false
 
   constructor(
     private injector: Injector,
@@ -48,9 +54,12 @@ export class GroupAdminComponent implements OnInit {
 
     // Fetch current group from the service
     this.groupData = await this.publicFunctions.getCurrentGroup();
+
+    // Fetch the setting status
     this.enabledRights = this.groupData.enabled_rights;
     this.enabledProjectType = this.groupData.project_type;
     this.enabledShuttleType = this.groupData.shuttle_type;
+    this.enabledCampaign = this.groupData.enabled_campaign
 
     // Fetch Current User
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -60,7 +69,10 @@ export class GroupAdminComponent implements OnInit {
 
     this.groupSections = await this.publicFunctions.getAllColumns(this.groupId);
 
-    this.shuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+    this.shuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable()
+
+    // Campaign Module Status
+    this.campaignModuleAvailable = await this.publicFunctions.isCampaignModuleAvailable()
   }
 
   // Check if the data provided is not empty{}
@@ -115,16 +127,23 @@ export class GroupAdminComponent implements OnInit {
       this.groupData.enabled_rights = selected.checked;
     }
 
-    if (selected.source.name === 'enabled_project_type') {
+    else if (selected.source.name === 'enabled_project_type') {
       this.enabledProjectType = selected.checked;
       this.groupData.project_type = selected.checked;
     }
 
-    if (selected.source.name === 'enabled_shuttle_type') {
+    else if (selected.source.name === 'enabled_shuttle_type') {
       this.enabledShuttleType = selected.checked;
       this.groupData.shuttle_type = selected.checked;
     }
 
+    // Campaign Module check
+    else if (selected.source.name === 'enabled_campaign') {
+      this.enabledCampaign = selected.checked;
+      this.groupData.enabled_campaign = selected.checked;
+    }
+
+    // Save the settings
     utilityService.asyncNotification('Please wait we are saving the new setting...',
       new Promise((resolve, reject)=>{
         groupService.saveSettings(this.groupId, selected.source.name, selected.checked)
