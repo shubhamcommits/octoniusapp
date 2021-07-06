@@ -931,10 +931,24 @@ export class GroupController {
 
             // Find the group and update their respective group avatar
             const group = await Group.findByIdAndUpdate({
-                _id: groupId
-            }, settingsData, {
-                new: true
-            }).lean();
+                    _id: groupId
+                }, settingsData, {
+                    new: true
+                })
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    match: {
+                        active: true
+                    }
+                }).lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -1399,9 +1413,30 @@ export class GroupController {
         const { selectedWidgets } = req.body;
 
         try {
+
+            if (!selectedWidgets.includes('RESOURCE_MANAGEMENT')) {
+                await Group.findByIdAndUpdate(groupId, {
+                    resource_management_allocation: false
+                }).select('selected_widgets').lean();
+            }
+
             const group = await Group.findByIdAndUpdate(groupId, {
                 $set: { 'selected_widgets': selectedWidgets }
-            }).select('selected_widgets').lean();
+            })
+            .populate({
+                path: '_members',
+                select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                match: {
+                    active: true
+                }
+            })
+            .populate({
+                path: '_admins',
+                select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                match: {
+                    active: true
+                }
+            }).lean();
 
             return res.status(200).json({
                 message: 'Group updated!',

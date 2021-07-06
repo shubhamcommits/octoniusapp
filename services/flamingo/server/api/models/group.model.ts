@@ -123,6 +123,10 @@ const GroupSchema = new Schema({
         type: [String],
         default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT']
     },
+    resource_management_allocation: {
+        type: Boolean,
+        default: true,
+    },
     custom_fields: {
         type: [{
             name: {
