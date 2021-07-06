@@ -919,104 +919,20 @@ export class GroupController {
         }
     };
 
-    async saveShareFilesSettings(req: Request, res: Response, next: NextFunction) {
+    async saveSettings(req: Request, res: Response, next: NextFunction) {
 
         // Fetch the groupId
         const { groupId } = req.params;
 
-        // Fetch the value from fileHandler middleware
-        const value = req.body['value'];
+        // Fetch the settingsData From the request
+        let { body: { settingsData } } = req;
 
         try {
 
             // Find the group and update their respective group avatar
             const group = await Group.findByIdAndUpdate({
                 _id: groupId
-            }, {
-                share_files: value
-            }, {
-                new: true
-            }).lean();
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Group settings updated!',
-                group: group
-            });
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    };
-
-    async enableRights(req: Request, res: Response, next: NextFunction) {
-        // Fetch the groupId
-        const { groupId } = req.params;
-
-        // Fetch the value from fileHandler middleware
-        const value = req.body['value'];
-
-        try {
-
-            // Find the group and update their respective group avatar
-            const group = await Group.findByIdAndUpdate({
-                _id: groupId
-            }, {
-                enabled_rights: value
-            }, {
-                new: true
-            }).lean();
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Group settings updated!',
-                group: group
-            });
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    };
-
-    async enabledProjectType(req: Request, res: Response, next: NextFunction) {
-        // Fetch the groupId
-        const { groupId } = req.params;
-
-        // Fetch the value from fileHandler middleware
-        const value = req.body['value'];
-
-        try {
-            // Find the group and update their respective group avatar
-            const group = await Group.findByIdAndUpdate({
-                _id: groupId
-            }, {
-                project_type: value
-            }, {
-                new: true
-            }).lean();
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Group settings updated!',
-                group: group
-            });
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    };
-
-    async enabledShuttleType(req: Request, res: Response, next: NextFunction) {
-        // Fetch the groupId
-        const { groupId } = req.params;
-
-        // Fetch the value from fileHandler middleware
-        const value = req.body['value'];
-
-        try {
-            // Find the group and update their respective group avatar
-            const group = await Group.findByIdAndUpdate({
-                _id: groupId
-            }, {
-                shuttle_type: value
-            }, {
+            }, settingsData, {
                 new: true
             }).lean();
 

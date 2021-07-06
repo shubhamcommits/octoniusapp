@@ -28,13 +28,15 @@ export class GroupAdminComponent implements OnInit {
   // Current Workspace Data
   workspaceData: any = {};
 
-  enabledRights: boolean;
+  enabledRights: boolean = false;
 
-  enabledProjectType: boolean;
+  enabledProjectType: boolean = false;
 
-  enabledShuttleType: boolean;
+  enabledShuttleType: boolean = false;
 
   shuttleTasksModuleAvailable: boolean = false;
+
+  enableAllocation: boolean = false;
 
   groupSections: any = [];
 
@@ -110,29 +112,61 @@ export class GroupAdminComponent implements OnInit {
     // Group Service
     let groupService = this.injector.get(GroupService);
 
-    if (selected.source.name === 'enabled_rights') {
-      this.enabledRights = selected.checked;
-      this.groupData.enabled_rights = selected.checked;
-    }
-
-    if (selected.source.name === 'enabled_project_type') {
-      this.enabledProjectType = selected.checked;
-      this.groupData.project_type = selected.checked;
-    }
-
-    if (selected.source.name === 'enabled_shuttle_type') {
-      this.enabledShuttleType = selected.checked;
-      this.groupData.shuttle_type = selected.checked;
-    }
-
     utilityService.asyncNotification('Please wait we are saving the new setting...',
       new Promise((resolve, reject)=>{
-        groupService.saveSettings(this.groupId, selected.source.name, selected.checked)
-        .then(()=> {
-          this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-          resolve(utilityService.resolveAsyncPromise('Settings saved to your group!'));
-        })
-        .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+        if (selected.source.name === 'share_files') {
+          groupService.saveSettings(this.groupId, {share_files: selected.checked})
+            .then(()=> {
+              this.groupData.share_files = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(utilityService.resolveAsyncPromise('Settings saved to your group!'));
+            })
+            .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+        }
+
+        if (selected.source.name === 'enabled_rights') {
+          groupService.saveSettings(this.groupId, {enabled_rights: selected.checked})
+            .then(()=> {
+              this.enabledRights = selected.checked;
+              this.groupData.enabled_rights = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(utilityService.resolveAsyncPromise('Settings saved to your group!'));
+            })
+            .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+        }
+
+        if (selected.source.name === 'enabled_project_type') {
+          groupService.saveSettings(this.groupId, {project_type: selected.checked})
+            .then(()=> {
+              this.enabledProjectType = selected.checked;
+              this.groupData.project_type = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(utilityService.resolveAsyncPromise('Settings saved to your group!'));
+            })
+            .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+        }
+
+        if (selected.source.name === 'enabled_shuttle_type') {
+          groupService.saveSettings(this.groupId, {shuttle_type: selected.checked})
+            .then(()=> {
+              this.enabledShuttleType = selected.checked;
+              this.groupData.shuttle_type = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(utilityService.resolveAsyncPromise('Settings saved to your group!'));
+            })
+            .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+        }
+
+        if (selected.source.name === 'enable_allocation') {
+          groupService.saveSettings(this.groupId, {enable_allocation: selected.checked})
+            .then(()=> {
+              this.enableAllocation = selected.checked;
+              this.groupData.enable_allocation = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(utilityService.resolveAsyncPromise('Settings saved to your group!'));
+            })
+            .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+        }
       }));
   }
 

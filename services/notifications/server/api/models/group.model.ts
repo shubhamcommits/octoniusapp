@@ -51,6 +51,10 @@ const GroupSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false,
     },
+    enable_allocation: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
     project_status: {
         type: String,
         enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']

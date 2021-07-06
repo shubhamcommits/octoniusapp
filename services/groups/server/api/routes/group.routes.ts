@@ -70,17 +70,8 @@ routes.put('/:groupId/customFields/addValue', group.addCustomFieldValue);
 // PUT - Remove custom field value
 routes.put('/:groupId/customFields/removeValue', group.removeCustomFieldValue);
 
-// PUT - Add new value to a custom field
-routes.put('/:groupId/settings/shareFiles', group.saveShareFilesSettings);
-
-// PUT - Enable/Disable BAR
-routes.put('/:groupId/settings/enableRights', group.enableRights);
-
-// PUT - Enable/Disable Group Project Type
-routes.put('/:groupId/settings/enabledProjectType', group.enabledProjectType);
-
-// PUT - Enable/Disable Group Shuttle Type
-routes.put('/:groupId/settings/enabledShuttleType', group.enabledShuttleType);
+// PUT - Save a settings property
+routes.put('/:groupId/settings', group.saveSettings);
 
 // PUT - Enable/Disable Group Shuttle Type
 routes.put('/:groupId/settings/selectShuttleSection', group.selectShuttleSection);
