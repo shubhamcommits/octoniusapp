@@ -35,10 +35,10 @@ export class ManagementPortalService {
 
   getStripeCheckoutSession(sessionId: string, workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(`${this.WORKSPACE_BASE_API_URL}/get-checkout-session/${workspaceId}/${sessionId}`, {
-        params: {
-          mgmtApiPrivateKey: mgmtApiPrivateKey
-        }
-      }).toPromise();
+      params: {
+        mgmtApiPrivateKey: mgmtApiPrivateKey
+      }
+    }).toPromise();
   }
 
   /**
@@ -51,7 +51,7 @@ export class ManagementPortalService {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     })
-    .toPromise()
+      .toPromise()
   }
 
   /**
@@ -59,25 +59,25 @@ export class ManagementPortalService {
    * Normally knowing if the environment is on-premise or on the cloud
    * @param workspaceId
    */
-   canActivateBilling(workspaceId: string, mgmtApiPrivateKey: string) {
+  canActivateBilling(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(this.WORKSPACE_BASE_API_URL + `/can-activate-billing/${workspaceId}`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     })
-    .toPromise()
+      .toPromise()
   }
 
   /**
    * This function fetches the subscription details for the currently loggedIn user
    */
-   getSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
+  getSubscription(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(this.WORKSPACE_BASE_API_URL + `/get-subscription/${workspaceId}`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     })
-    .toPromise()
+      .toPromise()
   }
 
   /**
@@ -89,7 +89,7 @@ export class ManagementPortalService {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     })
-    .toPromise()
+      .toPromise()
   }
 
   /**
@@ -101,7 +101,7 @@ export class ManagementPortalService {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
     })
-    .toPromise()
+      .toPromise()
   }
 
   isInTryOut(workspaceId: string, mgmtApiPrivateKey: string) {
@@ -142,7 +142,7 @@ export class ManagementPortalService {
    * This function is responsible for check if the workspace has excel import active
    * @param workspaceId
    */
-   getExcelImportStatus(workspaceId: string, mgmtApiPrivateKey: string) {
+  getExcelImportStatus(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/excelImport`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
@@ -154,8 +154,20 @@ export class ManagementPortalService {
    * This function is responsible for check if the workspace has shuttle module active
    * @param workspaceId
    */
-   isShuttleTasksModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
+  isShuttleTasksModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/shuttle`, {
+      params: {
+        mgmtApiPrivateKey: mgmtApiPrivateKey
+      }
+    }).toPromise();
+  }
+
+  /**
+   * This function is responsible for check if the workspace has excel module active
+   * @param workspaceId
+   */
+  isExcelModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/excelImport`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
