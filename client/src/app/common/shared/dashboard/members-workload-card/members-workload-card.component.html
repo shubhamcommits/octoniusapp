@@ -54,9 +54,17 @@
                 <i  class="material-icons task-status">task_alt</i> &nbsp;
                 <span class="badge badge-done">{{ workload.numDoneTasks }}</span> <span class="muted"> / </span><span class="badge">{{ workload.numTasks }}</span>
 
-                <div class="allocation">
+                <div class="allocation" *ngIf="groupData?.resource_management_allocation && groupData?.enable_allocation">
                   <i  class="material-icons">update</i> &nbsp;&nbsp;
                   <span>{{ workload.allocation || 0 }}h</span>
+                </div>
+
+                <div class="tasks-list">
+                  <ul>
+                    <li><span class="badge overdue-task" *ngIf="isCurrentDay(workload.date)">{{ workload.overdue_tasks }}</span></li>
+                    <li><span class="badge to-do-task">{{ workload.todo_tasks }}</span></li>
+                    <li><span class="badge in-progress-task">{{ workload.inprogress_tasks }}</span></li>
+                  </ul>
                 </div>
             </td>
           </tr>

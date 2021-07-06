@@ -46,19 +46,22 @@ routes.delete('/skills/:skill', skill.removeSkill);
 // -| POSTS |- 
 
 // GET - Fetches the today's tasks
-routes.get('/tasks/today', post.getTodayTasks)
+routes.get('/tasks/today', post.getTodayTasks);
 
 // GET - Fetches all the overdue tasks
 routes.get('/tasks/overdue', post.getOverdueTasks);
 
 // GET - Fetches this week's tasks
-routes.get('/tasks/week', post.getThisWeekTasks)
+routes.get('/tasks/week', post.getThisWeekTasks);
 
 // GET - Fetches next week's tasks
-routes.get('/tasks/next-week', post.getNextWeekTasks)
+routes.get('/tasks/next-week', post.getNextWeekTasks);
 
 // GET - Fetches future tasks
-routes.get('/tasks/future', post.getFutureTasks)
+routes.get('/tasks/future', post.getFutureTasks);
+
+// GET - Fetches all the overdue tasks for a specific group and user
+routes.get('/tasks/workloadOverdue', post.getWorkloadCardOverdueTasks);
 
 // GET - Fetches today's events
 routes.get('/events/today', post.getTodayEvents)

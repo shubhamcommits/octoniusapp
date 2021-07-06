@@ -259,6 +259,15 @@ export class UserService {
     return this._http.get(this.BASE_API_URL + `/tasks/overdue`).toPromise();
   }
 
+  getWorkloadOverdueTasks(userId: string, groupId: string) {
+    return this._http.get(this.BASE_API_URL + `/tasks/workloadOverdue`, {
+      params: {
+        userId: userId,
+        groupId: groupId.trim()
+      }
+    }).toPromise();
+  }
+
   /**
    * USER TODAY'S EVENTS
    */
@@ -368,6 +377,10 @@ export class UserService {
    */
   saveSelectedWidgets(userId: string, selectedWidgets: string[]) {
     return this._http.put<any>(`${this.BASE_API_URL}/${userId}/saveSelectedWidgets`, {selectedWidgets: selectedWidgets}).toPromise();
+  }
+
+  showAllocationWidget(userId: string, settingsData: any) {
+    return this._http.put(this.BASE_API_URL + `/${userId}/showAllocationWidget`,{settingsData}).toPromise();
   }
 
   /**
