@@ -76,7 +76,7 @@
     </mat-menu>
   </div>
 
-  <div *ngIf="postData?._assigned_to?.length < 2" class="set-parent">
+  <div *ngIf="postData?._assigned_to?.length < 2 && groupData?.enable_allocation" class="set-parent">
     <i class="material-icons">hourglass_top</i> ALLOCATION
 
     <!-- INPUT STARTS -->
