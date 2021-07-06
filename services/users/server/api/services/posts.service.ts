@@ -368,4 +368,40 @@ export class PostsService {
 
     }
 
+    /**
+     * This function is responsible for fetching overdue tasks of a member in a specific group
+     * @param userId 
+     * @param groupId
+     */
+    async getWorkloadCardOverdueTasks(userId: string, groupId: string) {
+
+        // Generate the actual time
+        const today = moment().format('YYYY-MM-DD');
+
+        // Fetch the tasks posts
+        const tasks = await Post.find({
+            $and: [
+                { '_assigned_to': userId },        
+                { '_group': groupId },
+                { 'task.due_to': { $lt: today }},
+                { 'task.is_template': { $ne: true }},
+                {
+                    $or: [
+                        { 'task.status': 'to do' },
+                        { 'task.status': 'in progress' }
+                    ]
+                }
+            ]
+        })
+            .sort('-task.due_to')
+            .populate('_group', this.groupFields)
+            .populate('_posted_by', this.userFields)
+            .populate('_assigned_to', this.userFields)
+            .populate('_followers', this.userFields)
+            .populate('_liked_by', this.userFields)
+            .lean();
+
+        // Return tasks
+        return tasks
+    }
 }
