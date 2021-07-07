@@ -61,7 +61,7 @@
 
                 <div class="tasks-list">
                   <ul>
-                    <li><span class="badge overdue-task" *ngIf="workload.isCurrentDay">{{ workload.overdue_tasks }}</span></li>
+                    <li><span class="badge overdue-task" *ngIf="this.isCurrentDay(workload.date)">{{ workload.overdue_tasks }}</span></li>
                     <li><span class="badge to-do-task">{{ workload.todo_tasks }}</span></li>
                     <li><span class="badge in-progress-task">{{ workload.inprogress_tasks }}</span></li>
                   </ul>

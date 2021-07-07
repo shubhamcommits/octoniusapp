@@ -91,8 +91,7 @@ export class MembersWorkloadCardComponent implements OnInit {
           overdue_tasks: 0,
           done_tasks: 0,
           todo_tasks: 0,
-          inprogress_tasks: 0,
-          isCurrentDay: false
+          inprogress_tasks: 0
         };
 
         if (this.isCurrentDay(date)) {
@@ -103,7 +102,6 @@ export class MembersWorkloadCardComponent implements OnInit {
             .catch(() => {
               workloadDay.overdue_tasks = 0;
             });
-          workloadDay.isCurrentDay = true;
         }
 
         const tasksTmp = await memberTasks.filter(post => {return moment(date).isSame(moment(post.task.due_to), 'day') });
@@ -128,7 +126,6 @@ export class MembersWorkloadCardComponent implements OnInit {
           workloadDay.numDoneTasks = 0;
           workloadDay.todo_tasks = 0;
           workloadDay.inprogress_tasks = 0;
-          workloadDay.isCurrentDay = false;
         }
 
         const index = member?.out_of_office?.findIndex(outOfficeDay => moment.utc(outOfficeDay.date).isSame(date, 'day'));
