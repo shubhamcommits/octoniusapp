@@ -54,7 +54,7 @@
               [checked]="groupData.share_files"
               [name]="'share_files'"
               (change)="saveSettings($event)">
-            <h6><b>Share files with the organization?</b></h6>
+            <h6><b>Share files with the organization</b></h6>
             <p class="card-text">This option makes all the files from this group accessible to the entire organization</p>
           </mat-slide-toggle>
         </div>
@@ -65,7 +65,7 @@
               [name]="'enabled_rights'"
               (change)="saveSettings($event)"
               [(ngModel)]="enabledRights">
-            <h6><b>Enable board access rights?</b></h6>
+            <h6><b>Enable board access rights</b></h6>
             <p class="card-text">BARs allow admins to chose who can see and work on specific tasks.<br> Sometimes this is necessary for transversal projects.</p>
             <button button class="btn btn-primary btn-sm" (click)="openBarModal(groupId)" *ngIf="enabledRights">Manage BAR</button>
           </mat-slide-toggle><br>
@@ -77,7 +77,7 @@
               [name]="'enabled_project_type'"
               (change)="saveSettings($event)"
               [(ngModel)]="enabledProjectType">
-            <h6><b>Enable Project Features?</b></h6>
+            <h6><b>Enable Project Features</b></h6>
             <p class="card-text"> This will enable all advanced project related funtionalities like: timeline, project planning etc.</p>
           </mat-slide-toggle><br>
         </div>
@@ -88,7 +88,7 @@
               [name]="'enable_allocation'"
               (change)="saveSettings($event)"
               [(ngModel)]="enableAllocation">
-            <h6><b>Enable Tasks Allocation?</b></h6>
+            <h6><b>Enable Tasks Allocation</b></h6>
             <p class="card-text"> This will enable allocation features on the tasks and resource management.</p>
           </mat-slide-toggle><br>
         </div>
@@ -99,7 +99,7 @@
               [name]="'enabled_shuttle_type'"
               (change)="saveSettings($event)"
               [(ngModel)]="enabledShuttleType">
-            <h6><b>Enable Shuttle Features?</b></h6>
+            <h6><b>Enable Task Shuttle</b></h6>
             <p class="card-text"> <img src="assets/images/icon-task-shuttle.svg" style="width: 32px"> Task Shuttle allows your group to receive tasks from other groups. Select the section that will receive all Shuttle Tasks.</p>
           </mat-slide-toggle>
 
