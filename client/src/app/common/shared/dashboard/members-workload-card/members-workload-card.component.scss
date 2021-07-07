@@ -107,13 +107,12 @@ tbody tr td:first-of-type {
   display: inline;
   font-family: Nunito,sans-serif;
   font-style: normal;
-  font-weight: 400!important;
+  font-weight: 700!important;
   font-size: 12px;
   align-items: center;
   color: #fff;
   background-color: rgba(157, 159, 161, 0.5);
-  border-radius: 10px;
-  padding: 2px 10px !important;
+  padding: 0 .4em;
 }
 
 .badge-done {
