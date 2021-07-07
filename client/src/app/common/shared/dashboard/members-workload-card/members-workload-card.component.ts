@@ -4,6 +4,7 @@ import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -20,7 +21,6 @@ export class MembersWorkloadCardComponent implements OnInit {
   userData;
   groupData;
   groupMembers = [];
-  // membersIds = [];
   groupTasks;
 
   //date for calendar Nav
@@ -37,6 +37,7 @@ export class MembersWorkloadCardComponent implements OnInit {
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   constructor(
+    private userService: UserService,
     private injector: Injector,
     private groupService: GroupService,
     public utilityService: UtilityService
@@ -58,7 +59,6 @@ export class MembersWorkloadCardComponent implements OnInit {
   async initTable() {
     this.groupService.getAllGroupMembers(this.groupData?._id).then(res => {
       this.groupMembers = res['users'];
-      // this.membersIds = this.groupMembers.map(member => member._id);
     });
 
     this.generateNavDates();
@@ -77,6 +77,8 @@ export class MembersWorkloadCardComponent implements OnInit {
     this.groupMembers.forEach(async member => {
 
       member.workload = [];
+
+      // filter member´s tasks
       const memberTasks = tasks.filter(post => { return post._assigned_to.includes(member?._id); });
 
       this.dates.forEach(async date => {
@@ -85,27 +87,48 @@ export class MembersWorkloadCardComponent implements OnInit {
           numTasks: 0,
           numDoneTasks: 0,
           allocation: 0,
-          outOfTheOfficeClass: ''
+          outOfTheOfficeClass: '',
+          overdue_tasks: 0,
+          done_tasks: 0,
+          todo_tasks: 0,
+          inprogress_tasks: 0
         };
 
-        const tasksTmp = await memberTasks.filter(post => {return date.startOf('day').isSame(moment(moment.utc(post.task.due_to).format("YYYY-MM-DD")).startOf('day'), 'day') });
+        if (this.isCurrentDay(date)) {
+          this.userService.getWorkloadOverdueTasks(member?._id, this.groupId)
+            .then((res) => {
+              workloadDay.overdue_tasks = res['tasks'].length;
+            })
+            .catch(() => {
+              workloadDay.overdue_tasks = 0;
+            });
+        }
+
+        const tasksTmp = await memberTasks.filter(post => {return moment(date).isSame(moment(post.task.due_to), 'day') });
         workloadDay.numTasks = tasksTmp.length;
 
         if (tasksTmp && tasksTmp.length > 0) {
-          const allocationTasks = tasksTmp.map(post => post?.task?.allocation || 0);
+          if (this.groupData.enable_allocation && this.groupData.resource_management_allocation) {
+            const allocationTasks = tasksTmp.map(post => post?.task?.allocation || 0);
 
-          workloadDay.allocation = allocationTasks
-            .reduce((a, b) => {
-              return a + b;
-            });
+            workloadDay.allocation = allocationTasks
+              .reduce((a, b) => {
+                return a + b;
+              });
+          }
+
+          // filter done/to do/in progress tasks count
+          workloadDay.numDoneTasks = tasksTmp.filter(post => { return post.task.status == 'done'; }).length;
+          workloadDay.todo_tasks = tasksTmp.filter(post => { return post?.task?.status == 'to do'}).length;
+          workloadDay.inprogress_tasks = tasksTmp.filter(post => { return post?.task?.status == 'in progress'}).length;
         } else {
           workloadDay.allocation = 0;
+          workloadDay.numDoneTasks = 0;
+          workloadDay.todo_tasks = 0;
+          workloadDay.inprogress_tasks = 0;
         }
 
-        const doneTasks = await tasksTmp.filter(post => { return post.task.status == 'done'; });
-        workloadDay.numDoneTasks = doneTasks.length;
-
-        const index = member?.out_of_office?.findIndex(outOfficeDay => moment(moment.utc(outOfficeDay.date).format("YYYY-MM-DD")).isSame(moment(date, 'day'), 'day'));
+        const index = member?.out_of_office?.findIndex(outOfficeDay => moment.utc(outOfficeDay.date).isSame(date, 'day'));
 
         if (index >= 0) {
           const outOfficeDay = member?.out_of_office[index];
@@ -120,7 +143,7 @@ export class MembersWorkloadCardComponent implements OnInit {
 
         member.workload.push(workloadDay);
       });
-      member.workload.sort((w1, w2) => (moment(w1.date).startOf('day').isBefore(moment(w2.date).startOf('day'), 'day')) ? -1 : 1);
+      member.workload = member.workload.sort((w1, w2) => moment.utc(w1.date).isBefore(w2.date) ? -1 : 1);
     });
   }
 
@@ -151,7 +174,7 @@ export class MembersWorkloadCardComponent implements OnInit {
   }
 
   isCurrentDay(day) {
-    return day.startOf('day').isSame(moment().startOf('day'));
+    return moment(day).isSame(this.currentDate, 'day');
   }
 
   isWeekend(date) {

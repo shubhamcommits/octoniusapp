@@ -43,7 +43,6 @@ export class PostsControllers {
 
     async getOverdueTasks(req: Request, res: Response, next: NextFunction) {
         try {
-
             // Fetch the userId from the request query
             let userId: any = req.query.userId
 
@@ -254,4 +253,35 @@ export class PostsControllers {
         }
     }
 
+    /**
+     * Fetches all the overdue tasks for a specific group and user
+     * 
+     * @param req 
+     * @param res 
+     * @param next 
+     * @returns 
+     */
+    async getWorkloadCardOverdueTasks(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Fetch the userId from the request query
+            const { userId, groupId } = req.query;
+
+            // If userId is not found
+            if(!userId || !groupId){
+                return sendError(res, new Error('Unable to find the user and group, either userId and groupId is invalid or you have made an unauthorized request!'), 'Unable to find the user, either userId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Fetch overdue task
+            const tasks: any = await postsService.getWorkloadCardOverdueTasks(userId.toString(), groupId.toString());
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Overdue tasks found!',
+                tasks: tasks
+            });
+
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }

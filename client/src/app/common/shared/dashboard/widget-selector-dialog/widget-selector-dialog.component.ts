@@ -13,6 +13,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 export class WidgetSelectorDialogComponent implements OnInit {
 
   @Output() saveEvent = new EventEmitter();
+  @Output() enableAllocationEvent = new EventEmitter();
   @Output() cancelEvent = new EventEmitter();
 
 
@@ -23,6 +24,8 @@ export class WidgetSelectorDialogComponent implements OnInit {
   selectedWidgets = [];
   newSelectedWidgets = [];
   initSelectedWidgets = [];
+  groupEnableAllocation = false;
+  resource_management_allocation = false;
 
   availableWidgets= [];
 
@@ -106,6 +109,8 @@ export class WidgetSelectorDialogComponent implements OnInit {
     this.userId = this.data.userId;
     this.selectedWidgets = this.data.selectedWidgets || [];
     this.initSelectedWidgets = [...this.selectedWidgets];
+    this.groupEnableAllocation = this.data.groupEnableAllocation;
+    this.resource_management_allocation = this.data.resource_management_allocation || false;
   }
 
   async ngOnInit() {
@@ -154,6 +159,18 @@ export class WidgetSelectorDialogComponent implements OnInit {
     } else {
       this.newSelectedWidgets.push(widget.code);
     }
+  }
+
+  enableDisplayAllocation(selected) {
+    this.utilityService.asyncNotification('Please wait we are saving the new setting...',
+      new Promise((resolve, reject)=>{
+        this.groupService.saveSettings(this.groupId, {resource_management_allocation: selected.checked})
+          .then(()=> {
+            this.enableAllocationEvent.emit(selected.checked);
+            resolve(this.utilityService.resolveAsyncPromise('Settings saved to your group!'));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+      }));
   }
 
   save() {

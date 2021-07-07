@@ -14,10 +14,10 @@
       <div>
         <span class="muted">Work by completition status</span>
         <div class="task_counts">
-          <span class="kpi-overdue-tasks">{{ overdue_task_count || 0 }}</span>
-          <span class="kpi-todo-tasks">{{ to_do_task_count || 0 }}</span>
-          <span class="kpi-in-progress-tasks">{{ in_progress_task_count || 0 }}</span>
-          <span class="kpi-done-tasks">{{ done_task_count || 0 }}</span>
+          <span class="badge overdue-task">{{ overdue_task_count || 0 }}</span>
+          <span class="badge to-do-task">{{ to_do_task_count || 0 }}</span>
+          <span class="badge in-progress-task">{{ in_progress_task_count || 0 }}</span>
+          <span class="badge badge-done">{{ done_task_count || 0 }}</span>
         </div>
       </div>
       <!-- TO DO, IN PROGRESS AND DONE TASKS ENDS -->

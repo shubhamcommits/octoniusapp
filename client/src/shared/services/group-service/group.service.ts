@@ -189,19 +189,8 @@ export class GroupService {
     return this._http.put(this.baseURL + `/${groupId}/customFields/removeValue`, { fieldId, value }).toPromise();
   }
 
-  saveSettings(groupId: string, propertyName: string, value: boolean, ) {
-    if (propertyName === 'share_files') {
-      return this._http.put(this.baseURL + `/${groupId}/settings/shareFiles`, { propertyName, value }).toPromise();
-    }
-    if(propertyName === "enabled_rights"){
-      return this._http.put(this.baseURL + `/${groupId}/settings/enableRights`, { propertyName, value }).toPromise();
-    }
-    if(propertyName === "enabled_project_type"){
-      return this._http.put(this.baseURL + `/${groupId}/settings/enabledProjectType`, { propertyName, value }).toPromise();
-    }
-    if(propertyName === "enabled_shuttle_type"){
-      return this._http.put(this.baseURL + `/${groupId}/settings/enabledShuttleType`, { propertyName, value }).toPromise();
-    }
+  saveSettings(groupId: string, settingsData: any) {
+    return this._http.put(this.baseURL + `/${groupId}/settings`,{settingsData}).toPromise();
   }
 
   selectShuttleSection(groupId: string, columnId: string) {

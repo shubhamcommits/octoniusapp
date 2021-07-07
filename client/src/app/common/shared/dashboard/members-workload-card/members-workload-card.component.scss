@@ -1,4 +1,5 @@
 @import "src/assets/scss/variables";
+@import "src/assets/scss/global";
 @import "src/assets/scss/tasks";
 @import "src/assets/scss/group";
 
@@ -9,7 +10,7 @@ a {
 }
 
 .smart-card {
-  background: #FFFFFF;
+  background-color: #FFFFFF;
   border: none;
   box-sizing: border-box;
   border-radius: 10px;
@@ -19,8 +20,7 @@ a {
 }
 
 .table-wrapper {
-  // max-width: 700px;
-  // overflow: scroll;
+  overflow-y: auto;
 
   .member {
     display: inline-flex;
@@ -30,11 +30,22 @@ a {
       margin-top: 12px;
     }
   }
+
+  .tasks-list {
+    ul {
+      list-style-type: none;
+      margin-left: -40px;
+      margin-top: 10px;
+
+      li {
+        display: inline;
+      }
+    }
+  }
 }
 
 table {
   position: relative;
-  // border: 1px solid #ddd;
   border-collapse: collapse;
 }
 
@@ -47,7 +58,6 @@ td, th {
 }
 
 th {
-  //background-color: #eee;
   border-top: none;
   position: sticky;
   top: -1px;
@@ -60,17 +70,22 @@ th {
     border-left: none;
     left: 0;
     z-index: 3;
+
+    opacity: 1;
+    background-color: #FFFFFF;
   }
 }
 
 tbody tr td:first-of-type {
-  //background-color: #eee;
   border-left: none;
   position: sticky;
   left: -1px;
   text-align: left;
   width: 150px;
   padding: 0px;
+
+  opacity: 1;
+  background-color: #FFFFFF;
 }
 
 .weekend {

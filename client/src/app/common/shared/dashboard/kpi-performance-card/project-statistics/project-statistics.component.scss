@@ -21,77 +21,16 @@
   display: flex;
 }
 
-
-.kpi-todo-tasks {
-  color: #ffffff;
-  background: #FFAB00;
-  border-radius: 20px;
-  font-style: normal;
-  font-weight: bold;
-  width: 20px;
-  height: 23px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 15px 7px;
-  padding: 0px 6px;
-}
-
-.kpi-in-progress-tasks {
-  color: #ffffff;
-  background: #26A69A;
-  border-radius: 20px;
-  font-style: normal;
-  font-weight: bold;
-  width: 20px;
-  height: 23px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 15px 7px;
-  padding: 0px 6px;
-}
-
-.kpi-done-tasks {
-  color: #ffffff;
-  background: #4A90E2;
-  border-radius: 20px;
-  font-style: normal;
-  font-weight: bold;
-  width: 20px;
-  height: 23px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 15px 7px;
-  padding: 0px 6px;
-}
-
-.kpi-overdue-tasks {
-  color: #ffffff;
-  background: #FF6584;
-  border-radius: 20px;
-  font-style: normal;
-  font-weight: bold;
-  width: 20px;
-  height: 23px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 15px 7px;
-  padding: 0px 6px;
-}
-
 .badge {
   background-color: $dark-sky-blue;
-  margin: 0 1px !important;
+  margin: 0 2px !important;
   display: inline;
   font-family: Nunito, sans-serif;
   font-style: normal;
   font-weight: 700 !important;
-  font-size: 12px;
+  font-size: 14px;
   align-items: center;
-  color: #005fd5;
+  color: #ffffff;
   background-color: #e4edf8;
 }
 

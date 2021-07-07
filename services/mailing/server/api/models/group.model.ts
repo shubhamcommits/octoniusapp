@@ -51,6 +51,10 @@ const GroupSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false,
     },
+    enable_allocation: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
     project_status: {
         type: String,
         enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
@@ -118,6 +122,10 @@ const GroupSchema = new Schema({
     selected_widgets: {
         type: [String],
         default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT']
+    },
+    resource_management_allocation: {
+        type: Boolean,
+        default: true,
     },
     custom_fields: {
         type: [{

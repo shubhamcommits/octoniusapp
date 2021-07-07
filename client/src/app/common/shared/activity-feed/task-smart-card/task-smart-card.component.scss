@@ -1,4 +1,5 @@
 @import "src/assets/scss/variables";
+@import "src/assets/scss/global";
 
 a{
     text-decoration: none !important;
@@ -39,24 +40,6 @@ img{
   text-align: center;
   margin: 1px;
   padding: 5px;
-}
-
-.to-do-task {
-  background: #FFAB00 !important;
-}
-
-
-.in-progress-task {
-  background: #0bc6a0 !important;
-}
-
-
-.done-task {
-  background: #4a90e2 !important;
-}
-
-.overdue-task {
-  background: #FF6584 !important;
 }
 
 .overdue-total-tasks {
