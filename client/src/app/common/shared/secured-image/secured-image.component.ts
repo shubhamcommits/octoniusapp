@@ -47,7 +47,7 @@ export class SecuredImageComponent implements OnChanges  {
 
     switch (this.service) {
       case 'workspace':
-        if(!this.imgURL) {
+        if(!this.imgURL || this.imgURL == 'undefined') {
           this.imgURL = "assets/images/organization.png";
           this.isLocalImg = true;
         }
@@ -61,7 +61,7 @@ export class SecuredImageComponent implements OnChanges  {
         this.onErrorUrl = "assets/images/organization.png";
         break;
       case 'group':
-        if(!this.imgURL) {
+        if(!this.imgURL || this.imgURL == 'undefined') {
           this.imgURL = "assets/images/icon-new-group.svg";
           this.isLocalImg = true;
         }
@@ -75,7 +75,7 @@ export class SecuredImageComponent implements OnChanges  {
         this.onErrorUrl = "assets/images/icon-new-group.svg";
         break;
       case 'user':
-        if(!this.imgURL) {
+        if(!this.imgURL || this.imgURL == 'undefined') {
           this.imgURL = "assets/images/user.png";
           this.isLocalImg = true;
         }
@@ -89,7 +89,7 @@ export class SecuredImageComponent implements OnChanges  {
         this.onErrorUrl = "assets/images/user.png";
         break;
       case 'flamingo':
-          if(!this.imgURL) {
+          if(!this.imgURL || this.imgURL == 'undefined') {
             this.imgURL = "http://placehold.it/180";
             this.isLocalImg = true;
           }
