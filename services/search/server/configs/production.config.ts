@@ -27,8 +27,7 @@ function prodConfigInit() {
   // Files Uploads Folder
   process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || path.join(__dirname, '../uploads/');
 
-  // Sendgrid Key
-  process.env.SENDGRID_KEY = process.env.SENDGRID_KEY
+  
 
   // External Key
   process.env.HEADER_EXTERNAL_KEY = process.env.HEADER_EXTERNAL_KEY
@@ -38,10 +37,6 @@ function prodConfigInit() {
 
   // Domain
   process.env.DOMAIN = process.env.DOMAIN
-
-  // Mailing Mircoservice
-  process.env.MAILING_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/mails`
-  process.env.MAILING_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/mails`
 
   // Auths Microservice
   process.env.AUTHS_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/auths`

@@ -8,7 +8,6 @@ source .env
 set +o allexport
 
 # build the Docker image (this will use the Dockerfile in the root of the repo)
-        docker build -t $MAILS_IMAGE_NAME --compress=true --force-rm=true ../services/mailing/server
         docker build -t $AUTHS_IMAGE_NAME --compress=true --force-rm=true ../services/authentication/server
         docker build -t $GROUPS_IMAGE_NAME --compress=true --force-rm=true ../services/groups/server
         docker build -t $WORKSPACES_IMAGE_NAME --compress=true --force-rm=true ../services/workspaces/server
@@ -29,7 +28,6 @@ set +o allexport
         docker login
 
 # push the new Docker image to the Docker registry
-        docker push $MAILS_IMAGE_NAME
         docker push $AUTHS_IMAGE_NAME
         docker push $GROUPS_IMAGE_NAME
         docker push $WORKSPACES_IMAGE_NAME

@@ -260,17 +260,7 @@ export class MembersControllers {
                 _id: groupData._workspace._id || groupData._workspace 
             }).select('management_private_api_key');
 
-            // Send join group confirmation email using mailing microservice
-            /*
-            http.post(`${process.env.MAILING_SERVER_API}/group-joined`, {
-                groupData: {
-                    group_name: groupData.group_name,
-                    workspace_name: groupData.workspace_name
-                },
-                memberData: member,
-                adminData: adminData
-            });
-            */
+            // Send join group confirmation email
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/group-joined`, {
                 API_KEY: workspace.management_private_api_key,
                 groupData: {

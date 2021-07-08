@@ -13,33 +13,6 @@ services:
     networks:
       - acc
           
-  mailing-server:
-    container_name: mailing-server
-    image: ${DOCKER_USER}/${DOCKER_REPO}:mailing-server
-    ports:
-      - ${MAILING_SERVER_PORT}:${MACHINE_PORT}
-    restart: always
-    volumes:
-      - ${VOLUME_NODE_MODULES}
-    environment:
-      - NODE_ENV=${NODE_ENV}
-      - PORT=${MACHINE_PORT}
-      - HOST=${HOST}
-      - JWT_KEY=${JWT_KEY}
-      - DB_URL=${DB_URL}
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=${REDIS_PORT}
-      - SENDGRID_KEY=${SENDGRID_KEY}
-      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
-      - PROTOCOL=${PROTOCOL}
-      - DOMAIN=${DOMAIN}
-    depends_on:
-      - mongodb
-    links:
-      - mongodb
-    networks:
-      - acc
-         
   auths-server:
     container_name: auths-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:auths-server
@@ -56,7 +29,6 @@ services:
       - DB_URL=${DB_URL}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-      - SENDGRID_KEY=${SENDGRID_KEY}
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
@@ -84,7 +56,6 @@ services:
       - DB_URL=${DB_URL}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-      - SENDGRID_KEY=${SENDGRID_KEY}
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
@@ -112,7 +83,6 @@ services:
       - DB_URL=${DB_URL}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-      - SENDGRID_KEY=${SENDGRID_KEY}
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
@@ -140,7 +110,6 @@ services:
       - DB_URL=${DB_URL}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-      - SENDGRID_KEY=${SENDGRID_KEY}
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
@@ -168,7 +137,6 @@ services:
       - DB_URL=${DB_URL}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-      - SENDGRID_KEY=${SENDGRID_KEY}
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
@@ -195,7 +163,6 @@ services:
       - DB_URL=${DB_URL}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-      - SENDGRID_KEY=${SENDGRID_KEY}
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
@@ -223,7 +190,6 @@ services:
       - DB_URL=${DB_URL}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-      - SENDGRID_KEY=${SENDGRID_KEY}
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
@@ -250,7 +216,6 @@ services:
       - DB_URL=${DB_URL}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-      - SENDGRID_KEY=${SENDGRID_KEY}
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
@@ -278,7 +243,6 @@ services:
       - DB_URL=${DB_URL}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-      - SENDGRID_KEY=${SENDGRID_KEY}
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
@@ -305,7 +269,6 @@ services:
       - DB_URL=${DB_URL}
       - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-      - SENDGRID_KEY=${SENDGRID_KEY}
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
@@ -330,7 +293,6 @@ services:
       - WEBSOCKET=${WEBSOCKET}
     depends_on:
       - mongodb
-      - mailing-server
       - auths-server
       - groups-server
       - workspaces-server
@@ -351,7 +313,6 @@ services:
       - ${APPLICATION_PORT}:${NGINX_PORT}
     depends_on:
       - mongodb
-      - mailing-server
       - auths-server
       - groups-server
       - workspaces-server

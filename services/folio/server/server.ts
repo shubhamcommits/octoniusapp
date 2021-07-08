@@ -37,7 +37,7 @@ if (cluster.isMaster) {
   // Environment State Variable
   const env = process.env.NODE_ENV;
 
-  // Creating Mailing Microservice Server
+  // Creating Folio Microservice Server
   const server = http.createServer(app);
 
   // Import Sharedb connection

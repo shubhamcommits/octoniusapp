@@ -108,14 +108,7 @@ export class PasswordsControllers {
             // to add it to link in the mail.
             const newResetPwdDoc = await Resetpwd.create(resetPwdData);
 
-            // Send email to user using mailing microservice
-            /*
-            http.post(`${process.env.MAILING_SERVER_API}/reset-password`, {
-                user: userEmail,
-                workspace: workspace,
-                newResetPwdDocId: newResetPwdDoc._id
-            })
-            */
+            // Send email to user
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/reset-password`, {
                 API_KEY: workspace.management_private_api_key,
                 user: userEmail,

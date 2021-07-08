@@ -36,10 +36,6 @@ export const environment = {
   // Octo-doc URL
   REAL_TIME_URL: `${window["env"]["domain"]}/editor`,
 
-  // Mailing URLs
-  MAILING_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/mails`,
-  MAILING_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/mails`,
-
   // Authentication URLs
   AUTH_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/auths`,
   AUTH_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/auths`,

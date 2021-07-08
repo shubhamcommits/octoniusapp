@@ -44,10 +44,6 @@ export const environment = {
   // Octo-doc URL
   REAL_TIME_URL: `${url.domain}:3001`,
 
-  // Mailing URLs
-  MAILING_BASE_URL: `${url.protocol}://${url.domain}:2000`,
-  MAILING_BASE_API_URL: `${url.protocol}://${url.domain}:2000/api`,
-
   // Authentication URLs
   AUTH_BASE_URL: `${url.protocol}://${url.domain}:3000`,
   AUTH_BASE_API_URL: `${url.protocol}://${url.domain}:3000/api`,
