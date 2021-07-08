@@ -201,6 +201,17 @@ export class GroupAdminComponent implements OnInit {
             })
             .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
         }
+
+        else if(selected.source.name === 'enabled_campaign'){
+          groupService.saveSettings(this.groupId, {enabled_campaign: selected.checked})
+          .then(()=> {
+            this.enabledCampaign = selected.checked;
+            this.groupData.enabled_campaign = selected.checked;
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+            resolve(utilityService.resolveAsyncPromise('Settings saved to your group!'));
+          })
+          .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+        }
       }));
   }
 

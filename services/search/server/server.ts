@@ -10,7 +10,7 @@ if (cluster.isMaster) {
   console.log('Master cluster setting up ' + numWorkers + ' workers...');
 
   // Fork the process and make clusters
-  for (let i = 0; i < numWorkers; i++) {
+  for (let i = 0; i < 1; i++) {
     cluster.fork();
   }
 
