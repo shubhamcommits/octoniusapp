@@ -104,4 +104,26 @@ export class GroupInformationComponent implements OnInit {
     })
   }
 
+  /**
+   * This function is responsible for returning the unique group members count
+   * @param members 
+   * @param admins 
+   * @returns 
+   */
+     getUniqueMembersCount(members, admins) {
+
+      if (members.length > 0 && admins.length > 0) {
+        // Merge the Admin and Members array
+        Array.prototype.push.apply(members, admins)
+  
+        // Set the value of members and remove the duplicates
+        members = Array.from(new Set(members))
+  
+        return members.length
+      } 
+      else 
+        return 0
+  
+    }
+
 }
