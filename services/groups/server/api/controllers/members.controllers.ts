@@ -1,5 +1,5 @@
-import { sendError } from '../../utils';
-import { User, Group } from '../models';
+import { axios, sendError } from '../../utils';
+import { User, Group, Workspace } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import http from 'axios';
 
@@ -254,9 +254,14 @@ export class MembersControllers {
             // Fetch the adminData for mailing
             const adminData = await User.findOne({
                 _id: adminId
-            }).select('first_name email')
+            }).select('first_name email');
+
+            const workspace = await Workspace.findOne({
+                _id: groupData._workspace._id || groupData._workspace 
+            }).select('management_private_api_key');
 
             // Send join group confirmation email using mailing microservice
+            /*
             http.post(`${process.env.MAILING_SERVER_API}/group-joined`, {
                 groupData: {
                     group_name: groupData.group_name,
@@ -264,7 +269,17 @@ export class MembersControllers {
                 },
                 memberData: member,
                 adminData: adminData
-            })
+            });
+            */
+            axios.post(`${process.env.MANAGEMENT_URL}/api/mail/group-joined`, {
+                API_KEY: workspace.management_private_api_key,
+                groupData: {
+                    group_name: groupData.group_name,
+                    workspace_name: groupData.workspace_name
+                },
+                memberData: member,
+                adminData: adminData
+            });
 
             // Send status 200 response
             return res.status(200).json({

@@ -113,9 +113,14 @@ export class AuthsController {
                 // let token = await auths.generateToken(account);
 
                 // Send signup confirmation email using mailing microservice
+                /*
                 http.post(`${process.env.MAILING_SERVER_API}/sign-up`, {
                     user: account
-                })
+                });
+                */
+                axios.post(`${process.env.MANAGEMENT_URL}/api/mail/sign-up`, {
+                    user: account
+                });
 
                 // Signup user and return the token
                 return res.status(200).json({
@@ -374,10 +379,16 @@ export class AuthsController {
                     let token = await auths.generateToken(user, workspace.workspace_name);
 
                     // Send signup confirmation email using mailing microservice
+                    /*
                     http.post(`${process.env.MAILING_SERVER_API}/join-workspace`, {
                         // TODO - send the proper data
                         user: user
-                    })
+                    });
+                    */
+                    axios.post(`${process.env.MANAGEMENT_URL}/api/mail/join-workspace`, {
+                        API_KEY: workspace.management_private_api_key,
+                        user: user
+                    });
 
                     // Count all the users present inside the workspace
                     const usersCount: number = await User.find({ $and: [

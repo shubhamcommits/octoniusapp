@@ -555,53 +555,6 @@ const taskReassigned = async (req: Request, res: Response, next: NextFunction) =
   }
 };
 
-
-// send an email when a task is completed
-const userCompletedTask = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { userWhoChangedStatusId, post } = req.body;
-    const emailType = 'userCompletedTask';
-
-    // Generate email data
-    const appointer: any = await User.findById({ _id: post._posted_by });
-    const appointee: any = await User.findById({ _id: post.task._assigned_to });
-    const userWhoChangedStatus: any = await User.findById({ _id: userWhoChangedStatusId });
-    const group: any = await Group.findById({ _id: post._group });
-
-    // we want to send emails to the appointer and the appointee
-    // if they are the same person then we only want to send one email
-    const destinationUsers = appointer._id === appointee._id ? [appointer] : [appointer, appointee];
-
-    destinationUsers.forEach(async (user) => {
-      const emailData = {
-        subject: subjects[emailType],
-        appointeeName: appointee.first_name,
-        appointerName: appointer.first_name,
-        userWhoChangedStatusName: userWhoChangedStatus.first_name,
-        toName: user.first_name,
-        toEmail: user.email,
-        contentTitle: post.title,
-        // contentPost: post.content,
-        workspace: group.workspace_name,
-        group: group.group_name,
-        link: defaults.signinLink,
-        postLink: defaults.postLink(group._id, post._id)
-      };
-
-      // Generate email body from template
-      const emailBody = await generateEmailBody(emailType, emailData);
-
-      // Send email
-      const send = await sendMail(emailBody, emailData);
-      return res.status(200).json({
-        message: 'User Task Completed mail sent'
-      });
-    });
-  } catch (err) {
-    return sendError(res, new Error(err), 'Internal Server Error!', 500);
-  }
-};
-
 /**
  * This function is responsible for sending email to the assigned users of event
  * @param { body:{ post } }req 
@@ -731,8 +684,5 @@ export {
   joinWorkspace,
 
   // Task Reassigned
-  taskReassigned,
-
-  // User Task Completed
-  userCompletedTask
+  taskReassigned
 }

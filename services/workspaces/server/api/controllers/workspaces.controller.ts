@@ -181,7 +181,7 @@ export class WorkspaceController {
             }, {
                 new: true
             })
-                .select('_id workspace_name owner_first_name owner_email')
+                .select('_id workspace_name owner_first_name owner_email management_private_api_key')
 
             // Error updating the workspace
             if (!workspaceUpdate) {
@@ -313,9 +313,15 @@ export class WorkspaceController {
             let token = await auths.generateToken(userUpdate, workspaceUpdate.workspace_name);
 
             // Send new workspace confirmation email
+            /*
             http.post(`${process.env.MAILING_SERVER_API}/new-workspace`, {
                 workspace: workspaceUpdate
-            })
+            });
+            */
+            axios.post(`${process.env.MANAGEMENT_URL}/api/mail/new-workspace`, {
+                API_KEY: workspace.management_private_api_key,
+                workspace: workspaceUpdate
+            });
 
             // Send new workspace and user to the mgmt portal
             let workspaceMgmt = {
@@ -560,7 +566,7 @@ export class WorkspaceController {
                 $and: [
                     { _id: user.workspaceId }
                 ]
-            }).select('workspace_name access_code allowed_domains');
+            }).select('workspace_name access_code allowed_domains management_private_api_key');
 
             if (addInvite) {
                 // Add user to invite users only when is a group invite
@@ -568,7 +574,20 @@ export class WorkspaceController {
             }
 
             // Send signup invite to user
+            /*
             http.post(`${process.env.MAILING_SERVER_API}/invite-user`, {
+                data: {
+                    from: req['userId'],
+                    email: user.email,
+                    access_code: workspace.access_code,
+                    workspace: workspace.workspace_name,
+                    type: user.type,
+                    groupId: user.groupId
+                }
+            });
+            */
+            axios.post(`${process.env.MANAGEMENT_URL}/api/mail/invite-user`, {
+                API_KEY: workspace.management_private_api_key,
                 data: {
                     from: req['userId'],
                     email: user.email,
