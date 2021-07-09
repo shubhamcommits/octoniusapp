@@ -44,17 +44,17 @@ export class GroupInformationComponent implements OnInit {
           this.groupService.updateGroup(this.groupData._id, value)
             .then((res) => {
 
-                // Update the Data
-                this.groupData.description = value.description;
-                this.groupData.group_name = value.group_name
+              // Update the Data
+              this.groupData.description = value.description;
+              this.groupData.group_name = value.group_name
 
-                // Send Updates to the group data service
-                this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-                
-                this.utilityService.handleDeleteGroupFavorite().emit(true);
-                this.utilityService.handleUpdateGroupData().emit(true);
-                // Resolve with success
-                resolve(this.utilityService.resolveAsyncPromise('Group updated sucessfully!'))
+              // Send Updates to the group data service
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
+              this.utilityService.handleDeleteGroupFavorite().emit(true);
+              this.utilityService.handleUpdateGroupData().emit(true);
+              // Resolve with success
+              resolve(this.utilityService.resolveAsyncPromise('Group updated sucessfully!'))
             })
             .catch(() =>
               reject(this.utilityService.rejectAsyncPromise('An unexpected occured while updating the group, please try again!')))
@@ -102,6 +102,28 @@ export class GroupInformationComponent implements OnInit {
         container: 'container-class',
       }
     })
+  }
+
+/**
+ * This function is responsible for returning the unique group members count
+ * @param members 
+ * @param admins 
+ * @returns 
+ */
+  getUniqueMembersCount(members, admins) {
+
+    if (members.length > 0 && admins.length > 0) {
+      // Merge the Admin and Members array
+      Array.prototype.push.apply(members, admins)
+
+      // Set the value of members and remove the duplicates
+      members = Array.from(new Set(members))
+
+      return members.length
+    }
+    else
+      return 0
+
   }
 
 }
