@@ -32,7 +32,7 @@
         <div *ngIf="member.active || type == 'group'" class="media-body">
 
             <!-- Member Details Starts -->
-            <div class="float-left">
+            <div class="float-left" style="text-transform: capitalize;">
                 <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
                 <p>Role: <span *ngIf="member?.role == 'manager'">Work </span>{{ member?.role }}<span *ngIf="isGroupManager(member._id)">, Group
                         Manager</span> (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
@@ -118,7 +118,7 @@
                 <div class="media-body">
 
                     <!-- Member Details Starts -->
-                    <div *ngIf="!member.active" class="float-left inactive-person" style="opacity: 0.5 !important;">
+                    <div *ngIf="!member.active" class="float-left inactive-person" style="opacity: 0.5 !important; text-transform: capitalize;">
                         <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
                         <p>Role: <span *ngIf="member?.role == 'manager'">Work </span>{{ member?.role }} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
                     </div>
