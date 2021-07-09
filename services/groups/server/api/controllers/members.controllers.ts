@@ -331,6 +331,14 @@ export class MembersControllers {
                 return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404)
             }
 
+            // Send Notification
+            // !--- In progress - Low Priority ---!
+            // http.post(`${process.env.NOTIFICATIONS_SERVER_API}/remove-user`, {
+            //     userId: userId,
+            //     adminId: req['userId'],
+            //     groupId: groupId
+            //   })
+
             // Send status 200 response
             return res.status(200).json({
                 message: `User has been removed from ${groupUpdate.group_name} group.`

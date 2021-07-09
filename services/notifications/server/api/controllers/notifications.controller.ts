@@ -634,4 +634,29 @@ export class NotificationsController {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
+
+
+    /**
+     * This route is responsible for notifying the user if they have been removed from the group
+     * @param req 
+     * @param res 
+     * @param next 
+     * @returns 
+     */
+     async removeUser(req: Request, res: Response, next: NextFunction) {
+
+        const { groupId, userId, adminId, io } = req.body;
+        try {
+            // Call Service Function for newEventAssignments
+            await notificationService.removeUser(groupId, userId, adminId, io)
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Remove user has been succeded!`,
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
 }
