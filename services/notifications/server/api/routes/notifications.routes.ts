@@ -40,4 +40,7 @@ routes.post('/new-like-comment', notificationFunctions.likeComment);
 // This route is responsible for notifying the user on mention on new post
 routes.post('/new-mention', notificationFunctions.newPostMentions);
 
+// This route is responsible for notifying the user while they are being removed from the group
+routes.post('/remove-user', notificationFunctions.removeUser);
+
 export { routes as notificationRoutes };
