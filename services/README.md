@@ -1,8 +1,3 @@
-**PORT 2000** - `http://localhost:2000/api` -> `/api/mails`
-
-*   `/`
-
-
 **PORT 3000** - `http://localhost:3000/api` -> `/api/auths`
 
 *   `/`

@@ -27,9 +27,6 @@ function devConfigInit() {
   // Files Uploads Folder
   process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || path.join(__dirname, '../uploads/');
 
-  // Sendgrid Key
-  process.env.SENDGRID_KEY = process.env.SENDGRID_KEY || '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'
-
   // External Key
   process.env.HEADER_EXTERNAL_KEY = process.env.HEADER_EXTERNAL_KEY || 'HEADERIDSHAREDFOROCTONIUS'
 
@@ -38,11 +35,6 @@ function devConfigInit() {
 
   // Domain
   process.env.DOMAIN = process.env.DOMAIN || 'localhost'
-
-  // Mailing Mircoservice
-  process.env.MAILING_PORT = process.env.MAILING_PORT || '2000'
-  process.env.MAILING_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.MAILING_PORT}`
-  process.env.MAILING_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}${process.env.MAILING_PORT}/api`
 
   // Auths Microservice
   process.env.AUTHS_PORT = process.env.AUTHS_PORT || '3000'

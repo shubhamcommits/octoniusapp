@@ -122,8 +122,8 @@ export class WorkspaceController {
      * 5. Updates the user document and pass 'Global' group to user's groups.
      * 6. Creates a new group named as 'Personal' which remains as the private group of that user and shall be used in the myworkplace.
      * 7. Generate a new JWT token and signin this newly created user and logs into the auth record
-     * 8. Sends the email of new signup and account created to the user's email address. (Using mailing microservice)
-     * 9. Sends the email of newly created workspace to the user's email address. (Using mailing microservice)
+     * 8. Sends the email of new signup and account created to the user's email address. (Using management portal)
+     * 9. Sends the email of newly created workspace to the user's email address. (Using management portal)
      */
     async createNewWorkspace(req: Request, res: Response, next: NextFunction) {
         try {
@@ -313,11 +313,6 @@ export class WorkspaceController {
             let token = await auths.generateToken(userUpdate, workspaceUpdate.workspace_name);
 
             // Send new workspace confirmation email
-            /*
-            http.post(`${process.env.MAILING_SERVER_API}/new-workspace`, {
-                workspace: workspaceUpdate
-            });
-            */
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/new-workspace`, {
                 API_KEY: workspace.management_private_api_key,
                 workspace: workspaceUpdate
@@ -574,18 +569,6 @@ export class WorkspaceController {
             }
 
             // Send signup invite to user
-            /*
-            http.post(`${process.env.MAILING_SERVER_API}/invite-user`, {
-                data: {
-                    from: req['userId'],
-                    email: user.email,
-                    access_code: workspace.access_code,
-                    workspace: workspace.workspace_name,
-                    type: user.type,
-                    groupId: user.groupId
-                }
-            });
-            */
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/invite-user`, {
                 API_KEY: workspace.management_private_api_key,
                 data: {

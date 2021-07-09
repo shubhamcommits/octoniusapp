@@ -354,7 +354,7 @@ export class PostService {
   }
 
   /**
-   * This function is responsible for sending the related real time notifications/emails to the user(s)
+   * This function is responsible for sending the related real time notifications to the user(s)
    * @param post 
    */
   async sendNotifications(post: any) {
@@ -384,18 +384,6 @@ export class PostService {
         // User Stream from the post contents
         userStream = Readable.from(post._content_mentions)
       }
-      /*
-      userStream.on('data', async (user: any) => {
-        user = await User.findOne({
-          _id: user
-        }).select('first_name email')
-
-        http.post(`${process.env.MAILING_SERVER_API}/user-post-mention`, {
-          post: post,
-          user: user
-        })
-      })
-      */
     }
 
     // Send notification after post creation
@@ -411,17 +399,6 @@ export class PostService {
             groupId: post._group._id || post._group,
             posted_by: post._posted_by
           })
-          /*
-          // Email notification for the new task
-          await http.post(`${process.env.MAILING_SERVER_API}/task-assigned`, {
-            post: post
-          })
-
-          // Schedule task reminder, which will be called in future
-          await http.post(`${process.env.MAILING_SERVER_API}/task-reminder`, {
-            post: post
-          })
-          */
         }
         break;
 
@@ -434,18 +411,6 @@ export class PostService {
           grouId: (post._group._id || post._group),
           posted_by: post._posted_by
         })
-
-        /*
-        // Email notification for the new email assignment
-        http.post(`${process.env.MAILING_SERVER_API}/event-assigned`, {
-          post: post
-        })
-
-        // Schedule event reminder, which will be called in future
-        http.post(`${process.env.MAILING_SERVER_API}/event-reminder`, {
-          post: post
-        })
-        */
         break;
 
       default:
@@ -455,7 +420,7 @@ export class PostService {
   }
 
   /**
-   * This function is responsible for sending the related real time notifications/emails to the user(s)
+   * This function is responsible for sending the related real time notifications to the user(s)
    * @param post 
    */
   async sendNewPostNotification(post: any) {
@@ -504,7 +469,7 @@ export class PostService {
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
 
-      // Send all the required emails and notifications
+      // Send all the required notifications
       await this.sendNotifications(post)
 
       if (post.type == 'normal') {
@@ -636,7 +601,7 @@ export class PostService {
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
 
-      // Send all the required emails and notifications
+      // Send all the required notifications
       this.sendNotifications(post);
 
       // Return the post
@@ -1068,13 +1033,6 @@ export class PostService {
         assigneeId: assigneeId,
         _assigned_from: userId
       })
-
-      /*
-      // Email notification for the new task reassignment
-      http.post(`${process.env.MAILING_SERVER_API}/task-reassign`, {
-        post: post
-      })
-      */
 
       // Return the post
       return post;
