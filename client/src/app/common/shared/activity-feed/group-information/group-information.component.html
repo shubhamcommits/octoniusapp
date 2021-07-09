@@ -22,7 +22,7 @@
             <!-- Group Information details starts -->
             <!-- <p class="card-text" *ngIf="!myWorkplace"><strong>Name: </strong>{{groupData?.group_name }}</p> -->
             <p class="card-text" *ngIf="!myWorkplace"><strong>Members:
-                </strong>{{getUniqueMembersCount(groupData?._members, groupData?._admins) || 0 }}</p>
+                </strong>{{ groupData?._members.length + groupData?._admins.length || 0 }}</p>
             <p class="card-text" *ngIf="!myWorkplace && groupData.group_name.toLowerCase() != 'global'">
                 <strong>Description: </strong>{{groupData?.description}}
             </p>

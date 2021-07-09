@@ -200,7 +200,7 @@ export class GroupsListComponent implements OnInit {
    */
    getUniqueMembersCount(members, admins) {
 
-    if (members.length > 0 && admins.length > 0) {
+    if (members.length >= 0 && admins.length >= 0) {
       // Merge the Admin and Members array
       Array.prototype.push.apply(members, admins)
 
