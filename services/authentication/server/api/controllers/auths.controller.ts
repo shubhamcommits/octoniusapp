@@ -109,13 +109,10 @@ export class AuthsController {
                     return sendError(res, new Error('Unable to create the account, some unexpected error occured!'), 'Unable to create the account, some unexpected error occured!', 500);
                 }
 
-                // Generate new token and logs the auth record
-                // let token = await auths.generateToken(account);
-
-                // Send signup confirmation email using mailing microservice
-                http.post(`${process.env.MAILING_SERVER_API}/sign-up`, {
+                // Send signup confirmation email
+                axios.post(`${process.env.MANAGEMENT_URL}/api/mail/sign-up`, {
                     user: account
-                })
+                });
 
                 // Signup user and return the token
                 return res.status(200).json({
@@ -373,11 +370,11 @@ export class AuthsController {
                     // Generate new token and logs the auth record
                     let token = await auths.generateToken(user, workspace.workspace_name);
 
-                    // Send signup confirmation email using mailing microservice
-                    http.post(`${process.env.MAILING_SERVER_API}/join-workspace`, {
-                        // TODO - send the proper data
+                    // Send signup confirmation email
+                    axios.post(`${process.env.MANAGEMENT_URL}/api/mail/join-workspace`, {
+                        API_KEY: workspace.management_private_api_key,
                         user: user
-                    })
+                    });
 
                     // Count all the users present inside the workspace
                     const usersCount: number = await User.find({ $and: [

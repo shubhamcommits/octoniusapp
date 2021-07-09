@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { User, Workspace, Resetpwd, Account } from '../models';
-import { sendError, PasswordHelper } from '../../utils';
+import { sendError, PasswordHelper, axios } from '../../utils';
 import http from 'axios';
 
 // Password Helper Class
@@ -16,18 +16,14 @@ export class PasswordsControllers {
     async resetPassword(req: Request, res: Response) {
         try {
             // grab the resetPWD + document user + delete the resetPwd document
-            const delResetPwdDoc: any = await Resetpwd.findOneAndDelete({ _id: req.body.resetPwdId })
-                .populate('_account');
+            const delResetPwdDoc: any = await Resetpwd.findOne({ _id: req.body.resetPwdId }).lean();
 
             if (!delResetPwdDoc) {
                 return sendError(res, new Error('Your link is not valid'), 'Your link is not valid', 401);
             }
 
             // the user that requested the password reset
-            let account = delResetPwdDoc._account;
-
-            // delete all the other reset pasword documents of this user
-            await Resetpwd.remove({ _account: account._id });
+            let accountId = delResetPwdDoc._account._id || delResetPwdDoc._account;
 
             // Encrypting user password
             const passEncrypted: any = await passwordHelper.encryptPassword(req.body.password);
@@ -38,10 +34,12 @@ export class PasswordsControllers {
             }
 
             //  save the encrypted password in the user document
-            account.password = passEncrypted.password;
+            await Account.findByIdAndUpdate(
+                {_id: accountId},
+                { password: passEncrypted.password});
 
-            // Save the new user document
-            await account.save();
+            // delete all the other reset pasword documents of this user
+            await Resetpwd.remove({ _account: accountId });
 
             res.status(200).json({
                 message: 'succesfully changed password'
@@ -95,16 +93,27 @@ export class PasswordsControllers {
             }
 
             const userEmail = {
-                _id: account._id,
+                _id: user._id,
                 first_name: user.first_name,
                 last_name: user.last_name,
                 email: account.email
             }
 
-            // Send email to user using mailing microservice
-            http.post(`${process.env.MAILING_SERVER_API}/reset-password`, {
+            const resetPwdData = {
+                _account: user._id
+            };
+          
+            // so this is a new document we create whenever a user requests a password reset
+            // it has user and _id properties. We use user to show the info and we use the _id
+            // to add it to link in the mail.
+            const newResetPwdDoc = await Resetpwd.create(resetPwdData);
+
+            // Send email to user
+            axios.post(`${process.env.MANAGEMENT_URL}/api/mail/reset-password`, {
+                API_KEY: workspace.management_private_api_key,
                 user: userEmail,
-                workspace: workspace
+                workspace: workspace,
+                newResetPwdDocId: newResetPwdDoc._id
             })
             .catch((err)=>{
                 console.log(err)

@@ -4,11 +4,6 @@
 
 echo "Stoping all the node services..."
 
-# Stops and kills the mailing server from port 2000
-pm2 stop mailing-server
-
-pm2 delete mailing-server
-
 
 # Stops and kills the auths server from port 3000
 pm2 stop auths-server

@@ -28,10 +28,6 @@ export const environment = {
   // Octo-doc URL
   REAL_TIME_URL: 'localhost:80/editor',
 
-  // Mailing URLs
-  MAILING_BASE_URL: 'http://localhost:80/mails',
-  MAILING_BASE_API_URL: 'http://localhost:80/api/mails',
-
   // Authentication URLs
   AUTH_BASE_URL: 'http://localhost:80/auths',
   AUTH_BASE_API_URL: 'http://localhost:80/api/auths',
