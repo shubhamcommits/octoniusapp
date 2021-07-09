@@ -34,7 +34,7 @@
             <!-- Member Details Starts -->
             <div class="float-left">
                 <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
-                <p>Role: {{member?.role}}<span *ngIf="type === 'group' && isGroupManager(member._id)">, Group
+                <p>Role: <span *ngIf="member?.role == 'manager'">Work </span>{{ member?.role }}<span *ngIf="isGroupManager(member._id)">, Group
                         Manager</span> (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
             </div>
             <!-- Member Details Ends -->
@@ -53,7 +53,7 @@
                       <li class="dropdown-item" *ngIf="member.role != 'admin'"
                           (click)="changeRole(member._id, 'admin', member.index)">Change to Admin</li>
                       <li class="dropdown-item" *ngIf="member.role != 'manager'"
-                          (click)="changeRole(member._id, 'manager', member.index)">Change to Group Manager</li>
+                          (click)="changeRole(member._id, 'manager', member.index)">Change to Work Manager</li>
                       <li class="dropdown-item" *ngIf="member.role != 'member'"
                           (click)="changeRole(member._id, 'member', member.index)">Change to Member</li>
                       <li class="dropdown-divider"></li>
@@ -64,35 +64,35 @@
 
               </div>
 
-                <!-- Remove from Group -->
-                <div class="dropdown"
-                    *ngIf="(userData?.role === 'owner' || isGroupManager(userData?._id)) && type == 'group'">
-                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                        Manage User
-                        <span class="caret"></span>
-                    </button>
+              <!-- Remove from Group -->
+              <div class="dropdown"
+                  *ngIf="(userData?.role === 'owner' || isGroupManager(userData?._id)) && type == 'group'">
+                  <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                      Manage User
+                      <span class="caret"></span>
+                  </button>
 
-                    <!-- Menu Drawer Starts -->
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-item" *ngIf="isGroupManager(userData._id)"
-                            (click)="openUpdatePasswordModal(member)">
-                          <button type="button" name="button" class="btn btn-warning">
-                              <i class="material-icons">lock</i> Reset Password
-                          </button>
-                        </li>
-                        <li class="dropdown-divider" *ngIf="isGroupManager(userData._id)"></li>
-                        <li class="dropdown-item" *ngIf="!isGroupManager(member._id)"
-                            (click)="changeGroupRole(member, 'manager', groupId)">Change to Group Manager</li>
-                        <li class="dropdown-item" *ngIf="isGroupManager(member._id)"
-                            (click)="changeGroupRole(member, 'member', groupId)">Change to Member</li>
-                        <li class="dropdown-divider"></li>
-                        <li class="dropdown-item btn btn-danger btn-sm dropdown-toggle"
-                            (click)="removeUserFromGroup(groupId, member._id, member.index)">Remove Member</li>
-                    </ul>
-                    <!-- Menu Drawer Ends -->
+                  <!-- Menu Drawer Starts -->
+                  <ul class="dropdown-menu">
+                      <li class="dropdown-item" *ngIf="isGroupManager(userData._id)"
+                          (click)="openUpdatePasswordModal(member)">
+                        <button type="button" name="button" class="btn btn-warning">
+                            <i class="material-icons">lock</i> Reset Password
+                        </button>
+                      </li>
+                      <li class="dropdown-divider" *ngIf="isGroupManager(userData._id)"></li>
+                      <li class="dropdown-item" *ngIf="!isGroupManager(member._id)"
+                          (click)="changeGroupRole(member, 'manager', groupId)">Change to Group Manager</li>
+                      <li class="dropdown-item" *ngIf="isGroupManager(member._id)"
+                          (click)="changeGroupRole(member, 'member', groupId)">Change to Member</li>
+                      <li class="dropdown-divider"></li>
+                      <li class="dropdown-item btn btn-danger btn-sm dropdown-toggle"
+                          (click)="removeUserFromGroup(groupId, member._id, member.index)">Remove Member</li>
+                  </ul>
+                  <!-- Menu Drawer Ends -->
 
-                </div>
-                <!-- Remove from Group -->
+              </div>
+              <!-- Remove from Group -->
             </div>
         </div>
     </div>
@@ -120,7 +120,7 @@
                     <!-- Member Details Starts -->
                     <div *ngIf="!member.active" class="float-left inactive-person" style="opacity: 0.5 !important;">
                         <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
-                        <p>Role: {{member?.role}} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
+                        <p>Role: <span *ngIf="member?.role == 'manager'">Work </span>{{ member?.role }} (<a href="mailto:{{member?.email}}">{{member?.email}}</a>)</p>
                     </div>
                     <!-- Member Details Ends -->
 
