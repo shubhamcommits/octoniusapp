@@ -21,7 +21,9 @@ export class GroupController {
             const groups = await Group.find({
                 $and: [
                     { group_name: { $ne: 'personal' } },
-                    { group_name: { $ne: 'private' } }]
+                    { group_name: { $ne: 'private' } },
+                    { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
+                ]
             })
                 .sort('_id')
                 .populate({
@@ -81,7 +83,119 @@ export class GroupController {
                 $and: [
                     { group_name: { $ne: 'personal' } },
                     { group_name: { $ne: 'private' } },
-                    { _id: { $gt: lastGroupId } }]
+                    { _id: { $gt: lastGroupId } },
+                    { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
+                ]
+            })
+                .sort('_id')
+                .limit(5)
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name active profile_pic role email created_date custom_fields_to_show share_files',
+                    options: {
+                        limit: 10
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name active profile_pic role email created_date custom_fields_to_show share_files',
+                    options: {
+                        limit: 10
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                .lean() || [];
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `The next ${groups.length} groups!`,
+                groups: groups
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+    /**
+     * This function fetches first 10 archived groups present in the database
+     * @param res 
+     */
+    async getAllArchivedGroupsList(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch first 10 groups in the database which are not private
+            const groups = await Group.find({
+                $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
+                    { archived_group: true }
+                ]
+            })
+                .sort('_id')
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    options: {
+                        limit: 10
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    options: {
+                        limit: 10
+                    }
+                })
+                .limit(20)
+                .lean() || [];
+
+            // Send the status 200 response
+            if (groups.length == 1) {
+                return res.status(200).json({
+                    message: `Only ${groups.length} group exists in the database!`,
+                    groups: groups
+                });
+            }
+
+            return res.status(200).json({
+                message: `First ${groups.length} groups found in the database!`,
+                groups: groups,
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function fetches next 5 archived groups which exist in the database based on the list of @lastGroupId
+     * @param req 
+     * @param res 
+     */
+    async getNextAllArchivedGroupsList(req: Request, res: Response) {
+        try {
+
+            const { lastGroupId } = req.query;
+
+            // If lastGroupId is null or not provided then we throw BAD REQUEST 
+            if (!lastGroupId) {
+                return res.status(400).json({
+                    message: 'Please provide the lastGroupId as the query parameter!'
+                })
+            }
+
+            // Fetch next 5 groups in the database based on the list of @lastGroupId which are not private
+            const groups = await Group.find({
+                $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
+                    { _id: { $gt: lastGroupId } },
+                    { archived_group: true }
+                ]
             })
                 .sort('_id')
                 .limit(5)
@@ -136,6 +250,7 @@ export class GroupController {
                     { group_name: { $ne: 'private' } },
                     { _workspace: workspaceId, },
                     { $or: [{ _members: userId }, { _admins: userId }] },
+                    { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
                     // { type: { $ne: 'smart' } }
                 ]
             })
@@ -202,7 +317,8 @@ export class GroupController {
                     { group_name: { $ne: 'private' } },
                     { _workspace: workspaceId, },
                     { $or: [{ _members: userId }, { _admins: userId }] },
-                    { _id: { $gt: lastGroupId } }
+                    { _id: { $gt: lastGroupId } },
+                    { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
                 ]
             })
                 .sort('_id')
@@ -474,7 +590,7 @@ export class GroupController {
 
             // Remove the group from users, and users´ favorite groups
             await User.updateMany({ _groups: groupId }, {
-                $pull: { _groups: groupId, 'stats.favorite_groups': groupId, 'stats.groups': {'_group': groupId}}
+                $pull: { _groups: groupId, 'stats.favorite_groups': groupId, 'stats.groups': { $elemMatch: { '_group': groupId }}}
             });
 
             // Delete Posts and Files too
@@ -549,6 +665,42 @@ export class GroupController {
     };
 
     /**
+     * This function archive the group in the database to the corresponding @constant groupId
+     * @param req - @constant groupId
+     * @param res 
+     */
+    async archive(req: Request, res: Response) {
+
+        const { groupId } = req.params;
+        const { archive } = req.body;
+
+        try {
+
+            const group: any = await Group.findOneAndUpdate(
+                { _id: groupId },
+                { archived_group: archive })
+                .lean();
+
+            if (!group) {
+                return sendError(res, new Error('Oops, group not found!'), 'Group not found, invalid groupId!', 404);
+            }
+
+            // Remove the group from users favorite groups
+            await User.updateMany({ _groups: groupId }, {
+                $pull: { 'stats.favorite_groups': groupId, 'stats.groups': { $elemMatch: { '_group': groupId }}}
+            });
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `Group archived set to ${archive} successfully!`,
+                group: group
+            });
+        } catch (error) {
+            return sendError(res, error);
+        }
+    };
+
+    /**
      * This function is responsible for updating the image for the particular group
      * @param { userId, fileName }req 
      * @param res 
@@ -604,6 +756,7 @@ export class GroupController {
                     { _members: { $ne: userId } },
                     { _admins: { $ne: userId } },
                     { _workspace: workspaceId },
+                    { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]},
                     { type: "agora" },
                 ]
             })
@@ -713,6 +866,7 @@ export class GroupController {
                     { _admins: { $ne: userId } },
                     { _workspace: workspaceId },
                     { type: "agora" },
+                    { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]},
                     { _id: { $gt: lastGroupId } }
                 ]
             })

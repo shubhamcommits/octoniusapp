@@ -46,6 +46,12 @@ export class GroupGuard implements CanActivate  {
     let currentGroup;
     currentGroup = await this.publicFunctions.getCurrentGroupDetails(currentGroupId);
 
+    if (currentGroup.archived_group) {
+      this.utilityService.warningNotification('Oops seems like the group don\'t exist!');
+      this.router.navigate(['dashboard', 'myspace', 'inbox']);
+      return false;
+    }
+
     const groupMembersIndex = currentGroup._members.findIndex((member: any) => member._id == userData._id);
     const groupAdminsIndex = currentGroup._admins.findIndex((admin: any) => admin._id == userData._id);
     const userGroupsIndex = userData._groups.findIndex((group: any) => group == currentGroupId);

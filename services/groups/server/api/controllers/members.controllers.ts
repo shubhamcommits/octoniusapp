@@ -307,12 +307,12 @@ export class MembersControllers {
 
             // Remove groupId from user groups
             let userUpdate = await User.findOneAndUpdate({
-                _id: userId
-            }, {
-                $pull: { _groups: groupId, 'stats.favorite_groups': groupId, 'stats.groups': {'_group': groupId}}
-            }, {
-                new: true
-            });
+                    _id: userId
+                }, {
+                    $pull: { _groups: groupId, 'stats.favorite_groups': groupId, 'stats.groups': { $elemMatch: { '_group': groupId }}}
+                }, {
+                    new: true
+                });
 
             // If group wasn't found or user wasn't found return invalid id error
             if (!groupUpdate || !userUpdate) {
