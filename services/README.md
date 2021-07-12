@@ -32,7 +32,7 @@
 *   `/comments`
 
 
-**PORT 9000** - `http://localhost:10000/api` -> `/api/notifications`
+**PORT 9000** - `http://localhost:9000/api` -> `/api/notifications`
 
 *   `/`
 
