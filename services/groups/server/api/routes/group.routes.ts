@@ -25,6 +25,18 @@ routes.get('/list', group.getAllGroupsList);
 // GET - Get list of next 5 groups present in the database based on the lastGroupId from fetched from the list of first 10 groups
 routes.get('/list/next', group.getNextAllGroupsList);
 
+// GET - Get list of first 10 archived groups present in the database
+routes.get('/list/archived', group.getAllArchivedGroupsList);
+
+// GET - Get list of next 5 archived groups present in the database based on the lastGroupId from fetched from the list of first 10 groups
+routes.get('/list/archived/next', group.getNextAllArchivedGroupsList);
+
+// GET - Get list of active groups present in the database based on a query
+routes.get('/search', group.getWorkspaceActiveGroups);
+
+// GET - Get list of archived groups present in the database based on a query
+routes.get('/search/archived', group.getWorkspaceArchivedGroups);
+
 // GET - Get group based on the groupId
 routes.get('/:groupId', group.get);
 
@@ -36,6 +48,9 @@ routes.put('/:groupId', group.update);
 
 // DELETE - Removes the group from the database
 routes.delete('/:groupId', group.remove);
+
+// DELETE - Archives the group from the database
+routes.put('/:groupId/archive', group.archive);
 
 // PUT - Change the Group Image
 routes.put('/:groupId/image', groupFileHandler, group.updateImage);

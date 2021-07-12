@@ -12,8 +12,8 @@ import { SubSink } from 'subsink';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { MatDialog } from '@angular/material/dialog';
-import { MemberDialogComponent } from '../member-dialog/member-dialog.component';
 import { UserUpdateProfileDialogComponent } from '../user-update-profile-dialog/user-update-profile-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-component-search-bar',
@@ -24,6 +24,7 @@ export class ComponentSearchBarComponent implements OnInit {
 
   constructor(
     private injector: Injector,
+    private router: Router,
     public utilityService: UtilityService,
     public dialog: MatDialog) { }
 
@@ -202,10 +203,17 @@ export class ComponentSearchBarComponent implements OnInit {
                   this.members.splice(index, 1);
 
                   // Send updates to groupData via service
-                  this.publicFunctions.sendUpdatesToGroupData(this.groupData)
+                  this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
+                  let resolveMessage = 'User removed!';
+                  if(userId == this.userData?._id) {
+                    resolveMessage = 'Group left!';
+
+                    this.router.navigate(['/home']);
+                  }
 
                   // Resolve with success
-                  resolve(this.utilityService.resolveAsyncPromise('User removed!'))
+                  resolve(this.utilityService.resolveAsyncPromise(resolveMessage));
 
                 })
                 .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the group, please try again!')))

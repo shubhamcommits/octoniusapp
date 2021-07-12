@@ -23,12 +23,21 @@ export class GroupService {
   getGroupObservale(groupId: string) {
     return this._http.get(this.baseURL + `/${groupId}`);
   }
+
   /**
    * This function is responsible for deleting the group
    * @param groupId
    */
   removeGroup(groupId: string){
     return this._http.delete(this.baseURL + `/${groupId}`).toPromise()
+  }
+
+  /**
+   * This function is responsible for archiving the group
+   * @param groupId
+   */
+   archiveGroup(groupId: string, archive: boolean){
+    return this._http.put(this.baseURL + `/${groupId}/archive`, { archive: archive }).toPromise()
   }
 
   /**
