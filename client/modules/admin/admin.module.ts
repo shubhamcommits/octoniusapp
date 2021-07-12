@@ -22,12 +22,15 @@ import { ActivateBillingGuard } from 'src/shared/guards/activate-billing-guard/a
 import { WorkplaceProfileCustomFieldsComponent } from './admin-general/workplace-profile-custom-fields/workplace-profile-custom-fields.component';
 import { ProfileCustomFieldsDialogComponent } from './admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AdminGroupsComponent } from './admin-groups/admin-groups.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 @NgModule({
   declarations: [
     AdminGeneralComponent,
     AdminMembersComponent,
+    AdminGroupsComponent,
     AdminBillingComponent,
     AdminHeaderComponent,
     WorkplaceInformationComponent,
@@ -44,7 +47,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     AdminRoutingModule,
     FormsModule,
     SharedModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTabsModule
   ],
   providers:[WorkspaceService, AdminService, ActivateBillingGuard],
   entryComponents: [

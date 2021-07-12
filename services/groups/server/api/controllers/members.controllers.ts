@@ -297,13 +297,13 @@ export class MembersControllers {
 
             // Remove userId from group users and decrement the count of members
             let groupUpdate: any = await Group.findOneAndUpdate({
-                _id: groupId
-            }, {
-                $pull: { _members: userId, _admins: userId },
-                $inc: { members_count: -1 }
-            }, {
-                new: true
-            })
+                    _id: groupId
+                }, {
+                    $pull: { _members: userId, _admins: userId},
+                    $inc: { members_count: -1 }
+                }, {
+                    new: true
+                });
 
             // Remove groupId from user groups
             let userUpdate = await User.findOneAndUpdate({
