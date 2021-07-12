@@ -74,12 +74,14 @@
 
                   <!-- Menu Drawer Starts -->
                   <ul class="dropdown-menu">
+                      <!--
                       <li class="dropdown-item" *ngIf="isGroupManager(userData._id)"
-                          (click)="openUpdatePasswordModal(member)">
-                        <button type="button" name="button" class="btn btn-warning">
-                            <i class="material-icons">lock</i> Reset Password
-                        </button>
+                            (click)="openUpdatePasswordModal(member)">
+                          <button type="button" name="button" class="btn btn-warning">
+                              <i class="material-icons">lock</i> Reset Password
+                          </button>
                       </li>
+                      -->
                       <li class="dropdown-divider" *ngIf="isGroupManager(userData._id)"></li>
                       <li class="dropdown-item" *ngIf="!isGroupManager(member._id)"
                           (click)="changeGroupRole(member, 'manager', groupId)">Change to Group Manager</li>
