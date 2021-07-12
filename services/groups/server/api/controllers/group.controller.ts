@@ -17,11 +17,20 @@ export class GroupController {
     async getAllGroupsList(req: Request, res: Response, next: NextFunction) {
         try {
 
+            const { workspaceId } = req.query;
+
+            if (!workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide workspaceId as the query parameter!'
+                });
+            }
+
             // Fetch first 10 groups in the database which are not private
             const groups = await Group.find({
                 $and: [
                     { group_name: { $ne: 'personal' } },
-                    // { group_name: { $ne: 'private' } },
+                    { group_name: { $ne: 'private' } },
+                    { _workspace: workspaceId },
                     { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
                 ]
             })
@@ -61,7 +70,13 @@ export class GroupController {
     async getNextAllGroupsList(req: Request, res: Response) {
         try {
 
-            const { lastGroupId } = req.query;
+            const { workspaceId, lastGroupId } = req.query;
+
+            if (!workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide workspaceId as the query parameter!'
+                });
+            }
 
             // If lastGroupId is null or not provided then we throw BAD REQUEST 
             if (!lastGroupId) {
@@ -74,7 +89,8 @@ export class GroupController {
             const groups = await Group.find({
                 $and: [
                     { group_name: { $ne: 'personal' } },
-                    //{ group_name: { $ne: 'private' } },
+                    { group_name: { $ne: 'private' } },
+                    { _workspace: workspaceId },
                     { _id: { $gt: lastGroupId } },
                     { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
                 ]
@@ -119,11 +135,20 @@ export class GroupController {
     async getAllArchivedGroupsList(req: Request, res: Response, next: NextFunction) {
         try {
 
+            const { workspaceId } = req.query;
+
+            if (!workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide workspaceId as the query parameter!'
+                });
+            }
+
             // Fetch first 10 groups in the database
             const groups = await Group.find({
                 $and: [
                     { group_name: { $ne: 'personal' } },
-                    //{ group_name: { $ne: 'private' } },
+                    { group_name: { $ne: 'private' } },
+                    { _workspace: workspaceId },
                     { archived_group: true }
                 ]
             })
@@ -163,7 +188,13 @@ export class GroupController {
     async getNextAllArchivedGroupsList(req: Request, res: Response) {
         try {
 
-            const { lastGroupId } = req.query;
+            const { workspaceId, lastGroupId } = req.query;
+
+            if (!workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide workspaceId as the query parameter!'
+                });
+            }
 
             // If lastGroupId is null or not provided then we throw BAD REQUEST 
             if (!lastGroupId) {
@@ -176,7 +207,8 @@ export class GroupController {
             const groups = await Group.find({
                 $and: [
                     { group_name: { $ne: 'personal' } },
-                    // { group_name: { $ne: 'private' } },
+                    { group_name: { $ne: 'private' } },
+                    { _workspace: workspaceId },
                     { _id: { $gt: lastGroupId } },
                     { archived_group: true }
                 ]
@@ -232,7 +264,7 @@ export class GroupController {
                 $and: [
                     { group_name: { $ne: 'personal' } },
                     { group_name: { $ne: 'private' } },
-                    { _workspace: workspaceId, },
+                    { _workspace: workspaceId },
                     { $or: [{ _members: userId }, { _admins: userId }] },
                     { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
                     // { type: { $ne: 'smart' } }
@@ -1631,7 +1663,7 @@ export class GroupController {
 
         try {
 
-            // If either groupId is null or not provided then we throw BAD REQUEST 
+            // If either workspaceId is null or not provided then we throw BAD REQUEST
             if (!workspaceId) {
                 return res.status(400).json({
                     message: 'Please provide workspaceId as the query parameter!'
