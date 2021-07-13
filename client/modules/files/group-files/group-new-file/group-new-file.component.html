@@ -32,7 +32,7 @@
     <li class="dropdown-divider" *ngIf="enabledCampaign && !campaignModuleAvailable"></li>
     <li class="dropdown-item" (click)="file.click()" *ngIf="enabledCampaign && campaignModuleAvailable">
         <i class="material-icons-outlined mr-2">upload_file</i> <span>Import Data</span>
-        <input #file type="file" placeholder="File" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" (change)="fileInput(file.files)"/>
+        <input #file type="file" placeholder="File" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" (change)="fileInput(file.files, 'campaign')"/>
     </li>
 </ul>
 <!-- Menu Drawer Ends -->

@@ -72,7 +72,7 @@
       </li>
       <li class="nav-item">
         <a [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('groups_tasks')" *ngIf="!myWorkplace && !isCampaign"
+          (click)="changeState('groups_tasks')" *ngIf="!myWorkplace"
           routerLink="/dashboard/work/groups/tasks" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
           routerLinkActive="active">Tasks
         </a>
@@ -85,7 +85,7 @@
         </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace && !isCampaign">
+      <li class="nav-item" *ngIf="!myWorkplace">
         <a [ngClass]="activeState == 'groups_members'?'nav-link active-nav':'nav-link'"
           (click)="changeState('groups_members')" routerLink="/dashboard/work/groups/members"
           [queryParams]="{ group: groupData?._id }" routerLinkActive="active">Members
@@ -100,8 +100,8 @@
       </li>
       <!-- Campaign is Enabled -->
       <li class="nav-item" *ngIf="!myWorkplace && isCampaign">
-        <a [ngClass]="activeState == 'groups_dashboard'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('groups_dashboard')" routerLink="/dashboard/work/groups/dashboard"
+        <a [ngClass]="activeState == 'groups_reports'?'nav-link active-nav':'nav-link'"
+          (click)="changeState('groups_reports')" routerLink="/dashboard/work/groups/reports"
           [queryParams]="{ group: groupData?._id }" routerLinkActive="active">Reports
         </a>
       </li>

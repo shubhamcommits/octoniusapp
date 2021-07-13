@@ -84,6 +84,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { KanbanTaskCardComponent } from './group/group-kanban-boards/kanban-task-card/kanban-task-card.component';
 import { ColumnProjectSectionComponent } from './group/group-kanban-boards/column-project-section/column-project-section.component';
 import { AdvancedFilterDialogComponent } from './group/group-kanban-boards/board-bar/advanced-filter-dialog/advanced-filter-dialog.component';
+import { GroupReportsComponent } from './group/group-reports/group-reports.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -185,6 +186,7 @@ import { AdvancedFilterDialogComponent } from './group/group-kanban-boards/board
     GanttViewComponent,
     CreateProjectColumnDialogComponent,
     KanbanTaskCardComponent,
+    GroupReportsComponent,
   ],
   imports: [
     CommonModule,

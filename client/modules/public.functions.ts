@@ -700,6 +700,32 @@ export class PublicFunctions {
     }
 
     /**
+     * This function is responsible for fetching the campaign files from the server based on the groupId
+     * @param groupId
+     * @param folderId
+     * @param lastFileId: optional
+     */
+     getCampaignFiles(groupId: string) {
+
+        // Files Service Instance
+        let filesService = this.injector.get(FilesService);
+
+        return new Promise((resolve, reject) => {
+            filesService.getCampaignFiles(groupId)
+                .then((res: any) => {
+
+                    // Resolve with sucess
+                    resolve(res['file'])
+                })
+                .catch(() => {
+
+                    // If there's an error, then reject with empty array
+                    reject([]);
+                })
+        })
+    }
+
+    /**
      * This function is responsible for fetching the folders from the server based on the groupId
      * @param groupId
      */

@@ -1,0 +1,53 @@
+import { Component, Injector, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { PublicFunctions } from 'modules/public.functions';
+import { environment } from 'src/environments/environment';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
+
+@Component({
+  selector: 'app-group-reports',
+  templateUrl: './group-reports.component.html',
+  styleUrls: ['./group-reports.component.scss']
+})
+export class GroupReportsComponent implements OnInit {
+
+  constructor(
+    private router: ActivatedRoute,
+    private injector: Injector,
+    private storageService: StorageService
+  ) { }
+
+  // Fetch groupId from router snapshot
+  groupId = this.router.snapshot.queryParamMap.get('group')
+
+  // Public Functions
+  public publicFunctions = new PublicFunctions(this.injector)
+
+  // Campaign File
+  campaignFile: any
+
+  // Campaign File URL
+  campaignFileUrl: any
+
+  // Base Url of the files uploads
+  filesBaseUrl = environment.UTILITIES_FILES_UPLOADS
+
+  // Auth Token
+  authToken: string
+
+  async ngOnInit() {
+
+    // Fetch the token
+    this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`
+
+    // Fetch all campaign files
+    let files: any = await this.publicFunctions.getCampaignFiles(this.groupId)
+
+    // Pickup the latest campaign file
+    if (files.length > 0) {
+      this.campaignFile = files[0]
+      this.campaignFileUrl = `${this.filesBaseUrl}/${files[0].modified_name}?authToken=${this.authToken}`
+    }
+  }
+
+}

@@ -128,7 +128,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
    * This function is responsible for uploading the files to the server
    * @param files
    */
-  fileInput(files: FileList) {
+  fileInput(files: FileList, type?: any) {
     // Start the loading spinner
     this.isLoading$.next(true);
 
@@ -137,6 +137,11 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
 
       // Adding Mime Type of the file uploaded
       this.fileData.mime_type = file.type
+
+      // Change type of file, if input is a flamingo
+      if(type){
+        this.fileData.type = type
+      }
 
       // Call the Upload file service function
       this.uploadFile(this.fileData, file);
