@@ -1679,7 +1679,7 @@ export class GroupController {
                         { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
                     ]
                 })
-                .sort('group_name')
+                .sort('_id')
                 .lean() || []
 
             // Send the status 200 response
@@ -1721,7 +1721,7 @@ export class GroupController {
                         { archived_group: true }
                     ]
                 })
-                .sort('group_name')
+                .sort('_id')
                 .lean() || []
 
             // Send the status 200 response
