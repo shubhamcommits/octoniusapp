@@ -13,6 +13,11 @@ const GroupSchema = new Schema({
         type: String,
         default: 'assets/images/icon-new-group.svg'
     },
+    archived_group: {
+        type: Schema.Types.Boolean,
+        required: true,
+        default: false,
+    },
     workspace_name: {
         type: String,
         required: true

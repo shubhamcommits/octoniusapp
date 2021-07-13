@@ -131,7 +131,8 @@
   </div>
 
   <!-- Delete Group Component starts -->
-  <app-delete-group *ngIf="groupId && groupId != null && groupId != undefined" [groupId]="groupId">
+  <app-delete-group *ngIf="groupData && groupId && groupId != null && groupId != undefined"
+    [groupId]="groupId" [numMembers]="groupData?._members?.length + groupData?._admins?.length">
   </app-delete-group>
   <!-- Delete Group Component ends -->
 

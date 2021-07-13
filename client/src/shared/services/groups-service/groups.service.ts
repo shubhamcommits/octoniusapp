@@ -15,6 +15,86 @@ export class GroupsService {
    * This function is responsible for fetching first 10 groups present in a workspace
    * @param workspaceId
    */
+   getAllGroupsList(workspaceId: string) {
+    return this._http.get(this.baseURL + `/list`, {
+      params: {
+        workspaceId: workspaceId
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching next 5 groups present based on the lastGroupId fetched
+   * @param workspaceId
+   * @param lastGroupId
+   */
+   getNextAllGroupsList(workspaceId: string, lastGroupId: string) {
+    return this._http.get(this.baseURL + `/list/next`, {
+      params: {
+        workspaceId: workspaceId,
+        lastGroupId: lastGroupId
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching active groups based on the workspaceId and the query
+   * @param workspaceId
+   * @param query
+   */
+   getWorkspaceActiveGroups(workspaceId: string, query: any) {
+    return this._http.get(this.baseURL + `/search`, {
+      params: {
+        workspaceId: workspaceId,
+        query: query
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching archived groups based on the workspaceId and the query
+   * @param workspaceId
+   * @param query
+   */
+   getWorkspaceArchivedGroups(workspaceId: string, query: any) {
+    return this._http.get(this.baseURL + `/search/archived`, {
+      params: {
+        workspaceId: workspaceId,
+        query: query
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching first 10 groups present in a workspace
+   * @param workspaceId
+   */
+   getAllArchivedGroupsList(workspaceId: string) {
+    return this._http.get(this.baseURL + `/list/archived`, {
+      params: {
+        workspaceId: workspaceId
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching next 5 groups present based on the lastGroupId fetched
+   * @param workspaceId
+   * @param lastGroupId
+   */
+   getNextAllArchivedGroupsList(workspaceId: string, lastGroupId: string) {
+    return this._http.get(this.baseURL + `/list/archived/next`, {
+      params: {
+        workspaceId: workspaceId,
+        lastGroupId: lastGroupId
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible for fetching first 10 pulses present in a workspace
+   * @param workspaceId
+   */
   getPulseGroups(workspaceId: string) {
     return this._http.get(this.baseURL + `/pulse/list`, {
       params: {
@@ -24,7 +104,7 @@ export class GroupsService {
   }
 
   /**
-   * This function is responsible for fetching next 5 groups present based on the lastGroupId fetched
+   * This function is responsible for fetching next 5 pulses present based on the lastGroupId fetched
    * @param workspaceId
    * @param lastGroupId
    */

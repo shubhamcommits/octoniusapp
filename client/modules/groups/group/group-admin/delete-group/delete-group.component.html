@@ -7,6 +7,7 @@
         <p>Please keep in mind that this action is irreversible.</p>
         <hr />
 
-        <button class="btn btn-md btn-danger" (click)="deleteGroup(groupId)">Delete</button>
+        <button *ngIf="numMembers<=1" class="btn btn-md btn-danger" (click)="deleteGroup(groupId)">Delete</button>
+        <button *ngIf="numMembers > 1" class="btn btn-md btn-danger" (click)="archiveGroup(groupId)">Archive</button>
     </div>
 </div>

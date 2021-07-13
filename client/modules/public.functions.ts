@@ -1403,4 +1403,146 @@ export class PublicFunctions {
             return false;
           });
       }
+
+      
+     /* Helper function fetching the worksapace groups
+     * @param workspaceId - current workspaceId
+     */
+     getAllGroupsList(workspaceId: string) {
+        return new Promise((resolve, reject) => {
+
+            // Create groups service instance
+            let groupsService = this.injector.get(GroupsService);
+
+            // Fetch the groups from server
+            groupsService.getAllGroupsList(workspaceId)
+                .then((res) => {
+                    // Resolve with sucess
+                    resolve(res['groups'])
+                })
+                .catch(() => {
+                    // If there's an error, then
+                    reject([]);
+                })
+        })
+    }
+
+    /**
+     * Helper function fetching the next workspace group
+     * @param workspaceId - current workspaceId
+     * @param lastWorkspaceId - lastWorkspaceId fetched from current groups array list
+     */
+     getNextAllGroupsList(workspaceId: string, lastWorkspaceId: string) {
+        return new Promise((resolve, reject) => {
+
+            // Create groups service instance
+            let groupsService = this.injector.get(GroupsService);
+
+            // Fetch the groups from server
+            groupsService.getNextAllGroupsList(workspaceId, lastWorkspaceId)
+                .then((res) => {
+                    // Resolve with sucess
+                    resolve(res['groups'])
+                })
+                .catch(() => {
+                    // If there's an error, then
+                    reject([]);
+                })
+        })
+    }
+
+    /**
+     * Helper function fetching the worksapace groups
+     * @param workspaceId - current workspaceId
+     */
+     getAllArchivedGroupsList(workspaceId: string) {
+        return new Promise((resolve, reject) => {
+
+            // Create groups service instance
+            let groupsService = this.injector.get(GroupsService);
+
+            // Fetch the groups from server
+            groupsService.getAllArchivedGroupsList(workspaceId)
+                .then((res) => {
+                    // Resolve with sucess
+                    resolve(res['groups'])
+                })
+                .catch(() => {
+                    // If there's an error, then
+                    reject([]);
+                })
+        })
+    }
+
+    /**
+     * Helper function fetching the next workspace group
+     * @param workspaceId - current workspaceId
+     * @param lastWorkspaceId - lastWorkspaceId fetched from current groups array list
+     */
+     getNextAllArchivedGroupsList(workspaceId: string, lastWorkspaceId: string) {
+        return new Promise((resolve, reject) => {
+
+            // Create groups service instance
+            let groupsService = this.injector.get(GroupsService);
+
+            // Fetch the groups from server
+            groupsService.getNextAllArchivedGroupsList(workspaceId, lastWorkspaceId)
+                .then((res) => {
+                    // Resolve with sucess
+                    resolve(res['groups'])
+                })
+                .catch(() => {
+                    // If there's an error, then
+                    reject([]);
+                })
+        })
+    }
+
+    /**
+     * This function is responsible for fetching the active groups present inside a workspace
+     * @param workspaceId
+     * @param query
+     */
+    searchWorkspaceActiveGroups(workspaceId: string, query: string) {
+        try {
+            return new Promise(async (resolve) => {
+
+                // Create workspace service instance
+                let groupsService = this.injector.get(GroupsService);
+
+                // Fetch the active groups based on the query and workspaceId
+                let groups = await groupsService.getWorkspaceActiveGroups(workspaceId, query)
+
+                // Resolve with success
+                resolve(groups)
+            })
+
+        } catch (err) {
+            this.sendError(err);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the archived groups present inside a workspace
+     * @param workspaceId
+     * @param query
+     */
+    searchWorkspaceArchivedGroups(workspaceId: string, query: string) {
+        try {
+            return new Promise(async (resolve) => {
+
+                // Create workspace service instance
+                let groupsService = this.injector.get(GroupsService);
+
+                // Fetch the archived groups based on the query and workspaceId
+                let groups = await groupsService.getWorkspaceArchivedGroups(workspaceId, query)
+
+                // Resolve with success
+                resolve(groups)
+            })
+
+        } catch (err) {
+            this.sendError(err);
+        }
+    }
 }
