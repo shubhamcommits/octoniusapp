@@ -93,10 +93,9 @@
           </mat-slide-toggle><br>
         </div>
         <!-- Campaign Module -->
-        <div class="mt-5 mb-5 pt-3"> 
+        <div class="mt-5 mb-5 pt-3" *ngIf="campaignModuleAvailable"> 
           <mat-slide-toggle color="primary"
               [checked]="groupData.enabled_campaign"
-              [disabled]="!campaignModuleAvailable"
               [name]="'enabled_campaign'"
               (change)="saveSettings($event)"
               [(ngModel)]="enabledCampaign">
