@@ -48,7 +48,7 @@ export class WorkNavbarComponent implements OnInit {
   }
 
   canSeeDashboard() {
-    return (this.userData && (this.userData.role === 'owner' || this.userData.role === 'admin'));
+    return (this.userData && (this.userData.role === 'owner' || this.userData.role === 'admin' || this.userData.role === 'manager'));
   }
 
 }
