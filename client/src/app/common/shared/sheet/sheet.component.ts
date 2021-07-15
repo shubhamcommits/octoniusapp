@@ -1,10 +1,4 @@
-import { Component, Injector, Input, OnInit, ViewChild } from '@angular/core'
-import { MatDialog } from '@angular/material/dialog'
-import { MatPaginator } from '@angular/material/paginator'
-import { MatSort } from '@angular/material/sort'
-import { MatTableDataSource } from '@angular/material/table'
-import { ActivatedRoute } from '@angular/router'
-import { BehaviorSubject } from 'rxjs'
+import { Component, Input, OnInit } from '@angular/core'
 
 import * as XLSX from 'xlsx'
 
@@ -17,11 +11,7 @@ type AOA = any[][]
 })
 export class SheetComponent implements OnInit {
 
-  constructor(
-    private _Injector: Injector,
-    public _Dialog: MatDialog,
-    private _ActivatedRoute: ActivatedRoute,
-  ) { }
+  constructor() { }
 
   // Raw Data of Sheet
   @Input('data') data: any = []
@@ -36,57 +26,13 @@ export class SheetComponent implements OnInit {
   // File URL
   @Input('fileUrl') fileUrl: any
 
-  // Is loading behaviour
-  isLoading$ = new BehaviorSubject(false)
-
-  // Columns
-  displayedColumns: any = []
-
-  // Datasource
-  dataSource = new MatTableDataSource([])
-
-  // Sort Table
-  @ViewChild(MatSort, { static: true }) sort: MatSort
-
-  // Paginator
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator
-
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   async ngOnChanges() {
     if (this.fileUrl) {
       let blob = await this.getBlobFromUrl(this.fileUrl)
       let data = await this.getDataFromBlob(blob)
-      console.log(this.data)
-      this.calculateData()
     }
-  }
-
-  /**
-   * Calculate Data Function
-   */
-  async calculateData(){
-    this.populateDatasource(this.data)
-  }
-
-  /**
-   * This function populates the dataset
-   * @param dataSet 
-   */
-  populateDatasource(dataSet: any) {
-    this.dataSource = new MatTableDataSource(dataSet)
-    this.dataSource.sort = this.sort
-    this.dataSource.paginator = this.paginator
-  }
-
-  /**
-   * Filter result function
-   * @param value 
-   * @param event 
-   */
-  public filterResults = (value: string, event: any) => {
-    if (event.keyCode === 13)
-      this.dataSource.filter = value.trim().toLocaleLowerCase()
   }
 
   /**
@@ -126,13 +72,16 @@ export class SheetComponent implements OnInit {
 
         /* save data */
         this.data = (XLSX.utils.sheet_to_json(ws, { header: 1 }))
-        this.displayedColumns = (XLSX.utils.sheet_to_json(ws, { header: 1 })[0])
 
         resolve(reader.result)
       };
       reader.onerror = reject;
       reader.readAsBinaryString(blob)
     })
+  }
+
+  rowEvents(event){
+    console.log(event)
   }
 
 }

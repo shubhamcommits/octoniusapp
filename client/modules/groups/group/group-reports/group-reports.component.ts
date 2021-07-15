@@ -1,6 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
@@ -35,19 +36,36 @@ export class GroupReportsComponent implements OnInit {
   // Auth Token
   authToken: string
 
+  // Files List
+  files: any = []
+
+  // Loading Behaviour
+  isLoading$ = new BehaviorSubject(false);
+
   async ngOnInit() {
+
+    // Change the loading state
+    this.isLoading$.next(true)
 
     // Fetch the token
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`
 
     // Fetch all campaign files
-    let files: any = await this.publicFunctions.getCampaignFiles(this.groupId)
+    this.files = await this.publicFunctions.getCampaignFiles(this.groupId)
 
     // Pickup the latest campaign file
-    if (files.length > 0) {
-      this.campaignFile = files[0]
-      this.campaignFileUrl = `${this.filesBaseUrl}/${files[0].modified_name}?authToken=${this.authToken}`
+    if (this.files.length > 0) {
+      this.campaignFile = this.files[0]
+      this.campaignFileUrl = `${this.filesBaseUrl}/${this.files[0].modified_name}?authToken=${this.authToken}`
     }
+
+    // Change the loading state
+    this.isLoading$.next(false)
+  }
+
+  changeValue(event){
+    this.campaignFile = event
+    this.campaignFileUrl = `${this.filesBaseUrl}/${event.modified_name}?authToken=${this.authToken}`
   }
 
 }

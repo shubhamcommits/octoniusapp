@@ -43,7 +43,7 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s
@@ -76,7 +76,7 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s
@@ -109,7 +109,7 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s
@@ -142,7 +142,7 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s
@@ -170,7 +170,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s
@@ -197,7 +197,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s
@@ -225,7 +225,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s
@@ -252,7 +252,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s
@@ -280,7 +280,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s
@@ -311,7 +311,7 @@ services:
       - SLACK_CLIENT_SECRET=${SLACK_CLIENT_SECRET}
       - SLACK_BOT_ACCESS_TOKEN=${SLACK_BOT_ACCESS_TOKEN}
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s
@@ -339,7 +339,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 10s

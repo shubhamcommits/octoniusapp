@@ -1,125 +1,45 @@
 // Import the desired fonts
 @import url('https://fonts.googleapis.com/css?family=Original Surfer');
 
-.not-found{
-    font-family: 'Original Surfer';
-    font-size: 30px;
-    color: #0052CC;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 2rem;
+
+ td,  th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  word-wrap: initial;
+  display: table-cell;
+  line-break: unset;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+  text-align: start;
+  justify-content: center;
 }
 
-table {
-    width: 100vw !important;
-    margin-bottom: 10%;
-    margin-right: 10%;
-  }
-  
-  .loading-placeholder{
-    display: block;
-    margin: 0 auto;
-    max-width: 50%;
-    max-height: 50%;
-    margin-top: 2rem;
-}
-
-td{
+tr {
   cursor: pointer;
 }
 
+ tr:nth-child(even){background-color: #f2f2f2;}
 
-  th.mat-sort-header-sorted {
-    color: black;
-  }
+ tr:hover {background-color: #ddd;}
 
-  .full-width {
-    width: 95%;
-    margin-bottom: 1%;
-  }
-
-  .extreme-right {
-    display: flex;
-    justify-content: right;
-    align-items: flex-end;
-    flex-direction: column;
-  }
-
-
-.mat-elevation-z8{
-      overflow-x: auto;
-      margin-top: 2%;
-    }
-
-.mat-cell,
-.mat-header-cell {
-    word-wrap: initial;
-    display: table-cell;
-    padding: 0px 10px;
-    line-break: unset;
-    // width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    vertical-align: middle;
-    text-align: start;
-    justify-content:center;
-}
-.mat-row,
-.mat-header-row {
-    display: table-row;
-    position: sticky;
-    top: 0;
-    background-color: inherit;
-    position: sticky !important;
-    position: -webkit-sticky !important;
-    top: 0;
-    z-index: 1000;
+ tbody > tr:first-child > td {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  word-wrap: initial;
+  display: table-cell;
+  line-break: unset;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+  text-align: start;
+  justify-content: center;
+  background-color: #04AA6D;
+  color: white;
 }
 
-.mat-spinner {
-  position: relative;
-  margin-left: 50%;
-  transform: translateX(-50%);
-}
-
-mat-paginator{
-  position: fixed;
-  left: 0;
-  bottom: 0;
+table{
   width: 100%;
-  z-index: 100;
-
-}
-
-mat-card{
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
-  z-index: 1000;
-  background: white;
-  margin: 1%;
-}
-
-ng-multiselect-dropdown{
-  margin: 1% !important;
-}
-
-.same-line{
-  display: flex; 
-  justify-content: space-between;
-}
-
-.search-btn{
-  margin-left: 2%;
-}
-
-.search-field{
-  width: 25%;
-}
-
-app-export-table{
-  float: right;
-  margin-right: 1%;
 }
