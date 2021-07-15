@@ -273,7 +273,7 @@ export class AdminGroupsComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Add the group to the archived groups array
                     this.archivedGroups.unshift(archivedGroup);
                     // Ortder groups
-                    this.archivedGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
+                    this.archivedGroups.sort((g1, g2) => (g1._id > g2._id) ? 1 : -1);
                   } else {
                     const index = this.archivedGroups.findIndex(group => group._id == groupId);
                     const activeGroup = this.archivedGroups[index];
@@ -282,7 +282,7 @@ export class AdminGroupsComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Add the group to the active groups array
                     this.activeGroups.unshift(activeGroup);
                     // Ortder groups
-                    this.activeGroups.sort((g1, g2) => (g1.group_name > g2.group_name) ? 1 : -1);
+                    this.activeGroups.sort((g1, g2) => (g1._id > g2._id) ? 1 : -1);
                   }
 
                   // Updating lastActiveGroupId with the lastest fetched data
@@ -304,6 +304,50 @@ export class AdminGroupsComponent implements OnInit, AfterViewInit, OnDestroy {
                 .catch(() => {
                   // Reject the promise
                   reject(utilityService.rejectAsyncPromise(errorMessage))
+                });
+            }));
+        }
+      });
+  }
+
+  removeGroup(groupId: string) {
+
+    // Group Service Instance
+    let groupService = this.injector.get(GroupService);
+
+    // Utility Service Instancr
+    let utilityService = this.injector.get(UtilityService);
+
+    // Ask User to delete the group or not
+    utilityService.getConfirmDialogAlert('Are you sure?', 'This action will completely remove the group.')
+      .then((result) => {
+        if (result.value) {
+
+          // Delete the group from the workspace
+          utilityService.asyncNotification('Please Wait while we update the group',
+            new Promise((resolve, reject) => {
+              // Call Remove Group Service Function
+              groupService.removeGroup(groupId)
+                .then(async () => {
+                  // Remove group from list and move to the other list
+                  const index = this.archivedGroups.findIndex(group => group._id == groupId);
+                  const activeGroup = this.archivedGroups[index];
+                  // Remove the group from the archived groups
+                  this.archivedGroups.splice(index, 1);
+
+                  // Updating lastArchivedGroupId with the lastest fetched data
+                  if (this.archivedGroups && this.archivedGroups.length > 0) {
+                    this.lastArchivedGroupId = this.archivedGroups[this.archivedGroups.length - 1]['_id'];
+                  } else {
+                    this.lastArchivedGroupId = '';
+                  }
+
+                  // Resolve the async promise
+                  resolve(utilityService.resolveAsyncPromise('Group removed!'));
+                })
+                .catch(() => {
+                  // Reject the promise
+                  reject(utilityService.rejectAsyncPromise('Unable to remove the group, please try again!'))
                 });
             }));
         }
