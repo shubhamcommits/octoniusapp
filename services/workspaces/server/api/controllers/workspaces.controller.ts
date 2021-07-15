@@ -781,7 +781,6 @@ export class WorkspaceController {
                 workspace: workspace
             });
         } catch (err) {
-            console.log(err);
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
