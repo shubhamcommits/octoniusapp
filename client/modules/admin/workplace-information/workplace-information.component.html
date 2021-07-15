@@ -11,7 +11,7 @@
                     {{ workspaceData?.workspace_name }}
                     <span (click)="editWorkspaceName = !editWorkspaceName" class="material-icons-outlined" style="cursor: pointer; font-size: 15px; margin-left: 10px; margin-bottom: 10px;">mode_edit</span>
                 </span>
-                <!-- Post Title starts -->
+                <!-- Workspace Name Input starts -->
                 <input *ngIf="editWorkspaceName"
                     type="text"
                     name="workspaceName"
@@ -19,7 +19,7 @@
                     [ngModel]="workspaceData?.workspace_name"
                     (blur)="workspaceNameChange($event)"
                     (keyup.enter)="workspaceNameChange($event)" />
-                <!-- Post Title ends -->
+                <!-- Workspace Name Input ends -->
             </p>
             <p class="card-text">Owner Name:
                 {{ workspaceData?.owner_first_name }} {{ workspaceData?.owner_last_name }}</p>
