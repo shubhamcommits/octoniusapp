@@ -43,6 +43,15 @@ export class WorkspaceService {
   }
 
   /**
+   * This function is responsible to updating the properties sent as json in the workspaceData property
+   * @param workspaceData
+   * @param worksapceId
+   */
+  updateWorkspaceProperties(workspaceId:object, workspaceData: any){
+    return this._http.put(this.BASE_API_URL + `/${workspaceId}/update`,{ workspaceData }).toPromise();
+  }
+
+  /**
    * This function is responsible for fetching first 10 workspace members
    * @param workspaceId
    * @param query - optional parameter(which searches for name and email too)

@@ -41,7 +41,6 @@ export class AdminGeneralComponent implements OnInit {
   }
 
   ngAfterViewChecked(): void {
-   // this.utilityService.stopForegroundLoader();
   }
 
   removeWorkspace(workspaceId) {
@@ -66,6 +65,11 @@ export class AdminGeneralComponent implements OnInit {
           }));
         }
       });
+  }
+
+  onWorkspaceUpdated(workspace: any) {
+    this.workspaceData = workspace;
+    this.publicFunctions.sendUpdatesToWorkspaceData(workspace);
   }
 
 }

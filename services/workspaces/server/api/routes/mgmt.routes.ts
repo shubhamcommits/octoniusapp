@@ -16,6 +16,9 @@ const routes = express.Router();
 // Verify the token
 routes.use(authsHelper.verifyMgmtAPIKey);
 
+// PUT - Updates the specify workspace name remotelly from the mgmt portal
+routes.put('/:workspaceId/workspaceName', controller.updateWorkspaceName);
+
 // DELETE - Removes the specify workspace remotelly from the mgmt portal
 routes.delete('/:workspaceId', controller.removeWorkspace);
 

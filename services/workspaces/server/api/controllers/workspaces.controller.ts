@@ -409,6 +409,90 @@ export class WorkspaceController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+    
+    /** 
+     * This function is responsible to update the question
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+     async updateWorkspaceProperties(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { params: { workspaceId }} = req;
+
+            // Fetch the workspaceData From the request
+            let { body: { workspaceData } } = req;
+
+            let updatedWorkspace = await Workspace.findOneAndUpdate(
+                { _id: workspaceId },
+                { $set: workspaceData },
+                { new : true })
+                .lean();
+
+            if (workspaceData.hasOwnProperty('workspace_name')) {
+                await User.updateMany({
+                        _workspace: workspaceId
+                    }, {
+                        $set: { workspace_name: workspaceData.workspace_name }
+                    });
+
+                // Send the update to mgmt portal
+                axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/updateName`, {
+                    API_KEY: updatedWorkspace.management_private_api_key,
+                    workspaceName: updatedWorkspace.workspace_name
+                }).then().catch(err => console.log(err));
+            }
+
+            // Count all the users present inside the workspace
+            const usersCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId }
+            ] }).countDocuments();
+            
+            // Send workspace to the mgmt portal
+            // Count all the groups present inside the workspace
+            const groupsCount: number = await Group.find({ $and: [
+                { group_name: { $ne: 'personal' } },
+                { _workspace: workspaceId }
+            ]}).countDocuments();
+
+            // Count all the users present inside the workspace
+            const guestsCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId },
+                { role: 'guest'}
+            ] }).countDocuments();
+
+            let workspaceMgmt = {
+                _id: workspaceId,
+                company_name: updatedWorkspace.company_name,
+                workspace_name: updatedWorkspace.workspace_name,
+                owner_email: updatedWorkspace.owner_email,
+                owner_first_name: updatedWorkspace.owner_first_name,
+                owner_last_name: updatedWorkspace.owner_last_name,
+                _owner_remote_id: updatedWorkspace._owner._id || updatedWorkspace._owner,
+                environment: process.env.DOMAIN,
+                num_members: usersCount,
+                num_invited_users: guestsCount,
+                num_groups: groupsCount,
+                created_date: updatedWorkspace.created_date,
+                access_code: updatedWorkspace.access_code,
+                management_private_api_key: updatedWorkspace.management_private_api_key
+            }
+            axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
+                API_KEY: updatedWorkspace.management_private_api_key,
+                workspaceData: workspaceMgmt
+            }).then().catch(err => console.log(err));
+                
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Workspace updated Success',
+                workspace: updatedWorkspace
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+     }
 
     /**
      * Fetches the unique email domains that exist within
@@ -697,7 +781,6 @@ export class WorkspaceController {
                 workspace: workspace
             });
         } catch (err) {
-            console.log(err);
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }

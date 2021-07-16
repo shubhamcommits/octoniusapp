@@ -39,7 +39,7 @@ export class PasswordsControllers {
                 { password: passEncrypted.password});
 
             // delete all the other reset pasword documents of this user
-            await Resetpwd.remove({ _account: accountId });
+            await Resetpwd.deleteOne({ _account: accountId });
 
             res.status(200).json({
                 message: 'succesfully changed password'
@@ -100,7 +100,7 @@ export class PasswordsControllers {
             }
 
             const resetPwdData = {
-                _account: user._id
+                _account: account._id
             };
           
             // so this is a new document we create whenever a user requests a password reset

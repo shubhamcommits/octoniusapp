@@ -40,6 +40,9 @@ routes.get('/:workspaceId', workspaces.getWorkspace);
 // PUT - Edit the workspace details
 routes.put('/:workspaceId', workspaceFileHandler, workspaces.updateWorkspace);
 
+// PUT - Edit the workspace properties
+routes.put('/:workspaceId/update', workspaceFileHandler, workspaces.updateWorkspaceProperties);
+
 // POST - Invite the user
 routes.post('/invite', workspaces.inviteUser);
 
