@@ -11,4 +11,4 @@
     <app-loading-spinner></app-loading-spinner>
   </ng-container>
 
-<app-sheet *ngIf="!(isLoading$ | async)" [fileUrl]="campaignFileUrl" [file]="campaignFile"></app-sheet>
+<app-sheet *ngIf="!(isLoading$ | async)" [fileUrl]="campaignFileUrl" [file]="campaignFile" [isMember]="isCurrentUserMember"></app-sheet>

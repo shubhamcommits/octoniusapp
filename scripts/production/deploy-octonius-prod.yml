@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   mongodb:
-    image: mongo:latest
+    image: ${MONGO_IMAGE_NAME}
     volumes:
       - octonius_production_db_data:/data/db
     ports:
@@ -15,8 +15,6 @@ services:
       resources:
         reservations:
           memory: 128M
-        limits:
-          memory: 256M
     networks:
       - octonius_production
 
@@ -43,7 +41,7 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s
@@ -76,7 +74,7 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s
@@ -109,7 +107,7 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s
@@ -142,7 +140,7 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s
@@ -170,7 +168,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s
@@ -197,7 +195,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s
@@ -225,7 +223,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s
@@ -252,7 +250,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s
@@ -280,7 +278,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s
@@ -311,7 +309,7 @@ services:
       - SLACK_CLIENT_SECRET=${SLACK_CLIENT_SECRET}
       - SLACK_BOT_ACCESS_TOKEN=${SLACK_BOT_ACCESS_TOKEN}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s
@@ -339,7 +337,7 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s
@@ -358,7 +356,7 @@ services:
       - WEBSOCKET=${WEBSOCKET}
       - mgmt_portal_domain=${mgmt_portal_domain}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s
@@ -372,7 +370,7 @@ services:
     ports:
       - ${APPLICATION_PORT}:${NGINX_PORT}
     deploy:
-      replicas: 3
+      replicas: ${REPLICAS}
       update_config:
         parallelism: 1
         delay: 10s

@@ -40,12 +40,24 @@ export class GroupReportsComponent implements OnInit {
   files: any = []
 
   // Loading Behaviour
-  isLoading$ = new BehaviorSubject(false);
+  isLoading$ = new BehaviorSubject(false)
+
+  // User Data Object
+  userData: any
+
+  // Current user member check
+  isCurrentUserMember = false
 
   async ngOnInit() {
 
     // Change the loading state
     this.isLoading$.next(true)
+
+    // Fetch Current User
+    this.userData = await this.publicFunctions.getCurrentUser()
+
+    // Current User Member check update
+    this.isCurrentUserMember = (this.userData.role === 'member') ? true : false
 
     // Fetch the token
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`

@@ -26,12 +26,18 @@ export class SheetComponent implements OnInit {
   // File URL
   @Input('fileUrl') fileUrl: any
 
+  // Is member
+  @Input('isMember') isMember: boolean
+
   ngOnInit(): void { }
 
   async ngOnChanges() {
     if (this.fileUrl) {
       let blob = await this.getBlobFromUrl(this.fileUrl)
       let data = await this.getDataFromBlob(blob)
+      if(this.isMember == true){
+        this.data.splice(0,9)
+      }
     }
   }
 
