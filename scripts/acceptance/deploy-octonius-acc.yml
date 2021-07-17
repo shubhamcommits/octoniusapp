@@ -4,7 +4,7 @@ services:
 
   mongodb:
     container_name: mongodb
-    image: ${MONGO_IMAGE_NAME}
+    image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
     restart: always
     volumes:
       - acc_db_data:/data/db

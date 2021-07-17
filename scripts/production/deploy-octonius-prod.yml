@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   mongodb:
-    image: ${MONGO_IMAGE_NAME}
+    image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
     volumes:
       - octonius_production_db_data:/data/db
     ports:
