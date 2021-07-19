@@ -56,6 +56,8 @@ export class ResultResponsesComponent implements OnChanges {
         return 'scale';
       case 'Dropdown':
         return 'dropdown';
+      case 'Multiple':
+        return 'multiselect';
     }
   }
 
@@ -72,6 +74,8 @@ export class ResultResponsesComponent implements OnChanges {
       case 'Scale':
         return 'leaderboard';
       case 'Dropdown':
+        return 'done';
+      case 'Multiple':
         return 'done';
     }
   }
