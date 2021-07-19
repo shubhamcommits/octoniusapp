@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
+import { Component, OnInit, Input, Injector, AfterViewInit, OnDestroy } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
   templateUrl: './component-search-bar.component.html',
   styleUrls: ['./component-search-bar.component.scss']
 })
-export class ComponentSearchBarComponent implements OnInit {
+export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Placeholder for the input bar
   @Input('placeholder') placeholder: string = '';
