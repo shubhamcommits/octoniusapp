@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
+import { Component, OnInit, Input, Injector, AfterViewInit, OnDestroy } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -20,13 +20,7 @@ import { Router } from '@angular/router';
   templateUrl: './component-search-bar.component.html',
   styleUrls: ['./component-search-bar.component.scss']
 })
-export class ComponentSearchBarComponent implements OnInit {
-
-  constructor(
-    private injector: Injector,
-    private router: Router,
-    public utilityService: UtilityService,
-    public dialog: MatDialog) { }
+export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Placeholder for the input bar
   @Input('placeholder') placeholder: string = '';
@@ -81,33 +75,16 @@ export class ComponentSearchBarComponent implements OnInit {
   // Create subsink class to unsubscribe the observables
   public subSink = new SubSink();
 
-  ngOnInit() {
+  constructor(
+    private injector: Injector,
+    private router: Router,
+    public utilityService: UtilityService,
+    public dialog: MatDialog) { }
 
+  ngOnInit() {
     // Calculate the lastUserId
     this.lastUserId = this.members[this.members.length - 1]['_id'];
     this.separateDisabled(this.members);
-  }
-
-  async separateDisabled(members){
-    this.ActiveMembers=[];
-    this.DisabledMembers=[];
-    members.forEach((member,index) => {
-      if(member.active) {
-          member.index = index;
-          this.ActiveMembers.push(member);
-      } else {
-        member.index = index;
-        this.DisabledMembers.push(member);
-      }
-    });
-  }
-
-  /**
-   * This method is binded to keyup event of query input field
-   * @param $event
-   */
-  queryChange($event: Event) {
-    this.queryChanged.next($event);
   }
 
   /**
@@ -174,12 +151,40 @@ export class ComponentSearchBarComponent implements OnInit {
   }
 
   /**
+   * Unsubscribe all the observables on destroying the component
+   */
+  ngOnDestroy() {
+    this.subSink.unsubscribe()
+    this.isLoading$.complete()
+  }
+
+  async separateDisabled(members){
+    this.ActiveMembers=[];
+    this.DisabledMembers=[];
+    members.forEach((member) => {
+      if(member.active) {
+          this.ActiveMembers.push(member);
+      } else {
+        this.DisabledMembers.push(member);
+      }
+    });
+  }
+
+  /**
+   * This method is binded to keyup event of query input field
+   * @param $event
+   */
+  queryChange($event: Event) {
+    this.queryChanged.next($event);
+  }
+
+  /**
    * This function is responsible for removing the user from the group
    * @param groupId
    * @param userId
    * @param index
    */
-  removeUserFromGroup(groupId: string, userId: string, index: number) {
+  removeUserFromGroup(groupId: string, userId: string) {
 
     // Create Service Instance
     let groupService = this.injector.get(GroupService);
@@ -192,15 +197,21 @@ export class ComponentSearchBarComponent implements OnInit {
           this.utilityService.asyncNotification('Please wait while we are removing the user ...',
             new Promise((resolve, reject) => {
               groupService.removeUser(groupId, userId)
-                .then(() => {
+                .then((res) => {
+                  const index = this.members.findIndex((user: any) => user._id === userId);
+
                   // Member Details
                   let member = this.members[index];
                   // Update the GroupData
-                  this.groupData._members.splice(this.groupData._members.findIndex((user: any) => user._id === member._id), 1)
-                  this.groupData._admins.splice(this.groupData._admins.findIndex((user: any) => user._id === member._id), 1)
+                  this.groupData._members.splice(this.groupData._members.findIndex((user: any) => user._id === member._id), 1);
+                  this.groupData._admins.splice(this.groupData._admins.findIndex((user: any) => user._id === member._id), 1);
+                  this.ActiveMembers.splice(this.ActiveMembers.findIndex((user: any) => user._id === member._id), 1);
+                  this.DisabledMembers.splice(this.ActiveMembers.findIndex((user: any) => user._id === member._id), 1)
 
                   // Update UI via removing from array
-                  this.members.splice(index, 1);
+                  if (index >- 1) {
+                    this.members.splice(index, 1);
+                  }
 
                   // Send updates to groupData via service
                   this.publicFunctions.sendUpdatesToGroupData(this.groupData);
@@ -214,9 +225,8 @@ export class ComponentSearchBarComponent implements OnInit {
 
                   // Resolve with success
                   resolve(this.utilityService.resolveAsyncPromise(resolveMessage));
-
                 })
-                .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the group, please try again!')))
+                .catch((err) => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the group, please try again!')));
             }))
         }
       });
@@ -228,7 +238,7 @@ export class ComponentSearchBarComponent implements OnInit {
    * @param workspaceId Workspace to remove from
    * @param index
    */
-  reactivateUserInWorkplace(userId, workspaceId, index) {
+  reactivateUserInWorkplace(userId: string, workspaceId: string) {
     // Create Service Instance
     const workspaceService = this.injector.get(WorkspaceService);
 
@@ -249,6 +259,7 @@ export class ComponentSearchBarComponent implements OnInit {
                   }
                   });
                   member.active = true;
+                  const index = this.members.findIndex((user: any) => user._id === member._id);
                   this.members[index] = member;
                   this.members.sort((x, y) => {
                     return (x.active === y.active) ? 0 : x.active ? -1 : 1;
@@ -271,7 +282,7 @@ export class ComponentSearchBarComponent implements OnInit {
    * @param workspaceId Workspace to remove from
    * @param index
    */
-  removeUserFromWorkplace(userId, workspaceId, index) {
+  removeUserFromWorkplace(userId, workspaceId) {
 
     // Create Service Instance
     let workspaceService = this.injector.get(WorkspaceService);
@@ -293,6 +304,7 @@ export class ComponentSearchBarComponent implements OnInit {
                   }
                   });
                   member.active = false;
+                  const index = this.members.findIndex((user: any) => user._id === member._id);
                   this.members[index] = member;
                   this.members.sort((x, y) => {
                     return (x.active === y.active) ? 0 : x.active ? -1 : 1;
@@ -335,9 +347,8 @@ export class ComponentSearchBarComponent implements OnInit {
    * This function is responsible for changing the roles of the users
    * @param userId - userId of the user of member object
    * @param role - 'admin' or 'member'
-   * @param index - current index of the object in the array
    */
-  async changeRole(userId: string, role: string, index: number) {
+  async changeRole(userId: string, role: string) {
 
     // Create a new User Service Object
     let userService = this.injector.get(UserService);
@@ -353,9 +364,10 @@ export class ComponentSearchBarComponent implements OnInit {
       new Promise((resolve, reject) => {
         userService.updateUserRole(userId, role)
           .then((res) => {
-
+            const index = this.members.findIndex((user: any) => user._id == userId);
             // Update the current member role
             this.members[index].role = role;
+            this.ActiveMembers[this.ActiveMembers.findIndex((user: any) => user._id == userId)].role = role;
 
             // Update the current workspace data with updated list of members
             this.workspaceData.members = this.members;
@@ -369,8 +381,68 @@ export class ComponentSearchBarComponent implements OnInit {
             // Updates the local data of the user to tell them about that their role has been updated
             this.publicFunctions.emitUserData(socketService, this.members[index]['_id'], this.members[index]);
 
+            let newRole = '';
+            if (role == 'member') {
+              newRole = 'Member';
+            } else if (role == 'admin') {
+              newRole = 'Admin';
+            } else if (role == 'manager') {
+              newRole = 'Work Manager';
+            }
+
             // Resolve the promise with success
-            resolve(utilityService.resolveAsyncPromise(`User updated to ${role}!`))
+            resolve(utilityService.resolveAsyncPromise(`User updated to ${newRole}!`))
+          })
+          .catch((err) => {
+            console.log('Error occured, while updating the role', err);
+            reject(utilityService.rejectAsyncPromise('Oops, an error occured while updating the role, please try again!'))
+          })
+      }))
+  }
+
+  /**
+   * This function is responsible for changing the roles of the users
+   * @param user - user member object
+   * @param role - 'manager' or 'member'
+   * @param groupId - current groupId
+   */
+  async changeGroupRole(user: any, role: string, groupId: string) {
+
+    // Create a new User Service Object
+    let groupService = this.injector.get(GroupService);
+
+    // Create a new utility Service Object
+    let utilityService = this.injector.get(UtilityService);
+
+    let newRole = '';
+    if (role === 'manager') {
+      newRole = 'Group Manager';
+      const index = this.groupData._members.findIndex(member => member._id === user._id);
+
+      if (index > -1) {
+        this.groupData._members.splice(index, 1);
+        this.groupData._admins.push(user);
+      }
+    } else if (role === 'member') {
+      newRole = 'Member';
+      const index = this.groupData._admins.findIndex(admin => admin._id === user._id);
+
+      if (index > -1) {
+        this.groupData._admins.splice(index, 1);
+        this.groupData._members.push(user);
+      }
+    }
+
+    // Instatiate the request to change the role
+    utilityService.asyncNotification('Please wait we are updating the role as per your request...',
+      new Promise((resolve, reject) => {
+        groupService.updateGroup(groupId, this.groupData)
+          .then((res) => {
+            // Send the data over the service and storage layer throughout the entire app
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
+            // Resolve the promise with success
+            resolve(utilityService.resolveAsyncPromise(`User updated to ${newRole}!`))
           })
           .catch((err) => {
             console.log('Error occured, while updating the role', err);
@@ -429,64 +501,8 @@ export class ComponentSearchBarComponent implements OnInit {
     this.isLoading$.next(false);
   }
 
-  /**
-   * Unsubscribe all the observables on destroying the component
-   */
-  ngOnDestroy() {
-    this.subSink.unsubscribe()
-    this.isLoading$.complete()
-  }
-
   isGroupManager(userId) {
     return (this.groupData && this.groupData._admins) ? this.groupData._admins.find(admin => admin._id === userId) : false;
-  }
-
-  /**
-   * This function is responsible for changing the roles of the users
-   * @param user - user member object
-   * @param role - 'manager' or 'member'
-   * @param groupId - current groupId
-   */
-  async changeGroupRole(user: any, role: string, groupId: string) {
-
-    // Create a new User Service Object
-    let groupService = this.injector.get(GroupService);
-
-    // Create a new utility Service Object
-    let utilityService = this.injector.get(UtilityService);
-
-    if (role === 'manager') {
-      const index = this.groupData._members.findIndex(member => member._id === user._id);
-
-      if (index > -1) {
-        this.groupData._members.splice(index, 1);
-        this.groupData._admins.push(user);
-      }
-    } else if (role === 'member') {
-      const index = this.groupData._admins.findIndex(admin => admin._id === user._id);
-
-      if (index > -1) {
-        this.groupData._admins.splice(index, 1);
-        this.groupData._members.push(user);
-      }
-    }
-
-    // Instatiate the request to change the role
-    utilityService.asyncNotification('Please wait we are updating the role as per your request...',
-      new Promise((resolve, reject) => {
-        groupService.updateGroup(groupId, this.groupData)
-          .then((res) => {
-            // Send the data over the service and storage layer throughout the entire app
-            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-
-            // Resolve the promise with success
-            resolve(utilityService.resolveAsyncPromise(`User updated to Group Manager!`))
-          })
-          .catch((err) => {
-            console.log('Error occured, while updating the role', err);
-            reject(utilityService.rejectAsyncPromise('Oops, an error occured while updating the role, please try again!'))
-          })
-      }))
   }
 
   /**

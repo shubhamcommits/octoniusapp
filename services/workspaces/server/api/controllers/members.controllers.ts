@@ -163,43 +163,48 @@ export class MembersControllers {
         const { userId, workspaceId } = req.body;
         try {
             const user: any = await User.findOneAndUpdate({
-                _id: userId
-            }, {
-                active: true,
-                invited: false,
-            }, {
-                new: true
-            }).select('first_name last_name profile_pic active email role integrations').lean();
+                    _id: userId
+                }, {
+                    active: true,
+                    invited: false,
+                }, {
+                    new: true
+                })
+                .select('first_name last_name profile_pic active email role integrations')
+                .populate({
+                    path: '_account',
+                    select: '_id email password'
+                }).lean();
 
             await Account.findOneAndUpdate({
-                email: user.email
-            }, {
-                $push: {
-                    _workspaces: workspaceId
-                }
-            });
+                    email: user.email
+                }, {
+                    $push: {
+                        _workspaces: workspaceId
+                    }
+                });
 
-            const workspace = await Workspace.findById(workspaceId);
+            const workspace = await Workspace.findById(workspaceId).lean();
 
             // Count all the users present inside the workspace
             const usersCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: workspaceId }
-            ] }).countDocuments();
+                    { active: true },
+                    { _workspace: workspaceId }
+                ] }).countDocuments();
 
             // Send workspace to the mgmt portal
             // Count all the users present inside the workspace
             const guestsCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: workspaceId },
-                { role: 'guest'}
-            ] }).countDocuments();
+                    { active: true },
+                    { _workspace: workspaceId },
+                    { role: 'guest'}
+                ] }).countDocuments();
 
             // Count all the groups present inside the workspace
             const groupsCount: number = await Group.find({ $and: [
-                { group_name: { $ne: 'personal' } },
-                { _workspace: workspace._id }
-            ]}).countDocuments();
+                    { group_name: { $ne: 'personal' } },
+                    { _workspace: workspace._id }
+                ]}).countDocuments();
 
             let workspaceMgmt = {
                 _id: workspace._id,
@@ -208,7 +213,7 @@ export class MembersControllers {
                 owner_email: workspace.owner_email,
                 owner_first_name: workspace.owner_first_name,
                 owner_last_name: workspace.owner_last_name,
-                _owner_remote_id: workspace._owner._id || workspace._owner,
+                _owner_remote_id: workspace._owner,
                 environment: process.env.DOMAIN,
                 num_members: usersCount,
                 num_invited_users: guestsCount,
@@ -236,7 +241,7 @@ export class MembersControllers {
                 environment: process.env.DOMAIN,
                 created_date: user.created_date
             }
-            axios.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
+            axios.put(`${process.env.MANAGEMENT_URL}/api/user/${user._id}/update`, {
                 API_KEY: workspace.management_private_api_key,
                 workspaceId: workspace._id,
                 userData: userMgmt
@@ -349,7 +354,7 @@ export class MembersControllers {
                     environment: process.env.DOMAIN,
                     created_date: user.created_date
                 }
-                axios.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
+                axios.put(`${process.env.MANAGEMENT_URL}/api/user/${user._id}/update`, {
                     API_KEY: workspace.management_private_api_key,
                     workspaceId: workspace._id,
                     userData: userMgmt

@@ -173,14 +173,14 @@ const PostSchema = new Schema({
         },
 
         idea: {
-            negative_votes: {
-                type: Number,
-                default: 0
-            },
-            positive_votes: {
-                type: Number,
-                default: 0
-            }
+            negative_votes: [{
+                type: String,
+                default: null
+            }],
+            positive_votes: [{
+                type: String,
+                default: null
+            }]
         },
         
         start_date: {

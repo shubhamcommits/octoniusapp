@@ -20,12 +20,18 @@ export class IdeaActionsComponent implements OnInit {
 
   voteValue = 0;
 
+  votedPositiveIndex = -1;
+  votedNegativeIndex = -1;
+
   ngOnInit() {
     if (!this.post.task.idea) {
       this.post.task.idea = {
         positive_votes: 0,
         negative_votes: 0
       }
+    } else {
+      this.votedPositiveIndex = this.post.task.idea.positive_votes.findIndex(userId => userId == this.userData._id);
+      this.votedNegativeIndex = this.post.task.idea.negative_votes.findIndex(userId => userId == this.userData._id);
     }
   }
 
@@ -34,17 +40,19 @@ export class IdeaActionsComponent implements OnInit {
    */
   vote(positiveVote: boolean) {
 
-    // Increment votes
-    if (positiveVote) {
-      this.voteValue = 1;
-      this.post.task.idea.positive_votes += this.voteValue;
-    } else {
-      this.voteValue = -1;
-      this.post.task.idea.negative_votes += this.voteValue;
-    }
+    if ((!positiveVote && this.votedNegativeIndex < 0) || (positiveVote && this.votedPositiveIndex < 0)) {
+      // Increment votes
+      if (positiveVote) {
+        this.voteValue = 1;
+        this.post.task.idea.positive_votes += this.voteValue;
+      } else {
+        this.voteValue = -1;
+        this.post.task.idea.negative_votes += this.voteValue;
+      }
 
-    // Call the Service Function to vote to a idea
-    this.onVote(this.post._id);
+      // Call the Service Function to vote to a idea
+      this.onVote(this.post._id);
+    }
   }
 
   /**
@@ -57,14 +65,11 @@ export class IdeaActionsComponent implements OnInit {
     let postService = this._Injector.get(PostService)
 
     // Return a new promise to call the service function
-    return new Promise((resolve, reject)=>{
-      postService.voteIdea(postId, this.voteValue)
+    return postService.voteIdea(postId, this.voteValue)
       .then((res) => {
-        resolve(res);
-      })
-      .catch((err)=>{
-        reject()
-      })
-    })
+        this.post = res['post'];
+        this.votedPositiveIndex = this.post.task.idea.positive_votes.findIndex(userId => userId == this.userData._id);
+        this.votedNegativeIndex = this.post.task.idea.negative_votes.findIndex(userId => userId == this.userData._id);
+      });
   }
 }
