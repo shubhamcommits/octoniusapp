@@ -1442,6 +1442,16 @@ export class GroupController {
                 });
                 */
                 if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0 || customFields.length > 0) {
+
+                    // Fetch the adminData for mailing
+                    const adminData = await User.findOne({
+                            _id: req['userId']
+                        }).select('first_name email');
+        
+                    const workspace = await Workspace.findOne({
+                            _id: group._workspace._id || group._workspace 
+                        }).select('management_private_api_key');
+
                     // Add new members
                     Array.from(validUsers).map(async (userId) => {
                         // Add the user to the group
@@ -1450,8 +1460,19 @@ export class GroupController {
                         });
 
                         // Add the group to the user document
-                        await User.findByIdAndUpdate(userId, {
+                        const user = await User.findByIdAndUpdate(userId, {
                             $addToSet: { _groups: groupId }
+                        });
+
+                        // Send join group confirmation email
+                        axios.post(`${process.env.MANAGEMENT_URL}/api/mail/group-joined`, {
+                            API_KEY: workspace.management_private_api_key,
+                            groupData: {
+                                group_name: group.group_name,
+                                workspace_name: group.workspace_name
+                            },
+                            memberData: user,
+                            adminData: adminData
                         });
                     });
                 }
