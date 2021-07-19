@@ -8,7 +8,8 @@
 
     <!-- Empty State starts -->
     <div *ngIf="notificationsData.unreadNotifications.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
-      <img src='assets/images/overview-empty-state.svg' style="width: 50%;">
+      <img src='assets/images/placeholder_recent_activity.png' class="placeholder-img">
+      <p class="muted text-center">Nothing new. Take a breath. </p>
     </div>
     <!-- Empty State ends -->
     <div *ngIf="notificationsData.unreadNotifications.length > 0 && !(isLoading$ | async)" >
@@ -94,7 +95,8 @@
 
     <!-- Empty State starts -->
     <div *ngIf="notificationsData.unreadPosts.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
-      <img src='assets/images/overview-empty-state.svg' style="width: 50%;">
+      <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
+      <p class="muted text-center">Everyone is silent. </p>
     </div>
     <!-- Empty State ends -->
     <div *ngIf="notificationsData.unreadPosts.length > 0 && !(isLoading$ | async)" >
