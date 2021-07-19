@@ -1218,19 +1218,91 @@ export class GroupController {
         const { groupId, rule, customFieldId } = req.params;
 
         try {
+            let group = await Group.findById(groupId).populate({
+                path: '_members',
+                select: 'email current_position skills profile_custom_fields'
+            }).lean();
+
             if (rule === 'email_domains') {
-                await Group.findByIdAndUpdate(groupId, {
-                    $unset: { 'conditions.email_domains': '' }
+                group['_members'].map(async (user) => {
+                    const email = user['email'];
+                    const index = email.indexOf('@');
+                    const emailDomain = email.substring(index + 1);
+
+                    if (group.conditions.email_domains && group.conditions.email_domains.includes(emailDomain)) {
+                        await User.findByIdAndUpdate(user._id, {
+                            $pull: { _groups: groupId }
+                        });
+
+                        await Group.findByIdAndUpdate(groupId, {
+                            $pull: { _members: user._id }
+                        });
+                    }
                 });
+
+                group = await Group.findByIdAndUpdate(groupId, {
+                        $unset: { 'conditions.email_domains': '' }
+                    },
+                    {
+                        new: true
+                    }).lean();
+
             } else if (rule === 'job_positions') {
-                await Group.findByIdAndUpdate(groupId, {
-                    $unset: { 'conditions.job_positions': '' }
+                
+                group['_members'].map(async (user) => {
+                    if (group.conditions.job_positions && group.conditions.job_positions.includes(user['current_position'])) {
+                        await User.findByIdAndUpdate(user._id, {
+                            $pull: { _groups: groupId }
+                        });
+
+                        await Group.findByIdAndUpdate(groupId, {
+                            $pull: { _members: user._id.toString() }
+                        });
+                    }
                 });
+
+                await Group.findByIdAndUpdate(groupId, {
+                        $unset: { 'conditions.job_positions': '' }
+                    },
+                    {
+                        new: true
+                    });
             } else if (rule === 'skills') {
-                await Group.findByIdAndUpdate(groupId, {
-                    $unset: { 'conditions.skills': '' }
+                
+                group['_members'].map(async (user) => {
+                    if (group.conditions.skills && group.conditions.skills.some(skill => user.skills.includes(skill))) {
+                        await User.findByIdAndUpdate(user._id, {
+                            $pull: { _groups: groupId }
+                        });
+
+                        await Group.findByIdAndUpdate(groupId, {
+                            $pull: { _members: user._id.toString() }
+                        });
+                    }
                 });
+
+                await Group.findByIdAndUpdate(groupId, {
+                        $unset: { 'conditions.skills': '' }
+                    },
+                    {
+                        new: true
+                    });
             } else if (rule === 'custom_field' && customFieldId) {
+                
+                group['_members'].map(async (user) => {
+                    if (group.conditions.custom_fields
+                            && user.profile_custom_fields
+                            && group.conditions.custom_fields.some(cf => user.profile_custom_fields[cf.name] == cf.value)) {
+                        await User.findByIdAndUpdate(user._id, {
+                            $pull: { _groups: groupId }
+                        });
+
+                        await Group.findByIdAndUpdate(groupId, {
+                            $pull: { _members: user._id.toString() }
+                        });
+                    }
+                });
+
                 // Find the workspace and remove a respective custom field
                 await Group.findByIdAndUpdate({
                         _id: groupId
@@ -1245,11 +1317,29 @@ export class GroupController {
                     },
                    {
                        new: true
-                   } ).lean();
+                   }).lean();
             }
+            
+            group = await Group.findById(groupId)
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    options: {
+                        limit: 10
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    options: {
+                        limit: 10
+                    }
+                })
+                .lean();
 
             return res.status(200).json({
-                message: 'Rule successfully deleted!'
+                message: 'Rule successfully deleted!',
+                group: group
             });
         } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);
@@ -1338,7 +1428,7 @@ export class GroupController {
                         validUsers.delete(adminId.toString());
                     }
                 });
-
+                /*
                 // Remove the group from the current members' _groups set
                 group['_members'].map(async (userId) => {
                     await User.findByIdAndUpdate(userId, {
@@ -1350,7 +1440,7 @@ export class GroupController {
                 await Group.findByIdAndUpdate(groupId, {
                     $set: { _members: [] }
                 });
-
+                */
                 if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0 || customFields.length > 0) {
                     // Add new members
                     Array.from(validUsers).map(async (userId) => {
