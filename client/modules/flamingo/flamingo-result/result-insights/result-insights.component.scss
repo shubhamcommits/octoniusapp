@@ -1,7 +1,7 @@
 .insights-container {
   font-family: Nunito,sans-serif;
   font-style: normal;
-  font-weight: 700!important;
+  font-weight: 400!important;
   font-size: 20px;
 
   width: 94%;
@@ -42,11 +42,12 @@
 
       .answer-response {
         text-align: left;
-        height: 27px;
+        min-height: 27px;
         border-bottom: 1px dashed #E4EDF8;
 
         .response {
           color: #FBB732;
+          font-weight: 700;
         }
       }
 
