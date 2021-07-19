@@ -1457,7 +1457,22 @@ export class GroupController {
                 }
             }
 
-            group = await Group.findById(groupId).lean();
+            group = await Group.findById(groupId)
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    options: {
+                        limit: 10
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    options: {
+                        limit: 10
+                    }
+                })
+                .lean();
 
             return res.status(200).json({
                 message: 'Group members successfully updated!',
