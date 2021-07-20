@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, EventEmitter, SimpleChanges, Injector, Input, OnChanges, Output, ViewChild } from '@angular/core';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { PublicFunctions } from 'modules/public.functions';
-import moment from 'moment';
 import { environment } from 'src/environments/environment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+
+import moment from 'moment';
 
 @Component({
   selector: 'app-tasks-table',
@@ -21,8 +22,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   @Input() section;
   @Input() sections;
   @Input() sortingBit: String
-  @Input() filteringBit: any;
-  @Input() filteringData: any;
   @Input() isAdmin = false;
   @Input() customFields = [];
   @Input() isIdeaModuleAvailable = false;
@@ -109,7 +108,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     this.unchangedTasks = JSON.parse(JSON.stringify(unchangedTasks));
 
     this.tasks = [...this.tasks];
-    await this.filtering(this.filteringBit);
     await this.sorting();
     if (this.revert) {
       this.tasks.reverse();
@@ -117,138 +115,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
     this.dataSource = new MatTableDataSource(this.tasks);
     this.dataSource.sort = this.sort;
-  }
-
-  async filtering(to) {
-    if (to == "mytask") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => {
-        var bit = false;
-        if (task && task._assigned_to) {
-          task._assigned_to.forEach(element => {
-            if (element._id == this.userData._id) {
-              bit = true
-            }
-          });
-        }
-        return bit;
-      })
-      this.unchangedTasks = tasks;
-    }
-    else if (to == 'due_before_today') {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => (
-        (task?.task?.due_to) ? moment.utc(task?.task?.due_to).isBefore(moment().add(-1,'days')) : false))
-      this.unchangedTasks = tasks;
-    } else if (to == 'due_today') {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => (
-        (task?.task?.due_to) ? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') : false))
-      this.unchangedTasks = tasks;
-    } else if (to == 'due_today') {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => (
-        (task?.task?.due_to) ? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD') : false))
-      this.unchangedTasks = tasks;
-    } else if (to == 'due_tomorrow') {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => (
-        (task?.task?.due_to) ? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().add(1,'days').format('YYYY-MM-DD') : false))
-      this.unchangedTasks = tasks;
-    } else if (to == 'due_week') {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => {
-        const first = moment().startOf('week').format();
-        const last = moment().endOf('week').add(1, 'days').format();
-        if (task?.task?.due_to) {
-          if ((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))) {
-            return true;
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
-
-      })
-      this.unchangedTasks = tasks;
-    } else if (to == 'due_next_week') {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => {
-        const first = moment().endOf('week').add(1, 'days').format();
-        const last = moment().endOf('week').add(9, 'days').format();
-        if (task?.task?.due_to) {
-          if ((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))) {
-            return true;
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
-
-      })
-      this.unchangedTasks = tasks;
-    } else if (to == 'due_14_days') {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => {
-        const first = moment().format();
-        const last = moment().add(14, 'days').format();
-        if (task?.task?.due_to) {
-          if ((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))) {
-            return true;
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
-
-      })
-      this.unchangedTasks = tasks;
-    } else if (to == "users") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => {
-        var bit = false;
-        if (task && task._assigned_to) {
-          task._assigned_to.forEach(element => {
-            if (element._id == this.filteringData) {
-              bit = true
-            }
-          });
-        }
-        return bit;
-      })
-      this.unchangedTasks = tasks;
-    }
-    else if (to == "custom_field") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      const cfName = this.filteringData.name;
-      const cfValue = this.filteringData.value;
-      this.tasks = tasks.tasksList.filter((task: any) => (
-        task.task.custom_fields[cfName] == cfValue))
-      this.unchangedTasks = tasks;
-    } else if (to == "ideas") {
-      let myClonedUnchnaged = Object.assign({}, this.unchangedTasks);
-      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
-      this.tasks = tasks.tasksList.filter((task: any) => (
-        task.task.is_idea == true))
-      this.unchangedTasks = tasks;
-    } else {
-      this.tasks = this.unchangedTasks.tasksList;
-    }
-
-
   }
 
   async sorting() {
