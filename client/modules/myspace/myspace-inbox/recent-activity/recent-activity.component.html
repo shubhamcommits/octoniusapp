@@ -43,12 +43,14 @@
             'started_notification': notification?.type === 'started',
             'like_notification': (notification?.type === 'like_comment' || notification?.type === 'like'),
             'follow_notification': notification?.type === 'follow',
-            'comment_notification': notification?.type === 'comment'
+            'comment_notification': notification?.type === 'comment',
+            'join_group_notification': notification?.type === 'join-group'
           }">
             {{ notification?.message }}
           </span>
           <span class="notification_post_title" *ngIf="notification?.type !== 'mention_folio'">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
           <span class="notification_post_title" *ngIf="notification?.type === 'mention_folio'">{{ notification?._origin_folio?.original_name | truncatetext: 20 }}</span>
+          <span class="notification_post_title" *ngIf="notification?.type === 'join-group'">{{ notification?._origin_group?.group_name | truncatetext: 20 }}</span>
         </div>
 
         <div class="notification_date_time">

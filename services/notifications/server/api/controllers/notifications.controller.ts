@@ -634,4 +634,25 @@ export class NotificationsController {
             return sendErr(res, new Error(err), 'Internal Server Error!', 500);
         }
     };
+
+    /**
+     * This route is responsible for notifying the user he/she is added to a group
+     * @param { userId, groupId, posted_by, io } post 
+     */
+    async joinGroup(req: Request, res: Response, next: NextFunction) {
+
+        const { userId, groupId, added_by, io } = req.body;
+        try {
+            // Call Service Function for newEventAssignments
+            await notificationService.joinGroup(userId, groupId, added_by, io);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Event Assignments Succeeded!`,
+            });
+        } catch (err) {
+            // Error Handling
+            return sendErr(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    };
 }

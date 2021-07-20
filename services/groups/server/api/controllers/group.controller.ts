@@ -850,6 +850,12 @@ export class GroupController {
                 new: true
             });
 
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/join-group`, {
+                userId: userId,
+                groupId: group._id,
+                added_by: userId
+            });
+
             return res.status(200).json({
                 message: `User added to group successfully!`,
             });
@@ -1462,6 +1468,12 @@ export class GroupController {
                         // Add the group to the user document
                         const user = await User.findByIdAndUpdate(userId, {
                             $addToSet: { _groups: groupId }
+                        });
+
+                        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/join-group`, {
+                            userId: user._id,
+                            groupId: group._id,
+                            added_by: req['userId']
                         });
 
                         // Send join group confirmation email

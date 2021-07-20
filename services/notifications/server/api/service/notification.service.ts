@@ -319,7 +319,6 @@ export class NotificationsService {
   */
  async newPost(postId: any, groupId:any, posted_by: string, io: any) {
     try {
-console.log(postId);
       // Let usersStream
       let userStream = Readable.from(await User.find({
               _groups: groupId
@@ -342,6 +341,27 @@ console.log(postId);
       throw err;
     }
  };
+    
+ /**
+ * This function is responsible for notifying the user getting a new post in one of his/her groups
+ * @param { userId, groupId, posted_by } comment 
+ */
+async joinGroup(userId: any, groupId:any, added_by: string, io: any) {
+   try {
+     const notification = await Notification.create({
+            _actor: added_by,
+            _owner: userId,
+            _origin_group: groupId,
+            message: 'added you to',
+            type: 'join-group'
+        });
+
+    await helperFunctions.sendNotificationsFeedFromService(userId, io, true);
+
+   } catch (err) {
+     throw err;
+   }
+};
 
   /**
    * This function is responsible for fetching the latest first 5 read notifications
@@ -362,6 +382,7 @@ console.log(postId);
               .populate('_origin_comment')
               .populate('_owner', 'first_name last_name profile_pic')
               .populate('_origin_folio')
+              .populate('_origin_group', 'group_name')
               .lean();
 
           return notifications;
@@ -388,6 +409,7 @@ console.log(postId);
               .populate('_origin_comment')
               .populate('_owner', 'first_name last_name profile_pic')
               .populate('_origin_folio')
+              .populate('_origin_group', 'group_name')
               .populate({ path: '_origin_folio', populate: { path: '_group' } })
               .lean();
 
@@ -415,6 +437,7 @@ console.log(postId);
               .populate('_origin_comment')
               .populate('_owner', 'first_name last_name profile_pic')
               .populate('_origin_folio')
+              .populate('_origin_group', 'group_name')
               .populate({ path: '_origin_folio', populate: { path: '_group' } })
               .lean();
 
