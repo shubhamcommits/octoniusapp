@@ -327,6 +327,12 @@ export class MembersControllers {
                 return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404)
             }
 
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/leave-group`, {
+                userId: userId,
+                groupId: groupId,
+                removed_by: req['userId']
+            });
+
             // Send status 200 response
             return res.status(200).json({
                 message: `User has been removed from ${groupUpdate.group_name} group.`
@@ -351,7 +357,6 @@ export class MembersControllers {
             const groupUpdate: any = await Group.findById(groupId);
             let foundBar = false;
             let userExists = false;
-            let barFromDB;
             let users;
             groupUpdate.bars.forEach(bar => {
                 if (bar.bar_tag === barTag) {
@@ -430,31 +435,30 @@ export class MembersControllers {
 
     async removeBar(req: Request, res: Response, next: NextFunction) {
         // Get the groupId and userId
-     const { groupId, barTag } = req.body;
+        const { groupId, barTag } = req.body;
 
-     try {
+        try {
 
-         const groupUpdate: any = await Group.findById(groupId);
+            const groupUpdate: any = await Group.findById(groupId);
 
-         // If group wasn't found invalid id error
-         if (groupUpdate === null || groupUpdate === undefined) {
-             let msg = '';
-             groupUpdate ? msg = 'Group' : msg = 'User';
-             return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404)
-         }
+            // If group wasn't found invalid id error
+            if (groupUpdate === null || groupUpdate === undefined) {
+                let msg = '';
+                groupUpdate ? msg = 'Group' : msg = 'User';
+                return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404)
+            }
 
-         // tslint:disable-next-line: no-shadowed-variable
-         // remove bar from list
-         const bars = groupUpdate.bars.filter( bar => bar.bar_tag !== barTag);
-         groupUpdate.bars = bars;
-         groupUpdate.save();
+            // remove bar from list
+            const bars = groupUpdate.bars.filter( bar => bar.bar_tag !== barTag);
+            groupUpdate.bars = bars;
+            groupUpdate.save();
 
-         // Send status 200 response
-         return res.status(200).json({
-             message: `Bar tag with users has been removed`
-         });
-     } catch (err) {
-         return sendError(res, err, 'Internal Server Error!', 500);
-     }
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Bar tag with users has been removed`
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 }

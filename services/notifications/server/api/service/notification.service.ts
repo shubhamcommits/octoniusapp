@@ -343,7 +343,7 @@ export class NotificationsService {
  };
     
  /**
- * This function is responsible for notifying the user getting a new post in one of his/her groups
+ * This function is responsible for notifying the user is added to a groups
  * @param { userId, groupId, posted_by } comment 
  */
 async joinGroup(userId: any, groupId:any, added_by: string, io: any) {
@@ -361,6 +361,27 @@ async joinGroup(userId: any, groupId:any, added_by: string, io: any) {
    } catch (err) {
      throw err;
    }
+};
+    
+/**
+* This function is responsible for notifying the user is removed from a groups
+* @param { userId, groupId, posted_by } comment 
+*/
+async leaveGroup(userId: any, groupId:any, removed_by: string, io: any) {
+  try {
+    const notification = await Notification.create({
+           _actor: removed_by,
+           _owner: userId,
+           _origin_group: groupId,
+           message: 'removed you from',
+           type: 'join-group'
+       });
+
+   await helperFunctions.sendNotificationsFeedFromService(userId, io, true);
+
+  } catch (err) {
+    throw err;
+  }
 };
 
   /**

@@ -1241,7 +1241,13 @@ export class GroupController {
                         });
 
                         await Group.findByIdAndUpdate(groupId, {
-                            $pull: { _members: user._id }
+                            $pull: { _members: user._id.toString() }
+                        });
+
+                        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/leave-group`, {
+                            userId: user._id,
+                            groupId: group._id,
+                            removed_by: req['userId']
                         });
                     }
                 });
@@ -1264,6 +1270,12 @@ export class GroupController {
                         await Group.findByIdAndUpdate(groupId, {
                             $pull: { _members: user._id.toString() }
                         });
+
+                        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/leave-group`, {
+                            userId: user._id,
+                            groupId: group._id,
+                            removed_by: req['userId']
+                        });
                     }
                 });
 
@@ -1283,6 +1295,12 @@ export class GroupController {
 
                         await Group.findByIdAndUpdate(groupId, {
                             $pull: { _members: user._id.toString() }
+                        });
+
+                        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/leave-group`, {
+                            userId: user._id,
+                            groupId: group._id,
+                            removed_by: req['userId']
                         });
                     }
                 });
@@ -1305,6 +1323,12 @@ export class GroupController {
 
                         await Group.findByIdAndUpdate(groupId, {
                             $pull: { _members: user._id.toString() }
+                        });
+
+                        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/leave-group`, {
+                            userId: user._id,
+                            groupId: group._id,
+                            removed_by: req['userId']
                         });
                     }
                 });
