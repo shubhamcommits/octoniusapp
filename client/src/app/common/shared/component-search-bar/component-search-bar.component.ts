@@ -182,7 +182,6 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
    * This function is responsible for removing the user from the group
    * @param groupId
    * @param userId
-   * @param index
    */
   removeUserFromGroup(groupId: string, userId: string) {
 
@@ -190,7 +189,7 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
     let groupService = this.injector.get(GroupService);
     // Ask User to remove this user from the group or not
     this.utilityService.getConfirmDialogAlert('Are you sure?',
-     'This will deactivate user!')
+     'This will remove the user from the group!')
       .then((result) => {
         if (result.value) {
           // Remove the User
@@ -236,7 +235,6 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
    * Function to remove member from workspace
    * @param userId User to remove
    * @param workspaceId Workspace to remove from
-   * @param index
    */
   reactivateUserInWorkplace(userId: string, workspaceId: string) {
     // Create Service Instance
@@ -277,12 +275,11 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
   }
 
   /**
-   * Function to remove member from workspace
+   * Function to disable a member in the workspace
    * @param userId User to remove
    * @param workspaceId Workspace to remove from
-   * @param index
    */
-  removeUserFromWorkplace(userId, workspaceId) {
+  disableUserInWorkplace(userId, workspaceId) {
 
     // Create Service Instance
     let workspaceService = this.injector.get(WorkspaceService);
@@ -309,6 +306,45 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
                   this.members.sort((x, y) => {
                     return (x.active === y.active) ? 0 : x.active ? -1 : 1;
                   });
+
+                  // Send updates to workspaceData via service
+                  this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
+                  this.separateDisabled(this.members);
+
+                  // Resolve with success
+                  resolve(this.utilityService.resolveAsyncPromise('User removed!'))
+                })
+                .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the workplace, please try again!')))
+            }))
+        }
+      })
+
+  }
+
+  /**
+   * Function to remove a member from the workspace
+   * @param userId User to remove
+   */
+   removeUserFromWorkplace(userId) {
+
+    // Create Service Instance
+    let userService = this.injector.get(UserService);
+
+    // Ask User to remove this user from the group or not
+    this.utilityService.getConfirmDialogAlert('Are you sure?',
+    'This action will remove the user completely from the workspace.')
+      .then((result) => {
+        if (result.value) {
+
+          // Remove the User
+          this.utilityService.asyncNotification('Please wait while we are removing the user ...',
+            new Promise((resolve, reject) => {
+              userService.removeUser(userId)
+                .then(() => {
+                  const index = this.members.findIndex((user: any) => user._id === userId);
+                  if (index >- 1) {
+                    this.members.splice(index, 1);
+                  }
 
                   // Send updates to workspaceData via service
                   this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
