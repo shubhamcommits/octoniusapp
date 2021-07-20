@@ -171,15 +171,15 @@ export class MembersControllers {
             // Update the group _members section and feed the memberId, and also increment the count of members by 1
             if (role === 'member') {
                 groupData = await Group.findByIdAndUpdate({
-                    _id: groupId
-                }, {
-                    $addToSet: {
-                        _members: _member
-                    },
-                    $inc: { members_count: 1 }
-                }, {
-                    new: true
-                })
+                        _id: groupId
+                    }, {
+                        $addToSet: {
+                            _members: _member
+                        },
+                        $inc: { members_count: 1 }
+                    }, {
+                        new: true
+                    })
                     .populate({
                         path: '_members',
                         select: 'first_name last_name profile_pic role email',
@@ -207,15 +207,15 @@ export class MembersControllers {
             else {
 
                 groupData = await Group.findByIdAndUpdate({
-                    _id: groupId
-                }, {
-                    $addToSet: {
-                        _admins: _member
-                    },
-                    $inc: { members_count: 1 }
-                }, {
-                    new: true
-                })
+                        _id: groupId
+                    }, {
+                        $addToSet: {
+                            _admins: _member
+                        },
+                        $inc: { members_count: 1 }
+                    }, {
+                        new: true
+                    })
                     .populate({
                         path: '_members',
                         select: 'first_name last_name profile_pic role email',
@@ -242,14 +242,14 @@ export class MembersControllers {
 
             // Update the userData and push group
             await User.updateMany({
-                _id: _member
-            }, {
-                $addToSet: {
-                    _groups: groupId
-                }
-            }, {
-                multi: true
-            })
+                    _id: _member
+                }, {
+                    $addToSet: {
+                        _groups: groupId
+                    }
+                }, {
+                    multi: true
+                });
 
             // Fetch the adminData for mailing
             const adminData = await User.findOne({
@@ -260,16 +260,22 @@ export class MembersControllers {
                 _id: groupData._workspace._id || groupData._workspace 
             }).select('management_private_api_key');
 
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/join-group`, {
+                    userId: _member,
+                    groupId: groupId,
+                    added_by: adminId
+                });
+
             // Send join group confirmation email
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/group-joined`, {
-                API_KEY: workspace.management_private_api_key,
-                groupData: {
-                    group_name: groupData.group_name,
-                    workspace_name: groupData.workspace_name
-                },
-                memberData: member,
-                adminData: adminData
-            });
+                    API_KEY: workspace.management_private_api_key,
+                    groupData: {
+                        group_name: groupData.group_name,
+                        workspace_name: groupData.workspace_name
+                    },
+                    memberData: member,
+                    adminData: adminData
+                });
 
             // Send status 200 response
             return res.status(200).json({
@@ -321,6 +327,12 @@ export class MembersControllers {
                 return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404)
             }
 
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/leave-group`, {
+                userId: userId,
+                groupId: groupId,
+                removed_by: req['userId']
+            });
+
             // Send status 200 response
             return res.status(200).json({
                 message: `User has been removed from ${groupUpdate.group_name} group.`
@@ -345,7 +357,6 @@ export class MembersControllers {
             const groupUpdate: any = await Group.findById(groupId);
             let foundBar = false;
             let userExists = false;
-            let barFromDB;
             let users;
             groupUpdate.bars.forEach(bar => {
                 if (bar.bar_tag === barTag) {
@@ -424,31 +435,30 @@ export class MembersControllers {
 
     async removeBar(req: Request, res: Response, next: NextFunction) {
         // Get the groupId and userId
-     const { groupId, barTag } = req.body;
+        const { groupId, barTag } = req.body;
 
-     try {
+        try {
 
-         const groupUpdate: any = await Group.findById(groupId);
+            const groupUpdate: any = await Group.findById(groupId);
 
-         // If group wasn't found invalid id error
-         if (groupUpdate === null || groupUpdate === undefined) {
-             let msg = '';
-             groupUpdate ? msg = 'Group' : msg = 'User';
-             return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404)
-         }
+            // If group wasn't found invalid id error
+            if (groupUpdate === null || groupUpdate === undefined) {
+                let msg = '';
+                groupUpdate ? msg = 'Group' : msg = 'User';
+                return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404)
+            }
 
-         // tslint:disable-next-line: no-shadowed-variable
-         // remove bar from list
-         const bars = groupUpdate.bars.filter( bar => bar.bar_tag !== barTag);
-         groupUpdate.bars = bars;
-         groupUpdate.save();
+            // remove bar from list
+            const bars = groupUpdate.bars.filter( bar => bar.bar_tag !== barTag);
+            groupUpdate.bars = bars;
+            groupUpdate.save();
 
-         // Send status 200 response
-         return res.status(200).json({
-             message: `Bar tag with users has been removed`
-         });
-     } catch (err) {
-         return sendError(res, err, 'Internal Server Error!', 500);
-     }
+            // Send status 200 response
+            return res.status(200).json({
+                message: `Bar tag with users has been removed`
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
 }
