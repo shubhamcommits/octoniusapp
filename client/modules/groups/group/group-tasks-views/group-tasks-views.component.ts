@@ -174,17 +174,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     this.sortingBit = bit;
   }
 
-  async onFilterTaskEmitter(obj: any){
-    if (obj.bit) {
-      this.filteringBit = obj.bit;
-      this.filtering(obj.bit);
-    }
-    if (obj.data){
-      this.filteringData=obj.data
-      if (this.filteringData) {
-        this.filtering(this.filteringBit);
-      }
-    }
+  async onFilterTaskEmitter(filter: any){
+    this.filteringBit = filter.bit;
+    this.filteringData = filter.data;
+
+    this.filtering();
   }
 
   async onCustomFieldEmitter(customFields) {
@@ -261,8 +255,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     });
   }
 
-  async filtering(to) {
-    if (to == "mytask") {
+  async filtering() {
+    if (this.filteringBit == "mytask") {
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
@@ -279,7 +273,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         })
       }
       this.unchangedColumns = tasks;
-    } else if (to == 'due_before_today'){
+    } else if (this.filteringBit == 'due_before_today'){
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
@@ -287,7 +281,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
           (task?.task?.due_to)? moment.utc(task?.task?.due_to).isBefore(moment().add(-1,'days')):false))
       }
       this.unchangedColumns = tasks;
-    } else if (to == 'due_today'){
+    } else if (this.filteringBit == 'due_today'){
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
@@ -295,7 +289,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
           (task?.task?.due_to)? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'):false))
       }
       this.unchangedColumns = tasks;
-    } else if (to == 'due_today'){
+    } else if (this.filteringBit == 'due_today'){
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
@@ -303,7 +297,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
           (task?.task?.due_to)? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'):false))
       }
       this.unchangedColumns = tasks;
-    } else if (to == 'due_tomorrow'){
+    } else if (this.filteringBit == 'due_tomorrow'){
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
@@ -311,7 +305,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
           (task?.task?.due_to)? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().add(1,'days').format('YYYY-MM-DD'):false))
       }
       this.unchangedColumns = tasks;
-    } else if (to == 'due_week'){
+    } else if (this.filteringBit == 'due_week'){
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
@@ -331,7 +325,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         })
       }
       this.unchangedColumns = tasks;
-    } else if (to == 'due_next_week'){
+    } else if (this.filteringBit == 'due_next_week'){
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
@@ -351,7 +345,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         })
       }
       this.unchangedColumns = tasks;
-    } else if (to == 'due_14_days'){
+    } else if (this.filteringBit == 'due_14_days'){
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
@@ -371,7 +365,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         })
       }
       this.unchangedColumns = tasks;
-    } else if (to == "users") {
+    } else if (this.filteringBit == "users") {
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
@@ -388,7 +382,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         })
       }
       this.unchangedColumns = tasks;
-    } else if (to == "custom_field") {
+    } else if (this.filteringBit == "custom_field") {
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       const cfName = this.filteringData.name;
@@ -399,7 +393,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         });
       }
       this.unchangedColumns = tasks;
-    } else if (to == "ideas") {
+    } else if (this.filteringBit == "ideas") {
       let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
       let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
       for (let index = 0; index < tasks.columns.length; index++) {
