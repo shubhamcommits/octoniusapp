@@ -1,17 +1,32 @@
+
+
 .action-post{
     border-top: 1px solid #E4EDF8;
     margin-top: 16px;
-}
-.stats{
-    margin-left:16px;
-    margin-right:16px;
-    font-size: 13px;
-    line-height: 40px;
-}
-.card-footer{
-    padding:8px 0 0 0;
-    i{
-        font-size: 24px;
+    display: flex;
+    justify-content: space-between;
+    .left, .right{
+        justify-content: space-evenly;
+        display: flex;
+        flex-direction: row;
+    }
+    .left{
+        padding-top: 5px;
     }
 }
 
+.card-footer{
+    padding:8px 0 0 0;
+    // i{
+    //     font-size: 20px !important;
+    // }
+}
+
+
+.badge{
+    // color: #fff;
+    font-size: 14px;   
+    i{
+        font-size: 16px;
+    }
+}

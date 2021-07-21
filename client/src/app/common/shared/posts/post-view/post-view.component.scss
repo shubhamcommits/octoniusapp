@@ -1,4 +1,8 @@
 // Adding pointer to image
+.postitem{
+  display: flex;
+}
+
 img{
     cursor: pointer;
     transition: transform .2s ease;
