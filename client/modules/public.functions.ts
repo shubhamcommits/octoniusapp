@@ -1501,4 +1501,19 @@ export class PublicFunctions {
             this.sendError(err);
         }
     }
+
+    /**
+     * This function checks the task board if a particular task is overdue or not
+     * @param task
+     * And applies the respective ng-class
+     *
+     * -----Tip:- Don't make the date functions asynchronous-----
+     *
+     */
+    checkOverdue(taskPost: any) {
+      // Today's date object
+      const today = moment().startOf('day').format('YYYY-MM-DD');
+      return (taskPost?.task?.status != 'done') &&
+        (moment.utc(taskPost?.task?.due_to).format('YYYY-MM-DD') < today);
+    }
 }
