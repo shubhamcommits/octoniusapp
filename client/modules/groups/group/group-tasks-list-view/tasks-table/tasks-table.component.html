@@ -67,7 +67,7 @@
         <app-inline-input
             *ngIf="task.task.due_to != 'Invalid date'"
             [(ngModel)]="task.task.due_to"
-            [styleClass]="checkOverdue(task) === true ? 'overdue' : 'due'"
+            [styleClass]="checkOverdue(task?.task) ? 'overdue' : 'due'"
             [domainObject]="task"
             [required]="true"
             type="date"
