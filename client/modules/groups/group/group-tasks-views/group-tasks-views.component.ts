@@ -389,7 +389,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
       const cfValue = this.filteringData.value;
       for (let index = 0; index < tasks.columns.length; index++) {
         this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
-          return task.task.custom_fields[cfName] == cfValue
+          return (task.task.custom_fields && task.task.custom_fields[cfName] == cfValue);
         });
       }
       this.unchangedColumns = tasks;
