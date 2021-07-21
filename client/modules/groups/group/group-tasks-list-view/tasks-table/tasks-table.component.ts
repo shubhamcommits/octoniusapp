@@ -228,10 +228,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
    *
    */
   checkOverdue(taskPost: any) {
-    // Today's date object
-    const today = moment().startOf('day').format('YYYY-MM-DD');
-    return (taskPost.status != 'done') &&
-      (moment.utc(taskPost.task.due_to).format('YYYY-MM-DD') < today);
+    return this.publicFunctions.checkOverdue(taskPost);
   }
 
   /**

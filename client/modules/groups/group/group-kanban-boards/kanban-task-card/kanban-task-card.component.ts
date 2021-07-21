@@ -20,9 +20,6 @@ export class KanbanTaskCardComponent {
   // Current User Data
   userData : any = {};
 
-  // Today's date object
-  today = moment().startOf('day').format('YYYY-MM-DD');
-
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -44,8 +41,7 @@ export class KanbanTaskCardComponent {
    *
    */
   checkOverdue(taskPost: any) {
-    return (taskPost.status != 'done') &&
-      (taskPost.task && moment.utc(taskPost.task.due_to).format('YYYY-MM-DD') < this.today);
+    return this.publicFunctions.checkOverdue(taskPost);
   }
 
   formateDate(date: any, format: string) {
