@@ -249,7 +249,7 @@ export class GroupSmartAdminComponent implements OnInit {
           this.currentSettings.customFields.splice(index, 1);
         }
 
-        this.autoAdd();
+        this.publicFunctions.sendUpdatesToGroupData(res['group']);
       },
       error => {
         this.utilityService.errorNotification('An error occurred whilst deleting the rule.');

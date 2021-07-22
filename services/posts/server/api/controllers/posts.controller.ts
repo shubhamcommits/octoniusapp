@@ -1582,9 +1582,10 @@ export class PostController {
 
         // Fetch Data from request
         const { params: { postId }, body: { vote } } = req;
+        const userId = req['userId'];
 
         // Call Service function to change the assignee
-        const post = await postService.voteIdea(postId, vote)
+        const post = await postService.voteIdea(postId, vote, userId)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             })

@@ -104,24 +104,22 @@
         <a mat-menu-item (click)="filterTask('none')" [ngStyle]="{'color' : (filterfor==='none') ? 'green' : 'black'}">
           <span>None</span>
         </a>
+
         <a mat-menu-item (click)="filterTask('mytask')"
           [ngStyle]="{'color' : (filterfor==='mytask') ? 'green' : 'black'}">
           <span>My Tasks</span>
         </a>
+
         <span mat-menu-item class="cursordefault overflowvisible"
           [ngStyle]="{'color' : (filterfor==='users') ? 'green' : 'black'}">
-          <!-- <span >Users</span> -->
           <div (click)="$event.stopPropagation();">
             <app-member-list-menu [groupMembers]="groupMembers" [filterfor]="filterfor" [menuLable]="menuLable"
               [menuFor]="menuFor" (userSelctionEmitter)="onUserSelctionEmitter($event)">
             </app-member-list-menu>
           </div>
-
-          <!-- <button mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">add assignee</button> -->
         </span>
 
         <span mat-menu-item class="cursordefault overflowvisible">
-
           <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
             <button [matMenuTriggerFor]="menuDueDate" class="dropdownbtn">
               <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='due_before_today' ||

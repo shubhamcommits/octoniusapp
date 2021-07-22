@@ -16,7 +16,7 @@
     <!-- PRIORITY design added  -->
     <div class="badge-idea" *ngIf="isIdeaModuleAvailable && task?.task?.is_idea">
       <i class="material-icons-outlined ml-1">emoji_objects</i>
-      {{ (task?.task?.idea?.positive_votes || 0) - (task?.task?.idea?.negative_votes || 0) }}
+      {{ (task?.task?.idea?.positive_votes?.length || 0) - (task?.task?.idea?.negative_votes?.length || 0) }}
     </div>
        </div>
     </div>

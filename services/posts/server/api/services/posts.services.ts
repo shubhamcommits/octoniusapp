@@ -2775,24 +2775,45 @@ export class PostService {
     }
   }
 
-  async voteIdea(postId: string, vote: number) {
+  async voteIdea(postId: string, vote: number, userId: string) {
 
     try {
-      let post;
+      let post = await Post.findById(postId).select('task.idea.positive_votes task.idea.negative_votes').lean();
 
       if (vote > 0) {
+        /*
         post = await Post.findOneAndUpdate(
           {_id: postId },
           { $inc: { 'task.idea.positive_votes': 1 } },
           { new: true }
           ).lean();
+        */
+        post = await Post.findOneAndUpdate(
+          {_id: postId },
+          { 
+            $pull: { 'task.idea.negative_votes': userId },
+            $addToSet: { 'task.idea.positive_votes': userId }
+          },
+          { new: true }
+          ).lean();
       } else {
+        /*
         post = await Post.findOneAndUpdate(
           { _id: postId },
           { $inc: { 'task.idea.negative_votes': 1 } },
           { new: true }
         )
         .lean();
+        */
+
+        post = await Post.findOneAndUpdate(
+          {_id: postId },
+          {
+            $pull: { 'task.idea.positive_votes': userId },
+            $addToSet: { 'task.idea.negative_votes': userId }
+          },
+          { new: true }
+          ).lean();
       }
 
       // Populate the post properties

@@ -88,8 +88,6 @@ export class BoardBarComponent implements OnInit {
     this.filterTaskEmitter.emit(obj);
   }
 
-
-
   openCustomFieldsDialog(): void {
     const dialogRef = this.dialog.open(CustomFieldsDialogComponent, {
       width: '100%',
