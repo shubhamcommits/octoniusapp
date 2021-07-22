@@ -1,13 +1,13 @@
 <!-- CARD FOOTER starts -->
 
-<div class="card-footer action-post" *ngIf="post">
-    <div class="row ">
-        <div class="col-md-6">
-            <span class="stats" customToolTip [contentArray]="likedByUsers"><b>{{post?._liked_by.length || 0 }}</b> Likes </span>
-            <span class="stats" *ngIf="!fullscreen" (click)="displayComments(!showComments)"><b>{{ post?.comments_count || 0 }}</b> Comments</span>
-            <span class="stats" customToolTip [contentArray]="followedByUsers"><b>{{post?._followers?.length || 0 }}</b> Followers</span>
+<div class="card-footer" *ngIf="post">
+    <div class="action-post">
+        <div class="left ml-2">
+            <span class="badge muted" customToolTip [contentArray]="likedByUsers"><b>{{post?._liked_by.length || 0 }}</b><i class="material-icons-outlined">thumb_up</i></span>
+            <span class="badge muted" *ngIf="!fullscreen" (click)="displayComments(!showComments)"><b>{{ post?.comments_count || 0 }}</b> <i class="material-icons-outlined">mode_comment</i></span>
+            <span class="badge muted" customToolTip [contentArray]="followedByUsers"><b>{{post?._followers?.length || 0 }}</b> <i class="material-icons-outlined">star_outline</i></span>
         </div>
-        <div class="col-md-6 text-right">
+        <div class="right">
 
             <app-idea-actions *ngIf="isIdeaModuleAvailable && post?.task?.is_idea"
               [post]="post"

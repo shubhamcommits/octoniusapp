@@ -255,8 +255,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
    *
    */
   checkOverdue(taskPost: any) {
-    return (taskPost.status != 'done') &&
-      (moment(taskPost.due_to).format('YYYY-MM-DD') < moment().local().startOf('day').format('YYYY-MM-DD'));
+    return this.publicFunctions.checkOverdue(taskPost);
   }
 
   /**

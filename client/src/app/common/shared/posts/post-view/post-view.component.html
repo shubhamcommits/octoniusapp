@@ -1,10 +1,10 @@
 <!-- Post Starts-->
 <li class="list-group-item" *ngIf="post">
     <div class="card-block">
-        <div class="row card-title">
+        <div class="postitem card-title">
 
             <!-- Image Avatar Starts -->
-            <div class="col-md-1 ">
+            <div>
                 <app-secured-image
                     [imgURL]="post?._posted_by?.profile_pic"
                     [service]="'user'"
@@ -14,7 +14,7 @@
             <!-- Image Avatar Ends -->
 
             <!-- Details of the Post Creator Starts -->
-            <div class="col-md-7">
+            <div>
                 <h6>{{post?._posted_by?.first_name || 'Deleted'}} {{post?._posted_by?.last_name || 'User'}} <br>
                     <span class="small lightgray date">
                         {{ (post?.created_date | date : 'medium') || ( this.date | date: 'medium') }}</span>

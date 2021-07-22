@@ -6,6 +6,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-group-tasks-views',
@@ -28,9 +29,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   isShuttleTasksModuleAvailable = false;
 
   filteringBit:String = 'none'
-  filteringData:String = ''
+  filteringData: any;
   // Fetch groupId from router snapshot
   groupId = this.router.snapshot.queryParamMap.get('group');
+
+  unchangedColumns: any;
 
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
@@ -65,45 +68,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subSink.unsubscribe();
     this.isLoading$.complete();
-  }
-
-  async onChangeViewEmitter(view: string) {
-    // Start the loading spinner
-    this.isLoading$.next(true);
-
-    this.userData.stats.lastTaskView = view;
-    // User service
-    const userService = this.injector.get(UserService);
-
-    // Update user´s last view
-    await userService.updateUser(this.userData);
-    await this.publicFunctions.sendUpdatesToUserData(this.userData);
-
-    this.viewType = view;
-
-    await this.initView();
-
-    // Return the function via stopping the loader
-    return this.isLoading$.next(false);
-  }
-
-  async onSortTaskEmitter(bit:string){
-    this.sortingBit = bit;
-  }
-
-  async onFilterTaskEmitter(obj:any){
-    // let task = this.columns;
-    if(obj.bit){
-      this.filteringBit = obj.bit;
-    }
-    if(obj.data){
-      this.filteringData=obj.data
-    }
-
-  }
-
-  async onCustomFieldEmitter(customFields) {
-    this.customFields = [...customFields];
   }
 
   async initView() {
@@ -162,6 +126,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
       this.initSections();
     }
 
+    let col = [];
+    this.columns.forEach(val => col.push(Object.assign({}, val)));
+    let unchangedColumns: any = { columns: col };
+    this.unchangedColumns = JSON.parse(JSON.stringify(unchangedColumns));
+
     /**
      * Obtain the custom fields
      */
@@ -179,6 +148,41 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
       const post = await this.publicFunctions.getPost(postId);
       this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.isIdeaModuleAvailable, this.columns);
     }
+  }
+
+  async onChangeViewEmitter(view: string) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    this.userData.stats.lastTaskView = view;
+    // User service
+    const userService = this.injector.get(UserService);
+
+    // Update user´s last view
+    await userService.updateUser(this.userData);
+    await this.publicFunctions.sendUpdatesToUserData(this.userData);
+
+    this.viewType = view;
+
+    await this.initView();
+
+    // Return the function via stopping the loader
+    return this.isLoading$.next(false);
+  }
+
+  async onSortTaskEmitter(bit:string){
+    this.sortingBit = bit;
+  }
+
+  async onFilterTaskEmitter(filter: any){
+    this.filteringBit = filter.bit;
+    this.filteringData = filter.data;
+
+    this.filtering();
+  }
+
+  async onCustomFieldEmitter(customFields) {
+    this.customFields = [...customFields];
   }
 
   isAdminUser() {
@@ -227,7 +231,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   }
 
   newSectionAdded(data) {
-
     // Push the Column
     this.columns.push(data);
   }
@@ -250,5 +253,156 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
       });
       column.tasks = tasks;
     });
+  }
+
+  async filtering() {
+    if (this.filteringBit == "mytask") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+          var bit = false;
+          if (task && task._assigned_to) {
+            task._assigned_to.forEach(element => {
+              if (element._id == this.userData._id) {
+                bit = true
+              }
+            });
+          }
+          return bit;
+        })
+      }
+      this.unchangedColumns = tasks;
+    } else if (this.filteringBit == 'due_before_today'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          (task?.task?.due_to)? moment.utc(task?.task?.due_to).isBefore(moment().add(-1,'days')):false))
+      }
+      this.unchangedColumns = tasks;
+    } else if (this.filteringBit == 'due_today'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          (task?.task?.due_to)? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'):false))
+      }
+      this.unchangedColumns = tasks;
+    } else if (this.filteringBit == 'due_today'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          (task?.task?.due_to)? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'):false))
+      }
+      this.unchangedColumns = tasks;
+    } else if (this.filteringBit == 'due_tomorrow'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          (task?.task?.due_to)? moment.utc(task?.task?.due_to).format('YYYY-MM-DD') == moment().add(1,'days').format('YYYY-MM-DD'):false))
+      }
+      this.unchangedColumns = tasks;
+    } else if (this.filteringBit == 'due_week'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+          const first = moment().startOf('week').format();
+          const last = moment().endOf('week').add(1,'days').format();
+          if(task?.task?.due_to){
+            if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
+              return true;
+            }else{
+              return false;
+            }
+          } else {
+            return false;
+          }
+
+        })
+      }
+      this.unchangedColumns = tasks;
+    } else if (this.filteringBit == 'due_next_week'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+          const first = moment().endOf('week').add(1,'days').format();
+          const last = moment().endOf('week').add(9,'days').format();
+          if(task?.task?.due_to){
+            if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
+              return true;
+            }else{
+              return false;
+            }
+          } else {
+            return false;
+          }
+
+        })
+      }
+      this.unchangedColumns = tasks;
+    } else if (this.filteringBit == 'due_14_days'){
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+          const first = moment().format();
+          const last = moment().add(14,'days').format();
+          if(task?.task?.due_to){
+            if((moment.utc(task?.task?.due_to).isAfter(first)) && (moment.utc(task?.task?.due_to).isBefore(last))){
+              return true;
+            }else{
+              return false;
+            }
+          } else {
+            return false;
+          }
+
+        })
+      }
+      this.unchangedColumns = tasks;
+    } else if (this.filteringBit == "users") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+          var bit = false;
+          if (task && task._assigned_to) {
+            task._assigned_to.forEach(element => {
+              if (element._id == this.filteringData) {
+                bit = true
+              }
+            });
+          }
+          return bit;
+        })
+      }
+      this.unchangedColumns = tasks;
+    } else if (this.filteringBit == "custom_field") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      const cfName = this.filteringData.name;
+      const cfValue = this.filteringData.value;
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => {
+          return (task.task.custom_fields && task.task.custom_fields[cfName] == cfValue);
+        });
+      }
+      this.unchangedColumns = tasks;
+    } else if (this.filteringBit == "ideas") {
+      let myClonedUnchnaged = Object.assign({}, this.unchangedColumns);
+      let tasks = JSON.parse(JSON.stringify(myClonedUnchnaged));
+      for (let index = 0; index < tasks.columns.length; index++) {
+        this.columns[index].tasks = tasks.columns[index].tasks.filter((task: any) => (
+          task.task.is_idea == true));
+      }
+      this.unchangedColumns = tasks;
+    } else {
+      this.columns = this.unchangedColumns.columns;
+    }
   }
 }

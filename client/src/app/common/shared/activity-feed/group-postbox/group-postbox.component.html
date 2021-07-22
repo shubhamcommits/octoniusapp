@@ -1,7 +1,7 @@
 <div class="card" (click)="openModal(content)" style="padding:0">
     <div class="card-block" style="padding: 0;">
-        <div class="row card-title">
-            <div class="col-md-1">
+        <div class="postboxheader card-title">
+            <div class="d-none d-sm-block">
               <app-secured-image
                 [routerLink]="['/dashboard', 'user', 'profile']"
                 [queryParams]="{ userId: userData?._id}"
@@ -9,7 +9,7 @@
                 [service]="'user'"
                 [styleClass]="'feed-avatar'"></app-secured-image>
             </div>
-            <div class="col-md-11" *ngIf="!showPostBox">
+            <div *ngIf="!showPostBox">
               <button type="text" class="form-control btn-md noborder-btn postbox"
                 placeholder="What are you working on?">What are you working on, <strong>{{ userData?.first_name }}</strong>?</button>
             </div>

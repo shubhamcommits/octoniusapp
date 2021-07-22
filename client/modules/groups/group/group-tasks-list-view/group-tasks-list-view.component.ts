@@ -1,5 +1,4 @@
-import { Component, OnInit, OnChanges, Input, Injector, ViewChild, Output, EventEmitter, SimpleChanges } from '@angular/core';
-import moment from 'moment/moment';
+import { Component, OnChanges, Input, Injector, ViewChild, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
+import moment from 'moment/moment';
 
 @Component({
   selector: 'app-group-tasks-list-view',
@@ -24,8 +24,6 @@ export class GroupTasksListViewComponent implements OnChanges {
   @Input() tasks: any;
   @Input() customFields: any;
   @Input() sortingBit: any;
-  @Input() filteringBit:any;
-  @Input() filteringData:any;
   @Input() isAdmin = false;
   @Input() isIdeaModuleAvailable = false;
   @Input() isShuttleTasksModuleAvailable = false;
@@ -71,9 +69,6 @@ export class GroupTasksListViewComponent implements OnChanges {
       if (propName === 'sortingBit') {
         this.sortingBit = to;
       }
-      if (propName === 'filteringData') {
-        this.filteringData = to;
-      }
     }
   }
 
@@ -109,8 +104,6 @@ export class GroupTasksListViewComponent implements OnChanges {
 
       // Create the Column asynchronously
       this.createNewSection(this.groupId, section.title);
-
-      this.newSectionEvent.emit(section);
     }
 
   }
@@ -139,8 +132,7 @@ export class GroupTasksListViewComponent implements OnChanges {
           section.tasks = [];
           section.custom_fields_to_show = ['priority'];
 
-          // Push the Column
-          this.sections.push(section);
+          this.newSectionEvent.emit(section);
 
           resolve(utilityService.resolveAsyncPromise('New Section Created!'));
         })
