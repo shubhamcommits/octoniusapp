@@ -1,15 +1,15 @@
 <div class="card comment">
     <div class="card-block">
-        <div class="row card-title ">
-            <div class="col-md-1">
+        <div class="postitem card-title ">
+            <div>
 
               <app-secured-image
                   [imgURL]="comment?._commented_by?.profile_pic"
                   [service]="'user'"
                   [styleClass]="'feed-avatar'"></app-secured-image>
             </div>
-            <div class="col-md-11 ">
-                <h6 class="ml-2"> {{comment?._commented_by?.first_name || 'Deleted'}} {{comment?._commented_by?.last_name || 'User'}}
+            <div>
+                <h6> {{comment?._commented_by?.first_name || 'Deleted'}} {{comment?._commented_by?.last_name || 'User'}}
                     <br>
                     <span class="small lightgray date"> {{comment?.created_date | date: 'medium'}}</span>
                 </h6>
@@ -20,14 +20,14 @@
         <ng-container *ngIf="displayCommentEditor">
 
             <!-- Save Button starts -->
-            <div class="col-md-12 text-right padding-bottom-md mb-2">
+            <div class="text-right padding-bottom-md mb-2">
                 <button class="btn btn-primary btn-sm"
                 (click)="saveCommentData()">Save</button>
             </div>
             <!-- Save Button ends -->
 
             <!-- Comment Edit starts -->
-            <div class="col-md-12 innercard">
+            <div class="innercard">
                 <app-quill-editor *ngIf="comment.content"
                     [editorId]="('comment_view_edit_'+ index + comment?._id) || 'editor'" [toolbar]="true" [readOnly]="false"
                     [contents]="comment.content" [groupId]="groupId" (content)="getQuillData($event)">
@@ -39,14 +39,14 @@
         <!-- Edit comment Content starts -->
 
         <!-- Comment Content starts -->
-        <div class="col-md-12 innercard " *ngIf="!displayCommentEditor">
+        <div class="innercard " *ngIf="!displayCommentEditor">
             <app-quill-editor *ngIf="comment.content" [editorId]="('comment_view_'+ index + comment?._id) || 'editor'"
                 [toolbar]="false" [readOnly]="true" [groupId]="groupId" [contents]="comment.content">
             </app-quill-editor>
         </div>
         <!-- Comment Content ends -->
 
-        <div class="col-md-12 innercard">
+        <div class="innercard">
           <!-- Attach files starts -->
           <div class="attach-files">
               <app-attach-files
@@ -61,14 +61,14 @@
 
         <!-- Comment Action Starts -->
         <!-- TODO -> this 'if' will be removed when we fix that new comments are added with the ID to the array -->
-        <div *ngIf="comment._id" class="row card-footer innercard action-post clearfix ml-0 mr-0">
+        <div *ngIf="comment._id" class="card-footer action-post ml-0 mr-0">
             <!-- Likes Placeholder starts -->
-            <div class="col-md-6">
-              <span class="stats" customToolTip [contentArray]="likedByUsers"><b>{{ likedByUsers?.length || 0 }}</b> Likes </span>
+            <div class="left ml-2">
+              <span class="badge text-primary" customToolTip [contentArray]="likedByUsers"><b>{{ likedByUsers?.length || 0 }}</b> <i class="material-icons-outlined">thumb_up</i> </span>
             </div>
             <!-- Likes Placeholder ends -->
 
-            <div class="col-md-6 text-right">
+            <div class="right">
 
                 <!-- Like Comment starts -->
                 <app-like-comment [userData]="userData" [comment]="comment" (commentLikedEmiter)="onCommentLiked($event)"></app-like-comment>
