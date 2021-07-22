@@ -14,12 +14,12 @@
             <i class="material-icons">menu_open</i>
           </button>
           <!-- TOGGLE MENU BUTTON ENDS -->
-
+          
           <!-- MENU BUTTON STARTS -->
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon">
-              <i class="material-icons-round">more_horiz</i>
+              <i class="material-icons-outlined muted">dashboard</i>
             </span>
           </button>
           <!-- MENU BUTTON ENDS -->
@@ -32,22 +32,18 @@
             <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()"  ></app-group-navbar>
             <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
             <!-- MENU ITEMS ENDS -->
-
-            <ul class="navbar-nav navbar-right">
-              <li class="nav-item">
-
-                <!-- SEARCH starts -->
-                <a class="nav-link" (click)="openModal(search)">
-                  <span class="material-icons">
-                    search
-                  </span>
-                </a>
-                <!-- SEARCH ends -->
-
-              </li>
-            </ul>
-
+             <!-- SEARCH starts -->
+             <button class="btn btn-link navbar-right" (click)="openModal(search)">
+              <span class="material-icons">
+                search
+              </span>
+            </button>
+            <!-- SEARCH ends -->
           </div>
+
+         
+             
+
           <!-- COLLAPSABLE MENU ENDS -->
         </nav>
     </div>

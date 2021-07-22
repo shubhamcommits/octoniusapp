@@ -1,3 +1,31 @@
 h6{
     font-size: 14px !important;
   }
+
+  .postitem{
+    display: flex;
+  }
+  
+  .badge{
+    // color: #fff;
+    margin-top: 8px;
+    font-size: 14px;   
+    i{
+        font-size: 16px !important;
+    }
+}
+
+.action-post{
+  border-top: 1px solid #E4EDF8;
+  display: flex;
+  justify-content: space-between;
+  .left, .right{
+      justify-content: space-evenly;
+      display: flex;
+      flex-direction: row;
+  }
+}
+
+.card-footer{
+  padding: 0;
+}
