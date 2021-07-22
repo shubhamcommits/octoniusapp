@@ -206,7 +206,7 @@ export class AdminGroupsComponent implements OnInit, AfterViewInit, OnDestroy {
       let nextArchivedGroups: any = []
 
       // Fetching next archived group based on the lastArchivedGroupId
-      nextArchivedGroups = await this.publicFunctions.getNextAllGroupsList(this.workspaceData['_id'], this.lastArchivedGroupId);
+      nextArchivedGroups = await this.publicFunctions.getNextAllArchivedGroupsList(this.workspaceData['_id'], this.lastArchivedGroupId);
 
       if (nextArchivedGroups.length > 0) {
         // Adding into exisiting array
