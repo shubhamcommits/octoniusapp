@@ -8,7 +8,7 @@
   </mat-sidenav>
   <mat-sidenav-content style="height: 100vh;">
     <div class="container-fluid">
-      <nav class="navbar navbar-expand-lg fixed-top">
+      <nav class="navbar navbar-expand-lg">
           <!-- TOGGLE MENU BUTTON STARTS -->
           <button type="button" id="sidebarCollapse" class="btn btn-link" (click)="sidenav.toggle()">
             <i class="material-icons">menu_open</i>
@@ -33,7 +33,13 @@
             <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
             <!-- MENU ITEMS ENDS -->
              <!-- SEARCH starts -->
-             <button class="btn btn-link navbar-right" (click)="openModal(search)">
+             <button class="btn btn-link navbar-right d-none d-sm-block" (click)="openModal(search)">
+              <span class="material-icons">
+                search
+              </span>
+            </button>
+            <!-- search for xs screens -->
+            <button class="btn btn-link btn-block d-block d-sm-none" (click)="openModal(search)">
               <span class="material-icons">
                 search
               </span>
