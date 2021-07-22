@@ -6,9 +6,11 @@
     font-weight: 400;
     justify-content: flex-end;
     background: #fff;
-    top: 84px;
+    margin-top:0;
     box-shadow: 0 4px 6px rgba(37, 38, 94, 0.1);
-    border-top: 1px solid #E4EDF8;
+    border: 1px solid #E4EDF8;
+    border-radius: 8px;
+    width: max-content;
 }
 
 .rightside{
