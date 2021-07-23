@@ -209,7 +209,7 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
   }
 
   onDeleteTask(deletedTaskId) {
-      // Find the index of the tasks inside the column
+      // Find the index of the tasks inside the section
       let indexTask = this.overdueAndTodayTasks.findIndex((task: any) => task._id === deletedTaskId);
       if (indexTask != -1) {
         this.overdueAndTodayTasks.splice(indexTask, 1);
