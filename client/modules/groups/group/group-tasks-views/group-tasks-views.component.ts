@@ -70,26 +70,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     this.isLoading$.complete();
   }
 
-  async onChangeViewEmitter(view: string) {
-    // Start the loading spinner
-    this.isLoading$.next(true);
-
-    this.userData.stats.lastTaskView = view;
-    // User service
-    const userService = this.injector.get(UserService);
-
-    // Update user´s last view
-    await userService.updateUser(this.userData);
-    await this.publicFunctions.sendUpdatesToUserData(this.userData);
-
-    this.viewType = view;
-
-    await this.initView();
-
-    // Return the function via stopping the loader
-    return this.isLoading$.next(false);
-  }
-
   async initView() {
 
     // Fetch current user details
@@ -168,6 +148,26 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
       const post = await this.publicFunctions.getPost(postId);
       this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.isIdeaModuleAvailable, this.columns);
     }
+  }
+
+  async onChangeViewEmitter(view: string) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    this.userData.stats.lastTaskView = view;
+    // User service
+    const userService = this.injector.get(UserService);
+
+    // Update user´s last view
+    await userService.updateUser(this.userData);
+    await this.publicFunctions.sendUpdatesToUserData(this.userData);
+
+    this.viewType = view;
+
+    await this.initView();
+
+    // Return the function via stopping the loader
+    return this.isLoading$.next(false);
   }
 
   async onSortTaskEmitter(bit:string){

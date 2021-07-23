@@ -272,9 +272,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
           // Assign the tasks to be []
           column.tasks = [];
 
-          // Push the Column
-          this.columns.push(column);
-
           this.newSectionEvent.emit(column);
 
           resolve(utilityService.resolveAsyncPromise('New Section Created!'));
