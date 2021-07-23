@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ViewChild, TemplateRef, Input } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild, TemplateRef, Input, OnDestroy } from '@angular/core';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
@@ -10,7 +10,7 @@ import moment from 'moment/moment';
   templateUrl: './myspace-tasks.component.html',
   styleUrls: ['./myspace-tasks.component.scss']
 })
-export class MyspaceTasksComponent implements OnInit {
+export class MyspaceTasksComponent implements OnInit, OnDestroy {
 
   @Input() isIdeaModuleAvailable;
 
@@ -22,7 +22,7 @@ export class MyspaceTasksComponent implements OnInit {
   nextWeekTasks: any = [];
   futureTasks: any = [];
   overdueTasks: any = [];
-  overdueAndTodayTasks = [];
+  overdueAndTodayTasks: any = [];
 
   userData: any
 
@@ -51,6 +51,10 @@ export class MyspaceTasksComponent implements OnInit {
     this.publicFunctions.sendUpdatesToRouterState({
       state: 'home'
     })
+  }
+
+  ngOnDestroy() {
+    this.utilityService.closeAllModals()
   }
 
   async loadTasks() {
@@ -182,13 +186,13 @@ export class MyspaceTasksComponent implements OnInit {
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateTask(data);
     });
+    const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+      this.onDeleteTask(data);
+    });
     dialogRef.afterClosed().subscribe(result => {
       closeEventSubs.unsubscribe();
+      deleteEventSubs.unsubscribe();
     });
-  }
-
-  ngOnDestroy() {
-    this.utilityService.closeAllModals()
   }
 
   updateTask(task) {
@@ -202,6 +206,33 @@ export class MyspaceTasksComponent implements OnInit {
       this.thisWeekTasks[index] = task;
     }
     this.markOverdueTasks();
+  }
+
+  onDeleteTask(deletedTaskId) {
+      // Find the index of the tasks inside the section
+      let indexTask = this.overdueAndTodayTasks.findIndex((task: any) => task._id === deletedTaskId);
+      if (indexTask != -1) {
+        this.overdueAndTodayTasks.splice(indexTask, 1);
+        return;
+      }
+
+      indexTask = this.thisWeekTasks.findIndex((task: any) => task._id === deletedTaskId);
+      if (indexTask != -1) {
+        this.thisWeekTasks.splice(indexTask, 1);
+        return;
+      }
+
+      indexTask = this.nextWeekTasks.findIndex((task: any) => task._id === deletedTaskId);
+      if (indexTask != -1) {
+        this.nextWeekTasks.splice(indexTask, 1);
+        return;
+      }
+
+      indexTask = this.futureTasks.findIndex((task: any) => task._id === deletedTaskId);
+      if (indexTask != -1) {
+        this.futureTasks.splice(indexTask, 1);
+        return;
+      }
   }
 
   getPriorityClass(priority: string) {
