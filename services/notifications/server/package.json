@@ -22,11 +22,11 @@
     "express": "^4.17.1",
     "farmhash": "^3.0.0",
     "moment": "^2.24.0",
-    "mongoose": "~5.8.7",
+    "mongoose": "^5.13.3",
     "morgan": "^1.9.1",
     "socket.io": "^4.0.0",
     "ts-node": "^8.6.2",
-    "ts-node-dev": "^1.0.0-pre.44",
+    "ts-node-dev": "^1.1.8",
     "tslint": "^5.20.1",
     "typescript": "~4.0.5"
   },
