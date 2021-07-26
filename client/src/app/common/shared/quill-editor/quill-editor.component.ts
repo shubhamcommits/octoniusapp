@@ -55,7 +55,7 @@ Quill.register('modules/clipboard', QuillClipboard, true)
 
 // Environments
 import { environment } from 'src/environments/environment';
-import { StorageService } from 'src/shared/services/storage-service/storage.service.js';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-quill-editor',
