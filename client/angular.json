@@ -22,6 +22,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/favicon.png",
@@ -53,7 +54,8 @@
               "crypto-js",
               "chart.js",
               "quill-delta-to-html",
-              "socket.io-client"
+              "socket.io-client",
+              "highlight.js"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
