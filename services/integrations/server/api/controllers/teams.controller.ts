@@ -171,7 +171,7 @@ export class TeamsController {
 
             const user = userOctonius._id;
 
-            const workspace_name = userOctonius.workspace_name;
+            const workspace_name = userOctonius['workspace_name'];
             
             let tokens = await auths.generateToken(user, workspace_name);
 
