@@ -33,27 +33,27 @@ export class IntegrationController {
             const user = await User.findById(req.body.userid).select('integrations');
 
             //Slack connected or not checking
-            const isSlackConnected = user?.integrations?.is_slack_connected || false;
+            const isSlackConnected = user['integrations'].is_slack_connected || false;
 
             //Slack connected or not checking
-            const isTeamConnected = user?.integrations?.is_teams_connected || false;
+            const isTeamConnected = user['integrations'].is_teams_connected || false;
 
             // Parsed the notfication and extract required data and format.
             const data = await helperFunctions.parsedNotificationData(req.body);
 
             // If Slack connected send notifcation to slack 
-            if (isSlackConnected && user.integrations.slack) {
+            if (isSlackConnected && user['integrations'].slack) {
                 // Slack incomming webhook to send notification
                 // Slack instance
-                var slack = require('slack-notify')(user?.integrations?.slack?.incoming_webhook);
+                var slack = require('slack-notify')(user['integrations'].slack?.incoming_webhook);
 
                 //Send notification to slack
                 await slackService.sendNotificationToSlack(slack, data);
             }
 
 
-            if (isTeamConnected && user.integrations.teams) {
-                await teamService.sendNotificationToTeam(data, user?.integrations?.teams?.user_id, user?.integrations?.teams?.tenant_id);
+            if (isTeamConnected && user['integrations'].teams) {
+                await teamService.sendNotificationToTeam(data, user['integrations'].teams?.user_id, user['integrations'].teams?.tenant_id);
             }
 
         } catch (error) {
@@ -108,7 +108,7 @@ export class IntegrationController {
 
             // If token is not valid (i.e expired, wrong) generate a new token
             if (!isvalidToken) {
-                const workspace_name = user.workspace_name;
+                const workspace_name = user['workspace_name'];
 
                 let tokens = await auths.generateToken(user._id, workspace_name);
 
@@ -141,16 +141,16 @@ export class IntegrationController {
         if (user && post) {
 
             const postData = {
-                title: post.title,
-                due: post?.task?.due_to,
-                status: post?.task?.status,
-                groupName: post?._group?.group_name,
-                workspaceName: post?._group?.workspace_name,
-                section: post?.task?._column?.title,
-                assigneeEmail: user?.email,
-                assigneeName: user?.full_name,
-                postByEmail: post?._posted_by?.email,
-                postByName: post?._posted_by?.full_name
+                title: post['title'],
+                due: post['task'].due_to,
+                status: post['task'].status,
+                groupName: post['_group'].group_name,
+                workspaceName: post['_group'].workspace_name,
+                section: post['task']._column?.title,
+                assigneeEmail: user['email'],
+                assigneeName: user['full_name'],
+                postByEmail: post['_posted_by'].email,
+                postByName: post['_posted_by'].full_name
             }
             res.status(200).json([postData]);
         } else {
@@ -171,7 +171,7 @@ export class IntegrationController {
             groups.forEach(group => {
                 dataList.push({
                     id: group._id,
-                    label: group.group_name,
+                    label: group['group_name'],
                     value: group._id
                 });
             });
@@ -195,7 +195,7 @@ export class IntegrationController {
             columns.forEach(column => {
                 dataList.push({
                     id: column._id,
-                    label: column.title,
+                    label: column['title'],
                     value: column._id
                 });
             });
