@@ -16,6 +16,7 @@ export class WorkplaceInviteUserComponent implements OnInit {
 
   @Input('workspaceData') workspaceData: any;
   @Input('userData') userData: any;
+
   email: string = '';
   label: string = "The option is mainly for inviting super-admins, group admins, and external guests.";
   placeholder: string = "Please provide the email";
@@ -49,7 +50,7 @@ export class WorkplaceInviteUserComponent implements OnInit {
     if (this.isValidEmail) {
       try {
         this.utilityService.asyncNotification('Please wait, while we are sending the email...', new Promise((resolve, reject)=>{
-          this.adminService.inviteNewUserViaEmail(workspaceId, email, 'workspace', '')
+          this.adminService.inviteNewUserViaEmail(workspaceId, email, 'workspace', '', this.userData?.first_name)
           .subscribe((res)=>{
             this.email = '';
             resolve(this.utilityService.resolveAsyncPromise(`We have sent the invitation email at ${email} to join your workplace!`))

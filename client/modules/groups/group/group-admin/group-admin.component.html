@@ -40,7 +40,8 @@
    <!-- Invite guest -->
    <app-invite-user *ngIf="groupData && workspaceData && groupData?.group_name?.toLowerCase() != 'global'"
     [workspaceData]="workspaceData"
-    [groupData]="groupData">
+    [groupData]="groupData"
+    [userData]="userData">
  </app-invite-user>
 
 
