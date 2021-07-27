@@ -17,6 +17,7 @@ export class InviteUserComponent implements OnInit {
   @Input('workspaceData') workspaceData: any;
   @Input('userData') userData: any;
   @Input('groupData') groupData: any;
+
   email: string = '';
   //  label: string = "The option is mainly for inviting external guests to this group.";
   placeholder: string = "Please provide the email";
@@ -49,7 +50,7 @@ export class InviteUserComponent implements OnInit {
   inviteUser(workspaceId: string, email: string, groupId: string){
     try{
       this.utilityService.asyncNotification('Please wait, while we are sending the email...', new Promise((resolve, reject)=>{
-        this.adminService.inviteNewUserViaEmail(workspaceId, email, 'group', groupId)
+        this.adminService.inviteNewUserViaEmail(workspaceId, email, 'group', groupId, this.userData?.first_name)
         .subscribe((res)=>{
           this.email = '';
           resolve(this.utilityService.resolveAsyncPromise(`We have sent the invitation email at ${email} to join your group!`))
