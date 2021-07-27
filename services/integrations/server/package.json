@@ -25,7 +25,7 @@
     "farmhash": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
-    "mongoose": "^5.13.3",
+    "mongoose": "~5.8.7",
     "morgan": "^1.9.1",
     "slack-notify": "^0.1.7",
     "ts-node": "^8.6.2",
