@@ -656,12 +656,7 @@ export class WorkspaceController {
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/invite-user`, {
                 API_KEY: workspace.management_private_api_key,
                 data: {
-                    from: req['userId'],
-                    email: user.email,
-                    access_code: workspace.access_code,
-                    workspace: workspace.workspace_name,
-                    type: user.type,
-                    groupId: user.groupId
+                    user: user
                 }
             });
 

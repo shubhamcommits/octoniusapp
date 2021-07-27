@@ -62,14 +62,15 @@ export class AdminService {
    * @param type
    * @param groupId
    */
-  inviteNewUserViaEmail(workspaceId: string, email: string, type: string, groupId: string) {
+  inviteNewUserViaEmail(workspaceId: string, email: string, type: string, groupId: string, userFirstName: string) {
 
     return this._http.post(this.baseURL + '/invite', {
       user:{
         workspaceId: workspaceId,
         email: email.toLowerCase(),
         type: type,
-        groupId: groupId
+        groupId: groupId,
+        first_name: userFirstName
       }
     });
   }
