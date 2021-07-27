@@ -660,6 +660,7 @@ export class WorkspaceController {
                     email: user.email,
                     access_code: workspace.access_code,
                     workspace: workspace.workspace_name,
+                    workspaceId: workspace._id,
                     type: user.type,
                     groupId: user.groupId
                 }
