@@ -2,6 +2,14 @@ import http from 'http';
 import { app } from './api/app';
 import cluster from 'cluster';
 import url from 'url';
+import { v4 as uuid } from 'uuid';
+
+import ShareDB from 'sharedb';
+ShareDB.types.register(require('rich-text').type);
+
+var ws = require('ws');
+var WebSocketJSONStream = require('websocket-json-stream');
+var debug = require('debug')('quill-sharedb-cursors:sharedb');
 
 if (cluster.isMaster) {
 
@@ -40,15 +48,67 @@ if (cluster.isMaster) {
   // Creating Folio Microservice Server
   const server = http.createServer(app);
 
-  // Import Sharedb connection
-  var wssShareDB = require('./utils/folio/wss-sharedb')(server)
+  /**
+   * Settup Sharedb connection STARTS
+   */
+  var shareDBServer = new ShareDB({
+      db: require('sharedb-mongo')(process.env.DB_URL || 'mongodb://127.0.0.1:27017/octonius?auto_reconnect=true', {
+          useUnifiedTopology: true,
+          useNewUrlParser: true
+      }),
+      disableDocAction: true,
+      disableSpaceDelimitedActions: true
+  });
 
-  // Import Cursors connection
-  var wssCursors = require('./utils/folio/wss-cursors')(server);
+  var wssShareDB = new ws.Server({
+    noServer: true
+  });
+  
+  wssShareDB.on('connection', function (ws, req) {
+
+      // generate an id for the socket
+      ws.id = uuid();
+      ws.isAlive = true;
+
+      debug('A new client (%s) connected.', ws.id);
+
+      var stream = new WebSocketJSONStream(ws);
+      shareDBServer.listen(stream);
+
+      ws.on('pong', function (data, flags) {
+          debug('Pong received. (%s)', ws.id);
+          ws.isAlive = true;
+      });
+
+      ws.on('error', function (error) {
+          debug('Client connection errored (%s). (Error: %s)', ws.id, error);
+      });
+  });
+
+  // Sockets Ping, Keep Alive
+  setInterval(function () {
+      wssShareDB.clients.forEach(function (ws) {
+          if (ws.isAlive === false) return ws.terminate();
+
+          ws.isAlive = false;
+          ws.ping();
+          debug('Ping sent. (%s)', ws.id);
+      });
+  }, 30000);
+  /**
+   * Settup Sharedb connection ENDS
+   */
+
+  /**
+   * Settup Cursors connection STARTS
+   */
+  //var wssCursors = require('./utils/folio/wss-cursors')(server);
+  /**
+   * Settup Cursors connection STARTS
+   */
 
   // Turn on the sockets to create the connection
   server.on('upgrade', (request, socket, head) => {
-
     // Get the path parameter
     const pathname = url.parse(request.url).pathname;
 
@@ -58,11 +118,13 @@ if (cluster.isMaster) {
         wssShareDB.emit('connection', ws)
       })
     }
+    /*
     else if (pathname === '/cursors') {
       wssCursors.handleUpgrade(request, socket, head, (ws) => {
         wssCursors.emit('connection', ws);
       }); 
     }
+    */
     else {
       socket.destroy()
     }
