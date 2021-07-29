@@ -43,6 +43,10 @@ const GroupSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false,
     },
+    enabled_campaign: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
     bars: [
         {
             bar_tag: Schema.Types.String,

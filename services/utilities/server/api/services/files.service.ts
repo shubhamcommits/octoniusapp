@@ -110,7 +110,7 @@ export class FilesService {
         let files: any = []
 
         let query = {};
-        
+
         // Fetch files on the basis of the params @lastPostId
         if (lastFileId) {
             if (folderId) {
@@ -125,10 +125,10 @@ export class FilesService {
                 query = {
                     $and: [
                         { _group: groupId },
-                        { _folder: { $eq: null }},
+                        { _folder: { $eq: null } },
                         { _id: { $lt: lastFileId } }
                     ]
-                };   
+                };
             }
 
             files = await File.find(query)
@@ -153,9 +153,9 @@ export class FilesService {
                 query = {
                     $and: [
                         { _group: groupId },
-                        { _folder: { $eq: null }}
+                        { _folder: { $eq: null } }
                     ]
-                };   
+                };
             }
             files = await File.find(query)
                 .sort('-_id')
@@ -219,13 +219,13 @@ export class FilesService {
             // Remove flamingo in case of flamingo type
             if (flamingoType) {
                 // Delete the flamingo
-                let flamingo = await Flamingo.findOne({_file:fileId});
+                let flamingo = await Flamingo.findOne({ _file: fileId });
                 flamingo = await Flamingo.populate(flamingo, [
                     { path: '_questions' }
                 ]);
 
                 if (flamingo) {
-                    flamingo = await Flamingo.findByIdAndDelete({_id: flamingo._id});
+                    flamingo = await Flamingo.findByIdAndDelete({ _id: flamingo._id });
 
                     // Delete the questions
                     flamingo._questions.forEach(async question => {
@@ -246,11 +246,11 @@ export class FilesService {
     async findGroupsShareFiles(groupId: string) {
         const groups = await Group.find({
             $and: [
-                { share_files: true},
-                { _id: { $ne: groupId} },
+                { share_files: true },
+                { _id: { $ne: groupId } },
             ]
         }).select('_id');
-        
+
         let groupsIds = [];
         groups.forEach(group => {
             groupsIds.push(group._id);
@@ -330,23 +330,23 @@ export class FilesService {
             let newFiles = [];
             // Find the folio by Id
             let oldFiles: any = await File.find({ _folder: folderId }).lean();
-            for (let i = 0 ; i < oldFiles.length; i++) {
+            for (let i = 0; i < oldFiles.length; i++) {
                 let newFile = oldFiles[i];
                 delete newFile._id;
                 newFile._group = groupId;
-    
+
                 if (newFolderId) {
                     newFile._folder = folderId;
                 } else {
                     delete newFile._folder;
                 }
-    
+
                 // Create new folio
                 newFile = await File.create(newFile);
-    
+
                 // Populate File Properties
                 newFile = this.populateFileProperties(newFile)
-    
+
                 if (newFile.type == 'folio') {
                     // TODO - Copy the content
                 }
@@ -380,6 +380,32 @@ export class FilesService {
 
             // Find the file by Id
             let file: any = await File.findByIdAndUpdate(fileId, updateAction);
+
+            // Populate File Properties
+            file = this.populateFileProperties(file)
+
+            // Return file
+            return file;
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the campaign type file
+     * @param groupId
+     */
+    async getCampaignFile(groupId: any) {
+
+        if (groupId) {
+
+            // Find the file by Id
+            let file: any = await File.find(
+                {
+                    $and: [
+                        { _group: groupId },
+                        { type: 'campaign' }
+                    ]
+                }
+            ).sort('-_id')
 
             // Populate File Properties
             file = this.populateFileProperties(file)

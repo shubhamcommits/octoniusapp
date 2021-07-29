@@ -33,6 +33,9 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   // Groups Data
   groupData: any;
 
+  // Is campaign module
+  isCampaign: any = false
+
   // User Data
   userData: any;
 
@@ -41,13 +44,13 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
   isFavoriteGroup: boolean;
 
-  activeState:string;
+  activeState: string;
 
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink()
 
-   // NOTIFICATIONS DATA
-   public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
+  // NOTIFICATIONS DATA
+  public notificationsData: { readNotifications: [], unreadNotifications: [] } = {
     readNotifications: [],
     unreadNotifications: []
   }
@@ -67,12 +70,15 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     });
 
     this.subSink.add(this.routeStateService?.pathParams.subscribe(async (res) => {
-      if(res){
+      if (res) {
         this.groupId = res.queryParams.group;
         this.routerFromEvent = res;
         await this.ngOnInit();
       }
-    }));
+    }))
+
+    // Check for all the settings
+    this.initiateSettings()
 
   }
 
@@ -104,6 +110,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
     if (this.groupData) {
       this.isAdmin = this.isAdminUser();
+      this.isCampaign = this.groupData.enabled_campaign
     }
 
     // My Workplace variable check
@@ -111,9 +118,9 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
     this.isFavoriteGroup = this.checkIsFavoriteGroup();
 
-    if(this.routerFromEvent && this.routerFromEvent?._urlSegment){
+    if (this.routerFromEvent && this.routerFromEvent?._urlSegment) {
       const segments = this.routerFromEvent?._urlSegment?.children?.primary?.segments;
-      this.activeState = segments?segments[segments.length-2]?.path+'_'+segments[segments.length-1]?.path:'';
+      this.activeState = segments ? segments[segments.length - 2]?.path + '_' + segments[segments.length - 1]?.path : '';
     }
 
     this.utilityService.handleActiveStateTopNavBar().subscribe(event => {
@@ -128,7 +135,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     this.subSink.unsubscribe();
   }
 
-  async changeState(state:string){
+  async changeState(state: string) {
     this.activeState = state;
   }
 
@@ -155,11 +162,11 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
   isPersonalNavigation() {
     return (this.groupId)
-      ? this.groupData.group_name==='personal'
+      ? this.groupData.group_name === 'personal'
         ? (this.groupData?._id == this.userData._private_group)
           ? true : false
-        :false
-      :true;
+        : false
+      : true;
   }
 
   checkIsFavoriteGroup() {
@@ -189,5 +196,18 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
             reject(utilityService.rejectAsyncPromise(`Unable to save the group as favorite, please try again!`))
           });
       }));
+  }
+
+  initiateSettings(){
+    // Current Group data
+    this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
+      if (JSON.stringify(res) != JSON.stringify({})) {
+        res = this.groupData
+        if (this.groupData) {
+          this.isAdmin = this.isAdminUser()
+          this.isCampaign = this.groupData.enabled_campaign
+        }
+      }
+    }))
   }
 }

@@ -1,0 +1,45 @@
+// Import the desired fonts
+@import url('https://fonts.googleapis.com/css?family=Original Surfer');
+
+
+ td,  th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  word-wrap: initial;
+  display: table-cell;
+  line-break: unset;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+  text-align: start;
+  justify-content: center;
+}
+
+tr {
+  cursor: pointer;
+}
+
+ tr:nth-child(even){background-color: #f2f2f2;}
+
+ tr:hover {background-color: #ddd;}
+
+ tbody > tr:first-child > td {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  word-wrap: initial;
+  display: table-cell;
+  line-break: unset;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+  text-align: start;
+  justify-content: center;
+  background-color: #04AA6D;
+  color: white;
+}
+
+table{
+  width: 100%;
+}

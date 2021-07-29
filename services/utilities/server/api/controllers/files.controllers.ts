@@ -84,6 +84,38 @@ export class FilesControllers {
     }
 
     /**
+     * This function is responsible for fetching the campaign type file
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+     async getCampaignFile(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the groupId from the request
+            let { groupId } = req.query;
+
+            // If groupId is not found, then throw the error
+            if (!groupId)
+                return res.status(400).json({
+                    message: 'Please pass groupId in the request params'
+                })
+
+            // Get File on the basis of the fileId
+            let file = await filesService.getCampaignFile(groupId)
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'File details retrieved!',
+                file: file
+            })
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for editing a file details
      * @param req 
      * @param res 

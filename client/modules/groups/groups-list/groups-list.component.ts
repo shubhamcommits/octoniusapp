@@ -78,25 +78,25 @@ export class GroupsListComponent implements OnInit {
 
     // Fetches the user groups from the server
     this.userGroups = await this.publicFunctions.getUserGroups(this.workspaceData['_id'], this.userData['_id'])
-    .catch(()=>{
-      // If the function breaks, then catch the error and console to the application
-      this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
-      this.isLoading$.next(false);
-    })
+      .catch(() => {
+        // If the function breaks, then catch the error and console to the application
+        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        this.isLoading$.next(false);
+      })
 
     this.agoraGroups = await this.publicFunctions.getAgoraGroupsNotJoined(this.workspaceData['_id'], this.userData['_id'])
-    .catch(()=>{
-      // If the function breaks, then catch the error and console to the application
-      this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
-      this.isLoadingAgora$.next(false);
-    })
+      .catch(() => {
+        // If the function breaks, then catch the error and console to the application
+        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        this.isLoadingAgora$.next(false);
+      })
 
     // Calculates the lastGroupId based on the userGroups
-    if(this.userGroups.length > 0)
-      this.lastGroupId = this.userGroups[(this.userGroups.length-1)]['_id'];
+    if (this.userGroups.length > 0)
+      this.lastGroupId = this.userGroups[(this.userGroups.length - 1)]['_id'];
 
-    if (this.agoraGroups.length>0){
-      this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups.length-1]['_id'];
+    if (this.agoraGroups.length > 0) {
+      this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups.length - 1]['_id'];
     }
 
     // Stops the spinner and return the value with ngOnInit
@@ -105,14 +105,14 @@ export class GroupsListComponent implements OnInit {
   }
 
   public async onScroll() {
-      this.isLoading$.next(true);
-      await this.scrolled();
-      // Stop the loading spinner
-      this.isLoading$.next(false);
-    }
+    this.isLoading$.next(true);
+    await this.scrolled();
+    // Stop the loading spinner
+    this.isLoading$.next(false);
+  }
 
-  public async onAgoraScroll(){
-    if (this.moreAgora){
+  public async onAgoraScroll() {
+    if (this.moreAgora) {
       this.isLoadingAgora$.next(true);
       await this.AgoraScrolled();
     }
@@ -141,7 +141,7 @@ export class GroupsListComponent implements OnInit {
         this.userGroups = [...this.userGroups, ...nextPulseGroups];
 
         // Removing duplicates from the array if any
-        this.utilityService.removeDuplicates(this.userGroups, '_id').then((groups)=>{
+        this.utilityService.removeDuplicates(this.userGroups, '_id').then((groups) => {
           this.userGroups = groups;
         })
 
@@ -155,29 +155,29 @@ export class GroupsListComponent implements OnInit {
   /**
    * Helper function of AgoraScroll to work on the business logic
    */
-  public async AgoraScrolled(){
+  public async AgoraScrolled() {
 
-    let nextAgoraGroups:any = await this.publicFunctions.getNextAgoraGroups(this.workspaceData['_id'], this.userData['_id'], this.lastAgoraGroupId);
+    let nextAgoraGroups: any = await this.publicFunctions.getNextAgoraGroups(this.workspaceData['_id'], this.userData['_id'], this.lastAgoraGroupId);
 
     // Adding into existing array
     this.agoraGroups = [...this.agoraGroups, ...nextAgoraGroups];
 
     // Removing Duplicates
-    this.utilityService.removeDuplicates(this.agoraGroups, '_id').then((groups)=>{
+    this.utilityService.removeDuplicates(this.agoraGroups, '_id').then((groups) => {
       this.agoraGroups = groups;
     })
 
-    if (this.moreAgora && this.agoraGroups.length>0){
-      this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups.length-1]['_id'];
+    if (this.moreAgora && this.agoraGroups.length > 0) {
+      this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups.length - 1]['_id'];
 
     }
 
-     // Stop the loading spinner
-     this.isLoadingAgora$.next(false);
+    // Stop the loading spinner
+    this.isLoadingAgora$.next(false);
 
   }
 
-  receiveGroupUpdates($event: Event){
+  receiveGroupUpdates($event: Event) {
     this.userGroups.push($event);
   }
 
@@ -188,7 +188,7 @@ export class GroupsListComponent implements OnInit {
 
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.isLoading$.complete()
   }
 

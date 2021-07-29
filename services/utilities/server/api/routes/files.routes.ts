@@ -23,6 +23,9 @@ routes.post('/groups', groupFileUploader, files.add);
 // GET - Fetches the files list
 routes.get('/groups', files.get);
 
+// GET - Fetches the campaign files list
+routes.get('/groups/campaign', files.getCampaignFile);
+
 // GET - Search the files inside of a group
 routes.get('/search', files.search);
 

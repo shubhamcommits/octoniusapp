@@ -93,6 +93,18 @@
             <p class="card-text" i18n="@@groupAdmin.enableAllocationsFeaturesOnTasks"> This will enable allocation features on the tasks and resource management.</p>
           </mat-slide-toggle><br>
         </div>
+        <!-- Campaign Module -->
+        <div class="mt-5 mb-5 pt-3" *ngIf="campaignModuleAvailable"> 
+          <mat-slide-toggle color="primary"
+              [checked]="groupData.enabled_campaign"
+              [name]="'enabled_campaign'"
+              (change)="saveSettings($event)"
+              [(ngModel)]="enabledCampaign">
+            <h6><b>Enable Campaign Features?</b></h6>
+            <p class="card-text"> This will enable all the campaign related functionalities.</p>
+          </mat-slide-toggle><br>
+        </div>
+        <!-- Campaign Module -->
 
         <div class="mt-5 mb-5 pt-3" *ngIf="shuttleTasksModuleAvailable">
           <mat-slide-toggle color="primary"

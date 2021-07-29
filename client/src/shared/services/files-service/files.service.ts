@@ -57,6 +57,19 @@ export class FilesService {
   }
 
   /**
+   * This function is responsible for fetching the file details on the basis of the groupId
+   * @param groupId
+   */
+  getCampaignFiles(groupId: string) {
+    if (groupId)
+      return this._http.get(this.baseURL + `/files/groups/campaign`, {
+        params: {
+          groupId: groupId
+        }
+      }).toPromise()
+  }
+
+  /**
    * This function is responsible for fetching the file details on the basis of the fileId
    * @param fileId
    */

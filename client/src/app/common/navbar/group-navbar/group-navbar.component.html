@@ -9,30 +9,24 @@
       <li class="nav-item mr-3 d-none d-sm-block">
 
         <!-- Group Avatar starts -->
-        <app-secured-image *ngIf="groupData && !myWorkplace"
-          [imgURL]="groupData?.group_avatar"
-          [service]="'group'"
-          [tooltip]="'Change group avatar'"
-          [placement]="'right'"
-          [styleClass]="'mr-3 feed-avatar'"
+        <app-secured-image *ngIf="groupData && !myWorkplace" [imgURL]="groupData?.group_avatar" [service]="'group'"
+          [tooltip]="'Change group avatar'" [placement]="'right'" [styleClass]="'mr-3 feed-avatar'"
           (click)="openDetails(content)"></app-secured-image>
         <!-- Group Avatar ends -->
 
         <!-- My workplace avatar starts -->
-        <app-secured-image *ngIf="userData && (myWorkplace || !groupData)"
-          [imgURL]="userData?.profile_pic"
-          [service]="'user'"
-          [tooltip]="'This is your workplace'"
-          [placement]="'right'"
+        <app-secured-image *ngIf="userData && (myWorkplace || !groupData)" [imgURL]="userData?.profile_pic"
+          [service]="'user'" [tooltip]="'This is your workplace'" [placement]="'right'"
           [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
         <!-- My Workplace avatar ends -->
 
         <ng-template #content let-modal>
-            <app-group-image-details [groupData]="groupData" [baseUrl]="baseUrl">
-            </app-group-image-details>
+          <app-group-image-details [groupData]="groupData" [baseUrl]="baseUrl">
+          </app-group-image-details>
         </ng-template>
 
-        <h2 *ngIf="groupData && !myWorkplace" (click)="saveFavoriteGroup()" placement="right" ngbTooltip="Add shortcut to sidebar">
+        <h2 *ngIf="groupData && !myWorkplace" (click)="saveFavoriteGroup()" placement="right"
+          ngbTooltip="Add shortcut to sidebar">
           <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="!isFavoriteGroup">star_outline</i>
           <i class="material-icons" style="color: #FFAB00; cursor: pointer;" *ngIf="isFavoriteGroup">star</i>
         </h2>
@@ -138,6 +132,7 @@
                 Dashboard
           </a>
       </li>
+      <!-- Campaign is Enabled -->
       <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
           <a [ngClass]="activeState == 'groups_admin'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_admin')"
