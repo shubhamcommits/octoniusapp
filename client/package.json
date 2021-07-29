@@ -14,8 +14,8 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --localize",
-    "dev": "ng serve --localize",
+    "start": "ng serve",
+    "dev": "ng serve",
     "build": "ng build --localize",
     "prod": "ng build --configuration --localize production",
     "gzip": "gzipper --verbose ./dist ./gzipped",
