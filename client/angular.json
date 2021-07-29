@@ -91,6 +91,15 @@
                   "maximumError": "2mb"
                 }
               ]
+            },
+            "en-US": {
+              "localize": ["en-US"]
+            },
+            "es-ES": {
+              "localize": ["es-ES"]
+            },
+            "de-DE": {
+              "localize": ["de-DE"]
             }
           },
           "defaultConfiguration": ""
@@ -103,6 +112,15 @@
           "configurations": {
             "production": {
               "browserTarget": "client:build:production"
+            },
+            "en-US": {
+              "browserTarget": "ng-i18n:build:en-US"
+            },
+            "es-ES": {
+              "browserTarget": "ng-i18n:build:es-ES"
+            },
+            "de-DE": {
+              "browserTarget": "ng-i18n:build:de-DE"
             }
           }
         },
@@ -153,6 +171,13 @@
               "devServerTarget": "client:serve:production"
             }
           }
+        }
+      },
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "es-ES": "src/locale/messages.es-ES.xlf",
+          "de-DE": "src/locale/messages.de-DE.xlf"
         }
       }
     }
