@@ -47,11 +47,7 @@ const NotificationSchema = new Schema({
     type: {
         type: String,
         required: true,
-<<<<<<< HEAD
-        enum: ['assignment', 'mention', 'mention_folio', 'started', 'completed', 'comment', 'like_comment', 'follow', 'likes', 'new-post', 'general']
-=======
         enum: ['assignment', 'mention', 'mention_folio', 'started', 'completed', 'comment', 'like_comment', 'follow', 'likes', 'new-post', 'join-group', 'leave-group']
->>>>>>> develop
     }
 });
 

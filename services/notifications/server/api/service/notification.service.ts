@@ -296,28 +296,6 @@ export class NotificationsService {
         }
     };
 
-    /**
-     * This function is responsible to notify the user 
-     * @param userId 
-     * @param adminId 
-     */
-    async removeUser(groupId: string, userId: string, adminId: string, io: any) {
-
-        try {
-            const notification = await Notification.create({
-                _actor: userId,
-                _owner: adminId,
-                _origin_group: groupId,
-                message: 'removed you',
-                type: 'general'
-            })
-            await helperFunctions.sendNotificationsFeedFromService(userId, io, true)
-        } catch (err) {
-            throw err;
-        }
-    };
-
-
     async likePost(postId, owner: string, actor: string) {
         try {
             const notification = await Notification.create({
@@ -331,7 +309,6 @@ export class NotificationsService {
             throw err;
         }
     };
-
 
 
     /**
