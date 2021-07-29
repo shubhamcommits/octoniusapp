@@ -124,26 +124,26 @@ export class GroupAdminComponent implements OnInit {
     // Group Service
     let groupService = this.injector.get(GroupService);
 
-    if (selected.source.name === 'enabled_rights') {
-      this.enabledRights = selected.checked;
-      this.groupData.enabled_rights = selected.checked;
-    }
+    // if (selected.source.name === 'enabled_rights') {
+    //   this.enabledRights = selected.checked;
+    //   this.groupData.enabled_rights = selected.checked;
+    // }
 
-    else if (selected.source.name === 'enabled_project_type') {
-      this.enabledProjectType = selected.checked;
-      this.groupData.project_type = selected.checked;
-    }
+    // else if (selected.source.name === 'enabled_project_type') {
+    //   this.enabledProjectType = selected.checked;
+    //   this.groupData.project_type = selected.checked;
+    // }
 
-    else if (selected.source.name === 'enabled_shuttle_type') {
-      this.enabledShuttleType = selected.checked;
-      this.groupData.shuttle_type = selected.checked;
-    }
+    // else if (selected.source.name === 'enabled_shuttle_type') {
+    //   this.enabledShuttleType = selected.checked;
+    //   this.groupData.shuttle_type = selected.checked;
+    // }
 
-    // Campaign Module check
-    else if (selected.source.name === 'enabled_campaign') {
-      this.enabledCampaign = selected.checked;
-      this.groupData.enabled_campaign = selected.checked;
-    }
+    // // Campaign Module check
+    // else if (selected.source.name === 'enabled_campaign') {
+    //   this.enabledCampaign = selected.checked;
+    //   this.groupData.enabled_campaign = selected.checked;
+    // }
 
     // Save the settings
     utilityService.asyncNotification('Please wait we are saving the new setting...',
