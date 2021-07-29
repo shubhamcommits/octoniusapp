@@ -13,17 +13,21 @@
 
       <div class="btn-group">
         <button *ngIf="activeQuestionIndex > 0"
-          class="btn btn-light" (click)="previousQuestion()"><span class="material-icons">
-            chevron_left
-            </span> Previous</button>
-            <button *ngIf="activeQuestionIndex > 0 && activeQuestionIndex < questions?.length-2"
-              class="btn btn-light" [disabled]="disableNext" (click)="nextQuestion()">Next  <span class="material-icons">
-                chevron_right
-                </span></button>
+          class="btn btn-light" (click)="previousQuestion()">
+            <span class="material-icons">chevron_left</span>
+            <span i18n="@@flamingoPreview.previous">Previous</span>
+        </button>
+
+        <button *ngIf="activeQuestionIndex > 0 && activeQuestionIndex < questions?.length-2"
+          class="btn btn-light" [disabled]="disableNext" (click)="nextQuestion()">
+          <span i18n="@@flamingoPreview.next">Next</span>
+          <span class="material-icons">chevron_right</span>
+        </button>
         <button *ngIf="activeQuestionIndex == questions?.length-2"
-            class="btn btn-success" [disabled]="disableNext" (click)="submitAnswers()">Submit</button>
+            class="btn btn-success" [disabled]="disableNext"
+            (click)="submitAnswers()"i18n="@@flamingoPreview.submit">Submit</button>
         <button *ngIf="activeQuestion?.type==='Welcome' && activeQuestionIndex == 0"
-            class="btn btn-primary" (click)="nextQuestion()">Start</button>
+            class="btn btn-primary" (click)="nextQuestion()"i18n="@@flamingoPreview.start">Start</button>
       </div>
     </div>
 
@@ -50,7 +54,7 @@
 
             <!-- question text -->
             <h2 style="color: {{activeQuestion?.text_color}}">{{activeQuestion?.text}}</h2>
-            <div *ngIf="activeQuestion?.mandatory" class="mandatory-text">* This question is mandatory</div>
+            <div *ngIf="activeQuestion?.mandatory" class="mandatory-text" i18n="@@flamingoPreview.questionMandatory">* This question is mandatory</div>
 
             <!-- question secondary text-->
             <span>{{ activeQuestion?.secondary_text }}</span>
@@ -91,22 +95,23 @@
 
             <!-- dropdown question dropdown -->
             <br *ngIf="activeQuestion?.type === 'Dropdown' || activeQuestion?.type === 'Multiple'"/>
-                    <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Dropdown'">
-                        <mat-select
-                            (selectionChange)="answerQuestion($event.value)"
-                            [(value)]="activeQuestion.answer">
-                            <mat-option *ngFor="let currentOption of activeQuestion?.options; let j=index" [value]="currentOption">{{ currentOption }}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
 
-                    <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Multiple'">
-                      <mat-select multiple
-                          (selectionChange)="answerQuestion($event.value)"
-                          (closed)="nextQuestion()"
-                          [(value)]="activeQuestion.answer_multiple">
-                        <mat-option *ngFor="let currentOption of activeQuestion?.options" [value]="currentOption">{{ currentOption }}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
+            <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Dropdown'">
+                <mat-select
+                    (selectionChange)="answerQuestion($event.value)"
+                    [(value)]="activeQuestion.answer">
+                    <mat-option *ngFor="let currentOption of activeQuestion?.options; let j=index" [value]="currentOption">{{ currentOption }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+            <mat-form-field appearance="fill" *ngIf="activeQuestion?.type === 'Multiple'">
+              <mat-select multiple
+                  (selectionChange)="answerQuestion($event.value)"
+                  (closed)="nextQuestion()"
+                  [(value)]="activeQuestion.answer_multiple">
+                <mat-option *ngFor="let currentOption of activeQuestion?.options" [value]="currentOption">{{ currentOption }}</mat-option>
+              </mat-select>
+            </mat-form-field>
         </div>
     </div>
     <!-- container for all other question except welcome and thanks question type end-->
@@ -120,7 +125,7 @@
       <img class="publish-image" src="assets/images/publish_flamingo.svg"/>
     </div>
     <div class="col-md-4">
-      <p class="publish-note">Thank you for submitting your opinion!</p>
+      <p class="publish-note" i18n="@@flamingoPreview.thankYouForSubmitting">Thank you for submitting your opinion!</p>
     </div>
     <div class="col-md-2"></div>
   </div>

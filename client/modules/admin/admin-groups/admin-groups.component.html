@@ -2,7 +2,9 @@
     <div class="card-tile">
 
         <!-- Heading of the component starts -->
-        <h6><strong>All groups from your workplace</strong></h6>
+        <h6>
+          <strong i18n="@@adminGroups.allGroups">All groups from your workplace</strong>
+        </h6>
         <!-- Heading of the component ends -->
 
         <div class="search">
@@ -10,9 +12,7 @@
             <input (keyup)="groupsSearchQuery(query)" type="text" [(ngModel)]="query" class="searchTerm"
                 [placeholder]="searchBarPlaceholder">
             <button type="submit" class="searchButton">
-                <i class="material-icons">
-                    search
-                </i>
+                <i class="material-icons">search</i>
             </button>
             <!-- Component search bar ends -->
         </div>
@@ -44,13 +44,13 @@
                                   <!-- Changing role functionality starts -->
                                   <div class="dropdown" *ngIf="currentUser.role == 'owner' || currentUser.role == 'admin'">
                                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                        Manage Group
+                                        <span i18n="@@adminGroups.manageGroup">Manage Group</span>
                                         <span class="caret"></span>
                                     </button>
 
                                     <!-- Menu Drawer Starts -->
                                     <ul class="dropdown-menu">
-                                        <li class="dropdown-item" (click)="archiveGroup(group._id, true)">Archive Group</li>
+                                        <li class="dropdown-item" (click)="archiveGroup(group._id, true)" i18n="@@adminGroups.archiveGroups">Archive Group</li>
                                     </ul>
                                     <!-- Menu Drawer Ends -->
                                 </div>
@@ -86,14 +86,14 @@
                                   <!-- Changing role functionality starts -->
                                   <div class="dropdown" *ngIf="currentUser.role == 'owner' || currentUser.role == 'admin'">
                                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                                        Manage Group
+                                      <span i18n="@@adminGroups.manageGroup">Manage Group</span>
                                         <span class="caret"></span>
                                     </button>
 
                                     <!-- Menu Drawer Starts -->
                                     <ul class="dropdown-menu">
-                                        <li class="dropdown-item" (click)="archiveGroup(group._id, false)">Activate Group</li>
-                                        <li class="btn btn-danger btn-sm" style="margin: auto 1.4rem;" (click)="removeGroup(group._id)">Remove Group</li>
+                                        <li class="dropdown-item" (click)="archiveGroup(group._id, false)" i18n="@@adminGroups.activateGroup">Activate Group</li>
+                                        <li class="btn btn-danger btn-sm" style="margin: auto 1.4rem;" (click)="removeGroup(group._id)" i18n="@@adminGroups.removeGroup">Remove Group</li>
                                     </ul>
                                     <!-- Menu Drawer Ends -->
                                 </div>

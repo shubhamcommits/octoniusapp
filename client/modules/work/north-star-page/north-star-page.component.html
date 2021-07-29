@@ -2,17 +2,20 @@
 
   <!-- Empty State of tasks starts -->
   <div *ngIf="northStarTasks.length === 0">
-  <h5 class="title-overview">  There are no missions here... Let's create one.</h5>
+    <h5 class="title-overview" i18n="@@northStarPage.noMission">There are no missions here... Let's create one.</h5>
   </div>
   <!-- Empty State of tasks ends -->
   <div class="media" style="margin-top: 140px; margin-bottom: 30px;">
     <img src="assets/images/northstar-hero.svg" class="mr-3" style="width: 200px">
     <div class="media-body" style="color: #242d3a;">
-      <h5 class="mt-0" style="font-weight: 700 !important;"><i class="material-icons-round" style="vertical-align: bottom;">
-        explore
-      </i> What is a North Star?</h5>
-      Set and achieve strategic goals. Align your organization. <br>
-      Connect your company goals and the work to support them in one place. <br>You can see progress to keep teams on track. And teams can work wisely to get the right things done.
+      <h5 class="mt-0" style="font-weight: 700 !important;">
+        <i class="material-icons-round" style="vertical-align: bottom;">explore</i>
+        <span i18n="@@northStarPage.whatIsNS">What is a North Star?</span>
+      </h5>
+      <span i18n="@@northStarPage.setAndAchieveStrategic">
+        Set and achieve strategic goals. Align your organization. <br>
+        Connect your company goals and the work to support them in one place. <br>You can see progress to keep teams on track. And teams can work wisely to get the right things done.
+      </span>
     </div>
   </div>
 

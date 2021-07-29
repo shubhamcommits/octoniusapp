@@ -6,30 +6,43 @@
       [service]="'workspace'"
       [styleClass]="'mr-3 feed-avatar'"
       style="float: left;"></app-secured-image>
-    <h2>Work</h2>
+
+    <h2 i18n="@@workNavbar.work">Work</h2>
     <!-- <h2>{{workspaceData?.workspace_name}} </h2> -->
   </li>
 
   <!-- All Groups Route starts -->
   <li class="nav-item">
-    <a class="nav-link" routerLink="/dashboard/work/groups/all" routerLinkActive="active">Groups
-      <span class="sr-only">(current)</span>
+    <a class="nav-link"
+        routerLink="/dashboard/work/groups/all"
+        routerLinkActive="active"
+        i18n="@@workNavbar.groups">
+          Groups
+          <span class="sr-only">(current)</span>
     </a>
   </li>
   <!-- All Groups Route ends -->
 
   <!-- North Star Route starts -->
   <li class="nav-item">
-    <a class="nav-link" routerLink="/dashboard/work/northstar" routerLinkActive="active">North Star
-      <span class="sr-only">(current)</span>
+    <a class="nav-link"
+        routerLink="/dashboard/work/northstar"
+        routerLinkActive="active"
+        i18n="@@workNavbar.northStar">
+          North Star
+          <span class="sr-only">(current)</span>
     </a>
   </li>
   <!-- North Star Route ends -->
 
   <!-- Dashboard Page Route starts -->
   <li class="nav-item" *ngIf="canSeeDashboard()">
-    <a class="nav-link" routerLink="/dashboard/work/dashboard" routerLinkActive="active">Dashboard
-      <span class="sr-only">(current)</span>
+    <a class="nav-link"
+        routerLink="/dashboard/work/dashboard"
+        routerLinkActive="active"
+        i18n="@@workNavbar.dashboard">
+          Dashboard
+          <span class="sr-only">(current)</span>
     </a>
   </li>
   <!-- Dashboard Page Route ends -->

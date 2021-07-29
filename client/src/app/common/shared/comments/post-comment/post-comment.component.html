@@ -22,7 +22,7 @@
             <!-- Save Button starts -->
             <div class="text-right padding-bottom-md mb-2">
                 <button class="btn btn-primary btn-sm"
-                (click)="saveCommentData()">Save</button>
+                (click)="saveCommentData()" i18n="@@postComment.save">Save</button>
             </div>
             <!-- Save Button ends -->
 
@@ -89,7 +89,7 @@
 
                         <!-- Edit Comment starts -->
                         <li class="dropdown-item" (click)="this.displayCommentEditor = true">
-                            <span>Edit</span>
+                            <span i18n="@@postComment.edit">Edit</span>
                         </li>
                         <!-- Edit Comment ends -->
 
@@ -97,7 +97,7 @@
 
                         <!-- Delete Comment starts -->
                         <li class="dropdown-item" (click)="deleteComment(index)">
-                            <span>Delete</span>
+                            <span i18n="@@postComment.delete">Delete</span>
                         </li>
                         <!-- Delete Comment ends-->
 

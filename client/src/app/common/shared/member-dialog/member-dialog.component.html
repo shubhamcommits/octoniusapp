@@ -28,17 +28,17 @@
 
                       <hr />
 
-                      <p class="card-text blue"><strong>Email:</strong>
+                      <p class="card-text blue"><strong i18n="@@memberDialog.email">Email:</strong>
                           {{ userData?.email}} </p>
-                      <p class="card-text blue"><strong>Phone:</strong>
+                      <p class="card-text blue"><strong i18n="@@memberDialog.phone">Phone:</strong>
                           <span id="userData_phone_number"> {{ userData?.phone_number }} </span></p>
-                      <p class="card-text blue"><strong>Mobile:</strong>
+                      <p class="card-text blue"><strong i18n="@@memberDialog.mobile">Mobile:</strong>
                           <span id="userData_mobile_number"> {{ userData?.mobile_number }}</span></p>
-                      <p class="card-text blue"><strong>Company:</strong>
+                      <p class="card-text blue"><strong i18n="@@memberDialog.company">Company:</strong>
                           <span id="userData_company_name"> {{ userData?.company_name }} </span></p>
-                      <p class="card-text blue"><strong>Role:</strong>
+                      <p class="card-text blue"><strong i18n="@@memberDialog.role">Role:</strong>
                           {{ userData?.role }}</p>
-                          <p class="card-text blue"><strong>Joined:</strong>
+                          <p class="card-text blue"><strong i18n="@@memberDialog.joined">Joined:</strong>
                             <span id="userData_company_join_date"> {{ userData?.company_join_date | date: 'longDate' }} </span></p>
                   </div>
 
@@ -48,7 +48,7 @@
           <div class="col-md-8">
             <div class="card-tile">
               <div class="card-block">
-                <p class="card-text"><strong>Biography:</strong></p>
+                <p class="card-text"><strong i18n="@@memberDialog.biography">Biography:</strong></p>
                   <span id="userData_bio" class="muted">  {{ userData?.bio }} </span>
 
 
@@ -61,7 +61,7 @@
               <div class="card-block">
 
                   <!-- Template Heading starts -->
-                  <h6 class="card-title"><b>Skills</b></h6>
+                  <h6 class="card-title"><b i18n="@@memberDialog.skills">Skills</b></h6>
                   <!-- Template Heading ends -->
 
                   <hr />

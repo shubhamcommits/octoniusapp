@@ -4,8 +4,8 @@
         <div class="card-block">
             <div class="row">
                 <div class="col-md-12">
-                    <h6 class="card-title font-weight-bold" *ngIf="!myWorkplace"> Team Assignments</h6>
-                    <h6 class="card-title font-weight-bold" *ngIf="myWorkplace"> Your Assignments</h6>
+                    <h6 class="card-title font-weight-bold" *ngIf="!myWorkplace" i18n="@@groupTaskProgress.teamAssignments"> Team Assignments</h6>
+                    <h6 class="card-title font-weight-bold" *ngIf="myWorkplace" i18n="@@groupTaskProgress.yourAssignments"> Your Assignments</h6>
                     <hr />
                 </div>
             </div>
@@ -14,42 +14,51 @@
         <div class="card-block">
             <div class="row">
                 <div class="col-md-12">
-                    <span class="bold" style="font-size: 20px;">{{ totalTasksCount }}</span> assignment(s) this week.
+                    <span class="bold" style="font-size: 20px;" i18n="@@groupTaskProgress.assignmentsWeek">{{ totalTasksCount }}</span> assignment(s) this week.
                     <br>
-                    <span class="overdue bold" style="font-size: 20px;">{{ undoneTasksCount }}</span> overdue assignment(s) this week.
+                    <span class="overdue bold" style="font-size: 20px;" i18n="@@groupTaskProgress.overdueAssignmentsWeek">{{ undoneTasksCount }}</span> overdue assignment(s) this week.
                 </div>
             </div>
-        
+
             <div class="row mt-2" *ngIf="percentageTodo >= 0">
                 <div class="col-md-6">
-                    <h6 class="todo"><b>{{todoTasksCount}} To do</b></h6>
-                    <!-- <app-progress-bar [preset]="'line'" [value]="percentageTodo" [stroke]="'#fd7714'"></app-progress-bar> -->
+                    <h6 class="todo">
+                      <b i18n="@@groupTaskProgress.toDo">{{todoTasksCount}} To do</b>
+                    </h6>
+                    <!--
+                    <app-progress-bar [preset]="'line'" [value]="percentageTodo" [stroke]="'#fd7714'"></app-progress-bar>
+                    -->
                 </div>
                 <div class="col-md-12">
-                    
+
                 </div>
             </div>
-        
+
             <div class="row mt-2 mb-2" *ngIf="percentageInProgress >= 0">
                 <div class="col-md-6">
-                    <h6 class="working"><b>{{inprogressTasksCount}} In progress</b></h6>
+                    <h6 class="working">
+                      <b i18n="@@groupTaskProgress.inProgress">{{inprogressTasksCount}} In progress</b>
+                    </h6>
                 </div>
-                <!-- <div class="col-md-12">
+                <!--
+                <div class="col-md-12">
                     <app-progress-bar style="width: 100%;" [preset]="'line'" [value]="percentageInProgress" [stroke]="'#0bc6a0'"></app-progress-bar>
-        
-                </div> -->
+                </div>
+                -->
             </div>
-        
+
             <div class="row mt-2" *ngIf="percentageDone >=0">
                 <div class="col-md-12">
-                    <h6 class="done"><b>{{doneTasksCount}} Done</b></h6>
+                    <h6 class="done">
+                      <b i18n="@@groupTaskProgress.done">{{doneTasksCount}} Done</b>
+                    </h6>
                 </div>
-                <!-- <div class="col-md-12">
+                <!--
+                <div class="col-md-12">
                     <app-progress-bar [preset]="'line'" [value]="percentageDone" [stroke]="'#005FD5'"></app-progress-bar>
-                </div> -->
+                </div>
+                -->
             </div>
-        
         </div>
-
     </div>
 </div>

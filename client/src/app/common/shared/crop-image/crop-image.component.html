@@ -2,14 +2,14 @@
 <div class="input-group mb-3">
     <div class="custom-file">
         <input type="file" class="custom-file-input" accept="image/*" (change)="fileChangeEvent($event)" />
-        <label class="custom-file-label">Choose file</label>
+        <label class="custom-file-label" i18n="@@cropImage.chooseFile">Choose file</label>
     </div>
 </div>
 <!-- INPUT IMAGE ENDS -->
 
 <!-- IMAGE CROPPER AND TOOLS STARTS -->
 <div class="container">
-    
+
     <!-- IMAGE CROPPER TOOL STARTS -->
     <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="1 / 1"
     [resizeToWidth]="300"

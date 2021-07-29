@@ -14,16 +14,18 @@
     <div class="menu-options">
         <ul class="list-unstyled components">
             <li>
-              <a [routerLink]="['/dashboard', 'myspace', 'inbox']" [queryParams]="{myWorkplace: true}" routerLinkActive="active">
-                  <i class="material-icons-outlined carret">home</i>
-                  My Space
+              <a [routerLink]="['/dashboard', 'myspace', 'inbox']"
+                  [queryParams]="{myWorkplace: true}"
+                  routerLinkActive="active"
+                  i18n="@@sidebar.mySpace">
+                    <i class="material-icons-outlined carret">home</i>
+                    My Space
               </a>
             </li>
             <li> <hr class="divider-line"></li>
-           
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true">
 
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true" i18n="@@sidebar.favorites">
                     <i class="material-icons-outlined carret">star_outline</i>
                     Favorites
                     <i class="material-icons-outlined carret">keyboard_arrow_down</i>
@@ -45,45 +47,58 @@
             </li>
             <li> <hr class="divider-line"></li>
             <li>
-              <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" class="explore-work">
-                <i class="material-icons-outlined carret">groups</i>
-                Explore Work
+              <a routerLinkActive="active"
+                  routerLink="/dashboard/work/groups/all"
+                  class="explore-work"
+                  i18n="@@sidebar.exploreWork">
+                    <i class="material-icons-outlined carret">groups</i>
+                    Explore Work
               </a>
             </li>
 
             <li> <hr class="divider-line"></li>
             <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
-                <a (click)="changeState('general')" class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
-                    <i class="material-icons-outlined">settings</i>
-                    Administration<span class="sr-only">(current)</span>
+                <a (click)="changeState('general')"
+                    class="nav-link"
+                    [routerLink]="['/dashboard', 'admin', 'general']"
+                    routerLinkActive="active"
+                    i18n="@@sidebar.administration">
+                      <i class="material-icons-outlined">settings</i>
+                      Administration
+                      <span class="sr-only">(current)</span>
                 </a>
             </li>
 
-                <li>
-                    <!-- USER PROFILE BADGE STARTS -->
-                    <a class="nav-link" *ngIf="this.userData"
-                      [routerLink]="['/dashboard', 'user', 'profile']"
-                      [queryParams]="{ userId: userData?._id}" routerLinkActive="active"
-                      (click)="changeState('profile')">
-                        <app-secured-image
-                            [imgURL]="userData?.profile_pic"
-                            [service]="'user'"
-                            [styleClass]="'avatar'"></app-secured-image>
-                        My Account
-                    </a>
-                    <!-- USER PROFILE BADGE ENDS -->
-                </li>
+            <li>
+                <!-- USER PROFILE BADGE STARTS -->
+                <a class="nav-link" *ngIf="this.userData"
+                  [routerLink]="['/dashboard', 'user', 'profile']"
+                  [queryParams]="{ userId: userData?._id}"
+                  routerLinkActive="active"
+                  (click)="changeState('profile')"
+                  i18n="@@sidebar.myAccount">
+                    <app-secured-image
+                        [imgURL]="userData?.profile_pic"
+                        [service]="'user'"
+                        [styleClass]="'avatar'"></app-secured-image>
+                    My Account
+                </a>
+                <!-- USER PROFILE BADGE ENDS -->
+            </li>
 
-                <li>
-                    <!-- LOGOUT FUNCTION STARTS-->
-                    <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active" (click)="logout()">
-                        <i class="material-icons-outlined carret">logout</i>
-                        Sign Out
-                        <span class="sr-only">(current)</span>
-                    </a>
-                    <!-- LOGOUT FUNCTION ENDS-->
-                </li>
-            </ul>
-
+            <li>
+                <!-- LOGOUT FUNCTION STARTS-->
+                <a class="nav-link"
+                    [routerLink]="['/home']"
+                    routerLinkActive="router-link-active"
+                    (click)="logout()"
+                    i18n="@@sidebar.signOut">
+                      <i class="material-icons-outlined carret">logout</i>
+                      Sign Out
+                      <span class="sr-only">(current)</span>
+                </a>
+                <!-- LOGOUT FUNCTION ENDS-->
+            </li>
+        </ul>
     </div>
 </nav>

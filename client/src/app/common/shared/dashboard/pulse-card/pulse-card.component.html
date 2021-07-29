@@ -1,6 +1,6 @@
 <div class="smart-card" style="padding: 10px;">
   <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
-    <div class="card-title mt-1">
+    <div class="card-title mt-1" i18n="@@pulseCard.pulse">
       Pulse
     </div>
     <div class="icon">
@@ -9,7 +9,7 @@
   </div>
 
   <div class="row">
-      <div class="card-first-column col-md-12">
+      <div class="card-first-column col-md-12" i18n="@@pulseCard.updatesToday">
         <div class="agoras_count"> {{ num_updates }} </div>
         &nbsp;updates today
       </div>
@@ -18,9 +18,9 @@
   <div class="row">
       <div class="card-first-column col-md-12">
         <div class="agoras_count"> {{ num_updates_period }} </div>
-        <div *ngIf="period === 7">&nbsp;updates last week</div>
-        <div *ngIf="period === 30">&nbsp;updates last month</div>
-        <div *ngIf="period === 365">&nbsp;updates last year</div>
+        <div *ngIf="period === 7" i18n="@@pulseCard.updatesLastWeek">&nbsp;updates last week</div>
+        <div *ngIf="period === 30" i18n="@@pulseCard.updatesLastMonth">&nbsp;updates last month</div>
+        <div *ngIf="period === 365" i18n="@@pulseCard.updatesLastYear">&nbsp;updates last year</div>
     </div>
   </div>
 </div>

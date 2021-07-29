@@ -1,12 +1,14 @@
 <div class="card sideinnercard">
     <div class="card-block">
         <h6 class="card-title">
-          <strong>Filters</strong>
+          <strong i18n="@@activityFilters.filters">Filters</strong>
           <i class="material-icons-outlined float-right">filter_list</i>
         </h6>
+
         <hr />
 
-        <p class="box-title" style="padding-top: 20px;">Posted By...</p>
+        <p class="box-title" style="padding-top: 20px;" i18n="@@activityFilters.postedBy">Posted By...</p>
+
         <app-multiple-assignments
           [groupId]="groupData?._id"
           [userData]="userData"
@@ -17,7 +19,8 @@
 
         <br />
 
-        <p class="box-title">Tags</p>
+        <p class="box-title" i18n="@@activityFilters.tags">Tags</p>
+
         <!-- Post Tags starts -->
         <app-post-tags
             [userData]="userData"

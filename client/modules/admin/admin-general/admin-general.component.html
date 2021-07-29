@@ -13,11 +13,13 @@
             <app-transfer-ownership [workspaceData]="workspaceData" [userData] = "userData" ></app-transfer-ownership>
 
             <div class="card-tile invite-users">
-              <h6><b>Delete Workspace</b></h6>
+              <h6>
+                <b i18n="@@adminGeneral.deleteWorkspace">Delete Workspace</b>
+              </h6>
               <hr />
               <div class="container">
                 <div class="row">
-                  <button class="btn btn-danger btn-sm" (click)="removeWorkspace(workspaceData['_id'])">Remove Workspace</button>
+                  <button class="btn btn-danger btn-sm" (click)="removeWorkspace(workspaceData['_id'])" i18n="@@adminGeneral.removeWorkspace">Remove Workspace</button>
                 </div>
                 <br />
             </div>

@@ -3,30 +3,37 @@
         <div class="card-block">
 
             <!-- Group Information Header starts -->
-            <h6 class="card-title" *ngIf="!myWorkplace" style="margin-bottom: -10px;"><b>{{groupData?.group_name }}</b>
+            <h6 class="card-title" *ngIf="!myWorkplace" style="margin-bottom: -10px;">
+
+                <b>{{groupData?.group_name }}</b>
 
                 <!-- Edit Group Details starts -->
                 <button *ngIf="userData.role != 'member' && groupData.group_name.toLowerCase() != 'global'"
                     type="button" name="button" class="btn btn-link-secondary" style="margin-top: -10px;"
                     (click)="this.editGroupDetails(openModal('Update Group Information!', 'assets/images/user-professional-info.svg'))">
-                    <i class="material-icons-outlined">settings</i>
+                      <i class="material-icons-outlined">settings</i>
                 </button>
                 <!-- Edit Group Details ends -->
 
             </h6>
-            <h6 class="card-title" *ngIf="myWorkplace"><b>Personal Workplace</b></h6>
+            <h6 class="card-title" *ngIf="myWorkplace">
+              <b i18n="@@groupInformation.personalWorkspace">
+                Personal Workplace
+              </b>
+            </h6>
             <!-- Group Information Header ends -->
 
             <hr />
 
             <!-- Group Information details starts -->
             <!-- <p class="card-text" *ngIf="!myWorkplace"><strong>Name: </strong>{{groupData?.group_name }}</p> -->
-            <p class="card-text" *ngIf="!myWorkplace"><strong>Members:
-                </strong>{{ groupData?._members.length + groupData?._admins.length || 0 }}</p>
+            <p class="card-text" *ngIf="!myWorkplace">
+              <strong i18n="@@groupInformation.members">Members:</strong>{{ groupData?._members.length + groupData?._admins.length || 0 }}</p>
             <p class="card-text" *ngIf="!myWorkplace && groupData.group_name.toLowerCase() != 'global'">
-                <strong>Description: </strong>{{groupData?.description}}
+                <strong i18n="@@groupInformation.description">Description: </strong>{{groupData?.description}}
             </p>
-            <p class="card-text" *ngIf="myWorkplace">This is your personal space. Everything you create here is private.
+            <p class="card-text" *ngIf="myWorkplace" i18n="@@groupInformation.thisIsPersonalSpace">
+              This is your personal space. Everything you create here is private.
             </p>
             <!-- Group Information details ends -->
 

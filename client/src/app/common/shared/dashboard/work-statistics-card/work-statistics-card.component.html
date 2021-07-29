@@ -1,11 +1,11 @@
 <div class="smart-card" style="padding: 10px;">
   <div *ngIf="!northStar" class="row" style="margin: 0 0 20px; justify-content: space-between;">
-    <div class="card-title mt-1">
+    <div class="card-title mt-1" i18n="@@workStatisticsCard.workStatistics">
       Work statistics
     </div>
   </div>
   <div *ngIf="northStar" class="row" style="margin: 0 0 20px; justify-content: space-between;">
-    <div class="card-title mt-1">
+    <div class="card-title mt-1" i18n="@@workStatisticsCard.companyObjectives">
       Company Objectives
     </div>
     <div class="icon">
@@ -13,10 +13,10 @@
     </div>
   </div>
 
-  <div class="card-icon" *ngIf="!northStar">
+  <div class="card-icon" *ngIf="!northStar" i18n="@@workStatisticsCard.totalTasks">
     <span class="number">{{ task_count }}</span>&nbsp;total tasks
   </div>
-  <div class="card-icon" *ngIf="northStar">
+  <div class="card-icon" *ngIf="northStar" i18n="@@workStatisticsCard.northStars">
     <span class="north_star_number">{{ task_count }}</span>&nbsp;North Stars
   </div>
   <div class="col-12 d-none d-sm-block" style="padding-top: 15px;" *ngIf="chartReady">

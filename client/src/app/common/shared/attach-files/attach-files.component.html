@@ -17,14 +17,13 @@
 
 <!-- Attached Files Starts -->
 <div *ngIf="post" class="ml-2 mt-2">
-    <p><strong *ngIf="post.files">Attached Files </strong></p>
+    <p><strong *ngIf="post.files" i18n="@@attachFiles.attachedFiles">Attached Files </strong></p>
     <div *ngFor="let file of post.files; let index = index">
       <a href="{{ baseUrl }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank">
           {{ file?.original_name }}
       </a>
-      <span class="material-icons" (click)="removeFile(index)">
-        highlight_off
-      </span>
+
+      <span class="material-icons" (click)="removeFile(index)">highlight_off</span>
     </div>
 </div>
 <!-- Attached Files Ends -->
@@ -32,14 +31,13 @@
 
 <!-- Attached Files Starts -->
 <div *ngIf="comment" class="ml-2 mt-2">
-  <p><strong *ngIf="comment.files">Attached Files </strong></p>
+  <p><strong *ngIf="comment.files" i18n="@@attachFiles.attachedFiles">Attached Files </strong></p>
   <div *ngFor="let file of comment.files; let index = index">
     <a href="{{ baseUrl }}/{{ file?.modified_name }}?authToken={{authToken}}" target="_blank">
         {{ file?.original_name }}
     </a>
-    <span *ngIf="showIcons" class="material-icons" (click)="removeFile(index)">
-      highlight_off
-    </span>
+
+    <span *ngIf="showIcons" class="material-icons" (click)="removeFile(index)">highlight_off</span>
   </div>
 </div>
 <!-- Attached Files Ends -->
@@ -48,11 +46,9 @@
 <div *ngIf="(!post || !post.files) && (!comment || !comment.files)"  class="ml-2 mt-2">
   <div *ngFor="let file of filesArray; let index = index">
     <p>
-      <strong>Selected File: </strong>
+      <strong i18n="@@attachFiles.selectedFile">Selected File: </strong>
       {{ file?.name }}
-      <span class="material-icons" (click)="removeTmpFile(index)">
-          highlight_off
-      </span>
+      <span class="material-icons" (click)="removeTmpFile(index)">highlight_off</span>
     </p>
   </div>
 </div>

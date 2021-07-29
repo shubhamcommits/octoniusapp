@@ -3,8 +3,8 @@
     <div class="card-tile">
 
         <!-- Heading of the component starts -->
-        <h4>Your files. Ready when you are.</h4>
-        <p>Drag and drop files here for easy upload. <br>Or use the NEW button for folders uploading.</p>
+        <h4 i18n="@@groupFiles.yourFiles">Your files. Ready when you are.</h4>
+        <p i18n="@@groupFiles.dragDropOrAdd">Drag and drop files here for easy upload. <br>Or use the NEW button for folders uploading.</p>
         <!-- Heading of the component ends -->
 
         <!-- Group New File starts -->
@@ -49,9 +49,7 @@
             <input type="text" [ngModel]="query" (ngModelChange)="fileSearchQuery($event)" class="searchTerm"
                 [placeholder]="'File search'">
             <button type="submit" class="searchButton">
-                <i class="material-icons">
-                    search
-                </i>
+                <i class="material-icons">search</i>
             </button>
             <!-- Component search bar ends -->
 
@@ -82,13 +80,13 @@
                         <mat-menu #menu="matMenu">
                             <a mat-menu-item (click)="deleteItem(folder?._id, folder?.type)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
-                                <span>Delete</span>
+                                <span i18n="@@groupFiles.delete">Delete</span>
                             </a>
 
                             <div *ngIf="folders && folders?.length > 1">
                               <a mat-menu-item [matMenuTriggerFor]="moveFolderMenu">
                                 <i class="material-icons">arrow_forward</i>
-                                Move to Folder
+                                <span i18n="@@groupFiles.moveToFolder">Move to Folder</span>
                               </a>
 
                               <mat-menu #moveFolderMenu="matMenu">
@@ -139,7 +137,7 @@
                         <mat-menu #menu="matMenu">
                             <a mat-menu-item (click)="copyToClipboard(file)">
                               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
-                              <span>Copy Link</span>
+                              <span i18n="@@groupFiles.copyLink">Copy Link</span>
                             </a>
 
                             <div *ngIf="file?.type == 'folio'">
@@ -151,7 +149,7 @@
                               -->
                               <a mat-menu-item [matMenuTriggerFor]="transferMenu" (mouseover)="saveTransferAction('move')">
                                 <i class="material-icons">arrow_forward</i>
-                                Move to Group
+                                <span i18n="@@groupFiles.moveToGroup">Move to Group</span>
                               </a>
 
                               <mat-menu #transferMenu="matMenu">
@@ -164,7 +162,7 @@
                             <div *ngIf="folders && folders?.length > 0">
                               <a mat-menu-item [matMenuTriggerFor]="moveFileMenu">
                                 <i class="material-icons">arrow_forward</i>
-                                Move to Folder
+                                <span i18n="@@groupFiles.moveToFolder">Move to Folder</span>
                               </a>
 
                               <mat-menu #moveFileMenu="matMenu">
@@ -176,15 +174,15 @@
 
                             <a *ngIf="file?.type === 'file'" mat-menu-item (click)="openViewFileDialog(filesBaseUrl + '/' + file?.modified_name)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
-                                <span>View</span>
+                                <span i18n="@@groupFiles.view">View</span>
                             </a>
                             <a *ngIf="file?.type === 'folio'" mat-menu-item (click)="openViewFolioDialog(file?._id)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
-                                <span>View</span>
+                                <span i18n="@@groupFiles.view">View</span>
                             </a>
                             <a mat-menu-item (click)="deleteItem(file?._id, file?.type, file?.modified_name)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
-                                <span>Delete</span>
+                                <span i18n="@@groupFiles.delete">Delete</span>
                             </a>
                         </mat-menu>
                     </div>

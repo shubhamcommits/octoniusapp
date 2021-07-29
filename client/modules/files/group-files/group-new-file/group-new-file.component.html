@@ -1,6 +1,7 @@
 <!-- Create new file starts -->
 <button class="btn btn-warning mb-3 mt-3 dropdown-toggle" type="button" data-toggle="dropdown">
-    <i class="material-icons-outlined">add</i> New
+    <i class="material-icons-outlined">add</i>
+    <span i18n="@@groupNewFile.new">New</span>
 </button>
 <!-- Create new file ends -->
 
@@ -8,25 +9,30 @@
 <ul class="dropdown-menu">
 
     <li class="dropdown-item" (click)="createFolder()">
-        <i class="material-icons-outlined mr-2">create_new_folder</i><span>Folder</span>
+        <i class="material-icons-outlined mr-2">create_new_folder</i>
+        <span i18n="@@groupNewFile.folder">Folder</span>
     </li>
 
     <li class="dropdown-item" (click)="file.click()">
-        <i class="material-icons-outlined mr-2">upload_file</i> <span>File upload</span>
+        <i class="material-icons-outlined mr-2">upload_file</i>
+        <span i18n="@@groupNewFile.fileUoload">File upload</span>
         <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)"/>
     </li>
 
     <li class="dropdown-item" (click)="folderInput.click()">
-        <i class="material-icons-outlined mr-2">drive_folder_upload</i> <span> Folder upload</span>
+        <i class="material-icons-outlined mr-2">drive_folder_upload</i>
+        <span i18n="@@groupNewFile.folderUpload"> Folder upload</span>
         <input #folderInput type="file" placeholder="File" webkitdirectory (change)="folderUpload($event)"/>
     </li>
 
     <li class="dropdown-divider"></li>
     <li class="dropdown-item" (click)="createFolio()">
-        <img src="assets/images/icon_folio.svg" alt="" class="mr-2"> <span>Folio</span>
+        <img src="assets/images/icon_folio.svg" alt="" class="mr-2">
+        <span i18n="@@groupNewFile.folio">Folio</span>
     </li>
     <li class="dropdown-item" *ngIf="flamingoModuleAvailable" (click)="createFlamingo()">
-        <img src="assets/images/icon_flamingo.svg" alt="" class="mr-2"> <span>Flamingo</span>
+        <img src="assets/images/icon_flamingo.svg" alt="" class="mr-2">
+        <span i18n="@@groupNewFile.flamingo">Flamingo</span>
     </li>
 </ul>
 <!-- Menu Drawer Ends -->

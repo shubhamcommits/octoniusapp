@@ -6,11 +6,16 @@
   <div class="media" style="margin-top: 140px; margin-bottom: 30px;">
     <img src="assets/images/hero-pulse.svg" class="mr-3" style="width: 200px">
     <div class="media-body">
-      <h5 class="mt-0"> <i class="material-icons-outlined">whatshot</i> What is a pulse?</h5>
+      <h5 class="mt-0">
+        <i class="material-icons-outlined">whatshot</i>
+        <span i18n="@@pulse.whatIsPulse">What is a pulse?</span>
+      </h5>
 
-      A pulse is a micro announcement from a Group.
-      It’s like twitter for Enterprise. <br>Even if you don’t have access to a group, you can still see what’s happening there.
-      <br>Pulses create transparency and a sense of mission for your organization.
+      <span i18n="@@pulse.pulseIsMicroAnnouncement">
+        A pulse is a micro announcement from a Group.
+        It’s like twitter for Enterprise. <br>Even if you don’t have access to a group, you can still see what’s happening there.
+        <br>Pulses create transparency and a sense of mission for your organization.
+      </span>
     </div>
   </div>
 
@@ -45,7 +50,7 @@
 
         <!-- TO DO, IN PROGRESS AND DONE TASKS STARTS -->
         <div class="pulse_data">
-          <div class="pulse_info muted"> Current work:</div>
+          <div class="pulse_info muted" i18n="@@pulse.currentWork"> Current work:</div>
           <span class="pulse-todo-tasks">{{ pulseToDoTasks[group?._id] || 0 }}</span>
           <span class="pulse-in-progress-tasks">{{ pulseInProgressTasks[group?._id] || 0 }}</span>
           <span class="pulse-done-tasks">{{ pulseDoneTasks[group?._id] || 0 }}</span>
@@ -66,5 +71,4 @@
   <!-- SECTION SEPARATOR INDICATOR STARTS -->
   <app-section-separator *ngIf="!moreToLoad"></app-section-separator>
   <!-- SECTION SEPARATOR INDICATOR ENDS -->
-
 </div>

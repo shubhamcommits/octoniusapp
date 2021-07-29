@@ -1,12 +1,18 @@
 <div class="sidecontent">
     <div class="card sideinnercard">
         <div class="card-block">
-            <h6 class="card-title" *ngIf="routerState === 'general'"><b>Workplace Info</b></h6>
-            <h6 class="card-title" *ngIf="routerState === 'billing'"><b>Company Stats</b></h6>
+            <h6 class="card-title" *ngIf="routerState === 'general'">
+              <b i18n="@@workplaceInformation.workspaceInfo">Workplace Info</b>
+            </h6>
+            <h6 class="card-title" *ngIf="routerState === 'billing'">
+              <b i18n="@@workplaceInformation.companyStats">Company Stats</b>
+            </h6>
             <hr />
-            <p class="card-text" *ngIf="routerState === 'billing'">Company Name:
-                {{ workspaceData?.company_name }}</p>
-            <p class="card-text">Workspace Name:
+            <p class="card-text" *ngIf="routerState === 'billing'">
+              <span i18n="@@workplaceInformation.companyName">Company Name</span>:
+              {{ workspaceData?.company_name }}</p>
+            <p class="card-text">
+                <span i18n="@@workplaceInformation.workspaceName">Workspace Name</span>:
                 <span *ngIf="!editWorkspaceName">
                     {{ workspaceData?.workspace_name }}
                     <span (click)="editWorkspaceName = !editWorkspaceName" class="material-icons-outlined" style="cursor: pointer; font-size: 15px; margin-left: 10px; margin-bottom: 10px;">mode_edit</span>
@@ -21,15 +27,20 @@
                     (keyup.enter)="workspaceNameChange($event)" />
                 <!-- Workspace Name Input ends -->
             </p>
-            <p class="card-text">Owner Name:
+            <p class="card-text">
+              <span i18n="@@workplaceInformation.ownerName">Owner Name</span>:
                 {{ workspaceData?.owner_first_name }} {{ workspaceData?.owner_last_name }}</p>
-            <p class="card-text">Total Members:
+            <p class="card-text">
+              <span i18n="@@workplaceInformation.totalMembers">Total Members</span>:
                 {{ workspaceData?.company_members_count + workspaceData?.guests_count }}</p>
-            <p class="card-text">Company Members:
+            <p class="card-text">
+              <span i18n="@@workplaceInformation.companyMembers">Company Members</span>:
                 {{ workspaceData?.company_members_count }}</p>
-            <p class="card-text">Invited Guests:
+            <p class="card-text">
+              <span i18n="@@workplaceInformation.invitedGuests">Invited Guests</span>:
                 {{ workspaceData?.guests_count }}</p>
-            <p class="card-text">Invite Access Code:
+            <p class="card-text">
+              <span i18n="@@workplaceInformation.inviteAccessCode">Invite Access Code</span>:
                 {{ workspaceData?.access_code }}</p>
         </div>
     </div>

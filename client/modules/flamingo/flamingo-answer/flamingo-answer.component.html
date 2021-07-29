@@ -15,22 +15,22 @@
           <span class="material-icons">
             chevron_left
           </span>
-          Previous
+          <span i18n="@@flamingoAnswer.previous">Previous</span>
         </button>
 
         <button *ngIf="activeQuestionIndex > 0 && activeQuestionIndex < questions?.length-2" class="btn btn-light"
             [disabled]="disableNext" (click)="nextQuestion()">
-          Next
+          <span i18n="@@flamingoAnswer.next">Next</span>
           <span class="material-icons">chevron_right</span>
         </button>
 
         <button *ngIf="activeQuestionIndex == questions?.length-2" class="btn btn-success"
-            [disabled]="disableNext" (click)="submitAnswers()">
+            [disabled]="disableNext" (click)="submitAnswers()" i18n="@@flamingoAnswer.submit">
           Submit
         </button>
 
         <button *ngIf="activeQuestion?.type==='Welcome' && activeQuestionIndex == 0"
-            class="btn btn-primary" (click)="nextQuestion()">
+            class="btn btn-primary" (click)="nextQuestion()" i18n="@@flamingoAnswer.start">
           Start
         </button>
       </div>
@@ -59,7 +59,7 @@
 
             <!-- question text -->
             <h2 style="color: {{activeQuestion?.text_color}}">{{activeQuestion?.text}}</h2>
-            <div *ngIf="activeQuestion?.mandatory" class="mandatory-text">* This question is mandatory</div>
+            <div *ngIf="activeQuestion?.mandatory" class="mandatory-text" i18n="@@flamingoAnswer.questionMandatory">* This question is mandatory</div>
 
             <!-- question secondary text-->
             <span>{{ activeQuestion?.secondary_text }}</span>
@@ -125,7 +125,7 @@
 <!-- Last page, only for Thanking for submitting a flamingo to octonius -->
 <div *ngIf="activeQuestion?.type == 'LastScreen'" class="answer-container">
   <div class="row">
-    
+
     <div class="col">
       <img src='assets/images/placeholder_flamingo_answer.png' class="placeholder-img">
       <p class="muted text-center">Thank you! You can close this window now. </p>
