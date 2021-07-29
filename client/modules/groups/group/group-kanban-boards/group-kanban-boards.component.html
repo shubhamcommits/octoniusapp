@@ -25,7 +25,7 @@
                                   <span class="material-icons-outlined">create</span>
                                   Edit
                                 </li>
-                                <li class="dropdown-item" *ngIf="columns.length > 1" (click)="deleteColumn(column)">
+                                <li class="dropdown-item" (click)="deleteColumn(column)">
                                   <span class="material-icons-outlined">delete</span>
                                   Delete
                                 </li>
@@ -115,7 +115,7 @@
                                   <span class="material-icons-outlined">create</span>
                                   Edit
                                 </li>
-                                <li class="dropdown-item" *ngIf="columns.length > 1" (click)="deleteColumn(column)">
+                                <li class="dropdown-item" (click)="deleteColumn(column)">
                                   <span class="material-icons-outlined">delete</span>
                                   Delete
                                 </li>
@@ -179,4 +179,11 @@
         </div>
         <!-- ALL COLUMN DETAILS FOR MOBILE ENDS -->
     </div>
+
+    <!-- placeholder for empty board starts -->
+    <div *ngIf="!columns || columns.length == 0" style="text-align: center;">
+      <img src='assets/images/placeholder_activity3.png' class="placeholder-img">
+      <p class="muted text-center">This board is empty. Create a section to add tasks. </p>
+    </div>
+    <!-- placeholder for empty board ends -->
 </div>
