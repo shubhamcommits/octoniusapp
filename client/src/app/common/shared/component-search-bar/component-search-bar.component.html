@@ -34,9 +34,9 @@
                 <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
                 <p>
                   <span i18n="@@componentSearchBar.role">Role: </span>
-                  <span *ngIf="member?.role == 'manager'" i18n="@@componentSearchBar.work">Work </span>
-                  {{ member?.role }}
-                  <span *ngIf="isGroupManager(member._id)" i18n="@@componentSearchBar.groupManager">, Group Manager</span> (<a href="mailto:{{member?.email}}" style="text-transform: lowercase;">{{member?.email}}</a>)
+                  <span *ngIf="member?.role == 'manager'" i18n="@@componentSearchBar.work">Work Manager</span>
+                  <span *ngIf="member?.role != 'manager'">{{ member?.role }}</span>
+                  <span *ngIf="isGroupManager(member._id)">, <span i18n="@@componentSearchBar.groupManager">Group Manager</span></span> (<a href="mailto:{{member?.email}}" style="text-transform: lowercase;">{{member?.email}}</a>)
                 </p>
             </div>
             <!-- Member Details Ends -->
@@ -46,9 +46,8 @@
               <!-- Changing role functionality starts -->
               <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
                   <button class="btn btn-primary btn-sm dropdown-toggle"
-                    type="button" data-toggle="dropdown"
-                    i18n="@@componentSearchBar.manageUser">
-                      Manage User
+                    type="button" data-toggle="dropdown">
+                      <span i18n="@@componentSearchBar.manageUser">Manage User</span>
                       <span class="caret"></span>
                   </button>
 
@@ -74,9 +73,8 @@
               <div class="dropdown"
                   *ngIf="(userData?.role === 'owner' || isGroupManager(userData?._id)) && type == 'group'">
                   <button class="btn btn-primary btn-sm dropdown-toggle"
-                    type="button" data-toggle="dropdown"
-                    i18n="@@componentSearchBar.manageUser">
-                      Manage User
+                    type="button" data-toggle="dropdown">
+                      <span i18n="@@componentSearchBar.manageUser">Manage User</span>
                       <span class="caret"></span>
                   </button>
 
@@ -107,9 +105,8 @@
               <div class="dropdown"
                   *ngIf="userData?.role !== 'owner' && !isGroupManager(userData?._id) && userData?._id == member?._id && type == 'group'">
                   <button class="btn btn-danger btn-sm" type="button"
-                    (click)="removeUserFromGroup(groupId, member._id)"
-                    i18n="@@componentSearchBar.leaveGroup">
-                      Leave Group
+                    (click)="removeUserFromGroup(groupId, member._id)">
+                      <span i18n="@@componentSearchBar.leaveGroup">Leave Group</span>
                       <span class="caret"></span>
                   </button>
               </div>
@@ -146,8 +143,8 @@
                         <p class="mt-0">{{member?.first_name}} {{member?.last_name}}</p>
                         <p>
                           <span i18n="@@componentSearchBar.role">Role: </span>
-                          <span *ngIf="member?.role == 'manager'" i18n="@@componentSearchBar.work">Work </span>
-                          {{ member?.role }} (<a href="mailto:{{member?.email}}" style="text-transform: lowercase;">{{member?.email}}</a>)
+                          <span *ngIf="member?.role == 'manager'" i18n="@@componentSearchBar.work">Work Manager</span>
+                          <span *ngIf="member?.role != 'manager'">{{ member?.role }}</span> (<a href="mailto:{{member?.email}}" style="text-transform: lowercase;">{{member?.email}}</a>)
                         </p>
                     </div>
                     <!-- Member Details Ends -->
@@ -155,9 +152,8 @@
                     <div *ngIf="!member.active" class="btn-group mr-3 float-right">
                       <div class="dropdown" *ngIf="member.role != 'owner' && type == 'workspace'">
                           <button class="btn btn-primary btn-sm dropdown-toggle"
-                            type="button" data-toggle="dropdown"
-                            i18n="@@componentSearchBar.manageUser">
-                              Manage User
+                            type="button" data-toggle="dropdown">
+                              <span i18n="@@componentSearchBar.manageUser">Manage User</span>
                               <span class="caret"></span>
                           </button>
 
