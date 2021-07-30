@@ -46,7 +46,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row d-none d-md-block">
     <div class="col-md-12 box" *ngIf="groupData?.project_type && groupData?.selected_widgets?.includes('KPI_PERFORMANCE')">
       <!-- KPI Performance Card Starts -->
       <app-kpi-performance-card [parentId]="groupData?._id" [type]="'group'"></app-kpi-performance-card>
@@ -54,7 +54,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row d-none d-md-block">
     <div class="col-md-12 box" *ngIf="groupData?.selected_widgets?.includes('RESOURCE_MANAGEMENT')">
       <!-- Members Workload Card Starts -->
       <app-members-workload-card [groupId]="groupData?._id"></app-members-workload-card>

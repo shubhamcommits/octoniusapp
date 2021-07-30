@@ -28,10 +28,10 @@
     </div>
   </div>
 
-  <div class="" *ngIf="chartReady">
+  <div class="d-none d-lg-block" *ngIf="chartReady">
     <canvas
       baseChart
-      height="150"
+      height="100"
       [data]="doughnutChartData"
       [labels]="doughnutChartLabels"
       [chartType]="doughnutChartType"
