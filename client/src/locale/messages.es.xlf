@@ -4751,7 +4751,7 @@
       </trans-unit>
       <trans-unit id="componentSearchBar.disabledUsers" datatype="html">
         <source>Disabled Users</source>
-        <target state="translated">Usuarios con discapacidad</target>
+        <target state="translated">Usuarios deshabilitados</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">126</context>
