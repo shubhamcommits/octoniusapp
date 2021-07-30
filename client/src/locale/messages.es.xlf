@@ -688,7 +688,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.moveToGroup" datatype="html">
         <source>Move to Group</source>
-        <target state="needs-l10n">Pasar al grupo</target>
+        <target state="needs-l10n">Mover al grupo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
           <context context-type="linenumber">152</context>
@@ -1300,7 +1300,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowsDialog.saveTime" datatype="html">
         <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Turn your Octonius board into an automation machine.</source>
-        <target state="needs-l10n">Ahorre tiempo en procesos manuales y deje que Octonius haga el trabajo pesado. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Convierta su placa Octonius en una máquina de automatización.</target>
+        <target state="needs-l10n">Ahorre tiempo en procesos manuales y deje que Octonius haga el trabajo pesado. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Convierta su tablero Octonius en una máquina de automatización.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flows-dialog/automation-flows-dialog.component.html</context>
           <context context-type="linenumber">19</context>
@@ -1804,7 +1804,7 @@
       </trans-unit>
       <trans-unit id="groupBoardBar.boardViews" datatype="html">
         <source>Board Views</source>
-        <target state="needs-l10n">Opiniones de la Junta</target>
+        <target state="needs-l10n">Vistas</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
           <context context-type="linenumber">49</context>
@@ -1812,7 +1812,7 @@
       </trans-unit>
       <trans-unit id="groupBoardBar.kanbanBoard" datatype="html">
         <source>Kanban Board</source>
-        <target state="translated">Tablero Kanban</target>
+        <target state="translated">Kanban</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
           <context context-type="linenumber">56</context>
@@ -3667,7 +3667,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.admin" datatype="html">
         <source> Admin </source>
-        <target state="needs-l10n"> Admin</target>
+        <target state="needs-l10n"> Administrador</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">143,144</context>
@@ -4691,7 +4691,7 @@
       </trans-unit>
       <trans-unit id="componentSearchBar.changeToAdmin" datatype="html">
         <source>Change to Admin</source>
-        <target state="needs-l10n">Cambiar a Admin</target>
+        <target state="needs-l10n">Cambiar a Administrador</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">58</context>
@@ -4699,7 +4699,7 @@
       </trans-unit>
       <trans-unit id="componentSearchBar.changeToManager" datatype="html">
         <source>Change to Work Manager</source>
-        <target state="needs-l10n">Cambiar al gestor de trabajo</target>
+        <target state="needs-l10n">Cambiar al manager de trabajo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">60</context>
@@ -4727,7 +4727,7 @@
       </trans-unit>
       <trans-unit id="componentSearchBar.changeToGroupManager" datatype="html">
         <source>Change to Group Manager</source>
-        <target state="needs-l10n">Cambio a gestor de grupos</target>
+        <target state="needs-l10n">Cambio a manager de grupos</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">95</context>
@@ -5000,7 +5000,7 @@
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.globalManagers" datatype="html">
         <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;global_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_global_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  global managers </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;global_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_global_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> gestores globales </target>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;global_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_global_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> manager global </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
           <context context-type="linenumber">18,20</context>
@@ -5008,7 +5008,7 @@
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.groupManagers" datatype="html">
         <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;group_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_group_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  group managers </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;group_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_group_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> gestores de grupo </target>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;group_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_group_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> manager de grupos </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
           <context context-type="linenumber">24,26</context>
@@ -5380,7 +5380,7 @@
       </trans-unit>
       <trans-unit id="postUtils.moveToGroup" datatype="html">
         <source>Move to Group</source>
-        <target state="needs-l10n">Pasar al grupo</target>
+        <target state="needs-l10n">Mover al grupo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.html</context>
           <context context-type="linenumber">23</context>
