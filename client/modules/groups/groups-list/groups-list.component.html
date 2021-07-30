@@ -16,8 +16,8 @@
                     <div *ngIf="group.group_name !== 'private'" class=" card"
                         [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
                         [queryParams]="{ group: group?._id, myWorkplace: false  }">
-                        <span class="badge badge-members" i18n="@@groupList.members">{{ (group?._members.length + group?._admins.length) || 0 }}
-                            Members</span>
+                        <span class="badge badge-members">{{ (group?._members.length + group?._admins.length) || 0 }}
+                            <span i18n="@@groupList.members">Members</span></span>
                         <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'"
                             [styleClass]="'card-img-top'"></app-secured-image>
                         <a *ngIf="group?.type == 'agora'" class="btn btn-light btn-public"><i
@@ -49,7 +49,7 @@
 
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div *ngIf="group.group_name !== 'private'" class=" card">
-                        <span class="badge badge-members" i18n="@@groupList.members">{{ (group?._members.length + group?._admins.length) || 0 }} Members</span>
+                        <span class="badge badge-members">{{ (group?._members.length + group?._admins.length) || 0 }} <span i18n="@@groupList.members">Members</span></span>
                         <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'"
                             [styleClass]="'card-img-top'"></app-secured-image>
                         <a *ngIf="group?.type == 'agora'" class="btn btn-warning btn-public"

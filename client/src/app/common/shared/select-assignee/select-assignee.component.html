@@ -20,7 +20,7 @@
 
 <!-- Assignee section for events starts -->
 <section [id]="post?._id" *ngIf="type === 'event'">
-    <p *ngIf="!eventAssignedToAll(eventMembersMap)" style="padding-top: 20px;" i18n="@@selectedAssignee.assignedTo">Assigned to {{ eventMembersMap.size }}</p>
+    <p *ngIf="!eventAssignedToAll(eventMembersMap)" style="padding-top: 20px;"><span i18n="@@selectedAssignee.assignedTo">Assigned to</span> {{ eventMembersMap.size }}</p>
     <p *ngIf="eventAssignedToAll(eventMembersMap)" style="padding-top: 20px;" i18n="@@selectedAssignee.assignedToAll">Assigned to all</p>
 
     <app-component-search-input-box

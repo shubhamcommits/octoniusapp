@@ -9,30 +9,30 @@
   </div>
 
   <div class="row" *ngIf="!group">
-      <div class="card-first-column col-md-12" i18n="@@engagementCard.agoras">
+      <div class="card-first-column col-md-12">
         <div class="agoras_count"> {{ num_agoras }} </div>
-        &nbsp;agoras
+        &nbsp;<span i18n="@@engagementCard.agoras">agoras</span>
       </div>
   </div>
 
   <div class="row" *ngIf="!group">
-      <div class="card-first-column col-md-12" i18n="@@engagementCard.topics">
+      <div class="card-first-column col-md-12">
         <div class="agoras_count"> {{ num_topics }} </div>
-        &nbsp;topics
+        &nbsp;<span i18n="@@engagementCard.topics">topics</span>
     </div>
   </div>
 
   <div class="row" *ngIf="group">
-    <div class="card-first-column col-md-12" i18n="@@engagementCard.posts">
+    <div class="card-first-column col-md-12">
       <div class="agoras_count"> {{ num_topics }} </div>
-      &nbsp;posts
+      &nbsp;<span i18n="@@engagementCard.posts">posts</span>
     </div>
   </div>
 
   <div class="row" *ngIf="group">
-    <div class="card-first-column col-md-12" i18n="@@engagementCard.comments">
+    <div class="card-first-column col-md-12">
       <div class="agoras_count"> {{ num_comments }} </div>
-      &nbsp;comments
+      &nbsp;<span i18n="@@engagementCard.comments">comments</span>
     </div>
   </div>
 

@@ -22,11 +22,11 @@
           <div class="answer-yes-no" *ngIf="question?.type == 'Yes/No'">
             <div class="row answer-response">
               <div class="col-md-5">{{ question?.positive_option_text }}</div>
-              <div class="col response" i18n="@@flamingoResultInsights.numResponses"> {{ getPositiveResponsesStats(question?._id) }}&nbsp;responses</div>
+              <div class="col response"> {{ getPositiveResponsesStats(question?._id) }}&nbsp;<span i18n="@@flamingoResultInsights.numResponses">responses</span></div>
             </div>
             <div class="row answer-response">
               <div class="col-md-5">{{ question?.negative_option_text }}</div>
-              <div class="col response" i18n="@@flamingoResultInsights.numResponses"> {{ getNegativeResponsesStats(question?._id) }}&nbsp;responses</div>
+              <div class="col response"> {{ getNegativeResponsesStats(question?._id) }}&nbsp;<span i18n="@@flamingoResultInsights.numResponses">responses</span></div>
             </div>
           </div>
           <div class="answer-scale" *ngIf="question?.type == 'Scale'">
@@ -35,13 +35,13 @@
           <div class="answer-dropdown" *ngIf="question?.type == 'Dropdown'">
             <div *ngFor="let option of question?.options" class="row answer-response">
               <div class="col-md-5">{{ option }}</div>
-              <div class="col response" i18n="@@flamingoResultInsights.numResponses"> {{ getDropdawnResponsesStats(question?._id, option) }}&nbsp;responses</div>
+              <div class="col response"> {{ getDropdawnResponsesStats(question?._id, option) }}&nbsp;<span i18n="@@flamingoResultInsights.numResponses">responses</span></div>
             </div>
           </div>
           <div class="answer-dropdown" *ngIf="question?.type == 'Multiple'">
             <div *ngFor="let option of question?.options" class="row answer-response">
               <div class="col-md-5">{{ option }}</div>
-              <div class="col response" i18n="@@flamingoResultInsights.numResponses"> {{ getMultipleResponsesStats(question?._id, option) }}&nbsp;responses</div>
+              <div class="col response"> {{ getMultipleResponsesStats(question?._id, option) }}&nbsp;<span i18n="@@flamingoResultInsights.numResponses">responses</span></div>
             </div>
           </div>
         </div>

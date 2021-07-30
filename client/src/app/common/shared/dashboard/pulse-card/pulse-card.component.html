@@ -9,18 +9,18 @@
   </div>
 
   <div class="row">
-      <div class="card-first-column col-md-12" i18n="@@pulseCard.updatesToday">
+      <div class="card-first-column col-md-12">
         <div class="agoras_count"> {{ num_updates }} </div>
-        &nbsp;updates today
+        &nbsp;<span i18n="@@pulseCard.updatesToday">updates today</span>
       </div>
   </div>
 
   <div class="row">
       <div class="card-first-column col-md-12">
         <div class="agoras_count"> {{ num_updates_period }} </div>
-        <div *ngIf="period === 7" i18n="@@pulseCard.updatesLastWeek">&nbsp;updates last week</div>
-        <div *ngIf="period === 30" i18n="@@pulseCard.updatesLastMonth">&nbsp;updates last month</div>
-        <div *ngIf="period === 365" i18n="@@pulseCard.updatesLastYear">&nbsp;updates last year</div>
+        <div *ngIf="period === 7">&nbsp;<span i18n="@@pulseCard.updatesLastWeek">updates last week</span></div>
+        <div *ngIf="period === 30">&nbsp;<span i18n="@@pulseCard.updatesLastMonth">updates last month</span></div>
+        <div *ngIf="period === 365">&nbsp;<span i18n="@@pulseCard.updatesLastYear">updates last year</span></div>
     </div>
   </div>
 </div>

@@ -3,19 +3,17 @@
 
     <!-- Normal Post Starts -->
     <button class="btn btn-md cool"  matTooltip="Create a post"
-      (click)="openModal(content); type = 'normal'"
-      i18n="@@groupPostSelection.writeAPost">
+      (click)="openModal(content); type = 'normal'">
         <i [style.color]="type === 'normal'" class="material-icons-outlined" id="icon_comment">comment</i>
-        Write a post
+        <span i18n="@@groupPostSelection.writeAPost">Write a post</span>
     </button>
     <!-- Normal Post Ends -->
 
     <!-- Event Post Starts -->
     <button class="btn btn-md cool"  matTooltip="Create event"
-      (click)="openModal(content); ; type = 'event'"
-      i18n="@@groupPostSelection.scheduleEvent">
+      (click)="openModal(content); ; type = 'event'">
         <i [style.color]="type === 'event'" class="material-icons-outlined" id="icon_event">event</i>
-        Schedule event
+        <span i18n="@@groupPostSelection.scheduleEvent">Schedule event</span>
     </button>
     <!-- Event Post Ends -->
 

@@ -4,17 +4,17 @@
             <div class="card-title mt-1" i18n="@@agendaSmartCard.agenda">
                 Agenda
             </div>
-            <div class="card-icon" i18n="@@agendaSmartCard.forToday">
-              <span class="badge">{{ today_event_count }}</span> for today
+            <div class="card-icon">
+              <span class="badge">{{ today_event_count }}</span> <span i18n="@@agendaSmartCard.forToday">for today</span>
             </div>
         </div>
 
-        <div class="row" i18n="@@agendaSmartCard.taDa">
-            <div class="card-first-column col-md-12">Ta-da!</div>
+        <div class="row">
+            <div class="card-first-column col-md-12" i18n="@@agendaSmartCard.taDa">Ta-da!</div>
         </div>
 
-        <div class="row" i18n="@@agendaSmartCard.youAreFreeToday">
-            <div class="card-first-column col-md-12">You're free today.</div>
+        <div class="row">
+            <div class="card-first-column col-md-12" i18n="@@agendaSmartCard.youAreFreeToday">You're free today.</div>
         </div>
 
         <div class="row">
@@ -36,8 +36,8 @@
             Agenda
         </div>
 
-        <div class="card-icon" i18n="@@agendaSmartCard.forToday">
-          <span class="badge">{{ today_event_count }}</span> for today
+        <div class="card-icon">
+          <span class="badge">{{ today_event_count }}</span> <span i18n="@@agendaSmartCard.forToday">for today</span>
         </div>
     </div>
 
@@ -53,8 +53,8 @@
         </div>
     </div>
 
-    <div class="post-title" *ngIf="today_event_count-2>0" i18n="@@agendaSmartCard.more">
-        {{ today_event_count - 2 > 0 ? today_event_count - 2 : 0 }} more...
+    <div class="post-title" *ngIf="today_event_count-2>0">
+        {{ today_event_count - 2 > 0 ? today_event_count - 2 : 0 }} <span i18n="@@agendaSmartCard.more">more...</span>
     </div>
   </a>
 </div>

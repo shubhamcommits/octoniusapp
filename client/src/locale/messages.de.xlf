@@ -1151,8 +1151,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoResultInsights.numResponses" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ getPositiveResponsesStats(question?._id) }}"/> responses</source>
-        <target state="needs-l10n"> <x id="INTERPOLATION" equiv-text="{{ getPositiveResponsesStats(question?._id) }}"/> Antworten</target>
+        <source>responses</source>
+        <target state="needs-adaptation"> <x id="INTERPOLATION" equiv-text="{{ getPositiveResponsesStats(question?._id) }}"/> Antworten</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-result/result-insights/result-insights.component.html</context>
           <context context-type="linenumber">25</context>
@@ -2131,15 +2132,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupDashboard.tasksDone" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ column?.tasks?.length }}"/> Tasks <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;float-right done&quot;&gt;"/> <x id="INTERPOLATION_1" equiv-text="{{ column?.numDoneTasks || 0 }}"/> Done <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
-        <target state="needs-l10n"> {{ spalte?.aufgaben?.länge }} Aufgaben {{ <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;float-right done&quot;&gt;"/> column?.numDoneTasks || 0 }} Erledigt <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <source>Tasks</source>
+        <target state="needs-adaptation"> {{ spalte?.aufgaben?.länge }} Aufgaben {{ <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;float-right done&quot;&gt;"/> column?.numDoneTasks || 0 }} Erledigt <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.html</context>
-          <context context-type="linenumber">49,53</context>
+          <context context-type="linenumber">50</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.html</context>
-          <context context-type="linenumber">139,143</context>
+          <context context-type="linenumber">140</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupDashboard.boardEmpty" datatype="html">
@@ -2295,11 +2297,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupList.members" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{ (group?._members.length + group?._admins.length) || 0 }}"/> Members</source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="{{ (group?._members.length + group?._admins.length) || 0 }}"/> Mitglieder</target>
+        <source>Members</source>
+        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{ (group?._members.length + group?._admins.length) || 0 }}"/> Mitglieder</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
-          <context context-type="linenumber">19,20</context>
+          <context context-type="linenumber">20</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
@@ -3781,11 +3784,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workNavbar.groups" datatype="html">
-        <source> Groups <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
-        <target state="needs-l10n"> Gruppen <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <source>Groups</source>
+        <target state="needs-adaptation"> Gruppen <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
-          <context context-type="linenumber">20,21</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workNavbar.northStar" datatype="html">
@@ -3793,7 +3797,7 @@
         <target state="needs-adaptation"> North Star <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workNavbar.dashboard" datatype="html">
@@ -3801,7 +3805,7 @@
         <target state="needs-adaptation"> Dashboard <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageNotFound.oops" datatype="html">
@@ -3881,47 +3885,52 @@
         </context-group>
       </trans-unit>
       <trans-unit id="agendaSmartCard.forToday" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ today_event_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> for today </source>
-        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ today_event_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> für heute </target>
+        <source>for today</source>
+        <target state="needs-adaptation"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ today_event_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> für heute </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
-          <context context-type="linenumber">8,9</context>
+          <context context-type="linenumber">8</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
-          <context context-type="linenumber">40,41</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="agendaSmartCard.taDa" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;&gt;"/>Ta-da!<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;&gt;"/>Ta-da!<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></target>
+        <source>Ta-da!</source>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;&gt;"/>Ta-da!<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="agendaSmartCard.youAreFreeToday" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;&gt;"/>You're free today.<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;&gt;"/>Sie sind heute frei.<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></target>
+        <source>You're free today.</source>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;&gt;"/>Sie sind heute frei.<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="agendaSmartCard.more" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ today_event_count - 2 &gt; 0 ? today_event_count - 2 : 0 }}"/> more... </source>
-        <target state="needs-l10n"> <x id="INTERPOLATION" equiv-text="{{ today_event_count - 2 &gt; 0 ? today_event_count - 2 : 0 }}"/> mehr..</target>
+        <source>more...</source>
+        <target state="needs-adaptation"> <x id="INTERPOLATION" equiv-text="{{ today_event_count - 2 &gt; 0 ? today_event_count - 2 : 0 }}"/> mehr..</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
-          <context context-type="linenumber">56,58</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupActivityFeed.pinnedPosts" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>push_pin<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> <x id="INTERPOLATION" equiv-text="{{ pinnedPosts?.length }}"/> Pinned posts </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>push_pin<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> <x id="INTERPOLATION" equiv-text="{{ pinnedPosts?.length }}"/> Angepinnte Beiträge </target>
+        <source>Pinned posts</source>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>push_pin<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> <x id="INTERPOLATION" equiv-text="{{ pinnedPosts?.length }}"/> Angepinnte Beiträge </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.html</context>
-          <context context-type="linenumber">59,61</context>
+          <context context-type="linenumber">60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupActivityFeed.nothingHereCreateSomething" datatype="html">
@@ -4029,16 +4038,18 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.from" datatype="html">
-        <source> From <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ postData?._group?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
-        <target state="needs-l10n"> Von <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ postData?._group?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <source> From</source>
+        <target state="needs-adaptation"> Von <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ postData?._group?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">205</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.to" datatype="html">
-        <source> To <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ shuttleGroup?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
-        <target state="needs-l10n"> An <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ shuttleGroup?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <source> To</source>
+        <target state="needs-adaptation"> An <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ shuttleGroup?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">206</context>
@@ -4093,11 +4104,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="northStar.northStar" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-round&quot; style=&quot;vertical-align: middle;&quot;&gt;"/>explore<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> North Star </source>
-        <target state="needs-l10n">nordstern<x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-round&quot; style=&quot;vertical-align: middle;&quot;&gt;"/>erkunden<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> </target>
+        <source>North Star</source>
+        <target state="needs-adaptation">nordstern<x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-round&quot; style=&quot;vertical-align: middle;&quot;&gt;"/>erkunden<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
-          <context context-type="linenumber">5,7</context>
+          <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStar.northStarAreGoals" datatype="html">
@@ -4169,11 +4181,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="northStar.focus" datatype="html">
-        <source> Focus <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons update&quot; (click)=&quot;updatingInitialValues = true; this.updateProgress = false;&quot;&gt;"/>settings<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/></source>
-        <target state="needs-l10n"> <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons update&quot; (click)=&quot;updatingInitialValues = true; this.updateProgress = false;&quot;&gt;"/>Fokus-Einstellungen<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/></target>
+        <source>Focus</source>
+        <target state="needs-adaptation"> <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons update&quot; (click)=&quot;updatingInitialValues = true; this.updateProgress = false;&quot;&gt;"/>Fokus-Einstellungen<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
-          <context context-type="linenumber">64,65</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStar.current" datatype="html">
@@ -4245,11 +4258,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="subTasks.subTasks" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ subtasks.length }}"/> Subtasks <x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div *ngIf=&quot;subtasks.length &gt; 0&quot; [class]=&quot;completitionPercentageClass&quot;&gt;"/> <x id="INTERPOLATION_1" equiv-text="{{ percentageSubtasksCompleted }}"/> % <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></source>
-        <target state="needs-l10n"> Teilaufgaben <x id="INTERPOLATION" equiv-text="{{ subtasks.length }}"/> Teilaufgaben <x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div *ngIf=&quot;subtasks.length &gt; 0&quot; [class]=&quot;completitionPercentageClass&quot;&gt;"/> <x id="INTERPOLATION_1" equiv-text="{{ percentageSubtasksCompleted }}"/> % <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></target>
+        <source>Subtasks</source>
+        <target state="needs-adaptation"> Teilaufgaben <x id="INTERPOLATION" equiv-text="{{ subtasks.length }}"/> Teilaufgaben <x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div *ngIf=&quot;subtasks.length &gt; 0&quot; [class]=&quot;completitionPercentageClass&quot;&gt;"/> <x id="INTERPOLATION_1" equiv-text="{{ percentageSubtasksCompleted }}"/> % <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/subtasks/subtasks.component.html</context>
-          <context context-type="linenumber">1,5</context>
+          <context context-type="linenumber">2</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.actions" datatype="html">
@@ -4261,43 +4275,48 @@
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.copyToGroup" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i  class=&quot;material-icons&quot;&gt;"/>content_copy<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> COPY TO GROUP </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i  class=&quot;material-icons&quot;&gt;"/>content_copy<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> COPY TO GROUP </target>
+        <source>COPY TO GROUP</source>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i  class=&quot;material-icons&quot;&gt;"/>content_copy<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> COPY TO GROUP </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
-          <context context-type="linenumber">8,10</context>
+          <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.moveToGroup" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>arrow_forward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> MOVE TO GROUP </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>arrow_forward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> MOVE TO GROUP </target>
+        <source>MOVE TO GROUP</source>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>arrow_forward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> MOVE TO GROUP </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
-          <context context-type="linenumber">14,16</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.templates" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>playlist_add<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> TEMPLATES </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>wiedergabeliste_hinzufügen<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> TEMPLATES </target>
+        <source>TEMPLATES</source>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>wiedergabeliste_hinzufügen<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> TEMPLATES </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
-          <context context-type="linenumber">42,44</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.saveTemplate" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>save_alt<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Save template </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>save_alt<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Vorlage speichern </target>
+        <source>Save template</source>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>save_alt<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Vorlage speichern </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
-          <context context-type="linenumber">61,63</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.deleteTemplate" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>delete<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Delete template </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>löschen<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Vorlage löschen </target>
+        <source>Delete template</source>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>löschen<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Vorlage löschen </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
-          <context context-type="linenumber">72,74</context>
+          <context context-type="linenumber">68</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.saveNewTemplate" datatype="html">
@@ -4305,15 +4324,16 @@
         <target state="needs-l10n"> Neue Vorlage speichern</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
-          <context context-type="linenumber">88</context>
+          <context context-type="linenumber">83</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.allocation" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>hourglass_top<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> ALLOCATION <x id="TAG_INPUT" ctype="x-input" equiv-text="&lt;input type=&quot;text&quot; name=&quot;allocation&quot; [ngModel]=&quot;allocation&quot; (blur)=&quot;allocationChange($event)&quot; class=&quot;input-search&quot; placeholder=&quot;Allocation&quot; /&gt;"/></source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>sanduhr_top<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> ALLOCATION <x id="TAG_INPUT" ctype="x-input" equiv-text="&lt;input type=&quot;text&quot; name=&quot;allocation&quot; [ngModel]=&quot;allocation&quot; (blur)=&quot;allocationChange($event)&quot; class=&quot;input-search&quot; placeholder=&quot;Allocation&quot; /&gt;"/></target>
+        <source>ALLOCATION</source>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>sanduhr_top<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> ALLOCATION <x id="TAG_INPUT" ctype="x-input" equiv-text="&lt;input type=&quot;text&quot; name=&quot;allocation&quot; [ngModel]=&quot;allocation&quot; (blur)=&quot;allocationChange($event)&quot; class=&quot;input-search&quot; placeholder=&quot;Allocation&quot; /&gt;"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
-          <context context-type="linenumber">103,107</context>
+          <context context-type="linenumber">97</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.makeSubtaskOf" datatype="html">
@@ -4321,7 +4341,7 @@
         <target state="needs-l10n">MACHEN UNTERAUFGABE VON</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
-          <context context-type="linenumber">114</context>
+          <context context-type="linenumber">107</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.makeDependencyOf" datatype="html">
@@ -4329,7 +4349,7 @@
         <target state="needs-l10n">ABHÄNGIG MACHEN VON</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
-          <context context-type="linenumber">143</context>
+          <context context-type="linenumber">136</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.makeNorthStar" datatype="html">
@@ -4337,7 +4357,7 @@
         <target state="needs-l10n">NORDSTERN MACHEN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
-          <context context-type="linenumber">180</context>
+          <context context-type="linenumber">173</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.northStarAreGoals" datatype="html">
@@ -4345,7 +4365,7 @@
         <target state="needs-l10n">North Stars sind Ziele für Sie oder Ihr Team.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
-          <context context-type="linenumber">189</context>
+          <context context-type="linenumber">182</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.idea" datatype="html">
@@ -4353,7 +4373,31 @@
         <target state="translated">Idee</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
-          <context context-type="linenumber">196</context>
+          <context context-type="linenumber">189</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="taskActions.makeMilestone" datatype="html">
+        <source>MAKE MILESTONE</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
+          <context context-type="linenumber">203</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="taskActions.milestoneMarkSpecific" datatype="html">
+        <source>Milestones mark specific points in time along a project timeline in order to track major progress points that must be reached to achieve success</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
+          <context context-type="linenumber">209</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="taskActions.withTaskShuttleYouCan" datatype="html">
+        <source>With Task Shuttle you can assign the task to another group.</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
+          <context context-type="linenumber">229</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.delete" datatype="html">
@@ -4381,19 +4425,21 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupPostSelection.writeAPost" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'normal'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_comment&quot;&gt;"/>comment<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Write a post </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'normal'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_comment&quot;&gt;"/>kommentar<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Einen Beitrag schreiben </target>
+        <source>Write a post</source>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'normal'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_comment&quot;&gt;"/>kommentar<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Einen Beitrag schreiben </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post-selection/group-post-selection.component.html</context>
-          <context context-type="linenumber">8,10</context>
+          <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupPostSelection.scheduleEvent" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'event'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_event&quot;&gt;"/>event<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Schedule event </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'event'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_event&quot;&gt;"/>ereignis<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Zeitplan Ereignis </target>
+        <source>Schedule event</source>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'event'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_event&quot;&gt;"/>ereignis<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Zeitplan Ereignis </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post-selection/group-post-selection.component.html</context>
-          <context context-type="linenumber">17,19</context>
+          <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupPostbox.whatAreYouWorkingOn" datatype="html">
@@ -4421,48 +4467,54 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupTaskProgress.assignmentsWeek" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{ totalTasksCount }}"/></source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="{{ totalTasksCount }}"/></target>
+        <source>assignment(s) this week.</source>
+        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{ totalTasksCount }}"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupTaskProgress.overdueAssignmentsWeek" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{ undoneTasksCount }}"/></source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="{{ undoneTasksCount }}"/></target>
+        <source>overdue assignment(s) this week.</source>
+        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{ undoneTasksCount }}"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
           <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupTaskProgress.toDo" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{todoTasksCount}}"/> To do</source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="{{todoTasksCount}}"/> Zu tun</target>
+        <source>To do</source>
+        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{todoTasksCount}}"/> Zu tun</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
           <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupTaskProgress.inProgress" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{inprogressTasksCount}}"/> In progress</source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="{{inprogressTasksCount}}"/> In Bearbeitung</target>
+        <source>In progress</source>
+        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{inprogressTasksCount}}"/> In Bearbeitung</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
           <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupTaskProgress.done" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{doneTasksCount}}"/> Done</source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="{{doneTasksCount}}"/> Erledigt</target>
+        <source>Done</source>
+        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{doneTasksCount}}"/> Erledigt</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
           <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="newsPill.newActivity" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>arrow_upward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> New activity <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>arrow_upward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Neue Aktivität <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <source>New activity</source>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>arrow_upward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Neue Aktivität <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/news-pill/news-pill.component.html</context>
           <context context-type="linenumber">4</context>
@@ -4505,15 +4557,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="taskSmartCard.forToday" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ today_task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> for today </source>
-        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ today_task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> für heute </target>
+        <source>for today</source>
+        <target state="needs-adaptation"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ today_task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> für heute </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
-          <context context-type="linenumber">10,11</context>
+          <context context-type="linenumber">10</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
-          <context context-type="linenumber">37,38</context>
+          <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskSmartCard.nothingForToday" datatype="html">
@@ -4525,32 +4578,36 @@
         </context-group>
       </trans-unit>
       <trans-unit id="taskSmartCard.overdue" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{ overdueTasks.length }}"/></source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="{{ overdueTasks.length }}"/></target>
+        <source>overdue</source>
+        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{ overdueTasks.length }}"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
           <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskSmartCard.toDo" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{ to_do_task_count }}"/></source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="{{ to_do_task_count }}"/></target>
+        <source>to do</source>
+        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{ to_do_task_count }}"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
           <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskSmartCard.inProgress" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{ in_progress_task_count }}"/></source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="{{ in_progress_task_count }}"/></target>
+        <source>in progress</source>
+        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{ in_progress_task_count }}"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
           <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskSmartCard.done" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{ done_task_count }}"/></source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="{{ done_task_count }}"/></target>
+        <source>done</source>
+        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{ done_task_count }}"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
           <context context-type="linenumber">47</context>
@@ -4585,8 +4642,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="commentList.showAll" datatype="html">
-        <source> Show all ...<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
-        <target state="needs-l10n"> Alle anzeigen ..<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <source>Show all ...</source>
+        <target state="needs-adaptation"> Alle anzeigen ..<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/comments/comment-list/comment-list.component.html</context>
           <context context-type="linenumber">10</context>
@@ -4675,7 +4733,6 @@
       <trans-unit id="componentSearchBar.manageUser" datatype="html">
         <source>Manage User</source>
         <target state="needs-adaptation"> Benutzer verwalten <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">50</context>
@@ -4744,7 +4801,6 @@
       <trans-unit id="componentSearchBar.leaveGroup" datatype="html">
         <source>Leave Group</source>
         <target state="needs-adaptation"> Gruppe verlassen <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">109</context>
@@ -4839,35 +4895,39 @@
         </context-group>
       </trans-unit>
       <trans-unit id="engagementCard.agoras" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  agoras </source>
-        <target state="needs-l10n"> Agoras<x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> </target>
+        <source>agoras</source>
+        <target state="needs-adaptation"> Agoras<x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
-          <context context-type="linenumber">13,15</context>
+          <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="engagementCard.topics" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  topics </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> topics </target>
+        <source>topics</source>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> topics </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
-          <context context-type="linenumber">20,22</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="engagementCard.posts" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  posts </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> Beiträge </target>
+        <source>posts</source>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> Beiträge </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
-          <context context-type="linenumber">27,29</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="engagementCard.comments" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_comments }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  comments </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> {{ Anzahl_Kommentare }} <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> Kommentare </target>
+        <source>comments</source>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> {{ Anzahl_Kommentare }} <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> Kommentare </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
-          <context context-type="linenumber">34,36</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="globalPerformanceCard.globalPerformance" datatype="html">
@@ -4968,19 +5028,21 @@
         </context-group>
       </trans-unit>
       <trans-unit id="organizationalStructureCard.groups" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;groups_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_groups }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  groups </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;groups_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_groups }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> groups </target>
+        <source>groups</source>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;groups_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_groups }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> groups </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/organizational-structure-card/organizational-structure-card.component.html</context>
-          <context context-type="linenumber">12,14</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationalStructureCard.agoras" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  agoras </source>
-        <target state="needs-l10n"> Agoras<x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> </target>
+        <source>agoras</source>
+        <target state="needs-adaptation"> Agoras<x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/organizational-structure-card/organizational-structure-card.component.html</context>
-          <context context-type="linenumber">18,20</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.peopleDirectory" datatype="html">
@@ -4992,43 +5054,48 @@
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.users" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;users_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_users }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  users </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;users_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_users }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> Benutzer </target>
+        <source>users</source>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;users_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_users }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> Benutzer </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
-          <context context-type="linenumber">12,14</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.globalManagers" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;global_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_global_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  global managers </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;global_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_global_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> globale Manager </target>
+        <source>global managers</source>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;global_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_global_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> globale Manager </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
-          <context context-type="linenumber">18,20</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.groupManagers" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;group_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_group_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  group managers </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;group_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_group_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> Gruppenmanager </target>
+        <source>group managers</source>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;group_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_group_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> Gruppenmanager </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
-          <context context-type="linenumber">24,26</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.members" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;members_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_members }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  members </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;members_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_members }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> members </target>
+        <source>members</source>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;members_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_members }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> members </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
-          <context context-type="linenumber">30,32</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.guests" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;guests_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_guests }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  guests </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;guests_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_guests }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> gäste </target>
+        <source>guests</source>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;guests_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_guests }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> gäste </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
-          <context context-type="linenumber">36,38</context>
+          <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pulseCard.pulse" datatype="html">
@@ -5040,32 +5107,36 @@
         </context-group>
       </trans-unit>
       <trans-unit id="pulseCard.updatesToday" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_updates }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  updates today </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_updates }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> heute aktualisiert </target>
+        <source>updates today</source>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_updates }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> heute aktualisiert </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/pulse-card/pulse-card.component.html</context>
-          <context context-type="linenumber">13,15</context>
+          <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pulseCard.updatesLastWeek" datatype="html">
-        <source> updates last week</source>
-        <target state="needs-l10n"> aktualisierungen letzte Woche</target>
+        <source>updates last week</source>
+        <target state="needs-adaptation"> aktualisierungen letzte Woche</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/pulse-card/pulse-card.component.html</context>
           <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pulseCard.updatesLastMonth" datatype="html">
-        <source> updates last month</source>
-        <target state="needs-l10n"> aktualisierungen letzten Monat</target>
+        <source>updates last month</source>
+        <target state="needs-adaptation"> aktualisierungen letzten Monat</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/pulse-card/pulse-card.component.html</context>
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pulseCard.updatesLastYear" datatype="html">
-        <source> updates last year</source>
-        <target state="needs-l10n"> aktualisierungen im letzten Jahr</target>
+        <source>updates last year</source>
+        <target state="needs-adaptation"> aktualisierungen im letzten Jahr</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/pulse-card/pulse-card.component.html</context>
           <context context-type="linenumber">23</context>
@@ -5080,11 +5151,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="sectionStatusCard.tasks" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ section?.numTasks }}"/> tasks </source>
-        <target state="needs-l10n"> <x id="INTERPOLATION" equiv-text="{{ section?.numTasks }}"/> Aufgaben</target>
+        <source>tasks</source>
+        <target state="needs-adaptation"> <x id="INTERPOLATION" equiv-text="{{ section?.numTasks }}"/> Aufgaben</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/section-status-card/section-status-card.component.html</context>
-          <context context-type="linenumber">16,18</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="velocityCard.velocityOverTime" datatype="html">
@@ -5152,19 +5224,21 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workStatisticsCard.totalTasks" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;number&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> total tasks </source>
-        <target state="needs-l10n">{<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;number&quot;&gt;"/>Gesamtzahl der Aufgaben }}<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> </target>
+        <source>total tasks</source>
+        <target state="needs-adaptation">{<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;number&quot;&gt;"/>Gesamtzahl der Aufgaben }}<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.html</context>
-          <context context-type="linenumber">17,18</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workStatisticsCard.northStars" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;north_star_number&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> North Stars </source>
-        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;north_star_number&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Nordsterne </target>
+        <source>North Stars</source>
+        <target state="needs-adaptation"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;north_star_number&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Nordsterne </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.html</context>
-          <context context-type="linenumber">20,21</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workloadCard.workloadByCompletitionStatus" datatype="html">
@@ -5240,11 +5314,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="memberListMenu.users" datatype="html">
-        <source> Users <x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image *ngIf=&quot;filterfor==='users'&quot;&#xA;      [imgURL]=&quot;picsUrl&quot;&#xA;      [service]=&quot;'user'&quot;&#xA;      [styleClass]=&quot;'feed-avatar'&quot;&gt;"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image&gt;"/></source>
-        <target state="needs-l10n"> Benutzer <x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image *ngIf=&quot;filterfor==='users'&quot;&#xA;      [imgURL]=&quot;picsUrl&quot;&#xA;      [service]=&quot;'user'&quot;&#xA;      [styleClass]=&quot;'feed-avatar'&quot;&gt;"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image&gt;"/></target>
+        <source>Users</source>
+        <target state="needs-adaptation"> Benutzer <x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image *ngIf=&quot;filterfor==='users'&quot;&#xA;      [imgURL]=&quot;picsUrl&quot;&#xA;      [service]=&quot;'user'&quot;&#xA;      [styleClass]=&quot;'feed-avatar'&quot;&gt;"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image&gt;"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-list-menu/member-list-menu.component.html</context>
-          <context context-type="linenumber">6,10</context>
+          <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
       <trans-unit id="memberListMenu.cloneTask" datatype="html">
@@ -5252,7 +5327,7 @@
         <target state="needs-l10n">KLONAUFGABE</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-list-menu/member-list-menu.component.html</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.unassigned" datatype="html">
@@ -5340,8 +5415,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ideaActions.votes" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{ (post?.task?.idea?.positive_votes?.length || 0) - (post?.task?.idea?.negative_votes?.length || 0) }}"/> votes</source>
-        <target state="needs-l10n">{{ (Beitrag?.Aufgabe?.Idee?.positive_Stimmen?.Länge || 0) - (Beitrag?.Aufgabe?.Idee?.negative_Stimmen?.Länge || 0) }} Stimmen</target>
+        <source>votes</source>
+        <target state="needs-adaptation">{{ (Beitrag?.Aufgabe?.Idee?.positive_Stimmen?.Länge || 0) - (Beitrag?.Aufgabe?.Idee?.negative_Stimmen?.Länge || 0) }} Stimmen</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/idea-actions/idea-actions.component.html</context>
           <context context-type="linenumber">3</context>
@@ -5444,11 +5520,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.sectionBudget" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ columnTitle }}"/> budget </source>
-        <target state="needs-l10n"> <x id="INTERPOLATION" equiv-text="{{ columnTitle }}"/> Haushalt</target>
+        <source>budget</source>
+        <target state="needs-adaptation"> <x id="INTERPOLATION" equiv-text="{{ columnTitle }}"/> Haushalt</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
-          <context context-type="linenumber">13,15</context>
+          <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudgetDialog.addBudgetForProject" datatype="html">
@@ -5564,8 +5641,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="selectedAssignee.assignedTo" datatype="html">
-        <source>Assigned to <x id="INTERPOLATION" equiv-text="{{ eventMembersMap.size }}"/></source>
-        <target state="needs-l10n">Zugeordnet zu <x id="INTERPOLATION" equiv-text="{{ eventMembersMap.size }}"/></target>
+        <source>Assigned to</source>
+        <target state="needs-adaptation">Zugeordnet zu <x id="INTERPOLATION" equiv-text="{{ eventMembersMap.size }}"/></target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/select-assignee/select-assignee.component.html</context>
           <context context-type="linenumber">23</context>

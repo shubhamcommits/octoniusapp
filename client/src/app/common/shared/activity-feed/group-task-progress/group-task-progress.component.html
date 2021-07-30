@@ -14,16 +14,16 @@
         <div class="card-block">
             <div class="row">
                 <div class="col-md-12">
-                    <span class="bold" style="font-size: 20px;" i18n="@@groupTaskProgress.assignmentsWeek">{{ totalTasksCount }}</span> assignment(s) this week.
+                    <span class="bold" style="font-size: 20px;">{{ totalTasksCount }}</span> <span i18n="@@groupTaskProgress.assignmentsWeek">assignment(s) this week.</span>
                     <br>
-                    <span class="overdue bold" style="font-size: 20px;" i18n="@@groupTaskProgress.overdueAssignmentsWeek">{{ undoneTasksCount }}</span> overdue assignment(s) this week.
+                    <span class="overdue bold" style="font-size: 20px;">{{ undoneTasksCount }}</span> <span i18n="@@groupTaskProgress.overdueAssignmentsWeek">overdue assignment(s) this week.</span>
                 </div>
             </div>
 
             <div class="row mt-2" *ngIf="percentageTodo >= 0">
                 <div class="col-md-6">
                     <h6 class="todo">
-                      <b i18n="@@groupTaskProgress.toDo">{{todoTasksCount}} To do</b>
+                      <b>{{todoTasksCount}} <span i18n="@@groupTaskProgress.toDo">To do</span></b>
                     </h6>
                     <!--
                     <app-progress-bar [preset]="'line'" [value]="percentageTodo" [stroke]="'#fd7714'"></app-progress-bar>
@@ -37,7 +37,7 @@
             <div class="row mt-2 mb-2" *ngIf="percentageInProgress >= 0">
                 <div class="col-md-6">
                     <h6 class="working">
-                      <b i18n="@@groupTaskProgress.inProgress">{{inprogressTasksCount}} In progress</b>
+                      <b>{{inprogressTasksCount}} <span i18n="@@groupTaskProgress.inProgress">In progress</span></b>
                     </h6>
                 </div>
                 <!--
@@ -50,7 +50,7 @@
             <div class="row mt-2" *ngIf="percentageDone >=0">
                 <div class="col-md-12">
                     <h6 class="done">
-                      <b i18n="@@groupTaskProgress.done">{{doneTasksCount}} Done</b>
+                      <b>{{doneTasksCount}} <span i18n="@@groupTaskProgress.done">Done</span></b>
                     </h6>
                 </div>
                 <!--

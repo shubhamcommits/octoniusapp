@@ -13,11 +13,11 @@
     </div>
   </div>
 
-  <div class="card-icon" *ngIf="!northStar" i18n="@@workStatisticsCard.totalTasks">
-    <span class="number">{{ task_count }}</span>&nbsp;total tasks
+  <div class="card-icon" *ngIf="!northStar">
+    <span class="number">{{ task_count }}</span>&nbsp;<span i18n="@@workStatisticsCard.totalTasks">total tasks</span>
   </div>
-  <div class="card-icon" *ngIf="northStar" i18n="@@workStatisticsCard.northStars">
-    <span class="north_star_number">{{ task_count }}</span>&nbsp;North Stars
+  <div class="card-icon" *ngIf="northStar">
+    <span class="north_star_number">{{ task_count }}</span>&nbsp;<span i18n="@@workStatisticsCard.northStars">North Stars</span>
   </div>
   <div class="col-12 d-none d-sm-block" style="padding-top: 15px;" *ngIf="chartReady">
     <canvas

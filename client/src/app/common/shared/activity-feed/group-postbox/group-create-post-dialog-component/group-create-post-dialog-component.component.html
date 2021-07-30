@@ -6,7 +6,7 @@
   </div>
 </mat-dialog-actions>
 <div class="post-dialog-content">
-    
+
 
     <div class="post-content">
         <div class="content-box">
@@ -202,8 +202,8 @@
           <p class="box-title"> <img src="assets/images/icon-task-shuttle.svg" style="width: 32px"i18n="@@groupCreatePostDialog.taskShuttle">  Task Shuttle</p>
 
           <div class="shuttle-box mt-2">
-            <p  *ngIf="groupData?._id == shuttleGroup?._id" style="margin-top: 7px;" i18n="@@groupCreatePostDialog.from"> From <span class="text-primary">{{ postData?._group?.group_name }}</span></p>
-            <p  *ngIf="groupData?._id != shuttleGroup?._id" style="margin-top: 7px;" i18n="@@groupCreatePostDialog.to"> To <span class="text-primary">{{ shuttleGroup?.group_name }}</span></p>
+            <p  *ngIf="groupData?._id == shuttleGroup?._id" style="margin-top: 7px;"><span i18n="@@groupCreatePostDialog.from"> From</span> <span class="text-primary">{{ postData?._group?.group_name }}</span></p>
+            <p  *ngIf="groupData?._id != shuttleGroup?._id" style="margin-top: 7px;"><span i18n="@@groupCreatePostDialog.to"> To</span> <span class="text-primary">{{ shuttleGroup?.group_name }}</span></p>
 
             <app-secured-image  *ngIf="groupData?._id == shuttleGroup?._id"
               [imgURL]="postData?._group?.group_avatar"

@@ -1,9 +1,9 @@
 <div class="north-star-box" *ngIf="isNorthStar">
   <!-- Is Not North Start starts -->
   <div>
-    <p class="box-title" i18n="@@northStar.northStar">
+    <p class="box-title">
       <i class="material-icons-round" style="vertical-align: middle;">explore</i>
-      North Star
+      <span i18n="@@northStar.northStar">North Star</span>
     </p>
 
     <p i18n="@@northStar.northStarAreGoals">North Stars are goals for you or your team.</p>
@@ -60,8 +60,8 @@
 
     <!-- Updating Initial Value starts -->
     <div class="focus" *ngIf="!updatingInitialValues">
-      <p class="title" i18n="@@northStar.focus">
-        Focus
+      <p class="title">
+        <span i18n="@@northStar.focus">Focus</span>
         <i class="material-icons update" (click)="updatingInitialValues = true; this.updateProgress = false;">settings</i>
       </p>
 

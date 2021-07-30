@@ -6,8 +6,8 @@
       <div class="card-title mt-1" i18n="@@taskSmartCard.tasks">
         Tasks
       </div>
-      <div class="card-icon" i18n="@@taskSmartCard.forToday">
-        <span class="badge">{{ today_task_count }}</span> for today
+      <div class="card-icon">
+        <span class="badge">{{ today_task_count }}</span> <span i18n="@@taskSmartCard.forToday">for today</span>
       </div>
     </div>
 
@@ -33,18 +33,18 @@
         <div class="card-title mt-1" i18n="@@taskSmartCard.tasks">
           Tasks
         </div>
-        <div class="card-icon" i18n="@@taskSmartCard.forToday">
-          <span class="badge">{{ today_task_count }}</span> for today
+        <div class="card-icon">
+          <span class="badge">{{ today_task_count }}</span> <span i18n="@@taskSmartCard.forToday">for today</span>
         </div>
       </div>
 
       <div class="row">
         <div class="col-6">
         <ul class="tasks-list">
-          <li><span class="badge overdue-task" i18n="@@taskSmartCard.overdue">{{ overdueTasks.length }}</span> overdue</li>
-          <li><span class="badge to-do-task" i18n="@@taskSmartCard.toDo">{{ to_do_task_count }}</span> to do</li>
-          <li><span class="badge in-progress-task" i18n="@@taskSmartCard.inProgress">{{ in_progress_task_count }}</span> in progress</li>
-          <li><span class="badge done-task" i18n="@@taskSmartCard.done">{{ done_task_count }}</span> done</li>
+          <li><span class="badge overdue-task">{{ overdueTasks.length }}</span> <span i18n="@@taskSmartCard.overdue">overdue</span></li>
+          <li><span class="badge to-do-task">{{ to_do_task_count }}</span> <span i18n="@@taskSmartCard.toDo">to do</span></li>
+          <li><span class="badge in-progress-task">{{ in_progress_task_count }}</span> <span i18n="@@taskSmartCard.inProgress">in progress</span></li>
+          <li><span class="badge done-task">{{ done_task_count }}</span> <span i18n="@@taskSmartCard.done">done</span></li>
         </ul>
       </div>
 
