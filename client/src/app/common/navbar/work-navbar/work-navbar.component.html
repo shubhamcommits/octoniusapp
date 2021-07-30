@@ -27,9 +27,8 @@
   <li class="nav-item">
     <a class="nav-link"
         routerLink="/dashboard/work/northstar"
-        routerLinkActive="active"
-        i18n="@@workNavbar.northStar">
-          North Star
+        routerLinkActive="active">
+          <span i18n="@@workNavbar.northStar">North Star</span>
           <span class="sr-only">(current)</span>
     </a>
   </li>
@@ -39,9 +38,8 @@
   <li class="nav-item d-none d-md-block" *ngIf="canSeeDashboard()">
     <a class="nav-link"
         routerLink="/dashboard/work/dashboard"
-        routerLinkActive="active"
-        i18n="@@workNavbar.dashboard">
-          Dashboard
+        routerLinkActive="active">
+          <span i18n="@@workNavbar.dashboard">Dashboard</span>
           <span class="sr-only">(current)</span>
     </a>
   </li>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="en-US" datatype="plaintext" original="ng2.template" target-language="es">
+  <file source-language="en" datatype="plaintext" original="ng2.template" target-language="es">
     <body>
       <trans-unit id="startSubscription.welcomeToYourWorkspace" datatype="html">
         <source>Welcome to your workspace!</source>
@@ -91,16 +91,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceAddDomain.chooseToMakeYourWorkspace" datatype="html">
-        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
-        <target state="needs-l10n"> Elige si quieres que el proceso de registro en tu centro de trabajo sea sólo por invitación, o si quieres que cualquier persona con un determinado dominio de dirección de correo electrónico pueda registrarse.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (por ejemplo, si especificas example.com, los usuarios que tengan una dirección de correo electrónico con el dominio example.com podrán registrarse) </target>
+        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
+        <target state="needs-l10n"> Elige si quieres que el proceso de registro en tu centro de trabajo sea sólo por invitación, o si quieres que cualquier persona con un determinado dominio de dirección de correo electrónico pueda registrarse.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (por ejemplo, si especificas example.com, los usuarios que tengan una dirección de correo electrónico con el dominio example.com podrán registrarse) </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">8,11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceAddDomain.usingWorkspaceName" datatype="html">
-        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/>", any email adress from these domain can signup:</source>
-        <target state="needs-l10n">Utilizando el nombre del lugar de trabajo<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/>"<x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/>", cualquier dirección de correo electrónico de estos dominios puede registrarse:</target>
+        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>", any email adress from these domain can signup:</source>
+        <target state="needs-l10n">Utilizando el nombre del lugar de trabajo<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/>"<x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>", cualquier dirección de correo electrónico de estos dominios puede registrarse:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">13</context>
@@ -647,8 +647,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.dragDropOrAdd" datatype="html">
-        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Or use the NEW button for folders uploading.</source>
-        <target state="needs-l10n">Arrastre y suelte los archivos aquí para facilitar la carga. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>O utilice el botón NUEVO para cargar carpetas.</target>
+        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Or use the NEW button for folders uploading.</source>
+        <target state="needs-l10n">Arrastre y suelte los archivos aquí para facilitar la carga. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>O utilice el botón NUEVO para cargar carpetas.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
           <context context-type="linenumber">7</context>
@@ -1119,8 +1119,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPublish.done" datatype="html">
-        <source> Done?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> When you are ready, you can click this button to PUBLISH the FORM and <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> let people answer.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> When it’s done, come back here and click UNPUBLISH in order to stop data <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> collection. </source>
-        <target state="needs-l10n"> ¿Hecho?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> Cuando esté listo, puede hacer clic en este botón para PUBLICAR el FORMULARIO y <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> dejar que la gente responda.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> Cuando haya terminado, vuelva aquí y haga clic en UNPUBLISH para detener la recopilación de datos <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> </target>
+        <source> Done?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> When you are ready, you can click this button to PUBLISH the FORM and <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> let people answer.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> When it’s done, come back here and click UNPUBLISH in order to stop data <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> collection. </source>
+        <target state="needs-l10n"> ¿Hecho?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> Cuando esté listo, puede hacer clic en este botón para PUBLICAR el FORMULARIO y <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> dejar que la gente responda.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> Cuando haya terminado, vuelva aquí y haga clic en UNPUBLISH para detener la recopilación de datos <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.html</context>
           <context context-type="linenumber">8,13</context>
@@ -1299,8 +1299,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAutomationFlowsDialog.saveTime" datatype="html">
-        <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Turn your Octonius board into an automation machine.</source>
-        <target state="needs-l10n">Ahorre tiempo en procesos manuales y deje que Octonius haga el trabajo pesado. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Convierta su placa Octonius en una máquina de automatización.</target>
+        <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Turn your Octonius board into an automation machine.</source>
+        <target state="needs-l10n">Ahorre tiempo en procesos manuales y deje que Octonius haga el trabajo pesado. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Convierta su placa Octonius en una máquina de automatización.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flows-dialog/automation-flows-dialog.component.html</context>
           <context context-type="linenumber">19</context>
@@ -1427,8 +1427,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.searchForOtherEmployees" datatype="html">
-        <source>Search for other employees within the organization and add them to your Group. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> This is how you usually create your team.</source>
-        <target state="needs-l10n">Busca a otros empleados dentro de la organización y añádelos a tu Grupo. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Así es como se suele crear el equipo.</target>
+        <source>Search for other employees within the organization and add them to your Group. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> This is how you usually create your team.</source>
+        <target state="needs-l10n">Busca a otros empleados dentro de la organización y añádelos a tu Grupo. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Así es como se suele crear el equipo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">18</context>
@@ -1459,8 +1459,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.BARAllowAdminsToChose" datatype="html">
-        <source>BARs allow admins to chose who can see and work on specific tasks.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Sometimes this is necessary for transversal projects.</source>
-        <target state="needs-l10n">Las barras permiten a los administradores elegir quién puede ver y trabajar en tareas específicas.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>A veces esto es necesario para proyectos transversales.</target>
+        <source>BARs allow admins to chose who can see and work on specific tasks.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Sometimes this is necessary for transversal projects.</source>
+        <target state="needs-l10n">Las barras permiten a los administradores elegir quién puede ver y trabajar en tareas específicas.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>A veces esto es necesario para proyectos transversales.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">70</context>
@@ -1547,8 +1547,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupBARDialog.createRulesToManage" datatype="html">
-        <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
-        <target state="needs-l10n"> Cree reglas para gestionar los derechos de acceso al tablero y seleccione qué miembros pueden ver ciertas tareas. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Por defecto, todas las tareas son visibles para el equipo, pero con las etiquetas BAR puedes controlar el acceso</target>
+        <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
+        <target state="needs-l10n"> Cree reglas para gestionar los derechos de acceso al tablero y seleccione qué miembros pueden ver ciertas tareas. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Por defecto, todas las tareas son visibles para el equipo, pero con las etiquetas BAR puedes controlar el acceso</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
           <context context-type="linenumber">15,17</context>
@@ -2131,8 +2131,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupDashboard.tasksDone" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ column?.tasks?.length }}"/> Tasks <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;float-right done&quot;>"/> <x id="INTERPOLATION_1" equiv-text="{{ column?.numDoneTasks || 0 }}"/> Done <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> {{ columna?.tareas?.longitud }} Tareas {{ column?. <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;float-right done&quot;>"/> numDoneTasks || 0 }} Hecho <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source> <x id="INTERPOLATION" equiv-text="{{ column?.tasks?.length }}"/> Tasks <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;float-right done&quot;&gt;"/> <x id="INTERPOLATION_1" equiv-text="{{ column?.numDoneTasks || 0 }}"/> Done <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <target state="needs-l10n"> {{ columna?.tareas?.longitud }} Tareas {{ column?. <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;float-right done&quot;&gt;"/> numDoneTasks || 0 }} Hecho <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.html</context>
           <context context-type="linenumber">49,53</context>
@@ -3023,7 +3023,7 @@
         <target state="needs-l10n"> Borrar la cuenta</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.html</context>
-          <context context-type="linenumber">27,28</context>
+          <context context-type="linenumber">30,31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userPasswordUpdate.passwordUpdate" datatype="html">
@@ -3203,8 +3203,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="northStarPage.setAndAchieveStrategic" datatype="html">
-        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
-        <target state="needs-l10n"> Establecer y alcanzar objetivos estratégicos. Alinee su organización. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Conecte los objetivos de su empresa y el trabajo para apoyarlos en un solo lugar. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Puede ver el progreso para mantener a los equipos en el camino. Y los equipos pueden trabajar de forma inteligente para hacer las cosas bien</target>
+        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
+        <target state="needs-l10n"> Establecer y alcanzar objetivos estratégicos. Alinee su organización. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Conecte los objetivos de su empresa y el trabajo para apoyarlos en un solo lugar. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Puede ver el progreso para mantener a los equipos en el camino. Y los equipos pueden trabajar de forma inteligente para hacer las cosas bien</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">16,18</context>
@@ -3219,8 +3219,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="pulse.pulseIsMicroAnnouncement" datatype="html">
-        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulses create transparency and a sense of mission for your organization. </source>
-        <target state="needs-l10n"> Un pulso es un microanuncio de un Grupo. Es como Twitter para la empresa. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Incluso si no tienes acceso a un grupo, puedes ver lo que está sucediendo allí. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Los pulsos crean transparencia y un sentido de misión para tu organización</target>
+        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Pulses create transparency and a sense of mission for your organization. </source>
+        <target state="needs-l10n"> Un pulso es un microanuncio de un Grupo. Es como Twitter para la empresa. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Incluso si no tienes acceso a un grupo, puedes ver lo que está sucediendo allí. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Los pulsos crean transparencia y un sentido de misión para tu organización</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/pulse/pulse.component.html</context>
           <context context-type="linenumber">15,18</context>
@@ -3484,7 +3484,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.PM" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="number;&#10;  priv"/></source>
+        <source><x id="INTERPOLATION" equiv-text="number;&#xA;  priv"/></source>
         <target state="needs-l10n">{número;
   priv}</target>
         <context-group purpose="location">
@@ -3493,8 +3493,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.AM" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="ssor,&#10;    OnCh"/></source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="ssor,&#10;    OnCh"/></target>
+        <source><x id="INTERPOLATION" equiv-text="ssor,&#xA;    OnCh"/></source>
+        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="ssor,&#xA;    OnCh"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
           <context context-type="linenumber">141,116</context>
@@ -3509,35 +3509,36 @@
         </context-group>
       </trans-unit>
       <trans-unit id="commonNavbar.general" datatype="html">
-        <source> General <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> General <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(actual)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source>General</source>
+        <target state="needs-l10n"> General </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/common-navbar.component.html</context>
-          <context context-type="linenumber">22,23</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="commonNavbar.members" datatype="html">
-        <source> Members <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> Miembros <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(actuales)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source>Members</source>
+        <target state="needs-l10n"> Miembros </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/common-navbar.component.html</context>
-          <context context-type="linenumber">30,31</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="commonNavbar.groups" datatype="html">
-        <source> Groups <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> Grupos <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(actuales)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source>Groups</source>
+        <target state="needs-l10n"> Grupos </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/common-navbar.component.html</context>
-          <context context-type="linenumber">38,39</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="commonNavbar.billing" datatype="html">
-        <source> Billing <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> Facturación <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(actual)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source>Billing</source>
+        <target state="needs-l10n"> Facturación </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/common-navbar.component.html</context>
-          <context context-type="linenumber">46,47</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userImageDetails.updateYourProfile" datatype="html">
@@ -3609,27 +3610,27 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.notes" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-notes&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Notes </source>
-        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-notes&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Notas </target>
+        <source>Notes</source>
+        <target state="needs-l10n"> Notas </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">59,61</context>
+          <context context-type="linenumber">60</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.personalTasks" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-personal-tasks&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Personal Tasks </source>
-        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-personal-tasks&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Tareas personales </target>
+        <source>Personal Tasks</source>
+        <target state="needs-l10n">Tareas personales </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">69,71</context>
+          <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.personalFiles" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-personal-files&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Personal Files </source>
-        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-personal-files&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Archivos personales </target>
+        <source>Personal Files</source>
+        <target state="needs-l10n">Archivos personales </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">79,81</context>
+          <context context-type="linenumber">80</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.activity" datatype="html">
@@ -3672,14 +3673,6 @@
           <context context-type="linenumber">143,144</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="navbar.search" datatype="html">
-        <source> search </source>
-        <target state="needs-l10n"> busque en</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/navbar.component.html</context>
-          <context context-type="linenumber">44,45</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="pushNotifications.recentNotifications" datatype="html">
         <source>Recent Notifications</source>
         <target state="needs-l10n">Notificaciones recientes</target>
@@ -3709,75 +3702,75 @@
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.mySpace" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;>"/>home<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> My Space </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;>"/>inicio<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Mi espacio </target>
+        <source>My Space</source>
+        <target state="needs-l10n">Mi espacio</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">21,23</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.favorites" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;>"/>star_outline<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Favorites <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;>"/>keyboard_arrow_down<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/></source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;>"/>star_outline<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Favoritos <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;>"/>keyboard_arrow_down<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/></target>
+        <source>Favorites</source>
+        <target state="needs-l10n">Favoritos</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">29,31</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.exploreWork" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;>"/>groups<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Explore Work </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;>"/>grupos<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Explorar el trabajo </target>
+        <source>Explore Work</source>
+        <target state="needs-l10n">Explorar el trabajo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">54,56</context>
+          <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.administration" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;>"/>settings<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Administration <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;>"/>ajustes<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Administración <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(actual)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source>Administration</source>
+        <target state="needs-l10n">Administración</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">66,68</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.myAccount" datatype="html">
-        <source><x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image&#10;                        [imgURL]=&quot;userData?.profile_pic&quot;&#10;                        [service]=&quot;'user'&quot;&#10;                        [styleClass]=&quot;'avatar'&quot;>"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image>"/> My Account </source>
-        <target state="needs-l10n"><x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image&#10;                        [imgURL]=&quot;userData?.profile_pic&quot;&#10;                        [service]=&quot;'user'&quot;&#10;                        [styleClass]=&quot;'avatar'&quot;>"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image>"/> Mi cuenta </target>
+        <source>My Account</source>
+        <target state="needs-l10n">Mi cuenta</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">80,85</context>
+          <context context-type="linenumber">80</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.signOut" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;>"/>logout<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Sign Out <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;>"/>logout<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Cerrar sesión <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(actual)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source>Sign Out</source>
+        <target state="needs-l10n">Cerrar sesión</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">96,98</context>
+          <context context-type="linenumber">92</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.profile" datatype="html">
-        <source> Profile <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> Perfil <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(actual)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source>Profile</source>
+        <target state="needs-l10n"> Perfil </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
-          <context context-type="linenumber">23,24</context>
+          <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.integrations" datatype="html">
-        <source> Integrations <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> Integraciones <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(actuales)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source>Integrations</source>
+        <target state="needs-l10n"> Integraciones </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
-          <context context-type="linenumber">33,34</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userAccountNavbar.timeOff" datatype="html">
-        <source> Time off <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> Tiempo libre <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(actual)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source>Time off</source>
+        <target state="needs-l10n"> Tiempo libre </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
-          <context context-type="linenumber">43,44</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workNavbar.work" datatype="html">
@@ -3789,27 +3782,27 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workNavbar.groups" datatype="html">
-        <source> Groups <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> Grupos <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(actuales)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source> Groups <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <target state="needs-l10n"> Grupos </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
           <context context-type="linenumber">20,21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workNavbar.northStar" datatype="html">
-        <source> North Star <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> Estrella del Norte <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(actual)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source>North Star</source>
+        <target state="needs-l10n"> Estrella del Norte </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
-          <context context-type="linenumber">32,33</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workNavbar.dashboard" datatype="html">
-        <source> Dashboard <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(current)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> Tablero de mandos <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;>"/>(actual)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source>Dashboard</source>
+        <target state="needs-l10n"> Tablero de mandos </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
-          <context context-type="linenumber">44,45</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageNotFound.oops" datatype="html">
@@ -3837,19 +3830,19 @@
         </context-group>
       </trans-unit>
       <trans-unit id="pageNotFound.takeMeHome" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>home<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Take Me Home </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>inicio<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Llévame a casa </target>
+        <source>Take Me Home</source>
+        <target state="needs-l10n"> Llévame a casa </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/page-not-found/page-not-found.component.html</context>
-          <context context-type="linenumber">17,19</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageNotFound.contactSupport" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>contact_support<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Contact Support </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>contact_support<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Contactar con el servicio de asistencia </target>
+        <source>Contact Support</source>
+        <target state="needs-l10n"> Contactar con el servicio de asistencia </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/page-not-found/page-not-found.component.html</context>
-          <context context-type="linenumber">22,24</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activityFilters.filters" datatype="html">
@@ -3889,8 +3882,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="agendaSmartCard.forToday" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;>"/><x id="INTERPOLATION" equiv-text="{{ today_event_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> for today </source>
-        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;>"/><x id="INTERPOLATION" equiv-text="{{ today_event_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> para hoy </target>
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ today_event_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> for today </source>
+        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ today_event_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> para hoy </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
           <context context-type="linenumber">8,9</context>
@@ -3901,32 +3894,32 @@
         </context-group>
       </trans-unit>
       <trans-unit id="agendaSmartCard.taDa" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;>"/>Ta-da!<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/></source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;>"/>¡Ta-da!<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/></target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;&gt;"/>Ta-da!<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;&gt;"/>¡Ta-da!<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="agendaSmartCard.youAreFreeToday" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;>"/>You're free today.<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/></source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;>"/>Hoy eres libre.<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/></target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;&gt;"/>You're free today.<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;&gt;"/>Hoy eres libre.<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="agendaSmartCard.more" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ today_event_count - 2 > 0 ? today_event_count - 2 : 0 }}"/> more... </source>
-        <target state="needs-l10n"> <x id="INTERPOLATION" equiv-text="{{ today_event_count - 2 > 0 ? today_event_count - 2 : 0 }}"/> más..</target>
+        <source> <x id="INTERPOLATION" equiv-text="{{ today_event_count - 2 &gt; 0 ? today_event_count - 2 : 0 }}"/> more... </source>
+        <target state="needs-l10n"> <x id="INTERPOLATION" equiv-text="{{ today_event_count - 2 &gt; 0 ? today_event_count - 2 : 0 }}"/> más..</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
           <context context-type="linenumber">56,58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupActivityFeed.pinnedPosts" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;>"/>push_pin<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> <x id="INTERPOLATION" equiv-text="{{ pinnedPosts?.length }}"/> Pinned posts </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;>"/>push_pin<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> <x id="INTERPOLATION" equiv-text="{{ pinnedPosts?.length }}"/> Mensajes anclados </target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>push_pin<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> <x id="INTERPOLATION" equiv-text="{{ pinnedPosts?.length }}"/> Pinned posts </source>
+        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>push_pin<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> <x id="INTERPOLATION" equiv-text="{{ pinnedPosts?.length }}"/> Mensajes anclados </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.html</context>
           <context context-type="linenumber">59,61</context>
@@ -4037,16 +4030,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.from" datatype="html">
-        <source> From <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;>"/><x id="INTERPOLATION" equiv-text="{{ postData?._group?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> De <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;>"/><x id="INTERPOLATION" equiv-text="{{ postData?._group?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source> From <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ postData?._group?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <target state="needs-l10n"> De <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ postData?._group?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">204</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.to" datatype="html">
-        <source> To <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;>"/><x id="INTERPOLATION" equiv-text="{{ shuttleGroup?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> A <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;>"/><x id="INTERPOLATION" equiv-text="{{ shuttleGroup?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source> To <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ shuttleGroup?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <target state="needs-l10n"> A <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ shuttleGroup?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">205</context>
@@ -4101,8 +4094,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="northStar.northStar" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-round&quot; style=&quot;vertical-align: middle;&quot;>"/>explore<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> North Star </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-round&quot; style=&quot;vertical-align: middle;&quot;>"/>explorar<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> la Estrella del Norte </target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-round&quot; style=&quot;vertical-align: middle;&quot;&gt;"/>explore<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> North Star </source>
+        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-round&quot; style=&quot;vertical-align: middle;&quot;&gt;"/>explorar<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> la Estrella del Norte </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
           <context context-type="linenumber">5,7</context>
@@ -4177,8 +4170,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="northStar.focus" datatype="html">
-        <source> Focus <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons update&quot; (click)=&quot;updatingInitialValues = true; this.updateProgress = false;&quot;>"/>settings<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/></source>
-        <target state="needs-l10n"> <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons update&quot; (click)=&quot;updatingInitialValues = true; this.updateProgress = false;&quot;>"/>Ajustes de<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>enfoque</target>
+        <source> Focus <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons update&quot; (click)=&quot;updatingInitialValues = true; this.updateProgress = false;&quot;&gt;"/>settings<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/></source>
+        <target state="needs-l10n"> <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons update&quot; (click)=&quot;updatingInitialValues = true; this.updateProgress = false;&quot;&gt;"/>Ajustes de<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/>enfoque</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
           <context context-type="linenumber">64,65</context>
@@ -4253,8 +4246,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="subTasks.subTasks" datatype="html">
-        <source> <x id="INTERPOLATION" equiv-text="{{ subtasks.length }}"/> Subtasks <x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div *ngIf=&quot;subtasks.length > 0&quot; [class]=&quot;completitionPercentageClass&quot;>"/> <x id="INTERPOLATION_1" equiv-text="{{ percentageSubtasksCompleted }}"/> % <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/></source>
-        <target state="needs-l10n"> <x id="INTERPOLATION" equiv-text="{{ subtasks.length }}"/> Subtareas <x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div *ngIf=&quot;subtasks.length > 0&quot; [class]=&quot;completitionPercentageClass&quot;>"/> <x id="INTERPOLATION_1" equiv-text="{{ percentageSubtasksCompleted }}"/> % <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/></target>
+        <source> <x id="INTERPOLATION" equiv-text="{{ subtasks.length }}"/> Subtasks <x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div *ngIf=&quot;subtasks.length &gt; 0&quot; [class]=&quot;completitionPercentageClass&quot;&gt;"/> <x id="INTERPOLATION_1" equiv-text="{{ percentageSubtasksCompleted }}"/> % <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></source>
+        <target state="needs-l10n"> <x id="INTERPOLATION" equiv-text="{{ subtasks.length }}"/> Subtareas <x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div *ngIf=&quot;subtasks.length &gt; 0&quot; [class]=&quot;completitionPercentageClass&quot;&gt;"/> <x id="INTERPOLATION_1" equiv-text="{{ percentageSubtasksCompleted }}"/> % <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/subtasks/subtasks.component.html</context>
           <context context-type="linenumber">1,5</context>
@@ -4269,40 +4262,40 @@
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.copyToGroup" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i  class=&quot;material-icons&quot;>"/>content_copy<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> COPY TO GROUP </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i  class=&quot;material-icons&quot;>"/>content_copy<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> COPY TO GROUP </target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i  class=&quot;material-icons&quot;&gt;"/>content_copy<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> COPY TO GROUP </source>
+        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i  class=&quot;material-icons&quot;&gt;"/>content_copy<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> COPY TO GROUP </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
           <context context-type="linenumber">8,10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.moveToGroup" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>arrow_forward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> MOVE TO GROUP </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>arrow_forward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> MOVER A GRUPO </target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>arrow_forward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> MOVE TO GROUP </source>
+        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>arrow_forward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> MOVER A GRUPO </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
           <context context-type="linenumber">14,16</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.templates" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;>"/>playlist_add<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> TEMPLATES </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;>"/>playlist_add<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> TEMPLATES </target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>playlist_add<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> TEMPLATES </source>
+        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>playlist_add<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> TEMPLATES </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
           <context context-type="linenumber">42,44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.saveTemplate" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;>"/>save_alt<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Save template </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;>"/>save_alt<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Guardar plantilla </target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>save_alt<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Save template </source>
+        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>save_alt<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Guardar plantilla </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
           <context context-type="linenumber">61,63</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.deleteTemplate" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;>"/>delete<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Delete template </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;>"/>eliminar<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Eliminar la plantilla </target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>delete<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Delete template </source>
+        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>eliminar<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Eliminar la plantilla </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
           <context context-type="linenumber">72,74</context>
@@ -4317,8 +4310,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.allocation" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>hourglass_top<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> ALLOCATION <x id="TAG_INPUT" ctype="x-input" equiv-text="&lt;input type=&quot;text&quot; name=&quot;allocation&quot; [ngModel]=&quot;allocation&quot; (blur)=&quot;allocationChange($event)&quot; class=&quot;input-search&quot; placeholder=&quot;Allocation&quot; />"/></source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>hourglass_top<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> ALLOCATION <x id="TAG_INPUT" ctype="x-input" equiv-text="&lt;input type=&quot;text&quot; name=&quot;allocation&quot; [ngModel]=&quot;allocation&quot; (blur)=&quot;allocationChange($event)&quot; class=&quot;input-search&quot; placeholder=&quot;Allocation&quot; />"/></target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>hourglass_top<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> ALLOCATION <x id="TAG_INPUT" ctype="x-input" equiv-text="&lt;input type=&quot;text&quot; name=&quot;allocation&quot; [ngModel]=&quot;allocation&quot; (blur)=&quot;allocationChange($event)&quot; class=&quot;input-search&quot; placeholder=&quot;Allocation&quot; /&gt;"/></source>
+        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>hourglass_top<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> ALLOCATION <x id="TAG_INPUT" ctype="x-input" equiv-text="&lt;input type=&quot;text&quot; name=&quot;allocation&quot; [ngModel]=&quot;allocation&quot; (blur)=&quot;allocationChange($event)&quot; class=&quot;input-search&quot; placeholder=&quot;Allocation&quot; /&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
           <context context-type="linenumber">103,107</context>
@@ -4389,24 +4382,24 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupPostSelection.writeAPost" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'normal'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_comment&quot;>"/>comment<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Write a post </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'normal'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_comment&quot;>"/>comentario<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Escriba un mensaje </target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'normal'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_comment&quot;&gt;"/>comment<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Write a post </source>
+        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'normal'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_comment&quot;&gt;"/>comentario<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Escriba un mensaje </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post-selection/group-post-selection.component.html</context>
           <context context-type="linenumber">8,10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupPostSelection.scheduleEvent" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'event'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_event&quot;>"/>event<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Schedule event </source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'event'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_event&quot;>"/>evento<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Programar el evento </target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'event'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_event&quot;&gt;"/>event<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Schedule event </source>
+        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'event'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_event&quot;&gt;"/>evento<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Programar el evento </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post-selection/group-post-selection.component.html</context>
           <context context-type="linenumber">17,19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupPostbox.whatAreYouWorkingOn" datatype="html">
-        <source> What are you working on, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>? </source>
-        <target state="needs-l10n"> ¿En qué estás trabajando, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>? </target>
+        <source> What are you working on, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>? </source>
+        <target state="needs-l10n"> ¿En qué estás trabajando, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>? </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-postbox.component.html</context>
           <context context-type="linenumber">18,19</context>
@@ -4469,8 +4462,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="newsPill.newActivity" datatype="html">
-        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>arrow_upward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> New activity <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>arrow_upward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Nueva actividad <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>arrow_upward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> New activity <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <target state="needs-l10n"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>arrow_upward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Nueva actividad <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/news-pill/news-pill.component.html</context>
           <context context-type="linenumber">4</context>
@@ -4513,8 +4506,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="taskSmartCard.forToday" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;>"/><x id="INTERPOLATION" equiv-text="{{ today_task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> for today </source>
-        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;>"/><x id="INTERPOLATION" equiv-text="{{ today_task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> para hoy </target>
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ today_task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> for today </source>
+        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ today_task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> para hoy </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
           <context context-type="linenumber">10,11</context>
@@ -4593,8 +4586,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="commentList.showAll" datatype="html">
-        <source> Show all ...<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> Mostrar todo ..<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source> Show all ...<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <target state="needs-l10n"> Mostrar todo ..<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/comments/comment-list/comment-list.component.html</context>
           <context context-type="linenumber">10</context>
@@ -4681,8 +4674,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="componentSearchBar.manageUser" datatype="html">
-        <source> Manage User <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> Gestionar usuario <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source> Manage User <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <target state="needs-l10n"> Gestionar usuario <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">51,52</context>
@@ -4749,8 +4742,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="componentSearchBar.leaveGroup" datatype="html">
-        <source> Leave Group <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source>
-        <target state="needs-l10n"> Dejar el grupo <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <source> Leave Group <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <target state="needs-l10n"> Dejar el grupo <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">112,113</context>
@@ -4845,32 +4838,32 @@
         </context-group>
       </trans-unit>
       <trans-unit id="engagementCard.agoras" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>  agoras </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> agoras </target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  agoras </source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> agoras </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
           <context context-type="linenumber">13,15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="engagementCard.topics" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>  topics </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> temas </target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  topics </source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> temas </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
           <context context-type="linenumber">20,22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="engagementCard.posts" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>  posts </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> puestos </target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  posts </source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> puestos </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
           <context context-type="linenumber">27,29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="engagementCard.comments" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_comments }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>  comments </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_comments }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> comentarios </target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_comments }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  comments </source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_comments }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> comentarios </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
           <context context-type="linenumber">34,36</context>
@@ -4893,7 +4886,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="projectBudget.budgetTitle" datatype="html">
-        <source> Budget</source>
+        <source> Budget
+</source>
         <target state="needs-l10n"> Presupuesto</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/kpi-performance-card/project-budget/project-budget.component.html</context>
@@ -4973,16 +4967,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="organizationalStructureCard.groups" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;groups_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_groups }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>  groups </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;groups_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_groups }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> grupos </target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;groups_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_groups }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  groups </source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;groups_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_groups }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> grupos </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/organizational-structure-card/organizational-structure-card.component.html</context>
           <context context-type="linenumber">12,14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationalStructureCard.agoras" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>  agoras </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> agoras </target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  agoras </source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> agoras </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/organizational-structure-card/organizational-structure-card.component.html</context>
           <context context-type="linenumber">18,20</context>
@@ -4997,40 +4991,40 @@
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.users" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;users_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_users }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>  users </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;users_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_users }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> usuarios </target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;users_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_users }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  users </source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;users_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_users }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> usuarios </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
           <context context-type="linenumber">12,14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.globalManagers" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;global_managers_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_global_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>  global managers </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;global_managers_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_global_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> gestores globales </target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;global_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_global_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  global managers </source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;global_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_global_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> gestores globales </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
           <context context-type="linenumber">18,20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.groupManagers" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;group_managers_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_group_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>  group managers </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;group_managers_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_group_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> gestores de grupo </target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;group_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_group_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  group managers </source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;group_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_group_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> gestores de grupo </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
           <context context-type="linenumber">24,26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.members" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;members_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_members }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>  members </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;members_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_members }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> miembros </target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;members_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_members }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  members </source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;members_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_members }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> miembros </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
           <context context-type="linenumber">30,32</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.guests" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;guests_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_guests }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>  guests </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;guests_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_guests }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> invitados </target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;guests_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_guests }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  guests </source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;guests_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_guests }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> invitados </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
           <context context-type="linenumber">36,38</context>
@@ -5045,8 +5039,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="pulseCard.updatesToday" datatype="html">
-        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_updates }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>  updates today </source>
-        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_updates }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> actualizaciones de hoy </target>
+        <source><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_updates }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/>  updates today </source>
+        <target state="needs-l10n"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_updates }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> actualizaciones de hoy </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/pulse-card/pulse-card.component.html</context>
           <context context-type="linenumber">13,15</context>
@@ -5157,16 +5151,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workStatisticsCard.totalTasks" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;number&quot;>"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> total tasks </source>
-        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;number&quot;>"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> total de tareas </target>
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;number&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> total tasks </source>
+        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;number&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> total de tareas </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.html</context>
           <context context-type="linenumber">17,18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workStatisticsCard.northStars" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;north_star_number&quot;>"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> North Stars </source>
-        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;north_star_number&quot;>"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Estrellas del Norte </target>
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;north_star_number&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> North Stars </source>
+        <target state="needs-l10n"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;north_star_number&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Estrellas del Norte </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.html</context>
           <context context-type="linenumber">20,21</context>
@@ -5245,8 +5239,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="memberListMenu.users" datatype="html">
-        <source> Users <x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image *ngIf=&quot;filterfor==='users'&quot;&#10;      [imgURL]=&quot;picsUrl&quot;&#10;      [service]=&quot;'user'&quot;&#10;      [styleClass]=&quot;'feed-avatar'&quot;>"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image>"/></source>
-        <target state="needs-l10n"> Usuarios <x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image *ngIf=&quot;filterfor==='users'&quot;&#10;      [imgURL]=&quot;picsUrl&quot;&#10;      [service]=&quot;'user'&quot;&#10;      [styleClass]=&quot;'feed-avatar'&quot;>"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image>"/></target>
+        <source> Users <x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image *ngIf=&quot;filterfor==='users'&quot;&#xA;      [imgURL]=&quot;picsUrl&quot;&#xA;      [service]=&quot;'user'&quot;&#xA;      [styleClass]=&quot;'feed-avatar'&quot;&gt;"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image&gt;"/></source>
+        <target state="needs-l10n"> Usuarios <x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image *ngIf=&quot;filterfor==='users'&quot;&#xA;      [imgURL]=&quot;picsUrl&quot;&#xA;      [service]=&quot;'user'&quot;&#xA;      [styleClass]=&quot;'feed-avatar'&quot;&gt;"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-list-menu/member-list-menu.component.html</context>
           <context context-type="linenumber">6,10</context>

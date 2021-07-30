@@ -55,9 +55,9 @@
         <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_activity')" routerLink="/dashboard/work/groups/activity"
             [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
-            routerLinkActive="active" i18n="@@groupNavbar.notes">
+            routerLinkActive="active">
               <span class="dot dot-notes"></span>
-              Notes
+              <span i18n="@@groupNavbar.notes">Notes</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="myWorkplace">
@@ -65,9 +65,9 @@
             (click)="changeState('groups_tasks')"
             routerLink="/dashboard/work/groups/tasks"
             [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
-            routerLinkActive="active" i18n="@@groupNavbar.personalTasks">
+            routerLinkActive="active">
               <span class="dot dot-personal-tasks"></span>
-              Personal Tasks
+              <span i18n="@@groupNavbar.personalTasks">Personal Tasks</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="myWorkplace">
@@ -75,9 +75,9 @@
             (click)="changeState('groups_files')"
             routerLink="/dashboard/work/groups/files"
             [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
-            routerLinkActive="active" i18n="@@groupNavbar.personalFiles">
+            routerLinkActive="active">
               <span class="dot dot-personal-files"></span>
-              Personal Files
+              <span i18n="@@groupNavbar.personalFiles">Personal Files</span>
         </a>
       </li>
 
