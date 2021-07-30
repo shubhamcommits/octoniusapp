@@ -28,7 +28,7 @@
       </trans-unit>
       <trans-unit id="startSubscription.purchase" datatype="html">
         <source> Purchase </source>
-        <target state="translated"> Kaufen Sie</target>
+        <target state="translated"> Kaufen Sie </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-billing/stripe-payment/start-subscription/start-subscription.component.html</context>
           <context context-type="linenumber">25,26</context>
@@ -91,16 +91,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceAddDomain.chooseToMakeYourWorkspace" datatype="html">
-        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
-        <target state="translated"> Legen Sie fest, ob die Anmeldung für Ihren Arbeitsplatz nur auf Einladung erfolgen soll oder ob sich auch andere Personen mit einer bestimmten E-Mail-Adressdomäne anmelden können.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (z. B. wenn Sie example.com angeben, können sich Benutzer, die eine E-Mail-Adresse mit der Domain example.com haben, anmelden!) </target>
+        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
+        <target state="translated"> Legen Sie fest, ob die Anmeldung für Ihren Arbeitsplatz nur auf Einladung erfolgen soll oder ob sich auch andere Personen mit einer bestimmten E-Mail-Adressdomäne anmelden können.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (z. B. wenn Sie example.com angeben, können sich Benutzer, die eine E-Mail-Adresse mit der Domain example.com haben, anmelden!) </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">8,11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceAddDomain.usingWorkspaceName" datatype="html">
-        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>", any email adress from these domain can signup:</source>
-        <target state="translated">Mit dem Arbeitsplatznamen<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/>"<x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>" kann sich jede E-Mail-Adresse aus dieser Domain anmelden:</target>
+        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/>", any email adress from these domain can signup:</source>
+        <target state="translated">Mit dem Arbeitsplatznamen<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/>"<x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/>" kann sich jede E-Mail-Adresse aus dieser Domain anmelden:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">13</context>
@@ -464,7 +464,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.letsGetYouStarted" datatype="html">
         <source> 👍 Alright! Let’s get you started. </source>
-        <target state="needs-l10n"> 👍 Also gut! Dann fangen wir mal an</target>
+        <target state="translated"> 👍 Also gut! Dann fangen wir mal an </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.html</context>
           <context context-type="linenumber">15,16</context>
@@ -472,7 +472,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.signUpToOctonius" datatype="html">
         <source> Sign up to Octonius </source>
-        <target state="needs-l10n"> Anmeldung bei Octonius</target>
+        <target state="translated"> Anmeldung bei Octonius</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.html</context>
           <context context-type="linenumber">19,20</context>
@@ -480,7 +480,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.enterYourWorkEmailAddress" datatype="html">
         <source>Enter your work email address</source>
-        <target state="needs-l10n">Geben Sie Ihre Arbeits-E-Mail-Adresse ein</target>
+        <target state="translated">Geben Sie Ihre Arbeits-E-Mail-Adresse ein</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.html</context>
           <context context-type="linenumber">23</context>
@@ -488,7 +488,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.password" datatype="html">
         <source>Password</source>
-        <target state="needs-l10n">Passwort</target>
+        <target state="translated">Passwort *</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.html</context>
           <context context-type="linenumber">29</context>
@@ -496,7 +496,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.repeatPassword" datatype="html">
         <source>Repeat your password</source>
-        <target state="needs-l10n">Wiederholen Sie Ihr Passwort</target>
+        <target state="translated">Wiederholen Sie Ihr Passwort</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.html</context>
           <context context-type="linenumber">35</context>
@@ -536,7 +536,7 @@
       </trans-unit>
       <trans-unit id="resetPassword.password" datatype="html">
         <source>Password</source>
-        <target state="needs-l10n">Passwort</target>
+        <target state="translated">Passwort *</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/reset-password/reset-password.component.html</context>
           <context context-type="linenumber">18</context>
@@ -552,7 +552,7 @@
       </trans-unit>
       <trans-unit id="resetPassword.resetPassword" datatype="html">
         <source> Reset password </source>
-        <target state="needs-l10n"> Passwort zurücksetzen</target>
+        <target state="translated"> Passwort zurücksetzen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/reset-password/reset-password.component.html</context>
           <context context-type="linenumber">36,37</context>
@@ -560,7 +560,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.welcome" datatype="html">
         <source> Welcome, <x id="INTERPOLATION" equiv-text="{{ accountData?.first_name }}"/> <x id="INTERPOLATION_1" equiv-text="{{ accountData?.last_name }}"/>! </source>
-        <target state="needs-l10n"> Willkommen, <x id="INTERPOLATION" equiv-text="{{ accountData?.first_name }}"/> <x id="INTERPOLATION_1" equiv-text="{{ accountData?.last_name }}"/>!</target>
+        <target state="translated"> Willkommen, <x id="INTERPOLATION" equiv-text="{{ accountData?.first_name }}"/> <x id="INTERPOLATION_1" equiv-text="{{ accountData?.last_name }}"/>!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">15,17</context>
@@ -568,7 +568,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.selectAWorkspace" datatype="html">
         <source> Select a workplace to start. </source>
-        <target state="needs-l10n"> Wählen Sie einen Arbeitsplatz, um zu beginnen</target>
+        <target state="translated"> Wählen Sie einen Arbeitsplatz, um zu beginnen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">20,21</context>
@@ -576,7 +576,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.createNewWorkspace" datatype="html">
         <source> Create a new workplace </source>
-        <target state="needs-l10n"> Einen neuen Arbeitsplatz schaffen</target>
+        <target state="translated"> Einen neuen Arbeitsplatz schaffen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">55,56</context>
@@ -584,7 +584,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.joinAnotherWorkspace" datatype="html">
         <source> Join another workplace </source>
-        <target state="needs-l10n"> An einem anderen Arbeitsplatz arbeiten</target>
+        <target state="translated">Anderen Arbeitsplatz arbeiten </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">69,70</context>
@@ -592,7 +592,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.previous" datatype="html">
         <source> Previous </source>
-        <target state="needs-l10n"> Vorherige</target>
+        <target state="translated"> Vorherige</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.html</context>
           <context context-type="linenumber">8,9</context>
@@ -600,7 +600,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.today" datatype="html">
         <source> Today </source>
-        <target state="needs-l10n"> Heute</target>
+        <target state="translated"> Heute</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.html</context>
           <context context-type="linenumber">11,12</context>
@@ -608,7 +608,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.next" datatype="html">
         <source> Next </source>
-        <target state="needs-l10n"> Weiter</target>
+        <target state="translated"> Weiter</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.html</context>
           <context context-type="linenumber">15,16</context>
@@ -616,7 +616,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.month" datatype="html">
         <source> Month </source>
-        <target state="needs-l10n"> Monat</target>
+        <target state="translated"> Monat</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.html</context>
           <context context-type="linenumber">26,27</context>
@@ -624,7 +624,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.week" datatype="html">
         <source> Week </source>
-        <target state="needs-l10n"> Woche</target>
+        <target state="translated"> Woche</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.html</context>
           <context context-type="linenumber">30,31</context>
@@ -632,7 +632,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.day" datatype="html">
         <source> Day </source>
-        <target state="needs-l10n"> Tag</target>
+        <target state="translated"> Tag</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.html</context>
           <context context-type="linenumber">34,35</context>
@@ -640,15 +640,15 @@
       </trans-unit>
       <trans-unit id="groupFiles.yourFiles" datatype="html">
         <source>Your files. Ready when you are.</source>
-        <target state="needs-l10n">Ihre Dateien. Bereit, wenn Sie es sind.</target>
+        <target state="translated">Ihre Dateien. Bereit, wenn Sie es sind.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
           <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.dragDropOrAdd" datatype="html">
-        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Or use the NEW button for folders uploading.</source>
-        <target state="needs-l10n">Ziehen Sie Dateien per Drag &amp; Drop hierher, um sie einfach hochzuladen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Oder verwenden Sie die Schaltfläche NEU für das Hochladen von Ordnern.</target>
+        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Or use the NEW button for folders uploading.</source>
+        <target state="translated">Ziehen Sie Dateien per Drag &amp; Drop hierher, um sie einfach hochzuladen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Oder verwenden Sie die Schaltfläche NEU für das Hochladen von Ordnern. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
           <context context-type="linenumber">7</context>
@@ -688,7 +688,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.moveToGroup" datatype="html">
         <source>Move to Group</source>
-        <target state="needs-l10n">Zur Gruppe verschieben</target>
+        <target state="translated">Zur Gruppe verschieben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
           <context context-type="linenumber">152</context>
@@ -732,7 +732,7 @@
       </trans-unit>
       <trans-unit id="groupNewFile.folderUpload" datatype="html">
         <source> Folder upload</source>
-        <target state="needs-l10n"> Hochladen von Ordnern</target>
+        <target state="translated"> Hochladen von Ordnern</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.html</context>
           <context context-type="linenumber">24</context>
@@ -740,7 +740,7 @@
       </trans-unit>
       <trans-unit id="groupNewFile.folio" datatype="html">
         <source>Folio</source>
-        <target state="needs-l10n">Folio</target>
+        <target state="translated">Folio</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.html</context>
           <context context-type="linenumber">31</context>
@@ -748,7 +748,7 @@
       </trans-unit>
       <trans-unit id="groupNewFile.flamingo" datatype="html">
         <source>Flamingo</source>
-        <target state="needs-l10n">Flamingo</target>
+        <target state="translated">Flamingo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.html</context>
           <context context-type="linenumber">35</context>
@@ -788,7 +788,7 @@
       </trans-unit>
       <trans-unit id="flamingoAnswer.start" datatype="html">
         <source> Start </source>
-        <target state="needs-l10n"> Start</target>
+        <target state="translated"> Start</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-answer/flamingo-answer.component.html</context>
           <context context-type="linenumber">34,35</context>
@@ -796,7 +796,7 @@
       </trans-unit>
       <trans-unit id="flamingoAnswer.questionMandatory" datatype="html">
         <source>* This question is mandatory</source>
-        <target state="needs-l10n">* Diese Frage ist obligatorisch</target>
+        <target state="translated">* Diese Frage ist obligatorisch</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-answer/flamingo-answer.component.html</context>
           <context context-type="linenumber">62</context>
@@ -844,7 +844,7 @@
       </trans-unit>
       <trans-unit id="flamingoEditor.newQuestion" datatype="html">
         <source> New question</source>
-        <target state="needs-l10n"> Neue Frage</target>
+        <target state="translated"> Neue Frage</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.html</context>
           <context context-type="linenumber">210</context>
@@ -852,7 +852,7 @@
       </trans-unit>
       <trans-unit id="flamingoEditor.chooseQuestionType" datatype="html">
         <source> Choose a question type </source>
-        <target state="needs-l10n"> Wählen Sie einen Fragetyp</target>
+        <target state="translated"> Wählen Sie einen Fragetyp</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.html</context>
           <context context-type="linenumber">215,216</context>
@@ -868,7 +868,7 @@
       </trans-unit>
       <trans-unit id="flamingoEditor.simpleText" datatype="html">
         <source>Simple text with an optional image / logo</source>
-        <target state="needs-l10n">Einfacher Text mit einem optionalen Bild/Logo</target>
+        <target state="translated">Text mit einem optionalen Bild/Logo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.html</context>
           <context context-type="linenumber">226</context>
@@ -876,7 +876,7 @@
       </trans-unit>
       <trans-unit id="flamingoEditor.thankYouScreen" datatype="html">
         <source>Thank you screen</source>
-        <target state="needs-l10n">Danke, Bildschirm</target>
+        <target state="translated">Bildschirm Danke</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.html</context>
           <context context-type="linenumber">234</context>
@@ -888,7 +888,7 @@
       </trans-unit>
       <trans-unit id="flamingoEditor.simpleThankYouText" datatype="html">
         <source>Simple thank you text with optional image / logo</source>
-        <target state="needs-l10n">Einfacher Dankeschön-Text mit optionalem Bild/Logo</target>
+        <target state="translated">Einfacher Dankeschön-Text mit optionalem Bild/Logo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.html</context>
           <context context-type="linenumber">239</context>
@@ -908,7 +908,7 @@
       </trans-unit>
       <trans-unit id="flamingoEditor.simpleQuestionSortAnswer" datatype="html">
         <source>A simple question with a short answer.</source>
-        <target state="needs-l10n">Eine einfache Frage mit einer kurzen Antwort.</target>
+        <target state="translated">Eine einfache Frage mit einer kurzen Antwort.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.html</context>
           <context context-type="linenumber">252</context>
@@ -916,7 +916,7 @@
       </trans-unit>
       <trans-unit id="flamingoEditor.yesNo" datatype="html">
         <source>YES/NO</source>
-        <target state="needs-l10n">JA/NEIN</target>
+        <target state="translated">JA/NEIN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.html</context>
           <context context-type="linenumber">260</context>
@@ -928,7 +928,7 @@
       </trans-unit>
       <trans-unit id="flamingoEditor.binaryQuestion" datatype="html">
         <source>Binary question.</source>
-        <target state="needs-l10n">Binäre Frage.</target>
+        <target state="translated">Binäre Frage.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.html</context>
           <context context-type="linenumber">265</context>
@@ -948,7 +948,7 @@
       </trans-unit>
       <trans-unit id="flamingoEditor.useForFeedback" datatype="html">
         <source>Use this for feedback options.</source>
-        <target state="needs-l10n">Verwenden Sie dies für Feedback-Optionen.</target>
+        <target state="translated">Verwenden Sie dies für Feedback-Optionen.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.html</context>
           <context context-type="linenumber">278</context>
@@ -968,7 +968,7 @@
       </trans-unit>
       <trans-unit id="flamingoEditor.listOfOptionsToSelect" datatype="html">
         <source>A list of options to select</source>
-        <target state="needs-l10n">Eine Liste von Optionen zur Auswahl</target>
+        <target state="translated">Eine Liste von Optionen zur Auswahl</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.html</context>
           <context context-type="linenumber">291</context>
@@ -988,7 +988,7 @@
       </trans-unit>
       <trans-unit id="flamingoEditor.listOfOptionsToSelectMultiple" datatype="html">
         <source>A list of options to select multiple options</source>
-        <target state="needs-l10n">Eine Liste von Optionen zur Auswahl mehrerer Optionen</target>
+        <target state="translated">Eine Liste von Optionen zur Auswahl mehrerer Optionen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.html</context>
           <context context-type="linenumber">304</context>
@@ -996,7 +996,7 @@
       </trans-unit>
       <trans-unit id="flamingoEditor.questionMandatory" datatype="html">
         <source>* This question is mandatory</source>
-        <target state="needs-l10n">* Diese Frage ist obligatorisch</target>
+        <target state="translated">* Diese Frage ist obligatorisch</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.html</context>
           <context context-type="linenumber">327</context>
@@ -1024,7 +1024,7 @@
       </trans-unit>
       <trans-unit id="flamingoQuestionImageDetails.uploadQuestionImage" datatype="html">
         <source>Upload your Question Image</source>
-        <target state="needs-l10n">Laden Sie Ihr Fragenbild hoch</target>
+        <target state="translated">Laden Sie Ihr Fragenbild hoch</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.html</context>
           <context context-type="linenumber">5</context>
@@ -1040,7 +1040,7 @@
       </trans-unit>
       <trans-unit id="flamingoQuestionImageDetails.uploadYourImage" datatype="html">
         <source>Upload your Image!</source>
-        <target state="needs-l10n">Laden Sie Ihr Bild hoch!</target>
+        <target state="translated">Laden Sie Ihr Bild hoch!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.html</context>
           <context context-type="linenumber">28</context>
@@ -1104,7 +1104,7 @@
       </trans-unit>
       <trans-unit id="flamingoPreview.questionMandatory" datatype="html">
         <source>* This question is mandatory</source>
-        <target state="needs-l10n">* Diese Frage ist obligatorisch</target>
+        <target state="translated">* Diese Frage ist obligatorisch</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-preview/flamingo-preview.component.html</context>
           <context context-type="linenumber">57</context>
@@ -1112,15 +1112,15 @@
       </trans-unit>
       <trans-unit id="flamingoPreview.thankYouForSubmitting" datatype="html">
         <source>Thank you for submitting your opinion!</source>
-        <target state="needs-l10n">Vielen Dank, dass Sie uns Ihre Meinung mitteilen!</target>
+        <target state="translated">Vielen Dank, dass Sie uns Ihre Meinung mitteilen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-preview/flamingo-preview.component.html</context>
           <context context-type="linenumber">128</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPublish.done" datatype="html">
-        <source> Done?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> When you are ready, you can click this button to PUBLISH the FORM and <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> let people answer.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> When it’s done, come back here and click UNPUBLISH in order to stop data <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> collection. </source>
-        <target state="needs-l10n"> Fertig?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> Wenn Sie bereit sind, können Sie auf diese Schaltfläche klicken, um das Formular zu VERÖFFENTLICHEN und <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> die Leute antworten zu lassen.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> Wenn es fertig ist, kommen Sie hierher zurück und klicken Sie auf VERÖFFENTLICHEN, um die Datenerfassung <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> zu beenden </target>
+        <source> Done?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> When you are ready, you can click this button to PUBLISH the FORM and <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> let people answer.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> When it’s done, come back here and click UNPUBLISH in order to stop data <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> collection. </source>
+        <target state="translated"> Fertig?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> Wenn Sie bereit sind, können Sie auf diese Schaltfläche klicken, um das Formular zu VERÖFFENTLICHEN und <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> die Leute antworten zu lassen.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> Wenn es fertig ist, kommen Sie hierher zurück und klicken Sie auf VERÖFFENTLICHEN, um die Datenerfassung <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> zu beenden </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.html</context>
           <context context-type="linenumber">8,13</context>
@@ -1136,7 +1136,7 @@
       </trans-unit>
       <trans-unit id="flamingoPublish.unpublish" datatype="html">
         <source>UNPUBLISH</source>
-        <target state="needs-l10n">UNPUBLISH</target>
+        <target state="translated">UNPUBLISH</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.html</context>
           <context context-type="linenumber">25</context>
@@ -1144,7 +1144,7 @@
       </trans-unit>
       <trans-unit id="flamingoResultInsights.responses" datatype="html">
         <source> Responses: <x id="INTERPOLATION" equiv-text="{{ responses?.length }}"/> </source>
-        <target state="needs-l10n"> Antworten: <x id="INTERPOLATION" equiv-text="{{ responses?.length }}"/></target>
+        <target state="translated"> Antworten: <x id="INTERPOLATION" equiv-text="{{ responses?.length }}"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-result/result-insights/result-insights.component.html</context>
           <context context-type="linenumber">4,6</context>
@@ -1152,7 +1152,7 @@
       </trans-unit>
       <trans-unit id="flamingoResultInsights.numResponses" datatype="html">
         <source>responses</source>
-        <target state="needs-adaptation"> <x id="INTERPOLATION" equiv-text="{{ getPositiveResponsesStats(question?._id) }}"/> Antworten</target>
+        <target state="translated">antworten</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-result/result-insights/result-insights.component.html</context>
@@ -1173,7 +1173,7 @@
       </trans-unit>
       <trans-unit id="flamingoResultResponses.personAnswered" datatype="html">
         <source>This person answered:</source>
-        <target state="needs-l10n">Diese Person antwortete:</target>
+        <target state="translated">Diese Person antwortete:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-result/result-responses/result-responses.component.html</context>
           <context context-type="linenumber">13</context>
@@ -1181,7 +1181,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.letsAddSomeSteps" datatype="html">
         <source>💪 Let's add some steps...</source>
-        <target state="needs-l10n">💪 Fügen wir ein paar Schritte hinzu...</target>
+        <target state="translated">💪 Fügen wir ein paar Schritte hinzu...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">25</context>
@@ -1189,7 +1189,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.selectStatus" datatype="html">
         <source> Select Status </source>
-        <target state="needs-l10n"> Status auswählen</target>
+        <target state="translated"> Status auswählen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">61,62</context>
@@ -1205,7 +1205,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.selectSection" datatype="html">
         <source> Select Section </source>
-        <target state="needs-l10n"> Abschnitt auswählen</target>
+        <target state="translated"> Abschnitt auswählen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">77,78</context>
@@ -1217,7 +1217,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.selectCF" datatype="html">
         <source> Select CF </source>
-        <target state="needs-l10n"> CF auswählen</target>
+        <target state="translated"> CF auswählen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">89,90</context>
@@ -1229,7 +1229,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.selectValue" datatype="html">
         <source> Select Value </source>
-        <target state="needs-l10n"> Wert auswählen</target>
+        <target state="translated"> Wert auswählen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">105,106</context>
@@ -1253,7 +1253,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.when" datatype="html">
         <source>WHEN</source>
-        <target state="needs-l10n">WENN</target>
+        <target state="translated">WENN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">146</context>
@@ -1261,7 +1261,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.selectTrigger" datatype="html">
         <source> Select trigger </source>
-        <target state="needs-l10n"> Auslöser wählen</target>
+        <target state="translated"> Auslöser wählen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">149,150</context>
@@ -1269,7 +1269,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.then" datatype="html">
         <source>THEN</source>
-        <target state="needs-l10n">DANN</target>
+        <target state="translated">DANN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">255</context>
@@ -1277,7 +1277,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.selectAction" datatype="html">
         <source> Select action </source>
-        <target state="needs-l10n"> Aktion auswählen</target>
+        <target state="translated"> Aktion auswählen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">258,259</context>
@@ -1293,15 +1293,15 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowsDialog.automator" datatype="html">
         <source>Automator</source>
-        <target state="needs-l10n">Automator</target>
+        <target state="translated">Automator</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flows-dialog/automation-flows-dialog.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupAutomationFlowsDialog.saveTime" datatype="html">
-        <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Turn your Octonius board into an automation machine.</source>
-        <target state="needs-l10n">Sparen Sie Zeit bei manuellen Prozessen und lassen Sie Octonius die schwere Arbeit erledigen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Verwandeln Sie Ihr Octonius-Board in eine Automatisierungsmaschine.</target>
+        <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Turn your Octonius board into an automation machine.</source>
+        <target state="translated">Sparen Sie Zeit bei manuellen Prozessen und lassen Sie Octonius die schwere Arbeit erledigen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Verwandeln Sie Ihr Octonius-Board in eine Automatisierungsmaschine.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flows-dialog/automation-flows-dialog.component.html</context>
           <context context-type="linenumber">19</context>
@@ -1309,7 +1309,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowsDialog.thereAreNoAutomations" datatype="html">
         <source>🌵 There are no automations...</source>
-        <target state="needs-l10n">🌵 Es gibt keine Automatisierungen...</target>
+        <target state="translated">🌵 Es gibt keine Automatisierungen...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flows-dialog/automation-flows-dialog.component.html</context>
           <context context-type="linenumber">23</context>
@@ -1317,7 +1317,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowsDialog.newAutomation" datatype="html">
         <source>New automation</source>
-        <target state="needs-l10n">Neue Automatisierung</target>
+        <target state="translated">Neue Automatisierung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flows-dialog/automation-flows-dialog.component.html</context>
           <context context-type="linenumber">29</context>
@@ -1325,7 +1325,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowsDialog.currentAutomations" datatype="html">
         <source>Current automations in action for this board</source>
-        <target state="needs-l10n">Aktuelle Automatisierungen in Aktion für dieses Board</target>
+        <target state="translated">Aktuelle Automatisierungen in Aktion für dieses Board</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flows-dialog/automation-flows-dialog.component.html</context>
           <context context-type="linenumber">34</context>
@@ -1341,7 +1341,7 @@
       </trans-unit>
       <trans-unit id="groupCFDialog.createCustomFields" datatype="html">
         <source>Create custom fields to improve how you organize your workflows in task boards.</source>
-        <target state="needs-l10n">Erstellen Sie benutzerdefinierte Felder, um die Organisation Ihrer Arbeitsabläufe in Aufgabentafeln zu verbessern.</target>
+        <target state="translated">Erstellen Sie benutzerdefinierte Felder, um die Organisation Ihrer Arbeitsabläufe in Aufgabentafeln zu verbessern.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.html</context>
           <context context-type="linenumber">17</context>
@@ -1349,7 +1349,7 @@
       </trans-unit>
       <trans-unit id="groupCFDialog.thereAreNoCustomFields" datatype="html">
         <source>🌵 There are no custom fields...</source>
-        <target state="needs-l10n">🌵 Es gibt keine benutzerdefinierten Felder...</target>
+        <target state="translated">🌵 Es gibt keine benutzerdefinierten Felder...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.html</context>
           <context context-type="linenumber">21</context>
@@ -1357,7 +1357,7 @@
       </trans-unit>
       <trans-unit id="groupCFDialog.addCustomField" datatype="html">
         <source>ADD CUSTOM FIELD</source>
-        <target state="needs-l10n">BENUTZERDEFINIERTES FELD HINZUFÜGEN</target>
+        <target state="translated">BENUTZERDEFINIERTES FELD HINZUFÜGEN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.html</context>
           <context context-type="linenumber">58</context>
@@ -1389,7 +1389,7 @@
       </trans-unit>
       <trans-unit id="deleteGroup.keepInMindIrreversible" datatype="html">
         <source>Please keep in mind that this action is irreversible.</source>
-        <target state="needs-l10n">Bitte beachten Sie, dass diese Maßnahme nicht rückgängig zu machen ist.</target>
+        <target state="translated">Bitte beachten Sie, dass diese Maßnahme nicht rückgängig zu machen ist.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/delete-group/delete-group.component.html</context>
           <context context-type="linenumber">7</context>
@@ -1413,7 +1413,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.group" datatype="html">
         <source><x id="INTERPOLATION" equiv-text="{{ groupData.group_name }}"/> group</source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="{{ groupData.group_name }}"/> group</target>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ groupData.group_name }}"/> group</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">6</context>
@@ -1428,8 +1428,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.searchForOtherEmployees" datatype="html">
-        <source>Search for other employees within the organization and add them to your Group. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> This is how you usually create your team.</source>
-        <target state="needs-l10n">Suchen Sie nach anderen Mitarbeitern innerhalb der Organisation und fügen Sie sie zu Ihrer Gruppe hinzu. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Auf diese Weise erstellen Sie normalerweise Ihr Team.</target>
+        <source>Search for other employees within the organization and add them to your Group. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> This is how you usually create your team.</source>
+        <target state="translated">Suchen Sie nach anderen Mitarbeitern innerhalb der Organisation und fügen Sie sie zu Ihrer Gruppe hinzu. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Auf diese Weise erstellen Sie normalerweise Ihr Team.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">18</context>
@@ -1437,7 +1437,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.shareFiles" datatype="html">
         <source>Share files with the organization</source>
-        <target state="needs-l10n">Dateien mit der Organisation teilen</target>
+        <target state="translated">Dateien mit der Organisation teilen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">58</context>
@@ -1445,7 +1445,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.makesAllFilesAccessible" datatype="html">
         <source>This option makes all the files from this group accessible to the entire organization</source>
-        <target state="needs-l10n">Diese Option macht alle Dateien dieser Gruppe für die gesamte Organisation zugänglich</target>
+        <target state="translated">Diese Option macht alle Dateien dieser Gruppe für die gesamte Organisation zugänglich</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">59</context>
@@ -1453,15 +1453,15 @@
       </trans-unit>
       <trans-unit id="groupAdmin.enableBAR" datatype="html">
         <source>Enable board access rights</source>
-        <target state="needs-l10n">Zugriffsrechte auf das Board aktivieren</target>
+        <target state="translated">Zugriffsrechte auf das Board aktivieren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">69</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.BARAllowAdminsToChose" datatype="html">
-        <source>BARs allow admins to chose who can see and work on specific tasks.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Sometimes this is necessary for transversal projects.</source>
-        <target state="needs-l10n">Mit BARs können Administratoren festlegen, wer bestimmte Aufgaben sehen und bearbeiten kann.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Manchmal ist dies für übergreifende Projekte notwendig.</target>
+        <source>BARs allow admins to chose who can see and work on specific tasks.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Sometimes this is necessary for transversal projects.</source>
+        <target state="translated">Mit BARs können Administratoren festlegen, wer bestimmte Aufgaben sehen und bearbeiten kann.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Manchmal ist dies für übergreifende Projekte notwendig.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">70</context>
@@ -1469,7 +1469,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.manageBAR" datatype="html">
         <source>Manage BAR</source>
-        <target state="needs-l10n">BAR verwalten</target>
+        <target state="translated">BAR verwalten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">71</context>
@@ -1477,7 +1477,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.enableProjectFeatures" datatype="html">
         <source>Enable Project Features</source>
-        <target state="needs-l10n">Projektfunktionen aktivieren</target>
+        <target state="translated">Projektfunktionen aktivieren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">81</context>
@@ -1485,7 +1485,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.enableAdvancedProjectFunctionalities" datatype="html">
         <source> This will enable all advanced project related funtionalities like: timeline, project planning etc.</source>
-        <target state="needs-l10n"> Dies ermöglicht alle fortgeschrittenen projektbezogenen Funktionen wie: Zeitleiste, Projektplanung usw.</target>
+        <target state="translated"> Dies ermöglicht alle fortgeschrittenen projektbezogenen Funktionen wie: Zeitleiste, Projektplanung usw.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">82</context>
@@ -1493,7 +1493,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.enableTaskAllocation" datatype="html">
         <source>Enable Tasks Allocation</source>
-        <target state="needs-l10n">Aktivieren der Aufgabenzuweisung</target>
+        <target state="translated">Aktivieren der Aufgabenzuweisung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">92</context>
@@ -1501,7 +1501,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.enableAllocationsFeaturesOnTasks" datatype="html">
         <source> This will enable allocation features on the tasks and resource management.</source>
-        <target state="needs-l10n"> Dies ermöglicht die Zuweisung von Aufgaben und die Verwaltung von Ressourcen.</target>
+        <target state="translated"> Dies ermöglicht die Zuweisung von Aufgaben und die Verwaltung von Ressourcen.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">93</context>
@@ -1509,7 +1509,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.enableCampaignFeature" datatype="html">
         <source>Enable Campaign Features?</source>
-        <target state="needs-l10n">Aktivieren Sie Kampagnenfunktionen?</target>
+        <target state="translated">Aktivieren Sie Kampagnenfunktionen?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">103</context>
@@ -1517,7 +1517,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.enableAllCampaign" datatype="html">
         <source> This will enable all the campaign related functionalities.</source>
-        <target state="needs-l10n"> Dadurch werden alle kampagnenbezogenen Funktionalitäten aktiviert.</target>
+        <target state="translated"> Dadurch werden alle kampagnenbezogenen Funktionalitäten aktiviert.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">104</context>
@@ -1525,7 +1525,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.enableTaskShuttle" datatype="html">
         <source>Enable Task Shuttle</source>
-        <target state="needs-l10n">Task Shuttle einschalten</target>
+        <target state="translated">Task Shuttle einschalten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">115</context>
@@ -1533,7 +1533,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.taskShuttleAllowYourGroup" datatype="html">
         <source>Task Shuttle allows your group to receive tasks from other groups. Select the section that will receive all Shuttle Tasks.</source>
-        <target state="needs-l10n">Task Shuttle ermöglicht es Ihrer Gruppe, Aufgaben von anderen Gruppen zu erhalten. Wählen Sie den Bereich, der alle Shuttle-Aufgaben erhalten soll.</target>
+        <target state="translated">Task Shuttle ermöglicht es Ihrer Gruppe, Aufgaben von anderen Gruppen zu erhalten. Wählen Sie den Bereich, der alle Shuttle-Aufgaben erhalten soll.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">117</context>
@@ -1541,15 +1541,15 @@
       </trans-unit>
       <trans-unit id="groupBARDialog.boarAccessRights" datatype="html">
         <source>Board Access Rights [BAR]</source>
-        <target state="needs-l10n">Board Access Rights [BAR]</target>
+        <target state="translated">Board Access Rights [BAR]</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
           <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBARDialog.createRulesToManage" datatype="html">
-        <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
-        <target state="needs-l10n"> Erstellen Sie Regeln zur Verwaltung der Zugriffsrechte auf das Board und wählen Sie aus, welche Mitglieder bestimmte Aufgaben sehen können. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Standardmäßig sind alle Aufgaben für das Team sichtbar, aber mit BAR-Tags können Sie den Zugriff steuern</target>
+        <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
+        <target state="translated"> Erstellen Sie Regeln zur Verwaltung der Zugriffsrechte auf das Board und wählen Sie aus, welche Mitglieder bestimmte Aufgaben sehen können. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Standardmäßig sind alle Aufgaben für das Team sichtbar, aber mit BAR-Tags können Sie den Zugriff steuern</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
           <context context-type="linenumber">15,17</context>
@@ -1557,7 +1557,7 @@
       </trans-unit>
       <trans-unit id="groupBARDialog.alwayseStriveTransparency" datatype="html">
         <source>🎉 Always strive for transparency...</source>
-        <target state="needs-l10n">🎉 Streben Sie stets nach Transparenz...</target>
+        <target state="translated">🎉 Streben Sie stets nach Transparenz...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
           <context context-type="linenumber">20</context>
@@ -1565,7 +1565,7 @@
       </trans-unit>
       <trans-unit id="groupBARDialog.tasksAreVisibleFor" datatype="html">
         <source>tasks are visible for</source>
-        <target state="needs-l10n">aufgaben sind sichtbar für</target>
+        <target state="translated">aufgaben sind sichtbar für</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
           <context context-type="linenumber">25</context>
@@ -1573,7 +1573,7 @@
       </trans-unit>
       <trans-unit id="groupBARDialog.addRule" datatype="html">
         <source>ADD RULE</source>
-        <target state="needs-l10n">REGEL HINZUFÜGEN</target>
+        <target state="translated">REGEL HINZUFÜGEN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
           <context context-type="linenumber">54</context>
@@ -1597,7 +1597,7 @@
       </trans-unit>
       <trans-unit id="groupSmartAdmin.groupWillAutomaticallyAdd" datatype="html">
         <source>This group will automatically add people with the following rules:</source>
-        <target state="needs-l10n">Diese Gruppe fügt automatisch Personen mit den folgenden Regeln hinzu:</target>
+        <target state="translated">Diese Gruppe fügt automatisch Personen mit den folgenden Regeln hinzu:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-smart-admin/group-smart-admin.component.html</context>
           <context context-type="linenumber">4</context>
@@ -1605,7 +1605,7 @@
       </trans-unit>
       <trans-unit id="groupSmartAdmin.emailDomains" datatype="html">
         <source>Email domains</source>
-        <target state="needs-l10n">E-Mail-Domänen</target>
+        <target state="translated">E-Mail-Domänen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-smart-admin/group-smart-admin.component.html</context>
           <context context-type="linenumber">8</context>
@@ -1637,7 +1637,7 @@
       </trans-unit>
       <trans-unit id="groupSmartAdmin.newRule" datatype="html">
         <source>New rule</source>
-        <target state="needs-l10n">Neue Regel</target>
+        <target state="translated">Neue Regel</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-smart-admin/group-smart-admin.component.html</context>
           <context context-type="linenumber">70</context>
@@ -1645,7 +1645,7 @@
       </trans-unit>
       <trans-unit id="groupInviteUser.inviteGuest" datatype="html">
         <source>Invite a guest?</source>
-        <target state="needs-l10n">Einen Gast einladen?</target>
+        <target state="translated">Einen Gast einladen?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/invite-user/invite-user.component.html</context>
           <context context-type="linenumber">6</context>
@@ -1653,7 +1653,7 @@
       </trans-unit>
       <trans-unit id="groupInviteUser.guestMembersHaveAccess" datatype="html">
         <source>Guest members have access only to the group they are invited. They can not see any private or public groups from your organization.</source>
-        <target state="needs-l10n">Gastmitglieder haben nur Zugriff auf die Gruppe, zu der sie eingeladen wurden. Sie können keine privaten oder öffentlichen Gruppen Ihrer Organisation sehen.</target>
+        <target state="translated">Gastmitglieder haben nur Zugriff auf die Gruppe, zu der sie eingeladen wurden. Sie können keine privaten oder öffentlichen Gruppen Ihrer Organisation sehen.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/invite-user/invite-user.component.html</context>
           <context context-type="linenumber">8</context>
@@ -1669,7 +1669,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.previous" datatype="html">
         <source> Previous </source>
-        <target state="needs-l10n"> Vorherige</target>
+        <target state="translated"> Vorherige</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.html</context>
           <context context-type="linenumber">8,9</context>
@@ -1677,7 +1677,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.today" datatype="html">
         <source> Today </source>
-        <target state="needs-l10n"> Heute</target>
+        <target state="translated"> Heute</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.html</context>
           <context context-type="linenumber">11,12</context>
@@ -1685,7 +1685,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.next" datatype="html">
         <source> Next </source>
-        <target state="needs-l10n"> Weiter</target>
+        <target state="translated"> Weiter</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.html</context>
           <context context-type="linenumber">15,16</context>
@@ -1693,7 +1693,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.month" datatype="html">
         <source> Month </source>
-        <target state="needs-l10n"> Monat</target>
+        <target state="translated"> Monat</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.html</context>
           <context context-type="linenumber">26,27</context>
@@ -1701,7 +1701,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.week" datatype="html">
         <source> Week </source>
-        <target state="needs-l10n"> Woche</target>
+        <target state="translated"> Woche</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.html</context>
           <context context-type="linenumber">30,31</context>
@@ -1709,7 +1709,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.day" datatype="html">
         <source> Day </source>
-        <target state="needs-l10n"> Tag</target>
+        <target state="translated"> Tag</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.html</context>
           <context context-type="linenumber">34,35</context>
@@ -1717,7 +1717,7 @@
       </trans-unit>
       <trans-unit id="groupDashboard.everythingHappeningYourTeam" datatype="html">
         <source>Everything happening in your team</source>
-        <target state="needs-l10n">Alles, was in Ihrem Team passiert</target>
+        <target state="translated">Alles, was in Ihrem Team passiert</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-dashboard/group-dashboard.component.html</context>
           <context context-type="linenumber">3</context>
@@ -1725,7 +1725,7 @@
       </trans-unit>
       <trans-unit id="advancedFilterDialog.filterCF" datatype="html">
         <source> Filter by Custom Fields </source>
-        <target state="needs-l10n"> Nach benutzerdefinierten Feldern filtern</target>
+        <target state="translated"> Nach benutzerdefinierten Feldern filtern</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/advanced-filter-dialog/advanced-filter-dialog.component.html</context>
           <context context-type="linenumber">9,10</context>
@@ -1733,7 +1733,7 @@
       </trans-unit>
       <trans-unit id="advancedFilterDialog.customFieldsArePowerful" datatype="html">
         <source>Custom fields are a powerful way to manage tasks and workload.</source>
-        <target state="needs-l10n">Benutzerdefinierte Felder sind eine leistungsstarke Methode zur Verwaltung von Aufgaben und Arbeitsbelastung.</target>
+        <target state="translated">Benutzerdefinierte Felder sind eine leistungsstarke Methode zur Verwaltung von Aufgaben und Arbeitsbelastung.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/advanced-filter-dialog/advanced-filter-dialog.component.html</context>
           <context context-type="linenumber">14</context>
@@ -1757,7 +1757,7 @@
       </trans-unit>
       <trans-unit id="advancedFilterDialog.cancel" datatype="html">
         <source>X Cancel</source>
-        <target state="needs-l10n">X Abbrechen</target>
+        <target state="translated">X Abbrechen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/advanced-filter-dialog/advanced-filter-dialog.component.html</context>
           <context context-type="linenumber">45</context>
@@ -1797,7 +1797,7 @@
       </trans-unit>
       <trans-unit id="groupBoardBar.automator" datatype="html">
         <source>Automator</source>
-        <target state="needs-l10n">Automator</target>
+        <target state="translated">Automator</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
           <context context-type="linenumber">39</context>
@@ -1805,7 +1805,7 @@
       </trans-unit>
       <trans-unit id="groupBoardBar.boardViews" datatype="html">
         <source>Board Views</source>
-        <target state="needs-l10n">Ansichten des Vorstands</target>
+        <target state="translated">Board Views</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
           <context context-type="linenumber">49</context>
@@ -1813,7 +1813,7 @@
       </trans-unit>
       <trans-unit id="groupBoardBar.kanbanBoard" datatype="html">
         <source>Kanban Board</source>
-        <target state="needs-l10n">Kanban-Tafel</target>
+        <target state="translated">Kanban-Board</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
           <context context-type="linenumber">56</context>
@@ -1917,7 +1917,7 @@
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.beforeToday" datatype="html">
         <source>Before today</source>
-        <target state="needs-l10n">Vor heute</target>
+        <target state="translated">Vor heute</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
           <context context-type="linenumber">153</context>
@@ -1957,7 +1957,7 @@
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.next14Days" datatype="html">
         <source>Next 14 days</source>
-        <target state="needs-l10n">Nächste 14 Tage</target>
+        <target state="translated">Nächste 14 Tage</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
           <context context-type="linenumber">173</context>
@@ -1997,7 +1997,7 @@
       </trans-unit>
       <trans-unit id="columnProjectSection.addBudget" datatype="html">
         <source>Add budget</source>
-        <target state="needs-l10n">Haushalt hinzufügen</target>
+        <target state="translated">Haushalt hinzufügen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/column-project-section/column-project-section.component.html</context>
           <context context-type="linenumber">23</context>
@@ -2037,7 +2037,7 @@
       </trans-unit>
       <trans-unit id="createProjectColumnDialog.projectSetup" datatype="html">
         <source>Project Setup</source>
-        <target state="needs-l10n">Projekt einrichten</target>
+        <target state="translated">Projekt einrichten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/create-project-column-dialog/create-project-column-dialog.component.html</context>
           <context context-type="linenumber">4</context>
@@ -2045,7 +2045,7 @@
       </trans-unit>
       <trans-unit id="createProjectColumnDialog.launchProject" datatype="html">
         <source>Launch as Project</source>
-        <target state="needs-l10n">Als Projekt starten</target>
+        <target state="translated">Als Projekt starten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/create-project-column-dialog/create-project-column-dialog.component.html</context>
           <context context-type="linenumber">11</context>
@@ -2053,7 +2053,7 @@
       </trans-unit>
       <trans-unit id="createProjectColumnDialog.allowsYouToPlan" datatype="html">
         <source>Allows you to plan and manage this section as a project.</source>
-        <target state="needs-l10n">Ermöglicht es Ihnen, diesen Abschnitt als Projekt zu planen und zu verwalten.</target>
+        <target state="translated">Ermöglicht es Ihnen, diesen Abschnitt als Projekt zu planen und zu verwalten.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/create-project-column-dialog/create-project-column-dialog.component.html</context>
           <context context-type="linenumber">14</context>
@@ -2061,7 +2061,7 @@
       </trans-unit>
       <trans-unit id="createProjectColumnDialog.selectStartDueDate" datatype="html">
         <source>Select a START and DUE DATE for your project.</source>
-        <target state="needs-l10n">Wählen Sie ein START- und FERTIGKEITSDATUM für Ihr Projekt.</target>
+        <target state="translated">Wählen Sie ein START- und FERTIGKEITSDATUM für Ihr Projekt.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/create-project-column-dialog/create-project-column-dialog.component.html</context>
           <context context-type="linenumber">18</context>
@@ -2085,7 +2085,7 @@
       </trans-unit>
       <trans-unit id="doneTasksKanbanView.doneArchived" datatype="html">
         <source>DONE (archived)</source>
-        <target state="needs-l10n">DONE (archiviert)</target>
+        <target state="translated">DONE (archiviert)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/done-tasks-kanban-view/done-tasks-kanban-view.component.html</context>
           <context context-type="linenumber">3</context>
@@ -2133,7 +2133,7 @@
       </trans-unit>
       <trans-unit id="groupDashboard.tasksDone" datatype="html">
         <source>Tasks</source>
-        <target state="needs-adaptation"> {{ spalte?.aufgaben?.länge }} Aufgaben {{ <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;float-right done&quot;&gt;"/> column?.numDoneTasks || 0 }} Erledigt <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Aufgaben</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.html</context>
@@ -2146,7 +2146,7 @@
       </trans-unit>
       <trans-unit id="groupDashboard.boardEmpty" datatype="html">
         <source>This board is empty. Create a section to add tasks. </source>
-        <target state="needs-l10n">Diese Tafel ist leer. Erstellen Sie einen Bereich, um Aufgaben hinzuzufügen</target>
+        <target state="translated">Diese Tafel ist leer. Erstellen Sie einen Bereich, um Aufgaben hinzuzufügen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.html</context>
           <context context-type="linenumber">186</context>
@@ -2154,7 +2154,7 @@
       </trans-unit>
       <trans-unit id="groupMembers.allMembersFromGroup" datatype="html">
         <source>All members from your group</source>
-        <target state="needs-l10n">Alle Mitglieder Ihrer Gruppe</target>
+        <target state="translated">Alle Mitglieder Ihrer Gruppe</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-members/group-members.component.html</context>
           <context context-type="linenumber">6</context>
@@ -2162,7 +2162,7 @@
       </trans-unit>
       <trans-unit id="groupReports.yourCampaignFiles" datatype="html">
         <source>Your Campaign Files</source>
-        <target state="needs-l10n">Ihre Kampagnendateien</target>
+        <target state="translated">Ihre Kampagnendateien</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-reports/group-reports.component.html</context>
           <context context-type="linenumber">2</context>
@@ -2170,7 +2170,7 @@
       </trans-unit>
       <trans-unit id="createSection.addNewSection" datatype="html">
         <source> + ADD NEW SECTION </source>
-        <target state="needs-l10n"> + NEUEN ABSCHNITT HINZUFÜGEN</target>
+        <target state="translated"> + NEUEN ABSCHNITT HINZUFÜGEN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/create-section/create-section.component.html</context>
           <context context-type="linenumber">5,6</context>
@@ -2178,7 +2178,7 @@
       </trans-unit>
       <trans-unit id="doneTasksListView.tags" datatype="html">
         <source> Tags </source>
-        <target state="needs-l10n"> Tags</target>
+        <target state="translated">Tags: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/done-tasks-list-view/done-tasks-list-view.component.html</context>
           <context context-type="linenumber">38</context>
@@ -2186,7 +2186,7 @@
       </trans-unit>
       <trans-unit id="doneTasksListView.assignee" datatype="html">
         <source> Assignee </source>
-        <target state="needs-l10n"> Rechtsnachfolger</target>
+        <target state="translated"> Rechtsnachfolger</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/done-tasks-list-view/done-tasks-list-view.component.html</context>
           <context context-type="linenumber">60</context>
@@ -2194,7 +2194,7 @@
       </trans-unit>
       <trans-unit id="doneTasksListView.dueDate" datatype="html">
         <source> Due Date </source>
-        <target state="needs-l10n"> Fälligkeitsdatum</target>
+        <target state="translated"> Fälligkeitsdatum</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/done-tasks-list-view/done-tasks-list-view.component.html</context>
           <context context-type="linenumber">68</context>
@@ -2210,7 +2210,7 @@
       </trans-unit>
       <trans-unit id="groupTasksListView.emptyBoard" datatype="html">
         <source>This board is empty. Create a section to add tasks. </source>
-        <target state="needs-l10n">Diese Tafel ist leer. Erstellen Sie einen Bereich, um Aufgaben hinzuzufügen</target>
+        <target state="translated">Diese Tafel ist leer. Erstellen Sie einen Bereich, um Aufgaben hinzuzufügen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/group-tasks-list-view.component.html</context>
           <context context-type="linenumber">56</context>
@@ -2218,7 +2218,7 @@
       </trans-unit>
       <trans-unit id="asksTableView.title" datatype="html">
         <source> Title </source>
-        <target state="needs-l10n"> Titel</target>
+        <target state="translated"> Titel</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
           <context context-type="linenumber">5</context>
@@ -2226,7 +2226,7 @@
       </trans-unit>
       <trans-unit id="asksTableView.tags" datatype="html">
         <source> Tags </source>
-        <target state="needs-l10n"> Tags</target>
+        <target state="translated">Tags: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
           <context context-type="linenumber">34</context>
@@ -2234,7 +2234,7 @@
       </trans-unit>
       <trans-unit id="asksTableView.assignee" datatype="html">
         <source> Assignee </source>
-        <target state="needs-l10n"> Rechtsnachfolger</target>
+        <target state="translated"> Rechtsnachfolger</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
           <context context-type="linenumber">56</context>
@@ -2242,7 +2242,7 @@
       </trans-unit>
       <trans-unit id="asksTableView.dueDate" datatype="html">
         <source> Due Date </source>
-        <target state="needs-l10n"> Fälligkeitsdatum</target>
+        <target state="translated"> Fälligkeitsdatum</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
           <context context-type="linenumber">64</context>
@@ -2290,7 +2290,7 @@
       </trans-unit>
       <trans-unit id="createGroup.agora" datatype="html">
         <source>Agora</source>
-        <target state="needs-l10n">Agora</target>
+        <target state="translated">AGORA</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/create-group/create-group.component.html</context>
           <context context-type="linenumber">18</context>
@@ -2298,7 +2298,7 @@
       </trans-unit>
       <trans-unit id="groupList.members" datatype="html">
         <source>Members</source>
-        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{ (group?._members.length + group?._admins.length) || 0 }}"/> Mitglieder</target>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ (group?._members.length + group?._admins.length) || 0 }}"/>Mitglieder</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
@@ -2335,7 +2335,7 @@
       </trans-unit>
       <trans-unit id="forgotPassword.recievieEmailToReset" datatype="html">
         <source>Receive email to reset your password</source>
-        <target state="needs-l10n">E-Mail zum Zurücksetzen Ihres Passworts erhalten</target>
+        <target state="translated">E-Mail zum Zurücksetzen Ihres Passworts erhalten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/forgot-password/forgot-password.component.html</context>
           <context context-type="linenumber">3</context>
@@ -2359,7 +2359,7 @@
       </trans-unit>
       <trans-unit id="welcomePage.logInYourAccount" datatype="html">
         <source> Log in to your account </source>
-        <target state="needs-l10n"> Bei Ihrem Konto anmelden</target>
+        <target state="translated"> Bei Ihrem Konto anmelden</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
           <context context-type="linenumber">15,16</context>
@@ -2367,7 +2367,7 @@
       </trans-unit>
       <trans-unit id="welcomePage.enterYourWorkEmail" datatype="html">
         <source>Enter your work email address</source>
-        <target state="needs-l10n">Geben Sie Ihre Arbeits-E-Mail-Adresse ein</target>
+        <target state="translated">Geben Sie Ihre Arbeits-E-Mail-Adresse ein</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
           <context context-type="linenumber">19</context>
@@ -2399,7 +2399,7 @@
       </trans-unit>
       <trans-unit id="welcomePage.firstTimeHere" datatype="html">
         <source> First time here? Create your account. </source>
-        <target state="needs-l10n"> Zum ersten Mal hier? Erstellen Sie Ihr Konto</target>
+        <target state="translated"> Zum ersten Mal hier? Erstellen Sie Ihr Konto</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
           <context context-type="linenumber">46,47</context>
@@ -2407,7 +2407,7 @@
       </trans-unit>
       <trans-unit id="welcomePage.signUp" datatype="html">
         <source> SIGN UP </source>
-        <target state="needs-l10n"> ANMELDEN</target>
+        <target state="translated"> ANMELDEN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
           <context context-type="linenumber">51,52</context>
@@ -2431,7 +2431,7 @@
       </trans-unit>
       <trans-unit id="myspaceHeader.mySpace" datatype="html">
         <source>My Space</source>
-        <target state="needs-l10n">Mein Raum</target>
+        <target state="translated">Mein Raum</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-header/myspace-header.component.html</context>
           <context context-type="linenumber">9</context>
@@ -2447,7 +2447,7 @@
       </trans-unit>
       <trans-unit id="myspaceHeader.myTasks" datatype="html">
         <source>My tasks</source>
-        <target state="needs-l10n">Meine Aufgaben</target>
+        <target state="translated">Meine Aufgaben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-header/myspace-header.component.html</context>
           <context context-type="linenumber">19</context>
@@ -2455,7 +2455,7 @@
       </trans-unit>
       <trans-unit id="myspaceHeader.personalWorkspace" datatype="html">
         <source>Personal workplace</source>
-        <target state="needs-l10n">Persönlicher Arbeitsplatz</target>
+        <target state="translated">Persönlicher Arbeitsplatz</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-header/myspace-header.component.html</context>
           <context context-type="linenumber">26</context>
@@ -2463,7 +2463,7 @@
       </trans-unit>
       <trans-unit id="recentActivity.recentActivities" datatype="html">
         <source>Recent activities</source>
-        <target state="needs-l10n">Jüngste Aktivitäten</target>
+        <target state="translated">Jüngste Aktivitäten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">8</context>
@@ -2475,7 +2475,7 @@
       </trans-unit>
       <trans-unit id="recentActivity.nothingNew" datatype="html">
         <source>Nothing new. Take a breath. </source>
-        <target state="needs-l10n">Nichts Neues. Atmen Sie durch</target>
+        <target state="translated">Nichts Neues. Atmen Sie durch</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">16</context>
@@ -2523,7 +2523,7 @@
       </trans-unit>
       <trans-unit id="recentActivity.newsFeed" datatype="html">
         <source>News feed</source>
-        <target state="needs-l10n">News-Feed</target>
+        <target state="translated">News-Feed</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">102</context>
@@ -2535,7 +2535,7 @@
       </trans-unit>
       <trans-unit id="recentActivity.everyoneIsSilent" datatype="html">
         <source>Everyone is silent. </source>
-        <target state="needs-l10n">Alle sind still</target>
+        <target state="translated">Alle sind still</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">110</context>
@@ -2543,7 +2543,7 @@
       </trans-unit>
       <trans-unit id="recentGroups.recentWork" datatype="html">
         <source> Recent work </source>
-        <target state="needs-l10n"> Jüngste Arbeiten</target>
+        <target state="translated"> Jüngste Arbeiten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-groups/recent-groups.component.html</context>
           <context context-type="linenumber">6,7</context>
@@ -2551,7 +2551,7 @@
       </trans-unit>
       <trans-unit id="mySpaceTasks.done" datatype="html">
         <source>Done. That's a wrap! </source>
-        <target state="needs-l10n">Erledigt. Das war's!</target>
+        <target state="translated">Erledigt. Das war's!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-tasks/myspace-tasks.component.html</context>
           <context context-type="linenumber">6</context>
@@ -2559,7 +2559,7 @@
       </trans-unit>
       <trans-unit id="mySpaceTasks.today" datatype="html">
         <source> Today </source>
-        <target state="needs-l10n"> Heute</target>
+        <target state="translated"> Heute</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-tasks/myspace-tasks.component.html</context>
           <context context-type="linenumber">13,14</context>
@@ -2567,7 +2567,7 @@
       </trans-unit>
       <trans-unit id="mySpaceTasks.overdue" datatype="html">
         <source> OVERDUE </source>
-        <target state="needs-l10n"> OVERDUE</target>
+        <target state="translated"> OVERDUE</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-tasks/myspace-tasks.component.html</context>
           <context context-type="linenumber">38,39</context>
@@ -2623,7 +2623,7 @@
       </trans-unit>
       <trans-unit id="mySpaceTasks.futureTasks" datatype="html">
         <source>Future Tasks</source>
-        <target state="needs-l10n">Künftige Aufgaben</target>
+        <target state="translated">Künftige Aufgaben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-tasks/myspace-tasks.component.html</context>
           <context context-type="linenumber">338</context>
@@ -2647,7 +2647,7 @@
       </trans-unit>
       <trans-unit id="searchHeader.files" datatype="html">
         <source>FILES</source>
-        <target state="needs-l10n">DATEIEN</target>
+        <target state="translated">DATEIEN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
           <context context-type="linenumber">14</context>
@@ -2655,7 +2655,7 @@
       </trans-unit>
       <trans-unit id="searchResult.title" datatype="html">
         <source>Title: </source>
-        <target state="needs-l10n">Titel</target>
+        <target state="translated">Titel</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
           <context context-type="linenumber">3</context>
@@ -2695,7 +2695,7 @@
       </trans-unit>
       <trans-unit id="searchResult.fileName" datatype="html">
         <source>File Name: </source>
-        <target state="needs-l10n">Dateiname</target>
+        <target state="translated">Datei Upload</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
           <context context-type="linenumber">31</context>
@@ -2727,7 +2727,7 @@
       </trans-unit>
       <trans-unit id="connectGoogleCloud.google" datatype="html">
         <source> Google</source>
-        <target state="needs-l10n"> Google</target>
+        <target state="translated"> Google</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/google-cloud/connect-google-cloud/connect-google-cloud.component.html</context>
           <context context-type="linenumber">4</context>
@@ -2767,7 +2767,7 @@
       </trans-unit>
       <trans-unit id="googleAccountDetails.driveUsage" datatype="html">
         <source>Drive Usage</source>
-        <target state="needs-l10n">Verwendung des Laufwerks</target>
+        <target state="translated">Verwendung des Laufwerks</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/google-cloud/google-account-details/google-account-details.component.html</context>
           <context context-type="linenumber">19</context>
@@ -2775,7 +2775,7 @@
       </trans-unit>
       <trans-unit id="connectSlack.slack" datatype="html">
         <source> Slack</source>
-        <target state="needs-l10n"> Slack</target>
+        <target state="translated"> Slack</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/slack/connect-slack/connect-slack.component.html</context>
           <context context-type="linenumber">4</context>
@@ -2831,7 +2831,7 @@
       </trans-unit>
       <trans-unit id="teamsAuthConfirmation.octoniusForMSTeams" datatype="html">
         <source> Octonius for Microsoft Teams is requesting permission to access your Octonius account </source>
-        <target state="needs-l10n"> Octonius für Microsoft Teams bittet um die Erlaubnis, auf Ihr Octonius-Konto zuzugreifen</target>
+        <target state="translated"> Octonius für Microsoft Teams bittet um die Erlaubnis, auf Ihr Octonius-Konto zuzugreifen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/team/team-auth-confirmation/team-auth-confirmation.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -2839,7 +2839,7 @@
       </trans-unit>
       <trans-unit id="teamsAuthConfirmation.authorizeThisApp" datatype="html">
         <source> If you authorize this app, you will give it permission to: </source>
-        <target state="needs-l10n"> Wenn Sie diese Anwendung autorisieren, geben Sie ihr die Erlaubnis,</target>
+        <target state="translated"> Wenn Sie diese Anwendung autorisieren, geben Sie ihr die Erlaubnis,</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/team/team-auth-confirmation/team-auth-confirmation.component.html</context>
           <context context-type="linenumber">7,8</context>
@@ -2847,7 +2847,7 @@
       </trans-unit>
       <trans-unit id="teamsAuthConfirmation.nameAndEmail" datatype="html">
         <source>Access your name and email address.</source>
-        <target state="needs-l10n">Geben Sie Ihren Namen und Ihre E-Mail-Adresse ein.</target>
+        <target state="translated">Geben Sie Ihren Namen und Ihre E-Mail-Adresse ein.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/team/team-auth-confirmation/team-auth-confirmation.component.html</context>
           <context context-type="linenumber">10</context>
@@ -2855,7 +2855,7 @@
       </trans-unit>
       <trans-unit id="teamsAuthConfirmation.accessTasksProjectsWorkplace" datatype="html">
         <source>Access your tasks, projects, and workplace.</source>
-        <target state="needs-l10n">Greifen Sie auf Ihre Aufgaben, Projekte und Ihren Arbeitsplatz zu.</target>
+        <target state="translated">Greifen Sie auf Ihre Aufgaben, Projekte und Ihren Arbeitsplatz zu.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/team/team-auth-confirmation/team-auth-confirmation.component.html</context>
           <context context-type="linenumber">11</context>
@@ -2863,7 +2863,7 @@
       </trans-unit>
       <trans-unit id="teamsAuthConfirmation.createTasksProjects" datatype="html">
         <source>Create and modify tasks, projects, and comments on your behalf.</source>
-        <target state="needs-l10n">Erstellen und ändern Sie Aufgaben, Projekte und Kommentare in Ihrem Namen.</target>
+        <target state="translated">Erstellen und ändern Sie Aufgaben, Projekte und Kommentare in Ihrem Namen.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/team/team-auth-confirmation/team-auth-confirmation.component.html</context>
           <context context-type="linenumber">12</context>
@@ -2895,7 +2895,7 @@
       </trans-unit>
       <trans-unit id="zapAuthConfirmation.requestingPermission" datatype="html">
         <source> Zapier is requesting permission to access your Octonius account </source>
-        <target state="needs-l10n"> Zapier fordert die Erlaubnis zum Zugriff auf Ihr Octonius-Konto an</target>
+        <target state="translated"> Zapier fordert die Erlaubnis zum Zugriff auf Ihr Octonius-Konto an</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/zapier/zap-auth-confirmation/zap-auth-confirmation.component.html</context>
           <context context-type="linenumber">5,6</context>
@@ -2903,7 +2903,7 @@
       </trans-unit>
       <trans-unit id="zapAuthConfirmation.authorizeApp" datatype="html">
         <source> If you authorize this app, you will give it permission to: </source>
-        <target state="needs-l10n"> Wenn Sie diese Anwendung autorisieren, geben Sie ihr die Erlaubnis,</target>
+        <target state="translated"> Wenn Sie diese Anwendung autorisieren, geben Sie ihr die Erlaubnis,</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/zapier/zap-auth-confirmation/zap-auth-confirmation.component.html</context>
           <context context-type="linenumber">8,9</context>
@@ -2911,7 +2911,7 @@
       </trans-unit>
       <trans-unit id="zapAuthConfirmation.nameEmail" datatype="html">
         <source>Access your name and email address.</source>
-        <target state="needs-l10n">Geben Sie Ihren Namen und Ihre E-Mail-Adresse ein.</target>
+        <target state="translated">Geben Sie Ihren Namen und Ihre E-Mail-Adresse ein.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/zapier/zap-auth-confirmation/zap-auth-confirmation.component.html</context>
           <context context-type="linenumber">11</context>
@@ -2919,7 +2919,7 @@
       </trans-unit>
       <trans-unit id="zapAuthConfirmation.accessTasksProjectsWorplace" datatype="html">
         <source>Access your tasks, projects, and workplace.</source>
-        <target state="needs-l10n">Greifen Sie auf Ihre Aufgaben, Projekte und Ihren Arbeitsplatz zu.</target>
+        <target state="translated">Greifen Sie auf Ihre Aufgaben, Projekte und Ihren Arbeitsplatz zu.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/zapier/zap-auth-confirmation/zap-auth-confirmation.component.html</context>
           <context context-type="linenumber">12</context>
@@ -2927,7 +2927,7 @@
       </trans-unit>
       <trans-unit id="zapAuthConfirmation.createTasksProjects" datatype="html">
         <source>Create and modify tasks, projects, and comments on your behalf.</source>
-        <target state="needs-l10n">Erstellen und ändern Sie Aufgaben, Projekte und Kommentare in Ihrem Namen.</target>
+        <target state="translated">Erstellen und ändern Sie Aufgaben, Projekte und Kommentare in Ihrem Namen.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/zapier/zap-auth-confirmation/zap-auth-confirmation.component.html</context>
           <context context-type="linenumber">13</context>
@@ -3023,7 +3023,7 @@
       </trans-unit>
       <trans-unit id="userInformation.deleteAccount" datatype="html">
         <source> Delete Account </source>
-        <target state="needs-l10n"> Konto löschen</target>
+        <target state="translated"> Konto löschen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.html</context>
           <context context-type="linenumber">30,31</context>
@@ -3031,7 +3031,7 @@
       </trans-unit>
       <trans-unit id="userPasswordUpdate.passwordUpdate" datatype="html">
         <source>Password update</source>
-        <target state="needs-l10n">Passwort aktualisieren</target>
+        <target state="translated">Passwort aktualisieren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-password-update/user-password-update.component.html</context>
           <context context-type="linenumber">3</context>
@@ -3047,7 +3047,7 @@
       </trans-unit>
       <trans-unit id="userprofessionalInformation.yourProfessionalInformation" datatype="html">
         <source>Your professional information</source>
-        <target state="needs-l10n">Ihre beruflichen Informationen</target>
+        <target state="translated">Ihre beruflichen Informationen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-professional-information/user-professional-information.component.html</context>
           <context context-type="linenumber">3</context>
@@ -3055,7 +3055,7 @@
       </trans-unit>
       <trans-unit id="userprofessionalInformation.currentPosition" datatype="html">
         <source>Current Position:</source>
-        <target state="needs-l10n">Derzeitige Position:</target>
+        <target state="translated">Aktuell:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-professional-information/user-professional-information.component.html</context>
           <context context-type="linenumber">9</context>
@@ -3063,7 +3063,7 @@
       </trans-unit>
       <trans-unit id="userprofessionalInformation.companyJoiningDate" datatype="html">
         <source>Company Joining Date:</source>
-        <target state="needs-l10n">Datum des Unternehmensbeitritts:</target>
+        <target state="translated">Datum des Unternehmensbeitritts:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-professional-information/user-professional-information.component.html</context>
           <context context-type="linenumber">11</context>
@@ -3071,7 +3071,7 @@
       </trans-unit>
       <trans-unit id="userprofessionalInformation.groupsCount" datatype="html">
         <source>Groups Count:</source>
-        <target state="needs-l10n">Gruppen zählen:</target>
+        <target state="translated">Gruppen zählen:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-professional-information/user-professional-information.component.html</context>
           <context context-type="linenumber">13</context>
@@ -3095,7 +3095,7 @@
       </trans-unit>
       <trans-unit id="userSkills.yourSkills" datatype="html">
         <source>Your skills</source>
-        <target state="needs-l10n">Deine Fähigkeiten</target>
+        <target state="translated">Deine Fähigkeiten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-profile/user-skills/user-skills.component.html</context>
           <context context-type="linenumber">5</context>
@@ -3135,7 +3135,7 @@
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.previous" datatype="html">
         <source> Previous </source>
-        <target state="needs-l10n"> Vorherige</target>
+        <target state="translated"> Vorherige</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
           <context context-type="linenumber">6,7</context>
@@ -3143,7 +3143,7 @@
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.today" datatype="html">
         <source> Today </source>
-        <target state="needs-l10n"> Heute</target>
+        <target state="translated"> Heute</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
           <context context-type="linenumber">9,10</context>
@@ -3151,7 +3151,7 @@
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.next" datatype="html">
         <source> Next </source>
-        <target state="needs-l10n"> Weiter</target>
+        <target state="translated"> Weiter</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
           <context context-type="linenumber">12,13</context>
@@ -3159,7 +3159,7 @@
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.clean" datatype="html">
         <source> Clean </source>
-        <target state="needs-l10n"> Sauber</target>
+        <target state="translated"> Sauber</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
           <context context-type="linenumber">27,28</context>
@@ -3167,7 +3167,7 @@
       </trans-unit>
       <trans-unit id="dashboardPage.everythingHappening" datatype="html">
         <source>Everything happening in your organization</source>
-        <target state="needs-l10n">Alles, was in Ihrer Organisation passiert</target>
+        <target state="translated">Alles, was in Ihrer Organisation passiert</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/dashboard-page/dashboard-page.component.html</context>
           <context context-type="linenumber">3</context>
@@ -3191,7 +3191,7 @@
       </trans-unit>
       <trans-unit id="northStarPage.noMission" datatype="html">
         <source>There are no missions here... Let's create one.</source>
-        <target state="needs-l10n">Hier gibt es keine Missionen... Lass uns eine erstellen.</target>
+        <target state="translated">Hier gibt es keine Missionen... Lass uns eine erstellen.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">5</context>
@@ -3199,15 +3199,15 @@
       </trans-unit>
       <trans-unit id="northStarPage.whatIsNS" datatype="html">
         <source>What is a North Star?</source>
-        <target state="needs-l10n">Was ist ein Nordstern?</target>
+        <target state="translated">Was ist ein Nordstern?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStarPage.setAndAchieveStrategic" datatype="html">
-        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
-        <target state="needs-l10n"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun</target>
+        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
+        <target state="translated"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">16,18</context>
@@ -3215,15 +3215,15 @@
       </trans-unit>
       <trans-unit id="pulse.whatIsPulse" datatype="html">
         <source>What is a pulse?</source>
-        <target state="needs-l10n">Was ist ein Puls?</target>
+        <target state="translated">Was ist ein Puls?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/pulse/pulse.component.html</context>
           <context context-type="linenumber">11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pulse.pulseIsMicroAnnouncement" datatype="html">
-        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Pulses create transparency and a sense of mission for your organization. </source>
-        <target state="needs-l10n"> Ein Puls ist eine Mikro-Mitteilung einer Gruppe. Es ist wie Twitter für Unternehmen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Auch wenn Sie keinen Zugang zu einer Gruppe haben, können Sie sehen, was dort passiert. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Pulse schaffen Transparenz und ein Gefühl der Mission für Ihre Organisation</target>
+        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulses create transparency and a sense of mission for your organization. </source>
+        <target state="translated"> Ein Puls ist eine Mikro-Mitteilung einer Gruppe. Es ist wie Twitter für Unternehmen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Auch wenn Sie keinen Zugang zu einer Gruppe haben, können Sie sehen, was dort passiert. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulse schaffen Transparenz und ein Gefühl der Mission für Ihre Organisation</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/pulse/pulse.component.html</context>
           <context context-type="linenumber">15,18</context>
@@ -3231,7 +3231,7 @@
       </trans-unit>
       <trans-unit id="pulse.currentWork" datatype="html">
         <source> Current work:</source>
-        <target state="needs-l10n"> Aktuelle Arbeit:</target>
+        <target state="translated"> Aktuelle Arbeit:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/pulse/pulse.component.html</context>
           <context context-type="linenumber">53</context>
@@ -3247,7 +3247,7 @@
       </trans-unit>
       <trans-unit id="ngb.carousel.slide-number" datatype="html">
         <source> Slide <x id="INTERPOLATION" equiv-text="cused$ = new Be"/> of <x id="INTERPOLATION_1" equiv-text="private _pau"/> </source>
-        <target state="needs-l10n"> Dia {cused$ = neu Be} von {privat _pau}</target>
+        <target state="translated"> Dia {cused$ = neu Be} von {privat _pau}</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/carousel/carousel.ts</context>
           <context context-type="linenumber">113,117</context>
@@ -3320,7 +3320,7 @@
       </trans-unit>
       <trans-unit id="ngb.pagination.first" datatype="html">
         <source>««</source>
-        <target state="needs-l10n">""</target>
+        <target state="translated">""</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/pagination/pagination.ts</context>
           <context context-type="linenumber">181,182</context>
@@ -3344,7 +3344,7 @@
       </trans-unit>
       <trans-unit id="ngb.pagination.last" datatype="html">
         <source>»»</source>
-        <target state="needs-l10n">""</target>
+        <target state="translated">""</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/pagination/pagination.ts</context>
           <context context-type="linenumber">201,203</context>
@@ -3384,7 +3384,7 @@
       </trans-unit>
       <trans-unit id="ngb.progressbar.value" datatype="html">
         <source><x id="INTERPOLATION" equiv-text="(): number { re"/></source>
-        <target state="needs-l10n">{(): Zahl { re}</target>
+        <target state="translated">{(): Zahl { re}</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/progressbar/progressbar.ts</context>
           <context context-type="linenumber">31,35</context>
@@ -3487,8 +3487,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.PM" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="number;&#xA;  priv"/></source>
-        <target state="needs-l10n">{Nummer;
+        <source><x id="INTERPOLATION" equiv-text="number;&#10;  priv"/></source>
+        <target state="translated">{Nummer;
   privat}</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
@@ -3496,8 +3496,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.AM" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="ssor,&#xA;    OnCh"/></source>
-        <target state="needs-l10n"><x id="INTERPOLATION" equiv-text="ssor,&#xA;    OnCh"/></target>
+        <source><x id="INTERPOLATION" equiv-text="ssor,&#10;    OnCh"/></source>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="ssor,&#10;    OnCh"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
           <context context-type="linenumber">141,116</context>
@@ -3513,7 +3513,7 @@
       </trans-unit>
       <trans-unit id="commonNavbar.general" datatype="html">
         <source>General</source>
-        <target state="needs-adaptation"> Allgemein <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Allgemein</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/common-navbar.component.html</context>
           <context context-type="linenumber">21</context>
@@ -3521,7 +3521,7 @@
       </trans-unit>
       <trans-unit id="commonNavbar.members" datatype="html">
         <source>Members</source>
-        <target state="needs-adaptation"> Mitglieder <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Mitglieder</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/common-navbar.component.html</context>
           <context context-type="linenumber">28</context>
@@ -3529,7 +3529,7 @@
       </trans-unit>
       <trans-unit id="commonNavbar.groups" datatype="html">
         <source>Groups</source>
-        <target state="needs-adaptation"> Gruppen <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Gruppen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/common-navbar.component.html</context>
           <context context-type="linenumber">35</context>
@@ -3537,7 +3537,7 @@
       </trans-unit>
       <trans-unit id="commonNavbar.billing" datatype="html">
         <source>Billing</source>
-        <target state="needs-adaptation"> Abrechnung <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Rechnung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/common-navbar.component.html</context>
           <context context-type="linenumber">42</context>
@@ -3545,7 +3545,7 @@
       </trans-unit>
       <trans-unit id="userImageDetails.updateYourProfile" datatype="html">
         <source>Update your profile Image</source>
-        <target state="needs-l10n">Aktualisieren Sie Ihr Profilbild</target>
+        <target state="translated">Aktualisieren Sie Ihr Profilbild</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/user-image-details/user-image-details.component.html</context>
           <context context-type="linenumber">5</context>
@@ -3553,7 +3553,7 @@
       </trans-unit>
       <trans-unit id="userImageDetails.updateYourImage" datatype="html">
         <source> Update your Image </source>
-        <target state="needs-l10n"> Aktualisieren Sie Ihr Image</target>
+        <target state="translated"> Aktualisieren Sie Ihr Image</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/user-image-details/user-image-details.component.html</context>
           <context context-type="linenumber">25,26</context>
@@ -3561,7 +3561,7 @@
       </trans-unit>
       <trans-unit id="workspaceDetails.workspaceUpdate" datatype="html">
         <source>Workspace Update</source>
-        <target state="needs-l10n">Arbeitsbereich-Update</target>
+        <target state="translated">Arbeitsbereich-Update</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.html</context>
           <context context-type="linenumber">5</context>
@@ -3577,7 +3577,7 @@
       </trans-unit>
       <trans-unit id="groupImageDetails.updateYourGroupAvatar" datatype="html">
         <source>Update your group avatar</source>
-        <target state="needs-l10n">Aktualisieren Sie Ihren Gruppenavatar</target>
+        <target state="translated">Aktualisieren Sie Ihren Gruppenavatar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-image-details/group-image-details.component.html</context>
           <context context-type="linenumber">5</context>
@@ -3585,7 +3585,7 @@
       </trans-unit>
       <trans-unit id="groupImageDetails.updateYourImage" datatype="html">
         <source>Update your Image!</source>
-        <target state="needs-l10n">Aktualisieren Sie Ihr Image!</target>
+        <target state="translated">Aktualisieren Sie Ihr Image!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-image-details/group-image-details.component.html</context>
           <context context-type="linenumber">22</context>
@@ -3593,7 +3593,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.inbox" datatype="html">
         <source> Inbox </source>
-        <target state="needs-l10n"> Posteingang</target>
+        <target state="translated"> Posteingang</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">42,43</context>
@@ -3601,7 +3601,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.tasks" datatype="html">
         <source> Tasks </source>
-        <target state="needs-l10n"> Aufgaben</target>
+        <target state="translated"> Aufgaben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">51,52</context>
@@ -3613,7 +3613,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.notes" datatype="html">
         <source>Notes</source>
-        <target state="needs-adaptation"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-notes&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Anmerkungen </target>
+        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-notes&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>Notizen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">60</context>
@@ -3621,7 +3621,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.personalTasks" datatype="html">
         <source>Personal Tasks</source>
-        <target state="needs-adaptation"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-personal-tasks&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Persönliche Aufgaben </target>
+        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-personal-tasks&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>Meine Aufgaben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">70</context>
@@ -3629,7 +3629,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.personalFiles" datatype="html">
         <source>Personal Files</source>
-        <target state="needs-adaptation"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-personal-files&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Persönliche Dateien </target>
+        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-personal-files&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>Persönliche Dateien</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">80</context>
@@ -3637,7 +3637,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.activity" datatype="html">
         <source> Activity </source>
-        <target state="needs-l10n"> Tätigkeit</target>
+        <target state="translated"> Tätigkeit</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">90,91</context>
@@ -3645,7 +3645,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.files" datatype="html">
         <source> Files </source>
-        <target state="needs-l10n"> Dateien</target>
+        <target state="translated"> Dateien </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">110,111</context>
@@ -3653,7 +3653,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.members" datatype="html">
         <source> Members </source>
-        <target state="needs-l10n"> Mitglieder</target>
+        <target state="translated"> Mitglieder </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">121,122</context>
@@ -3669,7 +3669,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.admin" datatype="html">
         <source> Admin </source>
-        <target state="needs-l10n"> Verwaltung</target>
+        <target state="translated"> Verwaltung </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">143,144</context>
@@ -3677,7 +3677,7 @@
       </trans-unit>
       <trans-unit id="pushNotifications.recentNotifications" datatype="html">
         <source>Recent Notifications</source>
-        <target state="needs-l10n">Aktuelle Benachrichtigungen</target>
+        <target state="translated">Aktuelle Benachrichtigungen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/push-notifications/push-notifications.component.html</context>
           <context context-type="linenumber">19</context>
@@ -3697,7 +3697,7 @@
       </trans-unit>
       <trans-unit id="pushNotifications.olderNotifications" datatype="html">
         <source>Older Notifications</source>
-        <target state="needs-l10n">Ältere Benachrichtigungen</target>
+        <target state="translated">Ältere Benachrichtigungen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/push-notifications/push-notifications.component.html</context>
           <context context-type="linenumber">59</context>
@@ -3705,7 +3705,7 @@
       </trans-unit>
       <trans-unit id="sidebar.mySpace" datatype="html">
         <source>My Space</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;&gt;"/>home<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Mein Raum </target>
+        <target state="translated">Mein Raum </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">21</context>
@@ -3713,7 +3713,7 @@
       </trans-unit>
       <trans-unit id="sidebar.favorites" datatype="html">
         <source>Favorites</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;&gt;"/>star_outline<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Favoriten <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;&gt;"/>keyboard_arrow_down<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/></target>
+        <target state="translated">Favoriten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">29</context>
@@ -3721,7 +3721,7 @@
       </trans-unit>
       <trans-unit id="sidebar.exploreWork" datatype="html">
         <source>Explore Work</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;&gt;"/>gruppen<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Arbeit erkunden </target>
+        <target state="translated">Arbeit erkunden</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">53</context>
@@ -3729,7 +3729,7 @@
       </trans-unit>
       <trans-unit id="sidebar.administration" datatype="html">
         <source>Administration</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>einstellungen<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Verwaltung <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Administration</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">64</context>
@@ -3737,7 +3737,7 @@
       </trans-unit>
       <trans-unit id="sidebar.myAccount" datatype="html">
         <source>My Account</source>
-        <target state="needs-adaptation"><x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image&#xA;                        [imgURL]=&quot;userData?.profile_pic&quot;&#xA;                        [service]=&quot;'user'&quot;&#xA;                        [styleClass]=&quot;'avatar'&quot;&gt;"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image&gt;"/> Mein Konto </target>
+        <target state="translated"><x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image&#10;                        [imgURL]=&quot;userData?.profile_pic&quot;&#10;                        [service]=&quot;'user'&quot;&#10;                        [styleClass]=&quot;'avatar'&quot;>"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image>"/>Mein Konto</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">80</context>
@@ -3745,7 +3745,7 @@
       </trans-unit>
       <trans-unit id="sidebar.signOut" datatype="html">
         <source>Sign Out</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined carret&quot;&gt;"/>logout<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Abmeldung <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Abmelden</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">92</context>
@@ -3753,7 +3753,7 @@
       </trans-unit>
       <trans-unit id="userAccountNavbar.profile" datatype="html">
         <source>Profile</source>
-        <target state="needs-adaptation"> Profil <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Profil</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
           <context context-type="linenumber">22</context>
@@ -3761,7 +3761,7 @@
       </trans-unit>
       <trans-unit id="userAccountNavbar.integrations" datatype="html">
         <source>Integrations</source>
-        <target state="needs-adaptation"> Integrationen <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Integrationen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
           <context context-type="linenumber">31</context>
@@ -3769,7 +3769,7 @@
       </trans-unit>
       <trans-unit id="userAccountNavbar.timeOff" datatype="html">
         <source>Time off</source>
-        <target state="needs-adaptation"> Freizeit <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Auszeit</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/user-account-navbar/user-account-navbar.component.html</context>
           <context context-type="linenumber">40</context>
@@ -3785,7 +3785,7 @@
       </trans-unit>
       <trans-unit id="workNavbar.groups" datatype="html">
         <source>Groups</source>
-        <target state="needs-adaptation"> Gruppen <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Gruppen</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
@@ -3794,7 +3794,7 @@
       </trans-unit>
       <trans-unit id="workNavbar.northStar" datatype="html">
         <source>North Star</source>
-        <target state="needs-adaptation"> North Star <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Nordstern</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
           <context context-type="linenumber">30</context>
@@ -3802,7 +3802,7 @@
       </trans-unit>
       <trans-unit id="workNavbar.dashboard" datatype="html">
         <source>Dashboard</source>
-        <target state="needs-adaptation"> Dashboard <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;sr-only&quot;&gt;"/>(aktuell)<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Dashboard</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
           <context context-type="linenumber">41</context>
@@ -3818,7 +3818,7 @@
       </trans-unit>
       <trans-unit id="pageNotFound.thereAreUnchartedWaters" datatype="html">
         <source> These are uncharted waters... </source>
-        <target state="needs-l10n"> Dies sind unerforschte Gewässer..</target>
+        <target state="translated"> Dies sind unerforschte Gewässer..</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/page-not-found/page-not-found.component.html</context>
           <context context-type="linenumber">8,9</context>
@@ -3826,7 +3826,7 @@
       </trans-unit>
       <trans-unit id="pageNotFound.notFound" datatype="html">
         <source> 404 Not Found </source>
-        <target state="needs-l10n"> 404 nicht gefunden</target>
+        <target state="translated"> 404 nicht gefunden</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/page-not-found/page-not-found.component.html</context>
           <context context-type="linenumber">12,13</context>
@@ -3834,7 +3834,7 @@
       </trans-unit>
       <trans-unit id="pageNotFound.takeMeHome" datatype="html">
         <source>Take Me Home</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>startseite<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Take Me Home </target>
+        <target state="translated">Zurück zur Startseite</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/page-not-found/page-not-found.component.html</context>
           <context context-type="linenumber">18</context>
@@ -3842,7 +3842,7 @@
       </trans-unit>
       <trans-unit id="pageNotFound.contactSupport" datatype="html">
         <source>Contact Support</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>contact_support<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Kontakt zum Support </target>
+        <target state="translated">Support kontaktieren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/page-not-found/page-not-found.component.html</context>
           <context context-type="linenumber">23</context>
@@ -3858,7 +3858,7 @@
       </trans-unit>
       <trans-unit id="activityFilters.postedBy" datatype="html">
         <source>Posted By...</source>
-        <target state="needs-l10n">Geschrieben von...</target>
+        <target state="translated">Geschrieben von...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/activity-filters/activity-filters.component.html</context>
           <context context-type="linenumber">10</context>
@@ -3874,7 +3874,7 @@
       </trans-unit>
       <trans-unit id="agendaSmartCard.agenda" datatype="html">
         <source> Agenda </source>
-        <target state="needs-l10n"> Tagesordnung</target>
+        <target state="translated"> Tagesordnung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
           <context context-type="linenumber">5,6</context>
@@ -3886,7 +3886,7 @@
       </trans-unit>
       <trans-unit id="agendaSmartCard.forToday" datatype="html">
         <source>for today</source>
-        <target state="needs-adaptation"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ today_event_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> für heute </target>
+        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;>"/><x id="INTERPOLATION" equiv-text="{{ today_event_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Heute</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
@@ -3899,7 +3899,7 @@
       </trans-unit>
       <trans-unit id="agendaSmartCard.taDa" datatype="html">
         <source>Ta-da!</source>
-        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;&gt;"/>Ta-da!<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></target>
+        <target state="translated"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;>"/>Ta-da!<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/></target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
@@ -3908,7 +3908,7 @@
       </trans-unit>
       <trans-unit id="agendaSmartCard.youAreFreeToday" datatype="html">
         <source>You're free today.</source>
-        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;&gt;"/>Sie sind heute frei.<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></target>
+        <target state="translated"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;>"/> Heute<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/></target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
@@ -3917,7 +3917,7 @@
       </trans-unit>
       <trans-unit id="agendaSmartCard.more" datatype="html">
         <source>more...</source>
-        <target state="needs-adaptation"> <x id="INTERPOLATION" equiv-text="{{ today_event_count - 2 &gt; 0 ? today_event_count - 2 : 0 }}"/> mehr..</target>
+        <target state="translated">mehr…</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
@@ -3926,7 +3926,7 @@
       </trans-unit>
       <trans-unit id="groupActivityFeed.pinnedPosts" datatype="html">
         <source>Pinned posts</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>push_pin<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> <x id="INTERPOLATION" equiv-text="{{ pinnedPosts?.length }}"/> Angepinnte Beiträge </target>
+        <target state="translated">POSTS</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.html</context>
@@ -3935,7 +3935,7 @@
       </trans-unit>
       <trans-unit id="groupActivityFeed.nothingHereCreateSomething" datatype="html">
         <source> Nothing here. Create something. </source>
-        <target state="needs-l10n"> Hier ist nichts. Schaffen Sie etwas</target>
+        <target state="translated"> Hier ist nichts. Schaffen Sie etwas</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.html</context>
           <context context-type="linenumber">109,110</context>
@@ -3943,7 +3943,7 @@
       </trans-unit>
       <trans-unit id="groupInformation.personalWorkspace" datatype="html">
         <source> Personal Workplace </source>
-        <target state="needs-l10n"> Personal Workplace</target>
+        <target state="translated"> Personal Workplace</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-information/group-information.component.html</context>
           <context context-type="linenumber">21,22</context>
@@ -3951,7 +3951,7 @@
       </trans-unit>
       <trans-unit id="groupInformation.members" datatype="html">
         <source>Members:</source>
-        <target state="needs-l10n">Mitglieder:</target>
+        <target state="translated"> Mitglieder </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-information/group-information.component.html</context>
           <context context-type="linenumber">31</context>
@@ -3967,7 +3967,7 @@
       </trans-unit>
       <trans-unit id="groupInformation.thisIsPersonalSpace" datatype="html">
         <source> This is your personal space. Everything you create here is private. </source>
-        <target state="needs-l10n"> Dies ist Ihr persönlicher Bereich. Alles, was Sie hier schaffen, ist privat</target>
+        <target state="translated"> Dies ist Ihr persönlicher Bereich. Alles, was Sie hier schaffen, ist privat</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-information/group-information.component.html</context>
           <context context-type="linenumber">36,37</context>
@@ -3983,7 +3983,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.addSubtask" datatype="html">
         <source> + Add Subtasks </source>
-        <target state="needs-l10n"> + Teilaufgaben hinzufügen</target>
+        <target state="translated"> + Teilaufgaben hinzufügen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">85,86</context>
@@ -3991,7 +3991,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.parentTask" datatype="html">
         <source> Parent task</source>
-        <target state="needs-l10n"> Übergeordnete Aufgabe</target>
+        <target state="translated"> Übergeordnete Aufgabe</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">117</context>
@@ -3999,7 +3999,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.taskStatus" datatype="html">
         <source> Task Status</source>
-        <target state="needs-l10n"> Status der Aufgabe</target>
+        <target state="translated"> Status der Aufgabe</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">142</context>
@@ -4031,7 +4031,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.bar" datatype="html">
         <source>BAR</source>
-        <target state="needs-l10n">BAR</target>
+        <target state="translated">BAR</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">177</context>
@@ -4039,7 +4039,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.from" datatype="html">
         <source> From</source>
-        <target state="needs-adaptation"> Von <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ postData?._group?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Mit dem Arbeitsplatznamen&lt;b&gt;"{{ workspaceData?.workspace_name }}&lt;/b&gt;" kann sich jede E-Mail-Adresse aus dieser Domain anmelden:<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;>"/><x id="INTERPOLATION" equiv-text="{{ postData?._group?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
@@ -4048,7 +4048,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.to" datatype="html">
         <source> To</source>
-        <target state="needs-adaptation"> An <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ shuttleGroup?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated"> An<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;>"/><x id="INTERPOLATION" equiv-text="{{ shuttleGroup?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
@@ -4081,7 +4081,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.assignedBy" datatype="html">
         <source>Assigned by</source>
-        <target state="needs-l10n">Zugewiesen von</target>
+        <target state="translated">Zugewiesen von</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">336</context>
@@ -4105,7 +4105,7 @@
       </trans-unit>
       <trans-unit id="northStar.northStar" datatype="html">
         <source>North Star</source>
-        <target state="needs-adaptation">nordstern<x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-round&quot; style=&quot;vertical-align: middle;&quot;&gt;"/>erkunden<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> </target>
+        <target state="translated">Nordstern</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
@@ -4114,7 +4114,7 @@
       </trans-unit>
       <trans-unit id="northStar.northStarAreGoals" datatype="html">
         <source>North Stars are goals for you or your team.</source>
-        <target state="needs-l10n">North Stars sind Ziele für Sie oder Ihr Team.</target>
+        <target state="translated">North Stars sind Ziele für Sie oder Ihr Team.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
           <context context-type="linenumber">9</context>
@@ -4122,7 +4122,7 @@
       </trans-unit>
       <trans-unit id="northStar.focusSettings" datatype="html">
         <source>Focus settings</source>
-        <target state="needs-l10n">Fokus-Einstellungen</target>
+        <target state="translated">Fokus-Einstellungen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
           <context context-type="linenumber">14</context>
@@ -4130,7 +4130,7 @@
       </trans-unit>
       <trans-unit id="northStar.metric" datatype="html">
         <source>Metric:</source>
-        <target state="needs-l10n">Metrisch:</target>
+        <target state="translated">Metrisch:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
           <context context-type="linenumber">18</context>
@@ -4162,7 +4162,7 @@
       </trans-unit>
       <trans-unit id="northStar.initialValue" datatype="html">
         <source>Initial Value:</source>
-        <target state="needs-l10n">Anfangswert:</target>
+        <target state="translated">Anfangswert:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
           <context context-type="linenumber">46</context>
@@ -4182,7 +4182,7 @@
       </trans-unit>
       <trans-unit id="northStar.focus" datatype="html">
         <source>Focus</source>
-        <target state="needs-adaptation"> <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons update&quot; (click)=&quot;updatingInitialValues = true; this.updateProgress = false;&quot;&gt;"/>Fokus-Einstellungen<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/></target>
+        <target state="translated">Fokussieren</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
@@ -4211,7 +4211,7 @@
       </trans-unit>
       <trans-unit id="northStar.status" datatype="html">
         <source>Status: </source>
-        <target state="translated">Status</target>
+        <target state="translated">Status:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
           <context context-type="linenumber">79</context>
@@ -4259,7 +4259,7 @@
       </trans-unit>
       <trans-unit id="subTasks.subTasks" datatype="html">
         <source>Subtasks</source>
-        <target state="needs-adaptation"> Teilaufgaben <x id="INTERPOLATION" equiv-text="{{ subtasks.length }}"/> Teilaufgaben <x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div *ngIf=&quot;subtasks.length &gt; 0&quot; [class]=&quot;completitionPercentageClass&quot;&gt;"/> <x id="INTERPOLATION_1" equiv-text="{{ percentageSubtasksCompleted }}"/> % <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/></target>
+        <target state="translated">Teilaufgaben</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/subtasks/subtasks.component.html</context>
@@ -4276,7 +4276,7 @@
       </trans-unit>
       <trans-unit id="taskActions.copyToGroup" datatype="html">
         <source>COPY TO GROUP</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i  class=&quot;material-icons&quot;&gt;"/>content_copy<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> COPY TO GROUP </target>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i  class=&quot;material-icons&quot;>"/>content_copy<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> COPY TO GROUP </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
@@ -4285,7 +4285,7 @@
       </trans-unit>
       <trans-unit id="taskActions.moveToGroup" datatype="html">
         <source>MOVE TO GROUP</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>arrow_forward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> MOVE TO GROUP </target>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;>"/>arrow_forward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> MOVE TO GROUP </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
@@ -4294,7 +4294,7 @@
       </trans-unit>
       <trans-unit id="taskActions.templates" datatype="html">
         <source>TEMPLATES</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>wiedergabeliste_hinzufügen<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> TEMPLATES </target>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;>"/>wiedergabeliste_hinzufügen<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> TEMPLATES </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
@@ -4303,7 +4303,7 @@
       </trans-unit>
       <trans-unit id="taskActions.saveTemplate" datatype="html">
         <source>Save template</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>save_alt<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Vorlage speichern </target>
+        <target state="translated">Vorlage speichern</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
@@ -4312,7 +4312,7 @@
       </trans-unit>
       <trans-unit id="taskActions.deleteTemplate" datatype="html">
         <source>Delete template</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons-outlined&quot;&gt;"/>löschen<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Vorlage löschen </target>
+        <target state="translated">Template löschen</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
@@ -4329,7 +4329,7 @@
       </trans-unit>
       <trans-unit id="taskActions.allocation" datatype="html">
         <source>ALLOCATION</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>sanduhr_top<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> ALLOCATION <x id="TAG_INPUT" ctype="x-input" equiv-text="&lt;input type=&quot;text&quot; name=&quot;allocation&quot; [ngModel]=&quot;allocation&quot; (blur)=&quot;allocationChange($event)&quot; class=&quot;input-search&quot; placeholder=&quot;Allocation&quot; /&gt;"/></target>
+        <target state="translated">ZUTEILUNG</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
@@ -4378,7 +4378,7 @@
       </trans-unit>
       <trans-unit id="taskActions.makeMilestone" datatype="html">
         <source>MAKE MILESTONE</source>
-        <target state="needs-translation"/>
+        <target state="needs-l10n">MILESTONE MACHEN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
           <context context-type="linenumber">203</context>
@@ -4386,7 +4386,7 @@
       </trans-unit>
       <trans-unit id="taskActions.milestoneMarkSpecific" datatype="html">
         <source>Milestones mark specific points in time along a project timeline in order to track major progress points that must be reached to achieve success</source>
-        <target state="needs-translation"/>
+        <target state="needs-l10n">Meilensteine markieren bestimmte Zeitpunkte entlang einer Projektzeitachse, um wichtige Fortschritte zu verfolgen, die erreicht werden müssen, um den Erfolg zu erzielen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
           <context context-type="linenumber">209</context>
@@ -4394,7 +4394,7 @@
       </trans-unit>
       <trans-unit id="taskActions.withTaskShuttleYouCan" datatype="html">
         <source>With Task Shuttle you can assign the task to another group.</source>
-        <target state="needs-translation"/>
+        <target state="needs-l10n">Mit Task Shuttle können Sie die Aufgabe einer anderen Gruppe zuweisen.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
           <context context-type="linenumber">229</context>
@@ -4426,7 +4426,7 @@
       </trans-unit>
       <trans-unit id="groupPostSelection.writeAPost" datatype="html">
         <source>Write a post</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'normal'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_comment&quot;&gt;"/>kommentar<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Einen Beitrag schreiben </target>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'normal'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_comment&quot;>"/>kommentar<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Einen Beitrag schreiben </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post-selection/group-post-selection.component.html</context>
@@ -4435,7 +4435,7 @@
       </trans-unit>
       <trans-unit id="groupPostSelection.scheduleEvent" datatype="html">
         <source>Schedule event</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'event'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_event&quot;&gt;"/>ereignis<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Zeitplan Ereignis </target>
+        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i [style.color]=&quot;type === 'event'&quot; class=&quot;material-icons-outlined&quot; id=&quot;icon_event&quot;>"/>ereignis<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Zeitplan Ereignis </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-post-selection/group-post-selection.component.html</context>
@@ -4443,8 +4443,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupPostbox.whatAreYouWorkingOn" datatype="html">
-        <source> What are you working on, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>? </source>
-        <target state="needs-l10n"> Woran arbeiten Sie, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>? </target>
+        <source> What are you working on, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>? </source>
+        <target state="needs-l10n"> Woran arbeiten Sie, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>? </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-postbox.component.html</context>
           <context context-type="linenumber">18,19</context>
@@ -4486,7 +4486,7 @@
       </trans-unit>
       <trans-unit id="groupTaskProgress.toDo" datatype="html">
         <source>To do</source>
-        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{todoTasksCount}}"/> Zu tun</target>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="{{todoTasksCount}}"/>Zu tun</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
@@ -4495,7 +4495,7 @@
       </trans-unit>
       <trans-unit id="groupTaskProgress.inProgress" datatype="html">
         <source>In progress</source>
-        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{inprogressTasksCount}}"/> In Bearbeitung</target>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="{{inprogressTasksCount}}"/>In Bearbeitung</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
@@ -4504,7 +4504,7 @@
       </trans-unit>
       <trans-unit id="groupTaskProgress.done" datatype="html">
         <source>Done</source>
-        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{doneTasksCount}}"/> Erledigt</target>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="{{doneTasksCount}}"/>Erledigt</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
@@ -4513,7 +4513,7 @@
       </trans-unit>
       <trans-unit id="newsPill.newActivity" datatype="html">
         <source>New activity</source>
-        <target state="needs-adaptation"><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i class=&quot;material-icons&quot;&gt;"/>arrow_upward<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Neue Aktivität <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Neue Aufgabe</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/news-pill/news-pill.component.html</context>
@@ -4558,7 +4558,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.forToday" datatype="html">
         <source>for today</source>
-        <target state="needs-adaptation"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ today_task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> für heute </target>
+        <target state="needs-adaptation"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;>"/><x id="INTERPOLATION" equiv-text="{{ today_task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> für heute </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
@@ -4579,7 +4579,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.overdue" datatype="html">
         <source>overdue</source>
-        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{ overdueTasks.length }}"/></target>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ overdueTasks.length }}"/>überfällig</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
@@ -4588,7 +4588,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.toDo" datatype="html">
         <source>to do</source>
-        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{ to_do_task_count }}"/></target>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ to_do_task_count }}"/>zu tun</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
@@ -4597,7 +4597,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.inProgress" datatype="html">
         <source>in progress</source>
-        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{ in_progress_task_count }}"/></target>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ in_progress_task_count }}"/>in Bearbeitung</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
@@ -4606,7 +4606,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.done" datatype="html">
         <source>done</source>
-        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="{{ done_task_count }}"/></target>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ done_task_count }}"/>erledigt</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
@@ -4643,7 +4643,7 @@
       </trans-unit>
       <trans-unit id="commentList.showAll" datatype="html">
         <source>Show all ...</source>
-        <target state="needs-adaptation"> Alle anzeigen ..<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Alle anzeigen ...<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/comments/comment-list/comment-list.component.html</context>
@@ -4724,7 +4724,7 @@
       </trans-unit>
       <trans-unit id="componentSearchBar.groupManager" datatype="html">
         <source>Group Manager</source>
-        <target state="needs-adaptation">, Gruppenleiter</target>
+        <target state="translated">Gruppenmanager</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">39</context>
@@ -4732,7 +4732,7 @@
       </trans-unit>
       <trans-unit id="componentSearchBar.manageUser" datatype="html">
         <source>Manage User</source>
-        <target state="needs-adaptation"> Benutzer verwalten <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Benutzer verwalten<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">50</context>
@@ -4800,7 +4800,7 @@
       </trans-unit>
       <trans-unit id="componentSearchBar.leaveGroup" datatype="html">
         <source>Leave Group</source>
-        <target state="needs-adaptation"> Gruppe verlassen <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;&gt;"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+        <target state="translated">Gruppe verlassen<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">109</context>
@@ -4896,7 +4896,7 @@
       </trans-unit>
       <trans-unit id="engagementCard.agoras" datatype="html">
         <source>agoras</source>
-        <target state="needs-adaptation"> Agoras<x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> </target>
+        <target state="needs-adaptation"> Agoras<x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
@@ -4905,7 +4905,7 @@
       </trans-unit>
       <trans-unit id="engagementCard.topics" datatype="html">
         <source>topics</source>
-        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> topics </target>
+        <target state="translated">Themen</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
@@ -4914,7 +4914,7 @@
       </trans-unit>
       <trans-unit id="engagementCard.posts" datatype="html">
         <source>posts</source>
-        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_topics }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> Beiträge </target>
+        <target state="translated">Beiträge</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
@@ -4923,7 +4923,7 @@
       </trans-unit>
       <trans-unit id="engagementCard.comments" datatype="html">
         <source>comments</source>
-        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> {{ Anzahl_Kommentare }} <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> Kommentare </target>
+        <target state="translated">Kommentare</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
@@ -5029,7 +5029,7 @@
       </trans-unit>
       <trans-unit id="organizationalStructureCard.groups" datatype="html">
         <source>groups</source>
-        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;groups_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_groups }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> groups </target>
+        <target state="translated">Gruppen</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/organizational-structure-card/organizational-structure-card.component.html</context>
@@ -5038,7 +5038,7 @@
       </trans-unit>
       <trans-unit id="organizationalStructureCard.agoras" datatype="html">
         <source>agoras</source>
-        <target state="needs-adaptation"> Agoras<x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> </target>
+        <target state="needs-adaptation"> Agoras<x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_agoras }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/organizational-structure-card/organizational-structure-card.component.html</context>
@@ -5055,7 +5055,7 @@
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.users" datatype="html">
         <source>users</source>
-        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;users_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_users }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> Benutzer </target>
+        <target state="translated">Benutzer</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
@@ -5064,7 +5064,7 @@
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.globalManagers" datatype="html">
         <source>global managers</source>
-        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;global_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_global_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> globale Manager </target>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;global_managers_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_global_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> globale Manager </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
@@ -5073,7 +5073,7 @@
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.groupManagers" datatype="html">
         <source>group managers</source>
-        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;group_managers_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_group_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> Gruppenmanager </target>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;group_managers_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_group_managers }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> Gruppenmanager </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
@@ -5082,7 +5082,7 @@
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.members" datatype="html">
         <source>members</source>
-        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;members_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_members }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> members </target>
+        <target state="translated">Mitglieder</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
@@ -5091,7 +5091,7 @@
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.guests" datatype="html">
         <source>guests</source>
-        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;guests_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_guests }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> gäste </target>
+        <target state="translated">Gäste</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
@@ -5108,7 +5108,7 @@
       </trans-unit>
       <trans-unit id="pulseCard.updatesToday" datatype="html">
         <source>updates today</source>
-        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;&gt;"/> <x id="INTERPOLATION" equiv-text="{{ num_updates }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div&gt;"/> heute aktualisiert </target>
+        <target state="needs-adaptation"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;agoras_count&quot;>"/> <x id="INTERPOLATION" equiv-text="{{ num_updates }}"/> <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/> heute aktualisiert </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/pulse-card/pulse-card.component.html</context>
@@ -5152,7 +5152,7 @@
       </trans-unit>
       <trans-unit id="sectionStatusCard.tasks" datatype="html">
         <source>tasks</source>
-        <target state="needs-adaptation"> <x id="INTERPOLATION" equiv-text="{{ section?.numTasks }}"/> Aufgaben</target>
+        <target state="translated">Aufgaben</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/section-status-card/section-status-card.component.html</context>
@@ -5225,7 +5225,7 @@
       </trans-unit>
       <trans-unit id="workStatisticsCard.totalTasks" datatype="html">
         <source>total tasks</source>
-        <target state="needs-adaptation">{<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;number&quot;&gt;"/>Gesamtzahl der Aufgaben }}<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> </target>
+        <target state="needs-adaptation">{<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;number&quot;>"/>Gesamtzahl der Aufgaben }}<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.html</context>
@@ -5234,7 +5234,7 @@
       </trans-unit>
       <trans-unit id="workStatisticsCard.northStars" datatype="html">
         <source>North Stars</source>
-        <target state="needs-adaptation"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;north_star_number&quot;&gt;"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Nordsterne </target>
+        <target state="needs-adaptation"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;north_star_number&quot;>"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Nordsterne </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.html</context>
@@ -5315,7 +5315,7 @@
       </trans-unit>
       <trans-unit id="memberListMenu.users" datatype="html">
         <source>Users</source>
-        <target state="needs-adaptation"> Benutzer <x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image *ngIf=&quot;filterfor==='users'&quot;&#xA;      [imgURL]=&quot;picsUrl&quot;&#xA;      [service]=&quot;'user'&quot;&#xA;      [styleClass]=&quot;'feed-avatar'&quot;&gt;"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image&gt;"/></target>
+        <target state="translated">Benutzer<x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image *ngIf=&quot;filterfor==='users'&quot;&#10;      [imgURL]=&quot;picsUrl&quot;&#10;      [service]=&quot;'user'&quot;&#10;      [styleClass]=&quot;'feed-avatar'&quot;>"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image>"/></target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-list-menu/member-list-menu.component.html</context>
@@ -5416,7 +5416,7 @@
       </trans-unit>
       <trans-unit id="ideaActions.votes" datatype="html">
         <source>votes</source>
-        <target state="needs-adaptation">{{ (Beitrag?.Aufgabe?.Idee?.positive_Stimmen?.Länge || 0) - (Beitrag?.Aufgabe?.Idee?.negative_Stimmen?.Länge || 0) }} Stimmen</target>
+        <target state="translated">Stimmen</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/idea-actions/idea-actions.component.html</context>
@@ -5521,7 +5521,7 @@
       </trans-unit>
       <trans-unit id="projectBudgetDialog.sectionBudget" datatype="html">
         <source>budget</source>
-        <target state="needs-adaptation"> <x id="INTERPOLATION" equiv-text="{{ columnTitle }}"/> Haushalt</target>
+        <target state="translated">Budget</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/project-budget-dialog/project-budget-dialog.component.html</context>
@@ -5642,7 +5642,7 @@
       </trans-unit>
       <trans-unit id="selectedAssignee.assignedTo" datatype="html">
         <source>Assigned to</source>
-        <target state="needs-adaptation">Zugeordnet zu <x id="INTERPOLATION" equiv-text="{{ eventMembersMap.size }}"/></target>
+        <target state="translated">Zugewiesen an<x id="INTERPOLATION" equiv-text="{{ eventMembersMap.size }}"/></target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/select-assignee/select-assignee.component.html</context>
