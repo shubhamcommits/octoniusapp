@@ -122,7 +122,7 @@
           </a>
       </li>
 
-      <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
+      <li class="nav-item d-none d-md-block" *ngIf="!myWorkplace && isAdmin">
           <a [ngClass]="activeState == 'groups_dashboard'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_dashboard')"
               routerLink="/dashboard/work/groups/dashboard"

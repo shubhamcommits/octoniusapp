@@ -36,7 +36,7 @@
   <!-- North Star Route ends -->
 
   <!-- Dashboard Page Route starts -->
-  <li class="nav-item" *ngIf="canSeeDashboard()">
+  <li class="nav-item d-none d-md-block" *ngIf="canSeeDashboard()">
     <a class="nav-link"
         routerLink="/dashboard/work/dashboard"
         routerLinkActive="active"
