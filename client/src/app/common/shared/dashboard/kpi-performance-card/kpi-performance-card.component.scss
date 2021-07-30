@@ -56,7 +56,7 @@ img{
 }
 
 .kpi_card{
-  height: 236px;
+  min-height: 200px;
   padding: 0 5px;
   background: white;
   width: 100%;
@@ -74,6 +74,7 @@ img{
   margin-right: 16px;
   padding-left:15px;
   height: 85%;
+  width: 20%;
 }
 
 .project_status {
@@ -84,6 +85,8 @@ img{
 .project_budget {
   display: flex;
   padding-right: 15px;
+  padding-left: 15px;
+  width: 33%;
 }
 
 // Group todo tasks banner
