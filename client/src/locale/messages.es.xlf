@@ -3199,7 +3199,7 @@
       </trans-unit>
       <trans-unit id="northStarPage.whatIsNS" datatype="html">
         <source>What is a North Star?</source>
-        <target state="needs-l10n">¿Qué es una estrella polar?</target>
+        <target state="needs-l10n">¿Qué es una North Star?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">13</context>
@@ -3794,7 +3794,7 @@
       </trans-unit>
       <trans-unit id="workNavbar.northStar" datatype="html">
         <source>North Star</source>
-        <target state="needs-l10n"> Estrella del Norte </target>
+        <target state="needs-l10n"> North Star </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
           <context context-type="linenumber">30</context>
@@ -4105,7 +4105,7 @@
       </trans-unit>
       <trans-unit id="northStar.northStar" datatype="html">
         <source>North Star</source>
-        <target state="needs-l10n"> Estrella del Norte </target>
+        <target state="needs-l10n"> North Star </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
@@ -4114,7 +4114,7 @@
       </trans-unit>
       <trans-unit id="northStar.northStarAreGoals" datatype="html">
         <source>North Stars are goals for you or your team.</source>
-        <target state="needs-l10n">Las Estrellas del Norte son goles para ti o para tu equipo.</target>
+        <target state="needs-l10n">Las North Stars son goles para ti o para tu equipo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
           <context context-type="linenumber">9</context>
@@ -4243,7 +4243,7 @@
       </trans-unit>
       <trans-unit id="northStarStats.northStarTimeline" datatype="html">
         <source>North Star TIMELINE</source>
-        <target state="needs-l10n">Cronología de la Estrella del Norte</target>
+        <target state="needs-l10n">North Star TIMELINE</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/stats/north-star-stats.component.html</context>
           <context context-type="linenumber">4</context>
@@ -4354,7 +4354,7 @@
       </trans-unit>
       <trans-unit id="taskActions.makeNorthStar" datatype="html">
         <source>MAKE NORTH STAR</source>
-        <target state="needs-l10n">HACER ESTRELLA DEL NORTE</target>
+        <target state="needs-l10n">HACER NORTH STAR</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
           <context context-type="linenumber">173</context>
@@ -4362,7 +4362,7 @@
       </trans-unit>
       <trans-unit id="taskActions.northStarAreGoals" datatype="html">
         <source>North Stars are goals for you or your team.</source>
-        <target state="needs-l10n">Las Estrellas del Norte son goles para ti o para tu equipo.</target>
+        <target state="needs-l10n">Las North Stars son goles para ti o para tu equipo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.html</context>
           <context context-type="linenumber">182</context>
@@ -5234,7 +5234,7 @@
       </trans-unit>
       <trans-unit id="workStatisticsCard.northStars" datatype="html">
         <source>North Stars</source>
-        <target state="needs-l10n"> Estrellas del Norte </target>
+        <target state="needs-l10n"> North Stars </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.html</context>
@@ -5376,7 +5376,7 @@
       </trans-unit>
       <trans-unit id="newTask.newNorthStar" datatype="html">
         <source>New North Star</source>
-        <target state="needs-l10n">Nueva Estrella del Norte</target>
+        <target state="needs-l10n">Nueva North Star</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/new-task/new-task.component.html</context>
           <context context-type="linenumber">6</context>
@@ -5400,7 +5400,7 @@
       </trans-unit>
       <trans-unit id="newTask.northStar" datatype="html">
         <source>North Star</source>
-        <target state="needs-l10n">Estrella del Norte</target>
+        <target state="needs-l10n">North Star</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/new-task/new-task.component.html</context>
           <context context-type="linenumber">20</context>
