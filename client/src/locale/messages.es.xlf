@@ -344,7 +344,7 @@
       </trans-unit>
       <trans-unit id="workplaceInformation.ownerName" datatype="html">
         <source>Owner Name</source>
-        <target state="translated">Nombre del Titular</target>
+        <target state="translated">Nombre del titular</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
           <context context-type="linenumber">31</context>
@@ -376,7 +376,7 @@
       </trans-unit>
       <trans-unit id="workplaceInformation.inviteAccessCode" datatype="html">
         <source>Invite Access Code</source>
-        <target state="needs-l10n">Código de acceso a la invitación</target>
+        <target state="needs-l10n">Código de acceso</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
           <context context-type="linenumber">43</context>
