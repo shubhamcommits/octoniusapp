@@ -93,13 +93,19 @@
               ]
             },
             "en": {
-              "localize": ["en"]
+              "localize": ["en"],
+              "outputPath": "dist/en",
+              "i18nMissingTranslation": "error"
             },
             "es": {
-              "localize": ["es"]
+              "localize": ["es"],
+              "outputPath": "dist/es/",
+              "i18nMissingTranslation": "error"
             },
             "de": {
-              "localize": ["de"]
+              "localize": ["de"],
+              "outputPath": "dist/de/",
+              "i18nMissingTranslation": "error"
             }
           },
           "defaultConfiguration": ""
@@ -113,7 +119,7 @@
             "production": {
               "browserTarget": "client:build:production"
             },
-            "en-EN": {
+            "en": {
               "browserTarget": "client:build:en"
             },
             "es": {
@@ -176,8 +182,14 @@
       "i18n": {
         "sourceLocale": "en",
         "locales": {
-          "es": "src/locale/messages.es.xlf",
-          "de": "src/locale/messages.de.xlf"
+          "es": {
+            "translation": "src/locale/messages.es.xlf",
+            "baseHref": ""
+          },
+          "de": {
+            "translation": "src/locale/messages.de.xlf",
+            "baseHref": ""
+          }
         }
       }
     }
