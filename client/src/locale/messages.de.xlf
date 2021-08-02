@@ -2298,7 +2298,7 @@
       </trans-unit>
       <trans-unit id="groupList.members" datatype="html">
         <source>Members</source>
-        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ (group?._members.length + group?._admins.length) || 0 }}"/>Mitglieder</target>
+        <target state="translated"> Mitglieder</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
@@ -3613,7 +3613,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.notes" datatype="html">
         <source>Notes</source>
-        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-notes&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>Notizen</target>
+        <target state="translated"> Notizen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">60</context>
@@ -3621,7 +3621,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.personalTasks" datatype="html">
         <source>Personal Tasks</source>
-        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-personal-tasks&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>Meine Aufgaben</target>
+        <target state="translated"> Meine Aufgaben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">70</context>
@@ -3629,7 +3629,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.personalFiles" datatype="html">
         <source>Personal Files</source>
-        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;dot dot-personal-files&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>Persönliche Dateien</target>
+        <target state="translated"> Persönliche Dateien</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">80</context>
@@ -3737,7 +3737,7 @@
       </trans-unit>
       <trans-unit id="sidebar.myAccount" datatype="html">
         <source>My Account</source>
-        <target state="translated"><x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image&#10;                        [imgURL]=&quot;userData?.profile_pic&quot;&#10;                        [service]=&quot;'user'&quot;&#10;                        [styleClass]=&quot;'avatar'&quot;>"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image>"/>Mein Konto</target>
+        <target state="translated"> Mein Konto</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">80</context>
@@ -3886,7 +3886,7 @@
       </trans-unit>
       <trans-unit id="agendaSmartCard.forToday" datatype="html">
         <source>for today</source>
-        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;>"/><x id="INTERPOLATION" equiv-text="{{ today_event_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Heute</target>
+        <target state="translated"> Heute</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
@@ -3899,7 +3899,7 @@
       </trans-unit>
       <trans-unit id="agendaSmartCard.taDa" datatype="html">
         <source>Ta-da!</source>
-        <target state="translated"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;>"/>Ta-da!<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/></target>
+        <target state="translated"> Ta-da!</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
@@ -3908,7 +3908,7 @@
       </trans-unit>
       <trans-unit id="agendaSmartCard.youAreFreeToday" datatype="html">
         <source>You're free today.</source>
-        <target state="translated"><x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div class=&quot;card-first-column col-md-12&quot;>"/> Heute<x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/></target>
+        <target state="translated">Du hast heute frei.</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
@@ -4039,7 +4039,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.from" datatype="html">
         <source> From</source>
-        <target state="translated"> Von<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;>"/><x id="INTERPOLATION" equiv-text="{{ postData?._group?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <target state="translated"> Von </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
@@ -4048,7 +4048,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.to" datatype="html">
         <source> To</source>
-        <target state="translated"> An<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;>"/><x id="INTERPOLATION" equiv-text="{{ shuttleGroup?.group_name }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <target state="translated"> An </target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
@@ -4468,7 +4468,7 @@
       </trans-unit>
       <trans-unit id="groupTaskProgress.assignmentsWeek" datatype="html">
         <source>assignment(s) this week.</source>
-        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ totalTasksCount }}"/>aufgabe(n) diese Woche.</target>
+        <target state="translated"> aufgabe(n) diese Woche.</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
@@ -4477,7 +4477,7 @@
       </trans-unit>
       <trans-unit id="groupTaskProgress.overdueAssignmentsWeek" datatype="html">
         <source>overdue assignment(s) this week.</source>
-        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ undoneTasksCount }}"/>überfällige Aufgabe(n) diese Woche.</target>
+        <target state="translated"> überfällige Aufgabe(n) diese Woche.</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
@@ -4486,7 +4486,7 @@
       </trans-unit>
       <trans-unit id="groupTaskProgress.toDo" datatype="html">
         <source>To do</source>
-        <target state="translated"><x id="INTERPOLATION" equiv-text="{{todoTasksCount}}"/>Zu tun</target>
+        <target state="translated">Zu tun</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
@@ -4495,7 +4495,7 @@
       </trans-unit>
       <trans-unit id="groupTaskProgress.inProgress" datatype="html">
         <source>In progress</source>
-        <target state="translated"><x id="INTERPOLATION" equiv-text="{{inprogressTasksCount}}"/>In Bearbeitung</target>
+        <target state="translated"> In Bearbeitung</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
@@ -4504,7 +4504,7 @@
       </trans-unit>
       <trans-unit id="groupTaskProgress.done" datatype="html">
         <source>Done</source>
-        <target state="translated"><x id="INTERPOLATION" equiv-text="{{doneTasksCount}}"/>Erledigt</target>
+        <target state="translated"> Erledigt</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
@@ -4558,7 +4558,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.forToday" datatype="html">
         <source>for today</source>
-        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge&quot;>"/><x id="INTERPOLATION" equiv-text="{{ today_task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Heute</target>
+        <target state="translated"> Heute</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
@@ -4579,7 +4579,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.overdue" datatype="html">
         <source>overdue</source>
-        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ overdueTasks.length }}"/>überfällig</target>
+        <target state="translated"> überfällig</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
@@ -4588,7 +4588,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.toDo" datatype="html">
         <source>to do</source>
-        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ to_do_task_count }}"/>zu tun</target>
+        <target state="translated">zu tun</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
@@ -4597,7 +4597,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.inProgress" datatype="html">
         <source>in progress</source>
-        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ in_progress_task_count }}"/>in Bearbeitung</target>
+        <target state="translated"> in Bearbeitung</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
@@ -4606,7 +4606,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.done" datatype="html">
         <source>done</source>
-        <target state="translated"><x id="INTERPOLATION" equiv-text="{{ done_task_count }}"/>erledigt</target>
+        <target state="translated">erledigt</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
@@ -4643,7 +4643,7 @@
       </trans-unit>
       <trans-unit id="commentList.showAll" datatype="html">
         <source>Show all ...</source>
-        <target state="translated">Alle anzeigen ...<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;badge badge-light&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <target state="translated">Alle anzeigen ...</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/comments/comment-list/comment-list.component.html</context>
@@ -4732,7 +4732,7 @@
       </trans-unit>
       <trans-unit id="componentSearchBar.manageUser" datatype="html">
         <source>Manage User</source>
-        <target state="translated">Benutzer verwalten<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <target state="translated">Benutzer verwalten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">50</context>
@@ -4800,7 +4800,7 @@
       </trans-unit>
       <trans-unit id="componentSearchBar.leaveGroup" datatype="html">
         <source>Leave Group</source>
-        <target state="translated">Gruppe verlassen<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;caret&quot;>"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
+        <target state="translated">Gruppe verlassen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">109</context>
@@ -5234,7 +5234,7 @@
       </trans-unit>
       <trans-unit id="workStatisticsCard.northStars" datatype="html">
         <source>North Stars</source>
-        <target state="translated"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;north_star_number&quot;>"/><x id="INTERPOLATION" equiv-text="{{ task_count }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>North Stars sind Ziele für Sie oder Ihr Team.</target>
+        <target state="translated">North Stars</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.html</context>
@@ -5315,7 +5315,7 @@
       </trans-unit>
       <trans-unit id="memberListMenu.users" datatype="html">
         <source>Users</source>
-        <target state="translated">Benutzer<x id="START_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;app-secured-image *ngIf=&quot;filterfor==='users'&quot;&#10;      [imgURL]=&quot;picsUrl&quot;&#10;      [service]=&quot;'user'&quot;&#10;      [styleClass]=&quot;'feed-avatar'&quot;>"/><x id="CLOSE_TAG_APP_SECURED_IMAGE" ctype="x-app_secured_image" equiv-text="&lt;/app-secured-image>"/></target>
+        <target state="translated">Benutzer</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-list-menu/member-list-menu.component.html</context>
