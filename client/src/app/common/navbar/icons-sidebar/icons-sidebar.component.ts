@@ -87,12 +87,12 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@iconsSidebar.successfullyLoggedOut:Successfully Logged out!`));
             }).catch((err) => {
               console.log('Error occurred while logging out!', err);
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@iconsSidebar.errorLoggingOut:Error occurred while logging you out!, please try again!`));
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@iconsSidebar.errorLoggingOut:Error occurred while logging you out, please try again!`));
             });
         }));
     } catch (err) {
       console.log('Error occurred while logging out!', err);
-      this.utilityService.errorNotification($localize`:@@iconsSidebar.errorLoggingOut:Error occurred while logging you out!`);
+      this.utilityService.errorNotification($localize`:@@iconsSidebar.errorLoggingOut:Error occurred while logging you out, please try again!`);
     }
   }
 

@@ -464,7 +464,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
               this.postService.createTaskFromTemplate(templatePostId, this.postData._id)
                 .then((res) => {
                   this.taskFromTemplateEmitter.emit(this.postData._id);
-                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.templateUpdated:Task updated!`))
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskUpdated:Task updated!`))
                 })
                 .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileUpdatingTask:An unexpected error occured while updating the task, please try again!`)))
             }))

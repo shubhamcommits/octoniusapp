@@ -547,7 +547,7 @@ export class GroupFilesComponent implements OnInit {
                   // Remove the file from the list
                   this.folders = this.folders.filter(folder => folder._id !== itemId);
 
-                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folderMoved:Folder moved!`));
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folderMoved:👍 Folder moved!`));
                 }).catch((err) => {
                   reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToMoveFolder:Unable to move the folder, please try again!`));
                 });
