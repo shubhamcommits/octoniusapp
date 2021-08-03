@@ -226,8 +226,8 @@ export class UtilityService {
 
     return Toast.fire({
       icon: 'warning',
-      title: 'Subscription pending',
-      text: timeRemaining + ' days trial left.'
+      title: $localize`:@@utilityService.subscriptionPending:Subscription pending`,
+      text: $localize`:@@utilityService.daysTrialLeft:${timeRemaining} days trial left.`
     })
   }
 
@@ -419,13 +419,13 @@ export class UtilityService {
    */
   public getConfirmDialogAlert(title?: string, text?: string, confirmButtonText?: string){
     return Swal.fire({
-      title: title || 'Are you sure?',
-      text: text || "You won't be able to revert this!",
+      title: title || $localize`:@@utilityService.areYouSure:Are you sure?`,
+      text: text || $localize`:@@utilityService.youWontRevert:You won't be able to revert this!`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: confirmButtonText || 'Yes, I am sure!'
+      confirmButtonText: confirmButtonText || $localize`:@@utilityService.yesSure:Yes, I am sure!`
     })
   }
 

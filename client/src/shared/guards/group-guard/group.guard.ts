@@ -47,7 +47,7 @@ export class GroupGuard implements CanActivate  {
     currentGroup = await this.publicFunctions.getCurrentGroupDetails(currentGroupId);
 
     if (currentGroup.archived_group) {
-      this.utilityService.warningNotification('Oops seems like the group don\'t exist!');
+      this.utilityService.warningNotification($localize`:@@groupGuard.oopsGroupDoesNotExist:Oops seems like the group don\'t exist!`);
       this.router.navigate(['dashboard', 'myspace', 'inbox']);
       return false;
     }
@@ -59,7 +59,7 @@ export class GroupGuard implements CanActivate  {
     if (groupMembersIndex >= 0 || groupAdminsIndex >= 0 || userGroupsIndex >= 0 || userData._private_group == currentGroupId) {
       return true;
     } else {
-      this.utilityService.warningNotification('Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!');
+      this.utilityService.warningNotification($localize`:@@groupGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);
       this.router.navigate(['dashboard', 'myspace', 'inbox']);
       return false;
     }
@@ -77,7 +77,7 @@ export class GroupGuard implements CanActivate  {
 
     return this.groupService.getGroupObservale(currentGroup).pipe(map((res) => {
       if (res['group']['_admins'].findIndex((admin: any) => admin._id == userId) < 0 && this.isGroupManagerURL(state)) {
-        this.utilityService.warningNotification('Oops seems like you don\'t have the permission to access the section, kindly contact your superior to provide you the proper admin rights!');
+        this.utilityService.warningNotification($localize`:@@groupGuard.oopsNoPermissionForSection:Oops seems like you don\'t have the permission to access the section, kindly contact your superior to provide you the proper admin rights!`);
         this.router.navigate(['dashboard', 'work', 'groups', 'activity'], {queryParams: { group: currentGroup, myWorkplace: false }});
         return false;
       }

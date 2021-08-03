@@ -50,7 +50,7 @@ export class FolioGuard implements CanActivate  {
         || currentGroup.share_files) {
       return true;
     } else {
-      this.utilityService.warningNotification('Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!');
+      this.utilityService.warningNotification($localize`:@@folioGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);
       this.router.navigate(['dashboard', 'myspace', 'inbox']);
       return false;
     }
