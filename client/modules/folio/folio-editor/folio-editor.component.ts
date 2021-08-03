@@ -228,7 +228,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       theme: 'bubble',
       modules: modules,
       readOnly: this.readOnly,
-      placeholder: 'Write something awesome...'
+      placeholder: $localize`:@@folioEditor.writeSomethingAwesome:Write something awesome...`
     })
   }
 

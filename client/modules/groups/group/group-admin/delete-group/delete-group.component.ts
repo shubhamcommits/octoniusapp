@@ -46,7 +46,7 @@ export class DeleteGroupComponent implements OnInit {
         if (result.value) {
 
           // Delete the group from the workspace
-          utilityService.asyncNotification('Please Wait while we are deleting the group',
+          utilityService.asyncNotification($localize`:@@deleteGroup.pleaseWaitDeletingGroup:Please Wait while we are deleting the group`,
             new Promise((resolve, reject) => {
               // Call Remove Group Service Function
               groupService.removeGroup(groupId)
@@ -57,13 +57,13 @@ export class DeleteGroupComponent implements OnInit {
                       // Resolve the async promise
                       this.utilityService.handleDeleteGroupFavorite().emit(true);
                       this.utilityService.handleUpdateGroupData().emit(true);
-                      resolve(utilityService.resolveAsyncPromise('Group removed!'));
+                      resolve(utilityService.resolveAsyncPromise($localize`:@@deleteGroup.groupRemoved:Group removed!`));
 
                     });
                 })
                 .catch(() => {
                   // Reject the promise
-                  reject(utilityService.rejectAsyncPromise('Unable to delete the group, please try again!'))
+                  reject(utilityService.rejectAsyncPromise($localize`:@@deleteGroup.unableToDeleteGroup:Unable to delete the group, please try again!`))
                 });
             }));
         }
@@ -79,12 +79,12 @@ export class DeleteGroupComponent implements OnInit {
     let utilityService = this.injector.get(UtilityService);
 
     // Ask User to delete the group or not
-    utilityService.getConfirmDialogAlert('Are you sure?', 'This action will archive the group.')
+    utilityService.getConfirmDialogAlert($localize`:@@deleteGroup.areYouSure:Are you sure?`, $localize`:@@deleteGroup.thisActionWillArchiveGroup:This action will archive the group.`)
       .then((result) => {
         if (result.value) {
 
           // Delete the group from the workspace
-          utilityService.asyncNotification('Please Wait while we are archive the group',
+          utilityService.asyncNotification($localize`:@@deleteGroup.pleaseWaitArchivingGroup:Please Wait while we are archive the group`,
             new Promise((resolve, reject) => {
               // Call Archive Group Service Function
               groupService.archiveGroup(groupId, true)
@@ -93,14 +93,14 @@ export class DeleteGroupComponent implements OnInit {
                   this.router.navigate(['/dashboard', 'work', 'groups', 'all'])
                     .then(() => {
                       // Resolve the async promise
-                      resolve(utilityService.resolveAsyncPromise('Group archived!'));
+                      resolve(utilityService.resolveAsyncPromise($localize`:@@deleteGroup.groupArchived:Group archived!`));
                       // refresh page in order to update the sidebar groups in case this was a favorite group
                       location.reload();
                     });
                 })
                 .catch(() => {
                   // Reject the promise
-                  reject(utilityService.rejectAsyncPromise('Unable to archive the group, please try again!'))
+                  reject(utilityService.rejectAsyncPromise($localize`:@@deleteGroup.unableToArchiveGroup:Unable to archive the group, please try again!`))
                 });
             }));
         }

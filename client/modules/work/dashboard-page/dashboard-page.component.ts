@@ -17,15 +17,15 @@ export class DashboardPageComponent implements OnInit {
   periods = [
     {
      key: 7,
-     value: 'Last 7 days'
+     value: $localize`:@@workDahsboardPage.last7Days:Last 7 days`
     },
     {
      key: 30,
-     value: 'Last month'
+     value: $localize`:@@workDahsboardPage.lastMonth:Last month`
     },
     {
      key: 365,
-     value: 'Last year'
+     value: $localize`:@@workDahsboardPage.lastYear:Last year`
     }
   ];
 
@@ -65,14 +65,14 @@ export class DashboardPageComponent implements OnInit {
     this.groupsList = await this.publicFunctions.getUserGroups(this.workspaceData['_id'], this.userData['_id'])
       .catch(()=>{
         // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        this.publicFunctions.sendError(new Error($localize`:@@workDahsboardPage.unableToConnectToServer:Unable to connect to the server, please try again later!`));
       });
 
     // Fetches the groups from the server
     this.projects = await this.getProjectColumns()
       .catch(() => {
         // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        this.publicFunctions.sendError(new Error($localize`:@@workDahsboardPage.unableToConnectToServer:Unable to connect to the server, please try again later!`));
       });
 
     this.period = (this.userData.stats.dashboard_period) ? this.userData.stats.dashboard_period : 7;

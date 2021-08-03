@@ -19,8 +19,7 @@ export class InviteUserComponent implements OnInit {
   @Input('groupData') groupData: any;
 
   email: string = '';
-  //  label: string = "The option is mainly for inviting external guests to this group.";
-  placeholder: string = "Please provide the email";
+  placeholder: string = $localize`:@@inviteUsers.pleaseProvideEmail:Please provide the email`;
 
   isValidEmail = false;
 
@@ -49,20 +48,20 @@ export class InviteUserComponent implements OnInit {
    */
   inviteUser(workspaceId: string, email: string, groupId: string){
     try{
-      this.utilityService.asyncNotification('Please wait, while we are sending the email...', new Promise((resolve, reject)=>{
+      this.utilityService.asyncNotification($localize`:@@inviteUsers.pleaseWaitSendingEmail:Please wait, while we are sending the email...`, new Promise((resolve, reject)=>{
         this.adminService.inviteNewUserViaEmail(workspaceId, email, 'group', groupId, this.userData?.first_name)
         .subscribe((res)=>{
           this.email = '';
-          resolve(this.utilityService.resolveAsyncPromise(`We have sent the invitation email at ${email} to join your group!`))
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@inviteUsers.weHaveSentInvitationEmail:We have sent the invitation email at ${email} to join your group!`))
         }, (err)=>{
           this.email = '';
           console.log('Error occured, while sending the email', err);
-          reject(this.utilityService.rejectAsyncPromise('Oops, an error occured while sending the email, please try again!'))
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@inviteUsers.oopsErrorWhileSendingEmail:Oops, an error occured while sending the email, please try again!`))
         })
       }))
     } catch(err){
       console.log('There\'s some unexpected error occured, please try again!', err);
-      this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
+      this.utilityService.errorNotification($localize`:@@inviteUsers.unexpectedErrorOccured:There\'s some unexpected error occured, please try again!`);
     }
   }
 

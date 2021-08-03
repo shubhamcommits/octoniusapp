@@ -142,10 +142,10 @@ export class UserWorkloadCalendarComponent implements OnInit {
       }
     } else if (action == 'remove') {
       if (this.daysToCancel && this.daysToCancel.length > 0) {
-        this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the day will be cancelled!')
+        this.utilityService.getConfirmDialogAlert($localize`:@@userWorkloadCalendar.areYouSure:Are you sure?`, $localize`:@@userWorkloadCalendar.dayWillBeCAncelled:By doing this the day will be cancelled!`)
           .then(async (res) => {
             if (res.value) {
-              await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
+              await this.utilityService.asyncNotification($localize`:@@userWorkloadCalendar.pleaseWaitWeCancelDay:Please wait we are cancelling the day...`, new Promise((resolve, reject) => {
                 for (let index = 0; index < this.daysToCancel.length; index++) {
                   this.daysToCancel[index].date = moment(this.daysToCancel[index].date).format("YYYY-MM-DD");
                 }
@@ -161,10 +161,10 @@ export class UserWorkloadCalendarComponent implements OnInit {
                   this.refresh.next();
 
                   // Resolve with success
-                  resolve(this.utilityService.resolveAsyncPromise(`👍 Day/s cancelled!`));
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@userWorkloadCalendar.dayCancelled:👍 Day/s cancelled!`));
                 })
                 .catch(() => {
-                  reject(this.utilityService.rejectAsyncPromise(`Error while cancelling the days!`));
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@userWorkloadCalendar.errorWhileCancellingDay:Error while cancelling the days!`));
                 });
               }));
             }

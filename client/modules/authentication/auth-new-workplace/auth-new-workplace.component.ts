@@ -40,7 +40,7 @@ export class AuthNewWorkplaceComponent implements OnInit {
 
   checkWorkspaceAvailability() {
     if (this.workplace.name == null || this.workplace.name == '') {
-      this.utilityService.warningNotification('Workplace name can\'t be empty!');
+      this.utilityService.warningNotification($localize`:@@authNewWorkplace.nameCannotBeEmpty:Workplace name can\'t be empty!`);
       this.validWorkspace = false;
     } else {
       this.authenticationService.checkWorkspaceName({
@@ -48,11 +48,11 @@ export class AuthNewWorkplaceComponent implements OnInit {
         })
         .then(() => {
           this.validWorkspace = true;
-          this.utilityService.successNotification('This workplace name is available.');
+          this.utilityService.successNotification($localize`:@@authNewWorkplace.nameAvailable:This workplace name is available.`);
         })
         .catch(() => {
           this.validWorkspace = false;
-          this.utilityService.errorNotification('This workplace name is taken, kindly come up with another one!');
+          this.utilityService.errorNotification($localize`:@@authNewWorkplace.nameTaken:This workplace name is taken, kindly come up with another one!`);
         });
     }
   }
@@ -66,19 +66,19 @@ export class AuthNewWorkplaceComponent implements OnInit {
   createNewWorkplace() {
     try {
       if (!this.validWorkspace || this.workplace.company_name == null || this.workplace.company_name == '') {
-        this.utilityService.warningNotification('Insufficient or incorrect data, kindly fill up all the fields correctly!');
+        this.utilityService.warningNotification($localize`:@@authNewWorkplace.insufficientData:Insufficient or incorrect data, kindly fill up all the fields correctly!`);
       } else {
         // PREPARING THE WORKPLACE DATA
         let workplaceData: Object = {
           workspace_name: this.workplace.name.trim(),
           company_name: this.workplace.company_name.trim()
         }
-        this.utilityService.asyncNotification('Please wait while we are setting up your new workplace and account...',
+        this.utilityService.asyncNotification($localize`:@@authNewWorkplace.pleaseWaitSettingUp:Please wait while we are setting up your new workplace and account...`,
           this.newWorkplaceServiceFunction(workplaceData))
       }
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
-      this.utilityService.errorNotification('There\'s some unexpected error occurred, please try again later!');
+      this.utilityService.errorNotification($localize`:@@authNewWorkplace.unexpectedError:There\'s some unexpected error occurred, please try again later!`);
     }
   }
 
@@ -94,19 +94,19 @@ export class AuthNewWorkplaceComponent implements OnInit {
           this.storeData(res);
           this.router.navigate(['dashboard', 'myspace', 'inbox'])
             .then(() => {
-              this.utilityService.successNotification(`Hi ${res['user']['first_name']}, welcome to your new workplace!`);
-              resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome to your new workplace!`))
+              this.utilityService.successNotification($localize`:@@authNewWorkplace.welcomeToWorkplace:Hi ${res['user']['first_name']}, welcome to your new workplace!`);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@authNewWorkplace.welcomeToWorkplace:Hi ${res['user']['first_name']}, welcome to your new workplace!`))
             })
             .catch(() => {
-              this.utilityService.errorNotification('Oops some error occured while setting you up, please try again!');
-              reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
+              this.utilityService.errorNotification($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occured while setting you up, please try again!`);
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occured while setting you up, please try again!`))
             })
 
         }, (err) => {
           console.error('Error occured while creating new workplace', err);
-          this.utilityService.errorNotification('Oops some error occured while setting you up, please try again!');
+          this.utilityService.errorNotification($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occured while setting you up, please try again!`);
           this.storageService.clear();
-          reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occured while setting you up, please try again!`))
         })
     })
   }

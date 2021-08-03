@@ -182,7 +182,7 @@ export class PublicFunctions {
                 .subscribe((res) => { resolve(res['workspace']) },
                     (err) => {
                         console.log('Error occured while fetching the workspace details!', err);
-                        utilityService.errorNotification('Error occured while fetching the workspace details, please try again!');
+                        utilityService.errorNotification($localize`:@@publicFunctions.errorOccuredWhileFetchingWorkspaceDetails:Error occured while fetching the workspace details, please try again!`);
                         reject(err)
                     })
             )
@@ -207,7 +207,7 @@ export class PublicFunctions {
                 })
                 .catch((err) => {
                     console.log('Error occured while fetching the workspace members!', err);
-                    utilityService.errorNotification('Error occured while fetching the workspace members!, please try again!');
+                    utilityService.errorNotification($localize`:@@publicFunctions.errorOccuredWhileFetchingWorkspaceMembers:Error occured while fetching the workspace members!, please try again!`);
                     reject(err)
                 })
         })
@@ -308,7 +308,7 @@ export class PublicFunctions {
                   }
                 })
                 .catch((err) => {
-                    this.sendError(new Error('Unable to fetch the group details, please try again!'))
+                    this.sendError(new Error($localize`:@@publicFunctions.unableToFetchGroupDetails:Unable to fetch the group details, please try again!`))
                     reject(err)
                 })
         })
@@ -866,16 +866,16 @@ export class PublicFunctions {
         // Utility Service Instance
         let utilityService = this.injector.get(UtilityService)
 
-        utilityService.asyncNotification('Please wait we are changing the task assignee...',
+        utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitWeChangeTaskAssignee:Please wait we are changing the task assignee...`,
             new Promise((resolve, reject) => {
 
                 // Call HTTP Request to change the assignee
                 postService.changeTaskAssignee(postId, assigneeId)
                     .then((res) => {
-                        resolve(utilityService.resolveAsyncPromise(`Task assigned to ${res['post']['task']['_assigned_to']['first_name']}`))
+                        resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.taskAssigned:Task assigned to ${res['post']['task']['_assigned_to']['first_name']}`))
                     })
                     .catch(() => {
-                        reject(utilityService.rejectAsyncPromise(`Unable to assign the new assignee, please try again!`))
+                        reject(utilityService.rejectAsyncPromise($localize`:@@publicFunctions.unableToAssign:Unable to assign the new assignee, please try again!`))
                     })
 
             }))
@@ -894,16 +894,16 @@ export class PublicFunctions {
         // Utility Service Instance
         let utilityService = this.injector.get(UtilityService)
 
-        utilityService.asyncNotification('Please wait we are changing the task due date...',
+        utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitChangingTaskDueDate:Please wait we are changing the task due date...`,
             new Promise((resolve, reject) => {
 
                 // Call HTTP Request to change the request
                 postService.changeTaskDueDate(postId, dueDate)
                     .then((res) => {
-                        resolve(utilityService.resolveAsyncPromise(`Task due date changed to ${moment(dueDate).format('YYYY-MM-DD')}!`))
+                        resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.taskDueDAteChanged:Task due date changed to ${moment(dueDate).format('YYYY-MM-DD')}!`))
                     })
                     .catch(() => {
-                        reject(utilityService.rejectAsyncPromise(`Unable to change the due date, please try again!`))
+                        reject(utilityService.rejectAsyncPromise($localize`:@@publicFunctions.unableToChangeDueDate:Unable to change the due date, please try again!`))
                     })
 
             }))
@@ -936,16 +936,16 @@ export class PublicFunctions {
         // Utility Service Instance
         let utilityService = this.injector.get(UtilityService)
 
-        utilityService.asyncNotification('Please wait we are moving the task to a new column...',
+        utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitWeAreMovingTaskToSection:Please wait we are moving the task to a new section...`,
             new Promise((resolve, reject) => {
 
                 // Call HTTP Request to change the request
                 postService.changeTaskColumn(postId, columnId, userId, groupId)
                     .then((res) => {
-                        resolve(utilityService.resolveAsyncPromise('Task moved'));
+                        resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.tasksMoved:Task moved`));
                     })
                     .catch(() => {
-                        reject(utilityService.rejectAsyncPromise(`Unable to move the task, please try again!`));
+                        reject(utilityService.rejectAsyncPromise($localize`:@@publicFunctions.unableToMoveTask:Unable to move the task, please try again!`));
                     })
 
             }))
@@ -991,9 +991,9 @@ export class PublicFunctions {
     async joinAgora(groupId, userId) {
         let groupService = this.injector.get(GroupsService);
         let utilityService = this.injector.get(UtilityService);
-        utilityService.asyncNotification('Joining Group...', new Promise((resolve, reject) => {
+        utilityService.asyncNotification($localize`:@@publicFunctions.joiningGroup:Joining Group...`, new Promise((resolve, reject) => {
             groupService.joinAgora(groupId, userId).then((res) => {
-                resolve(utilityService.resolveAsyncPromise('Successfully Joined Group'));
+                resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.successfullyJoinedGroup:Successfully Joined Group`));
             }).catch((err) => {
                 throw (err);
             })
@@ -1404,7 +1404,7 @@ export class PublicFunctions {
           });
       }
 
-      
+
      /* Helper function fetching the worksapace groups
      * @param workspaceId - current workspaceId
      */

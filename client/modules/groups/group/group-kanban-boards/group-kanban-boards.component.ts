@@ -212,17 +212,17 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     let utilityService = this.injector.get(UtilityService)
 
     // Call the HTTP Service function
-    utilityService.asyncNotification('Please wait we are save the column order...', new Promise((resolve, reject) => {
+    utilityService.asyncNotification($localize`:@@groupKanbanBoards.pleaseWaitWeSaveCSectionOrder:Please wait we are save the section order...`, new Promise((resolve, reject) => {
       // Move items in array
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
 
       const columnsMap = event.container.data.map((col, index) => { return { _id: col['_id'], position: index }});
       this.columnService.updateColumnsPosition(columnsMap)
         .then((res) => {
-          resolve(utilityService.resolveAsyncPromise('Order saved!'));
+          resolve(utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.orderSaved:Order saved!`));
         })
         .catch((err) => {
-          reject(utilityService.rejectAsyncPromise('Unable to save the order of the columns at the moment, please try again!'));
+          reject(utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToSaveOrderOfSections:Unable to save the order of the sections at the moment, please try again!`));
         });
     }));
   }
@@ -238,7 +238,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
     // If index is found, then throw error notification
     if (index != -1) {
-      this.utilityService.warningNotification('Section with the same title aready exist, please try with different name!')
+      this.utilityService.warningNotification($localize`:@@groupKanbanBoards.sectionWithSameNameExist:Section with the same title aready exist, please try with different name!`)
     }
 
     // If not found, then push the element
@@ -264,7 +264,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     let utilityService = this.injector.get(UtilityService)
 
     // Call the HTTP Service function
-    utilityService.asyncNotification('Please wait we are creating a new section...', new Promise((resolve, reject) => {
+    utilityService.asyncNotification($localize`:@@groupKanbanBoards.pleaseWaitWeCreateSection:Please wait we are creating a new section...`, new Promise((resolve, reject) => {
       columnService.addColumn(groupId, columnName)
         .then((res) => {
           let column = res['column'];
@@ -274,10 +274,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
           this.newSectionEvent.emit(column);
 
-          resolve(utilityService.resolveAsyncPromise('New Section Created!'));
+          resolve(utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.newSectionCreated:New Section Created!`));
         })
         .catch((err) => {
-          reject(utilityService.rejectAsyncPromise('Unable to create the section at the moment, please try again!'))
+          reject(utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToCreateSection:Unable to create the section at the moment, please try again!`))
         });
     }));
   }
@@ -295,13 +295,13 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     let utilityService = this.injector.get(UtilityService)
 
     // Call the HTTP Service function
-    utilityService.asyncNotification('Please wait we are removing your column...', new Promise((resolve, reject) => {
+    utilityService.asyncNotification($localize`:@@groupKanbanBoards.pleaseWaitWeRemovingSection:Please wait we are removing your section...`, new Promise((resolve, reject) => {
       columnService.deleteColumn(columnId)
         .then((res) => {
-          resolve(utilityService.resolveAsyncPromise('Column Removed!'));
+          resolve(utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.sectionRemoved:Section Removed!`));
         })
         .catch((err) => {
-          reject(utilityService.rejectAsyncPromise('Unable to removed the column at the moment, please try again!'))
+          reject(utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToRemoveSection:Unable to removed the section at the moment, please try again!`))
         })
     }))
   }
@@ -318,7 +318,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
     // If index is found, then throw error notification
     if (index != -1) {
-      this.utilityService.warningNotification('Column with the same title aready exist, please try with different name!')
+      this.utilityService.warningNotification($localize`:@@groupKanbanBoards.sectionWithSameTitleExists:Section with the same title aready exists, please try with different name!`)
     }
 
     // If not found, then change the element details
@@ -329,13 +329,13 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       let columnService = this.injector.get(ColumnService)
 
       // Call the HTTP Service function
-      this.utilityService.asyncNotification('Please wait we are renaming your column...', new Promise((resolve, reject) => {
+      this.utilityService.asyncNotification($localize`:@@groupKanbanBoards.pleaseWaitWeRenameSection:Please wait we are renaming your section`, new Promise((resolve, reject) => {
         columnService.editColumnName(columnId, newColTitle)
           .then((res) => {
-            resolve(this.utilityService.resolveAsyncPromise('Column Renamed!'));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.sectionRenamed:Section Renamed!`));
           })
           .catch((err) => {
-            reject(this.utilityService.rejectAsyncPromise('Unable to rename the column at the moment, please try again!'))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToRenameSection:Unable to rename the section at the moment, please try again!`))
           })
       }))
     }
@@ -348,7 +348,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   deleteColumn(column: any) {
 
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this all the tasks from this column will be deleted!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@groupKanbanBoards.areYouSure:Are you sure?`, $localize`:@@groupKanbanBoards.byDoingThisTasksWillBeDeleted:By doing this all the tasks from this section will be deleted!`)
       .then((res) => {
         if (res.value) {
           // Find the index of the column to check if the same named column exist or not
@@ -599,15 +599,15 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
   makeColumnProjectDialog(column: any) {
     if (!column?.project_type) {
-      this.utilityService.asyncNotification('Please wait we are creating a project from your column...', new Promise((resolve, reject) => {
+      this.utilityService.asyncNotification($localize`:@@groupKanbanBoards.pleaseWaitWeCreateProject:Please wait we are creating a project from your section...`, new Promise((resolve, reject) => {
         this.columnService.changeColumnProjectType(column._id, true)
           .then((res) => {
             column.project_type = true;
-            resolve(this.utilityService.resolveAsyncPromise('Column type changed!'));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.sectionTypeChanged:Section type changed!`));
           })
           .catch((err) => {
             column.project_type = false;
-            reject(this.utilityService.rejectAsyncPromise('Unable to change the column type at the moment, please try again!'))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToChangeSectionType:Unable to change the section type at the moment, please try again!`))
           })
       }));
     }

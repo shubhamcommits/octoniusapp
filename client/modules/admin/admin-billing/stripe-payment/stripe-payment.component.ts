@@ -66,7 +66,7 @@ export class StripePaymentComponent implements OnInit {
         })
         .catch(function (err) {
           console.log('Error when fetching Checkout session', err);
-          this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
+          this.utilityService.errorNotification($localize`:@@stripePayment.unexpectedError:There\'s some unexpected error occured, please try again!`);
         });
 
       await this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
@@ -105,7 +105,7 @@ export class StripePaymentComponent implements OnInit {
           // Initialise the suncription
           this.subscription = res['subscription'];
         })
-        .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
+        .catch(() => this.utilityService.errorNotification($localize`:@@stripePayment.unableFetchSubscriptionDetails:Unable to fetch the Subscription details, please try again!`));
     } else {
       this.subscription = null;
     }
@@ -124,7 +124,7 @@ export class StripePaymentComponent implements OnInit {
           this.subscription = null;
         }
       })
-      .catch(() => this.utilityService.errorNotification('Unable to fetch the Subscription details, please try again!'));
+      .catch(() => this.utilityService.errorNotification($localize`:@@stripePayment.unableFetchSubscriptionDetails:Unable to fetch the Subscription details, please try again!`));
 
   }
 
@@ -139,7 +139,7 @@ export class StripePaymentComponent implements OnInit {
     this.managementPortalService.createClientPortalSession(this.workspaceData._id, redirectUrl, this.workspaceData.management_private_api_key).then(res => {
       window.location.href = res['session']['url'];
     }).catch((err) => {
-      this.utilityService.errorNotification('There is an error with your Subscription, please contact support!');
+      this.utilityService.errorNotification($localize`:@@stripePayment.errorWithYourSubscription:There is an error with your Subscription, please contact support!`);
     });
   }
 }

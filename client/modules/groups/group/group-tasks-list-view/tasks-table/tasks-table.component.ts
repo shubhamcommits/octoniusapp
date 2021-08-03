@@ -307,7 +307,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
     // If index is found, then throw error notification
     if (index !== -1) {
-      this.utilityService.warningNotification('Column already exist!');
+      this.utilityService.warningNotification($localize`:@@taskTable.sectionAlreadyExists:Section already exists!`);
     } else {
       // If not found, then push the element
       // Create the Column

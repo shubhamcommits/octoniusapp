@@ -35,7 +35,7 @@ export class CreateGroupComponent implements OnInit {
     return this.utilityService.getSwalModal({
       title: title,
       input: 'text',
-      inputPlaceholder: 'Try to add a short name',
+      inputPlaceholder: $localize`:@@createGroup.tryToAddShortName:Try to add a short name`,
       inputAttributes: {
         maxlength: 20,
         autocapitalize: 'off',
@@ -45,7 +45,7 @@ export class CreateGroupComponent implements OnInit {
       imageAlt: title,
       confirmButtonText: title,
       showCancelButton: true,
-      cancelButtonText: 'Cancel',
+      cancelButtonText: $localize`:@@createGroup.cancel:Cancel`,
       cancelButtonColor: '#d33',
     })
   }
@@ -54,21 +54,21 @@ export class CreateGroupComponent implements OnInit {
    * This function creates the new normal group
    */
   async openCreateGroupModal() {
-    const { value: value } = await this.openModal('Create Group', 'assets/images/create-group.svg');
+    const { value: value } = await this.openModal($localize`:@@createGroup.createGroup:Create Group`, 'assets/images/create-group.svg');
     if (value) {
-      this.utilityService.asyncNotification('Please wait, while we are creating group for you...', new Promise((resolve, reject) => {
+      this.utilityService.asyncNotification($localize`:@@createGroup.pleaseWaitWeCreateGroup:Please wait, while we are creating group for you...`, new Promise((resolve, reject) => {
         this.createGroup(value, this.workspaceData['workspace_name'], this.workspaceData['_id'], this.userData['_id'], 'normal')
           .then((group) => {
 
             // Emit the group object to the other components
             this.groupEmitter.emit(group);
 
-            resolve(this.utilityService.resolveAsyncPromise('Group created!'))
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@createGroup.groupCreated:Group created!`))
           })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise('An unexpected error occured while creating the group, please try again!')))
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@createGroup.unexpectedErrorCreatingGroup:An unexpected error occured while creating the group, please try again!`)))
       }))
     } else if(value == ''){
-      this.utilityService.warningNotification('Group name can\'t be empty!');
+      this.utilityService.warningNotification($localize`:@@createGroup.groupNameNotEmpty:Group name can\'t be empty!`);
     }
   }
 
@@ -76,48 +76,24 @@ export class CreateGroupComponent implements OnInit {
    * This function creates the new agora group
    */
   async openCreateAgoraModal(){
-    const { value: value } = await this.openModal('Create Agora', 'assets/images/create-agora.svg');
+    const { value: value } = await this.openModal($localize`:@@createGroup.createAgora:Create Agora`, 'assets/images/create-agora.svg');
     if(value){
-      this.utilityService.asyncNotification('Please wait, while we are creating agora for you...', new Promise((resolve, reject) => {
+      this.utilityService.asyncNotification($localize`:@@createGroup.pleaseWaitWeCreateAgora:Please wait, while we are creating agora for you...`, new Promise((resolve, reject) => {
         this.createGroup(value, this.workspaceData['workspace_name'], this.workspaceData['_id'], this.userData['_id'], 'agora')
           .then((group) => {
 
             // Emit the group object to the other components
             this.groupEmitter.emit(group);
 
-            resolve(this.utilityService.resolveAsyncPromise('Agora created!'))
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@createGroup.agoraCreated:Agora created!`))
           })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise('An unexpected error occured while creating the group, please try again!')))
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@createGroup.unexpectedErrorCreatingGroup:An unexpected error occured while creating the group, please try again!`)))
       }))
 
     } else if(value == ''){
-      this.utilityService.warningNotification('Agora name can\'t be empty!')
+      this.utilityService.warningNotification($localize`:@@createGroup.agoraNameNotEmpty:Agora name can\'t be empty!`)
     }
   }
-
-  /**
-   * This function creates the new smart group
-   */
-  /*
-  async openCreateSmartGroupModal(){
-    const { value: value } = await this.openModal('Create Smart Group', 'assets/images/create-smartgroup.svg');
-    if(value){
-      this.utilityService.asyncNotification('Please wait, while we are creating smart group for you...', new Promise((resolve, reject) => {
-        this.createGroup(value, this.workspaceData['workspace_name'], this.workspaceData['_id'], this.userData['_id'], 'smart')
-          .then((group) => {
-
-            // Emit the group object to the other components
-            this.groupEmitter.emit(group);
-
-            resolve(this.utilityService.resolveAsyncPromise('Smart Group created!'))
-          })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise('An unexpected occured while creating the group, please try again!')))
-      }))
-    } else if(value == ''){
-      this.utilityService.warningNotification('Smart Group name can\'t be empty!')
-    }
-  }
-  */
 
   /**
    * Create group helper function, which makes the HTTP request to create the group

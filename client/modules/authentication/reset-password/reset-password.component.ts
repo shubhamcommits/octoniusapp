@@ -31,8 +31,8 @@ export class ResetPasswordComponent implements OnInit {
 
   matchUserPassword() {
     (this.user.password == this.user.repeatPassword)
-      ? this.utilityService.successNotification('Password matches successfully!')
-      : this.utilityService.warningNotification("Password doesn\'t match!");
+      ? this.utilityService.successNotification($localize`:@@resetPwd.pwdMatchSuccessfully:Password matches successfully!`)
+      : this.utilityService.warningNotification($localize`:@@resetPwd.pwddoesntMatch:Password doesn\'t match!`);
   }
 
   /**
@@ -52,15 +52,15 @@ export class ResetPasswordComponent implements OnInit {
         }
 
         // Call the service function
-        this.utilityService.asyncNotification('Please wait while we are resetting your password...',
+        this.utilityService.asyncNotification($localize`:@@resetPwd.pleaseWaitResettingPwd:Please wait while we are resetting your password...`,
           this.resetPasswordServiceFunction(resetPassObject))
       } else{
-        this.utilityService.warningNotification("Password doesn\'t match!");
+        this.utilityService.warningNotification($localize`:@@resetPwd.pwddoesntMatch:Password doesn\'t match!`);
       }
 
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
-      this.utilityService.errorNotification('There\'s some unexpected error occurred, please try again later!');
+      this.utilityService.errorNotification($localize`:@@resetPwd.unexpectedError:There\'s some unexpected error occurred, please try again later!`);
     }
   }
 
@@ -74,12 +74,12 @@ export class ResetPasswordComponent implements OnInit {
         .then((res) => {
           this.router.navigate(['home'])
             .then(() => {
-              this.utilityService.successNotification(`Your password has been reset successfully!`);
-              resolve(this.utilityService.resolveAsyncPromise(`Your password has been reset successfully!`))
+              this.utilityService.successNotification($localize`:@@resetPwd.pwdResetSuccessfully:Your password has been reset successfully!`);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@resetPwd.pwdResetSuccessfully:Your password has been reset successfully!`))
             })
             .catch(() => {
-              this.utilityService.errorNotification('Oops some error occured while setting you up, please try again!');
-              reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
+              this.utilityService.errorNotification($localize`:@@resetPwd.oopsErrorResetingPwd:Oops some error occured while reseting your password, please try again!`);
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@resetPwd.oopsErrorResetingPwd:Oops some error occured while reseting your password, please try again!`))
             })
         })
     })

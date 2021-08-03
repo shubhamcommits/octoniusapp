@@ -137,7 +137,7 @@ export class GroupSmartAdminComponent implements OnInit {
    */
   onAddNewRule(): void {
     if (this.rule === '' || this.condition === '') {
-      this.utilityService.infoNotification('Conditions must be selected.');
+      this.utilityService.infoNotification($localize`:@@groupSmartAdmin.conditionsMustBeSelected:Conditions must be selected.`);
       return;
     }
 
@@ -145,7 +145,7 @@ export class GroupSmartAdminComponent implements OnInit {
 
     if (this.rule === 'Email domain') {
       if (this.currentSettings.emailDomains.includes(this.condition)) {
-        this.utilityService.infoNotification('That domain has already been added.');
+        this.utilityService.infoNotification($localize`:@@groupSmartAdmin.domainAlreadyAdded:That domain has already been added.`);
         return;
       };
 
@@ -156,7 +156,7 @@ export class GroupSmartAdminComponent implements OnInit {
       data = { type: 'email_domain', payload: this.condition };
     } else if (this.rule === 'Job position') {
       if (this.currentSettings.jobPositions.includes(this.condition)) {
-        this.utilityService.infoNotification('That position has already been added.');
+        this.utilityService.infoNotification($localize`:@@groupSmartAdmin.positionAlreadyAdded:That position has already been added.`);
         return;
       };
 
@@ -167,7 +167,7 @@ export class GroupSmartAdminComponent implements OnInit {
       data = { type: 'job_position', payload: this.condition };
     } else if (this.rule === 'Skills') {
       if (this.currentSettings.skills.includes(this.condition)) {
-        this.utilityService.infoNotification('That skill has already been added.');
+        this.utilityService.infoNotification($localize`:@@groupSmartAdmin.skillAlreadyAdded:That skill has already been added.`);
         return;
       };
 
@@ -179,7 +179,7 @@ export class GroupSmartAdminComponent implements OnInit {
     } else if (this.rule === 'Custom Fields') {
       const index = this.currentSettings.customFields.findIndex(cf => cf.name == this.condition.name);
       if (index >= 0) {
-        this.utilityService.infoNotification('That field has already been added.');
+        this.utilityService.infoNotification($localize`:@@groupSmartAdmin.fieldAlreadyAdded:That field has already been added.`);
         return;
       };
 
@@ -193,14 +193,14 @@ export class GroupSmartAdminComponent implements OnInit {
     // Update DB
     this.groupService.updateSmartGroupRules(data, this.group._id).subscribe(
       res => {
-        this.utilityService.successNotification('The rule has been successfully added!');
+        this.utilityService.successNotification($localize`:@@groupSmartAdmin.fuleSuccessfullyAdded:The rule has been successfully added!`);
         this.rule = '';
         this.condition = '';
         this.conditions = [];
         this.autoAdd();
       },
       error => {
-        this.utilityService.errorNotification('An error occurred whilst adding the rule.');
+        this.utilityService.errorNotification($localize`:@@groupSmartAdmin.errorWhileAddingRule:An error occurred whilst adding the rule.`);
         console.error('Could not add new rule!');
         console.error(error);
       }
@@ -220,7 +220,7 @@ export class GroupSmartAdminComponent implements OnInit {
         this.currentSettings.customFields = res.custom_fields;
       },
       error => {
-        this.utilityService.errorNotification('An error occurred whilst fetching existing smart group settings.');
+        this.utilityService.errorNotification($localize`:@@groupSmartAdmin.errorOccuredWhileFetchingSmartSettings:An error occurred whilst fetching existing smart group settings.`);
         console.error('Could not fetch existing rules!');
         console.error(error);
       }
@@ -235,7 +235,7 @@ export class GroupSmartAdminComponent implements OnInit {
   onDeleteRule(rule: string, customFieldId?: string): void {
     this.groupService.deleteSmartGroupRule(this.group._id, rule, customFieldId).subscribe(
       res => {
-        this.utilityService.successNotification('The rule has been successfully deleted!');
+        this.utilityService.successNotification($localize`:@@groupSmartAdmin.ruleSuccessfullyDeleted:The rule has been successfully deleted!`);
 
         // Update UI
         if (rule === 'email_domains') {
@@ -252,7 +252,7 @@ export class GroupSmartAdminComponent implements OnInit {
         this.publicFunctions.sendUpdatesToGroupData(res['group']);
       },
       error => {
-        this.utilityService.errorNotification('An error occurred whilst deleting the rule.');
+        this.utilityService.errorNotification($localize`:@@groupSmartAdmin.errorWhileDeletingRule:An error occurred whilst deleting the rule.`);
         console.error('Could not delete rule!');
         console.error(error);
       }
@@ -288,7 +288,7 @@ export class GroupSmartAdminComponent implements OnInit {
         this.publicFunctions.sendUpdatesToGroupData(res['group']);
       },
       error => {
-        this.utilityService.errorNotification('An error occurred whilst modifying the members of the group.');
+        this.utilityService.errorNotification($localize`:@@groupSmartAdmin.errorOccurredWhileModifyingMembersOfGroup:An error occurred while modifying the members of the group.`);
         console.error('Could not auto add members!');
         console.error(error);
       }

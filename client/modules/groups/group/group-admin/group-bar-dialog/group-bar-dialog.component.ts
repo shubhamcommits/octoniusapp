@@ -54,18 +54,18 @@ import { environment } from 'src/environments/environment';
 
     addNewUserToBar(event, bar){
             // Add a new member to bar
-        this.utilityService.asyncNotification('Please wait we are adding the new user to bar...',
+        this.utilityService.asyncNotification($localize`:@@groupBarDialog.pleaseWaitAddingNewUserToBar:Please wait we are adding the new user to bar...`,
         new Promise((resolve, reject)=>{
         this.groupService.addMemberToBar(this.groupId, bar.bar_tag, event)
         .then(()=> {
-            resolve(this.utilityService.resolveAsyncPromise(`${event.first_name} added to your bar!`))
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupBarDialog.addedToBar:${event.first_name} added to your bar!`))
             this.barList.forEach(barItem => {
                 if(barItem.bar_tag === bar.bar_tag){
                     barItem.members.push(event);
                 }
             });
         })
-        .catch(() => reject(this.utilityService.rejectAsyncPromise(`Unable to add ${event.first_name} to your bar`)))
+        .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupBarDialog.unableToAddToBar:Unable to add ${event.first_name} to your bar`)))
         }))
     }
 
@@ -73,7 +73,7 @@ import { environment } from 'src/environments/environment';
 
         this.groupService.removeUserFromBar(this.groupId, bar.bar_tag, event)
         .then(()=> {
-            this.utilityService.warningNotification(`${event.first_name} removed from ${bar.bar_tag}!`);
+            this.utilityService.warningNotification($localize`:@@groupBarDialog.removedFromBarTag:${event.first_name} removed from ${bar.bar_tag}!`);
             this.barList.forEach( barItem => {
                 if(barItem.bar_tag === bar.bar_tag){
                     barItem.members = barItem.members.filter(member => member._id !== event._id);
@@ -81,7 +81,7 @@ import { environment } from 'src/environments/environment';
                 }
             });
         })
-        .catch(() => this.utilityService.rejectAsyncPromise(`Unable to remove ${event.first_name} from ${bar.bar_tag}`));
+        .catch(() => this.utilityService.rejectAsyncPromise($localize`:@@groupBarDialog.unableToRemoveFromBarTag:Unable to remove ${event.first_name} from ${bar.bar_tag}`));
     }
     showTagComponent(){
         this.addNewBar = !this.addNewBar;

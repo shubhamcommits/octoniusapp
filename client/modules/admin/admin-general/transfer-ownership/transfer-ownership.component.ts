@@ -25,17 +25,17 @@ export class TransferOwnershipComponent implements OnInit {
   }
 
   addNewUser(User:any){
-    this.utilityService.asyncNotification('Please wait while we are Deleting the user ...',
+    this.utilityService.asyncNotification($localize`:@@transferOwnership.pleaseWait:Please wait while we are Transfering Ownership ...`,
     new Promise((resolve, reject) => {
       this.userService.transferOwnership({
         userById: this.userData._id,
         userToId:User._id,
         workspaceId:this.workspaceData._id,
       }).then(res => {
-        resolve(this.utilityService.resolveAsyncPromise('Successfully Transfered OwnerShip!'));
+        resolve(this.utilityService.resolveAsyncPromise($localize`:@@transferOwnership.successfully:Successfully Transfered OwnerShip!`));
       })
       .catch(err => {
-        reject(this.utilityService.rejectAsyncPromise('Error occurred while transfering ownership , please try again!'));
+        reject(this.utilityService.rejectAsyncPromise($localize`:@@transferOwnership.errorWhileTransferingOwnership:Error occurred while transfering ownership , please try again!`));
       })
     }));
 

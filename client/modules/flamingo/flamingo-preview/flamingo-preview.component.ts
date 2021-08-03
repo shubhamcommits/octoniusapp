@@ -101,7 +101,7 @@ export class FlamingoPreviewComponent implements OnInit {
    * This functin is responsible for submitting the answer
    */
   submitAnswers() {
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the flamingo will be submited!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@flamingoPreview.areYouSure:Are you sure?`, $localize`:@@flamingoPreview.flamingoWillBeSubmited:By doing this the flamingo will be submited!`)
       .then((result) => {
         if (result.value) {
           // go to last screen

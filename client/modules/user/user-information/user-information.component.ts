@@ -42,14 +42,14 @@ export class UserInformationComponent implements OnInit {
   ngOnInit() {
   }
   async removeUser(userID: string){
-    
+
     // Ask User to remove this user from the group or not
-    this.utilityService.getConfirmDialogAlert('Are you sure?',
-    'This action will delete your account.')
+    this.utilityService.getConfirmDialogAlert($localize`:@@userInformation.areYouSure:Are you sure?`,
+        $localize`:@@userInformation.thisActionWillDeleteAccount:This action will delete your account.`)
       .then((result) => {
         if (result.value) {
           // Delete the User
-          this.utilityService.asyncNotification('Please wait while we are Deleting the user ...',
+          this.utilityService.asyncNotification($localize`:@@userInformation.pleaseWaitWeDeleteUser:Please wait while we are Deleting the user ...`,
             new Promise((resolve, reject) => {
               this.userService.removeUser(userID)
               .then(res => {
@@ -62,16 +62,16 @@ export class UserInformationComponent implements OnInit {
                       this.publicFunctions.sendUpdatesToUserData({})
                       this.publicFunctions.sendUpdatesToWorkspaceData({})
                       this.router.navigate(['/home'])
-                      resolve(this.utilityService.resolveAsyncPromise('Successfully Logged out!'));
+                      resolve(this.utilityService.resolveAsyncPromise($localize`:@@userInformation.successfullyLoggedOut:Successfully Logged out!`));
                     }).catch((err) => {
                       console.log('Error occurred while logging out!', err);
-                      reject(this.utilityService.rejectAsyncPromise('Error occurred while logging you out!, please try again!'));
+                      reject(this.utilityService.rejectAsyncPromise($localize`:@@userInformation.errorOccurredWhileLogginOut:Error occurred while logging you out!, please try again!`));
                     });
                   }
                   // Resolve with success
-                  resolve(this.utilityService.resolveAsyncPromise('User Deleted!'))
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@userInformation.userDeleted:User Deleted!`))
                 })
-                .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the workplace, please try again!')))
+                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@userInformation.unableToRemoveUser:Unable to remove the user from the workplace, please try again!`)))
             }))
         }
       })
@@ -90,7 +90,7 @@ export class UserInformationComponent implements OnInit {
       hasBackdrop: true,
       data: data
     });
-    
+
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
       this.updateData.emit(data);
     });
