@@ -1,5 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core'
-
+import { Component, Input, OnInit, ViewChild } from '@angular/core'
+import { BehaviorSubject } from 'rxjs'
+import { MatPaginator } from '@angular/material/paginator'
+import { MatSort } from '@angular/material/sort'
+import { MatTableDataSource } from '@angular/material/table'
+import { SubSink } from 'subsink'
 import * as XLSX from 'xlsx'
 
 type AOA = any[][]
@@ -29,16 +33,53 @@ export class SheetComponent implements OnInit {
   // Is member
   @Input('isMember') isMember: boolean
 
+  // Loading Behaviour
+  isLoading$ = new BehaviorSubject(false)
+
+  // Columns
+  columns: any = []
+
+  // Datasource
+  dataSource = new MatTableDataSource([])
+
+  // Sort Table
+  @ViewChild(MatSort, { static: true }) sort: MatSort
+
+  // Paginator
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator
+
+  // Subsink class
+  subsink = new SubSink()
+
+  // Show Analytics
+  showAnalytics = false
+
+  // Graphs count
+  graphs = []
+
+  // Chart Data
+  public chartLabels = ['Sales Q1', 'Sales Q2', 'Sales Q3', 'Sales Q4'];
+  public chartData = [120, 150, 180, 90];
+  public chartType = 'doughnut';
+
   ngOnInit(): void { }
 
   async ngOnChanges() {
     if (this.fileUrl) {
+      this.isLoading$.next(true)
       let blob = await this.getBlobFromUrl(this.fileUrl)
       let data = await this.getDataFromBlob(blob)
-      if(this.isMember == true){
-        this.data.splice(0,9)
-      }
+      this.data = data['array']
+      this.columns = data['keys']
+      this.graphs = []
+      this.populateDatasource(this.data)
+      this.isLoading$.next(false)
     }
+  }
+
+  public filterResults = (value: string, event: any) => {
+    if (event.keyCode === 13)
+      this.dataSource.filter = value.trim().toLocaleLowerCase()
   }
 
   /**
@@ -79,15 +120,39 @@ export class SheetComponent implements OnInit {
         /* save data */
         this.data = (XLSX.utils.sheet_to_json(ws, { header: 1 }))
 
-        resolve(reader.result)
+        resolve(this.convertToJSON(this.data))
       };
       reader.onerror = reject;
       reader.readAsBinaryString(blob)
     })
   }
 
-  rowEvents(event){
+  populateDatasource(dataSet: any) {
+    this.dataSource = new MatTableDataSource(dataSet)
+    this.dataSource.sort = this.sort
+    this.dataSource.paginator = this.paginator
+    console.log(this.dataSource)
+  }
+
+  convertToJSON(array) {
+    var objArray = [];
+    for (var i = 1; i < array.length; i++) {
+      objArray[i - 1] = {};
+      for (var k = 0; k < array[0].length && k < array[i].length; k++) {
+        var key = array[0][k];
+        objArray[i - 1][key] = array[i][k]
+      }
+    }
+
+    return { array: objArray, keys: array[0] }
+  }
+
+  rowEvents(event) {
     console.log(event)
+  }
+
+  ngOnDestroy() {
+    this.subsink.unsubscribe()
   }
 
 }

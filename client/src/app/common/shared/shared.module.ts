@@ -111,7 +111,12 @@ import { ColorPickerDialogComponent } from './color-picker-dialog/color-picker-d
 import { IdeaActionsComponent } from './posts/post-actions/idea-actions/idea-actions.component';
 import { ActivityFiltersComponent } from './activity-feed/activity-filters/activity-filters.component';
 import { SheetComponent } from './sheet/sheet.component';
+
+// Material All Components Module
 import { MaterialModule } from '../material-module/material-module.module';
+
+// Charts Module
+import { ChartModule } from 'modules/chart/chart.module';
 
 @NgModule({
   declarations: [
@@ -278,7 +283,10 @@ import { MaterialModule } from '../material-module/material-module.module';
     // MatTooltipModule,
 
     // Angular Material Module
-    MaterialModule
+    MaterialModule,
+
+    // Chart Module
+    ChartModule
   ],
   exports: [
     AttachFilesComponent,

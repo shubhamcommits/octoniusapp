@@ -49,6 +49,7 @@
     "angular-resizable-element": "^3.3.4",
     "autolinker": "^3.14.1",
     "chart.js": "^2.9.3",
+    "chartjs-plugin-labels": "^1.1.0",
     "crypto-js": "^3.1.9-1",
     "date-fns": "^2.11.0",
     "highlight.js": "^9.18.1",
