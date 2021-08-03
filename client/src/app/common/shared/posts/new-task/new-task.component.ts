@@ -191,7 +191,7 @@ export class NewTaskComponent implements OnInit {
     let postService = this.injector.get(PostService)
 
     // Asynchronously call the utility service
-    utilityService.asyncNotification('Please wait we are creating the post...', new Promise((resolve, reject) => {
+    utilityService.asyncNotification($localize`:@@newTask.pleaseWaitCreatingPost:Please wait we are creating the post...`, new Promise((resolve, reject) => {
       postService.create(postData)
         .then(async (res) => {
           let postData = res['post'];
@@ -204,12 +204,12 @@ export class NewTaskComponent implements OnInit {
           post.emit(postData);
 
           // Resolve with success
-          resolve(utilityService.resolveAsyncPromise('Task Created!'))
+          resolve(utilityService.resolveAsyncPromise($localize`:@@newTask.taskCreated:Task Created!`))
         })
         .catch((err) => {
 
           // Catch the error and reject the promise
-          reject(utilityService.rejectAsyncPromise('Unable to create new task, please try again!'))
+          reject(utilityService.rejectAsyncPromise($localize`:@@newTask.unableCreateNewTask:Unable to create new task, please try again!`))
         })
     }))
   }

@@ -52,7 +52,19 @@ export class WorkStatisticsCardComponent implements OnChanges {
 
     /* Chart Setup */
     // this.barChartLabels = [this.to_do_task_count, this.in_progress_task_count, this.done_task_count, this.overdue_task_count];
-    this.barChartLabels = (this.northStar) ? ['NOT STARTED', 'ON TRACK', 'IN DANGER', 'ACHIEVED', 'Overdue'] : ['To Do', 'In Progress', 'Done', 'Overdue'];
+    this.barChartLabels = (this.northStar) ?
+      [
+        $localize`:@@workStatisticsCard.notStarted:NOT STARTED`,
+        $localize`:@@workStatisticsCard.onTrack:ON TRACK`,
+        $localize`:@@workStatisticsCard.inDanger:IN DANGER`,
+        $localize`:@@workStatisticsCard.achieved:ACHIEVED`,
+        $localize`:@@workStatisticsCard.overdue:Overdue`
+      ] : [
+        $localize`:@@workStatisticsCard.toDo:To Do`,
+        $localize`:@@workStatisticsCard.inProgress:In Progress`,
+        $localize`:@@workStatisticsCard.done:Done`,
+        $localize`:@@workStatisticsCard.overdue:Overdue`
+      ];
     this.barChartData = (this.northStar) ? await this.getNorthStarTasksData() : await this.getTasksData();
     this.barChartType = 'bar';
     this.barChartOptions = {

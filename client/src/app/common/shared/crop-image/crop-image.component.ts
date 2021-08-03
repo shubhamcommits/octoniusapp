@@ -30,7 +30,7 @@ export class CropImageComponent implements OnInit {
 
   /**
    * This function is responsible for taking image as the input and assigning it to the cropper
-   * @param event 
+   * @param event
    */
   async fileChangeEvent(event: Event) {
 
@@ -42,7 +42,7 @@ export class CropImageComponent implements OnInit {
 
   /**
    * This functions is resposible for giving the cropped output of the current image input
-   * @param event 
+   * @param event
    * And Even emits the message to other components as well, with the @function outputImage()
    */
   async imageCropped(event: ImageCroppedEvent) {
@@ -76,7 +76,7 @@ export class CropImageComponent implements OnInit {
    * This function checks if the input image has failed to load
    */
   loadImageFailed() {
-    this.utilityService.errorNotification('Oops, seems like the format is not supported, kindly use .png, .gif, or .jpg format images!');
+    this.utilityService.errorNotification($localize`:@@cropImage.oopsFormatNotSupported:Oops, seems like the format is not supported, kindly use .png, .gif, or .jpg format images!`);
     this.utilityService.stopBackgroundLoader();
   }
 
@@ -115,7 +115,7 @@ export class CropImageComponent implements OnInit {
 
   /**
    * This function is resposible for converting a data URI to Blob
-   * @param dataURI 
+   * @param dataURI
    */
   dataURItoBlob(dataURI: any) {
 
@@ -150,7 +150,7 @@ export class CropImageComponent implements OnInit {
         resolve(event['target']['result']);
       };
 
-      // Convert data to base64 
+      // Convert data to base64
       reader.readAsDataURL(file);
     })
   }

@@ -82,17 +82,17 @@ export class MultipleAssignmentsComponent implements OnChanges {
 
   unassign(assigneeId: string) {
     if (this.type == 'post') {
-      this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.utilityService.asyncNotification($localize`:@@multipleAssignments.pleaseWaitWeAreUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
         this.postService.removeAssigneeFromPost(this.post._id, assigneeId)
           .then((res) => {
             const index = this.assigned_to.findIndex((assignee) => { assignee._id === assigneeId });
             this.assigned_to.splice(index, 1);
 
             // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise(`Assignee removed!`));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@multipleAssignments.assigneeRemoved:Assignee removed!`));
           })
           .catch((err) => {
-            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@multipleAssignments.unableToUpdateDetails:Unable to update the details, please try again!`));
           });
       }));
     } else if (this.type == 'flow') {
@@ -120,7 +120,7 @@ export class MultipleAssignmentsComponent implements OnChanges {
       if (index < 0) {
         if (this.type == 'post') {
           if (!this.isNewEvent) {
-            this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+            this.utilityService.asyncNotification($localize`:@@multipleAssignments.pleaseWaitWeAreUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
               this.postService.addAssigneeToPost(this.post._id, member._id, (this.post._group || this.post._group._id))
                 .then((res) => {
                   this.post = res['post'];
@@ -131,10 +131,10 @@ export class MultipleAssignmentsComponent implements OnChanges {
                   this.assigneeAddedEmiter.emit({post: this.post, assigneeId: member._id});
 
                   // Resolve with success
-                  resolve(this.utilityService.resolveAsyncPromise(`Assignee added!`));
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@multipleAssignments.assigneeAdded:Assignee added!`));
                 })
                 .catch((err) => {
-                  reject(this.utilityService.rejectAsyncPromise(`Unable to assign, please try again!`));
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@multipleAssignments.unableToAssignDetails:Unable to assign, please try again!`));
                 });
             }));
           } else {

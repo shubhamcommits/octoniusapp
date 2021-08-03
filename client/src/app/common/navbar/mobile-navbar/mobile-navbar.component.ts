@@ -202,7 +202,7 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         );
       } catch (err) {
         console.log('Error occured while fetching the user details', err);
-        this.utilityService.errorNotification('Error occured while fetching your profile details');
+        this.utilityService.errorNotification($localize`:@@mobileNavbar.errorFetchingProfile:Error occured while fetching your profile details`);
         reject({});
       }
     })

@@ -35,18 +35,18 @@ export class UserUpdateProfileDialogComponent implements OnInit {
   matchUserPassword(event:any) {
     if (this.password != this.repeatPassword) {
       this.repeatPassword='';
-      this.utilityService.asyncNotification('Please wait we are updating your information...',
+      this.utilityService.asyncNotification($localize`:@@userUpdateProfileDialog.pleseWaitUpdatingInformation:Please wait we are updating your information...`,
         new Promise((resolve, reject) => {
-          reject(this.utilityService.rejectAsyncPromise('Password did not match, please try again!'))
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@userUpdateProfileDialog.pwdDidNotMatch:Password did not match, please try again!`))
         }))
     }
   }
 
   async updatePassword() {
     if (this.password != this.repeatPassword) {
-      this.utilityService.asyncNotification('Please wait we are updating your information...',
+      this.utilityService.asyncNotification($localize`:@@userUpdateProfileDialog.pleseWaitUpdatingInformation:Please wait we are updating your information...`,
         new Promise((resolve, reject) => {
-          reject(this.utilityService.rejectAsyncPromise('Password did not match, please try again!'))
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@userUpdateProfileDialog.pwdDidNotMatch:Password did not match, please try again!`))
         }))
     } else {
 
@@ -56,15 +56,15 @@ export class UserUpdateProfileDialogComponent implements OnInit {
         });
       }
 
-      this.utilityService.asyncNotification('Please wait we are updating your information...',
+      this.utilityService.asyncNotification($localize`:@@userUpdateProfileDialog.pleseWaitUpdatingInformation:Please wait we are updating your information...`,
         new Promise((resolve, reject) => {
           this.userService.changePassword({ _id: this.userData?._account?._id || this.userData?._account, password: this.password })
             .then(res => {
-              resolve(this.utilityService.resolveAsyncPromise('Password updated sucessfully!'));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@userUpdateProfileDialog.pwdUpdated:Password updated sucessfully!`));
               this.mdDialogRef.close();
             })
             .catch(err => {
-              reject(this.utilityService.rejectAsyncPromise('An unexpected occured while updating the password, please try again!'));
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@userUpdateProfileDialog.unexpectedOccuredWhileUpdatingPwd:An unexpected occured while updating the password, please try again!`));
               this.mdDialogRef.close();
             })
         }))

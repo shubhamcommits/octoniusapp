@@ -74,7 +74,7 @@ export class PostCommentComponent implements OnInit {
           : this.publicFunctions.getOtherUser(user._id || user).then(otherUser => {
               this.likedByUsers.push(otherUser['first_name'] + ' ' + otherUser['last_name']);
             }).catch(err => {
-              this.likedByUsers.push('Deleted User');
+              this.likedByUsers.push($localize`:@@postComment.deletedUser:Deleted User`);
             });
       });
 
@@ -133,7 +133,7 @@ export class PostCommentComponent implements OnInit {
           let commentService = this.injector.get(CommentService);
           commentService.remove(this.comment._id).then((res)=>{
             this.remove.emit(index)
-            utilityService.warningNotification('Comment Removed!');
+            utilityService.warningNotification($localize`:@@postComment.commentRemoved:Comment Removed!`);
           })
         }
       })

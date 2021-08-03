@@ -47,7 +47,7 @@ export class GroupImageDetailsComponent implements OnInit {
     let groupService = this.injector.get(GroupService)
     let utilityService = this.injector.get(UtilityService)
 
-    utilityService.asyncNotification('Please wait while we are updating the group avatar...',
+    utilityService.asyncNotification($localize`:@@groupImageDetails.pleaseWaitWhileWeUpdate:Please wait while we are updating the group avatar...`,
       new Promise((resolve, reject) => {
 
         groupService.updateGroupAvatar(this.groupData._id, this.croppedImage, (this.groupData._workspace._id || this.groupData._workspace))
@@ -57,10 +57,10 @@ export class GroupImageDetailsComponent implements OnInit {
 
           this.publicFunctions.sendUpdatesToGroupData(this.groupData)
 
-          resolve(utilityService.resolveAsyncPromise('Group Avatar Updated!'))
+          resolve(utilityService.resolveAsyncPromise($localize`:@@groupImageDetails.groupAvatarUpdated:Group Avatar Updated!`))
         })
         .catch(()=>{
-          reject(utilityService.rejectAsyncPromise('Unable to update the group avatar!'))
+          reject(utilityService.rejectAsyncPromise($localize`:@@groupImageDetails.unableToUpdateAvatar:Unable to update the group avatar!`))
         })
 
       }))

@@ -389,7 +389,7 @@ export class GroupCreatePostComponent implements OnInit {
    * @param postData
    */
   onCreatePost(postData: FormData) {
-    this.utilityService.asyncNotification('Please wait we are creating the post...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@groupCreatePost.pleaseWaitWeCreatingPost:Please wait we are creating the post...`, new Promise((resolve, reject) => {
       this.postService.create(postData)
         .then(async (res) => {
 
@@ -401,13 +401,13 @@ export class GroupCreatePostComponent implements OnInit {
           this.post.emit(this.postData)
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise('Post Created!'))
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePost.postCreated:Post Created!`))
           this.closeModal();
         })
         .catch((err) => {
 
           // Catch the error and reject the promise
-          reject(this.utilityService.rejectAsyncPromise('Unable to create post, please try again!'))
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePost.unableToCreatePost:Unable to create post, please try again!`))
         })
     }))
   }
@@ -477,7 +477,7 @@ export class GroupCreatePostComponent implements OnInit {
    * Call the asynchronous function to change the column
    */
   editPost(postId: any, formData: FormData) {
-    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@groupCreatePost.pleaseWaitWeUpdatingContent:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.postService.edit(postId, formData)
         .then((res) => {
 
@@ -488,12 +488,12 @@ export class GroupCreatePostComponent implements OnInit {
           this.edited.emit(res['post'])
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`))
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePost.detailsUpdated:Details updated!`))
 
           this.closeModal();
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`))
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePost.unableToUpdatePost:Unable to update the details, please try again!`))
         })
     }))
   }
@@ -503,7 +503,7 @@ export class GroupCreatePostComponent implements OnInit {
    * @param postId
    */
   deletePost() {
-    this.utilityService.asyncNotification('Please wait we are deleting the post...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@groupCreatePost.pleaseWaitWeDeletingPost:Please wait we are deleting the post...`, new Promise((resolve, reject) => {
       this.postService.deletePost(this.postData._id)
         .then((res) => {
 
@@ -513,9 +513,9 @@ export class GroupCreatePostComponent implements OnInit {
           // Close the modal
           this.closeModal()
 
-          resolve(this.utilityService.resolveAsyncPromise('Post deleted!'));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePost.postDeleted:Post deleted!`));
         }).catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise('Unable to delete post, please try again!'));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePost.unableToDeletePost:Unable to delete post, please try again!`));
         })
     }))
   }
