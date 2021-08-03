@@ -414,10 +414,10 @@ export class GroupFilesComponent implements OnInit {
       this.foldersService.edit(this.currentFolder._id, event.target.value).then((res) => {
         this.currentFolder.folder_name = event.target.value;
         this.folderOriginalName = this.currentFolder.folder_name;
-        this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folderMoved:👍 Folder Moved!`);
+        this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.changeFolderTitle:Folder Title Changed!`);
       })
       .catch((error) => {
-        this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.errorMovingFolder:Error while moving the folder!`);
+        this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.errorChangingFolderTitle:Error while changing the title of the folder!`);
       });
     }
 
