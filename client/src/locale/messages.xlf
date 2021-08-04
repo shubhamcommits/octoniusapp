@@ -1732,6 +1732,13 @@
           <context context-type="linenumber">62</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="flamingoAnswer.thankYouForSubmitting" datatype="html">
+        <source>Thank you! You can close this window now. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/flamingo/flamingo-answer/flamingo-answer.component.html</context>
+          <context context-type="linenumber">132</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="flamingoAnswer.flamingoIsNotPublishedYet" datatype="html">
         <source>The Flamingo you are trying to access is not published yet, please try again later!</source>
         <context-group purpose="location">
@@ -2142,7 +2149,7 @@
         <source>Thank you for submitting your opinion!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-preview/flamingo-preview.component.html</context>
-          <context context-type="linenumber">128</context>
+          <context context-type="linenumber">130</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPreview.areYouSure" datatype="html">
