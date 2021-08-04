@@ -55,7 +55,8 @@
               "chart.js",
               "quill-delta-to-html",
               "socket.io-client",
-              "highlight.js"
+              "highlight.js",
+              "xlsx"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
