@@ -19,7 +19,7 @@
 
         <div class="result-container">
             <mat-tab-group mat-align-tabs="start">
-                <mat-tab label="Active Groups">
+                <mat-tab [label]="labelActiveGroups">
                     <!-- ACTIVE GROUPS START -->
                     <app-infinite-scroll (scrolled)="onActiveScroll()">
                       <div class="media card-tile user-list"
@@ -60,7 +60,7 @@
                     </app-infinite-scroll>
                     <!-- ACTIVE GROUPS ENDS -->
                 </mat-tab>
-                <mat-tab label="Archived Groups">
+                <mat-tab [label]="labelArchivedGroups">
                     <!-- ARCHIVED GROUPS START -->
                     <app-infinite-scroll (scrolled)="onArchivedScroll()">
                       <div class="media card-tile user-list"

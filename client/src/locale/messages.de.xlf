@@ -191,16 +191,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceAddDomain.chooseToMakeYourWorkspace" datatype="html">
-        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
-        <target state="translated"> Legen Sie fest, ob die Anmeldung für Ihren Arbeitsplatz nur auf Einladung erfolgen soll oder ob sich auch andere Personen mit einer bestimmten E-Mail-Adressdomäne anmelden können.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (z. B. wenn Sie example.com angeben, können sich Benutzer, die eine E-Mail-Adresse mit der Domain example.com haben, anmelden!) </target>
+        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
+        <target state="translated"> Legen Sie fest, ob die Anmeldung für Ihren Arbeitsplatz nur auf Einladung erfolgen soll oder ob sich auch andere Personen mit einer bestimmten E-Mail-Adressdomäne anmelden können.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (z. B. wenn Sie example.com angeben, können sich Benutzer, die eine E-Mail-Adresse mit der Domain example.com haben, anmelden!) </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">8,11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceAddDomain.usingWorkspaceName" datatype="html">
-        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/>", any email adress from these domain can signup:</source>
-        <target state="translated">Mit dem Arbeitsplatznamen<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/>"<x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/>" kann sich jede E-Mail-Adresse aus dieser Domain anmelden:</target>
+        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>", any email adress from these domain can signup:</source>
+        <target state="translated">Mit dem Arbeitsplatznamen<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/>"<x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>" kann sich jede E-Mail-Adresse aus dieser Domain anmelden:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">13</context>
@@ -554,12 +554,28 @@
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="adminGroups.labelActiveGroups" datatype="html">
+        <source>Active Groups</source>
+        <target state="translated">Aktive Gruppen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="adminGroups.labelArchivedGroups" datatype="html">
+        <source>Archived Groups</source>
+        <target state="translated">Archivierte Gruppen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="adminGroups.actionWillArchiveGroup" datatype="html">
         <source>This action will archive the group.</source>
         <target state="translated">Mit dieser Aktion wird die Gruppe archiviert.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">247</context>
+          <context context-type="linenumber">250</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.groupArchived" datatype="html">
@@ -567,7 +583,7 @@
         <target state="translated">Gruppe archiviert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">248</context>
+          <context context-type="linenumber">251</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.unableArchiveGroup" datatype="html">
@@ -575,7 +591,7 @@
         <target state="translated">Die Gruppe kann nicht archiviert werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">249</context>
+          <context context-type="linenumber">252</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.actionWillActivateGroup" datatype="html">
@@ -583,7 +599,7 @@
         <target state="translated">Durch diese Aktion wird die Gruppe aktiviert.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">251</context>
+          <context context-type="linenumber">254</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.groupActivated" datatype="html">
@@ -591,7 +607,7 @@
         <target state="translated">Gruppe aktiviert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">252</context>
+          <context context-type="linenumber">255</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.unableActivateGroup" datatype="html">
@@ -599,7 +615,7 @@
         <target state="translated">Die Gruppe kann nicht aktiviert werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">253</context>
+          <context context-type="linenumber">256</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.areYouSure" datatype="html">
@@ -607,11 +623,11 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">257</context>
+          <context context-type="linenumber">260</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">322</context>
+          <context context-type="linenumber">325</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.pleaseWaitUpdatingGroup" datatype="html">
@@ -619,7 +635,7 @@
         <target state="translated">Bitte warten Sie, während wir die Gruppe aktualisieren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">262</context>
+          <context context-type="linenumber">265</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.actionWillRemoveGroup" datatype="html">
@@ -627,7 +643,7 @@
         <target state="translated">Mit dieser Aktion wird die Gruppe vollständig entfernt.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">322</context>
+          <context context-type="linenumber">325</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.pleaseWaitRemovingGroup" datatype="html">
@@ -635,7 +651,7 @@
         <target state="translated">Bitte warten Sie, während wir die Gruppe entfernen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">327</context>
+          <context context-type="linenumber">330</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.groupRemoved" datatype="html">
@@ -643,7 +659,7 @@
         <target state="translated">Gruppe entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">346</context>
+          <context context-type="linenumber">349</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.unableToRemoveGroup" datatype="html">
@@ -651,7 +667,7 @@
         <target state="translated">Die Gruppe kann nicht entfernt werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">350</context>
+          <context context-type="linenumber">353</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminHeader.workspaceSettings" datatype="html">
@@ -1443,8 +1459,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.dragDropOrAdd" datatype="html">
-        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Or use the NEW button for folders uploading.</source>
-        <target state="translated">Ziehen Sie Dateien per Drag &amp; Drop hierher, um sie einfach hochzuladen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Oder verwenden Sie die Schaltfläche NEU für das Hochladen von Ordnern. </target>
+        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Or use the NEW button for folders uploading.</source>
+        <target state="translated">Ziehen Sie Dateien per Drag &amp; Drop hierher, um sie einfach hochzuladen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Oder verwenden Sie die Schaltfläche NEU für das Hochladen von Ordnern. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
           <context context-type="linenumber">7</context>
@@ -2423,8 +2439,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPublish.done" datatype="html">
-        <source> Done?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> When you are ready, you can click this button to PUBLISH the FORM and <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> let people answer.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> When it’s done, come back here and click UNPUBLISH in order to stop data <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> collection. </source>
-        <target state="translated"> Fertig?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> Wenn Sie bereit sind, können Sie auf diese Schaltfläche klicken, um das Formular zu VERÖFFENTLICHEN und <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> die Leute antworten zu lassen.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> Wenn es fertig ist, kommen Sie hierher zurück und klicken Sie auf VERÖFFENTLICHEN, um die Datenerfassung <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> zu beenden </target>
+        <source> Done?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> When you are ready, you can click this button to PUBLISH the FORM and <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> let people answer.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> When it’s done, come back here and click UNPUBLISH in order to stop data <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> collection. </source>
+        <target state="translated"> Fertig?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> Wenn Sie bereit sind, können Sie auf diese Schaltfläche klicken, um das Formular zu VERÖFFENTLICHEN und <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> die Leute antworten zu lassen.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> Wenn es fertig ist, kommen Sie hierher zurück und klicken Sie auf VERÖFFENTLICHEN, um die Datenerfassung <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> zu beenden </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.html</context>
           <context context-type="linenumber">8,13</context>
@@ -2767,8 +2783,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAutomationFlowsDialog.saveTime" datatype="html">
-        <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Turn your Octonius board into an automation machine.</source>
-        <target state="translated">Sparen Sie Zeit bei manuellen Prozessen und lassen Sie Octonius die schwere Arbeit erledigen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Verwandeln Sie Ihr Octonius-Board in eine Automatisierungsmaschine.</target>
+        <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Turn your Octonius board into an automation machine.</source>
+        <target state="translated">Sparen Sie Zeit bei manuellen Prozessen und lassen Sie Octonius die schwere Arbeit erledigen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Verwandeln Sie Ihr Octonius-Board in eine Automatisierungsmaschine.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flows-dialog/automation-flows-dialog.component.html</context>
           <context context-type="linenumber">19</context>
@@ -3023,8 +3039,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.searchForOtherEmployees" datatype="html">
-        <source>Search for other employees within the organization and add them to your Group. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> This is how you usually create your team.</source>
-        <target state="translated">Suchen Sie nach anderen Mitarbeitern innerhalb der Organisation und fügen Sie sie zu Ihrer Gruppe hinzu. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Auf diese Weise erstellen Sie normalerweise Ihr Team.</target>
+        <source>Search for other employees within the organization and add them to your Group. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> This is how you usually create your team.</source>
+        <target state="translated">Suchen Sie nach anderen Mitarbeitern innerhalb der Organisation und fügen Sie sie zu Ihrer Gruppe hinzu. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Auf diese Weise erstellen Sie normalerweise Ihr Team.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">18</context>
@@ -3055,8 +3071,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.BARAllowAdminsToChose" datatype="html">
-        <source>BARs allow admins to chose who can see and work on specific tasks.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Sometimes this is necessary for transversal projects.</source>
-        <target state="translated">Mit BARs können Administratoren festlegen, wer bestimmte Aufgaben sehen und bearbeiten kann.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Manchmal ist dies für übergreifende Projekte notwendig.</target>
+        <source>BARs allow admins to chose who can see and work on specific tasks.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Sometimes this is necessary for transversal projects.</source>
+        <target state="translated">Mit BARs können Administratoren festlegen, wer bestimmte Aufgaben sehen und bearbeiten kann.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Manchmal ist dies für übergreifende Projekte notwendig.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">70</context>
@@ -3243,8 +3259,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupBARDialog.createRulesToManage" datatype="html">
-        <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
-        <target state="translated"> Erstellen Sie Regeln zur Verwaltung der Zugriffsrechte auf das Board und wählen Sie aus, welche Mitglieder bestimmte Aufgaben sehen können. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Standardmäßig sind alle Aufgaben für das Team sichtbar, aber mit BAR-Tags können Sie den Zugriff steuern</target>
+        <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
+        <target state="translated"> Erstellen Sie Regeln zur Verwaltung der Zugriffsrechte auf das Board und wählen Sie aus, welche Mitglieder bestimmte Aufgaben sehen können. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Standardmäßig sind alle Aufgaben für das Team sichtbar, aber mit BAR-Tags können Sie den Zugriff steuern</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
           <context context-type="linenumber">15,17</context>
@@ -5687,7 +5703,7 @@
         <target state="translated"> Konto löschen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.html</context>
-          <context context-type="linenumber">30,31</context>
+          <context context-type="linenumber">27,28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.areYouSure" datatype="html">
@@ -6095,8 +6111,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="northStarPage.setAndAchieveStrategic" datatype="html">
-        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
-        <target state="translated"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun</target>
+        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
+        <target state="translated"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">16,18</context>
@@ -6111,8 +6127,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="pulse.pulseIsMicroAnnouncement" datatype="html">
-        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulses create transparency and a sense of mission for your organization. </source>
-        <target state="translated"> Ein Puls ist eine Mikro-Mitteilung einer Gruppe. Es ist wie Twitter für Unternehmen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Auch wenn Sie keinen Zugang zu einer Gruppe haben, können Sie sehen, was dort passiert. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulse schaffen Transparenz und ein Gefühl der Mission für Ihre Organisation</target>
+        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Pulses create transparency and a sense of mission for your organization. </source>
+        <target state="translated"> Ein Puls ist eine Mikro-Mitteilung einer Gruppe. Es ist wie Twitter für Unternehmen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Auch wenn Sie keinen Zugang zu einer Gruppe haben, können Sie sehen, was dort passiert. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Pulse schaffen Transparenz und ein Gefühl der Mission für Ihre Organisation</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/pulse/pulse.component.html</context>
           <context context-type="linenumber">15,18</context>
@@ -6384,7 +6400,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.PM" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="number;&#10;  priv"/></source>
+        <source><x id="INTERPOLATION" equiv-text="number;&#xA;  priv"/></source>
         <target state="translated">{Nummer;
   privat}</target>
         <context-group purpose="location">
@@ -6393,8 +6409,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.AM" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="ssor,&#10;    OnCh"/></source>
-        <target state="translated"><x id="INTERPOLATION" equiv-text="ssor,&#10;    OnCh"/></target>
+        <source><x id="INTERPOLATION" equiv-text="ssor,&#xA;    OnCh"/></source>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="ssor,&#xA;    OnCh"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
           <context context-type="linenumber">141,116</context>
@@ -7045,7 +7061,7 @@
         <target state="translated">Bitte warten Sie, wir speichern die neue Einstellung...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.ts</context>
-          <context context-type="linenumber">455</context>
+          <context context-type="linenumber">460</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupActivityFeed.settingsSaved" datatype="html">
@@ -7053,7 +7069,7 @@
         <target state="translated">Einstellungen in Ihrer Gruppe gespeichert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.ts</context>
-          <context context-type="linenumber">463</context>
+          <context context-type="linenumber">468</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupActivityFeed.unableToSaveGroupSettings" datatype="html">
@@ -7061,7 +7077,7 @@
         <target state="translated">Die Einstellungen können nicht in Ihrer Gruppe gespeichert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.ts</context>
-          <context context-type="linenumber">465</context>
+          <context context-type="linenumber">470</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupInformation.personalWorkspace" datatype="html">
@@ -8137,8 +8153,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupPostbox.whatAreYouWorkingOn" datatype="html">
-        <source> What are you working on, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>? </source>
-        <target state="translated"> Woran arbeiten Sie, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>? </target>
+        <source> What are you working on, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>? </source>
+        <target state="translated"> Woran arbeiten Sie, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>? </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-postbox.component.html</context>
           <context context-type="linenumber">18,19</context>

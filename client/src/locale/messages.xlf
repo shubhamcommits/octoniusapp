@@ -487,92 +487,106 @@
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="adminGroups.labelActiveGroups" datatype="html">
+        <source>Active Groups</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="adminGroups.labelArchivedGroups" datatype="html">
+        <source>Archived Groups</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="adminGroups.actionWillArchiveGroup" datatype="html">
         <source>This action will archive the group.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">247</context>
+          <context context-type="linenumber">250</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.groupArchived" datatype="html">
         <source>Group archived!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">248</context>
+          <context context-type="linenumber">251</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.unableArchiveGroup" datatype="html">
         <source>Unable to archive the group, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">249</context>
+          <context context-type="linenumber">252</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.actionWillActivateGroup" datatype="html">
         <source>This action will activate the group.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">251</context>
+          <context context-type="linenumber">254</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.groupActivated" datatype="html">
         <source>Group activated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">252</context>
+          <context context-type="linenumber">255</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.unableActivateGroup" datatype="html">
         <source>Unable to activate the group, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">253</context>
+          <context context-type="linenumber">256</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.areYouSure" datatype="html">
         <source>Are you sure?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">257</context>
+          <context context-type="linenumber">260</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">322</context>
+          <context context-type="linenumber">325</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.pleaseWaitUpdatingGroup" datatype="html">
         <source>Please Wait while we update the group</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">262</context>
+          <context context-type="linenumber">265</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.actionWillRemoveGroup" datatype="html">
         <source>This action will completely remove the group.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">322</context>
+          <context context-type="linenumber">325</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.pleaseWaitRemovingGroup" datatype="html">
         <source>Please Wait while we remove the group</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">327</context>
+          <context context-type="linenumber">330</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.groupRemoved" datatype="html">
         <source>Group removed!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">346</context>
+          <context context-type="linenumber">349</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.unableToRemoveGroup" datatype="html">
         <source>Unable to remove the group, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
-          <context context-type="linenumber">350</context>
+          <context context-type="linenumber">353</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminHeader.workspaceSettings" datatype="html">
@@ -5016,7 +5030,7 @@
         <source> Delete Account </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.html</context>
-          <context context-type="linenumber">30,31</context>
+          <context context-type="linenumber">27,28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.areYouSure" datatype="html">
@@ -6211,21 +6225,21 @@
         <source>Please wait we are saving the new setting...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.ts</context>
-          <context context-type="linenumber">455</context>
+          <context context-type="linenumber">460</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupActivityFeed.settingsSaved" datatype="html">
         <source>Settings saved to your group!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.ts</context>
-          <context context-type="linenumber">463</context>
+          <context context-type="linenumber">468</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupActivityFeed.unableToSaveGroupSettings" datatype="html">
         <source>Unable to save the settings to your group, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.ts</context>
-          <context context-type="linenumber">465</context>
+          <context context-type="linenumber">470</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupInformation.personalWorkspace" datatype="html">

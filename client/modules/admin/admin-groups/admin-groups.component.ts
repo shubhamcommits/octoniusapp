@@ -57,6 +57,9 @@ export class AdminGroupsComponent implements OnInit, AfterViewInit, OnDestroy {
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
 
+  labelActiveGroups = $localize`:@@adminGroups.labelActiveGroups:Active Groups`;
+  labelArchivedGroups = $localize`:@@adminGroups.labelArchivedGroups:Archived Groups`;
+
   constructor(
     public utilityService: UtilityService,
     private injector: Injector,
