@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="startSubscription.errorWithYourSubscription" datatype="html">
         <source>There is an error with your Subscription, please contact support!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Es liegt ein Fehler bei Ihrem Abonnement vor, bitte kontaktieren Sie den Support!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-billing/stripe-payment/start-subscription/start-subscription.component.ts</context>
           <context context-type="linenumber">72</context>
@@ -68,7 +68,7 @@
       </trans-unit>
       <trans-unit id="stripePayment.unexpectedError" datatype="html">
         <source>There's some unexpected error occured, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-billing/stripe-payment/stripe-payment.component.ts</context>
           <context context-type="linenumber">69</context>
@@ -76,7 +76,7 @@
       </trans-unit>
       <trans-unit id="stripePayment.unableFetchSubscriptionDetails" datatype="html">
         <source>Unable to fetch the Subscription details, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Die Abonnementdetails konnten nicht abgerufen werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-billing/stripe-payment/stripe-payment.component.ts</context>
           <context context-type="linenumber">108</context>
@@ -88,7 +88,7 @@
       </trans-unit>
       <trans-unit id="stripePayment.errorWithYourSubscription" datatype="html">
         <source>There is an error with your Subscription, please contact support!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Es liegt ein Fehler bei Ihrem Abonnement vor, bitte kontaktieren Sie den Support!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-billing/stripe-payment/stripe-payment.component.ts</context>
           <context context-type="linenumber">142</context>
@@ -112,7 +112,7 @@
       </trans-unit>
       <trans-unit id="adminGeneral.areYouSure" datatype="html">
         <source>Are you sure?</source>
-        <target state="needs-translation"/>
+        <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">47</context>
@@ -120,7 +120,7 @@
       </trans-unit>
       <trans-unit id="adminGeneral.workspaceCompletelyRemoved" datatype="html">
         <source>By doing this, the workspace be completely removed!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Auf diese Weise wird der Arbeitsbereich vollständig entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">47</context>
@@ -128,7 +128,7 @@
       </trans-unit>
       <trans-unit id="adminGeneral.pleaseWaitDeletingWorkspace" datatype="html">
         <source>Please wait we are deleting the workspace...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, wir löschen den Arbeitsbereich...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">50</context>
@@ -136,7 +136,7 @@
       </trans-unit>
       <trans-unit id="adminGeneral.workspaceDeleted" datatype="html">
         <source>Workspace deleted!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Arbeitsbereich gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">61</context>
@@ -144,7 +144,7 @@
       </trans-unit>
       <trans-unit id="adminGeneral.unableDeleteWorkspace" datatype="html">
         <source>Unable to delete the workspace, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Der Arbeitsbereich kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">63</context>
@@ -160,7 +160,7 @@
       </trans-unit>
       <trans-unit id="transferOwnership.pleaseWait" datatype="html">
         <source>Please wait while we are Transfering Ownership ...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, während wir den Eigentumsübergang durchführen ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.ts</context>
           <context context-type="linenumber">28</context>
@@ -168,7 +168,7 @@
       </trans-unit>
       <trans-unit id="transferOwnership.successfully" datatype="html">
         <source>Successfully Transfered OwnerShip!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Erfolgreich übertragenes OwnerShip!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.ts</context>
           <context context-type="linenumber">35</context>
@@ -176,7 +176,7 @@
       </trans-unit>
       <trans-unit id="transferOwnership.errorWhileTransferingOwnership" datatype="html">
         <source>Error occurred while transfering ownership , please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Beim Übertragen des Eigentums ist ein Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.ts</context>
           <context context-type="linenumber">38</context>
@@ -191,16 +191,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceAddDomain.chooseToMakeYourWorkspace" datatype="html">
-        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
-        <target state="translated"> Legen Sie fest, ob die Anmeldung für Ihren Arbeitsplatz nur auf Einladung erfolgen soll oder ob sich auch andere Personen mit einer bestimmten E-Mail-Adressdomäne anmelden können.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (z. B. wenn Sie example.com angeben, können sich Benutzer, die eine E-Mail-Adresse mit der Domain example.com haben, anmelden!) </target>
+        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
+        <target state="translated"> Legen Sie fest, ob die Anmeldung für Ihren Arbeitsplatz nur auf Einladung erfolgen soll oder ob sich auch andere Personen mit einer bestimmten E-Mail-Adressdomäne anmelden können.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (z. B. wenn Sie example.com angeben, können sich Benutzer, die eine E-Mail-Adresse mit der Domain example.com haben, anmelden!) </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">8,11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceAddDomain.usingWorkspaceName" datatype="html">
-        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>", any email adress from these domain can signup:</source>
-        <target state="translated">Mit dem Arbeitsplatznamen<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/>"<x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>" kann sich jede E-Mail-Adresse aus dieser Domain anmelden:</target>
+        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/>", any email adress from these domain can signup:</source>
+        <target state="translated">Mit dem Arbeitsplatznamen<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/>"<x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/>" kann sich jede E-Mail-Adresse aus dieser Domain anmelden:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">13</context>
@@ -240,7 +240,7 @@
       </trans-unit>
       <trans-unit id="workplaceAddDomain.pleaseWait" datatype="html">
         <source>Please wait, while we are adding the domain...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, während wir die Domäne hinzufügen...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
           <context context-type="linenumber">32</context>
@@ -248,7 +248,7 @@
       </trans-unit>
       <trans-unit id="workplaceAddDomain.domainAlreadyExists" datatype="html">
         <source>Seems like the <x id="PH" equiv-text="domain"/> domain already exist!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Es scheint, als ob die <x id="PH" equiv-text="domain"/>-Domäne bereits existiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
           <context context-type="linenumber">35</context>
@@ -256,7 +256,7 @@
       </trans-unit>
       <trans-unit id="workplaceAddDomain.domainAdded" datatype="html">
         <source><x id="PH" equiv-text="domain"/> has been added to the allowed domains!</source>
-        <target state="needs-translation"/>
+        <target state="translated"><x id="PH" equiv-text="domain"/> wurde zu den erlaubten Domänen hinzugefügt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
           <context context-type="linenumber">41</context>
@@ -264,7 +264,7 @@
       </trans-unit>
       <trans-unit id="workplaceAddDomain.oopsErrorAdding" datatype="html">
         <source>Oops, an error occured while adding the domain, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Ups, beim Hinzufügen der Domain ist ein Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
           <context context-type="linenumber">45</context>
@@ -272,7 +272,7 @@
       </trans-unit>
       <trans-unit id="workplaceAddDomain.unexpectedError" datatype="html">
         <source>There's some unexpected error occured, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
           <context context-type="linenumber">51</context>
@@ -288,7 +288,7 @@
       </trans-unit>
       <trans-unit id="workplaceAddDomain.oppsErrorFetching" datatype="html">
         <source>Oops, an error occured while fetching the list of email domain, please try refreshing the page!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Ups, beim Abrufen der Liste der E-Mail-Domänen ist ein Fehler aufgetreten. Bitte versuchen Sie, die Seite neu zu laden!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
           <context context-type="linenumber">65</context>
@@ -296,7 +296,7 @@
       </trans-unit>
       <trans-unit id="workplaceAddDomain.ownerUsesDomain" datatype="html">
         <source>The owner uses this domain, it cannot be removed!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Der Eigentümer nutzt diese Domain, sie kann nicht entfernt werden!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
           <context context-type="linenumber">80</context>
@@ -304,7 +304,7 @@
       </trans-unit>
       <trans-unit id="workplaceAddDomain.pleaseWaitWileRemoving" datatype="html">
         <source>Please wait, while we are removing the domain for you</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, während wir die Domain für Sie entfernen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
           <context context-type="linenumber">85</context>
@@ -312,7 +312,7 @@
       </trans-unit>
       <trans-unit id="workplaceAddDomain.domainRemoved" datatype="html">
         <source><x id="PH" equiv-text="domain"/> has been removed from the allowed domains!</source>
-        <target state="needs-translation"/>
+        <target state="translated"><x id="PH" equiv-text="domain"/> wurde aus den erlaubten Domänen entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
           <context context-type="linenumber">90</context>
@@ -320,7 +320,7 @@
       </trans-unit>
       <trans-unit id="workplaceAddDomain.oopsErrorRemoving" datatype="html">
         <source>Oops, an error occured while removing the domain, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Ups, beim Entfernen der Domain ist ein Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
           <context context-type="linenumber">93</context>
@@ -344,7 +344,7 @@
       </trans-unit>
       <trans-unit id="workplaceInviteUser.theOptionIsMainlyInvite" datatype="html">
         <source>The option is mainly for inviting super-admins, group admins, and external guests.</source>
-        <target state="needs-translation"/>
+        <target state="translated">Diese Option ist hauptsächlich für die Einladung von Super-Admins, Gruppen-Admins und externen Gästen gedacht.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-invite-user/workplace-invite-user.component.ts</context>
           <context context-type="linenumber">21</context>
@@ -352,7 +352,7 @@
       </trans-unit>
       <trans-unit id="workplaceInviteUser.pleaseProvideEmail" datatype="html">
         <source>Please provide the email</source>
-        <target state="needs-translation"/>
+        <target state="translated">E-Mail-Domänen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-invite-user/workplace-invite-user.component.ts</context>
           <context context-type="linenumber">22</context>
@@ -360,7 +360,7 @@
       </trans-unit>
       <trans-unit id="workplaceInviteUser.pleaseWaitSendingEmail" datatype="html">
         <source>Please wait, while we are sending the email...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, während wir die E-Mail versenden...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-invite-user/workplace-invite-user.component.ts</context>
           <context context-type="linenumber">52</context>
@@ -368,7 +368,7 @@
       </trans-unit>
       <trans-unit id="workplaceInviteUser.weSentInvitationEmail" datatype="html">
         <source>We have sent the invitation email at <x id="PH" equiv-text="email"/> to join your workplace!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Wir haben die Einladungs-E-Mail an <x id="PH" equiv-text="email"/> geschickt, um Ihrem Arbeitsplatz beizutreten!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-invite-user/workplace-invite-user.component.ts</context>
           <context context-type="linenumber">56</context>
@@ -376,7 +376,7 @@
       </trans-unit>
       <trans-unit id="workplaceInviteUser.oopsErrorSendingEmail" datatype="html">
         <source>Oops, an error occured while sending the email, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Ups, beim Senden der E-Mail ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-invite-user/workplace-invite-user.component.ts</context>
           <context context-type="linenumber">60</context>
@@ -384,7 +384,7 @@
       </trans-unit>
       <trans-unit id="workplaceInviteUser.unexpectedError" datatype="html">
         <source>There's some unexpected error occured, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-invite-user/workplace-invite-user.component.ts</context>
           <context context-type="linenumber">65</context>
@@ -440,7 +440,7 @@
       </trans-unit>
       <trans-unit id="profileCustomFieldsDialog.fieldAlreadyExist" datatype="html">
         <source>Field already exist!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Feld existiert bereits!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component.ts</context>
           <context context-type="linenumber">51</context>
@@ -448,7 +448,7 @@
       </trans-unit>
       <trans-unit id="profileCustomFieldsDialog.pleaseWaitDeletingCF" datatype="html">
         <source>Please wait we are deleting the custom field...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, wir löschen das benutzerdefinierte Feld...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component.ts</context>
           <context context-type="linenumber">88</context>
@@ -456,7 +456,7 @@
       </trans-unit>
       <trans-unit id="profileCustomFieldsDialog.cFDeleted" datatype="html">
         <source>Field deleted!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Feld gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component.ts</context>
           <context context-type="linenumber">97</context>
@@ -464,7 +464,7 @@
       </trans-unit>
       <trans-unit id="profileCustomFieldsDialog.unableDeleteCF" datatype="html">
         <source>Unable to delete field, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Das Feld kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component.ts</context>
           <context context-type="linenumber">99</context>
@@ -472,7 +472,7 @@
       </trans-unit>
       <trans-unit id="profileCustomFieldsDialog.valueAlreadyExist" datatype="html">
         <source>Value already exist!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Werte sind bereits vorhanden!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/profile-custom-fields-dialog/profile-custom-fields-dialog.component.ts</context>
           <context context-type="linenumber">116</context>
@@ -548,7 +548,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.searchGroups" datatype="html">
         <source>Search groups...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Gruppen durchsuchen...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">28</context>
@@ -556,7 +556,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.actionWillArchiveGroup" datatype="html">
         <source>This action will archive the group.</source>
-        <target state="needs-translation"/>
+        <target state="translated">Mit dieser Aktion wird die Gruppe archiviert.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">247</context>
@@ -564,7 +564,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.groupArchived" datatype="html">
         <source>Group archived!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Gruppe archiviert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">248</context>
@@ -572,7 +572,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.unableArchiveGroup" datatype="html">
         <source>Unable to archive the group, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Die Gruppe kann nicht archiviert werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">249</context>
@@ -580,7 +580,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.actionWillActivateGroup" datatype="html">
         <source>This action will activate the group.</source>
-        <target state="needs-translation"/>
+        <target state="translated">Durch diese Aktion wird die Gruppe aktiviert.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">251</context>
@@ -588,7 +588,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.groupActivated" datatype="html">
         <source>Group activated!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Gruppe aktiviert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">252</context>
@@ -596,7 +596,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.unableActivateGroup" datatype="html">
         <source>Unable to activate the group, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Die Gruppe kann nicht aktiviert werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">253</context>
@@ -604,7 +604,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.areYouSure" datatype="html">
         <source>Are you sure?</source>
-        <target state="needs-translation"/>
+        <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">257</context>
@@ -616,7 +616,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.pleaseWaitUpdatingGroup" datatype="html">
         <source>Please Wait while we update the group</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, während wir die Gruppe aktualisieren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">262</context>
@@ -624,7 +624,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.actionWillRemoveGroup" datatype="html">
         <source>This action will completely remove the group.</source>
-        <target state="needs-translation"/>
+        <target state="translated">Mit dieser Aktion wird die Gruppe vollständig entfernt.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">322</context>
@@ -632,7 +632,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.pleaseWaitRemovingGroup" datatype="html">
         <source>Please Wait while we remove the group</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, während wir die Gruppe entfernen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">327</context>
@@ -640,7 +640,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.groupRemoved" datatype="html">
         <source>Group removed!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Gruppe entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">346</context>
@@ -648,7 +648,7 @@
       </trans-unit>
       <trans-unit id="adminGroups.unableToRemoveGroup" datatype="html">
         <source>Unable to remove the group, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Die Gruppe kann nicht entfernt werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-groups/admin-groups.component.ts</context>
           <context context-type="linenumber">350</context>
@@ -696,7 +696,7 @@
       </trans-unit>
       <trans-unit id="adminMembers.searchUser" datatype="html">
         <source>Search user...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Benutzer suchen...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-members/admin-members.component.ts</context>
           <context context-type="linenumber">28</context>
@@ -776,7 +776,7 @@
       </trans-unit>
       <trans-unit id="workplaceInformation.pleaseWaitUpdatingWorkplaceName" datatype="html">
         <source>Please wait we are updating the workspace name...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, wir aktualisieren den Namen des Arbeitsbereichs...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.ts</context>
           <context context-type="linenumber">36</context>
@@ -784,7 +784,7 @@
       </trans-unit>
       <trans-unit id="workplaceInformation.detailsUpdated" datatype="html">
         <source>Details updated!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Details aktualisiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.ts</context>
           <context context-type="linenumber">41</context>
@@ -792,7 +792,7 @@
       </trans-unit>
       <trans-unit id="workplaceInformation.unableToUpdateDetails" datatype="html">
         <source>Unable to update the details, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Die Details können nicht aktualisiert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.ts</context>
           <context context-type="linenumber">44</context>
@@ -800,7 +800,7 @@
       </trans-unit>
       <trans-unit id="authJoinWorkplace.joinAnotherWorkspace" datatype="html">
         <source> Join another workplace </source>
-        <target state="translated">Anderen Arbeitsplatz arbeiten </target>
+        <target state="translated">Arbeitsplatz arbeiten </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
           <context context-type="linenumber">15,16</context>
@@ -840,7 +840,7 @@
       </trans-unit>
       <trans-unit id="authJoinWorkplace.nameCannotBeEmpty" datatype="html">
         <source>Workplace name can't be empty!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Der Name des Arbeitsplatzes darf nicht leer sein!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
           <context context-type="linenumber">43</context>
@@ -848,7 +848,7 @@
       </trans-unit>
       <trans-unit id="authJoinWorkplace.namedoesntExist" datatype="html">
         <source>This workplace name does not exist!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Dieser Arbeitsplatzname existiert nicht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
           <context context-type="linenumber">51</context>
@@ -856,7 +856,7 @@
       </trans-unit>
       <trans-unit id="authJoinWorkplace.nameIsCorrect" datatype="html">
         <source>This workplace name is correct!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Diese Arbeitsplatzbezeichnung ist richtig!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
           <context context-type="linenumber">55</context>
@@ -864,7 +864,7 @@
       </trans-unit>
       <trans-unit id="authJoinWorkplace.insufficientData" datatype="html">
         <source>Insufficient or incorrect data, kindly fill up all the fields correctly!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Unzureichende oder falsche Daten, bitte füllen Sie alle Felder korrekt aus!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
           <context context-type="linenumber">69</context>
@@ -872,7 +872,7 @@
       </trans-unit>
       <trans-unit id="authJoinWorkplace.pleaseWaitSettingUp" datatype="html">
         <source>Please wait while we are setting up your new workplace and account...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, während wir Ihren neuen Arbeitsplatz und Ihr Konto einrichten...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
           <context context-type="linenumber">76</context>
@@ -880,7 +880,7 @@
       </trans-unit>
       <trans-unit id="authJoinWorkplace.unexpectedError" datatype="html">
         <source>There's some unexpected error occurred, please try again later!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
           <context context-type="linenumber">81</context>
@@ -888,7 +888,7 @@
       </trans-unit>
       <trans-unit id="authJoinWorkplace.welcomeToWorkplace" datatype="html">
         <source>Hi <x id="PH" equiv-text="res['user']['first_name']"/>, welcome to your new workplace!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Hallo <x id="PH" equiv-text="res['user']['first_name']"/>, willkommen an Ihrem neuen Arbeitsplatz!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
           <context context-type="linenumber">97</context>
@@ -896,7 +896,7 @@
       </trans-unit>
       <trans-unit id="authJoinWorkplace.oopsErrorOccuredSettingUp" datatype="html">
         <source>Oops some error occured while setting you up, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Beim Einrichten ist ein Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
           <context context-type="linenumber">100</context>
@@ -944,7 +944,7 @@
       </trans-unit>
       <trans-unit id="authNewWorkplace.nameCannotBeEmpty" datatype="html">
         <source>Workplace name can't be empty!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Der Name des Arbeitsplatzes darf nicht leer sein!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-new-workplace/auth-new-workplace.component.ts</context>
           <context context-type="linenumber">43</context>
@@ -952,7 +952,7 @@
       </trans-unit>
       <trans-unit id="authNewWorkplace.nameAvailable" datatype="html">
         <source>This workplace name is available.</source>
-        <target state="needs-translation"/>
+        <target state="translated">Dieser Arbeitsplatzname ist verfügbar.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-new-workplace/auth-new-workplace.component.ts</context>
           <context context-type="linenumber">51</context>
@@ -960,7 +960,7 @@
       </trans-unit>
       <trans-unit id="authNewWorkplace.nameTaken" datatype="html">
         <source>This workplace name is taken, kindly come up with another one!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Der Name des Arbeitsplatzes ist vergeben, bitte denken Sie sich einen anderen aus!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-new-workplace/auth-new-workplace.component.ts</context>
           <context context-type="linenumber">55</context>
@@ -968,7 +968,7 @@
       </trans-unit>
       <trans-unit id="authNewWorkplace.insufficientData" datatype="html">
         <source>Insufficient or incorrect data, kindly fill up all the fields correctly!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Unzureichende oder falsche Daten, bitte füllen Sie alle Felder korrekt aus!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-new-workplace/auth-new-workplace.component.ts</context>
           <context context-type="linenumber">69</context>
@@ -976,7 +976,7 @@
       </trans-unit>
       <trans-unit id="authNewWorkplace.pleaseWaitSettingUp" datatype="html">
         <source>Please wait while we are setting up your new workplace and account...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, während wir Ihren neuen Arbeitsplatz und Ihr Konto einrichten...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-new-workplace/auth-new-workplace.component.ts</context>
           <context context-type="linenumber">76</context>
@@ -984,7 +984,7 @@
       </trans-unit>
       <trans-unit id="authNewWorkplace.unexpectedError" datatype="html">
         <source>There's some unexpected error occurred, please try again later!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-new-workplace/auth-new-workplace.component.ts</context>
           <context context-type="linenumber">81</context>
@@ -992,7 +992,7 @@
       </trans-unit>
       <trans-unit id="authNewWorkplace.welcomeToWorkplace" datatype="html">
         <source>Hi <x id="PH" equiv-text="res['user']['first_name']"/>, welcome to your new workplace!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Hallo <x id="PH" equiv-text="res['user']['first_name']"/>, willkommen an Ihrem neuen Arbeitsplatz!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-new-workplace/auth-new-workplace.component.ts</context>
           <context context-type="linenumber">97</context>
@@ -1004,7 +1004,7 @@
       </trans-unit>
       <trans-unit id="authNewWorkplace.oopsErrorOccuredSettingUp" datatype="html">
         <source>Oops some error occured while setting you up, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Beim Einrichten ist ein Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-new-workplace/auth-new-workplace.component.ts</context>
           <context context-type="linenumber">101</context>
@@ -1088,7 +1088,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.correctEmailFormat" datatype="html">
         <source>Correct Email Format!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Richtiges E-Mail-Format!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
           <context context-type="linenumber">68</context>
@@ -1096,7 +1096,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.followStandardFormat" datatype="html">
         <source>Follow the standard format, e.g. - user@example.com</source>
-        <target state="needs-translation"/>
+        <target state="translated">Beachten Sie das Standardformat, z. B. - user@example.com</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
           <context context-type="linenumber">70</context>
@@ -1104,7 +1104,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.wrongFormat" datatype="html">
         <source>Wrong Format!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Falsches Format!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
           <context context-type="linenumber">71</context>
@@ -1112,7 +1112,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.insufficientData" datatype="html">
         <source>Insufficient data, kindly fill up all the fields correctly!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Unzureichende Daten, bitte füllen Sie alle Felder korrekt aus!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
           <context context-type="linenumber">90</context>
@@ -1120,7 +1120,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.pleaseWaitWhileSettingUp" datatype="html">
         <source>Please wait while we are setting up your new account...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, während wir Ihr neues Konto einrichten...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
           <context context-type="linenumber">100</context>
@@ -1128,7 +1128,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.unexpectedErrorOccurred" datatype="html">
         <source>There's some unexpected error occurred, please try again later!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
           <context context-type="linenumber">105</context>
@@ -1136,7 +1136,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.hi" datatype="html">
         <source>Hi <x id="PH" equiv-text="res['account']['first_name']"/>!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Hallo <x id="PH" equiv-text="res['account']['first_name']"/>!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
           <context context-type="linenumber">121</context>
@@ -1148,7 +1148,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.oopsErrorSigningUp" datatype="html">
         <source>Oops some error occured while signing you up, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bei der Anmeldung ist ein Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
           <context context-type="linenumber">126</context>
@@ -1160,7 +1160,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.errorSigningUp" datatype="html">
         <source>Oops some error occured while signing you up, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bei der Anmeldung ist ein Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
           <context context-type="linenumber">133</context>
@@ -1200,7 +1200,7 @@
       </trans-unit>
       <trans-unit id="resetPwd.pwdMatchSuccessfully" datatype="html">
         <source>Password matches successfully!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Das Passwort stimmt überein!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/reset-password/reset-password.component.ts</context>
           <context context-type="linenumber">34</context>
@@ -1208,7 +1208,7 @@
       </trans-unit>
       <trans-unit id="resetPwd.pwddoesntMatch" datatype="html">
         <source>Password doesn't match!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Das Passwort stimmt nicht überein!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/reset-password/reset-password.component.ts</context>
           <context context-type="linenumber">35</context>
@@ -1220,7 +1220,7 @@
       </trans-unit>
       <trans-unit id="resetPwd.pleaseWaitResettingPwd" datatype="html">
         <source>Please wait while we are resetting your password...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, während wir Ihr Passwort zurücksetzen...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/reset-password/reset-password.component.ts</context>
           <context context-type="linenumber">55</context>
@@ -1228,7 +1228,7 @@
       </trans-unit>
       <trans-unit id="resetPwd.unexpectedError" datatype="html">
         <source>There's some unexpected error occurred, please try again later!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/reset-password/reset-password.component.ts</context>
           <context context-type="linenumber">63</context>
@@ -1236,7 +1236,7 @@
       </trans-unit>
       <trans-unit id="resetPwd.pwdResetSuccessfully" datatype="html">
         <source>Your password has been reset successfully!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Ihr Passwort wurde erfolgreich zurückgesetzt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/reset-password/reset-password.component.ts</context>
           <context context-type="linenumber">77</context>
@@ -1248,7 +1248,7 @@
       </trans-unit>
       <trans-unit id="resetPwd.oopsErrorResetingPwd" datatype="html">
         <source>Oops some error occured while reseting your password, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Beim Zurücksetzen Ihres Passworts ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/reset-password/reset-password.component.ts</context>
           <context context-type="linenumber">81</context>
@@ -1276,7 +1276,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.createNewWorkspace" datatype="html">
         <source> Create a new workplace </source>
-        <target state="translated"> Einen neuen Arbeitsplatz schaffen</target>
+        <target state="translated">Neuen Arbeitsplatz schaffen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">55,56</context>
@@ -1284,7 +1284,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.joinAnotherWorkspace" datatype="html">
         <source> Join another workplace </source>
-        <target state="translated">Anderen Arbeitsplatz arbeiten </target>
+        <target state="translated">Arbeitsplatz arbeiten </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">69,70</context>
@@ -1292,7 +1292,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.pleaseWaitSignYouIn" datatype="html">
         <source>Please wait while we sign you in...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, während wir Sie einschreiben...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
           <context context-type="linenumber">62</context>
@@ -1300,7 +1300,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.unexpectedError" datatype="html">
         <source>There's some unexpected error occurred, please try again later!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
           <context context-type="linenumber">66</context>
@@ -1308,7 +1308,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.workspaceIsNotAvailable" datatype="html">
         <source>Your workspace is not available, please contact your administrator!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Ihr Arbeitsbereich ist nicht verfügbar, bitte kontaktieren Sie Ihren Administrator!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
           <context context-type="linenumber">94</context>
@@ -1316,7 +1316,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.hi" datatype="html">
         <source>Hi <x id="PH" equiv-text="res['user']['first_name']"/>, welcome back to your workplace!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Hallo <x id="PH" equiv-text="res['user']['first_name']"/>, willkommen zurück an Ihrem Arbeitsplatz!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
           <context context-type="linenumber">109</context>
@@ -1328,7 +1328,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.oopsErrorSigningIn" datatype="html">
         <source>Oops some error occured while signing you in, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
           <context context-type="linenumber">119</context>
@@ -1388,7 +1388,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.edit" datatype="html">
         <source>Edit</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bearbeiten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
           <context context-type="linenumber">75</context>
@@ -1396,7 +1396,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.edited" datatype="html">
         <source>Edited</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bearbeitet</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
           <context context-type="linenumber">77</context>
@@ -1404,7 +1404,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.delete" datatype="html">
         <source>Delete</source>
-        <target state="needs-translation"/>
+        <target state="translated">Löschen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
           <context context-type="linenumber">82</context>
@@ -1412,7 +1412,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.deleted" datatype="html">
         <source>Deleted</source>
-        <target state="needs-translation"/>
+        <target state="translated">Gelöscht</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
           <context context-type="linenumber">85</context>
@@ -1420,7 +1420,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.droppedResized" datatype="html">
         <source>Dropped or resized</source>
-        <target state="needs-translation"/>
+        <target state="translated">Fallengelassen oder Größe geändert</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
           <context context-type="linenumber">219</context>
@@ -1428,7 +1428,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.newEvent" datatype="html">
         <source>New event</source>
-        <target state="needs-translation"/>
+        <target state="translated">Neue Veranstaltung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
           <context context-type="linenumber">258</context>
@@ -1443,8 +1443,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.dragDropOrAdd" datatype="html">
-        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Or use the NEW button for folders uploading.</source>
-        <target state="translated">Ziehen Sie Dateien per Drag &amp; Drop hierher, um sie einfach hochzuladen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Oder verwenden Sie die Schaltfläche NEU für das Hochladen von Ordnern. </target>
+        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Or use the NEW button for folders uploading.</source>
+        <target state="translated">Ziehen Sie Dateien per Drag &amp; Drop hierher, um sie einfach hochzuladen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Oder verwenden Sie die Schaltfläche NEU für das Hochladen von Ordnern. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
           <context context-type="linenumber">7</context>
@@ -1504,7 +1504,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.unableToConnectToServer" datatype="html">
         <source>Unable to connect to the server, please try again later!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Die Verbindung zum Server konnte nicht hergestellt werden, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
           <context context-type="linenumber">131</context>
@@ -1512,7 +1512,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitDeleting" datatype="html">
         <source>Please wait, we are deleting...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, wir löschen gerade...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
           <context context-type="linenumber">214</context>
@@ -1520,7 +1520,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.fileDeleted" datatype="html">
         <source>File deleted!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Datei gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
           <context context-type="linenumber">224</context>
@@ -1528,7 +1528,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.unableToDeleteFile" datatype="html">
         <source>Unable to delete file, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Die Datei kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
           <context context-type="linenumber">226</context>
@@ -1536,7 +1536,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.folderDeleted" datatype="html">
         <source>Folder deleted!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Ordner gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
           <context context-type="linenumber">237</context>
@@ -1544,7 +1544,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.unableToDeleteFolder" datatype="html">
         <source>Unable to delete folder, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Ordner kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
           <context context-type="linenumber">239</context>
@@ -1552,7 +1552,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.copiedToClipboard" datatype="html">
         <source>Copied to Clipboard!</source>
-        <target state="needs-translation"/>
+        <target state="translated">In Zwischenablage kopiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
           <context context-type="linenumber">306</context>
@@ -1560,7 +1560,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.areYouSure" datatype="html">
         <source>Are you sure?</source>
-        <target state="needs-translation"/>
+        <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
           <context context-type="linenumber">325</context>
@@ -1572,7 +1572,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.doingThisItemWillBeCopied" datatype="html">
         <source>By doing this the item will be copied to the selected group!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Auf diese Weise wird der Artikel in die ausgewählte Gruppe kopiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
           <context context-type="linenumber">325</context>
@@ -1580,7 +1580,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitCopyingFolio" datatype="html">
         <source>Please wait, we are copying the Folio...</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bitte warten Sie, wir kopieren das Folio...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
           <context context-type="linenumber">328</context>
@@ -2423,8 +2423,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPublish.done" datatype="html">
-        <source> Done?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> When you are ready, you can click this button to PUBLISH the FORM and <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> let people answer.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> When it’s done, come back here and click UNPUBLISH in order to stop data <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> collection. </source>
-        <target state="translated"> Fertig?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> Wenn Sie bereit sind, können Sie auf diese Schaltfläche klicken, um das Formular zu VERÖFFENTLICHEN und <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> die Leute antworten zu lassen.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> Wenn es fertig ist, kommen Sie hierher zurück und klicken Sie auf VERÖFFENTLICHEN, um die Datenerfassung <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> zu beenden </target>
+        <source> Done?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> When you are ready, you can click this button to PUBLISH the FORM and <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> let people answer.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> When it’s done, come back here and click UNPUBLISH in order to stop data <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> collection. </source>
+        <target state="translated"> Fertig?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> Wenn Sie bereit sind, können Sie auf diese Schaltfläche klicken, um das Formular zu VERÖFFENTLICHEN und <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> die Leute antworten zu lassen.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> Wenn es fertig ist, kommen Sie hierher zurück und klicken Sie auf VERÖFFENTLICHEN, um die Datenerfassung <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> zu beenden </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.html</context>
           <context context-type="linenumber">8,13</context>
@@ -2767,8 +2767,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAutomationFlowsDialog.saveTime" datatype="html">
-        <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Turn your Octonius board into an automation machine.</source>
-        <target state="translated">Sparen Sie Zeit bei manuellen Prozessen und lassen Sie Octonius die schwere Arbeit erledigen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Verwandeln Sie Ihr Octonius-Board in eine Automatisierungsmaschine.</target>
+        <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Turn your Octonius board into an automation machine.</source>
+        <target state="translated">Sparen Sie Zeit bei manuellen Prozessen und lassen Sie Octonius die schwere Arbeit erledigen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Verwandeln Sie Ihr Octonius-Board in eine Automatisierungsmaschine.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flows-dialog/automation-flows-dialog.component.html</context>
           <context context-type="linenumber">19</context>
@@ -3023,8 +3023,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.searchForOtherEmployees" datatype="html">
-        <source>Search for other employees within the organization and add them to your Group. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> This is how you usually create your team.</source>
-        <target state="translated">Suchen Sie nach anderen Mitarbeitern innerhalb der Organisation und fügen Sie sie zu Ihrer Gruppe hinzu. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Auf diese Weise erstellen Sie normalerweise Ihr Team.</target>
+        <source>Search for other employees within the organization and add them to your Group. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> This is how you usually create your team.</source>
+        <target state="translated">Suchen Sie nach anderen Mitarbeitern innerhalb der Organisation und fügen Sie sie zu Ihrer Gruppe hinzu. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Auf diese Weise erstellen Sie normalerweise Ihr Team.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">18</context>
@@ -3055,8 +3055,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.BARAllowAdminsToChose" datatype="html">
-        <source>BARs allow admins to chose who can see and work on specific tasks.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Sometimes this is necessary for transversal projects.</source>
-        <target state="translated">Mit BARs können Administratoren festlegen, wer bestimmte Aufgaben sehen und bearbeiten kann.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Manchmal ist dies für übergreifende Projekte notwendig.</target>
+        <source>BARs allow admins to chose who can see and work on specific tasks.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Sometimes this is necessary for transversal projects.</source>
+        <target state="translated">Mit BARs können Administratoren festlegen, wer bestimmte Aufgaben sehen und bearbeiten kann.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Manchmal ist dies für übergreifende Projekte notwendig.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">70</context>
@@ -3243,8 +3243,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupBARDialog.createRulesToManage" datatype="html">
-        <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
-        <target state="translated"> Erstellen Sie Regeln zur Verwaltung der Zugriffsrechte auf das Board und wählen Sie aus, welche Mitglieder bestimmte Aufgaben sehen können. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Standardmäßig sind alle Aufgaben für das Team sichtbar, aber mit BAR-Tags können Sie den Zugriff steuern</target>
+        <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
+        <target state="translated"> Erstellen Sie Regeln zur Verwaltung der Zugriffsrechte auf das Board und wählen Sie aus, welche Mitglieder bestimmte Aufgaben sehen können. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Standardmäßig sind alle Aufgaben für das Team sichtbar, aber mit BAR-Tags können Sie den Zugriff steuern</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
           <context context-type="linenumber">15,17</context>
@@ -3580,7 +3580,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.edit" datatype="html">
         <source>Edit</source>
-        <target state="needs-translation"/>
+        <target state="translated">Bearbeiten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.ts</context>
           <context context-type="linenumber">77</context>
@@ -3596,7 +3596,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.delete" datatype="html">
         <source>Delete</source>
-        <target state="needs-translation"/>
+        <target state="translated">Löschen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.ts</context>
           <context context-type="linenumber">84</context>
@@ -4388,7 +4388,7 @@
       </trans-unit>
       <trans-unit id="createSection.cancel" datatype="html">
         <source>Cancel</source>
-        <target state="needs-translation"/>
+        <target state="translated">Abbrechen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/create-section/create-section.component.ts</context>
           <context context-type="linenumber">55</context>
@@ -4404,7 +4404,7 @@
       </trans-unit>
       <trans-unit id="doneTasksListView.tags" datatype="html">
         <source> Tags </source>
-        <target state="translated">Tags: </target>
+        <target state="translated">Tags </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/done-tasks-list-view/done-tasks-list-view.component.html</context>
           <context context-type="linenumber">38</context>
@@ -4484,7 +4484,7 @@
       </trans-unit>
       <trans-unit id="asksTableView.tags" datatype="html">
         <source> Tags </source>
-        <target state="translated">Tags: </target>
+        <target state="translated">Tags </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
           <context context-type="linenumber">34</context>
@@ -4572,7 +4572,7 @@
       </trans-unit>
       <trans-unit id="createGroup.cancel" datatype="html">
         <source>Cancel</source>
-        <target state="needs-translation"/>
+        <target state="translated">Abbrechen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/create-group/create-group.component.ts</context>
           <context context-type="linenumber">48</context>
@@ -4656,7 +4656,7 @@
       </trans-unit>
       <trans-unit id="groupList.members" datatype="html">
         <source>Members</source>
-        <target state="translated"> Mitglieder</target>
+        <target state="translated">Mitglieder</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
           <context context-type="linenumber">20</context>
@@ -5452,7 +5452,7 @@
       </trans-unit>
       <trans-unit id="connectSlack.allow" datatype="html">
         <source>Allow</source>
-        <target state="needs-translation"/>
+        <target state="translated">Erlauben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/slack/connect-slack/connect-slack.component.ts</context>
           <context context-type="linenumber">102</context>
@@ -6095,8 +6095,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="northStarPage.setAndAchieveStrategic" datatype="html">
-        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
-        <target state="translated"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun</target>
+        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
+        <target state="translated"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">16,18</context>
@@ -6111,8 +6111,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="pulse.pulseIsMicroAnnouncement" datatype="html">
-        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Pulses create transparency and a sense of mission for your organization. </source>
-        <target state="translated"> Ein Puls ist eine Mikro-Mitteilung einer Gruppe. Es ist wie Twitter für Unternehmen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Auch wenn Sie keinen Zugang zu einer Gruppe haben, können Sie sehen, was dort passiert. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Pulse schaffen Transparenz und ein Gefühl der Mission für Ihre Organisation</target>
+        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulses create transparency and a sense of mission for your organization. </source>
+        <target state="translated"> Ein Puls ist eine Mikro-Mitteilung einer Gruppe. Es ist wie Twitter für Unternehmen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Auch wenn Sie keinen Zugang zu einer Gruppe haben, können Sie sehen, was dort passiert. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulse schaffen Transparenz und ein Gefühl der Mission für Ihre Organisation</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/pulse/pulse.component.html</context>
           <context context-type="linenumber">15,18</context>
@@ -6384,7 +6384,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.PM" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="number;&#xA;  priv"/></source>
+        <source><x id="INTERPOLATION" equiv-text="number;&#10;  priv"/></source>
         <target state="translated">{Nummer;
   privat}</target>
         <context-group purpose="location">
@@ -6393,8 +6393,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.AM" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="ssor,&#xA;    OnCh"/></source>
-        <target state="translated"><x id="INTERPOLATION" equiv-text="ssor,&#xA;    OnCh"/></target>
+        <source><x id="INTERPOLATION" equiv-text="ssor,&#10;    OnCh"/></source>
+        <target state="translated"><x id="INTERPOLATION" equiv-text="ssor,&#10;    OnCh"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/timepicker/timepicker.ts</context>
           <context context-type="linenumber">141,116</context>
@@ -6614,7 +6614,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.notes" datatype="html">
         <source>Notes</source>
-        <target state="translated"> Notizen</target>
+        <target state="translated">Notizen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">60</context>
@@ -6622,7 +6622,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.personalTasks" datatype="html">
         <source>Personal Tasks</source>
-        <target state="translated"> Meine Aufgaben</target>
+        <target state="translated">Meine Aufgaben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">70</context>
@@ -6630,7 +6630,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.personalFiles" datatype="html">
         <source>Personal Files</source>
-        <target state="translated"> Persönliche Dateien</target>
+        <target state="translated">Persönliche Dateien</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">80</context>
@@ -6806,7 +6806,7 @@
       </trans-unit>
       <trans-unit id="sidebar.myAccount" datatype="html">
         <source>My Account</source>
-        <target state="translated"> Mein Konto</target>
+        <target state="translated">Mein Konto</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">80</context>
@@ -6994,7 +6994,7 @@
       </trans-unit>
       <trans-unit id="agendaSmartCard.taDa" datatype="html">
         <source>Ta-da!</source>
-        <target state="translated"> Ta-da!</target>
+        <target state="translated">Ta-da!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
           <context context-type="linenumber">13</context>
@@ -7130,7 +7130,7 @@
       </trans-unit>
       <trans-unit id="groupInformation.updateInformation" datatype="html">
         <source>Update Information!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Informationen aktualisieren!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-information/group-information.component.ts</context>
           <context context-type="linenumber">93</context>
@@ -7202,7 +7202,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.from" datatype="html">
         <source> From</source>
-        <target state="translated"> Von </target>
+        <target state="translated"> Von</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">205</context>
@@ -7210,7 +7210,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.to" datatype="html">
         <source> To</source>
-        <target state="translated"> An </target>
+        <target state="translated"> An</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">206</context>
@@ -8137,8 +8137,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupPostbox.whatAreYouWorkingOn" datatype="html">
-        <source> What are you working on, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>? </source>
-        <target state="translated"> Woran arbeiten Sie, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>? </target>
+        <source> What are you working on, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>? </source>
+        <target state="translated"> Woran arbeiten Sie, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>? </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-postbox.component.html</context>
           <context context-type="linenumber">18,19</context>
@@ -8162,7 +8162,7 @@
       </trans-unit>
       <trans-unit id="groupTaskProgress.assignmentsWeek" datatype="html">
         <source>assignment(s) this week.</source>
-        <target state="translated"> aufgabe(n) diese Woche.</target>
+        <target state="translated">aufgabe(n) diese Woche.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
           <context context-type="linenumber">17</context>
@@ -8170,7 +8170,7 @@
       </trans-unit>
       <trans-unit id="groupTaskProgress.overdueAssignmentsWeek" datatype="html">
         <source>overdue assignment(s) this week.</source>
-        <target state="translated"> überfällige Aufgabe(n) diese Woche.</target>
+        <target state="translated">überfällige Aufgabe(n) diese Woche.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
           <context context-type="linenumber">19</context>
@@ -8186,7 +8186,7 @@
       </trans-unit>
       <trans-unit id="groupTaskProgress.inProgress" datatype="html">
         <source>In progress</source>
-        <target state="translated"> In Bearbeitung</target>
+        <target state="translated">In Bearbeitung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
           <context context-type="linenumber">40</context>
@@ -8194,7 +8194,7 @@
       </trans-unit>
       <trans-unit id="groupTaskProgress.done" datatype="html">
         <source>Done</source>
-        <target state="translated"> Erledigt</target>
+        <target state="translated">Erledigt</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-task-progress/group-task-progress.component.html</context>
           <context context-type="linenumber">53</context>
@@ -8314,7 +8314,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.overdue" datatype="html">
         <source>overdue</source>
-        <target state="translated"> überfällig</target>
+        <target state="translated">überfällig</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
           <context context-type="linenumber">44</context>
@@ -8330,7 +8330,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.inProgress" datatype="html">
         <source>in progress</source>
-        <target state="translated"> in Bearbeitung</target>
+        <target state="translated">in Bearbeitung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
           <context context-type="linenumber">46</context>
@@ -9019,7 +9019,7 @@
       </trans-unit>
       <trans-unit id="projectStatistics.toDo" datatype="html">
         <source>To Do</source>
-        <target state="needs-translation"/>
+        <target state="translated">Zu erledigen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/kpi-performance-card/project-statistics/project-statistics.component.ts</context>
           <context context-type="linenumber">55</context>
@@ -9027,7 +9027,7 @@
       </trans-unit>
       <trans-unit id="projectStatistics.inProgress" datatype="html">
         <source>In Progress</source>
-        <target state="needs-translation"/>
+        <target state="translated">In Bearbeitung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/kpi-performance-card/project-statistics/project-statistics.component.ts</context>
           <context context-type="linenumber">55</context>
@@ -9035,7 +9035,7 @@
       </trans-unit>
       <trans-unit id="projectStatistics.done" datatype="html">
         <source>Done</source>
-        <target state="needs-translation"/>
+        <target state="translated">Erledigt</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/kpi-performance-card/project-statistics/project-statistics.component.ts</context>
           <context context-type="linenumber">55</context>
@@ -9043,7 +9043,7 @@
       </trans-unit>
       <trans-unit id="projectStatistics.overdue" datatype="html">
         <source>Overdue</source>
-        <target state="needs-translation"/>
+        <target state="needs-l10n">überfällig</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/kpi-performance-card/project-statistics/project-statistics.component.ts</context>
           <context context-type="linenumber">55</context>
@@ -9123,7 +9123,7 @@
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.groupManagers" datatype="html">
         <source>group managers</source>
-        <target state="translated">Gruppen: </target>
+        <target state="translated">gruppenleiter</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
           <context context-type="linenumber">25</context>
@@ -9171,7 +9171,7 @@
       </trans-unit>
       <trans-unit id="pulseCard.updatesLastMonth" datatype="html">
         <source>updates last month</source>
-        <target state="translated"> Monat</target>
+        <target state="translated">aktualisierungen letzten Monat</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/pulse-card/pulse-card.component.html</context>
           <context context-type="linenumber">22</context>
@@ -9251,7 +9251,7 @@
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.workStatistics" datatype="html">
         <source>Work statistics</source>
-        <target state="needs-translation"/>
+        <target state="translated">Arbeitsstatistiken</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
           <context context-type="linenumber">35</context>
@@ -9263,7 +9263,7 @@
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.workloadCompletitionStatus" datatype="html">
         <source>Workload by completition status</source>
-        <target state="needs-translation"/>
+        <target state="translated">Arbeitsbelastung nach Abschlussstatus</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
           <context context-type="linenumber">39</context>
@@ -9275,7 +9275,7 @@
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.velocityOverTime" datatype="html">
         <source>Velocity over time</source>
-        <target state="needs-translation"/>
+        <target state="translated">Geschwindigkeit über die Zeit</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
           <context context-type="linenumber">43</context>
@@ -9287,7 +9287,7 @@
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.engagement" datatype="html">
         <source>Engagement</source>
-        <target state="needs-translation"/>
+        <target state="translated">Engagement</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
           <context context-type="linenumber">47</context>
@@ -9299,7 +9299,7 @@
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.resourceManagement" datatype="html">
         <source>Resource management</source>
-        <target state="needs-translation"/>
+        <target state="translated">Verwaltung der Ressourcen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
           <context context-type="linenumber">51</context>
@@ -9307,7 +9307,7 @@
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.pulse" datatype="html">
         <source>Pulse</source>
-        <target state="needs-translation"/>
+        <target state="translated">Pulse</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
           <context context-type="linenumber">71</context>
@@ -9315,7 +9315,7 @@
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.peopleDirectory" datatype="html">
         <source>People directory</source>
-        <target state="needs-translation"/>
+        <target state="translated">Personenverzeichnis</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
           <context context-type="linenumber">75</context>
@@ -9323,7 +9323,7 @@
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.organizationalStructure" datatype="html">
         <source>Organizational Structure</source>
-        <target state="needs-translation"/>
+        <target state="translated">Organisatorische Struktur</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
           <context context-type="linenumber">79</context>
@@ -9339,7 +9339,7 @@
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.kpiPerformance" datatype="html">
         <source>KPI Performance</source>
-        <target state="needs-translation"/>
+        <target state="translated">KPI-Leistung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
           <context context-type="linenumber">91</context>
@@ -9479,7 +9479,7 @@
       </trans-unit>
       <trans-unit id="workStatisticsCard.overdue" datatype="html">
         <source>Overdue</source>
-        <target state="needs-translation"/>
+        <target state="translated">Überfällig</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.ts</context>
           <context context-type="linenumber">61</context>
@@ -9491,7 +9491,7 @@
       </trans-unit>
       <trans-unit id="workStatisticsCard.toDo" datatype="html">
         <source>To Do</source>
-        <target state="needs-translation"/>
+        <target state="translated">Zu erledigen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.ts</context>
           <context context-type="linenumber">63</context>
@@ -9499,7 +9499,7 @@
       </trans-unit>
       <trans-unit id="workStatisticsCard.inProgress" datatype="html">
         <source>In Progress</source>
-        <target state="needs-translation"/>
+        <target state="translated">In Bearbeitung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.ts</context>
           <context context-type="linenumber">64</context>
@@ -9507,7 +9507,7 @@
       </trans-unit>
       <trans-unit id="workStatisticsCard.done" datatype="html">
         <source>Done</source>
-        <target state="needs-translation"/>
+        <target state="translated">Erledigt</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.ts</context>
           <context context-type="linenumber">65</context>
@@ -9523,7 +9523,7 @@
       </trans-unit>
       <trans-unit id="workloadCard.toDo" datatype="html">
         <source>To Do</source>
-        <target state="needs-translation"/>
+        <target state="translated">Zu erledigen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/workload-card/workload-card.component.ts</context>
           <context context-type="linenumber">55</context>
@@ -9531,7 +9531,7 @@
       </trans-unit>
       <trans-unit id="workloadCard.inProgress" datatype="html">
         <source>In Progress</source>
-        <target state="needs-translation"/>
+        <target state="translated">In Bearbeitung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/workload-card/workload-card.component.ts</context>
           <context context-type="linenumber">56</context>
@@ -9539,7 +9539,7 @@
       </trans-unit>
       <trans-unit id="workloadCard.done" datatype="html">
         <source>Done</source>
-        <target state="needs-translation"/>
+        <target state="translated">Erledigt</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/workload-card/workload-card.component.ts</context>
           <context context-type="linenumber">57</context>
@@ -9547,7 +9547,7 @@
       </trans-unit>
       <trans-unit id="workloadCard.overdue" datatype="html">
         <source>Overdue</source>
-        <target state="needs-translation"/>
+        <target state="translated">Überfällig</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/workload-card/workload-card.component.ts</context>
           <context context-type="linenumber">58</context>
