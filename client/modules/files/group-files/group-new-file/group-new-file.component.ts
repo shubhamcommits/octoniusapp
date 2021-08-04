@@ -260,7 +260,9 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
       _folder: this.folderId,
       _posted_by: this.userData._id,
       type: 'folio',
-      mime_type: 'folio'
+      mime_type: 'folio',
+      original_name: $localize`:@@groupNewFile.newFolio:New Folio`,
+      modified_name: $localize`:@@groupNewFile.newFolio:New Folio`
     }
 
     this.uploadFile(folio);

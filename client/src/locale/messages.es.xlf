@@ -1854,16 +1854,28 @@
           <context context-type="linenumber">240</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="groupNewFile.newFolio" datatype="html">
+        <source>New Folio</source>
+        <target state="translated">Nuevo Folio</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
+          <context context-type="linenumber">264</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
+          <context context-type="linenumber">265</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="groupNewFile.newFlamingo" datatype="html">
         <source>New Flamingo</source>
         <target state="translated">Flamingo Nuevo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
-          <context context-type="linenumber">283</context>
+          <context context-type="linenumber">285</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
-          <context context-type="linenumber">284</context>
+          <context context-type="linenumber">286</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNewFile.pleaseWaitUploadingFile" datatype="html">
@@ -1871,7 +1883,7 @@
         <target state="translated">Espere, estamos cargando su archivo - <x id="PH" equiv-text="file['name']"/> ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
-          <context context-type="linenumber">310</context>
+          <context context-type="linenumber">312</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNewFile.pleaseWaitCreatingFolio" datatype="html">
@@ -1879,7 +1891,7 @@
         <target state="translated">Espere mientras creamos un nuevo folio.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
-          <context context-type="linenumber">310</context>
+          <context context-type="linenumber">312</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNewFile.fileUploaded" datatype="html">
@@ -1887,7 +1899,7 @@
         <target state="translated">¡El archivo ha sido subido!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
-          <context context-type="linenumber">318</context>
+          <context context-type="linenumber">320</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNewFile.newFlamingoCreated" datatype="html">
@@ -1895,7 +1907,7 @@
         <target state="translated">¡Se ha creado un flamenco nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
-          <context context-type="linenumber">319</context>
+          <context context-type="linenumber">321</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNewFile.newFolioCreated" datatype="html">
@@ -1903,7 +1915,7 @@
         <target state="translated">¡Se ha creado un nuevo folio!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
-          <context context-type="linenumber">320</context>
+          <context context-type="linenumber">322</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNewFile.unexpectedErrorUploading" datatype="html">
@@ -1911,7 +1923,7 @@
         <target state="translated">Se produjo un error inesperado durante la carga. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
-          <context context-type="linenumber">324</context>
+          <context context-type="linenumber">326</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoAnswer.previous" datatype="html">
