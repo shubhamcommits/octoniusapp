@@ -18,7 +18,7 @@
     "start:es": "ng serve --configuration=es",
     "start:de": "ng serve --configuration=de",
     "build:es": "ng build --configuration=es",
-    "dev": "ng serve",
+    "dev": "ng serve --configuration=de",
     "build": "ng build",
     "prod": "ng build --configuration production --localize",
     "gzip": "gzipper --verbose ./dist ./gzipped",
