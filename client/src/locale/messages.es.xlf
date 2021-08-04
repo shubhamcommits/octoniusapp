@@ -1676,7 +1676,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitCreatingFolio" datatype="html">
         <source>Please wait while we are creating a new folio</source>
-        <target state="translated">Espere mientras creamos una nueva publicación.</target>
+        <target state="translated">Espere mientras creamos un nuevo folio</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
           <context context-type="linenumber">503</context>
@@ -1780,7 +1780,7 @@
       </trans-unit>
       <trans-unit id="groupNewFile.folio" datatype="html">
         <source>Folio</source>
-        <target state="translated">Cuentas</target>
+        <target state="translated">Folio</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.html</context>
           <context context-type="linenumber">31</context>
@@ -1876,7 +1876,7 @@
       </trans-unit>
       <trans-unit id="groupNewFile.pleaseWaitCreatingFolio" datatype="html">
         <source>Please wait while we are creating a new folio</source>
-        <target state="translated">Espere mientras creamos una nueva publicación.</target>
+        <target state="translated">Espere mientras creamos un nuevo folio.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
           <context context-type="linenumber">310</context>
@@ -2556,7 +2556,7 @@
       </trans-unit>
       <trans-unit id="folioHeader.newFolio" datatype="html">
         <source>New Folio</source>
-        <target state="translated">Folio nuevo</target>
+        <target state="translated">Nuevo Folio</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
           <context context-type="linenumber">68</context>
