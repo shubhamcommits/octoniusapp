@@ -2468,7 +2468,7 @@
       </trans-unit>
       <trans-unit id="flamingoPublish.publish" datatype="html">
         <source>PUBLISH</source>
-        <target state="translated">PUBLICADO</target>
+        <target state="translated">PUBLICAR</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.html</context>
           <context context-type="linenumber">24</context>
@@ -2476,7 +2476,7 @@
       </trans-unit>
       <trans-unit id="flamingoPublish.unpublish" datatype="html">
         <source>UNPUBLISH</source>
-        <target state="translated">DESPLAZARSE</target>
+        <target state="translated">DESPUBLICAR</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.html</context>
           <context context-type="linenumber">25</context>
