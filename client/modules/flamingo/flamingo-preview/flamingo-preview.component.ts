@@ -150,4 +150,7 @@ export class FlamingoPreviewComponent implements OnInit {
     this.progressValue = ((this.activeQuestionIndex + 1) * 100) / this.questions.length;
   }
 
+  enableNextButton(answer: string) {
+    this.disableNext = (answer.length == 0) && this.checkMandatoryQuestion();
+  }
 }

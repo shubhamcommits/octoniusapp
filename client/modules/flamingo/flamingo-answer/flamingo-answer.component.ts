@@ -224,4 +224,8 @@ export class FlamingoAnswerComponent implements OnInit {
     calculateProgressValues() {
       this.progressValue = ((this.activeQuestionIndex + 1) * 100) / this.questions.length;
     }
+
+    enableNextButton(answer: string) {
+      this.disableNext = (answer.length == 0) && this.checkMandatoryQuestion();
+    }
 }

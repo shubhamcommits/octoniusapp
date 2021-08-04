@@ -67,6 +67,7 @@
             <!-- ShortText text input field -->
             <input style="margin-top: 50px;" *ngIf="activeQuestion?.type==='ShortText'" placeholder="Type your answer here..."
                 class="input-answer" [(ngModel)]="activeQuestion.answer"
+                (keyup)="enableNextButton($event.target.value)"
                 (change)="answerQuestion($event.target.value)" />
 
             <!-- yes/no buttons -->
