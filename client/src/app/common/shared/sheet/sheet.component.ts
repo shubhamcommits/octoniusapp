@@ -1,4 +1,6 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core'
+import { Component, Injector, Input, OnInit, ViewChild } from '@angular/core'
+import { FilesService } from 'src/shared/services/files-service/files.service'
+import { UtilityService } from 'src/shared/services/utility-service/utility.service'
 import { BehaviorSubject } from 'rxjs'
 import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
@@ -15,7 +17,9 @@ type AOA = any[][]
 })
 export class SheetComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _Injector: Injector
+  ) { }
 
   // Raw Data of Sheet
   @Input('data') data: any = []
@@ -38,6 +42,12 @@ export class SheetComponent implements OnInit {
 
   // Columns
   columns: any = []
+
+  // Selected Columns
+  selectedColumns: any = []
+
+  // Rows Counts for User View
+  rows_count = 0
 
   // Datasource
   dataSource = new MatTableDataSource([])
@@ -62,7 +72,12 @@ export class SheetComponent implements OnInit {
   public chartData = [120, 150, 180, 90];
   public chartType = 'doughnut';
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    if(this.file){
+      this.selectedColumns = this.file._campaign_user_view.fields
+      this.rows_count = this.file._campaign_user_view.rows_count
+    }
+  }
 
   async ngOnChanges() {
     if (this.fileUrl) {
@@ -71,6 +86,12 @@ export class SheetComponent implements OnInit {
       let data = await this.getDataFromBlob(blob)
       this.data = data['array']
       this.columns = data['keys']
+
+      // If user is member
+      if(this.isMember == true){
+        this.data = this.data.slice(0, this.rows_count)
+        this.columns = this.selectedColumns
+      }
       this.graphs = []
       this.populateDatasource(this.data)
       this.isLoading$.next(false)
@@ -131,7 +152,6 @@ export class SheetComponent implements OnInit {
     this.dataSource = new MatTableDataSource(dataSet)
     this.dataSource.sort = this.sort
     this.dataSource.paginator = this.paginator
-    console.log(this.dataSource)
   }
 
   convertToJSON(array) {
@@ -147,8 +167,41 @@ export class SheetComponent implements OnInit {
     return { array: objArray, keys: array[0] }
   }
 
+  updateFile(fileId, fileData){
+    return new Promise((resolve)=>{
+      let filesService = this._Injector.get(FilesService)
+      filesService.edit(fileId, fileData)
+      .then((res)=>{
+        resolve(res['file'])
+      })
+      .catch(()=>{
+        resolve({})
+      })
+    })
+  }
+
   rowEvents(event) {
     console.log(event)
+  }
+
+  async saveSettingsForUserView(){
+
+    // Utility Service
+    let utilityService = this._Injector.get(UtilityService)
+
+    // Asynchronously Saving the content
+    utilityService.asyncNotification('Please wait we are saving the new setting...',
+    new Promise(async (resolve, reject)=>{
+      this.file._campaign_user_view = {
+        fields: this.selectedColumns,
+        rows_count: this.rows_count
+      } 
+      this.updateFile(this.file._id, this.file)
+      .then(()=>{
+        resolve(utilityService.resolveAsyncPromise('Settings saved to your campaign!'));
+      })
+      .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your campaign, please try again!')))
+    }))
   }
 
   ngOnDestroy() {

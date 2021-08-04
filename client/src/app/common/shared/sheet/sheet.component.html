@@ -18,6 +18,50 @@
 </ng-container>
 <!-- Loading Spinner -->
 
+<!-- Graph Settings -->
+<mat-expansion-panel *ngIf="isMember == false">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <span class="material-icons">
+                settings
+                </span> User View Settings
+        </mat-panel-title>
+        <mat-panel-description>
+            Customise the settings for the members of campaign
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <!-- User View -->
+    <div class="row">
+        <div class="col-md-12">
+
+            <!-- Select Columns -->
+            <mat-form-field class="full-width" appearance="outline"
+                *ngIf="!(isLoading$ | async) && dataSource.data.length > 0">
+                <mat-label>Select Columns for User View</mat-label>
+                <mat-select placeholder="Select the base column for your chart" multiple [(value)]="selectedColumns">
+                    <mat-option *ngFor="let column of columns" [value]="column">
+                        {{ column }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- Select Columns -->
+            <!-- Select Number of Rows -->
+            <mat-form-field class="full-width" appearance="outline" *ngIf="!(isLoading$ | async) && dataSource.data.length > 0">
+                <mat-label>Feed top rows count for User View</mat-label>
+                <input autocomplete="off" matInput placeholder="Total number of rows to be displayed" type="number" [(ngModel)]="rows_count">
+            </mat-form-field>
+            <!-- Select Number of Rows -->
+        </div>
+    </div>
+    <!-- User View -->
+    <mat-action-row>
+        <button mat-raised-button color="primary" (click)="saveSettingsForUserView()">Save Settings</button>
+        <button mat-raised-button color="primary">Checkout User View</button>
+        <button mat-raised-button color="primary">Revert to admin view</button>
+    </mat-action-row>
+</mat-expansion-panel>
+<!-- Graph Settings -->
+
 <div class="row">
     <div class="col-md-12">
 
@@ -35,32 +79,28 @@
         </ng-container>
 
         <!-- Manage Metrics -->
-        <div class="metrics" *ngIf="!(isLoading$ | async) && dataSource.data.length > 0">
+        <div class="metrics" *ngIf="!(isLoading$ | async) && dataSource.data.length > 0 && isMember == false">
             <span class="material-icons analytics" matTooltip="Add graph to your campaign" (click)="graphs.push('0')">
                 add_box
             </span>
-            <span *ngIf="graphs.length > 0" class="material-icons analytics" matTooltip="Remove last graph" (click)="graphs.pop()">
+            <span *ngIf="graphs.length > 0" class="material-icons analytics" matTooltip="Remove last graph"
+                (click)="graphs.pop()">
                 remove_circle_outline
             </span>
         </div>
         <!-- Manage Metrics -->
 
         <!-- Generic Graph -->
-        <div class="row" *ngIf="!(isLoading$ | async) && dataSource.data.length > 0">
+        <div class="row" *ngIf="!(isLoading$ | async) && dataSource.data.length > 0 && isMember == false">
             <ng-container>
                 <span *ngFor="let graph of graphs" class="col-md-6">
-                    <app-generic-graph
-                    *ngIf="chartData.length > 0 && chartLabels.length > 0 && data.length > 0"
-                    [sheetData]="data"
-                    [columns]="columns"
-                    [data]="chartData"
-                    [labels]="chartLabels">
+                    <app-generic-graph *ngIf="chartData.length > 0 && chartLabels.length > 0 && data.length > 0"
+                        [sheetData]="data" [columns]="columns" [data]="chartData" [labels]="chartLabels">
                     </app-generic-graph>
                 </span>
 
             </ng-container>
         </div>
-
         <!-- Generic Graph -->
 
         <!-- Export the report starts -->
