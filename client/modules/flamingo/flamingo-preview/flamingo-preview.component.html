@@ -18,8 +18,8 @@
             <span i18n="@@flamingoPreview.previous">Previous</span>
         </button>
 
-        <button *ngIf="activeQuestionIndex > 0 && activeQuestionIndex < questions?.length-2"
-          class="btn btn-light" [disabled]="disableNext" (click)="nextQuestion()">
+        <button *ngIf="(activeQuestionIndex > 0 || (activeQuestion?.type != 'Welcome' && activeQuestion?.type != 'Thanks')) && activeQuestionIndex < questions?.length-2"
+            class="btn btn-light" [disabled]="disableNext" (click)="nextQuestion()">
           <span i18n="@@flamingoPreview.next">Next</span>
           <span class="material-icons">chevron_right</span>
         </button>
