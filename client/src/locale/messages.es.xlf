@@ -1788,7 +1788,7 @@
       </trans-unit>
       <trans-unit id="groupNewFile.flamingo" datatype="html">
         <source>Flamingo</source>
-        <target state="translated">Flamenco</target>
+        <target state="translated">Flamingo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.html</context>
           <context context-type="linenumber">35</context>
@@ -1904,7 +1904,7 @@
       </trans-unit>
       <trans-unit id="groupNewFile.newFlamingoCreated" datatype="html">
         <source>New flamingo has been created!</source>
-        <target state="translated">¡Se ha creado un flamenco nuevo!</target>
+        <target state="translated">¡Se ha creado un Flamingo nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
           <context context-type="linenumber">321</context>
@@ -1984,7 +1984,7 @@
       </trans-unit>
       <trans-unit id="flamingoAnswer.flamingoWillBeSubmited" datatype="html">
         <source>By doing this the flamingo will be submited!</source>
-        <target state="translated">¡Al hacer esto, el flamenco se enviará!</target>
+        <target state="translated">¡Al hacer esto, el Flamingo se enviará!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-answer/flamingo-answer.component.ts</context>
           <context context-type="linenumber">113</context>
@@ -1992,7 +1992,7 @@
       </trans-unit>
       <trans-unit id="flamingoAnswer.pleaseWaitWhileSubmittingFlamingo" datatype="html">
         <source>Please wait while we are submitting the flamingo</source>
-        <target state="translated">Espere mientras enviamos el flamenco.</target>
+        <target state="translated">Espere mientras enviamos el Flamingo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-answer/flamingo-answer.component.ts</context>
           <context context-type="linenumber">174</context>
@@ -2444,7 +2444,7 @@
       </trans-unit>
       <trans-unit id="flamingoPreview.flamingoWillBeSubmited" datatype="html">
         <source>By doing this the flamingo will be submited!</source>
-        <target state="translated">¡Al hacer esto, el flamenco se enviará!</target>
+        <target state="translated">¡Al hacer esto, el Flamingo se enviará!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-preview/flamingo-preview.component.ts</context>
           <context context-type="linenumber">104</context>
@@ -2492,7 +2492,7 @@
       </trans-unit>
       <trans-unit id="flamingoPublish.pleaseWaitPublishingFlamingo" datatype="html">
         <source>Please wait while we are publishing/unpublishing the flamingo</source>
-        <target state="translated">Espere mientras publicamos / anulamos la publicación del flamenco.</target>
+        <target state="translated">Espere mientras publicamos / anulamos la publicación del Flamingo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.ts</context>
           <context context-type="linenumber">46</context>
