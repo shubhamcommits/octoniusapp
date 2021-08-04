@@ -1,65 +1,74 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Octonius</title>
-    <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-    <!-- CSS only -->
-    <link rel="stylesheet" type="text/css" href="assets/libs/bootstrap.4.5.2.min.css" />
+<head>
+  <meta charset="utf-8" />
+  <title>Octonius</title>
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-    <!-- Load environment variables -->
-    <script src="assets/env.js"></script>
+  <!-- CSS only -->
+  <link rel="stylesheet" type="text/css" href="assets/libs/bootstrap.4.5.2.min.css" />
+
+  <!-- Load environment variables -->
+  <script src="assets/env.js"></script>
 
 
-    <!--
+  <!--
     <script src="//fast.appcues.com/87011.js"></script>
     -->
 
-    <!-- js libraries -->
-    <script src="assets/libs/jquery-3.5.1.slim.min.js"></script>
-    <script src="assets/libs/popper.min.js"></script>
-    <script src="assets/libs/bootstrap.4.5.2.min.js"></script>
-    <script src="assets/libs/leader-line.1.0.5.min.js"></script>
+  <!-- js libraries -->
+  <script src="assets/libs/jquery-3.5.1.slim.min.js"></script>
+  <script src="assets/libs/popper.min.js"></script>
+  <script src="assets/libs/bootstrap.4.5.2.min.js"></script>
+  <script src="assets/libs/leader-line.1.0.5.min.js"></script>
 
-   
 
-    <!-- GOOGLE API STARTS -->
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
-    <!-- GOOGLE API ENDS -->
 
-    <!-- Stripe library -->
-    <script src="https://js.stripe.com/v3/"></script>
-    <!-- Stripe library -->
+  <!-- GOOGLE API STARTS -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+  <!-- GOOGLE API ENDS -->
 
-    <!-- MODIFYING THE BUILDED SCRIPTS -->
-    <script>
-      if (typeof module === 'object') { window.module = module; module = undefined; }
-    </script>
-    <script>
-      if (window.module) module = window.module;
-    </script>
+  <!-- Stripe library -->
+  <script src="https://js.stripe.com/v3/"></script>
+  <!-- Stripe library -->
 
-    <!-- Chatra {literal} -->
-    <script>
-      (function (d, w, c) {
-        w.ChatraID = 'gaBthaGGwugHEkqBa';
-        var s = d.createElement('script');
-        w[c] = w[c] || function () {
-          (w[c].q = w[c].q || []).push(arguments);
-        };
-        s.async = true;
-        s.src = 'https://call.chatra.io/chatra.js';
-        if (d.head) d.head.appendChild(s);
-      })(document, window, 'Chatra');
-    </script>
-    <!-- /Chatra {/literal} -->
-  </head>
+  <!-- MODIFYING THE BUILDED SCRIPTS -->
+  <script>
+    if (typeof module === 'object') { window.module = module; module = undefined; }
+  </script>
+  <script>
+    if (window.module) module = window.module;
+  </script>
 
-  <body>
-    <app-root></app-root>
-  </body>
+  <!-- Chatra {literal} -->
+  <script>
+    (function (d, w, c) {
+      w.ChatraID = 'gaBthaGGwugHEkqBa';
+      var s = d.createElement('script');
+      w[c] = w[c] || function () {
+        (w[c].q = w[c].q || []).push(arguments);
+      };
+      s.async = true;
+      s.src = 'https://call.chatra.io/chatra.js';
+      if (d.head) d.head.appendChild(s);
+    })(document, window, 'Chatra');
+    window.ChatraSetup = {
+      buttonPosition: 'lb',
+      colors: {
+        buttonText: '#fff', /* chat button text color */
+        buttonBg: '#005fd5'    /* chat button background color */
+    }
+    };
+  </script>
+  <!-- /Chatra {/literal} -->
+</head>
+
+<body>
+  <app-root></app-root>
+</body>
+
 </html>
