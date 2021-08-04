@@ -181,7 +181,7 @@ export class GroupAdminComponent implements OnInit {
             .catch(() => reject(utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
         }
 
-        else if(selected.source.name === 'enabled_campaign'){
+        if(selected.source.name === 'enabled_campaign'){
           groupService.saveSettings(this.groupId, {enabled_campaign: selected.checked})
           .then(()=> {
             this.enabledCampaign = selected.checked;
