@@ -1868,7 +1868,7 @@
       </trans-unit>
       <trans-unit id="groupNewFile.newFlamingo" datatype="html">
         <source>New Flamingo</source>
-        <target state="translated">Flamingo Nuevo</target>
+        <target state="translated">Nuevo Flamingo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
           <context context-type="linenumber">285</context>
@@ -2388,7 +2388,7 @@
       </trans-unit>
       <trans-unit id="flamingoHeader.newFlamingo" datatype="html">
         <source>New Flamingo</source>
-        <target state="translated">Flamingo Nuevo</target>
+        <target state="translated">Nuevo Flamingo </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-header/flamingo-header.component.ts</context>
           <context context-type="linenumber">152</context>
