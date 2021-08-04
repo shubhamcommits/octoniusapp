@@ -9756,7 +9756,7 @@
       </trans-unit>
       <trans-unit id="multipleAssignments.addAssignee" datatype="html">
         <source>add assignee</source>
-        <target state="translated">añadir a un beneficiario</target>
+        <target state="translated">asignar a</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
           <context context-type="linenumber">17</context>
