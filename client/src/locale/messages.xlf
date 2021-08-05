@@ -5576,18 +5576,18 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation.ts</context>
-          <context context-type="linenumber">33,35</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.datepicker.next-month" datatype="html">
         <source>Next month</source>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation.ts</context>
-          <context context-type="linenumber">43,47</context>
+          <context context-type="linenumber">44,48</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation.ts</context>
-          <context context-type="linenumber">56,60</context>
+          <context context-type="linenumber">57,61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.pagination.first" datatype="html">
@@ -5988,11 +5988,18 @@
           <context context-type="linenumber">132,133</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="groupNavbar.reports" datatype="html">
+        <source> Reports </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
+          <context context-type="linenumber">144,145</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="groupNavbar.admin" datatype="html">
         <source> Admin </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">143,144</context>
+          <context context-type="linenumber">156,157</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.pleaseWaitWeAreSaving" datatype="html">

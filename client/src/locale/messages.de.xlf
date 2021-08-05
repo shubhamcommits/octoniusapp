@@ -5,7 +5,6 @@
       <trans-unit id="startSubscription.welcomeToYourWorkspace" datatype="html">
         <source>Welcome to your workspace!</source>
         <target state="needs-adaptation">Willkommen in Ihrem Arbeitsbereich!</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-billing/stripe-payment/start-subscription/start-subscription.component.html</context>
           <context context-type="linenumber">5</context>
@@ -14,7 +13,6 @@
       <trans-unit id="startSubscription.toStartUsing" datatype="html">
         <source>To start using your workspace, please start a subscription.</source>
         <target state="needs-adaptation">Um Ihren Arbeitsplatz zu nutzen, starten Sie bitte ein Abonnement.</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-billing/stripe-payment/start-subscription/start-subscription.component.html</context>
           <context context-type="linenumber">7</context>
@@ -99,7 +97,6 @@
       <trans-unit id="adminGeneral.deleteWorkspace" datatype="html">
         <source>Delete Workspace</source>
         <target state="needs-adaptation">Arbeitsplatz löschen</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
           <context context-type="linenumber">17</context>
@@ -108,7 +105,6 @@
       <trans-unit id="adminGeneral.removeWorkspace" datatype="html">
         <source>Remove Workspace</source>
         <target state="needs-adaptation">Arbeitsplatz entfernen</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
           <context context-type="linenumber">22</context>
@@ -133,7 +129,6 @@
       <trans-unit id="adminGeneral.pleaseWaitDeletingWorkspace" datatype="html">
         <source>Please wait we are deleting the workspace...</source>
         <target state="needs-adaptation">Bitte warten, wir löschen den Arbeitsplatz...</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">50</context>
@@ -150,7 +145,6 @@
       <trans-unit id="adminGeneral.unableDeleteWorkspace" datatype="html">
         <source>Unable to delete the workspace, please try again!</source>
         <target state="needs-adaptation">Der Arbeitsplatz kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">63</context>
@@ -159,7 +153,6 @@
       <trans-unit id="transferOwnership.transferOwnership" datatype="html">
         <source>Transfer Ownership</source>
         <target state="needs-adaptation">Eigentum übertragen</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.html</context>
           <context context-type="linenumber">6</context>
@@ -168,7 +161,6 @@
       <trans-unit id="transferOwnership.pleaseWait" datatype="html">
         <source>Please wait while we are Transfering Ownership ...</source>
         <target state="needs-adaptation">Bitte warten Sie, während wir den Eigentumsübergang durchführen ...</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.ts</context>
           <context context-type="linenumber">28</context>
@@ -177,7 +169,6 @@
       <trans-unit id="transferOwnership.successfully" datatype="html">
         <source>Successfully Transfered OwnerShip!</source>
         <target state="needs-adaptation">Besitz erfolgreich übertragen!</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.ts</context>
           <context context-type="linenumber">35</context>
@@ -186,7 +177,6 @@
       <trans-unit id="transferOwnership.errorWhileTransferingOwnership" datatype="html">
         <source>Error occurred while transfering ownership , please try again!</source>
         <target state="needs-adaptation">Beim Übertragen der Inhaberschaft ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.ts</context>
           <context context-type="linenumber">38</context>
@@ -763,7 +753,6 @@
       <trans-unit id="workplaceInformation.ownerName" datatype="html">
         <source>Owner Name</source>
         <target state="needs-adaptation">Eigentümer Name</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
           <context context-type="linenumber">31</context>
@@ -804,7 +793,6 @@
       <trans-unit id="workplaceInformation.pleaseWaitUpdatingWorkplaceName" datatype="html">
         <source>Please wait we are updating the workspace name...</source>
         <target state="needs-adaptation">Bitte warten Sie, wir aktualisieren den Arbeitsplatznamen...</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.ts</context>
           <context context-type="linenumber">36</context>
@@ -829,7 +817,6 @@
       <trans-unit id="authJoinWorkplace.joinAnotherWorkspace" datatype="html">
         <source> Join another workplace </source>
         <target state="needs-adaptation"> Treten Sie einem Arbeitsplatz bei</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
           <context context-type="linenumber">15,16</context>
@@ -2418,7 +2405,6 @@
       <trans-unit id="flamingoQuestionImageDetails.uploadQuestionImage" datatype="html">
         <source>Upload your Question Image</source>
         <target state="needs-adaptation">Lade dein Bild hoch</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.html</context>
           <context context-type="linenumber">5</context>
@@ -2435,7 +2421,6 @@
       <trans-unit id="flamingoQuestionImageDetails.uploadYourImage" datatype="html">
         <source>Upload your Image!</source>
         <target state="needs-adaptation">Laden Sie Ihr Bild hoch!</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.html</context>
           <context context-type="linenumber">28</context>
@@ -2444,7 +2429,6 @@
       <trans-unit id="questionImageDetails.pleaseWaitUploadingQuestionImg" datatype="html">
         <source>Please wait while we are uploading the Question Image...</source>
         <target state="needs-adaptation">Bitte warten Sie, während wir das Bild hochladen...</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.ts</context>
           <context context-type="linenumber">64</context>
@@ -2453,7 +2437,6 @@
       <trans-unit id="questionImageDetails.questionImgUploaded" datatype="html">
         <source>Question Image upload success!!!</source>
         <target state="needs-adaptation">Bild hochgeladen!</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.ts</context>
           <context context-type="linenumber">73</context>
@@ -2462,7 +2445,6 @@
       <trans-unit id="questionImageDetails.unableToUploadQuestionImg" datatype="html">
         <source>Unable to Upload Question Image!</source>
         <target state="needs-adaptation">Bild kann nicht hochgeladen werden!</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.ts</context>
           <context context-type="linenumber">76</context>
@@ -2559,7 +2541,6 @@
       <trans-unit id="flamingoPreview.flamingoWillBeSubmited" datatype="html">
         <source>By doing this the flamingo will be submited!</source>
         <target state="needs-adaptation">Damit wird der Flamingo abgegeben!</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-preview/flamingo-preview.component.ts</context>
           <context context-type="linenumber">104</context>
@@ -2600,7 +2581,6 @@
       <trans-unit id="flamingoPublish.flamingoWillBePublishedUnpublished" datatype="html">
         <source>By doing this the flamingo will be published/unpublished!</source>
         <target state="needs-adaptation">Dadurch wird der Flamingo veröffentlicht/unveröffentlicht!</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.ts</context>
           <context context-type="linenumber">41</context>
@@ -5269,7 +5249,6 @@
       <trans-unit id="publicFunctions.errorOccuredWhileFetchingWorkspaceDetails" datatype="html">
         <source>Error occured while fetching the workspace details, please try again!</source>
         <target state="needs-adaptation">Beim Abrufen der Arbeitsbereichsdetails ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
           <context context-type="linenumber">185</context>
@@ -5278,7 +5257,6 @@
       <trans-unit id="publicFunctions.errorOccuredWhileFetchingWorkspaceMembers" datatype="html">
         <source>Error occured while fetching the workspace members!, please try again!</source>
         <target state="needs-adaptation">Beim Abrufen der Workspace-Mitglieder ist ein Fehler aufgetreten! Bitte versuchen Sie es erneut!</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
           <context context-type="linenumber">210</context>
@@ -6346,7 +6324,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation.ts</context>
-          <context context-type="linenumber">33,35</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.datepicker.next-month" datatype="html">
@@ -6354,11 +6332,11 @@
         <target state="translated">Nächster Monat</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation.ts</context>
-          <context context-type="linenumber">43,47</context>
+          <context context-type="linenumber">44,48</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/datepicker/datepicker-navigation.ts</context>
-          <context context-type="linenumber">56,60</context>
+          <context context-type="linenumber">57,61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.pagination.first" datatype="html">
@@ -6605,7 +6583,6 @@
       <trans-unit id="userImageDetails.updateYourProfile" datatype="html">
         <source>Update your profile Image</source>
         <target state="needs-adaptation">Aktualisieren Sie Ihr Profilbild</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/user-image-details/user-image-details.component.html</context>
           <context context-type="linenumber">5</context>
@@ -6614,7 +6591,6 @@
       <trans-unit id="userImageDetails.updateYourImage" datatype="html">
         <source> Update your Image </source>
         <target state="needs-adaptation"> Aktualisieren Sie Ihr Bild</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/user-image-details/user-image-details.component.html</context>
           <context context-type="linenumber">25,26</context>
@@ -6816,12 +6792,20 @@
           <context context-type="linenumber">132,133</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="groupNavbar.reports" datatype="html">
+        <source> Reports </source>
+        <target state="translated">Berichte</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
+          <context context-type="linenumber">144,145</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="groupNavbar.admin" datatype="html">
         <source> Admin </source>
         <target state="translated"> Verwaltung </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">143,144</context>
+          <context context-type="linenumber">156,157</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.pleaseWaitWeAreSaving" datatype="html">
@@ -8907,7 +8891,6 @@
       <trans-unit id="componentSearchBar.willRemoveUser" datatype="html">
         <source>This action will remove the user completely from the workspace.</source>
         <target state="needs-adaptation">Diese Aktion entfernt den Benutzer vollständig aus dem Arbeitsbereich.</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.ts</context>
           <context context-type="linenumber">335</context>

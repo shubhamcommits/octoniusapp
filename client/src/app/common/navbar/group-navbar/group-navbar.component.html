@@ -122,7 +122,7 @@
           </a>
       </li>
 
-      <li class="nav-item d-none d-md-block" *ngIf="!myWorkplace && isAdmin">
+      <li class="nav-item d-none d-md-block" *ngIf="!myWorkplace && isAdmin && !isCampaign">
           <a [ngClass]="activeState == 'groups_dashboard'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_dashboard')"
               routerLink="/dashboard/work/groups/dashboard"
@@ -132,7 +132,20 @@
                 Dashboard
           </a>
       </li>
+
       <!-- Campaign is Enabled -->
+      <li class="nav-item" *ngIf="!myWorkplace && isCampaign">
+        <a [ngClass]="activeState == 'groups_reports'?'nav-link active-nav':'nav-link'"
+            (click)="changeState('groups_reports')"
+            routerLink="/dashboard/work/groups/reports"
+            [queryParams]="{ group: groupData?._id }"
+            routerLinkActive="active"
+            i18n="@@groupNavbar.reports">
+              Reports
+        </a>
+      </li>
+      <!-- Campaign is Enabled -->
+
       <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
           <a [ngClass]="activeState == 'groups_admin'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_admin')"
