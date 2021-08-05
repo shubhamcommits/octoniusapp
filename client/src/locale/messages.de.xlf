@@ -3,16 +3,18 @@
   <file source-language="en" datatype="plaintext" original="ng2.template" target-language="de">
     <body>
       <trans-unit id="startSubscription.welcomeToYourWorkspace" datatype="html">
-        <source>Welcome to your workplace!</source>
-        <target state="translated">Willkommen in Ihrem Arbeitsbereich!</target>
+        <source>Welcome to your workspace!</source>
+        <target state="needs-adaptation">Willkommen in Ihrem Arbeitsbereich!</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-billing/stripe-payment/start-subscription/start-subscription.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
       <trans-unit id="startSubscription.toStartUsing" datatype="html">
-        <source>To start using your workplace, please start a subscription.</source>
-        <target state="translated">Um Ihren Arbeitsplatz zu nutzen, starten Sie bitte ein Abonnement.</target>
+        <source>To start using your workspace, please start a subscription.</source>
+        <target state="needs-adaptation">Um Ihren Arbeitsplatz zu nutzen, starten Sie bitte ein Abonnement.</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-billing/stripe-payment/start-subscription/start-subscription.component.html</context>
           <context context-type="linenumber">7</context>
@@ -95,8 +97,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.deleteWorkspace" datatype="html">
-        <source>Delete Workplace</source>
-        <target state="translated">Arbeitsplatz löschen</target>
+        <source>Delete Workspace</source>
+        <target state="needs-adaptation">Arbeitsplatz löschen</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
@@ -104,8 +106,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.removeWorkspace" datatype="html">
-        <source>Remove Workplace</source>
-        <target state="translated">Arbeitsplatz entfernen</target>
+        <source>Remove Workspace</source>
+        <target state="needs-adaptation">Arbeitsplatz entfernen</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
@@ -120,42 +122,43 @@
           <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="adminGeneral.workplaceCompletelyRemoved" datatype="html">
-        <source>By doing this, the workplace be completely removed!</source>
-        <target state="translated">Dadurch kann der Arbeitsplatz komplett entfernt werden!</target>
+      <trans-unit id="adminGeneral.workspaceCompletelyRemoved" datatype="html">
+        <source>By doing this, the workspace be completely removed!</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.pleaseWaitDeletingWorkspace" datatype="html">
-        <source>Please wait, we are deleting the workplace...</source>
-        <target state="translated">Bitte warten, wir löschen den Arbeitsplatz...</target>
+        <source>Please wait we are deleting the workspace...</source>
+        <target state="needs-adaptation">Bitte warten, wir löschen den Arbeitsplatz...</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="adminGeneral.workplaceDeleted" datatype="html">
-        <source>Workplace deleted!</source>
-        <target state="translated">Arbeitsplatz gelöscht!</target>
+      <trans-unit id="adminGeneral.workspaceDeleted" datatype="html">
+        <source>Workspace deleted!</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.unableDeleteWorkspace" datatype="html">
-        <source>Unable to delete the workplace, please try again!</source>
-        <target state="translated">Der Arbeitsplatz kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
+        <source>Unable to delete the workspace, please try again!</source>
+        <target state="needs-adaptation">Der Arbeitsplatz kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transferOwnership.transferOwnership" datatype="html">
-        <source>Transfer ownership</source>
-        <target state="translated">Eigentum übertragen</target>
+        <source>Transfer Ownership</source>
+        <target state="needs-adaptation">Eigentum übertragen</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.html</context>
@@ -163,8 +166,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="transferOwnership.pleaseWait" datatype="html">
-        <source>Please wait, we are transferring ownership ...</source>
-        <target state="translated">Bitte warten Sie, während wir den Eigentumsübergang durchführen ...</target>
+        <source>Please wait while we are Transfering Ownership ...</source>
+        <target state="needs-adaptation">Bitte warten Sie, während wir den Eigentumsübergang durchführen ...</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.ts</context>
@@ -172,8 +175,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="transferOwnership.successfully" datatype="html">
-        <source>Successfully transferred ownership!</source>
-        <target state="translated">Besitz erfolgreich übertragen!</target>
+        <source>Successfully Transfered OwnerShip!</source>
+        <target state="needs-adaptation">Besitz erfolgreich übertragen!</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.ts</context>
@@ -181,65 +184,65 @@
         </context-group>
       </trans-unit>
       <trans-unit id="transferOwnership.errorWhileTransferingOwnership" datatype="html">
-        <source>Error occurred while transferring ownership , please try again!</source>
-        <target state="translated">Beim Übertragen der Inhaberschaft ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
+        <source>Error occurred while transfering ownership , please try again!</source>
+        <target state="needs-adaptation">Beim Übertragen der Inhaberschaft ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.ts</context>
           <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceAddDomain.workplaceSignupMode" datatype="html">
+      <trans-unit id="workspaceAddDomain.workspaceSignupMode" datatype="html">
         <source>Workplace signup mode</source>
-        <target state="translated">Anmeldemodus am Arbeitsplatz</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceAddDomain.chooseToMakeYourWorkspace" datatype="html">
-        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
-        <target state="translated">Entscheiden Sie sich dafür, Ihren Arbeitsplatz-Anmeldeprozess entweder nur über eine Einladung durchzuführen oder jeder anderen Person mit einer bestimmten E-Mail-Adressdomäne zu erlauben, sich anzumelden.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (z. B. - wenn Sie example.com angeben, können sich Benutzer mit einer E-Mail-Adresse mit der Domain example.com anmelden!)</target>
+      <trans-unit id="workspaceAddDomain.chooseToMakeYourWorkspace" datatype="html">
+        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">8,11</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceAddDomain.usingWorkspaceName" datatype="html">
-        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/><x id="INTERPOLATION" equiv-text="{{ workplaceData?.workplace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/>", any email adress from these domain can signup:</source>
-        <target state="translated">Unter Verwendung des Arbeitsplatznamens" <x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/><x id="INTERPOLATION" equiv-text="{{ workplaceData?.workplace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/> " kann sich jede E-Mail-Adresse dieser Domain anmelden:</target>
+      <trans-unit id="workspaceAddDomain.usingWorkspaceName" datatype="html">
+        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>", any email adress from these domain can signup:</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceAddDomain.addThisDomain" datatype="html">
+      <trans-unit id="workspaceAddDomain.addThisDomain" datatype="html">
         <source>Add this Domain</source>
-        <target state="translated">Diese Domain hinzufügen</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceAddDomain.allowedDomains" datatype="html">
+      <trans-unit id="workspaceAddDomain.allowedDomains" datatype="html">
         <source>Allowed Domains</source>
-        <target state="translated">Zulässige Domains</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceAddDomain.listOfAllowedDomains" datatype="html">
+      <trans-unit id="workspaceAddDomain.listOfAllowedDomains" datatype="html">
         <source>List of all allowed domains from where user can sign up to this workplace.</source>
-        <target state="translated">Liste aller zulässigen Domänen, von denen aus sich Benutzer an diesem Arbeitsplatz anmelden können.</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceAddDomain.removeDomain" datatype="html">
+      <trans-unit id="workspaceAddDomain.removeDomain" datatype="html">
         <source>Remove Domain</source>
-        <target state="translated">Domäne entfernen</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">38</context>
@@ -333,17 +336,17 @@
           <context context-type="linenumber">93</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceInviteUser.inviteUser" datatype="html">
+      <trans-unit id="workspaceInviteUser.inviteUser" datatype="html">
         <source>Invite individual users by email</source>
-        <target state="translated">Einzelne Benutzer per E-Mail einladen</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-invite-user/workplace-invite-user.component.html</context>
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceInviteUser.inviteToJoin" datatype="html">
+      <trans-unit id="workspaceInviteUser.inviteToJoin" datatype="html">
         <source> Invite to Join </source>
-        <target state="translated"> Zum Beitritt einladen </target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-invite-user/workplace-invite-user.component.html</context>
           <context context-type="linenumber">18,19</context>
@@ -485,25 +488,25 @@
           <context context-type="linenumber">116</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceProfileCF.profileFields" datatype="html">
+      <trans-unit id="workspaceProfileCF.profileFields" datatype="html">
         <source>Profile Fields</source>
-        <target state="translated">Profilfelder</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/workplace-profile-custom-fields.component.html</context>
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceProfileCF.profileFieldsWillShowUp" datatype="html">
+      <trans-unit id="workspaceProfileCF.profileFieldsWillShowUp" datatype="html">
         <source>Profile Fields will show up in user profile to help create rich details, according to your organizational structure. Example: Department - Marketing, Sales etc.</source>
-        <target state="translated">Profilfelder werden im Benutzerprofil angezeigt, um umfassende Details gemäß Ihrer Organisationsstruktur zu erstellen. Beispiel: Abteilung - Marketing, Vertrieb etc.</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/workplace-profile-custom-fields.component.html</context>
           <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceProfileCF.manageFields" datatype="html">
+      <trans-unit id="workspaceProfileCF.manageFields" datatype="html">
         <source>Manage Fields</source>
-        <target state="translated">Felder verwalten</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/workplace-profile-custom-fields.component.html</context>
           <context context-type="linenumber">10</context>
@@ -677,9 +680,9 @@
           <context context-type="linenumber">353</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="adminHeader.workplaceSettings" datatype="html">
+      <trans-unit id="adminHeader.workspaceSettings" datatype="html">
         <source>Workplace settings</source>
-        <target state="translated">Arbeitsplatzeinstellungen</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-header/admin-header.component.html</context>
           <context context-type="linenumber">11</context>
@@ -725,9 +728,9 @@
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceInformation.workplaceInfo" datatype="html">
+      <trans-unit id="workplaceInformation.workspaceInfo" datatype="html">
         <source>Workplace Info</source>
-        <target state="translated">Arbeitsplatzinfo</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
           <context context-type="linenumber">5</context>
@@ -749,17 +752,17 @@
           <context context-type="linenumber">12</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceInformation.workplaceName" datatype="html">
-        <source>Workplace name</source>
-        <target state="translated">Name des Arbeitsplatzes</target>
+      <trans-unit id="workplaceInformation.workspaceName" datatype="html">
+        <source>Workspace Name</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
           <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.ownerName" datatype="html">
-        <source>Owner name</source>
-        <target state="translated">Eigentümer Name</target>
+        <source>Owner Name</source>
+        <target state="needs-adaptation">Eigentümer Name</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
@@ -799,8 +802,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.pleaseWaitUpdatingWorkplaceName" datatype="html">
-        <source>Please wait we are updating the workplace name...</source>
-        <target state="translated">Bitte warten Sie, wir aktualisieren den Arbeitsplatznamen...</target>
+        <source>Please wait we are updating the workspace name...</source>
+        <target state="needs-adaptation">Bitte warten Sie, wir aktualisieren den Arbeitsplatznamen...</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.ts</context>
           <context context-type="linenumber">36</context>
@@ -823,8 +827,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.joinAnotherWorkspace" datatype="html">
-        <source> Join a workplace </source>
-        <target state="translated"> Treten Sie einem Arbeitsplatz bei</target>
+        <source> Join another workplace </source>
+        <target state="needs-adaptation"> Treten Sie einem Arbeitsplatz bei</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
@@ -1287,7 +1291,7 @@
         <source> Welcome, <x id="INTERPOLATION" equiv-text="{{ accountData?.first_name }}"/> <x id="INTERPOLATION_1" equiv-text="{{ accountData?.last_name }}"/>! </source>
         <target state="translated"> Willkommen, <x id="INTERPOLATION" equiv-text="{{ accountData?.first_name }}"/> <x id="INTERPOLATION_1" equiv-text="{{ accountData?.last_name }}"/>! </target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.html</context>
+          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">15,17</context>
         </context-group>
       </trans-unit>
@@ -1295,7 +1299,7 @@
         <source> Select a workplace to start. </source>
         <target state="translated"> Wählen Sie einen Arbeitsplatz, um zu beginnen </target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.html</context>
+          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">20,21</context>
         </context-group>
       </trans-unit>
@@ -1303,7 +1307,7 @@
         <source> Create a new workplace </source>
         <target state="translated"> Neuen Arbeitsplatz schaffen </target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.html</context>
+          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">55,56</context>
         </context-group>
       </trans-unit>
@@ -1311,7 +1315,7 @@
         <source> Join another workplace </source>
         <target state="translated"> Arbeitsplatz arbeiten </target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.html</context>
+          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">69,70</context>
         </context-group>
       </trans-unit>
@@ -1319,7 +1323,7 @@
         <source>Please wait while we sign you in...</source>
         <target state="translated">Bitte warten Sie, während wir Sie einschreiben...</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
           <context context-type="linenumber">62</context>
         </context-group>
       </trans-unit>
@@ -1327,15 +1331,15 @@
         <source>There's some unexpected error occurred, please try again later!</source>
         <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
           <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="selectWorkspace.workplaceIsNotAvailable" datatype="html">
-        <source>Your workplace is not available, please contact your administrator!</source>
-        <target state="translated">Ihr Arbeitsplatz ist nicht verfügbar, wenden Sie sich bitte an Ihren Administrator!</target>
+      <trans-unit id="selectWorkspace.workspaceIsNotAvailable" datatype="html">
+        <source>Your workspace is not available, please contact your administrator!</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
           <context context-type="linenumber">94</context>
         </context-group>
       </trans-unit>
@@ -1343,11 +1347,11 @@
         <source>Hi <x id="PH" equiv-text="res['user']['first_name']"/>, welcome back to your workplace!</source>
         <target state="translated">Hallo <x id="PH" equiv-text="res['user']['first_name']"/>, willkommen zurück an Ihrem Arbeitsplatz!</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
           <context context-type="linenumber">109</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
           <context context-type="linenumber">115</context>
         </context-group>
       </trans-unit>
@@ -1355,11 +1359,11 @@
         <source>Oops some error occured while signing you in, please try again!</source>
         <target state="translated">Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
           <context context-type="linenumber">119</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
           <context context-type="linenumber">125</context>
         </context-group>
       </trans-unit>
@@ -1556,8 +1560,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.dragDropOrAdd" datatype="html">
-        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Or use the NEW button for folders uploading.</source>
-        <target state="translated">Ziehen Sie Dateien per Drag &amp; Drop hierher, um sie einfach hochzuladen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Oder verwenden Sie die Schaltfläche NEU für das Hochladen von Ordnern.</target>
+        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Or use the NEW button for folders uploading.</source>
+        <target state="translated">Ziehen Sie Dateien per Drag &amp; Drop hierher, um sie einfach hochzuladen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Oder verwenden Sie die Schaltfläche NEU für das Hochladen von Ordnern.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
           <context context-type="linenumber">7</context>
@@ -2412,8 +2416,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoQuestionImageDetails.uploadQuestionImage" datatype="html">
-        <source>Upload your image</source>
-        <target state="translated">Lade dein Bild hoch</target>
+        <source>Upload your Question Image</source>
+        <target state="needs-adaptation">Lade dein Bild hoch</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.html</context>
           <context context-type="linenumber">5</context>
@@ -2428,32 +2433,36 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoQuestionImageDetails.uploadYourImage" datatype="html">
-        <source>Upload your image!</source>
-        <target state="translated">Laden Sie Ihr Bild hoch!</target>
+        <source>Upload your Image!</source>
+        <target state="needs-adaptation">Laden Sie Ihr Bild hoch!</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.html</context>
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="questionImageDetails.pleaseWaitUploadingQuestionImg" datatype="html">
-        <source>Please wait while we are uploading the image...</source>
-        <target state="translated">Bitte warten Sie, während wir das Bild hochladen...</target>
+        <source>Please wait while we are uploading the Question Image...</source>
+        <target state="needs-adaptation">Bitte warten Sie, während wir das Bild hochladen...</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.ts</context>
           <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="questionImageDetails.questionImgUploaded" datatype="html">
-        <source>Image uploaded!</source>
-        <target state="translated">Bild hochgeladen!</target>
+        <source>Question Image upload success!!!</source>
+        <target state="needs-adaptation">Bild hochgeladen!</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.ts</context>
           <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="questionImageDetails.unableToUploadQuestionImg" datatype="html">
-        <source>Unable to upload image!</source>
-        <target state="translated">Bild kann nicht hochgeladen werden!</target>
+        <source>Unable to Upload Question Image!</source>
+        <target state="needs-adaptation">Bild kann nicht hochgeladen werden!</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.ts</context>
           <context context-type="linenumber">76</context>
@@ -2548,8 +2557,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPreview.flamingoWillBeSubmited" datatype="html">
-        <source>By doing this, the flamingo will be submited!</source>
-        <target state="translated">Damit wird der Flamingo abgegeben!</target>
+        <source>By doing this the flamingo will be submited!</source>
+        <target state="needs-adaptation">Damit wird der Flamingo abgegeben!</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-preview/flamingo-preview.component.ts</context>
           <context context-type="linenumber">104</context>
@@ -2588,8 +2598,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPublish.flamingoWillBePublishedUnpublished" datatype="html">
-        <source>By doing this, the flamingo will be published/unpublished!</source>
-        <target state="translated">Dadurch wird der Flamingo veröffentlicht/unveröffentlicht!</target>
+        <source>By doing this the flamingo will be published/unpublished!</source>
+        <target state="needs-adaptation">Dadurch wird der Flamingo veröffentlicht/unveröffentlicht!</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.ts</context>
           <context context-type="linenumber">41</context>
@@ -3376,8 +3387,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupBARDialog.createRulesToManage" datatype="html">
-        <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
-        <target state="translated"> Erstellen Sie Regeln zur Verwaltung der Zugriffsrechte auf das Board und wählen Sie aus, welche Mitglieder bestimmte Aufgaben sehen können. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Standardmäßig sind alle Aufgaben für das Team sichtbar, aber mit BAR-Tags können Sie den Zugriff steuern </target>
+        <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
+        <target state="translated"> Erstellen Sie Regeln zur Verwaltung der Zugriffsrechte auf das Board und wählen Sie aus, welche Mitglieder bestimmte Aufgaben sehen können. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Standardmäßig sind alle Aufgaben für das Team sichtbar, aber mit BAR-Tags können Sie den Zugriff steuern </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
           <context context-type="linenumber">15,17</context>
@@ -4843,9 +4854,9 @@
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="forgotPassword.workplace" datatype="html">
+      <trans-unit id="forgotPassword.workspace" datatype="html">
         <source>Workspace</source>
-        <target state="translate">Arbeitsplatz</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/forgot-password/forgot-password.component.html</context>
           <context context-type="linenumber">16</context>
@@ -5256,16 +5267,18 @@
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.errorOccuredWhileFetchingWorkspaceDetails" datatype="html">
-        <source>Error occured while fetching the workplace details, please try again!</source>
-        <target state="translated">Beim Abrufen der Arbeitsbereichsdetails ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
+        <source>Error occured while fetching the workspace details, please try again!</source>
+        <target state="needs-adaptation">Beim Abrufen der Arbeitsbereichsdetails ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
           <context context-type="linenumber">185</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.errorOccuredWhileFetchingWorkspaceMembers" datatype="html">
-        <source>Error occured while fetching the workplace members!, please try again!</source>
-        <target state="translated">Beim Abrufen der Workspace-Mitglieder ist ein Fehler aufgetreten! Bitte versuchen Sie es erneut!</target>
+        <source>Error occured while fetching the workspace members!, please try again!</source>
+        <target state="needs-adaptation">Beim Abrufen der Workspace-Mitglieder ist ein Fehler aufgetreten! Bitte versuchen Sie es erneut!</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
           <context context-type="linenumber">210</context>
@@ -6228,8 +6241,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="northStarPage.setAndAchieveStrategic" datatype="html">
-        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
-        <target state="translated"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun </target>
+        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
+        <target state="translated"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">16,18</context>
@@ -6244,8 +6257,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="pulse.pulseIsMicroAnnouncement" datatype="html">
-        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulses create transparency and a sense of mission for your organization. </source>
-        <target state="translated"> Ein Pulse ist eine Mikro-Mitteilung einer Gruppe. Es ist wie Twitter für Unternehmen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Auch wenn Sie keinen Zugang zu einer Gruppe haben, können Sie sehen, was dort passiert. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulse schaffen Transparenz und ein Gefühl der Mission für Ihre Organisation </target>
+        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Pulses create transparency and a sense of mission for your organization. </source>
+        <target state="translated"> Ein Pulse ist eine Mikro-Mitteilung einer Gruppe. Es ist wie Twitter für Unternehmen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Auch wenn Sie keinen Zugang zu einer Gruppe haben, können Sie sehen, was dort passiert. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Pulse schaffen Transparenz und ein Gefühl der Mission für Ihre Organisation </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/pulse/pulse.component.html</context>
           <context context-type="linenumber">15,18</context>
@@ -6590,8 +6603,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="userImageDetails.updateYourProfile" datatype="html">
-        <source>Update your profile image</source>
-        <target state="translated">Aktualisieren Sie Ihr Profilbild</target>
+        <source>Update your profile Image</source>
+        <target state="needs-adaptation">Aktualisieren Sie Ihr Profilbild</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/user-image-details/user-image-details.component.html</context>
@@ -6599,8 +6612,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="userImageDetails.updateYourImage" datatype="html">
-        <source> Update your image </source>
-        <target state="translated"> Aktualisieren Sie Ihr Bild</target>
+        <source> Update your Image </source>
+        <target state="needs-adaptation"> Aktualisieren Sie Ihr Bild</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/user-image-details/user-image-details.component.html</context>
@@ -6639,51 +6652,51 @@
           <context context-type="linenumber">86</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceDetails.workplaceUpdate" datatype="html">
-        <source>Workplace update</source>
-        <target state="translated">Arbeitsplatz-Update</target>
+      <trans-unit id="workspaceDetails.workspaceUpdate" datatype="html">
+        <source>Workspace Update</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.html</context>
+          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceDetails.save" datatype="html">
+      <trans-unit id="workspaceDetails.save" datatype="html">
         <source> Save </source>
-        <target state="translated"> Speichern </target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.html</context>
+          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.html</context>
           <context context-type="linenumber">25,26</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceDetails.pleaseWaitWhileWeUpdate" datatype="html">
-        <source>Please wait while we are updating the workplace avatar for you ...</source>
-        <target state="translated">Bitte warten Sie, während wir den Arbeitsplatz-Avatar für Sie aktualisieren ...</target>
+      <trans-unit id="workspaceDetails.pleaseWaitWhileWeUpdate" datatype="html">
+        <source>Please wait while we are updating the workspace avatar for you ...</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.ts</context>
+          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.ts</context>
           <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceDetails.workplaceAvatarUpdated" datatype="html">
-        <source>Workplace avatar updated!</source>
-        <target state="translated">Arbeitsplatz-Avatar aktualisiert!</target>
+      <trans-unit id="workspaceDetails.workspaceAvatarUpdated" datatype="html">
+        <source>Workspace avatar updated!</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.ts</context>
+          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.ts</context>
           <context context-type="linenumber">78</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceDetails.oopsAnErrorOccured" datatype="html">
-        <source>Oops, an error occured while updating the workplace avatar, please try again!</source>
-        <target state="translated">Hoppla! Beim Aktualisieren des Arbeitsplatz-Avatars ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
+      <trans-unit id="workspaceDetails.oopsAnErrorOccured" datatype="html">
+        <source>Oops, an error occured while updating the workspace avatar, please try again!</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.ts</context>
+          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.ts</context>
           <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceDetails.unexpectedError" datatype="html">
+      <trans-unit id="workspaceDetails.unexpectedError" datatype="html">
         <source>There's some unexpected error occured, please try again!</source>
-        <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
+        <target state="needs-translation"/>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.ts</context>
+          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.ts</context>
           <context context-type="linenumber">86</context>
         </context-group>
       </trans-unit>
@@ -8892,8 +8905,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="componentSearchBar.willRemoveUser" datatype="html">
-        <source>This action will remove the user completely from the workplace.</source>
-        <target state="translated">Diese Aktion entfernt den Benutzer vollständig aus dem Arbeitsbereich.</target>
+        <source>This action will remove the user completely from the workspace.</source>
+        <target state="needs-adaptation">Diese Aktion entfernt den Benutzer vollständig aus dem Arbeitsbereich.</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.ts</context>
           <context context-type="linenumber">335</context>
@@ -10837,9 +10851,9 @@
           <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="denyNavigationGuard.workplaceNotAvailable" datatype="html">
-        <source>Your workplace is not available, please contact your administrator!</source>
-        <target state="translated">Ihr Arbeitsplatz ist nicht verfügbar, wenden Sie sich bitte an Ihren Administrator!</target>
+      <trans-unit id="denyNavigationGuard.workspaceNotAvailable" datatype="html">
+        <source>Your workspace is not available, please contact your administrator!</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/deny-navigation-guard/deny-navigation.guard.ts</context>
           <context context-type="linenumber">85</context>
