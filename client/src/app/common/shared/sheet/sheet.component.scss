@@ -94,10 +94,14 @@ th.mat-sort-header-sorted {
 }
 
 
-.mat-elevation-z8{
-    overflow-x: auto;
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+
+  .mat-elevation-z8{
     margin-top: 2%;
   }
+}
 
 .mat-cell,
 .mat-header-cell {
