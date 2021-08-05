@@ -84,14 +84,14 @@
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.deleteWorkspace" datatype="html">
-        <source>Delete Workspace</source>
+        <source>Delete Workplace</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.removeWorkspace" datatype="html">
-        <source>Remove Workspace</source>
+        <source>Remove Workplace</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
           <context context-type="linenumber">22</context>
@@ -112,14 +112,14 @@
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.pleaseWaitDeletingWorkspace" datatype="html">
-        <source>Please wait we are deleting the workplace...</source>
+        <source>Please wait, we are deleting the workplace...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.workplaceDeleted" datatype="html">
-        <source>Workspace deleted!</source>
+        <source>Workplace deleted!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">61</context>
@@ -133,28 +133,28 @@
         </context-group>
       </trans-unit>
       <trans-unit id="transferOwnership.transferOwnership" datatype="html">
-        <source>Transfer Ownership</source>
+        <source>Transfer ownership</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.html</context>
           <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transferOwnership.pleaseWait" datatype="html">
-        <source>Please wait while we are Transfering Ownership ...</source>
+        <source>Please wait, we are transferring ownership ...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.ts</context>
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transferOwnership.successfully" datatype="html">
-        <source>Successfully Transfered OwnerShip!</source>
+        <source>Successfully transferred ownership!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.ts</context>
           <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transferOwnership.errorWhileTransferingOwnership" datatype="html">
-        <source>Error occurred while transfering ownership , please try again!</source>
+        <source>Error occurred while transferring ownership , please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.ts</context>
           <context context-type="linenumber">38</context>
@@ -653,14 +653,14 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.workplaceName" datatype="html">
-        <source>Workspace Name</source>
+        <source>Workplace name</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
           <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.ownerName" datatype="html">
-        <source>Owner Name</source>
+        <source>Owner name</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
           <context context-type="linenumber">31</context>
@@ -716,7 +716,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.joinAnotherWorkspace" datatype="html">
-        <source> Join another workplace </source>
+        <source> Join a workplace </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
           <context context-type="linenumber">15,16</context>
@@ -5726,14 +5726,14 @@
         </context-group>
       </trans-unit>
       <trans-unit id="userImageDetails.updateYourProfile" datatype="html">
-        <source>Update your profile Image</source>
+        <source>Update your profile image</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/user-image-details/user-image-details.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userImageDetails.updateYourImage" datatype="html">
-        <source> Update your Image </source>
+        <source> Update your image </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/user-image-details/user-image-details.component.html</context>
           <context context-type="linenumber">25,26</context>
@@ -5768,7 +5768,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceDetails.workplaceUpdate" datatype="html">
-        <source>Workspace Update</source>
+        <source>Workplace update</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.html</context>
           <context context-type="linenumber">5</context>
@@ -5789,7 +5789,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceDetails.workplaceAvatarUpdated" datatype="html">
-        <source>Workspace avatar updated!</source>
+        <source>Workplace avatar updated!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.ts</context>
           <context context-type="linenumber">78</context>
