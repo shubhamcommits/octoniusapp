@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import 'chartjs-plugin-labels'
+//import 'chartjs-plugin-labels'
 
 
 @Component({
@@ -22,7 +22,7 @@ export class GenericGraphComponent implements OnInit {
   // Datasets
   @Input('datasets') public datasets: any = []
 
-  // Data 
+  // Data
   @Input('data') public data = []
 
   // Chart Type - by default 'bar', other options - bar, line, radar, pie, doughnut
@@ -46,8 +46,8 @@ export class GenericGraphComponent implements OnInit {
 
   /**
    * Format Number
-   * @param labelValue 
-   * @returns 
+   * @param labelValue
+   * @returns
    */
   public formatNumber(labelValue: any) {
 
@@ -55,7 +55,7 @@ export class GenericGraphComponent implements OnInit {
     return Math.abs(Number(labelValue)) >= 1.0e+7
 
       ? Number(Math.abs(Number(labelValue)) / 1.0e+7).toFixed(2) + "Cr"
-      // Six Zeroes for Millions 
+      // Six Zeroes for Millions
       : Number(Math.abs(Number(labelValue)) >= 1.0e+5).toFixed(2)
 
         ? Number(Math.abs(Number(labelValue)) / 1.0e+5).toFixed(2) + "L"

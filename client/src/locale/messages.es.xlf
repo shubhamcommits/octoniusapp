@@ -1450,6 +1450,94 @@
           <context context-type="linenumber">258</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="genericGraph.graphSettings" datatype="html">
+        <source> Graph Settings </source>
+        <target state="translated">Ajustes de Gráficos</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chart/generic-graph/generic-graph.component.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="genericGraph.customiseGraphYourWay" datatype="html">
+        <source> Customise the graph by your own way for better visualisation </source>
+        <target state="translated">Personalice el gráfico a su manera para una mejor visualización</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chart/generic-graph/generic-graph.component.html</context>
+          <context context-type="linenumber">8,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="genericGraph.selectChartType" datatype="html">
+        <source>Select Chart Type</source>
+        <target state="translated">Seleccione tipo de Gráfico</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chart/generic-graph/generic-graph.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="genericGraph.barChart" datatype="html">
+        <source>Bar Chart</source>
+        <target state="translated">Gráfico de Barras</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chart/generic-graph/generic-graph.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="genericGraph.doughnutChart" datatype="html">
+        <source>Doughnut Chart</source>
+        <target state="translated">Gráfico de anillos</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chart/generic-graph/generic-graph.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="genericGraph.lineChart" datatype="html">
+        <source>Line Chart</source>
+        <target state="translated">Gráfico de lineas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chart/generic-graph/generic-graph.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="genericGraph.pieChart" datatype="html">
+        <source>Pie Chart</source>
+        <target state="translated">Gráfico de circular</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chart/generic-graph/generic-graph.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="genericGraph.radarChart" datatype="html">
+        <source>Radar Chart</source>
+        <target state="translated">Gráfico de radar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chart/generic-graph/generic-graph.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="genericGraph.selectlabelColumn" datatype="html">
+        <source>Select Label (Base) Column</source>
+        <target state="translated">Seleccionar columna de etiqueta (Base)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chart/generic-graph/generic-graph.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="genericGraph.selectValuesColumn" datatype="html">
+        <source>Select Values Column</source>
+        <target state="translated">Seleccionar columna de valores</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chart/generic-graph/generic-graph.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="genericGraph.computeGraph" datatype="html">
+        <source>Compute Graph </source>
+        <target state="translated">Calcular Gráfico</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/chart/generic-graph/generic-graph.component.html</context>
+          <context context-type="linenumber">40,41</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="groupFiles.yourFiles" datatype="html">
         <source>Your files. Ready when you are.</source>
         <target state="translated">Tus archivos. Listos cuando tú lo estés.</target>
@@ -4403,7 +4491,7 @@
         <target state="translated">Sus archivos de campaña</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-reports/group-reports.component.html</context>
-          <context context-type="linenumber">2</context>
+          <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
       <trans-unit id="createSection.addNewSection" datatype="html">
@@ -10420,6 +10508,126 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/select-assignee/select-assignee.component.html</context>
           <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sheet.userViewSettings" datatype="html">
+        <source>User View Settings</source>
+        <target status="translated">Configuración de vista de usuario</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sheet.customiseSettingsForMembers" datatype="html">
+        <source> Customise the settings for the members of campaign </source>
+        <target status="translated">Personalice la configuración para los miembros de la campaña.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.html</context>
+          <context context-type="linenumber">15,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sheet.selectColumnsForView" datatype="html">
+        <source>Select Columns for User View</source>
+        <target status="translated">Seleccionar columnas para la vista de usuario</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sheet.feedTopRowsForView" datatype="html">
+        <source>Feed top rows count for User View</source>
+        <target status="translated">Recuento de las filas superiores del feed para la Vista de Usuario</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sheet.saveSettings" datatype="html">
+        <source>Save Settings</source>
+        <target status="translated">Guardar ajustes</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sheet.checkoutUserView" datatype="html">
+        <source>Checkout User View</source>
+        <target status="translated">Verificar Vista de Usuario</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sheet.revertToAdminView" datatype="html">
+        <source>Revert to admin view</source>
+        <target status="translated">Volver a Vista de Administrador</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sheet.noResults" datatype="html">
+        <source>No Results...</source>
+        <target status="translated">Sin Resultados...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="seet.salesQ1" datatype="html">
+        <source>Sales Q1</source>
+        <target status="translated">Ventas T1</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.ts</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="seet.salesQ2" datatype="html">
+        <source>Sales Q2</source>
+        <target status="translated">Ventas T2</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.ts</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="seet.salesQ3" datatype="html">
+        <source>Sales Q3</source>
+        <target status="translated">Ventas T3</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.ts</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="seet.salesQ4" datatype="html">
+        <source>Sales Q4</source>
+        <target status="translated">Ventas T4</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.ts</context>
+          <context context-type="linenumber">75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="seet.pleaseWaitSavingSettings" datatype="html">
+        <source>Please wait we are saving the new setting...</source>
+        <target status="translated">Espere, estamos guardando la nueva configuración ...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.ts</context>
+          <context context-type="linenumber">198</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="seet.settingsSavedCampaign" datatype="html">
+        <source>Settings saved to your campaign!</source>
+        <target status="translated">¡Configuración guardada en su campaña!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.ts</context>
+          <context context-type="linenumber">206</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="seet.unableToSaveSettingsCampaign" datatype="html">
+        <source>Unable to save the settings to your campaign, please try again!</source>
+        <target status="translated">¡No se puede guardar la configuración de su campaña. Vuelva a intentarlo!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.ts</context>
+          <context context-type="linenumber">208</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userUpdateProfileDialog.updatePassword" datatype="html">

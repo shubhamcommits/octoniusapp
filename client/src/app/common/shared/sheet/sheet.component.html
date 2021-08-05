@@ -1,17 +1,3 @@
-<!-- <div class="row">
-    <div class="col-md-12">
-        <table >
-            <tbody>
-                <tr *ngFor="let row of data" (click)="rowEvents(row)">
-                    <td *ngFor="let val of row">
-                        {{val}}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div> -->
-
 <!-- Loading Spinner -->
 <ng-container *ngIf="isLoading$ | async">
     <app-loading-spinner></app-loading-spinner>
@@ -22,11 +8,10 @@
 <mat-expansion-panel *ngIf="isMember == false">
     <mat-expansion-panel-header>
         <mat-panel-title>
-            <span class="material-icons">
-                settings
-                </span> User View Settings
+            <span class="material-icons">settings</span>
+            <span i18n="@@sheet.userViewSettings">User View Settings</span>
         </mat-panel-title>
-        <mat-panel-description>
+        <mat-panel-description i18n="@@sheet.customiseSettingsForMembers">
             Customise the settings for the members of campaign
         </mat-panel-description>
     </mat-expansion-panel-header>
@@ -37,7 +22,7 @@
             <!-- Select Columns -->
             <mat-form-field class="full-width" appearance="outline"
                 *ngIf="!(isLoading$ | async) && dataSource.data.length > 0">
-                <mat-label>Select Columns for User View</mat-label>
+                <mat-label i18n="@@sheet.selectColumnsForView">Select Columns for User View</mat-label>
                 <mat-select placeholder="Select the base column for your chart" multiple [(value)]="selectedColumns">
                     <mat-option *ngFor="let column of columns" [value]="column">
                         {{ column }}
@@ -47,7 +32,7 @@
             <!-- Select Columns -->
             <!-- Select Number of Rows -->
             <mat-form-field class="full-width" appearance="outline" *ngIf="!(isLoading$ | async) && dataSource.data.length > 0">
-                <mat-label>Feed top rows count for User View</mat-label>
+                <mat-label i18n="@@sheet.feedTopRowsForView">Feed top rows count for User View</mat-label>
                 <input autocomplete="off" matInput placeholder="Total number of rows to be displayed" type="number" [(ngModel)]="rows_count">
             </mat-form-field>
             <!-- Select Number of Rows -->
@@ -55,9 +40,9 @@
     </div>
     <!-- User View -->
     <mat-action-row>
-        <button mat-raised-button color="primary" (click)="saveSettingsForUserView()">Save Settings</button>
-        <button mat-raised-button color="primary">Checkout User View</button>
-        <button mat-raised-button color="primary">Revert to admin view</button>
+        <button mat-raised-button color="primary" (click)="saveSettingsForUserView()" i18n="@@sheet.saveSettings">Save Settings</button>
+        <button mat-raised-button color="primary" i18n="@@sheet.checkoutUserView">Checkout User View</button>
+        <button mat-raised-button color="primary" i18n="@@sheet.revertToAdminView">Revert to admin view</button>
     </mat-action-row>
 </mat-expansion-panel>
 <!-- Graph Settings -->
@@ -65,28 +50,15 @@
 <div class="row">
     <div class="col-md-12">
 
-        <!-- Filter Current search results in the dom -->
-        <!-- <mat-form-field class="full-width" *ngIf="(!(isLoading$ | async) && dataSource.data.length > 0)">
-            <mat-label>Filter results</mat-label>
-            <input autocomplete="off" matInput (keyup)="filterResults($event.target.value, $event)"
-                placeholder="Start typing here and hit enter to filter the results...">
-        </mat-form-field> -->
-        <!-- Filter Current search results in the dom -->
-
         <ng-container *ngIf="!(isLoading$ | async) && dataSource.data.length === 0">
-            <h1 class="not-found">No Results...</h1>
+            <h1 class="not-found" i18n="@@sheet.noResults">No Results...</h1>
             <img class="loading-placeholder" src="assets/images/svgs/no_results.svg">
         </ng-container>
 
         <!-- Manage Metrics -->
         <div class="metrics" *ngIf="!(isLoading$ | async) && dataSource.data.length > 0 && isMember == false">
-            <span class="material-icons analytics" matTooltip="Add graph to your campaign" (click)="graphs.push('0')">
-                add_box
-            </span>
-            <span *ngIf="graphs.length > 0" class="material-icons analytics" matTooltip="Remove last graph"
-                (click)="graphs.pop()">
-                remove_circle_outline
-            </span>
+            <span class="material-icons analytics" matTooltip="Add graph to your campaign" (click)="graphs.push('0')">add_box</span>
+            <span *ngIf="graphs.length > 0" class="material-icons analytics" matTooltip="Remove last graph" (click)="graphs.pop()">remove_circle_outline</span>
         </div>
         <!-- Manage Metrics -->
 
@@ -102,11 +74,6 @@
             </ng-container>
         </div>
         <!-- Generic Graph -->
-
-        <!-- Export the report starts -->
-        <!-- <app-export-table *ngIf="!(isLoading$ | async) && dataSource.data.length > 0"
-            [data]="this.dataSource.filteredData" [fileName]="reconFileName"></app-export-table> -->
-        <!-- Export the report ends -->
 
         <table mat-table [hidden]="!(!(isLoading$ | async) && dataSource.data.length > 0)" [dataSource]="dataSource"
             matSort class="mat-elevation-z8">
