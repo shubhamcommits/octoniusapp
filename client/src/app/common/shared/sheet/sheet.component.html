@@ -108,20 +108,23 @@
             [data]="this.dataSource.filteredData" [fileName]="reconFileName"></app-export-table> -->
         <!-- Export the report ends -->
 
-        <table mat-table [hidden]="!(!(isLoading$ | async) && dataSource.data.length > 0)" [dataSource]="dataSource"
-            matSort class="mat-elevation-z8">
+        <div class="table-container">
+            <table mat-table [hidden]="!(!(isLoading$ | async) && dataSource.data.length > 0)" [dataSource]="dataSource"
+                matSort class="mat-elevation-z8">
+  
+                <ng-container *ngFor="let disCol of columns; let colIndex = index" matColumnDef="{{disCol}}">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ disCol }}</th>
+                    <td mat-cell *matCellDef="let element "> {{ element[disCol] || '-' }}
+                    </td>
+                </ng-container>
+  
+                <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+  
+            </table>
+  
+            <mat-paginator class="mat-elevation-z8" [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons></mat-paginator>
+          </div>
 
-            <ng-container *ngFor="let disCol of columns; let colIndex = index" matColumnDef="{{disCol}}">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ disCol }}</th>
-                <td mat-cell *matCellDef="let element "> {{ element[disCol] || '-' }}
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-
-        </table>
-
-        <mat-paginator class="mat-elevation-z8" [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons></mat-paginator>
     </div>
 </div>
