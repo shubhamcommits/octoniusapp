@@ -75,11 +75,6 @@
         </div>
         <!-- Generic Graph -->
 
-        <!-- Export the report starts -->
-        <!-- <app-export-table *ngIf="!(isLoading$ | async) && dataSource.data.length > 0"
-            [data]="this.dataSource.filteredData" [fileName]="reconFileName"></app-export-table> -->
-        <!-- Export the report ends -->
-
         <div class="table-container">
             <table mat-table [hidden]="!(!(isLoading$ | async) && dataSource.data.length > 0)" [dataSource]="dataSource"
                 matSort class="mat-elevation-z8">
