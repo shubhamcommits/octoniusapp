@@ -3,14 +3,14 @@
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="startSubscription.welcomeToYourWorkspace" datatype="html">
-        <source>Welcome to your workspace!</source>
+        <source>Welcome to your workplace!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-billing/stripe-payment/start-subscription/start-subscription.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
       <trans-unit id="startSubscription.toStartUsing" datatype="html">
-        <source>To start using your workspace, please start a subscription.</source>
+        <source>To start using your workplace, please start a subscription.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-billing/stripe-payment/start-subscription/start-subscription.component.html</context>
           <context context-type="linenumber">7</context>
@@ -104,21 +104,21 @@
           <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="adminGeneral.workspaceCompletelyRemoved" datatype="html">
-        <source>By doing this, the workspace be completely removed!</source>
+      <trans-unit id="adminGeneral.workplaceCompletelyRemoved" datatype="html">
+        <source>By doing this, the workplace be completely removed!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.pleaseWaitDeletingWorkspace" datatype="html">
-        <source>Please wait we are deleting the workspace...</source>
+        <source>Please wait we are deleting the workplace...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="adminGeneral.workspaceDeleted" datatype="html">
+      <trans-unit id="adminGeneral.workplaceDeleted" datatype="html">
         <source>Workspace deleted!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
@@ -126,7 +126,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.unableDeleteWorkspace" datatype="html">
-        <source>Unable to delete the workspace, please try again!</source>
+        <source>Unable to delete the workplace, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
           <context context-type="linenumber">63</context>
@@ -160,49 +160,49 @@
           <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceAddDomain.workspaceSignupMode" datatype="html">
+      <trans-unit id="workplaceAddDomain.workplaceSignupMode" datatype="html">
         <source>Workplace signup mode</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceAddDomain.chooseToMakeYourWorkspace" datatype="html">
+      <trans-unit id="workplaceAddDomain.chooseToMakeYourWorkspace" datatype="html">
         <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">8,11</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceAddDomain.usingWorkspaceName" datatype="html">
-        <source>Using workplace name&quot;<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>&quot;, any email adress from these domain can signup:</source>
+      <trans-unit id="workplaceAddDomain.usingWorkspaceName" datatype="html">
+        <source>Using workplace name&quot;<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/><x id="INTERPOLATION" equiv-text="{{ workplaceData?.workplace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>&quot;, any email adress from these domain can signup:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceAddDomain.addThisDomain" datatype="html">
+      <trans-unit id="workplaceAddDomain.addThisDomain" datatype="html">
         <source>Add this Domain</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceAddDomain.allowedDomains" datatype="html">
+      <trans-unit id="workplaceAddDomain.allowedDomains" datatype="html">
         <source>Allowed Domains</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceAddDomain.listOfAllowedDomains" datatype="html">
+      <trans-unit id="workplaceAddDomain.listOfAllowedDomains" datatype="html">
         <source>List of all allowed domains from where user can sign up to this workplace.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceAddDomain.removeDomain" datatype="html">
+      <trans-unit id="workplaceAddDomain.removeDomain" datatype="html">
         <source>Remove Domain</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
@@ -287,14 +287,14 @@
           <context context-type="linenumber">93</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceInviteUser.inviteUser" datatype="html">
+      <trans-unit id="workplaceInviteUser.inviteUser" datatype="html">
         <source>Invite individual users by email</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-invite-user/workplace-invite-user.component.html</context>
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceInviteUser.inviteToJoin" datatype="html">
+      <trans-unit id="workplaceInviteUser.inviteToJoin" datatype="html">
         <source> Invite to Join </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-invite-user/workplace-invite-user.component.html</context>
@@ -420,21 +420,21 @@
           <context context-type="linenumber">116</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceProfileCF.profileFields" datatype="html">
+      <trans-unit id="workplaceProfileCF.profileFields" datatype="html">
         <source>Profile Fields</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/workplace-profile-custom-fields.component.html</context>
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceProfileCF.profileFieldsWillShowUp" datatype="html">
+      <trans-unit id="workplaceProfileCF.profileFieldsWillShowUp" datatype="html">
         <source>Profile Fields will show up in user profile to help create rich details, according to your organizational structure. Example: Department - Marketing, Sales etc.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/workplace-profile-custom-fields.component.html</context>
           <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceProfileCF.manageFields" datatype="html">
+      <trans-unit id="workplaceProfileCF.manageFields" datatype="html">
         <source>Manage Fields</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/workplace-profile-custom-fields.component.html</context>
@@ -589,7 +589,7 @@
           <context context-type="linenumber">353</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="adminHeader.workspaceSettings" datatype="html">
+      <trans-unit id="adminHeader.workplaceSettings" datatype="html">
         <source>Workplace settings</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-header/admin-header.component.html</context>
@@ -631,7 +631,7 @@
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceInformation.workspaceInfo" datatype="html">
+      <trans-unit id="workplaceInformation.workplaceInfo" datatype="html">
         <source>Workplace Info</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
@@ -652,7 +652,7 @@
           <context context-type="linenumber">12</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workplaceInformation.workspaceName" datatype="html">
+      <trans-unit id="workplaceInformation.workplaceName" datatype="html">
         <source>Workspace Name</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.html</context>
@@ -695,7 +695,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.pleaseWaitUpdatingWorkplaceName" datatype="html">
-        <source>Please wait we are updating the workspace name...</source>
+        <source>Please wait we are updating the workplace name...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/workplace-information/workplace-information.component.ts</context>
           <context context-type="linenumber">36</context>
@@ -1125,71 +1125,71 @@
       <trans-unit id="selectWorkspace.welcome" datatype="html">
         <source> Welcome, <x id="INTERPOLATION" equiv-text="{{ accountData?.first_name }}"/> <x id="INTERPOLATION_1" equiv-text="{{ accountData?.last_name }}"/>! </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
+          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.html</context>
           <context context-type="linenumber">15,17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectWorkspace.selectAWorkspace" datatype="html">
         <source> Select a workplace to start. </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
+          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.html</context>
           <context context-type="linenumber">20,21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectWorkspace.createNewWorkspace" datatype="html">
         <source> Create a new workplace </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
+          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.html</context>
           <context context-type="linenumber">55,56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectWorkspace.joinAnotherWorkspace" datatype="html">
         <source> Join another workplace </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
+          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.html</context>
           <context context-type="linenumber">69,70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectWorkspace.pleaseWaitSignYouIn" datatype="html">
         <source>Please wait while we sign you in...</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
           <context context-type="linenumber">62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectWorkspace.unexpectedError" datatype="html">
         <source>There&apos;s some unexpected error occurred, please try again later!</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
           <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="selectWorkspace.workspaceIsNotAvailable" datatype="html">
-        <source>Your workspace is not available, please contact your administrator!</source>
+      <trans-unit id="selectWorkspace.workplaceIsNotAvailable" datatype="html">
+        <source>Your workplace is not available, please contact your administrator!</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
           <context context-type="linenumber">94</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectWorkspace.hi" datatype="html">
         <source>Hi <x id="PH" equiv-text="res[&apos;user&apos;][&apos;first_name&apos;]"/>, welcome back to your workplace!</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
           <context context-type="linenumber">109</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
           <context context-type="linenumber">115</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectWorkspace.oopsErrorSigningIn" datatype="html">
         <source>Oops some error occured while signing you in, please try again!</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
           <context context-type="linenumber">119</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
+          <context context-type="sourcefile">modules/authentication/select-workplace/select-workplace.component.ts</context>
           <context context-type="linenumber">125</context>
         </context-group>
       </trans-unit>
@@ -2041,7 +2041,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoQuestionImageDetails.uploadQuestionImage" datatype="html">
-        <source>Upload your Question Image</source>
+        <source>Upload your image</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.html</context>
           <context context-type="linenumber">5</context>
@@ -2055,28 +2055,28 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoQuestionImageDetails.uploadYourImage" datatype="html">
-        <source>Upload your Image!</source>
+        <source>Upload your image!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.html</context>
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="questionImageDetails.pleaseWaitUploadingQuestionImg" datatype="html">
-        <source>Please wait while we are uploading the Question Image...</source>
+        <source>Please wait while we are uploading the image...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.ts</context>
           <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="questionImageDetails.questionImgUploaded" datatype="html">
-        <source>Question Image upload success!!!</source>
+        <source>Image uploaded!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.ts</context>
           <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="questionImageDetails.unableToUploadQuestionImg" datatype="html">
-        <source>Unable to Upload Question Image!</source>
+        <source>Unable to upload image!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.ts</context>
           <context context-type="linenumber">76</context>
@@ -2160,7 +2160,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPreview.flamingoWillBeSubmited" datatype="html">
-        <source>By doing this the flamingo will be submited!</source>
+        <source>By doing this, the flamingo will be submited!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-preview/flamingo-preview.component.ts</context>
           <context context-type="linenumber">104</context>
@@ -2195,7 +2195,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPublish.flamingoWillBePublishedUnpublished" datatype="html">
-        <source>By doing this the flamingo will be published/unpublished!</source>
+        <source>By doing this, the flamingo will be published/unpublished!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.ts</context>
           <context context-type="linenumber">41</context>
@@ -4182,7 +4182,7 @@
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="forgotPassword.workspace" datatype="html">
+      <trans-unit id="forgotPassword.workplace" datatype="html">
         <source>Workspace</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/forgot-password/forgot-password.component.html</context>
@@ -4555,14 +4555,14 @@
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.errorOccuredWhileFetchingWorkspaceDetails" datatype="html">
-        <source>Error occured while fetching the workspace details, please try again!</source>
+        <source>Error occured while fetching the workplace details, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
           <context context-type="linenumber">185</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.errorOccuredWhileFetchingWorkspaceMembers" datatype="html">
-        <source>Error occured while fetching the workspace members!, please try again!</source>
+        <source>Error occured while fetching the workplace members!, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
           <context context-type="linenumber">210</context>
@@ -5767,45 +5767,45 @@
           <context context-type="linenumber">86</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceDetails.workspaceUpdate" datatype="html">
+      <trans-unit id="workplaceDetails.workplaceUpdate" datatype="html">
         <source>Workspace Update</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.html</context>
+          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceDetails.save" datatype="html">
+      <trans-unit id="workplaceDetails.save" datatype="html">
         <source> Save </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.html</context>
+          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.html</context>
           <context context-type="linenumber">25,26</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceDetails.pleaseWaitWhileWeUpdate" datatype="html">
-        <source>Please wait while we are updating the workspace avatar for you ...</source>
+      <trans-unit id="workplaceDetails.pleaseWaitWhileWeUpdate" datatype="html">
+        <source>Please wait while we are updating the workplace avatar for you ...</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.ts</context>
+          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.ts</context>
           <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceDetails.workspaceAvatarUpdated" datatype="html">
+      <trans-unit id="workplaceDetails.workplaceAvatarUpdated" datatype="html">
         <source>Workspace avatar updated!</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.ts</context>
+          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.ts</context>
           <context context-type="linenumber">78</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceDetails.oopsAnErrorOccured" datatype="html">
-        <source>Oops, an error occured while updating the workspace avatar, please try again!</source>
+      <trans-unit id="workplaceDetails.oopsAnErrorOccured" datatype="html">
+        <source>Oops, an error occured while updating the workplace avatar, please try again!</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.ts</context>
+          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.ts</context>
           <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="workspaceDetails.unexpectedError" datatype="html">
+      <trans-unit id="workplaceDetails.unexpectedError" datatype="html">
         <source>There&apos;s some unexpected error occured, please try again!</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.ts</context>
+          <context context-type="sourcefile">src/app/common/navbar/common-navbar/workplace-details/workplace-details.component.ts</context>
           <context context-type="linenumber">86</context>
         </context-group>
       </trans-unit>
@@ -7768,7 +7768,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="componentSearchBar.willRemoveUser" datatype="html">
-        <source>This action will remove the user completely from the workspace.</source>
+        <source>This action will remove the user completely from the workplace.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.ts</context>
           <context context-type="linenumber">335</context>
@@ -9377,8 +9377,8 @@
           <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="denyNavigationGuard.workspaceNotAvailable" datatype="html">
-        <source>Your workspace is not available, please contact your administrator!</source>
+      <trans-unit id="denyNavigationGuard.workplaceNotAvailable" datatype="html">
+        <source>Your workplace is not available, please contact your administrator!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/deny-navigation-guard/deny-navigation.guard.ts</context>
           <context context-type="linenumber">85</context>
