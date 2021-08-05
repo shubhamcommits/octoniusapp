@@ -816,7 +816,7 @@
       </trans-unit>
       <trans-unit id="authJoinWorkplace.joinAnotherWorkspace" datatype="html">
         <source> Join another workplace </source>
-        <target state="translated">Arbeitsplatz arbeiten </target>
+        <target state="translated"> Arbeitsplatz arbeiten </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
           <context context-type="linenumber">15,16</context>
@@ -832,7 +832,7 @@
       </trans-unit>
       <trans-unit id="authJoinWorkplace.enterYourInviteCode" datatype="html">
         <source>Enter your invite code</source>
-        <target state="translated">Einladungscode </target>
+        <target state="translated">Einladungscode</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
           <context context-type="linenumber">27</context>
@@ -840,7 +840,7 @@
       </trans-unit>
       <trans-unit id="authJoinWorkplace.join" datatype="html">
         <source> Join </source>
-        <target state="translated"> Beitreten</target>
+        <target state="translated"> Beitreten </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.html</context>
           <context context-type="linenumber">35,36</context>
@@ -944,7 +944,7 @@
       </trans-unit>
       <trans-unit id="authNewWorkplace.create" datatype="html">
         <source> Create </source>
-        <target state="translated"> Erstellen</target>
+        <target state="translated"> Erstellen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-new-workplace/auth-new-workplace.component.html</context>
           <context context-type="linenumber">35,36</context>
@@ -1048,7 +1048,7 @@
       </trans-unit>
       <trans-unit id="authSignUp.signUpToOctonius" datatype="html">
         <source> Sign up to Octonius </source>
-        <target state="translated"> Anmeldung bei Octonius</target>
+        <target state="translated"> Anmeldung bei Octonius </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.html</context>
           <context context-type="linenumber">19,20</context>
@@ -1208,7 +1208,7 @@
       </trans-unit>
       <trans-unit id="resetPassword.resetPassword" datatype="html">
         <source> Reset password </source>
-        <target state="translated"> Passwort zurücksetzen</target>
+        <target state="translated"> Passwort zurücksetzen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/reset-password/reset-password.component.html</context>
           <context context-type="linenumber">36,37</context>
@@ -1276,7 +1276,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.welcome" datatype="html">
         <source> Welcome, <x id="INTERPOLATION" equiv-text="{{ accountData?.first_name }}"/> <x id="INTERPOLATION_1" equiv-text="{{ accountData?.last_name }}"/>! </source>
-        <target state="translated"> Willkommen, <x id="INTERPOLATION" equiv-text="{{ accountData?.first_name }}"/> <x id="INTERPOLATION_1" equiv-text="{{ accountData?.last_name }}"/>!</target>
+        <target state="translated"> Willkommen, <x id="INTERPOLATION" equiv-text="{{ accountData?.first_name }}"/> <x id="INTERPOLATION_1" equiv-text="{{ accountData?.last_name }}"/>! </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">15,17</context>
@@ -1284,7 +1284,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.selectAWorkspace" datatype="html">
         <source> Select a workplace to start. </source>
-        <target state="translated"> Wählen Sie einen Arbeitsplatz, um zu beginnen</target>
+        <target state="translated"> Wählen Sie einen Arbeitsplatz, um zu beginnen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">20,21</context>
@@ -1292,7 +1292,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.createNewWorkspace" datatype="html">
         <source> Create a new workplace </source>
-        <target state="translated">Neuen Arbeitsplatz schaffen</target>
+        <target state="translated"> Neuen Arbeitsplatz schaffen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">55,56</context>
@@ -1300,7 +1300,7 @@
       </trans-unit>
       <trans-unit id="selectWorkspace.joinAnotherWorkspace" datatype="html">
         <source> Join another workplace </source>
-        <target state="translated">Arbeitsplatz arbeiten </target>
+        <target state="translated"> Arbeitsplatz arbeiten </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.html</context>
           <context context-type="linenumber">69,70</context>
@@ -1356,7 +1356,7 @@
       </trans-unit>
       <trans-unit id="groupCalendar.previous" datatype="html">
         <source> Previous </source>
-        <target state="translated"> Vorherige</target>
+        <target state="translated"> Vorherige </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.html</context>
           <context context-type="linenumber">8,9</context>
@@ -1460,7 +1460,7 @@
       </trans-unit>
       <trans-unit id="groupFiles.dragDropOrAdd" datatype="html">
         <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Or use the NEW button for folders uploading.</source>
-        <target state="translated">Ziehen Sie Dateien per Drag &amp; Drop hierher, um sie einfach hochzuladen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Oder verwenden Sie die Schaltfläche NEU für das Hochladen von Ordnern. </target>
+        <target state="translated">Ziehen Sie Dateien per Drag &amp; Drop hierher, um sie einfach hochzuladen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Oder verwenden Sie die Schaltfläche NEU für das Hochladen von Ordnern.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
           <context context-type="linenumber">7</context>
@@ -2348,7 +2348,7 @@
       </trans-unit>
       <trans-unit id="questionImageDetails.questionImgUploaded" datatype="html">
         <source>Question Image upload success!!!</source>
-        <target state="translated">Laden Sie Ihr Fragenbild hoch</target>
+        <target state="translated">Bild erfolgreich hochgeladen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/question-image-details/question-image-details.component.ts</context>
           <context context-type="linenumber">73</context>
@@ -2532,7 +2532,7 @@
       </trans-unit>
       <trans-unit id="flamingoResultInsights.responses" datatype="html">
         <source> Responses: <x id="INTERPOLATION" equiv-text="{{ responses?.length }}"/> </source>
-        <target state="translated"> Antworten: <x id="INTERPOLATION" equiv-text="{{ responses?.length }}"/></target>
+        <target state="translated"> Antworten: <x id="INTERPOLATION" equiv-text="{{ responses?.length }}"/> </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-result/result-insights/result-insights.component.html</context>
           <context context-type="linenumber">4,6</context>
@@ -2596,7 +2596,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.selectStatus" datatype="html">
         <source> Select Status </source>
-        <target state="translated"> Status auswählen</target>
+        <target state="translated"> Status auswählen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">61,62</context>
@@ -2612,7 +2612,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.selectSection" datatype="html">
         <source> Select Section </source>
-        <target state="translated"> Abschnitt auswählen</target>
+        <target state="translated"> Abschnitt auswählen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">77,78</context>
@@ -2624,7 +2624,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.selectCF" datatype="html">
         <source> Select CF </source>
-        <target state="translated"> CF auswählen</target>
+        <target state="translated"> CF auswählen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">89,90</context>
@@ -2636,7 +2636,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.selectValue" datatype="html">
         <source> Select Value </source>
-        <target state="translated"> Wert auswählen</target>
+        <target state="translated"> Wert auswählen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">105,106</context>
@@ -2668,7 +2668,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.selectTrigger" datatype="html">
         <source> Select trigger </source>
-        <target state="translated"> Auslöser wählen</target>
+        <target state="translated"> Auslöser wählen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">149,150</context>
@@ -2684,7 +2684,7 @@
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.selectAction" datatype="html">
         <source> Select action </source>
-        <target state="translated"> Aktion auswählen</target>
+        <target state="translated"> Aktion auswählen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.html</context>
           <context context-type="linenumber">258,259</context>
@@ -2772,7 +2772,7 @@
       </trans-unit>
       <trans-unit id="automationFlowDetailsDialog.pleaseWaitDeletingFlow" datatype="html">
         <source>Please wait we are deleting the flow...</source>
-        <target state="translated">Fluss gelöscht!</target>
+        <target state="translated">Bitte warten Sie, wir löschen den Flow...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
           <context context-type="linenumber">296</context>
@@ -3208,7 +3208,7 @@
       </trans-unit>
       <trans-unit id="groupAdmin.settingsSaved" datatype="html">
         <source>Settings saved to your group!</source>
-        <target state="translated">Alle Mitglieder Ihrer Gruppe</target>
+        <target state="translated">Gruppeneinstellungen gespeichert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
           <context context-type="linenumber">135</context>
@@ -3280,7 +3280,7 @@
       </trans-unit>
       <trans-unit id="groupBARDialog.createRulesToManage" datatype="html">
         <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
-        <target state="translated"> Erstellen Sie Regeln zur Verwaltung der Zugriffsrechte auf das Board und wählen Sie aus, welche Mitglieder bestimmte Aufgaben sehen können. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Standardmäßig sind alle Aufgaben für das Team sichtbar, aber mit BAR-Tags können Sie den Zugriff steuern</target>
+        <target state="translated"> Erstellen Sie Regeln zur Verwaltung der Zugriffsrechte auf das Board und wählen Sie aus, welche Mitglieder bestimmte Aufgaben sehen können. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Standardmäßig sind alle Aufgaben für das Team sichtbar, aber mit BAR-Tags können Sie den Zugriff steuern </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
           <context context-type="linenumber">15,17</context>
@@ -3568,7 +3568,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.previous" datatype="html">
         <source> Previous </source>
-        <target state="translated"> Vorherige</target>
+        <target state="translated"> Vorherige </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.html</context>
           <context context-type="linenumber">8,9</context>
@@ -3576,7 +3576,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.today" datatype="html">
         <source> Today </source>
-        <target state="translated"> Heute</target>
+        <target state="translated"> Heute </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.html</context>
           <context context-type="linenumber">11,12</context>
@@ -3584,7 +3584,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.next" datatype="html">
         <source> Next </source>
-        <target state="translated"> Weiter</target>
+        <target state="translated"> Weiter </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.html</context>
           <context context-type="linenumber">15,16</context>
@@ -3592,7 +3592,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.month" datatype="html">
         <source> Month </source>
-        <target state="translated"> Monat</target>
+        <target state="translated"> Monat </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.html</context>
           <context context-type="linenumber">26,27</context>
@@ -3600,7 +3600,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.week" datatype="html">
         <source> Week </source>
-        <target state="translated"> Woche</target>
+        <target state="translated"> Woche </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.html</context>
           <context context-type="linenumber">30,31</context>
@@ -3608,7 +3608,7 @@
       </trans-unit>
       <trans-unit id="groupCalendarView.day" datatype="html">
         <source> Day </source>
-        <target state="translated"> Tag</target>
+        <target state="translated"> Tag </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-calendar-view/group-calendar-view.component.html</context>
           <context context-type="linenumber">34,35</context>
@@ -3696,7 +3696,7 @@
       </trans-unit>
       <trans-unit id="advancedFilterDialog.filterCF" datatype="html">
         <source> Filter by Custom Fields </source>
-        <target state="translated"> Nach benutzerdefinierten Feldern filtern</target>
+        <target state="translated"> Nach benutzerdefinierten Feldern filtern </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/advanced-filter-dialog/advanced-filter-dialog.component.html</context>
           <context context-type="linenumber">9,10</context>
@@ -4408,7 +4408,7 @@
       </trans-unit>
       <trans-unit id="createSection.addNewSection" datatype="html">
         <source> + ADD NEW SECTION </source>
-        <target state="translated"> + NEUEN ABSCHNITT HINZUFÜGEN</target>
+        <target state="translated"> + ABSCHNITT HINZUFÜGEN </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/create-section/create-section.component.html</context>
           <context context-type="linenumber">5,6</context>
@@ -4440,7 +4440,7 @@
       </trans-unit>
       <trans-unit id="doneTasksListView.tags" datatype="html">
         <source> Tags </source>
-        <target state="translated">Tags </target>
+        <target state="translated"> Tags </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/done-tasks-list-view/done-tasks-list-view.component.html</context>
           <context context-type="linenumber">38</context>
@@ -4456,7 +4456,7 @@
       </trans-unit>
       <trans-unit id="doneTasksListView.dueDate" datatype="html">
         <source> Due Date </source>
-        <target state="translated"> Fälligkeitsdatum</target>
+        <target state="translated"> Fälligkeitsdatum </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/done-tasks-list-view/done-tasks-list-view.component.html</context>
           <context context-type="linenumber">68</context>
@@ -4512,7 +4512,7 @@
       </trans-unit>
       <trans-unit id="asksTableView.title" datatype="html">
         <source> Title </source>
-        <target state="translated"> Titel</target>
+        <target state="translated"> Titel </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
           <context context-type="linenumber">5</context>
@@ -4520,7 +4520,7 @@
       </trans-unit>
       <trans-unit id="asksTableView.tags" datatype="html">
         <source> Tags </source>
-        <target state="translated">Tags </target>
+        <target state="translated"> Tags </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
           <context context-type="linenumber">34</context>
@@ -4536,7 +4536,7 @@
       </trans-unit>
       <trans-unit id="asksTableView.dueDate" datatype="html">
         <source> Due Date </source>
-        <target state="translated"> Fälligkeitsdatum</target>
+        <target state="translated"> Fälligkeitsdatum </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.html</context>
           <context context-type="linenumber">64</context>
@@ -4796,7 +4796,7 @@
       </trans-unit>
       <trans-unit id="welcomePage.logInYourAccount" datatype="html">
         <source> Log in to your account </source>
-        <target state="translated"> Bei Ihrem Konto anmelden</target>
+        <target state="translated"> Anmelden </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
           <context context-type="linenumber">15,16</context>
@@ -4836,7 +4836,7 @@
       </trans-unit>
       <trans-unit id="welcomePage.firstTimeHere" datatype="html">
         <source> First time here? Create your account. </source>
-        <target state="translated"> Zum ersten Mal hier? Erstellen Sie Ihr Konto</target>
+        <target state="translated"> Sie haben kein Konto? Registrieren. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
           <context context-type="linenumber">46,47</context>
@@ -4844,7 +4844,7 @@
       </trans-unit>
       <trans-unit id="welcomePage.signUp" datatype="html">
         <source> SIGN UP </source>
-        <target state="translated"> ANMELDEN</target>
+        <target state="translated"> REGISTRIEREN </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
           <context context-type="linenumber">51,52</context>
@@ -4960,7 +4960,7 @@
       </trans-unit>
       <trans-unit id="myspaceHeader.mySpace" datatype="html">
         <source>My Space</source>
-        <target state="translated">Mein Raum</target>
+        <target state="translated">My Space</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-header/myspace-header.component.html</context>
           <context context-type="linenumber">9</context>
@@ -4968,7 +4968,7 @@
       </trans-unit>
       <trans-unit id="myspaceHeader.inbox" datatype="html">
         <source>Inbox</source>
-        <target state="translated">Posteingang</target>
+        <target state="translated">Inbox</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-header/myspace-header.component.html</context>
           <context context-type="linenumber">13</context>
@@ -5004,7 +5004,7 @@
       </trans-unit>
       <trans-unit id="recentActivity.nothingNew" datatype="html">
         <source>Nothing new. Take a breath. </source>
-        <target state="translated">Nichts Neues. Atmen Sie durch</target>
+        <target state="translated">Nichts Neues. Atmen Sie durch </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">16</context>
@@ -5064,7 +5064,7 @@
       </trans-unit>
       <trans-unit id="recentActivity.everyoneIsSilent" datatype="html">
         <source>Everyone is silent. </source>
-        <target state="translated">Alle sind still</target>
+        <target state="translated">Alle sind still </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
           <context context-type="linenumber">110</context>
@@ -5072,7 +5072,7 @@
       </trans-unit>
       <trans-unit id="recentGroups.recentWork" datatype="html">
         <source> Recent work </source>
-        <target state="translated"> Jüngste Arbeiten</target>
+        <target state="translated"> Jüngste Arbeiten </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-groups/recent-groups.component.html</context>
           <context context-type="linenumber">6,7</context>
@@ -5080,7 +5080,7 @@
       </trans-unit>
       <trans-unit id="mySpaceTasks.done" datatype="html">
         <source>Done. That's a wrap! </source>
-        <target state="translated">Erledigt. Das war's!</target>
+        <target state="translated">Erledigt. Das war's! </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-tasks/myspace-tasks.component.html</context>
           <context context-type="linenumber">6</context>
@@ -5088,7 +5088,7 @@
       </trans-unit>
       <trans-unit id="mySpaceTasks.today" datatype="html">
         <source> Today </source>
-        <target state="translated"> Heute</target>
+        <target state="translated"> Heute </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-tasks/myspace-tasks.component.html</context>
           <context context-type="linenumber">13,14</context>
@@ -5096,7 +5096,7 @@
       </trans-unit>
       <trans-unit id="mySpaceTasks.overdue" datatype="html">
         <source> OVERDUE </source>
-        <target state="translated">Überfällig </target>
+        <target state="translated"> Überfällig </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-tasks/myspace-tasks.component.html</context>
           <context context-type="linenumber">38,39</context>
@@ -5296,7 +5296,7 @@
       </trans-unit>
       <trans-unit id="searchResult.title" datatype="html">
         <source>Title: </source>
-        <target state="translated">Titel</target>
+        <target state="translated">Titel </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
           <context context-type="linenumber">3</context>
@@ -5320,7 +5320,7 @@
       </trans-unit>
       <trans-unit id="searchResult.mail" datatype="html">
         <source>mail: </source>
-        <target state="translated">E-Mail:</target>
+        <target state="translated">E-Mail: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
           <context context-type="linenumber">22</context>
@@ -5336,7 +5336,7 @@
       </trans-unit>
       <trans-unit id="searchResult.fileName" datatype="html">
         <source>File Name: </source>
-        <target state="translated">Datei Upload</target>
+        <target state="translated">Dateinamen: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
           <context context-type="linenumber">31</context>
@@ -5528,7 +5528,7 @@
       </trans-unit>
       <trans-unit id="teamsAuthConfirmation.octoniusForMSTeams" datatype="html">
         <source> Octonius for Microsoft Teams is requesting permission to access your Octonius account </source>
-        <target state="translated"> Octonius für Microsoft Teams bittet um die Erlaubnis, auf Ihr Octonius-Konto zuzugreifen</target>
+        <target state="translated"> Octonius für Microsoft Teams bittet um die Erlaubnis, auf Ihr Octonius-Konto zuzugreifen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/team/team-auth-confirmation/team-auth-confirmation.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -5536,7 +5536,7 @@
       </trans-unit>
       <trans-unit id="teamsAuthConfirmation.authorizeThisApp" datatype="html">
         <source> If you authorize this app, you will give it permission to: </source>
-        <target state="translated"> Wenn Sie diese Anwendung autorisieren, geben Sie ihr die Erlaubnis,</target>
+        <target state="translated"> Wenn Sie diese Anwendung autorisieren, geben Sie ihr die Erlaubnis: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/team/team-auth-confirmation/team-auth-confirmation.component.html</context>
           <context context-type="linenumber">7,8</context>
@@ -5592,7 +5592,7 @@
       </trans-unit>
       <trans-unit id="zapAuthConfirmation.requestingPermission" datatype="html">
         <source> Zapier is requesting permission to access your Octonius account </source>
-        <target state="translated"> Zapier fordert die Erlaubnis zum Zugriff auf Ihr Octonius-Konto an</target>
+        <target state="translated"> Zapier fordert die Erlaubnis zum Zugriff auf Ihr Octonius-Konto an </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/zapier/zap-auth-confirmation/zap-auth-confirmation.component.html</context>
           <context context-type="linenumber">5,6</context>
@@ -5600,7 +5600,7 @@
       </trans-unit>
       <trans-unit id="zapAuthConfirmation.authorizeApp" datatype="html">
         <source> If you authorize this app, you will give it permission to: </source>
-        <target state="translated"> Wenn Sie diese Anwendung autorisieren, geben Sie ihr die Erlaubnis,</target>
+        <target state="translated"> Wenn Sie diese Anwendung autorisieren, geben Sie ihr die Erlaubnis: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/zapier/zap-auth-confirmation/zap-auth-confirmation.component.html</context>
           <context context-type="linenumber">8,9</context>
@@ -5720,7 +5720,7 @@
       </trans-unit>
       <trans-unit id="userInformation.deleteAccount" datatype="html">
         <source> Delete Account </source>
-        <target state="translated"> Konto löschen</target>
+        <target state="translated"> Konto löschen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.html</context>
           <context context-type="linenumber">27,28</context>
@@ -5984,7 +5984,7 @@
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.previous" datatype="html">
         <source> Previous </source>
-        <target state="translated"> Vorherige</target>
+        <target state="translated"> Vorherige </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
           <context context-type="linenumber">6,7</context>
@@ -5992,7 +5992,7 @@
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.today" datatype="html">
         <source> Today </source>
-        <target state="translated"> Heute</target>
+        <target state="translated"> Heute </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
           <context context-type="linenumber">9,10</context>
@@ -6000,7 +6000,7 @@
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.next" datatype="html">
         <source> Next </source>
-        <target state="translated"> Weiter</target>
+        <target state="translated"> Weiter </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
           <context context-type="linenumber">12,13</context>
@@ -6008,7 +6008,7 @@
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.clean" datatype="html">
         <source> Clean </source>
-        <target state="translated"> Sauber</target>
+        <target state="translated"> Sauber </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
           <context context-type="linenumber">27,28</context>
@@ -6132,7 +6132,7 @@
       </trans-unit>
       <trans-unit id="northStarPage.setAndAchieveStrategic" datatype="html">
         <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
-        <target state="translated"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun</target>
+        <target state="translated"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">16,18</context>
@@ -6148,7 +6148,7 @@
       </trans-unit>
       <trans-unit id="pulse.pulseIsMicroAnnouncement" datatype="html">
         <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulses create transparency and a sense of mission for your organization. </source>
-        <target state="translated"> Ein Puls ist eine Mikro-Mitteilung einer Gruppe. Es ist wie Twitter für Unternehmen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Auch wenn Sie keinen Zugang zu einer Gruppe haben, können Sie sehen, was dort passiert. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulse schaffen Transparenz und ein Gefühl der Mission für Ihre Organisation</target>
+        <target state="translated"> Ein Pulse ist eine Mikro-Mitteilung einer Gruppe. Es ist wie Twitter für Unternehmen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Auch wenn Sie keinen Zugang zu einer Gruppe haben, können Sie sehen, was dort passiert. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulse schaffen Transparenz und ein Gefühl der Mission für Ihre Organisation </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/pulse/pulse.component.html</context>
           <context context-type="linenumber">15,18</context>
@@ -6180,7 +6180,7 @@
       </trans-unit>
       <trans-unit id="ngb.carousel.slide-number" datatype="html">
         <source> Slide <x id="INTERPOLATION" equiv-text="cused$ = new Be"/> of <x id="INTERPOLATION_1" equiv-text="private _pau"/> </source>
-        <target state="translated"> Dia {cused$ = neu Be} von {privat _pau}</target>
+        <target state="translated"> Dia {cused$ = neu Be} von {privat _pau} </target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/@ng-bootstrap/src/carousel/carousel.ts</context>
           <context context-type="linenumber">113,117</context>
@@ -6502,7 +6502,7 @@
       </trans-unit>
       <trans-unit id="userImageDetails.updateYourImage" datatype="html">
         <source> Update your Image </source>
-        <target state="translated"> Aktualisieren Sie Ihr Image</target>
+        <target state="translated"> Aktualisieren Sie Ihr Image </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/user-image-details/user-image-details.component.html</context>
           <context context-type="linenumber">25,26</context>
@@ -6630,7 +6630,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.inbox" datatype="html">
         <source> Inbox </source>
-        <target state="translated"> Posteingang</target>
+        <target state="translated"> Inbox </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">42,43</context>
@@ -6638,7 +6638,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.tasks" datatype="html">
         <source> Tasks </source>
-        <target state="translated"> Aufgaben</target>
+        <target state="translated"> Aufgaben </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">51,52</context>
@@ -6674,7 +6674,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.activity" datatype="html">
         <source> Activity </source>
-        <target state="translated"> Tätigkeit</target>
+        <target state="translated"> Aktivität </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">90,91</context>
@@ -6810,7 +6810,7 @@
       </trans-unit>
       <trans-unit id="sidebar.mySpace" datatype="html">
         <source>My Space</source>
-        <target state="translated">Mein Raum</target>
+        <target state="translated">My Space</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">21</context>
@@ -6858,7 +6858,7 @@
       </trans-unit>
       <trans-unit id="sidebar.pleaseWaitWhileLogOut" datatype="html">
         <source>Please wait, while we log you out securely...</source>
-        <target state="translated">Abmelden</target>
+        <target state="translated">Abmelden…</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.ts</context>
           <context context-type="linenumber">98</context>
@@ -6950,7 +6950,7 @@
       </trans-unit>
       <trans-unit id="pageNotFound.thereAreUnchartedWaters" datatype="html">
         <source> These are uncharted waters... </source>
-        <target state="translated"> Dies sind unerforschte Gewässer..</target>
+        <target state="translated"> Dies sind unerforschte Gewässer.. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/page-not-found/page-not-found.component.html</context>
           <context context-type="linenumber">8,9</context>
@@ -6958,7 +6958,7 @@
       </trans-unit>
       <trans-unit id="pageNotFound.notFound" datatype="html">
         <source> 404 Not Found </source>
-        <target state="translated"> 404 nicht gefunden</target>
+        <target state="translated"> 404 nicht gefunden </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/page-not-found/page-not-found.component.html</context>
           <context context-type="linenumber">12,13</context>
@@ -7006,7 +7006,7 @@
       </trans-unit>
       <trans-unit id="agendaSmartCard.agenda" datatype="html">
         <source> Agenda </source>
-        <target state="translated"> Tagesordnung</target>
+        <target state="translated"> Tagesordnung </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
           <context context-type="linenumber">5,6</context>
@@ -7018,7 +7018,7 @@
       </trans-unit>
       <trans-unit id="agendaSmartCard.forToday" datatype="html">
         <source>for today</source>
-        <target state="translated"> Heute</target>
+        <target state="translated">heute</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/agenda-smart-card/agenda-smart-card.component.html</context>
           <context context-type="linenumber">8</context>
@@ -7070,7 +7070,7 @@
       </trans-unit>
       <trans-unit id="groupActivityFeed.nothingHereCreateSomething" datatype="html">
         <source> Nothing here. Create something. </source>
-        <target state="translated"> Hier ist nichts. Schaffen Sie etwas</target>
+        <target state="translated"> Nichts hier. Erstellen Sie etwas. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.html</context>
           <context context-type="linenumber">118,119</context>
@@ -7102,7 +7102,7 @@
       </trans-unit>
       <trans-unit id="groupInformation.personalWorkspace" datatype="html">
         <source> Personal Workplace </source>
-        <target state="translated"> Personal Workplace</target>
+        <target state="translated"> Personal Workplace </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-information/group-information.component.html</context>
           <context context-type="linenumber">21,22</context>
@@ -7110,7 +7110,7 @@
       </trans-unit>
       <trans-unit id="groupInformation.members" datatype="html">
         <source>Members:</source>
-        <target state="translated"> Mitglieder </target>
+        <target state="translated">Mitglieder:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-information/group-information.component.html</context>
           <context context-type="linenumber">31</context>
@@ -7118,7 +7118,7 @@
       </trans-unit>
       <trans-unit id="groupInformation.description" datatype="html">
         <source>Description: </source>
-        <target state="translated">Beschreibung:</target>
+        <target state="translated">Beschreibung: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-information/group-information.component.html</context>
           <context context-type="linenumber">33</context>
@@ -7126,7 +7126,7 @@
       </trans-unit>
       <trans-unit id="groupInformation.thisIsPersonalSpace" datatype="html">
         <source> This is your personal space. Everything you create here is private. </source>
-        <target state="translated"> Dies ist Ihr persönlicher Bereich. Alles, was Sie hier schaffen, ist privat</target>
+        <target state="translated"> Dies ist Ihr persönlicher Raum. Alles, was Sie hier erstellen, ist privat. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-information/group-information.component.html</context>
           <context context-type="linenumber">36,37</context>
@@ -7182,7 +7182,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.addSubtask" datatype="html">
         <source> + Add Subtasks </source>
-        <target state="translated"> + Teilaufgaben hinzufügen</target>
+        <target state="translated"> + Unteraufgaben hinzufügen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">85,86</context>
@@ -7270,7 +7270,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.assignee" datatype="html">
         <source>Assignee</source>
-        <target state="translated"> Verantwortlich </target>
+        <target state="translated">Verantwortlich</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
           <context context-type="linenumber">325</context>
@@ -8062,7 +8062,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePost.delete" datatype="html">
         <source> X DELETE </source>
-        <target state="translated"> X LÖSCHEN</target>
+        <target state="translated"> X LÖSCHEN </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post/group-create-post.component.html</context>
           <context context-type="linenumber">212,213</context>
@@ -8070,7 +8070,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePost.post" datatype="html">
         <source> Post </source>
-        <target state="translated"> Beitrag</target>
+        <target state="translated"> Beitrag </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post/group-create-post.component.html</context>
           <context context-type="linenumber">218,219</context>
@@ -8078,7 +8078,7 @@
       </trans-unit>
       <trans-unit id="groupCreatePost.update" datatype="html">
         <source> Update </source>
-        <target state="translated"> Update</target>
+        <target state="translated"> Update </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post/group-create-post.component.html</context>
           <context context-type="linenumber">223,224</context>
@@ -8262,7 +8262,7 @@
       </trans-unit>
       <trans-unit id="projectStatus.statusProjectUpdated" datatype="html">
         <source>Status for the current project is updated!</source>
-        <target state="translated">Projekt Status</target>
+        <target state="translated">Projektstatus aktualisiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/project-status/project-status.component.ts</context>
           <context context-type="linenumber">72</context>
@@ -8286,7 +8286,7 @@
       </trans-unit>
       <trans-unit id="sendPulse.sendPulse" datatype="html">
         <source> Send Pulse </source>
-        <target state="translated"> Sendeimpuls</target>
+        <target state="translated"> Pulse senden </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/send-pulse/send-pulse.component.html</context>
           <context context-type="linenumber">15,16</context>
@@ -8318,7 +8318,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.tasks" datatype="html">
         <source> Tasks </source>
-        <target state="translated"> Aufgaben</target>
+        <target state="translated"> Aufgaben </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
           <context context-type="linenumber">7,8</context>
@@ -8330,7 +8330,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.forToday" datatype="html">
         <source>for today</source>
-        <target state="translated"> Heute</target>
+        <target state="translated">heute</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
           <context context-type="linenumber">10</context>
@@ -8342,7 +8342,7 @@
       </trans-unit>
       <trans-unit id="taskSmartCard.nothingForToday" datatype="html">
         <source>Nothing for today. Take a break. </source>
-        <target state="translated">Nichts für heute. Machen Sie eine Pause</target>
+        <target state="translated">Nichts für heute. Machen Sie eine Pause </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/task-smart-card/task-smart-card.component.html</context>
           <context context-type="linenumber">19</context>
@@ -8382,7 +8382,7 @@
       </trans-unit>
       <trans-unit id="attachFiles.attachedFiles" datatype="html">
         <source>Attached Files </source>
-        <target state="translated">Angehängte Dateien</target>
+        <target state="translated">Angehängte Dateien </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/attach-files/attach-files.component.html</context>
           <context context-type="linenumber">20</context>
@@ -8394,7 +8394,7 @@
       </trans-unit>
       <trans-unit id="attachFiles.selectedFile" datatype="html">
         <source>Selected File: </source>
-        <target state="translated">Ausgewählte Datei</target>
+        <target state="translated">Ausgewählte Datei: </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/attach-files/attach-files.component.html</context>
           <context context-type="linenumber">49</context>
@@ -8646,7 +8646,7 @@
       </trans-unit>
       <trans-unit id="componentSearchBar.activateUser" datatype="html">
         <source> Activate user </source>
-        <target state="translated"> Benutzer aktivieren</target>
+        <target state="translated"> Benutzer aktivieren </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">166,167</context>
@@ -8654,7 +8654,7 @@
       </trans-unit>
       <trans-unit id="componentSearchBar.removeUser" datatype="html">
         <source> Remove user </source>
-        <target state="translated"> Benutzer entfernen</target>
+        <target state="translated"> Benutzer entfernen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.html</context>
           <context context-type="linenumber">175,176</context>
@@ -8854,7 +8854,7 @@
       </trans-unit>
       <trans-unit id="componentSearchInputBox.addSkill" datatype="html">
         <source> Add skill </source>
-        <target state="translated"> Fähigkeit hinzufügen</target>
+        <target state="translated"> Fähigkeit hinzufügen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-input-box/component-search-input-box.component.html</context>
           <context context-type="linenumber">45,46</context>
@@ -8862,7 +8862,7 @@
       </trans-unit>
       <trans-unit id="componentSearchInputBox.addTag" datatype="html">
         <source> Add tag </source>
-        <target state="translated"> Tag hinzufügen</target>
+        <target state="translated"> Tag hinzufügen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-input-box/component-search-input-box.component.html</context>
           <context context-type="linenumber">57,58</context>
@@ -8870,7 +8870,7 @@
       </trans-unit>
       <trans-unit id="componentSearchInputBox.add" datatype="html">
         <source> Add </source>
-        <target state="translated"> Hinzufügen</target>
+        <target state="translated"> Hinzufügen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-input-box/component-search-input-box.component.html</context>
           <context context-type="linenumber">73,74</context>
@@ -8882,7 +8882,7 @@
       </trans-unit>
       <trans-unit id="componentSearchInputBox.transfer" datatype="html">
         <source> Transfer </source>
-        <target state="translated"> Übertragung</target>
+        <target state="translated"> Übertragung </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-input-box/component-search-input-box.component.html</context>
           <context context-type="linenumber">101,102</context>
@@ -8890,7 +8890,7 @@
       </trans-unit>
       <trans-unit id="componentSearchInputBox.assign" datatype="html">
         <source> assign </source>
-        <target state="translated"> zuweisen</target>
+        <target state="translated"> zuweisen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-input-box/component-search-input-box.component.html</context>
           <context context-type="linenumber">121,122</context>
@@ -8918,7 +8918,7 @@
       </trans-unit>
       <trans-unit id="engagementCard.engagement" datatype="html">
         <source> Engagement </source>
-        <target state="translated"> Verlobung</target>
+        <target state="translated"> Verlobung </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/engagement-card/engagement-card.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -8958,7 +8958,7 @@
       </trans-unit>
       <trans-unit id="globalPerformanceCard.globalPerformance" datatype="html">
         <source> Global Performance </source>
-        <target state="translated"> Globale Leistung</target>
+        <target state="translated"> Globale Leistung </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/global-performance-card/global-performance-card.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -8974,7 +8974,7 @@
       </trans-unit>
       <trans-unit id="kpiPerformanceCard.kpiPerformance" datatype="html">
         <source> KPI Performance </source>
-        <target state="translated"> KPI-Leistung</target>
+        <target state="translated"> KPI-Leistung </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/kpi-performance-card/kpi-performance-card.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -8991,7 +8991,8 @@
       <trans-unit id="projectBudget.budgetTitle" datatype="html">
         <source> Budget
 </source>
-        <target state="translated">Budget</target>
+        <target state="translated"> Budget
+</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/kpi-performance-card/project-budget/project-budget.component.html</context>
           <context context-type="linenumber">2,3</context>
@@ -9087,7 +9088,7 @@
       </trans-unit>
       <trans-unit id="membersWorkloadCard.resourceManagement" datatype="html">
         <source> Resource management </source>
-        <target state="translated"> Verwaltung der Ressourcen</target>
+        <target state="translated"> Verwaltung der Ressourcen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/members-workload-card/members-workload-card.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -9095,7 +9096,7 @@
       </trans-unit>
       <trans-unit id="membersWorkloadCard.today" datatype="html">
         <source> Today </source>
-        <target state="translated"> Heute</target>
+        <target state="translated"> Heute </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/members-workload-card/members-workload-card.component.html</context>
           <context context-type="linenumber">20,21</context>
@@ -9111,7 +9112,7 @@
       </trans-unit>
       <trans-unit id="organizationalStructureCard.organizationalStructure" datatype="html">
         <source> Organizational structure </source>
-        <target state="translated"> Organisatorische Struktur</target>
+        <target state="translated"> Organisatorische Struktur </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/organizational-structure-card/organizational-structure-card.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -9135,7 +9136,7 @@
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.peopleDirectory" datatype="html">
         <source> People directory </source>
-        <target state="translated"> Personenverzeichnis</target>
+        <target state="translated"> Personenverzeichnis </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -9183,7 +9184,7 @@
       </trans-unit>
       <trans-unit id="pulseCard.pulse" datatype="html">
         <source> Pulse </source>
-        <target state="translated"> Puls</target>
+        <target state="translated"> Pulse </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/pulse-card/pulse-card.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -9191,7 +9192,7 @@
       </trans-unit>
       <trans-unit id="pulseCard.updatesToday" datatype="html">
         <source>updates today</source>
-        <target state="translated"> Heute</target>
+        <target state="translated">heute aktualisiert</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/pulse-card/pulse-card.component.html</context>
           <context context-type="linenumber">14</context>
@@ -9199,7 +9200,7 @@
       </trans-unit>
       <trans-unit id="pulseCard.updatesLastWeek" datatype="html">
         <source>updates last week</source>
-        <target state="translated"> Woche</target>
+        <target state="translated">Updates letzte Woche</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/pulse-card/pulse-card.component.html</context>
           <context context-type="linenumber">21</context>
@@ -9223,7 +9224,7 @@
       </trans-unit>
       <trans-unit id="sectionStatusCard.realTimeStauts" datatype="html">
         <source> Real time status by section </source>
-        <target state="translated"> Echtzeit-Status nach Abschnitten</target>
+        <target state="translated"> Echtzeit-Status nach Abschnitten </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/section-status-card/section-status-card.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -9239,7 +9240,7 @@
       </trans-unit>
       <trans-unit id="velocityCard.velocityOverTime" datatype="html">
         <source> Velocity over time </source>
-        <target state="translated"> Geschwindigkeit über die Zeit</target>
+        <target state="translated"> Geschwindigkeit über die Zeit </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/velocity-card/velocity-card.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -9247,7 +9248,7 @@
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.customizeYourDashboard" datatype="html">
         <source> Customize your dashboard </source>
-        <target state="translated"> Passen Sie Ihr Dashboard an</target>
+        <target state="translated"> Passen Sie Ihr Dashboard an </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.html</context>
           <context context-type="linenumber">14,15</context>
@@ -9451,7 +9452,7 @@
       </trans-unit>
       <trans-unit id="workStatisticsCard.workStatistics" datatype="html">
         <source> Work statistics </source>
-        <target state="translated"> Arbeitsstatistiken</target>
+        <target state="translated"> Arbeitsstatistiken </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -9459,7 +9460,7 @@
       </trans-unit>
       <trans-unit id="workStatisticsCard.companyObjectives" datatype="html">
         <source> Company Objectives </source>
-        <target state="translated"> Zielsetzungen des Unternehmens</target>
+        <target state="translated"> Zielsetzungen des Unternehmens </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/work-statistics-card/work-statistics-card.component.html</context>
           <context context-type="linenumber">9,10</context>
@@ -9551,7 +9552,7 @@
       </trans-unit>
       <trans-unit id="workloadCard.workloadByCompletitionStatus" datatype="html">
         <source> Workload by completition status </source>
-        <target state="translated"> Arbeitsbelastung nach Abschlussstatus</target>
+        <target state="translated"> Arbeitsbelastung nach Abschlussstatus </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/workload-card/workload-card.component.html</context>
           <context context-type="linenumber">4,5</context>
@@ -9767,7 +9768,7 @@
       </trans-unit>
       <trans-unit id="multipleAssignments.unassigned" datatype="html">
         <source> Unassigned </source>
-        <target state="translated"> Nicht zugewiesen</target>
+        <target state="translated"> Keine verantwortliche Person </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
           <context context-type="linenumber">12,13</context>
@@ -9791,7 +9792,7 @@
       </trans-unit>
       <trans-unit id="multipleAssignments.assignee" datatype="html">
         <source>Assignee</source>
-        <target state="translated"> Verantwortlich </target>
+        <target state="translated">Verantwortlich</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.html</context>
           <context context-type="linenumber">24</context>
@@ -9811,7 +9812,7 @@
       </trans-unit>
       <trans-unit id="multipleAssignments.assigneeRemoved" datatype="html">
         <source>Assignee removed!</source>
-        <target state="translated">Verantwortlicher entfernt! </target>
+        <target state="translated">Verantwortlicher entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/multiple-assignments/multiple-assignments.component.ts</context>
           <context context-type="linenumber">92</context>
@@ -9979,7 +9980,7 @@
       </trans-unit>
       <trans-unit id="postUtils.delete" datatype="html">
         <source> Delete </source>
-        <target state="translated"> Löschen</target>
+        <target state="translated"> Löschen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.html</context>
           <context context-type="linenumber">30,31</context>
@@ -10147,7 +10148,7 @@
       </trans-unit>
       <trans-unit id="postView.assignedToNumMembers" datatype="html">
         <source> Assigned to <x id="INTERPOLATION" equiv-text="{{post._assigned_to?.length || 0}}"/> Member(s) </source>
-        <target state="translated"> Zugeordnet zu <x id="INTERPOLATION" equiv-text="{{post._assigned_to?.length || 0}}"/> Mitglied(er)</target>
+        <target state="translated"> Zugeordnet zu <x id="INTERPOLATION" equiv-text="{{post._assigned_to?.length || 0}}"/> Mitglied(er) </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
           <context context-type="linenumber">27,29</context>
@@ -10155,7 +10156,7 @@
       </trans-unit>
       <trans-unit id="postView.assignedToAllMembers" datatype="html">
         <source> Assigned to all Members </source>
-        <target state="translated"> Zugewiesen für alle Mitglieder</target>
+        <target state="translated"> Zugewiesen für alle Mitglieder </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-view/post-view.component.html</context>
           <context context-type="linenumber">31,32</context>
