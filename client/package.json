@@ -31,12 +31,12 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^11.0.2",
-    "@angular/cdk": "11.0.0",
+    "@angular/cdk": "11.2.13",
     "@angular/common": "^11.0.2",
     "@angular/compiler": "^11.0.2",
     "@angular/core": "^11.0.2",
     "@angular/forms": "^11.0.2",
-    "@angular/material": "~11.0.0",
+    "@angular/material": "11.2.13",
     "@angular/material-moment-adapter": "^11.0.0",
     "@angular/platform-browser": "^11.0.2",
     "@angular/platform-browser-dynamic": "^11.0.2",
@@ -49,6 +49,7 @@
     "angular-resizable-element": "^3.3.4",
     "autolinker": "^3.14.1",
     "chart.js": "^2.9.3",
+    "chartjs-plugin-labels": "^1.1.0",
     "crypto-js": "^3.1.9-1",
     "date-fns": "^2.11.0",
     "highlight.js": "^9.18.1",
@@ -74,6 +75,7 @@
     "sweetalert2": "^10.12.7",
     "tslib": "^2.0.0",
     "ws": "^7.3.0",
+    "xlsx": "^0.17.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

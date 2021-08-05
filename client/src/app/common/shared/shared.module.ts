@@ -110,6 +110,13 @@ import { WidgetSelectorDialogComponent } from './dashboard/widget-selector-dialo
 import { ColorPickerDialogComponent } from './color-picker-dialog/color-picker-dialog.component';
 import { IdeaActionsComponent } from './posts/post-actions/idea-actions/idea-actions.component';
 import { ActivityFiltersComponent } from './activity-feed/activity-filters/activity-filters.component';
+import { SheetComponent } from './sheet/sheet.component';
+
+// Material All Components Module
+import { MaterialModule } from '../material-module/material-module.module';
+
+// Charts Module
+import { ChartModule } from 'modules/chart/chart.module';
 
 @NgModule({
   declarations: [
@@ -230,7 +237,8 @@ import { ActivityFiltersComponent } from './activity-feed/activity-filters/activ
     CustomToolTipComponent,
     ToolTipRendererDirective,
     WidgetSelectorDialogComponent,
-    ColorPickerDialogComponent
+    ColorPickerDialogComponent,
+    SheetComponent
   ],
   imports: [
     CommonModule,
@@ -254,25 +262,31 @@ import { ActivityFiltersComponent } from './activity-feed/activity-filters/activ
     NgbModalModule,
 
     // MAT SIDE MODULE
-    MatSidenavModule,
+    // MatSidenavModule,
 
     // Angular Material Dialog
-    MatDialogModule,
+    // MatDialogModule,
 
     NgxDocViewerModule,
 
-    MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
+    // MatSelectModule,
+    // MatDatepickerModule,
+    // MatNativeDateModule,
     MomentDateModule,
-    MatSlideToggleModule,
+    // MatSlideToggleModule,
     ChartsModule,
     ResizableModule,
-    MatMenuModule,
-    MatBadgeModule,
-    MatPaginatorModule,
-    MatExpansionModule,
-    MatTooltipModule
+    // MatMenuModule,
+    // MatBadgeModule,
+    // MatPaginatorModule,
+    // MatExpansionModule,
+    // MatTooltipModule,
+
+    // Angular Material Module
+    MaterialModule,
+
+    // Chart Module
+    ChartModule
   ],
   exports: [
     AttachFilesComponent,
@@ -364,7 +378,13 @@ import { ActivityFiltersComponent } from './activity-feed/activity-filters/activ
     MatTooltipModule,
     CustomToolTipComponent,
     WidgetSelectorDialogComponent,
-    ColorPickerDialogComponent
+    ColorPickerDialogComponent,
+
+    // Sheet Component
+    SheetComponent,
+
+    // Material Module
+    MaterialModule
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

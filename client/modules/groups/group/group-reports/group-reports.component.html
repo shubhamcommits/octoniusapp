@@ -1,0 +1,14 @@
+<mat-form-field class="full-width" appearance="outline" *ngIf="!(isLoading$ | async) && isCurrentUserMember == false">
+    <mat-label>Your Campaign Files</mat-label>
+    <mat-select [(value)]="campaignFile" (valueChange)="changeValue($event)">
+      <mat-option *ngFor="let file of files" [value]="file">
+        {{ file?.original_name || '-' }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+  </ng-container>
+
+<app-sheet *ngIf="!(isLoading$ | async)" [fileUrl]="campaignFileUrl" [file]="campaignFile" [isMember]="isCurrentUserMember"></app-sheet>

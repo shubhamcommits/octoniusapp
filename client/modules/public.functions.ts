@@ -700,6 +700,32 @@ export class PublicFunctions {
     }
 
     /**
+     * This function is responsible for fetching the campaign files from the server based on the groupId
+     * @param groupId
+     * @param folderId
+     * @param lastFileId: optional
+     */
+     getCampaignFiles(groupId: string) {
+
+        // Files Service Instance
+        let filesService = this.injector.get(FilesService);
+
+        return new Promise((resolve, reject) => {
+            filesService.getCampaignFiles(groupId)
+                .then((res: any) => {
+
+                    // Resolve with sucess
+                    resolve(res['file'])
+                })
+                .catch(() => {
+
+                    // If there's an error, then reject with empty array
+                    reject([]);
+                })
+        })
+    }
+
+    /**
      * This function is responsible for fetching the folders from the server based on the groupId
      * @param groupId
      */
@@ -1361,7 +1387,25 @@ export class PublicFunctions {
     }
 
     /**
-     * Helper function fetching the worksapace groups
+     * This function is responsible for fetching the status of the campaign module
+     * @returns status
+     */
+    async isCampaignModuleAvailable() {
+        const workspace: any = await this.getCurrentWorkspace()
+        const managementPortalService = this.injector.get(ManagementPortalService);
+        return managementPortalService.isExcelModuleAvailable(workspace?._id, workspace?.management_private_api_key).then(
+          (res) => {
+            if ( !res || !res['status'] ) {
+              return false;
+            }
+            return true;
+          }).catch((err) => {
+            return false;
+          });
+      }
+
+      
+     /* Helper function fetching the worksapace groups
      * @param workspaceId - current workspaceId
      */
      getAllGroupsList(workspaceId: string) {

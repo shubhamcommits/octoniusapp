@@ -15,7 +15,7 @@ const FileSchema = new Schema({
         type: String,
         default: 'folio',
         required: false,
-        enum: ['file', 'folio' , 'flamingo']
+        enum: ['file', 'folio' , 'flamingo', 'campaign']
     },
     mime_type: {
         type: String,
@@ -39,6 +39,15 @@ const FileSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Folder',
         required: false
+    },
+    _campaign_user_view : {
+        fields : [{
+            type: String
+        }],
+        rows_count: {
+            type: Number,
+            default: 0
+        }
     }
 });
 

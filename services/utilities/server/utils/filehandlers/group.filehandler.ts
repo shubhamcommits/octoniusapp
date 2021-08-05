@@ -41,6 +41,9 @@ const groupFileUploader = async (req: Request, res: Response, next: NextFunction
     /// Instantiate the fileName variable and add the date object in the name
     let fileName: any = Date.now().toString() + "_" + req['files'].file['name'];
 
+    // if(req.body.fileData.type == 'campaign')
+    //   fileName = req['files'].file['name']
+
     // Get the file from the request
     const file: any = req['files'].file;
 
@@ -108,7 +111,7 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
   const { fileId } = req.params;
   let deletedFile: any = await File.findById({ _id: fileId });
   
-  if (req.body.fileName && req.body.fileName != '' && deletedFile.type == 'file') {
+  if (req.body.fileName && req.body.fileName != '' && (deletedFile.type == 'file' || deletedFile.type == 'campaign')) {
     // Delete the file accordingly and handle request
     fs.unlink(process.env.FILE_UPLOAD_FOLDER + req.body.fileName, (error) => {
       if (error) {

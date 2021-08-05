@@ -5,13 +5,20 @@ import cluster from 'cluster';
 
 if (cluster.isMaster) {
 
+  // Environment State Variable
+  const env = process.env.NODE_ENV
+
   // Fetch Number of Workers
-  const numWorkers = require('os').cpus().length;
+  let numWorkers = 1
+
+  // Scale the workers accordingly
+  if(env == 'production')
+    numWorkers = require('os').cpus().length
 
   console.log('Master cluster setting up ' + numWorkers + ' workers...');
 
   // Fork the process and make clusters
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < numWorkers; i++) {
     cluster.fork();
   }
 

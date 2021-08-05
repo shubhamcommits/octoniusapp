@@ -19,6 +19,7 @@ import { GroupPostComponent } from './group/group-post/group-post.component';
 import { GroupTasksViewsComponent } from './group/group-tasks-views/group-tasks-views.component';
 import { GroupGuard } from 'src/shared/guards/group-guard/group.guard';
 import { GroupDashboardComponent } from './group/group-dashboard/group-dashboard.component';
+import { GroupReportsComponent } from './group/group-reports/group-reports.component';
 
 
 /**
@@ -65,8 +66,11 @@ const routes: Routes = [
       // Group Admin
       { path: 'admin', component: GroupAdminComponent },
 
-      // Group Admin
+      // Group Dashboards
       { path: 'dashboard', component: GroupDashboardComponent },
+
+      // Group Reports
+      { path: 'reports', component: GroupReportsComponent },
 
       // Group Post View
       { path: 'post/:postId', component: GroupPostComponent },

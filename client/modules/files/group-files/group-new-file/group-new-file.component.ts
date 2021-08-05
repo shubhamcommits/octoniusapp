@@ -29,6 +29,9 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
   // GroupId Variable
   @Input() folderId: any;
 
+  // Group Data
+  @Input('groupData') groupData: any;
+
   // Output folder event emitter
   @Output('folder') folderEmitter = new EventEmitter();
 
@@ -37,6 +40,12 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
 
   // Property to check if the workspace has the flamingo module available
   flamingoModuleAvailable = false;
+
+  // Check if campaign module is available
+  enabledCampaign = false
+
+  // Campaign Module Available
+  campaignModuleAvailable: boolean = false
 
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
@@ -64,6 +73,12 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
       type: 'file',
       _workspace: this.workspaceId
     }
+
+    // Campaign Enabled
+    this.enabledCampaign = this.groupData.enabled_campaign
+
+    // Campaign Module Status
+    this.campaignModuleAvailable = await this.publicFunctions.isCampaignModuleAvailable()
   }
 
   ngOnDestroy() {
@@ -113,7 +128,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
    * This function is responsible for uploading the files to the server
    * @param files
    */
-  fileInput(files: FileList) {
+  fileInput(files: FileList, type?: any) {
     // Start the loading spinner
     this.isLoading$.next(true);
 
@@ -122,6 +137,11 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
 
       // Adding Mime Type of the file uploaded
       this.fileData.mime_type = file.type
+
+      // Change type of file, if input is a flamingo
+      if(type){
+        this.fileData.type = type
+      }
 
       // Call the Upload file service function
       this.uploadFile(this.fileData, file);
@@ -162,7 +182,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
                 // upload the file
                 // Set the folder
                 const folderIndex = await folders.findIndex(folder => {
-                  return folder.folder_name == path[i-1];
+                  return folder.folder_name == path[i - 1];
                 });
 
                 if (folderIndex >= 0) {
@@ -198,7 +218,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
                   if (i > 0) {
                     // search for the parent
                     folderIndex = await folders.findIndex(folder => {
-                      return folder.folder_name == path[i-1];
+                      return folder.folder_name == path[i - 1];
                     });
                     folder._parent = folders[folderIndex]._id;
                   } else {
@@ -252,7 +272,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
   /**
   * This function is responsible for creating a flamingo
   */
-  createFlamingo(){
+  createFlamingo() {
 
     this.isLoading$.next(true);
 
@@ -261,7 +281,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
       _folder: this.folderId,
       _posted_by: this.userData._id,
       original_name: 'New Flamingo',
-      modified_name:'New Flamingo',
+      modified_name: 'New Flamingo',
       type: 'flamingo',
       mime_type: 'flamingo'
     }
