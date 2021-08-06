@@ -85,12 +85,10 @@ export class GenericGraphComponent implements OnInit {
 
   changeBaseColumn(event) {
     this.labels = this.sheetData.map(element => element[event]).slice(0,9)
-    console.log(this.labels)
   }
 
   changeValueColumn(event) {
     this.data = this.sheetData.map(element => element[event]).slice(0,9)
-    console.log(this.data)
   }
 
 }
