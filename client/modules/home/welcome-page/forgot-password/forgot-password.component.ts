@@ -44,10 +44,10 @@ export class ForgotPasswordComponent implements OnInit {
   async sendMail(email: string, workspace: string) {
     try{
       if(email == null || workspace == null || email == '' || workspace == ''){
-        this.utilityService.warningNotification('Insufficient data, kindly fill up the form correctly!');
+        this.utilityService.warningNotification($localize`:@@forgotPwd.insufficientData:Insufficient data, kindly fill up the form correctly!`);
       }
       else{
-        this.utilityService.asyncNotification('Please wait while we are processing your request',
+        this.utilityService.asyncNotification($localize`:@@forgotPwd.pleaseWaitProcessing:Please wait while we are processing your request`,
         new Promise((resolve, reject) => {
 
           // Preparing the email data
@@ -63,10 +63,10 @@ export class ForgotPasswordComponent implements OnInit {
                 email: null,
                 workspace: null
               };
-              resolve(this.utilityService.resolveAsyncPromise('Forgot Password email sent successfully!'));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@forgotPwd.forgotPwdEmailSent:Forgot Password email sent successfully!`));
             }, (err) => {
               console.log('Error occured while sending the email', err);
-              reject(this.utilityService.rejectAsyncPromise('Error occured while sending the email, please try again!'));
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@forgotPwd.errorSendingEmail:Error occured while sending the email, please try again!`));
             }));
         }))
       }

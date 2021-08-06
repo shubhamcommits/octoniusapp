@@ -19,7 +19,7 @@ export class GroupMembersComponent implements OnInit {
   public members: any = [];
 
   // PLACEHOLDER INPUT FOR SEARCH BAR
-  public searchBarPlaceholder = "Search user...";
+  public searchBarPlaceholder = $localize`:@@groupMembers.searchUser:Search user...`;
 
   // WORKSPACE DATA
   public groupData: any;

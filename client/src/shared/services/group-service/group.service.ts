@@ -63,7 +63,6 @@ export class GroupService {
       _group: groupId
     }
     formData.append('fileData', JSON.stringify(fileData));
-    console.log("sdsdsf",formData);
     return this._http.put(this.baseURL + `/${groupId}/image`, formData).toPromise()
   }
 

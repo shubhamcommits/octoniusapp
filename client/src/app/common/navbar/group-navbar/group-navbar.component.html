@@ -2,7 +2,9 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="nav">
       <li class="nav-item d-block d-sm-none text-center">
-        <h6 class="card-title" *ngIf="!myWorkplace"><b>{{groupData?.group_name }}</b></h6>
+        <h6 class="card-title" *ngIf="!myWorkplace">
+          <b>{{groupData?.group_name }}</b>
+        </h6>
       </li>
       <li class="nav-item mr-3 d-none d-sm-block">
 
@@ -31,89 +33,129 @@
 
       </li>
 
-      <li class="nav-item" *ngIf="myWorkplace || !groupData">
+      <li class="nav-item" *ngIf="myWorkplace || !groupData" >
         <a [ngClass]="activeState == 'myspace_inbox'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('myspace_inbox')" routerLink="/dashboard/myspace/inbox"
-          [queryParams]="{myWorkplace: true }" routerLinkActive="active">Inbox</a>
+            (click)="changeState('myspace_inbox')"
+            routerLink="/dashboard/myspace/inbox"
+            [queryParams]="{myWorkplace: true }"
+            routerLinkActive="active" i18n="@@groupNavbar.inbox">
+              Inbox
+          </a>
       </li>
       <li class="nav-item" *ngIf="myWorkplace || !groupData">
         <a [ngClass]="activeState == 'myspace_tasks'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('myspace_tasks')" routerLink="/dashboard/myspace/tasks"
-          [queryParams]="{myWorkplace: true }" routerLinkActive="active">Tasks</a>
+            (click)="changeState('myspace_tasks')"
+            routerLink="/dashboard/myspace/tasks"
+            [queryParams]="{myWorkplace: true }"
+            routerLinkActive="active" i18n="@@groupNavbar.tasks">
+              Tasks
+        </a>
       </li>
       <li class="nav-item" *ngIf="myWorkplace">
         <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('groups_activity')" routerLink="/dashboard/work/groups/activity"
-          [queryParams]="{ group: userData?._private_group, myWorkplace: true }" routerLinkActive="active"> <span
-            class="dot dot-notes"></span> Notes
+            (click)="changeState('groups_activity')" routerLink="/dashboard/work/groups/activity"
+            [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
+            routerLinkActive="active">
+              <span class="dot dot-notes"></span>
+              <span i18n="@@groupNavbar.notes">Notes</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="myWorkplace">
         <a [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('groups_tasks')" routerLink="/dashboard/work/groups/tasks"
-          [queryParams]="{ group: userData?._private_group, myWorkplace: true }" routerLinkActive="active"><span
-            class="dot dot-personal-tasks"></span> Personal Tasks
+            (click)="changeState('groups_tasks')"
+            routerLink="/dashboard/work/groups/tasks"
+            [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
+            routerLinkActive="active">
+              <span class="dot dot-personal-tasks"></span>
+              <span i18n="@@groupNavbar.personalTasks">Personal Tasks</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="myWorkplace">
         <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('groups_files')" routerLink="/dashboard/work/groups/files"
-          [queryParams]="{ group: userData?._private_group, myWorkplace: true }" routerLinkActive="active"><span
-            class="dot dot-personal-files"></span> Personal Files
+            (click)="changeState('groups_files')"
+            routerLink="/dashboard/work/groups/files"
+            [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
+            routerLinkActive="active">
+              <span class="dot dot-personal-files"></span>
+              <span i18n="@@groupNavbar.personalFiles">Personal Files</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('groups_activity')" *ngIf="!myWorkplace"
-          routerLink="/dashboard/work/groups/activity"
-          [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }" routerLinkActive="active">Activity
+        <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
+            (click)="changeState('groups_activity')"
+            routerLink="/dashboard/work/groups/activity"
+            [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
+            routerLinkActive="active" i18n="@@groupNavbar.activity">
+              Activity
         </a>
       </li>
       <li class="nav-item">
-        <a [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('groups_tasks')" *ngIf="!myWorkplace"
-          routerLink="/dashboard/work/groups/tasks" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
-          routerLinkActive="active">Tasks
-        </a>
+          <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('groups_tasks')"
+              routerLink="/dashboard/work/groups/tasks"
+              [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
+              routerLinkActive="active"
+              i18n="@@groupNavbar.tasks">
+                Tasks
+          </a>
       </li>
       <li class="nav-item">
-        <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('groups_files')" *ngIf="!myWorkplace"
-          routerLink="/dashboard/work/groups/files" [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
-          routerLinkActive="active">Files
-        </a>
+          <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('groups_files')"
+              routerLink="/dashboard/work/groups/files"
+              [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
+              routerLinkActive="active"
+              i18n="@@groupNavbar.files">
+                Files
+          </a>
       </li>
 
       <li class="nav-item" *ngIf="!myWorkplace">
-        <a [ngClass]="activeState == 'groups_members'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('groups_members')" routerLink="/dashboard/work/groups/members"
-          [queryParams]="{ group: groupData?._id }" routerLinkActive="active">Members
+          <a [ngClass]="activeState == 'groups_members'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('groups_members')"
+              routerLink="/dashboard/work/groups/members"
+              [queryParams]="{ group: groupData?._id }"
+              routerLinkActive="active"
+              i18n="@@groupNavbar.members">
+                Members
+          </a>
+      </li>
 
-        </a>
+      <li class="nav-item d-none d-md-block" *ngIf="!myWorkplace && isAdmin && !isCampaign">
+          <a [ngClass]="activeState == 'groups_dashboard'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('groups_dashboard')"
+              routerLink="/dashboard/work/groups/dashboard"
+              [queryParams]="{ group: groupData?._id }"
+              routerLinkActive="active"
+              i18n="@@groupNavbar.dashboard">
+                Dashboard
+          </a>
       </li>
-      <li class="nav-item" *ngIf="!myWorkplace && isAdmin && !isCampaign">
-        <a [ngClass]="activeState == 'groups_dashboard'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('groups_dashboard')" routerLink="/dashboard/work/groups/dashboard"
-          [queryParams]="{ group: groupData?._id }" routerLinkActive="active">Dashboard
-        </a>
-      </li>
+
       <!-- Campaign is Enabled -->
       <li class="nav-item" *ngIf="!myWorkplace && isCampaign">
         <a [ngClass]="activeState == 'groups_reports'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('groups_reports')" routerLink="/dashboard/work/groups/reports"
-          [queryParams]="{ group: groupData?._id }" routerLinkActive="active">Reports
+            (click)="changeState('groups_reports')"
+            routerLink="/dashboard/work/groups/reports"
+            [queryParams]="{ group: groupData?._id }"
+            routerLinkActive="active"
+            i18n="@@groupNavbar.reports">
+              Reports
         </a>
       </li>
       <!-- Campaign is Enabled -->
+
       <li class="nav-item" *ngIf="!myWorkplace && isAdmin">
-        <a [ngClass]="activeState == 'groups_admin'?'nav-link active-nav':'nav-link'"
-          (click)="changeState('groups_admin')" routerLink="/dashboard/work/groups/admin"
-          [queryParams]="{ group: groupData?._id }" routerLinkActive="active">Admin
-
-        </a>
+          <a [ngClass]="activeState == 'groups_admin'?'nav-link active-nav':'nav-link'"
+              (click)="changeState('groups_admin')"
+              routerLink="/dashboard/work/groups/admin"
+              [queryParams]="{ group: groupData?._id }"
+              routerLinkActive="active"
+              i18n="@@groupNavbar.admin">
+                Admin
+          </a>
       </li>
-
     </ul>
   </div>
 </nav>

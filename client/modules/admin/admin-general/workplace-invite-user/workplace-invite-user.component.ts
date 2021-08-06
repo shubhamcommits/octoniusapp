@@ -18,8 +18,8 @@ export class WorkplaceInviteUserComponent implements OnInit {
   @Input('userData') userData: any;
 
   email: string = '';
-  label: string = "The option is mainly for inviting super-admins, group admins, and external guests.";
-  placeholder: string = "Please provide the email";
+  label: string = $localize`:@@workplaceInviteUser.theOptionIsMainlyInvite:The option is mainly for inviting super-admins, group admins, and external guests.`;
+  placeholder: string = $localize`:@@workplaceInviteUser.pleaseProvideEmail:Please provide the email`;
 
   isValidEmail = false;
 
@@ -49,20 +49,20 @@ export class WorkplaceInviteUserComponent implements OnInit {
   inviteUser(workspaceId: string, email: string){
     if (this.isValidEmail) {
       try {
-        this.utilityService.asyncNotification('Please wait, while we are sending the email...', new Promise((resolve, reject)=>{
+        this.utilityService.asyncNotification($localize`:@@workplaceInviteUser.pleaseWaitSendingEmail:Please wait, while we are sending the email...`, new Promise((resolve, reject)=>{
           this.adminService.inviteNewUserViaEmail(workspaceId, email, 'workspace', '', this.userData?.first_name)
           .subscribe((res)=>{
             this.email = '';
-            resolve(this.utilityService.resolveAsyncPromise(`We have sent the invitation email at ${email} to join your workplace!`))
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceInviteUser.weSentInvitationEmail:We have sent the invitation email at ${email} to join your workplace!`))
           }, (err)=>{
             this.email = '';
             console.log('Error occured, while sending the email', err);
-            reject(this.utilityService.rejectAsyncPromise('Oops, an error occured while sending the email, please try again!'))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceInviteUser.oopsErrorSendingEmail:Oops, an error occured while sending the email, please try again!`))
           })
         }))
       } catch(err) {
         console.log('There\'s some unexpected error occured, please try again!', err);
-        this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
+        this.utilityService.errorNotification($localize`:@@workplaceInviteUser.unexpectedError:There\'s some unexpected error occured, please try again!`);
       }
     }
   }

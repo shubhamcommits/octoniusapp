@@ -1,78 +1,92 @@
 <div class="north-star-box" *ngIf="isNorthStar">
   <!-- Is Not North Start starts -->
   <div>
-    <p class="box-title"><i class="material-icons-round" style="vertical-align: middle;">
-      explore
-    </i> North Star</p>
-    <p>North Stars are goals for you or your team.</p>
+    <p class="box-title">
+      <i class="material-icons-round" style="vertical-align: middle;">explore</i>
+      <span i18n="@@northStar.northStar">North Star</span>
+    </p>
+
+    <p i18n="@@northStar.northStarAreGoals">North Stars are goals for you or your team.</p>
 
     <br/>
     <!-- Setting Initial Value starts -->
     <div class="focus" *ngIf="updatingInitialValues">
-      <p class="title">Focus settings</p>
-   <div class="container" style="margin-top: 24px;">
-    <div class="row">
-      <div class="col">
-     <label for="target">Metric:</label>
-   </div>
-   <div class="col" style="padding-left: 0;">
-     <mat-form-field style="width:100%; margin-top: -20px;">
-       <mat-select ngDefaultControl
-         [disabled]="northStar?.values?.length > 1"
-         (selectionChange)="changeType($event)"
-         (click)="$event.stopPropagation()"
-         [(ngModel)]="northStar.type"
-         name="new_type">
-           <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
-       </mat-select>
-     </mat-form-field>
-   </div>
+      <p class="title" i18n="@@northStar.focusSettings">Focus settings</p>
+      <div class="container" style="margin-top: 24px;">
+        <div class="row">
+          <div class="col">
+            <label for="target" i18n="@@northStar.metric">Metric:</label>
+          </div>
 
-   <div class="w-100"></div>
-   <div class="col"><label for="target">Target:</label></div>
-   <div class="col" style="padding-left: 0;"><input class="target" name="target" type="text" [(ngModel)]="northStar.target_value"></div>
-   <div class="w-100"></div>
-   <div class="col">
-    <label for="value">Initial Value:</label></div>
-    <div class="col" style="padding-left: 0;"><input name="value" type="text" [(ngModel)]="initialValue">
-  </div>
-   </div>
-   </div>
+          <div class="col" style="padding-left: 0;">
+            <mat-form-field style="width:100%; margin-top: -20px;">
+              <mat-select ngDefaultControl
+                [disabled]="northStar?.values?.length > 1"
+                (selectionChange)="changeType($event)"
+                (click)="$event.stopPropagation()"
+                [(ngModel)]="northStar.type"
+                name="new_type">
+                  <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="w-100"></div>
+          <div class="col">
+            <label for="target" i18n="@@northStar.target">Target:</label>
+          </div>
+
+          <div class="col" style="padding-left: 0;">
+            <input class="target" name="target" type="text" [(ngModel)]="northStar.target_value">
+          </div>
+
+          <div class="w-100"></div>
+
+          <div class="col">
+            <label for="value" i18n="@@northStar.initialValue">Initial Value:</label>
+          </div>
+
+          <div class="col" style="padding-left: 0;">
+            <input name="value" type="text" [(ngModel)]="initialValue">
+          </div>
+        </div>
+      </div>
 
 
 
-      <div class="save" (click)="saveInitial()">Save</div>
+      <div class="save" (click)="saveInitial()" i18n="@@northStar.save">Save</div>
     </div>
     <!-- Setting Initial Value ends -->
 
     <!-- Updating Initial Value starts -->
     <div class="focus" *ngIf="!updatingInitialValues">
-      <p class="title">Focus
+      <p class="title">
+        <span i18n="@@northStar.focus">Focus</span>
         <i class="material-icons update" (click)="updatingInitialValues = true; this.updateProgress = false;">settings</i>
       </p>
 
-      <div class="target_value" *ngIf="northStar?.type === 'Currency $'"><span>Target:</span> {{ northStar?.target_value | currency: '$' }}</div>
-      <div class="target_value" *ngIf="northStar?.type === 'Currency €'"><span>Target:</span> {{ northStar?.target_value | currency: '€' }}</div>
-      <div class="target_value" *ngIf="northStar?.type === 'Number'"><span>Target:</span> {{ northStar?.target_value }}</div>
-      <div class="target_value" *ngIf="northStar?.type === 'Percent'"><span>Target:</span> {{ northStar?.target_value/100 | percent: '.2-2' }}</div>
+      <div class="target_value" *ngIf="northStar?.type === 'Currency $'"><span i18n="@@northStar.target">Target:</span> {{ northStar?.target_value | currency: '$' }}</div>
+      <div class="target_value" *ngIf="northStar?.type === 'Currency €'"><span i18n="@@northStar.target">Target:</span> {{ northStar?.target_value | currency: '€' }}</div>
+      <div class="target_value" *ngIf="northStar?.type === 'Number'"><span i18n="@@northStar.target">Target:</span> {{ northStar?.target_value }}</div>
+      <div class="target_value" *ngIf="northStar?.type === 'Percent'"><span i18n="@@northStar.target">Target:</span> {{ northStar?.target_value/100 | percent: '.2-2' }}</div>
 
-      <div class="value" *ngIf="northStar?.type === 'Currency $'"> <span>Current:</span> {{ northStar?.values[northStar?.values?.length - 1]?.value | currency: '$' }}</div>
-      <div class="value" *ngIf="northStar?.type === 'Currency €'"><span>Current:</span>  {{ northStar?.values[northStar?.values?.length - 1]?.value | currency: '€' }}</div>
-      <div class="value" *ngIf="northStar?.type === 'Percent'"><span>Current:</span>  {{ northStar?.values[northStar?.values?.length - 1]?.value/100 | percent: '.2-2' }}</div>
-      <div class="value" *ngIf="northStar?.type === 'Number'"> <span>Current:</span> {{ northStar?.values[northStar?.values?.length - 1]?.value }}</div>
+      <div class="value" *ngIf="northStar?.type === 'Currency $'"> <span i18n="@@northStar.current">Current:</span> {{ northStar?.values[northStar?.values?.length - 1]?.value | currency: '$' }}</div>
+      <div class="value" *ngIf="northStar?.type === 'Currency €'"><span i18n="@@northStar.current">Current:</span>  {{ northStar?.values[northStar?.values?.length - 1]?.value | currency: '€' }}</div>
+      <div class="value" *ngIf="northStar?.type === 'Percent'"><span i18n="@@northStar.current">Current:</span>  {{ northStar?.values[northStar?.values?.length - 1]?.value/100 | percent: '.2-2' }}</div>
+      <div class="value" *ngIf="northStar?.type === 'Number'"> <span i18n="@@northStar.current">Current:</span> {{ northStar?.values[northStar?.values?.length - 1]?.value }}</div>
 
       <div>
-        <span>Status: </span>
+        <span i18n="@@northStar.status">Status: </span>
         <span class="status">{{ northStar?.values[northStar?.values?.length - 1]?.status }}</span>
       </div>
 
-      <div class="open_update_progress" (click)="openUpdateProgress()">Update progress</div>
+      <div class="open_update_progress" (click)="openUpdateProgress()" i18n="@@northStar.updateProgress">Update progress</div>
 
       <div class="update_progress" *ngIf="updateProgress">
-        <label for="newValue">Progress update:</label>
+        <label for="newValue" i18n="@@northStar.progressUpdate">Progress update:</label>
         <input name="newValue" type="text" [(ngModel)]="newValue.value">
 
-        <label for="new_status">Status update:</label>
+        <label for="new_status" i18n="@@northStar.statusUpdate">Status update:</label>
         <mat-form-field>
           <mat-select ngDefaultControl name="new_status"
             [ngClass]="status_class"
@@ -83,7 +97,7 @@
           </mat-select>
         </mat-form-field>
 
-        <div class="save" (click)="addUpdateProgress()">Save</div>
+        <div class="save" (click)="addUpdateProgress()" i18n="@@northStar.save">Save</div>
       </div>
     </div>
     <!-- Updating Initial Value ends -->

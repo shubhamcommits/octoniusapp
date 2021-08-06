@@ -55,9 +55,9 @@ export class UserSkillsComponent implements OnInit {
       .toPromise()
       .then(()=> {
         this.autoUpdateGroups();
-        resolve(this.utilityService.successNotification('New skill Added!'));
+        resolve(this.utilityService.successNotification($localize`:@@userSkills.newSkillAdded:New skill Added!`));
       })
-      .catch(() => reject(this.utilityService.errorNotification('Unable to add new skill, please try again!')));
+      .catch(() => reject(this.utilityService.errorNotification($localize`:@@userSkills.unableToAddSkill:Unable to add new skill, please try again!`)));
     })
   }
 
@@ -81,9 +81,9 @@ export class UserSkillsComponent implements OnInit {
         this.publicFunctions.sendUpdatesToUserData(this.userData);
 
         // Resolve the promise
-        resolve(this.utilityService.warningNotification('Skill Removed!'))
+        resolve(this.utilityService.warningNotification($localize`:@@userSkills.skillRemoved:Skill Removed!`))
       })
-      .catch(() => reject(this.utilityService.errorNotification('Unable to add new skill, please try again!')));
+      .catch(() => reject(this.utilityService.errorNotification($localize`:@@userSkills.unableToRemoveSkill:Unable to remove skill, please try again!`)));
     })
   }
 
@@ -107,8 +107,7 @@ export class UserSkillsComponent implements OnInit {
               this.publicFunctions.sendUpdatesToGroupData(res['group']);
             },
             error => {
-              this.utilityService.errorNotification('An error occurred whilst modifying the members of the group.');
-              console.error('Could not auto update members!');
+              this.utilityService.errorNotification($localize`:@@userSkills.errorOccurredWhileModifyingMembers:An error occurred while modifying the members of the group.`);
               console.error(error);
             }
           );

@@ -44,10 +44,10 @@ export class AdminGeneralComponent implements OnInit {
   }
 
   removeWorkspace(workspaceId) {
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this, the workspace be completely removed!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@adminGeneral.areYouSure:Are you sure?`, $localize`:@@adminGeneral.workspaceCompletelyRemoved:By doing this, the workspace be completely removed!`)
       .then((res) => {
         if (res.value) {
-          this.utilityService.asyncNotification('Please wait we are deleting the workspace...', new Promise((resolve, reject) => {
+          this.utilityService.asyncNotification($localize`:@@adminGeneral.pleaseWaitDeletingWorkspace:Please wait we are deleting the workspace...`, new Promise((resolve, reject) => {
             // Remove the step
             this.workspaceService.removeWorkspace(workspaceId)
               .then((res) => {
@@ -58,9 +58,9 @@ export class AdminGeneralComponent implements OnInit {
                 this.publicFunctions.sendUpdatesToUserData({});
                 this.router.navigate(['/home']);
 
-                resolve(this.utilityService.resolveAsyncPromise('Workspace deleted!'));
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@adminGeneral.workspaceDeleted:Workspace deleted!`));
               }).catch((err) => {
-                reject(this.utilityService.rejectAsyncPromise('Unable to delete the workspace, please try again!'));
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@adminGeneral.unableDeleteWorkspace:Unable to delete the workspace, please try again!`));
               });
           }));
         }

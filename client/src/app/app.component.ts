@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Inject, Injector, LOCALE_ID } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { retry } from 'rxjs/internal/operators/retry';
@@ -8,7 +8,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { NotificationService } from 'src/shared/services/notification-service/notification.service';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { PublicFunctions } from '../../modules/public.functions';
-import { Router, RouterEvent, NavigationEnd, ChildActivationEnd, ActivationEnd } from '@angular/router';
+import { Router, NavigationEnd, ChildActivationEnd, ActivationEnd } from '@angular/router';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 import { HttpCancelService } from 'src/shared/services/httpcancel-service/httpcancel.service';
 
@@ -42,6 +42,7 @@ export class AppComponent {
   isAuth : boolean = false;
 
   constructor(
+    // @Inject(LOCALE_ID) protected localeId: string,
     private injector: Injector,
     private storageService: StorageService,
     private _router: Router,
@@ -110,7 +111,7 @@ export class AppComponent {
     return this.createOnline$()
       .subscribe((isOnline) => {
         if (!isOnline) {
-          utilityService.warningNotification('Oops, seems like you lost your internet connection');
+          utilityService.warningNotification($localize`:@@app.oopsSeemsYouLostInternetConnection:Oops, seems like you lost your internet connection`);
         }
         else
           utilityService.clearAllNotifications();
@@ -208,7 +209,7 @@ export class AppComponent {
         // Update the role
         if (userData.hasOwnProperty('role')) {
           currentUser.role = userData.role || currentUser.role;
-          utilityService.infoNotification(`Your role has been updated to ${currentUser.role}!`)
+          utilityService.infoNotification($localize`:@@app.roleUpdated:Your role has been updated to ${currentUser.role}!`)
         }
 
 

@@ -54,8 +54,16 @@
               "crypto-js",
               "chart.js",
               "quill-delta-to-html",
-              "socket.io-client"
-            ]
+              "socket.io-client",
+              "highlight.js",
+              "xlsx"
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -84,8 +92,24 @@
                   "maximumError": "2mb"
                 }
               ]
+            },
+            "en": {
+              "localize": ["en"],
+              "outputPath": "dist/en",
+              "i18nMissingTranslation": "error"
+            },
+            "es": {
+              "localize": ["es"],
+              "outputPath": "dist/es/",
+              "i18nMissingTranslation": "error"
+            },
+            "de": {
+              "localize": ["de"],
+              "outputPath": "dist/de/",
+              "i18nMissingTranslation": "error"
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -95,6 +119,15 @@
           "configurations": {
             "production": {
               "browserTarget": "client:build:production"
+            },
+            "en": {
+              "browserTarget": "client:build:en"
+            },
+            "es": {
+              "browserTarget": "client:build:es"
+            },
+            "de": {
+              "browserTarget": "client:build:de"
             }
           }
         },
@@ -144,6 +177,19 @@
             "production": {
               "devServerTarget": "client:serve:production"
             }
+          }
+        }
+      },
+      "i18n": {
+        "sourceLocale": "en",
+        "locales": {
+          "es": {
+            "translation": "src/locale/messages.es.xlf",
+            "baseHref": ""
+          },
+          "de": {
+            "translation": "src/locale/messages.de.xlf",
+            "baseHref": ""
           }
         }
       }

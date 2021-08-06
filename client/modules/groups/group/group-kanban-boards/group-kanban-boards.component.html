@@ -23,15 +23,15 @@
                             <ul class="dropdown-menu">
                                 <li class="dropdown-item" (click)="column.editColumn = !column.editColumn">
                                   <span class="material-icons-outlined">create</span>
-                                  Edit
+                                  <span i18n="@@groupKanbanBoard.edit">Edit</span>
                                 </li>
                                 <li class="dropdown-item" (click)="deleteColumn(column)">
                                   <span class="material-icons-outlined">delete</span>
-                                  Delete
+                                  <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
                                 <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(column)">
                                   <img src="assets/images/Icon/icon_launch_project.svg" alt="" >
-                                  Launch Project
+                                  <span i18n="@@groupDashboard.launchProject">Launch Project</span>
                                 </li>
                             </ul>
                             <!-- Menu Drawer Ends -->
@@ -47,7 +47,7 @@
 
                 <!-- COLUMN STATS SECTION STARTS -->
                 <div class="project-container">
-                  {{ column?.tasks?.length }} Tasks
+                  {{ column?.tasks?.length }} <span i18n="@@groupDashboard.tasksDone">Tasks</span>
                   <span class="float-right done">
                     {{ column?.numDoneTasks || 0 }} Done
                   </span>
@@ -137,7 +137,7 @@
 
                 <!-- COLUMN STATS SECTION STARTS -->
                 <div class="project-container">
-                  {{ column?.tasks?.length }} Tasks
+                  {{ column?.tasks?.length }} <span i18n="@@groupDashboard.tasksDone">Tasks</span>
                   <span class="float-right done">
                     {{ column?.numDoneTasks || 0 }} Done
                   </span>
@@ -183,7 +183,7 @@
     <!-- placeholder for empty board starts -->
     <div *ngIf="!columns || columns.length == 0" style="text-align: center;">
       <img src='assets/images/placeholder_activity3.png' class="placeholder-img">
-      <p class="muted text-center">This board is empty. Create a section to add tasks. </p>
+      <p class="muted text-center" i18n="@@groupDashboard.boardEmpty">This board is empty. Create a section to add tasks. </p>
     </div>
     <!-- placeholder for empty board ends -->
 </div>

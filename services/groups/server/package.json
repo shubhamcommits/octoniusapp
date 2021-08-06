@@ -28,7 +28,7 @@
     "mongoose": "~5.8.7",
     "morgan": "^1.9.1",
     "ts-node": "^8.6.2",
-    "ts-node-dev": "^1.0.0-pre.44",
+    "ts-node-dev": "^1.1.8",
     "tslint": "^5.20.1",
     "typescript": "~4.0.5"
   },

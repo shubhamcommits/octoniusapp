@@ -80,14 +80,14 @@ export class GroupsListComponent implements OnInit {
     this.userGroups = await this.publicFunctions.getUserGroups(this.workspaceData['_id'], this.userData['_id'])
       .catch(() => {
         // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        this.publicFunctions.sendError(new Error($localize`:@@groupList.unableToConnectToServer:Unable to connect to the server, please try again later!`));
         this.isLoading$.next(false);
       })
 
     this.agoraGroups = await this.publicFunctions.getAgoraGroupsNotJoined(this.workspaceData['_id'], this.userData['_id'])
       .catch(() => {
         // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        this.publicFunctions.sendError(new Error($localize`:@@groupList.unableToConnectToServer:Unable to connect to the server, please try again later!`));
         this.isLoadingAgora$.next(false);
       })
 
@@ -194,9 +194,9 @@ export class GroupsListComponent implements OnInit {
 
   /**
    * This function is responsible for returning the unique group members count
-   * @param members 
-   * @param admins 
-   * @returns 
+   * @param members
+   * @param admins
+   * @returns
    */
    getUniqueMembersCount(members, admins) {
 
@@ -208,8 +208,8 @@ export class GroupsListComponent implements OnInit {
       members = Array.from(new Set(members))
 
       return members.length
-    } 
-    else 
+    }
+    else
       return 0
 
   }

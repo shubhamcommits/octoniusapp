@@ -53,7 +53,7 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
         return this.managementPortalService.getBillingStatus(this.workspaceId, currentWorkspace['management_private_api_key']).then(
           (res) => {
             if ( !res['status'] ) {
-              Swal.fire("Access restricted", "Please start your subscription.");
+              Swal.fire($localize`:@@denyNavigationGuard.accessRestricted:Access restricted`, $localize`:@@denyNavigationGuard.pleaseStartSubscription:Please start your subscription.`);
             }
             return res['status'];
           }).catch((err) => {
@@ -82,7 +82,7 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
       return this.managementPortalService.getBillingStatus(this.workspaceId, currentWorkspace['management_private_api_key']).then(
         (res) => {
           if (res['blocked'] ) {
-            this.utilityService.warningNotification('Your workspace is not available, please contact your administrator!');
+            this.utilityService.warningNotification($localize`:@@denyNavigationGuard.workspaceNotAvailable:Your workspace is not available, please contact your administrator!`);
             this.authService.signout().subscribe((res) => {
               this.storageService.clear();
               this.publicFunctions.sendUpdatesToGroupData({});

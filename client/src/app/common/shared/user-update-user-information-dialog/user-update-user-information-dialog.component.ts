@@ -52,16 +52,16 @@ export class UserUpdateUserInformationDialogComponent implements OnInit {
       phone_number : this.phone_number,
       company_name : this.company_name
     }
-    this.utilityService.asyncNotification('Please wait we are updating your information...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@userUpdateUserInformationDialog.pleseWaitUpdatingInformation:Please wait we are updating your information...`, new Promise((resolve, reject) => {
       this.publicFunctions.userDetailsServiceFunction(this.userService,data)
         .then((res) => {
 
           this.closeEvent.emit(res);
           this.mdDialogRef.close();
 
-          resolve(this.utilityService.resolveAsyncPromise('Details updated sucessfully!'));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@userUpdateUserInformationDialog.detailsUpdated:Details updated sucessfully!`));
         }).catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise(err.error.message || 'An unexpected occured while updating the details, please try again!'));
+          reject(this.utilityService.rejectAsyncPromise(err.error.message || $localize`:@@userUpdateUserInformationDialog.unexpectedOccured:An unexpected occured while updating the details, please try again!`));
         });
     }));
   }

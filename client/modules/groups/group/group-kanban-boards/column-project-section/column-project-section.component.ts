@@ -39,16 +39,16 @@ export class ColumnProjectSectionComponent implements OnInit {
 
   newBudget(columnId: string, initialBudget: number) {
 
-    this.utilityService.asyncNotification('Please wait we are updating the project...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@columnProjectSection.pleaseWaitUpdatingProject:Please wait we are updating the project...`, new Promise((resolve, reject) => {
       this.columnService.saveAmountBudget(columnId, initialBudget)
         .then((res) => {
           this.column.budget = {
             amount_planned: initialBudget
           }
-          resolve(this.utilityService.resolveAsyncPromise('Project updated!'));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@columnProjectSection.projectUpdated:Project updated!`));
         })
         .catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise('Unable to update the column, please try again!'))
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@columnProjectSection.unableToUpdateColumn:Unable to update the column, please try again!`))
         })
     }));
   }

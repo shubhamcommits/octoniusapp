@@ -4,14 +4,14 @@
           <div class="col-md-4">
               <div class="btn-group">
                   <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
-                      (viewDateChange)="closeOpenMonthViewDay()">
+                      (viewDateChange)="closeOpenMonthViewDay()" i18n="@@groupCalendarView.previous">
                       Previous
                   </div>
-                  <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+                  <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate" i18n="@@groupCalendarView.today">
                       Today
                   </div>
                   <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
-                      (viewDateChange)="closeOpenMonthViewDay()">
+                      (viewDateChange)="closeOpenMonthViewDay()" i18n="@@groupCalendarView.next">
                       Next
                   </div>
               </div>
@@ -22,15 +22,15 @@
           <div class="col-md-4">
               <div class="btn-group">
                   <div class="btn btn-primary" (click)="setView(CalendarView.Month)"
-                      [class.active]="view === CalendarView.Month">
+                      [class.active]="view === CalendarView.Month" i18n="@@groupCalendarView.month">
                       Month
                   </div>
                   <div class="btn btn-primary" (click)="setView(CalendarView.Week)"
-                      [class.active]="view === CalendarView.Week">
+                      [class.active]="view === CalendarView.Week" i18n="@@groupCalendarView.week">
                       Week
                   </div>
                   <div class="btn btn-primary" (click)="setView(CalendarView.Day)"
-                      [class.active]="view === CalendarView.Day">
+                      [class.active]="view === CalendarView.Day" i18n="@@groupCalendarView.day">
                       Day
                   </div>
               </div>

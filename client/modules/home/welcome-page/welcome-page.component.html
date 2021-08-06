@@ -11,12 +11,12 @@
 
           <div style="width: 100%; margin:0 auto; align-items: center;height: 30vh;">
 
-            <h1 style="margin-bottom: 30px;">
+            <h1 style="margin-bottom: 30px;" i18n="@@welcomePage.logInYourAccount">
               Log in to your account
             </h1>
 
             <div class="form-group">
-              <label for="email" class="muted">Enter your work email address</label>
+              <label for="email" class="muted" i18n="@@welcomePage.enterYourWorkEmail">Enter your work email address</label>
               <input type="email" name="email" (focusout)="validateEmail()" class="form-control"
                 [(ngModel)]="account.email" (keyup.enter)="signIn()">
             </div>
@@ -26,25 +26,28 @@
               <input type="password" class="form-control" name="password"
                 [(ngModel)]="account.password" (keyup.enter)="signIn()">
                 <p class="muted">
-                  Forgot password? <span (click)="openForgotPassword(content)" class="forgot-password">Reset password</span></p>
+                  <span i18n="@@welcomePage.forgotPassword">Forgot password?</span>
+                  <span (click)="openForgotPassword(content)" class="forgot-password" i18n="@@welcomePage.resetPassword">Reset password</span>
+                </p>
             </div>
 
             <!-- FORGOT PASSWORD MODULE STARTS -->
-           
+
             <ng-template #content let-modal>
               <forgot-password></forgot-password>
             </ng-template>
             <!-- FORGOT PASSWORD MODULE ENDS -->
 
-            <button type="submit" class="btn btn-primary btn-block btn_login" (click)="signIn()">LOG IN</button>
+            <button type="submit" class="btn btn-primary btn-block btn_login" (click)="signIn()" i18n="@@welcomePage.logIn">LOG IN</button>
           </div>
 
           <div style="width: 100%; margin:80px auto; align-items: center; text-align: center; border-top: 1px solid #005fd521;">
-            <p class="text-center muted" style="margin-top: 50px;">
+            <p class="text-center muted" style="margin-top: 50px;" i18n="@@welcomePage.firstTimeHere">
               First time here? Create your account.
             </p>
             <button type="button" class="btn btn-outline-secondary btn-block btn_login"
-                [routerLink]="['/authentication', 'sign-up']" routerLinkActive="router-link-active">
+                [routerLink]="['/authentication', 'sign-up']" routerLinkActive="router-link-active"
+                i18n="@@welcomePage.signUp">
               SIGN UP
             </button>
           </div>

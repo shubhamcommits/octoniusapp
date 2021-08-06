@@ -1,19 +1,22 @@
 <div *ngIf="today_event_count == 0" class="smart-card" style="padding: 10px;">
     <a style="text-decoration:none; color:inherit;" routerLink="/dashboard/myspace/agenda">
         <div class="row" style="margin: 0 0 20px;">
-            <div class="card-title mt-1">
+            <div class="card-title mt-1" i18n="@@agendaSmartCard.agenda">
                 Agenda
-              </div>
+            </div>
             <div class="card-icon">
-              <span class="badge">{{ today_event_count }}</span> for today
+              <span class="badge">{{ today_event_count }}</span> <span i18n="@@agendaSmartCard.forToday">for today</span>
             </div>
         </div>
+
         <div class="row">
-            <div class="card-first-column col-md-12">Ta-da!</div>
+            <div class="card-first-column col-md-12" i18n="@@agendaSmartCard.taDa">Ta-da!</div>
         </div>
+
         <div class="row">
-            <div class="card-first-column col-md-12">You're free today.</div>
+            <div class="card-first-column col-md-12" i18n="@@agendaSmartCard.youAreFreeToday">You're free today.</div>
         </div>
+
         <div class="row">
         </div>
 
@@ -29,32 +32,29 @@
 <div *ngIf="today_event_count > 0" class="smart-card" style="padding: 10px;">
   <a style="text-decoration:none; color:inherit;" routerLink="/dashboard/myspace/agenda">
     <div class="row" style="margin: 0 0 20px;">
-        <div class="card-title mt-1">
+        <div class="card-title mt-1" i18n="@@agendaSmartCard.agenda">
             Agenda
-          </div>
+        </div>
+
         <div class="card-icon">
-          <span class="badge">{{ today_event_count }}</span> for today
+          <span class="badge">{{ today_event_count }}</span> <span i18n="@@agendaSmartCard.forToday">for today</span>
         </div>
     </div>
 
 
     <div *ngFor="let post of todayEvents; let i = index;">
-
         <div *ngIf="post.type == 'event' && i < 2" class="row media-body">
             <div class="col-3" style="padding-right: 0">
-                <div class="card-first-column blue">{{post.event.due_to | date:'HH:mm' }}</div>
+                <div class="card-first-column blue">{{ post.event.due_to | date:'HH:mm' }}</div>
             </div>
             <div class="col-9" style="padding-left: 0;">
-                <div class="post-title title-nowrap">{{post?.title }}</div>
+                <div class="post-title title-nowrap">{{ post?.title }}</div>
             </div>
         </div>
     </div>
 
     <div class="post-title" *ngIf="today_event_count-2>0">
-        {{today_event_count - 2 > 0 ? today_event_count - 2 : 0 }} more...
+        {{ today_event_count - 2 > 0 ? today_event_count - 2 : 0 }} <span i18n="@@agendaSmartCard.more">more...</span>
     </div>
-
-
-   
   </a>
 </div>

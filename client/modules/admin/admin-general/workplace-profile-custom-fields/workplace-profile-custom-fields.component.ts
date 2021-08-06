@@ -17,9 +17,7 @@ export class WorkplaceProfileCustomFieldsComponent implements OnInit {
   isValidEmail = false;
 
   constructor(
-    public dialog: MatDialog,
-    private adminService: AdminService,
-    private utilityService: UtilityService
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {

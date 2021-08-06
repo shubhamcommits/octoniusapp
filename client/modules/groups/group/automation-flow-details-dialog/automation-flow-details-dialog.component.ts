@@ -90,15 +90,15 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
   flowNameChange(event: any) {
     const newFlowName = event.target.value;
     if (newFlowName !== this.flowName) {
-      this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise(async (resolve, reject) => {
+      this.utilityService.asyncNotification($localize`:@@automationFlowDetailsDialog.pleaseWaitUpdatingContents:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
         await this.flowService.updateFlowName(this.flowId, newFlowName).then((res) => {
           this.flowName = newFlowName;
 
           this.flowNameChangeEmitter.emit({ flowId: this.flowId, flowName: this.flowName });
 
-          resolve(this.utilityService.resolveAsyncPromise('Flow Name updated!'));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@automationFlowDetailsDialog.flowNameUpdated:Flow Name updated!`));
         }).catch(err => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the Flow Name, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@automationFlowDetailsDialog.unableToUpdateFlowName:Unable to update the Flow Name, please try again!`));
         });
       }));
     }
@@ -142,7 +142,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
         .then((result) => {
           if (result.value) {
             // Remove the file
-            this.utilityService.asyncNotification('Please wait we are deleting the flow step...', new Promise((resolve, reject) => {
+            this.utilityService.asyncNotification($localize`:@@automationFlowDetailsDialog.pleaseWaitDeletingStep:Please wait we are deleting the flow step...`, new Promise((resolve, reject) => {
               const index = this.flowSteps.findIndex((s: any) => s._id === stepId);
               if (index !== -1) {
                 // Remove the step
@@ -151,9 +151,9 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
                     // Remove the field from the list
                     this.flowSteps.splice(index, 1);
 
-                    resolve(this.utilityService.resolveAsyncPromise('Step deleted!'));
+                    resolve(this.utilityService.resolveAsyncPromise($localize`:@@automationFlowDetailsDialog.stepDeleted:Step deleted!`));
                   }).catch((err) => {
-                    reject(this.utilityService.rejectAsyncPromise('Unable to delete step, please try again!'));
+                    reject(this.utilityService.rejectAsyncPromise($localize`:@@automationFlowDetailsDialog.unableToDeleteStep:Unable to delete step, please try again!`));
                   });
               }
             }));
@@ -274,13 +274,13 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
   }
 
   saveStep(step: any) {
-    this.utilityService.asyncNotification('Please wait we are updating the step...', new Promise(async (resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@automationFlowDetailsDialog.pleaseWaitUpdatingStep:Please wait we are updating the step...`, new Promise(async (resolve, reject) => {
       await this.flowService.saveStep(this.flowId, step).then((res) => {
         this.initFlowsSteps(res['flow']['steps']);
 
-        resolve(this.utilityService.resolveAsyncPromise('Step saved!'));
+        resolve(this.utilityService.resolveAsyncPromise($localize`:@@automationFlowDetailsDialog.stepSaved:Step saved!`));
       }).catch(err => {
-        reject(this.utilityService.rejectAsyncPromise(`Unable to save the step, please try again!`));
+        reject(this.utilityService.rejectAsyncPromise($localize`:@@automationFlowDetailsDialog.unableToSaveStep:Unable to save the step, please try again!`));
       });
     }));
   }
@@ -293,7 +293,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
       .then((result) => {
         if (result.value) {
           // Remove the file
-          this.utilityService.asyncNotification('Please wait we are deleting the flow...', new Promise((resolve, reject) => {
+          this.utilityService.asyncNotification($localize`:@@automationFlowDetailsDialog.pleaseWaitDeletingFlow:Please wait we are deleting the flow...`, new Promise((resolve, reject) => {
             this.flowService.deleteFlow(this.flowId)
               .then((res) => {
                 // Emit the Deleted post to all the compoents in order to update the UI
@@ -301,9 +301,9 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
                 // Close the modal
                 this.mdDialogRef.close();
 
-                resolve(this.utilityService.resolveAsyncPromise('Flow deleted!'));
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@automationFlowDetailsDialog.flowDeleted:Flow deleted!`));
               }).catch((err) => {
-                reject(this.utilityService.rejectAsyncPromise('Unable to delete flow, please try again!'));
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@automationFlowDetailsDialog.unableToDeleteFlow:Unable to delete flow, please try again!`));
               });
           }));
         }

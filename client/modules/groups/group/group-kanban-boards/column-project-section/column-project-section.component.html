@@ -1,6 +1,6 @@
 <div>
   <div class="project-container">
-    Planned
+    <span i18n="@@columnProjectSection.planned">Planned</span>
     <span class="float-right">
       {{ formateDate(column?.start_date, "Do, MMM") }}
       <i class="material-icons">arrow_right_alt</i>
@@ -9,7 +9,7 @@
   </div>
 
   <div class="project-container bold" *ngIf="column?.real_due_date">
-    Real
+    <span i18n="@@columnProjectSection.real">Real</span>
     <span *ngIf="column?.real_due_date" class="float-right">
       <i *ngIf="isDelay(column?.real_due_date, column?.due_date)" class="material-icons-outlined" style="color: #eb5757;">arrow_right_alt</i>
       {{ formateDate(column?.real_due_date, "Do, MMM") }}
@@ -19,7 +19,8 @@
 
   <div class="project-container" style="height: 40px;" *ngIf="canSeeBudget && column?.project_type && !(column?.budget?.amount_planned)">
     <button class="btn muted" (click)="column.addBudget = true" *ngIf="!column.addBudget" style="width: 90%; text-align: left;">
-      <i class="material-icons-outlined">add</i>Add budget
+      <i class="material-icons-outlined">add</i>
+      <span i18n="@@columnProjectSection.addBudget">Add budget</span>
     </button>
     <div style="width: 75%;" class="float-left" *ngIf="column.addBudget">
         <input class="form-control" type="text" placeholder="Enter initial planned budget"
@@ -32,7 +33,7 @@
 
   <div class="project-container budget" style="cursor: pointer;" (click)="openBudgetDialog(column)"
       *ngIf="canSeeBudget && column?.project_type && column?.budget?.amount_planned">
-    Budget
+    <span i18n="@@columnProjectSection.budget">Budget</span>
     <span class="float-right">
       {{ column?.budget?.amount_planned }}
       <span class="material-icons" style="line-height: 1px;">monetization_on</span>

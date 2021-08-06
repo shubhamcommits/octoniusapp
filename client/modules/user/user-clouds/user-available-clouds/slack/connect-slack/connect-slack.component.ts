@@ -38,41 +38,41 @@ export class ConnectSlackComponent implements OnInit {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
     this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
-  
+
    if(!this.slackAuthSuccessful){
       this.router.queryParams.subscribe(params => {
         if (params['code']) {
           try {
-            this.utilityService.asyncNotification('Please wait, while we are authenticating the slack...', new Promise((resolve, reject) => {
+            this.utilityService.asyncNotification($localize`:@@connectSlack.pleaseWaitAuthenticatinSlack:Please wait, while we are authenticating the slack...`, new Promise((resolve, reject) => {
               this.userService.slackAuth(params['code'], this.userData)
               .subscribe((res) => {
                   // Resolve the promise
                   setTimeout(() => {
                     this.updateUserData(res);
                   }, 1000);
-                  
-                  resolve(this.utilityService.resolveAsyncPromise('Authenticated Successfully!'))
-                  
+
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@connectSlack.authenticatedSuccessfully:Authenticated Successfully!`))
+
                 }),
                 ((err) => {
                   console.log('Error occured, while authenticating for Slack', err);
-                  reject(this.utilityService.rejectAsyncPromise('Oops, an error occured while authenticating for Slack, please try again!'))
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@connectSlack.oppsErrorWhileAuthenticatinoSlack:Oops, an error occured while authenticating for Slack, please try again!`))
                 });
             }));
           }
           catch (err) {
             console.log('There\'s some unexpected error occured, please try again!', err);
-            this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
+            this.utilityService.errorNotification($localize`:@@connectSlack.unexpectedErrorOccured:There\'s some unexpected error occured, please try again!`);
           }
         }
       });
     }
-    
-  
-  
+
+
+
   }
 
-  
+
 /**
    * This function is responsible to update user slack connection status.
    */
@@ -81,7 +81,7 @@ export class ConnectSlackComponent implements OnInit {
     await this.publicFunctions.sendUpdatesToUserData(this.userData);
     this.slackAuthSuccessful = true;
     this.userService.slackConnected().emit(true);
-  
+
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -99,7 +99,7 @@ export class ConnectSlackComponent implements OnInit {
    * This function is responsible for connecting the slack acount to the main octonius server
    */
   async slackAuth() {
-    this.utilityService.getConfirmDialogAlert("Do you allow?", "Octonius for Slack is requesting permission to use your Octonius account.", "Allow")
+    this.utilityService.getConfirmDialogAlert($localize`:@@connectSlack.doYouAllow:Do you allow?`, $localize`:@@connectSlack.octoniusForSlackRequestingPermission:Octonius for Slack is requesting permission to use your Octonius account.`, $localize`:@@connectSlack.allow:Allow`)
       .then((result) => {
         if (result.value) {
           localStorage.setItem("slackAuth", "connected");

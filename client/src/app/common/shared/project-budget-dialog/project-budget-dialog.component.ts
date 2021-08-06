@@ -67,47 +67,47 @@ export class ProjectBudgetDialogComponent implements OnInit {
   }
 
   saveBudget() {
-    this.utilityService.asyncNotification('Please wait we are updating the budget...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@projectBudgetDialog.pleaseWaitWeUpdateBudget:Please wait we are updating the budget...`, new Promise((resolve, reject) => {
       this.columnService.saveAmountBudget(this.columnId, this.budget?.amount_planned, this.budget?.currency)
         .then((res) => {
-          resolve(this.utilityService.resolveAsyncPromise('Budget updated!'));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@projectBudgetDialog.budgetUpdated:Budget updated!`));
         })
         .catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise('Unable to update the budget, please try again!'))
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@projectBudgetDialog.unableToUpdateBudget:Unable to update the budget, please try again!`))
         })
     }));
   }
 
   saveExpense() {
     if (this.expense.amount < 0 || this.expense.reason == '' ) {
-      this.utilityService.errorNotification('Amount and Description are mandatory fields.');
+      this.utilityService.errorNotification($localize`:@@projectBudgetDialog.amountDescriptionMandatory:Amount and Description are mandatory fields.`);
     } else {
       if (!this.expense._id) {
         this.expense._user = this.currentUser;
-        this.utilityService.asyncNotification('Please wait we are saving the new expense...', new Promise((resolve, reject) => {
+        this.utilityService.asyncNotification($localize`:@@projectBudgetDialog.pleaseWaitWeSaveNewExpense:Please wait we are saving the new expense...`, new Promise((resolve, reject) => {
           this.columnService.addBudgetExpense(this.columnId, this.expense)
             .then((res) => {
               this.budget.expenses.unshift(this.expense);
               this.calculateTotalSpent();
               this.resetExpense();
-              resolve(this.utilityService.resolveAsyncPromise('Expense saved!'));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@projectBudgetDialog.expenseSaved:Expense saved!`));
             })
             .catch((err) => {
-              reject(this.utilityService.rejectAsyncPromise('Unable to save the expense, please try again!'))
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@projectBudgetDialog.unableToSaveExpense:Unable to save the expense, please try again!`))
             })
         }));
       } else {
-        this.utilityService.asyncNotification('Please wait we are saving the expense...', new Promise((resolve, reject) => {
+        this.utilityService.asyncNotification($localize`:@@projectBudgetDialog.pleaseWaitWeSaveExpense:Please wait we are saving the expense...`, new Promise((resolve, reject) => {
           this.columnService.updateBudgetExpense(this.columnId, this.expense)
             .then((res) => {
               let index = this.budget.expenses.findIndex((exp: any) => exp._id === this.expense._id);
               this.budget.expenses[index] = this.expense;
               this.calculateTotalSpent();
               this.resetExpense();
-              resolve(this.utilityService.resolveAsyncPromise('Expense saved!'));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@projectBudgetDialog.expenseSaved:Expense saved!`));
             })
             .catch((err) => {
-              reject(this.utilityService.rejectAsyncPromise('Unable to save the expense, please try again!'))
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@projectBudgetDialog.unableToSaveExpense:Unable to save the expense, please try again!`))
             })
         }));
       }
@@ -120,20 +120,20 @@ export class ProjectBudgetDialogComponent implements OnInit {
 
   removeExpense(expense: any) {
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this, the expense will be deleted!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@projectBudgetDialog.areYouSure:Are you sure?`, $localize`:@@projectBudgetDialog.dingThisWillDeleteExpense:By doing this, the expense will be deleted!`)
     .then((res) => {
       if (res.value) {
-        this.utilityService.asyncNotification('Please wait we are remove the expense...', new Promise((resolve, reject) => {
+        this.utilityService.asyncNotification($localize`:@@projectBudgetDialog.pleaseWaitWeDeleteExpense:Please wait we are remove the expense...`, new Promise((resolve, reject) => {
           this.columnService.deleteBudgetExpense(this.columnId, expense._id)
             .then((res) => {
               // Remove the column from the array
               let index = this.budget.expenses.findIndex((exp: any) => exp._id === expense._id);
               this.budget.expenses.splice(index, 1);
               this.calculateTotalSpent();
-              resolve(this.utilityService.resolveAsyncPromise('Expense deleted!'));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@projectBudgetDialog.expenseDeleted:Expense deleted!`));
             })
             .catch((err) => {
-              reject(this.utilityService.rejectAsyncPromise('Unable to save the expense, please try again!'))
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@projectBudgetDialog.unableToSaveExpense:Unable to save the expense, please try again!`))
             })
         }));
       }

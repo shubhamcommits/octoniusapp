@@ -1,6 +1,6 @@
 <div class="smart-card" style="padding: 10px;">
   <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
-    <div class="card-title mt-1">
+    <div class="card-title mt-1" i18n="@@engagementCard.engagement">
       Engagement
     </div>
     <div class="icon">
@@ -11,28 +11,28 @@
   <div class="row" *ngIf="!group">
       <div class="card-first-column col-md-12">
         <div class="agoras_count"> {{ num_agoras }} </div>
-        &nbsp;agoras
+        &nbsp;<span i18n="@@engagementCard.agoras">agoras</span>
       </div>
   </div>
 
   <div class="row" *ngIf="!group">
       <div class="card-first-column col-md-12">
         <div class="agoras_count"> {{ num_topics }} </div>
-        &nbsp;topics
+        &nbsp;<span i18n="@@engagementCard.topics">topics</span>
     </div>
   </div>
 
   <div class="row" *ngIf="group">
     <div class="card-first-column col-md-12">
       <div class="agoras_count"> {{ num_topics }} </div>
-      &nbsp;posts
+      &nbsp;<span i18n="@@engagementCard.posts">posts</span>
     </div>
   </div>
 
   <div class="row" *ngIf="group">
     <div class="card-first-column col-md-12">
       <div class="agoras_count"> {{ num_comments }} </div>
-      &nbsp;comments
+      &nbsp;<span i18n="@@engagementCard.comments">comments</span>
     </div>
   </div>
 

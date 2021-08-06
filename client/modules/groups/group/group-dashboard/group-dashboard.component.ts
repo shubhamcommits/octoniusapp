@@ -20,15 +20,15 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
   periods = [
     {
      key: 7,
-     value: 'Last 7 days'
+     value: $localize`:@@groupDashboard.last7Days:Last 7 days`
     },
     {
      key: 30,
-     value: 'Last month'
+     value: $localize`:@@groupDashboard.lastMonth:Last month`
     },
     {
      key: 365,
-     value: 'Last year'
+     value: $localize`:@@groupDashboard.lastYear:Last year`
     }
   ];
 

@@ -85,7 +85,7 @@ export class ProjectBudgetComponent implements OnChanges {
 
     /* Chart Setup */
     if (this.completitionPercentage > 100) {
-      this.doughnutChartLabels = ['Real cost'];
+      this.doughnutChartLabels = [$localize`:@@projectBudget.realCost:Real cost`];
       this.doughnutChartData = [this.project?.budget?.real_cost];
       this.doughnutChartColors = [{
         backgroundColor: [
@@ -93,7 +93,7 @@ export class ProjectBudgetComponent implements OnChanges {
         ]
       }];
     } else if(!noBudget) {
-      this.doughnutChartLabels = ['Budget left', 'Real cost'];
+      this.doughnutChartLabels = [$localize`:@@projectBudget.budgetLeft:Budget left`, $localize`:@@projectBudget.realCost:Real cost`];
       this.doughnutChartData = [this.project?.budget?.amount_planned - this.project?.budget?.real_cost, this.project?.budget?.real_cost];
       this.doughnutChartColors = [{
         backgroundColor: [

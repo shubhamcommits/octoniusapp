@@ -5,11 +5,14 @@
 
     <h2>
       <img src="assets/images/placeholder_filtercf.svg" alt="" style="margin-bottom: 30px;"><br>
-      <span class="muted">
+      <span class="muted" i18n="@@advancedFilterDialog.filterCF">
         Filter by Custom Fields
       </span>
     </h2>
-    <p class="mb-4"><i class="material-icons">auto_awesome</i> Custom fields are are a powerful way to manage tasks and workload.</p>
+    <p class="mb-4">
+      <i class="material-icons">auto_awesome</i>
+      <span i18n="@@advancedFilterDialog.customFieldsArePowerful">Custom fields are a powerful way to manage tasks and workload.</span>
+    </p>
 
     <mat-dialog-content class="customFieldsDialogContent">
       <mat-form-field class="mr-3">
@@ -18,16 +21,16 @@
             (click)="$event.stopPropagation()"
             [(value)]="cfName"
             name="names">
-          <mat-option 
+          <mat-option
           *ngFor="let cf of customFields" [value]="cf.name">{{ cf.title }}</mat-option>
         </mat-select>
-        <mat-label>Select Custom Field</mat-label>
+        <mat-label i18n="@@advancedFilterDialog.selectCF">Select Custom Field</mat-label>
 
       </mat-form-field>
 
 
       <mat-form-field>
-     
+
         <mat-select ngDefaultControl class="select-field"
             (click)="$event.stopPropagation()"
             [(value)]="cfValue"
@@ -35,12 +38,12 @@
             name="values">
           <mat-option *ngFor="let value of cfValues" [value]="value">{{ value }}</mat-option>
         </mat-select>
-        <mat-label>Select Value</mat-label>
+        <mat-label i18n="@@advancedFilterDialog.selectValue">Select Value</mat-label>
       </mat-form-field>
 
       <div style="display: flex; justify-content:space-between; margin: 100px auto; width: 60%">
-        <button class="btn btn-danger" (click)="cancel()">X Cancel</button>
-        <button class="btn btn-primary" (click)="filter()">Filter</button>
+        <button class="btn btn-danger" (click)="cancel()" i18n="@@advancedFilterDialog.cancel">X Cancel</button>
+        <button class="btn btn-primary" (click)="filter()" i18n="@@advancedFilterDialog.filter">Filter</button>
       </div>
     </mat-dialog-content>
 </div>

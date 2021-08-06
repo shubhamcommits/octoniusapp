@@ -149,7 +149,7 @@ export class FlamingoHeaderComponent implements OnInit {
       this.editTitle = false
 
       // Change the title of the tab
-      this.titleService.setTitle('Octonius | Folio - ' + (this.file.original_name || 'New Folio'));
+      this.titleService.setTitle('Octonius | Folio - ' + (this.file.original_name || $localize`:@@flamingoHeader.newFlamingo:New Flamingo`));
 
       // Call the HTTP PUT request to change the data on server
       await this.edit(this.fileId, {

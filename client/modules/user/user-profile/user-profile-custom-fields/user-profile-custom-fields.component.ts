@@ -65,7 +65,7 @@ export class UserProfileCustomFieldsComponent implements OnInit {
   }
 
   saveCustomField(customFieldName: string, customFieldValue: string) {
-    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@userProfileCF.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.userService.saveCustomField(this.userData._id, customFieldName, customFieldValue)
         .then(async (res) => {
           this.selectedCFValues[customFieldName] = customFieldValue;
@@ -74,10 +74,10 @@ export class UserProfileCustomFieldsComponent implements OnInit {
           this.autoUpdateGroups();
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`${customFieldName} updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@userProfileCF.cfUpdated:${customFieldName} updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update ${customFieldName}, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@userProfileCF.unableToUpdateCF:Unable to update ${customFieldName}, please try again!`));
         });
     }));
   }
@@ -102,8 +102,7 @@ export class UserProfileCustomFieldsComponent implements OnInit {
               this.publicFunctions.sendUpdatesToGroupData(res['group']);
             },
             error => {
-              this.utilityService.errorNotification('An error occurred whilst modifying the members of the group.');
-              console.error('Could not auto update members!');
+              this.utilityService.errorNotification($localize`:@@userProfileCF.errorOccurredWhileModifyingMembers:An error occurred while modifying the members of the group.`);
               console.error(error);
             }
           );

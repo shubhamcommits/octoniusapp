@@ -2,7 +2,7 @@
 
 <!-- USER HEADER STARTS -->
 <div class="modal-header">
-    <h4 class="modal-title">Update your profile Image</h4>
+    <h4 class="modal-title" i18n="@@userImageDetails.updateYourProfile">Update your profile Image</h4>
 </div>
 <!-- USER HEADER ENDS -->
 
@@ -20,7 +20,10 @@
 <!-- USER FOOTER STARTS -->
 <div class="modal-footer">
     <button type="button" class="btn btn-success"
-        (click)="updateUserDetails( croppedImage )">Update your Image</button>
+      (click)="updateUserDetails( croppedImage )"
+      i18n="@@userImageDetails.updateYourImage">
+        Update your Image
+    </button>
 </div>
 <!-- USER FOOTER ENDS -->
 

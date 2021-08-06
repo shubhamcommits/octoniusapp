@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row" style="justify-content: space-between;">
-    <div><p>Everything happening in your organization</p></div>
+    <div><p i18n="@@dashboardPage.everythingHappening">Everything happening in your organization</p></div>
     <div>
       <mat-form-field>
         <mat-select ngDefaultControl
@@ -13,7 +13,7 @@
       </mat-form-field>
 
       <mat-form-field style="margin-left: 30px;">
-        <mat-label>Groups</mat-label>
+        <mat-label i18n="@@dashboardPage.groups">Groups</mat-label>
         <mat-select [formControl]="filteringGroups" multiple (selectionChange)="groupsSelected($event)">
           <mat-select-trigger>
             {{ (filteringGroups && filteringGroups[0]) ? filteringGroups[0].group_name : '' }}
@@ -89,7 +89,7 @@
     <div></div>
     <div class="float-right">
       <mat-form-field>
-        <mat-label>Projects</mat-label>
+        <mat-label i18n="@@dashboardPage.projects">Projects</mat-label>
         <mat-select [formControl]="filteringProjects" multiple (selectionChange)="projectsSelected($event)">
           <mat-select-trigger>
             {{ (filteringProjects && filteringProjects[0]) ? filteringProjects[0].title : '' }}

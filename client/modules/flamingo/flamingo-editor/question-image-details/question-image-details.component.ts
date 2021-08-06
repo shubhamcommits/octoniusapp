@@ -61,7 +61,7 @@ export class QuestionImageDetailsComponent implements OnInit {
    // Flamingo Service
     let flamingoService = this.injector.get(FlamingoService);
     let utilityService = this.injector.get(UtilityService)
-    utilityService.asyncNotification('Please wait while we are uploading the Question Image...',
+    utilityService.asyncNotification($localize`:@@questionImageDetails.pleaseWaitUploadingQuestionImg:Please wait while we are uploading the Question Image...`,
       new Promise((resolve, reject) => {
         flamingoService.uploadQuestionImage(this.groupId, this.croppedImage,this.flamingoId,this.activeQuestion?._id, this.workspaceId)
         .then((res)=>{
@@ -70,10 +70,10 @@ export class QuestionImageDetailsComponent implements OnInit {
 
           this.uploadImageEmitter.emit(res['question']);
           utilityService.closeAllModals();
-          resolve(utilityService.resolveAsyncPromise('Question Image upload success!!!'))
+          resolve(utilityService.resolveAsyncPromise($localize`:@@questionImageDetails.questionImgUploaded:Question Image upload success!!!`))
         })
         .catch(()=>{
-          reject(utilityService.rejectAsyncPromise('Unable to Question Image!'))
+          reject(utilityService.rejectAsyncPromise($localize`:@@questionImageDetails.unableToUploadQuestionImg:Unable to Upload Question Image!`))
         })
 
       }))

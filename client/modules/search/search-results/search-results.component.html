@@ -1,12 +1,12 @@
 <div *ngIf="type=='post'" style="text-align: left;">
   <p class="octo-search-category">
-    Title:&nbsp;
+    <span i18n="@@searchResult.title">Title:&nbsp;</span>
     <a [href]="generatePostURL()" target="_blank">
       {{ data.title }}
     </a>
   </p>
   <div [innerHTML]="data?.html" class="search-content"></div>
-  <p><strong>Tags: </strong></p>
+  <p><strong i18n="@@searchResult.tags">Tags: </strong></p>
   <ul>
     <li *ngFor="let tag of data.tags" class="label">{{ tag }}</li>
   </ul>
@@ -14,20 +14,21 @@
 
 <div *ngIf="type=='user'" style="text-align: left;">
   <p class="octo-search-category">
-    Full Name:&nbsp;
+    <span i18n="@@searchResult.fullName">Full Name</span>:&nbsp;
     <a [href]="generateUserURL(data._id)" target="_blank">
       {{ data.first_name }} {{ data.last_name }}
     </a>
   </p>
-  <p><strong>mail: </strong>{{ data.email }}</p>
-  <p><strong>Skills: </strong></p>
+  <p><strong i18n="@@searchResult.mail">mail: </strong>{{ data.email }}</p>
+  <p><strong i18n="@@searchResult.skills">Skills: </strong></p>
   <ul>
       <li *ngFor="let skill of data.skills" class="label"> {{ skill }}</li>
   </ul>
 </div>
 
 <div *ngIf="type=='file'" style="text-align: left;">
-  <p class="octo-search-category">File Name:&nbsp;
+  <p class="octo-search-category">
+    <span i18n="@@searchResult.fileName">File Name:&nbsp;</span>
     <a *ngIf="data?.type === 'file' || data?.type === undefined" [href]="generateFileURL()" target="_blank">
       {{ data.original_name }}
     </a>
@@ -37,7 +38,7 @@
     </a>
   </p>
   <!-- <p><strong>Modified File Name: </strong>{{ data.modified_name }}</p> -->
-  <p><strong>Group: </strong>{{ data.groupName }}</p>
-  <p><strong>File type: </strong>{{ data.mime_type }}</p>
-  <p><strong>Posted By: </strong><a [href]="generateUserURL(data._posted_by)" target="_blank">{{ data.postedBy }}</a></p>
+  <p><strong i18n="@@searchResult.group">Group: </strong>{{ data.groupName }}</p>
+  <p><strong i18n="@@searchResult.fileType">File type: </strong>{{ data.mime_type }}</p>
+  <p><strong i18n="@@searchResult.postedBy">Posted By: </strong><a [href]="generateUserURL(data._posted_by)" target="_blank">{{ data.postedBy }}</a></p>
 </div>

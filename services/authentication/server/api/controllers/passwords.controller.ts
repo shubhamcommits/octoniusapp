@@ -94,9 +94,9 @@ export class PasswordsControllers {
 
             const userEmail = {
                 _id: user._id,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: account.email
+                first_name: user['first_name'],
+                last_name: user['last_name'],
+                email: account['email']
             }
 
             const resetPwdData = {
@@ -110,7 +110,7 @@ export class PasswordsControllers {
 
             // Send email to user
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/reset-password`, {
-                API_KEY: workspace.management_private_api_key,
+                API_KEY: workspace['management_private_api_key'],
                 user: userEmail,
                 workspace: workspace,
                 newResetPwdDocId: newResetPwdDoc._id

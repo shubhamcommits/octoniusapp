@@ -260,7 +260,7 @@ export class AuthsController {
                         }
     
                         // If user is invite, does not have access to global
-                        if (user.role != 'guest') {
+                        if (user['role'] != 'guest') {
                             // Add new user to workspace's group
                             const groupUpdate = await Group.findOneAndUpdate({
                                 group_name: 'Global',
@@ -421,15 +421,15 @@ export class AuthsController {
                     let userMgmt = {
                         _id: user._id,
                         _account_id: accountUpdate._id,
-                        active: user.active,
+                        active: user['active'],
                         email: accountUpdate.email,
                         password: accountUpdate.password,
-                        first_name: user.first_name,
-                        last_name: user.last_name,
+                        first_name: user['first_name'],
+                        last_name: user['last_name'],
                         _remote_workspace_id: workspace._id,
                         workspace_name: workspace.workspace_name,
                         environment: process.env.DOMAIN,
-                        created_date: user.created_date
+                        created_date: user['created_date']
                     }
                     axios.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
                         API_KEY: workspace.management_private_api_key,
@@ -438,7 +438,7 @@ export class AuthsController {
                     }).then().catch(err => console.log(err));
 
                     const mailUser = {
-                        first_name: user.first_name,
+                        first_name: user['first_name'],
                         email: accountUpdate.email,
                         workspace_name: workspace.workspace_name
                     }
@@ -507,7 +507,7 @@ export class AuthsController {
             const plainPassword = password;
 
             // Decrypting Password
-            const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, account.password);
+            const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, account['password']);
 
             // If we are unable to decrypt the password from the server
             if (!passDecrypted.password) {
@@ -553,7 +553,7 @@ export class AuthsController {
             }
 
             // Generate new token and logs the auth record
-            let token = await auths.generateToken(user, user.workspace_name);
+            let token = await auths.generateToken(user, user['workspace_name']);
 
             // Send the status 200 response 
             return res.status(200).json({

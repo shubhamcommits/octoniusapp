@@ -44,16 +44,16 @@ export class UserUpdateUserPersonalInformationDialogComponent implements OnInit 
       company_join_date: this.joinDate,
       bio: this.bio
     }
-    this.utilityService.asyncNotification('Please wait we are updating your information...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@userUpdateUserPersonalInformationDialog.pleseWaitUpdatingInformation:Please wait we are updating your information...`, new Promise((resolve, reject) => {
       this.publicFunctions.userDetailsServiceFunction(this.userService,data)
         .then((res) => {
 
           this.closeEvent.emit(res);
           this.mdDialogRef.close();
 
-          resolve(this.utilityService.resolveAsyncPromise('Details updated sucessfully!'));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@userUpdateUserPersonalInformationDialog.detailsUpdated:Details updated sucessfully!`));
         }).catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise('An unexpected occured while updating the details, please try again!'));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@userUpdateUserPersonalInformationDialog.unexpectedOccured:An unexpected occured while updating the details, please try again!`));
         });
     }));
   }

@@ -44,7 +44,7 @@ export class FlamingoAnswerComponent implements OnInit {
     // if the flamingo is not publish, we send the user to the home page.
     // -- Should do this on the guard, but I am not able to obtain the flamingo ID
     if (!this.flamingo.publish) {
-      this.utilityService.errorNotification('The Flamingo you are trying to access is not published yet, please try again later!')
+      this.utilityService.errorNotification($localize`:@@flamingoAnswer.flamingoIsNotPublishedYet:The Flamingo you are trying to access is not published yet, please try again later!`)
       this.router.navigate(['/',]);
     }
 
@@ -104,14 +104,13 @@ export class FlamingoAnswerComponent implements OnInit {
     this.activeQuestionIndex = this.activeQuestionIndex-1;
     this.activeQuestion = this.questions[this.activeQuestionIndex];
     this.calculateProgressValues();
-console.log(this.activeQuestion);
   }
 
   /**
    * This functin is responsible for submitting the answer
    */
   submitAnswers() {
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the flamingo will be submited!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@flamingoAnswer.areYouSure:Are you sure?`, $localize`:@@flamingoAnswer.flamingoWillBeSubmited:By doing this the flamingo will be submited!`)
       .then((result) => {
         if (result.value) {
           this.callSubmitAnswersService();
@@ -172,16 +171,16 @@ console.log(this.activeQuestion);
 
     // Call the HTTP Request Asynschronously
     this.utilityService.asyncNotification(
-      'Please wait while we are submitting the flamingo',
+      $localize`:@@flamingoAnswer.pleaseWaitWhileSubmittingFlamingo:Please wait while we are submitting the flamingo`,
       new Promise((resolve, reject) => {
         this.flamingoService.submit(this.flamingo._id, responses)
           .then((res) => {
             // go to last screen
             this.activeQuestion = this.questions[this.questions.length-1];
-            resolve(this.utilityService.resolveAsyncPromise('Flamingo has been submited!'));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@flamingoAnswer.flamingoSubmited:Flamingo has been submited!`));
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise('Unexpected error occured while submitting Flamingo, please try again!'));
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@flamingoAnswer.unexpectedErrorOccuredSubmittingFlamingo:Unexpected error occured while submitting Flamingo, please try again!`));
           });
     }));
   }
@@ -224,5 +223,9 @@ console.log(this.activeQuestion);
 
     calculateProgressValues() {
       this.progressValue = ((this.activeQuestionIndex + 1) * 100) / this.questions.length;
+    }
+
+    enableNextButton(answer: string) {
+      this.disableNext = (answer.length == 0) && this.checkMandatoryQuestion();
     }
 }

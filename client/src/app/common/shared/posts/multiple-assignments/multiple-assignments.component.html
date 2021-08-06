@@ -7,20 +7,21 @@
     [styleClass]="'feed-avatar-small'"
     [tooltip]="assignee?.first_name + ' ' + assignee?.last_name"
     (click)="unassign(assignee._id)"></app-secured-image>
-  <span *ngIf="(!assigned_to || assigned_to.length === 0) && type != 'filter'">
-    Unassigned
+  <span *ngIf="(!assigned_to || assigned_to.length === 0) && type != 'filter'"
+    i18n="@@multipleAssignments.unassigned">
+      Unassigned
   </span>
 
   <button *ngIf="(!post?.task?.allocation || post?.task?.allocation == 0) || (assigned_to?.length < 1)"
     mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">
-      <span *ngIf="type != 'filter'">add assignee</span>
-      <span *ngIf="type == 'filter'">add user</span>
+      <span *ngIf="type != 'filter'"i18n="@@multipleAssignments.addAssignee">add assignee</span>
+      <span *ngIf="type == 'filter'"i18n="@@multipleAssignments.addUser">add user</span>
     </button>
   <mat-menu #assigneeSearch="matMenu">
     <div>
       <div class="users-card">
         <div class="form-group">
-          <label for="search-text" *ngIf="type != 'filter'">Assignee</label>
+          <label for="search-text" *ngIf="type != 'filter'"i18n="@@multipleAssignments.assignee">Assignee</label>
           <input type="email" class="form-control" id="search-text" aria-describedby="search-text" [(ngModel)]="searchText"
             placeholder="Search group member" autofocus
             (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">

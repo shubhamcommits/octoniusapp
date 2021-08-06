@@ -1,5 +1,7 @@
 <div class="card-tile invite-users">
-    <h6><b>Invite individual users by email</b></h6>
+    <h6>
+      <b i18n="@@workspaceInviteUser.inviteUser">Invite individual users by email</b>
+    </h6>
     <hr />
     <div class="form-group">
         <app-email-input
@@ -9,6 +11,10 @@
           (outputEmail)="getValidEmail($event)">
         </app-email-input>
     </div>
-    <button class="btn btn-primary" [disabled]="!isValidEmail" (click)="inviteUser(workspaceData?._id, this.email)">Invite to Join</button>
 
+    <button class="btn btn-primary" [disabled]="!isValidEmail"
+      (click)="inviteUser(workspaceData?._id, this.email)"
+      i18n="@@workspaceInviteUser.inviteToJoin">
+        Invite to Join
+    </button>
 </div>
