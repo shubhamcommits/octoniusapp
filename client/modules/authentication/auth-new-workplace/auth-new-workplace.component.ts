@@ -98,15 +98,15 @@ export class AuthNewWorkplaceComponent implements OnInit {
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@authNewWorkplace.welcomeToWorkplace:Hi ${res['user']['first_name']}, welcome to your new workplace!`))
             })
             .catch(() => {
-              this.utilityService.errorNotification($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occured while setting you up, please try again!`);
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occured while setting you up, please try again!`))
+              this.utilityService.errorNotification($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occurred while setting you up, please try again!`);
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occurred while setting you up, please try again!`))
             })
 
         }, (err) => {
-          console.error('Error occured while creating new workplace', err);
-          this.utilityService.errorNotification($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occured while setting you up, please try again!`);
+          console.error('Error occurred while creating new workplace', err);
+          this.utilityService.errorNotification($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occurred while setting you up, please try again!`);
           this.storageService.clear();
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occured while setting you up, please try again!`))
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@authNewWorkplace.oopsErrorOccuredSettingUp:Oops some error occurred while setting you up, please try again!`))
         })
     })
   }

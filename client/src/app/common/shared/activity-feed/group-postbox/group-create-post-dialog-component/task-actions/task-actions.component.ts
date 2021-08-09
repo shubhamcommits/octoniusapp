@@ -438,7 +438,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
                   }
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.templateUpdated:Template updated!`))
                 })
-                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileUpdatingTemplate:An unexpected error occured while updating the template, please try again!`)))
+                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileUpdatingTemplate:An unexpected error occurred while updating the template, please try again!`)))
             }))
           }
         });
@@ -452,7 +452,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
                   this.groupTemplates.splice(this.groupTemplates.findIndex((t) => t._id === templatePostId), 1);
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.templateDeleted:Template deleted!`))
                 })
-                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileDeletingTemplate:An unexpected error occured while deleting the template, please try again!`)))
+                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileDeletingTemplate:An unexpected error occurred while deleting the template, please try again!`)))
             }))
           }
         });
@@ -466,7 +466,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
                   this.taskFromTemplateEmitter.emit(this.postData._id);
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskUpdated:Task updated!`))
                 })
-                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileUpdatingTask:An unexpected error occured while updating the task, please try again!`)))
+                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileUpdatingTask:An unexpected error occurred while updating the task, please try again!`)))
             }))
           }
         });
@@ -488,7 +488,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
             this.groupTemplates.sort((t1, t2) => (t1.task.template_name > t2.task.template_name) ? 1 : -1);
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.templateCreated:Template created!`))
           })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileCreatingTemplate:An unexpected error occured while creating the template, please try again!`)))
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileCreatingTemplate:An unexpected error occurred while creating the template, please try again!`)))
       }))
     } else if(value == ''){
       this.utilityService.warningNotification($localize`:@@taskActions.templateNameCannotBeEmpty:Template name can\'t be empty!`);

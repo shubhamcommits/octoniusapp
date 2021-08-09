@@ -106,16 +106,16 @@ export class Auths {
             const auth = await Auth.create(newAuth)
                 .catch(() => {
                     reject({
-                        message: 'Unable to log the auth record creation, some unexpected error occured!',
-                        error: new Error('Unable to log the auth record creation, some unexpected error occured!')
+                        message: 'Unable to log the auth record creation, some unexpected error occurred!',
+                        error: new Error('Unable to log the auth record creation, some unexpected error occurred!')
                     })
                 })
 
             // Error on auth creation
             if (!auth) {
                 reject({
-                    message: 'Unable to log the auth record creation, some unexpected error occured!',
-                    error: new Error('Unable to log the auth record creation, some unexpected error occured!')
+                    message: 'Unable to log the auth record creation, some unexpected error occurred!',
+                    error: new Error('Unable to log the auth record creation, some unexpected error occurred!')
                 })
             }
 

@@ -78,8 +78,8 @@ export class ResetPasswordComponent implements OnInit {
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@resetPwd.pwdResetSuccessfully:Your password has been reset successfully!`))
             })
             .catch(() => {
-              this.utilityService.errorNotification($localize`:@@resetPwd.oopsErrorResetingPwd:Oops some error occured while reseting your password, please try again!`);
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@resetPwd.oopsErrorResetingPwd:Oops some error occured while reseting your password, please try again!`))
+              this.utilityService.errorNotification($localize`:@@resetPwd.oopsErrorResetingPwd:Oops some error occurred while reseting your password, please try again!`);
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@resetPwd.oopsErrorResetingPwd:Oops some error occurred while reseting your password, please try again!`))
             })
         })
     })

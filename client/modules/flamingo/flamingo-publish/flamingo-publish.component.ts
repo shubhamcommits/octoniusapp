@@ -52,7 +52,7 @@ export class FlamingoPublishComponent implements OnInit {
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@flamingoPublish.flamingoPublished:Flamingo has been published/unpublished!`));
                 })
                 .catch(() => {
-                  reject(this.utilityService.rejectAsyncPromise($localize`:@@flamingoPublish.unexpectedErrorPublishing:Unexpected error occured while publishing/unpublishing Flamingo, please try again!`));
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@flamingoPublish.unexpectedErrorPublishing:Unexpected error occurred while publishing/unpublishing Flamingo, please try again!`));
                 });
           }));
         }

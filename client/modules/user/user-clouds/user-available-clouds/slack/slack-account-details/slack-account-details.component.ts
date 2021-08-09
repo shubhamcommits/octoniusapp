@@ -45,7 +45,7 @@ export class SlackAccountDetailsComponent implements OnInit {
         }
       }),
       ((err) => {
-        console.log('Error occured, while authenticating for Slack', err);
+        console.log('Error occurred, while authenticating for Slack', err);
       });
   }
 

@@ -116,13 +116,13 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
                   })
                   .catch((err) => {
                     this.storageService.clear();
-                    reject(this.utilityService.rejectAsyncPromise($localize`:@@selectWorkspace.oopsErrorSigningIn:Oops some error occured while signing you in, please try again!`))
+                    reject(this.utilityService.rejectAsyncPromise($localize`:@@selectWorkspace.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
                   })
                 }
               }, 500);
             }
           }, (err) => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@selectWorkspace.oopsErrorSigningIn:Oops some error occured while signing you in, please try again!`))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@selectWorkspace.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
           }));
       });
   }

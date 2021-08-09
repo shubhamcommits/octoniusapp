@@ -77,13 +77,13 @@ export class UserImageDetailsComponent implements OnInit {
 
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@userImageDetails.avatarUpdated:Avatar updated!`));
             }, (err) => {
-              console.log('Error occured, while updating the avatar', err);
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@userImageDetails.oopsAnErrorOccured:Oops, an error occured while updating the avatar, please try again!`));
+              console.log('Error occurred, while updating the avatar', err);
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@userImageDetails.oopsAnErrorOccured:Oops, an error occurred while updating the avatar, please try again!`));
             }))
         }))
     } catch (err) {
-      console.log('There\'s some unexpected error occured, please try again!', err);
-      this.utilityService.errorNotification($localize`:@@userImageDetails.unexpectedError:'There\'s some unexpected error occured, please try again!`);
+      console.log('There\'s some unexpected error occurred, please try again!', err);
+      this.utilityService.errorNotification($localize`:@@userImageDetails.unexpectedError:'There\'s some unexpected error occurred, please try again!`);
     }
   }
 

@@ -41,14 +41,14 @@ export class WorkplaceAddDomainComponent implements OnInit {
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceAddDomain.domainAdded:${domain} has been added to the allowed domains!`))
             }, (err) => {
               this.addDomain = '';
-              console.log('Error occured, while adding the domain', err);
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceAddDomain.oopsErrorAdding:Oops, an error occured while adding the domain, please try again!`))
+              console.log('Error occurred, while adding the domain', err);
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceAddDomain.oopsErrorAdding:Oops, an error occurred while adding the domain, please try again!`))
             })
         }
       }))
     } catch (err) {
-      console.log('There\'s some unexpected error occured, please try again!', err);
-      this.utilityService.errorNotification($localize`:@@workplaceAddDomain.unexpectedError:There\'s some unexpected error occured, please try again!`);
+      console.log('There\'s some unexpected error occurred, please try again!', err);
+      this.utilityService.errorNotification($localize`:@@workplaceAddDomain.unexpectedError:There\'s some unexpected error occurred, please try again!`);
     }
   }
 
@@ -61,15 +61,15 @@ export class WorkplaceAddDomainComponent implements OnInit {
             this.isLoading$.next(false);
             resolve(res['domains']);
           }, (err) => {
-            console.log('Error occured, while fetching the list of allowed email domains', err);
-            this.utilityService.errorNotification($localize`:@@workplaceAddDomain.oppsErrorFetching:Oops, an error occured while fetching the list of email domain, please try refreshing the page!`);
+            console.log('Error occurred, while fetching the list of allowed email domains', err);
+            this.utilityService.errorNotification($localize`:@@workplaceAddDomain.oppsErrorFetching:Oops, an error occurred while fetching the list of email domain, please try refreshing the page!`);
             this.isLoading$.next(false);
             reject([]);
           })
       })
     } catch (err) {
-      console.log('There\'s some unexpected error occured, please try again!', err);
-      this.utilityService.errorNotification($localize`:@@workplaceAddDomain.unexpectedError:There\'s some unexpected error occured, please try again!`);
+      console.log('There\'s some unexpected error occurred, please try again!', err);
+      this.utilityService.errorNotification($localize`:@@workplaceAddDomain.unexpectedError:There\'s some unexpected error occurred, please try again!`);
     }
   }
 
@@ -89,16 +89,16 @@ export class WorkplaceAddDomainComponent implements OnInit {
                   this.allowedDomains.splice(index, 1);
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceAddDomain.domainRemoved:${domain} has been removed from the allowed domains!`));
                 }, (err) => {
-                  console.log('Error occured, while removing the domain', err);
-                  resolve(this.utilityService.rejectAsyncPromise($localize`:@@workplaceAddDomain.oopsErrorRemoving:Oops, an error occured while removing the domain, please try again!`));
+                  console.log('Error occurred, while removing the domain', err);
+                  resolve(this.utilityService.rejectAsyncPromise($localize`:@@workplaceAddDomain.oopsErrorRemoving:Oops, an error occurred while removing the domain, please try again!`));
                 })
               }))
             }
           });
         }
     } catch (err) {
-      console.log('There\'s some unexpected error occured, please try again!', err);
-      this.utilityService.errorNotification($localize`:@@workplaceAddDomain.unexpectedError:There\'s some unexpected error occured, please try again!`);
+      console.log('There\'s some unexpected error occurred, please try again!', err);
+      this.utilityService.errorNotification($localize`:@@workplaceAddDomain.unexpectedError:There\'s some unexpected error occurred, please try again!`);
     }
   }
 

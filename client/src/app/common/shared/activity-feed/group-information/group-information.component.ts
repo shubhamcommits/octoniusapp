@@ -57,7 +57,7 @@ export class GroupInformationComponent implements OnInit {
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupInformation.groupUpdatedSucessfully:Group updated sucessfully!`))
             })
             .catch(() =>
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@groupInformation.unexpectedError:An unexpected error occured while updating the group, please try again!`)))
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@groupInformation.unexpectedError:An unexpected error occurred while updating the group, please try again!`)))
         }))
     } else if (JSON.stringify(value) == '') {
       this.utilityService.warningNotification($localize`:@@groupInformation.kindlyFillUp:Kindly fill up all the details properly!`);

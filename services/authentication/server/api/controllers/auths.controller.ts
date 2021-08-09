@@ -106,7 +106,7 @@ export class AuthsController {
 
                 // Error creating the new account
                 if (!account) {
-                    return sendError(res, new Error('Unable to create the account, some unexpected error occured!'), 'Unable to create the account, some unexpected error occured!', 500);
+                    return sendError(res, new Error('Unable to create the account, some unexpected error occurred!'), 'Unable to create the account, some unexpected error occurred!', 500);
                 }
 
                 // // Send signup confirmation email
@@ -174,7 +174,7 @@ export class AuthsController {
 
                     // Error updating the account
                     if (!accountUpdate) {
-                        return sendError(res, new Error('Unable to update the account, some unexpected error occured!'), 'Unable to update the account, some unexpected error occured!', 500);
+                        return sendError(res, new Error('Unable to update the account, some unexpected error occurred!'), 'Unable to update the account, some unexpected error occurred!', 500);
                     }
 
                     // Find if the user already exist in the workplace, but is inactive
@@ -226,7 +226,7 @@ export class AuthsController {
             
                                 // Error updating the group
                                 if (!groupUpdate) {
-                                    return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                                    return sendError(res, new Error(`Unable to update the group, some unexpected error occurred!`), `Unable to update the group, some unexpected error occurred!`, 500);
                                 }
             
                                 // Add group to user's groups
@@ -256,7 +256,7 @@ export class AuthsController {
     
                         // Error creating the new user
                         if (!user) {
-                            return sendError(res, new Error('Unable to create the user, some unexpected error occured!'), 'Unable to create the user, some unexpected error occured!', 500);
+                            return sendError(res, new Error('Unable to create the user, some unexpected error occurred!'), 'Unable to create the user, some unexpected error occurred!', 500);
                         }
     
                         // If user is invite, does not have access to global
@@ -274,7 +274,7 @@ export class AuthsController {
         
                             // Error updating the group
                             if (!groupUpdate) {
-                                return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                                return sendError(res, new Error(`Unable to update the group, some unexpected error occurred!`), `Unable to update the group, some unexpected error occurred!`, 500);
                             }
         
                             // Add group to user's groups
@@ -291,7 +291,7 @@ export class AuthsController {
         
                             // Error updating the user
                             if (!user) {
-                                return sendError(res, new Error('Unable to update the user, some unexpected error occured!'), 'Unable to update the user, some unexpected error occured!', 500);
+                                return sendError(res, new Error('Unable to update the user, some unexpected error occurred!'), 'Unable to update the user, some unexpected error occurred!', 500);
                             }
                         }
 
@@ -363,7 +363,7 @@ export class AuthsController {
     
                         // Error updating the Workspace and removing the user email
                         if (!workspace) {
-                            return sendError(res, new Error('Unable to update the workspace, some unexpected error occured!'), 'Unable to update the workspace, some unexpected error occured!', 500);
+                            return sendError(res, new Error('Unable to update the workspace, some unexpected error occurred!'), 'Unable to update the workspace, some unexpected error occurred!', 500);
                         }
                     }
 

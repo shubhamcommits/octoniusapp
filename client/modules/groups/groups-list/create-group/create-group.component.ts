@@ -65,7 +65,7 @@ export class CreateGroupComponent implements OnInit {
 
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@createGroup.groupCreated:Group created!`))
           })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@createGroup.unexpectedErrorCreatingGroup:An unexpected error occured while creating the group, please try again!`)))
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@createGroup.unexpectedErrorCreatingGroup:An unexpected error occurred while creating the group, please try again!`)))
       }))
     } else if(value == ''){
       this.utilityService.warningNotification($localize`:@@createGroup.groupNameNotEmpty:Group name can\'t be empty!`);
@@ -87,7 +87,7 @@ export class CreateGroupComponent implements OnInit {
 
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@createGroup.agoraCreated:Agora created!`))
           })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@createGroup.unexpectedErrorCreatingGroup:An unexpected error occured while creating the group, please try again!`)))
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@createGroup.unexpectedErrorCreatingGroup:An unexpected error occurred while creating the group, please try again!`)))
       }))
 
     } else if(value == ''){

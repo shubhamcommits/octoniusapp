@@ -64,7 +64,7 @@ export class UserUpdateProfileDialogComponent implements OnInit {
               this.mdDialogRef.close();
             })
             .catch(err => {
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@userUpdateProfileDialog.unexpectedOccuredWhileUpdatingPwd:An unexpected occured while updating the password, please try again!`));
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@userUpdateProfileDialog.unexpectedOccuredWhileUpdatingPwd:An unexpected occurred while updating the password, please try again!`));
               this.mdDialogRef.close();
             })
         }))

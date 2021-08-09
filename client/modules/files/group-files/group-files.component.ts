@@ -512,7 +512,7 @@ export class GroupFilesComponent implements OnInit {
 
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unexpectedErrorUploading:Unexpected error occured while uploading, please try again!`))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unexpectedErrorUploading:Unexpected error occurred while uploading, please try again!`))
           })
       }))
   }

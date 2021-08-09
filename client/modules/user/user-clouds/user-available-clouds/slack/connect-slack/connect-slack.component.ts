@@ -55,14 +55,14 @@ export class ConnectSlackComponent implements OnInit {
 
                 }),
                 ((err) => {
-                  console.log('Error occured, while authenticating for Slack', err);
-                  reject(this.utilityService.rejectAsyncPromise($localize`:@@connectSlack.oppsErrorWhileAuthenticatinoSlack:Oops, an error occured while authenticating for Slack, please try again!`))
+                  console.log('Error occurred, while authenticating for Slack', err);
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@connectSlack.oppsErrorWhileAuthenticatinoSlack:Oops, an error occurred while authenticating for Slack, please try again!`))
                 });
             }));
           }
           catch (err) {
-            console.log('There\'s some unexpected error occured, please try again!', err);
-            this.utilityService.errorNotification($localize`:@@connectSlack.unexpectedErrorOccured:There\'s some unexpected error occured, please try again!`);
+            console.log('There\'s some unexpected error occurred, please try again!', err);
+            this.utilityService.errorNotification($localize`:@@connectSlack.unexpectedErrorOccured:There\'s some unexpected error occurred, please try again!`);
           }
         }
       });

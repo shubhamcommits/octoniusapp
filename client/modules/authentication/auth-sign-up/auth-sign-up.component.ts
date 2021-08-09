@@ -122,15 +122,15 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@authSignUp.hi:Hi ${res['account']['first_name']}!`));
             })
             .catch((err) => {
-              console.error('Error occured while signing in the user', err);
-              this.utilityService.errorNotification($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occured while signing you up, please try again!`);
+              console.error('Error occurred while signing in the user', err);
+              this.utilityService.errorNotification($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
               this.storageService.clear();
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occured while signing you up, please try again!`))
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`))
             });
 
         }, (err) => {
-          console.error('Error occured while signing in the user', err);
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@authSignUp.errorSigningUp:Oops some error occured while signing you up, please try again!`))
+          console.error('Error occurred while signing in the user', err);
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@authSignUp.errorSigningUp:Oops some error occurred while signing you up, please try again!`))
         }));
     });
   }

@@ -120,10 +120,10 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}, welcome back!`));
             })
             .catch((err) => {
-              console.error('Error occured while signing in the user', err);
-              this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occured while signing you in, please try again!`);
+              console.error('Error occurred while signing in the user', err);
+              this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`);
               this.storageService.clear();
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occured while signing you in, please try again!`))
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
             })
             // else normal flow
           } else {
@@ -136,15 +136,15 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
                 resolve(this.utilityService.resolveAsyncPromise($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}, welcome back!`));
               })
               .catch((err) => {
-                console.error('Error occured while signing in the user', err);
-                this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occured while signing you in, please try again!`);
+                console.error('Error occurred while signing in the user', err);
+                this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`);
                 this.storageService.clear();
-                reject(this.utilityService.rejectAsyncPromise($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occured while signing you in, please try again!`))
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
               })
           }
         }, (err) => {
-          console.error('Error occured while signing in the user', err);
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occured while signing you in, please try again!`))
+          console.error('Error occurred while signing in the user', err);
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
         }));
     });
   }

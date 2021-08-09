@@ -56,13 +56,13 @@ export class WorkplaceInviteUserComponent implements OnInit {
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceInviteUser.weSentInvitationEmail:We have sent the invitation email at ${email} to join your workplace!`))
           }, (err)=>{
             this.email = '';
-            console.log('Error occured, while sending the email', err);
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceInviteUser.oopsErrorSendingEmail:Oops, an error occured while sending the email, please try again!`))
+            console.log('Error occurred, while sending the email', err);
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceInviteUser.oopsErrorSendingEmail:Oops, an error occurred while sending the email, please try again!`))
           })
         }))
       } catch(err) {
-        console.log('There\'s some unexpected error occured, please try again!', err);
-        this.utilityService.errorNotification($localize`:@@workplaceInviteUser.unexpectedError:There\'s some unexpected error occured, please try again!`);
+        console.log('There\'s some unexpected error occurred, please try again!', err);
+        this.utilityService.errorNotification($localize`:@@workplaceInviteUser.unexpectedError:There\'s some unexpected error occurred, please try again!`);
       }
     }
   }

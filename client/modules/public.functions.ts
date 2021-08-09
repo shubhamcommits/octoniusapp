@@ -181,8 +181,8 @@ export class PublicFunctions {
                 .pipe(retry(3))
                 .subscribe((res) => { resolve(res['workspace']) },
                     (err) => {
-                        console.log('Error occured while fetching the workspace details!', err);
-                        utilityService.errorNotification($localize`:@@publicFunctions.errorOccuredWhileFetchingWorkspaceDetails:Error occured while fetching the workspace details, please try again!`);
+                        console.log('Error occurred while fetching the workspace details!', err);
+                        utilityService.errorNotification($localize`:@@publicFunctions.errorOccuredWhileFetchingWorkspaceDetails:Error occurred while fetching the workspace details, please try again!`);
                         reject(err)
                     })
             )
@@ -206,8 +206,8 @@ export class PublicFunctions {
                     resolve(res['users']);
                 })
                 .catch((err) => {
-                    console.log('Error occured while fetching the workspace members!', err);
-                    utilityService.errorNotification($localize`:@@publicFunctions.errorOccuredWhileFetchingWorkspaceMembers:Error occured while fetching the workspace members!, please try again!`);
+                    console.log('Error occurred while fetching the workspace members!', err);
+                    utilityService.errorNotification($localize`:@@publicFunctions.errorOccuredWhileFetchingWorkspaceMembers:Error occurred while fetching the workspace members!, please try again!`);
                     reject(err)
                 })
         })
@@ -972,7 +972,7 @@ export class PublicFunctions {
 
     async sendError(err: Error) {
         let utilityService = this.injector.get(UtilityService)
-        console.log('There\'s some unexpected error occured, please try again!', err);
+        console.log('There\'s some unexpected error occurred, please try again!', err);
         utilityService.errorNotification(err.message);
     }
 

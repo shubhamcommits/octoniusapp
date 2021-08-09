@@ -116,7 +116,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
 
           })
           .catch(() => {
-            reject(utilityService.rejectAsyncPromise($localize`:@@groupNewFile.unexpectedErrorCreatingFolder:Unexpected error occured while creating the folder, please try again!`))
+            reject(utilityService.rejectAsyncPromise($localize`:@@groupNewFile.unexpectedErrorCreatingFolder:Unexpected error occurred while creating the folder, please try again!`))
           });
       }));
 
@@ -239,8 +239,8 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
           this.folderEmitter.emit(folders[0]);
           resolve(utilityService.resolveAsyncPromise($localize`:@@groupNewFile.folderUploaded:Folder has been uploaded!`));
         } catch (err) {
-          console.log('There\'s some unexpected error occured, please try again!', err);
-          reject(utilityService.rejectAsyncPromise($localize`:@@groupNewFile.unexpectedErrorCreatingFolder:Unexpected error occured while creating the folder, please try again!`));
+          console.log('There\'s some unexpected error occurred, please try again!', err);
+          reject(utilityService.rejectAsyncPromise($localize`:@@groupNewFile.unexpectedErrorCreatingFolder:Unexpected error occurred while creating the folder, please try again!`));
         }
       }));
 
@@ -323,7 +323,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
 
           })
           .catch(() => {
-            reject(utilityService.rejectAsyncPromise($localize`:@@groupNewFile.unexpectedErrorUploading:Unexpected error occured while uploading, please try again!`))
+            reject(utilityService.rejectAsyncPromise($localize`:@@groupNewFile.unexpectedErrorUploading:Unexpected error occurred while uploading, please try again!`))
           })
       }))
   }

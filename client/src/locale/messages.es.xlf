@@ -67,7 +67,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="stripePayment.unexpectedError" datatype="html">
-        <source>There's some unexpected error occured, please try again!</source>
+        <source>There's some unexpected error occurred, please try again!</source>
         <target state="translated">Ocurrió un error inesperado, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-billing/stripe-payment/stripe-payment.component.ts</context>
@@ -263,7 +263,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceAddDomain.oopsErrorAdding" datatype="html">
-        <source>Oops, an error occured while adding the domain, please try again!</source>
+        <source>Oops, an error occurred while adding the domain, please try again!</source>
         <target state="translated">¡Vaya! Se produjo un error al agregar el dominio. Vuelva a intentarlo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
@@ -271,7 +271,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceAddDomain.unexpectedError" datatype="html">
-        <source>There's some unexpected error occured, please try again!</source>
+        <source>There's some unexpected error occurred, please try again!</source>
         <target state="translated">Ocurrió un error inesperado, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
@@ -287,7 +287,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceAddDomain.oppsErrorFetching" datatype="html">
-        <source>Oops, an error occured while fetching the list of email domain, please try refreshing the page!</source>
+        <source>Oops, an error occurred while fetching the list of email domain, please try refreshing the page!</source>
         <target state="translated">Vaya, se produjo un error al obtener la lista de dominios de correo electrónico. ¡Intente actualizar la página!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
@@ -319,7 +319,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceAddDomain.oopsErrorRemoving" datatype="html">
-        <source>Oops, an error occured while removing the domain, please try again!</source>
+        <source>Oops, an error occurred while removing the domain, please try again!</source>
         <target state="translated">¡Vaya! Se produjo un error al eliminar el dominio. Vuelve a intentarlo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.ts</context>
@@ -375,7 +375,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInviteUser.oopsErrorSendingEmail" datatype="html">
-        <source>Oops, an error occured while sending the email, please try again!</source>
+        <source>Oops, an error occurred while sending the email, please try again!</source>
         <target state="translated">Vaya, se produjo un error al enviar el correo electrónico. Vuelva a intentarlo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-invite-user/workplace-invite-user.component.ts</context>
@@ -383,7 +383,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInviteUser.unexpectedError" datatype="html">
-        <source>There's some unexpected error occured, please try again!</source>
+        <source>There's some unexpected error occurred, please try again!</source>
         <target state="translated">Ocurrió un error inesperado, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-invite-user/workplace-invite-user.component.ts</context>
@@ -911,7 +911,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="authJoinWorkplace.oopsErrorOccuredSettingUp" datatype="html">
-        <source>Oops some error occured while setting you up, please try again!</source>
+        <source>Oops some error occurred while setting you up, please try again!</source>
         <target state="translated">¡Vaya! Se produjo un error al configurarlo. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
@@ -1019,7 +1019,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="authNewWorkplace.oopsErrorOccuredSettingUp" datatype="html">
-        <source>Oops some error occured while setting you up, please try again!</source>
+        <source>Oops some error occurred while setting you up, please try again!</source>
         <target state="translated">¡Vaya! Se produjo un error al configurarlo. Vuelve a intentarlo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-new-workplace/auth-new-workplace.component.ts</context>
@@ -1163,7 +1163,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="authSignUp.oopsErrorSigningUp" datatype="html">
-        <source>Oops some error occured while signing you up, please try again!</source>
+        <source>Oops some error occurred while signing you up, please try again!</source>
         <target state="translated">Vaya, se produjo un error al registrarte. Vuelve a intentarlo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
@@ -1175,7 +1175,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="authSignUp.errorSigningUp" datatype="html">
-        <source>Oops some error occured while signing you up, please try again!</source>
+        <source>Oops some error occurred while signing you up, please try again!</source>
         <target state="translated">Vaya, se produjo un error al registrarte. Vuelve a intentarlo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
@@ -1263,7 +1263,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="resetPwd.oopsErrorResetingPwd" datatype="html">
-        <source>Oops some error occured while reseting your password, please try again!</source>
+        <source>Oops some error occurred while reseting your password, please try again!</source>
         <target state="translated">¡Vaya! Se produjo un error al restablecer su contraseña. Vuelva a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/reset-password/reset-password.component.ts</context>
@@ -1343,7 +1343,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="selectWorkspace.oopsErrorSigningIn" datatype="html">
-        <source>Oops some error occured while signing you in, please try again!</source>
+        <source>Oops some error occurred while signing you in, please try again!</source>
         <target state="translated">Vaya, se ha producido un error al iniciar sesión. Inténtalo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/select-workspace/select-workspace.component.ts</context>
@@ -1787,7 +1787,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.unexpectedErrorUploading" datatype="html">
-        <source>Unexpected error occured while uploading, please try again!</source>
+        <source>Unexpected error occurred while uploading, please try again!</source>
         <target state="translated">Se produjo un error inesperado durante la carga. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
@@ -1915,7 +1915,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupNewFile.unexpectedErrorCreatingFolder" datatype="html">
-        <source>Unexpected error occured while creating the folder, please try again!</source>
+        <source>Unexpected error occurred while creating the folder, please try again!</source>
         <target state="translated">Ocurrió un error inesperado al crear la carpeta. Vuelva a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
@@ -2007,7 +2007,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupNewFile.unexpectedErrorUploading" datatype="html">
-        <source>Unexpected error occured while uploading, please try again!</source>
+        <source>Unexpected error occurred while uploading, please try again!</source>
         <target state="translated">Se produjo un error inesperado durante la carga. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-new-file/group-new-file.component.ts</context>
@@ -2103,7 +2103,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoAnswer.unexpectedErrorOccuredSubmittingFlamingo" datatype="html">
-        <source>Unexpected error occured while submitting Flamingo, please try again!</source>
+        <source>Unexpected error occurred while submitting Flamingo, please try again!</source>
         <target state="translated">Se produjo un error inesperado al enviar Flamingo, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-answer/flamingo-answer.component.ts</context>
@@ -2347,7 +2347,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoEditor.unexpectedErrorCreatingQuestion" datatype="html">
-        <source>Unexpected error occured while creating the Question, please try again!</source>
+        <source>Unexpected error occurred while creating the Question, please try again!</source>
         <target state="translated">Se produjo un error inesperado al crear la pregunta, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.ts</context>
@@ -2371,7 +2371,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoEditor.unexpectedErrorDeletingQuestion" datatype="html">
-        <source>Unexpected error occured while deleting Question, please try again!</source>
+        <source>Unexpected error occurred while deleting Question, please try again!</source>
         <target state="translated">Se produjo un error inesperado al eliminar la pregunta, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.ts</context>
@@ -2395,7 +2395,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoEditor.unexpectedErrorUpdatingQuestion" datatype="html">
-        <source>Unexpected error occured while updating Question, please try again!</source>
+        <source>Unexpected error occurred while updating Question, please try again!</source>
         <target state="translated">Ocurrió un error inesperado al actualizar la Pregunta. ¡Vuelva a intentarlo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.ts</context>
@@ -2603,7 +2603,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPublish.unexpectedErrorPublishing" datatype="html">
-        <source>Unexpected error occured while publishing/unpublishing Flamingo, please try again!</source>
+        <source>Unexpected error occurred while publishing/unpublishing Flamingo, please try again!</source>
         <target state="translated">Se produjo un error inesperado al publicar / anular la publicación de Flamingo, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.ts</context>
@@ -3639,7 +3639,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="inviteUsers.oopsErrorWhileSendingEmail" datatype="html">
-        <source>Oops, an error occured while sending the email, please try again!</source>
+        <source>Oops, an error occurred while sending the email, please try again!</source>
         <target state="translated">Vaya, se produjo un error al enviar el correo electrónico. Vuelva a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/invite-user/invite-user.component.ts</context>
@@ -3647,7 +3647,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="inviteUsers.unexpectedErrorOccured" datatype="html">
-        <source>There's some unexpected error occured, please try again!</source>
+        <source>There's some unexpected error occurred, please try again!</source>
         <target state="translated">Ocurrió un error inesperado, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/invite-user/invite-user.component.ts</context>
@@ -4727,7 +4727,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="createGroup.unexpectedErrorCreatingGroup" datatype="html">
-        <source>An unexpected error occured while creating the group, please try again!</source>
+        <source>An unexpected error occurred while creating the group, please try again!</source>
         <target state="translated">Se produjo un error inesperado al crear el grupo, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/create-group/create-group.component.ts</context>
@@ -4875,7 +4875,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="forgotPwd.errorSendingEmail" datatype="html">
-        <source>Error occured while sending the email, please try again!</source>
+        <source>Error occurred while sending the email, please try again!</source>
         <target state="translated">Se produjo un error al enviar el correo electrónico, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/forgot-password/forgot-password.component.ts</context>
@@ -5007,7 +5007,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.oopsErrorSigningIn" datatype="html">
-        <source>Oops some error occured while signing you in, please try again!</source>
+        <source>Oops some error occurred while signing you in, please try again!</source>
         <target state="needs-l10n">Vaya, se ha producido un error al iniciar sesión. Inténtalo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
@@ -5247,7 +5247,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.errorOccuredWhileFetchingWorkspaceDetails" datatype="html">
-        <source>Error occured while fetching the workspace details, please try again!</source>
+        <source>Error occurred while fetching the workspace details, please try again!</source>
         <target state="translated">Se produjo un error al obtener los detalles del espacio de trabajo. Vuelva a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
@@ -5255,7 +5255,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.errorOccuredWhileFetchingWorkspaceMembers" datatype="html">
-        <source>Error occured while fetching the workspace members!, please try again!</source>
+        <source>Error occurred while fetching the workspace members!, please try again!</source>
         <target state="translated">¡Se produjo un error al obtener los miembros del espacio de trabajo! ¡Inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
@@ -5543,7 +5543,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="connectSlack.oppsErrorWhileAuthenticatinoSlack" datatype="html">
-        <source>Oops, an error occured while authenticating for Slack, please try again!</source>
+        <source>Oops, an error occurred while authenticating for Slack, please try again!</source>
         <target state="needs-l10n">¡Vaya! Se produjo un error al autenticarse en Slack. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/slack/connect-slack/connect-slack.component.ts</context>
@@ -5551,7 +5551,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="connectSlack.unexpectedErrorOccured" datatype="html">
-        <source>There's some unexpected error occured, please try again!</source>
+        <source>There's some unexpected error occurred, please try again!</source>
         <target state="needs-l10n">Ocurrió un error inesperado, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-clouds/user-available-clouds/slack/connect-slack/connect-slack.component.ts</context>
@@ -6613,7 +6613,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="userImageDetails.oopsAnErrorOccured" datatype="html">
-        <source>Oops, an error occured while updating the avatar, please try again!</source>
+        <source>Oops, an error occurred while updating the avatar, please try again!</source>
         <target state="needs-l10n">¡Vaya! Se produjo un error al actualizar el avatar. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/user-image-details/user-image-details.component.ts</context>
@@ -6621,7 +6621,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="userImageDetails.unexpectedError" datatype="html">
-        <source>'There's some unexpected error occured, please try again!</source>
+        <source>'There's some unexpected error occurred, please try again!</source>
         <target state="needs-l10n">'Se ha producido un error inesperado, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/user-image-details/user-image-details.component.ts</context>
@@ -6661,7 +6661,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceDetails.oopsAnErrorOccured" datatype="html">
-        <source>Oops, an error occured while updating the workspace avatar, please try again!</source>
+        <source>Oops, an error occurred while updating the workspace avatar, please try again!</source>
         <target state="translated">¡Vaya! Se produjo un error al actualizar el avatar del espacio de trabajo. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.ts</context>
@@ -6669,7 +6669,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceDetails.unexpectedError" datatype="html">
-        <source>There's some unexpected error occured, please try again!</source>
+        <source>There's some unexpected error occurred, please try again!</source>
         <target state="translated">Ocurrió un error inesperado, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/common-navbar/workspace-details/workspace-details.component.ts</context>
@@ -6861,7 +6861,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="mobileNavbar.errorFetchingProfile" datatype="html">
-        <source>Error occured while fetching your profile details</source>
+        <source>Error occurred while fetching your profile details</source>
         <target state="needs-l10n">Se produjo un error al obtener los detalles de su perfil</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/mobile-navbar/mobile-navbar.component.ts</context>
@@ -6869,7 +6869,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="navbar.errorWhileFetchingProfile" datatype="html">
-        <source>Error occured while fetching your profile details</source>
+        <source>Error occurred while fetching your profile details</source>
         <target state="needs-l10n">Se produjo un error al obtener los detalles de su perfil</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/navbar.component.ts</context>
@@ -7245,7 +7245,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupInformation.unexpectedError" datatype="html">
-        <source>An unexpected error occured while updating the group, please try again!</source>
+        <source>An unexpected error occurred while updating the group, please try again!</source>
         <target state="needs-l10n">Ocurrió un error inesperado al actualizar el grupo, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-information/group-information.component.ts</context>
@@ -8001,7 +8001,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unexpectedErrorOccuredWhileUpdatingTemplate" datatype="html">
-        <source>An unexpected error occured while updating the template, please try again!</source>
+        <source>An unexpected error occurred while updating the template, please try again!</source>
         <target state="needs-l10n">Ocurrió un error inesperado al actualizar la plantilla, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.ts</context>
@@ -8033,7 +8033,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unexpectedErrorOccuredWhileDeletingTemplate" datatype="html">
-        <source>An unexpected error occured while deleting the template, please try again!</source>
+        <source>An unexpected error occurred while deleting the template, please try again!</source>
         <target state="needs-l10n">Se produjo un error inesperado al eliminar la plantilla, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.ts</context>
@@ -8065,7 +8065,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unexpectedErrorOccuredWhileUpdatingTask" datatype="html">
-        <source>An unexpected error occured while updating the task, please try again!</source>
+        <source>An unexpected error occurred while updating the task, please try again!</source>
         <target state="needs-l10n">Se produjo un error inesperado al actualizar la tarea, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.ts</context>
@@ -8097,7 +8097,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unexpectedErrorOccuredWhileCreatingTemplate" datatype="html">
-        <source>An unexpected error occured while creating the template, please try again!</source>
+        <source>An unexpected error occurred while creating the template, please try again!</source>
         <target state="needs-l10n">Se produjo un error inesperado al crear la plantilla, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/task-actions/task-actions.component.ts</context>
@@ -8921,7 +8921,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="componentSearchBar.oopsErrorWhileUpdatingRole" datatype="html">
-        <source>Oops, an error occured while updating the role, please try again!</source>
+        <source>Oops, an error occurred while updating the role, please try again!</source>
         <target state="needs-l10n">Vaya, se produjo un error al actualizar la función. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/component-search-bar/component-search-bar.component.ts</context>
@@ -10699,7 +10699,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="userUpdateProfileDialog.unexpectedOccuredWhileUpdatingPwd" datatype="html">
-        <source>An unexpected occured while updating the password, please try again!</source>
+        <source>An unexpected occurred while updating the password, please try again!</source>
         <target state="needs-l10n">Se produjo un error inesperado al actualizar la contraseña, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-update-profile-dialog/user-update-profile-dialog.component.ts</context>
@@ -10747,7 +10747,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="userUpdateUserInformationDialog.unexpectedOccured" datatype="html">
-        <source>An unexpected occured while updating the details, please try again!</source>
+        <source>An unexpected occurred while updating the details, please try again!</source>
         <target state="needs-l10n">Se produjo un error inesperado al actualizar los detalles. Vuelva a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-update-user-information-dialog/user-update-user-information-dialog.component.ts</context>
@@ -10795,7 +10795,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="userUpdateUserPersonalInformationDialog.unexpectedOccured" datatype="html">
-        <source>An unexpected occured while updating the details, please try again!</source>
+        <source>An unexpected occurred while updating the details, please try again!</source>
         <target state="needs-l10n">Se produjo un error inesperado al actualizar los detalles. Vuelva a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/user-update-user-personal-information-dialog/user-update-user-personal-information-dialog.component.ts</context>

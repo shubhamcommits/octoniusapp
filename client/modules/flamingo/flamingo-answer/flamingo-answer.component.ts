@@ -180,7 +180,7 @@ export class FlamingoAnswerComponent implements OnInit {
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@flamingoAnswer.flamingoSubmited:Flamingo has been submited!`));
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@flamingoAnswer.unexpectedErrorOccuredSubmittingFlamingo:Unexpected error occured while submitting Flamingo, please try again!`));
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@flamingoAnswer.unexpectedErrorOccuredSubmittingFlamingo:Unexpected error occurred while submitting Flamingo, please try again!`));
           });
     }));
   }

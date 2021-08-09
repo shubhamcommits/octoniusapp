@@ -53,7 +53,7 @@ export class UserUpdateUserPersonalInformationDialogComponent implements OnInit 
 
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@userUpdateUserPersonalInformationDialog.detailsUpdated:Details updated sucessfully!`));
         }).catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@userUpdateUserPersonalInformationDialog.unexpectedOccured:An unexpected occured while updating the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@userUpdateUserPersonalInformationDialog.unexpectedOccured:An unexpected occurred while updating the details, please try again!`));
         });
     }));
   }

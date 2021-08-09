@@ -144,7 +144,7 @@ export class WorkspaceController {
 
             // Error creating workspace
             if (!workspace) {
-                return sendError(res, new Error('Unable to create the workspace, some unexpected error occured!'), 'Unable to create the workspace, some unexpected error occured!', 500);
+                return sendError(res, new Error('Unable to create the workspace, some unexpected error occurred!'), 'Unable to create the workspace, some unexpected error occurred!', 500);
             }
 
             // Prepare new user data
@@ -165,7 +165,7 @@ export class WorkspaceController {
 
             // Error creating user
             if (!user) {
-                return sendError(res, new Error('Unable to create the user, some unexpected error occured!'), 'Unable to create the user, some unexpected error occured!', 500);
+                return sendError(res, new Error('Unable to create the user, some unexpected error occurred!'), 'Unable to create the user, some unexpected error occurred!', 500);
             }
 
             // Pass user as workspace member and _owner
@@ -185,7 +185,7 @@ export class WorkspaceController {
 
             // Error updating the workspace
             if (!workspaceUpdate) {
-                return sendError(res, new Error('Unable to update the workspace, some unexpected error occured!'), 'Unable to update the workspace, some unexpected error occured!', 500);
+                return sendError(res, new Error('Unable to update the workspace, some unexpected error occurred!'), 'Unable to update the workspace, some unexpected error occurred!', 500);
             }
 
             // Add workspace to user account
@@ -201,7 +201,7 @@ export class WorkspaceController {
 
             // Error updating the account
             if (!accountUpdate) {
-                return sendError(res, new Error('Unable to update the account, some unexpected error occured!'), 'Unable to update the account, some unexpected error occured!', 500);
+                return sendError(res, new Error('Unable to update the account, some unexpected error occurred!'), 'Unable to update the account, some unexpected error occurred!', 500);
             }
 
             // Pepare global group data
@@ -218,7 +218,7 @@ export class WorkspaceController {
 
             // Error creating global group
             if (!group) {
-                return sendError(res, new Error('Unable to create the global group, some unexpected error occured!'), 'Unable to create the global group, some unexpected error occured!', 500);
+                return sendError(res, new Error('Unable to create the global group, some unexpected error occurred!'), 'Unable to create the global group, some unexpected error occurred!', 500);
             }
 
             const default_CF = {
@@ -251,7 +251,7 @@ export class WorkspaceController {
 
             // Error updating the user
             if (!userUpdate) {
-                return sendError(res, new Error('Unable to update the user, some unexpected error occured!'), 'Unable to update the user, some unexpected error occured!', 500);
+                return sendError(res, new Error('Unable to update the user, some unexpected error occurred!'), 'Unable to update the user, some unexpected error occurred!', 500);
             }
 
             // Prepare newGroupData
@@ -625,7 +625,7 @@ export class WorkspaceController {
 
                     // Error updating the group
                     if (!groupUpdate) {
-                        return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                        return sendError(res, new Error(`Unable to update the group, some unexpected error occurred!`), `Unable to update the group, some unexpected error occurred!`, 500);
                     }
 
                     // Add group to user's groups

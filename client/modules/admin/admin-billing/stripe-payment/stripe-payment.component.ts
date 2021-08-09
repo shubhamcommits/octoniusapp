@@ -66,7 +66,7 @@ export class StripePaymentComponent implements OnInit {
         })
         .catch(function (err) {
           console.log('Error when fetching Checkout session', err);
-          this.utilityService.errorNotification($localize`:@@stripePayment.unexpectedError:There\'s some unexpected error occured, please try again!`);
+          this.utilityService.errorNotification($localize`:@@stripePayment.unexpectedError:There\'s some unexpected error occurred, please try again!`);
         });
 
       await this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);

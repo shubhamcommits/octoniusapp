@@ -158,7 +158,7 @@ export class RecentActivityComponent implements OnInit {
   }
 
   /**
-   * This function routes the user to the particular post where notification has occured
+   * This function routes the user to the particular post where notification has occurred
    * @param postId - userId of the current user
    * @param postType - post type
    * @param group - group Id
@@ -180,7 +180,7 @@ export class RecentActivityComponent implements OnInit {
   }
 
   /**
-   * This function opens the dialog of the post where notification has occured
+   * This function opens the dialog of the post where notification has occurred
    * @param postId - userId of the current user
    * @param postType - post type
    * @param group - group Id

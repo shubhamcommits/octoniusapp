@@ -51,7 +51,7 @@ export class ZapAuthConfirmationComponent implements OnInit {
         await this.publicFunctions.sendUpdatesToUserData(res['update_user']);
       }),
       ((err) => {
-          console.log('Error occured, while coonecting to Zapier', err);
+          console.log('Error occurred, while coonecting to Zapier', err);
       });
 
       setTimeout(() => {

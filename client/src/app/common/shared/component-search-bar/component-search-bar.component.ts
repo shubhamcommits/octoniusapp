@@ -430,8 +430,8 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
             resolve(utilityService.resolveAsyncPromise($localize`:@@componentSearchBar.roleUpdated:User role updated!`))
           })
           .catch((err) => {
-            console.log('Error occured, while updating the role', err);
-            reject(utilityService.rejectAsyncPromise($localize`:@@componentSearchBar.oopsErrorWhileUpdatingRole:Oops, an error occured while updating the role, please try again!`))
+            console.log('Error occurred, while updating the role', err);
+            reject(utilityService.rejectAsyncPromise($localize`:@@componentSearchBar.oopsErrorWhileUpdatingRole:Oops, an error occurred while updating the role, please try again!`))
           })
       }))
   }
@@ -481,8 +481,8 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
             resolve(utilityService.resolveAsyncPromise($localize`:@@componentSearchBar.userRoleUpdated:User role updated!`))
           })
           .catch((err) => {
-            console.log('Error occured, while updating the role', err);
-            reject(utilityService.rejectAsyncPromise($localize`:@@componentSearchBar.oopsErrorWhileUpdatingRole:Oops, an error occured while updating the role, please try again!`))
+            console.log('Error occurred, while updating the role', err);
+            reject(utilityService.rejectAsyncPromise($localize`:@@componentSearchBar.oopsErrorWhileUpdatingRole:Oops, an error occurred while updating the role, please try again!`))
           })
       }))
   }

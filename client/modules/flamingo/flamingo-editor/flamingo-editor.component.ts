@@ -234,7 +234,7 @@ export class FlamingoEditorComponent implements OnInit {
 
           })
           .catch(() => {
-            reject(utilityService.rejectAsyncPromise($localize`:@@flamingoEditor.unexpectedErrorCreatingQuestion:Unexpected error occured while creating the Question, please try again!`))
+            reject(utilityService.rejectAsyncPromise($localize`:@@flamingoEditor.unexpectedErrorCreatingQuestion:Unexpected error occurred while creating the Question, please try again!`))
           })
       }))
   }
@@ -363,7 +363,7 @@ export class FlamingoEditorComponent implements OnInit {
 
           })
           .catch(() => {
-            reject(utilityService.rejectAsyncPromise($localize`:@@flamingoEditor.unexpectedErrorDeletingQuestion:Unexpected error occured while deleting Question, please try again!`))
+            reject(utilityService.rejectAsyncPromise($localize`:@@flamingoEditor.unexpectedErrorDeletingQuestion:Unexpected error occurred while deleting Question, please try again!`))
           })
       }))
   }
@@ -391,7 +391,7 @@ export class FlamingoEditorComponent implements OnInit {
 
           })
           .catch(() => {
-            reject(utilityService.rejectAsyncPromise($localize`:@@flamingoEditor.unexpectedErrorUpdatingQuestion:Unexpected error occured while updating Question, please try again!`))
+            reject(utilityService.rejectAsyncPromise($localize`:@@flamingoEditor.unexpectedErrorUpdatingQuestion:Unexpected error occurred while updating Question, please try again!`))
           })
       }))
   }

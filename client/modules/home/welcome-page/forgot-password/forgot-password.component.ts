@@ -65,8 +65,8 @@ export class ForgotPasswordComponent implements OnInit {
               };
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@forgotPwd.forgotPwdEmailSent:Forgot Password email sent successfully!`));
             }, (err) => {
-              console.log('Error occured while sending the email', err);
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@forgotPwd.errorSendingEmail:Error occured while sending the email, please try again!`));
+              console.log('Error occurred while sending the email', err);
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@forgotPwd.errorSendingEmail:Error occurred while sending the email, please try again!`));
             }));
         }))
       }
