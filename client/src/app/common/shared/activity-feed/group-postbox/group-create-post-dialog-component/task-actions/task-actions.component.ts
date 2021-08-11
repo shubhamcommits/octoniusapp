@@ -84,7 +84,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
     if (this.postData.type === 'task' && this.groupData && this.userData) {
       // Fetches the user groups from the server
-      await this.publicFunctions.getUserGroups(this.groupData._workspace, this.userData._id)
+      await this.publicFunctions.getAllUserGroups(this.groupData._workspace, this.userData._id)
         .then((groups: any) => {
           groups.forEach(async group => {
             group.sections = await this.publicFunctions.getAllColumns(group._id);

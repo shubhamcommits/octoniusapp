@@ -216,6 +216,33 @@ export class GroupsService {
     }).toPromise();
   }
 
+  /**
+   * This function is responsible for fetching the list of all groups for which a user is a part of
+   * @param workspaceId
+   * @param userId
+   */
+   getAllUserGroups(workspaceId: string, userId: string){
+    return this._http.get(this.baseURL + `/allUserGroups`, {
+      params: {
+        workspaceId,
+        userId
+      }
+    }).toPromise();
+  }
+
+  /**
+   * This function is responsible for fetching the list of all groups for which a user is manager
+   * @param workspaceId
+   * @param userId
+   */
+   getAllManagerGroups(workspaceId: string, userId: string){
+    return this._http.get(this.baseURL + `/allManagerGroups`, {
+      params: {
+        workspaceId,
+        userId
+      }
+    }).toPromise();
+  }
 
   getAgoraGroupsNotJoined(workspaceId: string, userId: string){
     return this._http.get(this.baseURL + '/agora/not-joined', {

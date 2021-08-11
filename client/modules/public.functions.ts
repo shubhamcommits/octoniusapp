@@ -474,6 +474,49 @@ export class PublicFunctions {
         })
     }
 
+    /**
+     * Fetch list of next 5 groups of which a user is a part of based on the lastGroupId
+     * @param workspaceId
+     * @param userId
+     * @param lastGroupId
+     */
+    public async getNextUserGroups(workspaceId: string, userId: string, lastGroupId: string) {
+        return new Promise((resolve, reject) => {
+            let groupsService = this.injector.get(GroupsService);
+            groupsService.getNextUserGroups(workspaceId, userId, lastGroupId)
+                .then((res) => resolve(res['groups']))
+                .catch(() => reject([]))
+        })
+    }
+
+    /**
+     * Fetch list of groups of which a user is a part of
+     * @param workspaceId
+     * @param userId
+     */
+    public async getAllUserGroups(workspaceId: string, userId: string) {
+        return new Promise((resolve, reject) => {
+            let groupsService = this.injector.get(GroupsService);
+            groupsService.getAllUserGroups(workspaceId, userId)
+                .then((res) => resolve(res['groups']))
+                .catch(() => reject([]))
+        })
+    }
+
+    /**
+     * Fetch list of groups of which a user is manager
+     * @param workspaceId
+     * @param userId
+     */
+    public async getAllManagerGroups(workspaceId: string, userId: string) {
+        return new Promise((resolve, reject) => {
+            let groupsService = this.injector.get(GroupsService);
+            groupsService.getAllManagerGroups(workspaceId, userId)
+                .then((res) => resolve(res['groups']))
+                .catch(() => reject([]))
+        })
+    }
+
     async getShuttleGroups(workspaceId: string, groupId: string) {
       return new Promise((resolve, reject) => {
           let workspaceService = this.injector.get(WorkspaceService);
@@ -492,21 +535,6 @@ export class PublicFunctions {
             let usersService = this.injector.get(UserService);
             usersService.getUserFavoriteGroups(userId)
                 .then((res) => resolve(res['user']['stats']['favorite_groups']))
-                .catch(() => reject([]))
-        })
-    }
-
-    /**
-     * Fetch list of next 5 groups of which a user is a part of based on the lastGroupId
-     * @param workspaceId
-     * @param userId
-     * @param lastGroupId
-     */
-    public async getNextUserGroups(workspaceId: string, userId: string, lastGroupId: string) {
-        return new Promise((resolve, reject) => {
-            let groupsService = this.injector.get(GroupsService);
-            groupsService.getNextUserGroups(workspaceId, userId, lastGroupId)
-                .then((res) => resolve(res['groups']))
                 .catch(() => reject([]))
         })
     }
@@ -1404,7 +1432,7 @@ export class PublicFunctions {
           });
       }
 
-      
+
      /* Helper function fetching the worksapace groups
      * @param workspaceId - current workspaceId
      */
