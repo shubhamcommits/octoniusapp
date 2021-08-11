@@ -93,6 +93,9 @@ export class AdminGeneralComponent implements OnInit {
   }
 
   openDialog() {
-    this.dialog.open(WorkspaceRolesInformationDialogComponent);
+    this.dialog.open(WorkspaceRolesInformationDialogComponent, {
+      disableClose: false,
+      hasBackdrop: true
+    });
   }
 }
