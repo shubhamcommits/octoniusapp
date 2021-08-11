@@ -1,10 +1,12 @@
 import { Component, OnInit, Injector } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
+import { WorkspaceRolesInformationDialogComponent } from './workspace-roles-information-dialog/workspace-roles-information-dialog.component';
 
 @Component({
   selector: 'app-admin-general',
@@ -13,15 +15,6 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
 })
 export class AdminGeneralComponent implements OnInit {
 
-  constructor(
-    private workspaceService: WorkspaceService,
-    private utilityService: UtilityService,
-    private storageService: StorageService,
-    private authService: AuthService,
-    private router: Router,
-    private injector: Injector
-  ) { }
-
   workspaceData: Object;
 
   userData: Object;
@@ -29,6 +22,16 @@ export class AdminGeneralComponent implements OnInit {
   allowDecentralizedRoles = false;
 
   publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private workspaceService: WorkspaceService,
+    private utilityService: UtilityService,
+    private storageService: StorageService,
+    private authService: AuthService,
+    private router: Router,
+    private injector: Injector,
+    public dialog: MatDialog
+  ) { }
 
   async ngOnInit() {
 
@@ -87,5 +90,9 @@ export class AdminGeneralComponent implements OnInit {
           })
           .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@adminGeneral.unableToSaveGroupSettings:Unable to save the settings to your workspace, please try again!`)));
     }));
+  }
+
+  openDialog() {
+    this.dialog.open(WorkspaceRolesInformationDialogComponent);
   }
 }
