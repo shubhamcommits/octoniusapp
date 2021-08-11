@@ -250,7 +250,8 @@ export class GroupController {
     async getAllManagerGroups(req: Request, res: Response, next: NextFunction) {
         try {
 
-            const { workspaceId, userId } = req.query;
+            const { userId } = req.query;
+            const { workspaceId } = req.params;
 
             // If either workspaceId or userId is null or not provided then we throw BAD REQUEST 
             if (!workspaceId || !userId) {
@@ -310,7 +311,8 @@ export class GroupController {
     async getAllUserGroups(req: Request, res: Response, next: NextFunction) {
         try {
 
-            const { workspaceId, userId } = req.query;
+            const { userId } = req.query;
+            const { workspaceId } = req.params;
 
             // If either workspaceId or userId is null or not provided then we throw BAD REQUEST 
             if (!workspaceId || !userId) {

@@ -62,10 +62,10 @@ routes.get('/', group.getUserGroups);
 routes.get('/:lastGroupId/next', group.getNextUserGroups);
 
 // GET - Get list of groups of which a user is a part of
-routes.get('/allUserGroups', group.getAllUserGroups);
+routes.get('/:workspaceId/allUserGroups', group.getAllUserGroups);
 
 // GET - Get list of groups of which a user is a manager
-routes.get('/allManagerGroups', group.getAllManagerGroups);
+routes.get('/:workspaceId/allManagerGroups', group.getAllManagerGroups);
 
 // GET - Get first 10 Agora groups not joined by user
 routes.get('/agora/not-joined', group.getAgoraGroupsNotJoined);

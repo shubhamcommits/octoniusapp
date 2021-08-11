@@ -10,6 +10,27 @@
 
             <app-workplace-invite-user [workspaceData]="workspaceData" [userData]="userData"></app-workplace-invite-user>
             <app-workplace-profile-custom-fields [workspaceData]="workspaceData" [userData] = "userData"></app-workplace-profile-custom-fields>
+
+
+            <div class="card-tile invite-users">
+              <h6>
+                <b i18n="@@adminGeneral.decentralizedUserRoles">My organization uses decentralized user roles</b>
+              </h6>
+              <hr />
+              <div class="container">
+                <div class="row">
+                  <mat-slide-toggle color="primary"
+                      [checked]="workspaceData['allow_decentralized_roles']"
+                      [name]="'allow_decentralized_roles'"
+                      (change)="saveSettings($event)"
+                      [(ngModel)]="allowDecentralizedRoles">
+                    <p class="card-text" i18n="@@adminGeneral.enablingDecentralizedUserRoles">By enabling this, you allow everyone to create Groups(private). This will reduce the number of user roles to Workplace Admin, Group Manager, Member, and Guest.</p>
+                  </mat-slide-toggle>
+                </div>
+                <br />
+              </div>
+            </div>
+
             <app-transfer-ownership [workspaceData]="workspaceData" [userData] = "userData" ></app-transfer-ownership>
 
             <div class="card-tile invite-users">

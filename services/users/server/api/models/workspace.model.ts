@@ -49,6 +49,10 @@ const workspaceSchema = new Schema({
         type: String,
         required: true
     }],
+    allow_decentralized_roles: {
+        type: Boolean,
+        default: false
+    },
     profile_custom_fields: {
         type: [{
             name: {

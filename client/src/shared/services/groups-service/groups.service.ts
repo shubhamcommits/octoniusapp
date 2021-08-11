@@ -222,9 +222,8 @@ export class GroupsService {
    * @param userId
    */
    getAllUserGroups(workspaceId: string, userId: string){
-    return this._http.get(this.baseURL + `/allUserGroups`, {
+    return this._http.get(this.baseURL + `/${workspaceId}/allUserGroups`, {
       params: {
-        workspaceId,
         userId
       }
     }).toPromise();
@@ -236,9 +235,8 @@ export class GroupsService {
    * @param userId
    */
    getAllManagerGroups(workspaceId: string, userId: string){
-    return this._http.get(this.baseURL + `/allManagerGroups`, {
+    return this._http.get(this.baseURL + `/${workspaceId}/allManagerGroups`, {
       params: {
-        workspaceId,
         userId
       }
     }).toPromise();

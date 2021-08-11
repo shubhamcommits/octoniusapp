@@ -26,6 +26,8 @@ export class AdminGeneralComponent implements OnInit {
 
   userData: Object;
 
+  allowDecentralizedRoles = false;
+
   publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
@@ -36,8 +38,9 @@ export class AdminGeneralComponent implements OnInit {
     })
 
     //this.utilityService.startForegroundLoader();
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.userData = await this.publicFunctions.getCurrentUser();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    this.allowDecentralizedRoles = this.workspaceData['allow_decentralized_roles'];
   }
 
   ngAfterViewChecked(): void {
@@ -72,4 +75,17 @@ export class AdminGeneralComponent implements OnInit {
     this.publicFunctions.sendUpdatesToWorkspaceData(workspace);
   }
 
+  saveSettings(selected) {
+    // Save the settings
+    this.utilityService.asyncNotification($localize`:@@adminGeneral.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+    new Promise((resolve, reject)=>{
+        this.workspaceService.saveSettings(this.workspaceData['_id'], {allow_decentralized_roles: selected.checked})
+          .then(()=> {
+            this.workspaceData['allow_decentralized_roles'] = selected.checked;
+            this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@adminGeneral.settingsSaved:Settings saved to your workspace!`));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@adminGeneral.unableToSaveGroupSettings:Unable to save the settings to your workspace, please try again!`)));
+    }));
+  }
 }

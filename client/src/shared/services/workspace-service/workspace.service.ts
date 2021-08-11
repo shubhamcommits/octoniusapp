@@ -294,4 +294,8 @@ export class WorkspaceService {
       }
     }).toPromise();
   }
+
+  saveSettings(workspaceId: string, settingsData: any) {
+    return this._http.put(this.BASE_API_URL + `/${workspaceId}/settings`,{settingsData}).toPromise();
+  }
 }
