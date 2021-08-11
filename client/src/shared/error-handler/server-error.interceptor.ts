@@ -19,7 +19,7 @@ export class ServerErrorInterceptor implements HttpInterceptor {
                 if (error.status === 401) {
                     // refresh token
                     injector.clearAllNotifications();
-                    injector.errorNotification('You are not authorized to proceed, kindly check your credentials!');
+                    injector.errorNotification($localize`:@@serverError.notAuthorizedToProcced:You are not authorized to proceed, kindly check your credentials!`);
                 } else {
                     return throwError(error);
                 }

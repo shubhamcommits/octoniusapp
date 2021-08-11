@@ -9,9 +9,14 @@
                 [service]="'user'"
                 [styleClass]="'feed-avatar'"></app-secured-image>
             </div>
+
             <div *ngIf="!showPostBox">
-              <button type="text" class="form-control btn-md noborder-btn postbox"
-                placeholder="What are you working on?">What are you working on, <strong>{{ userData?.first_name }}</strong>?</button>
+              <button type="text"
+                  class="form-control btn-md noborder-btn postbox"
+                  placeholder="What are you working on?"
+                  i18n="@@groupPostbox.whatAreYouWorkingOn">
+                  What are you working on, <strong>{{ userData?.first_name }}</strong>?
+              </button>
             </div>
             <!--
             <section  [ngClass]="(showPostBox) ? 'show-container' : 'hide-container'">

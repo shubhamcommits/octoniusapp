@@ -2,14 +2,18 @@
 <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab">
   <mat-tab>
     <ng-template mat-tab-label>
-      <span *ngIf="notificationsData.unreadNotifications.length > 0" [matBadge]="notificationsData.unreadNotifications.length" matBadgeOverlap="false" matBadgeColor="warn">Recent activities</span>
-      <span *ngIf="notificationsData.unreadNotifications.length == 0">Recent activities</span>
+      <span *ngIf="notificationsData.unreadNotifications.length > 0"
+        [matBadge]="notificationsData.unreadNotifications.length"
+        matBadgeOverlap="false" matBadgeColor="warn"
+        i18n="@@recentActivity.recentActivities">Recent activities</span>
+      <span *ngIf="notificationsData.unreadNotifications.length == 0"
+        i18n="@@recentActivity.recentActivities">Recent activities</span>
     </ng-template>
 
     <!-- Empty State starts -->
     <div *ngIf="notificationsData.unreadNotifications.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
       <img src='assets/images/placeholder_recent_activity.png' class="placeholder-img">
-      <p class="muted text-center">Nothing new. Take a breath. </p>
+      <p class="muted text-center" i18n="@@recentActivity.nothingNew">Nothing new. Take a breath. </p>
     </div>
     <!-- Empty State ends -->
     <div *ngIf="notificationsData.unreadNotifications.length > 0 && !(isLoading$ | async)" >
@@ -19,7 +23,7 @@
           <mat-menu #general_menu="matMenu">
             <a mat-menu-item (click)="markAllNotificationAsRead('')">
               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
-              <span>Mark All As Read</span>
+              <span i18n="@@recentActivity.markAllAsRead">Mark All As Read</span>
             </a>
           </mat-menu>
         </div>
@@ -73,16 +77,16 @@
             <a mat-menu-item *ngIf="notification?.type !== 'mention_folio'"
               (click)="viewNotification(notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group?._id)">
               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
-              <span>View</span>
+              <span i18n="@@recentActivity.view">View</span>
             </a>
             <a mat-menu-item *ngIf="notification?.type === 'mention_folio'"
               (click)="viewFolioNotification(notification?._origin_folio?._id, notification?._origin_folio?._group?._id)">
               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
-              <span>View</span>
+              <span i18n="@@recentActivity.view">View</span>
             </a>
             <a mat-menu-item (click)="markNotificationAsRead(notification._id, userData._id, index, '')">
               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
-              <span>Mark As Read</span>
+              <span i18n="@@recentActivity.markAsRead">Mark As Read</span>
           </a>
           </mat-menu>
         </div>
@@ -92,14 +96,18 @@
   </mat-tab>
   <mat-tab label="">
     <ng-template mat-tab-label>
-      <span *ngIf="notificationsData.unreadPosts.length > 0" [matBadge]="notificationsData.unreadPosts.length" matBadgeOverlap="false" matBadgeColor="warn">News feed</span>
-      <span *ngIf="notificationsData.unreadPosts.length == 0">News feed</span>
+      <span *ngIf="notificationsData.unreadPosts.length > 0"
+        [matBadge]="notificationsData.unreadPosts.length"
+        matBadgeOverlap="false" matBadgeColor="warn"
+        i18n="@@recentActivity.newsFeed">News feed</span>
+      <span *ngIf="notificationsData.unreadPosts.length == 0"
+        i18n="@@recentActivity.newsFeed">News feed</span>
     </ng-template>
 
     <!-- Empty State starts -->
     <div *ngIf="notificationsData.unreadPosts.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
       <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
-      <p class="muted text-center">Everyone is silent. </p>
+      <p class="muted text-center" i18n="@@recentActivity.everyoneIsSilent">Everyone is silent. </p>
     </div>
     <!-- Empty State ends -->
     <div *ngIf="notificationsData.unreadPosts.length > 0 && !(isLoading$ | async)" >
@@ -109,7 +117,7 @@
           <mat-menu #general_menu="matMenu">
             <a mat-menu-item (click)="markAllNotificationAsRead('new-post')">
               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
-              <span>Mark All As Read</span>
+              <span i18n="@@recentActivity.markAllAsRead">Mark All As Read</span>
             </a>
           </mat-menu>
         </div>
@@ -150,11 +158,11 @@
             <a mat-menu-item *ngIf="notification?.type !== 'mention_folio'"
               (click)="viewPost(notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group?._id)">
               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
-              <span>View</span>
+              <span i18n="@@recentActivity.view">View</span>
             </a>
             <a mat-menu-item (click)="markNotificationAsRead(notification._id, userData._id, index, notification?.type)">
               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
-              <span>Mark As Read</span>
+              <span i18n="@@recentActivity.markAsRead">Mark As Read</span>
             </a>
           </mat-menu>
         </div>

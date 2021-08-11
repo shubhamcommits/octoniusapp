@@ -37,7 +37,7 @@ export class TaskStatusComponent implements OnInit {
    */
   changeStatus(status: string) {
     if (!this.shuttleType) {
-      this.utilityService.asyncNotification('Please wait we are updating the status of the task...',
+      this.utilityService.asyncNotification($localize`:@@taskStatus.pleaseWaitWeUpdateStatus:Please wait we are updating the status of the task...`,
         new Promise((resolve, reject) => {
           // Call HTTP Request to change the request
           this.publicFunctions.changeTaskStatus(this.postId, status, this.userId, this.groupId)
@@ -45,11 +45,11 @@ export class TaskStatusComponent implements OnInit {
               this.status = status;
               // Emit the status to other parent components
               this.statusEmitter.emit(status)
-              resolve(this.utilityService.resolveAsyncPromise(`Task status marked as ${status}!`))
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskStatus.taskMarkedAs:Task status marked as ${status}!`))
             })
             .catch(() => {
               this.statusEmitter.emit(this.status)
-              reject(this.utilityService.rejectAsyncPromise(`Unable to change the status, please try again!`))
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@taskStatus.unableToChangeStatus:Unable to change the status, please try again!`))
             });
         }));
     } else {

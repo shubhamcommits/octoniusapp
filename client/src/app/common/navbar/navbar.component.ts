@@ -194,8 +194,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
           .subscribe(res => resolve(res['user']))
         );
       } catch (err) {
-        console.log('Error occured while fetching the user details', err);
-        this.utilityService.errorNotification('Error occured while fetching your profile details');
+        console.log('Error occurred while fetching the user details', err);
+        this.utilityService.errorNotification($localize`:@@navbar.errorWhileFetchingProfile:Error occurred while fetching your profile details`);
         reject({});
       }
     })

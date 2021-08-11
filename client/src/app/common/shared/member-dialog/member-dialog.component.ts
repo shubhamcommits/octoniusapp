@@ -34,9 +34,6 @@ export class MemberDialogComponent implements OnInit {
         if(JSON.stringify(res) != JSON.stringify({})){
           this.userData = res;
         }
-
-        // Instantiate the current user value
-        //this.isCurrentUser = false;
       });
     }
   }

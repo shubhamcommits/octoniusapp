@@ -61,7 +61,7 @@ export class ProjectStatusComponent implements OnInit {
     let utilityService = this.injector.get(UtilityService);
 
     // Asynchronously Handling the the promise
-    utilityService.asyncNotification('Please wait we are sending the status...',
+    utilityService.asyncNotification($localize`:@@projectStatus.pleaseWaitSendingStatus:Please wait we are sending the status...`,
     new Promise((resolve, reject)=>{
 
       // Call status service function
@@ -69,12 +69,12 @@ export class ProjectStatusComponent implements OnInit {
         .then((res)=>{
 
           // Resolve the promise
-          resolve(utilityService.resolveAsyncPromise('Status for the current project is updated!'))
+          resolve(utilityService.resolveAsyncPromise($localize`:@@projectStatus.statusProjectUpdated:Status for the current project is updated!`))
         })
         .catch(()=>{
 
           // If there's an error, catch and reject it
-          reject(utilityService.rejectAsyncPromise('Unable to update the status, please try again!'))
+          reject(utilityService.rejectAsyncPromise($localize`:@@projectStatus.unableToUpdateStatus:Unable to update the status, please try again!`))
         });
     }))
   }

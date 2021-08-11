@@ -63,7 +63,7 @@ export class WorkspaceDetailsComponent implements OnInit {
    */
   async updateWorkplaceDetails(workspaceId: string, workspaceAvatar: File) {
     try {
-      this.utilityService.asyncNotification('Please wait while we are updating the workspace avatar for you ...',
+      this.utilityService.asyncNotification($localize`:@@workspaceDetails.pleaseWaitWhileWeUpdate:Please wait while we are updating the workspace avatar for you ...`,
         new Promise((resolve, reject) => {
           this.subSink.add(this.workspaceService.updateWorkspace(workspaceId, workspaceAvatar)
             .subscribe((res) => {
@@ -75,15 +75,15 @@ export class WorkspaceDetailsComponent implements OnInit {
               // Sends the updates to all the user connected in the same workspace
               this.subSink.add(this.emitWorkspaceData(this.socketService, this.workspaceData))
 
-              resolve(this.utilityService.resolveAsyncPromise('Workspace avatar updated!'))
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@workspaceDetails.workspaceAvatarUpdated:Workspace avatar updated!`));
             }, (err) => {
-              console.log('Error occured, while updating the workspace avatar', err);
-              reject(this.utilityService.rejectAsyncPromise('Oops, an error occured while updating the workspace avatar, please try again!'))
+              console.log('Error occurred, while updating the workspace avatar', err);
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@workspaceDetails.oopsAnErrorOccured:Oops, an error occurred while updating the workspace avatar, please try again!`))
             }))
         }))
     } catch (err) {
-      console.log('There\'s some unexpected error occured, please try again!', err);
-      this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
+      console.log('There\'s some unexpected error occurred, please try again!', err);
+      this.utilityService.errorNotification($localize`:@@workspaceDetails.unexpectedError:There\'s some unexpected error occurred, please try again!`);
     }
   }
 

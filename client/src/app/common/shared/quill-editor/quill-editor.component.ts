@@ -366,7 +366,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       theme: theme || 'snow',
       modules: modules,
       readOnly: this.readOnly,
-      placeholder: (this.readOnly) ? '' : 'Write something awesome...'
+      placeholder: (this.readOnly) ? '' : $localize`:@@quillEditor.writeSomethingAwesome:Write something awesome...`
     })
   }
 

@@ -1,6 +1,6 @@
 <div class="smart-card" style="padding: 10px;">
   <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
-    <div class="card-title mt-1">
+    <div class="card-title mt-1" i18n="@@membersWorkloadCard.resourceManagement">
       Resource management
     </div>
   </div>
@@ -9,14 +9,14 @@
     <div class="row text-center mb-3">
       <div class="col-md-1">
       </div>
-      <div class="col-md-8">
+      <div class="col-md-7">
           <h6>{{ dates[0] | date:'MMM dd' }} - {{ dates[dates?.length - 1] | date:'MMM dd' }}</h6>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="btn btn-default" (click)="changeDates(7, 'sub')">
           <i class="material-icons">navigate_before</i>
         </div>
-        <div class="btn btn-default" (click)="changeDates(0, 'today')">
+        <div class="btn btn-default" (click)="changeDates(0, 'today')" i18n="@@membersWorkloadCard.today">
           Today
         </div>
         <div class="btn btn-default" (click)="changeDates(7, 'add')">
@@ -52,7 +52,8 @@
             </td>
             <td *ngFor="let workload of member.workload" [ngClass]="workload?.outOfTheOfficeClass">
 
-                 <span class="muted mr-2"> Total tasks</span><span class="badge">{{ workload.numTasks }}</span>
+                 <span class="muted mr-2" i18n="@@membersWorkloadCard.totalTasks"> Total tasks</span>
+                 <span class="badge">{{ workload.numTasks }}</span>
 
                 <div class="allocation" *ngIf="groupData?.resource_management_allocation && groupData?.enable_allocation">
                   <i  class="material-icons">update</i> &nbsp;&nbsp;

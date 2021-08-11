@@ -81,14 +81,15 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Websocket Options
   webSocketOptions = {
-    WebSocket: undefined,
-    maxReconnectionDelay: 10000,
-    minReconnectionDelay: 1000 + Math.random() * 4000,
-    reconnectionDelayGrowFactor: 1.3,
-    minUptime: 5000,
-    connectionTimeout: 4000,
-    maxRetries: Infinity,
-    debug: false,
+    // WebSocket: undefined,
+    // maxReconnectionDelay: 10000,
+    // minReconnectionDelay: 1000 + Math.random() * 4000,
+    // reconnectionDelayGrowFactor: 1.3,
+    // minUptime: 5000,
+    // connectionTimeout: 4000,
+    // maxRetries: Infinity,
+    // debug: false,
+    //startClosed: false
   }
 
   // Folio Variable
@@ -207,7 +208,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.shareDBSocket = new ReconnectingWebSocket(environment.FOLIO_BASE_URL + '/editor', [], this.webSocketOptions)
 
     // Initialise the Realtime DB Connection
-    let shareDBConnection = new ShareDB.Connection(this.shareDBSocket)
+    let shareDBConnection = new ShareDB.Connection(this.shareDBSocket);
 
     // Return the Document with the respective folioId
     return shareDBConnection.get('documents', this.folioId);
@@ -227,7 +228,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       theme: 'bubble',
       modules: modules,
       readOnly: this.readOnly,
-      placeholder: 'Write something awesome...'
+      placeholder: $localize`:@@folioEditor.writeSomethingAwesome:Write something awesome...`
     })
   }
 

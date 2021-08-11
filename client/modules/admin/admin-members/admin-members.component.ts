@@ -25,7 +25,7 @@ export class AdminMembersComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   // PLACEHOLDER INPUT FOR SEARCH BAR
-  public searchBarPlaceholder = 'Search user...';
+  public searchBarPlaceholder = $localize`:@@adminMembers.searchUser:Search user...`;
 
   // WORKSPACE DATA
   public workspaceData: any;

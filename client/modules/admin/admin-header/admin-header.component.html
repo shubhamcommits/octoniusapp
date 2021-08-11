@@ -8,22 +8,24 @@
         [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
       <div class="media-body">
          <div>
-            <h2>Workplace settings</h2>
+            <h2 i18n="@@adminHeader.workspaceSettings">Workplace settings</h2>
             <ul class="nav">
                <li class="nav-item">
-                  <a class="nav-link" routerLink="/dashboard/admin/general" routerLinkActive="active">General
+                  <a class="nav-link" routerLink="/dashboard/admin/general" routerLinkActive="active">
+                    <span i18n="@@adminHeader.general">General</span>
                      <span class="sr-only">(current)</span>
                   </a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" routerLink="/dashboard/admin/members" routerLinkActive="active">Members
+                  <a class="nav-link" routerLink="/dashboard/admin/members" routerLinkActive="active">
+                    <span i18n="@@adminHeader.members">Members</span>
                      <span class="sr-only">(current)</span>
                   </a>
                </li>
                <li class="nav-item">
                   <a class="nav-link" routerLink="/dashboard/admin/billing" routerLinkActive="active">
-                    Billing
-                    <span class="sr-only">(current)</span>
+                    <span i18n="@@adminHeader.billing">Billing</span>
+                     <span class="sr-only">(current)</span>
                   </a>
                </li>
             </ul>

@@ -56,7 +56,7 @@ export class CreateColumnComponent implements OnInit {
     return this.utilityService.getSwalModal({
       title: title,
       input: 'text',
-      inputPlaceholder: 'Try to add a short name',
+      inputPlaceholder: $localize`:@@createColumn.tryAddShortName:Try to add a short name`,
       inputAttributes: {
         maxlength: 20,
         autocapitalize: 'off',
@@ -66,7 +66,7 @@ export class CreateColumnComponent implements OnInit {
       imageAlt: title,
       confirmButtonText: title,
       showCancelButton: true,
-      cancelButtonText: 'Cancel',
+      cancelButtonText: $localize`:@@createColumn.cancel:Cancel`,
       cancelButtonColor: '#d33',
     })
   }
@@ -82,7 +82,7 @@ export class CreateColumnComponent implements OnInit {
       this.newColumn = undefined
 
     } else if (this.newColumn == '') {
-      this.utilityService.warningNotification('Section name can\'t be empty!');
+      this.utilityService.warningNotification($localize`:@@createColumn.sectionNameNotEmpty:Section name can\'t be empty!`);
     }
   }
 

@@ -70,10 +70,10 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     this.utilityService.validateEmail(
       this.account.email
     )
-      ? this.utilityService.successNotification("Correct Email Format!")
+      ? this.utilityService.successNotification($localize`:@@welcomePage.correctEmailFormat:Correct Email Format!`)
       : this.utilityService.warningNotification(
-        "Follow the standard format, e.g. - user@example.com",
-        "Wrong Format!"
+        $localize`:@@welcomePage.followTheStandard:Follow the standard format, e.g. - user@example.com`,
+        $localize`:@@welcomePage.wrongFormat:Wrong Format!`
       );
   }
 
@@ -86,18 +86,18 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
   async signIn() {
     try {
       if (this.account.email == null || this.account.password == null || this.account.email == '' || this.account.password == '') {
-        this.utilityService.warningNotification('Insufficient data, kindly fill up all the fields correctly!');
+        this.utilityService.warningNotification($localize`:@@welcomePage.insufficientData:Insufficient data, kindly fill up all the fields correctly!`);
       } else {
         let userData: Object = {
           email: this.account.email.trim(),
           password: this.account.password.trim()
         }
-        this.utilityService.asyncNotification('Please wait while we sign you in...',
+        this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
           this.signInServiceFunction(userData));
       }
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
-      this.utilityService.errorNotification('There\'s some unexpected error occurred, please try again later!');
+      this.utilityService.errorNotification($localize`:@@welcomePage.unexpectedError:There\'s some unexpected error occurred, please try again later!`);
     }
   }
 
@@ -116,35 +116,35 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
             this.storeAccountData(res);
             this.router.navigate(['authentication', 'select-workspace'],{ queryParams: { teams_permission_url : this.queryParms.teams_permission_url }})
             .then(() => {
-              this.utilityService.successNotification(`Hi ${res['account']['first_name']}, welcome back!`);
-              resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['account']['first_name']}, welcome back!`));
+              this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}, welcome back!`);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}, welcome back!`));
             })
             .catch((err) => {
-              console.error('Error occured while signing in the user', err);
-              this.utilityService.errorNotification('Oops some error occured while signing you in, please try again!');
+              console.error('Error occurred while signing in the user', err);
+              this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`);
               this.storageService.clear();
-              reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
             })
             // else normal flow
-          } else { 
+          } else {
 
             this.clearAccountData();
             this.storeAccountData(res);
             this.router.navigate(['authentication', 'select-workspace'])
               .then(() => {
-                this.utilityService.successNotification(`Hi ${res['account']['first_name']}, welcome back!`);
-                resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['account']['first_name']}, welcome back!`));
+                this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}, welcome back!`);
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}, welcome back!`));
               })
               .catch((err) => {
-                console.error('Error occured while signing in the user', err);
-                this.utilityService.errorNotification('Oops some error occured while signing you in, please try again!');
+                console.error('Error occurred while signing in the user', err);
+                this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`);
                 this.storageService.clear();
-                reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
               })
           }
         }, (err) => {
-          console.error('Error occured while signing in the user', err);
-          reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+          console.error('Error occurred while signing in the user', err);
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@welcomePage.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
         }));
     });
   }

@@ -96,7 +96,7 @@ export class GroupTasksListViewComponent implements OnChanges {
 
     // If index is found, then throw error notification
     if (index != -1) {
-      this.utilityService.warningNotification('Column with the same title aready exist, please try with different name!')
+      this.utilityService.warningNotification($localize`:@@taskTable.sectionWithSameNameAlreadyExists:Section with the same title aready exist, please try with different name!`)
     }
 
     // If not found, then push the element
@@ -123,7 +123,7 @@ export class GroupTasksListViewComponent implements OnChanges {
     let utilityService = this.injector.get(UtilityService)
 
     // Call the HTTP Service function
-    utilityService.asyncNotification('Please wait we are creating a new section...', new Promise((resolve, reject) => {
+    utilityService.asyncNotification($localize`:@@taskTable.pleaseWaitWeCreateSection:Please wait we are creating a new section...`, new Promise((resolve, reject) => {
       columnService.addColumn(groupId, columnName)
         .then((res) => {
           let section = res['column'];
@@ -134,10 +134,10 @@ export class GroupTasksListViewComponent implements OnChanges {
 
           this.newSectionEvent.emit(section);
 
-          resolve(utilityService.resolveAsyncPromise('New Section Created!'));
+          resolve(utilityService.resolveAsyncPromise($localize`:@@taskTable.newSectionCreated:New Section Created!`));
         })
         .catch((err) => {
-          reject(utilityService.rejectAsyncPromise('Unable to create the section at the moment, please try again!'))
+          reject(utilityService.rejectAsyncPromise($localize`:@@taskTable.unableToCreateSection:Unable to create the section at the moment, please try again!`))
         })
     }))
   }

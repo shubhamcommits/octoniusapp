@@ -1,38 +1,44 @@
 <div class="card-tile workspace-signupmode">
 
-    <h6><b>Workplace signup mode</b></h6>
+    <h6>
+      <b i18n="@@workspaceAddDomain.workspaceSignupMode">Workplace signup mode</b>
+    </h6>
     <hr />
-    <p>Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email
+    <p i18n="@@workspaceAddDomain.chooseToMakeYourWorkspace">
+      Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email
         address domain to sign up.<br />
-        (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!)</p>
+        (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!)
+    </p>
     <div class="form-group">
-        <label for="domain">Using workplace name"<b>{{ workspaceData?.workspace_name }}</b>", any email adress from these domain can signup:</label>
+        <label for="domain" i18n="@@workspaceAddDomain.usingWorkspaceName">Using workplace name"<b>{{ workspaceData?.workspace_name }}</b>", any email adress from these domain can signup:</label>
         <input type="text" class="form-control" name="domain" [(ngModel)]="addDomain" placeholder="Please provide the domain name">
     </div>
-    <button class="btn btn-primary" (click)="addDomainName(workspaceData?._id, addDomain)">Add this Domain</button>
+    <button class="btn btn-primary" (click)="addDomainName(workspaceData?._id, addDomain)" i18n="@@workspaceAddDomain.addThisDomain">Add this Domain</button>
 
 </div>
 
 <div class="card-tile invite-users">
-    <h6><b>Allowed Domains</b></h6>
+    <h6>
+      <b i18n="@@workspaceAddDomain.allowedDomains">Allowed Domains</b>
+    </h6>
     <hr />
-    <p>List of all allowed domains from where user can sign up to this workplace.</p>
+    <p i18n="@@workspaceAddDomain.listOfAllowedDomains">List of all allowed domains from where user can sign up to this workplace.</p>
     <hr />
     <ng-container *ngIf="isLoading$ | async">
       <app-loading-spinner></app-loading-spinner>
     </ng-container>
 
     <div *ngIf="!(isLoading$ | async)">
-    <div class="container" *ngFor="let domain of allowedDomains; trackBy: utilityService.trackByIndex;">
-        <div class="row">
-            <div class="col-md-6">
-                <b>{{ domain }}</b>
-            </div>
-            <div class="col-md-6">
-                <button class="btn btn-danger btn-sm" (click)="removeDomain(workspaceData._id, domain)">Remove Domain</button>
-            </div>
-        </div>
-        <br />
+      <div class="container" *ngFor="let domain of allowedDomains; trackBy: utilityService.trackByIndex;">
+          <div class="row">
+              <div class="col-md-6">
+                  <b>{{ domain }}</b>
+              </div>
+              <div class="col-md-6">
+                  <button class="btn btn-danger btn-sm" (click)="removeDomain(workspaceData._id, domain)" i18n="@@workspaceAddDomain.removeDomain">Remove Domain</button>
+              </div>
+          </div>
+          <br />
+      </div>
     </div>
-</div>
 </div>

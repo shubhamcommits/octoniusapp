@@ -7,13 +7,13 @@
     <i *ngIf="type === 'normal'" class="material-icons-outlined">comment</i>
      <!-- Post Title starts -->
      <input
-     name="postTitle"
-     type="text"
-     [ngModel]="title"
-     (ngModelChange)="titleChange($event)"
-     class="post-title"
-     placeholder="✍🏻 Title" />
-   <!-- Post Title ends -->
+      name="postTitle"
+      type="text"
+      [ngModel]="title"
+      (ngModelChange)="titleChange($event)"
+      class="post-title"
+      placeholder="✍🏻 Title" />
+    <!-- Post Title ends -->
   </h4>
 
 
@@ -21,13 +21,13 @@
     <i *ngIf="type === 'normal'" class="material-icons-outlined">comment</i>
       <!-- Post Title starts -->
       <input
-      name="postTitle"
-      type="text"
-      [ngModel]="title"
-      (ngModelChange)="titleChange($event)"
-      class="post-title"
-      placeholder="{{ title }}" />
-    <!-- Post Title ends -->
+        name="postTitle"
+        type="text"
+        [ngModel]="title"
+        (ngModelChange)="titleChange($event)"
+        class="post-title"
+        placeholder="{{ title }}" />
+      <!-- Post Title ends -->
   </h4>
   <!-- Normal Post Header ends -->
 
@@ -36,26 +36,26 @@
     <i *ngIf="type === 'task'" class="material-icons-outlined">check_box</i>
      <!-- Post Title starts -->
      <input
-     name="postTitle"
-     type="text"
-     [ngModel]="title"
-     (ngModelChange)="titleChange($event)"
-     class="post-title"
-     placeholder="✍🏻 Title" />
-   <!-- Post Title ends -->
+      name="postTitle"
+      type="text"
+      [ngModel]="title"
+      (ngModelChange)="titleChange($event)"
+      class="post-title"
+      placeholder="✍🏻 Title" />
+    <!-- Post Title ends -->
   </h4>
 
   <h4 class="modal-title" *ngIf="type === 'task' && edit === true">
     <i *ngIf="type === 'task'" class="material-icons-outlined">check_box</i>
      <!-- Post Title starts -->
      <input
-     name="postTitle"
-     type="text"
-     [ngModel]="title"
-     (ngModelChange)="titleChange($event)"
-     class="post-title"
-     placeholder="{{ title }}" />
-   <!-- Post Title ends -->
+      name="postTitle"
+      type="text"
+      [ngModel]="title"
+      (ngModelChange)="titleChange($event)"
+      class="post-title"
+      placeholder="{{ title }}" />
+    <!-- Post Title ends -->
   </h4>
   <!-- Task Post Header ends -->
 
@@ -64,26 +64,26 @@
     <i *ngIf="type === 'event'" class="material-icons-outlined">event</i>
     <!-- Post Title starts -->
     <input
-    name="postTitle"
-    type="text"
-    [ngModel]="title"
-    (ngModelChange)="titleChange($event)"
-    class="post-title"
-    placeholder="✍🏻 Title" />
-  <!-- Post Title ends -->
+      name="postTitle"
+      type="text"
+      [ngModel]="title"
+      (ngModelChange)="titleChange($event)"
+      class="post-title"
+      placeholder="✍🏻 Title" />
+    <!-- Post Title ends -->
   </h4>
 
   <h4 class="modal-title" *ngIf="type === 'event' && edit === true">
     <i *ngIf="type === 'event'" class="material-icons-outlined">event</i>
     <!-- Post Title starts -->
     <input
-    name="postTitle"
-    type="text"
-    [ngModel]="title"
-    (ngModelChange)="titleChange($event)"
-    class="post-title"
-    placeholder="{{ title }}" />
-  <!-- Post Title ends -->
+      name="postTitle"
+      type="text"
+      [ngModel]="title"
+      (ngModelChange)="titleChange($event)"
+      class="post-title"
+      placeholder="{{ title }}" />
+    <!-- Post Title ends -->
   </h4>
   <!-- Event Post Header ends -->
 
@@ -207,12 +207,19 @@
   </div>
 
   <button type="button" class="btn btn-md btn-link delete-btn" style="margin-right: 30px;" (click)="deletePost()"
-    *ngIf="edit && (userData?.role == 'admin' || userData?.role == 'owner' || postData?._posted_by == userData?._id)">X DELETE</button>
+    *ngIf="edit && (userData?.role == 'admin' || userData?.role == 'owner' || postData?._posted_by == userData?._id)"
+    i18n="@@groupCreatePost.delete">
+      X DELETE
+  </button>
 
-  <button type="button" *ngIf="!edit" class="btn btn-md btn-primary float-right" (click)="createPost()" style="width: 100px;">Post</button>
+  <button type="button" *ngIf="!edit" class="btn btn-md btn-primary float-right"
+    (click)="createPost()" style="width: 100px;"
+    i18n="@@groupCreatePost.post">
+      Post
+  </button>
   <!-- Update Details Button starts -->
   <button [disabled]="!showUpdateDetails" *ngIf="edit" class="btn float-right btn-primary btn-md"
-    (click)="updateDetails()">
+    (click)="updateDetails()"i18n="@@groupCreatePost.update">
     Update
   </button>
   <!-- Update Details Button ends -->

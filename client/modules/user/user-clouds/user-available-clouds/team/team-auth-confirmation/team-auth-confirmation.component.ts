@@ -51,7 +51,7 @@ export class TeamAuthConfirmationComponent implements OnInit {
         await this.publicFunctions.sendUpdatesToUserData(res['update_user']);
       }),
       ((err) => {
-          console.log('Error occured, while coonecting to teams', err);
+          console.log('Error occurred, while coonecting to teams', err);
       });
 
       setTimeout(() => {

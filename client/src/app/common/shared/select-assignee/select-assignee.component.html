@@ -5,7 +5,7 @@
         [service]="'user'"
         [styleClass]="'feed-avatar'"></app-secured-image>
     <p *ngIf="assigned"> {{taskAssignee?.first_name}} <span *ngIf="!showBar">{{ taskAssignee?.last_name }}</span></p>
-    <p *ngIf="!assigned">Unassigned</p>
+    <p *ngIf="!assigned" i18n="@@selectedAssignee.unassigned">Unassigned</p>
     <app-component-search-input-box
         *ngIf="type === 'task' && userData && checkDataExist(userData) && showBar"
         [placeholder]="'Assign...'"
@@ -20,8 +20,8 @@
 
 <!-- Assignee section for events starts -->
 <section [id]="post?._id" *ngIf="type === 'event'">
-    <p *ngIf="!eventAssignedToAll(eventMembersMap)" style="padding-top: 20px;">Assigned to {{ eventMembersMap.size }}</p>
-    <p *ngIf="eventAssignedToAll(eventMembersMap)" style="padding-top: 20px;">Assigned to all</p>
+    <p *ngIf="!eventAssignedToAll(eventMembersMap)" style="padding-top: 20px;"><span i18n="@@selectedAssignee.assignedTo">Assigned to</span> {{ eventMembersMap.size }}</p>
+    <p *ngIf="eventAssignedToAll(eventMembersMap)" style="padding-top: 20px;" i18n="@@selectedAssignee.assignedToAll">Assigned to all</p>
 
     <app-component-search-input-box
         *ngIf="type === 'event' && userData && checkDataExist(userData) && showBar"

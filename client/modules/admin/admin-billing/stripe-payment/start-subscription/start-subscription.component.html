@@ -1,11 +1,15 @@
 <div class="card-tile">
 
   <!-- Header Starts -->
-  <h6><b>Welcome to your workspace!</b></h6>
-  <h6>To start using your workspace, please start a subscription.</h6>
-<h6>Octonius partners with Stripe to manage your payments. <br>
-  <img src="assets/images/stripe_pay.svg" alt="" style="width: 240px; margin-top: 30px;">
-</h6>
+  <h6>
+    <b i18n="@@startSubscription.welcomeToYourWorkspace">Welcome to your workspace!</b>
+  </h6>
+  <h6 i18n="@@startSubscription.toStartUsing">To start using your workspace, please start a subscription.</h6>
+  <h6>
+    <span i18n="@@startSubscription.octoniusPartnersWithStripe">Octonius partners with Stripe to manage your payments.</span>
+    <br>
+    <img src="assets/images/stripe_pay.svg" alt="" style="width: 240px; margin-top: 30px;">
+  </h6>
 
   <!-- Header Ends -->
 
@@ -15,10 +19,12 @@
   <div *ngFor="let price of subscription_prices">
     <h6>
       <!-- <button (click)="handlePayment(price.id, price.amount)" class="ml-3 btn btn-md btn-primary"> -->
-      <button (click)="startStripeCheckoutSession(price.id)" class="ml-3 btn btn-md btn-primary">
-        Purchase
+      <button (click)="startStripeCheckoutSession(price.id)"
+        class="ml-3 btn btn-md btn-primary"
+        i18n="@@startSubscription.purchase">
+          Purchase
       </button>
-      {{ price.unit_amount/100 | currency: '$': 'symbol': '.2-2' }} / seat / {{ price?.recurring?.interval }}
+      {{ price.unit_amount/100 | currency: '$': 'symbol': '.2-2' }} / <span i18n="@@startSubscription.seat">seat</span> / {{ price?.recurring?.interval }}
     </h6>
   </div>
 

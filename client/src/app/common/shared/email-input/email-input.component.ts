@@ -53,11 +53,12 @@ export class EmailInputComponent implements OnInit {
       this.utilityService.clearAllNotifications();
       let validatedEmailState = this.utilityService.validateEmail(this.email);
         if(validatedEmailState === true){
-          this.utilityService.successNotification('Correct Email Format!');
+          this.utilityService.successNotification($localize`:@@emailInput.correctEmailFormat:Correct Email Format!`);
           this.outputEmail.emit(this.email);
         } else {
           this.outputEmail.emit('');
-          this.utilityService.warningNotification('Kindly follow the standard format which uses user@domain nomenclature, e.g - username@example.com', 'Wrong format!')
+          this.utilityService.warningNotification($localize`:@@emailInput.kindlyFollowStandardFormat:Kindly follow the standard format which uses user@domain nomenclature, e.g - username@example.com`,
+          $localize`:@@emailInput.wrongFormat:Wrong format!`)
         }
     }))
   }

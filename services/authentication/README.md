@@ -47,7 +47,7 @@
         Or
 
         Code: 500
-        Content: 'Unable to create the user, some unexpected error occured!', 'Unable to update the global group, some unexpected error occured!', 'Unable to update the user, some unexpected error occured!', 'Unable to update the workspace, some unexpected error occured!', 'Either workspace doesn\'t exist or user is already a member of this workspace!'
+        Content: 'Unable to create the user, some unexpected error occurred!', 'Unable to update the global group, some unexpected error occurred!', 'Unable to update the user, some unexpected error occurred!', 'Unable to update the workspace, some unexpected error occurred!', 'Either workspace doesn\'t exist or user is already a member of this workspace!'
 
         Or
 

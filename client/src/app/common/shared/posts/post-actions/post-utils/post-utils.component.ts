@@ -62,7 +62,7 @@ export class PostUtilsComponent implements OnInit {
       })
       .catch(() => {
         // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        this.publicFunctions.sendError(new Error($localize`:@@postUtils.unableToConnectToServer:Unable to connect to the server, please try again later!`));
       });
   }
 
@@ -124,14 +124,14 @@ export class PostUtilsComponent implements OnInit {
     document.body.removeChild(selBox);
 
     // Show Confirmed notification
-    this.utilityService.simpleNotification(`Copied to Clipboard!`);
+    this.utilityService.simpleNotification($localize`:@@postUtils.copiedClipboard:Copied to Clipboard!`);
   }
 
   async pinToTop(pin: boolean) {
     this.postService.pinToTop(this.post._id, pin).then((res) => {
       this.pinEvent.emit(pin);
     }).catch((error) => {
-      this.utilityService.errorNotification(`Error while pin/unpin the post!`);
+      this.utilityService.errorNotification($localize`:@@postUtils.errorWhilePinPost:Error while pin/unpin the post!`);
     });
   }
 
@@ -140,7 +140,7 @@ export class PostUtilsComponent implements OnInit {
    */
   deletePost() {
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be deleted!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@postUtils.areYouSure:Are you sure?`, $localize`:@@postUtils.byDoingTaskWillBeDeleted:By doing this the task will be deleted!`)
       .then((res) => {
         if (res.value) {
           this.delete.emit(this.post);
@@ -157,16 +157,16 @@ export class PostUtilsComponent implements OnInit {
 
   async copyToGroup(group: any) {
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the card will be copied to the selected group!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@postUtils.areYouSure:Are you sure?`, $localize`:@@postUtils.byDoingCardWillBeCopied:By doing this the card will be copied to the selected group!`)
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
+          await this.utilityService.asyncNotification($localize`:@@postUtils.pleaseWaitWeCopyTask:Please wait while we copy the task...`, new Promise((resolve, reject) => {
             this.postService.transferToGroup(this.post._id, group, '', this.groupId, this.userData._id, true).then((res) => {
               this.onTransferPost({post: res['post'], isCopy: true});
-              resolve(this.utilityService.resolveAsyncPromise(`👍 Card copied!`));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@postUtils.cardCopied:👍 Card copied!`));
             })
             .catch((error) => {
-              reject(this.utilityService.rejectAsyncPromise(`Error while copying the post!`));
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@postUtils.errorWhileCopyingPost:Error while copying the post!`));
             });
           }));
         }
@@ -175,17 +175,17 @@ export class PostUtilsComponent implements OnInit {
 
   async moveToGroup(group: any) {
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the card will be moved to the selected group!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@postUtils.areYouSure:Are you sure?`, $localize`:@@postUtils.byDoingCardWillBeMoved:By doing this the card will be moved to the selected group!`)
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait while we move the card...', new Promise((resolve, reject) => {
+          await this.utilityService.asyncNotification($localize`:@@postUtils.pleaseWaitWeMoveTask:Please wait while we move the card...`, new Promise((resolve, reject) => {
             this.postService.transferToGroup(this.post._id, group._id, '', this.groupId, this.userData._id, false)
               .then((res) => {
                 this.onTransferPost({post: res['post'], isCopy: false, groupId: group});
-                resolve(this.utilityService.resolveAsyncPromise(`👍 Card moved!`));
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@postUtils.cardMoved:👍 Card moved!`));
               })
               .catch((error) => {
-                reject(this.utilityService.rejectAsyncPromise(`Error while moving the post!`));
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@postUtils.errorWhileMovingPost:Error while moving the post!`));
               });
           }));
         }

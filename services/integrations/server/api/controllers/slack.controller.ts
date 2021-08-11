@@ -59,7 +59,7 @@ export class SlackController {
             if (userOctonius && userOctonius!=null) {
                 
                 // Bot Access Token
-                botAccessToken = userOctonius.integrations.slack.bot_access_token;
+                botAccessToken = userOctonius['integrations'].slack.bot_access_token;
 
                 // Bearer Token
                 var BearerToken = "Bearer ";
@@ -88,7 +88,7 @@ export class SlackController {
 
                 // If token is not valid (i.e expired, wrong) generate a new token
                 if(!isvalidToken){
-                    const workspace_name = userOctonius.workspace_name;
+                    const workspace_name = userOctonius['workspace_name'];
 
                     let tokens = await auths.generateToken(userOctonius._id, workspace_name);
 
@@ -637,7 +637,7 @@ export class SlackController {
         const user = await User.findOne({_id:req.params.userID}).select('integrations');
         
         // If SlackData exist user authenticated.
-        if (user && user.integrations && user.integrations.slack) {
+        if (user && user['integrations'] && user['integrations'].slack) {
 
             res.status(200).json({message:"Connected to slack",connect:true});
 

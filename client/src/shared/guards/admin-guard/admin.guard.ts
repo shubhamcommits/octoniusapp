@@ -23,7 +23,7 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
       if(userAdminState === true)
         return true;
       else{
-        this.utilityService.warningNotification('Oops seems like you don\'t have the permission to access the admin section, kindly contact your superior to provide you the proper admin rights!');
+        this.utilityService.warningNotification($localize`:@@adminGuard.oopsNoPermission:Oops seems like you don\'t have the permission to access the admin section, kindly contact your superior to provide you the proper admin rights!`);
         if(state.url.match('/dashboard/admin/.*'))
           this.router.navigate(['dashboard', 'myspace', 'inbox']);
         return false;

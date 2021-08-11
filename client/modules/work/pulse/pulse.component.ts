@@ -68,7 +68,7 @@ export class PulseComponent implements OnInit {
     this.pulseGroups = await this.getAllPulseGroups(this.workspaceData['_id'])
       .catch(() => {
         // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        this.publicFunctions.sendError(new Error($localize`:@@workPulse.unableToConnectToServer:Unable to connect to the server, please try again later!`));
         this.isLoading$.next(false);
       })
 

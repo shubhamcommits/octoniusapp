@@ -105,7 +105,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
         })
         .catch(() => {
           // If the function breaks, then catch the error and console to the application
-          this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+          this.publicFunctions.sendError(new Error($localize`:@@taskActions.unableToConnectToServer:Unable to connect to the server, please try again later!`));
         });
     }
 
@@ -115,7 +115,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       this.shuttleGroups = await this.publicFunctions.getShuttleGroups(this.groupData?._workspace, groupId)
         .catch(() => {
           // If the function breaks, then catch the error and console to the application
-          this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+          this.publicFunctions.sendError(new Error($localize`:@@taskActions.unableToConnectToServer:Unable to connect to the server, please try again later!`));
         });
     }
 
@@ -207,17 +207,17 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       assignees = [selectedMemberId];
     }
 
-    this.utilityService.asyncNotification('Please wait we are cloning the task...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitWeAreCloning:Please wait we are cloning the task...`, new Promise((resolve, reject) => {
       this.postService.cloneToAssignee(assignees, this.postData._id)
         .then((res) => {
           // Close the modal
           this.mdDialogRef.close();
 
           this.taskClonedEmitter.emit();
-          resolve(this.utilityService.resolveAsyncPromise(`👍 Task cloned!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskCloned:👍 Task cloned!`));
         })
         .catch((error) => {
-          reject(this.utilityService.rejectAsyncPromise(`Error while cloning the task!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.errorCliningTask:Error while cloning the task!`));
         });
     }));
   }
@@ -246,16 +246,16 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
   async copyToGroup(group: string, section: any) {
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be copied to the selected group!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@taskActions.areYouSure:Are you sure?`, $localize`:@@taskActions.taskWillBeCopied:By doing this the task will be copied to the selected group!`)
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait we are copy the task...', new Promise((resolve, reject) => {
+          await this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitWeAreCopy:Please wait we are copy the task...`, new Promise((resolve, reject) => {
             this.postService.transferToGroup(this.postData._id, group, section._id, this.groupData._id, this.userData._id, true).then((res) => {
               this.onTransferPost({ post: res['post'], isCopy: true });
-              resolve(this.utilityService.resolveAsyncPromise(`👍 Task Copied!`));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskCopied:👍 Task Copied!`));
             })
               .catch((error) => {
-                reject(this.utilityService.rejectAsyncPromise(`Error while copying the task!`));
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.errorWhileCopyingTask:Error while copying the task!`));
               });
           }));
         }
@@ -264,17 +264,17 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
   async moveToGroup(group: string, section: any) {
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will be moved to the selected group!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@taskActions.areYouSure:Are you sure?`, $localize`:@@taskActions.taskWillBeMoved:By doing this the task will be moved to the selected group!`)
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait we are move the task...', new Promise((resolve, reject) => {
+          await this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitWeMoveTask:Please wait we are move the task...`, new Promise((resolve, reject) => {
             this.postService.transferToGroup(this.postData._id, group, section._id, this.groupData._id, this.userData._id, false)
               .then((res) => {
                 this.onTransferPost({ post: res['post'], isCopy: false, groupId: group });
-                resolve(this.utilityService.resolveAsyncPromise(`👍 Task moved!`));
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskMoved:👍 Task moved!`));
               })
               .catch((error) => {
-                reject(this.utilityService.rejectAsyncPromise(`Error while moving the task!`));
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.errorWhilemovingTask:Error while moving the task!`));
               });
           }));
         }
@@ -331,7 +331,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   }
 
   async setParentTask(parentTaskId: string) {
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will change its parent task!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@taskActions.areYouSure:Are you sure?`, $localize`:@@taskActions.taskWillBeChangeToParentTask:By doing this the task will change its parent task!`)
       .then((res) => {
         if (res.value) {
           this.postService.setParentTask(this.postData._id, parentTaskId).then(res => {
@@ -350,7 +350,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   }
 
   async setDependencyTask(dependencyTaskId: string) {
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will change its dependency task!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@taskActions.areYouSure:Are you sure?`, $localize`:@@taskActions.taskWillBeChangeToDependencyTask:By doing this the task will change its dependency task!`)
       .then((res) => {
         if (res.value) {
           this.postService.setDependencyTask(this.postData._id, dependencyTaskId).then(res => {
@@ -395,7 +395,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
   async removeDependencyTask(index){
 
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will remove its dependency task!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@taskActions.areYouSure:Are you sure?`, $localize`:@@taskActions.taskWillBeRemoveItsDependencyTask:By doing this the task will remove its dependency task!`)
     .then((res) => {
       if (res.value) {
         this.postService.removeDependencyTask(this.postData._id, this.dependencyTask[index]._id).then(res => {
@@ -426,47 +426,47 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
    */
   selectTemplate(templatePostId: string, templateName?: string) {
     if (this.templateAction == 'save') {
-      this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will change the content of the template!')
+      this.utilityService.getConfirmDialogAlert($localize`:@@taskActions.areYouSure:Are you sure?`, $localize`:@@taskActions.taskWillChangeContentTemplate:By doing this the task will change the content of the template!`)
         .then((res) => {
           if (res.value) {
-            this.utilityService.asyncNotification('Please wait, while we are updating the template for you...', new Promise((resolve, reject) => {
+            this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitUpdetingTemplate:Please wait, while we are updating the template for you...`, new Promise((resolve, reject) => {
               this.postService.overwriteTemplate(this.postData._id, templatePostId, templateName)
                 .then((res) => {
                   const index = this.groupTemplates.findIndex(t => t._id == templatePostId);
                   if (index >= 0) {
                     this.groupTemplates[index] = res['post'];
                   }
-                  resolve(this.utilityService.resolveAsyncPromise('Template updated!'))
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.templateUpdated:Template updated!`))
                 })
-                .catch(() => reject(this.utilityService.rejectAsyncPromise('An unexpected error occured while updating the template, please try again!')))
+                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileUpdatingTemplate:An unexpected error occurred while updating the template, please try again!`)))
             }))
           }
         });
     } else if (this.templateAction == 'delete') {
-      this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the template will be deleted!')
+      this.utilityService.getConfirmDialogAlert($localize`:@@taskActions.areYouSure:Are you sure?`, $localize`:@@taskActions.templateWillBeDeleted:By doing this the template will be deleted!`)
         .then((res) => {
           if (res.value) {
-            this.utilityService.asyncNotification('Please wait, while we are deleting the template for you...', new Promise((resolve, reject) => {
+            this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitDeletingTemplate:Please wait, while we are deleting the template for you...`, new Promise((resolve, reject) => {
               this.postService.deletePost(templatePostId)
                 .then((res) => {
                   this.groupTemplates.splice(this.groupTemplates.findIndex((t) => t._id === templatePostId), 1);
-                  resolve(this.utilityService.resolveAsyncPromise('Template deleted!'))
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.templateDeleted:Template deleted!`))
                 })
-                .catch(() => reject(this.utilityService.rejectAsyncPromise('An unexpected error occured while deleting the template, please try again!')))
+                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileDeletingTemplate:An unexpected error occurred while deleting the template, please try again!`)))
             }))
           }
         });
     } else {
-      this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the task will change the content of the task!')
+      this.utilityService.getConfirmDialogAlert($localize`:@@taskActions.areYouSure:Are you sure?`, $localize`:@@taskActions.taskWillBeChanged:By doing this the task will change the content of the task!`)
         .then((res) => {
           if (res.value) {
-            this.utilityService.asyncNotification('Please wait, while we are updating the task for you...', new Promise((resolve, reject) => {
+            this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitUpdatingTask:Please wait, while we are updating the task for you...`, new Promise((resolve, reject) => {
               this.postService.createTaskFromTemplate(templatePostId, this.postData._id)
                 .then((res) => {
                   this.taskFromTemplateEmitter.emit(this.postData._id);
-                  resolve(this.utilityService.resolveAsyncPromise('Task updated!'))
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskUpdated:Task updated!`))
                 })
-                .catch(() => reject(this.utilityService.rejectAsyncPromise('An unexpected error occured while updating the task, please try again!')))
+                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileUpdatingTask:An unexpected error occurred while updating the task, please try again!`)))
             }))
           }
         });
@@ -479,19 +479,19 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
    * This function creates a new template from the current post
    */
   async createTemplate() {
-    const { value: value } = await this.openModal('Create Template');
+    const { value: value } = await this.openModal($localize`:@@taskActions.createTemplate:Create Template`);
     if (value) {
-      this.utilityService.asyncNotification('Please wait, while we are creating the template for you...', new Promise((resolve, reject) => {
+      this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitCreatingTemplate:Please wait, while we are creating the template for you...`, new Promise((resolve, reject) => {
         this.postService.createTemplate(this.postData._id, this.groupData._id, value)
           .then((res) => {
             this.groupTemplates.unshift(res['post']);
             this.groupTemplates.sort((t1, t2) => (t1.task.template_name > t2.task.template_name) ? 1 : -1);
-            resolve(this.utilityService.resolveAsyncPromise('Template created!'))
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.templateCreated:Template created!`))
           })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise('An unexpected error occured while creating the template, please try again!')))
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.unexpectedErrorOccuredWhileCreatingTemplate:An unexpected error occurred while creating the template, please try again!`)))
       }))
     } else if(value == ''){
-      this.utilityService.warningNotification('Template name can\'t be empty!');
+      this.utilityService.warningNotification($localize`:@@taskActions.templateNameCannotBeEmpty:Template name can\'t be empty!`);
     }
   }
 
@@ -504,7 +504,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     return this.utilityService.getSwalModal({
       title: title,
       input: 'text',
-      inputPlaceholder: 'Try to add a name',
+      inputPlaceholder: $localize`:@@taskActions.tryToAddName:Try to add a name`,
       inputAttributes: {
         maxlength: 30,
         autocapitalize: 'off',
@@ -521,15 +521,15 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
     const allocation = event.target.value;
 
-    this.utilityService.asyncNotification('Please wait we are saving the task...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitWeAreSavingTask:Please wait we are saving the task...`, new Promise((resolve, reject) => {
       this.postService.saveAllocation(allocation, this.postData?._id)
         .then((res) => {
           this.allocation = allocation;
           this.taskAllocationEmitter.emit(allocation);
-          resolve(this.utilityService.resolveAsyncPromise(`👍 Task saved!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskSave:👍 Task saved!`));
         })
         .catch((error) => {
-          reject(this.utilityService.rejectAsyncPromise(`Error while saving the task!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.errorWhileSavingTask:Error while saving the task!`));
         });
     }));
   }
@@ -550,7 +550,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   }
 
   async shuttleTask(groupId) {
-    this.utilityService.asyncNotification('Please wait we are saving the task...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitWeAreSavingTask:Please wait we are saving the task...`, new Promise((resolve, reject) => {
       this.postService.selectShuttleGroup(this.postData?._id, groupId)
         .then(async (res) => {
           this.postData = res['post'];
@@ -561,10 +561,10 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
               shuttle_status: this.postData?.task?.shuttle_status
             });
           this.postData.task._shuttle_group = this.postData?.task?._shuttle_group?._id;
-          resolve(this.utilityService.resolveAsyncPromise(`👍 Task saved!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskSave:👍 Task saved!`));
         })
         .catch((error) => {
-          reject(this.utilityService.rejectAsyncPromise(`Error while saving the task!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@taskActions.errorWhileSavingTask:Error while saving the task!`));
         });
     }));
   }

@@ -54,7 +54,7 @@ export class UserImageDetailsComponent implements OnInit {
    */
   async updateUserDetails(userAvatar: File) {
     try {
-      this.utilityService.asyncNotification('Please wait while we are updating your avatar ...',
+      this.utilityService.asyncNotification($localize`:@@userImageDetails.pleaseWait:Please wait while we are updating your avatar ...`,
         new Promise((resolve, reject) => {
           this.subSink.add(this.userService.updateUserProfileImage(userAvatar, this.workspaceData._id)
             .subscribe((res) => {
@@ -75,15 +75,15 @@ export class UserImageDetailsComponent implements OnInit {
               // Updating the data across the shared service in the application
               this.publicFunctions.sendUpdatesToUserData(this.userData);
 
-              resolve(this.utilityService.resolveAsyncPromise('Avatar updated!'))
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@userImageDetails.avatarUpdated:Avatar updated!`));
             }, (err) => {
-              console.log('Error occured, while updating the avatar', err);
-              reject(this.utilityService.rejectAsyncPromise('Oops, an error occured while updating the avatar, please try again!'))
+              console.log('Error occurred, while updating the avatar', err);
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@userImageDetails.oopsAnErrorOccured:Oops, an error occurred while updating the avatar, please try again!`));
             }))
         }))
     } catch (err) {
-      console.log('There\'s some unexpected error occured, please try again!', err);
-      this.utilityService.errorNotification('There\'s some unexpected error occured, please try again!');
+      console.log('There\'s some unexpected error occurred, please try again!', err);
+      this.utilityService.errorNotification($localize`:@@userImageDetails.unexpectedError:'There\'s some unexpected error occurred, please try again!`);
     }
   }
 

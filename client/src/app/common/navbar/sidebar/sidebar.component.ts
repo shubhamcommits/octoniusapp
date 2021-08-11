@@ -95,7 +95,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
    */
   async logout() {
     try {
-      this.utilityService.asyncNotification('Please wait, while we log you out securely...',
+      this.utilityService.asyncNotification($localize`:@@sidebar.pleaseWaitWhileLogOut:Please wait, while we log you out securely...`,
         new Promise((resolve, reject) => {
           this.authService.signout().toPromise()
             .then((res) => {
@@ -107,15 +107,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
               this.publicFunctions.sendUpdatesToWorkspaceData({})
               this.socketService.disconnectSocket();
               this.router.navigate(['/home'])
-              resolve(this.utilityService.resolveAsyncPromise('Successfully Logged out!'));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@sidebar.successfullyLogOut:Successfully Logged out!`));
             }).catch((err) => {
               console.log('Error occurred while logging out!', err);
-              reject(this.utilityService.rejectAsyncPromise('Error occurred while logging you out!, please try again!'));
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@sidebar.errorWhileLogOut:Error occurred while logging you out!, please try again!`));
             });
         }));
     } catch (err) {
       console.log('Error occurred while logging out!', err);
-      this.utilityService.errorNotification('Error occurred while logging you out!');
+      this.utilityService.errorNotification($localize`:@@sidebar.errorWhileLogOut:Error occurred while logging you out!, please try again!`);
     }
   }
 

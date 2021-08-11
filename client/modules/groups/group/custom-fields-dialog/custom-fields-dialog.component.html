@@ -8,17 +8,17 @@
         <span class="badge badge-cf">
             <i class="material-icons">label</i>
         </span>
-        Custom Fields
+        <span i18n="@@groupCFDialog.customFields">Custom Fields</span>
     </h2>
 
     <mat-dialog-content>
         <div class="description">
             <img src="assets/images/placeholder_cf.svg" alt="" style="width: 300px; margin-bottom: 24px">
-            <p>Create custom fields to improve how you organize your workflows in task boards.</p>
+            <p i18n="@@groupCFDialog.createCustomFields">Create custom fields to improve how you organize your workflows in task boards.</p>
         </div>
 
         <div class="customFieldsList" *ngIf="customFields.length <= 0">
-            <h3 class="text-center muted">🌵 There are no custom fields...</h3>
+            <h3 class="text-center muted" i18n="@@groupCFDialog.thereAreNoCustomFields">🌵 There are no custom fields...</h3>
         </div>
 
 
@@ -54,16 +54,18 @@
         </div>
         <div class="newCustomFieldForm" style="padding: 10px; margin-top: 30px">
             <button class="btn badge-cf" (click)="showNewCustomField = !showNewCustomField">
-                <i class="material-icons">label</i> ADD CUSTOM FIELD
+                <i class="material-icons">label</i>
+                <span i18n="@@groupCFDialog.addCustomField">ADD CUSTOM FIELD</span>
              </button>
              <div class="add-field" *ngIf="showNewCustomField">
                  <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
                  <div class="actions">
-                     <button class="col-md-4 btn btn-primary" (click)="createCustomField()">
-                         Save
+                     <button class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@groupCFDialog.save">
+                        Save
                      </button>
-                     <button class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''">
-                         Cancel
+                     <button class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''"
+                          i18n="@@groupCFDialog.cancel">
+                        Cancel
                      </button>
                  </div>
              </div>

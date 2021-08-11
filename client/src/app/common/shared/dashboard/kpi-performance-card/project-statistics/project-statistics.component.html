@@ -8,11 +8,15 @@
 <div class="smart-card">
   <div>
     <div class="project_stats">
-      <div class="muted">Planned: {{ formateDate(project.start_date, 'Do, MMM') }} - {{ formateDate(project.due_date, 'Do, MMM') }}</div>
-      <div class="estimation">Estimation: {{ formateDate(project.estimation_due_date, 'Do, MMM') }}</div>
+      <div class="muted">
+        <span i18n="@@projectStatistics.planned">Planned</span>: {{ formateDate(project.start_date, 'Do, MMM') }} - {{ formateDate(project.due_date, 'Do, MMM') }}
+      </div>
+      <div class="estimation">
+        <span i18n="@@projectStatistics.estimation">Estimation</span>: {{ formateDate(project.estimation_due_date, 'Do, MMM') }}
+      </div>
       <!-- TO DO, IN PROGRESS AND DONE TASKS STARTS -->
       <div>
-        <span class="muted">Work by completition status</span>
+        <span class="muted" i18n="@@projectStatistics.workByCompletitionStatus">Work by completition status</span>
         <div class="task_counts">
           <span class="badge overdue-task">{{ overdue_task_count || 0 }}</span>
           <span class="badge to-do-task">{{ to_do_task_count || 0 }}</span>
@@ -24,10 +28,10 @@
     </div>
   </div>
 
-  <div class="" *ngIf="chartReady">
+  <div class="d-none d-lg-block" *ngIf="chartReady">
     <canvas
       baseChart
-      height="150"
+      height="100"
       [data]="doughnutChartData"
       [labels]="doughnutChartLabels"
       [chartType]="doughnutChartType"

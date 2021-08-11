@@ -2,7 +2,7 @@
 
 <!-- WORKSPACE HEADER STARTS -->
 <div class="modal-header">
-    <h4 class="modal-title">Workspace Update</h4>
+    <h4 class="modal-title" i18n="@@workspaceDetails.workspaceUpdate">Workspace Update</h4>
 </div>
 <!-- WORKSPACE HEADER ENDS -->
 
@@ -20,7 +20,10 @@
 <!-- WORKSPACE FOOTER STARTS -->
 <div class="modal-footer">
     <button type="button" class="btn btn-success"
-        (click)="updateWorkplaceDetails( workspaceData?._id, croppedImage )">Save</button>
+      (click)="updateWorkplaceDetails( workspaceData?._id, croppedImage )"
+      i18n="@@workspaceDetails.save">
+        Save
+    </button>
 </div>
 <!-- WORKSPACE FOOTER ENDS -->
 

@@ -10,12 +10,12 @@
   <div class="content">
     <div class="">
         <div class="modal-header">
-          <h4 class="modal-title">
+          <h4 class="modal-title" i18n="@@widgetSelectorDialog.customizeYourDashboard">
             Customize your dashboard
           </h4>
         </div>
 
-        <p class="ml-3">Select what widgets should be displayed in the dashboard.</p>
+        <p class="ml-3" i18n="@@widgetSelectorDialog.selectWhatWidgets">Select what widgets should be displayed in the dashboard.</p>
         <div class="clearfix"></div>
     </div>
 
@@ -35,7 +35,7 @@
             [checked]="resource_management_allocation"
             [name]="'share_files'"
             (change)="enableDisplayAllocation($event)">
-          <h6><b>Allocation</b></h6>
+          <h6><b i18n="@@widgetSelectorDialog.allocation">Allocation</b></h6>
         </mat-slide-toggle>
       </div>
     </div>
@@ -43,8 +43,8 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-  <button class="btn btn-danger mr-4" (click)="cancel()">Cancel</button>
-  <button class="btn btn-primary" (click)="save()">Update settings</button>
+  <button class="btn btn-danger mr-4" (click)="cancel()" i18n="@@widgetSelectorDialog.cancel">Cancel</button>
+  <button class="btn btn-primary" (click)="save()" i18n="@@widgetSelectorDialog.updateSettings">Update settings</button>
 </mat-dialog-actions>
   <!-- Top Right Section ends -->
 </div>

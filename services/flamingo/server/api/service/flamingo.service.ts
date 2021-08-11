@@ -105,7 +105,7 @@ export class FlamingoService {
      */
       async get(fileId: string) {
 
-        let flamingo = await Flamingo.findOne({_file:fileId})
+        let flamingo: any = await Flamingo.findOne({_file:fileId})
         flamingo = this.populateFlamingoProperties(flamingo);
         
         return flamingo;
@@ -120,7 +120,7 @@ export class FlamingoService {
         let query = {_id: flamingoId};
         let data = { $push: { _questions: questionId }}
 
-        let flamigoupdated = await Flamingo.findByIdAndUpdate(query,data,{new:true});
+        let flamigoupdated: any = await Flamingo.findByIdAndUpdate(query,data,{new:true});
 
         flamigoupdated = this.populateFlamingoProperties(flamigoupdated);
 
@@ -144,7 +144,7 @@ export class FlamingoService {
         let query = {_id: flamingoId};
         let data = { $pull: { _questions: questionId }}
 
-        let flamigoupdated = await Flamingo.findByIdAndUpdate(query,data,{new:true});
+        let flamigoupdated: any = await Flamingo.findByIdAndUpdate(query,data,{new:true});
 
         flamigoupdated = this.populateFlamingoProperties(flamigoupdated);
 

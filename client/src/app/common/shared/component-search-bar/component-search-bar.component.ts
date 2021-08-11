@@ -188,12 +188,12 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
     // Create Service Instance
     let groupService = this.injector.get(GroupService);
     // Ask User to remove this user from the group or not
-    this.utilityService.getConfirmDialogAlert('Are you sure?',
-     'This will remove the user from the group!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@componentSearchBar.areYouSure:Are you sure?`,
+        $localize`:@@componentSearchBar.willRemoveUserFromGroup:This will remove the user from the group!`)
       .then((result) => {
         if (result.value) {
           // Remove the User
-          this.utilityService.asyncNotification('Please wait while we are removing the user ...',
+          this.utilityService.asyncNotification($localize`:@@componentSearchBar.pleaseWaitWeRemoveUser:Please wait while we are removing the user ...`,
             new Promise((resolve, reject) => {
               groupService.removeUser(groupId, userId)
                 .then((res) => {
@@ -215,9 +215,9 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
                   // Send updates to groupData via service
                   this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
-                  let resolveMessage = 'User removed!';
+                  let resolveMessage = $localize`:@@componentSearchBar.userRemoved:User removed!`;
                   if(userId == this.userData?._id) {
-                    resolveMessage = 'Group left!';
+                    resolveMessage = $localize`:@@componentSearchBar.groupLeft:Group left!`;
 
                     this.router.navigate(['/home']);
                   }
@@ -225,7 +225,7 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
                   // Resolve with success
                   resolve(this.utilityService.resolveAsyncPromise(resolveMessage));
                 })
-                .catch((err) => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the group, please try again!')));
+                .catch((err) => reject(this.utilityService.rejectAsyncPromise($localize`:@@componentSearchBar.unableToRemoveUserGroup:Unable to remove the user from the group, please try again!`)));
             }))
         }
       });
@@ -241,13 +241,13 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
     const workspaceService = this.injector.get(WorkspaceService);
 
     // Ask User to enable this user from the group or not
-    this.utilityService.getConfirmDialogAlert('Are you sure?',
-    'This action will enable the user.')
+    this.utilityService.getConfirmDialogAlert($localize`:@@componentSearchBar.areYouSure:Are you sure?`,
+        $localize`:@@componentSearchBar.willEnableUser:This action will enable the user.`)
       .then((result) => {
         if (result.value) {
 
           // Remove the User
-          this.utilityService.asyncNotification('Please wait while we are enabling the user ...',
+          this.utilityService.asyncNotification($localize`:@@componentSearchBar.pleaseWaitWeEnableUser:Please wait while we are enabling the user ...`,
             new Promise((resolve, reject) => {
               workspaceService.reactivateUserToWorkplace(userId, workspaceId)
                 .then(() => {
@@ -265,10 +265,10 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
 
                   this.separateDisabled(this.members);
                   // Resolve with success
-                  resolve(this.utilityService.resolveAsyncPromise('User activated!'));
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@componentSearchBar.userActivated:User activated!`));
                 })
                 .catch(() => reject(this.utilityService
-                  .rejectAsyncPromise('Unable to reactivate the user from the workplace, please try again!')));
+                  .rejectAsyncPromise($localize`:@@componentSearchBar.unableToReactivateUserWorkspace:Unable to reactivate the user from the workplace, please try again!`)));
             }));
         }
     });
@@ -285,13 +285,13 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
     let workspaceService = this.injector.get(WorkspaceService);
 
     // Ask User to remove this user from the group or not
-    this.utilityService.getConfirmDialogAlert('Are you sure?',
-    'This action will disable the user.')
+    this.utilityService.getConfirmDialogAlert($localize`:@@componentSearchBar.areYouSure:Are you sure?`,
+        $localize`:@@componentSearchBar.willDisableUser:This action will disable the user.`)
       .then((result) => {
         if (result.value) {
 
           // Remove the User
-          this.utilityService.asyncNotification('Please wait while we are disabling the user ...',
+          this.utilityService.asyncNotification($localize`:@@componentSearchBar.pleaseWaitWeDisableUser:Please wait while we are disabling the user ...`,
             new Promise((resolve, reject) => {
               workspaceService.removeUserFromWorkspace(userId, workspaceId)
                 .then(() => {
@@ -312,9 +312,9 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
                   this.separateDisabled(this.members);
 
                   // Resolve with success
-                  resolve(this.utilityService.resolveAsyncPromise('User removed!'))
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@componentSearchBar.userDisabled:User disabled!`))
                 })
-                .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the workplace, please try again!')))
+                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@componentSearchBar.unableToDeactivateUserWorkspace:Unable to deactivate the user from the workplace, please try again!`)))
             }))
         }
       })
@@ -331,13 +331,13 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
     let userService = this.injector.get(UserService);
 
     // Ask User to remove this user from the group or not
-    this.utilityService.getConfirmDialogAlert('Are you sure?',
-    'This action will remove the user completely from the workspace.')
+    this.utilityService.getConfirmDialogAlert($localize`:@@componentSearchBar.areYouSure:Are you sure?`,
+        $localize`:@@componentSearchBar.willRemoveUser:This action will remove the user completely from the workspace.`)
       .then((result) => {
         if (result.value) {
 
           // Remove the User
-          this.utilityService.asyncNotification('Please wait while we are removing the user ...',
+          this.utilityService.asyncNotification($localize`:@@componentSearchBar.pleaseWaitWeRemoveUser:Please wait while we are removing the user ...`,
             new Promise((resolve, reject) => {
               userService.removeUser(userId)
                 .then(() => {
@@ -351,9 +351,9 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
                   this.separateDisabled(this.members);
 
                   // Resolve with success
-                  resolve(this.utilityService.resolveAsyncPromise('User removed!'))
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@componentSearchBar.userRemoved:User removed!`))
                 })
-                .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to remove the user from the workplace, please try again!')))
+                .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@componentSearchBar.unableToRemoveUserWorkspace:Unable to remove the user from the workplace, please try again!`)))
             }))
         }
       })
@@ -396,7 +396,7 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
     let socketService = this.injector.get(SocketService);
 
     // Instatiate the request to change the role
-    utilityService.asyncNotification('Please wait we are updating the role as per your request...',
+    utilityService.asyncNotification($localize`:@@componentSearchBar.pleaseWaitWeUpdatingUserRoleWorkspace:Please wait we are updating the role as per your request...`,
       new Promise((resolve, reject) => {
         userService.updateUserRole(userId, role)
           .then((res) => {
@@ -427,11 +427,11 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
             }
 
             // Resolve the promise with success
-            resolve(utilityService.resolveAsyncPromise(`User updated to ${newRole}!`))
+            resolve(utilityService.resolveAsyncPromise($localize`:@@componentSearchBar.roleUpdated:User role updated!`))
           })
           .catch((err) => {
-            console.log('Error occured, while updating the role', err);
-            reject(utilityService.rejectAsyncPromise('Oops, an error occured while updating the role, please try again!'))
+            console.log('Error occurred, while updating the role', err);
+            reject(utilityService.rejectAsyncPromise($localize`:@@componentSearchBar.oopsErrorWhileUpdatingRole:Oops, an error occurred while updating the role, please try again!`))
           })
       }))
   }
@@ -470,7 +470,7 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
     }
 
     // Instatiate the request to change the role
-    utilityService.asyncNotification('Please wait we are updating the role as per your request...',
+    utilityService.asyncNotification($localize`:@@componentSearchBar.pleaseWaitWeUpdatingUserRoleGroup:Please wait we are updating the role as per your request...`,
       new Promise((resolve, reject) => {
         groupService.updateGroup(groupId, this.groupData)
           .then((res) => {
@@ -478,11 +478,11 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
             this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
             // Resolve the promise with success
-            resolve(utilityService.resolveAsyncPromise(`User updated to ${newRole}!`))
+            resolve(utilityService.resolveAsyncPromise($localize`:@@componentSearchBar.userRoleUpdated:User role updated!`))
           })
           .catch((err) => {
-            console.log('Error occured, while updating the role', err);
-            reject(utilityService.rejectAsyncPromise('Oops, an error occured while updating the role, please try again!'))
+            console.log('Error occurred, while updating the role', err);
+            reject(utilityService.rejectAsyncPromise($localize`:@@componentSearchBar.oopsErrorWhileUpdatingRole:Oops, an error occurred while updating the role, please try again!`))
           })
       }))
   }

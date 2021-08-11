@@ -1,6 +1,6 @@
 <div class="smart-card" style="padding: 10px;">
   <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
-    <div class="card-title mt-1">
+    <div class="card-title mt-1" i18n="@@sectionStatusCard.realTimeStauts">
       Real time status by section
     </div>
   </div>
@@ -14,7 +14,7 @@
         {{ section?.percentage }} %
       </div>
       <div class="section-tasks">
-        {{ section?.numTasks }} tasks
+        {{ section?.numTasks }} <span i18n="@@sectionStatusCard.tasks">tasks</span>
       </div>
       <div class="section-allocation">
         {{ section?.allocation }}

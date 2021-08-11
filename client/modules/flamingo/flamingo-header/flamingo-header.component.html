@@ -31,15 +31,19 @@
         <li class="nav-item">
             <a [ngClass]="activeState == 'create_form'?'nav-link active-nav':'nav-link'"
                 (click)="changeState('create_form')" routerLink="/document/flamingo/{{fileId}}" [queryParams]="{ group: groupId }"
-                routerLinkActive="active">Create</a>
+                routerLinkActive="active" i18n="@@flamingoHeader.create">Create</a>
         </li>
         <li class="nav-item">
             <a [ngClass]="activeState == 'publish'?'nav-link active-nav':'nav-link'"
-                (click)="changeState('publish')" routerLink="/document/flamingo/{{fileId}}/publish" [queryParams]="{ group: groupId }">Publish</a>
+                (click)="changeState('publish')"
+                routerLink="/document/flamingo/{{fileId}}/publish" [queryParams]="{ group: groupId }"
+                i18n="@@flamingoHeader.publish">Publish</a>
         </li>
         <li class="nav-item">
             <a [ngClass]="activeState == 'result'?'nav-link active-nav':'nav-link'"
-                (click)="changeState('result')" routerLink="/document/flamingo/{{fileId}}/result" [queryParams]="{ group: groupId }">Results</a>
+                (click)="changeState('result')"
+                routerLink="/document/flamingo/{{fileId}}/result" [queryParams]="{ group: groupId }"
+                i18n="@@flamingoHeader.results">Results</a>
         </li>
     </ul>
 

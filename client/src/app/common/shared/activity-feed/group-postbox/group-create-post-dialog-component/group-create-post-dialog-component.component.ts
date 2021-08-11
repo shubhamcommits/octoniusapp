@@ -304,17 +304,17 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * @param property
    */
   async updateDate(date, property) {
-    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       if (property === 'due_date') {
             this.postService.changeTaskDueDate(this.postData._id, date?moment(date).format('YYYY-MM-DD'):null)
             .then((res) => {
               this.postData = res['post'];
               this.dueDate = moment(this.postData?.task?.due_to);
               // Resolve with success
-              resolve(this.utilityService.resolveAsyncPromise(`Date updated!`));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.dateUpdated:Date updated!`));
             })
             .catch(() => {
-              reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
             });
 
       } else if(property === 'start_date') {
@@ -323,10 +323,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
               this.postData = res['post'];
               this.startDate = moment(this.postData?.task?.start_date);
               // Resolve with success
-              resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.dateUpdated:Date updated!`));
             })
             .catch(() => {
-              reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
             });
       }
     }));
@@ -361,16 +361,16 @@ export class GroupCreatePostDialogComponent implements OnInit {
         bar = element;
       }
     });
-    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.postService.addBar(this.postData._id, bar)
         .then((res) => {
           // Resolve with success
         this.postData.bars.push(bar);
         this.barTags.push(event);
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
   }
@@ -383,16 +383,16 @@ export class GroupCreatePostDialogComponent implements OnInit {
       }
     });
 
-    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.postService.removeBar(this.postData._id, bar)
         .then((res) => {
           // Resolve with success
           this.barTags.splice(index, 1);
           this.postData.bars = this.postData.bars.filter(barTag => barTag.bar_tag !== event);
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
   }
@@ -445,7 +445,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   saveCustomField(customFieldName: string, customFieldValue: string) {
-    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.postService.saveCustomField(this.postData._id, customFieldName, customFieldValue, this.groupId)
         .then(async (res) => {
           this.selectedCFValues[customFieldName] = customFieldValue;
@@ -454,10 +454,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
           this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData);
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`${customFieldName} updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update ${customFieldName}, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
   }
@@ -553,15 +553,15 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async changeShuttleTaskStatus(event) {
     // Set the status
     this.postData.task.shuttle_status = event;
-    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise(async (resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
       await this.postService.selectShuttleStatus(this.postData?._id, event)
         .then((res) => {
           // Resolve with success
           this.postData.task._shuttle_section = event;
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
   }
@@ -576,15 +576,15 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   async moveShuttleTaskToSection(event) {
     const shuttleSectionId = event.newColumn._id;
-    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise(async (resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
       await this.postService.selectShuttleSection(this.postData?._id, shuttleSectionId)
         .then((res) => {
           // Resolve with success
           this.postData.task._shuttle_section = shuttleSectionId;
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
   }
@@ -610,16 +610,16 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * Call the asynchronous function to change the column
    */
   async editPost(postId: any, formData: FormData) {
-    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.postService.edit(postId, formData)
         .then((res) => {
           this.postData = res['post'];
           this.contentChanged = false;
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
   }
@@ -629,7 +629,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
    */
   deletePost() {
     const id = this.postData._id;
-    this.utilityService.asyncNotification('Please wait we are deleting the post...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.pleaseWaitWeAreDeleting:Please wait we are deleting the post...`, new Promise((resolve, reject) => {
       this.postService.deletePost(this.postData._id)
         .then((res) => {
           // Emit the Deleted post to all the compoents in order to update the UI
@@ -637,9 +637,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
           // Close the modal
           this.mdDialogRef.close();
 
-          resolve(this.utilityService.resolveAsyncPromise('Post deleted!'));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.postDeleted:Post deleted!`));
         }).catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise('Unable to delete post, please try again!'));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToDeletePost:Unable to delete post, please try again!`));
         });
     }));
   }

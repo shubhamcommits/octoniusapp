@@ -69,7 +69,7 @@ export class StartSubscriptionComponent implements OnInit {
         sessionId: res['session'].id
       });
     }).catch((err)=> {
-      this.utilityService.errorNotification('There is an error with your Subscription, please contact support!');
+      this.utilityService.errorNotification($localize`:@@startSubscription.errorWithYourSubscription:There is an error with your Subscription, please contact support!`);
     });
   }
 }

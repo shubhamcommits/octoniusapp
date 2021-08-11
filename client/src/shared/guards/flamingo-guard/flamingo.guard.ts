@@ -41,7 +41,7 @@ export class FlamingoGuard implements CanActivate  {
     const flamingoStatus = await publicFunctions.checkFlamingoStatus(flamingo['_file']._group._workspace._id, flamingo['_file']._group._workspace.management_private_api_key);
 
     if (!flamingoStatus) {
-      this.utilityService.warningNotification('Oops seems like your subscription doesn\´t have Flamingo Module available!');
+      this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsSubscriptionNoFlamingo:Oops seems like your subscription doesn\´t have Flamingo Module available!`);
       this.router.navigate(['/home']);
 
       return false;
@@ -64,7 +64,7 @@ export class FlamingoGuard implements CanActivate  {
           || userGroupsIndex >= 0 || currentUser._private_group == currentGroupId) {
         return true;
       } else {
-        this.utilityService.warningNotification('Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!');
+        this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);
         this.router.navigate(['dashboard', 'myspace', 'inbox']);
         return false;
       }

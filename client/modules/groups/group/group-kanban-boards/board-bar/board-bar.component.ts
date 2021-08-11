@@ -42,8 +42,8 @@ export class BoardBarComponent implements OnInit {
 
   sortby: string = 'none'
   filterfor: string = 'none'
-  menuLable: string='Filter Task For';
-  menuFor: string='Filter';
+  menuLable: string = $localize`:@@boardBar.filterTaskFor:Filter Task For`;
+  menuFor: string = 'Filter';
   reverse: boolean = false;
   cfFilter: any = {}
 

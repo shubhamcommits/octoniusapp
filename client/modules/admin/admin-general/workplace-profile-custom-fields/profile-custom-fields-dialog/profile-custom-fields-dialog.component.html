@@ -8,17 +8,17 @@
         <span class="badge badge-cf">
             <i class="material-icons">label</i>
         </span>
-       Profile Fields
+       <span i18n="@@profileCFDialog.profileFields">Profile Fields</span>
     </h2>
 
     <mat-dialog-content>
         <div class="description">
             <img src="assets/images/placeholder_profile_fields.svg" alt="" style="width: 300px; margin-bottom: 24px">
-            <p>Create Profile Fields to improve how you organize your teams based on user's profile.</p>
+            <p i18n="@@profileCFDialog.createProfileFieldsToImprove">Create Profile Fields to improve how you organize your teams based on user's profile.</p>
         </div>
 
         <div class="customFieldsList" *ngIf="customFields.length <= 0">
-            <h3 class="text-center muted">🌵 There are no custom fields...</h3>
+            <h3 class="text-center muted" i18n="@@profileCFDialog.thereAreNoCF">🌵 There are no custom fields...</h3>
         </div>
 
 
@@ -54,15 +54,15 @@
         </div>
         <div class="newCustomFieldForm" style="padding: 10px; margin-top: 30px">
             <button class="btn badge-cf" (click)="showNewCustomField = !showNewCustomField">
-                <i class="material-icons">label</i> ADD PROFILE FIELD
+                <i class="material-icons">label</i> <span i18n="@@profileCFDialog.addProfileField">ADD PROFILE FIELD</span>
              </button>
              <div class="add-field" *ngIf="showNewCustomField">
                  <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
                  <div class="actions">
-                     <button class="col-md-4 btn btn-primary" (click)="createCustomField()">
+                     <button class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@profileCFDialog.save">
                          Save
                      </button>
-                     <button class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''">
+                     <button class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''" i18n="@@profileCFDialog.cancel">
                          Cancel
                      </button>
                  </div>

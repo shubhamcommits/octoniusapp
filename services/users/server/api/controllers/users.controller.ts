@@ -506,7 +506,7 @@ export class UsersControllers {
 
                 // Error updating the group
                 if (!groupUpdate) {
-                    return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                    return sendError(res, new Error(`Unable to update the group, some unexpected error occurred!`), `Unable to update the group, some unexpected error occurred!`, 500);
                 }
 
                 // Add group to user's groups
@@ -544,7 +544,7 @@ export class UsersControllers {
 
             // Error updating the user
             if (!user) {
-                return sendError(res, new Error('Unable to update the user, some unexpected error occured!'), 'Unable to update the user, some unexpected error occured!', 500);
+                return sendError(res, new Error('Unable to update the user, some unexpected error occurred!'), 'Unable to update the user, some unexpected error occurred!', 500);
             }
 
             let groupsUpdate;

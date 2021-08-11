@@ -54,7 +54,7 @@
                           (click)="removeBackgroundColor(i)">
                         <b>X</b>
                       </button>
-                      Background Color
+                      <span i18n="@@flamingoEditor.backgroundColor">Background Color</span>
                     </div>
                     <!-- background color remove end-->
 
@@ -67,7 +67,7 @@
                           (click)="removeTextColor(i)">
                         <b>X</b>
                       </button>
-                      Text Color
+                      <span i18n="@@flamingoEditor.textColor">Text Color</span>
                     </div>
                     <!-- background color remove end-->
 
@@ -128,14 +128,14 @@
                     <div *ngIf="question.type==='Scale' && i==activeQuestionIndex" class="scale-setting">
 
                         <div class="form-group row">
-                            <label for="Steps" class="col-sm-4 col-form-label">Steps</label>
+                            <label for="Steps" class="col-sm-4 col-form-label" i18n="@@flamingoEditor.steps">Steps</label>
                             <div class="col-sm-8" style="padding-right: 20px;">
                                 <mat-slider [max]="11" [min]="5" [value]="question?.scale?.size || 5"
                                     (change)="setScaleSize($event,i)" [disabled]="flamingo?.publish"></mat-slider>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="Steps" class="col-sm-4 col-form-label">Show Label</label>
+                            <label for="Steps" class="col-sm-4 col-form-label" i18n="@@flamingoEditor.showLabel">Show Label</label>
                             <div class="col-sm-8" style="padding-right: 20px;">
                                 <mat-slide-toggle [color]="'#9B9B9B'"
                                     [disabled]="flamingo?.publish"
@@ -168,7 +168,7 @@
                 <!-- Question delete and image upload button start -->
                 <div class="settings" *ngIf="i==activeQuestionIndex">
                     <div class="setting-icons-div" style="width: 110px;" *ngIf="activeQuestion?.type !='Welcome' && activeQuestion?.type !='Thanks'">
-                        Mandatory
+                        <span i18n="@@flamingoEditor.mandatory">Mandatory</span>
                         <mat-slide-toggle [color]="'#9B9B9B'"
                           [disabled]="flamingo?.publish"
                           [checked]="(question?.mandatory) ? true: false"
@@ -207,95 +207,88 @@
                     <span>
                         <i class="material-icons">add_circle</i>
                     </span>
-                    <span> New question</span>
+                    <span i18n="@@flamingoEditor.newQuestion"> New question</span>
                 </button>
                 <mat-menu #myMenu="matMenu" class="question-menu">
                     <div style="position: relative;">
-                        <p style="height: 45px;padding-top: 10px;padding-left: 15px;color: #9B9B9B;">Choose a question
-                            type</p>
+                        <p style="height: 45px;padding-top: 10px;padding-left: 15px;color: #9B9B9B;" i18n="@@flamingoEditor.chooseQuestionType">
+                          Choose a question type
+                        </p>
                         <div class="welcome-screen" (click)="createQuestion('Welcome')">
-                            <div class="btn-icon"><span class="material-icons">
-                                play_arrow
-                                </span>
-
-                                </div>
+                            <div class="btn-icon">
+                              <span class="material-icons">play_arrow</span>
+                            </div>
                             <div class="btn-txt">Welcome screen</div>
                             <div class="hovered-welcome">
                                 <p style="margin-left: 10%;margin-top: 25%;">
-                                    <strong>Welcome screen</strong>
+                                    <strong i18n="@@flamingoEditor.welcomeScreen">Welcome screen</strong>
                                     <br />
-                                  Simple text with an optional image / logo
+                                  <span i18n="@@flamingoEditor.simpleText">Simple text with an optional image / logo</span>
                                 </p>
                             </div>
                         </div>
                         <div class="thank-screen" (click)="createQuestion('Thanks')">
-                            <div class="btn-icon"><span class="material-icons">
-                                check_circle_outline
-                                </span></div>
-                            <div class="btn-txt">Thank you screen</div>
+                            <div class="btn-icon">
+                              <span class="material-icons">check_circle_outline</span>
+                            </div>
+                            <div class="btn-txt" i18n="@@flamingoEditor.thankYouScreen">Thank you screen</div>
                             <div class="hovered-thank">
                                 <p style="margin-left: 10%;margin-top: 25%;">
-                                    <strong>Thank you screen</strong>
+                                    <strong i18n="@@flamingoEditor.thankYouScreen">Thank you screen</strong>
                                     <br />
-                                    Simple thank you text with optional image / logo
+                                    <span i18n="@@flamingoEditor.simpleThankYouText">Simple thank you text with optional image / logo</span>
                                 </p>
                             </div>
                         </div>
                         <div class="short-text" (click)="createQuestion('ShortText')">
-                            <div class="btn-icon"><span class="material-icons">
-                                text_snippet
-                                </span>
-
-                                </div>
-                            <div class="btn-txt">Short text</div>
+                            <div class="btn-icon">
+                              <span class="material-icons">text_snippet</span>
+                            </div>
+                            <div class="btn-txt" i18n="@@flamingoEditor.sortText">Short text</div>
                             <div class="hovered-short">
                                 <p style="margin-left: 10%;margin-top: 25%;">
-                                    <strong>Short text</strong>
+                                    <strong i18n="@@flamingoEditor.sortText">Short text</strong>
                                     <br />
-                                    A simple question with a short answer.
+                                    <span i18n="@@flamingoEditor.simpleQuestionSortAnswer">A simple question with a short answer.</span>
                                 </p>
                             </div>
                         </div>
                         <div class="yes-no" (click)="createQuestion('Yes/No')">
-                            <div class="btn-icon"><span class="material-icons">
-                                rule
-                                </span>
-
-                                </div>
-                            <div class="btn-txt">YES/NO</div>
+                            <div class="btn-icon">
+                              <span class="material-icons">rule</span>
+                            </div>
+                            <div class="btn-txt" i18n="@@flamingoEditor.yesNo">YES/NO</div>
                             <div class="hovered-yes-no">
                                 <p style="margin-left: 10%;margin-top: 25%;">
-                                    <strong>YES/NO</strong>
+                                    <strong i18n="@@flamingoEditor.yesNo">YES/NO</strong>
                                     <br />
-                                   Binary question.
+                                    <span i18n="@@flamingoEditor.binaryQuestion">Binary question.</span>
                                 </p>
                             </div>
                         </div>
                         <div class="scale" (click)="createQuestion('Scale')">
-                            <div class="btn-icon"><span class="material-icons">
-                                align_horizontal_left
-                                </span>
-
-                                </div>
-                            <div class="btn-txt">Scale</div>
+                            <div class="btn-icon">
+                              <span class="material-icons">align_horizontal_left</span>
+                            </div>
+                            <div class="btn-txt" i18n="@@flamingoEditor.scale">Scale</div>
                             <div class="hovered-scale">
                                 <p style="margin-left: 10%;margin-top: 25%;">
-                                    <strong>Scale</strong>
+                                    <strong i18n="@@flamingoEditor.scale">Scale</strong>
                                     <br />
-                                  Use this for feedback options.
+                                    <span i18n="@@flamingoEditor.useForFeedback">Use this for feedback options.</span>
                                 </p>
                             </div>
                         </div>
                         <div class="dropdown-question" (click)="createQuestion('Dropdown')">
-                            <div class="btn-icon"><span class="material-icons">
-                                list
-                                </span></div>
-                            <div class="btn-txt">Dropdown</div>
+                            <div class="btn-icon">
+                              <span class="material-icons">list</span>
+                            </div>
+                            <div class="btn-txt" i18n="@@flamingoEditor.dropdown">Dropdown</div>
                             <div class="hovered-dropdown">
                                 <p style="margin-left: 10%;margin-top: 25%;">
-                                    <strong>Dropdown</strong>
+                                    <strong i18n="@@flamingoEditor.dropdown">Dropdown</strong>
                                     <br />
-                                    A list of options to select
+                                    <span i18n="@@flamingoEditor.listOfOptionsToSelect">A list of options to select</span>
                                 </p>
                             </div>
                         </div>
@@ -303,12 +296,12 @@
                             <div class="btn-icon">
                               <span class="material-icons">list</span>
                             </div>
-                            <div class="btn-txt">Multiple Options</div>
+                            <div class="btn-txt" i18n="@@flamingoEditor.multipleOptions">Multiple Options</div>
                             <div class="hovered-dropdown">
                                 <p style="margin-left: 10%;margin-top: 25%;">
-                                    <strong>Multiple Options</strong>
+                                    <strong i18n="@@flamingoEditor.multipleOptions">Multiple Options</strong>
                                     <br />
-                                    A list of options to select multiple options
+                                    <span i18n="@@flamingoEditor.listOfOptionsToSelectMultiple">A list of options to select multiple options</span>
                                 </p>
                             </div>
                         </div>
@@ -331,7 +324,7 @@
                   [service]="'flamingo'" [styleClass]="'welcome-img'"></app-secured-image>
 
                 <h2 style="color: {{ activeQuestion?.text_color || '#000000' }}">{{activeQuestion?.text}}</h2>
-                <div *ngIf="activeQuestion?.mandatory" class="mandatory-text">* This question is mandatory</div>
+                <div *ngIf="activeQuestion?.mandatory" class="mandatory-text" i18n="@@flamingoEditor.questionMandatory">* This question is mandatory</div>
 
                 <!-- question secondary text-->
                 <span>{{ activeQuestion?.secondary_text }}</span>
@@ -339,9 +332,9 @@
                 <br/><br/>
 
                 <button *ngIf="activeQuestion?.type==='Thanks'"
-                    class="btn btn-success">Submit</button>
+                    class="btn btn-success" i18n="@@flamingoEditor.submit">Submit</button>
                 <button *ngIf="activeQuestion?.type==='Welcome'"
-                    class="btn btn-primary">Start</button>
+                    class="btn btn-primary" i18n="@@flamingoEditor.start">Start</button>
             </div>
             <!-- welcome and thanks question type preview div end-->
 
@@ -356,7 +349,7 @@
 
                     <!-- question text -->
                     <h2 style="color: {{ activeQuestion?.text_color || '#000000' }}">{{activeQuestion?.text}}</h2>
-                    <div *ngIf="activeQuestion?.mandatory" class="mandatory-text">* This question is mandatory</div>
+                    <div *ngIf="activeQuestion?.mandatory" class="mandatory-text" i18n="@@flamingoEditor.questionMandatory">* This question is mandatory</div>
 
                     <!-- question secondary text-->
                     <span>{{activeQuestion?.secondary_text}}</span>

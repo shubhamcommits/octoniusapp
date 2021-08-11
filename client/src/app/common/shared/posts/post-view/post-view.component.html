@@ -24,10 +24,10 @@
 
                 <!-- Assignee detail starts -->
                 <section *ngIf="post.type == 'task' || post.type == 'event'">
-                    <span class="assigned" *ngIf="!eventAssignedToAll(post)">
+                    <span class="assigned" *ngIf="!eventAssignedToAll(post)" i18n="@@postView.assignedToNumMembers">
                       Assigned to {{post._assigned_to?.length || 0}} Member(s)
                     </span>
-                    <span class="assigned" *ngIf="eventAssignedToAll(post)">
+                    <span class="assigned" *ngIf="eventAssignedToAll(post)" i18n="@@postView.assignedToAllMembers">
                       Assigned to all Members
                     </span>
                 </section>
@@ -50,7 +50,7 @@
 
                 <!-- Due Date starts -->
                 <p class="small font-weight-bold mt-3" *ngIf="post.task?.due_to && post.task?.due_to != 'Invalid date'">
-                    due {{post.task?.due_to | date}}
+                    <span i18n="@@postView.due">due</span> {{post.task?.due_to | date}}
                 </p>
                 <!-- Due Date ends -->
 

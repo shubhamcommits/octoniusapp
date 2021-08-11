@@ -37,7 +37,7 @@ export class UserAvailabilityDayDialogComponent implements OnInit {
   }
 
   async confirmDays() {
-    await this.utilityService.asyncNotification('Please wait we are saving your days...', new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@userAvailabilityDAyDialog.pleaseWaitSavingDays:Please wait we are saving your days...`, new Promise((resolve, reject) => {
       const days = this.selectedDays.map(day => {
         return {
           date: day.date ? moment(day.date).format("YYYY-MM-DD"):null,
@@ -52,10 +52,10 @@ export class UserAvailabilityDayDialogComponent implements OnInit {
           this.closeDialog();
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Days saved!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@userAvailabilityDAyDialog.daysSaved:Days saved!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to save the dates, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@userAvailabilityDAyDialog.unableToSaveDates:Unable to save the dates, please try again!`));
         });
     }));
   }

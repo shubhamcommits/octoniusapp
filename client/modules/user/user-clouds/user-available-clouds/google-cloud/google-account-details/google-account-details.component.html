@@ -1,9 +1,9 @@
 <div class="card-tile" *ngIf="googleUser">
     <div class="card-title">
         <h2 class="float-left">
-            <strong>Google</strong>
+            <strong i18n="@@googleAccountDetails.google">Google</strong>
         </h2>
-        <button class="btn btn-danger" (click)="disconnectGoogleAccount()">Disconnect</button>
+        <button class="btn btn-danger" (click)="disconnectGoogleAccount()" i18n="@@googleAccountDetails.disconect">Disconnect</button>
     </div>
     <div class="user-sticky-card media mt-4">
         <hr>
@@ -15,7 +15,8 @@
                 <h4>{{googleUser?.user?.emailAddress}}</h4>
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link active">Drive Usage
+                        <a class="nav-link active">
+                            <span i18n="@@googleAccountDetails.driveUsage">Drive Usage</span>
                             <span class="sr-only">(current)</span>
                         </a>
                         {{ googleDriveUsed }} %

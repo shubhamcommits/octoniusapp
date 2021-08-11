@@ -128,7 +128,7 @@ export class GroupFilesComponent implements OnInit {
         })
         .catch(() => {
           // If the function breaks, then catch the error and console to the application
-          this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+          this.publicFunctions.sendError(new Error($localize`:@@groupFiles.unableToConnectToServer:Unable to connect to the server, please try again later!`));
         });
     }
 
@@ -211,7 +211,7 @@ export class GroupFilesComponent implements OnInit {
       .then((result) => {
         if (result.value) {
           // Remove the file
-          this.utilityService.asyncNotification('Please wait, we are deleting...', new Promise((resolve, reject) => {
+          this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitDeleting:Please wait, we are deleting...`, new Promise((resolve, reject) => {
             if (type == 'file' || type == 'folio' || type == 'flamingo' || type == 'campaign') {
               this.filesService.deleteFile(itemId, fileName, type == 'flamingo')
                 .then((res) => {
@@ -221,9 +221,9 @@ export class GroupFilesComponent implements OnInit {
                   // Remove the file from the list
                   this.files = this.files.filter(file => file._id !== itemId);
 
-                  resolve(this.utilityService.resolveAsyncPromise('File deleted!'));
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.fileDeleted:File deleted!`));
                 }).catch((err) => {
-                  reject(this.utilityService.rejectAsyncPromise('Unable to delete file, please try again!'));
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToDeleteFile:Unable to delete file, please try again!`));
                 });
             } else {
               this.foldersService.deleteFolder(itemId)
@@ -234,9 +234,9 @@ export class GroupFilesComponent implements OnInit {
                   // Remove the folder from the list
                   this.files = this.files.filter(file => file._id !== itemId);
 
-                  resolve(this.utilityService.resolveAsyncPromise('Folder deleted!'));
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folderDeleted:Folder deleted!`));
                 }).catch((err) => {
-                  reject(this.utilityService.rejectAsyncPromise('Unable to delete folder, please try again!'));
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToDeleteFolder:Unable to delete folder, please try again!`));
                 });
             }
           }));
@@ -303,7 +303,7 @@ export class GroupFilesComponent implements OnInit {
     document.body.removeChild(selBox);
 
     // Show Confirmed notification
-    this.utilityService.simpleNotification(`Copied to Clipboard!`);
+    this.utilityService.simpleNotification($localize`:@@groupFiles.copiedToClipboard:Copied to Clipboard!`);
   }
 
   saveTransferAction(action: string) {
@@ -322,15 +322,15 @@ export class GroupFilesComponent implements OnInit {
 
   async copyToGroup(itemId: string, group: string, type: string) {
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the item will be copied to the selected group!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@groupFiles.areYouSure:Are you sure?`, $localize`:@@groupFiles.doingThisItemWillBeCopied:By doing this the item will be copied to the selected group!`)
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait, we are copying the Folio...', new Promise((resolve, reject) => {
+          await this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitCopyingFolio:Please wait, we are copying the Folio...`, new Promise((resolve, reject) => {
             this.filesService.transferToGroup(itemId, group, true).then((res) => {
-                resolve(this.utilityService.resolveAsyncPromise(`👍 Folio Copied!`));
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folioCopied:👍 Folio Copied!`));
               })
               .catch((error) => {
-                reject(this.utilityService.rejectAsyncPromise(`Error while copying the Folio!`));
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.errorCopyingFolio:Error while copying the Folio!`));
               });
           }));
         }
@@ -339,18 +339,18 @@ export class GroupFilesComponent implements OnInit {
 
   async moveToGroup(itemId: string, groupId: string, type: string) {
     // Open the Confirm Dialog to ask for permission
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the item will be moved to the selected group!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@groupFiles.areYouSure:Are you sure?`, $localize`:@@groupFiles.doingThisItemWillBeMoved:By doing this the item will be moved to the selected group!`)
       .then(async (res) => {
         if (res.value) {
-          await this.utilityService.asyncNotification('Please wait we are moving the item...', new Promise((resolve, reject) => {
+          await this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitMovingFolio:Please wait we are moving the item...`, new Promise((resolve, reject) => {
             this.filesService.transferToGroup(itemId, groupId, false)
               .then((res) => {
                 // Redirect to the new group files page
                 this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId, myWorkplace: false } });
-                resolve(this.utilityService.resolveAsyncPromise(`👍 Folio Moved!`));
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folioMoved:👍 Folio Moved!`));
               })
               .catch((error) => {
-                reject(this.utilityService.rejectAsyncPromise(`Error while moving the folio!`));
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.errorMovingFolio:Error while moving the folio!`));
               });
           }));
         }
@@ -414,10 +414,10 @@ export class GroupFilesComponent implements OnInit {
       this.foldersService.edit(this.currentFolder._id, event.target.value).then((res) => {
         this.currentFolder.folder_name = event.target.value;
         this.folderOriginalName = this.currentFolder.folder_name;
-        this.utilityService.resolveAsyncPromise(`👍 Folder Moved!`);
+        this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.changeFolderTitle:Folder Title Changed!`);
       })
       .catch((error) => {
-        this.utilityService.rejectAsyncPromise(`Error while moving the folder!`);
+        this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.errorChangingFolderTitle:Error while changing the title of the folder!`);
       });
     }
 
@@ -500,19 +500,19 @@ export class GroupFilesComponent implements OnInit {
   uploadFile(fileData: any, file?: File) {
     // Call the HTTP Request Asynschronously
     this.utilityService.asyncNotification(
-      (file) ? `Please wait, we are uploading your file - ${file['name']} ...` : `Please wait while we are creating a new folio`,
+      (file) ? $localize`:@@groupFiles.pleaseWaitUploadingFile:Please wait, we are uploading your file - ${file['name']} ...` : $localize`:@@groupFiles.pleaseWaitCreatingFolio:Please wait while we are creating a new folio`,
       new Promise((resolve, reject) => {
         this.filesService.addFile(fileData, file)
           .then((res) => {
 
             // Output the created file to the top components
             this.getFile(res['file']);
-            resolve((file) ? this.utilityService.resolveAsyncPromise('File has been uploaded!') :
-              this.utilityService.resolveAsyncPromise('New file has been uploaded!'))
+            resolve((file) ? this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.fileUploaded:File has been uploaded!`) :
+              this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.newFileUploaded:New file has been uploaded!`))
 
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise('Unexpected error occured while uploading, please try again!'))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unexpectedErrorUploading:Unexpected error occurred while uploading, please try again!`))
           })
       }))
   }
@@ -530,16 +530,16 @@ export class GroupFilesComponent implements OnInit {
       .then((result) => {
         if (result.value) {
           // Move the item
-          this.utilityService.asyncNotification('Please wait, we are moving the item...', new Promise((resolve, reject) => {
+          this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitMovingItem:Please wait, we are moving the item...`, new Promise((resolve, reject) => {
             if (type == 'file') {
               this.filesService.moveToFolder(itemId, folderId)
                 .then((res) => {
                   // Remove the file from the list
                   this.files = this.files.filter(file => file._id !== itemId);
 
-                  resolve(this.utilityService.resolveAsyncPromise('File moved!'));
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.fileMoved:File moved!`));
                 }).catch((err) => {
-                  reject(this.utilityService.rejectAsyncPromise('Unable to move the file, please try again!'));
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToMoveFile:Unable to move the file, please try again!`));
                 });
             } else if (type == 'folder') {
               this.foldersService.moveToFolder(itemId, folderId)
@@ -547,9 +547,9 @@ export class GroupFilesComponent implements OnInit {
                   // Remove the file from the list
                   this.folders = this.folders.filter(folder => folder._id !== itemId);
 
-                  resolve(this.utilityService.resolveAsyncPromise('Folder moved!'));
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folderMoved:👍 Folder moved!`));
                 }).catch((err) => {
-                  reject(this.utilityService.rejectAsyncPromise('Unable to move the folder, please try again!'));
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToMoveFolder:Unable to move the folder, please try again!`));
                 });
             }
           }));

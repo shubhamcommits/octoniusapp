@@ -96,7 +96,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
     let utilityService = this.Injector.get(UtilityService);
 
     const folder: any = {
-      folder_name: 'New Folder',
+      folder_name: $localize`:@@groupNewFile.newFolder:New Folder`,
       _created_by: this.userData._id,
       _group: this.groupId,
       _parent: this.folderId
@@ -104,7 +104,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
 
     // Call the HTTP Request Asynschronously
     utilityService.asyncNotification(
-      `Please wait we are creating the folder - ${folder['folder_name']} ...`,
+      $localize`:@@groupNewFile.pleaseCreatingFolder:Please wait we are creating the folder - ${folder['folder_name']} ...`,
       new Promise((resolve, reject) => {
         folderService.add(folder)
           .then((res) => {
@@ -112,11 +112,11 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
             // Output the created file to the top components
             this.folderEmitter.emit(res['folder']);
 
-            resolve(utilityService.resolveAsyncPromise('Folder has been created!'));
+            resolve(utilityService.resolveAsyncPromise($localize`:@@groupNewFile.folderCreated:Folder has been created!`));
 
           })
           .catch(() => {
-            reject(utilityService.rejectAsyncPromise('Unexpected error occured while creating the folder, please try again!'))
+            reject(utilityService.rejectAsyncPromise($localize`:@@groupNewFile.unexpectedErrorCreatingFolder:Unexpected error occurred while creating the folder, please try again!`))
           });
       }));
 
@@ -165,7 +165,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
     // Files Service Instance
     let fileService = this.Injector.get(FilesService);
 
-    utilityService.asyncNotification(`Please wait we are uploading the folder...`,
+    utilityService.asyncNotification($localize`:@@groupNewFile.pleaseWaitUploadingFolder:Please wait we are uploading the folder...`,
       new Promise(async (resolve, reject) => {
         try {
           let folders = [];
@@ -237,10 +237,10 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
             }
           }
           this.folderEmitter.emit(folders[0]);
-          resolve(utilityService.resolveAsyncPromise('Folder has been uploaded!'));
+          resolve(utilityService.resolveAsyncPromise($localize`:@@groupNewFile.folderUploaded:Folder has been uploaded!`));
         } catch (err) {
-          console.log('There\'s some unexpected error occured, please try again!', err);
-          reject(utilityService.rejectAsyncPromise('Unexpected error occured while creating the folder, please try again!'));
+          console.log('There\'s some unexpected error occurred, please try again!', err);
+          reject(utilityService.rejectAsyncPromise($localize`:@@groupNewFile.unexpectedErrorCreatingFolder:Unexpected error occurred while creating the folder, please try again!`));
         }
       }));
 
@@ -260,7 +260,9 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
       _folder: this.folderId,
       _posted_by: this.userData._id,
       type: 'folio',
-      mime_type: 'folio'
+      mime_type: 'folio',
+      original_name: $localize`:@@groupNewFile.newFolio:New Folio`,
+      modified_name: $localize`:@@groupNewFile.newFolio:New Folio`
     }
 
     this.uploadFile(folio);
@@ -280,8 +282,8 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
       _group: this.groupId,
       _folder: this.folderId,
       _posted_by: this.userData._id,
-      original_name: 'New Flamingo',
-      modified_name: 'New Flamingo',
+      original_name: $localize`:@@groupNewFile.newFlamingo:New Flamingo`,
+      modified_name: $localize`:@@groupNewFile.newFlamingo:New Flamingo`,
       type: 'flamingo',
       mime_type: 'flamingo'
     }
@@ -307,7 +309,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
 
     // Call the HTTP Request Asynschronously
     utilityService.asyncNotification(
-      (file) ? `Please wait we are uploading your file - ${file['name']} ...` : `Please wait while we are creating a new folio`,
+      (file) ? $localize`:@@groupNewFile.pleaseWaitUploadingFile:Please wait we are uploading your file - ${file['name']} ...` : $localize`:@@groupNewFile.pleaseWaitCreatingFolio:Please wait while we are creating a new folio`,
       new Promise((resolve, reject) => {
         fileService.addFile(fileData, file)
           .then((res) => {
@@ -315,13 +317,13 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
             // Output the created file to the top components
             this.fileEmitter.emit(res['file']);
 
-            resolve((file) ? utilityService.resolveAsyncPromise('File has been uploaded!')
-              : (fileData.type == 'flamingo' ? utilityService.resolveAsyncPromise('New flamingo has been created!')
-                : utilityService.resolveAsyncPromise('New folio has been created!')))
+            resolve((file) ? utilityService.resolveAsyncPromise($localize`:@@groupNewFile.fileUploaded:File has been uploaded!`)
+              : (fileData.type == 'flamingo' ? utilityService.resolveAsyncPromise($localize`:@@groupNewFile.newFlamingoCreated:New flamingo has been created!`)
+                : utilityService.resolveAsyncPromise($localize`:@@groupNewFile.newFolioCreated:New folio has been created!`)))
 
           })
           .catch(() => {
-            reject(utilityService.rejectAsyncPromise('Unexpected error occured while uploading, please try again!'))
+            reject(utilityService.rejectAsyncPromise($localize`:@@groupNewFile.unexpectedErrorUploading:Unexpected error occurred while uploading, please try again!`))
           })
       }))
   }

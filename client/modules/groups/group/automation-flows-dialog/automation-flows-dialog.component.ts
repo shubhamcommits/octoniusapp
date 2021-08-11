@@ -39,14 +39,14 @@ export class AutomationFlowsDialogComponent implements OnInit {
   }
 
   createFlow() {
-    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise(async (resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@automationFlowsDialog.pleaseWaitupdatingContent:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
       await this.flowService.createNewAutomationFlow(this.groupId).then((res) => {
         this.automationFlows.push(res['flow']);
         this.automationFlows.sort((f1, f2) => (f1.name > f2.name) ? 1 : -1);
 
-        resolve(this.utilityService.resolveAsyncPromise('Automation Flow created!'));
+        resolve(this.utilityService.resolveAsyncPromise($localize`:@@automationFlowsDialog.automationFlowCreated:Automation Flow created!`));
       }).catch(err => {
-        reject(this.utilityService.rejectAsyncPromise(`Unable to create the new Automation Flow, please try again!`));
+        reject(this.utilityService.rejectAsyncPromise($localize`:@@automationFlowsDialog.unableToCreateAutomationFlow:Unable to create the new Automation Flow, please try again!`));
       });
     }));
   }

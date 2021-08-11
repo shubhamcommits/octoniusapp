@@ -39,7 +39,7 @@ export class GroupInformationComponent implements OnInit {
     // Open Model Function, which opens up the modal
     const { value: value } = await openModal;
     if (value) {
-      this.utilityService.asyncNotification('Please wait we are updating the group\'s information...',
+      this.utilityService.asyncNotification($localize`:@@groupInformation.pleaseWaitWeUpdateGroupInformation:Please wait we are updating the group\'s information...`,
         new Promise((resolve, reject) => {
           this.groupService.updateGroup(this.groupData._id, value)
             .then((res) => {
@@ -54,13 +54,13 @@ export class GroupInformationComponent implements OnInit {
               this.utilityService.handleDeleteGroupFavorite().emit(true);
               this.utilityService.handleUpdateGroupData().emit(true);
               // Resolve with success
-              resolve(this.utilityService.resolveAsyncPromise('Group updated sucessfully!'))
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupInformation.groupUpdatedSucessfully:Group updated sucessfully!`))
             })
             .catch(() =>
-              reject(this.utilityService.rejectAsyncPromise('An unexpected occured while updating the group, please try again!')))
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@groupInformation.unexpectedError:An unexpected error occurred while updating the group, please try again!`)))
         }))
     } else if (JSON.stringify(value) == '') {
-      this.utilityService.warningNotification('Kindly fill up all the details properly!');
+      this.utilityService.warningNotification($localize`:@@groupInformation.kindlyFillUp:Kindly fill up all the details properly!`);
     }
   }
 
@@ -90,7 +90,7 @@ export class GroupInformationComponent implements OnInit {
           description: document.getElementById('mobile-number')['value'],
         }
       },
-      confirmButtonText: 'Update Information!',
+      confirmButtonText: $localize`:@@groupInformation.updateInformation:Update Information!`,
       showCancelButton: true,
       cancelButtonText: 'Cancel',
       cancelButtonColor: '#d33',
@@ -106,9 +106,9 @@ export class GroupInformationComponent implements OnInit {
 
 /**
  * This function is responsible for returning the unique group members count
- * @param members 
- * @param admins 
- * @returns 
+ * @param members
+ * @param admins
+ * @returns
  */
   getUniqueMembersCount(members, admins) {
 

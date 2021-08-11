@@ -1,5 +1,5 @@
 <div class="subtasks-title">
-  {{ subtasks.length }} Subtasks
+  {{ subtasks.length }} <span i18n="@@subTasks.subTasks">Subtasks</span>
   <div *ngIf="subtasks.length > 0" [class]="completitionPercentageClass">
     {{ percentageSubtasksCompleted }} %
   </div>

@@ -4,7 +4,9 @@
 <head>
   <meta charset="utf-8" />
   <title>Octonius</title>
-  <base href="/" />
+  
+  <base href="./" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
@@ -14,10 +16,9 @@
   <!-- Load environment variables -->
   <script src="assets/env.js"></script>
 
-
   <!--
-    <script src="//fast.appcues.com/87011.js"></script>
-    -->
+  <script src="//fast.appcues.com/87011.js"></script>
+  -->
 
   <!-- js libraries -->
   <script src="assets/libs/jquery-3.5.1.slim.min.js"></script>
@@ -32,32 +33,37 @@
   <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
   <!-- GOOGLE API ENDS -->
 
-  <!-- Stripe library -->
+  <!-- Stripe library starts -->
   <script src="https://js.stripe.com/v3/"></script>
-  <!-- Stripe library -->
+  <!-- Stripe library ends -->
 
   <!-- MODIFYING THE BUILDED SCRIPTS -->
   <script>
-    if (typeof module === 'object') { window.module = module; module = undefined; }
+    if (typeof module === 'object') {
+      window.module = module;
+      module = undefined;
+    }
   </script>
   <script>
-    if (window.module) module = window.module;
+    if (window.module) {
+      module = window.module;
+    }
   </script>
 
- <!-- Chatra {literal} -->
- <script>
-  (function (d, w, c) {
-    w.ChatraID = 'gaBthaGGwugHEkqBa';
-    var s = d.createElement('script');
-    w[c] = w[c] || function () {
-      (w[c].q = w[c].q || []).push(arguments);
-    };
-    s.async = true;
-    s.src = 'https://call.chatra.io/chatra.js';
-    if (d.head) d.head.appendChild(s);
-  })(document, window, 'Chatra');
-</script>
-<!-- /Chatra {/literal} -->
+  <!-- Chatra starts -->
+  <script>
+    (function (d, w, c) {
+      w.ChatraID = 'gaBthaGGwugHEkqBa';
+      var s = d.createElement('script');
+      w[c] = w[c] || function () {
+        (w[c].q = w[c].q || []).push(arguments);
+      };
+      s.async = true;
+      s.src = 'https://call.chatra.io/chatra.js';
+      if (d.head) d.head.appendChild(s);
+    })(document, window, 'Chatra');
+  </script>
+  <!-- Chatra ends -->
 </head>
 
 <body>

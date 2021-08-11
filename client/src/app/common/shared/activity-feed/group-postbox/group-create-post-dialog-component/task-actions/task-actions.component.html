@@ -1,13 +1,16 @@
 <div class="content-box">
-  <p class="box-title">Actions</p>
+  <p class="box-title" i18n="@@taskActions.actions">Actions</p>
+
   <div *ngIf="!postData?.task?._parent_task">
-    <button mat-menu-item [matMenuTriggerFor]="transferMenu" (click)="saveTransferAction('copy')">
-      <i  class="material-icons">content_copy</i>
-      COPY TO GROUP
+    <button mat-menu-item [matMenuTriggerFor]="transferMenu"
+      (click)="saveTransferAction('copy')">
+        <i  class="material-icons">content_copy</i>
+        <span i18n="@@taskActions.copyToGroup">COPY TO GROUP</span>
     </button>
-    <button mat-menu-item [matMenuTriggerFor]="transferMenu" (click)="saveTransferAction('move')">
-      <i class="material-icons">arrow_forward</i>
-      MOVE TO GROUP
+    <button mat-menu-item [matMenuTriggerFor]="transferMenu"
+      (click)="saveTransferAction('move')">
+        <i class="material-icons">arrow_forward</i>
+        <span i18n="@@taskActions.moveToGroup">MOVE TO GROUP</span>
     </button>
 
     <mat-menu #transferMenu="matMenu">
@@ -33,9 +36,10 @@
 
   <div *ngIf="!postData?.task?._parent_task">
     <button mat-menu-item [matMenuTriggerFor]="templateTaskMenu">
-      <i class="material-icons-outlined">playlist_add</i>
-      TEMPLATES
+        <i class="material-icons-outlined">playlist_add</i>
+        <span i18n="@@taskActions.templates">TEMPLATES</span>
     </button>
+
     <mat-menu #templateTaskMenu="matMenu">
       <div>
         <div class="users-card" style="width: 200px">
@@ -45,15 +49,23 @@
             </button>
 
             <!-- <li class="assignee-list-item save-template" (click)="createTemplate()">Save as template</li> -->
-            <button class="assignee-list-item save-template" style="line-height: inherit;" mat-menu-item [matMenuTriggerFor]="templatesMenu" (mouseover)="saveTemplateAction('save')" (click)="saveTemplateAction('save')">
-              <i class="material-icons-outlined">save_alt</i>
-              Save template
+            <button class="assignee-list-item save-template"
+              style="line-height: inherit;"
+              mat-menu-item [matMenuTriggerFor]="templatesMenu"
+              (mouseover)="saveTemplateAction('save')"
+              (click)="saveTemplateAction('save')">
+                <i class="material-icons-outlined">save_alt</i>
+                <span i18n="@@taskActions.saveTemplate">Save template</span>
             </button>
 
-            <button class="assignee-list-item save-template" style="line-height: inherit;" mat-menu-item [matMenuTriggerFor]="templatesMenu" (mouseover)="saveTemplateAction('delete')" (click)="saveTemplateAction('delete')"
-                *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || postData?._posted_by == userData?._id">
-              <i class="material-icons-outlined">delete</i>
-              Delete template
+            <button class="assignee-list-item save-template"
+              *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || postData?._posted_by == userData?._id"
+              style="line-height: inherit;"
+              mat-menu-item [matMenuTriggerFor]="templatesMenu"
+              (mouseover)="saveTemplateAction('delete')"
+              (click)="saveTemplateAction('delete')">
+                <i class="material-icons-outlined">delete</i>
+                <span i18n="@@taskActions.deleteTemplate">Delete template</span>
             </button>
 
             <mat-menu #templatesMenu="matMenu">
@@ -64,7 +76,11 @@
                       {{ template.task.template_name }}
                     </li>
 
-                    <li *ngIf="templateAction == 'save'" class="assignee-list-item save-template" (click)="createTemplate()">Save new template</li>
+                    <li *ngIf="templateAction == 'save'"
+                      class="assignee-list-item save-template"
+                      (click)="createTemplate()"
+                      i18n="@@taskActions.saveNewTemplate">
+                        Save new template</li>
                   </ul>
                 </div>
               </div>
@@ -77,17 +93,18 @@
   </div>
 
   <div *ngIf="postData?._assigned_to?.length < 2 && groupData?.enable_allocation" class="set-parent">
-    <i class="material-icons">hourglass_top</i> ALLOCATION
+      <i class="material-icons">hourglass_top</i>
+      <span i18n="@@taskActions.allocation">ALLOCATION</span>
 
-    <!-- INPUT STARTS -->
-    <input type="text" name="allocation" [ngModel]="allocation" (blur)="allocationChange($event)" class="input-search" placeholder="Allocation" />
-    <!-- INPUT ENDS -->
+      <!-- INPUT STARTS -->
+      <input type="text" name="allocation" [ngModel]="allocation" (blur)="allocationChange($event)" class="input-search" placeholder="Allocation" />
+      <!-- INPUT ENDS -->
   </div>
 
 
 
   <div *ngIf="!parentTask && !isDependent && !isMilestone" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
-   MAKE SUBTASK OF
+   <span i18n="@@taskActions.makeSubtaskOf">MAKE SUBTASK OF</span>
 
     <!-- INPUT BAR STARTS -->
     <input type="search" id="keyword" autocomplete="off" placeholder="Search task" class="input-search"
@@ -116,7 +133,7 @@
   </div>
 
   <div *ngIf="groupData && groupData?.project_type && !isChild" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
-    MAKE DEPENDENCY OF
+    <span i18n="@@taskActions.makeDependencyOf">MAKE DEPENDENCY OF</span>
 
     <button *ngFor="let task of dependencyTask; let i = index" class="btn dependencylabel" style="margin-right: 1rem;"
        (click)="removeDependencyTask(i)">
@@ -153,7 +170,8 @@
   <!-- North Start Switch starts -->
   <div class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;"> explore </i>
-    MAKE NORTH STAR
+    <span i18n="@@taskActions.makeNorthStar">MAKE NORTH STAR</span>
+
     <mat-slide-toggle color="primary" style=" margin-left: 15px;"
       [checked]="isNorthStar"
       [name]="'north_star'"
@@ -161,14 +179,15 @@
     </mat-slide-toggle>
 
 
-    <p>North Stars are goals for you or your team.</p>
+    <p i18n="@@taskActions.northStarAreGoals">North Stars are goals for you or your team.</p>
   </div>
   <!-- North Start Switch ends -->
 
   <!-- Idea Switch starts -->
   <div *ngIf="isIdeaModuleAvailable" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <i _ngcontent-bbh-c36="" class="material-icons-outlined" style="vertical-align: middle;">emoji_objects</i>
-    Idea
+    <span i18n="@@taskActions.idea">Idea</span>
+
     <mat-slide-toggle color="primary" style=" margin-left: 15px;"
       [checked]="isIdea"
       [name]="'idea'"
@@ -181,13 +200,13 @@
   <!-- Milestone Switch starts -->
   <div *ngIf="groupData && groupData.project_type" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
     <img src="assets/images/Icon/icon_milestone.svg" alt="Flag"/>
-   MAKE MILESTONE
+    <span i18n="@@taskActions.makeMilestone">MAKE MILESTONE</span>
     <mat-slide-toggle color="primary" style=" margin-left: 15px;"
       [checked]="isMilestone"
       [name]="'milestone'"
       (change)="transformToMilestone()">
     </mat-slide-toggle>
-    <p>Milestones mark specific points in time along a project timeline in order to track major progress points that must be reached to achieve success</p>
+    <p i18n="@@taskActions.milestoneMarkSpecific">Milestones mark specific points in time along a project timeline in order to track major progress points that must be reached to achieve success</p>
   </div>
   <!-- Milestone Switch ends -->
 
@@ -207,7 +226,7 @@
     <!-- Clean field starts -->
     <i *ngIf="postData?.task?._shuttle_group && postData?.task?._shuttle_group != groupData._id" (click)="shuttleTask(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
     <!-- Clean field ends -->
-    <p>With Task Shuttle you can assign the task to another group.</p>
+    <p i18n="@@taskActions.withTaskShuttleYouCan">With Task Shuttle you can assign the task to another group.</p>
   </div>
   <!-- Select Shuttle group ends -->
 </div>

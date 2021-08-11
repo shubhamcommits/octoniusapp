@@ -1,9 +1,9 @@
 <div class="content-box">
   <!-- Is Not North Start starts -->
   <div *ngIf="isNorthStar">
-    <h4 class="text-center">North Star TIMELINE</h4>
-    <p class="box-title">Showing how your team's day-to-day work connects to achieve the goal.</p>
- 
+    <h4 class="text-center" i18n="@@northStarStats.northStarTimeline">North Star TIMELINE</h4>
+    <p class="box-title" i18n="@@northStarStats.showingHowYourtTeam">Showing how your team's day-to-day work connects to achieve the goal.</p>
+
 
     <div class="timeline" *ngIf="northStar?.values">
       <div *ngFor="let value of northStar?.values; let index = index">
@@ -27,14 +27,14 @@
                   <span  *ngIf="northStar.type === 'Number'">
                     {{ value.value }}
                   </span>
-                  
+
                 </span>
                 <span class="time-wrapper"><span class="time">{{ value.date | date: 'MMM, d' }}</span></span>
               </div>
               <div class="desc"> <span [ngClass]="getNSStatusClass(value.status)">
                 {{ value.status }}
               </span>
-              
+
               </div>
             </div>
           </li>
