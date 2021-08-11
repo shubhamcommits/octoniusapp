@@ -94,12 +94,28 @@
           <context context-type="linenumber">142</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="adminGeneral.decentralizedUserRoles" datatype="html">
+        <source>My organization uses decentralized user roles</source>
+        <target state="translated">Meine Organisation verwendet dezentrale Benutzerrollen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="adminGeneral.enablingDecentralizedUserRoles" datatype="html">
+        <source>By enabling this, you allow everyone to create Groups(private). This will reduce the number of user roles to Workplace Admin, Group Manager, Member, and Guest.</source>
+        <target state="translated">Indem Sie dies aktivieren, erlauben Sie jedem, Gruppen (privat) zu erstellen. Dadurch wird die Anzahl der Benutzerrollen auf Arbeitsplatzadministrator, Gruppenmanager, Mitglied und Gast reduziert.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="adminGeneral.deleteWorkspace" datatype="html">
         <source>Delete Workspace</source>
         <target state="translated">Arbeitsplatz löschen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.removeWorkspace" datatype="html">
@@ -107,7 +123,7 @@
         <target state="translated">Arbeitsplatz entfernen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.areYouSure" datatype="html">
@@ -115,7 +131,7 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.workspaceCompletelyRemoved" datatype="html">
@@ -123,7 +139,7 @@
         <target state="translated">Dadurch kann der Arbeitsbereich komplett entfernt werden!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.pleaseWaitDeletingWorkspace" datatype="html">
@@ -131,7 +147,7 @@
         <target state="translated">Bitte warten, wir löschen den Arbeitsplatz...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.workspaceDeleted" datatype="html">
@@ -139,7 +155,7 @@
         <target state="translated">Arbeitsbereich gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
-          <context context-type="linenumber">61</context>
+          <context context-type="linenumber">67</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.unableDeleteWorkspace" datatype="html">
@@ -147,7 +163,31 @@
         <target state="translated">Der Arbeitsplatz kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
-          <context context-type="linenumber">63</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="adminGeneral.pleaseWaitsavingSettings" datatype="html">
+        <source>Please wait we are saving the new setting...</source>
+        <target state="translated">Bitte warten Sie, wir speichern die neue Einstellung...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="adminGeneral.settingsSaved" datatype="html">
+        <source>Settings saved to your workspace!</source>
+        <target state="translated">Einstellungen in Ihrem Arbeitsbereich gespeichert!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="adminGeneral.unableToSaveGroupSettings" datatype="html">
+        <source>Unable to save the settings to your workspace, please try again!</source>
+        <target state="translated">Die Einstellungen können nicht in Ihrem Arbeitsbereich gespeichert werden. Bitte versuchen Sie es erneut!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
+          <context context-type="linenumber">91</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transferOwnership.transferOwnership" datatype="html">
@@ -500,6 +540,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/workplace-profile-custom-fields.component.html</context>
           <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workspaceRolesInformationDialog.workspaceRoles" datatype="html">
+        <source>Workspace Roles</source>
+        <target state="translated">Arbeitsbereichsrollen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
+          <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.allGroups" datatype="html">
@@ -5275,7 +5323,7 @@
         <target state="translated">Bitte warten, wir wechseln den Verantwortlichen…</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">869</context>
+          <context context-type="linenumber">897</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.taskAssigned" datatype="html">
@@ -5283,7 +5331,7 @@
         <target state="translated">Aufgabe <x id="PH" equiv-text="res['post']['task']['_assigned_to']['first_name']"/> zugewiesen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">875</context>
+          <context context-type="linenumber">903</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.unableToAssign" datatype="html">
@@ -5291,7 +5339,7 @@
         <target state="translated">Der neue Verantwortliche kann nicht zugewiesen werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">878</context>
+          <context context-type="linenumber">906</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.pleaseWaitChangingTaskDueDate" datatype="html">
@@ -5299,7 +5347,7 @@
         <target state="translated">Bitte warten Sie, wir ändern das Fälligkeitsdatum der Aufgabe...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">897</context>
+          <context context-type="linenumber">925</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.taskDueDAteChanged" datatype="html">
@@ -5307,7 +5355,7 @@
         <target state="translated">Das Fälligkeitsdatum der Aufgabe wurde auf <x id="PH" equiv-text="moment(dueDate).format('YYYY-MM-DD')"/> geändert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">903</context>
+          <context context-type="linenumber">931</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.unableToChangeDueDate" datatype="html">
@@ -5315,7 +5363,7 @@
         <target state="translated">Das Fälligkeitsdatum kann nicht geändert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">906</context>
+          <context context-type="linenumber">934</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.pleaseWaitWeAreMovingTaskToSection" datatype="html">
@@ -5323,7 +5371,7 @@
         <target state="translated">Bitte warten Sie, wir verschieben die Aufgabe in einen neuen Abschnitt...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">939</context>
+          <context context-type="linenumber">967</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.tasksMoved" datatype="html">
@@ -5331,7 +5379,7 @@
         <target state="translated">Aufgabe verschoben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">945</context>
+          <context context-type="linenumber">973</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.unableToMoveTask" datatype="html">
@@ -5339,7 +5387,7 @@
         <target state="translated">Die Aufgabe kann nicht verschoben werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">948</context>
+          <context context-type="linenumber">976</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.joiningGroup" datatype="html">
@@ -5347,7 +5395,7 @@
         <target state="translated">Gruppe beitreten...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">994</context>
+          <context context-type="linenumber">1022</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.successfullyJoinedGroup" datatype="html">
@@ -5355,7 +5403,7 @@
         <target state="translated">Gruppe erfolgreich beigetreten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">996</context>
+          <context context-type="linenumber">1024</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.posts" datatype="html">
@@ -10815,7 +10863,7 @@
         <target state="translated">Hoppla, Sie haben anscheinend nicht die Berechtigung, auf den Admin-Bereich zuzugreifen. Bitte wenden Sie sich an Ihren Vorgesetzten, um Ihnen die richtigen Admin-Rechte zu erteilen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/admin-guard/admin.guard.ts</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="denyNavigationGuard.accessRestricted" datatype="html">

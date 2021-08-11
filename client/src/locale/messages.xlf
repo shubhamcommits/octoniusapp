@@ -83,53 +83,88 @@
           <context context-type="linenumber">142</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="adminGeneral.decentralizedUserRoles" datatype="html">
+        <source>My organization uses decentralized user roles</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="adminGeneral.enablingDecentralizedUserRoles" datatype="html">
+        <source>By enabling this, you allow everyone to create Groups(private). This will reduce the number of user roles to Workplace Admin, Group Manager, Member, and Guest.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="adminGeneral.deleteWorkspace" datatype="html">
         <source>Delete Workspace</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.removeWorkspace" datatype="html">
         <source>Remove Workspace</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.areYouSure" datatype="html">
         <source>Are you sure?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.workspaceCompletelyRemoved" datatype="html">
         <source>By doing this, the workspace be completely removed!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.pleaseWaitDeletingWorkspace" datatype="html">
         <source>Please wait we are deleting the workspace...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.workspaceDeleted" datatype="html">
         <source>Workspace deleted!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
-          <context context-type="linenumber">61</context>
+          <context context-type="linenumber">67</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.unableDeleteWorkspace" datatype="html">
         <source>Unable to delete the workspace, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
-          <context context-type="linenumber">63</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="adminGeneral.pleaseWaitsavingSettings" datatype="html">
+        <source>Please wait we are saving the new setting...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="adminGeneral.settingsSaved" datatype="html">
+        <source>Settings saved to your workspace!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="adminGeneral.unableToSaveGroupSettings" datatype="html">
+        <source>Unable to save the settings to your workspace, please try again!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
+          <context context-type="linenumber">91</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transferOwnership.transferOwnership" datatype="html">
@@ -439,6 +474,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-profile-custom-fields/workplace-profile-custom-fields.component.html</context>
           <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workspaceRolesInformationDialog.workspaceRoles" datatype="html">
+        <source>Workspace Roles</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
+          <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
       <trans-unit id="adminGroups.allGroups" datatype="html">
@@ -4656,77 +4698,77 @@
         <source>Please wait we are changing the task assignee...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">869</context>
+          <context context-type="linenumber">897</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.taskAssigned" datatype="html">
         <source>Task assigned to <x id="PH" equiv-text="res[&apos;post&apos;][&apos;task&apos;][&apos;_assigned_to&apos;][&apos;first_name&apos;]"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">875</context>
+          <context context-type="linenumber">903</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.unableToAssign" datatype="html">
         <source>Unable to assign the new assignee, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">878</context>
+          <context context-type="linenumber">906</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.pleaseWaitChangingTaskDueDate" datatype="html">
         <source>Please wait we are changing the task due date...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">897</context>
+          <context context-type="linenumber">925</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.taskDueDAteChanged" datatype="html">
         <source>Task due date changed to <x id="PH" equiv-text="moment(dueDate).format(&apos;YYYY-MM-DD&apos;)"/>!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">903</context>
+          <context context-type="linenumber">931</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.unableToChangeDueDate" datatype="html">
         <source>Unable to change the due date, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">906</context>
+          <context context-type="linenumber">934</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.pleaseWaitWeAreMovingTaskToSection" datatype="html">
         <source>Please wait we are moving the task to a new section...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">939</context>
+          <context context-type="linenumber">967</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.tasksMoved" datatype="html">
         <source>Task moved</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">945</context>
+          <context context-type="linenumber">973</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.unableToMoveTask" datatype="html">
         <source>Unable to move the task, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">948</context>
+          <context context-type="linenumber">976</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.joiningGroup" datatype="html">
         <source>Joining Group...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">994</context>
+          <context context-type="linenumber">1022</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.successfullyJoinedGroup" datatype="html">
         <source>Successfully Joined Group</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">996</context>
+          <context context-type="linenumber">1024</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.posts" datatype="html">
@@ -9549,7 +9591,7 @@
         <source>Oops seems like you don&apos;t have the permission to access the admin section, kindly contact your superior to provide you the proper admin rights!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/admin-guard/admin.guard.ts</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="denyNavigationGuard.accessRestricted" datatype="html">
