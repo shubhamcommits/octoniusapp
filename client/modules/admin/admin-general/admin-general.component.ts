@@ -80,15 +80,15 @@ export class AdminGeneralComponent implements OnInit {
 
   saveSettings(selected) {
     // Save the settings
-    this.utilityService.asyncNotification($localize`:@@adminGeneral.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+    this.utilityService.asyncNotification($localize`:@@adminGeneral.pleaseWaitsavingSettings:Please wait, we are saving the new setting...`,
     new Promise((resolve, reject)=>{
         this.workspaceService.saveSettings(this.workspaceData['_id'], {allow_decentralized_roles: selected.checked})
           .then(()=> {
             this.workspaceData['allow_decentralized_roles'] = selected.checked;
             this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@adminGeneral.settingsSaved:Settings saved to your workspace!`));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@adminGeneral.settingsSaved:Settings saved!`));
           })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@adminGeneral.unableToSaveGroupSettings:Unable to save the settings to your workspace, please try again!`)));
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@adminGeneral.unableToSaveGroupSettings:Unable to save the settings, please try again!`)));
     }));
   }
 
