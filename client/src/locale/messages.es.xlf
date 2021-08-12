@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="adminGeneral.enablingDecentralizedUserRoles" datatype="html">
         <source>Turn this <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-success&quot;&gt;"/>ON<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> to allow everyone to create Groups(private). This will reduce the number of user roles to Workplace Admin, Group Manager, Member, and Guest.</source>
-        <target state="needs-adaptation">Al habilitar esto, permite que todos creen Grupos (privados). Esto reducirá la cantidad de roles de usuario a Administrador del workplace, Manager de grupo, Miembro e Invitado.</target>
+        <target state="translated">Al habilitar esto<x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-success&quot;&gt;"/>ON<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> para permitir que todos creen Grupos (privados). Esto reducirá la cantidad de roles de usuario a Administrador del workplace, Manager de grupo, Miembro e Invitado.</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
@@ -113,7 +113,7 @@
       </trans-unit>
       <trans-unit id="adminGeneral.CentralizedUserRoles" datatype="html">
         <source>Leave this <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-warning&quot;&gt;"/>OFF<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> if your organization uses centralized user roles. Your Workplace Admins must assign Work Managers(only WM can create private Groups). This will create the following roles: Workplace Admin, Work Manager, Group Manager, Member, Guest.</source>
-        <target state="needs-translation"/>
+        <target state="translated">Deje esto <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-warning&quot;&gt;"/>OFF<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> si su organización utiliza roles de usuario centralizados. Los administradores de su lugar de trabajo deben asignar administradores de trabajo (solo WM puede crear grupos privados). Esto creará los siguientes roles: administrador del lugar de trabajo, administrador del trabajo, administrador del grupo, miembro, invitado.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
           <context context-type="linenumber">35,37</context>
@@ -177,7 +177,7 @@
       </trans-unit>
       <trans-unit id="adminGeneral.pleaseWaitsavingSettings" datatype="html">
         <source>Please wait, we are saving the new setting...</source>
-        <target state="needs-adaptation">Espere, estamos guardando la nueva configuración ...</target>
+        <target state="translated">Espere, estamos guardando la nueva configuración ...</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
@@ -186,7 +186,7 @@
       </trans-unit>
       <trans-unit id="adminGeneral.settingsSaved" datatype="html">
         <source>Settings saved!</source>
-        <target state="needs-adaptation">¡Ajustes guardados en tu workspace!</target>
+        <target state="translated">¡Configuración guardada!</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
@@ -195,7 +195,7 @@
       </trans-unit>
       <trans-unit id="adminGeneral.unableToSaveGroupSettings" datatype="html">
         <source>Unable to save the settings, please try again!</source>
-        <target state="needs-adaptation">No se puede guardar la configuración en su workplace, ¡inténtelo de nuevo!</target>
+        <target state="translated">No se puede guardar la configuración, ¡inténtelo de nuevo!</target>
         <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.ts</context>
@@ -564,7 +564,7 @@
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.WA" datatype="html">
         <source>Workplace Admin (WA)</source>
-        <target state="needs-translation"/>
+        <target state="translated">Workplace Admin (WA)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">9</context>
@@ -572,7 +572,7 @@
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.WADef1" datatype="html">
         <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>manage the workplace settings, manually invite people, handle payments etc <x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>restore or archive groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>create private groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>access the global dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>assign roles to other members<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
-        <target state="needs-translation"/>
+        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>administrar la configuración del lugar de trabajo, invitar personas manualmente, manejar pagos, etc. <x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>restaurar o archivar grupos<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>crear grupos privados<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>acceder al dashboard global<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>Asignar roles a otros miembros<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">12,16</context>
@@ -580,7 +580,7 @@
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.WM" datatype="html">
         <source>WORK Managers - WM</source>
-        <target state="needs-translation"/>
+        <target state="translated">WORK Managers - WM</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">22</context>
@@ -588,7 +588,7 @@
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.WMDef1" datatype="html">
         <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/> create private groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>manage users and roles inside the groups they create<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>access the global dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>delete their groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
-        <target state="needs-translation"/>
+        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/> crear groupos privados<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>administrar usuarios y roles dentro de los grupos que crean<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>acceder al dashboard global<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>eliminar sus groupos<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">25,28</context>
@@ -596,7 +596,7 @@
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.GM" datatype="html">
         <source>Group Managers - GM</source>
-        <target state="needs-translation"/>
+        <target state="translated">Group Managers - GM</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">35</context>
@@ -604,7 +604,7 @@
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.GMDef1" datatype="html">
         <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>they are created by the WM, inside a group<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>manage users and roles inside the group they belong<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can access the group dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can't create other groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can delete their groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
-        <target state="needs-translation"/>
+        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>son creados por el WM, dentro de un grupo<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>administrar usuarios y roles dentro del grupo al que pertenecen<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>puede acceder al dashboard del grupo<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>no puede crear otros grupos<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>puede eliminar sus grupos<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">38,42</context>
@@ -612,7 +612,7 @@
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.M" datatype="html">
         <source>Members - M</source>
-        <target state="needs-translation"/>
+        <target state="translated">Members - M</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">49</context>
@@ -620,7 +620,7 @@
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.MDef1" datatype="html">
         <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>they can create AGORAs<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can create content inside the groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
-        <target state="needs-translation"/>
+        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>pueden crear AGORAs<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>puede crear contenido dentro de los grupos<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">52,53</context>
@@ -628,7 +628,7 @@
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.G" datatype="html">
         <source> Guests - G</source>
-        <target state="needs-translation"/>
+        <target state="translated">Guests - G</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">61</context>
@@ -636,7 +636,7 @@
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.GDef1" datatype="html">
         <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>isolated to the Group they are invited<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can't access any Agora(Public Groups)<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
-        <target state="needs-translation"/>
+        <target state="translated"><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>aislados del grupo al que están invitados<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>No se puede acceder a ningún Ágora (Grupos Públicos)<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
           <context context-type="linenumber">64,65</context>
