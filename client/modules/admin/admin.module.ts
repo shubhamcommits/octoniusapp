@@ -24,6 +24,7 @@ import { ProfileCustomFieldsDialogComponent } from './admin-general/workplace-pr
 import { MatDialogModule } from '@angular/material/dialog';
 import { AdminGroupsComponent } from './admin-groups/admin-groups.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { WorkspaceRolesInformationDialogComponent } from './admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     StartSubscriptionComponent,
     TransferOwnershipComponent,
     WorkplaceProfileCustomFieldsComponent,
-    ProfileCustomFieldsDialogComponent
+    ProfileCustomFieldsDialogComponent,
+    WorkspaceRolesInformationDialogComponent
   ],
   imports: [
     CommonModule,
@@ -52,7 +54,8 @@ import { MatTabsModule } from '@angular/material/tabs';
   ],
   providers:[WorkspaceService, AdminService, ActivateBillingGuard],
   entryComponents: [
-    ProfileCustomFieldsDialogComponent
+    ProfileCustomFieldsDialogComponent,
+    WorkspaceRolesInformationDialogComponent
   ]
 })
 export class AdminModule { }

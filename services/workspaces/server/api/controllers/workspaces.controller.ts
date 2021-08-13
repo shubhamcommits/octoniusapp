@@ -898,4 +898,42 @@ export class WorkspaceController {
             return sendError(res, err);
         }
     };
+
+    async saveSettings(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the workspaceId
+        const { workspaceId } = req.params;
+
+        // Fetch the settingsData From the request
+        let { body: { settingsData } } = req;
+
+        try {
+
+            // Find the workspace and update their respective workspace settings
+            const workspace = await Workspace.findByIdAndUpdate({
+                    _id: workspaceId
+                }, settingsData, {
+                    new: true
+                })
+                .populate({
+                    path: 'members',
+                    select: 'first_name last_name profile_pic role email active',
+                    options: {
+                        limit: 10
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Workspace settings updated!',
+                workspace: workspace
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }

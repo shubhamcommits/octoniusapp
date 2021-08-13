@@ -1,10 +1,12 @@
 import { Component, OnInit, Injector } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
+import { WorkspaceRolesInformationDialogComponent } from './workspace-roles-information-dialog/workspace-roles-information-dialog.component';
 
 @Component({
   selector: 'app-admin-general',
@@ -13,20 +15,23 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
 })
 export class AdminGeneralComponent implements OnInit {
 
+  workspaceData: Object;
+
+  userData: Object;
+
+  allowDecentralizedRoles = false;
+
+  publicFunctions = new PublicFunctions(this.injector);
+
   constructor(
     private workspaceService: WorkspaceService,
     private utilityService: UtilityService,
     private storageService: StorageService,
     private authService: AuthService,
     private router: Router,
-    private injector: Injector
+    private injector: Injector,
+    public dialog: MatDialog
   ) { }
-
-  workspaceData: Object;
-
-  userData: Object;
-
-  publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
 
@@ -36,8 +41,9 @@ export class AdminGeneralComponent implements OnInit {
     })
 
     //this.utilityService.startForegroundLoader();
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.userData = await this.publicFunctions.getCurrentUser();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    this.allowDecentralizedRoles = this.workspaceData['allow_decentralized_roles'];
   }
 
   ngAfterViewChecked(): void {
@@ -72,4 +78,24 @@ export class AdminGeneralComponent implements OnInit {
     this.publicFunctions.sendUpdatesToWorkspaceData(workspace);
   }
 
+  saveSettings(selected) {
+    // Save the settings
+    this.utilityService.asyncNotification($localize`:@@adminGeneral.pleaseWaitsavingSettings:Please wait, we are saving the new setting...`,
+    new Promise((resolve, reject)=>{
+        this.workspaceService.saveSettings(this.workspaceData['_id'], {allow_decentralized_roles: selected.checked})
+          .then(()=> {
+            this.workspaceData['allow_decentralized_roles'] = selected.checked;
+            this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@adminGeneral.settingsSaved:Settings saved!`));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@adminGeneral.unableToSaveGroupSettings:Unable to save the settings, please try again!`)));
+    }));
+  }
+
+  openDialog() {
+    this.dialog.open(WorkspaceRolesInformationDialogComponent, {
+      disableClose: false,
+      hasBackdrop: true
+    });
+  }
 }

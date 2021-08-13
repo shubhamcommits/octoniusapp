@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Column, Flow, Group, Post } from '../models';
+import { Column, Group, Post } from '../models';
 import { sendError } from '../../utils';
 import moment from 'moment';
 
@@ -49,15 +49,15 @@ export class ColumnsController {
                 { path: 'budget.expenses._user' }
               ]);
             } else if (workspaceId) {
-              const groups = await Group.find({
-                $and: [
-                    { _workspace: workspaceId },
-                    { $or: [{ _members: userId }, { _admins: userId }] },
-                ]
-                
-              })
-              .select('_id')
-              .lean() || [];
+                // Only groups where user is manager
+                const groups = await Group.find({
+                    $and: [
+                        { _workspace: workspaceId },
+                        { _admins: userId },
+                    ]
+                })
+                .select('_id')
+                .lean() || [];
 
               columns = await Column.find({
                 '_group': { $in: groups },

@@ -51,7 +51,7 @@ export class PostUtilsComponent implements OnInit {
     this.groupId = (this.post._group._id) ? this.post._group._id : this.post._group;
 
     // Fetches the user groups from the server
-    await this.publicFunctions.getUserGroups(workspaceData['_id'], this.userData._id)
+    await this.publicFunctions.getAllUserGroups(workspaceData['_id'], this.userData._id)
       .then(async (groups: any) => {
         await groups.forEach(group => {
           if (group._id != this.groupId) {
