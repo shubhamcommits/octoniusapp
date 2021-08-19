@@ -125,7 +125,7 @@ do
     cd $i
 
     # Removing the lock files
-    rm -rf yarn.lock package-lock.json
+    rm -rf yarn.lock package-lock.json node_modules
 
     # Service Name
     service="$(cut -d'/' -f1 <<<"$i")"
