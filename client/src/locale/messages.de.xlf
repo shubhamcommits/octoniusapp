@@ -5145,7 +5145,7 @@
       </trans-unit>
       <trans-unit id="welcomePage.welcomeBack" datatype="html">
         <source>welcome back!</source>
-        <target state="translated">willkommen zurück!<target>
+        <target state="translated">willkommen zurück!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
           <context context-type="linenumber">119</context>
