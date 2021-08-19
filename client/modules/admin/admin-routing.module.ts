@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'general', component: AdminGeneralComponent, canActivate: [DenyNavigationGuard] },
   { path: 'members', component: AdminMembersComponent, canActivate: [DenyNavigationGuard] },
   { path: 'groups', component: AdminGroupsComponent, canActivate: [DenyNavigationGuard] },
-  { path: 'billing', component: AdminBillingComponent, canActivate: [ActivateBillingGuard, DenyNavigationGuard], canDeactivate: [DenyNavigationGuard] }
+  { path: 'billing', component: AdminBillingComponent, canActivate: [ActivateBillingGuard], canDeactivate: [DenyNavigationGuard] }
 ];
 
 @NgModule({

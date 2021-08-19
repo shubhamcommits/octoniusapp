@@ -19,11 +19,12 @@ export class ActivateBillingGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      return this.checkBillingStatus();
+      return this.checkBillingStatus() && this.isAdminUser();
   }
 
   async checkBillingStatus() {
     const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
+
     return this.managementPortalService.canActivateBilling(currentWorkspace['_id'], currentWorkspace['management_private_api_key']).then(
       (res) => {
         if ( !res['status'] ) {
@@ -34,5 +35,15 @@ export class ActivateBillingGuard implements CanActivate {
         this.router.navigate(['/home']);
         return false;
       });
+  }
+
+  async isAdminUser() {
+    const currentUser = await this.publicFunctions.getCurrentUser();
+    let userAdminState = (currentUser.role === 'member' || currentUser.role === 'guest') ? false : true;
+    let adminUser = false;
+    if (userAdminState) {
+      adminUser = true;
+    }
+    return adminUser;
   }
 }

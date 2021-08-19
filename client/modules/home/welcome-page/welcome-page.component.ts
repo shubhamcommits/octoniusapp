@@ -116,8 +116,8 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
             this.storeAccountData(res);
             this.router.navigate(['authentication', 'select-workspace'],{ queryParams: { teams_permission_url : this.queryParms.teams_permission_url }})
             .then(() => {
-              this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}, welcome back!`);
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}, welcome back!`));
+              this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ` + res['account']['first_name'] + ', ' + $localize`:@@welcomePage.welcomeBack:welcome back!`);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@welcomePage.hi:Hi ` + res['account']['first_name'] + ', ' + $localize`:@@welcomePage.welcomeBack:welcome back!`));
             })
             .catch((err) => {
               console.error('Error occurred while signing in the user', err);
@@ -132,8 +132,8 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
             this.storeAccountData(res);
             this.router.navigate(['authentication', 'select-workspace'])
               .then(() => {
-                this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}, welcome back!`);
-                resolve(this.utilityService.resolveAsyncPromise($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}, welcome back!`));
+                this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ` + res['account']['first_name'] + ', ' + $localize`:@@welcomePage.welcomeBack:welcome back!`);
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@welcomePage.hi:Hi ` + res['account']['first_name'] + ', ' + $localize`:@@welcomePage.welcomeBack:welcome back!`));
               })
               .catch((err) => {
                 console.error('Error occurred while signing in the user', err);
