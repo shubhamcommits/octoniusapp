@@ -109,6 +109,17 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
             } else {
               if (adminUser && !res['onPremise']) {
                 this.router.navigate(['dashboard', 'admin', 'billing']);
+              } else {
+                this.utilityService.warningNotification($localize`:@@denyNavigationGuard.workspaceNotAvailable:Your workspace is not available, please contact your administrator!`);
+                this.authService.signout().subscribe((res) => {
+                  this.storageService.clear();
+                  this.publicFunctions.sendUpdatesToGroupData({});
+                  this.publicFunctions.sendUpdatesToRouterState({});
+                  this.publicFunctions.sendUpdatesToUserData({});
+                  this.publicFunctions.sendUpdatesToWorkspaceData({});
+                  this.socketService.disconnectSocket();
+                  this.router.navigate(['/home']);
+                });
               }
             }
             return false;
