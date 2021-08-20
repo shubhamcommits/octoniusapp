@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector ,Input} from '@angular/core';
+import { Component, OnInit, Injector ,Input, OnDestroy} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
@@ -12,7 +12,7 @@ import { SubSink } from 'subsink';
   templateUrl: './common-navbar.component.html',
   styleUrls: ['./common-navbar.component.scss']
 })
-export class CommonNavbarComponent implements OnInit {
+export class CommonNavbarComponent implements OnInit, OnDestroy {
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
@@ -89,6 +89,13 @@ export class CommonNavbarComponent implements OnInit {
     this.checkCanActivateBilling();
   }
 
+  /**
+   * This function unsubscribes the data from the observables
+   */
+  ngOnDestroy(): void {
+      this.subSink.unsubscribe();
+  }
+
   async changeState(state:string){
     this.activeState = state;
   }
@@ -113,11 +120,9 @@ export class CommonNavbarComponent implements OnInit {
 
   async checkCanActivateBilling() {
     const currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
-    this.managementPortalService.canActivateBilling(currentWorkspace['_id'], currentWorkspace['management_private_api_key']).then(
+    this.subSink.add(this.managementPortalService.canActivateBilling(currentWorkspace['_id'], currentWorkspace['management_private_api_key']).subscribe(
       (res) => {
         this.canActivateBilling = res['status'] || false;
-      }).catch((err) => {
-        this.canActivateBilling = false;
-      });
+      }));
   }
 }

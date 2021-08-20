@@ -64,8 +64,7 @@ export class ManagementPortalService {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }
-    })
-      .toPromise()
+    });
   }
 
   /**
