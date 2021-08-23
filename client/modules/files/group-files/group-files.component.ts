@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Injector, Output, EventEmitter, LOCALE_ID, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
@@ -85,6 +85,7 @@ export class GroupFilesComponent implements OnInit {
   public moreToLoad: boolean = true;
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     public utilityService: UtilityService,
     private injector: Injector,
     private _router: Router,
@@ -96,7 +97,6 @@ export class GroupFilesComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
 
@@ -279,11 +279,14 @@ export class GroupFilesComponent implements OnInit {
     selBox.style.top = '0';
     selBox.style.opacity = '0';
 
-    let url = '';
+    let url = environment.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
     if (file?.type == 'folio') {
-      url = environment.clientUrl + '/document/' + file?._id + '?group=' + this.groupId + '&readOnly=true';
+      url += '/document/' + file?._id + '?group=' + this.groupId + '&readOnly=true';
     } else if (file?.type == 'flamingo') {
-      url = environment.clientUrl + '/document/flamingo/' + file?._id + '?group=' + this.groupId;
+      url += '/document/flamingo/' + file?._id + '?group=' + this.groupId;
     } else if (file?.type == 'file') {
       url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
     }
