@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Injector, Inject, LOCALE_ID } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
@@ -38,6 +38,7 @@ export class PostUtilsComponent implements OnInit {
   groupId = '';
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     public utilityService: UtilityService,
     private injector: Injector,
     private _router: Router,
@@ -104,11 +105,15 @@ export class PostUtilsComponent implements OnInit {
 
     const group = (this.post._group._id) ? this.post._group._id : this.post._group;
 
+    let url = environment.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
     // Set the Value of element selection box to be the url of the post
     if (this.post.type === 'task') {
-      selBox.value = environment.clientUrl + '/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + this.post._id;
+      selBox.value = url + '/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + this.post._id;
     } else {
-      selBox.value = environment.clientUrl + '/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + this.post._id;
+      selBox.value = url + '/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + this.post._id;
     }
     // Append the element to the DOM
     document.body.appendChild(selBox);
