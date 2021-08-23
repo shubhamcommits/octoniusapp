@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -15,12 +16,19 @@ export class AssigneeAvatarComponent implements OnChanges {
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   numberAssignees = '';
+  assigneeTooltip = '';
 
-  constructor() { }
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+      private injector: Injector
+    ) { }
 
   ngOnChanges() {
     if (this.post && this.post._assigned_to) {
       this.numberAssignees = '+' + (this.post._assigned_to.length - 1);
+      this.getAssigneeTooltip(this.post?._assigned_to)
     }
   }
 
@@ -39,16 +47,21 @@ export class AssigneeAvatarComponent implements OnChanges {
     return profilePic;
   }
 
-  getAssigneeTooltip(_assigned_to) {
-    let tooltip = '';
-    if (_assigned_to && _assigned_to.length > 0) {
-      const index = _assigned_to.findIndex(assignee => assignee._id == this.userData._id);
+  async getAssigneeTooltip(_assigned_to) {
+    if (_assigned_to.length > 0) {
+      const index = _assigned_to.findIndex(assignee => (assignee._id || assignee) == this.userData._id);
+      let assignee;
       if (index < 0) {
-        tooltip = _assigned_to[0].first_name + ' ' + _assigned_to[0].last_name;
+        assignee = _assigned_to[0];
       } else {
-        tooltip = _assigned_to[index].first_name + ' ' + _assigned_to[index].last_name;
+        assignee = _assigned_to[index];
       }
+
+      if (typeof assignee === 'string' && assignee !== null) {
+        assignee = await this.publicFunctions.getOtherUser(assignee);
+      }
+
+      this.assigneeTooltip = assignee.first_name + ' ' + assignee.last_name;
     }
-    return tooltip;
   }
 }

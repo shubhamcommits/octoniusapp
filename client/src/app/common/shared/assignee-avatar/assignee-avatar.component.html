@@ -2,7 +2,7 @@
   [imgURL]="getAssigneePic(post?._assigned_to)"
   [service]="'user'"
   [styleClass]="'assignee-avatar'"
-  [tooltip]="getAssigneeTooltip(post?._assigned_to)"></app-secured-image>
+  [tooltip]="assigneeTooltip"></app-secured-image>
 
 <span *ngIf="post?._assigned_to && (post?._assigned_to?.length - 1) > 0" style="margin-left: -5px;"
   [matBadge]="numberAssignees" matBadgePosition="before" class="assigneeinfo"></span>
