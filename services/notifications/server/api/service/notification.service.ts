@@ -196,7 +196,7 @@ export class NotificationsService {
                 _actor: posted_by,
                 _owner: assigneeId,
                 _origin_post: postId,
-                message: 'assigned you',
+                message: 'assigned you on',
                 type: 'assignment'
             });
         } catch (err) {
@@ -457,7 +457,7 @@ export class NotificationsService {
                 _owner: userId,
                 _origin_group: groupId,
                 message: 'removed you from',
-                type: 'join-group'
+                type: 'leave-group'
             });
 
             await helperFunctions.sendNotificationsFeedFromService(userId, io, true);
