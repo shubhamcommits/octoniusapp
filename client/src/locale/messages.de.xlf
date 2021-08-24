@@ -1795,7 +1795,7 @@
         <target state="translated">In Zwischenablage kopiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">306</context>
+          <context context-type="linenumber">309</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.areYouSure" datatype="html">
@@ -1803,11 +1803,11 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">325</context>
+          <context context-type="linenumber">328</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">342</context>
+          <context context-type="linenumber">345</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.doingThisItemWillBeCopied" datatype="html">
@@ -1815,7 +1815,7 @@
         <target state="translated">Auf diese Weise wird der Artikel in die ausgewählte Gruppe kopiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">325</context>
+          <context context-type="linenumber">328</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitCopyingFolio" datatype="html">
@@ -1823,7 +1823,7 @@
         <target state="translated">Bitte warten Sie, wir kopieren das Folio...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">328</context>
+          <context context-type="linenumber">331</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.folioCopied" datatype="html">
@@ -1831,7 +1831,7 @@
         <target state="translated">👍 Folio kopiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">330</context>
+          <context context-type="linenumber">333</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.errorCopyingFolio" datatype="html">
@@ -1839,7 +1839,7 @@
         <target state="translated">Fehler beim Kopieren des Folios!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">333</context>
+          <context context-type="linenumber">336</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.doingThisItemWillBeMoved" datatype="html">
@@ -1847,7 +1847,7 @@
         <target state="translated">Dadurch wird der Artikel in die ausgewählte Gruppe verschoben!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">342</context>
+          <context context-type="linenumber">345</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitMovingFolio" datatype="html">
@@ -1855,7 +1855,7 @@
         <target state="translated">Bitte warten Sie, wir verschieben den Artikel...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">345</context>
+          <context context-type="linenumber">348</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.folioMoved" datatype="html">
@@ -1863,7 +1863,7 @@
         <target state="translated">👍 Folio verschoben!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">350</context>
+          <context context-type="linenumber">353</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.errorMovingFolio" datatype="html">
@@ -1871,7 +1871,7 @@
         <target state="translated">Fehler beim Verschieben des Folios!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">353</context>
+          <context context-type="linenumber">356</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.changeFolderTitle" datatype="html">
@@ -1879,7 +1879,7 @@
         <target state="translated">Ordnertitel geändert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">417</context>
+          <context context-type="linenumber">420</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.errorChangingFolderTitle" datatype="html">
@@ -1887,7 +1887,7 @@
         <target state="translated">Fehler beim Ändern des Ordnertitels!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">420</context>
+          <context context-type="linenumber">423</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitUploadingFile" datatype="html">
@@ -1895,7 +1895,7 @@
         <target state="translated">Bitte warten Sie, wir laden Ihre Datei hoch - <x id="PH" equiv-text="file['name']"/> ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">503</context>
+          <context context-type="linenumber">506</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitCreatingFolio" datatype="html">
@@ -1903,7 +1903,7 @@
         <target state="translated">Bitte warten Sie, während wir ein neues Folio erstellen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">503</context>
+          <context context-type="linenumber">506</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.fileUploaded" datatype="html">
@@ -1911,7 +1911,7 @@
         <target state="translated">Datei wurde hochgeladen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">510</context>
+          <context context-type="linenumber">513</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.newFileUploaded" datatype="html">
@@ -1919,7 +1919,7 @@
         <target state="translated">Neue Datei wurde hochgeladen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">511</context>
+          <context context-type="linenumber">514</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.unexpectedErrorUploading" datatype="html">
@@ -1927,7 +1927,7 @@
         <target state="translated">Beim Hochladen ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">515</context>
+          <context context-type="linenumber">518</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitMovingItem" datatype="html">
@@ -1935,7 +1935,7 @@
         <target state="translated">Bitte warten Sie, wir verschieben den Artikel...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">533</context>
+          <context context-type="linenumber">536</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.fileMoved" datatype="html">
@@ -1943,7 +1943,7 @@
         <target state="translated">Datei verschoben!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">540</context>
+          <context context-type="linenumber">543</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.unableToMoveFile" datatype="html">
@@ -1951,7 +1951,7 @@
         <target state="translated">Die Datei kann nicht verschoben werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">542</context>
+          <context context-type="linenumber">545</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.folderMoved" datatype="html">
@@ -1959,7 +1959,7 @@
         <target state="translated">👍 Ordner verschoben!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">550</context>
+          <context context-type="linenumber">553</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.unableToMoveFolder" datatype="html">
@@ -1967,7 +1967,7 @@
         <target state="translated">Der Ordner kann nicht verschoben werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">552</context>
+          <context context-type="linenumber">555</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNewFile.new" datatype="html">
@@ -2795,7 +2795,7 @@
         <target state="translated">Schreib was tolles...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">233</context>
+          <context context-type="linenumber">231</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioHeader.newFolio" datatype="html">
@@ -5125,7 +5125,6 @@
       <trans-unit id="welcomePage.hi" datatype="html">
         <source>Hi </source>
         <target state="translated">Hallo </target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
           <context context-type="linenumber">119</context>
@@ -5264,7 +5263,91 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">119</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.assignedYou" datatype="html">
+        <source>assigned you on</source>
+        <target state="translated">dir zugewiesen auf</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.mentionedYou" datatype="html">
+        <source>mentioned you on</source>
+        <target state="translated">erwähnte dich auf</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.completed" datatype="html">
+        <source>completed</source>
+        <target state="translated">vollendet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.started" datatype="html">
+        <source>started</source>
+        <target state="translated">gestartet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.likedYourComment" datatype="html">
+        <source>liked your comment on</source>
+        <target state="translated">hat deinen Kommentar gefallen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.likes" datatype="html">
+        <source> likes </source>
+        <target state="translated">Likes</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.follows" datatype="html">
+        <source>follows</source>
+        <target state="translated">folgt</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.commentedOn" datatype="html">
+        <source>commented on</source>
+        <target state="translated">kommentiert</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.addedYou" datatype="html">
+        <source>added you to</source>
+        <target state="translated">hat dich hinzugefügt</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.removedYou" datatype="html">
+        <source>removed you from</source>
+        <target state="translated">entfernt dich von</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">54</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.view" datatype="html">
@@ -5272,15 +5355,15 @@
         <target state="translated">Anzeigen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">80</context>
+          <context context-type="linenumber">79</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">85</context>
+          <context context-type="linenumber">84</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">161</context>
+          <context context-type="linenumber">160</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.markAsRead" datatype="html">
@@ -5288,11 +5371,11 @@
         <target state="translated">Als gelesen markieren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">89</context>
+          <context context-type="linenumber">88</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">165</context>
+          <context context-type="linenumber">164</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.newsFeed" datatype="html">
@@ -5300,11 +5383,11 @@
         <target state="translated">News-Feed</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">102</context>
+          <context context-type="linenumber">101</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">104</context>
+          <context context-type="linenumber">103</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentActivity.everyoneIsSilent" datatype="html">
@@ -5312,7 +5395,15 @@
         <target state="translated">Alle sind still </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
-          <context context-type="linenumber">110</context>
+          <context context-type="linenumber">109</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentActivity.posted" datatype="html">
+        <source> posted </source>
+        <target state="translated">Gesendet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-activity/recent-activity.component.html</context>
+          <context context-type="linenumber">137</context>
         </context-group>
       </trans-unit>
       <trans-unit id="recentGroups.recentWork" datatype="html">
@@ -6426,7 +6517,6 @@
       <trans-unit id="ngb.carousel.slide-number" datatype="html">
         <source> Slide <x id="INTERPOLATION" equiv-text="OnHover$ = new"/> of <x id="INTERPOLATION_1" equiv-text=";&#xA;  private _pa"/> </source>
         <target state="needs-adaptation"> Dia {cused$ = neu Be} von {privat _pau} </target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/carousel/carousel.ts</context>
           <context context-type="linenumber">114,118</context>
@@ -6564,7 +6654,6 @@
       <trans-unit id="ngb.progressbar.value" datatype="html">
         <source><x id="INTERPOLATION" equiv-text="; }&#xA;&#xA;  /**&#xA;   *"/></source>
         <target state="needs-adaptation">{(): Zahl { re}</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/progressbar/progressbar.ts</context>
           <context context-type="linenumber">32,38</context>
@@ -6669,7 +6758,6 @@
       <trans-unit id="ngb.timepicker.AM" datatype="html">
         <source><x id="INTERPOLATION" equiv-text="NgbTime;&#xA;&#xA;  pr"/></source>
         <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="ssor,&#xA;    OnCh"/></target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
           <context context-type="linenumber">115,121</context>
@@ -6679,7 +6767,6 @@
         <source><x id="INTERPOLATION" equiv-text="t() meridian: b"/></source>
         <target state="needs-adaptation">{Nummer;
   privat}</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
           <context context-type="linenumber">123,131</context>
@@ -10248,7 +10335,7 @@
         <target state="translated">Die Verbindung zum Server konnte nicht hergestellt werden, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postUtils.copiedClipboard" datatype="html">
@@ -10256,7 +10343,7 @@
         <target state="translated">In Zwischenablage kopiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">127</context>
+          <context context-type="linenumber">132</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postUtils.errorWhilePinPost" datatype="html">
@@ -10264,7 +10351,7 @@
         <target state="translated">Fehler beim Anheften/Entheften des Beitrags!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">134</context>
+          <context context-type="linenumber">139</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postUtils.areYouSure" datatype="html">
@@ -10272,15 +10359,15 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">143</context>
+          <context context-type="linenumber">148</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">160</context>
+          <context context-type="linenumber">165</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">178</context>
+          <context context-type="linenumber">183</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postUtils.byDoingTaskWillBeDeleted" datatype="html">
@@ -10288,7 +10375,7 @@
         <target state="translated">Damit wird die Aufgabe gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">143</context>
+          <context context-type="linenumber">148</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postUtils.byDoingCardWillBeCopied" datatype="html">
@@ -10296,7 +10383,7 @@
         <target state="translated">Dadurch wird die Karte in die ausgewählte Gruppe kopiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">160</context>
+          <context context-type="linenumber">165</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postUtils.pleaseWaitWeCopyTask" datatype="html">
@@ -10304,7 +10391,7 @@
         <target state="translated">Bitte warten Sie, während wir die Aufgabe kopieren...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">163</context>
+          <context context-type="linenumber">168</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postUtils.cardCopied" datatype="html">
@@ -10312,7 +10399,7 @@
         <target state="translated">👍 Karte kopiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">166</context>
+          <context context-type="linenumber">171</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postUtils.errorWhileCopyingPost" datatype="html">
@@ -10320,7 +10407,7 @@
         <target state="translated">Fehler beim Kopieren des Beitrags!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">169</context>
+          <context context-type="linenumber">174</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postUtils.byDoingCardWillBeMoved" datatype="html">
@@ -10328,7 +10415,7 @@
         <target state="translated">Dadurch wird die Karte in die ausgewählte Gruppe verschoben!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">178</context>
+          <context context-type="linenumber">183</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postUtils.pleaseWaitWeMoveTask" datatype="html">
@@ -10336,7 +10423,7 @@
         <target state="translated">Bitte warten Sie, während wir die Karte verschieben...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">181</context>
+          <context context-type="linenumber">186</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postUtils.cardMoved" datatype="html">
@@ -10344,7 +10431,7 @@
         <target state="translated">👍 Karte verschoben!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">185</context>
+          <context context-type="linenumber">190</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postUtils.errorWhileMovingPost" datatype="html">
@@ -10352,7 +10439,7 @@
         <target state="translated">Fehler beim Verschieben des Beitrags!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/post-actions/post-utils/post-utils.component.ts</context>
-          <context context-type="linenumber">188</context>
+          <context context-type="linenumber">193</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskStatus.toDo" datatype="html">
@@ -11001,6 +11088,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/deny-navigation-guard/deny-navigation.guard.ts</context>
           <context context-type="linenumber">85</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/guards/deny-navigation-guard/deny-navigation.guard.ts</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoGuard.oopsSubscriptionNoFlamingo" datatype="html">
