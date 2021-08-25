@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, Injector } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Injector, LOCALE_ID, Inject } from '@angular/core';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
@@ -14,7 +14,10 @@ export class SearchResultsComponent implements OnInit {
   @Input() data: any;
   @Input() type: string;
 
-  constructor(public storageService: StorageService) { }
+  constructor(
+      @Inject(LOCALE_ID) public locale: string,
+      public storageService: StorageService
+    ) { }
 
   ngOnInit() {
   }
@@ -45,15 +48,24 @@ export class SearchResultsComponent implements OnInit {
 
   generatePostURL() {
     const group = (this.data._group._id) ? this.data._group._id : this.data._group;
+    let url = environment.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
+
     if (this.data.type === 'task') {
-      return environment.clientUrl + '/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + this.data._id;
+      return url + '/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + this.data._id;
     } else {
-      return environment.clientUrl + '/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + this.data._id;
+      return url + '/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + this.data._id;
     }
   }
 
   generateUserURL(userId) {
-    return environment.clientUrl + '/dashboard/user/profile?userId=' + userId;
+    let url = environment.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
+    return url + '/dashboard/user/profile?userId=' + userId;
   }
 
   generateFileURL() {

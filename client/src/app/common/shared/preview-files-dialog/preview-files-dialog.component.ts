@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -14,13 +14,18 @@ export class PreviewFilesDialogComponent implements OnInit {
   viewer = 'url';
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public storageService: StorageService) {
   }
 
   ngOnInit() {
     if (this.data.id !== undefined && this.data.group !== undefined) {
-      this.fileUrl = environment.clientUrl
+      let url = environment.clientUrl;
+      if (environment.production) {
+        url += '/' + this.locale;
+      }
+      this.fileUrl = url
           + '/document/' + this.data.id
           + '?group=' + this.data.group
           + '&readOnly=true';

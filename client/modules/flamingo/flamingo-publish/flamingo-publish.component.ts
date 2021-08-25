@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
@@ -17,6 +17,7 @@ export class FlamingoPublishComponent implements OnInit {
   flamingoURL;
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     private _ActivatedRoute: ActivatedRoute,
     private flamingoService: FlamingoService,
     private utilityService: UtilityService
@@ -26,7 +27,12 @@ export class FlamingoPublishComponent implements OnInit {
 
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.params['id'];
-    this.flamingoURL = environment.clientUrl + '/document/flamingo/' + this.fileId + '/answer';
+
+    let url = environment.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
+    this.flamingoURL = url + '/document/flamingo/' + this.fileId + '/answer';
 
     // Fetch Flamingo Details
     await this.flamingoService.getOne(this.fileId).then((res) => {

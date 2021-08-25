@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Auth, User, Workspace, Group, Account } from '../models';
 import { sendError, Auths, PasswordHelper, axios } from '../../utils';
+import { ManagementService } from '../services';
 import http from 'axios';
 import moment from 'moment';
 
@@ -9,6 +10,8 @@ const passwordHelper = new PasswordHelper();
 
 // Authentication Utilities Class
 const auths = new Auths();
+
+const managementService = new ManagementService();
 
 export class AuthsController {
 
@@ -708,8 +711,6 @@ export class AuthsController {
             // Fetch current loggedIn User
             const user: any = await User.findOne({ _id: req['userId'] }).select('_workspace');
 
-            
-
             // Send the status 200 response
             return res.status(200).json({
                 message: 'User is added to the subscription!'
@@ -731,6 +732,33 @@ export class AuthsController {
             return res.status(200).json({
                 message: 'User profile picture updated!',
                 user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for check if the user can create new workspaces
+     * @param workspaceId
+     */
+    async isNewWorkplacesAvailable(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { environment } = req.query;
+
+            let message;
+            let status;
+
+            await managementService.callNewWorkplacesAvailable(environment.toString())
+                .then(res => {
+                    message = res['data']['message'];
+                    status = res['data']['status'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

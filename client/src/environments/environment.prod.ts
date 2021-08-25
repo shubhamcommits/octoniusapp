@@ -13,6 +13,8 @@ export const environment = {
   production: true,
   hmr: false,
 
+  domain: url['domain'],
+
   //slack redirect url for authentication
   slack_redirect_url: `https://slack.com/oauth/v2/authorize?client_id=2561616476.1145669381443&scope=commands,incoming-webhook`,
 

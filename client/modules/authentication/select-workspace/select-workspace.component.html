@@ -45,7 +45,7 @@
           <!-- SELECT A WORKPLACE -->
 
           <!-- CREATE A NEW WORKPLACE -->
-          <div class="form-group">
+          <div class="form-group" *ngIf="canCreateNewWorkplaces">
             <div [routerLink]="['/authentication', 'new-workplace']" routerLinkActive="router-link-active" class="workplace-cells">
                 <div class="btn-create-workplace">
                   <i class="material-icons"> add</i>
