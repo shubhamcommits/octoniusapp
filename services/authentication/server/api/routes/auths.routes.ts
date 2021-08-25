@@ -35,6 +35,9 @@ routes.post('/sign-out', authsHelper.verifyToken, authsHelper.isLoggedIn, auth.s
 // GET - Get other user details on the basis of email
 routes.get('/email-exists', auth.getOtherUserByEmail);
 
+// GET - obtain if the user can create new workspaces
+routes.get('/blockNewWorkplaces', auth.isNewWorkplacesAvailable);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

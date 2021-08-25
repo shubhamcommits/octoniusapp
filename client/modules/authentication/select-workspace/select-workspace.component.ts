@@ -20,6 +20,9 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
 
   accountData;
   queryParms:any;
+
+  canCreateNewWorkplaces = false;
+
   publicFunctions = new PublicFunctions(this._Injector);
 
   // ADD ALL SUBSCRIPTIONS HERE TO DESTROY THEM ALL TOGETHER
@@ -41,6 +44,12 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
     if (!this.accountData || JSON.stringify(this.accountData) == JSON.stringify({})) {
       this.router.navigate(['']);
     }
+
+    await this.authService.isNewWorkplacesAvailable().then(res => {
+      if (res['status']) {
+        this.canCreateNewWorkplaces = res['status'];
+      }
+    });
 
     // Getting the query params teams_permission_url if exist
     this.activeRouter.queryParams.subscribe(params => {
