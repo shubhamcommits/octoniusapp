@@ -95,17 +95,14 @@
             },
             "en": {
               "localize": ["en"],
-              "outputPath": "dist/en",
               "i18nMissingTranslation": "warning"
             },
             "es": {
               "localize": ["es"],
-              "outputPath": "dist/es/",
               "i18nMissingTranslation": "warning"
             },
             "de": {
               "localize": ["de"],
-              "outputPath": "dist/de/",
               "i18nMissingTranslation": "warning"
             }
           },
@@ -182,17 +179,14 @@
       },
       "i18n": {
         "sourceLocale": {
-          "code": "en",
-          "baseHref": "/en"
+          "code": "en"
         },
         "locales": {
           "es": {
-            "translation": "src/locale/messages.es.xlf",
-            "baseHref": "/es"
+            "translation": "src/locale/messages.es.xlf"
           },
           "de": {
-            "translation": "src/locale/messages.de.xlf",
-            "baseHref": "/de"
+            "translation": "src/locale/messages.de.xlf"
           }
         }
       }
