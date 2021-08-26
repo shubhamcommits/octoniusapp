@@ -89,21 +89,25 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.section.custom_fields_to_show.forEach(field => {
-      if (this.displayedColumns.length - 1 >= 0) {
-        const index = this.displayedColumns.indexOf(field.name);
-        if (index < 0) {
-          this.displayedColumns.splice(this.displayedColumns.length - 1, 0, field);
+    if (this.section && this.section.custom_fields_to_show) {
+      this.section.custom_fields_to_show.forEach(field => {
+        if (this.displayedColumns.length - 1 >= 0) {
+          const index = this.displayedColumns.indexOf(field.name);
+          if (index < 0) {
+            this.displayedColumns.splice(this.displayedColumns.length - 1, 0, field);
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   async initTable() {
     await this.loadCustomFieldsToShow();
 
     let taskslist = [];
-    this.tasks.forEach(val => taskslist.push(Object.assign({}, val)));
+    if (this.tasks) {
+      this.tasks.forEach(val => taskslist.push(Object.assign({}, val)));
+    }
     let unchangedTasks: any = { tasksList: taskslist };
     this.unchangedTasks = JSON.parse(JSON.stringify(unchangedTasks));
 
@@ -118,7 +122,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   }
 
   async sorting() {
-    if (this.sortingBit == 'due_date' || this.sortingBit == 'none') {
+    if ((this.sortingBit == 'due_date' || this.sortingBit == 'none') && this.tasks) {
       this.tasks.sort((t1, t2) => {
         if (t1.task?.due_to && t2.task?.due_to) {
           if (moment.utc(t1.task?.due_to).isBefore(moment.utc(t2.task?.due_to))) {
@@ -135,7 +139,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
         }
       })
 
-    } else if (this.sortingBit == 'priority') {
+    } else if ((this.sortingBit == 'priority') && this.tasks) {
       this.tasks.sort((t1, t2) => {
         return (t1?.task?.custom_fields && t2?.task?.custom_fields)
           ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
@@ -146,7 +150,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
               ? 1 : 0);
       });
 
-    } else if (this.sortingBit == 'tags') {
+    } else if ((this.sortingBit == 'tags') && this.tasks) {
       this.tasks.sort((t1, t2) => {
         if (t1?.tags.length > 0 && t2?.tags.length > 0) {
           const name1 = t1?.tags[0]?.toLowerCase();
@@ -163,7 +167,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
           return 0;
         }
       });
-    } else if (this.sortingBit == 'status') {
+    } else if ((this.sortingBit == 'status') && this.tasks) {
       this.tasks.sort((t1, t2) => {
         return (t1?.task?.status && t2?.task?.status)
           ? (((t1?.task?.status == 'to do' && t2?.task?.status != 'to do') || (t1?.task?.status == 'in progress' && t2?.task?.status == 'done'))
@@ -173,7 +177,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
             ? -1 : ((!t1?.task?.status && t2?.task?.status))
               ? 1 : 0);
       });
-    } else if (this.sortingBit == 'ideas') {
+    } else if ((this.sortingBit == 'ideas') && this.tasks) {
       this.tasks.sort((t1, t2) => {
         return ((t1?.task?.idea?.positive_votes?.length || 0 - t1?.task?.idea?.negative_votes || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes?.length || 0)) ? 1 : 0;
       });
@@ -181,7 +185,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   }
 
   loadCustomFieldsToShow() {
-    if (this.customFieldsToShow.length === 0) {
+    if (this.section && this.section.custom_fields_to_show && this.customFieldsToShow.length === 0) {
       this.section.custom_fields_to_show.forEach(field => {
         const cf = this.getCustomField(field);
         // Push the Column
