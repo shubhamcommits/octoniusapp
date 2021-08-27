@@ -9,14 +9,14 @@
 
   <div class="content">
     <div>
-      <p class="title">Selected days</p>
+      <p class="title" i18n="@@userAvailabilityDaysDialog.selectedDays">Selected days</p>
       <div *ngFor="let day of selectedDays">
         {{ day.date | date: 'MMM dd, yyyy' }}
       </div>
     </div>
 
     <div>
-      <p class="title">Reason</p>
+      <p class="title" i18n="@@userAvailabilityDaysDialog.reason">Reason</p>
       <mat-select ngDefaultControl
           [(value)]="selectedReason"
           (selectionChange)="onSelectedReasonChange($event, selectedReason)"
@@ -28,10 +28,10 @@
     </div>
 
     <div class="clearfix save-content">
-      <button mat-dialog-close (click)="closeDialog()" class="btn float-left btn-danger btn-md">
+      <button mat-dialog-close (click)="closeDialog()" class="btn float-left btn-danger btn-md" i18n="@@userAvailabilityDaysDialog.cancel">
         Cancel
       </button>
-      <button [disabled]="selectedReason == ''" class="btn float-right btn-primary btn-md" (click)="confirmDays()">
+      <button [disabled]="selectedReason == ''" class="btn float-right btn-primary btn-md" (click)="confirmDays()" i18n="@@userAvailabilityDaysDialog.save">
         Save
       </button>
     </div>

@@ -181,7 +181,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     // Utility Service
     let utilityService = this.injector.get(UtilityService);
 
-    utilityService.asyncNotification('Please wait we are saving the information...',
+    utilityService.asyncNotification($localize`:@@groupNavbar.pleaseWaitWeAreSaving:Please wait we are saving the information...`,
       new Promise((resolve, reject) => {
         // Call HTTP Request to change the request
         this.userService.saveFavoriteGroup(this.userData._id, this.groupId, !this.isFavoriteGroup)
@@ -190,10 +190,10 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
             this.userData = res['user'];
             this.publicFunctions.sendUpdatesToUserData(this.userData);
             this.favoriteGroupSaved.emit(this.userData);
-            resolve(utilityService.resolveAsyncPromise(`Group saved as favorite!`))
+            resolve(utilityService.resolveAsyncPromise($localize`:@@groupNavbar.groupSavedFavorite:Group saved as favorite!`))
           })
           .catch(() => {
-            reject(utilityService.rejectAsyncPromise(`Unable to save the group as favorite, please try again!`))
+            reject(utilityService.rejectAsyncPromise($localize`:@@groupNavbar.unableToSaveAsFavorite:Unable to save the group as favorite, please try again!`))
           });
       }));
   }

@@ -121,14 +121,14 @@ export class CommentSectionComponent implements OnInit {
   }
 
   async newComment(commentData: FormData) {
-    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@commentSection.pleaseWaitUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.commentService.new(commentData, this.postId)
         .then((res) => {
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Comment added!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@commentSection.commentAdded:Comment added!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to submit the comment, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@commentSection.unableToSubmitComment:Unable to submit the comment, please try again!`));
         });
     }));
 

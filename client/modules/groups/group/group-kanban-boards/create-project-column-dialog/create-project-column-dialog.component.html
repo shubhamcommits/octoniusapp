@@ -1,21 +1,21 @@
 <div class="dialog-content">
   <div class="content">
 
-    <div class="modal-title">Project Setup</div>
+    <div class="modal-title" i18n="@@createProjectColumnDialog.projectSetup">Project Setup</div>
 
     <div class="content-box">
       <mat-slide-toggle color="primary"
         [checked]="this.column.project_type"
         [name]="'project_type'"
         (change)="changeColumnProjectType($event)">
-        <h6><b>Launch as Project</b></h6>
-       
+        <h6><b i18n="@@createProjectColumnDialog.launchProject">Launch as Project</b></h6>
+
       </mat-slide-toggle>
-      <p class="card-text">Allows you to plan and manage this section as a project.</p>
+      <p class="card-text" i18n="@@createProjectColumnDialog.allowsYouToPlan">Allows you to plan and manage this section as a project.</p>
     </div>
 
     <div class="content-box" *ngIf="column?.project_type">
-      <p class="card-text">Select a START and DUE DATE for your project.</p>
+      <p class="card-text" i18n="@@createProjectColumnDialog.selectStartDueDate">Select a START and DUE DATE for your project.</p>
       <app-date-picker class="input-date due"
         (date)="getDate($event, 'start_date')" [selectedDate]="column?.start_date">
       </app-date-picker>
@@ -34,21 +34,23 @@
       <!-- Clean field ends -->
     </div>
 
-   
+
 
     <div class="conten-box save-content" *ngIf="column?.project_type">
         <!-- Update Details Button starts -->
-        <button 
+        <button
             class="btn btn-danger btn-md"
-            (click)="cancel()">
+            (click)="cancel()"
+            i18n="@@createProjectColumnDialog.cancel">
           Cancel
         </button>
         <!-- Update Details Button ends -->
 
       <!-- Update Details Button starts -->
-        <button 
+        <button
             class="btn float-right btn-primary btn-md"
-            (click)="saveColumnProjectDates()">
+            (click)="saveColumnProjectDates()"
+            i18n="@@createProjectColumnDialog.save">
           Save
       </button>
       <!-- Update Details Button ends -->

@@ -48,7 +48,7 @@ export class ProfileCustomFieldsDialogComponent implements OnInit {
 
       // If index is found, then throw error notification
       if (index !== -1) {
-        this.utilityService.warningNotification('Field already exist!');
+        this.utilityService.warningNotification($localize`:@@profileCustomFieldsDialog.fieldAlreadyExist:Field already exist!`);
       } else {
         const newCF = {
           name: this.newCustomFieldTitle.toLowerCase(),
@@ -85,7 +85,7 @@ export class ProfileCustomFieldsDialogComponent implements OnInit {
       .then((result) => {
         if (result.value) {
           // Remove the file
-          this.utilityService.asyncNotification('Please wait we are deleting the custom field...', new Promise((resolve, reject) => {
+          this.utilityService.asyncNotification($localize`:@@profileCustomFieldsDialog.pleaseWaitDeletingCF:Please wait we are deleting the custom field...`, new Promise((resolve, reject) => {
             const index = this.customFields.findIndex((f: any) => f.name.toLowerCase() === field.name.toLowerCase());
             if (index !== -1) {
               // Remove the value
@@ -94,9 +94,9 @@ export class ProfileCustomFieldsDialogComponent implements OnInit {
                   // Remove the field from the list
                   this.customFields.splice(index, 1);
 
-                  resolve(this.utilityService.resolveAsyncPromise('Field deleted!'));
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@profileCustomFieldsDialog.cFDeleted:Field deleted!`));
                 }).catch((err) => {
-                  reject(this.utilityService.rejectAsyncPromise('Unable to delete field, please try again!'));
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@profileCustomFieldsDialog.unableDeleteCF:Unable to delete field, please try again!`));
                 });
             }
           }));
@@ -113,7 +113,7 @@ export class ProfileCustomFieldsDialogComponent implements OnInit {
 
       // If index is found, then throw error notification
       if (index !== -1) {
-        this.utilityService.warningNotification('Value already exist!');
+        this.utilityService.warningNotification($localize`:@@profileCustomFieldsDialog.valueAlreadyExist:Value already exist!`);
       } else {
         field.values.push(newValue);
 

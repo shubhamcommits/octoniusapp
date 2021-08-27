@@ -105,9 +105,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     /**
      * Adding the property of tasks in every column
      */
-    this.columns?.forEach((column: any) => {
-      column.tasks = []
-    });
+    if (this.columns) {
+      this.columns?.forEach((column: any) => {
+        column.tasks = []
+      });
+    }
 
     // Fetch all the tasks posts from the server
     this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
@@ -127,7 +129,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     }
 
     let col = [];
-    this.columns.forEach(val => col.push(Object.assign({}, val)));
+    if (this.columns) {
+      this.columns.forEach(val => col.push(Object.assign({}, val)));
+    }
     let unchangedColumns: any = { columns: col };
     this.unchangedColumns = JSON.parse(JSON.stringify(unchangedColumns));
 
@@ -196,27 +200,29 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
    * @param tasks
    */
   sortTasksInColumns(columns: any, tasks: any) {
-    columns.forEach(async (column: any) => {
-      // Feed the tasks into that column which has matching property _column with the column title
-      column.tasks = await tasks
-        .filter((post: any) => ((post.task.hasOwnProperty('_column') === true
-            && post.task._column
-            && (post.task._column._id || post.task._column) == column['_id'])
-          || post.task._shuttle_section == column['_id'])
-        )
-        .sort(function(t1, t2) {
-          if (t1.task.status != t2.task.status) {
-            return t1.task.status == 'done' ? 1 : -1;
-          }
-          return t2.title - t1.title;
-        });
+    if (columns) {
+      columns.forEach(async (column: any) => {
+        // Feed the tasks into that column which has matching property _column with the column title
+        column.tasks = await tasks
+          .filter((post: any) => ((post.task.hasOwnProperty('_column') === true
+              && post.task._column
+              && (post.task._column._id || post.task._column) == column['_id'])
+            || post.task._shuttle_section == column['_id'])
+          )
+          .sort(function(t1, t2) {
+            if (t1.task.status != t2.task.status) {
+              return t1.task.status == 'done' ? 1 : -1;
+            }
+            return t2.title - t1.title;
+          });
 
-      // Find the hightes due date on the tasks of the column
-      column.real_due_date = this.publicFunctions.getHighestDate(column.tasks);
+        // Find the hightes due date on the tasks of the column
+        column.real_due_date = this.publicFunctions.getHighestDate(column.tasks);
 
-      // Calculate number of done tasks
-      column.numDoneTasks = column.tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;
-    });
+        // Calculate number of done tasks
+        column.numDoneTasks = column.tasks.filter((post) => post?.task?.status?.toLowerCase() == 'done').length;
+      });
+    }
   }
 
 
@@ -236,23 +242,27 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   }
 
   initSections() {
-    this.columns.forEach(column => {
-      let tasks = [];
+    if (this.columns) {
+      this.columns.forEach(column => {
+        let tasks = [];
 
-      // Filtering other tasks
-      column.tasks.forEach(task => {
-        if (task.bars !== undefined && task.bars.length > 0) {
-          task.bars.forEach(bar => {
-            if (bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+        if (column.tasks) {
+          // Filtering other tasks
+          column.tasks.forEach(task => {
+            if (task.bars !== undefined && task.bars.length > 0) {
+              task.bars.forEach(bar => {
+                if (bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+                  tasks.push(task);
+                }
+              });
+            } else {
               tasks.push(task);
             }
           });
-        } else {
-          tasks.push(task);
         }
+        column.tasks = tasks;
       });
-      column.tasks = tasks;
-    });
+    }
   }
 
   async filtering() {

@@ -14,7 +14,7 @@
             <i class="material-icons">menu_open</i>
           </button>
           <!-- TOGGLE MENU BUTTON ENDS -->
-          
+
           <!-- MENU BUTTON STARTS -->
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,26 +29,22 @@
 
             <app-common-navbar *ngIf="isAdminNavbar$ | async" ></app-common-navbar>
             <app-user-account-navbar *ngIf="isUserAccountNavbar$ | async" ></app-user-account-navbar>
-            <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()"  ></app-group-navbar>
+            <app-group-navbar *ngIf="isGroupNavbar$ | async" (favoriteGroupSaved)="onFavoriteGroupSaved()"></app-group-navbar>
             <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
             <!-- MENU ITEMS ENDS -->
              <!-- SEARCH starts -->
              <button class="btn btn-link navbar-right d-none d-sm-block" (click)="openModal(search)">
-              <span class="material-icons">
-                search
-              </span>
+              <span class="material-icons">search</span>
             </button>
             <!-- search for xs screens -->
             <button class="btn btn-link btn-block d-block d-sm-none" (click)="openModal(search)">
-              <span class="material-icons">
-                search
-              </span>
+              <span class="material-icons">search</span>
             </button>
             <!-- SEARCH ends -->
           </div>
 
-         
-             
+
+
 
           <!-- COLLAPSABLE MENU ENDS -->
         </nav>

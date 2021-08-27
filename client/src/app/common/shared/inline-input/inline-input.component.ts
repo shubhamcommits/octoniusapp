@@ -159,7 +159,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
   }
 
   async updateDate(date, property) {
-    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@inlineInput.pleaseWaitUpdatingContent:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       if (property === 'due_date') {
         this.postService.changeTaskDueDate(this.domainObject._id, moment(date).format('YYYY-MM-DD'))
           .then((res) => {
@@ -167,20 +167,20 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
             this.post.emit({post: res['post']});
 
             // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise(`Date updated!`));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@inlineInput.dateUpdated:Date updated!`));
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise(`Unable to update the date, please try again!`));
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@inlineInput.unableToUpdateDate:Unable to update the date, please try again!`));
           });
       } else if(property === 'start_date') {
         this.postService.saveTaskDates(this.domainObject._id, moment(date).format('YYYY-MM-DD'), property)
           .then((res) => {
             this.domainObject = res['post'];
             // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@inlineInput.detailsUpdated:Details updated!`));
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@inlineInput.unableToUpdateDetails:Unable to update the details, please try again!`));
           });
       }
     }));
@@ -191,17 +191,17 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
 
     this.domainObject.task.custom_fields[this.customFieldName] = this.customFieldValue;
 
-    this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@inlineInput.pleaseWaitUpdatingContent:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.postService.saveCustomField(this.domainObject._id, this.customFieldName, this.customFieldValue, this.groupId)
         .then((res) => {
           // Emit the post to other components
           this.post.emit({post: res['post'], cfTrigger: {name: this.customFieldName, value: this.customFieldValue}});
 
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`${this.customFieldName} updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@inlineInput.cFUpdated:${this.customFieldName} updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update ${this.customFieldName}, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@inlineInput.unableToUpdateCF:Unable to update ${this.customFieldName}, please try again!`));
         });
     }));
   }
@@ -214,8 +214,6 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
 
     this.preValue = value;
     this.editing = true;
-    // Focus on the input element just as the editing begins
-    // setTimeout(_ => this.renderer.invokeElementMethod(this.inlineEditControl, 'focus', []));
   }
 
   saveData() {
@@ -264,17 +262,17 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
         }
       }
 
-      this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+      this.utilityService.asyncNotification($localize`:@@inlineInput.pleaseWaitUpdatingContent:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
         this.postService.edit(this.domainObject._id, formData)
           .then((res) => {
             // Emit the post to other components
             this.post.emit({post: res['post']});
 
             // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@inlineInput.detailsUpdated:Details updated!`));
           })
           .catch(() => {
-            reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@inlineInput.unableToUpdateDetails:Unable to update the details, please try again!`));
           });
       }));
     }

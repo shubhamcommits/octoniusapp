@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Auth, User, Workspace, Group, Account } from '../models';
 import { sendError, Auths, PasswordHelper, axios } from '../../utils';
+import { ManagementService } from '../services';
 import http from 'axios';
 import moment from 'moment';
 
@@ -9,6 +10,8 @@ const passwordHelper = new PasswordHelper();
 
 // Authentication Utilities Class
 const auths = new Auths();
+
+const managementService = new ManagementService();
 
 export class AuthsController {
 
@@ -106,7 +109,7 @@ export class AuthsController {
 
                 // Error creating the new account
                 if (!account) {
-                    return sendError(res, new Error('Unable to create the account, some unexpected error occured!'), 'Unable to create the account, some unexpected error occured!', 500);
+                    return sendError(res, new Error('Unable to create the account, some unexpected error occurred!'), 'Unable to create the account, some unexpected error occurred!', 500);
                 }
 
                 // // Send signup confirmation email
@@ -174,7 +177,7 @@ export class AuthsController {
 
                     // Error updating the account
                     if (!accountUpdate) {
-                        return sendError(res, new Error('Unable to update the account, some unexpected error occured!'), 'Unable to update the account, some unexpected error occured!', 500);
+                        return sendError(res, new Error('Unable to update the account, some unexpected error occurred!'), 'Unable to update the account, some unexpected error occurred!', 500);
                     }
 
                     // Find if the user already exist in the workplace, but is inactive
@@ -226,7 +229,7 @@ export class AuthsController {
             
                                 // Error updating the group
                                 if (!groupUpdate) {
-                                    return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                                    return sendError(res, new Error(`Unable to update the group, some unexpected error occurred!`), `Unable to update the group, some unexpected error occurred!`, 500);
                                 }
             
                                 // Add group to user's groups
@@ -256,11 +259,11 @@ export class AuthsController {
     
                         // Error creating the new user
                         if (!user) {
-                            return sendError(res, new Error('Unable to create the user, some unexpected error occured!'), 'Unable to create the user, some unexpected error occured!', 500);
+                            return sendError(res, new Error('Unable to create the user, some unexpected error occurred!'), 'Unable to create the user, some unexpected error occurred!', 500);
                         }
     
                         // If user is invite, does not have access to global
-                        if (user.role != 'guest') {
+                        if (user['role'] != 'guest') {
                             // Add new user to workspace's group
                             const groupUpdate = await Group.findOneAndUpdate({
                                 group_name: 'Global',
@@ -274,7 +277,7 @@ export class AuthsController {
         
                             // Error updating the group
                             if (!groupUpdate) {
-                                return sendError(res, new Error(`Unable to update the group, some unexpected error occured!`), `Unable to update the group, some unexpected error occured!`, 500);
+                                return sendError(res, new Error(`Unable to update the group, some unexpected error occurred!`), `Unable to update the group, some unexpected error occurred!`, 500);
                             }
         
                             // Add group to user's groups
@@ -291,7 +294,7 @@ export class AuthsController {
         
                             // Error updating the user
                             if (!user) {
-                                return sendError(res, new Error('Unable to update the user, some unexpected error occured!'), 'Unable to update the user, some unexpected error occured!', 500);
+                                return sendError(res, new Error('Unable to update the user, some unexpected error occurred!'), 'Unable to update the user, some unexpected error occurred!', 500);
                             }
                         }
 
@@ -363,7 +366,7 @@ export class AuthsController {
     
                         // Error updating the Workspace and removing the user email
                         if (!workspace) {
-                            return sendError(res, new Error('Unable to update the workspace, some unexpected error occured!'), 'Unable to update the workspace, some unexpected error occured!', 500);
+                            return sendError(res, new Error('Unable to update the workspace, some unexpected error occurred!'), 'Unable to update the workspace, some unexpected error occurred!', 500);
                         }
                     }
 
@@ -421,15 +424,15 @@ export class AuthsController {
                     let userMgmt = {
                         _id: user._id,
                         _account_id: accountUpdate._id,
-                        active: user.active,
+                        active: user['active'],
                         email: accountUpdate.email,
                         password: accountUpdate.password,
-                        first_name: user.first_name,
-                        last_name: user.last_name,
+                        first_name: user['first_name'],
+                        last_name: user['last_name'],
                         _remote_workspace_id: workspace._id,
                         workspace_name: workspace.workspace_name,
                         environment: process.env.DOMAIN,
-                        created_date: user.created_date
+                        created_date: user['created_date']
                     }
                     axios.post(`${process.env.MANAGEMENT_URL}/api/user/add`, {
                         API_KEY: workspace.management_private_api_key,
@@ -438,7 +441,7 @@ export class AuthsController {
                     }).then().catch(err => console.log(err));
 
                     const mailUser = {
-                        first_name: user.first_name,
+                        first_name: user['first_name'],
                         email: accountUpdate.email,
                         workspace_name: workspace.workspace_name
                     }
@@ -507,7 +510,7 @@ export class AuthsController {
             const plainPassword = password;
 
             // Decrypting Password
-            const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, account.password);
+            const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, account['password']);
 
             // If we are unable to decrypt the password from the server
             if (!passDecrypted.password) {
@@ -553,7 +556,7 @@ export class AuthsController {
             }
 
             // Generate new token and logs the auth record
-            let token = await auths.generateToken(user, user.workspace_name);
+            let token = await auths.generateToken(user, user['workspace_name']);
 
             // Send the status 200 response 
             return res.status(200).json({
@@ -708,8 +711,6 @@ export class AuthsController {
             // Fetch current loggedIn User
             const user: any = await User.findOne({ _id: req['userId'] }).select('_workspace');
 
-            
-
             // Send the status 200 response
             return res.status(200).json({
                 message: 'User is added to the subscription!'
@@ -731,6 +732,33 @@ export class AuthsController {
             return res.status(200).json({
                 message: 'User profile picture updated!',
                 user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for check if the user can create new workspaces
+     * @param workspaceId
+     */
+    async isNewWorkplacesAvailable(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { environment } = req.query;
+
+            let message;
+            let status;
+
+            await managementService.callNewWorkplacesAvailable(environment.toString())
+                .then(res => {
+                    message = res['data']['message'];
+                    status = res['data']['status'];
+                });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: message,
+                status: status
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

@@ -1,20 +1,21 @@
 <!-- Select Group Type starts -->
 <button class="btn  btn-primary stickybtn mb-3 mt-0 dropdown-toggle" type="button" data-toggle="dropdown">
-  <i class="material-icons-round" style="font-size: 24px;">add</i> New
+  <i class="material-icons-round" style="font-size: 24px;">add</i>
+  <span i18n="@@createGroup.new">New</span>
 </button>
 <!-- Select Group Type ends -->
 
 <!-- Menu Drawer Starts -->
 <ul class="dropdown-menu">
-    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner' || userData?.role== 'manager')"
+    <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner' || userData?.role== 'manager' || workspaceData?.allow_decentralized_roles)"
         class="dropdown-item"
         (click)="openCreateGroupModal()">
-        <span>Group</span>
+        <span i18n="@@createGroup.group">Group</span>
     </li>
     <li
         class="dropdown-item"
         (click)="openCreateAgoraModal()">
-        <span>Agora</span>
+        <span i18n="@@createGroup.agora">Agora</span>
     </li>
     <!--
     <li *ngIf="(userData?.role== 'admin' || userData?.role== 'owner')"

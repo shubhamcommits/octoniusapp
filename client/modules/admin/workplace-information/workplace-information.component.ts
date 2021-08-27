@@ -33,15 +33,15 @@ export class WorkplaceInformationComponent implements OnInit {
   }
 
   async workspaceNameChange(event: any) {
-    await this.utilityService.asyncNotification('Please wait we are updating the workspace name...', new Promise(async (resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@workplaceInformation.pleaseWaitUpdatingWorkplaceName:Please wait we are updating the workspace name...`, new Promise(async (resolve, reject) => {
       await this.workspaceService.updateWorkspaceProperties(this.workspaceData._id, { workspace_name: event.target.value })
         .then((res) => {
           this.workspaceUpdatedEvent.emit(res['workspace']);
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceInformation.detailsUpdated:Details updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceInformation.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
 

@@ -186,11 +186,11 @@ async function likePost(data:any) {
     const userObject = userData.toObject();
 
     const notificationObject = {
-        name: userObject.full_name,
-        text: `${userObject.full_name} likes ${postUserFullName}'s ${postObject.title}`,
-        image: userObject.profile_pic,
+        name: userObject['full_name'],
+        text: `${userObject['full_name']} likes ${postUserFullName}'s ${postObject['title']}`,
+        image: userObject['profile_pic'],
         content: '\n ',
-        group_id: postObject._group,
+        group_id: postObject['_group'],
         post_id: data.postId,
         btn_title:'view post'
     }

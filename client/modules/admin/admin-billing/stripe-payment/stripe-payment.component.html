@@ -7,10 +7,15 @@
 </app-start-subscription>
 
 <div *ngIf="subscriptionActive" class="card-tile" style="margin-top: 20px;">
-  <h4>Octonius partners with Stripe to manage your payments. <br>
+  <h4>
+    <span i18n="@@stripePayment.octoniusPartnersWithStripe">Octonius partners with Stripe to manage your payments.</span>
+    <br>
     <img src="assets/images/stripe_pay.svg" alt="" style="width: 240px; margin-top: 30px;">
   </h4>
-  <button (click)="createCustomerPortalSession()" class="btn btn-md btn-primary mt-4">Manage subscription</button>
+  <button (click)="createCustomerPortalSession()" class="btn btn-md btn-primary mt-4"
+    i18n="@@stripePayment.mangaeSubscription">
+      Manage subscription
+  </button>
 </div>
 
 <ng-container *ngIf="isLoading$ | async">

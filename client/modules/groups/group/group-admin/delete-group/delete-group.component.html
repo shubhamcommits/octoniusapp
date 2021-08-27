@@ -2,12 +2,12 @@
     <div class="card-block">
 
         <!-- Template Heading starts -->
-        <h6><b>Delete this group</b></h6>
+        <h6><b i18n="@@deleteGroup.deleteThisGroup">Delete this group</b></h6>
         <!-- Template Heading ends -->
-        <p>Please keep in mind that this action is irreversible.</p>
+        <p i18n="@@deleteGroup.keepInMindIrreversible">Please keep in mind that this action is irreversible.</p>
         <hr />
 
-        <button *ngIf="numMembers<=1" class="btn btn-md btn-danger" (click)="deleteGroup(groupId)">Delete</button>
-        <button *ngIf="numMembers > 1" class="btn btn-md btn-danger" (click)="archiveGroup(groupId)">Archive</button>
+        <button *ngIf="numMembers<=1" class="btn btn-md btn-danger" (click)="deleteGroup(groupId)" i18n="@@deleteGroup.delete">Delete</button>
+        <button *ngIf="numMembers > 1" class="btn btn-md btn-danger" (click)="archiveGroup(groupId)" i18n="@@deleteGroup.archive">Archive</button>
     </div>
 </div>

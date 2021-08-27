@@ -50,7 +50,7 @@ export class TeamsController {
 
         } catch (error) {
             console.log("error", error);
-            res.status(200).json({message:"Error Occured faild",});
+            res.status(200).json({message:"Error Occurred faild",});
         }
 
     }
@@ -171,7 +171,7 @@ export class TeamsController {
 
             const user = userOctonius._id;
 
-            const workspace_name = userOctonius.workspace_name;
+            const workspace_name = userOctonius['workspace_name'];
             
             let tokens = await auths.generateToken(user, workspace_name);
 

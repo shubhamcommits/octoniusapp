@@ -3,6 +3,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { SubSink } from 'subsink';
+import { GroupsService } from 'src/shared/services/groups-service/groups.service';
 
 @Component({
   selector: 'app-work-navbar',
@@ -13,6 +14,7 @@ export class WorkNavbarComponent implements OnInit {
 
   constructor(
     private utilityService: UtilityService,
+    private groupsService: GroupsService,
     private injector: Injector
   ) { }
 
@@ -48,7 +50,9 @@ export class WorkNavbarComponent implements OnInit {
   }
 
   canSeeDashboard() {
-    return (this.userData && (this.userData.role === 'owner' || this.userData.role === 'admin' || this.userData.role === 'manager'));
+    return (this.userData &&
+        (this.userData.role == 'owner' || this.userData.role == 'admin' || this.userData.role == 'manager' ||
+          (this.workspaceData && this.workspaceData.allow_decentralized_roles)));
   }
 
 }

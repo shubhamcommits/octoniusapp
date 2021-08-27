@@ -33,7 +33,7 @@ export class ZapierController {
 
         } catch (error) {
             console.log("error", error);
-            res.status(200).json({ message: "Error Occured faild", });
+            res.status(200).json({ message: "Error Occurred faild", });
         }
     }
 

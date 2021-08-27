@@ -222,7 +222,7 @@ export class FlamingoEditorComponent implements OnInit {
 
     // Call the HTTP Request Asynschronously
     utilityService.asyncNotification(
-      `Please wait while we are creating a new question`,
+      $localize`:@@flamingoEditor.pleaseWaitCreatingQuestion:Please wait while we are creating a new question`,
       new Promise((resolve, reject) => {
         flamingoService.createQuestion(this.flamingo._id, data)
           .then((res) => {
@@ -230,11 +230,11 @@ export class FlamingoEditorComponent implements OnInit {
             this.flamingo = res['flamingo'];
             this.questions = this.flamingo._questions;
 
-            resolve(utilityService.resolveAsyncPromise('Question has been created and added to Flamingo'))
+            resolve(utilityService.resolveAsyncPromise($localize`:@@flamingoEditor.questionCreated:Question has been created and added to Flamingo`))
 
           })
           .catch(() => {
-            reject(utilityService.rejectAsyncPromise('Unexpected error occured while uploading, please try again!'))
+            reject(utilityService.rejectAsyncPromise($localize`:@@flamingoEditor.unexpectedErrorCreatingQuestion:Unexpected error occurred while creating the Question, please try again!`))
           })
       }))
   }
@@ -341,7 +341,7 @@ export class FlamingoEditorComponent implements OnInit {
 
     // Call the HTTP Request Asynschronously
     utilityService.asyncNotification(
-      `Please wait while we are deleting question`,
+      $localize`:@@flamingoEditor.pleaseWaitDeletingQuestion:Please wait while we are deleting question`,
       new Promise((resolve, reject) => {
         flamingoService.deleteQuestion(this.flamingo?._id, questionId)
           .then((res) => {
@@ -359,11 +359,11 @@ export class FlamingoEditorComponent implements OnInit {
 
             this.activeQuestion = this.questions[this.activeQuestionIndex];
 
-            resolve(utilityService.resolveAsyncPromise('Question has been deleted and removed from Flamingo!'))
+            resolve(utilityService.resolveAsyncPromise($localize`:@@flamingoEditor.questionDeleted:Question has been deleted and removed from Flamingo!`))
 
           })
           .catch(() => {
-            reject(utilityService.rejectAsyncPromise('Unexpected error occured while uploading, please try again!'))
+            reject(utilityService.rejectAsyncPromise($localize`:@@flamingoEditor.unexpectedErrorDeletingQuestion:Unexpected error occurred while deleting Question, please try again!`))
           })
       }))
   }
@@ -382,16 +382,16 @@ export class FlamingoEditorComponent implements OnInit {
 
     // Call the HTTP Request Asynschronously
     utilityService.asyncNotification(
-      `Please wait while we are updating question`,
+      $localize`:@@flamingoEditor.pleaseWaitUpdatingQuestion:Please wait while we are updating question`,
       new Promise((resolve, reject) => {
         flamingoService.updateQuestion(questionId, questionData)
           .then((res) => {
 
-            resolve(utilityService.resolveAsyncPromise('Question has been updated!'))
+            resolve(utilityService.resolveAsyncPromise($localize`:@@flamingoEditor.questionUpdated:Question has been updated!`))
 
           })
           .catch(() => {
-            reject(utilityService.rejectAsyncPromise('Unexpected error occured while uploading, please try again!'))
+            reject(utilityService.rejectAsyncPromise($localize`:@@flamingoEditor.unexpectedErrorUpdatingQuestion:Unexpected error occurred while updating Question, please try again!`))
           })
       }))
   }

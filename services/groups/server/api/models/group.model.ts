@@ -47,6 +47,10 @@ const GroupSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false,
     },
+    keep_pinned_open: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
     bars: [
         {
             bar_tag: Schema.Types.String,

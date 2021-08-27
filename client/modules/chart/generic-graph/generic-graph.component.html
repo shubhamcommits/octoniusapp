@@ -1,25 +1,25 @@
 <!-- Graph Settings -->
 <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title>
+      <mat-panel-title i18n="@@genericGraph.graphSettings">
         Graph Settings
       </mat-panel-title>
-      <mat-panel-description>
+      <mat-panel-description i18n="@@genericGraph.customiseGraphYourWay">
         Customise the graph by your own way for better visualisation
       </mat-panel-description>
     </mat-expansion-panel-header>
     <mat-form-field class="full-width" appearance="outline">
-        <mat-label>Select Chart Type</mat-label>
+        <mat-label i18n="@@genericGraph.selectChartType">Select Chart Type</mat-label>
         <mat-select [(value)]="chartType" (valueChange)="changeChartType($event)">
-            <mat-option [value]="'bar'">Bar Chart</mat-option>
-            <mat-option [value]="'doughnut'">Doughnut Chart</mat-option>
-            <mat-option [value]="'line'">Line Chart</mat-option>
-            <mat-option [value]="'pie'">Pie Chart</mat-option>
-            <mat-option [value]="'radar'">Radar Chart</mat-option>
+            <mat-option [value]="'bar'" i18n="@@genericGraph.barChart">Bar Chart</mat-option>
+            <mat-option [value]="'doughnut'" i18n="@@genericGraph.doughnutChart">Doughnut Chart</mat-option>
+            <mat-option [value]="'line'" i18n="@@genericGraph.lineChart">Line Chart</mat-option>
+            <mat-option [value]="'pie'" i18n="@@genericGraph.pieChart">Pie Chart</mat-option>
+            <mat-option [value]="'radar'" i18n="@@genericGraph.radarChart">Radar Chart</mat-option>
           </mat-select>
     </mat-form-field>
     <mat-form-field class="full-width" appearance="outline">
-        <mat-label>Select Label (Base) Column</mat-label>
+        <mat-label i18n="@@genericGraph.selectlabelColumn">Select Label (Base) Column</mat-label>
         <mat-select placeholder="Select the base column for your chart" (valueChange)="changeBaseColumn($event)">
             <mat-option *ngFor="let column of columns" [value]="column">
               {{ column }}
@@ -27,7 +27,7 @@
           </mat-select>
     </mat-form-field>
     <mat-form-field class="full-width" appearance="outline">
-        <mat-label>Select Values Column</mat-label>
+        <mat-label i18n="@@genericGraph.selectValuesColumn">Select Values Column</mat-label>
         <mat-select  placeholder="Select the corresponding numeric values column for your chart" (valueChange)="changeValueColumn($event)">
             <mat-option *ngFor="let column of columns" [value]="column">
               {{ column }}
@@ -35,7 +35,10 @@
           </mat-select>
     </mat-form-field>
     <mat-action-row>
-        <button mat-raised-button color="primary" (click)="compute(); this.showGraph = true">Compute Graph</button>
+        <button mat-raised-button color="primary"
+          (click)="compute(); this.showGraph = true"
+          i18n="@@genericGraph.computeGraph">Compute Graph
+        </button>
       </mat-action-row>
   </mat-expansion-panel>
   <!-- Graph Settings -->
@@ -43,7 +46,7 @@
   <!-- Graph Display -->
   <div style="display: block" *ngIf="showGraph">
     <canvas baseChart
-                [datasets]="datasets"  
+                [datasets]="datasets"
                 [data]="data"
                 [labels]="labels"
                 [chartType]="chartType"

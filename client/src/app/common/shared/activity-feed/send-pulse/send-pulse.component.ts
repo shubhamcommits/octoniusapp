@@ -22,10 +22,10 @@ export class SendPulseComponent implements OnInit {
 
   /**
    * This function updates the pulse data
-   * @param pulseDescription 
+   * @param pulseDescription
    */
   onClickSendPulse(pulseDescription: string){
-    
+
     // Call the Helper Function to send the pulse
     this.sendPulse(pulseDescription)
 
@@ -35,7 +35,7 @@ export class SendPulseComponent implements OnInit {
 
   /**
    * This function is responsible for sending the updated pulse data for this week
-   * @param pulseDescription 
+   * @param pulseDescription
    */
   sendPulse(pulseDescription: string){
 
@@ -46,7 +46,7 @@ export class SendPulseComponent implements OnInit {
     let utilityService = this.injector.get(UtilityService);
 
     // Asynchronously Handling the the promise
-    utilityService.asyncNotification('Please wait we are sending the pulse...', 
+    utilityService.asyncNotification($localize`:@@sendPulse.pleaseWaitSendingPulse:Please wait we are sending the pulse...`,
     new Promise((resolve, reject)=>{
 
       // Call pulse service function
@@ -54,12 +54,12 @@ export class SendPulseComponent implements OnInit {
       .then((res)=>{
 
         // Resolve the promise
-        resolve(utilityService.resolveAsyncPromise('Pulse for the current week is updated!'))
+        resolve(utilityService.resolveAsyncPromise($localize`:@@sendPulse.pulseUpdated:Pulse for the current week is updated!`))
       })
       .catch(()=>{
 
         // If there's an error, catch and reject it
-        reject(utilityService.rejectAsyncPromise('Unable to update the pulse, please try again!'))
+        reject(utilityService.rejectAsyncPromise($localize`:@@sendPulse.unableToUpdatePulse:Unable to update the pulse, please try again!`))
       })
     }))
 

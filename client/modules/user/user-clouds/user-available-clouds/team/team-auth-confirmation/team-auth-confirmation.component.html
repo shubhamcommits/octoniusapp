@@ -1,15 +1,17 @@
 <div class="container-fluid mainDiv">
     <img src="assets/images/teamsToOctonius.png" alt="" style="width: 240px; margin-top: 10px;margin-left: 25%;">
-    <h3 style="text-align: center;line-height: 1.1;margin-top: 10px;font-size: 22px;">Octonius for Microsoft Teams is
-        requesting permission to access your Octonius account</h3>
-    <h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;">If you authorize this app, you will give it
-        permission to:</h4>
+    <h3 style="text-align: center;line-height: 1.1;margin-top: 10px;font-size: 22px;" i18n="@@teamsAuthConfirmation.octoniusForMSTeams">
+      Octonius for Microsoft Teams is requesting permission to access your Octonius account
+    </h3>
+    <h4 style="text-align: center;margin-top: 20px;margin-bottom: 20px;" i18n="@@teamsAuthConfirmation.authorizeThisApp">
+      If you authorize this app, you will give it permission to:
+    </h4>
     <ul style="margin-left: 5%;margin-bottom: 35px;">
-        <li>Access your name and email address.</li>
-        <li>Access your tasks, projects, and workplace.</li>
-        <li>Create and modify tasks, projects, and comments on your behalf.</li>
+        <li i18n="@@teamsAuthConfirmation.nameAndEmail">Access your name and email address.</li>
+        <li i18n="@@teamsAuthConfirmation.accessTasksProjectsWorkplace">Access your tasks, projects, and workplace.</li>
+        <li i18n="@@teamsAuthConfirmation.createTasksProjects">Create and modify tasks, projects, and comments on your behalf.</li>
     </ul>
 
-    <button style="margin-left: 32%;margin-right: 5%;" (click)="alloweded()">Allow</button>
-    <button (click)="cancel()">Cancel</button>
+    <button style="margin-left: 32%;margin-right: 5%;" (click)="alloweded()" i18n="@@teamsAuthConfirmation.allow">Allow</button>
+    <button (click)="cancel()" i18n="@@teamsAuthConfirmation.cancel">Cancel</button>
 </div>

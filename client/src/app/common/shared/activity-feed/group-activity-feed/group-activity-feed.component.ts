@@ -8,6 +8,7 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { retry } from 'rxjs/internal/operators/retry';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import moment from 'moment';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 
 @Component({
   selector: 'app-group-activity-feed',
@@ -42,6 +43,7 @@ export class GroupActivityFeedComponent implements OnInit {
 
   // Pinned posts
   pinnedPosts = [];
+  keepPinnedOpen = false;
 
   filters = {};
 
@@ -132,6 +134,7 @@ export class GroupActivityFeedComponent implements OnInit {
         this.groupData = res
 
         this.isProjectType = this.groupData.project_type;
+        this.keepPinnedOpen = this.groupData.keep_pinned_open;
       }
     }))
 
@@ -439,5 +442,33 @@ export class GroupActivityFeedComponent implements OnInit {
 
   checker(arr, target) {
     return target.every(v => arr.includes(v));
+  }
+
+  isGroupManager() {
+    return (this.groupData && this.groupData._admins) ? this.groupData._admins.find(admin => admin._id == this.userData?._id) : false;
+  }
+
+  saveSettings(selected) {
+
+    // Utility Service
+    let utilityService = this.injector.get(UtilityService);
+
+    // Group Service
+    let groupService = this.injector.get(GroupService);
+
+    // Save the settings
+    utilityService.asyncNotification($localize`:@@groupActivityFeed.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+      new Promise((resolve, reject)=>{
+        if(selected.source.name === 'keep_pinned_open'){
+          groupService.saveSettings(this.groupId, {keep_pinned_open: selected.checked})
+          .then(()=> {
+            this.keepPinnedOpen = selected.checked;
+            this.groupData.keep_pinned_open = selected.checked;
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+            resolve(utilityService.resolveAsyncPromise($localize`:@@groupActivityFeed.settingsSaved:Settings saved to your group!`));
+          })
+          .catch(() => reject(utilityService.rejectAsyncPromise($localize`:@@groupActivityFeed.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        }
+      }));
   }
 }

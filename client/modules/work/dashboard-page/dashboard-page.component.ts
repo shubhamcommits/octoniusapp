@@ -17,15 +17,15 @@ export class DashboardPageComponent implements OnInit {
   periods = [
     {
      key: 7,
-     value: 'Last 7 days'
+     value: $localize`:@@workDahsboardPage.last7Days:Last 7 days`
     },
     {
      key: 30,
-     value: 'Last month'
+     value: $localize`:@@workDahsboardPage.lastMonth:Last month`
     },
     {
      key: 365,
-     value: 'Last year'
+     value: $localize`:@@workDahsboardPage.lastYear:Last year`
     }
   ];
 
@@ -62,17 +62,17 @@ export class DashboardPageComponent implements OnInit {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     // Fetches the user groups from the server
-    this.groupsList = await this.publicFunctions.getUserGroups(this.workspaceData['_id'], this.userData['_id'])
+    this.groupsList = await this.publicFunctions.getAllManagerGroups(this.workspaceData['_id'], this.userData['_id'])
       .catch(()=>{
         // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        this.publicFunctions.sendError(new Error($localize`:@@workDahsboardPage.unableToConnectToServer:Unable to connect to the server, please try again later!`));
       });
 
     // Fetches the groups from the server
     this.projects = await this.getProjectColumns()
       .catch(() => {
         // If the function breaks, then catch the error and console to the application
-        this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+        this.publicFunctions.sendError(new Error($localize`:@@workDahsboardPage.unableToConnectToServer:Unable to connect to the server, please try again later!`));
       });
 
     this.period = (this.userData.stats.dashboard_period) ? this.userData.stats.dashboard_period : 7;
@@ -129,7 +129,6 @@ export class DashboardPageComponent implements OnInit {
       this.userData.selected_widgets = data;
     });
 
-
     dialogRef.afterClosed().subscribe(result => {
       saveEventSubs.unsubscribe();
       closeEventSubs.unsubscribe();
@@ -137,8 +136,7 @@ export class DashboardPageComponent implements OnInit {
   }
 
   /**
-   * This function is resposible for fetching first 10 groups present in the workplace
-   * @param workspaceId
+   * This function is resposible for fetching project columns present in the workplace
    */
   async getProjectColumns() {
 

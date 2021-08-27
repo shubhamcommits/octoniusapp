@@ -15,14 +15,16 @@
     <div class="dropdown-menu dropdown-menu-right dropleft" aria-labelledby="dropdownMenuLink">
 
         <!-- UNREAD/RECENT NOTIFICATIONS STARTS -->
-        <h6 class="dropdown-header"><b>Recent Notifications</b></h6>
+        <h6 class="dropdown-header">
+          <b i18n="@@pushNotifications.recentNotifications">Recent Notifications</b>
+        </h6>
         <div class="dropdown-divider"></div>
 
         <!-- NOTIFICATION ITEM STARTS-->
         <div class="notification-item" *ngIf="this.notificationsData?.unreadNotifications?.length != 0">
                 <button class="dropdown-item"
-                (click)="$event.stopPropagation()"
-                *ngFor="let notifications of notificationsData?.unreadNotifications;">
+                    (click)="$event.stopPropagation()"
+                    *ngFor="let notifications of notificationsData?.unreadNotifications;">
                         <app-secured-image
                             [imgURL]="notifications?._actor?.profile_pic"
                             [service]="'user'"
@@ -31,12 +33,12 @@
                         {{notifications?._actor?.first_name}} {{notifications?.message}}
                     <br />
                     <span class="mark-notification-read tootip" data-toggle="tooltip"
-                    data-matTooltipPosition="left" title="Mark as Read" (click)="markNotificationAsRead(notifications?._id, userData?._id)">
+                        data-matTooltipPosition="left" title="Mark as Read" (click)="markNotificationAsRead(notifications?._id, userData?._id)">
                             <i class="material-icons" >check_circle_outline</i>
                     </span>
                     <span class="view-notification" data-toggle="tooltip"
-                    data-matTooltipPosition="right" title="View this notification">
-                        <i class="material-icons">remove_red_eye</i>
+                        data-matTooltipPosition="right" title="View this notification">
+                          <i class="material-icons">remove_red_eye</i>
                     </span>
                     <!-- <span class="muted text-small float-right">{{notifications?.created_date | timeAgo}}</span> -->
                     <span class="muted text-small float-right">{{notifications?.created_date | date:'MMM dd, yyyy' }}</span>
@@ -45,7 +47,7 @@
         <!-- NOTIFICATION ITEM ENDS-->
 
         <div *ngIf="this.notificationsData?.unreadNotifications?.length == 0">
-                <button class="dropdown-item">All up to date</button>
+            <button class="dropdown-item" i18n="@@pushNotifications.allUpToDate">All up to date</button>
         </div>
 
         <div class="dropdown-divider"></div>
@@ -53,7 +55,9 @@
         <!-- UNREAD/RECENT NOTIFICATIONS ENDS -->
 
         <!-- READ/OLDER NOTIFICATIONS STARTS -->
-        <h6 class="dropdown-header"><b>Older Notifications</b></h6>
+        <h6 class="dropdown-header">
+          <b i18n="@@pushNotifications.olderNotifications">Older Notifications</b>
+        </h6>
         <div class="dropdown-divider"></div>
 
         <!-- NOTIFICATION ITEM STARTS-->
@@ -73,7 +77,7 @@
         <!-- NOTIFICATION ITEM ENDS-->
 
         <div *ngIf="this.notificationsData?.readNotifications?.length == 0">
-                <button class="dropdown-item">All up to date</button>
+            <button class="dropdown-item" i18n="@@pushNotifications.allUpToDate">All up to date</button>
         </div>
         <!-- READ/OLDER NOTIFICATIONS ENDS -->
     </div>

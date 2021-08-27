@@ -74,17 +74,17 @@ export class GroupCalendarViewComponent implements OnInit {
   actions: CalendarEventAction[] = [
     {
       label: '<span class="material-icons">create</span>',
-      a11yLabel: 'Edit',
+      a11yLabel: $localize`:@@groupCalendarView.edit:Edit`,
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
+        this.handleEvent($localize`:@@groupCalendarView.editd:Edited`, event);
       }
     },
     {
       label: '<span class="material-icons">delete</span>',
-      a11yLabel: 'Delete',
+      a11yLabel: $localize`:@@groupCalendarView.delete:Delete`,
       onClick: ({ event }: { event: CalendarEvent }): void => {
         this.events = this.events.filter(iEvent => iEvent !== event);
-        this.handleEvent('Deleted', event);
+        this.handleEvent($localize`:@@groupCalendarView.deleted:Deleted`, event);
       }
     }
   ]
@@ -216,7 +216,7 @@ export class GroupCalendarViewComponent implements OnInit {
       }
       return iEvent;
     });
-    this.handleEvent('Dropped or resized', event);
+    this.handleEvent($localize`:@@groupCalendarView.droppedResized:Dropped or resized`, event);
   }
 
   handleEvent(action: string, event: any): void {
@@ -255,7 +255,7 @@ export class GroupCalendarViewComponent implements OnInit {
     this.events = [
       ...this.events,
       {
-        title: 'New event',
+        title: $localize`:@@groupCalendarView.newEvent:New event`,
         start: moment().startOf('day').toDate(),
         end: moment().endOf('day').toDate(),
         color: colors.red,

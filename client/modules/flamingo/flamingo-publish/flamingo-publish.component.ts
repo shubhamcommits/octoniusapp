@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
@@ -17,6 +17,7 @@ export class FlamingoPublishComponent implements OnInit {
   flamingoURL;
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     private _ActivatedRoute: ActivatedRoute,
     private flamingoService: FlamingoService,
     private utilityService: UtilityService
@@ -26,7 +27,12 @@ export class FlamingoPublishComponent implements OnInit {
 
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.params['id'];
-    this.flamingoURL = environment.clientUrl + '/document/flamingo/' + this.fileId + '/answer';
+
+    let url = environment.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
+    this.flamingoURL = url + '/document/flamingo/' + this.fileId + '/answer';
 
     // Fetch Flamingo Details
     await this.flamingoService.getOne(this.fileId).then((res) => {
@@ -38,21 +44,21 @@ export class FlamingoPublishComponent implements OnInit {
    * Method to execute in front to call the service to publish or unpublish the flamingo
    */
   publish() {
-    this.utilityService.getConfirmDialogAlert('Are you sure?', 'By doing this the flamingo will be published/unpublished!')
+    this.utilityService.getConfirmDialogAlert($localize`:@@flamingoPublish.areYouSure:Are you sure?`, $localize`:@@flamingoPublish.flamingoWillBePublishedUnpublished:By doing this the flamingo will be published/unpublished!`)
       .then((result) => {
         if (result.value) {
           // Call the HTTP Request Asynschronously
           this.utilityService.asyncNotification(
-            'Please wait while we are publishing the flamingo',
+            $localize`:@@flamingoPublish.pleaseWaitPublishingFlamingo:Please wait while we are publishing/unpublishing the flamingo`,
             new Promise((resolve, reject) => {
               this.flamingoService.publish(this.flamingo._id, !this.flamingo.publish || false)
                 .then((res) => {
                   this.flamingo = res['flamingo'];
 
-                  resolve(this.utilityService.resolveAsyncPromise('Flamingo has been published!'));
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@flamingoPublish.flamingoPublished:Flamingo has been published/unpublished!`));
                 })
                 .catch(() => {
-                  reject(this.utilityService.rejectAsyncPromise('Unexpected error occured while publishing Flamingo, please try again!'));
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@flamingoPublish.unexpectedErrorPublishing:Unexpected error occurred while publishing/unpublishing Flamingo, please try again!`));
                 });
           }));
         }
@@ -88,6 +94,6 @@ export class FlamingoPublishComponent implements OnInit {
     document.body.removeChild(selBox);
 
     // Show Confirmed notification
-    this.utilityService.simpleNotification(`Copied to Clipboard!`);
+    this.utilityService.simpleNotification($localize`:@@flamingoPublish.copiedToClipboard:Copied to Clipboard!`);
   }
 }

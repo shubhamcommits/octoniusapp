@@ -78,7 +78,7 @@ export class PushNotificationsComponent implements OnInit {
     }
 
     /**
-     * This function routes the user to the particular post where notification has occured
+     * This function routes the user to the particular post where notification has occurred
      * @param notficationId - notification Object Id
      * @param postId - userId of the current user
      */

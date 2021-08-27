@@ -25,7 +25,7 @@ export class AdminGroupsComponent implements OnInit, AfterViewInit, OnDestroy {
   public archivedGroups: any = [];
 
   // PLACEHOLDER INPUT FOR SEARCH BAR
-  public searchBarPlaceholder = 'Search groups...';
+  public searchBarPlaceholder = $localize`:@@adminGroups.searchGroups:Search groups...`;
 
   // WORKSPACE DATA
   public workspaceData: any;
@@ -56,6 +56,9 @@ export class AdminGroupsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
+
+  labelActiveGroups = $localize`:@@adminGroups.labelActiveGroups:Active Groups`;
+  labelArchivedGroups = $localize`:@@adminGroups.labelArchivedGroups:Archived Groups`;
 
   constructor(
     public utilityService: UtilityService,
@@ -244,22 +247,22 @@ export class AdminGroupsComponent implements OnInit, AfterViewInit, OnDestroy {
     let resolveMessage = '';
     let errorMessage = '';
     if (archive) {
-      confirmMessage = 'This action will archive the group.';
-      resolveMessage = 'Group archived!';
-      errorMessage = 'Unable to archive the group, please try again!';
+      confirmMessage = $localize`:@@adminGroups.actionWillArchiveGroup:This action will archive the group.`;
+      resolveMessage = $localize`:@@adminGroups.groupArchived:Group archived!`;
+      errorMessage = $localize`:@@adminGroups.unableArchiveGroup:Unable to archive the group, please try again!`;
     } else {
-      confirmMessage = 'This action will activate the group.';
-      resolveMessage = 'Group activated!';
-      errorMessage = 'Unable to activate the group, please try again!';
+      confirmMessage = $localize`:@@adminGroups.actionWillActivateGroup:This action will activate the group.`;
+      resolveMessage = $localize`:@@adminGroups.groupActivated:Group activated!`;
+      errorMessage = $localize`:@@adminGroups.unableActivateGroup:Unable to activate the group, please try again!`;
     }
 
     // Ask User to delete the group or not
-    utilityService.getConfirmDialogAlert('Are you sure?', confirmMessage)
+    utilityService.getConfirmDialogAlert($localize`:@@adminGroups.areYouSure:Are you sure?`, confirmMessage)
       .then((result) => {
         if (result.value) {
 
           // Delete the group from the workspace
-          utilityService.asyncNotification('Please Wait while we update the group',
+          utilityService.asyncNotification($localize`:@@adminGroups.pleaseWaitUpdatingGroup:Please Wait while we update the group`,
             new Promise((resolve, reject) => {
               // Call Archive Group Service Function
               groupService.archiveGroup(groupId, archive)
@@ -319,12 +322,12 @@ export class AdminGroupsComponent implements OnInit, AfterViewInit, OnDestroy {
     let utilityService = this.injector.get(UtilityService);
 
     // Ask User to delete the group or not
-    utilityService.getConfirmDialogAlert('Are you sure?', 'This action will completely remove the group.')
+    utilityService.getConfirmDialogAlert($localize`:@@adminGroups.areYouSure:Are you sure?`, $localize`:@@adminGroups.actionWillRemoveGroup:This action will completely remove the group.`)
       .then((result) => {
         if (result.value) {
 
           // Delete the group from the workspace
-          utilityService.asyncNotification('Please Wait while we update the group',
+          utilityService.asyncNotification($localize`:@@adminGroups.pleaseWaitRemovingGroup:Please Wait while we remove the group`,
             new Promise((resolve, reject) => {
               // Call Remove Group Service Function
               groupService.removeGroup(groupId)
@@ -343,11 +346,11 @@ export class AdminGroupsComponent implements OnInit, AfterViewInit, OnDestroy {
                   }
 
                   // Resolve the async promise
-                  resolve(utilityService.resolveAsyncPromise('Group removed!'));
+                  resolve(utilityService.resolveAsyncPromise($localize`:@@adminGroups.groupRemoved:Group removed!`));
                 })
                 .catch(() => {
                   // Reject the promise
-                  reject(utilityService.rejectAsyncPromise('Unable to remove the group, please try again!'))
+                  reject(utilityService.rejectAsyncPromise($localize`:@@adminGroups.unableToRemoveGroup:Unable to remove the group, please try again!`))
                 });
             }));
         }

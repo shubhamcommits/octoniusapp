@@ -37,7 +37,7 @@ export class TeamAccountDetailsComponent implements OnInit {
         }
       }),
       ((err) => {
-        console.log('Error occured, while disconnecting for Teams', err);
+        console.log('Error occurred, while disconnecting for Teams', err);
       });
   }
 

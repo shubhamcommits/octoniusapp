@@ -51,7 +51,7 @@ export class KpiPerformanceCardComponent implements OnChanges {
       this.projects = await this.getProjectColumns(this.parentId)
         .catch(() => {
           // If the function breaks, then catch the error and console to the application
-          this.publicFunctions.sendError(new Error('Unable to connect to the server, please try again later!'));
+          this.publicFunctions.sendError(new Error($localize`:@@kpiPerformanceCard.unableToConnectServer:Unable to connect to the server, please try again later!`));
           this.isLoading$.next(false);
         });
     }

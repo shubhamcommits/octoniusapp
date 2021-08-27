@@ -52,7 +52,7 @@ export class ProjectStatisticsComponent implements OnChanges {
     /* Chart Setup */
     const tasksData = await this.getTasksData();
     const percentageDone = await this.getPercentageDone(tasksData[2]);
-    this.doughnutChartLabels = ['To Do', 'In Progress', 'Done', 'Overdue'];
+    this.doughnutChartLabels = [$localize`:@@projectStatistics.toDo:To Do`, $localize`:@@projectStatistics.inProgress:In Progress`, $localize`:@@projectStatistics.done:Done`, $localize`:@@projectStatistics.overdue:Overdue`];
     this.doughnutChartData = tasksData;
     this.doughnutChartType = 'doughnut';
     this.doughnutChartOptions = {

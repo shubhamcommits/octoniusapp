@@ -72,7 +72,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
    */
   async logout() {
     try {
-      this.utilityService.asyncNotification('Please wait, while we log you out securely...',
+      this.utilityService.asyncNotification($localize`:@@iconsSidebar.pleaseWaitWhileWeLogYouOut:Please wait, while we log you out securely...`,
         new Promise((resolve, reject) => {
           this.authService.signout().toPromise()
             .then((res) => {
@@ -84,15 +84,15 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
               this.publicFunctions.sendUpdatesToWorkspaceData({})
               this.socketService.disconnectSocket();
               this.router.navigate(['/home'])
-              resolve(this.utilityService.resolveAsyncPromise('Successfully Logged out!'));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@iconsSidebar.successfullyLoggedOut:Successfully Logged out!`));
             }).catch((err) => {
               console.log('Error occurred while logging out!', err);
-              reject(this.utilityService.rejectAsyncPromise('Error occurred while logging you out!, please try again!'));
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@iconsSidebar.errorLoggingOut:Error occurred while logging you out, please try again!`));
             });
         }));
     } catch (err) {
       console.log('Error occurred while logging out!', err);
-      this.utilityService.errorNotification('Error occurred while logging you out!');
+      this.utilityService.errorNotification($localize`:@@iconsSidebar.errorLoggingOut:Error occurred while logging you out, please try again!`);
     }
   }
 

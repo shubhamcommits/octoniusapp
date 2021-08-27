@@ -55,7 +55,7 @@ Quill.register('modules/clipboard', QuillClipboard, true)
 
 // Environments
 import { environment } from 'src/environments/environment';
-import { StorageService } from 'src/shared/services/storage-service/storage.service.js';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-quill-editor',
@@ -366,7 +366,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       theme: theme || 'snow',
       modules: modules,
       readOnly: this.readOnly,
-      placeholder: (this.readOnly) ? '' : 'Write something awesome...'
+      placeholder: (this.readOnly) ? '' : $localize`:@@quillEditor.writeSomethingAwesome:Write something awesome...`
     })
   }
 

@@ -247,6 +247,129 @@ export class GroupController {
         }
     };
 
+    async getAllManagerGroups(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { userId } = req.query;
+            const { workspaceId } = req.params;
+
+            // If either workspaceId or userId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId || !userId) {
+                return res.status(400).json({
+                    message: 'Please provide both workspaceId and userId as the query parameter!'
+                })
+            }
+
+            // Finding groups for the user of which they are a part of
+            const groups = await Group.find({
+                $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
+                    { _workspace: workspaceId },
+                    { _admins: userId },
+                    { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
+                ]
+            })
+                .sort('_id')
+                .populate({
+                    path: '_members',
+                    select: '_id',
+                    options: {
+                        count: true
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: '_id',
+                    options: {
+                        count: true
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                .lean() || []
+
+            // If there are no groups then we send error response
+            if (!groups) {
+                return sendError(res, new Error('Oops, no groups found!'), 'Group not found, Invalid workspaceId or userId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `${groups.length} groups found.`,
+                groups
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    async getAllUserGroups(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { userId } = req.query;
+            const { workspaceId } = req.params;
+
+            // If either workspaceId or userId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId || !userId) {
+                return res.status(400).json({
+                    message: 'Please provide both workspaceId and userId as the query parameter!'
+                })
+            }
+
+            // Finding groups for the user of which they are a part of
+            const groups = await Group.find({
+                $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { group_name: { $ne: 'private' } },
+                    { _workspace: workspaceId },
+                    { $or: [{ _members: userId }, { _admins: userId }] },
+                    { $or: [{ archived_group: false }, { archived_group: { $eq: null }}]}
+                    // { type: { $ne: 'smart' } }
+                ]
+            })
+                .sort('_id')
+                .populate({
+                    path: '_members',
+                    select: '_id',
+                    options: {
+                        count: true
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: '_id',
+                    options: {
+                        count: true
+                    },
+                    match: {
+                        active: true
+                    }
+                })
+                .lean() || []
+
+            // If there are no groups then we send error response
+            if (!groups) {
+                return sendError(res, new Error('Oops, no groups found!'), 'Group not found, Invalid workspaceId or userId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `${groups.length} groups found.`,
+                groups
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
     async getUserGroups(req: Request, res: Response, next: NextFunction) {
         try {
 
@@ -271,7 +394,7 @@ export class GroupController {
                 ]
             })
                 .sort('_id')
-                .limit(20)
+                .limit(10)
                 .populate({
                     path: '_members',
                     select: '_id',

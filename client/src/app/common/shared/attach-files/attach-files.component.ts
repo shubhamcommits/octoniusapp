@@ -107,14 +107,14 @@ export class AttachFilesComponent implements OnInit {
       this.comment.files = arr
     }
 
-    await this.utilityService.asyncNotification('Please wait we are updating the contents...', new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@attachFiles.pleaseWaitUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.postService.removeAttachedFile(file['modified_name'], this.post._id)
         .then((res) => {
           // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise(`Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@attachFiles.detailsUpdated:Details updated!`));
         })
         .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise(`Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@attachFiles.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
   }

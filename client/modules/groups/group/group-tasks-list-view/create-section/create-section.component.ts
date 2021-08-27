@@ -42,7 +42,7 @@ export class CreateSectionComponent implements OnInit {
     return this.utilityService.getSwalModal({
       title: title,
       input: 'text',
-      inputPlaceholder: 'Try to add a short name',
+      inputPlaceholder: $localize`:@@createSection.tryAddShortName:Try to add a short name`,
       inputAttributes: {
         maxlength: 20,
         autocapitalize: 'off',
@@ -52,7 +52,7 @@ export class CreateSectionComponent implements OnInit {
       imageAlt: title,
       confirmButtonText: title,
       showCancelButton: true,
-      cancelButtonText: 'Cancel',
+      cancelButtonText: $localize`:@@createSection.cancel:Cancel`,
       cancelButtonColor: '#d33',
     })
   }
@@ -68,7 +68,7 @@ export class CreateSectionComponent implements OnInit {
       this.newSection = undefined
 
     } else if (this.newSection == '') {
-      this.utilityService.warningNotification('Section name can\'t be empty!');
+      this.utilityService.warningNotification($localize`:@@createSection.sectionNameNotEmpty:Section name can\'t be empty!`);
     }
   }
 

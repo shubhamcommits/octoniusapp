@@ -65,10 +65,10 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
     this.utilityService.validateEmail(
       this.account.email
     )
-      ? this.utilityService.successNotification("Correct Email Format!")
+      ? this.utilityService.successNotification($localize`:@@authSignUp.correctEmailFormat:Correct Email Format!`)
       : this.utilityService.warningNotification(
-        "Follow the standard format, e.g. - user@example.com",
-        "Wrong Format!"
+        $localize`:@@authSignUp.followStandardFormat:Follow the standard format, e.g. - user@example.com`,
+        $localize`:@@authSignUp.wrongFormat:Wrong Format!`
       );
   }
 
@@ -87,7 +87,7 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
           || this.account.password == null || this.account.password == ''
           || this.account.first_name == null || this.account.first_name == ''
           || this.account.last_name == null || this.account.last_name == '') {
-        this.utilityService.warningNotification('Insufficient data, kindly fill up all the fields correctly!');
+        this.utilityService.warningNotification($localize`:@@authSignUp.insufficientData:Insufficient data, kindly fill up all the fields correctly!`);
       } else {
         // Preparing the user data
         let userData: any = {
@@ -97,12 +97,12 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
           last_name: this.account.last_name.trim()
         }
 
-        this.utilityService.asyncNotification('Please wait while we are setting up your new account...',
+        this.utilityService.asyncNotification($localize`:@@authSignUp.pleaseWaitWhileSettingUp:Please wait while we are setting up your new account...`,
           this.signUpServiceFunction(userData));
       }
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
-      this.utilityService.errorNotification('There\'s some unexpected error occurred, please try again later!');
+      this.utilityService.errorNotification($localize`:@@authSignUp.unexpectedErrorOccurred:There\'s some unexpected error occurred, please try again later!`);
     }
   }
 
@@ -118,19 +118,19 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
           this.storeAccountData(res);
           this.router.navigate(['authentication', 'select-workspace'])
             .then(() => {
-              this.utilityService.successNotification(`Hi ${res['account']['first_name']}!`);
-              resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['account']['first_name']}!`));
+              this.utilityService.successNotification($localize`:@@authSignUp.hi:Hi ${res['account']['first_name']}!`);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@authSignUp.hi:Hi ${res['account']['first_name']}!`));
             })
             .catch((err) => {
-              console.error('Error occured while signing in the user', err);
-              this.utilityService.errorNotification('Oops some error occured while signing you up, please try again!');
+              console.error('Error occurred while signing in the user', err);
+              this.utilityService.errorNotification($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
               this.storageService.clear();
-              reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you up, please try again!'))
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`))
             });
 
         }, (err) => {
-          console.error('Error occured while signing in the user', err);
-          reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+          console.error('Error occurred while signing in the user', err);
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@authSignUp.errorSigningUp:Oops some error occurred while signing you up, please try again!`))
         }));
     });
   }

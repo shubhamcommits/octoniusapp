@@ -1,27 +1,61 @@
 <div class="container">
-    <div class="row main-actvity" *ngIf="workspaceData && userData">
+  <div class="row main-actvity" *ngIf="workspaceData && userData">
 
-        <div class="col-md-4">
-            <app-workplace-information [workspaceData]="workspaceData" [routerState]="'general'" (workspaceUpdatedEvent)="onWorkspaceUpdated($event)"></app-workplace-information>
-        </div>
+    <div class="col-md-4">
+      <app-workplace-information [workspaceData]="workspaceData" [routerState]="'general'"
+        (workspaceUpdatedEvent)="onWorkspaceUpdated($event)"></app-workplace-information>
+    </div>
 
-        <div class="col-md-8">
-            <app-workplace-add-domain [workspaceData]="workspaceData"></app-workplace-add-domain>
+    <div class="col-md-8">
+      <app-workplace-add-domain [workspaceData]="workspaceData"></app-workplace-add-domain>
 
-            <app-workplace-invite-user [workspaceData]="workspaceData" [userData]="userData"></app-workplace-invite-user>
-            <app-workplace-profile-custom-fields [workspaceData]="workspaceData" [userData] = "userData"></app-workplace-profile-custom-fields>
-            <app-transfer-ownership [workspaceData]="workspaceData" [userData] = "userData" ></app-transfer-ownership>
+      <app-workplace-invite-user [workspaceData]="workspaceData" [userData]="userData"></app-workplace-invite-user>
+      <app-workplace-profile-custom-fields [workspaceData]="workspaceData" [userData]="userData">
+      </app-workplace-profile-custom-fields>
 
-            <div class="card-tile invite-users">
-              <h6><b>Delete Workspace</b></h6>
-              <hr />
-              <div class="container">
-                <div class="row">
-                  <button class="btn btn-danger btn-sm" (click)="removeWorkspace(workspaceData['_id'])">Remove Workspace</button>
-                </div>
-                <br />
+
+      <div class="card-tile invite-users">
+        <h6>
+          <mat-slide-toggle color="primary" [checked]="workspaceData['allow_decentralized_roles']"
+            [name]="'allow_decentralized_roles'" (change)="saveSettings($event)" [(ngModel)]="allowDecentralizedRoles">
+
+          </mat-slide-toggle>
+          <b i18n="@@adminGeneral.decentralizedUserRoles" style="margin-left: 6px;">My organization uses decentralized
+            user roles</b>
+          &nbsp;&nbsp;<span class="material-icons-outlined" (click)="openDialog()" style="cursor: pointer;">info</span>
+        </h6>
+        <hr />
+        <div class="container">
+          <div class="row">
+            <img src="assets/images/admin-decentralized-roles.svg" style="width: 130px;" class="col-md-3">
+            <div class="col-md-9">
+              <p class="card-text" i18n="@@adminGeneral.enablingDecentralizedUserRoles">Turn this <span class="text-success">ON</span> to allow everyone to create Groups(private). This will reduce the
+                number of user roles to Workplace Admin, Group Manager, Member, and Guest.</p>
+                <hr>
+              <p class="card-text" i18n="@@adminGeneral.CentralizedUserRoles">Leave this <span class="text-warning">OFF</span> if your organization uses centralized user roles.
+                Your Workplace Admins must assign Work Managers(only WM can create private Groups).
+                This will create the following roles: Workplace Admin, Work Manager, Group Manager, Member, Guest.</p>
             </div>
           </div>
+
         </div>
+      </div>
+
+      <app-transfer-ownership [workspaceData]="workspaceData" [userData]="userData"></app-transfer-ownership>
+
+      <div class="card-tile invite-users">
+        <h6>
+          <b i18n="@@adminGeneral.deleteWorkspace">Delete Workspace</b>
+        </h6>
+        <hr />
+        <div class="container">
+          <div class="row">
+            <button class="btn btn-danger btn-sm" (click)="removeWorkspace(workspaceData['_id'])"
+              i18n="@@adminGeneral.removeWorkspace">Remove Workspace</button>
+          </div>
+          <br />
+        </div>
+      </div>
     </div>
+  </div>
 </div>

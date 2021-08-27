@@ -28,7 +28,7 @@ export class SheetComponent implements OnInit {
 
   fileName: string = 'SheetJS.xlsx'
 
-  // File 
+  // File
   @Input('file') file: any
 
   // File URL
@@ -68,11 +68,16 @@ export class SheetComponent implements OnInit {
   graphs = []
 
   // Chart Data
-  public chartLabels = ['Sales Q1', 'Sales Q2', 'Sales Q3', 'Sales Q4'];
+  public chartLabels = [
+    $localize`:@@seet.salesQ1:Sales Q1`,
+    $localize`:@@seet.salesQ2:Sales Q2`,
+    $localize`:@@seet.salesQ3:Sales Q3`,
+    $localize`:@@seet.salesQ4:Sales Q4`
+  ];
   public chartData = [120, 150, 180, 90];
   public chartType = 'doughnut';
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     if(this.file){
       this.selectedColumns = this.file._campaign_user_view.fields
       this.rows_count = this.file._campaign_user_view.rows_count
@@ -105,8 +110,8 @@ export class SheetComponent implements OnInit {
 
   /**
    * This function is responsible for creating blob from the FILE
-   * @param myImageUrl 
-   * @returns 
+   * @param myImageUrl
+   * @returns
    */
   getBlobFromUrl(myImageUrl) {
     return new Promise((resolve, reject) => {
@@ -123,8 +128,8 @@ export class SheetComponent implements OnInit {
 
   /**
    * This function is responsible for mapping the blob data into binary file and prepare the data for table
-   * @param blob 
-   * @returns 
+   * @param blob
+   * @returns
    */
   getDataFromBlob(blob: any) {
     return new Promise((resolve, reject) => {
@@ -190,17 +195,17 @@ export class SheetComponent implements OnInit {
     let utilityService = this._Injector.get(UtilityService)
 
     // Asynchronously Saving the content
-    utilityService.asyncNotification('Please wait we are saving the new setting...',
+    utilityService.asyncNotification($localize`:@@seet.pleaseWaitSavingSettings:Please wait we are saving the new setting...`,
     new Promise(async (resolve, reject)=>{
       this.file._campaign_user_view = {
         fields: this.selectedColumns,
         rows_count: this.rows_count
-      } 
+      }
       this.updateFile(this.file._id, this.file)
       .then(()=>{
-        resolve(utilityService.resolveAsyncPromise('Settings saved to your campaign!'));
+        resolve(utilityService.resolveAsyncPromise($localize`:@@seet.settingsSavedCampaign:Settings saved to your campaign!`));
       })
-      .catch(() => reject(utilityService.rejectAsyncPromise('Unable to save the settings to your campaign, please try again!')))
+      .catch(() => reject(utilityService.rejectAsyncPromise($localize`:@@seet.unableToSaveSettingsCampaign:Unable to save the settings to your campaign, please try again!`)))
     }))
   }
 

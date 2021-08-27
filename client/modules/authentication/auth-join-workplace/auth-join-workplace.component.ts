@@ -40,7 +40,7 @@ export class AuthJoinWorkplaceComponent implements OnInit {
 
   checkWorkspaceAvailability() {
     if (this.workplace.name == null || this.workplace.name == '') {
-      this.utilityService.warningNotification('Workplace name can\'t be empty!');
+      this.utilityService.warningNotification($localize`:@@authJoinWorkplace.nameCannotBeEmpty:Workplace name can\'t be empty!`);
       this.validWorkspace = false;
     } else {
       this.authenticationService.checkWorkspaceName({
@@ -48,11 +48,11 @@ export class AuthJoinWorkplaceComponent implements OnInit {
         })
         .then(() => {
           this.validWorkspace = false;
-          this.utilityService.errorNotification('This workplace name does not exist!');
+          this.utilityService.errorNotification($localize`:@@authJoinWorkplace.namedoesntExist:This workplace name does not exist!`);
         })
         .catch(() => {
           this.validWorkspace = true;
-          this.utilityService.successNotification('This workplace name is correct!');
+          this.utilityService.successNotification($localize`:@@authJoinWorkplace.nameIsCorrect:This workplace name is correct!`);
         });
     }
   }
@@ -66,19 +66,19 @@ export class AuthJoinWorkplaceComponent implements OnInit {
   joinWorkplace() {
     try {
       if (!this.validWorkspace || this.workplace.access_code == null || this.workplace.access_code == '') {
-        this.utilityService.warningNotification('Insufficient or incorrect data, kindly fill up all the fields correctly!');
+        this.utilityService.warningNotification($localize`:@@authJoinWorkplace.insufficientData:Insufficient or incorrect data, kindly fill up all the fields correctly!`);
       } else {
         // PREPARING THE WORKPLACE DATA
         let workplaceData: Object = {
           workspace_name: this.workplace.name.trim(),
           access_code: this.workplace.access_code.trim()
         }
-        this.utilityService.asyncNotification('Please wait while we are setting up your new workplace and account...',
+        this.utilityService.asyncNotification($localize`:@@authJoinWorkplace.pleaseWaitSettingUp:Please wait while we are setting up your new workplace and account...`,
           this.joinWorkplaceServiceFunction(workplaceData))
       }
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
-      this.utilityService.errorNotification('There\'s some unexpected error occurred, please try again later!');
+      this.utilityService.errorNotification($localize`:@@authJoinWorkplace.unexpectedError:There\'s some unexpected error occurred, please try again later!`);
     }
   }
 
@@ -94,10 +94,10 @@ export class AuthJoinWorkplaceComponent implements OnInit {
           this.storeData(res);
           this.router.navigate(['dashboard', 'myspace', 'inbox'])
             .then(() => {
-              resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome to your new workplace!`))
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@authJoinWorkplace.welcomeToWorkplace:Hi ${res['user']['first_name']}, welcome to your new workplace!`))
             })
             .catch(() => {
-              reject(this.utilityService.rejectAsyncPromise('Oops some error occured while setting you up, please try again!'))
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@authJoinWorkplace.oopsErrorOccuredSettingUp:Oops some error occurred while setting you up, please try again!`))
             })
 
         }, (err) => {

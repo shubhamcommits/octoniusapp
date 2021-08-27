@@ -77,7 +77,7 @@ export class SkillsControllers {
 
             // If unable to update the user skills
             if (!user) {
-                return sendError(res, new Error('Unable to find and update the user, either userId is invalid or any unexpected error has occured'), 'Unable to find the user find and update, either userId is invalid or or any unexpected error has occured', 404);
+                return sendError(res, new Error('Unable to find and update the user, either userId is invalid or any unexpected error has occurred'), 'Unable to find the user find and update, either userId is invalid or or any unexpected error has occurred', 404);
             }
 
             // Send status 200 response
@@ -122,7 +122,7 @@ export class SkillsControllers {
 
             // If unable to update the user skills
             if (!user) {
-                return sendError(res, new Error('Unable to find and update the user, either userId is invalid or any unexpected error has occured'), 'Unable to find the user find and update, either userId is invalid or or any unexpected error has occured', 404);
+                return sendError(res, new Error('Unable to find and update the user, either userId is invalid or any unexpected error has occurred'), 'Unable to find the user find and update, either userId is invalid or or any unexpected error has occurred', 404);
             }
 
 

@@ -34,12 +34,12 @@ export class SocketService {
           let notifyData: Array<any> = [];
           if (notify?.type === 'mention_folio') {
             notifyData.push({
-              'title': 'Notification',
+              'title': $localize`:@@socketService.notification:Notification`,
               'alertContent': `${notify?._actor?.first_name || 'Deleted'} ${notify?._actor?.last_name || 'User'} ${notify?.message} ${notify?._origin_folio?.original_name}`,
             });
           } else {
             notifyData.push({
-              'title': 'Notification',
+              'title': $localize`:@@socketService.notification:Notification`,
               'alertContent': `${notify?._actor?.first_name || 'Deleted'} ${notify?._actor?.last_name || 'User'} ${notify?.message} ${notify?._origin_post?.title}`,
             });
           }
@@ -86,7 +86,7 @@ export class SocketService {
     }
     return this.socket;
   }
- 
+
   public changeData(data: any) {
     this.dataSource.next(data);
   }

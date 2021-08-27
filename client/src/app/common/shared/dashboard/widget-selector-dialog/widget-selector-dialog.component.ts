@@ -32,23 +32,23 @@ export class WidgetSelectorDialogComponent implements OnInit {
   groupAvailableWidgets = [
     {
       code: 'WORK_STATISTICS',
-      name: 'Work statistics',
+      name: $localize`:@@widgetSelectorDialog.workStatistics:Work statistics`,
       img: 'assets/images/widgets/widget-work-stats.png'
     }, {
       code: 'WORKLOAD',
-      name: 'Workload by completition status',
+      name: $localize`:@@widgetSelectorDialog.workloadCompletitionStatus:Workload by completition status`,
       img: 'assets/images/widgets/widget-workload.png'
     }, {
       code: 'VELOCITY',
-      name: 'Velocity over time',
+      name: $localize`:@@widgetSelectorDialog.velocityOverTime:Velocity over time`,
       img: 'assets/images/widgets/widget-velocity.png'
     }, {
       code: 'ENGAGEMENT',
-      name: 'Engagement',
+      name: $localize`:@@widgetSelectorDialog.engagement:Engagement`,
       img: 'assets/images/widgets/widget-engagement.png'
     }, {
       code: 'RESOURCE_MANAGEMENT',
-      name: 'Resource management',
+      name: $localize`:@@widgetSelectorDialog.resourceManagement:Resource management`,
       img: 'assets/images/widgets/widget-resources.png'
     }
   ];
@@ -56,39 +56,39 @@ export class WidgetSelectorDialogComponent implements OnInit {
   globalAvailableWidgets = [
     {
       code: 'WORK_STATISTICS',
-      name: 'Work statistics',
+      name: $localize`:@@widgetSelectorDialog.workStatistics:Work statistics`,
       img: 'assets/images/widgets/widget-work-stats.png'
     }, {
       code: 'WORKLOAD',
-      name: 'Workload by completition status',
+      name: $localize`:@@widgetSelectorDialog.workloadCompletitionStatus:Workload by completition status`,
       img: 'assets/images/widgets/widget-workload.png'
     }, {
       code: 'VELOCITY',
-      name: 'Velocity over time',
+      name: $localize`:@@widgetSelectorDialog.velocityOverTime:Velocity over time`,
       img: 'assets/images/widgets/widget-velocity.png'
     }, {
       code: 'PULSE',
-      name: 'Pulse',
+      name: $localize`:@@widgetSelectorDialog.pulse:Pulse`,
       img: 'assets/images/widgets/widget-pulse.png'
     }, {
       code: 'PEOPLE_DIRECTORY',
-      name: 'People directory',
+      name: $localize`:@@widgetSelectorDialog.peopleDirectory:People directory`,
       img: 'assets/images/widgets/widget-people.png'
     }, {
       code: 'ORGANIZATIONAL_STRUCTURE',
-      name: 'Organizational Structure',
+      name: $localize`:@@widgetSelectorDialog.organizationalStructure:Organizational Structure`,
       img: 'assets/images/widgets/widget-organizational.png'
     }, {
       code: 'WORK_STATISTICS_NORTH_STAR',
-      name: 'Work statistics North Stars',
+      name: $localize`:@@widgetSelectorDialog.workStatisticsNorthStars:Work statistics North Stars`,
       img: 'assets/images/widgets/widget-northstars.png'
     }, {
       code: 'ENGAGEMENT',
-      name: 'Engagement',
+      name: $localize`:@@widgetSelectorDialog.engagement:Engagement`,
       img: 'assets/images/widgets/widget-engagement.png'
     }, {
       code: 'KPI_PERFORMANCE',
-      name: 'KPI Performance',
+      name: $localize`:@@widgetSelectorDialog.kpiPerformance:KPI Performance`,
       img: 'assets/images/widgets/widget-kpi.png'
     }
   ];
@@ -120,7 +120,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
       if (this.groupProjectType) {
         this.availableWidgets.push({
           code: 'KPI_PERFORMANCE',
-          name: 'KPI Performance',
+          name: $localize`:@@widgetSelectorDialog.kpiPerformance:KPI Performance`,
           img: 'assets/images/widgets/widget-kpi.png'
         });
       }
@@ -162,21 +162,21 @@ export class WidgetSelectorDialogComponent implements OnInit {
   }
 
   enableDisplayAllocation(selected) {
-    this.utilityService.asyncNotification('Please wait we are saving the new setting...',
+    this.utilityService.asyncNotification($localize`:@@widgetSelectorDialog.pleaseWaitWeSavingSettings:Please wait we are saving the new setting...`,
       new Promise((resolve, reject)=>{
         this.groupService.saveSettings(this.groupId, {resource_management_allocation: selected.checked})
           .then(()=> {
             this.enableAllocationEvent.emit(selected.checked);
-            resolve(this.utilityService.resolveAsyncPromise('Settings saved to your group!'));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@widgetSelectorDialog.settingsSavedGroup:Settings saved to your group!`));
           })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise('Unable to save the settings to your group, please try again!')))
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@widgetSelectorDialog.unableToSaveSettings:Unable to save the settings to your group, please try again!`)))
       }));
   }
 
   save() {
     this.selectedWidgets = this.selectedWidgets.concat(this.newSelectedWidgets);
 
-    this.utilityService.asyncNotification('Please wait we are saving the widgets...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@widgetSelectorDialog.pleaseWaitWeSavingWidgets:Please wait we are saving the widgets...`, new Promise((resolve, reject) => {
       if (this.groupId) {
         this.groupService.saveSelectedWidgets(this.groupId, this.selectedWidgets)
           .then((res) => {
@@ -187,10 +187,10 @@ export class WidgetSelectorDialogComponent implements OnInit {
             // Close the modal
             this.mdDialogRef.close();
 
-            resolve(this.utilityService.resolveAsyncPromise('Group updated!'));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@widgetSelectorDialog.groupUpdated:Group updated!`));
           })
           .catch((err) => {
-            reject(this.utilityService.rejectAsyncPromise('Unable to update the group, please try again!'))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@widgetSelectorDialog.unableToUpdateGroup:Unable to update the group, please try again!`))
           });
       }
 
@@ -204,10 +204,10 @@ export class WidgetSelectorDialogComponent implements OnInit {
             // Close the modal
             this.mdDialogRef.close();
 
-            resolve(this.utilityService.resolveAsyncPromise('User updated!'));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@widgetSelectorDialog.userUpdated:User updated!`));
           })
           .catch((err) => {
-            reject(this.utilityService.rejectAsyncPromise('Unable to update the user, please try again!'))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@widgetSelectorDialog.unableToUpdateUser:Unable to update the user, please try again!`))
           });
       }
     }));

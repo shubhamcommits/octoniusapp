@@ -2,13 +2,13 @@
     <div class="row text-center">
         <div class="col-md-4">
             <div class="btn-group">
-                <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+                <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" i18n="@@userWorkloadCalendar.previous">
                     Previous
                 </div>
-                <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+                <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate" i18n="@@userWorkloadCalendar.today">
                     Today
                 </div>
-                <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+                <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" i18n="@@userWorkloadCalendar.next">
                     Next
                 </div>
             </div>
@@ -23,7 +23,7 @@
           <button class="btn" (click)="openDialog('remove')" style="margin:0">
             <i class="material-icons">remove</i>
           </button>
-          <button class="btn btn-outline-warning" (click)="clearDates()" style="margin:0">
+          <button class="btn btn-outline-warning" (click)="clearDates()" style="margin:0" i18n="@@userWorkloadCalendar.clean">
             Clean
           </button>
         </div>

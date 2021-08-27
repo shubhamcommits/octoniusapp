@@ -17,7 +17,7 @@
                         [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
                         [queryParams]="{ group: group?._id, myWorkplace: false  }">
                         <span class="badge badge-members">{{ (group?._members.length + group?._admins.length) || 0 }}
-                            Members</span>
+                            <span i18n="@@groupList.members">Members</span></span>
                         <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'"
                             [styleClass]="'card-img-top'"></app-secured-image>
                         <a *ngIf="group?.type == 'agora'" class="btn btn-light btn-public"><i
@@ -41,7 +41,7 @@
 
     <!-- INFINITE SCROLL STARTS FOR AGORA GROUPS -->
     <app-infinite-scroll (scrolled)="onAgoraScroll()" *ngIf="agoraGroups.length>0 && userData.role != 'guest'">
-        <h2 class="section-title">AGORA</h2>
+        <h2 class="section-title" i18n="@@groupList.agora">AGORA</h2>
         <div class="row">
 
 
@@ -49,11 +49,11 @@
 
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div *ngIf="group.group_name !== 'private'" class=" card">
-                        <span class="badge badge-members">{{ (group?._members.length + group?._admins.length) || 0 }} Members</span>
+                        <span class="badge badge-members">{{ (group?._members.length + group?._admins.length) || 0 }} <span i18n="@@groupList.members">Members</span></span>
                         <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'"
                             [styleClass]="'card-img-top'"></app-secured-image>
                         <a *ngIf="group?.type == 'agora'" class="btn btn-warning btn-public"
-                            (click)="joinGroup(group._id)">JOIN</a>
+                            (click)="joinGroup(group._id)" i18n="@@groupList.join">JOIN</a>
 
                         <div class="card-body">
                             <a>

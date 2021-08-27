@@ -117,9 +117,15 @@ routes.put('/:workspaceId/customFields/addValue', workspaces.addCustomFieldValue
 
 // PUT - Remove custom field value
 routes.put('/:workspaceId/customFields/removeValue', workspaces.removeCustomFieldValue);
+/**
+ * Profile Custom Fields ENDS
+ */
 
 // GET - Get a list of the groups which has shuttle flag active
 routes.get('/:workspaceId/shuttleGroups', workspaces.getShuttleGroups);
+
+// PUT - Save settings
+routes.put('/:workspaceId/settings', workspaces.saveSettings);
 
 /*  ===================
  *  -- EXPORT ROUTES --

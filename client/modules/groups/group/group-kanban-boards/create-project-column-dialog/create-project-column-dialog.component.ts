@@ -34,15 +34,15 @@ export class CreateProjectColumnDialogComponent implements OnChanges {
   }
 
   changeColumnProjectType(selected) {
-    this.utilityService.asyncNotification('Please wait we are creating a project from your column...', new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@createProjectColumn.pleaseWaitWeCreateProjectFromColumn:Please wait we are creating a project from your column...`, new Promise((resolve, reject) => {
       this.columnService.changeColumnProjectType(this.column._id, selected.checked)
         .then((res) => {
           this.column.project_type = selected.checked;
-          resolve(this.utilityService.resolveAsyncPromise('Column type changed!'));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@createProjectColumn.columnTypeChanged:Column type changed!`));
         })
         .catch((err) => {
           this.column.project_type = selected.checked;
-          reject(this.utilityService.rejectAsyncPromise('Unable to change the column type at the moment, please try again!'))
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@createProjectColumn.unableToChangeColumnType:Unable to change the column type at the moment, please try again!`))
         })
     }));
   }
@@ -54,7 +54,7 @@ export class CreateProjectColumnDialogComponent implements OnChanges {
 
   saveColumnProjectDates() {
     if (this.startDate && this.dueDate) {
-      this.utilityService.asyncNotification('Please wait we are saving your project dates...', new Promise((resolve, reject) => {
+      this.utilityService.asyncNotification($localize`:@@createProjectColumn.pleaseWaitWeSaveProjectDates:Please wait we are saving your project dates...`, new Promise((resolve, reject) => {
         this.columnService.saveColumnProjectDates(this.column?._id, this.startDate, this.dueDate)
           .then((res) => {
             this.column.start_date = moment(this.startDate).hours(12).format('YYYY-MM-DD');
@@ -64,14 +64,14 @@ export class CreateProjectColumnDialogComponent implements OnChanges {
             this.closeEvent.emit(this.column);
             this.mdDialogRef.close();
 
-            resolve(this.utilityService.resolveAsyncPromise('Project Saved!'));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@createProjectColumn.projectSaved:Project Saved!`));
           })
           .catch((err) => {
-            reject(this.utilityService.rejectAsyncPromise('Unable to save the project at the moment, please try again!'))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@createProjectColumn.unableToSAveProject:Unable to save the project at the moment, please try again!`))
           })
       }));
     } else {
-      this.utilityService.infoNotification('Start and Due Dates must be selected!');
+      this.utilityService.infoNotification($localize`:@@createProjectColumn.startDueDAtesMustBeSelected:Start and Due Dates must be selected!`);
     }
   }
 

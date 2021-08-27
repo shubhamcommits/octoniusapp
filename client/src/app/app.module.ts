@@ -41,7 +41,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 // ANGULAR MODULES
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler, Injectable } from '@angular/core';
+import { NgModule, ErrorHandler, Injectable, LOCALE_ID } from '@angular/core';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -150,7 +150,8 @@ import { ManageHttpInterceptor } from 'src/shared/services/manage-http-intercept
       useClass: ServerErrorInterceptor,
       multi: true
     },
-    { provide: HTTP_INTERCEPTORS, useClass: ManageHttpInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ManageHttpInterceptor, multi: true },
+    //{ provide: LOCALE_ID, useValue: 'en-US' }
   ],
   bootstrap: [AppComponent]
 })

@@ -20,6 +20,9 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
 
   accountData;
   queryParms:any;
+
+  canCreateNewWorkplaces = false;
+
   publicFunctions = new PublicFunctions(this._Injector);
 
   // ADD ALL SUBSCRIPTIONS HERE TO DESTROY THEM ALL TOGETHER
@@ -42,6 +45,12 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
       this.router.navigate(['']);
     }
 
+    await this.authService.isNewWorkplacesAvailable().then(res => {
+      if (res['status']) {
+        this.canCreateNewWorkplaces = res['status'];
+      }
+    });
+
     // Getting the query params teams_permission_url if exist
     this.activeRouter.queryParams.subscribe(params => {
       if (params['teams_permission_url']) {
@@ -59,11 +68,11 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
 
   selectWorkspace(workspaceId: string) {
     try {
-      this.utilityService.asyncNotification('Please wait while we sign you in...',
+      this.utilityService.asyncNotification($localize`:@@selectWorkspace.pleaseWaitSignYouIn:Please wait while we sign you in...`,
         this.selectWorkspaceServiceFunction(this.accountData._id, workspaceId));
     } catch (err) {
       console.log('There\'s some unexpected error occurred, please try again later!', err);
-      this.utilityService.errorNotification('There\'s some unexpected error occurred, please try again later!');
+      this.utilityService.errorNotification($localize`:@@selectWorkspace.unexpectedError:There\'s some unexpected error occurred, please try again later!`);
     }
   }
 
@@ -91,7 +100,7 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
             });
 
             if (workspaceBlocked) {
-              this.utilityService.errorNotification('Your workspace is not available, please contact your administrator!');
+              this.utilityService.errorNotification($localize`:@@selectWorkspace.workspaceIsNotAvailable:Your workspace is not available, please contact your administrator!`);
               this.authService.signout().subscribe((res) => {
                 this.storageService.clear();
                 this.publicFunctions.sendUpdatesToGroupData({});
@@ -106,23 +115,23 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
               // note:- Code is for teams auth popup not for octonius app and only work in that case.
               setTimeout(() => {
                 if ( this.queryParms ) {
-                  resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@selectWorkspace.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
                   window.location.href = this.queryParms.teams_permission_url;
                 } else {
                   this.socketService.serverInit();
                   this.router.navigate(['dashboard', 'myspace', 'inbox'])
                   .then(() => {
-                    resolve(this.utilityService.resolveAsyncPromise(`Hi ${res['user']['first_name']}, welcome back to your workplace!`));
+                    resolve(this.utilityService.resolveAsyncPromise($localize`:@@selectWorkspace.hi:Hi ${res['user']['first_name']}, welcome back to your workplace!`));
                   })
                   .catch((err) => {
                     this.storageService.clear();
-                    reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+                    reject(this.utilityService.rejectAsyncPromise($localize`:@@selectWorkspace.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
                   })
                 }
               }, 500);
             }
           }, (err) => {
-            reject(this.utilityService.rejectAsyncPromise('Oops some error occured while signing you in, please try again!'))
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@selectWorkspace.oopsErrorSigningIn:Oops some error occurred while signing you in, please try again!`))
           }));
       });
   }

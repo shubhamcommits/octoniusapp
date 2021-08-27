@@ -4,7 +4,7 @@
             <img class="publish-image" src="assets/images/publish_flamingo.svg"/>
         </div>
         <div class="col-md-6">
-            <p class="publish-note">
+            <p class="publish-note" i18n="@@flamingoPublish.done">
               Done?<br/>
               When you are ready, you can click this button to PUBLISH the FORM and <br/>
               let people answer.<br/>
@@ -21,8 +21,8 @@
               </i>
             </div>
             <div class="btn-style">
-              <button class="btn btn-primary" *ngIf="flamingo && !flamingo.publish" (click)="publish()">PUBLISH</button>
-              <button class="btn btn-danger" *ngIf="flamingo && flamingo.publish" (click)="publish()">UNPUBLISH</button>
+              <button class="btn btn-primary" *ngIf="flamingo && !flamingo.publish" (click)="publish()" i18n="@@flamingoPublish.publish">PUBLISH</button>
+              <button class="btn btn-danger" *ngIf="flamingo && flamingo.publish" (click)="publish()" i18n="@@flamingoPublish.unpublish">UNPUBLISH</button>
             </div>
         </div>
     </div>

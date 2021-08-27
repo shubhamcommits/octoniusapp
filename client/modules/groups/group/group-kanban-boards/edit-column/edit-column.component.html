@@ -3,9 +3,9 @@
     <input class="form-control" type="text" [(ngModel)]="this.newColumnName" placeholder="Rename the column">
     <div class="container">
         <button class="col-md-4 btn btn-primary"
-            (click)="column.editColumn = false; saveColumnName()">Save</button>
+            (click)="column.editColumn = false; saveColumnName()" i18n="@@editColumn.save">Save</button>
         <button class="col-md-4 btn btn-danger"
-            (click)="column.editColumn = false; ">Cancel</button>
+            (click)="column.editColumn = false;" i18n="@@editColumn.cancel">Cancel</button>
     </div>
 </div>
 <!-- EDIT COLUMN ENDS -->

@@ -65,7 +65,7 @@ export class FolioHeaderComponent implements OnInit {
     document.body.style.background = '#ffffff'
 
     // Change the title of the tab
-    this.titleService.setTitle('Octonius | Folio - ' + (this.file.original_name || 'New Folio'));
+    this.titleService.setTitle('Octonius | Folio - ' + (this.file.original_name || $localize`:@@folioHeader.newFolio:New Folio`));
   }
 
   /**
@@ -148,7 +148,7 @@ export class FolioHeaderComponent implements OnInit {
       this.editTitle = false
 
       // Change the title of the tab
-      this.titleService.setTitle('Octonius | Folio - ' + (this.file.original_name || 'New Folio'));
+      this.titleService.setTitle('Octonius | Folio - ' + (this.file.original_name || $localize`:@@folioHeader.newFolio:New Folio`));
 
       // Call the HTTP PUT request to change the data on server
       await this.edit(this.fileId, {

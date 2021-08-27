@@ -12,11 +12,11 @@
 
         <div style="width: 100%; margin:0 auto; align-items: center; height: 30vh;">
 
-          <h4 class="muted not_bold">
+          <h4 class="muted not_bold" i18n="@@selectWorkspace.welcome">
             Welcome, {{ accountData?.first_name }} {{ accountData?.last_name }}!
           </h4>
 
-          <h1 style="margin-bottom: 30px;">
+          <h1 style="margin-bottom: 30px;" i18n="@@selectWorkspace.selectAWorkspace">
             Select a workplace to start.
           </h1>
 
@@ -28,13 +28,6 @@
                 <img src="{{ this.baseUrl }}/{{workspace.workspace_avatar}}?noAuth=true"
                     style="height: 100%; width:100%"
                     onerror="this.src='assets/images/icon-new-group.svg'" />
-                <!--
-                <app-secured-image
-                    [imgURL]="workspace?.workspace_avatar"
-                    [service]="'workspace'"
-                    [inlineStyle]="'height: 100%; width:100%'"
-                    [noAuth]="true"></app-secured-image>
-                -->
               </div>
 
               <h3 class="card-title ml-3">
@@ -45,14 +38,13 @@
           <!-- SELECT A WORKPLACE -->
 
           <!-- CREATE A NEW WORKPLACE -->
-          <div class="form-group">
+          <div class="form-group" *ngIf="canCreateNewWorkplaces">
             <div [routerLink]="['/authentication', 'new-workplace']" routerLinkActive="router-link-active" class="workplace-cells">
                 <div class="btn-create-workplace">
                   <i class="material-icons"> add</i>
                 </div>
 
-              <h3 class="card-title ml-3">
-
+              <h3 class="card-title ml-3" i18n="@@selectWorkspace.createNewWorkspace">
                   Create a new workplace
               </h3>
             </div>
@@ -66,7 +58,7 @@
                 <div class="btn-join-workplace">
                   <i class="material-icons"> login</i>
                 </div>
-              <h3 class="card-title ml-3">
+              <h3 class="card-title ml-3" i18n="@@selectWorkspace.joinAnotherWorkspace">
                   Join another workplace
               </h3>
             </div>
