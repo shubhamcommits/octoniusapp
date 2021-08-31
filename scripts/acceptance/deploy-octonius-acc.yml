@@ -2,17 +2,52 @@ version: '3.7'
 
 services:
 
-  mongodb:
+  mongodb1:
+    hostname: mongo1
     container_name: mongodb
     image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
     restart: always
+    expose: 
+    - 27017
     volumes:
-      - acc_db_data:/data/db
+      - ./acc_db_data/mongodb/mongo/data1/db:/data/db
     ports:
-      - ${MONGO_PORT}:${MONGO_MACHINE_PORT}
+      - ${MONGO_PORT1}:${MONGO_MACHINE_PORT}
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--journal", "--dbpath", "/data/db" ]
     networks:
       - acc
-          
+
+  mongodb2:
+    hostname: mongo2
+    container_name: mongodb_rp1
+    image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
+    restart: always
+    expose:
+    - 27017
+    volumes:
+      #- acc_db_data/mongo/data2/db:/data/db
+      - ./acc_db_data/mongodb/mongo/data2/db:/data/db
+    ports:
+      - ${MONGO_PORT2}:${MONGO_MACHINE_PORT}
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--journal", "--dbpath", "/data/db" ]
+    networks:
+      - acc
+  
+  mongodb3:
+    hostname: mongo3
+    container_name: mongodb_rp2
+    image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
+    restart: always
+    expose:
+    - 27017
+    volumes:
+      - ./acc_db_data/mongodb/mongo/data3/db:/data/db
+    ports:
+      - ${MONGO_PORT3}:${MONGO_MACHINE_PORT}
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--journal", "--dbpath", "/data/db" ]
+    networks:
+      - acc
+        
   auths-server:
     container_name: octonius_auths-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:auths-server
@@ -38,9 +73,13 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     links:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     networks:
       - acc
              
@@ -70,9 +109,13 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     links:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     networks:
       - acc
          
@@ -102,9 +145,13 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     links:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     networks:
       - acc
     
@@ -134,9 +181,13 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     links:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     networks:
       - acc    
       
@@ -161,9 +212,13 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     links:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     networks:
       - acc
           
@@ -187,9 +242,13 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     links:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     networks:
       - acc
           
@@ -214,9 +273,13 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     links:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     networks:
       - acc
     
@@ -240,9 +303,13 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     links:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     networks:
       - acc
     
@@ -267,9 +334,13 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     links:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     networks:
       - acc
 
@@ -297,9 +368,13 @@ services:
       - SLACK_CLIENT_SECRET=${SLACK_CLIENT_SECRET}
       - SLACK_BOT_ACCESS_TOKEN=${SLACK_BOT_ACCESS_TOKEN}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     links:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     networks:
       - acc
       
@@ -324,9 +399,13 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     links:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
     networks:
       - acc
 
@@ -341,7 +420,9 @@ services:
       - WEBSOCKET=${WEBSOCKET}
       - mgmt_portal_domain=${mgmt_portal_domain}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
       - auths-server
       - groups-server
       - workspaces-server
@@ -362,7 +443,9 @@ services:
     ports:
       - ${APPLICATION_PORT}:${NGINX_PORT}
     depends_on:
-      - mongodb
+      - mongodb1
+      - mongodb2
+      - mongodb3
       - auths-server
       - groups-server
       - workspaces-server
