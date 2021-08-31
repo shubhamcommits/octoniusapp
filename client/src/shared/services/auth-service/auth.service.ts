@@ -133,4 +133,16 @@ export class AuthService {
   getUserWorkspaces(email: string, password: string) {
     return this.httpClient.get(this.AUTH_BASE_API_URL + '/user-workspaces', { params: { email: email, password: password } }).toPromise();
   }
+
+  /**
+   * This function is responsible for check if the environment can create new workplaces
+   * @returns
+   */
+  isNewWorkplacesAvailable() {
+    return this.httpClient.get(`${this.AUTH_BASE_API_URL}/blockNewWorkplaces`, {
+      params: {
+        environment: environment['domain']
+      }
+    }).toPromise();
+  }
 }

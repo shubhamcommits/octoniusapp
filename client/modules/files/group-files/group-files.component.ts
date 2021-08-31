@@ -279,7 +279,7 @@ export class GroupFilesComponent implements OnInit {
     selBox.style.top = '0';
     selBox.style.opacity = '0';
 
-    let url = environment.clientUrl;
+    let url = this.clientUrl;
     if (environment.production) {
       url += '/' + this.locale;
     }

@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -14,41 +15,44 @@ export class AssigneeAvatarComponent implements OnChanges {
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
+  assignee;
   numberAssignees = '';
+  profilePic = 'assets/images/user.png';
+  assigneeTooltip = '';
 
-  constructor() { }
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+      private injector: Injector
+    ) { }
 
   ngOnChanges() {
     if (this.post && this.post._assigned_to) {
       this.numberAssignees = '+' + (this.post._assigned_to.length - 1);
+
+      this.getAssignee(this.post?._assigned_to);
     }
   }
 
-  getAssigneePic(_assigned_to) {
-    let profilePic = '';
-    if (_assigned_to && _assigned_to.length > 0) {
-      const index = _assigned_to.findIndex(assignee => assignee._id == this.userData._id);
+  async getAssignee(_assigned_to) {
+    if (_assigned_to.length > 0 && this.userData) {
+      const index = _assigned_to.findIndex(assignee => (assignee._id || assignee) == this.userData._id);
+      let assigneeTmp;
       if (index < 0) {
-        profilePic = _assigned_to[0].profile_pic;
+        assigneeTmp = _assigned_to[0];
       } else {
-        profilePic = _assigned_to[index].profile_pic;
+        assigneeTmp = _assigned_to[index];
       }
-    } else {
-      profilePic = 'assets/images/user.png';
-    }
-    return profilePic;
-  }
 
-  getAssigneeTooltip(_assigned_to) {
-    let tooltip = '';
-    if (_assigned_to && _assigned_to.length > 0) {
-      const index = _assigned_to.findIndex(assignee => assignee._id == this.userData._id);
-      if (index < 0) {
-        tooltip = _assigned_to[0].first_name + ' ' + _assigned_to[0].last_name;
+      if (typeof assigneeTmp === 'string' && assigneeTmp !== null) {
+        this.assignee = await this.publicFunctions.getOtherUser(assigneeTmp);
       } else {
-        tooltip = _assigned_to[index].first_name + ' ' + _assigned_to[index].last_name;
+        this.assignee = assigneeTmp;
       }
+
+      this.profilePic = this.assignee.profile_pic;
+      this.assigneeTooltip = this.assignee.first_name + ' ' + this.assignee.last_name;
     }
-    return tooltip;
   }
 }
