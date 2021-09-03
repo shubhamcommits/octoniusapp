@@ -18,7 +18,6 @@
 
         <!-- Edit comment Content starts -->
         <ng-container *ngIf="displayCommentEditor">
-
             <!-- Save Button starts -->
             <div class="text-right padding-bottom-md mb-2">
                 <button class="btn btn-primary btn-sm"
@@ -28,8 +27,9 @@
 
             <!-- Comment Edit starts -->
             <div class="innercard">
-                <app-quill-editor *ngIf="comment.content"
-                    [editorId]="('comment_view_edit_'+ index + comment?._id) || 'editor'" [toolbar]="true" [readOnly]="false"
+                <app-quill-editor
+                    [editorId]="('comment_edit_'+ index + comment?._id) || 'editor'"
+                    [toolbar]="true" [readOnly]="false"
                     [contents]="comment.content" [groupId]="groupId" (content)="getQuillData($event)">
                 </app-quill-editor>
             </div>
@@ -40,8 +40,10 @@
 
         <!-- Comment Content starts -->
         <div class="innercard " *ngIf="!displayCommentEditor">
-            <app-quill-editor *ngIf="comment.content" [editorId]="('comment_view_'+ index + comment?._id) || 'editor'"
-                [toolbar]="false" [readOnly]="true" [groupId]="groupId" [contents]="comment.content">
+            <app-quill-editor
+                [editorId]="('comment_view_'+ index + comment?._id) || 'editor'"
+                [toolbar]="false" [readOnly]="true"
+                [contents]="comment.content" [groupId]="groupId">
             </app-quill-editor>
         </div>
         <!-- Comment Content ends -->
