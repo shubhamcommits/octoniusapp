@@ -48,7 +48,7 @@ export class PostCommentComponent implements OnInit {
   @Output('remove') remove = new EventEmitter();
 
   // Display Comment editor variable
-  displayCommentEditor: boolean = false;
+  displayCommentEditor: boolean = true;
 
   // Quill Data
   quillData: any;
@@ -77,8 +77,9 @@ export class PostCommentComponent implements OnInit {
               this.likedByUsers.push($localize`:@@postComment.deletedUser:Deleted User`);
             });
       });
-
     }
+
+    this.displayCommentEditor = false;
   }
 
   /**
@@ -90,35 +91,37 @@ export class PostCommentComponent implements OnInit {
   }
 
   saveCommentData() {
-    this.comment.content = JSON.stringify(this.quillData.contents)
-    this.displayCommentEditor = false
-    let commentService = this.injector.get(CommentService);
-    this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
+    if (this.quillData) {
+      this.comment.content = JSON.stringify(this.quillData.contents)
+      let commentService = this.injector.get(CommentService);
+      this._content_mentions = this.quillData.mention.users.map((user)=> user.insert.mention.id)
 
-    // If content mentions has 'all' then only pass 'all' inside the array
-    if(this._content_mentions.includes('all'))
-      this._content_mentions = ['all']
+      // If content mentions has 'all' then only pass 'all' inside the array
+      if(this._content_mentions.includes('all'))
+        this._content_mentions = ['all']
 
-    // Set the values of the array
-    this._content_mentions = Array.from(new Set(this._content_mentions))
+      // Set the values of the array
+      this._content_mentions = Array.from(new Set(this._content_mentions))
 
-    this.comment._content_mentions = this._content_mentions;
+      this.comment._content_mentions = this._content_mentions;
 
-    // Create FormData Object
-    let formData = new FormData();
+      // Create FormData Object
+      let formData = new FormData();
 
-    // Append Comment Data
-    formData.append('comment', JSON.stringify(this.comment))
+      // Append Comment Data
+      formData.append('comment', JSON.stringify(this.comment))
 
-    // Append all the file attachments
-    if (this.files.length != 0) {
-      for (let index = 0; index < this.files.length; index++) {
-        formData.append('attachments', this.files[index], this.files[index]['name']);
+      // Append all the file attachments
+      if (this.files.length != 0) {
+        for (let index = 0; index < this.files.length; index++) {
+          formData.append('attachments', this.files[index], this.files[index]['name']);
+        }
       }
+
+      commentService.edit(formData, this.comment._id);
     }
 
-
-    commentService.edit(formData, this.comment._id);
+    this.displayCommentEditor = false;
   }
 
   deleteComment(index: number) {

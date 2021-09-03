@@ -188,6 +188,26 @@ export class UtilityService {
 
 
   /**
+   * This function generates a custom notification for warning event
+   * @param text
+   * @param title - optional
+   */
+  workplaceBlockedNotification(text: string){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom',
+      showCloseButton: true,
+      showConfirmButton: false
+    })
+
+    return Toast.fire({
+      icon: 'warning',
+      text: text
+    });
+  }
+
+
+  /**
    * This function generates a custom  notification for asynchronous event
    * @param text
    * @param promise - which resolves() or rejects() on the basis of response
