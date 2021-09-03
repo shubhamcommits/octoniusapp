@@ -360,7 +360,9 @@ export class NotificationsService {
                 .populate({ path: '_origin_post', populate: { path: '_group' } })
                 .populate('_origin_comment')
                 .populate('_owner', 'first_name last_name profile_pic')
+                .populate('_origin_group', 'group_name group_avatar')
                 .populate('_origin_folio')
+                .populate({ path: '_origin_folio', populate: { path: '_group' } })
                 .lean();
 
             return notifications;
@@ -387,6 +389,7 @@ export class NotificationsService {
                 .populate({ path: '_origin_post', populate: { path: '_group' } })
                 .populate('_origin_comment')
                 .populate('_owner', 'first_name last_name profile_pic')
+                .populate('_origin_group', 'group_name group_avatar')
                 .populate('_origin_folio')
                 .populate({ path: '_origin_folio', populate: { path: '_group' } })
                 .lean();
