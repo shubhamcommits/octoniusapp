@@ -82,15 +82,18 @@ export class DenyNavigationGuard implements CanActivate, CanActivateChild, CanDe
       return this.managementPortalService.getBillingStatus(this.workspaceId, currentWorkspace['management_private_api_key']).then(
         (res) => {
           if (res['blocked'] ) {
-            this.utilityService.warningNotification($localize`:@@denyNavigationGuard.workspaceNotAvailable:Your workspace is not available, please contact your administrator!`);
-            this.authService.signout().subscribe((res) => {
-              this.storageService.clear();
-              this.publicFunctions.sendUpdatesToGroupData({});
-              this.publicFunctions.sendUpdatesToRouterState({});
-              this.publicFunctions.sendUpdatesToUserData({});
-              this.publicFunctions.sendUpdatesToWorkspaceData({});
-              this.socketService.disconnectSocket();
-              this.router.navigate(['/home']);
+            this.utilityService.workplaceBlockedNotification($localize`:@@denyNavigationGuard.workspaceNotAvailable:Your workspace is not available, please contact your administrator!`).then(res => {
+              if (res.dismiss === Swal.DismissReason.close) {
+                this.authService.signout().subscribe((res) => {
+                  this.storageService.clear();
+                  this.publicFunctions.sendUpdatesToGroupData({});
+                  this.publicFunctions.sendUpdatesToRouterState({});
+                  this.publicFunctions.sendUpdatesToUserData({});
+                  this.publicFunctions.sendUpdatesToWorkspaceData({});
+                  this.socketService.disconnectSocket();
+                  this.router.navigate(['/home']);
+                });
+              }
             });
             return false;
           }
