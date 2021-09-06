@@ -14,6 +14,7 @@ export class CustomFieldsDialogComponent implements OnInit {
 
   showNewCustomField = false;
   newCustomFieldTitle = '';
+  newCustomFieldInputType = false;
 
   groupData;
 
@@ -53,6 +54,7 @@ export class CustomFieldsDialogComponent implements OnInit {
         const newCF = {
           name: this.newCustomFieldTitle.toLowerCase(),
           title: this.titleCase(this.newCustomFieldTitle),
+          input_type: this.newCustomFieldInputType,
           values: []
         };
 
@@ -70,6 +72,7 @@ export class CustomFieldsDialogComponent implements OnInit {
 
         this.showNewCustomField = false;
         this.newCustomFieldTitle = '';
+        this.newCustomFieldInputType = false;
       }
     }
   }

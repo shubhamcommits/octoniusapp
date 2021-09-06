@@ -23,7 +23,6 @@
 
 
         <div class="customFieldsList" *ngIf="customFields.length > 0">
-
             <div class="customFieldsBody">
                 <div class="field" *ngFor="let field of customFields">
                     <div class="title">
@@ -33,7 +32,7 @@
                             (click)="removeCustomField(field)"
                             style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
                     </div>
-                    <div class="values">
+                    <div class="values" *ngIf="!field.input_type">
                         <span class="badge" *ngFor="let value of field.values">
                             {{ value }}
                             <i class="material-icons" *ngIf="field.name != 'priority'"
@@ -44,32 +43,37 @@
                             <input type="text" autocomplete="off" placeholder="Add value and hit ENTER..."
                                 class="newValueInput"
                                 (keyup.enter)="addValue(field, $event)"/>
-                            <!--
-                            <button mat-button (click)="addValue(field, $event)">Add</button>
-                            -->
                         </div>
+                    </div>
+                    <div *ngIf="field.input_type" i18n="@@groupCFDialog.isAnInputCF">
+                      Is an Input Custom Field
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="newCustomFieldForm" style="padding: 10px; margin-top: 30px">
             <button class="btn badge-cf" (click)="showNewCustomField = !showNewCustomField">
                 <i class="material-icons">label</i>
                 <span i18n="@@groupCFDialog.addCustomField">ADD CUSTOM FIELD</span>
              </button>
+
              <div class="add-field" *ngIf="showNewCustomField">
-                 <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
-                 <div class="actions">
-                     <button class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@groupCFDialog.save">
-                        Save
-                     </button>
-                     <button class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''"
-                          i18n="@@groupCFDialog.cancel">
-                        Cancel
-                     </button>
-                 </div>
+                <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
+
+                <input class="" type="checkbox" name="inputType" [(ngModel)]="newCustomFieldInputType">
+                <label class="onoffswitch-label" for="inputType" i18n="@@groupCFDialog.inputValue">Input Value</label>
+
+                <div class="actions">
+                    <button class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@groupCFDialog.save">
+                      Save
+                    </button>
+                    <button class="col-md-4 btn btn-danger" (click)="showNewCustomField = false; this.newCustomFieldTitle = ''"
+                        i18n="@@groupCFDialog.cancel">
+                      Cancel
+                    </button>
+                </div>
              </div>
         </div>
-
     </mat-dialog-content>
 </div>

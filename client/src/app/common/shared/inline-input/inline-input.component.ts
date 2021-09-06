@@ -64,6 +64,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
   @Input() groupId: string;
   @Input() options: [string];
   @Input() customFieldName='';
+  @Input() customFieldInputType = false;
 
   customFieldValue = '';
 

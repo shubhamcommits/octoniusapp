@@ -444,6 +444,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.saveCustomField(customFieldName, customFieldValue);
   }
 
+  saveInputCustomField(event: Event, customFieldName: string) {
+    const customFieldValue = event.target['value'];
+    this.saveCustomField(customFieldName, customFieldValue);
+  }
+
   saveCustomField(customFieldName: string, customFieldValue: string) {
     this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.postService.saveCustomField(this.postData._id, customFieldName, customFieldValue, this.groupId)

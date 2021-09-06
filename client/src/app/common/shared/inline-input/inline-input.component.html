@@ -49,12 +49,20 @@
             tabindex="0" class="inline-edit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
     </div>
     <div *ngIf="editing">
-        <mat-form-field style="width: 90%; float: right;">
+        <mat-form-field style="width: 90%; float: right;" *ngIf="!customFieldInputType">
             <mat-select ngDefaultControl
                     (selectionChange)="onCustomFieldChange($event)"
                     [(ngModel)]="customFieldValue">
                 <mat-option *ngFor="let opt of options" [value]="opt">{{ opt }}</mat-option>
             </mat-select>
         </mat-form-field>
+
+        <div *ngIf="customFieldInputType" style="display: flex; float: left; width: 125px;">
+          <input type="text" [name]="customFieldName" [(ngModel)]="customFieldValue"
+              class="col" style="width: 94px;" [value]="customFieldValue"
+              (keyup.enter)="onCustomFieldChange($event)" />
+          <i (click)="onCustomFieldChange($event);" class="material-icons muted mr-5"
+            style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i>
+        </div>
     </div>
 </div>
