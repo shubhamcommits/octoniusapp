@@ -368,7 +368,7 @@
 
             <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
                 <p class="col">{{ cf.title }}</p>
-                <mat-select ngDefaultControl
+                <mat-select ngDefaultControl *ngIf="!cf.input_type"
                     [(value)]="selectedCFValues[cf.name]"
                     (selectionChange)="onCustomFieldChange($event, cf.name)"
                     appearance="fill"
@@ -377,8 +377,18 @@
                     <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
                 </mat-select>
 
+                <div *ngIf="cf.input_type" class="col" style="display: flex; float: left; width: 125px;">
+                  <input type="text" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]"
+                      class="col" style="width: 94px;" [value]="selectedCFValues[cf.name]"
+                      (keyup.enter)="saveInputCustomField($event, cf.name)" />
+                  <i (click)="saveCustomField(cf.name, selectedCFValues[cf.name]);" class="material-icons muted mr-5"
+                    style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i>
+                </div>
+
                 <!-- Clean field starts -->
-                <i (click)="saveCustomField(cf.name, null);" class="material-icons muted mr-5" style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
+                <i (click)="saveCustomField(cf.name, null);"
+                  class="material-icons muted mr-5"
+                  style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
                 <!-- Clean field ends -->
             </div>
         </div>
