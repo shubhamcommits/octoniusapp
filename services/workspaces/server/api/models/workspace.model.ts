@@ -63,6 +63,10 @@ const workspaceSchema = new Schema({
                 type: String,
                 required: true
             },
+            input_type: {
+                type: Boolean,
+                default: false
+            },
             values: {
                 type: [String],
                 required: true,
