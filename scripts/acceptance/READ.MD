@@ -35,15 +35,31 @@ where --host = host on which you want to restore the this backup and --db= name 
 ```
 ## if it is fresh deployment then following steps should be execuited
 ```
-step-1) git clone git clone https://bitbucket.org/octonius/octonius.git -b develop
-step-2) cd octonius/scripts/acceptance
-step-3) docker login
-step-4) ./deploy-octonius-acc.sh
+step-1) copy the following provided by octonious to your home directory or any directory of your choice
+ files-list: 
+           1) deploy-octonious-acc.sh ( for acc deployment )
+           2) .env
+           3) backup.sh
+           4) deploy-octonius-acc.yml
+           5) restore.sh
+           6) stop-octonius-acc.sh
+           7) mongo_setup_scripts ( folder container setup.sh so provide this entire folder as it is needed )
+
+step-2) docker login
+step-3) ./deploy-octonius-acc.sh
 ```
 ## If deployment is for client or existing client with our setup
 ```
-step-1) git clone git clone https://bitbucket.org/octonius/octonius.git -b develop
-step-2) cd octonius/scripts/acceptance
+step-1) copy the following provided by octonious to your home directory or any directory of your choice
+ files-list:
+           1) deploy-octonious-acc.sh ( for acc deployment )
+           2) .env
+           3) backup.sh
+           4) deploy-octonius-acc.yml
+           5) restore.sh
+           6) stop-octonius-acc.sh
+           7) mongo_setup_scripts ( folder container setup.sh so provide this entire folder as it is needed )
+step-2) go to the directory where you have store this above files and folder
 step-3) backup.sh =( for backing up the existing mongodb database )
 step-4) docker login
 step-5) ./deploy-octonius-acc.sh
