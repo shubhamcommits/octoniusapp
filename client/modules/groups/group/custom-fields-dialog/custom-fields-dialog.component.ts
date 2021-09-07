@@ -1,7 +1,8 @@
-import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-custom-fields-dialog',
@@ -9,6 +10,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./custom-fields-dialog.component.scss']
 })
 export class CustomFieldsDialogComponent implements OnInit {
+
+  @Output() customFieldsEvent = new EventEmitter();
 
   customFields = [];
 
@@ -18,11 +21,13 @@ export class CustomFieldsDialogComponent implements OnInit {
 
   groupData;
 
-  @Output() customFieldsEvent = new EventEmitter();
+  // PUBLIC FUNCTIONS
+  public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     public utilityService: UtilityService,
     private groupService: GroupService,
+    private injector: Injector,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
@@ -66,6 +71,8 @@ export class CustomFieldsDialogComponent implements OnInit {
           if (index >= 0) {
             newCF['_id'] = dbCustomFields[index]._id;
           }
+          this.groupData.custom_fields = res['group'].custom_fields;
+          this.publicFunctions.sendUpdatesToGroupData(this.groupData);
         });
 
         this.customFields.push(newCF);
@@ -97,6 +104,9 @@ export class CustomFieldsDialogComponent implements OnInit {
                   // Remove the field from the list
                   this.customFields.splice(index, 1);
 
+                  this.groupData.custom_fields = res['group'].custom_fields;
+                  this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@customFieldDialog.fieldDeleted:Field deleted!`));
                 }).catch((err) => {
                   reject(this.utilityService.rejectAsyncPromise($localize`:@@customFieldDialog.unableToDeleteField:Unable to delete field, please try again!`));
@@ -121,11 +131,21 @@ export class CustomFieldsDialogComponent implements OnInit {
         field.values.push(newValue);
 
         // Save the new value
-        this.groupService.addCustomFieldNewValue(newValue, field._id, this.groupData._id);
+        this.groupService.addCustomFieldNewValue(newValue, field._id, this.groupData._id).then(res => {
+          this.groupData.custom_fields = res['group'].custom_fields;
+          this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+        });
 
         event.target['value'] = '';
       }
     }
+  }
+
+  setDisplayInKanbanCard(field) {
+    this.groupService.setCustomFieldDisplayKanbanCard(!field.display_in_kanban_card, field._id, this.groupData._id).then(res => {
+      this.groupData.custom_fields = res['group'].custom_fields;
+      this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+    });
   }
 
   removeValue(field, value: string) {
@@ -136,6 +156,9 @@ export class CustomFieldsDialogComponent implements OnInit {
       this.groupService.removeCustomFieldValue(value, field._id, this.groupData._id)
         .then((res) => {
           field.values.splice(index, 1);
+
+          this.groupData.custom_fields = res['group'].custom_fields;
+          this.publicFunctions.sendUpdatesToGroupData(this.groupData);
         });
     }
   }

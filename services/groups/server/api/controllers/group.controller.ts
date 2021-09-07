@@ -1187,6 +1187,37 @@ export class GroupController {
         }
     };
 
+    async setCustomFieldDisplayKanbanCard(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the field and value from fileHandler middleware
+        const fieldId = req.body['fieldId'];
+        const display_in_kanban_card = req.body['display_in_kanban_card'];
+
+        try {
+            // Find the custom field in a group and add the value
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                $set: { "custom_fields.$[field].display_in_kanban_card": display_in_kanban_card }
+            }, {
+                arrayFilters: [{ "field._id": fieldId }],
+                new: true
+            }).select('custom_fields')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
     async removeCustomFieldValue(req: Request, res: Response, next: NextFunction) {
 
         // Fetch the groupId

@@ -15,10 +15,12 @@ export class KanbanTaskCardComponent {
   @Input() isDelay: Boolean;
   @Input() task: any;
   @Input() isIdeaModuleAvailable;
-  @Input() groupId: string
+  @Input() groupId: string;
+
 
   // Current User Data
-  userData : any = {};
+  userData: any = {};
+  groupData: any = {};
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -30,6 +32,7 @@ export class KanbanTaskCardComponent {
 
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
+    this.groupData = await this.publicFunctions.getCurrentGroup();
   }
 
   /**
@@ -77,5 +80,13 @@ export class KanbanTaskCardComponent {
     }
 
     return (isNorthStar) ? taskClass + ' north-star' : taskClass;
+  }
+
+  displayCustomField(cfName: string) {
+    const index = this.groupData?.custom_fields?.findIndex(cf => cf.name == cfName);
+    return this.groupData
+      && this.groupData?.custom_fields
+      && this.groupData?.custom_fields[index]
+      && this.groupData?.custom_fields[index]?.display_in_kanban_card;
   }
 }

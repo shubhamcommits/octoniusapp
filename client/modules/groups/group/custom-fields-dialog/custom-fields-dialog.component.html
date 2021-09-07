@@ -32,6 +32,7 @@
                             (click)="removeCustomField(field)"
                             style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
                     </div>
+
                     <div class="values" *ngIf="!field.input_type">
                         <span class="badge" *ngFor="let value of field.values">
                             {{ value }}
@@ -45,8 +46,14 @@
                                 (keyup.enter)="addValue(field, $event)"/>
                         </div>
                     </div>
-                    <div *ngIf="field.input_type" i18n="@@groupCFDialog.isAnInputCF">
+
+                    <div class="values" *ngIf="field.input_type" i18n="@@groupCFDialog.isAnInputCF">
                       Is an Input Custom Field
+                    </div>
+
+                    <div class="displayKanbanCard" *ngIf="field.name != 'priority'">
+                      <input class="" type="checkbox" (click)="setDisplayInKanbanCard(field)" [(ngModel)]="field.display_in_kanban_card">
+                      <label class="onoffswitch-label" style="margin-left: 9px;" i18n="@@groupCFDialog.displayinKanbanCard">Display in Kanban Card</label>
                     </div>
                 </div>
             </div>
@@ -62,7 +69,7 @@
                 <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
 
                 <input class="" type="checkbox" name="inputType" [(ngModel)]="newCustomFieldInputType">
-                <label class="onoffswitch-label" for="inputType" i18n="@@groupCFDialog.inputValue">Input Value</label>
+                <label class="onoffswitch-label" style="margin-left: 10px;" for="inputType" i18n="@@groupCFDialog.inputValue">Input Value</label>
 
                 <div class="actions">
                     <button class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@groupCFDialog.save">
