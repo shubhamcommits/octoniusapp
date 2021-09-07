@@ -93,6 +93,7 @@
       <div class="cf_cell">
         <app-inline-input
             [customFieldName]="cf.name"
+            [customFieldInputType]="cf.input_type"
             [domainObject]="task"
             [required]="true"
             [options]="customFieldValues(cf.name)"

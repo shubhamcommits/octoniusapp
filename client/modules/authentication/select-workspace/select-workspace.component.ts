@@ -8,6 +8,7 @@ import { SocketService } from 'src/shared/services/socket-service/socket.service
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 
 @Component({
   selector: 'select-workspace',
@@ -100,15 +101,18 @@ export class SelectWorkspaceComponent implements OnInit, OnDestroy {
             });
 
             if (workspaceBlocked) {
-              this.utilityService.errorNotification($localize`:@@selectWorkspace.workspaceIsNotAvailable:Your workspace is not available, please contact your administrator!`);
-              this.authService.signout().subscribe((res) => {
-                this.storageService.clear();
-                this.publicFunctions.sendUpdatesToGroupData({});
-                this.publicFunctions.sendUpdatesToRouterState({});
-                this.publicFunctions.sendUpdatesToUserData({});
-                this.publicFunctions.sendUpdatesToWorkspaceData({});
-                this.socketService.disconnectSocket();
-                this.router.navigate(['/home']);
+              this.utilityService.workplaceBlockedNotification($localize`:@@selectWorkspace.workspaceIsNotAvailable:Your workspace is not available, please contact your administrator!`).then(res => {
+                if (res.dismiss === Swal.DismissReason.close) {
+                  this.authService.signout().subscribe((res) => {
+                    this.storageService.clear();
+                    this.publicFunctions.sendUpdatesToGroupData({});
+                    this.publicFunctions.sendUpdatesToRouterState({});
+                    this.publicFunctions.sendUpdatesToUserData({});
+                    this.publicFunctions.sendUpdatesToWorkspaceData({});
+                    this.socketService.disconnectSocket();
+                    this.router.navigate(['/home']);
+                  });
+                }
               });
             } else {
               //if query parms exist redirect to teams permission page else normal flow

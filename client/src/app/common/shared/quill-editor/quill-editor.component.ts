@@ -120,7 +120,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
         : this.quill.clipboard.convert(this.contents);
 
       // Set the content inside quill container
-      this.setContents(this.quill, delta)
+      this.setContents(this.quill, delta);
     }
   }
 
@@ -163,11 +163,12 @@ export class QuillEditorComponent implements OnInit, OnChanges {
         : this.quill.clipboard.convert(this.contents);
 
       // Set the content inside quill container
-      this.setContents(this.quill, delta)
+      this.setContents(this.quill, delta);
     }
 
+
     // Turn on the quill text change event handler
-    this.quillContentChanges(this.quill)
+    this.quillContentChanges(this.quill);
   }
 
   /**
@@ -425,7 +426,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
    * @param contents of type Delta
    */
   setContents(quill: Quill, contents: any) {
-    quill.setContents(contents)
+    quill.setContents(contents);
   }
 
   /**

@@ -67,9 +67,14 @@
         </div>
 
         <div class="notification_tag d-none d-sm-block">
-          <div class="tags">
-            <span class="badge" *ngIf="notification?._origin_post?._group?.group_name">
-              {{ notification?._origin_post?._group?.group_name }}
+          <div class="tags" *ngIf="notification?.type != 'join-group' && notification?.type != 'leave-group' && notification?._origin_post?._group?.group_name">
+            <span class="badge">
+              {{ notification?._origin_post?._group?.group_name | truncatetext: 20 }}
+            </span>
+          </div>
+          <div class="tags" *ngIf="(notification?.type == 'join-group' || notification?.type == 'leave-group') && notification?._origin_group?.group_name">
+            <span class="badge">
+              {{ notification?._origin_group?.group_name | truncatetext: 20 }}
             </span>
           </div>
         </div>
