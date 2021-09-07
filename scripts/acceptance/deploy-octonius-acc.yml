@@ -18,7 +18,6 @@ services:
     hostname: mongo-2.mongo
     container_name: mongo-2.mongo
     image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
-    #image: mongo:5.0.2-focal
     restart: always
     expose: 
     - 27017
