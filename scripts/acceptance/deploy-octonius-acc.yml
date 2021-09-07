@@ -3,7 +3,7 @@ version: '3.7'
 services:
   mongo-setup:
     container_name: mongo-setup
-    image: mongo
+    image: mongo:5.0.2-focal
     restart: on-failure
     networks:
        - acc
@@ -11,53 +11,55 @@ services:
       - ./mongo_setup_scripts:/scripts
     entrypoint: [ "/scripts/setup.sh" ]
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
- 
-  mongodb1:
-    hostname: mongo1
-    container_name: mongodb
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
+  mongo-2.mongo:
+    hostname: mongo-2.mongo
+    container_name: mongo-2.mongo
     image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
+    #image: mongo:5.0.2-focal
     restart: always
     expose: 
     - 27017
     volumes:
-      - ./acc_db_data/mongodb/mongo/data1/db:/data/db
+      - ./acc_db_data/mongodb/data2/db:/data/db
     ports:
-      - ${MONGO_PORT1}:${MONGO_MACHINE_PORT}
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--journal", "--dbpath", "/data/db" ]
+      - ${MONGO_PORT3}:${MONGO_MACHINE_PORT}
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "octo_rs", "--journal", "--dbpath", "/data/db" ]
     networks:
       - acc
 
-  mongodb2:
-    hostname: mongo2
-    container_name: mongodb_rp1
+  mongo-1.mongo:
+    hostname: mongo-1.mongo
+    container_name: mongo-1.mongo
     image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
     restart: always
     expose:
     - 27017
     volumes:
-      #- acc_db_data/mongo/data2/db:/data/db
-      - ./acc_db_data/mongodb/mongo/data2/db:/data/db
+      - ./acc_db_data/mongodb/data1/db:/data/db
     ports:
       - ${MONGO_PORT2}:${MONGO_MACHINE_PORT}
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--journal", "--dbpath", "/data/db" ]
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "octo_rs", "--journal", "--dbpath", "/data/db" ]
     networks:
       - acc
   
-  mongodb3:
-    hostname: mongo3
-    container_name: mongodb_rp2
+  mongo-0.mongo:
+    hostname: mongo-0.mongo
+    container_name: mongo-0.mongo
     image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
     restart: always
     expose:
     - 27017
     volumes:
-      - ./acc_db_data/mongodb/mongo/data3/db:/data/db
+      - "./acc_db_data/mongodb/data0/db:/data/db"
     ports:
-      - ${MONGO_PORT3}:${MONGO_MACHINE_PORT}
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--journal", "--dbpath", "/data/db" ]
+      - ${MONGO_PORT1}:${MONGO_MACHINE_PORT}
+    links:
+      - mongo-1.mongo:mongo-1.mongo
+      - mongo-2.mongo:mongo-2.mongo
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "octo_rs", "--journal", "--dbpath", "/data/db" ]
     networks:
       - acc
         
@@ -86,13 +88,13 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     links:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     networks:
       - acc
              
@@ -122,13 +124,13 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     links:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     networks:
       - acc
          
@@ -158,13 +160,13 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     links:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     networks:
       - acc
     
@@ -194,13 +196,13 @@ services:
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     links:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     networks:
       - acc    
       
@@ -225,13 +227,13 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     links:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     networks:
       - acc
           
@@ -255,13 +257,13 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     links:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     networks:
       - acc
           
@@ -286,13 +288,13 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     links:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     networks:
       - acc
     
@@ -316,13 +318,13 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     links:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     networks:
       - acc
     
@@ -347,13 +349,13 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     links:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     networks:
       - acc
 
@@ -381,13 +383,13 @@ services:
       - SLACK_CLIENT_SECRET=${SLACK_CLIENT_SECRET}
       - SLACK_BOT_ACCESS_TOKEN=${SLACK_BOT_ACCESS_TOKEN}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     links:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     networks:
       - acc
       
@@ -412,19 +414,21 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     links:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
     networks:
       - acc
 
   client:
     container_name: octonius_client
     image: ${DOCKER_USER}/${DOCKER_REPO}:client
+    ports:
+      - 80:80
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment: 
@@ -433,9 +437,9 @@ services:
       - WEBSOCKET=${WEBSOCKET}
       - mgmt_portal_domain=${mgmt_portal_domain}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
       - auths-server
       - groups-server
       - workspaces-server
@@ -456,9 +460,9 @@ services:
     ports:
       - ${APPLICATION_PORT}:${NGINX_PORT}
     depends_on:
-      - mongodb1
-      - mongodb2
-      - mongodb3
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
       - auths-server
       - groups-server
       - workspaces-server
@@ -474,12 +478,12 @@ services:
       - acc
     
 volumes:
-  acc_db_data:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${PWD}/data/db
-      o: bind
+  #acc_db_data:
+  #  driver: local
+  #  driver_opts:
+  #    type: none
+  #    device: ${PWD}/data/db
+  #    o: bind
 
   acc_groups_uploads_data:
     driver: local
