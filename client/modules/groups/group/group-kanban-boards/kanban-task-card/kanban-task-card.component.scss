@@ -69,3 +69,15 @@
     align-self: center;
   }
 }
+
+.badge-cf {
+  margin: 0 5px !important;
+  font-family: Nunito, sans-serif;
+  font-style: normal;
+  font-size: 12px;
+  align-items: center;
+  color: $muted-color;
+  background-color: #e4edf8;
+  border-radius: 10px;
+  padding: 0 5px !important;
+}

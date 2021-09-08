@@ -18,13 +18,15 @@
               *ngIf="task?.task?.custom_fields && task?.task?.custom_fields['priority']">
             {{ task?.task?.custom_fields['priority'] }}
           </div>
+          <div *ngFor="let cf of task?.task?.custom_fields | keyvalue">
+            <div *ngIf="cf.key != 'priority' && cf.value && displayCustomField(cf.key)" class="badge-cf">
+              {{ cf.value }}
+            </div>
+          </div>
+
         </div>
 
-        <div *ngFor="let cf of task?.task?.custom_fields | keyvalue">
-          <div *ngIf="cf.key != 'priority' && cf.value && displayCustomField(cf.key)">
-            {{ cf.key }} - {{ cf.value }}
-          </div>
-        </div>
+       
     </div>
     <app-assignee-avatar [post]="task" [userData]="userData" style="margin-right: 10px;"></app-assignee-avatar>
   </div>
