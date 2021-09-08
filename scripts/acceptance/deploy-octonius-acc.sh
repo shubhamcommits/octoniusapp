@@ -8,7 +8,6 @@ set +o allexport
 
 # Make Suitable Directories
 mkdir -p data \
-      data/db \
       data/uploads \
       data/uploads/groups \
       data/uploads/posts \

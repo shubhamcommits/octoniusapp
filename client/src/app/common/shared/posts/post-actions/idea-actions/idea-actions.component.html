@@ -1,5 +1,5 @@
-<span style="color: #005FD5;">
-  <i style="color: #F67B99;" class="material-icons-outlined" [ngClass]="{'active': votedNegativeIndex >= 0}" (click)="vote(false)">arrow_downward</i>
-  <span style="cursor: auto;">{{ (post?.task?.idea?.positive_votes?.length || 0) - (post?.task?.idea?.negative_votes?.length || 0) }} <span i18n="@@ideaActions.votes">votes</span></span>
-  <i class="material-icons-outlined" [ngClass]="{'active': votedPositiveIndex >= 0}" (click)="vote(true)">arrow_upward</i>
+<span>
+  <i style="color: #F67B99;" class="btn btn-link material-icons-outlined" [ngClass]="{'active': votedNegativeIndex >= 0}" (click)="vote(false)">arrow_downward</i>
+  <span style="cursor: auto;" class="muted">{{ (post?.task?.idea?.positive_votes?.length || 0) - (post?.task?.idea?.negative_votes?.length || 0) }} <span i18n="@@ideaActions.votes">votes</span></span>
+  <i class="btn btn-link material-icons-outlined" [ngClass]="{'active': votedPositiveIndex >= 0}" (click)="vote(true)">arrow_upward</i>
 </span>
