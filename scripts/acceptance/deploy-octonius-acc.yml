@@ -426,8 +426,6 @@ services:
   client:
     container_name: octonius_client
     image: ${DOCKER_USER}/${DOCKER_REPO}:client
-    ports:
-      - 80:80
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment: 

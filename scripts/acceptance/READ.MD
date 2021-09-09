@@ -39,9 +39,9 @@ step-1) copy the following provided by octonious to your home directory or any d
  files-list: 
            1) deploy-octonious-acc.sh ( for acc deployment )
            2) .env
-           3) backup.sh
+           *3) backup.sh
            4) deploy-octonius-acc.yml
-           5) restore.sh
+           *5) restore.sh
            6) stop-octonius-acc.sh
            7) mongo_setup_scripts ( folder container setup.sh so provide this entire folder as it is needed )
 
