@@ -3127,7 +3127,7 @@
         <target state="translated">BENUTZERDEFINIERTES FELD HINZUFÜGEN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.html</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">78</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCFDialog.inputValue" datatype="html">
@@ -3135,7 +3135,7 @@
         <target state="translated">Eingegebener Wert</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.html</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">85</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCFDialog.save" datatype="html">
@@ -3143,7 +3143,7 @@
         <target state="translated"> Speichern </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.html</context>
-          <context context-type="linenumber">76,77</context>
+          <context context-type="linenumber">89,90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCFDialog.cancel" datatype="html">
@@ -3151,7 +3151,7 @@
         <target state="translated"> Abbrechen </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.html</context>
-          <context context-type="linenumber">80,81</context>
+          <context context-type="linenumber">93,94</context>
         </context-group>
       </trans-unit>
       <trans-unit id="customFieldDialog.fieldAlreadyExist" datatype="html">
@@ -3159,7 +3159,7 @@
         <target state="translated">Feld existiert bereits!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">57</context>
+          <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="customFieldDialog.pleaseWaitDeletingCF" datatype="html">
@@ -3167,7 +3167,7 @@
         <target state="translated">Bitte warten Sie, wir löschen das benutzerdefinierte Feld...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">98</context>
+          <context context-type="linenumber">100</context>
         </context-group>
       </trans-unit>
       <trans-unit id="customFieldDialog.fieldDeleted" datatype="html">
@@ -3175,7 +3175,7 @@
         <target state="translated">Feld gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">110</context>
+          <context context-type="linenumber">112</context>
         </context-group>
       </trans-unit>
       <trans-unit id="customFieldDialog.unableToDeleteField" datatype="html">
@@ -3183,7 +3183,7 @@
         <target state="translated">Das Feld kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">112</context>
+          <context context-type="linenumber">114</context>
         </context-group>
       </trans-unit>
       <trans-unit id="customFieldDialog.valueAlreadyExists" datatype="html">
@@ -3191,7 +3191,55 @@
         <target state="translated">Wert ist bereits vorhanden!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
-          <context context-type="linenumber">129</context>
+          <context context-type="linenumber">131</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="customFieldDialog.pleaseWaitUpdatingCF" datatype="html">
+        <source>Please wait we are updating the custom field...</source>
+        <target state="translated">Bitte warten Sie, wir aktualisieren das benutzerdefinierte Feld...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">147</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">196</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">215</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="customFieldDialog.fieldUpdated" datatype="html">
+        <source>Field updated!</source>
+        <target state="translated">Feld aktualisiert!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">152</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">204</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">222</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="customFieldDialog.unableToUpdateField" datatype="html">
+        <source>Unable to update field, please try again!</source>
+        <target state="translated">Feld kann nicht aktualisiert werden. Bitte versuchen Sie es erneut!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">154</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">206</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.ts</context>
+          <context context-type="linenumber">224</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteGroup.deleteThisGroup" datatype="html">
@@ -4943,11 +4991,11 @@
         <target state="translated">Mitglieder</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="linenumber">18</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">75</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupList.agora" datatype="html">
@@ -4955,7 +5003,7 @@
         <target state="translated">AGORA</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupList.join" datatype="html">
@@ -4963,7 +5011,7 @@
         <target state="translated">TRETEN SIE</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
-          <context context-type="linenumber">56</context>
+          <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupList.unableToConnectToServer" datatype="html">
@@ -7011,7 +7059,6 @@
       <trans-unit id="groupNavbar.notes" datatype="html">
         <source> Notes</source>
         <target state="needs-adaptation">Notizen</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">60</context>
@@ -7020,7 +7067,6 @@
       <trans-unit id="groupNavbar.personalTasks" datatype="html">
         <source> Personal Tasks</source>
         <target state="needs-adaptation">Meine Aufgaben</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">70</context>
@@ -7029,7 +7075,6 @@
       <trans-unit id="groupNavbar.personalFiles" datatype="html">
         <source> Personal Files</source>
         <target state="needs-adaptation">Persönliche Dateien</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">80</context>
