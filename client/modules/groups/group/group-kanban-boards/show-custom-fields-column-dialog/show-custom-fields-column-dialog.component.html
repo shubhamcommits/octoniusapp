@@ -5,8 +5,8 @@
 
     <div class="content-box">
       <div *ngFor="let cf of customFields" style="display: flex; justify-content: space-between">
-        <div *ngIf="cf.name != 'priority'"> {{ cf.title }} </div>
-        <div *ngIf="cf.name != 'priority'">
+        <div *ngIf="cf.input_type"> {{ cf.title }} </div>
+        <div *ngIf="cf.input_type">
           <input class="" type="checkbox" (click)="showCFInColumn(cf)" [(ngModel)]="cf.showInColumn" />
         </div>
       </div>
