@@ -193,6 +193,14 @@ export class GroupService {
     return this._http.put(this.baseURL + `/${groupId}/customFields/addValue`, { fieldId, value }).toPromise();
   }
 
+  setCustomFieldDisplayKanbanCard(display_in_kanban_card: boolean, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/customFields/displayInKanbanCard`, { fieldId, display_in_kanban_card }).toPromise();
+  }
+
+  setCustomFieldColor(color: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/customFields/color`, { fieldId, color }).toPromise();
+  }
+
   removeCustomFieldValue(value: string, fieldId: string, groupId: string) {
     return this._http.put(this.baseURL + `/${groupId}/customFields/removeValue`, { fieldId, value }).toPromise();
   }

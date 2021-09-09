@@ -13,7 +13,7 @@
 
     <mat-dialog-content>
         <div class="description">
-            <img src="assets/images/placeholder_cf.svg" alt="" style="width: 300px; margin-bottom: 24px">
+            <img src="assets/images/placeholder_cf.svg" alt="" style="width: 200px; margin-bottom: 24px">
             <p i18n="@@groupCFDialog.createCustomFields">Create custom fields to improve how you organize your workflows in task boards.</p>
         </div>
 
@@ -32,6 +32,7 @@
                             (click)="removeCustomField(field)"
                             style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
                     </div>
+
                     <div class="values" *ngIf="!field.input_type">
                         <span class="badge" *ngFor="let value of field.values">
                             {{ value }}
@@ -45,8 +46,27 @@
                                 (keyup.enter)="addValue(field, $event)"/>
                         </div>
                     </div>
-                    <div *ngIf="field.input_type" i18n="@@groupCFDialog.isAnInputCF">
+
+                    <div class="values" *ngIf="field.input_type" i18n="@@groupCFDialog.isAnInputCF">
                       Is an Input Custom Field
+                    </div>
+
+                    <div class="displayKanbanCard" *ngIf="field.name != 'priority'">
+                      <input class="" type="checkbox" (click)="setDisplayInKanbanCard(field)" [(ngModel)]="field.display_in_kanban_card">
+                      <label class="onoffswitch-label" style="margin-left: 9px;" i18n="@@groupCFDialog.displayinKanbanCard">Display in Kanban Card</label>
+                    </div>
+
+                    <div *ngIf="field.name != 'priority'" style="display: flex;">
+                      <div [ngStyle]="{'width': '30px', 'height': '30px', 'background-color': field?.badge_color }">
+                        <button *ngIf="field?.badge_color"
+                        class="btn removeImageBtn"
+                        style="margin-left: -9px; margin-top: -5px;"
+                        (click)="removeBadgeColor(field)">
+                      <i class="material-icons">close</i>
+                    </button>
+                      </div>
+                      
+                      <i class="material-icons muted" style="cursor: pointer;" (click)="openColorPicker(field)">color_lens</i>
                     </div>
                 </div>
             </div>
@@ -62,7 +82,7 @@
                 <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
 
                 <input class="" type="checkbox" name="inputType" [(ngModel)]="newCustomFieldInputType">
-                <label class="onoffswitch-label" for="inputType" i18n="@@groupCFDialog.inputValue">Input Value</label>
+                <label class="onoffswitch-label" style="margin-left: 10px;" for="inputType" i18n="@@groupCFDialog.inputValue">Input Value</label>
 
                 <div class="actions">
                     <button class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@groupCFDialog.save">

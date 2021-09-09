@@ -23,7 +23,10 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   tasks: any = [];
   userData: any;
   customFields: any = [];
+
   sortingBit:String = 'none';
+  sortingData: any;
+
   currentWorkspace: any;
   isIdeaModuleAvailable = false;
   isShuttleTasksModuleAvailable = false;
@@ -174,8 +177,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     return this.isLoading$.next(false);
   }
 
-  async onSortTaskEmitter(bit:string){
-    this.sortingBit = bit;
+  async onSortTaskEmitter(sort: any){
+    this.sortingBit = sort.bit;
+    this.sortingData = sort.data;
   }
 
   async onFilterTaskEmitter(filter: any){

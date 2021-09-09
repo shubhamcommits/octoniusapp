@@ -158,6 +158,10 @@ const GroupSchema = new Schema({
                 type: [String],
                 required: true,
                 default: []
+            },
+            display_in_kanban_card: {
+                type: Boolean,
+                default: false
             }
         }]
     },

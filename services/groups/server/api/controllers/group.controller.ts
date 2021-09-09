@@ -394,7 +394,7 @@ export class GroupController {
                 ]
             })
                 .sort('_id')
-                .limit(10)
+                //.limit(10)
                 .populate({
                     path: '_members',
                     select: '_id',
@@ -1176,6 +1176,68 @@ export class GroupController {
                 arrayFilters: [{ "field._id": fieldId }],
                 new: true
             }).select('custom_fields');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async setCustomFieldDisplayKanbanCard(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the field and value from fileHandler middleware
+        const fieldId = req.body['fieldId'];
+        const display_in_kanban_card = req.body['display_in_kanban_card'];
+
+        try {
+            // Find the custom field in a group and add the value
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                $set: { "custom_fields.$[field].display_in_kanban_card": display_in_kanban_card }
+            }, {
+                arrayFilters: [{ "field._id": fieldId }],
+                new: true
+            }).select('custom_fields')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async setCustomFieldColor(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the field and value from fileHandler middleware
+        const fieldId = req.body['fieldId'];
+        const color = req.body['color'];
+
+        try {
+            // Find the custom field in a group and add the value
+            const group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    $set: { "custom_fields.$[field].badge_color": color }
+                }, {
+                    arrayFilters: [{ "field._id": fieldId }],
+                    new: true
+                }).select('custom_fields')
+                .lean();
 
             // Send status 200 response
             return res.status(200).json({
