@@ -85,6 +85,7 @@ import { KanbanTaskCardComponent } from './group/group-kanban-boards/kanban-task
 import { ColumnProjectSectionComponent } from './group/group-kanban-boards/column-project-section/column-project-section.component';
 import { AdvancedFilterDialogComponent } from './group/group-kanban-boards/board-bar/advanced-filter-dialog/advanced-filter-dialog.component';
 import { GroupReportsComponent } from './group/group-reports/group-reports.component';
+import { ShowCustomFieldsColumnDialogComponent } from './group/group-kanban-boards/show-custom-fields-column-dialog/show-custom-fields-column-dialog.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -185,6 +186,7 @@ import { GroupReportsComponent } from './group/group-reports/group-reports.compo
 
     GanttViewComponent,
     CreateProjectColumnDialogComponent,
+    ShowCustomFieldsColumnDialogComponent,
     KanbanTaskCardComponent,
     GroupReportsComponent,
   ],
@@ -232,6 +234,7 @@ import { GroupReportsComponent } from './group/group-reports/group-reports.compo
     AutomationFlowsDialogComponent,
     AutomationFlowDetailsDialogComponent,
     CreateProjectColumnDialogComponent,
+    ShowCustomFieldsColumnDialogComponent,
     GroupBarDialogComponent
   ]
 })

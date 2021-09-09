@@ -1,0 +1,24 @@
+<div class="dialog-content">
+  <div class="content">
+
+    <div class="modal-title" i18n="@@showCustomFieldsColumnDialog.cfToShow">Custom Fields To Show</div>
+
+    <div class="content-box">
+      <div *ngFor="let cf of customFields" style="display: flex; justify-content: space-between">
+        <div *ngIf="cf.name != 'priority'"> {{ cf.title }} </div>
+        <div *ngIf="cf.name != 'priority'">
+          <input class="" type="checkbox" (click)="showCFInColumn(cf)" [(ngModel)]="cf.showInColumn" />
+        </div>
+      </div>
+    </div>
+
+    <div class="conten-box save-content">
+      <button
+          class="btn btn-danger btn-md"
+          (click)="closeDialog()"
+          i18n="@@showCustomFieldsColumnDialog.close">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
