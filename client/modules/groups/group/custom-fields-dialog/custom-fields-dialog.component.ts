@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject, Output, EventEmitter, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
+import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
 
 @Component({
   selector: 'app-custom-fields-dialog',
@@ -28,7 +29,8 @@ export class CustomFieldsDialogComponent implements OnInit {
     public utilityService: UtilityService,
     private groupService: GroupService,
     private injector: Injector,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog
   ) { }
 
   async ngOnInit() {
@@ -142,10 +144,16 @@ export class CustomFieldsDialogComponent implements OnInit {
   }
 
   setDisplayInKanbanCard(field) {
-    this.groupService.setCustomFieldDisplayKanbanCard(!field.display_in_kanban_card, field._id, this.groupData._id).then(res => {
-      this.groupData.custom_fields = res['group'].custom_fields;
-      this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-    });
+    this.utilityService.asyncNotification($localize`:@@customFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
+      this.groupService.setCustomFieldDisplayKanbanCard(!field.display_in_kanban_card, field._id, this.groupData._id).then(res => {
+        this.groupData.custom_fields = res['group'].custom_fields;
+        this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
+        resolve(this.utilityService.resolveAsyncPromise($localize`:@@customFieldDialog.fieldUpdated:Field updated!`));
+      }).catch((err) => {
+        reject(this.utilityService.rejectAsyncPromise($localize`:@@customFieldDialog.unableToUpdateField:Unable to update field, please try again!`));
+      });
+    }));
   }
 
   removeValue(field, value: string) {
@@ -168,5 +176,53 @@ export class CustomFieldsDialogComponent implements OnInit {
       return word;
     }
     return word[0].toUpperCase() + word.substr(1).toLowerCase();
+  }
+
+  /**
+   * This function opens up the dialog to select a color
+   */
+  openColorPicker(field: any) {
+    const dialogRef = this.dialog.open(ColorPickerDialogComponent, {
+      width: '67%',
+      height: '50%',
+      disableClose: false,
+      hasBackdrop: true,
+      data: { colorSelected: field.badge_color }
+    });
+
+    const colorPickedSubs = dialogRef.componentInstance.colorPickedEvent.subscribe(async (data) => {
+      const index = this.customFields.findIndex((cf: any) => cf.name == field.name);
+
+      this.utilityService.asyncNotification($localize`:@@customFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
+        this.groupService.setCustomFieldColor(data, field._id, this.groupData._id).then(res => {
+
+          this.customFields[index].badge_color = data;
+          this.groupData.custom_fields = res['group'].custom_fields;
+
+          this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@customFieldDialog.fieldUpdated:Field updated!`));
+        }).catch((err) => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@customFieldDialog.unableToUpdateField:Unable to update field, please try again!`));
+        });
+      }));
+    });
+  }
+
+  removeBadgeColor(field: any) {
+    const index = this.customFields.findIndex((cf: any) => cf.name == field.name);
+
+    this.utilityService.asyncNotification($localize`:@@customFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
+      this.groupService.setCustomFieldColor('', field._id, this.groupData._id).then(res => {
+        this.groupData.custom_fields = res['group'].custom_fields;
+
+        this.customFields[index].badge_color = '';
+        this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
+        resolve(this.utilityService.resolveAsyncPromise($localize`:@@customFieldDialog.fieldUpdated:Field updated!`));
+      }).catch((err) => {
+        reject(this.utilityService.rejectAsyncPromise($localize`:@@customFieldDialog.unableToUpdateField:Unable to update field, please try again!`));
+      });
+    }));
   }
 }

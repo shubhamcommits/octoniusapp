@@ -162,6 +162,11 @@ const GroupSchema = new Schema({
             display_in_kanban_card: {
                 type: Boolean,
                 default: false
+            },
+            badge_color: {
+                type: String,
+                required: true,
+                default: '#e4edf8'
             }
         }]
     },

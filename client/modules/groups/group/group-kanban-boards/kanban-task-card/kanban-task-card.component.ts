@@ -89,4 +89,15 @@ export class KanbanTaskCardComponent {
       && this.groupData?.custom_fields[index]
       && this.groupData?.custom_fields[index]?.display_in_kanban_card;
   }
+
+  getCustomFieldBadgeColor(cfName: string) {
+    const index = this.groupData?.custom_fields?.findIndex(cf => cf.name == cfName);
+    if (index >= 0) {
+      const cf = this.groupData?.custom_fields[index];
+      if (cf && cf.badge_color) {
+        return cf.badge_color;
+      }
+    }
+    return '#e4edf8';
+  }
 }

@@ -55,6 +55,17 @@
                       <input class="" type="checkbox" (click)="setDisplayInKanbanCard(field)" [(ngModel)]="field.display_in_kanban_card">
                       <label class="onoffswitch-label" style="margin-left: 9px;" i18n="@@groupCFDialog.displayinKanbanCard">Display in Kanban Card</label>
                     </div>
+
+                    <div *ngIf="field.name != 'priority'">
+                      <div [ngStyle]="{'width': '30px', 'height': '30px', 'float': 'left', 'background-color': field?.badge_color }"></div>
+                      <button *ngIf="field?.badge_color"
+                          class="btn removeImageBtn"
+                          style="width: 30px;height: 30px;margin: 0px !important;"
+                          (click)="removeBadgeColor(field)">
+                        <b>X</b>
+                      </button>
+                      <i class="material-icons" style="cursor: pointer;" (click)="openColorPicker(field)">color_lens</i>
+                    </div>
                 </div>
             </div>
         </div>
