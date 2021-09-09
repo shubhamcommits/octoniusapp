@@ -4364,7 +4364,7 @@
       </trans-unit>
       <trans-unit id="createProjectColumnDialog.launchProject" datatype="html">
         <source>Launch as Project</source>
-        <target state="translated">Lanzamiento como proyecto</target>
+        <target state="translated">Arrancar como proyecto</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/create-project-column-dialog/create-project-column-dialog.component.html</context>
           <context context-type="linenumber">11</context>
@@ -4500,7 +4500,7 @@
       </trans-unit>
       <trans-unit id="groupDashboard.launchProject" datatype="html">
         <source>Launch Project</source>
-        <target state="translated">Enlace al proyecto</target>
+        <target state="translated">Arrancar Proyecto</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.html</context>
           <context context-type="linenumber">34</context>
