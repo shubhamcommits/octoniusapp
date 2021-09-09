@@ -394,7 +394,7 @@ export class GroupController {
                 ]
             })
                 .sort('_id')
-                .limit(10)
+                //.limit(10)
                 .populate({
                     path: '_members',
                     select: '_id',
