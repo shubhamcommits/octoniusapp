@@ -3,7 +3,7 @@ version: '3.7'
 services:
   mongo-setup:
     container_name: mongo-setup
-    image: mongo:5.0.2-focal
+    image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
     restart: on-failure
     networks:
        - acc
