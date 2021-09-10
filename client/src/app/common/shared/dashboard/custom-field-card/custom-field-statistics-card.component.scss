@@ -22,8 +22,12 @@ img{
 
 
 
-.row  {
+.line  {
   margin-bottom: 5px;
+}
+.badge{
+  color: #ffffff;
+  font-size: 20px;
 }
 
 .icon {
@@ -51,19 +55,7 @@ img{
   line-height: 30px;
   color: #969A9E;
 
-  .number {
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 30px;
-    color: #5E6268;
-  }
-
-  .north_star_number {
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 30px;
-    color: #005FD5;
-  }
+ 
 }
 
 .card-content {
@@ -81,4 +73,20 @@ img{
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.number {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.north_star_number {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 30px;
+  color: #005FD5;
+}
+
+.text-done{
+  color: #4a90e2;
 }

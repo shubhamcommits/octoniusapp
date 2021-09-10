@@ -4,27 +4,27 @@
       {{ customField?.title }}
     </div>
     <div>
-      number
+      <span class="material-icons-outlined">auto_awesome</span>
     </div>
   </div>
 
-  <div class="row">
-    <span class="badge">{{ numInProgressTasks }}</span>
+  <div class="line">
+    <span class="badge in-progress-task mr-1">{{ numInProgressTasks }}</span>
     <span i18n="@@cfStatisticsCard.tasksInProgress">tasks in progress</span>
   </div>
 
-  <div class="row">
-    <span>{{ statsInProgressTasks }}</span>
+  <div class="line">
+    <span class="number text-warning mr-1">{{ statsInProgressTasks }}</span>
     <span i18n="@@cfStatisticsCard.opportunity">opportunity</span>
   </div>
-
-  <div class="row">
-    <span class="badge">{{ numInProgressTasks }}</span>
+<hr>
+  <div class="line">
+    <span class="badge done-task mr-1">{{ numInProgressTasks }}</span>
     <span i18n="@@cfStatisticsCard.tasksDone">tasks done</span>
   </div>
 
-  <div class="row">
-    <span>{{ statsDoneTasks }}</span>
+  <div class="line">
+    <span class="number text-done mr-1">{{ statsDoneTasks }}</span>
     <span i18n="@@cfStatisticsCard.total">total</span>
   </div>
 </div>
