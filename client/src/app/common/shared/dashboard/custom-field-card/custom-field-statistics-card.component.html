@@ -1,0 +1,30 @@
+<div class="smart-card" style="padding: 10px;">
+  <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+    <div class="card-title mt-1">
+      {{ customField?.title }}
+    </div>
+    <div>
+      number
+    </div>
+  </div>
+
+  <div class="row">
+    <span class="badge">{{ numInProgressTasks }}</span>
+    <span i18n="@@cfStatisticsCard.tasksInProgress">tasks in progress</span>
+  </div>
+
+  <div class="row">
+    <span>{{ statsInProgressTasks }}</span>
+    <span i18n="@@cfStatisticsCard.opportunity">opportunity</span>
+  </div>
+
+  <div class="row">
+    <span class="badge">{{ numInProgressTasks }}</span>
+    <span i18n="@@cfStatisticsCard.tasksDone">tasks done</span>
+  </div>
+
+  <div class="row">
+    <span>{{ statsDoneTasks }}</span>
+    <span i18n="@@cfStatisticsCard.total">total</span>
+  </div>
+</div>

@@ -20,6 +20,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
   groupId;
   groupProjectType;
   userId;
+  custom_fields = [];
 
   selectedWidgets = [];
   newSelectedWidgets = [];
@@ -111,6 +112,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
     this.initSelectedWidgets = [...this.selectedWidgets];
     this.groupEnableAllocation = this.data.groupEnableAllocation;
     this.resource_management_allocation = this.data.resource_management_allocation || false;
+    this.custom_fields = this.data.custom_fields.filter(cf => cf.input_type) || [];
   }
 
   async ngOnInit() {
@@ -145,9 +147,11 @@ export class WidgetSelectorDialogComponent implements OnInit {
     return this.selectedWidgets.indexOf(widgetCode) >= 0 || this.newSelectedWidgets.indexOf(widgetCode) >= 0;
   }
 
-  selectWidget(widget) {
-    const selectedWidgetIndex = this.selectedWidgets.indexOf(widget.code);
-    const newSelectedWidgetIndex = this.newSelectedWidgets.indexOf(widget.code);
+  selectWidget(widget: any, cfName?: string) {
+    const widgetCode = (cfName) ? cfName : widget.code;
+
+    const selectedWidgetIndex = this.selectedWidgets.indexOf(widgetCode);
+    const newSelectedWidgetIndex = this.newSelectedWidgets.indexOf(widgetCode);
 
     if (selectedWidgetIndex >= 0 || newSelectedWidgetIndex >= 0) {
       if (selectedWidgetIndex >= 0) {
@@ -157,7 +161,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
         this.newSelectedWidgets.splice(newSelectedWidgetIndex, 1);
       }
     } else {
-      this.newSelectedWidgets.push(widget.code);
+      this.newSelectedWidgets.push(widgetCode);
     }
   }
 

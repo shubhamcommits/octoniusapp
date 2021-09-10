@@ -117,6 +117,7 @@ import { MaterialModule } from '../material-module/material-module.module';
 
 // Charts Module
 import { ChartModule } from 'modules/chart/chart.module';
+import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-card/custom-field-statistics-card.component';
 
 @NgModule({
   declarations: [
@@ -214,6 +215,7 @@ import { ChartModule } from 'modules/chart/chart.module';
     ProjectBudgetComponent,
     MembersWorkloadCardComponent,
     SectionStatusCardComponent,
+    CustomFieldStatisticsCardComponent,
 
     NewTaskComponent,
 
@@ -359,6 +361,7 @@ import { ChartModule } from 'modules/chart/chart.module';
     ProjectBudgetComponent,
     MembersWorkloadCardComponent,
     SectionStatusCardComponent,
+    CustomFieldStatisticsCardComponent,
 
     NewTaskComponent,
 

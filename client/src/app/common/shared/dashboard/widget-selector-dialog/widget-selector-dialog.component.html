@@ -39,6 +39,22 @@
         </mat-slide-toggle>
       </div>
     </div>
+
+    <div class="content-box" *ngIf="groupId">
+      <div style="display: flex;" >
+        <img [src]="'assets/images/widgets/widget-kpi.png'" alt="" class="widget-img">
+        <h4 class="ml-3 mt-4" i18n="@@widgetSelectorDialog.cfStatistics"> CF Statistics</h4>
+      </div>
+
+      <div style="margin-left: 120px; margin-top: 30px;" *ngFor="let cf of custom_fields">
+        <mat-slide-toggle color="primary"
+            [checked]="isSelected(cf.name)"
+            [name]="'share_files'"
+            (change)="selectWidget(null, cf.name)">
+          <h6><b>{{ cf.title }}</b></h6>
+        </mat-slide-toggle>
+      </div>
+    </div>
   </div>
 </mat-dialog-content>
 

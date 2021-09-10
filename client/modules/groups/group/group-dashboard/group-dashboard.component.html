@@ -46,6 +46,14 @@
     </div>
   </div>
 
+  <!-- CF Widgets STARTS -->
+  <div class="row d-none d-md-block" *ngIf="cfWidgets?.length > 0">
+    <div class="col-md-3 box" *ngFor="let cfWidget of cfWidgets">
+      <app-custom-field-statistics-card [period]="period" [group]="groupData?._id" [customField]="getCustomField(cfWidget)"></app-custom-field-statistics-card>
+    </div>
+  </div>
+  <!-- CF Widgets ENDS -->
+
   <div class="row d-none d-md-block">
     <div class="col-md-12 box" *ngIf="groupData?.project_type && groupData?.selected_widgets?.includes('KPI_PERFORMANCE')">
       <!-- KPI Performance Card Starts -->
@@ -61,6 +69,5 @@
       <!-- Members Workload Card Ends -->
     </div>
   </div>
-
 </div>
 
