@@ -4155,7 +4155,7 @@
         <target state="translated">Benutzerdefinierte Feld</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">107</context>
+          <context context-type="linenumber">101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.none" datatype="html">
@@ -4163,7 +4163,7 @@
         <target state="translated">Nichts</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.myTasks" datatype="html">
@@ -4171,7 +4171,7 @@
         <target state="translated">Meine Aufgaben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">124</context>
+          <context context-type="linenumber">118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.dueDate" datatype="html">
@@ -4179,7 +4179,7 @@
         <target state="translated">Fälligkeitsdatum</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">145</context>
+          <context context-type="linenumber">139</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.beforeToday" datatype="html">
@@ -4187,7 +4187,7 @@
         <target state="translated">Vor heute</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">167</context>
+          <context context-type="linenumber">161</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.today" datatype="html">
@@ -4195,7 +4195,7 @@
         <target state="translated">Heute</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">171</context>
+          <context context-type="linenumber">165</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.tomorrow" datatype="html">
@@ -4203,7 +4203,7 @@
         <target state="translated">Morgen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">175</context>
+          <context context-type="linenumber">169</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.thisWeek" datatype="html">
@@ -4211,7 +4211,7 @@
         <target state="translated">Diese Woche</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">179</context>
+          <context context-type="linenumber">173</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.nextWeek" datatype="html">
@@ -4219,7 +4219,7 @@
         <target state="translated">Nächste Woche</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">183</context>
+          <context context-type="linenumber">177</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.next14Days" datatype="html">
@@ -4227,7 +4227,7 @@
         <target state="translated">Nächste 14 Tage</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">187</context>
+          <context context-type="linenumber">181</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.ideas" datatype="html">
@@ -4235,7 +4235,7 @@
         <target state="translated">Ideen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">196</context>
+          <context context-type="linenumber">190</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.advancedFilters" datatype="html">
@@ -4243,7 +4243,7 @@
         <target state="translated">Erweiterte Filter</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">201</context>
+          <context context-type="linenumber">195</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boardBar.filterTaskFor" datatype="html">
@@ -4519,8 +4519,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupDashboard.showCF" datatype="html">
-        <source>Show Custom Fields</source>
-        <target state="translated">Benutzerdefinierte Felder anzeigen</target>
+        <source>Show CF Data</source>
+        <target state="translated">CF-Daten anzeigen</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.html</context>
           <context context-type="linenumber">38</context>
@@ -4710,12 +4711,20 @@
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="showCustomFieldsColumnDialog.cfToShowDescription" datatype="html">
+        <source>This will display statistics for selected Custom Fields in the header of the section.</source>
+        <target state="needs-translation">Dadurch werden Statistiken für ausgewählte benutzerdefinierte Felder in der Kopfzeile des Abschnitts angezeigt.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-kanban-boards/show-custom-fields-column-dialog/show-custom-fields-column-dialog.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="showCustomFieldsColumnDialog.close" datatype="html">
         <source> Close </source>
         <target state="translated">Schließen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/show-custom-fields-column-dialog/show-custom-fields-column-dialog.component.html</context>
-          <context context-type="linenumber">24,25</context>
+          <context context-type="linenumber">25,26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="showCustomFieldsColumnDialog.pleaseWaitWeUpdateColumn" datatype="html">
@@ -7122,7 +7131,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.notes" datatype="html">
         <source> Notes</source>
-        <target state="needs-adaptation">Notizen</target>
+        <target state="translated">Notizen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">60</context>
@@ -7130,7 +7139,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.personalTasks" datatype="html">
         <source> Personal Tasks</source>
-        <target state="needs-adaptation">Meine Aufgaben</target>
+        <target state="translated">Meine Aufgaben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">70</context>
@@ -7138,7 +7147,7 @@
       </trans-unit>
       <trans-unit id="groupNavbar.personalFiles" datatype="html">
         <source> Personal Files</source>
-        <target state="needs-adaptation">Persönliche Dateien</target>
+        <target state="translated">Persönliche Dateien</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
           <context context-type="linenumber">80</context>
