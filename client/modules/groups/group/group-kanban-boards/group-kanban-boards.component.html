@@ -33,6 +33,10 @@
                                   <img src="assets/images/Icon/icon_launch_project.svg" alt="" >
                                   <span i18n="@@groupDashboard.launchProject">Launch Project</span>
                                 </li>
+                                <li class="dropdown-item" (click)="openShowCFDialog(column)">
+                                  <span class="material-icons-outlined">auto_awesome</span>
+                                  <span i18n="@@groupDashboard.showCF">Show CF Data</span>
+                                </li>
                             </ul>
                             <!-- Menu Drawer Ends -->
                         </div>
@@ -60,6 +64,15 @@
                   [userData]="userData"
                   [groupData]="groupData"></app-column-project-section>
                 <!-- COLUMN PROJECT SECTION ENDS -->
+
+                <!-- CUSTOM FIELDS STATS SECTION STARTS -->
+                <div class="project-container" *ngFor="let cfName of column.custom_fields_to_show_kanban">
+                  {{ cfName }}
+                  <span class="float-right done">
+                    {{ calculateCFStatistics(cfName, column.tasks) }}
+                  </span>
+                </div>
+                <!-- CUSTOM FIELDS STATS SECTION ENDS -->
 
                 <!-- TASK CONTAINER STARTS -->
                 <div class="tasks-container" [id]="column._id"
@@ -113,15 +126,19 @@
                             <ul class="dropdown-menu">
                                 <li class="dropdown-item" (click)="column.editColumn = !column.editColumn">
                                   <span class="material-icons-outlined">create</span>
-                                  Edit
+                                  <span i18n="@@groupKanbanBoard.edit">Edit</span>
                                 </li>
                                 <li class="dropdown-item" (click)="deleteColumn(column)">
                                   <span class="material-icons-outlined">delete</span>
-                                  Delete
+                                  <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
                                 <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(column)">
                                   <img src="assets/images/Icon/icon_launch_project.svg" alt="" >
-                                  Launch Project
+                                  <span i18n="@@groupDashboard.launchProject">Launch Project</span>
+                                </li>
+                                <li class="dropdown-item" (click)="openShowCFDialog(column)">
+                                  <span class="material-icons-outlined">auto_awesome</span>
+                                  <span i18n="@@groupDashboard.showCF">Show CF Data</span>
                                 </li>
                             </ul>
                             <!-- Menu Drawer Ends -->
@@ -150,6 +167,15 @@
                   [userData]="userData"
                   [groupData]="groupData"></app-column-project-section>
                 <!-- COLUMN PROJECT SECTION ENDS -->
+
+                <!-- CUSTOM FIELDS STATS SECTION STARTS -->
+                <div class="project-container" *ngFor="let cfName of column.custom_fields_to_show_kanban">
+                  {{ cfName }}
+                  <span class="float-right done">
+                    {{ calculateCFStatistics(cfName, column.tasks) }}
+                  </span>
+                </div>
+                <!-- CUSTOM FIELDS STATS SECTION ENDS -->
 
                 <!-- TASK CONTAINER STARTS -->
                 <div class="tasks-container" [id]="column._id">

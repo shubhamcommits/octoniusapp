@@ -96,12 +96,6 @@
           <span i18n="@@groupBoardBar.sort.ideas">Ideas</span>
         </a>
 
-        <!--
-        <a mat-menu-item (click)="sortTasks('priority')"
-          [ngStyle]="{'color' : (sortby==='priority') ? 'green' : 'black'}">
-          <span i18n="@@groupBoardBar.sort.priority">Priority</span>
-        </a>
-        -->
         <a mat-menu-item [matMenuTriggerFor]="menuCustomFieldsSort" class="dropdownbtn"
           [ngStyle]="{'color' : (sortby==='priority') ? 'green' : 'black'}">
             <span i18n="@@groupBoardBar.sort.customField">Custom Field</span>
