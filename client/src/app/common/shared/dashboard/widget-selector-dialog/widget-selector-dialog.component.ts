@@ -112,7 +112,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
     this.initSelectedWidgets = [...this.selectedWidgets];
     this.groupEnableAllocation = this.data.groupEnableAllocation;
     this.resource_management_allocation = this.data.resource_management_allocation || false;
-    this.custom_fields = this.data.custom_fields.filter(cf => cf.input_type) || [];
+    this.custom_fields = (this.data.custom_fields) ? this.data.custom_fields.filter(cf => cf.input_type) || [] : [];
   }
 
   async ngOnInit() {
