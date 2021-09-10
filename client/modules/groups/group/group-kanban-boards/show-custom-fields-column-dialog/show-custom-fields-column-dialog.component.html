@@ -8,7 +8,11 @@
       <div *ngFor="let cf of customFields" style="display: flex; justify-content: space-between">
         <div *ngIf="cf.input_type"> {{ cf.title }} </div>
         <div *ngIf="cf.input_type">
-          <input class="" type="checkbox" (click)="showCFInColumn(cf)" [(ngModel)]="cf.showInColumn" />
+          <mat-slide-toggle color="primary"
+            [checked]="cf.showInColumn"
+            [name]="cf.name"
+            (change)="showCFInColumn(cf)">
+          </mat-slide-toggle>
         </div>
       </div>
     </div>
