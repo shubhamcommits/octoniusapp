@@ -117,7 +117,9 @@ import { MaterialModule } from '../material-module/material-module.module';
 
 // Charts Module
 import { ChartModule } from 'modules/chart/chart.module';
-import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-card/custom-field-statistics-card.component';
+import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-statistics-card/custom-field-statistics-card.component';
+import { CustomFieldTableCardComponent } from './dashboard/custom-field-table-card/custom-field-table-card.component';
+import { CustomFieldsTableSettingsDialogComponent } from './dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component';
 
 @NgModule({
   declarations: [
@@ -216,6 +218,7 @@ import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-car
     MembersWorkloadCardComponent,
     SectionStatusCardComponent,
     CustomFieldStatisticsCardComponent,
+    CustomFieldTableCardComponent,
 
     NewTaskComponent,
 
@@ -239,6 +242,7 @@ import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-car
     CustomToolTipComponent,
     ToolTipRendererDirective,
     WidgetSelectorDialogComponent,
+    CustomFieldsTableSettingsDialogComponent,
     ColorPickerDialogComponent,
     SheetComponent
   ],
@@ -362,6 +366,7 @@ import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-car
     MembersWorkloadCardComponent,
     SectionStatusCardComponent,
     CustomFieldStatisticsCardComponent,
+    CustomFieldTableCardComponent,
 
     NewTaskComponent,
 
@@ -381,6 +386,7 @@ import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-car
     MatTooltipModule,
     CustomToolTipComponent,
     WidgetSelectorDialogComponent,
+    CustomFieldsTableSettingsDialogComponent,
     ColorPickerDialogComponent,
 
     // Sheet Component
@@ -407,6 +413,7 @@ import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-car
     ProjectBudgetDialogComponent,
     CustomToolTipComponent,
     WidgetSelectorDialogComponent,
+    CustomFieldsTableSettingsDialogComponent,
     ColorPickerDialogComponent
   ]
 })

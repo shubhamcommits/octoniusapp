@@ -134,11 +134,19 @@ const GroupSchema = new Schema({
     },
     selected_widgets: {
         type: [String],
-        default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT']
+        default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT', 'CF_TABLE']
     },
     resource_management_allocation: {
         type: Boolean,
         default: true,
+    },
+    custom_fields_table_widget: {
+        selectTypeCF: {
+            type: String
+        },
+        inputTypeCFs: {
+            type: [String]
+        }
     },
     custom_fields: {
         type: [{

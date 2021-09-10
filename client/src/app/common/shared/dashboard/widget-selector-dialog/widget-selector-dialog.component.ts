@@ -51,6 +51,10 @@ export class WidgetSelectorDialogComponent implements OnInit {
       code: 'RESOURCE_MANAGEMENT',
       name: $localize`:@@widgetSelectorDialog.resourceManagement:Resource management`,
       img: 'assets/images/widgets/widget-resources.png'
+    }, {
+      code: 'CF_TABLE',
+      name: $localize`:@@widgetSelectorDialog.cf:Custom Fields Table`,
+      img: 'assets/images/widgets/widget-kpi.png'
     }
   ];
 
