@@ -2,6 +2,7 @@ import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
+import { CFB } from 'xlsx/types';
 import { CustomFieldsTableSettingsDialogComponent } from './custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component';
 
 @Component({
@@ -20,8 +21,13 @@ export class CustomFieldTableCardComponent implements OnChanges {
 
   tasks = [];
 
+  selectTypeCustomField: any;
+  inputTypeCustomFields = []
+
   selectTypeCF: any;
   inputTypeCFs = [];
+
+  tableData = [];
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
@@ -33,13 +39,50 @@ export class CustomFieldTableCardComponent implements OnChanges {
   ) { }
 
   async ngOnChanges() {
+    this.selectTypeCF = this.groupData?.custom_fields_table_widget?.selectTypeCF;
+    this.inputTypeCFs = this.groupData?.custom_fields_table_widget?.inputTypeCFs;
+
     await this.getTasks();
+    await this.updateColumns();
   }
 
   async getTasks() {
-    await this.postService.getGroupPosts(this.groupData?._id, 'task', this.period, false)
-    .then((res) => {
-      this.tasks = res['posts'];
+    await this.postService.getGroupPosts(this.groupData?._id, 'task', null)
+      .then((res) => {
+        this.tasks = res['posts'];
+      });
+  }
+
+  updateColumns() {
+    let index = this.customFields.findIndex(cf => cf.name == this.selectTypeCF);
+    this.selectTypeCustomField = this.customFields[index];
+    this.selectTypeCustomField.values.forEach(cfValue => {
+      let tableRow = { selectValue: cfValue, inputTypeCustomFields: [] };
+      this.tableData.push(tableRow);
+    });
+
+    this.inputTypeCFs.forEach(cfName => {
+      index = this.customFields.findIndex(field => field.name == cfName);
+      if (index >= 0) {
+        const field = this.customFields[index];
+        this.inputTypeCustomFields.push(field);
+      }
+    });
+
+    this.tableData.forEach(row => {
+      this.inputTypeCustomFields.forEach(cf => {
+        let sum = 0;
+
+        this.tasks.forEach(task => {
+          if (task.task.custom_fields
+              && (task.task.custom_fields[this.selectTypeCF] && task.task.custom_fields[this.selectTypeCF] == row.selectValue)
+              && (task.task.custom_fields[cf.name] && !isNaN(task.task.custom_fields[cf.name]))) {
+
+            sum += +task.task.custom_fields[cf.name];
+          }
+        });
+        row.inputTypeCustomFields.push(sum);
+      });
     });
   }
 
@@ -47,8 +90,8 @@ export class CustomFieldTableCardComponent implements OnChanges {
     const data = {
       groupId: this.groupData._id,
       customFields: this.customFields,
-      selectTypeCF: this.groupData?.custom_fields_table_widget?.selectTypeCF,
-      inputTypeCFs: this.groupData?.custom_fields_table_widget?.inputTypeCFs
+      selectTypeCF: this.selectTypeCF,
+      inputTypeCFs: this.inputTypeCFs
     }
 
     const dialogRef = this.dialog.open(CustomFieldsTableSettingsDialogComponent, {
@@ -62,6 +105,7 @@ export class CustomFieldTableCardComponent implements OnChanges {
     const saveEventSubs = dialogRef.componentInstance.saveEvent.subscribe((data) => {
       this.selectTypeCF = data.selectTypeCF;
       this.inputTypeCFs = data.inputTypeCFs;
+      this.updateColumns();
     });
 
     dialogRef.afterClosed().subscribe(result => {

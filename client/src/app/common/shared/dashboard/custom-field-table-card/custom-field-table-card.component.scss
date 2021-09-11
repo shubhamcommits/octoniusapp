@@ -20,44 +20,6 @@ img{
   height: 100%;
 }
 
-
-
-.line  {
-  margin-bottom: 5px;
-}
-.badge{
-  color: #ffffff;
-  font-size: 20px;
-}
-
-.icon {
-  margin: 5px 0 0 0;
-  color: #5E2FE5;
-}
-
-.card-first-column {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 30px;
-  display: flex;
-  align-items: center;
-}
-
-.card-icon {
-  display: flex;
-  align-items: flex-end;
-  margin-left: auto;
-  margin-right: 10px;
-
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 30px;
-  color: #969A9E;
-
- 
-}
-
 .card-content {
   overflow-x: scroll;
   overflow-y: hidden;
@@ -75,18 +37,71 @@ img{
   }
 }
 
-.number {
-  font-weight: 700;
-  font-size: 20px;
+.table-wrapper {
+  overflow-y: auto;
+
+  .member {
+    display: inline-flex;
+
+    .name {
+      line-height: 20px;
+      margin-top: 12px;
+    }
+  }
+
+  .tasks-list {
+    ul {
+      list-style-type: none;
+      margin-left: -40px;
+      margin-top: 10px;
+
+      li {
+        display: inline;
+      }
+    }
+  }
 }
 
-.north_star_number {
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 30px;
-  color: #005FD5;
+table {
+  position: relative;
+  border-collapse: collapse;
 }
 
-.text-done{
-  color: #4a90e2;
+td, th {
+  white-space: nowrap;
+  border: $border-gray;
+  padding: 5px 10px;
+  text-align: left;
+  width: 130px;
+}
+
+th {
+  border-top: none;
+  position: sticky;
+  top: -1px;
+  z-index: 2;
+  text-align: center;
+  padding: 0px;
+  font-weight: 400;
+
+  &:first-of-type {
+    border-left: none;
+    left: 0;
+    z-index: 3;
+
+    opacity: 1;
+    background-color: #FFFFFF;
+  }
+}
+
+tbody tr td:first-of-type {
+  border-left: none;
+  position: sticky;
+  left: -1px;
+  text-align: left;
+  width: 150px;
+  padding: 0px;
+
+  opacity: 1;
+  background-color: #FFFFFF;
 }
