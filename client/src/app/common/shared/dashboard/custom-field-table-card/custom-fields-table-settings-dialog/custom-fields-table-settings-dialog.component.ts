@@ -2,7 +2,6 @@ import { Component, EventEmitter, Inject, Injector, OnInit, Output } from '@angu
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -28,7 +27,6 @@ export class CustomFieldsTableSettingsDialogComponent implements OnInit {
 
   constructor(
     private groupService: GroupService,
-    private userService: UserService,
     public utilityService: UtilityService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<CustomFieldsTableSettingsDialogComponent>,

@@ -43,7 +43,13 @@ step-1) copy the following provided by octonious to your home directory or any d
            4) stop-octonius-prod.sh
            5) mongo_setup_scripts ( folder container setup.sh so provide this entire folder as it is needed )
 
-step-2) ./deploy-octonius-prod.sh
+Step-2 add entry in /etc/host file to connect to mongodb server from host machine
+     vi /etc/hosts
+     and add following entry 
+                    127.0.0.1 localhost mongo-0-mongo mongo-1-mongo mongo-2-mongo
+     and save it 
+
+step-3) ./deploy-octonius-prod.sh
 ```
 ## If deployment is for client or existing client with our setup
 ```
@@ -63,9 +69,17 @@ step-1) copy the following provided by octonious to your home directory or any d
            5) prod_restore.sh
            6) stop-octonius-prod.sh
            7) mongo_setup_scripts ( folder container setup.sh so provide this entire folder as it is needed )
-step-2) go to the directory where you have store this above files and folder
-step-3) prod_backup.sh = ( for backing up the existing mongodb database )
-step-4) ./deploy-octonius-prod.sh
-step-5) prod_restore.sh = ( for restoring the backup database that we done in step 3 to the mongodb replicaset cluster )
-```
 
+step-2) go to the directory where you have store this above files and folder
+
+step-3) prod_backup.sh = ( for backing up the existing mongodb database )
+
+step-4) add entry in /etc/host file to connect to mongodb server from host machine
+     vi /etc/hosts
+     and add following entry
+                    127.0.0.1 localhost mongo-0-mongo mongo-1-mongo mongo-2-mongo
+     and save it
+step-5) ./deploy-octonius-prod.sh
+
+step-6) prod_restore.sh = ( for restoring the backup database that we done in step 3 to the mongodb replicaset cluster )
+```
