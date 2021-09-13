@@ -54,7 +54,7 @@ export class WidgetSelectorDialogComponent implements OnInit {
     }, {
       code: 'CF_TABLE',
       name: $localize`:@@widgetSelectorDialog.cf:Custom Fields Table`,
-      img: 'assets/images/widgets/widget-kpi.png'
+      img: 'assets/images/widgets/widget-cf-table.svg'
     }
   ];
 
