@@ -207,6 +207,10 @@ export class CustomFieldsDialogComponent implements OnInit {
         });
       }));
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      colorPickedSubs.unsubscribe();
+    });
   }
 
   removeBadgeColor(field: any) {

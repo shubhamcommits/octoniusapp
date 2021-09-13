@@ -289,4 +289,13 @@ export class GroupService {
   getShuttleTasks(groupId: string) {
     return this._http.get(this.baseURL + `/${groupId}/shuttleTasks`).toPromise();
   }
+
+  /**
+   * This method calls the corresponding service to save the settings of the custom fields table settings dialog
+   * @param groupId
+   * @param settings
+   */
+  saveCFTableWidgetSettings(groupId: string, settings: any) {
+    return this._http.put<any>(`${this.baseURL}/${groupId}/saveCustomFieldsSettings`, {settings: settings}).toPromise();
+  }
 }

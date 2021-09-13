@@ -1,0 +1,58 @@
+<div class="dialog-content">
+  <mat-dialog-actions align="end">
+      <div class="action-box">
+          <a (click)="cancel()" mat-dialog-close>
+          <i  class="material-icons" style="cursor: pointer">close</i>
+          </a>
+      </div>
+  </mat-dialog-actions>
+  <mat-dialog-content>
+  <div class="content">
+    <div class="">
+        <div class="modal-header">
+          <h4 class="modal-title" i18n="@@cfTableSettingsDialog.customizeYourDashboard">
+            Customize your analytics
+          </h4>
+        </div>
+
+        <p class="mb-3" i18n="@@cfTableSettingsDialog.selectWhatWidgets">Select what Custom Fields(CF) should be displayed in the table, in order to get your custom analytics.</p>
+        <div class="clearfix"></div>
+    </div>
+<hr>
+    <div class="row">
+      <div class="col-md-6">
+        <p class="mb-1 bold">CF select - text </p>
+        <hr>
+        <div *ngFor="let cf of selectCustomFields">
+          <mat-slide-toggle color="primary"
+              [checked]="selectTypeCF && selectTypeCF == cf.name"
+              [disabled]="selectTypeCF && selectTypeCF != cf.name"
+              [name]="cf.name"
+              (change)="selectSelectTypeCF(cf, $event.checked)">
+            <h6>{{ cf.title }}</h6>
+          </mat-slide-toggle>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <p class="mb-1 bold">CF input - value.</p>
+        <hr>
+        <div *ngFor="let cf of inputCustomFields">
+          <mat-slide-toggle color="primary"
+              [checked]="isChecked(cf)"
+              [name]="cf.name"
+              (change)="selectInputTypeCF(cf, $event.checked)">
+            <h6>{{ cf.title }}</h6>
+          </mat-slide-toggle>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button class="btn btn-danger mr-4" (click)="cancel()" i18n="@@cfTableSettingsDialog.cancel">Cancel</button>
+  <button class="btn btn-primary" (click)="save()" i18n="@@cfTableSettingsDialog.updateSettings">Update settings</button>
+</mat-dialog-actions>
+  <!-- Top Right Section ends -->
+</div>

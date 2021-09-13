@@ -281,6 +281,10 @@ export class FlamingoEditorComponent implements OnInit {
         this.activeQuestion.text_color = data;
       }
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      colorPickedSubs.unsubscribe();
+    });
   }
 
   /**

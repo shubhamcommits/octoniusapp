@@ -441,4 +441,41 @@ export class ColumnsController {
             return sendError(res, error, 'Internal Server Error!', 500);
         }
     };
+
+    async setDisplayCustomFieldInColumn(req: Request, res: Response, next: NextFunction) {
+        const { columnId, showInColumn, customFieldName } = req.body;
+
+        try {
+            let action = {};
+            if (showInColumn) {
+                action = {
+                    $push: {'custom_fields_to_show_kanban': customFieldName }
+                }
+            } else {
+                action = {
+                    $pull: {'custom_fields_to_show_kanban': customFieldName }
+                }
+            }
+
+            // Find the group and update their respective group avatar
+            const column = await Column.findOneAndUpdate({
+                    _id: columnId
+                }, 
+                    action
+                , {
+                safe: true,
+                new: true
+                })
+                .select("custom_fields_to_show_kanban")
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Column Custom Fields saved!',
+                column: column
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }

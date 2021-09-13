@@ -60,7 +60,11 @@ const ColumnSchema = new Schema({
     },
     kanban_order: {
         type: Number
-    }
+    },
+    custom_fields_to_show_kanban: [{
+        type: String,
+        required: false
+    }]
 });
 
 const Column = mongoose.model('Column', ColumnSchema);

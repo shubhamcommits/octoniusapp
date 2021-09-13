@@ -9,6 +9,7 @@ import moment from 'moment/moment';
 import { MatDialog } from '@angular/material/dialog';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { CreateProjectColumnDialogComponent } from './create-project-column-dialog/create-project-column-dialog.component';
+import { ShowCustomFieldsColumnDialogComponent } from './show-custom-fields-column-dialog/show-custom-fields-column-dialog.component';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -652,7 +653,40 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     });
   }
 
+  openShowCFDialog(column) {
+    const data = {
+      column: column,
+      customFields: this.groupData?.custom_fields
+    }
+
+    const dialogRef = this.dialog.open(ShowCustomFieldsColumnDialogComponent, {
+      data: data,
+      hasBackdrop: true
+    });
+    const customFieldsUpdatedEventSubs = dialogRef.componentInstance.customFieldsUpdatedEvent.subscribe((data) => {
+      const index = this.columns.findIndex(col => col._id == data._id);
+      if (index >= 0) {
+        this.columns[index] = data;
+      }
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      customFieldsUpdatedEventSubs.unsubscribe();
+    });
+  }
+
   isDelay(realDueDate: any, dueDate: any) {
     return moment(realDueDate).isAfter(moment(dueDate), 'day');
+  }
+
+  calculateCFStatistics(cfName: string, tasks: any) {
+    let calculation = 0;
+    tasks.forEach(task => {
+      calculation += (task.task.custom_fields[cfName] && !isNaN(task.task.custom_fields[cfName]))
+        ? +task.task.custom_fields[cfName]
+        : 0;
+    });
+    return calculation;
   }
 }

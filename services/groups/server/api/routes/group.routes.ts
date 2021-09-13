@@ -140,6 +140,9 @@ routes.put('/:groupId/saveSelectedWidgets', group.saveSelectedWidgets);
 
 // GET - Get group shuttle tasks
 routes.get('/:groupId/shuttleTasks', group.getShuttleTasks);
+
+// PUT - Updates the settings of the custom fields table dialog in the group
+routes.put('/:groupId/saveCustomFieldsSettings', group.saveCustomFieldsSettings);
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

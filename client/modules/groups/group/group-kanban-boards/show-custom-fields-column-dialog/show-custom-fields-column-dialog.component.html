@@ -1,0 +1,29 @@
+<div class="dialog-content">
+  <div class="content">
+
+    <div class="modal-title" i18n="@@showCustomFieldsColumnDialog.cfToShow">Custom Fields To Show</div>
+    <p i18n="@@showCustomFieldsColumnDialog.cfToShowDescription">This will display statistics for selected Custom Fields in the header of the section.</p>
+
+    <div class="content-box">
+      <div *ngFor="let cf of customFields" style="display: flex; justify-content: space-between">
+        <div *ngIf="cf.input_type"> {{ cf.title }} </div>
+        <div *ngIf="cf.input_type">
+          <mat-slide-toggle color="primary"
+            [checked]="cf.showInColumn"
+            [name]="cf.name"
+            (change)="showCFInColumn(cf)">
+          </mat-slide-toggle>
+        </div>
+      </div>
+    </div>
+
+    <div class="conten-box save-content">
+      <button
+          class="btn btn-danger btn-md"
+          (click)="closeDialog()"
+          i18n="@@showCustomFieldsColumnDialog.close">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
