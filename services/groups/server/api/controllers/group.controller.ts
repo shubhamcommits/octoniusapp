@@ -2081,4 +2081,37 @@ export class GroupController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    async saveCustomFieldsSettings(req: Request, res: Response, next: NextFunction) {
+        const { groupId } = req.params;
+        const { settings } = req.body;
+
+        try {
+
+            const group = await Group.findByIdAndUpdate(groupId, {
+                $set: { 'custom_fields_table_widget': settings }
+            })
+            .populate({
+                path: '_members',
+                select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                match: {
+                    active: true
+                }
+            })
+            .populate({
+                path: '_admins',
+                select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                match: {
+                    active: true
+                }
+            }).lean();
+
+            return res.status(200).json({
+                message: 'Group updated!',
+                group: group
+            });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    };
 }

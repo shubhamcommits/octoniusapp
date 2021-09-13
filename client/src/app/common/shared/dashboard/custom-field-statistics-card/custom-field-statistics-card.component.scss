@@ -1,0 +1,92 @@
+@import "src/assets/scss/variables";
+
+a{
+    text-decoration: none !important;
+    color: inherit;
+}
+
+img{
+    display:block;
+    width: 100%;
+}
+
+.smart-card {
+  background: #FFFFFF;
+  border: none;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 3px 0 #005fd521;
+  min-height: 260px;
+  height: 100%;
+}
+
+
+
+.line  {
+  margin-bottom: 5px;
+}
+.badge{
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.icon {
+  margin: 5px 0 0 0;
+  color: #5E2FE5;
+}
+
+.card-first-column {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.card-icon {
+  display: flex;
+  align-items: flex-end;
+  margin-left: auto;
+  margin-right: 10px;
+
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 30px;
+  color: #969A9E;
+
+ 
+}
+
+.card-content {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  .card-box {
+    display: inline-block;
+    width: 50%;
+  }
+}
+
+.card-content {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.number {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.north_star_number {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 30px;
+  color: #005FD5;
+}
+
+.text-done{
+  color: #4a90e2;
+}
