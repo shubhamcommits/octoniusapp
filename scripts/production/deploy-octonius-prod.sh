@@ -8,7 +8,9 @@ set +o allexport
 
 # Make Suitable Directories
 mkdir -p data \
-      data/db \
+      data/mongo/db1 \
+      data/mongo/db2  \
+      data/mongo/db0   \
       data/uploads \
       data/uploads/groups \
       data/uploads/posts \
@@ -20,7 +22,6 @@ mkdir -p data \
 
 # Give permissions to data folder
 sudo chmod u+x data
-
 # Login to dockerhub
 docker login
 
