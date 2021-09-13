@@ -962,12 +962,12 @@ export class PostController {
         let posts: any = [];
 
         if (type === 'task') {
-            posts = await postService.getGroupTasksResults(groupId, type, +numDays, (overdue == "true"))
+            posts = await postService.getGroupTasksResults(groupId, type, numDays, (overdue == "true"))
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });
         } else {
-            posts = await postService.getGroupPostsResults(groupId, +numDays)
+            posts = await postService.getGroupPostsResults(groupId, numDays)
                 .catch((err) => {
                     return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                 });

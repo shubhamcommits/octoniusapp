@@ -37,7 +37,7 @@ $dark-sky-blue: #4a90e2;
         .title {
             width: 30%;
             text-align: left;
-            
+
         }
 
         .values {
@@ -80,10 +80,15 @@ $dark-sky-blue: #4a90e2;
             }
         }
 
+        .displayKanbanCard {
+          text-align: left;
+          width: 30%;
+        }
+
         .customFieldsBody {
                 width: 70%;
                 margin: 0  auto;
-                
+
 
             .field {
                 border-bottom: 1px solid #e4edf8 !important;

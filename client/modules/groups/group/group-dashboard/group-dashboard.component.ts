@@ -15,6 +15,8 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
 
   groupData: any;
 
+  cfWidgets= [];
+
   period = 7;
 
   periods = [
@@ -58,9 +60,15 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
         this.groupData = res;
         if (!this.groupData.selected_widgets) {
           this.groupData.selected_widgets = ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT'];
+        } else {
+          this.groupData?.custom_fields.forEach(cf => {
+            if (cf.input_type && this.groupData.selected_widgets.includes(cf.name) && !this.cfWidgets.includes(cf.name)) {
+              this.cfWidgets.push(cf.name);
+            }
+          });
         }
       }
-    }))
+    }));
 
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -92,7 +100,8 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
       groupProjectType: this.groupData.project_type,
       selectedWidgets: this.groupData.selected_widgets,
       resource_management_allocation: this.groupData.resource_management_allocation,
-      groupEnableAllocation: this.groupData.enable_allocation
+      groupEnableAllocation: this.groupData.enable_allocation,
+      custom_fields: this.groupData.custom_fields
     }
 
     const dialogRef = this.dialog.open(WidgetSelectorDialogComponent, {
@@ -105,6 +114,12 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
 
     const saveEventSubs = dialogRef.componentInstance.saveEvent.subscribe((data) => {
       this.groupData.selected_widgets = data;
+      this.cfWidgets = [];
+      this.groupData?.custom_fields.forEach(cf => {
+        if (cf.input_type && this.groupData.selected_widgets.includes(cf.name) && !this.cfWidgets.includes(cf.name)) {
+          this.cfWidgets.push(cf.name);
+        }
+      });
     });
 
     const enableAllocationEventSubs = dialogRef.componentInstance.enableAllocationEvent.subscribe((data) => {
@@ -113,6 +128,12 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
 
     const closeEventSubs = dialogRef.componentInstance.cancelEvent.subscribe(async (data) => {
       this.groupData.selected_widgets = data;
+      this.cfWidgets = [];
+      this.groupData?.custom_fields.forEach(cf => {
+        if (cf.input_type && this.groupData.selected_widgets.includes(cf.name) && !this.cfWidgets.includes(cf.name)) {
+          this.cfWidgets.push(cf.name);
+        }
+      });
     });
 
 
@@ -123,4 +144,8 @@ export class GroupDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  getCustomField(cfName: string) {
+    const index = this.groupData?.custom_fields?.findIndex(cf => cf.name == cfName);
+    return (index >= 0) ? this.groupData?.custom_fields[index] : null;
+  }
 }

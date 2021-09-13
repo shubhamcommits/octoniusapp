@@ -24,6 +24,7 @@ export class GroupTasksListViewComponent implements OnChanges {
   @Input() tasks: any;
   @Input() customFields: any;
   @Input() sortingBit: any;
+  @Input() sortingData: any;
   @Input() isAdmin = false;
   @Input() isIdeaModuleAvailable = false;
   @Input() isShuttleTasksModuleAvailable = false;
@@ -62,12 +63,14 @@ export class GroupTasksListViewComponent implements OnChanges {
   ) { }
 
   async ngOnChanges(changes: SimpleChanges) {
-    //this.initSections();
     for (const propName in changes) {
       const change = changes[propName];
       const to = change.currentValue;
       if (propName === 'sortingBit') {
         this.sortingBit = to;
+      }
+      if (propName === 'sortingData') {
+        this.sortingData = to;
       }
     }
   }

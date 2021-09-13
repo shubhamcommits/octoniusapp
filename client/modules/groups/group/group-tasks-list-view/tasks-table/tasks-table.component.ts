@@ -21,7 +21,8 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
   @Input() userData;
   @Input() section;
   @Input() sections;
-  @Input() sortingBit: String
+  @Input() sortingBit: String;
+  @Input() sortingData: any;
   @Input() isAdmin = false;
   @Input() customFields = [];
   @Input() isIdeaModuleAvailable = false;
@@ -31,9 +32,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
   customFieldsToShow = [];
   unchangedTasks: any;
-  newColumnSelected
-  notchanged: any;
-  revert: boolean = false;
+  newColumnSelected;
 
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -65,27 +64,15 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       const change = changes[propName];
       const to = change.currentValue;
       const from = change.previousValue;
+
       if (propName === 'sortingBit') {
-        if (to == 'reverse') {
-          if (from == 'invert') {
-            this.sortingBit = this.notchanged;
-          } else {
-            this.sortingBit = from;
-            this.notchanged = from;
-          }
-          this.revert = true;
-        } else if (to == 'invert') {
-          this.sortingBit = this.notchanged;
-          this.revert = false;
-        } else {
-          this.sortingBit = to;
-          this.revert = false;
-        }
+        this.sortingBit = to;
+      }
+      if (propName === 'sortingData') {
+        this.sortingData = to;
       }
     }
-
     await this.initTable();
-
   }
 
   ngAfterViewInit() {
@@ -113,9 +100,6 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
 
     this.tasks = [...this.tasks];
     await this.sorting();
-    if (this.revert) {
-      this.tasks.reverse();
-    }
 
     this.dataSource = new MatTableDataSource(this.tasks);
     this.dataSource.sort = this.sort;
@@ -137,19 +121,33 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
             return 1;
           }
         }
-      })
-
-    } else if ((this.sortingBit == 'priority') && this.tasks) {
-      this.tasks.sort((t1, t2) => {
-        return (t1?.task?.custom_fields && t2?.task?.custom_fields)
-          ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
-            ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
-              ? 1 : 0))
-          : ((t1?.task?.custom_fields && !t2?.task?.custom_fields)
-            ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
-              ? 1 : 0);
       });
-
+    } else if (this.sortingBit == 'custom_field' && this.tasks) {
+        if (this.sortingData && this.sortingData.name == 'priority') {
+          this.tasks.sort((t1, t2) => {
+            return (t1?.task?.custom_fields && t2?.task?.custom_fields)
+              ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
+                ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
+                  ? 1 : 0))
+              : ((t1?.task?.custom_fields && !t2?.task?.custom_fields)
+                ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
+                  ? 1 : 0);
+          });
+        } else {
+          this.tasks.sort((t1, t2) => {
+            return (t1?.task?.custom_fields && t2?.task?.custom_fields)
+              ? (t1?.task?.custom_fields[this.sortingData.name] && t2?.task?.custom_fields[this.sortingData.name])
+                ?((t1?.task?.custom_fields[this.sortingData.name] > t2?.task?.custom_fields[this.sortingData.name])
+                  ? -1 : (t1?.task?.custom_fields < t2?.task?.custom_fields)
+                    ? 1 : 0)
+                : ((t1?.task?.custom_fields[this.sortingData.name] && !t2?.task?.custom_fields[this.sortingData.name])
+                  ? -1 : ((!t1?.task?.custom_fields[this.sortingData.name] && t2?.task?.custom_fields[this.sortingData.name]))
+                    ? 1 : 0)
+              : ((t1?.task?.custom_fields && !t2?.task?.custom_fields)
+                ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
+                  ? 1 : 0);
+          });
+      }
     } else if ((this.sortingBit == 'tags') && this.tasks) {
       this.tasks.sort((t1, t2) => {
         if (t1?.tags.length > 0 && t2?.tags.length > 0) {
@@ -181,6 +179,8 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       this.tasks.sort((t1, t2) => {
         return ((t1?.task?.idea?.positive_votes?.length || 0 - t1?.task?.idea?.negative_votes || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes?.length || 0)) ? 1 : 0;
       });
+    } else if ((this.sortingBit == 'reverse' || this.sortingBit == 'inverse') && this.tasks) {
+      this.tasks.reverse();
     }
   }
 

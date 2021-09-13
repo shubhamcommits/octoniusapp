@@ -88,6 +88,12 @@ routes.delete('/:groupId/customFields/:fieldId', group.removeCustomField);
 // PUT - Add new value to a custom field
 routes.put('/:groupId/customFields/addValue', group.addCustomFieldValue);
 
+// PUT - Set the CF to be displayed in the kanban card
+routes.put('/:groupId/customFields/displayInKanbanCard', group.setCustomFieldDisplayKanbanCard);
+
+// PUT - Set the CF to be displayed in the kanban card
+routes.put('/:groupId/customFields/color', group.setCustomFieldColor);
+
 // PUT - Remove custom field value
 routes.put('/:groupId/customFields/removeValue', group.removeCustomFieldValue);
 
@@ -134,6 +140,9 @@ routes.put('/:groupId/saveSelectedWidgets', group.saveSelectedWidgets);
 
 // GET - Get group shuttle tasks
 routes.get('/:groupId/shuttleTasks', group.getShuttleTasks);
+
+// PUT - Updates the settings of the custom fields table dialog in the group
+routes.put('/:groupId/saveCustomFieldsSettings', group.saveCustomFieldsSettings);
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

@@ -174,4 +174,9 @@ export class ColumnService {
   updateColumnsPosition(columns: any) {
     return this._http.put<any>(this.baseUrl + `/columns/updateColumnsPosition`, {columns: columns}).toPromise();
   }
+
+  displayCustomFieldInColumn(columnId: string, showInColumn: boolean, customFieldName: string) {
+    return this._http.put<any>(this.baseUrl + `/columns/setDisplayCustomFieldInColumn`, {columnId, showInColumn, customFieldName}).toPromise();
+  }
+
 }

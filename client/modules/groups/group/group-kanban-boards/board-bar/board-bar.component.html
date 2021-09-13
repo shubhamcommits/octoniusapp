@@ -77,13 +77,10 @@
         <a mat-menu-item (click)="sortTasks('none')" [ngStyle]="{'color' : (sortby==='none') ? 'green' : 'black'}">
           <span i18n="@@groupBoardBar.sort.none">None</span>
         </a>
+
         <a mat-menu-item (click)="sortTasks('due_date')"
           [ngStyle]="{'color' : (sortby==='due_date') ? 'green' : 'black'}">
           <span i18n="@@groupBoardBar.sort.dueDate">Due Date</span>
-        </a>
-        <a mat-menu-item (click)="sortTasks('priority')"
-          [ngStyle]="{'color' : (sortby==='priority') ? 'green' : 'black'}">
-          <span i18n="@@groupBoardBar.sort.priority">Priority</span>
         </a>
 
         <a mat-menu-item (click)="sortTasks('tags')" [ngStyle]="{'color' : (sortby==='tags') ? 'green' : 'black'}">
@@ -98,6 +95,17 @@
           [ngStyle]="{'color' : (sortby==='due_date') ? 'green' : 'black'}">
           <span i18n="@@groupBoardBar.sort.ideas">Ideas</span>
         </a>
+
+        <a mat-menu-item [matMenuTriggerFor]="menuCustomFieldsSort" class="dropdownbtn"
+          [ngStyle]="{'color' : (sortby==='priority') ? 'green' : 'black'}">
+            <span i18n="@@groupBoardBar.sort.customField">Custom Field</span>
+        </a>
+
+        <mat-menu #menuCustomFieldsSort="matMenu">
+          <a mat-menu-item *ngFor="let cf of groupData?.custom_fields" (click)="sortTasks('custom_field', cf)" style="margin: 10px;text-decoration: none;">
+            <span>{{ cf.title }}</span>
+          </a>
+        </mat-menu>
       </mat-menu>
 
       <mat-menu #menuFilter="matMenu" style="overflow: visible !important;" class="filter-menu">

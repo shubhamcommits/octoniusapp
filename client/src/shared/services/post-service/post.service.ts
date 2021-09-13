@@ -351,14 +351,14 @@ export class PostService {
       params = {
         groupId: groupId.toString().trim(),
         type: type.toString().trim(),
-        numDays: numDays.toString().trim(),
+        numDays: (numDays) ? numDays.toString().trim() : null,
         overdue: overdue.toString().trim()
       };
     } else {
       params = {
         groupId: groupId.toString().trim(),
         type: type.toString().trim(),
-        numDays: numDays.toString().trim()
+        numDays: (numDays) ? numDays.toString().trim() : null
       };
     }
     return this._http.get(this.baseURL + `/group/posts`, {

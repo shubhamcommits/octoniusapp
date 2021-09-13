@@ -193,6 +193,14 @@ export class GroupService {
     return this._http.put(this.baseURL + `/${groupId}/customFields/addValue`, { fieldId, value }).toPromise();
   }
 
+  setCustomFieldDisplayKanbanCard(display_in_kanban_card: boolean, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/customFields/displayInKanbanCard`, { fieldId, display_in_kanban_card }).toPromise();
+  }
+
+  setCustomFieldColor(color: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/customFields/color`, { fieldId, color }).toPromise();
+  }
+
   removeCustomFieldValue(value: string, fieldId: string, groupId: string) {
     return this._http.put(this.baseURL + `/${groupId}/customFields/removeValue`, { fieldId, value }).toPromise();
   }
@@ -280,5 +288,14 @@ export class GroupService {
 
   getShuttleTasks(groupId: string) {
     return this._http.get(this.baseURL + `/${groupId}/shuttleTasks`).toPromise();
+  }
+
+  /**
+   * This method calls the corresponding service to save the settings of the custom fields table settings dialog
+   * @param groupId
+   * @param settings
+   */
+  saveCFTableWidgetSettings(groupId: string, settings: any) {
+    return this._http.put<any>(`${this.baseURL}/${groupId}/saveCustomFieldsSettings`, {settings: settings}).toPromise();
   }
 }

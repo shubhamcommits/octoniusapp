@@ -9,6 +9,7 @@ import moment from 'moment/moment';
 import { MatDialog } from '@angular/material/dialog';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { CreateProjectColumnDialogComponent } from './create-project-column-dialog/create-project-column-dialog.component';
+import { ShowCustomFieldsColumnDialogComponent } from './show-custom-fields-column-dialog/show-custom-fields-column-dialog.component';
 
 @Component({
   selector: 'app-group-kanban-boards',
@@ -25,6 +26,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   // Task Posts array variable
   @Input() tasks: any;
   @Input() sortingBit: String;
+  @Input() sortingData: any;
   @Input() isIdeaModuleAvailable = false;
   @Input() isShuttleTasksModuleAvailable = false;
 
@@ -78,6 +80,10 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         this.sortingBit = to;
         await this.sorting();
       }
+      if (propName === 'sortingData') {
+        this.sortingData = to;
+        await this.sorting();
+      }
     }
   }
 
@@ -91,7 +97,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   }
 
   async sorting() {
-
     if (this.sortingBit == 'due_date' || this.sortingBit == 'none') {
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;
@@ -113,18 +118,34 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         })
         this.columns[index].tasks = task;
       }
-    } else if (this.sortingBit == 'priority') {
+    } else if (this.sortingBit == 'custom_field') {
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;
-        task.sort((t1, t2) => {
-          return (t1?.task?.custom_fields && t2?.task?.custom_fields)
-            ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
-              ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
-                ? 1 : 0))
-            : ((t1?.task?.custom_fields && !t2?.task?.custom_fields)
-              ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
-                ? 1 : 0);
-        });
+        if (this.sortingData && this.sortingData.name == 'priority') {
+          task.sort((t1, t2) => {
+            return (t1?.task?.custom_fields && t2?.task?.custom_fields)
+              ? (((t1?.task?.custom_fields['priority'] == 'High' && t2?.task?.custom_fields['priority'] != 'High') || (t1?.task?.custom_fields['priority'] == 'Medium' && t2?.task?.custom_fields['priority'] == 'Low'))
+                ? -1 : (((t1?.task?.custom_fields['priority'] != 'High' && t2?.task?.custom_fields['priority'] == 'High') || (t1?.task?.custom_fields['priority'] == 'Low' && t2?.task?.custom_fields['priority'] == 'Medium'))
+                  ? 1 : 0))
+              : ((t1?.task?.custom_fields && !t2?.task?.custom_fields)
+                ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
+                  ? 1 : 0);
+          });
+        } else {
+          task.sort((t1, t2) => {
+            return (t1?.task?.custom_fields && t2?.task?.custom_fields)
+              ? (t1?.task?.custom_fields[this.sortingData.name] && t2?.task?.custom_fields[this.sortingData.name])
+                ?((t1?.task?.custom_fields[this.sortingData.name] > t2?.task?.custom_fields[this.sortingData.name])
+                  ? -1 : (t1?.task?.custom_fields < t2?.task?.custom_fields)
+                    ? 1 : 0)
+                : ((t1?.task?.custom_fields[this.sortingData.name] && !t2?.task?.custom_fields[this.sortingData.name])
+                  ? -1 : ((!t1?.task?.custom_fields[this.sortingData.name] && t2?.task?.custom_fields[this.sortingData.name]))
+                    ? 1 : 0)
+              : ((t1?.task?.custom_fields && !t2?.task?.custom_fields)
+                ? -1 : ((!t1?.task?.custom_fields && t2?.task?.custom_fields))
+                  ? 1 : 0);
+          });
+        }
         this.columns[index].tasks = task;
       }
     } else if (this.sortingBit == 'tags') {
@@ -171,11 +192,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         });
         this.columns[index].tasks = task;
       }
-    } else if(this.sortingBit == 'reverse'){
-      this.columns.forEach(column => {
-        column.tasks.reverse();
-      });
-    } else if (this.sortingBit == 'invert'){
+    } else if (this.sortingBit == 'reverse' || this.sortingBit == 'inverse') {
       this.columns.forEach(column => {
         column.tasks.reverse();
       });
@@ -636,7 +653,40 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     });
   }
 
+  openShowCFDialog(column) {
+    const data = {
+      column: column,
+      customFields: this.groupData?.custom_fields
+    }
+
+    const dialogRef = this.dialog.open(ShowCustomFieldsColumnDialogComponent, {
+      data: data,
+      hasBackdrop: true
+    });
+    const customFieldsUpdatedEventSubs = dialogRef.componentInstance.customFieldsUpdatedEvent.subscribe((data) => {
+      const index = this.columns.findIndex(col => col._id == data._id);
+      if (index >= 0) {
+        this.columns[index] = data;
+      }
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      customFieldsUpdatedEventSubs.unsubscribe();
+    });
+  }
+
   isDelay(realDueDate: any, dueDate: any) {
     return moment(realDueDate).isAfter(moment(dueDate), 'day');
+  }
+
+  calculateCFStatistics(cfName: string, tasks: any) {
+    let calculation = 0;
+    tasks.forEach(task => {
+      calculation += (task.task.custom_fields[cfName] && !isNaN(task.task.custom_fields[cfName]))
+        ? +task.task.custom_fields[cfName]
+        : 0;
+    });
+    return calculation;
   }
 }

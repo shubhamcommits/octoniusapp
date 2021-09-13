@@ -1,0 +1,39 @@
+<div class="smart-card" style="padding: 10px;">
+  <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
+    <div class="card-title mt-1">
+      <span class="material-icons-outlined">auto_awesome</span>
+      <span i18n="@@cfTableCard.cfTable">Custom Fields analytics</span>
+    </div>
+    <div>
+      <span class="material-icons muted" style="margin-left: 30px; cursor: pointer;" (click)="openSettingsDialog()">settings</span>
+    </div>
+  </div>
+
+  <div clas="row">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th class="header"> {{ selectTypeCustomField?.title }} </th>
+            <th *ngFor="let cf of inputTypeCustomFields" class="muted"> {{ cf.title }} </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of tableData">
+            <td>
+              <div class="member">
+                <div class="name">
+                  {{ row.selectValue }}
+                </div>
+              </div>
+            </td>
+
+            <td *ngFor="let cf of row.inputTypeCustomFields">
+              {{ cf }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

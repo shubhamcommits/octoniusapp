@@ -34,7 +34,9 @@ export class AdvancedFilterDialogComponent implements OnInit {
 
     await this.groupService.getGroupCustomFields(this.groupData._id).then((res) => {
       res['group']['custom_fields'].forEach(field => {
-        this.customFields.push(field);
+        if (!field.input_type) {
+          this.customFields.push(field);
+        }
       });
     });
 

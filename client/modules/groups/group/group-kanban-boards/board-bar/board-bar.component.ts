@@ -30,7 +30,7 @@ export class BoardBarComponent implements OnInit {
   @Output() changeViewEmitter: EventEmitter<string> = new EventEmitter<string>();
 
   // Emitter to notify that the sorting type is changing
-  @Output() sortTaskEmitter: EventEmitter<string> = new EventEmitter<string>();
+  @Output() sortTaskEmitter: EventEmitter<Object> = new EventEmitter<Object>();
 
   // Emitter to notify that the filter type is changing
   @Output() filterTaskEmitter: EventEmitter<Object> = new EventEmitter<Object>();
@@ -45,7 +45,8 @@ export class BoardBarComponent implements OnInit {
   menuLable: string = $localize`:@@boardBar.filterTaskFor:Filter Task For`;
   menuFor: string = 'Filter';
   reverse: boolean = false;
-  cfFilter: any = {}
+  cfFilter: any = {};
+  cfSort: any = {};
 
   groupMembers:any = [];
 
@@ -57,22 +58,31 @@ export class BoardBarComponent implements OnInit {
     this.changeViewEmitter.emit(view);
   }
 
-  sortTasks(bit: string) {
-    if(bit==this.sortby){
-      if(this.reverse==false){
-        this.reverse = true;
-        this.sortTaskEmitter.emit('reverse');
-      } else if(this.reverse==true){
+  sortTasks(bit: string, cf?: any) {
+    if (bit == this.sortby) {
+      if (cf && this.cfSort && cf.title != this.cfSort.title) {
         this.reverse = false;
-        this.sortTaskEmitter.emit('invert');
+        this.cfSort = (cf) ? cf : {};
+        const obj = { bit: bit, data: this.cfSort || '' }
+        this.sortTaskEmitter.emit(obj);
+      } else {
+        if (this.reverse == false) {
+          this.reverse = true;
+          const obj = { bit: 'reverse' }
+          this.sortTaskEmitter.emit(obj);
+        } else if (this.reverse == true) {
+          this.reverse = false;
+          const obj = { bit: 'inverse' }
+          this.sortTaskEmitter.emit(obj);
+        }
       }
-
     } else {
       this.sortby = bit;
       this.reverse = false;
-      this.sortTaskEmitter.emit(bit);
+      this.cfSort = (cf) ? cf : {};
+      const obj = { bit: bit, data: this.cfSort || '' }
+      this.sortTaskEmitter.emit(obj);
     }
-
   }
 
   filterTask(bit: string, cf?: any) {
