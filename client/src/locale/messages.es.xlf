@@ -3971,7 +3971,7 @@
         <target state="translated">Últimos 7 días</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-dashboard/group-dashboard.component.ts</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupDashboard.lastMonth" datatype="html">
@@ -3979,7 +3979,7 @@
         <target state="translated">Último mes</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-dashboard/group-dashboard.component.ts</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupDashboard.lastYear" datatype="html">
@@ -3987,7 +3987,7 @@
         <target state="translated">El año pasado</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-dashboard/group-dashboard.component.ts</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="advancedFilterDialog.filterCF" datatype="html">
@@ -4521,7 +4521,6 @@
       <trans-unit id="groupDashboard.showCF" datatype="html">
         <source>Show CF Data</source>
         <target state="translated">Mostrar datos CF</target>
-        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.html</context>
           <context context-type="linenumber">38</context>
@@ -4713,7 +4712,7 @@
       </trans-unit>
       <trans-unit id="showCustomFieldsColumnDialog.cfToShowDescription" datatype="html">
         <source>This will display statistics for selected Custom Fields in the header of the section.</source>
-        <target state="needs-translation">Esto mostrará las estadísticas de los Campos Personalizados seleccionados en el encabezado de la sección.</target>
+        <target state="translated">Esto mostrará las estadísticas de los Campos Personalizados seleccionados en el encabezado de la sección.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/show-custom-fields-column-dialog/show-custom-fields-column-dialog.component.html</context>
           <context context-type="linenumber">5</context>
@@ -9405,6 +9404,102 @@
           <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="cfStatisticsCard.tasksInProgress" datatype="html">
+        <source>tasks in progress</source>
+        <target state="translated">tarea en progreso</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-statistics-card/custom-field-statistics-card.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cfStatisticsCard.opportunity" datatype="html">
+        <source>opportunity</source>
+        <target state="translated">oportunidad</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-statistics-card/custom-field-statistics-card.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cfStatisticsCard.tasksDone" datatype="html">
+        <source>tasks done</source>
+        <target state="translated">taread completadas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-statistics-card/custom-field-statistics-card.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cfStatisticsCard.total" datatype="html">
+        <source>total</source>
+        <target state="translated">total</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-statistics-card/custom-field-statistics-card.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cfTableCard.cfTable" datatype="html">
+        <source>Custom Fields analytics</source>
+        <target state="translated">Analíticas de Campos Personalizados</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-field-table-card.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cfTableSettingsDialog.customizeYourDashboard" datatype="html">
+        <source> Customize your analytics </source>
+        <target state="translated">Personaliza tus analíticas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component.html</context>
+          <context context-type="linenumber">14,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cfTableSettingsDialog.selectWhatWidgets" datatype="html">
+        <source>Select what Custom Fields(CF) should be displayed in the table, in order to get your custom analytics.</source>
+        <target state="translated">Selectiona que Campos Personalizados (CF) deben ser mostrados en la tabla, para obtener tus analíticas personalizadas.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cfTableSettingsDialog.cancel" datatype="html">
+        <source>Cancel</source>
+        <target state="translated">Cancelar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cfTableSettingsDialog.updateSettings" datatype="html">
+        <source>Update settings</source>
+        <target state="translated">Actualizar configuración</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component.html</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cfTableSettingsDialog.pleaseWaitWeSavingWidgets" datatype="html">
+        <source>Please wait we are saving the settings...</source>
+        <target state="translated">Por favor, espere mientras guardamos la configuración...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component.ts</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cfTableSettingsDialog.groupUpdated" datatype="html">
+        <source>Group updated!</source>
+        <target state="translated">Grupo actualizado</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component.ts</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cfTableSettingsDialog.unableToUpdateGroup" datatype="html">
+        <source>Unable to update the group, please try again!</source>
+        <target state="translated">No se puede actualizar el grupo. Vuelve a intentarlo.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component.ts</context>
+          <context context-type="linenumber">92</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="engagementCard.engagement" datatype="html">
         <source> Engagement </source>
         <target state="translated"> Compromiso</target>
@@ -9759,12 +9854,20 @@
           <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="widgetSelectorDialog.cfStatistics" datatype="html">
+        <source> CF Statistics</source>
+        <target state="translated">Estadisticas de CF</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="widgetSelectorDialog.cancel" datatype="html">
         <source>Cancel</source>
         <target state="translated">Cancelar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.html</context>
-          <context context-type="linenumber">46</context>
+          <context context-type="linenumber">62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.updateSettings" datatype="html">
@@ -9772,7 +9875,7 @@
         <target state="translated">Actualizar configurción</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.html</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.workStatistics" datatype="html">
@@ -9780,11 +9883,11 @@
         <target state="needs-l10n">Estadísticas laborales</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">36</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">59</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.workloadCompletitionStatus" datatype="html">
@@ -9792,11 +9895,11 @@
         <target state="needs-l10n">Carga de trabajo por estado de finalización</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">39</context>
+          <context context-type="linenumber">40</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">63</context>
+          <context context-type="linenumber">68</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.velocityOverTime" datatype="html">
@@ -9804,11 +9907,11 @@
         <target state="needs-l10n">Velocidad en el tiempo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="linenumber">44</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">72</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.engagement" datatype="html">
@@ -9816,11 +9919,11 @@
         <target state="translated">Participación</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">48</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">92</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.resourceManagement" datatype="html">
@@ -9828,7 +9931,15 @@
         <target state="needs-l10n">Administracion de recursos</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="widgetSelectorDialog.cf" datatype="html">
+        <source>Custom Fields Table</source>
+        <target state="translated">Tabla de Campos Personalizados</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
+          <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.pulse" datatype="html">
@@ -9836,7 +9947,7 @@
         <target state="translated">Pulso</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">71</context>
+          <context context-type="linenumber">76</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.peopleDirectory" datatype="html">
@@ -9844,7 +9955,7 @@
         <target state="needs-l10n">Directorio de personas</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">75</context>
+          <context context-type="linenumber">80</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.organizationalStructure" datatype="html">
@@ -9852,7 +9963,7 @@
         <target state="needs-l10n">Estructura organizativa</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">79</context>
+          <context context-type="linenumber">84</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.workStatisticsNorthStars" datatype="html">
@@ -9860,7 +9971,7 @@
         <target state="needs-l10n">Estadísticas de trabajo North Stars</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">83</context>
+          <context context-type="linenumber">88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.kpiPerformance" datatype="html">
@@ -9868,11 +9979,11 @@
         <target state="needs-l10n">Rendimiento de KPI</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">91</context>
+          <context context-type="linenumber">96</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">123</context>
+          <context context-type="linenumber">129</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.pleaseWaitWeSavingSettings" datatype="html">
@@ -9880,7 +9991,7 @@
         <target state="needs-l10n">Espere, estamos guardando la nueva configuración ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">165</context>
+          <context context-type="linenumber">173</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.settingsSavedGroup" datatype="html">
@@ -9888,7 +9999,7 @@
         <target state="needs-l10n">¡Ajustes guardados en tu grupo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">170</context>
+          <context context-type="linenumber">178</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.unableToSaveSettings" datatype="html">
@@ -9896,7 +10007,7 @@
         <target state="needs-l10n">No se puede guardar la configuración en su grupo, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">172</context>
+          <context context-type="linenumber">180</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.pleaseWaitWeSavingWidgets" datatype="html">
@@ -9904,7 +10015,7 @@
         <target state="needs-l10n">Espere, estamos guardando los widgets ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">179</context>
+          <context context-type="linenumber">187</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.groupUpdated" datatype="html">
@@ -9912,7 +10023,7 @@
         <target state="needs-l10n">¡Grupo actualizado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">190</context>
+          <context context-type="linenumber">198</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.unableToUpdateGroup" datatype="html">
@@ -9920,7 +10031,7 @@
         <target state="needs-l10n">No se puede actualizar el grupo. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">193</context>
+          <context context-type="linenumber">201</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.userUpdated" datatype="html">
@@ -9928,7 +10039,7 @@
         <target state="translated">¡Usuario actualizado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">207</context>
+          <context context-type="linenumber">215</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.unableToUpdateUser" datatype="html">
@@ -9936,7 +10047,7 @@
         <target state="needs-l10n">No se puede actualizar al usuario, inténtelo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">210</context>
+          <context context-type="linenumber">218</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workStatisticsCard.workStatistics" datatype="html">
