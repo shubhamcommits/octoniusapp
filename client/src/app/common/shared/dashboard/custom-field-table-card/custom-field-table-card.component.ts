@@ -89,6 +89,8 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
       this.inputTypeCFs = [];
     }
 
+    let totals = [];
+
     this.tableData.forEach(row => {
       this.inputTypeCustomFields.forEach(cf => {
         let sum = 0;
@@ -103,6 +105,24 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
         });
         row.inputTypeCustomFields.push(sum);
       });
+    });
+
+    const columns = this.transpose(this.tableData)[this.tableData.length-1];
+    for (let col = 0; col < columns[0].length; col++) {
+      let colSum = 0;
+      for (let row = 0; row < columns.length; row++) {
+        if (!isNaN(columns[row][col])) {
+          colSum += +columns[row][col];
+        }
+      }
+      totals.push(colSum);
+    }
+    this.tableData.push({ selectValue: '', inputTypeCustomFields: totals });
+  }
+
+  transpose(a) {
+    return Object.keys(a[0]).map((c) => {
+        return a.map((r) => { return r[c]; });
     });
   }
 
