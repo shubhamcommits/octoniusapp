@@ -117,7 +117,7 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
       }
       totals.push(colSum);
     }
-    this.tableData.push({ selectValue: '', inputTypeCustomFields: totals });
+    this.tableData.push({ selectValue: $localize`:@@cfTableCard.total:TOTAL`, inputTypeCustomFields: totals });
   }
 
   transpose(a) {

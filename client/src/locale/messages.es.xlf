@@ -9444,6 +9444,14 @@
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="cfTableCard.total" datatype="html">
+        <source>TOTAL</source>
+        <target state="translated">TOTAL</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-field-table-card.component.ts</context>
+          <context context-type="linenumber">120</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="cfTableSettingsDialog.customizeYourDashboard" datatype="html">
         <source> Customize your analytics </source>
         <target state="translated">Personaliza tus analíticas</target>
@@ -9481,7 +9489,7 @@
         <target state="translated">Por favor, espere mientras guardamos la configuración...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component.ts</context>
-          <context context-type="linenumber">81</context>
+          <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cfTableSettingsDialog.groupUpdated" datatype="html">
@@ -9489,7 +9497,7 @@
         <target state="translated">Grupo actualizado</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component.ts</context>
-          <context context-type="linenumber">89</context>
+          <context context-type="linenumber">87</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cfTableSettingsDialog.unableToUpdateGroup" datatype="html">
@@ -9497,7 +9505,7 @@
         <target state="translated">No se puede actualizar el grupo. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component.ts</context>
-          <context context-type="linenumber">92</context>
+          <context context-type="linenumber">90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="engagementCard.engagement" datatype="html">
