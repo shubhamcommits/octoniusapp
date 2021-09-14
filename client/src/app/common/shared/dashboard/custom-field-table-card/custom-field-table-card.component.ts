@@ -107,22 +107,29 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
       });
     });
 
-    const columns = this.transpose(this.tableData)[this.tableData.length-1];
-    for (let col = 0; col < columns[0].length; col++) {
-      let colSum = 0;
-      for (let row = 0; row < columns.length; row++) {
-        if (!isNaN(columns[row][col])) {
-          colSum += +columns[row][col];
+    if (this.tableData && this.tableData[0]) {
+      const tableTransposed = this.transpose(this.tableData);
+      const columns = tableTransposed[tableTransposed.length-1];
+      if (columns && columns[0]) {
+        for (let col = 0; col < columns[0].length; col++) {
+          let colSum = 0;
+          for (let row = 0; row < columns.length; row++) {
+            if (columns[row] && columns[row][col] && !isNaN(columns[row][col])) {
+              colSum += +columns[row][col];
+            }
+          }
+          totals.push(colSum);
         }
       }
-      totals.push(colSum);
+      this.tableData.push({ selectValue: $localize`:@@cfTableCard.total:TOTAL`, inputTypeCustomFields: totals });
     }
-    this.tableData.push({ selectValue: $localize`:@@cfTableCard.total:TOTAL`, inputTypeCustomFields: totals });
   }
 
   transpose(a) {
     return Object.keys(a[0]).map((c) => {
-        return a.map((r) => { return r[c]; });
+      return a.map((r) => {
+        return r[c];
+      });
     });
   }
 
