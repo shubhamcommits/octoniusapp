@@ -65,13 +65,14 @@
 .badges-bar{
   display: flex;
   justify-content:flex-start;
+  flex-flow: wrap;
   .label-priority{
     align-self: center;
   }
 }
 
 .badge-cf {
-  margin: 0 5px !important;
+  margin:5px 2px!important;
   font-family: Nunito, sans-serif;
   font-style: normal;
   font-size: 12px;
