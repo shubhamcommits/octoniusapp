@@ -258,6 +258,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -270,6 +271,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -281,6 +283,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -291,6 +294,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -1233,6 +1237,7 @@ export class PostService {
         .populate('_posted_by', 'first_name last_name profile_pic')
         .populate('_assigned_to', 'first_name last_name profile_pic')
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .lean();
 
       return {
@@ -1277,6 +1282,7 @@ export class PostService {
         .populate('_posted_by', 'first_name last_name profile_pic')
         .populate('_assigned_to', 'first_name last_name profile_pic')
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .lean();
 
       return {
@@ -1323,6 +1329,7 @@ export class PostService {
         .populate('_posted_by', 'first_name last_name profile_pic')
         .populate('_assigned_to', 'first_name last_name profile_pic')
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .lean();
 
       return {
@@ -1653,6 +1660,7 @@ export class PostService {
         .populate('_posted_by', this.userFields)
         .populate('_assigned_to', this.userFields)
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .lean();
 
     } else {
@@ -1668,6 +1676,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
     }
@@ -1708,6 +1717,7 @@ export class PostService {
         .populate('_posted_by', this.userFields)
         .populate('_assigned_to', this.userFields)
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .lean();
 
     } else {
@@ -1724,6 +1734,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
     }
@@ -1760,6 +1771,7 @@ export class PostService {
           .populate('_posted_by', this.userFields)
           .populate('_assigned_to', this.userFields)
           .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+          .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
           .lean();
 
       } else {
@@ -1781,6 +1793,7 @@ export class PostService {
           .populate({ path: '_posted_by', select: this.userFields })
           .populate({ path: '_assigned_to', select: this.userFields })
           .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+          .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
           .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
           .lean();
       }
@@ -1796,6 +1809,7 @@ export class PostService {
           .populate({ path: '_posted_by', select: this.userFields })
           .populate({ path: '_assigned_to', select: this.userFields })
           .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+          .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
           .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
           .lean();
     }
@@ -1831,6 +1845,7 @@ export class PostService {
         .populate('_posted_by', this.userFields)
         .populate('_assigned_to', this.userFields)
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .lean();
 
     } else {
@@ -1851,6 +1866,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
     }
@@ -1957,6 +1973,7 @@ export class PostService {
         .populate('_posted_by', this.userFields)
         .populate('_assigned_to', this.userFields)
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .lean();
 
     } else {
@@ -1971,6 +1988,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
     }
@@ -2011,6 +2029,7 @@ export class PostService {
       .populate({ path: '_posted_by', select: this.userFields })
       .populate({ path: '_assigned_to', select: this.userFields })
       .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+      .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
       .lean();
 

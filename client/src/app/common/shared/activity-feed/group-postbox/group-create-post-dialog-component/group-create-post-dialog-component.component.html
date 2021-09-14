@@ -113,7 +113,7 @@
     <!-- Top Right Section starts -->
     <div class="post-properties">
         <!-- Parent Task starts -->
-        <div *ngIf="postData?.task?._parent_task && postData?.type === 'task'" class="content-box">
+        <div *ngIf="postData?.task?._parent_task && postData?.type === 'task' && groupData?._id != shuttleGroup?._id" class="content-box">
           <p class="box-title"i18n="@@groupCreatePostDialog.parentTask"> Parent task</p>
 
           <div class="parent-task">
@@ -158,13 +158,12 @@
             <!-- Change task status ends -->
             </div>
 
-          <div class="shuttle-box">
-            <p class="mt-1" *ngIf="columns" style="margin-top: 18px; width:70px" i18n="@@groupCreatePostDialog.section">Section</p>
+          <div class="shuttle-box" *ngIf="columns && !postData?.task?._parent_task">
+            <p class="mt-1" style="margin-top: 18px; width:70px" i18n="@@groupCreatePostDialog.section">Section</p>
 
             <!-- Change task column starts -->
             <app-change-column
                 class="ml-2"
-                *ngIf="columns"
                 [post]="postData"
                 [columns]="columns"
                 [disabled]="postData?.task?._shuttle_group == groupId"
@@ -202,8 +201,8 @@
           <p class="box-title"> <img src="assets/images/icon-task-shuttle.svg" style="width: 32px"i18n="@@groupCreatePostDialog.taskShuttle">  Task Shuttle</p>
 
           <div class="shuttle-box mt-2">
-            <p  *ngIf="groupData?._id == shuttleGroup?._id" style="margin-top: 7px;"><span i18n="@@groupCreatePostDialog.from"> From</span> <span class="text-primary">{{ postData?._group?.group_name }}</span></p>
-            <p  *ngIf="groupData?._id != shuttleGroup?._id" style="margin-top: 7px;"><span i18n="@@groupCreatePostDialog.to"> To</span> <span class="text-primary">{{ shuttleGroup?.group_name }}</span></p>
+            <p  *ngIf="groupData?._id == shuttleGroup?._id" style="margin-top: 7px;"><span i18n="@@groupCreatePostDialog.from"> From</span>:&nbsp;&nbsp;<span class="text-primary">{{ postData?._group?.group_name }}</span></p>
+            <p  *ngIf="groupData?._id != shuttleGroup?._id" style="margin-top: 7px;"><span i18n="@@groupCreatePostDialog.to"> To</span>:&nbsp;&nbsp;<span class="text-primary">{{ shuttleGroup?.group_name }}</span></p>
 
             <app-secured-image  *ngIf="groupData?._id == shuttleGroup?._id"
               [imgURL]="postData?._group?.group_avatar"
