@@ -105,3 +105,7 @@ tbody tr td:first-of-type {
   opacity: 1;
   background-color: #FFFFFF;
 }
+
+tbody tr:last-child {
+  font-weight: bold;
+}
