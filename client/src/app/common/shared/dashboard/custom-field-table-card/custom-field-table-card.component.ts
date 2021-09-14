@@ -77,13 +77,17 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
       this.selectTypeCustomField = null;
     }
 
-    this.inputTypeCFs.forEach(cfName => {
-      index = this.customFields.findIndex(field => field.name == cfName);
-      if (index >= 0) {
-        const field = this.customFields[index];
-        this.inputTypeCustomFields.push(field);
-      }
-    });
+    if (this.inputTypeCFs) {
+      this.inputTypeCFs.forEach(cfName => {
+        index = this.customFields.findIndex(field => field.name == cfName);
+        if (index >= 0) {
+          const field = this.customFields[index];
+          this.inputTypeCustomFields.push(field);
+        }
+      });
+    } else {
+      this.inputTypeCFs = [];
+    }
 
     this.tableData.forEach(row => {
       this.inputTypeCustomFields.forEach(cf => {
@@ -122,6 +126,12 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
       this.selectTypeCF = data.selectTypeCF;
       this.inputTypeCFs = data.inputTypeCFs;
 
+      if (!this.groupData.custom_fields_table_widget) {
+        this.groupData.custom_fields_table_widget = {
+          selectTypeCF: this.selectTypeCF,
+          inputTypeCFs: this.inputTypeCFs
+        };
+      }
       this.groupData.custom_fields_table_widget.selectTypeCF = this.selectTypeCF;
       this.groupData.custom_fields_table_widget.inputTypeCFs = this.inputTypeCFs;
 
