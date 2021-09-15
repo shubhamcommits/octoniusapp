@@ -564,15 +564,17 @@ export class PostService {
       }).toPromise();
   }
 
-  selectShuttleSection(postId: string, shuttleSectionId: string) {
+  selectShuttleSection(postId: string, groupId: string, shuttleSectionId: string) {
     return this._http.put(this.baseURL + `/${postId}/selectShuttleSection`, {
-        shuttleSectionId: shuttleSectionId
+        shuttleSectionId: shuttleSectionId,
+        groupId: groupId
       }).toPromise();
   }
 
-  selectShuttleStatus(postId: string, shuttleStatus: string) {
+  selectShuttleStatus(postId: string, groupId: string, shuttleStatus: string) {
     return this._http.put(this.baseURL + `/${postId}/selectShuttleStatus`, {
-      shuttleStatus: shuttleStatus
+      shuttleStatus: shuttleStatus,
+      groupId: groupId
       }).toPromise();
   }
 }

@@ -153,14 +153,12 @@
           <app-change-column
             class="ml-3"
             *ngIf="type === 'task' && columns"
-            [post]="postData"
+            [sectionId]="(postData?.task?._column?._id || postData?.task?._column)"
             [columns]="columns"
             (moveTask)="moveTaskToColumn($event)">
           </app-change-column>
           <!-- Change task column ends -->
-
       </div>
-
     </div>
 
     <!-- Quill Editor with content of post if edit property is enabled -->

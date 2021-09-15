@@ -231,17 +231,17 @@ export class GroupCreatePostComponent implements OnInit {
     // Set the status
     this.postData.task.status = event;
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId);
 
     this.taskStatus.emit(event);
   }
 
   async moveTaskToColumn(event) {
-    const columnId = event.post.task._column._id || event.post.task._column;
+    const columnId = event.newColumnId;
     await this.publicFunctions.changeTaskColumn(this.postData._id, columnId, this.userData._id, this.groupId);
     this.postData.task._column = columnId;
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId);
 
     this.moveTask.emit(event);
   }
@@ -251,7 +251,7 @@ export class GroupCreatePostComponent implements OnInit {
     if (this.postData) {
       this.postData = res['post'];
       if (this.type === 'task') {
-        this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData);
+        this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId);
       }
     } else {
       this.eventAssignees.push(res['assigneeId']);
@@ -395,7 +395,7 @@ export class GroupCreatePostComponent implements OnInit {
 
           this.postData = res['post'];
 
-          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData);
+          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId);
 
           // Emit the Post to the other components
           this.post.emit(this.postData)
