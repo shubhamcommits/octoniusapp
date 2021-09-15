@@ -48,7 +48,9 @@ export class ChangeColumnComponent implements OnChanges {
   }
 
   selectColumn(columnId) {
-    const columnIndex = this.columns.findIndex(column => column._id ==  columnId);
-    this.selectedColumn = this.columns[columnIndex];
+    if (this.columns) {
+      const columnIndex = this.columns.findIndex(column => column._id ==  columnId);
+      this.selectedColumn = this.columns[columnIndex];
+    }
   }
 }
