@@ -4555,7 +4555,7 @@
         <target state="translated">Bitte warten Sie, wir speichern die Abschnittsreihenfolge...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">232</context>
+          <context context-type="linenumber">236</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.orderSaved" datatype="html">
@@ -4563,7 +4563,7 @@
         <target state="translated">Auftrag gespeichert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">239</context>
+          <context context-type="linenumber">243</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.unableToSaveOrderOfSections" datatype="html">
@@ -4571,7 +4571,7 @@
         <target state="translated">Die Reihenfolge der Abschnitte kann derzeit nicht gespeichert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">242</context>
+          <context context-type="linenumber">246</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.sectionWithSameNameExist" datatype="html">
@@ -4579,7 +4579,7 @@
         <target state="translated">Abschnitt mit gleichem Titel existiert bereits, bitte versuchen Sie es mit einem anderen Namen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">258</context>
+          <context context-type="linenumber">262</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.pleaseWaitWeCreateSection" datatype="html">
@@ -4587,7 +4587,7 @@
         <target state="translated">Bitte warten Sie, wir erstellen einen neuen Abschnitt...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">284</context>
+          <context context-type="linenumber">288</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.newSectionCreated" datatype="html">
@@ -4595,7 +4595,7 @@
         <target state="translated">Neuer Abschnitt erstellt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">294</context>
+          <context context-type="linenumber">298</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.unableToCreateSection" datatype="html">
@@ -4603,7 +4603,7 @@
         <target state="translated">Der Abschnitt kann derzeit nicht erstellt werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">297</context>
+          <context context-type="linenumber">301</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.pleaseWaitWeRemovingSection" datatype="html">
@@ -4611,7 +4611,7 @@
         <target state="translated">Bitte warten Sie, wir entfernen Ihren Abschnitt...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">315</context>
+          <context context-type="linenumber">319</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.sectionRemoved" datatype="html">
@@ -4619,7 +4619,7 @@
         <target state="translated">Abschnitt entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">318</context>
+          <context context-type="linenumber">322</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.unableToRemoveSection" datatype="html">
@@ -4627,7 +4627,7 @@
         <target state="translated">Der Abschnitt kann derzeit nicht entfernt werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">321</context>
+          <context context-type="linenumber">325</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.sectionWithSameTitleExists" datatype="html">
@@ -4635,7 +4635,7 @@
         <target state="translated">Abschnitt mit gleichem Titel existiert bereits, bitte versuchen Sie es mit einem anderen Namen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">338</context>
+          <context context-type="linenumber">342</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.pleaseWaitWeRenameSection" datatype="html">
@@ -4643,7 +4643,7 @@
         <target state="translated">Bitte warten Sie, wir benennen Ihren Bereich um</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">349</context>
+          <context context-type="linenumber">353</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.sectionRenamed" datatype="html">
@@ -4651,7 +4651,7 @@
         <target state="translated">Abschnitt umbenannt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">352</context>
+          <context context-type="linenumber">356</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.unableToRenameSection" datatype="html">
@@ -4659,7 +4659,7 @@
         <target state="translated">Der Abschnitt kann derzeit nicht umbenannt werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">355</context>
+          <context context-type="linenumber">359</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.areYouSure" datatype="html">
@@ -4667,7 +4667,7 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">368</context>
+          <context context-type="linenumber">372</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.byDoingThisTasksWillBeDeleted" datatype="html">
@@ -4675,7 +4675,7 @@
         <target state="translated">Dadurch werden alle Aufgaben aus diesem Abschnitt gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">368</context>
+          <context context-type="linenumber">372</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.pleaseWaitWeCreateProject" datatype="html">
@@ -4683,7 +4683,7 @@
         <target state="translated">Bitte warten Sie, wir erstellen ein Projekt aus Ihrem Bereich...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">619</context>
+          <context context-type="linenumber">625</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.sectionTypeChanged" datatype="html">
@@ -4691,7 +4691,7 @@
         <target state="translated">Abschnittstyp geändert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">623</context>
+          <context context-type="linenumber">629</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.unableToChangeSectionType" datatype="html">
@@ -4699,7 +4699,7 @@
         <target state="translated">Der Abschnittstyp kann derzeit nicht geändert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">627</context>
+          <context context-type="linenumber">633</context>
         </context-group>
       </trans-unit>
       <trans-unit id="showCustomFieldsColumnDialog.cfToShow" datatype="html">
@@ -5734,12 +5734,108 @@
           <context context-type="linenumber">976</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="groupCreatePostDialog.plesaeWaitWeAreUpdaing" datatype="html">
+        <source>Please wait we are updating the contents...</source>
+        <target state="translated">Bitte warten Sie, wir aktualisieren den Inhalt...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/public.functions.ts</context>
+          <context context-type="linenumber">1009</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">307</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">364</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">386</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">453</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">561</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">617</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupCreatePostDialog.detailsUpdated" datatype="html">
+        <source>Details updated!</source>
+        <target state="translated">Details aktualisiert!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/public.functions.ts</context>
+          <context context-type="linenumber">1013</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">370</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">392</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">462</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">569</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">623</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupCreatePostDialog.unableToUpdateDetails" datatype="html">
+        <source>Unable to update the details, please try again!</source>
+        <target state="translated">Die Details können nicht aktualisiert werden. Bitte versuchen Sie es erneut!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/public.functions.ts</context>
+          <context context-type="linenumber">1016</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">317</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">329</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">373</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">395</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">465</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">572</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
+          <context context-type="linenumber">626</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="publicFunctions.joiningGroup" datatype="html">
         <source>Joining Group...</source>
         <target state="translated">Gruppe beitreten...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1022</context>
+          <context context-type="linenumber">1061</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.successfullyJoinedGroup" datatype="html">
@@ -5747,7 +5843,7 @@
         <target state="translated">Gruppe erfolgreich beigetreten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1024</context>
+          <context context-type="linenumber">1063</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.posts" datatype="html">
@@ -7701,7 +7797,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
-          <context context-type="linenumber">222</context>
+          <context context-type="linenumber">220</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.section" datatype="html">
@@ -7713,7 +7809,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
-          <context context-type="linenumber">237</context>
+          <context context-type="linenumber">235</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.bar" datatype="html">
@@ -7721,7 +7817,7 @@
         <target state="translated">BAR</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
-          <context context-type="linenumber">177</context>
+          <context context-type="linenumber">175</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.from" datatype="html">
@@ -7729,7 +7825,7 @@
         <target state="translated"> Von</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
-          <context context-type="linenumber">205</context>
+          <context context-type="linenumber">203</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.to" datatype="html">
@@ -7737,7 +7833,7 @@
         <target state="translated"> An</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
-          <context context-type="linenumber">206</context>
+          <context context-type="linenumber">204</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.startDate" datatype="html">
@@ -7745,7 +7841,7 @@
         <target state="translated">Startdatum</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
-          <context context-type="linenumber">257</context>
+          <context context-type="linenumber">253</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.dueDate" datatype="html">
@@ -7753,7 +7849,7 @@
         <target state="translated">Fälligkeitsdatum</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
-          <context context-type="linenumber">286</context>
+          <context context-type="linenumber">282</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.assignee" datatype="html">
@@ -7761,7 +7857,7 @@
         <target state="translated">Verantwortlich</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
-          <context context-type="linenumber">325</context>
+          <context context-type="linenumber">321</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.assignedBy" datatype="html">
@@ -7769,7 +7865,7 @@
         <target state="translated">Zugewiesen von</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
-          <context context-type="linenumber">336</context>
+          <context context-type="linenumber">332</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.tags" datatype="html">
@@ -7777,7 +7873,7 @@
         <target state="translated">Schlagwörter</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
-          <context context-type="linenumber">354</context>
+          <context context-type="linenumber">350</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.customFields" datatype="html">
@@ -7785,39 +7881,7 @@
         <target state="translated">Benutzerdefinierte Felder</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.html</context>
-          <context context-type="linenumber">367</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupCreatePostDialog.plesaeWaitWeAreUpdaing" datatype="html">
-        <source>Please wait we are updating the contents...</source>
-        <target state="translated">Bitte warten Sie, wir aktualisieren den Inhalt...</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">307</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">364</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">386</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">453</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">561</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">584</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">618</context>
+          <context context-type="linenumber">363</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.dateUpdated" datatype="html">
@@ -7832,76 +7896,12 @@
           <context context-type="linenumber">326</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="groupCreatePostDialog.unableToUpdateDetails" datatype="html">
-        <source>Unable to update the details, please try again!</source>
-        <target state="translated">Die Details können nicht aktualisiert werden. Bitte versuchen Sie es erneut!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">317</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">329</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">373</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">395</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">465</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">569</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">592</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">627</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupCreatePostDialog.detailsUpdated" datatype="html">
-        <source>Details updated!</source>
-        <target state="translated">Details aktualisiert!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">370</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">392</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">462</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">566</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">589</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">624</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="groupCreatePostDialog.pleaseWaitWeAreDeleting" datatype="html">
         <source>Please wait we are deleting the post...</source>
         <target state="translated">Bitte warten wir den Beitrag löschen...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">637</context>
+          <context context-type="linenumber">636</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.postDeleted" datatype="html">
@@ -7909,7 +7909,7 @@
         <target state="translated">Beitrag gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">645</context>
+          <context context-type="linenumber">644</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.unableToDeletePost" datatype="html">
@@ -7917,7 +7917,7 @@
         <target state="translated">Beitrag kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component.ts</context>
-          <context context-type="linenumber">647</context>
+          <context context-type="linenumber">646</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStar.northStar" datatype="html">
@@ -8553,7 +8553,7 @@
         <target state="translated"> X LÖSCHEN </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post/group-create-post.component.html</context>
-          <context context-type="linenumber">212,213</context>
+          <context context-type="linenumber">210,211</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.post" datatype="html">
@@ -8561,7 +8561,7 @@
         <target state="translated"> Beitrag </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post/group-create-post.component.html</context>
-          <context context-type="linenumber">218,219</context>
+          <context context-type="linenumber">216,217</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.update" datatype="html">
@@ -8569,7 +8569,7 @@
         <target state="translated"> Update </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post/group-create-post.component.html</context>
-          <context context-type="linenumber">223,224</context>
+          <context context-type="linenumber">221,222</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePost.pleaseWaitWeCreatingPost" datatype="html">
@@ -9449,7 +9449,7 @@
         <target state="translated">GESAMT</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-field-table-card.component.ts</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">124</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cfTableSettingsDialog.customizeYourDashboard" datatype="html">
