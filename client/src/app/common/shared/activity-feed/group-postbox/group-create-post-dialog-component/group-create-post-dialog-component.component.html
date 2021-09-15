@@ -78,7 +78,7 @@
                 Save
             </button>
 
-            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task'"
+            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!shuttleGroup || !postData?.task?.shuttle_type || groupData?._id != shuttleGroup?._id)"
               class="btn float-left btn-warning btn-md"
               (click)="prepareToAddSubtasks()"
               i18n="@@groupCreatePostDialog.addSubtask">
@@ -86,7 +86,7 @@
             </button>
         </div>
 
-        <div class="content-box" *ngIf="showSubtasks">
+        <div class="content-box" *ngIf="showSubtasks && (!shuttleGroup || !postData?.task?.shuttle_type || groupData?._id != shuttleGroup?._id)">
           <app-subtasks
             [subtasks]="subtasks"
             [groupData]="groupData"
