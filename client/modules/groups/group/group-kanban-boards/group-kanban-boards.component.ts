@@ -213,7 +213,11 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       var post: any = event.previousContainer.data[event.previousIndex];
 
       // Update the task column when changed with dropping events to reflect back in the task view modal
-      post['task']._column = event.container.id
+      if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == this.groupId) {
+        post['task']._shuttle_section = event.container.id;
+      } else {
+        post['task']._column = event.container.id;
+      }
 
       // Call move task to a new column
       this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
@@ -414,14 +418,19 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
    * @param columnId
    */
   async moveTaskToNewColumn(task: any, oldColumnId: string, columnId: string) {
-    this.publicFunctions.changeTaskColumn(task._id, columnId, this.userData._id, this.groupId);
 
-    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, task, this.userData._id);
+    if (task?.task?.shuttle_type && (task?.task?._shuttle_group?._id || task?.task?._shuttle_group) == this.groupId) {
+      await this.publicFunctions.changeTaskShuttleSection(task?._id, this.groupId, columnId);
+    } else {
+      await this.publicFunctions.changeTaskColumn(task._id, columnId, this.userData._id, this.groupId);
+    }
+
+    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, task, this.groupId);
 
     // Prepare Event
     let columnEvent = {
       post: task,
-      newColumn: (task?.task?._column?._id || task?.task?._column),
+      newColumn: columnId,
       oldColumn: oldColumnId
     }
 
@@ -498,7 +507,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
           }
         }
         // Find the hightes due date on the tasks of the column
-        //col.real_due_date = moment(Math.max(...col.tasks.map(post => moment(post.task.due_to))));
         col.real_due_date = this.publicFunctions.getHighestDate(col.tasks);
 
         // Calculate number of done tasks
@@ -529,7 +537,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     if (this.columns[oldColumnIndex]['tasks'].length == 0) {
       this.columns[oldColumnIndex].real_due_date = null;
     } else {
-      //this.columns[oldColumnIndex].real_due_date = moment(Math.max(...this.columns[oldColumnIndex].tasks.map(post => moment(post.task.due_to))));
       this.columns[oldColumnIndex].real_due_date = this.publicFunctions.getHighestDate(this.columns[oldColumnIndex].tasks);
     }
 
@@ -539,7 +546,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     if (this.columns[newColumnIndex]['tasks'].length == 0) {
       this.columns[newColumnIndex].real_due_date = null;
     } else {
-      //this.columns[newColumnIndex].real_due_date = moment(Math.max(...this.columns[newColumnIndex].tasks.map(post => moment(post.task.due_to))));
       this.columns[newColumnIndex].real_due_date = this.publicFunctions.getHighestDate(this.columns[newColumnIndex].tasks);
     }
 

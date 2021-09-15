@@ -1295,7 +1295,7 @@ export class PostController {
                                 const isChildStatusTrigger = (childStatusTriggerIndex >= 0)
                                     ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], post.task._parent_task._id || post.task._parent_task)
                                     : false;
-                                doTrigger = await this.doesTriggersMatch(step.trigger, post, isCreationTaskTrigger, isChildStatusTrigger);
+                                doTrigger = await this.doesTriggersMatch(step.trigger, post, groupId, isCreationTaskTrigger, isChildStatusTrigger);
                                 if (doTrigger) {
                                     await postService.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
                                 }
@@ -1322,7 +1322,7 @@ export class PostController {
      * @param isCreationTaskTrigger 
      * @param isChildStatusTrigger 
      */
-    doesTriggersMatch(triggers: any[], post: any, isCreationTaskTrigger?: boolean, isChildStatusTrigger?: boolean) {
+    doesTriggersMatch(triggers: any[], post: any, groupId: string, isCreationTaskTrigger: boolean, isChildStatusTrigger: boolean) {
         let retValue = true;
         if (triggers && triggers.length > 0) {
             triggers.forEach(async trigger => {
@@ -1350,18 +1350,37 @@ export class PostController {
                             break;
                         case 'Section is':
                             if (post.task._parent_task) {
-                                retValue = false;
+                                if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
+                                    const triggerSection = (trigger._section._id || trigger._section);
+                                    const postSection = (post.task._shuttle_section._id || post.task._shuttle_section);
+                                    retValue = triggerSection.toString() == postSection.toString();
+                                } else {
+                                    retValue = false;
+                                }
                             } else {
                                 const triggerSection = (trigger._section._id || trigger._section);
-                                const postSection = (post.task._column._id || post.task._column);
+                                let postSection;
+                                if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
+                                    postSection = (post.task._shuttle_section._id || post.task._shuttle_section);
+                                } else {
+                                    postSection = (post.task._column._id || post.task._column);
+                                }
                                 retValue = triggerSection.toString() == postSection.toString();
                             }
                             break;
                         case 'Status is':
                             if (post.task._parent_task) {
-                                retValue = false;
+                                if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
+                                    retValue = trigger.status.toUpperCase() == post.task.shuttle_status.toUpperCase();
+                                } else {
+                                    retValue = false;
+                                }
                             } else {
-                                retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+                                if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
+                                    retValue = trigger.status.toUpperCase() == post.task.shuttle_status.toUpperCase();
+                                } else {
+                                    retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
+                                }
                             }
                             break;
                         case 'Subtasks Status':
@@ -1647,26 +1666,22 @@ export class PostController {
     };
 
     async selectShuttleSection(req: Request, res: Response, next: NextFunction) {
-        // Fetch the groupId
+        // Fetch the postId
         const { postId } = req.params;
 
-        // Fetch the value from fileHandler middleware
+        // Fetch userId from the request
+        const userId = req['userId'];
+
+        // Fetch the value for shuttleSectionId & groupId
         const shuttleSectionId = req.body['shuttleSectionId'];
+        const groupId = req.body['groupId'];
 
         try {
             // Find the group and update
-            let post;
-            
-            post = await Post.findByIdAndUpdate({
-                    _id: postId
-                }, {
-                    'task.shuttle_type': true,
-                    'task._shuttle_section': shuttleSectionId
-                }, {
-                    new: true
-                }).lean();
-
-            post = await postService.populatePostProperties(post);
+            let post = await postService.selectShuttleSection(postId, true, shuttleSectionId);
+           
+            // Execute Automation Flows
+            post = await this.executeAutomationFlows(groupId, post, userId, true);
 
             // Send status 200 response
             return res.status(200).json({
@@ -1679,26 +1694,22 @@ export class PostController {
     };
 
     async selectShuttleStatus(req: Request, res: Response, next: NextFunction) {
-        // Fetch the groupId
+        // Fetch the postId & groupId
         const { postId } = req.params;
 
-        // Fetch the value from fileHandler middleware
+        // Fetch userId from the request
+        const userId = req['userId'];
+
+        // Fetch the value for shuttleSectionId & groupId
         const shuttleStatus = req.body['shuttleStatus'];
+        const groupId = req.body['groupId'];
 
         try {
             // Find the group and update
-            let post;
+            let post = await postService.selectShuttleStatus(postId, true, shuttleStatus);
             
-            post = await Post.findByIdAndUpdate({
-                    _id: postId
-                }, {
-                    'task.shuttle_type': true,
-                    'task.shuttle_status': shuttleStatus
-                }, {
-                    new: true
-                }).lean();
-
-            post = await postService.populatePostProperties(post);
+            // Execute Automation Flows
+            post = await this.executeAutomationFlows(groupId, post, userId, true);
 
             // Send status 200 response
             return res.status(200).json({

@@ -2897,18 +2897,37 @@ export class PostService {
                 break;
             case 'Move to':
                 if (isChildStatusTrigger && post.task._parent_task) {
-                  post = await this.changeTaskColumn(post.task._parent_task._id || post.task._parent_task, (action._section._id || action._section), userId);
+                  if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
+                    post = await this.selectShuttleSection(post._id, true, (action._section._id || action._section));
+                  }
+                  /*
+                  else {
+                    post = await this.changeTaskColumn(post.task._parent_task._id || post.task._parent_task, (action._section._id || action._section), userId);
+                  }
+                  */
                 } else {
-                  if (!post.task._parent_task) {
-                    post = await this.changeTaskColumn(post._id, (action._section._id || action._section), userId);
+                  if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
+                    post = await this.selectShuttleSection(post._id, true, (action._section._id || action._section));
+                  } else {
+                    if (!post.task._parent_task) {
+                      post = await this.changeTaskColumn(post._id, (action._section._id || action._section), userId);
+                    }
                   }
                 }
                 break;
             case 'Change Status to':
                 if (isChildStatusTrigger && post.task._parent_task) {
-                  post = await this.changeTaskStatus(post.task._parent_task._id || post.task._parent_task, action.status, userId);
+                  if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
+                    post = await this.selectShuttleStatus(post._id, true, action.status);
+                  } else {
+                    post = await this.changeTaskStatus(post.task._parent_task._id || post.task._parent_task, action.status, userId);
+                  }
                 } else {
-                  post = await this.changeTaskStatus(post._id, action.status, userId);
+                  if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
+                    post = await this.selectShuttleStatus(post._id, true, action.status);
+                  } else {
+                    post = await this.changeTaskStatus(post._id, action.status, userId);
+                  }
                 }
                 break;
             default:
@@ -2953,11 +2972,33 @@ export class PostService {
         }
       });
     }
-    
-
   }
 
+  async selectShuttleSection(postId: string, shuttleType: boolean, shuttleSectionId: string) {
+    let post = await Post.findByIdAndUpdate({
+            _id: postId
+        }, {
+            'task.shuttle_type': shuttleType,
+            'task._shuttle_section': shuttleSectionId
+        }, {
+            new: true
+        }).lean();
 
+    return await this.populatePostProperties(post);
+  }
+
+  async selectShuttleStatus(postId: string, shuttleType: boolean, shuttleStatus: string) {
+    let post = await Post.findByIdAndUpdate({
+          _id: postId
+      }, {
+          'task.shuttle_type': shuttleType,
+          'task.shuttle_status': shuttleStatus
+      }, {
+          new: true
+      }).lean();
+
+    return await this.populatePostProperties(post);
+  }
 }
 
 

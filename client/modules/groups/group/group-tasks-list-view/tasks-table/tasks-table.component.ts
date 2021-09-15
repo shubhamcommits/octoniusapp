@@ -282,7 +282,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       if (cfTrigger) {
         post.task.custom_fields[cfTrigger.name] = cfTrigger.value;
       }
-      post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, post);
+      post = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, post, this.groupData?._id);
 
       // Find the index of the task
       const indexTask = this.tasks.findIndex((task: any) => task._id === post._id);

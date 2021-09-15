@@ -225,9 +225,9 @@ routes.put('/:postId/vote-idea', postController.voteIdea);
 routes.put('/:postId/selectShuttleGroup', postController.selectShuttleGroup);
 
 // PUT - Change the section of the Shuttle task
-routes.put('/:postId/selectShuttleSection', postController.selectShuttleSection);
+routes.put('/:postId/selectShuttleSection', postController.selectShuttleSection.bind(postController));
 
 // PUT - Change the status of the Shuttle task
-routes.put('/:postId/selectShuttleStatus', postController.selectShuttleStatus);
+routes.put('/:postId/selectShuttleStatus', postController.selectShuttleStatus.bind(postController));
 
 export { routes as postRoutes };

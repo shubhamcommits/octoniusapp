@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, Output, EventEmitter, Injector } from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter, Injector, SimpleChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
@@ -9,14 +9,12 @@ import { PublicFunctions } from 'modules/public.functions';
 export class ChangeColumnComponent implements OnChanges {
 
   // Post Input Variable
-  @Input('post') post: any;
+  @Input() sectionId: string;
 
   // Columns Input Variable
-  @Input('columns') columns: any;
+  @Input() columns: any;
 
   @Input() disabled: boolean = false;
-
-  @Input() shuttle: boolean = false;
 
   // Move Task Output Emitter
   @Output('moveTask') moveTask = new EventEmitter();
@@ -29,13 +27,7 @@ export class ChangeColumnComponent implements OnChanges {
   constructor(private injector: Injector) { }
 
   async ngOnChanges() {
-    let columnIndex = -1;
-    if (this.shuttle) {
-      columnIndex = this.columns.findIndex(column => column._id == this.post?.task?._shuttle_section);
-    } else {
-      columnIndex = this.columns.findIndex(column => column._id == (this.post?.task?._column._id || this.post?.task?._column));
-    }
-    this.selectedColumn = this.columns[columnIndex];
+    this.selectColumn(this.sectionId);
   }
 
   /**
@@ -45,18 +37,18 @@ export class ChangeColumnComponent implements OnChanges {
    * @param newColumn
    * Hence emits an message to the parent when the task is moved from one column to another via dropdown
    */
-  sendMoveTaskMessage(post: any, oldColumn: any, newColumn: any){
-
-    this.selectedColumn = newColumn;
-
-    // updating the task column status before emitting the message
-    post.task._column = newColumn;
+  sendMoveTaskMessage(oldColumn: string, newColumnId: string) {
+    this.sectionId = newColumnId
+    this.selectColumn(newColumnId);
 
     // Emit the new task column state
     this.moveTask.emit({
-      post, oldColumn, newColumn
+      oldColumn, newColumnId
     });
-
   }
 
+  selectColumn(columnId) {
+    const columnIndex = this.columns.findIndex(column => column._id ==  columnId);
+    this.selectedColumn = this.columns[columnIndex];
+  }
 }

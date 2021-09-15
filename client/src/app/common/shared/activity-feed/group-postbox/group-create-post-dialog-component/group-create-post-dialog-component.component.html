@@ -164,10 +164,9 @@
             <!-- Change task column starts -->
             <app-change-column
                 class="ml-2"
-                [post]="postData"
+                [sectionId]="(postData?.task?._column?._id || postData?.task?._column)"
                 [columns]="columns"
                 [disabled]="postData?.task?._shuttle_group == groupId"
-                [shuttle]="false"
                 (moveTask)="moveTaskToColumn($event)">
             </app-change-column>
             <!-- Change task column ends -->
@@ -232,16 +231,14 @@
           </div>
           <!-- Change shuttle task status ends -->
 
-          <div class="shuttle-box">
-            <p class="mt-1" *ngIf="shuttleColumns" style="width:70px" i18n="@@groupCreatePostDialog.section">Section</p>
+          <div class="shuttle-box" *ngIf="shuttleColumns">
+            <p class="mt-1" style="width:70px" i18n="@@groupCreatePostDialog.section">Section</p>
             <!-- Change task column starts -->
             <app-change-column
                 class="ml-2"
-                *ngIf="shuttleColumns"
-                [post]="postData"
+                [sectionId]="(postData?.task?._shuttle_section?._id || postData?.task?._shuttle_section)"
                 [columns]="shuttleColumns"
                 [disabled]="postData?.task?._shuttle_group != groupId"
-                [shuttle]="true"
                 (moveTask)="moveShuttleTaskToSection($event)">
             </app-change-column>
           </div>
