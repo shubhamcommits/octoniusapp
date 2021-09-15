@@ -140,7 +140,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     if (this.isShuttleTasksModuleAvailable) {
       // If this is a shuttle task from other group, we will need to switch the sections
       if (this.postData?.task?.shuttle_type && this.groupId == this.postData?.task?._shuttle_group) {
-        this.shuttleColumns = await this.publicFunctions.getAllColumns(this.groupId);
+        this.shuttleColumns = await this.publicFunctions.getAllColumns(this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group);
         this.columns = await this.publicFunctions.getAllColumns(this.postData?._group?._id || this.postData?._group);
       } else if (this.postData?.task?.shuttle_type && this.postData?.task?._shuttle_group) {
         this.shuttleColumns = await this.publicFunctions.getAllColumns(this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group);
@@ -704,9 +704,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     // If this is a shuttle task from other group, we will need to switch the sections
     if (this.isShuttleTasksModuleAvailable) {
-      this.shuttleGroup = subtask.task._shuttle_group;
+      // If this is a shuttle task from other group, we will need to switch the sections
       if (this.postData?.task?.shuttle_type && this.groupId == this.postData?.task?._shuttle_group) {
-        this.shuttleColumns = await this.publicFunctions.getAllColumns(this.groupId);
+        this.shuttleColumns = await this.publicFunctions.getAllColumns(this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group);
         this.columns = await this.publicFunctions.getAllColumns(this.postData?._group?._id || this.postData?._group);
       } else if (this.postData?.task?.shuttle_type && this.postData?.task?._shuttle_group) {
         this.shuttleColumns = await this.publicFunctions.getAllColumns(this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group);
