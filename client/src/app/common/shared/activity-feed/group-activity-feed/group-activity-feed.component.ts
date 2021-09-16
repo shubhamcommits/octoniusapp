@@ -436,6 +436,10 @@ export class GroupActivityFeedComponent implements OnInit {
     // pinned/unpinned posts
     await this.fetchPinnedPosts();
 
+    if (this.filters && this.filters['numLikes'] && +(this.filters['numLikes']) > 0) {
+      this.moreToLoad = false;
+    }
+
     // Stop the loading spinner
     this.isLoading$.next(false);
   }
