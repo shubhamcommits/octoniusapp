@@ -387,19 +387,6 @@ export class GroupActivityFeedComponent implements OnInit {
     }
   }
 
-  /**
-   * This function is responsible for sorting the map into reverse order,
-   * It compares the integer key and sorts them in descedning order aka most recent first in the activity
-   * @param a
-   * @param b
-   */
-  /*
-  compare(a: any, b: any) {
-    return parseInt(a.key, 20) > parseInt(b.key, 20) ? -1 :
-      (parseInt(a.key, 20) > parseInt(b.key, 20) ? 1 : 0);
-  }
-  */
-
   onPostPin(postData: any) {
     if (postData.pin) {
       const postIndex = this.posts.findIndex((post) => post._id == postData._id);
@@ -418,17 +405,6 @@ export class GroupActivityFeedComponent implements OnInit {
         return (moment.utc(p1.created_date).isBefore(p2.created_date)) ? -1 : 1;
       });
 
-    /*
-    if (this.filters && this.filters['numLikes'] && +(this.filters['numLikes']) > 0) {
-      this.posts = this.posts.sort((p1, p2) => {
-        return (p1['likes_count']) < p2['likes_count'] ? -1 : 1;
-      });
-    } else {
-      this.posts = this.posts.sort((p1, p2) => {
-        return (moment.utc(p1['created_date']).isBefore(p2['created_date'])) ? -1 : 1;
-      });
-    }
-    */
     if (!(this.filters && this.filters['numLikes'] && +(this.filters['numLikes']) > 0)) {
       this.posts = this.posts.sort((p1, p2) => {
         return (moment.utc(p1['created_date']).isBefore(p2['created_date'])) ? -1 : 1;
@@ -449,14 +425,6 @@ export class GroupActivityFeedComponent implements OnInit {
     postsTmp.forEach(post => {
       this.posts.push(post);
     });
-
-    /*
-    if (this.filters && this.filters['numLikes'] && +(this.filters['numLikes']) > 0) {
-      this.posts = this.posts.sort((p1, p2) => {
-        return (p1['likes_count']) < p2['likes_count'] ? -1 : 1;
-      });
-    }
-    */
 
     // pinned/unpinned posts
     await this.fetchPinnedPosts();
