@@ -1,7 +1,5 @@
 import { Component, OnInit, Injector, Input, EventEmitter, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { GroupsService } from 'src/shared/services/groups-service/groups.service';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-activity-filters',
@@ -25,6 +23,7 @@ export class ActivityFiltersComponent implements OnInit {
   filterUsers = [];
   usersIds = [];
   filterTags = [];
+  numLikes;
 
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -41,19 +40,23 @@ export class ActivityFiltersComponent implements OnInit {
   async onUserSelctionEmitter(user: any) {
     this.filterUsers.push(user);
     this.usersIds.push(user._id);
-    this.filterPostsEmitter.emit({ tags: this.filterTags, users: this.usersIds });
+    this.filterPostsEmitter.emit({ tags: this.filterTags, users: this.usersIds, numLikes: this.numLikes });
   }
 
   async assigneeRemovedEmiter(userId: string) {
     this.filterUsers.splice(this.filterUsers.findIndex(user => user._id == userId), 1);
     this.usersIds.splice(this.usersIds.findIndex(user => user == userId), 1);
 
-    this.filterPostsEmitter.emit({ tags: this.filterTags, users: this.usersIds });
+    this.filterPostsEmitter.emit({ tags: this.filterTags, users: this.usersIds, numLikes: this.numLikes });
   }
 
-  async onTagSelctionEmitter(tags: any){
+  async onTagSelctionEmitter(tags: any) {
     this.filterTags = tags;
     this.post.tags = this.filterTags;
-    this.filterPostsEmitter.emit({ tags: this.filterTags, users: this.usersIds });
+    this.filterPostsEmitter.emit({ tags: this.filterTags, users: this.usersIds, numLikes: this.numLikes });
+  }
+
+  async onLikesEmitter() {
+    this.filterPostsEmitter.emit({ tags: this.filterTags, users: this.usersIds, numLikes: this.numLikes });
   }
 }
