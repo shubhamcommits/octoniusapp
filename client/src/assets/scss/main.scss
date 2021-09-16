@@ -802,6 +802,10 @@ app-branding-panel {
   color: $dark-text !important;
   margin: 2px 0 !important;
 }
+.ql-editor img {
+  max-width:100%;
+  height:auto;
+ }
 
 input {
   outline: none !important;
