@@ -76,6 +76,8 @@ export class PostService {
         }
         */
       }
+
+      const numLikes = (filters.numLikes) ? +(filters.numLikes) : 0;
       
       // Fetch posts on the basis of the params @lastPostId
       if (lastPostId) {
@@ -92,9 +94,8 @@ export class PostService {
                   pinnedQuery,
                   postedByFilter,
                   tagsFilter
-                  // numLikesFilter
                 ]
-              }), type, +(filters.numLikes))
+              }), type, numLikes)
 
             break;
 
@@ -109,9 +110,8 @@ export class PostService {
                   pinnedQuery,
                   postedByFilter,
                   tagsFilter
-                  // numLikesFilter
                 ]
-              }), 'all', +(filters.numLikes))
+              }), 'all', numLikes)
 
             break;
 
@@ -126,9 +126,8 @@ export class PostService {
                   pinnedQuery,
                   postedByFilter,
                   tagsFilter
-                  // numLikesFilter
                 ]
-              }), type, +(filters.numLikes))
+              }), type, numLikes)
 
             break;
 
@@ -139,9 +138,9 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { type: type },
-                  { _id: { $lt: lastPostId } }
+                  { _id: { $lt: lastPostId }}
                 ]
-              }), type)
+              }), type, numLikes)
 
             break;
 
@@ -152,9 +151,9 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { type: type },
-                  { _id: { $lt: lastPostId } }
+                  { _id: { $lt: lastPostId }}
                 ]
-              }), type)
+              }), type, numLikes)
 
             break;
         }
@@ -171,7 +170,7 @@ export class PostService {
                 $and: [
                   { _group: groupId }
                 ]
-              }), type)
+              }), type, numLikes)
 
             break;
 
@@ -185,9 +184,8 @@ export class PostService {
                   pinnedQuery,
                   postedByFilter,
                   tagsFilter
-                  // numLikesFilter
                 ]
-              }), 'all', +(filters.numLikes))
+              }), 'all', numLikes)
 
             break;
 
@@ -201,9 +199,8 @@ export class PostService {
                   pinnedQuery,
                   postedByFilter,
                   tagsFilter
-                  // numLikesFilter
                 ]
-              }), type, +(filters.numLikes))
+              }), type, numLikes)
 
             break;
 
@@ -225,7 +222,7 @@ export class PostService {
               Post.find({
                 $and: [
                   { _group: groupId },
-                  { type: type },
+                  { type: type }
                 ]
               }), type)
 
@@ -240,9 +237,8 @@ export class PostService {
                   pinnedQuery,
                   postedByFilter,
                   tagsFilter
-                  // numLikesFilter
                 ]
-              }), type, +(filters.numLikes));
+              }), type, numLikes);
             break;
         }
       }
@@ -264,7 +260,7 @@ export class PostService {
   filterGroupPosts(posts: any, type?: string, numLikes?: number) {
 
     // Filtered posts array
-    var filteredPosts = posts
+    var filteredPosts = posts;
 
     // If all types of posts are selected
     if (type == 'all' || type == 'group')
@@ -3016,7 +3012,3 @@ export class PostService {
     return await this.populatePostProperties(post);
   }
 }
-
-
-
-

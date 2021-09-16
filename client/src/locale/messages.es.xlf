@@ -9414,7 +9414,7 @@
       </trans-unit>
       <trans-unit id="cfStatisticsCard.tasksInProgress" datatype="html">
         <source>tasks in progress</source>
-        <target state="translated">tarea en progreso</target>
+        <target state="translated">tareas en progreso</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-statistics-card/custom-field-statistics-card.component.html</context>
           <context context-type="linenumber">13</context>
@@ -9430,7 +9430,7 @@
       </trans-unit>
       <trans-unit id="cfStatisticsCard.tasksDone" datatype="html">
         <source>tasks done</source>
-        <target state="translated">taread completadas</target>
+        <target state="translated">tareas completadas</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-statistics-card/custom-field-statistics-card.component.html</context>
           <context context-type="linenumber">23</context>

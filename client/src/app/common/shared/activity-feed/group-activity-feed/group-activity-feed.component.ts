@@ -39,7 +39,7 @@ export class GroupActivityFeedComponent implements OnInit {
   userData: any;
 
   // Posts map
-  posts = new Map();
+  posts = [];
 
   // Pinned posts
   pinnedPosts = [];
@@ -90,7 +90,7 @@ export class GroupActivityFeedComponent implements OnInit {
         // Global Feed Variable check
         this.globalFeed = (this._router.routerState.snapshot.root.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true
 
-        this.posts.clear()
+        this.posts = [];
 
         this.showNewPosts = false;
 
@@ -272,7 +272,8 @@ export class GroupActivityFeedComponent implements OnInit {
     new Promise((resolve, reject)=>{
       this.postService.deletePost(post._id).then((res)=>{
          // Find the key(postId) and remove the post
-        this.posts.delete(post._id);
+         const index = this.posts.findIndex((postTmp) => postTmp._id == post._id);
+        this.posts.splice(index, 1);
         if (post.pin_to_top) {
           const postIndex = this.pinnedPosts.findIndex((postTmp) => postTmp._id == post._id);
           this.pinnedPosts.splice(postIndex, 1);
@@ -286,7 +287,7 @@ export class GroupActivityFeedComponent implements OnInit {
   }
 
   editedPost(event: any) {
-    this.posts.set(event._id, event);
+    this.posts.push(event);
   }
 
   /**
@@ -295,7 +296,7 @@ export class GroupActivityFeedComponent implements OnInit {
   async newPosts() {
 
     // Clear the Posts Map
-    this.posts.clear()
+    this.posts = [];
 
     this.moreToLoad = true
 
@@ -349,7 +350,7 @@ export class GroupActivityFeedComponent implements OnInit {
     // Else if moreToLoad is true
     if (this.moreToLoad) {
       for (let post of posts) {
-        this.posts.set(post._id, post);
+        this.posts.push(post);
       }
 
       // Calculate the lastPostId from the currently fetched posts
@@ -362,7 +363,7 @@ export class GroupActivityFeedComponent implements OnInit {
   }
 
   async fetchPinnedPosts() {
-    await this.postService.getPosts(this.groupId, 'pinned', true, null, this.filters).then(res => {
+    await this.postService.getPosts(this.groupId, 'pinned', true, null, { tags: this.filters['tags'], users: this.filters['users'] }).then(res => {
       this.pinnedPosts = res['posts'];
     });
   }
@@ -386,37 +387,29 @@ export class GroupActivityFeedComponent implements OnInit {
     }
   }
 
-  /**
-   * This function is responsible for sorting the map into reverse order,
-   * It compares the integer key and sorts them in descedning order aka most recent first in the activity
-   * @param a
-   * @param b
-   */
-  compare(a: any, b: any) {
-    return parseInt(a.key, 20) > parseInt(b.key, 20) ? -1 :
-      (parseInt(a.key, 20) > parseInt(b.key, 20) ? 1 : 0);
-  }
-
   onPostPin(postData: any) {
     if (postData.pin) {
-      const post = this.posts.get(postData._id);
-      this.posts.delete(postData._id);
+      const postIndex = this.posts.findIndex((post) => post._id == postData._id);
+      const post = this.posts[postIndex];
+      this.posts.splice(postIndex, 1);
       this.pinnedPosts.push(post);
     } else {
       const postIndex = this.pinnedPosts.findIndex((post) => post._id == postData._id);
       const post = this.pinnedPosts[postIndex];
       this.pinnedPosts.splice(postIndex, 1);
       if (post) {
-        this.posts.set(post._id, post);
+        this.posts.push(post);
       }
     }
     this.pinnedPosts.sort((p1, p2) => {
         return (moment.utc(p1.created_date).isBefore(p2.created_date)) ? -1 : 1;
       });
 
-    this.posts = new Map([...this.posts.entries()].sort((p1, p2) => {
+    if (!(this.filters && this.filters['numLikes'] && +(this.filters['numLikes']) > 0)) {
+      this.posts = this.posts.sort((p1, p2) => {
         return (moment.utc(p1['created_date']).isBefore(p2['created_date'])) ? -1 : 1;
-      }));
+      });
+    }
   }
 
   async applyFilters(filters: any) {
@@ -426,11 +419,11 @@ export class GroupActivityFeedComponent implements OnInit {
     this.filters = filters;
 
     // Fetch the posts
-    this.posts.clear();
+    this.posts = [];
     let postsTmp: any = [];
     postsTmp = await this.publicFunctions.getPosts(this.groupId, 'normal', false, null, this.filters);
     postsTmp.forEach(post => {
-      this.posts.set(post._id, post);
+      this.posts.push(post);
     });
 
     // pinned/unpinned posts
