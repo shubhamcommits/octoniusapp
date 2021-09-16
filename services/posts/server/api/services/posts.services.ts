@@ -52,6 +52,7 @@ export class PostService {
       
       let postedByFilter = {};
       let tagsFilter = {};
+      // let numLikesFilter = {};
       if (filters && filters != 'undefined') {
         filters = JSON.parse(filters)
 
@@ -66,7 +67,18 @@ export class PostService {
             tags: { $in: filters.tags }
           }
         }
+
+        /*
+        if (filters.numLikes) {
+          numLikesFilter = {
+            likes_count: { $gte: +(filters.numLikes) }
+          }
+        }
+        */
       }
+
+      const numLikes = (filters.numLikes) ? +(filters.numLikes) : 0;
+      
       // Fetch posts on the basis of the params @lastPostId
       if (lastPostId) {
 
@@ -83,7 +95,7 @@ export class PostService {
                   postedByFilter,
                   tagsFilter
                 ]
-              }), type)
+              }), type, numLikes)
 
             break;
 
@@ -99,7 +111,7 @@ export class PostService {
                   postedByFilter,
                   tagsFilter
                 ]
-              }), 'all')
+              }), 'all', numLikes)
 
             break;
 
@@ -115,7 +127,7 @@ export class PostService {
                   postedByFilter,
                   tagsFilter
                 ]
-              }), type)
+              }), type, numLikes)
 
             break;
 
@@ -126,9 +138,9 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { type: type },
-                  { _id: { $lt: lastPostId } }
+                  { _id: { $lt: lastPostId }}
                 ]
-              }), type)
+              }), type, numLikes)
 
             break;
 
@@ -139,9 +151,9 @@ export class PostService {
                 $and: [
                   { _group: groupId },
                   { type: type },
-                  { _id: { $lt: lastPostId } }
+                  { _id: { $lt: lastPostId }}
                 ]
-              }), type)
+              }), type, numLikes)
 
             break;
         }
@@ -158,7 +170,7 @@ export class PostService {
                 $and: [
                   { _group: groupId }
                 ]
-              }), type)
+              }), type, numLikes)
 
             break;
 
@@ -173,7 +185,7 @@ export class PostService {
                   postedByFilter,
                   tagsFilter
                 ]
-              }), 'all')
+              }), 'all', numLikes)
 
             break;
 
@@ -188,7 +200,7 @@ export class PostService {
                   postedByFilter,
                   tagsFilter
                 ]
-              }), type)
+              }), type, numLikes)
 
             break;
 
@@ -210,7 +222,7 @@ export class PostService {
               Post.find({
                 $and: [
                   { _group: groupId },
-                  { type: type },
+                  { type: type }
                 ]
               }), type)
 
@@ -226,7 +238,7 @@ export class PostService {
                   postedByFilter,
                   tagsFilter
                 ]
-              }), type);
+              }), type, numLikes);
             break;
         }
       }
@@ -245,16 +257,16 @@ export class PostService {
    * This is the helper function which returns the filtered posts
    * @param posts 
    */
-  filterGroupPosts(posts: any, type?: string) {
+  filterGroupPosts(posts: any, type?: string, numLikes?: number) {
 
     // Filtered posts array
-    var filteredPosts = posts
+    var filteredPosts = posts;
 
     // If all types of posts are selected
     if (type == 'all' || type == 'group')
       filteredPosts = posts
-        .sort('-_id')
-        .limit(5)
+        .sort((numLikes && numLikes > 0) ? '-likes_count' : '-_id')
+        .limit((numLikes && numLikes > 0) ? numLikes : 5)
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
@@ -265,8 +277,8 @@ export class PostService {
     // If normal posts are selected
     else if (type === 'normal')
       filteredPosts = posts
-        .sort('-_id')
-        .limit(5)
+        .sort((numLikes && numLikes > 0) ? '-likes_count' : '-_id')
+        .limit((numLikes && numLikes > 0) ? numLikes : 5)
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
@@ -278,7 +290,7 @@ export class PostService {
     // If all tasks are selected
     else if (type === 'task')
       filteredPosts = posts
-        .sort('-task.due_to')
+        .sort((numLikes && numLikes > 0) ? '-likes_count' : '-task.due_to')
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
@@ -289,7 +301,7 @@ export class PostService {
 
     else if (type == 'pinned')
       filteredPosts = posts
-        .sort('-created_date')
+        .sort((numLikes && numLikes > 0) ? '-likes_count' : '-created_date')
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
@@ -3000,7 +3012,3 @@ export class PostService {
     return await this.populatePostProperties(post);
   }
 }
-
-
-
-

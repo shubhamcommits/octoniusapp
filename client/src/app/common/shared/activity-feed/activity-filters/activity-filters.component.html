@@ -29,5 +29,15 @@
             (tags)="onTagSelctionEmitter($event)">
         </app-post-tags>
         <!-- Post Tags ends -->
+
+        <br />
+
+        <p class="box-title" i18n="@@activityFilters.likes">Likes</p>
+
+        <!-- Post Likes starts -->
+        <input type="text" class="form-control" name="likes" [(ngModel)]="numLikes"
+          placeholder="Enter number of post to show..."
+          (focusout)="onLikesEmitter()" (keyup.enter)="$event.target.blur();">
+        <!-- Post Likes ends -->
     </div>
 </div>
