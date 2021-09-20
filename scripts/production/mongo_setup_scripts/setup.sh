@@ -34,7 +34,7 @@ var cfg = {
         {
             "_id": 2,
             "host": "mongo-2-mongo:27017",
-            "priority": 0
+            "priority": 1
         }
     ],settings: {chainingAllowed: true}
 };
