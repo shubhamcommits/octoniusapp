@@ -103,7 +103,7 @@ export class PostUtilsComponent implements OnInit {
     selBox.style.top = '0';
     selBox.style.opacity = '0';
 
-    const group = (this.post._group._id) ? this.post._group._id : this.post._group;
+    const group = (this.groupData._id) ? this.groupData._id : this.groupData;
 
     let url = environment.clientUrl;
     if (environment.production) {

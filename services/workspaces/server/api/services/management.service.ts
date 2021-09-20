@@ -1,5 +1,3 @@
-import { CommonService } from '.';
-import http from "axios";
 import { axios } from '../../utils';
 
 /*  ===============================

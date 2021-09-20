@@ -44,6 +44,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
   searchText = '';
   groupMembers = [];
   shuttleGroups: any = [];
+  shuttleGroupId: string;
 
   parentTask: boolean = false;
   isChild: boolean = false;
@@ -111,6 +112,9 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
     if (this.postData.type === 'task' && this.groupData && this.groupData?.shuttle_type) {
       const groupId = (this.groupData?._id == this.postData?.task?._shuttle_group) ? null : this.groupData?._id;
+
+      this.shuttleGroupId = this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group;
+
       // Fetches shuttle groups from the server
       this.shuttleGroups = await this.publicFunctions.getShuttleGroups(this.groupData?._workspace, groupId)
         .catch(() => {
@@ -554,6 +558,7 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       this.postService.selectShuttleGroup(this.postData?._id, groupId)
         .then(async (res) => {
           this.postData = res['post'];
+          this.shuttleGroupId = groupId;
           this.shuttleGroupEmitter.emit({
               shuttle_group: (this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group),
               shuttle_section: this.postData?.task?._shuttle_section,

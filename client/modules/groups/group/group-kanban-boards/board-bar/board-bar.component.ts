@@ -49,9 +49,11 @@ export class BoardBarComponent implements OnInit {
   cfSort: any = {};
 
   groupMembers:any = [];
+  shuttleGroups:any = [];
 
   async ngOnInit() {
     this.groupMembers = await this.publicFunctions.getCurrentGroupMembers();
+    this.shuttleGroups = await this.publicFunctions.getShuttleGroups(this.groupData?._workspace, this.groupData?._id);
   }
 
   changeView(view: string) {
@@ -118,7 +120,12 @@ export class BoardBarComponent implements OnInit {
       width: '100%',
       height: '100%',
       disableClose: true,
-      data: { groupId: this.groupData._id, groupSections: this.sections, customFields: this.customFields }
+      data: {
+        groupId: this.groupData._id,
+        groupSections: this.sections,
+        customFields: this.customFields,
+        shuttleGroups: this.shuttleGroups
+      }
     });
   }
 

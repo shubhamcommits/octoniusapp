@@ -1398,6 +1398,14 @@ export class PublicFunctions {
                           post.task.status = action.status;
                         }
                         return post;
+                    case 'Shuttle task':
+                        const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
+                        if (isShuttleTasksModuleAvailable) {
+                          post.task.shuttle_type = true;
+                          post.task._shuttle_group = action?._shuttle_group;
+                          post.task._shuttle_section = action?._shuttle_group?._shuttle_section;
+                        }
+                        break;
                     default:
                         break;
                 }
