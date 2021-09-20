@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AutomationFlowDetailsDialogComponent } from '../automation-flow-details-dialog/automation-flow-details-dialog.component';
@@ -17,6 +17,7 @@ export class AutomationFlowsDialogComponent implements OnInit {
   groupSections = [];
   workspaceId;
   customFields = [];
+  shuttleGroups = [];
 
   constructor(
     public utilityService: UtilityService,
@@ -30,6 +31,7 @@ export class AutomationFlowsDialogComponent implements OnInit {
     this.groupSections = this.data.groupSections;
     this.workspaceId = this.data.workspaceId;
     this.customFields = this.data.customFields;
+    this.shuttleGroups = this.data.shuttleGroups;
 
     await this.flowService.getGroupAutomationFlows(this.groupId).then((res) => {
       res['flows'].forEach(flow => {
@@ -61,7 +63,8 @@ export class AutomationFlowsDialogComponent implements OnInit {
         flowId: flowId,
         groupSections: this.groupSections,
         workspaceId: this.workspaceId,
-        customFields: this.customFields
+        customFields: this.customFields,
+        shuttleGroups: this.shuttleGroups
       }
     });
     const subFlowNameChangeEmitter = dialogRef.componentInstance.flowNameChangeEmitter.subscribe((data) => {

@@ -26,12 +26,12 @@ export class IdeaActionsComponent implements OnInit {
   ngOnInit() {
     if (!this.post.task.idea) {
       this.post.task.idea = {
-        positive_votes: 0,
-        negative_votes: 0
+        positive_votes: [],
+        negative_votes: []
       }
     } else {
-      this.votedPositiveIndex = this.post.task.idea.positive_votes.findIndex(userId => userId == this.userData._id);
-      this.votedNegativeIndex = this.post.task.idea.negative_votes.findIndex(userId => userId == this.userData._id);
+      this.votedPositiveIndex = this.post?.task?.idea?.positive_votes?.findIndex(userId => userId == this.userData._id);
+      this.votedNegativeIndex = this.post?.task?.idea?.negative_votes?.findIndex(userId => userId == this.userData._id);
     }
   }
 
@@ -40,14 +40,14 @@ export class IdeaActionsComponent implements OnInit {
    */
   vote(positiveVote: boolean) {
 
-    if ((!positiveVote && this.votedNegativeIndex < 0) || (positiveVote && this.votedPositiveIndex < 0)) {
+    if ((!positiveVote && this.votedNegativeIndex < 0) || (positiveVote && this.votedPositiveIndex < 0) && this.userData) {
       // Increment votes
       if (positiveVote) {
         this.voteValue = 1;
-        this.post.task.idea.positive_votes += this.voteValue;
+        this.post.task.idea.positive_votes.push(this.userData);
       } else {
         this.voteValue = -1;
-        this.post.task.idea.negative_votes += this.voteValue;
+        this.post.task.idea.negative_votes.push(this.userData);
       }
 
       // Call the Service Function to vote to a idea

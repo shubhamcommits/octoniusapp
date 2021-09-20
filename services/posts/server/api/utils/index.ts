@@ -2,6 +2,7 @@ import { Auths } from './auth';
 import { sendErr } from './sendError';
 import { postFileHandler } from "./filehandler";
 import { commentFileHandler } from './commentFileHandler';
+import { axios } from './proxy';
 
 export {
 
@@ -15,5 +16,8 @@ export {
     postFileHandler as postFileHandler,
 
     // COMMENT FILEHANDLER
-    commentFileHandler as commentFileHandler
+    commentFileHandler as commentFileHandler,
+
+    // PROXY CONFIGS
+    axios as axios
 }

@@ -169,13 +169,15 @@
             <!-- Change task status ends -->
             </div>
 
-          <div class="shuttle-box" *ngIf="columns || shuttleColumns">
-            <p class="mt-1" *ngIf="(columns && (postData?.task?._shuttle_group != groupId && !postData?.task?._parent_task)) || (shuttleColumns && postData?.task?._shuttle_group == groupId)" style="margin-top: 18px; width:70px" i18n="@@groupCreatePostDialog.section">Section</p>
+          <div class="shuttle-box" *ngIf="columns">
+            <p class="mt-1" *ngIf="(((postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupId) && !postData?.task?._parent_task) || (shuttleColumns && ((postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) == groupId))"
+                style="margin-top: 18px; width:70px" i18n="@@groupCreatePostDialog.section">
+              Section
+            </p>
 
-            <!-- (!postData?.task?._parent_task || postData?.task?._shuttle_group == groupId) -->
             <!-- Change task column starts -->
             <app-change-column class="ml-2"
-                *ngIf="columns && (postData?.task?._shuttle_group != groupId && !postData?.task?._parent_task)"
+                *ngIf="(!postData?.task?._shuttle_group || ((postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupId) && !postData?.task?._parent_task)"
                 [sectionId]="(postData?.task?._column?._id || postData?.task?._column)"
                 [columns]="columns"
                 [disabled]="false"
@@ -183,9 +185,9 @@
             </app-change-column>
 
             <app-change-column class="ml-2"
-                *ngIf="shuttleColumns && postData?.task?._shuttle_group == groupId"
+                *ngIf="(postData?.task?._shuttle_group && (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) == groupId)"
                 [sectionId]="(postData?.task?._shuttle_section?._id || postData?.task?._shuttle_section)"
-                [columns]="shuttleColumns"
+                [columns]="columns"
                 [disabled]="false"
                 (moveTask)="moveShuttleTaskToSection($event)">
             </app-change-column>
@@ -261,21 +263,26 @@
           </div>
           <!-- Change shuttle task status ends -->
 
-          <div class="shuttle-box" *ngIf="columns || shuttleColumns">
-            <p *ngIf="(postData?.task?._shuttle_group != groupId) || (!postData?.task?._parent_task && postData?.task?._shuttle_group == groupId)" class="mt-1" style="width:70px" i18n="@@groupCreatePostDialog.section">Section</p>
+          <div class="shuttle-box" *ngIf="shuttleColumns">
+            <p *ngIf="((postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupId)
+                  || (!postData?.task?._parent_task && ((postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) == groupId))"
+                class="mt-1" style="width:70px" i18n="@@groupCreatePostDialog.section">
+              Section
+            </p>
+
             <!-- Change task column starts -->
+            <!-- *ngIf="!postData?.task?._parent_task && postData?.task?._shuttle_group == groupId" -->
             <app-change-column class="ml-2"
-                *ngIf="!postData?.task?._parent_task && postData?.task?._shuttle_group == groupId"
-                [sectionId]="(postData?.task?._column?._id || postData?.task?._column)"
-                [columns]="columns"
+            *ngIf="(!postData?.task?._shuttle_group || ((postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupId))"
+                [sectionId]="(postData?.task?._shuttle_section?._id || postData?.task?._shuttle_section)"
+                [columns]="shuttleColumns"
                 [disabled]="true">
             </app-change-column>
 
-            <!-- (!postData?.task?._parent_task || postData?.task?._shuttle_group == groupId) -->
-
+            <!-- *ngIf="postData?.task?._shuttle_group != groupId" -->
             <app-change-column class="ml-2"
-                *ngIf="postData?.task?._shuttle_group != groupId"
-                [sectionId]="(postData?.task?._shuttle_section?._id || postData?.task?._shuttle_section)"
+                *ngIf="(postData?.task?._shuttle_group && (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) == groupId) && !postData?.task?._parent_task"
+                [sectionId]="(postData?.task?._column?._id || postData?.task?._column)"
                 [columns]="shuttleColumns"
                 [disabled]="true">
             </app-change-column>

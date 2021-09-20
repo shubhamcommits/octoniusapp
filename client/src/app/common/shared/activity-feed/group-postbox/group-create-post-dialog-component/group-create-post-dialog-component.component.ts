@@ -131,24 +131,28 @@ export class GroupCreatePostDialogComponent implements OnInit {
       this.tasks = this.data.Tasks;
     }
 
-    if(this.postData?.task?._parent_task &&  this.columns){
+    if(this.postData?.task?._parent_task && this.columns && (this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group) != this.groupId){
       this.columns = null;
     }
 
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+    if (this.isShuttleTasksModuleAvailable && this.postData?.task?.shuttle_type) {
+      const shuttleGroupId = (this.postData?.task?._shuttle_group && (this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group) == this.groupId)
+        ? (this.postData?._group?._id || this.postData?._group) : (this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group);
 
-    if (this.isShuttleTasksModuleAvailable) {
+      if (shuttleGroupId) {
+        this.shuttleColumns = await this.publicFunctions.getAllColumns(shuttleGroupId);
+      }
+/*
       // If this is a shuttle task from other group, we will need to switch the sections
-      if (this.postData?.task?.shuttle_type && this.groupId == this.postData?.task?._shuttle_group) {
+      if (this.groupId == shuttleGroupId) {
         this.shuttleColumns = await this.publicFunctions.getAllColumns(this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group);
         this.columns = await this.publicFunctions.getAllColumns(this.postData?._group?._id || this.postData?._group);
-      } else if (this.postData?.task?.shuttle_type && this.postData?.task?._shuttle_group) {
+      } else {
         this.shuttleColumns = await this.publicFunctions.getAllColumns(this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group);
       }
-
-      if (this.postData?.task?.shuttle_type) {
-        this.shuttleGroup = await this.publicFunctions.getGroupDetails(this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group);
-      }
+*/
+      this.shuttleGroup = await this.publicFunctions.getGroupDetails(this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group);
     }
 
     this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);

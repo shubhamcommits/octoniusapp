@@ -67,14 +67,6 @@ export class PostService {
             tags: { $in: filters.tags }
           }
         }
-
-        /*
-        if (filters.numLikes) {
-          numLikesFilter = {
-            likes_count: { $gte: +(filters.numLikes) }
-          }
-        }
-        */
       }
 
       const numLikes = (filters.numLikes) ? +(filters.numLikes) : 0;
@@ -2826,13 +2818,6 @@ export class PostService {
       let post = await Post.findById(postId).select('task.idea.positive_votes task.idea.negative_votes').lean();
 
       if (vote > 0) {
-        /*
-        post = await Post.findOneAndUpdate(
-          {_id: postId },
-          { $inc: { 'task.idea.positive_votes': 1 } },
-          { new: true }
-          ).lean();
-        */
         post = await Post.findOneAndUpdate(
           {_id: postId },
           { 
@@ -2842,15 +2827,6 @@ export class PostService {
           { new: true }
           ).lean();
       } else {
-        /*
-        post = await Post.findOneAndUpdate(
-          { _id: postId },
-          { $inc: { 'task.idea.negative_votes': 1 } },
-          { new: true }
-        )
-        .lean();
-        */
-
         post = await Post.findOneAndUpdate(
           {_id: postId },
           {
@@ -2912,11 +2888,6 @@ export class PostService {
                   if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
                     post = await this.selectShuttleSection(post._id, true, (action._section._id || action._section));
                   }
-                  /*
-                  else {
-                    post = await this.changeTaskColumn(post.task._parent_task._id || post.task._parent_task, (action._section._id || action._section), userId);
-                  }
-                  */
                 } else {
                   if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
                     post = await this.selectShuttleSection(post._id, true, (action._section._id || action._section));
@@ -2942,12 +2913,15 @@ export class PostService {
                   }
                 }
                 break;
+            case 'Shuttle task':
+                post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group);
+                break;
             default:
                 break;
         }
     });
     return post;
-}
+  }
 
   /**
    * Execute the actions from the automator
@@ -2958,10 +2932,10 @@ export class PostService {
    */
   async triggerToZap(postId: string, userId: string, trigger: string) {
     const post = await Post.findById(postId)
-    .populate('_assigned_to').select(this.userFields )
-    .populate('_group').select(this.groupFields )
-    .populate('_posted_by').select(this.userFields )
-    .populate({path:'task._column',select:'_id title'}).select('task title content tags');
+      .populate('_assigned_to').select(this.userFields )
+      .populate('_group').select(this.groupFields )
+      .populate('_posted_by').select(this.userFields )
+      .populate({path:'task._column',select:'_id title'}).select('task title content tags');
 
     const user = await User.findById(userId);
     if(user && post){
@@ -3010,5 +2984,36 @@ export class PostService {
       }).lean();
 
     return await this.populatePostProperties(post);
+  }
+
+  async selectShuttleGroup(postId: string, shuttleGroupId: string) {
+      let post;
+      if (shuttleGroupId) {
+        const group = await Group.findById({ _id: shuttleGroupId }).lean();
+
+        post = await Post.findByIdAndUpdate({
+                _id: postId
+            }, {
+                'task.shuttle_type': true,
+                'task._shuttle_group': shuttleGroupId,
+                'task._shuttle_section': group._shuttle_section,
+                'task.shuttle_status': 'to do'
+            }, {
+                new: true
+            }).lean();
+      } else {
+          post = await Post.findByIdAndUpdate({
+                  _id: postId
+              }, {
+                  'task.shuttle_type': false,
+                  'task._shuttle_group': null,
+                  'task._shuttle_section': null,
+                  'task.shuttle_status': ''
+              }, {
+                  new: true
+              }).lean();
+      }
+
+      return this.populatePostProperties(post);
   }
 }

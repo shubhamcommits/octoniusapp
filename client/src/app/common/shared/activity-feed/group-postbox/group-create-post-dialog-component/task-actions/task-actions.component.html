@@ -103,7 +103,7 @@
 
 
 
-  <div *ngIf="!parentTask && !isDependent && !isMilestone" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
+  <div *ngIf="!parentTask && !isDependent && !isMilestone && (groupData?.shuttle_type && (!postData?.task?._shuttle_group || (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupData?._id))" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
    <span i18n="@@taskActions.makeSubtaskOf">MAKE SUBTASK OF</span>
 
     <!-- INPUT BAR STARTS -->
@@ -212,14 +212,16 @@
 
 
   <!-- Select Shuttle group starts -->
-  <div *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8; margin-left: 15px;">
+  <div *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type && (!postData?.task?._shuttle_group || (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupData?._id)"
+      style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8; margin-left: 15px;">
     <img src="assets/images/icon-task-shuttle.svg" style="width: 24px">
+
     <mat-form-field appearance="fill" style="margin-left: 15px;">
       <mat-select
-          [disabled]="postData?.task?._shuttle_group == groupData._id"
+          [disabled]="postData?.task?._shuttle_group && (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) == groupData?._id"
           (selectionChange)="shuttleTask($event.value)"
-          [(value)]="postData.task._shuttle_group">
-        <mat-option *ngFor="let group of shuttleGroups; let j=index" [value]="group._id">{{ group.group_name }}</mat-option>
+          [(value)]="shuttleGroupId">
+        <mat-option *ngFor="let group of shuttleGroups; let j=index" [value]="group?._id">{{ group?.group_name }}</mat-option>
       </mat-select>
     </mat-form-field>
 

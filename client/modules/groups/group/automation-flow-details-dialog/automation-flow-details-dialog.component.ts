@@ -1,9 +1,10 @@
-import { Component, OnInit, Inject, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter, OnDestroy, Injector } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-automation-flow-details-dialog',
@@ -11,6 +12,9 @@ import { SubSink } from 'subsink';
   styleUrls: ['./automation-flow-details-dialog.component.scss']
 })
 export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
+
+  @Output() flowNameChangeEmitter = new EventEmitter();
+  @Output() deleteFlowEvent = new EventEmitter();
 
   flowSteps = [];
 
@@ -26,6 +30,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
   statusOptions = ['to do', 'in progress', 'done'];
   customFields = [];
   customFieldOptions = [];
+  shuttleGroups = [];
 
   newTrigger = false;
   newAction = false;
@@ -34,13 +39,16 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
   userData: any;
 
+  isShuttleTasksModuleAvailable = false;
+
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();
 
-  @Output() flowNameChangeEmitter = new EventEmitter();
-  @Output() deleteFlowEvent = new EventEmitter();
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    private injector: Injector,
     public utilityService: UtilityService,
     private flowService: FlowService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -53,10 +61,17 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.groupSections = this.data.groupSections;
     this.workspaceId = this.data.workspaceId;
     this.customFields = this.data.customFields;
+    this.shuttleGroups = this.data.shuttleGroups;
 
     this.customFields.forEach(cf => {
       this.customFieldOptions.push(cf.name);
     });
+
+    this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+
+    if (this.isShuttleTasksModuleAvailable) {
+      this.actionOptions.push('Shuttle task');
+    }
 
     // GETTING USER DATA FROM THE SHARED SERVICE
     this.subSink.add(
@@ -252,7 +267,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.flowSteps[stepIndex].action[actionIndex].custom_field = custom_field;
   }
 
-  actionSelected(type: string, value: string, stepIndex: number, actionIndex: number) {
+  actionSelected(type: string, value: any, stepIndex: number, actionIndex: number) {
     switch (type) {
       case 'cf':
         this.flowSteps[stepIndex].action[actionIndex].custom_field.value = value;
@@ -264,6 +279,10 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
 
       case 'section':
         this.flowSteps[stepIndex].action[actionIndex]._section = (value['_id'] || value);
+        break;
+
+      case 'shuttle':
+        this.flowSteps[stepIndex].action[actionIndex]._shuttle_group = (value['_id'] || value);
         break;
 
       default:

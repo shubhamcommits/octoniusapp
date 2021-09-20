@@ -1624,36 +1624,7 @@ export class PostController {
         const shuttleGroupId = req.body['shuttleGroupId'];
 
         try {
-            // Find the group and update
-            let post;
-            
-            if (shuttleGroupId) {
-                const group = await Group.findById({ _id: shuttleGroupId }).lean();
-
-                post = await Post.findByIdAndUpdate({
-                        _id: postId
-                    }, {
-                        'task.shuttle_type': true,
-                        'task._shuttle_group': shuttleGroupId,
-                        'task._shuttle_section': group._shuttle_section,
-                        'task.shuttle_status': 'to do'
-                    }, {
-                        new: true
-                    }).lean();
-            } else {
-                post = await Post.findByIdAndUpdate({
-                        _id: postId
-                    }, {
-                        'task.shuttle_type': false,
-                        'task._shuttle_group': null,
-                        'task._shuttle_section': null,
-                        'task.shuttle_status': ''
-                    }, {
-                        new: true
-                    }).lean();
-            }
-
-            post = await postService.populatePostProperties(post);
+            const post = await postService.selectShuttleGroup(postId, shuttleGroupId);
 
             // Send status 200 response
             return res.status(200).json({
