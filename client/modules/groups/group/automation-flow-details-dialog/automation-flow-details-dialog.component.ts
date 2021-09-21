@@ -129,7 +129,10 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
       steps.forEach(step => {
         this.flowSteps.push(step);
       });
-      this.flowSteps.sort((s1, s2) => (s1.created_date > s2.created_date) ? 1 : -1);
+
+      this.flowSteps = this.flowSteps?.filter((step) => {
+        return step.action.findIndex(action => action.name == 'Shuttle task') < 0 || this.isShuttleTasksModuleAvailable;
+      }).sort((s1, s2) => (s1.created_date > s2.created_date) ? 1 : -1);
     }
   }
 

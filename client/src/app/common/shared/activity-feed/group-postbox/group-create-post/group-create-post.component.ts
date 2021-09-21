@@ -39,16 +39,16 @@ export class GroupCreatePostComponent implements OnInit {
   quillData: any
 
   // Content Mentions Variables keeps a track of mentioned members
-  _content_mentions: any = []
+  _content_mentions: any = [];
 
   // Tags Object
-  tags: any = []
+  tags: any = [];
 
   // Public Functions class object
-  publicFunctions = new PublicFunctions(this.injector)
+  publicFunctions = new PublicFunctions(this.injector);
 
   // Show Update Details Variable
-  showUpdateDetails = false
+  showUpdateDetails = false;
 
   /* Task Variables */
 
@@ -326,7 +326,7 @@ export class GroupCreatePostComponent implements OnInit {
   /**
    * This function creates a new post in the activity
    */
-  createPost() {
+  async createPost() {
 
     // Prepare Post Data
     let postData: any = {
@@ -378,6 +378,8 @@ export class GroupCreatePostComponent implements OnInit {
         formData.append('attachments', this.files[index], this.files[index]['name']);
       }
     }
+
+    formData.append('isShuttleTasksModuleAvailable', (await this.publicFunctions.isShuttleTasksModuleAvailable()).toString());
 
     // Call the Helper Function
     this.onCreatePost(formData)

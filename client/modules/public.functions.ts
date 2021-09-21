@@ -895,10 +895,10 @@ export class PublicFunctions {
         let utilityService = this.injector.get(UtilityService)
 
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitWeChangeTaskAssignee:Please wait we are changing the task assignee...`,
-            new Promise((resolve, reject) => {
-
+            new Promise(async (resolve, reject) => {
+                const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
                 // Call HTTP Request to change the assignee
-                postService.changeTaskAssignee(postId, assigneeId)
+                postService.changeTaskAssignee(postId, assigneeId, isShuttleTasksModuleAvailable)
                     .then((res) => {
                         resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.taskAssigned:Task assigned to ${res['post']['task']['_assigned_to']['first_name']}`))
                     })
@@ -942,13 +942,15 @@ export class PublicFunctions {
      * @param postId
      * @param status
      */
-    changeTaskStatus(postId: string, status: string, userId: string, groupId: string) {
+    async changeTaskStatus(postId: string, status: string, userId: string, groupId: string) {
 
         // Post Service Instance
         let postService = this.injector.get(PostService)
 
+        const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
+
         // Call HTTP Request to change the request
-        return postService.changeTaskStatus(postId, status, userId, groupId);
+        return postService.changeTaskStatus(postId, status, userId, groupId, isShuttleTasksModuleAvailable);
     }
 
     /**
@@ -965,10 +967,10 @@ export class PublicFunctions {
         let utilityService = this.injector.get(UtilityService)
 
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitWeAreMovingTaskToSection:Please wait we are moving the task to a new section...`,
-            new Promise((resolve, reject) => {
-
+            new Promise(async (resolve, reject) => {
+                const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
                 // Call HTTP Request to change the request
-                postService.changeTaskColumn(postId, columnId, userId, groupId)
+                postService.changeTaskColumn(postId, columnId, userId, groupId, isShuttleTasksModuleAvailable)
                     .then((res) => {
                         resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.tasksMoved:Task moved`));
                     })
@@ -984,13 +986,15 @@ export class PublicFunctions {
      * @param postId
      * @param status
      */
-    changeTaskShuttleStatus(postId: string, groupId: string, status: string) {
+    async changeTaskShuttleStatus(postId: string, groupId: string, status: string) {
 
         // Post Service Instance
-        let postService = this.injector.get(PostService)
+        let postService = this.injector.get(PostService);
+
+        const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
 
         // Call HTTP Request to change the request
-        return postService.selectShuttleStatus(postId, groupId, status);
+        return postService.selectShuttleStatus(postId, groupId, status, isShuttleTasksModuleAvailable);
     }
 
     /**
@@ -998,16 +1002,18 @@ export class PublicFunctions {
      * @param postId
      * @param title
      */
-    changeTaskShuttleSection(postId: string, groupId: string, shuttleSectionId: string) {
+    async changeTaskShuttleSection(postId: string, groupId: string, shuttleSectionId: string) {
 
         // Post Service Instance
-        let postService = this.injector.get(PostService)
+        let postService = this.injector.get(PostService);
 
         // Utility Service Instance
-        let utilityService = this.injector.get(UtilityService)
+        let utilityService = this.injector.get(UtilityService);
+
+        const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
 
         utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
-          await postService.selectShuttleSection(postId, groupId, shuttleSectionId)
+          await postService.selectShuttleSection(postId, groupId, shuttleSectionId, isShuttleTasksModuleAvailable)
             .then(async (res) => {
 
               resolve(utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
@@ -1361,8 +1367,11 @@ export class PublicFunctions {
         return retValue;
     }
 
-    executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, childTasksUpdated: boolean, groupId: string) {
-        if (!childTasksUpdated) {
+    async executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, childTasksUpdated: boolean, groupId: string) {
+        const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
+        const shuttleActinIndex = flows[flowIndex].steps[stepIndex].action.findIndex(action => action.name == 'Shuttle task');
+        const executeShuttleAction = (shuttleActinIndex < 0) || isShuttleTasksModuleAvailable;
+        if (!childTasksUpdated && executeShuttleAction) {
             flows[flowIndex].steps[stepIndex].action.forEach(async action => {
                 switch (action.name) {
                     case 'Assign to':
@@ -1399,12 +1408,10 @@ export class PublicFunctions {
                         }
                         return post;
                     case 'Shuttle task':
-                        const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
-                        if (isShuttleTasksModuleAvailable) {
-                          post.task.shuttle_type = true;
-                          post.task._shuttle_group = action?._shuttle_group;
-                          post.task._shuttle_section = action?._shuttle_group?._shuttle_section;
-                        }
+console.log("11111111");
+                        post.task.shuttle_type = true;
+                        post.task._shuttle_group = action?._shuttle_group;
+                        post.task._shuttle_section = action?._shuttle_group?._shuttle_section;
                         break;
                     default:
                         break;
