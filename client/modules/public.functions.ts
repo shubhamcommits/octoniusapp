@@ -1408,10 +1408,11 @@ export class PublicFunctions {
                         }
                         return post;
                     case 'Shuttle task':
-console.log("11111111");
-                        post.task.shuttle_type = true;
-                        post.task._shuttle_group = action?._shuttle_group;
-                        post.task._shuttle_section = action?._shuttle_group?._shuttle_section;
+                        if (!post?.task?.shuttle_type && ((post?.task?._shuttle_group?._id || post?.task?._shuttle_group) != groupId)) {
+                          post.task.shuttle_type = true;
+                          post.task._shuttle_group = action?._shuttle_group;
+                          post.task._shuttle_section = action?._shuttle_group?._shuttle_section;
+                        }
                         break;
                     default:
                         break;
