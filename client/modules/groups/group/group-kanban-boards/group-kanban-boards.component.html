@@ -69,7 +69,7 @@
                 <div class="project-container" *ngFor="let cfName of column.custom_fields_to_show_kanban">
                   {{ cfName }}
                   <span class="float-right done">
-                    {{ calculateCFStatistics(cfName, column.tasks) }}
+                    {{ calculateCFStatistics(cfName, column.tasks) | number }}
                   </span>
                 </div>
                 <!-- CUSTOM FIELDS STATS SECTION ENDS -->
@@ -172,7 +172,7 @@
                 <div class="project-container" *ngFor="let cfName of column.custom_fields_to_show_kanban">
                   {{ cfName }}
                   <span class="float-right done">
-                    {{ calculateCFStatistics(cfName, column.tasks) }}
+                    {{ calculateCFStatistics(cfName, column.tasks) | number }}
                   </span>
                 </div>
                 <!-- CUSTOM FIELDS STATS SECTION ENDS -->
