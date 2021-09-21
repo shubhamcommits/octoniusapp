@@ -117,7 +117,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // Fetch all the tasks posts from the server
     this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
 
-    if (this.groupData.shuttle_type) {
+    if (this.groupData.shuttle_type && this.isShuttleTasksModuleAvailable) {
       const shuttleTasks = await this.publicFunctions.getShuttleTasks(this.groupId);
       this.tasks = this.tasks.concat(shuttleTasks);
     }
