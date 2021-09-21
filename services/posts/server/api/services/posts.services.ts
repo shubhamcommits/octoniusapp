@@ -2914,7 +2914,9 @@ export class PostService {
                 }
                 break;
             case 'Shuttle task':
-                post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group);
+                if (!post?.task?.shuttle_type && ((post?.task?._shuttle_group?._id || post?.task?._shuttle_group) != groupId)) {
+                  post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group);
+                }
                 break;
             default:
                 break;
