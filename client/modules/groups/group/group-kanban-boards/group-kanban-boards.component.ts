@@ -67,8 +67,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       this.flows = res['flows'];
     });
 
-    this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin' || this.userData?.role == 'manager'
-                        || (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id)>=0);
+    this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin'
+                        || this.userData?.role == 'manager' || this.isGroupManager();
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -188,7 +188,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {
-          return ((t1?.task?.idea?.positive_votes?.length || 0 - t1?.task?.idea?.negative_votes?.length || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes || 0)) ? 1 : 0;
+          return ((t1?.task?.idea?.positive_votes?.length || 0 - t1?.task?.idea?.negative_votes?.length || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes || 0)) ? -1 : 1;
         });
         this.columns[index].tasks = task;
       }
@@ -694,5 +694,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         : 0;
     });
     return calculation;
+  }
+
+  isGroupManager() {
+    return (this.groupData && this.groupData._admins) ? (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id) >= 0) : false;
   }
 }

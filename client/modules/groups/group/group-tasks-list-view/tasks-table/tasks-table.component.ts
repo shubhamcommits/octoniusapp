@@ -177,7 +177,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       });
     } else if ((this.sortingBit == 'ideas') && this.tasks) {
       this.tasks.sort((t1, t2) => {
-        return ((t1?.task?.idea?.positive_votes?.length || 0 - t1?.task?.idea?.negative_votes || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes?.length || 0)) ? 1 : 0;
+        return ((t1?.task?.idea?.positive_votes?.length || 0 - t1?.task?.idea?.negative_votes || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes?.length || 0)) ? -1 : 1;
       });
     } else if ((this.sortingBit == 'reverse' || this.sortingBit == 'inverse') && this.tasks) {
       this.tasks.reverse();

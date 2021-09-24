@@ -215,6 +215,6 @@ export class PostUtilsComponent implements OnInit {
   }
 
   isGroupManager() {
-    return (this.groupData && this.groupData._admins) ? this.groupData._admins.find(admin => admin._id === this.userData._id) : false;
+    return (this.groupData && this.groupData._admins) ? (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id) >= 0) : false;
   }
 }
