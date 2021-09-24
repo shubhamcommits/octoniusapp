@@ -5,7 +5,9 @@ import url from 'url';
 import { v4 as uuid } from 'uuid';
 
 import ShareDB from 'sharedb';
-ShareDB.types.register(require('rich-text').type);
+
+// Using default type of shareSB JSON0
+// ShareDB.types.register(require('rich-text').type);
 
 var ws = require('ws');
 var WebSocketJSONStream = require('websocket-json-stream');
@@ -126,7 +128,7 @@ if (cluster.isMaster) {
       })
     }
     /*
-    else if (pathname === '/cursors') {
+    else if (pathnamfoliofolioe === '/cursors') {
       wssCursors.handleUpgrade(request, socket, head, (ws) => {
         wssCursors.emit('connection', ws);
       }); 
