@@ -115,4 +115,13 @@ export class FlamingoService {
   submit(flamingoId: string, responses: any) {
     return this._http.put(this.baseURL + `/submit/?flamingoId=${flamingoId}`, { responses: responses }).toPromise();
   }
+
+  /**
+   * Duplicate flamingo
+   *
+   * @param fileId
+   */
+   async copyFlamingo(fileId: string) {
+    return this._http.put(this.baseURL + `/${fileId}/copy`, { }).toPromise();
+  }
 }

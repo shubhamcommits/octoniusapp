@@ -1,8 +1,7 @@
 import moment from 'moment';
+import { File } from '../models';
 import { Flamingo } from '../models';
 import { Question } from '../models';
-import { Readable } from 'stream';
-
 
 /*  ===============================
  *  -- Flamingo Service --
@@ -74,6 +73,23 @@ export class FlamingoService {
 
         // Return file with populated properties
         return flamingo
+    }
+
+    /**
+     * This function is used to populate a file with all the possible properties
+     * @param file
+     */
+    async populateFileProperties(file: any) {
+
+        // Populate file properties
+        file = await File.populate(file, [
+            { path: '_group', select: this.groupFields },
+            { path: '_posted_by', select: this.userFields },
+            { path: '_folder', select: 'folder_name' },
+        ])
+
+        // Return file with populated properties
+        return file
     }
 
     /** 
@@ -205,5 +221,72 @@ export class FlamingoService {
                 }
             },
             { new: true}).lean();
+    }
+
+    async copyFlamingo(fileId: string) {
+
+        if (fileId) {
+            // Find the folio by Id
+            let oldFlamingo: any = await Flamingo.findOne({_file:fileId}).lean();
+
+            // Populate File Properties
+            oldFlamingo = await this.populateFlamingoProperties(oldFlamingo);
+
+            let newFlamingo = oldFlamingo;
+            let questions = oldFlamingo._questions;
+            delete newFlamingo._id;
+            delete newFlamingo.responses;
+            newFlamingo.publish = false;
+            newFlamingo.created_date = moment().format();
+
+            // Duplicate questions
+            newFlamingo._questions = [];
+
+            for (let i = 0; i < questions.length; i++) {
+                let newQuestion = await Question.findById(questions[i]?._id || questions[i]).lean();
+
+                delete newQuestion._id;
+
+                newQuestion.created_date = moment().format();
+
+                newQuestion = await Question.create(newQuestion);
+                newFlamingo._questions.push(newQuestion);
+            }
+
+
+            const file = await this.copyFile(fileId);
+
+            newFlamingo._file = file._id;
+
+            // Create new flamingo
+            newFlamingo = await Flamingo.create(newFlamingo);
+
+            // Return file
+            return file;
+        }
+    }
+
+    /**
+     * This function is responsible for copying a folio to a group
+     * @param fileId
+     * @param groupId 
+     */
+    async copyFile(fileId: string) {
+
+        if (fileId) {
+            // Find the folio by Id
+            let oldFile: any = await File.findById(fileId).lean();
+
+            let newFile = oldFile;
+            delete newFile._id;
+
+            newFile.original_name = 'Copy of ' + oldFile.original_name;
+
+            // Create new folio
+            newFile = await File.create(newFile);
+
+            // Populate File Properties
+            return this.populateFileProperties(newFile)
+        }
     }
 }

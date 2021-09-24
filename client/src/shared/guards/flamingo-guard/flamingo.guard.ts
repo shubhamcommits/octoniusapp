@@ -38,36 +38,40 @@ export class FlamingoGuard implements CanActivate  {
     // Public Functions Instance
     let publicFunctions = this.injector.get(PublicFunctions);
 
-    const flamingoStatus = await publicFunctions.checkFlamingoStatus(flamingo['_file']._group._workspace._id, flamingo['_file']._group._workspace.management_private_api_key);
+    if (flamingo && flamingo['_file']) {
+      const flamingoStatus = await publicFunctions.checkFlamingoStatus(flamingo['_file']._group._workspace._id, flamingo['_file']._group._workspace.management_private_api_key);
 
-    if (!flamingoStatus) {
-      this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsSubscriptionNoFlamingo:Oops seems like your subscription doesn\´t have Flamingo Module available!`);
-      this.router.navigate(['/home']);
+      if (!flamingoStatus) {
+        this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsSubscriptionNoFlamingo:Oops seems like your subscription doesn\´t have Flamingo Module available!`);
+        this.router.navigate(['/home']);
 
-      return false;
-    } else {
-      if (state.url.includes('/answer')) {
-        return true;
-      }
-
-      const currentUser = await publicFunctions.getCurrentUser();
-
-      let currentGroup;
-      await this.groupService.getGroup(currentGroupId).then(res => {
-        currentGroup = res['group'];
-      });
-      const groupMembersIndex = currentGroup._members.findIndex((member: any) => member._id == currentUser._id);
-      const groupAdminsIndex = currentGroup._admins.findIndex((admin: any) => admin._id == currentUser._id);
-      const userGroupsIndex = currentUser._groups.findIndex((group: any) => group == currentGroupId);
-
-      if (groupMembersIndex >= 0 || groupAdminsIndex >= 0
-          || userGroupsIndex >= 0 || currentUser._private_group == currentGroupId) {
-        return true;
-      } else {
-        this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);
-        this.router.navigate(['dashboard', 'myspace', 'inbox']);
         return false;
+      } else {
+        if (state.url.includes('/answer')) {
+          return true;
+        }
+
+        const currentUser = await publicFunctions.getCurrentUser();
+
+        let currentGroup;
+        await this.groupService.getGroup(currentGroupId).then(res => {
+          currentGroup = res['group'];
+        });
+        const groupMembersIndex = currentGroup._members.findIndex((member: any) => member._id == currentUser._id);
+        const groupAdminsIndex = currentGroup._admins.findIndex((admin: any) => admin._id == currentUser._id);
+        const userGroupsIndex = currentUser._groups.findIndex((group: any) => group == currentGroupId);
+
+        if (groupMembersIndex >= 0 || groupAdminsIndex >= 0
+            || userGroupsIndex >= 0 || currentUser._private_group == currentGroupId) {
+          return true;
+        } else {
+          this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);
+          this.router.navigate(['dashboard', 'myspace', 'inbox']);
+          return false;
+        }
       }
+    } else {
+      this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsFlamingoDoesNotExists:Oops seems like the Flamingo doesn\'t exists!`);
     }
   }
 

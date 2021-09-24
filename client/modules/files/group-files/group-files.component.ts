@@ -14,6 +14,7 @@ import { FilesService } from './../../../src/shared/services/files-service/files
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 
 @Component({
   selector: 'app-group-files',
@@ -91,6 +92,7 @@ export class GroupFilesComponent implements OnInit {
     private _router: Router,
     private router: ActivatedRoute,
     private filesService: FilesService,
+    private flamingoService: FlamingoService,
     private foldersService: FoldersService,
     public dialog: MatDialog,
     public storageService: StorageService
@@ -558,5 +560,19 @@ export class GroupFilesComponent implements OnInit {
           }));
         }
       });
+  }
+
+  async copyFlamingo(fileId: string) {
+    this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitDuplicateFile:Please wait, we are duplicating the file...`, new Promise((resolve, reject) => {
+        this.flamingoService.copyFlamingo(fileId)
+          .then((res) => {
+
+            this.getFile(res['file']);
+
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.flamingoDuplicated:Flamingo duplicated!`));
+          }).catch((err) => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToDuplicateFlamingo:Unable to duplicate the flamingo, please try again!`));
+          });
+    }));
   }
 }
