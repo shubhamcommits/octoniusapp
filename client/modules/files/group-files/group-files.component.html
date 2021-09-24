@@ -140,7 +140,7 @@
                               <span i18n="@@groupFiles.copyLink">Copy Link</span>
                             </a>
 
-                            <div *ngIf="file?.type == 'folio'">
+                            <div *ngIf="file?.type == 'folio' || file?.type == 'flamingo'">
                               <!--
                               <a mat-menu-item [matMenuTriggerFor]="transferMenu" (mouseover)="saveTransferAction('copy')">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
