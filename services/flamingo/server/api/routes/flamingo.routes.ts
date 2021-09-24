@@ -24,4 +24,7 @@ routes.delete('/question', auths.verifyToken, auths.isLoggedIn, flamingoFunction
 
 routes.put('/submit', flamingoFunctions.submit);
 
+// PUT - Handles the duplication of a flamingo
+routes.put('/:fileId/copy', auths.verifyToken, auths.isLoggedIn, flamingoFunctions.copyFlamingo);
+
 export { routes as flamingoRoutes };

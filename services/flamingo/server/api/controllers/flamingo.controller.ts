@@ -55,7 +55,6 @@ export class FlamingoController {
             // flamingo 
             let flamingo: any;
             
-
             flamingo = await flamingoService.get(fileId.toString());  
             
             // Send Status 200 response
@@ -229,5 +228,38 @@ export class FlamingoController {
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
+     }
+
+     /**
+      * This function is responsible for copying a flamingo
+      * @param req 
+      * @param res 
+      * @param next 
+      */
+     async copyFlamingo(req: Request, res: Response, next: NextFunction) {
+         try {
+ 
+             // Fetch the fileId from the request
+             const { params: { fileId } } = req;
+ 
+             // If fileId is not found, then throw the error
+             if (!fileId) {
+                 return res.status(400).json({
+                     message: 'Please pass the fileId'
+                 });
+             }
+ 
+             // Copy the folio
+             let fileData = await flamingoService.copyFlamingo(fileId);
+ 
+             // Send Status 200 response
+             return res.status(200).json({
+                 message: 'Flamingo copied!',
+                 file: fileData
+             })
+ 
+         } catch (err) {
+             return sendError(res, new Error('Internal Server Error!'), 'Internal Server Error!', 500);
+         }
      }
 }
