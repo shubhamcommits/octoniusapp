@@ -67,8 +67,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       this.flows = res['flows'];
     });
 
-    this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin' || this.userData?.role == 'manager'
-                        || (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id)>=0);
+    this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin'
+                        || this.userData?.role == 'manager' || this.isGroupManager();
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -694,5 +694,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         : 0;
     });
     return calculation;
+  }
+
+  isGroupManager() {
+    return (this.groupData && this.groupData._admins) ? (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id) >= 0) : false;
   }
 }

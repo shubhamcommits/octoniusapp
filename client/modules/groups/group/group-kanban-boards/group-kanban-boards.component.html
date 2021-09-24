@@ -25,7 +25,8 @@
                                   <span class="material-icons-outlined">create</span>
                                   <span i18n="@@groupKanbanBoard.edit">Edit</span>
                                 </li>
-                                <li class="dropdown-item" (click)="deleteColumn(column)">
+                                <li *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()"
+                                    class="dropdown-item" (click)="deleteColumn(column)">
                                   <span class="material-icons-outlined">delete</span>
                                   <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
@@ -128,7 +129,8 @@
                                   <span class="material-icons-outlined">create</span>
                                   <span i18n="@@groupKanbanBoard.edit">Edit</span>
                                 </li>
-                                <li class="dropdown-item" (click)="deleteColumn(column)">
+                                <li *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()"
+                                    class="dropdown-item" (click)="deleteColumn(column)">
                                   <span class="material-icons-outlined">delete</span>
                                   <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
