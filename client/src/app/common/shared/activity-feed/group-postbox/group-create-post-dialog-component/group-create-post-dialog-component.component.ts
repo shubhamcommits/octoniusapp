@@ -449,7 +449,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
           this.selectedCFValues[customFieldName] = customFieldValue;
           this.postData.task.custom_fields[customFieldName] = customFieldValue;
 
-          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId);
+          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
 
           // Resolve with success
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
@@ -545,7 +545,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     // Set the status
     this.postData.task.status = event;
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
   }
 
   async changeShuttleTaskStatus(event) {
@@ -557,7 +557,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
           // Resolve with success
           this.postData.task.shuttles[this.shuttleIndex].shuttle_status = event;
 
-          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupData?._id);
+          this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupData?._id, false, this.shuttleIndex);
 
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
@@ -572,7 +572,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     await this.publicFunctions.changeTaskColumn(this.postData._id, columnId, this.userData._id, this.groupId);
     this.postData.task._column = columnId;
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
   }
 
   async moveShuttleTaskToSection(event) {
@@ -583,7 +583,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     // Resolve with success
     this.postData.task._shuttle_section = shuttleSectionId;
 
-    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupData?._id);
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupData?._id, false, this.shuttleIndex);
   }
 
   async onAssigned(res) {
@@ -591,7 +591,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.setAssignedBy(this.postData);
 
     if (this.postData.type === 'task') {
-      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId);
+      this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
     }
   }
 
