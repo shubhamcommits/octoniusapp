@@ -52,21 +52,14 @@ import { LikeCommentComponent } from './comments/post-comment/like-comment/like-
 import { NorthStarComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component';
 import { NorthStarStatsComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/north-star/stats/north-star-stats.component';
 
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSelectModule } from '@angular/material/select';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
 import { GroupCreatePostDialogComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 import { ChartsModule, ThemeService } from 'ng2-charts';
@@ -89,7 +82,6 @@ import { MultipleAssignmentsComponent } from './posts/multiple-assignments/multi
 import { HighlightDirective } from './posts/multiple-assignments/highlight.directive';
 import { FilterPipe } from './posts/multiple-assignments/filter.pipe';
 import { AssigneeAvatarComponent } from './assignee-avatar/assignee-avatar.component';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { CommentListComponent } from './comments/comment-list/comment-list.component';
 import { MemberListMenuComponent } from './member-list-menu/member-list-menu.component';
 import { MembersWorkloadCardComponent } from './dashboard/members-workload-card/members-workload-card.component';
@@ -120,6 +112,7 @@ import { ChartModule } from 'modules/chart/chart.module';
 import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-statistics-card/custom-field-statistics-card.component';
 import { CustomFieldTableCardComponent } from './dashboard/custom-field-table-card/custom-field-table-card.component';
 import { CustomFieldsTableSettingsDialogComponent } from './dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component';
+import { ShuttleTaskComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/shuttle-task/shuttle-task.component';
 
 @NgModule({
   declarations: [
@@ -225,6 +218,7 @@ import { CustomFieldsTableSettingsDialogComponent } from './dashboard/custom-fie
     SubtasksComponent,
 
     TaskActionsComponent,
+    ShuttleTaskComponent,
 
     MultipleAssignmentsComponent,
 
@@ -373,6 +367,7 @@ import { CustomFieldsTableSettingsDialogComponent } from './dashboard/custom-fie
     SubtasksComponent,
 
     TaskActionsComponent,
+    ShuttleTaskComponent,
 
     MultipleAssignmentsComponent,
     AssigneeAvatarComponent,

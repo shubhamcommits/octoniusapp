@@ -262,7 +262,8 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+        .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
+        .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -275,7 +276,8 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+        .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
+        .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -287,7 +289,8 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+        .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
+        .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -298,7 +301,8 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
-        .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+        .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
+        .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
         .lean();
 
@@ -319,7 +323,8 @@ export class PostService {
         { path: '_group', select: this.groupFields },
         { path: '_posted_by', select: this.userFields },
         { path: 'task._parent_task', select: '_id title _assigned_to' },
-        { path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' }
+        { path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' },
+        { path: 'task.shuttles._shuttle_section', select: '_id title' }
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -2885,12 +2890,14 @@ export class PostService {
                 break;
             case 'Move to':
                 if (isChildStatusTrigger && post.task._parent_task) {
-                  if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
-                    post = await this.selectShuttleSection(post._id, true, (action._section._id || action._section));
+                  if (post?.task?.shuttle_type
+                      && post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) >= 0) {
+                    post = await this.selectShuttleSection(post._id, true, (action._section._id || action._section), groupId);
                   }
                 } else {
-                  if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
-                    post = await this.selectShuttleSection(post._id, true, (action._section._id || action._section));
+                  if (post?.task?.shuttle_type
+                      && post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) >= 0) {
+                    post = await this.selectShuttleSection(post._id, true, (action._section._id || action._section), groupId);
                   } else {
                     if (!post.task._parent_task) {
                       post = await this.changeTaskColumn(post._id, (action._section._id || action._section), userId);
@@ -2900,21 +2907,24 @@ export class PostService {
                 break;
             case 'Change Status to':
                 if (isChildStatusTrigger && post.task._parent_task) {
-                  if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
-                    post = await this.selectShuttleStatus(post._id, true, action.status);
+                  if (post?.task?.shuttle_type 
+                      && post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) >= 0) {
+                    post = await this.selectShuttleStatus(post._id, (post?.task?._shuttle_group?._id || post?.task?._shuttle_group), action.status, userId);
                   } else {
                     post = await this.changeTaskStatus(post.task._parent_task._id || post.task._parent_task, action.status, userId);
                   }
                 } else {
-                  if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
-                    post = await this.selectShuttleStatus(post._id, true, action.status);
+                  if (post?.task?.shuttle_type 
+                      && post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) >= 0) {
+                    post = await this.selectShuttleStatus(post._id, groupId, action.status, userId);
                   } else {
                     post = await this.changeTaskStatus(post._id, action.status, userId);
                   }
                 }
                 break;
             case 'Shuttle task':
-                if (!post?.task?.shuttle_type && ((post?.task?._shuttle_group?._id || post?.task?._shuttle_group) != groupId)) {
+                if (!post?.task?.shuttle_type 
+                    && post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) < 0) {
                   post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group);
                 }
                 break;
@@ -2962,29 +2972,54 @@ export class PostService {
     }
   }
 
-  async selectShuttleSection(postId: string, shuttleType: boolean, shuttleSectionId: string) {
+  async selectShuttleSection(postId: string, shuttleType: boolean, shuttleSectionId: string, shuttleGroupId: string) {
+    /*
     let post = await Post.findByIdAndUpdate({
             _id: postId
         }, {
             'task.shuttle_type': shuttleType,
             'task._shuttle_section': shuttleSectionId
         }, {
+            arrayFilters: [{ "shuttle._shuttle_group": shuttleGroupId }],
+            new: true
+        }).lean();
+    */
+    let post = await Post.findByIdAndUpdate({
+            _id: postId
+        }, {
+            $set: { 
+              'task.shuttle_type': shuttleType,
+              "task.shuttles.$[shuttle]._shuttle_section": shuttleSectionId
+            }
+        }, {
+            arrayFilters: [{ "shuttle._shuttle_group": shuttleGroupId }],
             new: true
         }).lean();
 
     return await this.populatePostProperties(post);
   }
 
-  async selectShuttleStatus(postId: string, shuttleType: boolean, shuttleStatus: string) {
+  async selectShuttleStatus(postId: string, shuttleGroupId: string, shuttleStatus: string, userId: string) {
+
     let post = await Post.findByIdAndUpdate({
           _id: postId
       }, {
-          'task.shuttle_type': shuttleType,
-          'task.shuttle_status': shuttleStatus
+          $set: { "task.shuttles.$[shuttle].shuttle_status": shuttleStatus }
       }, {
+          arrayFilters: [{ "shuttle._shuttle_group": shuttleGroupId }],
           new: true
       }).lean();
 
+    if (shuttleStatus !== 'to do') {
+      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/status-change`, {
+        postId: post._id,
+        userId: userId,
+        assigned_to: post._assigned_to,
+        status: shuttleStatus ? shuttleStatus : 'to do',
+        followers: post._followers,
+        posted_by: post._posted_by
+      });
+    }
     return await this.populatePostProperties(post);
   }
 
@@ -2996,24 +3031,20 @@ export class PostService {
         post = await Post.findByIdAndUpdate({
                 _id: postId
             }, {
+              $set: {
                 'task.shuttle_type': true,
-                'task._shuttle_group': shuttleGroupId,
-                'task._shuttle_section': group._shuttle_section,
-                'task.shuttle_status': 'to do'
+              },
+              $push: {
+                "task.shuttles": {
+                  shuttled_at: moment().format(),
+                  shuttle_status: 'to do',
+                  _shuttle_section: group._shuttle_section,
+                  _shuttle_group: shuttleGroupId
+                }
+              }
             }, {
                 new: true
-            }).lean();
-      } else {
-          post = await Post.findByIdAndUpdate({
-                  _id: postId
-              }, {
-                  'task.shuttle_type': false,
-                  'task._shuttle_group': null,
-                  'task._shuttle_section': null,
-                  'task.shuttle_status': ''
-              }, {
-                  new: true
-              }).lean();
+            });
       }
 
       return this.populatePostProperties(post);

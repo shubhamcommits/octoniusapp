@@ -1,0 +1,68 @@
+<div class="content-box">
+  <p class="box-title">
+    <img src="assets/images/icon-task-shuttle.svg" style="width: 32px" />
+    <span i18n="@@shuttleTask.taskShuttle">Task Shuttle</span>
+  </p>
+
+  <div>
+    <div *ngFor="let shuttle of postData?.task?.shuttles; let index = index">
+      <span *ngIf="index == 0" i18n="@@shuttleTask.currently"> Currently: </span>
+      <span *ngIf="index > 0"> <span i18n="@@shuttleTask.shuttle">Shuttle</span> {{ postData?.task?.shuttles.length - index }}: </span>
+
+      {{ shuttle?._shuttle_group?.group_name | truncatetext: 20 }}
+
+      <app-secured-image
+        [imgURL]="shuttle?._shuttle_group?.group_avatar"
+        [service]="'group'"
+        [styleClass]="'feed-avatar-small'"></app-secured-image>
+    </div>
+
+    <div>
+      <span i18n="@@shuttleTask.origin">Origin: </span>
+
+      {{ postData?._group?.group_name | truncatetext: 20 }}
+
+      <app-secured-image
+        [imgURL]="postData?._group?.group_avatar"
+        [service]="'group'"
+        [styleClass]="'feed-avatar-small'"></app-secured-image>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Shuttle Status starts -->
+  <div>
+    <p class="mt-1" i18n="@@shuttleTask.currentStatus">Current Status</p>
+
+    <!-- Change shuttle task status starts -->
+    <div class="shuttle-box mb-2">
+      <span class="mt-1" style="width:70px" i18n="@@shuttleTask.status">Status</span>
+
+      <app-task-status class="ml-2"
+          [postId]="postData?._id"
+          [groupId]="currentShuttle?._shuttle_group?._id || currentShuttle?._shuttle_group"
+          [userId]="userData?._id"
+          [status]="currentShuttle?.shuttle_status"
+          [disabled]="true"
+          [shuttleType]="true">
+      </app-task-status>
+    </div>
+    <!-- Change shuttle task status ends -->
+
+    <div class="shuttle-box" *ngIf="shuttleColumns">
+      <span *ngIf="(currentShuttle)" class="mt-1" style="width:70px" i18n="@@shuttleTask.section">
+        Section
+      </span>
+
+      <!-- Change task column starts -->
+      <app-change-column class="ml-2"
+          [sectionId]="(this.currentShuttle?._shuttle_section?._id || this.currentShuttle?._shuttle_section)"
+          [columns]="shuttleColumns"
+          [disabled]="true">
+      </app-change-column>
+    </div>
+    <!-- Change task column ends -->
+  </div>
+  <!-- Shuttle Status ends -->
+</div>

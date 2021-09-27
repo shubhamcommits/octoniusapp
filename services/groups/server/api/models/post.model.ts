@@ -212,18 +212,25 @@ const PostSchema = new Schema({
             type: Boolean,
             default: false
         },
-        _shuttle_group: {
-            type: Schema.Types.ObjectId,
-            ref: 'Group'
-        },
-        _shuttle_section: {
-            type: Schema.Types.ObjectId,
-            ref: 'Column'
-        },
-        shuttle_status: {
-            type: String,
-            default: 'to do'
-        }
+        shuttles: [{
+            _shuttle_group: {
+                type: Schema.Types.ObjectId,
+                ref: 'Group'
+            },
+            _shuttle_section: {
+                type: Schema.Types.ObjectId,
+                ref: 'Column'
+            },
+            shuttle_status: {
+                type: String,
+                default: 'to do'
+            },
+            shuttled_at: {
+                type: Date,
+                required: true,
+                default: moment().format()
+            }
+        }]
     },
 
     // PERFORMANCE TASK
