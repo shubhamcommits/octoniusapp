@@ -1653,7 +1653,7 @@ export class PostController {
 
         try {
             // Find the group and update
-            let post = await postService.selectShuttleSection(postId, true, shuttleSectionId);
+            let post = await postService.selectShuttleSection(postId, true, shuttleSectionId, groupId);
            
             // Execute Automation Flows
             post = await this.executeAutomationFlows(groupId, post, userId, true, isShuttleTasksModuleAvailable);
@@ -1682,7 +1682,7 @@ export class PostController {
 
         try {
             // Find the group and update
-            let post = await postService.selectShuttleStatus(postId, true, shuttleStatus);
+            let post = await postService.selectShuttleStatus(postId, groupId, shuttleStatus, userId);
             
             // Execute Automation Flows
             post = await this.executeAutomationFlows(groupId, post, userId, true, isShuttleTasksModuleAvailable);
