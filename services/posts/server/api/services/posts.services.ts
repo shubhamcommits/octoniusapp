@@ -2863,6 +2863,8 @@ export class PostService {
    * @param isChildStatusTrigger 
    */
   executeActionFlow(actions: any[], post: any, userId: string, groupId: string, isChildStatusTrigger: boolean) {
+    const shuttleIndex = post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId);
+
     actions.forEach(async action => {
         switch (action.name) {
             case 'Assign to':
@@ -2890,13 +2892,11 @@ export class PostService {
                 break;
             case 'Move to':
                 if (isChildStatusTrigger && post.task._parent_task) {
-                  if (post?.task?.shuttle_type
-                      && post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) >= 0) {
+                  if (post?.task?.shuttle_type && shuttleIndex >= 0) {
                     post = await this.selectShuttleSection(post._id, true, (action._section._id || action._section), groupId);
                   }
                 } else {
-                  if (post?.task?.shuttle_type
-                      && post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) >= 0) {
+                  if (post?.task?.shuttle_type && shuttleIndex >= 0) {
                     post = await this.selectShuttleSection(post._id, true, (action._section._id || action._section), groupId);
                   } else {
                     if (!post.task._parent_task) {
@@ -2907,15 +2907,13 @@ export class PostService {
                 break;
             case 'Change Status to':
                 if (isChildStatusTrigger && post.task._parent_task) {
-                  if (post?.task?.shuttle_type 
-                      && post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) >= 0) {
+                  if (post?.task?.shuttle_type && shuttleIndex >= 0) {
                     post = await this.selectShuttleStatus(post._id, (post?.task?._shuttle_group?._id || post?.task?._shuttle_group), action.status, userId);
                   } else {
                     post = await this.changeTaskStatus(post.task._parent_task._id || post.task._parent_task, action.status, userId);
                   }
                 } else {
-                  if (post?.task?.shuttle_type 
-                      && post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) >= 0) {
+                  if (post?.task?.shuttle_type && shuttleIndex >= 0) {
                     post = await this.selectShuttleStatus(post._id, groupId, action.status, userId);
                   } else {
                     post = await this.changeTaskStatus(post._id, action.status, userId);
@@ -2923,8 +2921,7 @@ export class PostService {
                 }
                 break;
             case 'Shuttle task':
-                if (!post?.task?.shuttle_type 
-                    && post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) < 0) {
+                if (!post?.task?.shuttle_type && shuttleIndex >= 0) {
                   post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group);
                 }
                 break;
@@ -2973,17 +2970,6 @@ export class PostService {
   }
 
   async selectShuttleSection(postId: string, shuttleType: boolean, shuttleSectionId: string, shuttleGroupId: string) {
-    /*
-    let post = await Post.findByIdAndUpdate({
-            _id: postId
-        }, {
-            'task.shuttle_type': shuttleType,
-            'task._shuttle_section': shuttleSectionId
-        }, {
-            arrayFilters: [{ "shuttle._shuttle_group": shuttleGroupId }],
-            new: true
-        }).lean();
-    */
     let post = await Post.findByIdAndUpdate({
             _id: postId
         }, {

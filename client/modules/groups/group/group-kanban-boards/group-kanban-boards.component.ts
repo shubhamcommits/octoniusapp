@@ -212,15 +212,16 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     } else {
       var post: any = event.previousContainer.data[event.previousIndex];
 
+      const shuttleIndex = post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupId);
       // Update the task column when changed with dropping events to reflect back in the task view modal
-      if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == this.groupId) {
-        post['task']._shuttle_section = event.container.id;
+      if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
+        post.task.shuttles[shuttleIndex]._shuttle_section = event.container.id;
       } else {
-        post['task']._column = event.container.id;
+        post.task._column = event.container.id;
       }
 
       // Call move task to a new column
-      this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
+      this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id, shuttleIndex);
     }
   }
 
@@ -417,15 +418,15 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
    * @param task
    * @param columnId
    */
-  async moveTaskToNewColumn(task: any, oldColumnId: string, columnId: string) {
+  async moveTaskToNewColumn(task: any, oldColumnId: string, columnId: string, shuttleIndex: number) {
 
-    if (task?.task?.shuttle_type && (task?.task?._shuttle_group?._id || task?.task?._shuttle_group) == this.groupId) {
+    if (task?.task?.shuttle_type && shuttleIndex >= 0) {
       await this.publicFunctions.changeTaskShuttleSection(task?._id, this.groupId, columnId);
     } else {
       await this.publicFunctions.changeTaskColumn(task._id, columnId, this.userData._id, this.groupId);
     }
 
-    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, task, this.groupId);
+    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, task, this.groupId, false, shuttleIndex);
 
     // Prepare Event
     let columnEvent = {

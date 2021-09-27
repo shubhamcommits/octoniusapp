@@ -1297,8 +1297,8 @@ export class PostController {
                                     ? await this.isChildTasksUpdated(step.trigger[childStatusTriggerIndex], post.task._parent_task._id || post.task._parent_task)
                                     : false;
                                 doTrigger = await this.doesTriggersMatch(step.trigger, post, groupId, isCreationTaskTrigger, isChildStatusTrigger);
-                                const shuttleActinIndex = step.action.findIndex(action => action.name == 'Shuttle task');
-                                doTrigger = doTrigger && ((shuttleActinIndex < 0) || isShuttleTasksModuleAvailable);
+                                const shuttleActionIndex = step.action.findIndex(action => action.name == 'Shuttle task');
+                                doTrigger = doTrigger && ((shuttleActionIndex < 0) || isShuttleTasksModuleAvailable);
                                 if (doTrigger) {
                                     await postService.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
                                 }
@@ -1327,6 +1327,7 @@ export class PostController {
      */
     doesTriggersMatch(triggers: any[], post: any, groupId: string, isCreationTaskTrigger: boolean, isChildStatusTrigger: boolean) {
         let retValue = true;
+        const shuttleIndex = post?.task?.shuttles?.findIndex(shuttle => (shuttle?._shuttle_group?._id || shuttle?._shuttle_group) == groupId);
         if (triggers && triggers.length > 0) {
             triggers.forEach(async trigger => {
                 if (retValue) {
@@ -1363,8 +1364,8 @@ export class PostController {
                             } else {
                                 const triggerSection = (trigger._section._id || trigger._section);
                                 let postSection;
-                                if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
-                                    postSection = (post.task._shuttle_section._id || post.task._shuttle_section);
+                                if (post?.task?.shuttle_type && shuttleIndex >= 0) {
+                                    postSection = (post.task.shuttles[shuttleIndex]._shuttle_section._id || post.task.shuttles[shuttleIndex]._shuttle_section);
                                 } else {
                                     postSection = (post.task._column._id || post.task._column);
                                 }
@@ -1373,14 +1374,14 @@ export class PostController {
                             break;
                         case 'Status is':
                             if (post.task._parent_task) {
-                                if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
-                                    retValue = trigger.status.toUpperCase() == post.task.shuttle_status.toUpperCase();
+                                if (post?.task?.shuttle_type && shuttleIndex >= 0) {
+                                    retValue = trigger.status.toUpperCase() == post.task.shuttles[shuttleIndex].shuttle_status.toUpperCase();
                                 } else {
                                     retValue = false;
                                 }
                             } else {
-                                if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId){
-                                    retValue = trigger.status.toUpperCase() == post.task.shuttle_status.toUpperCase();
+                                if (post?.task?.shuttle_type && shuttleIndex >= 0) {
+                                    retValue = trigger.status.toUpperCase() == post.task.shuttles[shuttleIndex].shuttle_status.toUpperCase();
                                 } else {
                                     retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
                                 }
