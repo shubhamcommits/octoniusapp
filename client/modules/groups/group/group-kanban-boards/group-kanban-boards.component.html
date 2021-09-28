@@ -30,6 +30,11 @@
                                   <span class="material-icons-outlined">delete</span>
                                   <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
+                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager())"
+                                    class="dropdown-item" (click)="archiveColumn(column)">
+                                  <span class="material-icons-outlined">archive</span>
+                                  <span i18n="@@groupDashboard.archive">Archive</span>
+                                </li>
                                 <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(column)">
                                   <img src="assets/images/Icon/icon_launch_project.svg" alt="" >
                                   <span i18n="@@groupDashboard.launchProject">Launch Project</span>
@@ -115,6 +120,7 @@
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
                 <div class="column-title">
                     <p class="text-capitalize" [matTooltip]="column?.title">
+                      <img *ngIf="isShuttleTasksModuleAvailable && column?._id == (groupData?._shuttle_section?._id || groupData?._shuttle_section)" src="assets/images/icon-task-shuttle.svg" alt="" style="width: 24px;">
                       <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type">
                       {{ column?.title | truncatetext:20 }}
                     </p>
@@ -133,6 +139,11 @@
                                     class="dropdown-item" (click)="deleteColumn(column)">
                                   <span class="material-icons-outlined">delete</span>
                                   <span i18n="@@groupDashboard.delete">Delete</span>
+                                </li>
+                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager())"
+                                    class="dropdown-item" (click)="archiveColumn(column)">
+                                  <span class="material-icons-outlined">archive</span>
+                                  <span i18n="@@groupDashboard.archive">Archive</span>
                                 </li>
                                 <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(column)">
                                   <img src="assets/images/Icon/icon_launch_project.svg" alt="" >

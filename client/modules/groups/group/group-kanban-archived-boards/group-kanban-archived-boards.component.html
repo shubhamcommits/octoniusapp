@@ -1,0 +1,73 @@
+<div class="board">
+  <div class="board-wrapper">
+      <!-- ALL COLUMN DETAILS FOR MOBILE STARTS -->
+      <div class="board-columns" *ngIf="columns">
+
+          <div class="board-column" *ngFor="let column of columns; let i = index;">
+              <!-- COLUMN TITLE AND EDIT/DELETE DETAILS STARTS -->
+              <div class="column-title">
+                  <p class="text-capitalize" [matTooltip]="column?.title">
+                    <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type">
+                    {{ column?.title | truncatetext:20 }}
+                  </p>
+                  <div class="inline-block">
+                      <div class="dropdown">
+                          <i class="material-icons action dropdown-toggle"
+                              data-toggle="dropdown">more_horiz</i>
+
+                          <!-- Menu Drawer Starts -->
+                          <ul class="dropdown-menu">
+                              <li class="dropdown-item" (click)="column.editColumn = !column.editColumn">
+                                <span class="material-icons-outlined">create</span>
+                                <span i18n="@@groupKanbanBoard.edit">Edit</span>
+                              </li>
+
+                              <li *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()"
+                                  class="dropdown-item" (click)="deleteColumn(column)">
+                                <span class="material-icons-outlined">delete</span>
+                                <span i18n="@@groupDashboard.delete">Delete</span>
+                              </li>
+
+                              <li *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()"
+                                  class="dropdown-item" (click)="unarchiveColumn(column)">
+                                <span class="material-icons-outlined">unarchive</span>
+                                <span i18n="@@groupDashboard.unarchive">Unarchive</span>
+                              </li>
+                          </ul>
+                          <!-- Menu Drawer Ends -->
+                      </div>
+                  </div>
+              </div>
+              <!-- COLUMN TITLE AND EDIT/DELETE DETAILS ENDS -->
+
+              <!-- EDIT COLUMN STARTS -->
+              <app-edit-column *ngIf="column" [column]="column" (column)="editColumn(column, $event)">
+              </app-edit-column>
+              <!-- EDIT COLUMN ENDS -->
+
+              <!-- TASK CONTAINER STARTS -->
+              <div class="tasks-container" [id]="column._id">
+                  <!-- TASK DETAILS STARTS -->
+                  <app-kanban-task-card *ngFor="let task of column.tasks; let j = index;"
+                    (click)="openFullscreenModal(task)"
+                    [isProject]="column?.project_type"
+                    [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
+                    [task]="task"
+                    [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+                    [groupId]="groupData._id">
+                  </app-kanban-task-card>
+                  <!-- TASK DETAILS ENDS -->
+              </div>
+              <!-- TASK CONTAINER ENDS -->
+          </div>
+      </div>
+      <!-- ALL COLUMN DETAILS FOR MOBILE ENDS -->
+  </div>
+
+  <!-- placeholder for empty board starts -->
+  <div *ngIf="!columns || columns.length == 0" style="text-align: center;">
+    <img src='assets/images/placeholder_activity3.png' class="placeholder-img">
+    <p class="muted text-center" i18n="@@groupDashboard.boardEmpty">This board is empty. Create a section to add tasks. </p>
+  </div>
+  <!-- placeholder for empty board ends -->
+</div>

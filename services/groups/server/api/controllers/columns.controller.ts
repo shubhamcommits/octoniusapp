@@ -13,7 +13,38 @@ export class ColumnsController {
             const { groupId } = req.query;
 
             let columns = await Column.find({
-                _group: groupId
+                $and: [
+                    { _group: groupId },
+                    { archived: { $ne: true }}
+                ]
+            }).sort({kanban_order: 1}).lean() || [];
+
+            columns = await Column.populate(columns, [
+                { path: 'budget.expenses._user' }
+            ]);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Column obtained Successfully!',
+                columns: columns
+            });
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    // get all existing archived columns
+    async getAllArchivedColumns(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch GroupId from the query
+            const { groupId } = req.query;
+
+            let columns = await Column.find({
+                $and: [
+                    { _group: groupId },
+                    { archived: true }
+                ]
             }).sort({kanban_order: 1}).lean() || [];
 
             columns = await Column.populate(columns, [
@@ -40,8 +71,11 @@ export class ColumnsController {
             let columns = [];
             if (groupId) {
               columns = await Column.find({
-                  _group: groupId,
-                  project_type: true
+                $and: [
+                    { _group: groupId },
+                    { project_type: true },
+                    { archived: { $ne: true }}
+                ]
               }).lean() || [];
 
               columns = await Column.populate(columns, [
@@ -60,8 +94,11 @@ export class ColumnsController {
                 .lean() || [];
 
               columns = await Column.find({
-                '_group': { $in: groups },
-                project_type: true
+                $and: [
+                    { '_group': { $in: groups }},
+                    { project_type: true },
+                    { archived: { $ne: true }}
+                ]
               }).lean() || [];
 
               columns = await Column.populate(columns, [
@@ -87,15 +124,14 @@ export class ColumnsController {
             // Fetch GroupId from the query
             const { workspaceId, filteringGroups } = req.query;
 
-            if (!workspaceId) {
-
-            }
-
             let columns = [];
             if (workspaceId) {
               columns = await Column.find({
-                '_group': { $in: filteringGroups },
-                project_type: true
+                $and: [
+                    { '_group': { $in: filteringGroups }},
+                    { project_type: true },
+                    { archived: { $ne: true }}
+                ]
               }).lean() || [];
 
               columns = await Column.populate(columns, [
@@ -467,6 +503,51 @@ export class ColumnsController {
                 new: true
                 })
                 .select("custom_fields_to_show_kanban")
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Column Custom Fields saved!',
+                column: column
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async archive(req: Request, res: Response, next: NextFunction) {
+        const { sectionId } = req.body;
+
+        try {
+            let column = await Column.findById({
+                    _id: sectionId
+                })
+                .select("title archived")
+                .lean();
+
+            await Post.updateMany({
+                    'task._column': sectionId
+                }, {
+                    $set: {'archived': !(column.archived) }
+                });
+
+            let action = (column.archived) ? {
+                $set: { archived: !(column.archived) }
+            }: {
+                $set: {
+                    archived: !(column.archived),
+                    title: column.title + ' ' + moment().format('YYYY-MM-DD')
+                }
+            };
+
+            // Find the group and update their respective group avatar
+            column = await Column.findOneAndUpdate({
+                    _id: sectionId
+                }, action, {
+                    safe: true,
+                    new: true
+                })
+                .populate({ path: 'budget.expenses._user' })
                 .lean();
 
             // Send status 200 response

@@ -151,7 +151,7 @@
                 [groupId]="postData?._group?._id || postData?._group"
                 [userId]="userData?._id"
                 [status]="postData?.task?.status"
-                [disabled]="false"
+                [disabled]="postData?.archived"
                 [shuttleType]="false"
                 (status)="changeTaskStatus($event)">
             </app-task-status>
@@ -162,7 +162,7 @@
                 [groupId]="shuttle?._shuttle_group?._id || shuttle?._shuttle_group"
                 [userId]="userData?._id"
                 [status]="shuttle?.shuttle_status"
-                [disabled]="false"
+                [disabled]="postData?.archived"
                 [shuttleType]="true"
                 (status)="changeShuttleTaskStatus($event)">
             </app-task-status>
@@ -180,7 +180,7 @@
                 *ngIf="!postData?.task?.shuttle_type || (groupData?._id == postData?._group?._id && !postData?.task?._parent_task)"
                 [sectionId]="(postData?.task?._column?._id || postData?.task?._column)"
                 [columns]="columns"
-                [disabled]="false"
+                [disabled]="postData?.archived"
                 (moveTask)="moveTaskToColumn($event)">
             </app-change-column>
 
@@ -188,7 +188,7 @@
                 *ngIf="(postData?.task?.shuttle_type && groupData?._id != postData?._group?._id)"
                 [sectionId]="(shuttle?._shuttle_section?._id || shuttle?._shuttle_section)"
                 [columns]="columns"
-                [disabled]="false"
+                [disabled]="postData?.archived"
                 (moveTask)="moveShuttleTaskToSection($event)">
             </app-change-column>
             <!-- Change task column ends -->

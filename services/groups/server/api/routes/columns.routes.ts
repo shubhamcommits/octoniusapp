@@ -23,6 +23,9 @@ router.use(auths.isLoggedIn);
 // get all existing columns
 router.get('/all', columns.getAllColumns);
 
+// get all existing archived columns
+router.get('/archived', columns.getAllArchivedColumns);
+
 // get all existing project columns
 router.get('/projects', columns.getAllProjectColumns);
 
@@ -64,5 +67,8 @@ router.put('/updateColumnsPosition', columns.updateColumnsPosition);
 
 // PUT - Updates the order of the sections in the board views
 router.put('/setDisplayCustomFieldInColumn', columns.setDisplayCustomFieldInColumn);
+
+// PUT - Archives an entrie section and its tasks
+router.put('/archive', columns.archive);
 
 export { router as columnRoutes };

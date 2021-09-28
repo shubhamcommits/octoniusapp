@@ -86,6 +86,7 @@ import { ColumnProjectSectionComponent } from './group/group-kanban-boards/colum
 import { AdvancedFilterDialogComponent } from './group/group-kanban-boards/board-bar/advanced-filter-dialog/advanced-filter-dialog.component';
 import { GroupReportsComponent } from './group/group-reports/group-reports.component';
 import { ShowCustomFieldsColumnDialogComponent } from './group/group-kanban-boards/show-custom-fields-column-dialog/show-custom-fields-column-dialog.component';
+import { GroupKanbanArchivedBoardsComponent } from './group/group-kanban-archived-boards/group-kanban-archived-boards.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -100,47 +101,11 @@ import { ShowCustomFieldsColumnDialogComponent } from './group/group-kanban-boar
     // Create Group Component
     CreateGroupComponent,
 
-    // // Group Kanban Task View Component
-    // GroupKanbanTaskViewComponent,
-
-    // // Group Kanban Task Assignment Component
-    // GroupKanbanTaskAssignmentComponent,
-
-    // // Group Tasks Component
-    // GroupTasksComponent,
-
     // // Group Smart Admin Component
     GroupSmartAdminComponent,
 
-    // // Group Post Component
-    // GroupPostComponent,
-
     // Group Members Component
     GroupMembersComponent,
-
-    // // Group Kanban Boards Component
-    // GroupKanbanBoardsComponent,
-
-    // // Group Files Component
-    // GroupFilesComponent,
-
-    // // Group Edit Component
-    // GroupEditComponent,
-
-    // // Group Calendar Component
-    // GroupCalendarComponent,
-
-    // // Group Admin Component
-    // GroupAdminComponent,
-
-    // // Group Activity Progress Component
-    // GroupActivityProgressComponent,
-
-    // // Group Activity Filters Component
-    // GroupActivityFiltersComponent,
-
-    // // Group Activity Component
-    // GroupActivityComponent,
 
     // Group Component
     GroupComponent,
@@ -155,6 +120,7 @@ import { ShowCustomFieldsColumnDialogComponent } from './group/group-kanban-boar
 
     GroupKanbanBoardsComponent,
     GroupTasksListViewComponent,
+    GroupKanbanArchivedBoardsComponent,
 
     CreateColumnComponent,
     CreateSectionComponent,
@@ -166,8 +132,6 @@ import { ShowCustomFieldsColumnDialogComponent } from './group/group-kanban-boar
     GroupPostComponent,
 
     InviteUserComponent,
-
-    // GroupImageDetailsComponent,
 
     GroupTasksViewsComponent,
     CustomFieldsDialogComponent,

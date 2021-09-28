@@ -46,6 +46,12 @@ routes.post('/', postFileHandler, postController.add.bind(postController));
 routes.get('/', postController.getPosts);
 
 /**
+ * GET - This route fetches the list of archived tasks present in a group
+ * @param { groupId } query
+ */
+routes.get('/archived', postController.getArchivedTasks);
+
+/**
  * GET - This route fetches the list of posts present in a group
  * @param { groups Ids } query
  */
