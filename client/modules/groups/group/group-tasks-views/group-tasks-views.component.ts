@@ -161,17 +161,21 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    this.userData.stats.lastTaskView = view;
-    // User service
-    const userService = this.injector.get(UserService);
+    if (view != 'archived') {
+      this.userData.stats.lastTaskView = view;
+      // User service
+      const userService = this.injector.get(UserService);
 
-    // Update user´s last view
-    await userService.updateUser(this.userData);
-    await this.publicFunctions.sendUpdatesToUserData(this.userData);
+      // Update user´s last view
+      await userService.updateUser(this.userData);
+      await this.publicFunctions.sendUpdatesToUserData(this.userData);
 
-    this.viewType = view;
+      this.viewType = view;
 
-    await this.initView();
+      await this.initView();
+    } else {
+      this.viewType = view;
+    }
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);

@@ -25,6 +25,18 @@ export class ColumnService {
   }
 
   /**
+   * This function is responsible for fetching all the archived columns present in a board
+   * @param groupId
+   */
+  getAllArchivedColumns(groupId: string) {
+    return this._http.get(this.baseUrl + `/columns/archived`, {
+      params:{
+        groupId: groupId
+      }
+    }).toPromise()
+  }
+
+  /**
    * This function is responsible for fetching all the columns present in a board
    * @param groupId
    */
@@ -179,4 +191,7 @@ export class ColumnService {
     return this._http.put<any>(this.baseUrl + `/columns/setDisplayCustomFieldInColumn`, {columnId, showInColumn, customFieldName}).toPromise();
   }
 
+  archiveColumn(sectionId: string) {
+    return this._http.put<any>(this.baseUrl + `/columns/archive`, { sectionId }).toPromise();
+  }
 }

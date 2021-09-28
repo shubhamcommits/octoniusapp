@@ -677,6 +677,28 @@ export class PublicFunctions {
     }
 
     /**
+     * This function is responsible for fetching the archived tasks from the server based on the groupId
+     * @param groupId
+     */
+    getArchivedTasks(groupId: string) {
+
+      // Post Service Instance
+      let postService = this.injector.get(PostService);
+
+      return new Promise((resolve, reject) => {
+          postService.getArchivedTasks(groupId)
+              .then((res: any) => {
+                  // Resolve with sucess
+                  resolve(res['posts'])
+              })
+              .catch(() => {
+                  // If there's an error, then reject with empty array
+                  reject([]);
+              });
+      });
+    }
+
+    /**
      * This function is responsible for fetching the tags from the server based on the groupId
      * @param groupId
      * @param tag: optional
@@ -865,6 +887,34 @@ export class PublicFunctions {
         // Call the HTTP Request to fetch the columns
         return new Promise((resolve, reject) => {
             columnService.getAllColumns(groupId)
+                .then((res) => {
+
+                    if (res == null) {
+                        resolve([]);
+                    }
+
+                    // Resolve with sucess
+                    resolve(res['columns']);
+                })
+                .catch((err) => {
+                    // If there's an error, then reject with empty object
+                    reject(err);
+                })
+        })
+    }
+
+    /**
+     * This function is responsible for fetching all the columns present in a group
+     * @param groupId
+     */
+    getAllArchivedColumns(groupId: string) {
+
+        // Column Service Insctance
+        let columnService = this.injector.get(ColumnService)
+
+        // Call the HTTP Request to fetch the columns
+        return new Promise((resolve, reject) => {
+            columnService.getAllArchivedColumns(groupId)
                 .then((res) => {
 
                     if (res == null) {

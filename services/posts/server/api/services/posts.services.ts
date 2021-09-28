@@ -245,6 +245,29 @@ export class PostService {
     }
   }
 
+  async getArchivedTasks(groupId: string) {
+    try {
+
+      // Posts Variable
+      let posts = await this.filterGroupPosts(
+        Post.find({
+          $and: [
+            { _group: groupId },
+            { type: 'task' },
+            { archived: true }
+          ]
+        }), 'task');
+
+      // Return set of posts 
+      return posts;
+
+    } catch (err) {
+
+      // Return With error
+      throw (err);
+    }
+  }
+
   /**
    * This is the helper function which returns the filtered posts
    * @param posts 

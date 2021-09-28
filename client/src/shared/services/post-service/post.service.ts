@@ -143,6 +143,19 @@ export class PostService {
   }
 
   /**
+   *  This function fetches the list of archived tasks present in a group
+   * @param groupId
+   * @returns
+   */
+   getArchivedTasks(groupId: string) {
+    return this._http.get(this.baseURL + `/archived`, {
+        params: {
+          groupId: groupId
+        }
+      }).toPromise();
+  }
+
+  /**
    * This function fetches the list of North Star Tasks present in a user´s groups
    * @param { groups } query
    */

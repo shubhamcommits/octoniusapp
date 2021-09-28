@@ -212,7 +212,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     } else {
       var post: any = event.previousContainer.data[event.previousIndex];
 
-      const shuttleIndex = post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupId);
+      const shuttleIndex = (post && post.task && post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupId) : -1;
       // Update the task column when changed with dropping events to reflect back in the task view modal
       if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
         post.task.shuttles[shuttleIndex]._shuttle_section = event.container.id;
@@ -256,7 +256,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   async addColumn(column: any) {
 
     // Find the index of the column to check if the same named column exist or not
-    let index = this.columns.findIndex((col: any) => (col._id || col) == column._id)
+    let index = (this.columns) ? this.columns.findIndex((col: any) => (col._id || col) == column._id) : -1;
 
     // If index is found, then throw error notification
     if (index != -1) {
@@ -336,7 +336,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   editColumn(oldCol: any, newColTitle: any) {
 
     // Find the index of the column to check if the same named column exist or not
-    let index = this.columns.findIndex((col: any) => col.title.toLowerCase() === newColTitle.toLowerCase())
+    let index = (this.columns) ? this.columns.findIndex((col: any) => col.title.toLowerCase() === newColTitle.toLowerCase()) : -1 ;
 
     // If index is found, then throw error notification
     if (index != -1) {
@@ -374,7 +374,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       .then((res) => {
         if (res.value) {
           // Find the index of the column to check if the same named column exist or not
-          let index = this.columns.findIndex((col: any) => col._id === column._id);
+          let index = (this.columns) ? this.columns.findIndex((col: any) => col._id === column._id) : -1;
           // Remove the column from the array
           this.columns.splice(index, 1)
 
@@ -392,7 +392,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   removeTask(column: any, post: any) {
 
     // Find the index of the tasks inside the column
-    let index = column.tasks.findIndex((task: any) => task._id == post._id)
+    let index = (column && column.tasks) ? column.tasks.findIndex((task: any) => task._id == post._id) : -1;
 
     // If the index is not found
     if (index != -1) {
@@ -400,6 +400,42 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       // Remove the tasks from the array
       column.tasks.splice(index, 1)
     }
+  }
+
+  /**
+   * This function is responsible for deleting a column from the board
+   * @param column
+   */
+  archiveColumn(column: any) {
+
+    // Open the Confirm Dialog to ask for permission
+    this.utilityService.getConfirmDialogAlert($localize`:@@groupKanbanBoards.areYouSure:Are you sure?`, $localize`:@@groupKanbanBoards.byDoingThisTasksWillBeArchived:By doing this all the tasks from this section will be archived!`)
+      .then((res) => {
+        if (res.value) {
+          // Find the index of the column to check if the same named column exist or not
+          let index = (this.columns) ? this.columns.findIndex((col: any) => col._id === column._id) : -1;
+
+          // Column Service Instance
+          let columnService = this.injector.get(ColumnService);
+
+          // Utility Service Instance
+          let utilityService = this.injector.get(UtilityService);
+
+          // Call the HTTP Service function
+          utilityService.asyncNotification($localize`:@@groupKanbanBoards.pleaseWaitWeArchivingSection:Please wait we are archiving your section...`, new Promise((resolve, reject) => {
+            columnService.archiveColumn(column._id)
+              .then((res) => {
+                // Remove the column from the array
+                this.columns.splice(index, 1);
+
+                resolve(utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.sectionArchived:Section Archived!`));
+              })
+              .catch((err) => {
+                reject(utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToArchiveSection:Unable to archived the section at the moment, please try again!`))
+              })
+          }))
+        }
+      })
   }
 
   /**
@@ -450,7 +486,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   onDeleteEvent(id) {
     this.columns.forEach((col, indexColumn) => {
       // Find the index of the tasks inside the column
-      const indexTask = col.tasks.findIndex((task: any) => task._id === id);
+      const indexTask = (col && col.tasks) ? col.tasks.findIndex((task: any) => task._id === id) : -1;
       if (indexTask !== -1) {
         this.columns[indexColumn].tasks.splice(indexTask, 1);
         return;
@@ -495,13 +531,13 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   updateTask(post: any) {
     this.columns.forEach((col, indexColumn) => {
       // Find the index of the tasks inside the column
-      const indexTask = col.tasks.findIndex((task: any) => task._id === post._id);
+      const indexTask = (col && col.tasks) ? col.tasks.findIndex((task: any) => task._id === post._id) : -1;
       if (indexTask != -1) {
         if ((post.task._column && col._id == (post.task._column._id || post.task._column)) || (post.task._shuttle_section && col._id == (post.task._shuttle_section._id || post.task._shuttle_section))) {
           // update the tasks from the array
           this.columns[indexColumn].tasks[indexTask] = post;
         } else {
-          let indexNewColumn = this.columns.findIndex((column: any) => (post.task._column && column._id == (post.task._column._id || post.task._column)) || (post.task._shuttle_section && column._id == (post.task._shuttle_section._id || post.task._shuttle_section)));
+          let indexNewColumn = (this.columns) ? this.columns.findIndex((column: any) => (post.task._column && column._id == (post.task._column._id || post.task._column)) || (post.task._shuttle_section && column._id == (post.task._shuttle_section._id || post.task._shuttle_section))) : -1;
           if (indexNewColumn != -1) {
             this.columns[indexNewColumn].tasks.unshift(post);
             this.columns[indexColumn].tasks.splice(indexTask, 1);
@@ -527,13 +563,18 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   moveTaskToColumnFront(columnEvent: any) {
 
     // Find the oldColumnIndex in which task existed
-    let oldColumnIndex = this.columns.findIndex((column: any) => column._id == columnEvent.oldColumn);
+    let oldColumnIndex = (this.columns) ? this.columns.findIndex((column: any) => column._id == columnEvent.oldColumn) : -1;
 
     // Find the newColumnIndex in which task is to be shifted
-    let newColumnIndex = this.columns.findIndex((column: any) => column._id == columnEvent.newColumn);
+    let newColumnIndex = (this.columns) ? this.columns.findIndex((column: any) => column._id == columnEvent.newColumn) : -1;
+
+    let index = (this.columns && oldColumnIndex >= 0 && this.columns[oldColumnIndex] && this.columns[oldColumnIndex]['tasks'])
+      ? this.columns[oldColumnIndex]['tasks'].findIndex((post: any) => post._id === columnEvent.post._id)
+      : -1;
 
     // Remove the task from the old Column
-    this.columns[oldColumnIndex]['tasks'].splice(this.columns[oldColumnIndex]['tasks'].findIndex((post: any) => post._id === columnEvent.post._id), 1);
+    this.columns[oldColumnIndex]['tasks'].splice(index, 1);
+
     // Find the highest due date on the tasks of the column
     if (this.columns[oldColumnIndex]['tasks'].length == 0) {
       this.columns[oldColumnIndex].real_due_date = null;
@@ -648,7 +689,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       hasBackdrop: true
     });
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      const index = this.columns.findIndex(col => col._id == column._id);
+      const index = (this.columns) ? this.columns.findIndex(col => col._id == column._id) : -1;
       if (index >= 0) {
         this.columns[index] = column;
       }
@@ -671,7 +712,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       hasBackdrop: true
     });
     const customFieldsUpdatedEventSubs = dialogRef.componentInstance.customFieldsUpdatedEvent.subscribe((data) => {
-      const index = this.columns.findIndex(col => col._id == data._id);
+      const index = (this.columns) ? this.columns.findIndex(col => col._id == data._id) : -1;
       if (index >= 0) {
         this.columns[index] = data;
       }

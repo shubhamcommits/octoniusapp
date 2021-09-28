@@ -1,0 +1,194 @@
+@import "src/assets/scss/variables";
+
+.has-gradient-text {
+    background: -webkit-linear-gradient(#13f7f4, #2af598);
+    -webkit-text-fill-color: transparent;
+}
+
+.board {
+    display: flex;
+    flex-direction: column;
+    // flex-grow: 1;
+
+    // Override Automatic Minimum Size
+    // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+    min-width: 0;
+    min-height: 0;
+
+    .board-wrapper {
+        margin-top: 2rem;
+
+        .board-columns {
+            display: flex;
+            flex-grow: 1;
+
+            .board-column {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 0;
+                flex-basis: 0; // to force the columns to all be the same size, regardless of content
+                width: 340px;
+                margin: 0px 15px;
+                padding: 0px;
+
+                &:not(:first-child) {
+                    margin-left: 0;
+                }
+
+                .column-title {
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 24px 0;
+                    width: 310px;
+                    cursor: move;
+                    p {
+                        font-size: 15px;
+                        font-weight: 400;
+                        text-transform: uppercase !important;
+                    }
+                }
+
+                .budget {
+                    cursor: pointer;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    margin-top: -16px;
+                }
+
+                .budget:hover {
+                    color: #fff;
+                    background: #4a90e2;
+                    border: 1px solid $border-color;
+                    border-radius: 4px;
+                }
+            }
+        }
+    }
+}
+
+.column-title.create-column:hover {
+    color: #005fd5;
+}
+
+.delete-column {
+    color: black;
+    float: right;
+    cursor: pointer;
+    :hover {
+        color: red;
+    }
+}
+
+.create-task {
+    cursor: pointer;
+}
+
+.dropdown-item {
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    span {
+        color: #ff6584;
+    }
+}
+
+.project-container {
+    width: 310px;
+    border-bottom: 1px solid $border-color;
+    margin-bottom: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.tasks-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    height: 70vh;
+    overflow-x: hidden;
+    width: 310px;
+}
+// to fix the annoying scroll bar but still being able to scroll vertically
+.tasks-container::-webkit-scrollbar {
+    width: 0 !important;
+}
+
+.cdk-drag-preview {
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    background: #00d2ff; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #3a7bd5, #00d2ff); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+        to right,
+        #3a7bd5,
+        #00d2ff
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    opacity: 0.9;
+
+    .tasks-container {
+        opacity: 0.2;
+    }
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.tasks-container.cdk-drop-list-dragging .task:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.due-date {
+    margin-left: auto;
+}
+
+.dropdown-toggle:after {
+    content: none;
+}
+
+.milestone {
+    background: #aadbc9;
+}
+
+section {
+    margin-bottom: 10px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    p {
+        margin-top: auto !important;
+    }
+}
+
+// img {
+//     cursor: pointer;
+//     transition: transform 0.2s ease;
+// }
+
+// img:hover {
+//     transform: scale(1.1);
+// }
+
+.dropdown-menu {
+    top: 20px !important;
+    transform: none !important;
+}
+
+.feed-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0;
+}
+
+.caption {
+    font-size: 12px;
+}
+.blue {
+    color: #005fd5;
+}
