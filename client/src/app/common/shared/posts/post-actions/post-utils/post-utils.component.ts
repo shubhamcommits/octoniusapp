@@ -103,7 +103,7 @@ export class PostUtilsComponent implements OnInit {
     selBox.style.top = '0';
     selBox.style.opacity = '0';
 
-    const group = (this.post._group._id) ? this.post._group._id : this.post._group;
+    const group = (this.groupData._id) ? this.groupData._id : this.groupData;
 
     let url = environment.clientUrl;
     if (environment.production) {
@@ -215,6 +215,6 @@ export class PostUtilsComponent implements OnInit {
   }
 
   isGroupManager() {
-    return (this.groupData && this.groupData._admins) ? this.groupData._admins.find(admin => admin._id === this.userData._id) : false;
+    return (this.groupData && this.groupData._admins) ? (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id) >= 0) : false;
   }
 }

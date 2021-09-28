@@ -14,7 +14,7 @@
   </div>
 
   <div class="line">
-    <span class="number text-warning mr-1">{{ statsInProgressTasks }}</span>
+    <span class="number text-warning mr-1">{{ statsInProgressTasks | number }}</span>
     <span i18n="@@cfStatisticsCard.opportunity">opportunity</span>
   </div>
 <hr>
@@ -24,7 +24,7 @@
   </div>
 
   <div class="line">
-    <span class="number text-done mr-1">{{ statsDoneTasks }}</span>
+    <span class="number text-done mr-1">{{ statsDoneTasks | number }}</span>
     <span i18n="@@cfStatisticsCard.total">total</span>
   </div>
 </div>

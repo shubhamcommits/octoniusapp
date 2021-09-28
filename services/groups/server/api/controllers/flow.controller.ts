@@ -52,10 +52,11 @@ export class FlowController {
                 _group: req.params.groupId
             })
             .sort('name')
-            .populate('steps.action._user', '_id profile_pic')
             .populate('steps.trigger._user', '_id profile_pic')
-            .populate('steps.action._section', '_id title')
             .populate('steps.trigger._section', '_id title')
+            .populate('steps.action._user', '_id profile_pic')
+            .populate('steps.action._section', '_id title')
+            .populate('steps.action._shuttle_group', '_id group_name group_avatar _shuttle_section created_date')
             .lean();
 
             // Check if group already exist with the same groupId
@@ -127,6 +128,7 @@ export class FlowController {
             })
             .populate('steps.action._section', '_id title')
             .populate('steps.trigger._section', '_id title')
+            .populate('steps.action._shuttle_group', '_id group_name group_avatar created_date')
             .lean();
 
             if (!flow) {
@@ -188,23 +190,24 @@ export class FlowController {
             
             // Find the Group based on the groupId
             flow = await Flow.findOneAndUpdate({
-                _id: flowId
-            }, {
-                $push: { "steps": step }
-            }, {
-                new: true
-            })
-            .populate({
-                path: 'steps.trigger._user',
-                select: 'first_name last_name profile_pic created_date'
-            })
-            .populate({
-                path: 'steps.action._user',
-                select: 'first_name last_name profile_pic created_date'
-            })
-            .populate('steps.action._section', '_id title')
-            .populate('steps.trigger._section', '_id title')
-            .lean();
+                    _id: flowId
+                }, {
+                    $push: { "steps": step }
+                }, {
+                    new: true
+                })
+                .populate({
+                    path: 'steps.trigger._user',
+                    select: 'first_name last_name profile_pic created_date'
+                })
+                .populate({
+                    path: 'steps.action._user',
+                    select: 'first_name last_name profile_pic created_date'
+                })
+                .populate('steps.action._section', '_id title')
+                .populate('steps.trigger._section', '_id title')
+                .populate('steps.action._shuttle_group', '_id group_name group_avatar created_date')
+                .lean();
 
             // Check if group already exist with the same groupId
             if (!flow) {

@@ -67,8 +67,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       this.flows = res['flows'];
     });
 
-    this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin' || this.userData?.role == 'manager'
-                        || (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id)>=0);
+    this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin'
+                        || this.userData?.role == 'manager' || this.isGroupManager();
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -188,7 +188,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;
         task.sort((t1, t2) => {
-          return ((t1?.task?.idea?.positive_votes?.length || 0 - t1?.task?.idea?.negative_votes?.length || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes || 0)) ? 1 : 0;
+          return ((t1?.task?.idea?.positive_votes?.length || 0 - t1?.task?.idea?.negative_votes?.length || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes || 0)) ? -1 : 1;
         });
         this.columns[index].tasks = task;
       }
@@ -212,15 +212,16 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     } else {
       var post: any = event.previousContainer.data[event.previousIndex];
 
+      const shuttleIndex = post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupId);
       // Update the task column when changed with dropping events to reflect back in the task view modal
-      if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == this.groupId) {
-        post['task']._shuttle_section = event.container.id;
+      if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
+        post.task.shuttles[shuttleIndex]._shuttle_section = event.container.id;
       } else {
-        post['task']._column = event.container.id;
+        post.task._column = event.container.id;
       }
 
       // Call move task to a new column
-      this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id);
+      this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id, shuttleIndex);
     }
   }
 
@@ -417,15 +418,15 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
    * @param task
    * @param columnId
    */
-  async moveTaskToNewColumn(task: any, oldColumnId: string, columnId: string) {
+  async moveTaskToNewColumn(task: any, oldColumnId: string, columnId: string, shuttleIndex: number) {
 
-    if (task?.task?.shuttle_type && (task?.task?._shuttle_group?._id || task?.task?._shuttle_group) == this.groupId) {
+    if (task?.task?.shuttle_type && shuttleIndex >= 0) {
       await this.publicFunctions.changeTaskShuttleSection(task?._id, this.groupId, columnId);
     } else {
       await this.publicFunctions.changeTaskColumn(task._id, columnId, this.userData._id, this.groupId);
     }
 
-    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, task, this.groupId);
+    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, task, this.groupId, false, shuttleIndex);
 
     // Prepare Event
     let columnEvent = {
@@ -689,10 +690,14 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   calculateCFStatistics(cfName: string, tasks: any) {
     let calculation = 0;
     tasks.forEach(task => {
-      calculation += (task.task.custom_fields[cfName] && !isNaN(task.task.custom_fields[cfName]))
+      calculation += (task.task.custom_fields && task.task.custom_fields[cfName] && !isNaN(task.task.custom_fields[cfName]))
         ? +task.task.custom_fields[cfName]
         : 0;
     });
     return calculation;
+  }
+
+  isGroupManager() {
+    return (this.groupData && this.groupData._admins) ? (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id) >= 0) : false;
   }
 }

@@ -53,7 +53,7 @@ const FlowSchema = new Schema({
         action: [{
             name: {
                 type: String,
-                enum: ['Assign to', 'Change Status to', 'Custom Field', 'Move to']
+                enum: ['Assign to', 'Change Status to', 'Custom Field', 'Move to', 'Shuttle task']
             },
             _user: [{
                 type: Schema.Types.ObjectId,
@@ -76,6 +76,10 @@ const FlowSchema = new Schema({
                     type: String,
                     default: ''
                 }
+            },
+            _shuttle_group: {
+                type: Schema.Types.ObjectId,
+                ref: 'Group'
             }
         }]
     }]

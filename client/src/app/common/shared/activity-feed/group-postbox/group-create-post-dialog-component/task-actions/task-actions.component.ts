@@ -2,6 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Injector, Input, OnDestroy, OnC
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
+import moment from 'moment';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
@@ -111,12 +112,17 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
     if (this.postData.type === 'task' && this.groupData && this.groupData?.shuttle_type) {
       const groupId = (this.groupData?._id == this.postData?.task?._shuttle_group) ? null : this.groupData?._id;
+
       // Fetches shuttle groups from the server
       this.shuttleGroups = await this.publicFunctions.getShuttleGroups(this.groupData?._workspace, groupId)
         .catch(() => {
           // If the function breaks, then catch the error and console to the application
           this.publicFunctions.sendError(new Error($localize`:@@taskActions.unableToConnectToServer:Unable to connect to the server, please try again later!`));
         });
+      this.shuttleGroups = await this.shuttleGroups.filter(group => {
+        return ((!this.postData?.task?.shuttles || this.postData?.task?.shuttles.findIndex(s => (s?._shuttle_group?._id || s?._shuttle_group) == (group?._id || group)) < 0)
+          && (this.postData?._group?._id || this.postData?._group) != (group?._id || group))
+      });
     }
 
     this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
@@ -549,18 +555,25 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
     this.transformIntoMilestoneEmitter.emit(this.isMilestone);
   }
 
-  async shuttleTask(groupId) {
+  showShuttle() {
+    let lastShuttle = (this.postData?.task?.shuttles) ? this.postData?.task?.shuttles[0] : null;
+    return this.isShuttleTasksModuleAvailable && this.groupData?.shuttle_type && (!this.postData?.task?.shuttle_type
+      || (lastShuttle && (lastShuttle?._shuttle_group?._id || lastShuttle?._shuttle_group) == this.groupData?._id));
+  }
+
+  async shuttleTask(group: any) {
     this.utilityService.asyncNotification($localize`:@@taskActions.pleaseWaitWeAreSavingTask:Please wait we are saving the task...`, new Promise((resolve, reject) => {
-      this.postService.selectShuttleGroup(this.postData?._id, groupId)
+      this.postService.selectShuttleGroup(this.postData?._id, group._id)
         .then(async (res) => {
           this.postData = res['post'];
+          const index = this.postData?.task?.shuttles?.findIndex(s => (s?._shuttle_group?._id || s?._shuttle_group) == group._id);
+          const shuttle = this.postData?.task?.shuttles[index];
           this.shuttleGroupEmitter.emit({
-              shuttle_group: (this.postData?.task?._shuttle_group?._id || this.postData?.task?._shuttle_group),
-              shuttle_section: this.postData?.task?._shuttle_section,
-              shuttle_type: this.postData?.task?.shuttle_type,
-              shuttle_status: this.postData?.task?.shuttle_status
+              _shuttle_group: group,
+              _shuttle_section: shuttle._shuttle_section,
+              shuttle_status: 'to do',
+              shuttled_at: moment().format()
             });
-          this.postData.task._shuttle_group = this.postData?.task?._shuttle_group?._id;
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@taskActions.taskSave:👍 Task saved!`));
         })
         .catch((error) => {

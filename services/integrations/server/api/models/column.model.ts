@@ -64,7 +64,11 @@ const ColumnSchema = new Schema({
     custom_fields_to_show_kanban: [{
         type: String,
         required: false
-    }]
+    }],
+    archived: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const Column = mongoose.model('Column', ColumnSchema);

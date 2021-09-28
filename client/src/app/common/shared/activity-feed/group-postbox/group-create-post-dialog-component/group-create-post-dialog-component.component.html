@@ -78,7 +78,7 @@
                 Save
             </button>
 
-            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!shuttleGroup || !postData?.task?.shuttle_type || groupData?._id != shuttleGroup?._id)"
+            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id)"
               class="btn float-left btn-warning btn-md"
               (click)="prepareToAddSubtasks()"
               i18n="@@groupCreatePostDialog.addSubtask">
@@ -86,7 +86,7 @@
             </button>
         </div>
 
-        <div class="content-box" *ngIf="showSubtasks && (!shuttleGroup || !postData?.task?.shuttle_type || groupData?._id != shuttleGroup?._id)">
+        <div class="content-box" *ngIf="showSubtasks && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id)">
           <app-subtasks
             [subtasks]="subtasks"
             [groupData]="groupData"
@@ -113,7 +113,7 @@
     <!-- Top Right Section starts -->
     <div class="post-properties">
         <!-- Parent Task starts -->
-        <div *ngIf="postData?.task?._parent_task && postData?.type === 'task' && groupData?._id != shuttleGroup?._id" class="content-box">
+        <div *ngIf="postData?.task?._parent_task && postData?.type === 'task' && groupData?._id == postData?._group?._id" class="content-box">
           <p class="box-title"i18n="@@groupCreatePostDialog.parentTask"> Parent task</p>
 
           <div class="parent-task">
@@ -146,7 +146,7 @@
 
             <!-- Change task status starts -->
             <app-task-status class="ml-2"
-                *ngIf="groupData?._id != shuttleGroup?._id"
+                *ngIf="groupData?._id == postData?._group?._id"
                 [postId]="postData?._id"
                 [groupId]="postData?._group?._id || postData?._group"
                 [userId]="userData?._id"
@@ -157,11 +157,11 @@
             </app-task-status>
 
             <app-task-status class="ml-2"
-                *ngIf="groupData?._id == shuttleGroup?._id"
+                *ngIf="groupData?._id != postData?._group?._id"
                 [postId]="postData?._id"
-                [groupId]="postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group"
+                [groupId]="shuttle?._shuttle_group?._id || shuttle?._shuttle_group"
                 [userId]="userData?._id"
-                [status]="postData?.task?.shuttle_status"
+                [status]="shuttle?.shuttle_status"
                 [disabled]="false"
                 [shuttleType]="true"
                 (status)="changeShuttleTaskStatus($event)">
@@ -169,13 +169,15 @@
             <!-- Change task status ends -->
             </div>
 
-          <div class="shuttle-box" *ngIf="columns || shuttleColumns">
-            <p class="mt-1" *ngIf="(columns && (postData?.task?._shuttle_group != groupId && !postData?.task?._parent_task)) || (shuttleColumns && postData?.task?._shuttle_group == groupId)" style="margin-top: 18px; width:70px" i18n="@@groupCreatePostDialog.section">Section</p>
+          <div class="shuttle-box" *ngIf="columns">
+            <p class="mt-1" *ngIf="(((shuttle?._shuttle_group?._id || shuttle?._shuttle_group) != groupId) && !postData?.task?._parent_task) || ((shuttle?._shuttle_group?._id || shuttle?._shuttle_group) == groupId)"
+                style="margin-top: 18px; width:70px" i18n="@@groupCreatePostDialog.section">
+              Section
+            </p>
 
-            <!-- (!postData?.task?._parent_task || postData?.task?._shuttle_group == groupId) -->
             <!-- Change task column starts -->
             <app-change-column class="ml-2"
-                *ngIf="columns && (postData?.task?._shuttle_group != groupId && !postData?.task?._parent_task)"
+                *ngIf="!postData?.task?.shuttle_type || (groupData?._id == postData?._group?._id && !postData?.task?._parent_task)"
                 [sectionId]="(postData?.task?._column?._id || postData?.task?._column)"
                 [columns]="columns"
                 [disabled]="false"
@@ -183,107 +185,43 @@
             </app-change-column>
 
             <app-change-column class="ml-2"
-                *ngIf="shuttleColumns && postData?.task?._shuttle_group == groupId"
-                [sectionId]="(postData?.task?._shuttle_section?._id || postData?.task?._shuttle_section)"
-                [columns]="shuttleColumns"
+                *ngIf="(postData?.task?.shuttle_type && groupData?._id != postData?._group?._id)"
+                [sectionId]="(shuttle?._shuttle_section?._id || shuttle?._shuttle_section)"
+                [columns]="columns"
                 [disabled]="false"
                 (moveTask)="moveShuttleTaskToSection($event)">
             </app-change-column>
             <!-- Change task column ends -->
           </div>
 
-            <p *ngIf="groupData && groupData.enabled_rights" class="box-title" style="margin-top: 18px;" i18n="@@groupCreatePostDialog.bar">BAR</p>
-            <div *ngIf="groupData && groupData.enabled_rights" class="ml-1">
-                <div (click)="removeBarTag(i, barTag)" *ngFor="let barTag of barTags; let i = index">
-                  <div>
-                    <span class="tag"> {{ barTag }}</span> <i class="material-icons" style="color: red;">clear</i>
-                  </div>
+          <p *ngIf="groupData && groupData.enabled_rights" class="box-title" style="margin-top: 18px;" i18n="@@groupCreatePostDialog.bar">BAR</p>
+          <div *ngIf="groupData && groupData.enabled_rights" class="ml-1">
+              <div (click)="removeBarTag(i, barTag)" *ngFor="let barTag of barTags; let i = index">
+                <div>
+                  <span class="tag"> {{ barTag }}</span> <i class="material-icons" style="color: red;">clear</i>
                 </div>
+              </div>
 
-                <app-component-search-input-box
-                    *ngIf="groupData && checkDataExist(groupData)"
-                    [placeholder]="'Add bar tag'"
-                    [groupData] = "groupData"
-                    [type]="'barTag'"
-                    [groupId]="groupId"
-                    (barTag)="addNewBarTag($event)">
-                </app-component-search-input-box>
-            </div>
-            <br *ngIf="groupData && groupData.enabled_rights" />
-
-
+              <app-component-search-input-box
+                  *ngIf="groupData && checkDataExist(groupData)"
+                  [placeholder]="'Add bar tag'"
+                  [groupData] = "groupData"
+                  [type]="'barTag'"
+                  [groupId]="groupId"
+                  (barTag)="addNewBarTag($event)">
+              </app-component-search-input-box>
+          </div>
+          <br *ngIf="groupData && groupData.enabled_rights" />
         </div>
         <!-- Status ends -->
 
-        <!-- Shuttle Status starts -->
-        <div class="content-box" *ngIf="isShuttleTasksModuleAvailable && postData?.type === 'task' && postData?.task?.shuttle_type">
-          <p class="box-title"> <img src="assets/images/icon-task-shuttle.svg" style="width: 32px"i18n="@@groupCreatePostDialog.taskShuttle">  Task Shuttle</p>
-
-          <div class="shuttle-box mt-2">
-            <p *ngIf="groupData?._id == shuttleGroup?._id" style="margin-top: 7px;"><span i18n="@@groupCreatePostDialog.from"> From</span>:&nbsp;&nbsp;<span class="text-primary">{{ postData?._group?.group_name }}</span></p>
-            <p *ngIf="groupData?._id != shuttleGroup?._id" style="margin-top: 7px;"><span i18n="@@groupCreatePostDialog.to"> To</span>:&nbsp;&nbsp;<span class="text-primary">{{ shuttleGroup?.group_name }}</span></p>
-
-            <app-secured-image  *ngIf="groupData?._id == shuttleGroup?._id"
-              [imgURL]="postData?._group?.group_avatar"
-              [service]="'group'"
-              [styleClass]="'feed-avatar-small'"></app-secured-image>
-            <app-secured-image  *ngIf="groupData?._id != shuttleGroup?._id"
-              [imgURL]="shuttleGroup?.group_avatar"
-              [service]="'group'"
-              [styleClass]="'feed-avatar-small'"></app-secured-image>
-
-          </div>
-
-          <hr>
-          <!-- Change shuttle task status starts -->
-          <div class="shuttle-box mb-2">
-            <p class=" mt-1" style="width:70px" i18n="@@groupCreatePostDialog.status">Status</p>
-            <app-task-status class="ml-2"
-                *ngIf="groupData?._id == shuttleGroup?._id"
-                [postId]="postData?._id"
-                [groupId]="postData?._group?._id || postData?._group"
-                [userId]="userData?._id"
-                [status]="postData?.task?.status"
-                [disabled]="true"
-                [shuttleType]="false">
-            </app-task-status>
-
-            <app-task-status
-                class="ml-2"
-                *ngIf="groupData?._id != shuttleGroup?._id"
-                [postId]="postData?._id"
-                [groupId]="postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group"
-                [userId]="userData?._id"
-                [status]="postData?.task?.shuttle_status"
-                [disabled]="true"
-                [shuttleType]="true">
-            </app-task-status>
-          </div>
-          <!-- Change shuttle task status ends -->
-
-          <div class="shuttle-box" *ngIf="columns || shuttleColumns">
-            <p *ngIf="(postData?.task?._shuttle_group != groupId) || (!postData?.task?._parent_task && postData?.task?._shuttle_group == groupId)" class="mt-1" style="width:70px" i18n="@@groupCreatePostDialog.section">Section</p>
-            <!-- Change task column starts -->
-            <app-change-column class="ml-2"
-                *ngIf="!postData?.task?._parent_task && postData?.task?._shuttle_group == groupId"
-                [sectionId]="(postData?.task?._column?._id || postData?.task?._column)"
-                [columns]="columns"
-                [disabled]="true">
-            </app-change-column>
-
-            <!-- (!postData?.task?._parent_task || postData?.task?._shuttle_group == groupId) -->
-
-            <app-change-column class="ml-2"
-                *ngIf="postData?.task?._shuttle_group != groupId"
-                [sectionId]="(postData?.task?._shuttle_section?._id || postData?.task?._shuttle_section)"
-                [columns]="shuttleColumns"
-                [disabled]="true">
-            </app-change-column>
-          </div>
-
-          <!-- Change task column ends -->
-        </div>
-        <!-- Shuttle Status ends -->
+        <!-- Shuttle Task starts -->
+        <app-shuttle-task *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type && postData?.task?.shuttle_type"
+          [postData]="postData"
+          [groupData]="groupData"
+          [userData]="userData"
+          [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"></app-shuttle-task>
+        <!-- Shuttle Task ends -->
 
         <!-- Dates starts -->
         <div class="content-box" *ngIf="postData?.type === 'task' || postData.type === 'event'">

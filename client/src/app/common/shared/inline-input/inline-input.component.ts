@@ -6,7 +6,9 @@ import { Component,
   forwardRef,
   OnChanges,
   EventEmitter,
-  Output} from '@angular/core';
+  Output,
+  OnInit,
+  Injector} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -16,6 +18,7 @@ import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/mat
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment} from 'moment';
+import { PublicFunctions } from 'modules/public.functions';
 
 const moment = _rollupMoment || _moment;
 
@@ -51,7 +54,7 @@ export const MY_FORMATS = {
   ],
   styleUrls: ['./inline-input.component.scss']
 })
-export class InlineInputComponent implements ControlValueAccessor, OnChanges {
+export class InlineInputComponent implements ControlValueAccessor, OnChanges, OnInit {
 
   @ViewChild('inlineEditControl', {static: true}) inlineEditControl: ElementRef; // input DOM element
 
@@ -66,6 +69,9 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
   @Input() customFieldName='';
   @Input() customFieldInputType = false;
 
+  // Post Event Emitter - Emits the post to the other components
+  @Output() post = new EventEmitter();
+
   customFieldValue = '';
 
   private _value = ''; // Private variable for input value
@@ -79,8 +85,10 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
   public onTouched: any = Function.prototype; // Trascend the onTouch event
   public onFocusout: any = Function.prototype; // Trascend the onTouch event
 
-  // Post Event Emitter - Emits the post to the other components
-  @Output() post = new EventEmitter();
+  isShuttleTasksModuleAvailable = false;
+
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
 
   // Control Value Accessors for ngModel
   get value(): any {
@@ -98,7 +106,8 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
     element: ElementRef,
     private renderer: Renderer2,
     public utilityService: UtilityService,
-    private postService: PostService
+    private postService: PostService,
+    private injector: Injector
     ) {
   }
 
@@ -115,6 +124,10 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
     }
 
     this.dateStyleClass = 'input-date ' +  this.styleClass;
+  }
+
+  async ngOnInit() {
+    this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
   }
 
   // Required for ControlValueAccessor interface
@@ -193,7 +206,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges {
     this.domainObject.task.custom_fields[this.customFieldName] = this.customFieldValue;
 
     this.utilityService.asyncNotification($localize`:@@inlineInput.pleaseWaitUpdatingContent:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.saveCustomField(this.domainObject._id, this.customFieldName, this.customFieldValue, this.groupId)
+      this.postService.saveCustomField(this.domainObject._id, this.customFieldName, this.customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable)
         .then((res) => {
           // Emit the post to other components
           this.post.emit({post: res['post'], cfTrigger: {name: this.customFieldName, value: this.customFieldValue}});

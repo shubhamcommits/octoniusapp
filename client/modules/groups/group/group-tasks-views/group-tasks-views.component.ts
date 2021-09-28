@@ -117,7 +117,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // Fetch all the tasks posts from the server
     this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
 
-    if (this.groupData.shuttle_type) {
+    if (this.groupData.shuttle_type && this.isShuttleTasksModuleAvailable) {
       const shuttleTasks = await this.publicFunctions.getShuttleTasks(this.groupId);
       this.tasks = this.tasks.concat(shuttleTasks);
     }
@@ -208,10 +208,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
       columns.forEach(async (column: any) => {
         // Feed the tasks into that column which has matching property _column with the column title
         column.tasks = await tasks
-          .filter((post: any) => ((post.task.hasOwnProperty('_column') === true
-              && post.task._column
-              && (post.task._column._id || post.task._column) == column['_id'])
-            || post.task._shuttle_section == column['_id'])
+          .filter((post: any) => ((post.task._column && (post.task._column._id || post.task._column) == column._id)
+            || (post.task.shuttle_type && post.task.shuttles
+                && post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_section._id || shuttle._shuttle_section) == column._id) >= 0))
           )
           .sort(function(t1, t2) {
             if (t1.task.status != t2.task.status) {

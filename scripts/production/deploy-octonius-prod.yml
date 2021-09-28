@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   mongo-setup:
-    container_name: prod-mongo-setup
+    #container_name: prod-mongo-setup
     image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
     restart: on-failure
     networks:
@@ -42,7 +42,7 @@ services:
           memory: 128M
     networks:
       - octonius_production
-  
+
   mongo-1-mongo:
     hostname: mongo-1-mongo
     image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
@@ -107,6 +107,8 @@ services:
       - PROXY_PORT=${PROXY_PORT}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -140,6 +142,8 @@ services:
       - PROXY_PORT=${PROXY_PORT}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -173,6 +177,8 @@ services:
       - PROXY_PORT=${PROXY_PORT}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -206,6 +212,8 @@ services:
       - PROXY_PORT=${PROXY_PORT}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -234,6 +242,8 @@ services:
       - DOMAIN=${DOMAIN}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -261,6 +271,8 @@ services:
       - DOMAIN=${DOMAIN}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -289,6 +301,8 @@ services:
       - DOMAIN=${DOMAIN}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -316,6 +330,8 @@ services:
       - DOMAIN=${DOMAIN}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -344,6 +360,8 @@ services:
       - DOMAIN=${DOMAIN}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -375,6 +393,8 @@ services:
       - SLACK_BOT_ACCESS_TOKEN=${SLACK_BOT_ACCESS_TOKEN}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -403,6 +423,8 @@ services:
       - DOMAIN=${DOMAIN}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -422,6 +444,8 @@ services:
       - mgmt_portal_domain=${mgmt_portal_domain}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -436,6 +460,8 @@ services:
       - ${APPLICATION_PORT}:${NGINX_PORT}
     deploy:
       replicas: ${REPLICAS}
+      placement:
+        constraints: [node.role == manager]
       update_config:
         parallelism: 1
         delay: 10s
@@ -517,3 +543,5 @@ volumes:
 
 networks:
   octonius_production:
+    driver: overlay
+    internal: true

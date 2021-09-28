@@ -80,7 +80,7 @@ export class NewTaskComponent implements OnInit {
   /**
    * This function creates a new post in the activity
    */
-  createPost() {
+  async createPost() {
 
     // Prepare Post Data
     var postData: any;
@@ -169,6 +169,7 @@ export class NewTaskComponent implements OnInit {
 
     // Append Post Data
     formData.append('post', JSON.stringify(postData))
+    formData.append('isShuttleTasksModuleAvailable', (await this.publicFunctions.isShuttleTasksModuleAvailable()).toString());
 
     // Call the Helper Function
     this.onCreatePost(formData, this.post)

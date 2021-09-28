@@ -1978,7 +1978,7 @@ export class GroupController {
                 $and: [
                     { type: 'task' },
                     { 'task.shuttle_type': true },
-                    { 'task._shuttle_group': groupId }
+                    { 'task.shuttles._shuttle_group': groupId }
                 ]
             })
             .populate({ path: '_group', select: 'group_name group_avatar workspace_name' })
@@ -1986,6 +1986,8 @@ export class GroupController {
             .populate({ path: '_assigned_to', select: 'first_name last_name profile_pic role email' })
             .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
             .populate({ path: '_followers', select: 'first_name last_name profile_pic role email' })
+            .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
+            .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
             .lean() || [];
 
             // Send the status 200 response

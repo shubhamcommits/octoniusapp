@@ -246,9 +246,27 @@
                     </div>
                   </div>
                 </div>
+
+                <div *ngIf="isShuttleTasksModuleAvailable && action.name === 'Shuttle task'">
+                  <div *ngIf="action._shuttle_group">
+                    {{ action?._shuttle_group?.group_name?.toUpperCase() }}
+                  </div>
+
+                  <button *ngIf="!action._shuttle_group" mat-menu-item [matMenuTriggerFor]="shuttleActionMenu"
+                      i18n="@@groupAutomationFlowDetailsDialog.selectShuttleGroup">
+                    Select Shuttle Group
+                  </button>
+                  <mat-menu #shuttleActionMenu="matMenu">
+                    <ng-container>
+                      <button mat-menu-item *ngFor="let group of shuttleGroups" (click)="actionSelected('shuttle', group, stepIndex, actionIndex)">{{ group.group_name.toUpperCase() }}</button>
+                    </ng-container>
+                  </mat-menu>
+                </div>
+
               </div>
             </div>
-           <div class="add-step"> <i class="material-icons-outlined" *ngIf="!newAction" (click)="newAction = !newAction" style="cursor: pointer;">add</i></div>
+
+            <div class="add-step"> <i class="material-icons-outlined" *ngIf="!newAction" (click)="newAction = !newAction" style="cursor: pointer;">add</i></div>
           </div>
 
           <div class="step-element" *ngIf="!step.action || newAction">

@@ -140,7 +140,7 @@
                               <span i18n="@@groupFiles.copyLink">Copy Link</span>
                             </a>
 
-                            <div *ngIf="file?.type == 'folio'">
+                            <div *ngIf="file?.type == 'folio' || file?.type == 'flamingo'">
                               <!--
                               <a mat-menu-item [matMenuTriggerFor]="transferMenu" (mouseover)="saveTransferAction('copy')">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
@@ -171,6 +171,11 @@
                                 </ng-container>
                               </mat-menu>
                             </div>
+
+                            <a mat-menu-item *ngIf="file?.type == 'flamingo'" (click)="copyFlamingo(file?._id)">
+                              <img src="assets/images/icon_flamingo.svg" onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: top;">
+                              <span i18n="@@groupFiles.copyFlamingo">Copy Flamingo</span>
+                            </a>
 
                             <a *ngIf="file?.type === 'file'" mat-menu-item (click)="openViewFileDialog(filesBaseUrl + '/' + file?.modified_name)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>

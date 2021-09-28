@@ -895,10 +895,10 @@ export class PublicFunctions {
         let utilityService = this.injector.get(UtilityService)
 
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitWeChangeTaskAssignee:Please wait we are changing the task assignee...`,
-            new Promise((resolve, reject) => {
-
+            new Promise(async (resolve, reject) => {
+                const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
                 // Call HTTP Request to change the assignee
-                postService.changeTaskAssignee(postId, assigneeId)
+                postService.changeTaskAssignee(postId, assigneeId, isShuttleTasksModuleAvailable)
                     .then((res) => {
                         resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.taskAssigned:Task assigned to ${res['post']['task']['_assigned_to']['first_name']}`))
                     })
@@ -942,13 +942,15 @@ export class PublicFunctions {
      * @param postId
      * @param status
      */
-    changeTaskStatus(postId: string, status: string, userId: string, groupId: string) {
+    async changeTaskStatus(postId: string, status: string, userId: string, groupId: string) {
 
         // Post Service Instance
         let postService = this.injector.get(PostService)
 
+        const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
+
         // Call HTTP Request to change the request
-        return postService.changeTaskStatus(postId, status, userId, groupId);
+        return postService.changeTaskStatus(postId, status, userId, groupId, isShuttleTasksModuleAvailable);
     }
 
     /**
@@ -965,10 +967,10 @@ export class PublicFunctions {
         let utilityService = this.injector.get(UtilityService)
 
         utilityService.asyncNotification($localize`:@@publicFunctions.pleaseWaitWeAreMovingTaskToSection:Please wait we are moving the task to a new section...`,
-            new Promise((resolve, reject) => {
-
+            new Promise(async (resolve, reject) => {
+                const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
                 // Call HTTP Request to change the request
-                postService.changeTaskColumn(postId, columnId, userId, groupId)
+                postService.changeTaskColumn(postId, columnId, userId, groupId, isShuttleTasksModuleAvailable)
                     .then((res) => {
                         resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.tasksMoved:Task moved`));
                     })
@@ -984,13 +986,15 @@ export class PublicFunctions {
      * @param postId
      * @param status
      */
-    changeTaskShuttleStatus(postId: string, groupId: string, status: string) {
+    async changeTaskShuttleStatus(postId: string, groupId: string, status: string) {
 
         // Post Service Instance
-        let postService = this.injector.get(PostService)
+        let postService = this.injector.get(PostService);
+
+        const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
 
         // Call HTTP Request to change the request
-        return postService.selectShuttleStatus(postId, groupId, status);
+        return postService.selectShuttleStatus(postId, groupId, status, isShuttleTasksModuleAvailable);
     }
 
     /**
@@ -998,16 +1002,18 @@ export class PublicFunctions {
      * @param postId
      * @param title
      */
-    changeTaskShuttleSection(postId: string, groupId: string, shuttleSectionId: string) {
+    async changeTaskShuttleSection(postId: string, groupId: string, shuttleSectionId: string) {
 
         // Post Service Instance
-        let postService = this.injector.get(PostService)
+        let postService = this.injector.get(PostService);
 
         // Utility Service Instance
-        let utilityService = this.injector.get(UtilityService)
+        let utilityService = this.injector.get(UtilityService);
+
+        const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
 
         utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
-          await postService.selectShuttleSection(postId, groupId, shuttleSectionId)
+          await postService.selectShuttleSection(postId, groupId, shuttleSectionId, isShuttleTasksModuleAvailable)
             .then(async (res) => {
 
               resolve(utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
@@ -1244,32 +1250,28 @@ export class PublicFunctions {
         this.subSink.unsubscribe();
     }
 
-    executedAutomationFlowsPropertiesFront(flows: any[], post: any, groupId: string, isCreationTaskTrigger?: boolean) {
+    executedAutomationFlowsPropertiesFront(flows: any[], post: any, groupId: string, isCreationTaskTrigger?: boolean, shuttleIndex?: number) {
         if (flows && flows.length > 0) {
           let doTrigger = true;
-          let loopCounter = 1;
-          while (doTrigger && loopCounter <= 3) {
             flows.forEach((flow, flowIndex) => {
               const steps = flow['steps'];
               if (steps && steps.length > 0) {
                 steps.forEach(async (step, stepIndex) => {
-                  doTrigger = this.doesTriggersMatch(step.trigger, post, groupId, isCreationTaskTrigger || false)
+                  doTrigger = this.doesTriggersMatch(step.trigger, post, groupId, isCreationTaskTrigger || false, shuttleIndex)
                   if (doTrigger) {
                     const childStatusTriggerIndex = step.trigger.findIndex(trigger => { return trigger.name.toLowerCase() == 'subtasks status'; });
-                    post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, childStatusTriggerIndex != -1, groupId);
+                    post = await this.executeActionFlow(flows, flowIndex, stepIndex, post, childStatusTriggerIndex != -1, groupId, shuttleIndex);
                   }
                 });
               } else {
                 doTrigger = false;
               }
-              loopCounter++;
             });
-          }
         }
         return post;
     }
 
-    doesTriggersMatch(triggers: any[], post: any, groupId: string, isCreationTaskTrigger: boolean) {
+    doesTriggersMatch(triggers: any[], post: any, groupId: string, isCreationTaskTrigger: boolean, shuttleIndex: number) {
         let retValue = true;
         if (triggers && triggers.length > 0) {
             triggers.forEach(trigger => {
@@ -1317,14 +1319,14 @@ export class PublicFunctions {
                             break;
                         case 'Status is':
                             if (post.task._parent_task) {
-                                if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId) {
-                                    retValue = trigger.status.toUpperCase() == post.task.shuttle_status.toUpperCase();
+                                if (post?.task?.shuttle_type && shuttleIndex >= 0) {
+                                    retValue = trigger.status.toUpperCase() == post.task.shuttles[shuttleIndex].shuttle_status.toUpperCase();
                                 } else {
                                     retValue = false;
                                 }
                             } else {
-                                if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId) {
-                                    retValue = trigger.status.toUpperCase() == post.task.shuttle_status.toUpperCase();
+                                if (post?.task?.shuttle_type && shuttleIndex >= 0) {
+                                    retValue = trigger.status.toUpperCase() == post.task.shuttles[shuttleIndex].shuttle_status.toUpperCase();
                                 } else {
                                     retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
                                 }
@@ -1361,8 +1363,11 @@ export class PublicFunctions {
         return retValue;
     }
 
-    executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, childTasksUpdated: boolean, groupId: string) {
-        if (!childTasksUpdated) {
+    async executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, childTasksUpdated: boolean, groupId: string, shuttleIndex: number) {
+        const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
+        const shuttleActinIndex = flows[flowIndex].steps[stepIndex].action.findIndex(action => action.name == 'Shuttle task');
+        const executeShuttleAction = (shuttleActinIndex < 0) || isShuttleTasksModuleAvailable;
+        if (!childTasksUpdated && executeShuttleAction) {
             flows[flowIndex].steps[stepIndex].action.forEach(async action => {
                 switch (action.name) {
                     case 'Assign to':
@@ -1378,12 +1383,12 @@ export class PublicFunctions {
                         return post;
                     case 'Move to':
                         if (post.task._parent_task) {
-                          if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId) {
-                            post.task._shuttle_section = action._section;
+                          if (post?.task?.shuttle_type && shuttleIndex >= 0) {
+                            post.task.shuttles[shuttleIndex]._shuttle_section = action._section;
                           }
                         } else {
-                          if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId) {
-                            post.task._shuttle_section = action._section;
+                          if (post?.task?.shuttle_type && shuttleIndex >= 0) {
+                            post.task.shuttles[shuttleIndex]._shuttle_section = action._section;
                           } else {
                             if (!post.task._parent_task) {
                               post.task._column = action._section;
@@ -1392,12 +1397,26 @@ export class PublicFunctions {
                         }
                         return post;
                     case 'Change Status to':
-                        if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId) {
-                          post.task.shuttle_status = action.status;
+                        if (post?.task?.shuttle_type && shuttleIndex >= 0) {
+                          post.task.shuttles[shuttleIndex].shuttle_status = action.status;
                         } else {
                           post.task.status = action.status;
                         }
                         return post;
+                    case 'Shuttle task':
+                        if (!post?.task?.shuttle_type && shuttleIndex < 0) {
+                          post.task.shuttle_type = true;
+                          if (!post.task.shuttles) {
+                            post.task.shuttles = [];
+                          }
+                          post.task.shuttles.unshift({
+                            _shuttle_group: action?._shuttle_group,
+                            _shuttle_section: action?._shuttle_group?._shuttle_section,
+                            shuttle_status: 'to do',
+                            shuttled_at: moment().format()
+                          });
+                        }
+                        break;
                     default:
                         break;
                 }

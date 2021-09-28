@@ -177,7 +177,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       });
     } else if ((this.sortingBit == 'ideas') && this.tasks) {
       this.tasks.sort((t1, t2) => {
-        return ((t1?.task?.idea?.positive_votes?.length || 0 - t1?.task?.idea?.negative_votes || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes?.length || 0)) ? 1 : 0;
+        return ((t1?.task?.idea?.positive_votes?.length || 0 - t1?.task?.idea?.negative_votes || 0) > (t2?.task?.idea?.positive_votes || 0 - t2?.task?.idea?.negative_votes?.length || 0)) ? -1 : 1;
       });
     } else if ((this.sortingBit == 'reverse' || this.sortingBit == 'inverse') && this.tasks) {
       this.tasks.reverse();
@@ -354,9 +354,11 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     this.taskClonnedEvent.emit(data);
   }
 
-  getTaskClass(status: string, isNorthStar: boolean, isMilestone: boolean, isShuttleTask: boolean, shuttleStatus: string) {
+  getTaskClass(status: string, isNorthStar: boolean, isMilestone: boolean, task: any) {
     let taskClass = '';
-    if (isShuttleTask) {
+    if (task.task.shuttle_type) {
+      const shuttleIndex = (task.task.shuttles) ? task.task.shuttles.findIndex(s => (s._shuttle_group._id || s._shuttle_group) == this.groupData?._id) : -1;
+      const shuttleStatus = (shuttleIndex >= 0) ? task.task.shuttles[shuttleIndex].shuttle_status : status;
       if (shuttleStatus === 'to do') {
         taskClass = 'status-todo';
       } else if (shuttleStatus === 'in progress') {

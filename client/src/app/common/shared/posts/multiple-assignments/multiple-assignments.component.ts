@@ -1,5 +1,6 @@
-import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncapsulation, Injector, OnInit } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -11,7 +12,7 @@ import { SubSink } from 'subsink';
   styleUrls: ['./multiple-assignments.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MultipleAssignmentsComponent implements OnChanges {
+export class MultipleAssignmentsComponent implements OnChanges, OnInit {
 
   @Input() groupId;
   @Input() userData;
@@ -33,12 +34,18 @@ export class MultipleAssignmentsComponent implements OnChanges {
 
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
+  isShuttleTasksModuleAvailable = false;
+
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
+
   // Subsink Object
   subSink = new SubSink();
 
   constructor(
     public utilityService: UtilityService,
-    private postService: PostService
+    private postService: PostService,
+    private injector: Injector
   ) { }
 
   ngOnChanges() {
@@ -72,6 +79,10 @@ export class MultipleAssignmentsComponent implements OnChanges {
     if (!this.assigned_to) {
       this.assigned_to = [];
     }
+  }
+
+  async ngOnInit() {
+    this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
   }
 
   ngOnDestroy(): void {
@@ -121,7 +132,7 @@ export class MultipleAssignmentsComponent implements OnChanges {
         if (this.type == 'post') {
           if (!this.isNewEvent) {
             this.utilityService.asyncNotification($localize`:@@multipleAssignments.pleaseWaitWeAreUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-              this.postService.addAssigneeToPost(this.post._id, member._id, (this.post._group || this.post._group._id))
+              this.postService.addAssigneeToPost(this.post._id, member._id, (this.post._group || this.post._group._id), this.isShuttleTasksModuleAvailable)
                 .then((res) => {
                   this.post = res['post'];
                   this.assigned_to.push(member);
