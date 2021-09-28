@@ -121,6 +121,13 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   //Delete comment modal boolean
   deleteCommentBool : boolean = false;
 
+  //Mention in comment boolean
+  mentionCommentUser : boolean = false;
+  mentionCommentFile : boolean = false;
+
+  //To handle mention text
+  mentionText : string = '';
+
   //comment To Delete
   commentToDelete : number;
 
@@ -372,6 +379,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
       quill.on("selection-change",(range, oldRange, source) => {
         if(range != null) {
+          this.commentsToDisplay = [];
           this.mapComments(range.index, range.length);
         }
       })
@@ -470,6 +478,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   //Validates comment content and adds the comment
   submitComment() {
+    console.log(this.enteredComment);
     var txt = null;
     if (this.selectedText == null || this.selectedText == "") {
       txt = "No content is selected";
@@ -541,7 +550,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   //To get comments on selection
   mapComments(index : number, length : number) {
     var selectedIndexes = this.generateIndexes(index, length);
-    this.commentsToDisplay = this.metaData.filter((value) => {
+    this.metaData.forEach((value, index) => {
       var valueIndexes = this.generateIndexes(value.range.index, value.range.length);
       var found = false
       valueIndexes.forEach((val) => {
@@ -549,8 +558,10 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           found = true;
         }
       })
-      if(found) return value;
+      console.log(index);
+      if(found) this.commentsToDisplay.push(index);
     });
+    console.log(this.commentsToDisplay);
   }
 
   generateIndexes(index : number, length : number) {
@@ -559,6 +570,48 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       arr.push(i);
     }
     return arr;
+  }
+
+  onCommentPress(event : KeyboardEvent) {
+    console.log(event);
+    if(this.mentionCommentUser) this.handleAt(event) 
+    else if (this.mentionCommentFile) this.handleHash(event)
+    else if(event.key === '@') {
+      console.log(event.key);
+      this.mentionText = ''
+      this.mentionCommentUser = true;
+      this.handleAt(event);
+    }
+    else if(event.key === '#') {
+      console.log(event.key);
+      this.mentionText = ''
+      this.mentionCommentFile = true;
+      this.handleHash(event);
+    }
+  }
+
+  async handleAt(event : KeyboardEvent) {
+    event.key === "Backspace" ? this.mentionText = this.mentionText.slice(0 , -1) : 
+    (event.key.length == 1) ? this.mentionText = this.mentionText + event.key : null;
+    if(this.mentionText.length < 1 || event.key === "Escape") {
+      this.mentionCommentUser = false;
+      return;
+    }
+    console.log(this.mentionText.slice(1));
+    var members = await this.suggestMembers(this.groupId, this.mentionText.slice(1));
+    console.log(members);
+  }
+
+  async handleHash(event : KeyboardEvent) {
+    event.key === "Backspace" ? this.mentionText = this.mentionText.slice(0 , -1) : 
+    (event.key.length == 1) ? this.mentionText = this.mentionText + event.key : null;
+    if(this.mentionText.length < 1 || event.key === "Escape") {
+      this.mentionCommentFile = false;
+      return;
+    }
+    console.log(this.mentionText.slice(1));
+    var files = await this.suggestFiles(this.groupId, this.mentionText.slice(1));
+    console.log(files);
   }
   /**
    * This function returns the mention module
@@ -581,11 +634,10 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
             id: "all",
             value: "all",
           });
-          values = await this.suggestFiles(this.groupId, searchTerm);
-
           // If User types "#" then trigger the list for files mentioning
         } else if (mentionChar === "#") {
           // Initialise values with list of files
+          values = await this.suggestFiles(this.groupId, searchTerm);
         }
 
         // If searchTerm length is 0, then show the full list

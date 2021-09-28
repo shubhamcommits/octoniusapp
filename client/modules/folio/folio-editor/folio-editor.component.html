@@ -39,7 +39,7 @@
     </div>
   </div>
   <div class="comment-area">
-    <div class="commentmsg" (click)="highlight(meta.range)" *ngFor="let meta of commentsToDisplay;let ind = index">
+    <div class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}" (click)="highlight(meta.range)" *ngFor="let meta of metaData;let ind = index">
       <div class="comment-profile">
         <div class="profile">
           <div class="profile-pic">
