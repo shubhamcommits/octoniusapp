@@ -48,7 +48,6 @@ export class PostService {
           ]
         }
       }
-
       
       let postedByFilter = {};
       let tagsFilter = {};
@@ -202,7 +201,8 @@ export class PostService {
               Post.find({
                 $and: [
                   { _group: groupId },
-                  { type: type }
+                  { type: type },
+                  { archived: { $ne: true }}
                 ]
               }), type)
 
@@ -2863,9 +2863,8 @@ export class PostService {
    * @param isChildStatusTrigger 
    */
   executeActionFlow(actions: any[], post: any, userId: string, groupId: string, isChildStatusTrigger: boolean) {
-    const shuttleIndex = post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId);
-
     actions.forEach(async action => {
+        let shuttleIndex = (post?.task?.shuttles) ? post?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == groupId) : -1;
         switch (action.name) {
             case 'Assign to':
                 action._user.forEach(async userAction => {
@@ -2921,8 +2920,8 @@ export class PostService {
                 }
                 break;
             case 'Shuttle task':
-                if (!post?.task?.shuttle_type && shuttleIndex >= 0) {
-                  post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group);
+                if (shuttleIndex < 0) {
+                  post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group);  
                 }
                 break;
             default:
@@ -3010,8 +3009,11 @@ export class PostService {
   }
 
   async selectShuttleGroup(postId: string, shuttleGroupId: string) {
-      let post;
-      if (shuttleGroupId) {
+      let post =  await Post.findById({ _id: postId }).select('task.shuttles').lean();
+
+      const shuttleIndex = await (post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == shuttleGroupId) : -1;
+
+      if (shuttleGroupId && shuttleIndex < 0) {
         const group = await Group.findById({ _id: shuttleGroupId }).lean();
 
         post = await Post.findByIdAndUpdate({
@@ -3020,7 +3022,7 @@ export class PostService {
               $set: {
                 'task.shuttle_type': true,
               },
-              $push: {
+              $addToSet: {
                 "task.shuttles": {
                   shuttled_at: moment().format(),
                   shuttle_status: 'to do',

@@ -58,7 +58,7 @@ export class KanbanTaskCardComponent {
   getTaskClass(status: string, isNorthStar: boolean, isMilestone: boolean, isShuttleTask: boolean) {
     let taskClass = '';
     if (isShuttleTask) {
-      const shuttleIndex = this.task.task.shuttles.findIndex(s => (s._shuttle_group._id || s._shuttle_group) == this.groupId);
+      const shuttleIndex = (this.task.task.shuttles) ? this.task.task.shuttles.findIndex(s => (s._shuttle_group._id || s._shuttle_group) == this.groupId) : -1;
       const shuttleStatus = (shuttleIndex >= 0) ? this.task.task.shuttles[shuttleIndex].shuttle_status : status;
       if (shuttleStatus === 'to do') {
         taskClass = 'status-todo';

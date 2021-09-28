@@ -95,6 +95,10 @@ const PostSchema = new Schema({
         required: true,
         default: []
     }],
+    archived: {
+        type: Boolean,
+        default: false
+    },
 
     // TASK
     task: {

@@ -690,7 +690,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   calculateCFStatistics(cfName: string, tasks: any) {
     let calculation = 0;
     tasks.forEach(task => {
-      calculation += (task.task.custom_fields[cfName] && !isNaN(task.task.custom_fields[cfName]))
+      calculation += (task.task.custom_fields && task.task.custom_fields[cfName] && !isNaN(task.task.custom_fields[cfName]))
         ? +task.task.custom_fields[cfName]
         : 0;
     });

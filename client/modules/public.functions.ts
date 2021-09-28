@@ -1253,8 +1253,6 @@ export class PublicFunctions {
     executedAutomationFlowsPropertiesFront(flows: any[], post: any, groupId: string, isCreationTaskTrigger?: boolean, shuttleIndex?: number) {
         if (flows && flows.length > 0) {
           let doTrigger = true;
-          let loopCounter = 1;
-          while (doTrigger && loopCounter <= 3) {
             flows.forEach((flow, flowIndex) => {
               const steps = flow['steps'];
               if (steps && steps.length > 0) {
@@ -1268,9 +1266,7 @@ export class PublicFunctions {
               } else {
                 doTrigger = false;
               }
-              loopCounter++;
             });
-          }
         }
         return post;
     }
@@ -1410,7 +1406,10 @@ export class PublicFunctions {
                     case 'Shuttle task':
                         if (!post?.task?.shuttle_type && shuttleIndex < 0) {
                           post.task.shuttle_type = true;
-                          post.task.shuttles.unsift({
+                          if (!post.task.shuttles) {
+                            post.task.shuttles = [];
+                          }
+                          post.task.shuttles.unshift({
                             _shuttle_group: action?._shuttle_group,
                             _shuttle_section: action?._shuttle_group?._shuttle_section,
                             shuttle_status: 'to do',
