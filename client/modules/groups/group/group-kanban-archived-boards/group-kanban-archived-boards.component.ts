@@ -176,7 +176,7 @@ export class GroupKanbanArchivedBoardsComponent implements OnInit, OnChanges, Af
           resolve(utilityService.resolveAsyncPromise($localize`:@@groupKanbanArchivedBoards.sectionRemoved:Section Removed!`));
         })
         .catch((err) => {
-          reject(utilityService.rejectAsyncPromise($localize`:@@groupKanbanArchivedBoards.unableToRemoveSection:Unable to removed the section at the moment, please try again!`))
+          reject(utilityService.rejectAsyncPromise($localize`:@@groupKanbanArchivedBoards.unableToRemoveSection:Unable to remove the section at the moment, please try again!`))
         })
     }))
   }
@@ -193,7 +193,7 @@ export class GroupKanbanArchivedBoardsComponent implements OnInit, OnChanges, Af
 
     // If index is found, then throw error notification
     if (index != -1) {
-      this.utilityService.warningNotification($localize`:@@groupKanbanArchivedBoards.sectionWithSameTitleExists:Section with the same title aready exists, please try with different name!`)
+      this.utilityService.warningNotification($localize`:@@groupKanbanArchivedBoards.sectionWithSameTitleExists:Section with the same title already exists, please try with different name!`)
     }
 
     // If not found, then change the element details

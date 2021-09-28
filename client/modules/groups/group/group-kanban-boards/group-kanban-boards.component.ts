@@ -260,7 +260,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
     // If index is found, then throw error notification
     if (index != -1) {
-      this.utilityService.warningNotification($localize`:@@groupKanbanBoards.sectionWithSameNameExist:Section with the same title aready exist, please try with different name!`)
+      this.utilityService.warningNotification($localize`:@@groupKanbanBoards.sectionWithSameNameExist:Section with the same title already exist, please try with different name!`)
     }
 
     // If not found, then push the element
@@ -323,7 +323,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
           resolve(utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.sectionRemoved:Section Removed!`));
         })
         .catch((err) => {
-          reject(utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToRemoveSection:Unable to removed the section at the moment, please try again!`))
+          reject(utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToRemoveSection:Unable to remove the section at the moment, please try again!`))
         })
     }))
   }
@@ -340,7 +340,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
     // If index is found, then throw error notification
     if (index != -1) {
-      this.utilityService.warningNotification($localize`:@@groupKanbanBoards.sectionWithSameTitleExists:Section with the same title aready exists, please try with different name!`)
+      this.utilityService.warningNotification($localize`:@@groupKanbanBoards.sectionWithSameTitleExists:Section with the same title already exists, please try with different name!`)
     }
 
     // If not found, then change the element details

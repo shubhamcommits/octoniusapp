@@ -99,7 +99,7 @@ export class GroupTasksListViewComponent implements OnChanges {
 
     // If index is found, then throw error notification
     if (index != -1) {
-      this.utilityService.warningNotification($localize`:@@taskTable.sectionWithSameNameAlreadyExists:Section with the same title aready exist, please try with different name!`)
+      this.utilityService.warningNotification($localize`:@@taskTable.sectionWithSameNameAlreadyExists:Section with the same title already exist, please try with different name!`)
     }
 
     // If not found, then push the element
