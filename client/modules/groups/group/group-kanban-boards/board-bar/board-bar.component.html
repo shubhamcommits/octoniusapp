@@ -21,7 +21,7 @@
 
       <span *ngIf="viewType == 'kanban' || viewType == 'table'" class="separator"></span>
 
-      <button class="btn badge-cf" *ngIf="isAdmin" (click)="openCustomFieldsDialog()">
+      <button class="btn badge-cf" *ngIf="isAdmin && viewType != 'archived'" (click)="openCustomFieldsDialog()">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" class="badge-cf">
           <path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15zM11.5 9.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zm-1.51 3.49L9 15.17l-.99-2.18L5.83 12l2.18-.99L9 8.83l.99 2.18 2.18.99-2.18.99z"/>
         </svg>
@@ -29,9 +29,9 @@
         <span i18n="@@groupBoardBar.customFields">Custom Fields</span>
       </button>
 
-      <span class="separator" *ngIf="isAdmin"></span>
+      <span class="separator" *ngIf="isAdmin && viewType != 'archived'"></span>
 
-      <button class="btn badge-automator" *ngIf="isAdmin" (click)="openAutomatorDialog()">
+      <button class="btn badge-automator" *ngIf="isAdmin && viewType != 'archived'" (click)="openAutomatorDialog()">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path fill-rule="evenodd" d="M2.4 13.5v-12h10l-4 9h4l-7 12v-9h-3zm14-12h2l3.2 9h-1.9l-.7-2h-3.2l-.7 2h-1.9l3.2-9zm1 2l-1.15 3.65h2.3L17.4 3.5zm-7.877 8.674l-2.339 4.061.835-4.06H4.671V3.5h4.05l-2.524 7.818h3.826l-.5.856z" clip-rule="evenodd"/>
         </svg>
@@ -39,7 +39,7 @@
         <span i18n="@@groupBoardBar.automator">Automator</span>
       </button>
 
-      <span class="separator"></span>
+      <span class="separator" *ngIf="viewType != 'archived'"></span>
 
       <button [matMenuTriggerFor]="menu" class="btn badge-boardviews">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -50,27 +50,34 @@
       </button>
 
       <mat-menu #menu="matMenu">
-        <a mat-menu-item (click)="changeView('kanban')" class="board-options">
+        <a mat-menu-item *ngIf="viewType != 'kanban'" (click)="changeView('kanban')" class="board-options">
           <img src="assets/images/Icon/board-bar/icon_kanban.svg" alt="" class="mr-2">
 
           <span i18n="@@groupBoardBar.kanbanBoard">Kanban Board</span>
         </a>
-        <a mat-menu-item (click)="changeView('table')" class="board-options">
+
+        <a mat-menu-item *ngIf="viewType != 'table'" (click)="changeView('table')" class="board-options">
           <img src="assets/images/Icon/board-bar/icon_table.svg" alt="" class="mr-2">
 
           <span i18n="@@groupBoardBar.table">Table</span>
         </a>
-        <a mat-menu-item (click)="changeView('calendar')" class="board-options">
+
+        <a mat-menu-item *ngIf="viewType != 'calendar'" (click)="changeView('calendar')" class="board-options">
           <img src="assets/images/Icon/board-bar/icon_calendar.svg" alt="" class="mr-2">
 
           <span i18n="@@groupBoardBar.calendar">Calendar</span>
         </a>
 
-        <a *ngIf="groupData.project_type" mat-menu-item (click)="changeView('gantt')" class="board-options">
+        <a *ngIf="groupData.project_type && viewType != 'gant'" mat-menu-item (click)="changeView('gantt')" class="board-options">
           <img src="assets/images/Icon/board-bar/icon_timeline.svg" alt="" class="mr-2">
           <span i18n="@@groupBoardBar.timeline">Timeline</span>
         </a>
 
+        <a mat-menu-item *ngIf="viewType != 'archived'" (click)="changeView('archived')" class="board-options">
+          <span class="material-icons-outlined mr-2">archive</span>
+
+          <span i18n="@@groupBoardBar.archived">Archived</span>
+        </a>
       </mat-menu>
 
       <mat-menu #menuSort="matMenu">

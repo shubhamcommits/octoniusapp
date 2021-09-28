@@ -1,62 +1,73 @@
 <div *ngIf="!(isLoading$ | async)" class="root">
 
-        <app-board-bar *ngIf="groupData"
-            [groupData]="groupData"
-            [sections]="columns"
-            [userData]="userData"
-            [isAdmin]="isAdminUser()"
-            [customFields]="customFields"
-            [viewType]="viewType"
-            [isIdeaModuleAvailable]="isIdeaModuleAvailable"
-            (changeViewEmitter)='onChangeViewEmitter($event)'
-            (customFieldEmitter)="onCustomFieldEmitter($event)"
-            (sortTaskEmitter)="onSortTaskEmitter($event)"
-            (filterTaskEmitter)="onFilterTaskEmitter($event)"
-            >
-        </app-board-bar>
+  <app-board-bar *ngIf="groupData"
+      [groupData]="groupData"
+      [sections]="columns"
+      [userData]="userData"
+      [isAdmin]="isAdminUser()"
+      [customFields]="customFields"
+      [viewType]="viewType"
+      [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+      (changeViewEmitter)='onChangeViewEmitter($event)'
+      (customFieldEmitter)="onCustomFieldEmitter($event)"
+      (sortTaskEmitter)="onSortTaskEmitter($event)"
+      (filterTaskEmitter)="onFilterTaskEmitter($event)"
+      >
+  </app-board-bar>
 
-        <app-group-kanban-boards *ngIf="viewType === 'kanban'"
-            [groupData]="groupData"
-            [userData]="userData"
-            [columns]="columns"
-            [tasks]="tasks"
-            [isIdeaModuleAvailable]="isIdeaModuleAvailable"
-            [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
-            [sortingBit]="sortingBit"
-            [sortingData]="sortingData"
-            (taskClonnedEvent)="onTaskClonned($event)"
-            (newSectionEvent)="newSectionAdded($event)">
-        </app-group-kanban-boards>
+  <app-group-kanban-boards *ngIf="viewType === 'kanban'"
+      [groupData]="groupData"
+      [userData]="userData"
+      [columns]="columns"
+      [tasks]="tasks"
+      [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+      [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
+      [sortingBit]="sortingBit"
+      [sortingData]="sortingData"
+      (taskClonnedEvent)="onTaskClonned($event)"
+      (newSectionEvent)="newSectionAdded($event)">
+  </app-group-kanban-boards>
 
-        <app-group-tasks-list-view *ngIf="viewType === 'table'"
-            [groupData]="groupData"
-            [userData]="userData"
-            [sections]="columns"
-            [tasks]="tasks"
-            [customFields]="customFields"
-            [isAdmin]="isAdminUser()"
-            [isIdeaModuleAvailable]="isIdeaModuleAvailable"
-            [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
-            [sortingBit]="sortingBit"
-            [sortingData]="sortingData"
-            (taskClonnedEvent)="onTaskClonned($event)"
-            (newSectionEvent)="newSectionAdded($event)">
-        </app-group-tasks-list-view>
+  <app-group-tasks-list-view *ngIf="viewType === 'table'"
+      [groupData]="groupData"
+      [userData]="userData"
+      [sections]="columns"
+      [tasks]="tasks"
+      [customFields]="customFields"
+      [isAdmin]="isAdminUser()"
+      [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+      [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
+      [sortingBit]="sortingBit"
+      [sortingData]="sortingData"
+      (taskClonnedEvent)="onTaskClonned($event)"
+      (newSectionEvent)="newSectionAdded($event)">
+  </app-group-tasks-list-view>
 
-        <app-gantt-view *ngIf="viewType === 'gantt'"
-          [tasks]="tasks"
-          [userData]="userData"
-          [columns]="columns"
-          [isIdeaModuleAvailable]="isIdeaModuleAvailable"
-          (taskClonnedEvent)="onTaskClonned($event)"
-          >
-        </app-gantt-view>
+  <app-gantt-view *ngIf="viewType === 'gantt'"
+    [tasks]="tasks"
+    [userData]="userData"
+    [columns]="columns"
+    [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+    (taskClonnedEvent)="onTaskClonned($event)"
+    >
+  </app-gantt-view>
 
-        <app-group-calendar-view *ngIf="viewType === 'calendar'"
-          [groupId]="groupData._id" [tasks]="tasks"
-          [isIdeaModuleAvailable]="isIdeaModuleAvailable">
-        </app-group-calendar-view>
+  <app-group-calendar-view *ngIf="viewType === 'calendar'"
+    [groupId]="groupData._id" [tasks]="tasks"
+    [isIdeaModuleAvailable]="isIdeaModuleAvailable">
+  </app-group-calendar-view>
 
+  <app-group-kanban-archived-boards *ngIf="viewType === 'archived'"
+      [groupData]="groupData"
+      [userData]="userData"
+      [customFields]="customFields"
+      [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+      [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
+      [sortingBit]="sortingBit"
+      [sortingData]="sortingData"
+      (taskClonnedEvent)="onTaskClonned($event)"
+      (newSectionEvent)="newSectionAdded($event)">
+  </app-group-kanban-archived-boards>
 </div>
 
 <!-- Loading Spinner Starts -->

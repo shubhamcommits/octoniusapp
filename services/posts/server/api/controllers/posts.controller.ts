@@ -197,6 +197,36 @@ export class PostController {
     }
 
     /**
+     * This function fetches the archived tasks present inside a group
+     * @param { query: { groupId } } req 
+     * @param res 
+     * @param next 
+     */
+    async getArchivedTasks(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch groupId and lastPostId from request
+        var { groupId } = req.query;
+
+        // If groupId is not present, then return error
+        if (!groupId) {
+            return sendErr(res, new Error('Please provide the groupId as the query parameter'), 'Please provide the groupId as the query paramater!', 400);
+        }
+
+        // Fetch the next 5 recent posts
+        await postService.getArchivedTasks(groupId.toString())
+            .then((posts) => {
+                return res.status(200).json({
+                    message: `The archived tasks!`,
+                    posts: posts
+                });
+            })
+            .catch((err) => {
+                // If there's an error send bad request
+                return sendErr(res, new Error(err), 'Unable to fetch the archived tasks, kindly check the stack trace for error', 400)
+            });
+    }
+
+    /**
      * This function fetches the North Star tasks present inside multiple groups
      * @param { query: { groups } } req 
      * @param res 
