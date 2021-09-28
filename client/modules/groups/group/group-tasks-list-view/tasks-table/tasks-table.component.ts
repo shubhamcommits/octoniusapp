@@ -358,7 +358,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     let taskClass = '';
     if (task.task.shuttle_type) {
       const shuttleIndex = task.task.shuttles.findIndex(s => (s._shuttle_group._id || s._shuttle_group) == this.groupData?._id);
-      const shuttleStatus = task.task.shuttles[shuttleIndex].shuttle_status;
+      const shuttleStatus = (shuttleIndex >= 0) ? task.task.shuttles[shuttleIndex].shuttle_status : status;
       if (shuttleStatus === 'to do') {
         taskClass = 'status-todo';
       } else if (shuttleStatus === 'in progress') {
