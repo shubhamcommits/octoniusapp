@@ -15,7 +15,7 @@ export class CustomFieldsTableSettingsDialogComponent implements OnInit {
 
   groupId;
   customFields = [];
-  selectTypeCF: any;
+  selectTypeCFs = [];
   inputTypeCFs = [];
 
 
@@ -34,7 +34,7 @@ export class CustomFieldsTableSettingsDialogComponent implements OnInit {
   ) {
     this.groupId = this.data.groupId;
     this.customFields = this.data.customFields;
-    this.selectTypeCF = this.data.selectTypeCF;
+    this.selectTypeCFs = this.data.selectTypeCFs;
     this.inputTypeCFs = this.data.inputTypeCFs;
 
     this.customFields.forEach(cf => {
@@ -54,14 +54,24 @@ export class CustomFieldsTableSettingsDialogComponent implements OnInit {
 
   selectSelectTypeCF(cf: any, active: boolean) {
     if (active) {
-      this.selectTypeCF = cf.name;
+      if (!this.selectTypeCFs) {
+        this.selectTypeCFs = []
+      }
+      this.selectTypeCFs.push(cf.name);
     } else {
-      this.selectTypeCF = null;
+      const index = (this.selectTypeCFs) ? this.selectTypeCFs.findIndex(field => field == cf.name) : -1;
+      if (index >= 0) {
+        this.selectTypeCFs.splice(index, 1);
+      }
     }
   }
 
-  isChecked(cf: any) {
-    return this.inputTypeCFs && this.inputTypeCFs.findIndex(field => field == cf.name) >= 0;
+  isSelectTypeChecked(cfName: string) {
+    return this.selectTypeCFs && this.selectTypeCFs.findIndex(field => field == cfName) >= 0;
+  }
+
+  isChecked(cfName: string) {
+    return this.inputTypeCFs && this.inputTypeCFs.findIndex(field => field == cfName) >= 0;
   }
 
   selectInputTypeCF(cf: any, active: boolean) {
@@ -74,7 +84,7 @@ export class CustomFieldsTableSettingsDialogComponent implements OnInit {
   }
 
   save() {
-    const settings = { selectTypeCF: this.selectTypeCF, inputTypeCFs: this.inputTypeCFs };
+    const settings = { selectTypeCFs: this.selectTypeCFs, inputTypeCFs: this.inputTypeCFs };
 
     this.utilityService.asyncNotification($localize`:@@cfTableSettingsDialog.pleaseWaitWeSavingWidgets:Please wait we are saving the settings...`, new Promise((resolve, reject) => {
       this.groupService.saveCFTableWidgetSettings(this.groupId, settings)

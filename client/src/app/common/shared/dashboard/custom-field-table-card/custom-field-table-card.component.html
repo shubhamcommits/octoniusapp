@@ -14,23 +14,23 @@
       <table>
         <thead>
           <tr>
-            <th class="header"> {{ selectTypeCustomField?.title }} </th>
-            <th *ngFor="let cf of inputTypeCustomFields" class="muted"> {{ cf.title }} </th>
+            <th *ngFor="let cf of selectTypeCustomFields" class="header"> {{ cf?.title }} </th>
+            <th *ngFor="let cf of inputTypeCustomFields" class="muted"> {{ cf?.title }} </th>
           </tr>
         </thead>
 
         <tbody>
           <tr *ngFor="let row of tableData">
-            <td>
+            <td *ngFor="let select of selectTypeCFs">
               <div class="member">
                 <div class="name">
-                  {{ row.selectValue }}
+                  {{ row[select] }}
                 </div>
               </div>
             </td>
 
-            <td *ngFor="let cf of row.inputTypeCustomFields">
-              {{ cf | number }}
+            <td *ngFor="let input of inputTypeCFs">
+              {{ row[input] | number }}
             </td>
           </tr>
         </tbody>

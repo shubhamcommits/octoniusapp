@@ -25,8 +25,7 @@
         <hr>
         <div *ngFor="let cf of selectCustomFields">
           <mat-slide-toggle color="primary"
-              [checked]="selectTypeCF && selectTypeCF == cf.name"
-              [disabled]="selectTypeCF && selectTypeCF != cf.name"
+              [checked]="isSelectTypeChecked(cf.name)"
               [name]="cf.name"
               (change)="selectSelectTypeCF(cf, $event.checked)">
             <h6>{{ cf.title }}</h6>
@@ -39,7 +38,7 @@
         <hr>
         <div *ngFor="let cf of inputCustomFields">
           <mat-slide-toggle color="primary"
-              [checked]="isChecked(cf)"
+              [checked]="isChecked(cf.name)"
               [name]="cf.name"
               (change)="selectInputTypeCF(cf, $event.checked)">
             <h6>{{ cf.title }}</h6>
