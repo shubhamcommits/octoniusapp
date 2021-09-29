@@ -23,7 +23,7 @@ Quill2.register({
 export class FolioEditorComponent implements OnInit, AfterViewInit {
   // Quill instance variable
   quill: any;
-
+  quill2: any;
   // Quill modules variable
   modules: any;
 
@@ -93,6 +93,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   @ViewChild('editable', { static: true })
   editRef!: ElementRef;
+
+  @ViewChild('editable2', { static: true })
+  editRef2!: ElementRef;
 
   constructor(
     private _Injector: Injector,
@@ -184,6 +187,16 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       theme: 'snow',
       modules: this.modules,
     });
+
+    this.quill2 = new Quill2(this.editRef2.nativeElement,{
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline']
+        ],
+        mention : this.metionModule()
+      }
+    })
   }
 
   initializeConnection() {
@@ -204,7 +217,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   initializeFolio(folio: any, quill: any) {
     // Subscribe to the folio data and update the quill instance with the data
     folio.subscribe(async () => {
-      console.log(folio.type);
       if (!folio.type) {
         folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
         console.log("creating folio");
@@ -212,15 +224,14 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       console.log("folio data : ", folio.data.data);
       // update editor contents
       quill.setContents(folio.data.data.delta);
+      this.quill2.setContents([{ insert: "\n" }]);
       this.metaData = folio.data.data.comment;
       // local -> server
       quill.on("text-change", (delta, oldDelta, source) => {
-        console.log("delta : ", delta);
-        console.log("old delta : ", oldDelta);
-        console.log("source : ", source);
+        // console.log(delta.ops);
         if (delta.ops.length > 1 && delta.ops[1].insert) {
           let mentionMap = JSON.parse(JSON.stringify(delta.ops[1].insert));
-          console.log("mention Map : ", mentionMap);
+          // console.log("mention : ",mentionMap.mention);
           if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
             let filesService = this._Injector.get(FilesService);
             filesService
@@ -233,14 +244,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           }
         }
         if (source == "user") {
-          console.log("to send ops : ", delta.ops);
-          console.log("quill contents : ", quill.getContents().ops);
           var toSend = {
             p: ["data"],
             od: folio.data.data,
             oi: { comment: this.metaData, delta: quill.getContents().ops },
           };
-          console.log("to send : ", toSend);
           folio.submitOp(
             toSend,
             {
@@ -250,7 +258,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
               if (err) console.error("Submit OP returned an error:", err);
             }
           );
-          console.log("sent");
         }
       });
 
@@ -344,7 +351,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   //Validates comment content and adds the comment
   submitComment() {
-    console.log(this.enteredComment);
+    this.enteredComment = this.quill2.root.innerHTML;
     var txt = null;
     if (this.selectedText == null || this.selectedText == "") {
       txt = "No content is selected";
@@ -354,6 +361,21 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       alert(txt);
     } else {
       var userName = this.userData.first_name + ' ' + this.userData.last_name;
+      this.quill2.getContents().ops.map((value)=>{
+        if(value.insert.mention){
+          var mentionMap = value.insert;
+          if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
+            let filesService = this._Injector.get(FilesService);
+            filesService
+              .newFolioMention(
+                mentionMap.mention,
+                this.folioId,
+                this.userData._id
+              )
+              .then((res) => res.subscribe((result) => console.log(result)));
+          }
+        }
+      });
       this.metaData.push({ range: this.range, comment: this.enteredComment, user_name : userName, profile_pic : this.userData.profile_pic });
       this.quill.formatText(this.range.index, this.range.length, {
         background: "#fff72b",
@@ -374,6 +396,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           return;
         }
       );
+      this.quill2.deleteText(0, this.quill2.getLength());
       this.commentBool = false;
       this.selectedText = null;
       this.enteredComment = null;
@@ -382,6 +405,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   //Closes the comment dialog box
   closeComment() {
+    this.quill2.deleteText(0, this.quill2.getLength());
     this.commentBool = false;
     this.selectedText = null;
     this.enteredComment = null;

@@ -1,5 +1,5 @@
  <!-- Folio wrapper starts here -->
- <div *ngIf="commentBool" class="comment-modal center">
+ <div [ngClass]="{'hide-modal' : !commentBool}" class="comment-modal center">
   <div class="comment-container center">
     <span class="close" (click)="closeComment()">&times;</span>
     <div class="to-comment-text">
@@ -7,7 +7,7 @@
       <textarea readonly cols="30" rows="4">{{selectedText}}</textarea>
     </div>
     <h2>Comment : </h2>
-    <textarea cols="30" rows="4" [(ngModel)]="enteredComment"></textarea>
+    <div #editable2></div>
     <div class="comment-submit" (click)="submitComment()">
       Submit
     </div>
@@ -49,7 +49,8 @@
       </div>
       <div class="close" (click)="openDeleteComment(ind)">&times;</div>
     </div>
-    {{meta.comment}}
+    <div [innerHTML]="meta.comment">
+    </div>
   </div>
 </div>
 </div>
