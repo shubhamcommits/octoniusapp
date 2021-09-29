@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="values" *ngIf="field.input_type" i18n="@@groupCFDialog.isAnInputCF">
-                      Is an Input Custom Field
+                      Is a <span *ngIf="field.input_type_text">text</span><span *ngIf="field.input_type_number">number</span> Input Custom Field
                     </div>
 
                     <div class="displayKanbanCard" *ngIf="field.name != 'priority'">
@@ -65,7 +65,7 @@
                       <i class="material-icons">close</i>
                     </button>
                       </div>
-                      
+
                       <i class="material-icons muted" style="cursor: pointer;" (click)="openColorPicker(field)">color_lens</i>
                     </div>
                 </div>
@@ -81,8 +81,19 @@
              <div class="add-field" *ngIf="showNewCustomField">
                 <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
 
-                <input class="" type="checkbox" name="inputType" [(ngModel)]="newCustomFieldInputType">
-                <label class="onoffswitch-label" style="margin-left: 10px;" for="inputType" i18n="@@groupCFDialog.inputValue">Input Value</label>
+                <br/>
+
+                <input type="checkbox" name="inputType" [(ngModel)]="newCustomFieldInputType">
+                <label class="onoffswitch-label" style="margin-left: 10px; margin-right: 10px;" for="inputType" i18n="@@groupCFDialog.inputValue">Input Value</label>
+
+                <mat-form-field appearance="fill" *ngIf="newCustomFieldInputType">
+                  <mat-select
+                      (selectionChange)="selectInputType($event.value)"
+                      [(value)]="newCustomFieldInputSelectType">
+                    <mat-option value="number">Number</mat-option>
+                    <mat-option value="text">Text</mat-option>
+                  </mat-select>
+                </mat-form-field>
 
                 <div class="actions">
                     <button class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@groupCFDialog.save">
