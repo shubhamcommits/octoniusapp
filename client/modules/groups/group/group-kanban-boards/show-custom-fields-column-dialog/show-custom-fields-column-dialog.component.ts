@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Inject, OnChanges, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import moment from 'moment';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -10,7 +8,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
   templateUrl: './show-custom-fields-column-dialog.component.html',
   styleUrls: ['./show-custom-fields-column-dialog.component.scss']
 })
-export class ShowCustomFieldsColumnDialogComponent implements OnChanges, OnInit {
+export class ShowCustomFieldsColumnDialogComponent implements OnInit {
 
   @Output() customFieldsUpdatedEvent = new EventEmitter();
 
@@ -36,9 +34,6 @@ export class ShowCustomFieldsColumnDialogComponent implements OnChanges, OnInit 
         cf.showInColumn = false;
       }
     });
-  }
-
-  ngOnChanges(): void {
   }
 
   showCFInColumn(cf: any) {
