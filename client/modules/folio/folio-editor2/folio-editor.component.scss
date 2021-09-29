@@ -1,0 +1,177 @@
+//please make body bg #fff here so that we have fulll white bg all over the canvas
+body{
+    background-color: #fff !important;
+}
+
+.folio-container{
+    padding-top: 90px;
+    height: 100vh;
+    background-color: #ffffff !important;
+    // -webkit-font-smoothing: antialiased;
+    width: 100%;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.folio {
+    // max-width: 825px;
+    // margin: 0 auto;
+    height: 80vh;
+    overflow-y: visible;
+    img{
+        width: 100%;
+    }
+}
+
+// // this applies dark mode to FOLIO editor
+// //for dark mode please make body bg color to same bg color 
+// .folio-dark-mode{
+//     background-color: #171b22 !important;
+//     color: #ffffff !important;
+//     h1,h2,h3,h4,h5{
+//         color: #ffffff !important;
+//     }
+// }
+
+.editor-section{
+    width: 73%;
+}
+
+.comments-section{
+    width: 23%;
+}
+
+.center{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.center-vertical{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.comment-head{
+    position: relative;    
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    height: 42px;
+}
+
+.comment-area{
+    padding: 8px;
+    height: 80vh;
+    overflow-y: auto;
+    // overflow: scroll;
+}
+
+.commentmsg {
+    padding: 8px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+}
+
+.commentmsg:hover {
+    background-color: #f3f4f6;
+}
+
+.commentmsg-highlight {
+    background-color: #f3f4f6;
+}
+
+.comment-profile {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.profile {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    height: 10%;
+}
+
+.profile-pic {
+    height: 18px;
+    margin-right: 8px;
+}
+
+.comment-close {
+    width: 10%;
+    text-align: center;   
+    color: rgba(255, 0, 0, 0.486);
+    cursor: pointer;
+    &:hover {
+        color: red;
+    }
+}
+
+.icon {
+    width: 100%;
+    height: 100%;
+}
+
+.comment-modal{
+    padding-top: 90px;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.comment-container{
+    padding: 2%;
+    z-index: 2;
+    position: fixed;
+    width: 30%;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #f3f4f6;
+}
+
+.close {
+    color: rgb(172, 83, 83);
+    float:right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+.comment-submit{
+    padding  : 8px;
+    border: 1px solid #f3f4f6;
+    border-radius: 4px;
+    &:hover{
+        border: 1px solid rgb(99, 99, 99);
+        background: #f3f4f6;
+    }
+    width:fit-content;
+    cursor: pointer;
+    font-size: medium;
+}
+
+.to-comment-text{
+    width: 100%;
+    overflow-y: auto;
+    overflow-wrap: break-word;
+}
+
+.row-buttons{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+}
+
+.ql-container.ql-snow {
+    border: none;
+}

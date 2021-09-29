@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FolioRoutingModule } from './folio-routing.module';
 import { FolioHeaderComponent } from './folio-header/folio-header.component';
-import { FolioEditorComponent } from './folio-editor/folio-editor.component';
+import { FolioEditorComponent } from './folio-editor2/folio-editor.component';
 
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';

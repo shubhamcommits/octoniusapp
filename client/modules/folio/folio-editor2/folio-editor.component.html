@@ -1,0 +1,59 @@
+ <!-- Folio wrapper starts here -->
+ <div *ngIf="commentBool" class="comment-modal center">
+  <div class="comment-container center">
+    <span class="close" (click)="closeComment()">&times;</span>
+    <div class="to-comment-text">
+      <h2>Selected Text : </h2>
+      <textarea readonly cols="30" rows="4">{{selectedText}}</textarea>
+    </div>
+    <h2>Comment : </h2>
+    <textarea cols="30" rows="4" [(ngModel)]="enteredComment"></textarea>
+    <div class="comment-submit" (click)="submitComment()">
+      Submit
+    </div>
+  </div>
+</div>
+<div *ngIf="deleteCommentBool" class="comment-modal center">
+<div class="comment-container center">
+  <h1>Confirm to delete the comment</h1>
+  <div class="row-buttons">
+    <div class="comment-submit" (click)='onDeleteConfirm()'>
+      Confirm
+    </div>
+    <div class="comment-submit" (click)='onDeleteCancel()'>
+      Cancel
+    </div>
+  </div>
+</div>
+</div> 
+<div class="folio-container">
+<!-- Quill Editor Component Starts -->
+<div class="editor-section">
+<div #editable class="folio">
+</div>
+</div>
+<div class="comments-section">
+<div class="comment-head">
+  <div class="center">
+  COMMENTS
+  </div>
+</div>
+<div class="comment-area">
+  <div class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}" (click)="highlight(meta.range)" *ngFor="let meta of metaData;let ind = index">
+    <div class="comment-profile">
+      <div class="profile">
+        <div class="profile-pic">
+          <img style="height: 100%;" src="{{meta.profile_pic}}" alt="">
+        </div>
+        <div>{{meta.user_name}}</div>
+      </div>
+      <div class="close" (click)="openDeleteComment(ind)">&times;</div>
+    </div>
+    {{meta.comment}}
+  </div>
+</div>
+</div>
+<!-- Quill Editor Component Ends -->
+
+</div>
+<!-- Folio wrapper ends here -->
