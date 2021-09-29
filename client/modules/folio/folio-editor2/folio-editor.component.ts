@@ -7,9 +7,10 @@ import { environment } from "src/environments/environment";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import * as ShareDB from "sharedb/lib/client";
 import { FilesService } from "src/shared/services/files-service/files.service";
+import { StorageService } from "src/shared/services/storage-service/storage.service";
 
 declare const Quill2: any;
-declare const quillBetterTable: any
+declare const quillBetterTable: any;
 Quill2.register({
   'modules/better-table': quillBetterTable,
 }, true);
@@ -94,7 +95,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   editRef!: ElementRef;
 
   constructor(
-    private httpClient: HttpClient,
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
   ) {
@@ -138,6 +138,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         delay: 2500,
         userOnly: true,
       },
+      mention: {}
     };
   }
 
@@ -157,7 +158,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       });
       this.readOnly = this.readOnly || groupIndex < 0;
     }
-
+    this.modules.mention = this.metionModule();
     this.initEditor();
     this.initializeFolio(this.folio, this.quill);
     document.querySelector(".ql-comment").innerHTML =
@@ -217,7 +218,20 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         console.log("delta : ", delta);
         console.log("old delta : ", oldDelta);
         console.log("source : ", source);
-
+        if (delta.ops.length > 1 && delta.ops[1].insert) {
+          let mentionMap = JSON.parse(JSON.stringify(delta.ops[1].insert));
+          console.log("mention Map : ", mentionMap);
+          if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
+            let filesService = this._Injector.get(FilesService);
+            filesService
+              .newFolioMention(
+                mentionMap.mention,
+                this.folioId,
+                this.userData._id
+              )
+              .then((res) => res.subscribe((result) => console.log(result)));
+          }
+        }
         if (source == "user") {
           console.log("to send ops : ", delta.ops);
           console.log("quill contents : ", quill.getContents().ops);
@@ -397,5 +411,92 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   //Highlights the text in given range
   highlight(range: any) {
     this.quill.setSelection(range.index, range.length);
+  }
+
+  metionModule() {
+    return {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      mentionDenotationChars: ["@", "#"],
+      source: async (searchTerm, renderList, mentionChar) => {
+        // Value of the mention list
+        let values: any;
+
+        // If User types "@" then trigger the list for user mentioning
+        if (mentionChar === "@") {
+          // Initialise values with list of members
+          values = await this.suggestMembers(this.groupId, searchTerm);
+
+          // Adding All Object to mention all the members
+          values.unshift({
+            id: "all",
+            value: "all",
+          });
+          // If User types "#" then trigger the list for files mentioning
+        } else if (mentionChar === "#") {
+          // Initialise values with list of files
+          values = await this.suggestFiles(this.groupId, searchTerm);
+        }
+
+        // If searchTerm length is 0, then show the full list
+        if (searchTerm.length === 0) {
+          renderList(values, searchTerm);
+        } else {
+          const matches = [];
+          for (let i = 0; i < values.length; i++)
+            if (
+              ~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())
+            )
+              matches.push(values[i]);
+          renderList(matches, searchTerm);
+        }
+      },
+    };
+  }
+
+  async suggestMembers(groupId: string, searchTerm: string) {
+    // Fetch the users list from the server
+    let usersList: any = await this.publicFunctions.searchGroupMembers(
+      groupId,
+      searchTerm
+    );
+
+    // Map the users list
+    usersList = usersList["users"].map((user) => ({
+      id: user._id,
+      value: user.first_name + " " + user.last_name,
+    }));
+
+    // Return the Array without duplicates
+    return Array.from(new Set(usersList));
+  }
+
+  async suggestFiles(groupId: string, searchTerm: string) {
+    // Storage Service Instance
+    let storageService = this._Injector.get(StorageService);
+
+    // Fetch the users list from the server
+    let filesList: any = await this.publicFunctions.searchFiles(
+      groupId,
+      searchTerm,
+      "true"
+    );
+
+    // Map the users list
+    filesList = filesList.map((file: any) => ({
+      id: file._id,
+      value:
+        file.type == "folio"
+          ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+          : `<a href="${this.filesBaseUrl}/${
+              file.modified_name
+            }?authToken=Bearer ${
+              storageService.getLocalData("authToken")["token"]
+            }" style="color: inherit" target="_blank">${
+              file.original_name
+            }</a>`,
+    }));
+
+    // Return the Array without duplicates
+    return Array.from(new Set(filesList));
   }
 }
