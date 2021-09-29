@@ -204,9 +204,9 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
   getBackgroundColor(row: any, cfName: string) {
     const index = this.customFields.findIndex(cf => cf.name == cfName);
     const cf = this.customFields[index];
-    const valueIndex = cf.values.findIndex(value => value == row[cfName]);
-    if (row[cfName] && valueIndex >= 0) {
-      return cf?.badge_color
+    const valueIndex = (cf && cf.values) ? cf.values.findIndex(value => value == row[cfName]) : -1;
+    if ((row[cfName] && valueIndex >= 0) || (cf.input_type_text)) {
+      return cf?.badge_color;
     }
     return '';
   }
