@@ -141,8 +141,8 @@ const GroupSchema = new Schema({
         default: true,
     },
     custom_fields_table_widget: {
-        selectTypeCF: {
-            type: String
+        selectTypeCFs: {
+            type: [String]
         },
         inputTypeCFs: {
             type: [String]
