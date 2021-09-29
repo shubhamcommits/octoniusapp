@@ -96,7 +96,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
       this.utilityService.asyncNotification($localize`:@@multipleAssignments.pleaseWaitWeAreUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
         this.postService.removeAssigneeFromPost(this.post._id, assigneeId)
           .then((res) => {
-            const index = this.assigned_to.findIndex((assignee) => { assignee._id === assigneeId });
+            const index = this.assigned_to.findIndex((assignee) => assignee._id == assigneeId);
             this.assigned_to.splice(index, 1);
 
             // Resolve with success
@@ -109,7 +109,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
     } else if (this.type == 'flow') {
       this.assigneeRemovedEmiter.emit({assigneeId: assigneeId});
     } else if (this.type == 'filter') {
-      const index = this.assigned_to.findIndex((assignee) => { assignee._id === assigneeId });
+      const index = this.assigned_to.findIndex((assignee) => assignee._id == assigneeId);
       this.assigned_to.splice(index, 1);
       this.assigneeRemovedEmiter.emit(assigneeId);
     }
@@ -127,7 +127,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
     }
 
     assignees.forEach(member => {
-      const index = this.assigned_to.findIndex((assignee) => { assignee._id === member._id });
+      const index = this.assigned_to.findIndex((assignee) => assignee._id == member._id);
       if (index < 0) {
         if (this.type == 'post') {
           if (!this.isNewEvent) {
