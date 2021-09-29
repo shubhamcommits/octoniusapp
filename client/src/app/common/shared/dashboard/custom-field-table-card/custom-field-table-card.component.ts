@@ -200,4 +200,14 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
       saveEventSubs.unsubscribe();
     });
   }
+
+  getBackgroundColor(row: any, cfName: string) {
+    const index = this.customFields.findIndex(cf => cf.name == cfName);
+    const cf = this.customFields[index];
+    const valueIndex = cf.values.findIndex(value => value == row[cfName]);
+    if (row[cfName] && valueIndex >= 0) {
+      return cf?.badge_color
+    }
+    return '';
+  }
 }
