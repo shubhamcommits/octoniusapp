@@ -19,6 +19,7 @@ export class CustomFieldsDialogComponent implements OnInit {
   showNewCustomField = false;
   newCustomFieldTitle = '';
   newCustomFieldInputType = false;
+  newCustomFieldInputSelectType = 'number';
 
   groupData;
 
@@ -62,6 +63,8 @@ export class CustomFieldsDialogComponent implements OnInit {
           name: this.newCustomFieldTitle.toLowerCase(),
           title: this.titleCase(this.newCustomFieldTitle),
           input_type: this.newCustomFieldInputType,
+          input_type_number: (this.newCustomFieldInputSelectType == 'number') ? true : false,
+          input_type_text: (this.newCustomFieldInputSelectType == 'text') ? true : false,
           values: []
         };
 
@@ -228,5 +231,9 @@ export class CustomFieldsDialogComponent implements OnInit {
         reject(this.utilityService.rejectAsyncPromise($localize`:@@customFieldDialog.unableToUpdateField:Unable to update field, please try again!`));
       });
     }));
+  }
+
+  selectInputType(value: string) {
+    this.newCustomFieldInputSelectType = value;
   }
 }

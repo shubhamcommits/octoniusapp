@@ -21,7 +21,7 @@
 
         <tbody>
           <tr *ngFor="let row of tableData">
-            <td *ngFor="let select of selectTypeCFs">
+            <td *ngFor="let select of selectTypeCFs" style="background-color: {{getBackgroundColor(row, select)}}">
               <div class="member">
                 <div class="name">
                   {{ row[select] }}

@@ -39,7 +39,11 @@ export class CustomFieldsTableSettingsDialogComponent implements OnInit {
 
     this.customFields.forEach(cf => {
       if (cf.input_type) {
-        this.inputCustomFields.push(cf);
+        if (cf.input_type_number) {
+          this.inputCustomFields.push(cf);
+        } else {
+          this.selectCustomFields.push(cf);
+        }
       } else {
         if (cf.name != 'priority') {
           this.selectCustomFields.push(cf);
