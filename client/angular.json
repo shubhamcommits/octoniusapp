@@ -38,7 +38,8 @@
               "node_modules/quill/dist/quill.bubble.css",
               "node_modules/quill-mention/dist/quill.mention.min.css",
               "src/shared/utilities/highlight.js/monokai-sublime.min.css",
-              "src/shared/utilities/loading-bar/loading-bar.min.css"
+              "src/shared/utilities/loading-bar/loading-bar.min.css",
+              "node_modules/quill-better-table/dist/quill-better-table.css"
             ],
             "scripts": [
               "src/shared/utilities/stripe.checkout.js",

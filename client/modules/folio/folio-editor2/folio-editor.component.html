@@ -1,5 +1,8 @@
  <!-- Folio wrapper starts here -->
- <div [ngClass]="{'hide-modal' : !commentBool}" class="comment-modal center">
+ 
+<app-create-table *ngIf="tableShow" (dataToSubmit)="dataFromTableModal($event)"></app-create-table>
+
+<div [ngClass]="{'hide-modal' : !commentBool}" class="comment-modal center">
   <div class="comment-container center">
     <span class="close" (click)="closeComment()">&times;</span>
     <div class="to-comment-text">

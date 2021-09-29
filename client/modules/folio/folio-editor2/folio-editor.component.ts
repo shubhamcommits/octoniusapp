@@ -48,6 +48,10 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   //Comment modal boolean
   commentBool: boolean = false;
 
+  // Table modal boolean
+  tableShow: boolean = false;
+
+
   //Delete comment modal boolean
   deleteCommentBool : boolean = false;
 
@@ -118,7 +122,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
         ['direction', { 'align': [] }],
         ['link', 'image', 'video', 'formula'],
-        ['clean'], ['comment'],['clear']
+        ['clean'], ['comment'],['tables'],['clear']
       ],
       table: false,
         'better-table': {
@@ -175,6 +179,15 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     document.querySelector(".ql-clear").addEventListener("click", () => {
       this.clearEditor();
     });
+
+    document.querySelectorAll('.ql-tables').forEach(button => {
+      button.innerHTML = '<svg viewBox="0 0 18 18"> <rect class="ql-stroke" height="12" width="12" x="3" y="3"></rect> <rect class="ql-fill" height="2" width="3" x="5" y="5"></rect> <rect class="ql-fill" height="2" width="4" x="9" y="5"></rect> <g class="ql-fill ql-transparent"> <rect height="2" width="3" x="5" y="8"></rect> <rect height="2" width="4" x="9" y="8"></rect> <rect height="2" width="3" x="5" y="11"></rect> <rect height="2" width="4" x="9" y="11"></rect> </g> </svg>'
+      button.addEventListener('click', () => {
+        this.openTableOptions()    
+      });
+     });
+
+
   }
 
   ngOnDestroy() {
@@ -437,6 +450,24 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     this.quill.setSelection(range.index, range.length);
   }
 
+  // Open Table input options dialoge
+  openTableOptions() {
+    this.tableShow= true;  
+  }
+
+  // Get user's input from the create-table modal
+  dataFromTableModal(data:any){    
+    this.tableShow= false;
+    if(data){
+      this.createTable(data.rowCount,data.columnCount)
+    }
+  }
+  // Create table with specific values
+  createTable(rowCount:number,columnCount:number ){
+    const tableModule = this.quill.getModule('better-table');
+      tableModule.insertTable(rowCount, columnCount);
+  }
+  
   metionModule() {
     return {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
