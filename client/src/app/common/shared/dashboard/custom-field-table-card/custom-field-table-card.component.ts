@@ -93,20 +93,27 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
       let tasksCFs= [];
       tasks.forEach(task => {
         let value = {};
+
+        // check if all selectTypes are empty
+        let addTask = false;
         this.selectTypeCFs.forEach(cfName => {
-          if (cfName && task[cfName]) {
-            value[cfName] = task[cfName];
+          if (task[cfName]) {
+            addTask = true;
           }
         });
 
-        this.inputTypeCFs.forEach(cfName => {
-          if (cfName && task[cfName]) {
+        if (addTask) {
+          this.selectTypeCFs.forEach(cfName => {
             value[cfName] = task[cfName];
-          }
-        });
+          });
 
-        if (Object.keys(value).length > 0) {
-          tasksCFs.push(value);
+          this.inputTypeCFs.forEach(cfName => {
+            value[cfName] = task[cfName];
+          });
+
+          if (Object.keys(value).length > 0) {
+            tasksCFs.push(value);
+          }
         }
       });
 
@@ -119,17 +126,15 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
           key += o[selectTypeCFsTmp[i]] + '-';
         }
 
-        if (!key.includes('undefined')) {
-          if(!row[key]) {
-            row[key] = Object.assign({}, o); // create a copy of o
-            r.push(row[key]);
-          } else {
-            inputTypeCFsTmp.forEach(itCF => {
-              if (itCF && itCF.name) {
-                row[key][itCF.name] += o[itCF.name];
-              }
-            });
-          }
+        if(!row[key]) {
+          row[key] = Object.assign({}, o); // create a copy of o
+          r.push(row[key]);
+        } else {
+          inputTypeCFsTmp.forEach(itCF => {
+            if (itCF && itCF.name) {
+              row[key][itCF.name] += o[itCF.name];
+            }
+          });
         }
         return r;
       }, []);
