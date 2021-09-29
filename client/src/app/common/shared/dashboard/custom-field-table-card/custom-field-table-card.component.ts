@@ -64,15 +64,15 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
 
   updateTable() {
     if (this.selectTypeCFs && this.inputTypeCFs) {
+      // Clean the table arrays
+      this.tableData = [];
+      this.selectTypeCustomFields = [];
+      this.inputTypeCustomFields = [];
 
       // Prepare the header row
       this.selectTypeCFs.forEach(selectCF => {
         const index = this.customFields.findIndex(cf => cf.name == selectCF);
         if (index >= 0) {
-          if (!this.selectTypeCustomFields) {
-            this.selectTypeCustomFields = []
-          }
-
           this.selectTypeCustomFields.push(this.customFields[index]);
         }
       });
@@ -80,10 +80,6 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
       this.inputTypeCFs.forEach(inputCF => {
         const index = this.customFields.findIndex(cf => cf.name == inputCF);
         if (index >= 0) {
-          if (!this.inputTypeCustomFields) {
-            this.inputTypeCustomFields = []
-          }
-
           this.inputTypeCustomFields.push(this.customFields[index]);
         }
       });
