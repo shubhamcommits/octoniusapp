@@ -34,8 +34,8 @@ export class CustomFieldsTableSettingsDialogComponent implements OnInit {
   ) {
     this.groupId = this.data.groupId;
     this.customFields = this.data.customFields;
-    this.selectTypeCFs = this.data.selectTypeCFs;
-    this.inputTypeCFs = this.data.inputTypeCFs;
+    this.selectTypeCFs = this.data.selectTypeCFs || [];
+    this.inputTypeCFs = this.data.inputTypeCFs || [];
 
     this.customFields.forEach(cf => {
       if (cf.input_type) {

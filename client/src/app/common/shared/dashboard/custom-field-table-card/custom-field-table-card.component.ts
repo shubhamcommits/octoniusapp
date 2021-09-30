@@ -147,7 +147,7 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
 
       this.transpose(this.tableData).forEach((column, index) => {
         if (index >= this.selectTypeCFs.length) {
-          row[this.inputTypeCFs[index - this.selectTypeCFs.length]] = column.reduce((sum, current) => sum + (+current), 0);
+          row[this.inputTypeCFs[index - this.selectTypeCFs.length]] = column.reduce((sum, current) => sum + (+current || 0), 0);
         }
       });
       this.tableData.push(row);
