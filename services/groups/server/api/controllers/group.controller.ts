@@ -1133,19 +1133,93 @@ export class GroupController {
         const { groupId, fieldId } = req.params;
 
         try {
-            // Find the group and update their respective group avatar
-            const group = await Group.findByIdAndUpdate({
+
+            let group = await Group.findById({
                 _id: groupId
-            },
-                {
-                    $pull:
+            }).select('custom_fields').lean();
+
+            const cfIndex = group.custom_fields.findIndex(cf => cf._id == fieldId);
+            const cf = (group && group.custom_fields) ? group.custom_fields[cfIndex] : null;
+
+            if (cf) {
+                // remove the CF from the table widget
+                group = await Group.findByIdAndUpdate({
+                        _id: groupId
+                    },
                     {
+                        $pull: {
+                            'custom_fields_table_widget.selectTypeCFs': cf.name,
+                            'custom_fields_table_widget.inputTypeCFs': cf.name
+                        }
+                    }).lean();
+                
+                // remove the CF from the Columns where it is displayed
+                await Column.updateMany({
+                        _group: groupId
+                    }, {
+                        $pull: {
+                            'custom_fields_to_show': cf.name,
+                            'custom_fields_to_show_kanban': cf.name
+                        }
+                    }).lean();
+
+                // remove the CF from the Flows where it is used
+                const flows = await Flow.find({
+                        _group: groupId
+                    }).select('_id steps._id steps.trigger steps.action').lean();
+
+                if (flows) {
+                    flows.forEach(flow => {
+                        if (flow.steps) {
+                            flow.steps.forEach(async step => {
+                                const triggerIndex = (step && step.trigger) ? step.trigger.findIndex(trigger => trigger.name == 'Custom Field' && trigger.custom_field.name == cf.name) : -1;
+                                const actionIndex = (step && step.action) ? step.action.findIndex(action => action.name == 'Custom Field' && action.custom_field.name == cf.name) : -1;
+                                if (triggerIndex >= 0 || actionIndex >= 0) {
+console.log(step._id);
+                                    await Flow.findByIdAndUpdate({
+                                            _id: flow._id
+                                        }, {
+                                            $pull: {
+                                                steps: {_id: step._id}
+                                            }
+                                        });
+                                }
+                            });
+                        }
+                    });
+                }
+                
+                /* TODO
+                // remove the CF from the Flows where it is used
+                await Post.updateMany({
+                        _group: groupId
+                    }, {
+                        $unset: { cf.name: 1 }
+                    });
+                */
+                /*
+                const group = await Group.findByIdAndUpdate({
+                        _id: groupId
+                    }, {
+                        $pull: { "custom_fields.$[field].values": value }
+                    }, {
+                        arrayFilters: [{ "field._id": fieldId }],
+                        new: true
+                    }).select('custom_fields');
+                */
+            }
+
+            // Find the group and update their respective group avatar
+            group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    $pull: {
                         custom_fields: {
                             _id: fieldId
                         }
                     }
-                });
-
+                }).lean();
+                
             // Send status 200 response
             return res.status(200).json({
                 message: 'Group custom fields updated!',

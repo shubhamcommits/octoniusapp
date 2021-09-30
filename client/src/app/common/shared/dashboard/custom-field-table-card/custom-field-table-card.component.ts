@@ -205,7 +205,7 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
     const index = this.customFields.findIndex(cf => cf.name == cfName);
     const cf = this.customFields[index];
     const valueIndex = (cf && cf.values) ? cf.values.findIndex(value => value == row[cfName]) : -1;
-    if ((row[cfName] && valueIndex >= 0) || (cf && cf.input_type_text)) {
+    if ((row[cfName] && valueIndex >= 0) || (cf && cf.input_type_text && row[cf.name])) {
       return cf?.badge_color;
     }
     return '';

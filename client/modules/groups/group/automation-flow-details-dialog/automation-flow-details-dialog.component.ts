@@ -64,7 +64,9 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.shuttleGroups = this.data.shuttleGroups;
 
     this.customFields.forEach(cf => {
-      this.customFieldOptions.push(cf.name);
+      if (!cf.input_type && !cf.input_type_number && !cf.input_type_text) {
+        this.customFieldOptions.push(cf.name);
+      }
     });
 
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
