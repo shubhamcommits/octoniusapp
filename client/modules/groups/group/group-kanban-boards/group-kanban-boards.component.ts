@@ -415,23 +415,17 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
           // Find the index of the column to check if the same named column exist or not
           let index = (this.columns) ? this.columns.findIndex((col: any) => col._id === column._id) : -1;
 
-          // Column Service Instance
-          let columnService = this.injector.get(ColumnService);
-
-          // Utility Service Instance
-          let utilityService = this.injector.get(UtilityService);
-
           // Call the HTTP Service function
-          utilityService.asyncNotification($localize`:@@groupKanbanBoards.pleaseWaitWeArchivingSection:Please wait we are archiving your section...`, new Promise((resolve, reject) => {
-            columnService.archiveColumn(column._id)
+          this.utilityService.asyncNotification($localize`:@@groupKanbanBoards.pleaseWaitWeArchivingSection:Please wait we are archiving your section...`, new Promise((resolve, reject) => {
+            this.columnService.archiveColumn(column._id)
               .then((res) => {
-                // Remove the column from the array
-                this.columns.splice(index, 1);
+                // Remove the tasks from the section
+                this.columns[index].tasks = [];
 
-                resolve(utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.sectionArchived:Section Archived!`));
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.sectionArchived:Section Archived!`));
               })
               .catch((err) => {
-                reject(utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToArchiveSection:Unable to archived the section at the moment, please try again!`))
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToArchiveSection:Unable to archived the section at the moment, please try again!`))
               })
           }))
         }
