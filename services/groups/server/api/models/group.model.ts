@@ -141,8 +141,8 @@ const GroupSchema = new Schema({
         default: true,
     },
     custom_fields_table_widget: {
-        selectTypeCF: {
-            type: String
+        selectTypeCFs: {
+            type: [String]
         },
         inputTypeCFs: {
             type: [String]
@@ -159,6 +159,14 @@ const GroupSchema = new Schema({
                 required: true
             },
             input_type: {
+                type: Boolean,
+                default: false
+            },
+            input_type_number: {
+                type: Boolean,
+                default: false
+            },
+            input_type_text: {
                 type: Boolean,
                 default: false
             },

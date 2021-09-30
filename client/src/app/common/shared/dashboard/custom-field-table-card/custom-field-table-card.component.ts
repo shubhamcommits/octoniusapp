@@ -19,10 +19,10 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
 
   tasks = [];
 
-  selectTypeCustomField: any;
+  selectTypeCustomFields = [];
   inputTypeCustomFields = []
 
-  selectTypeCF: any;
+  selectTypeCFs = [];
   inputTypeCFs = [];
 
   tableData = [];
@@ -48,7 +48,7 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
     this.groupData = await this.publicFunctions.getCurrentGroup();
     this.customFields = this.groupData?.custom_fields;
 
-    this.selectTypeCF = this.groupData?.custom_fields_table_widget?.selectTypeCF;
+    this.selectTypeCFs = this.groupData?.custom_fields_table_widget?.selectTypeCFs;
     this.inputTypeCFs = this.groupData?.custom_fields_table_widget?.inputTypeCFs;
 
     await this.getTasks();
@@ -63,65 +63,94 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
   }
 
   updateTable() {
-    this.inputTypeCustomFields = [];
-    this.tableData = [];
+    if (this.selectTypeCFs && this.inputTypeCFs) {
+      // Clean the table arrays
+      this.tableData = [];
+      this.selectTypeCustomFields = [];
+      this.inputTypeCustomFields = [];
 
-    let index = this.customFields.findIndex(cf => cf.name == this.selectTypeCF);
-    if (index >= 0) {
-      this.selectTypeCustomField = this.customFields[index];
-      this.selectTypeCustomField.values.forEach(cfValue => {
-        let tableRow = { selectValue: cfValue, inputTypeCustomFields: [] };
-        this.tableData.push(tableRow);
-      });
-    } else {
-      this.selectTypeCustomField = null;
-    }
-
-    if (this.inputTypeCFs) {
-      this.inputTypeCFs.forEach(cfName => {
-        index = this.customFields.findIndex(field => field.name == cfName);
+      // Prepare the header row
+      this.selectTypeCFs.forEach(selectCF => {
+        const index = this.customFields.findIndex(cf => cf.name == selectCF);
         if (index >= 0) {
-          const field = this.customFields[index];
-          this.inputTypeCustomFields.push(field);
+          this.selectTypeCustomFields.push(this.customFields[index]);
         }
       });
-    } else {
-      this.inputTypeCFs = [];
-    }
 
-    let totals = [];
+      this.inputTypeCFs.forEach(inputCF => {
+        const index = this.customFields.findIndex(cf => cf.name == inputCF);
+        if (index >= 0) {
+          this.inputTypeCustomFields.push(this.customFields[index]);
+        }
+      });
 
-    this.tableData.forEach(row => {
-      this.inputTypeCustomFields.forEach(cf => {
-        let sum = 0;
+      // Map only the CF properties from the tasks
+      const tasks = this.tasks.map(task => {
+        return task.task.custom_fields;
+      }).filter(cf => cf);
 
-        this.tasks.forEach(task => {
-          if (task.task.custom_fields
-              && (task.task.custom_fields[this.selectTypeCF] && task.task.custom_fields[this.selectTypeCF] == row.selectValue)
-              && (task.task.custom_fields[cf.name] && !isNaN(task.task.custom_fields[cf.name]))) {
+      // Map the CF as needed for the table
+      let tasksCFs= [];
+      tasks.forEach(task => {
+        let value = {};
 
-            sum += +task.task.custom_fields[cf.name];
+        // check if all selectTypes are empty
+        let addTask = false;
+        this.selectTypeCFs.forEach(cfName => {
+          if (task[cfName]) {
+            addTask = true;
           }
         });
-        row.inputTypeCustomFields.push(sum);
-      });
-    });
 
-    if (this.tableData && this.tableData[0]) {
-      const tableTransposed = this.transpose(this.tableData);
-      const columns = tableTransposed[tableTransposed.length-1];
-      if (columns && columns[0]) {
-        for (let col = 0; col < columns[0].length; col++) {
-          let colSum = 0;
-          for (let row = 0; row < columns.length; row++) {
-            if (columns[row] && columns[row][col] && !isNaN(columns[row][col])) {
-              colSum += +columns[row][col];
-            }
+        if (addTask) {
+          this.selectTypeCFs.forEach(cfName => {
+            value[cfName] = task[cfName];
+          });
+
+          this.inputTypeCFs.forEach(cfName => {
+            value[cfName] = task[cfName];
+          });
+
+          if (Object.keys(value).length > 0) {
+            tasksCFs.push(value);
           }
-          totals.push(colSum);
         }
-      }
-      this.tableData.push({ selectValue: $localize`:@@cfTableCard.total:TOTAL`, inputTypeCustomFields: totals });
+      });
+
+      const selectTypeCFsTmp = this.selectTypeCFs;
+      const inputTypeCFsTmp = this.inputTypeCFs;
+      let row = {};
+      this.tableData = tasksCFs.reduce((r, o) => {
+        let key = '';
+        for (let i = 0; i < selectTypeCFsTmp.length; i++) {
+          key += o[selectTypeCFsTmp[i]] + '-';
+        }
+
+        if(!row[key]) {
+          row[key] = Object.assign({}, o); // create a copy of o
+          r.push(row[key]);
+        } else {
+          inputTypeCFsTmp.forEach(itCF => {
+            if (itCF && itCF.name) {
+              row[key][itCF.name] += o[itCF.name];
+            }
+          });
+        }
+        return r;
+      }, []);
+    }
+
+    // Add a totals row
+    let row = {};
+    if (this.tableData && this.tableData[0]) {
+      row[this.selectTypeCFs[0]] = $localize`:@@cfTableCard.total:TOTAL`;
+
+      this.transpose(this.tableData).forEach((column, index) => {
+        if (index >= this.selectTypeCFs.length) {
+          row[this.inputTypeCFs[index - this.selectTypeCFs.length]] = column.reduce((sum, current) => sum + (+current || 0), 0);
+        }
+      });
+      this.tableData.push(row);
     }
   }
 
@@ -137,7 +166,7 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
     const data = {
       groupId: this.groupData?._id,
       customFields: this.customFields,
-      selectTypeCF: this.selectTypeCF,
+      selectTypeCFs: this.selectTypeCFs,
       inputTypeCFs: this.inputTypeCFs
     }
 
@@ -150,16 +179,16 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
     });
 
     const saveEventSubs = dialogRef.componentInstance.saveEvent.subscribe(async (data) => {
-      this.selectTypeCF = data.selectTypeCF;
+      this.selectTypeCFs = data.selectTypeCFs;
       this.inputTypeCFs = data.inputTypeCFs;
 
       if (!this.groupData.custom_fields_table_widget) {
         this.groupData.custom_fields_table_widget = {
-          selectTypeCF: this.selectTypeCF,
+          selectTypeCFs: this.selectTypeCFs,
           inputTypeCFs: this.inputTypeCFs
         };
       }
-      this.groupData.custom_fields_table_widget.selectTypeCF = this.selectTypeCF;
+      this.groupData.custom_fields_table_widget.selectTypeCFs = this.selectTypeCFs;
       this.groupData.custom_fields_table_widget.inputTypeCFs = this.inputTypeCFs;
 
       await this.publicFunctions.sendUpdatesToGroupData(this.groupData);
@@ -170,5 +199,15 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
     dialogRef.afterClosed().subscribe(result => {
       saveEventSubs.unsubscribe();
     });
+  }
+
+  getBackgroundColor(row: any, cfName: string) {
+    const index = this.customFields.findIndex(cf => cf.name == cfName);
+    const cf = this.customFields[index];
+    const valueIndex = (cf && cf.values) ? cf.values.findIndex(value => value == row[cfName]) : -1;
+    if ((row[cfName] && valueIndex >= 0) || (cf && cf.input_type_text && row[cf.name])) {
+      return cf?.badge_color;
+    }
+    return '';
   }
 }

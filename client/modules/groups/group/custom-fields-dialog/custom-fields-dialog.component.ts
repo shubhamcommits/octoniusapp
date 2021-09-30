@@ -19,6 +19,7 @@ export class CustomFieldsDialogComponent implements OnInit {
   showNewCustomField = false;
   newCustomFieldTitle = '';
   newCustomFieldInputType = false;
+  newCustomFieldInputSelectType = 'number';
 
   groupData;
 
@@ -62,6 +63,8 @@ export class CustomFieldsDialogComponent implements OnInit {
           name: this.newCustomFieldTitle.toLowerCase(),
           title: this.titleCase(this.newCustomFieldTitle),
           input_type: this.newCustomFieldInputType,
+          input_type_number: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'number') ? true : false,
+          input_type_text: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'text') ? true : false,
           values: []
         };
 
@@ -107,6 +110,8 @@ export class CustomFieldsDialogComponent implements OnInit {
                   this.customFields.splice(index, 1);
 
                   this.groupData.custom_fields = res['group'].custom_fields;
+                  this.groupData.custom_fields_table_widget.selectTypeCFs = res['group'].custom_fields_table_widget.selectTypeCFs;
+                  this.groupData.custom_fields_table_widget.inputTypeCFs = res['group'].custom_fields_table_widget.inputTypeCFs;
                   this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@customFieldDialog.fieldDeleted:Field deleted!`));
@@ -228,5 +233,9 @@ export class CustomFieldsDialogComponent implements OnInit {
         reject(this.utilityService.rejectAsyncPromise($localize`:@@customFieldDialog.unableToUpdateField:Unable to update field, please try again!`));
       });
     }));
+  }
+
+  selectInputType(value: string) {
+    this.newCustomFieldInputSelectType = value;
   }
 }
