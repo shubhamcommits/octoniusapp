@@ -1190,22 +1190,12 @@ console.log(step._id);
                 }
                 
                 /* TODO
-                // remove the CF from the Flows where it is used
+                // remove the CF from the Posts where it is used
                 await Post.updateMany({
                         _group: groupId
                     }, {
                         $unset: { cf.name: 1 }
                     });
-                */
-                /*
-                const group = await Group.findByIdAndUpdate({
-                        _id: groupId
-                    }, {
-                        $pull: { "custom_fields.$[field].values": value }
-                    }, {
-                        arrayFilters: [{ "field._id": fieldId }],
-                        new: true
-                    }).select('custom_fields');
                 */
             }
 
@@ -1219,7 +1209,7 @@ console.log(step._id);
                         }
                     }
                 }).lean();
-                
+
             // Send status 200 response
             return res.status(200).json({
                 message: 'Group custom fields updated!',
