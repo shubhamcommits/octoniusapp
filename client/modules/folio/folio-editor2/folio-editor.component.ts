@@ -8,6 +8,7 @@ import ReconnectingWebSocket from "reconnecting-websocket";
 import * as ShareDB from "sharedb/lib/client";
 import { FilesService } from "src/shared/services/files-service/files.service";
 import { StorageService } from "src/shared/services/storage-service/storage.service";
+import { FolioServiceService } from 'src/app/folio-service.service';
 
 declare const Quill2: any;
 declare const quillBetterTable: any;
@@ -104,8 +105,14 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   constructor(
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
+    private follioService: FolioServiceService
   ) {
     // Get the State of the ReadOnly
+    follioService.follioSubject.subscribe(data => {
+      if (data){
+        this.quill.clipboard.dangerouslyPasteHTML(data);
+      }
+    })
     this.readOnly =
       this._ActivatedRoute.snapshot.queryParamMap.get("readOnly") == "true" ||
       false;

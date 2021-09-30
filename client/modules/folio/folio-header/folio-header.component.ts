@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { Title } from "@angular/platform-browser";
 import { PublicFunctions } from 'modules/public.functions';
+import { HttpClient } from '@angular/common/http';
+import { FolioServiceService } from 'src/app/folio-service.service';
 
 @Component({
   selector: 'app-folio-header',
@@ -10,6 +12,9 @@ import { PublicFunctions } from 'modules/public.functions';
   styleUrls: ['./folio-header.component.scss']
 })
 export class FolioHeaderComponent implements OnInit {
+
+
+  uploadedFiles: Array<File> = []
 
   // GroupID Variable
   groupId: any;
@@ -22,6 +27,11 @@ export class FolioHeaderComponent implements OnInit {
 
   // File Data Variable
   file: any
+
+  // Uploaded Files
+  selectedFile: any
+
+  htmlData: any
 
   // Edit Title
   editTitle = false
@@ -36,7 +46,9 @@ export class FolioHeaderComponent implements OnInit {
     private router: Router,
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,
-    private titleService: Title
+    private titleService: Title,
+    private httpClient: HttpClient,
+    private follioService: FolioServiceService
   ) { }
 
   async ngOnInit() {
@@ -175,4 +187,24 @@ export class FolioHeaderComponent implements OnInit {
     this.titleService.setTitle('Octonius');
   }
 
+  fileChange(element: any) {
+    this.uploadedFiles = element.target.files;
+  }
+
+  onFileChanged(event) {
+    this.uploadedFiles = event.target.files;
+
+    let formData = new FormData();
+    for (var i = 0; i < this.uploadedFiles.length; i++) {
+      formData.append("uploads[]", this.uploadedFiles[i], this.uploadedFiles[i].name);
+    }
+    this.httpClient.post('http://localhost:11000/upload', formData)
+      .subscribe((response: any) => {
+        // HTML data Converted
+        this.htmlData = response.message;
+
+        //Setting follioService Subject for binding content in quill
+        this.follioService.setNewFollioValue(this.htmlData);
+      })
+  }
 }

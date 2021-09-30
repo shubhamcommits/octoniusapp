@@ -4,6 +4,12 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
+const { exec } = require("child_process");
+const fs = require('fs');
+const multipart = require('connect-multiparty');
+const multipartMiddleware = multipart({
+    uploadDir: './uploads'
+});
 
 // Defining new Express application
 const app = express();
@@ -60,6 +66,15 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
     res.sendFile(path.join(__dirname, './views/index.html'));
 });
 
+app.post('/upload', multipartMiddleware, async (req: any, res) =>{
+    let file_path = "";
+    if ( req.files.uploads.length >=1 ) {
+        file_path = './'+req.files.uploads[0].path;
+        file_path = './uploads/'+path.basename(file_path);
+    }
+    const htmlData = await createHtml("html", file_path, res);
+})
+
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
     const error = new Error('404 not found');
@@ -75,6 +90,28 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
         }
     });
 });
+
+
+const createHtml = (toFormate="html", file_uri, res) => {
+    exec(`"C:/Program Files/LibreOffice/program/soffice" --convert-to "${toFormate}" --outdir "./uploads" "${file_uri}"`, (error, stdout, stderr) => {
+      if (error) {
+          console.log(`error: ${error.message}`);
+          return;
+      }
+      if (stderr) {
+          console.log(`stderr: ${stderr}`);
+          return;
+      }
+      console.log(`stdout:`);
+      const htmlFile = "./uploads/"+path.parse(file_uri).name+".html";
+      fs.readFile(htmlFile, 'utf-8', (err, data) => {
+        res.json({
+          "message": data,
+          "messages": "Temp"
+        });
+      })
+    }); 
+  }
 
 // Compressing the Application
 app.use(compression());
