@@ -1175,7 +1175,6 @@ export class GroupController {
                                 const triggerIndex = (step && step.trigger) ? step.trigger.findIndex(trigger => trigger.name == 'Custom Field' && trigger.custom_field.name == cf.name) : -1;
                                 const actionIndex = (step && step.action) ? step.action.findIndex(action => action.name == 'Custom Field' && action.custom_field.name == cf.name) : -1;
                                 if (triggerIndex >= 0 || actionIndex >= 0) {
-console.log(step._id);
                                     await Flow.findByIdAndUpdate({
                                             _id: flow._id
                                         }, {
