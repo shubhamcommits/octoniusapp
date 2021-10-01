@@ -102,13 +102,13 @@ export class ComponentSearchInputBoxComponent implements OnInit {
             this.itemList = []
 
           else {
-            if(this.type === 'barTag'){
+            if(this.type === 'barTag') {
               this.itemList = this.groupData.bars.map( item => item.bar_tag);
               this.itemList = this.itemList.filter( item => item.includes(this.itemValue));
             }
-            if(this.type === 'barMembers'){
+            if(this.type === 'barMembers') {
               this.itemList = this.groupData._members.filter( member => {
-                let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase()
+                let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase();
                 return item.includes(this.itemValue.toLowerCase());
               });
 
@@ -181,7 +181,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
           // Stop the loading state once the values are loaded
           this.isLoading$.next(false);
         }
-      }))
+      }));
   }
 
   /**

@@ -4,6 +4,7 @@ import { SubSink } from 'subsink';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
     selector: 'app-group-bar-dialog',
@@ -18,7 +19,9 @@ import { environment } from 'src/environments/environment';
         @Inject(MAT_DIALOG_DATA) public data: any,
         private mdDialogRef: MatDialogRef<GroupBarDialogComponent>
         ) { }
+
     @Output() closeEvent = new EventEmitter();
+
       // Base Url of the users uploads
     userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
     tag: string;
@@ -31,6 +34,10 @@ import { environment } from 'src/environments/environment';
     membersLoaded = false;
     addNewBar = false;
     searchBarPlaceHolder= 'Add a member to tag';
+
+    // PUBLIC FUNCTIONS
+    public publicFunctions = new PublicFunctions(this.injector);
+
     ngOnInit(): void {
         this.members = this.data.groupData._members;
         this.groupData = this.data.groupData;
@@ -53,24 +60,28 @@ import { environment } from 'src/environments/environment';
     }
 
     addNewUserToBar(event, bar){
-            // Add a new member to bar
+        // Add a new member to bar
         this.utilityService.asyncNotification($localize`:@@groupBarDialog.pleaseWaitAddingNewUserToBar:Please wait we are adding the new user to bar...`,
         new Promise((resolve, reject)=>{
         this.groupService.addMemberToBar(this.groupId, bar.bar_tag, event)
-        .then(()=> {
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupBarDialog.addedToBar:${event.first_name} added to your bar!`))
+          .then((res: any)=> {
             this.barList.forEach(barItem => {
                 if(barItem.bar_tag === bar.bar_tag){
                     barItem.members.push(event);
                 }
             });
-        })
-        .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupBarDialog.unableToAddToBar:Unable to add ${event.first_name} to your bar`)))
-        }))
+
+            this.groupData = res.group;
+            this.groupData.bars = this.barList;
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupBarDialog.addedToBar:${event.first_name} added to your bar!`));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupBarDialog.unableToAddToBar:Unable to add ${event.first_name} to your bar`)))
+        }));
     }
 
     removeUserFromBar(event,bar){
-
         this.groupService.removeUserFromBar(this.groupId, bar.bar_tag, event)
         .then(()=> {
             this.utilityService.warningNotification($localize`:@@groupBarDialog.removedFromBarTag:${event.first_name} removed from ${bar.bar_tag}!`);
@@ -80,6 +91,9 @@ import { environment } from 'src/environments/environment';
                     barItem.tag_members = barItem.tag_members.filter(memberId => memberId !== event._id);
                 }
             });
+
+            this.groupData.bars = this.barList;
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
         })
         .catch(() => this.utilityService.rejectAsyncPromise($localize`:@@groupBarDialog.unableToRemoveFromBarTag:Unable to remove ${event.first_name} from ${bar.bar_tag}`));
     }
@@ -87,9 +101,8 @@ import { environment } from 'src/environments/environment';
         this.addNewBar = !this.addNewBar;
     }
 
-    addTag(){
-        this.groupService.addBar(this.groupData._id, this.tag).then((res: any)=>{
-            this.data.groupData = res.group;
+    addTag() {
+        this.groupService.addBar(this.groupData._id, this.tag).then((res: any) => {
             this.barList = res.group.bars;
             this.barList.forEach(bar => {
                 bar.members = [];
@@ -100,6 +113,10 @@ import { environment } from 'src/environments/environment';
                     });
                 });
             });
+
+            this.groupData = res.group;
+            this.groupData.bars = this.barList;
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
         }).catch(() => {});
         this.tag = "";
         this.addNewBar = false;
@@ -107,7 +124,6 @@ import { environment } from 'src/environments/environment';
 
     removeTag(barTag) {
         this.groupService.removeBar(this.groupData._id, barTag).then((res: any)=>{
-            this.data.groupData = res.group;
             this.barList = res.group.bars;
             this.barList.forEach(bar => {
                 bar.members = [];
@@ -118,6 +134,10 @@ import { environment } from 'src/environments/environment';
                     });
                 });
             });
+
+            this.groupData = res.group;
+            this.groupData.bars = this.barList;
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
         }).catch(() => {});
         this.tag = "";
         this.addNewBar = false;
