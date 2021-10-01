@@ -60,28 +60,28 @@ import { PublicFunctions } from 'modules/public.functions';
     }
 
     addNewUserToBar(event, bar){
-            // Add a new member to bar
+        // Add a new member to bar
         this.utilityService.asyncNotification($localize`:@@groupBarDialog.pleaseWaitAddingNewUserToBar:Please wait we are adding the new user to bar...`,
         new Promise((resolve, reject)=>{
         this.groupService.addMemberToBar(this.groupId, bar.bar_tag, event)
-        .then((res: any)=> {
-          this.groupData = res.group;
-
-          this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupBarDialog.addedToBar:${event.first_name} added to your bar!`))
+          .then((res: any)=> {
             this.barList.forEach(barItem => {
                 if(barItem.bar_tag === bar.bar_tag){
                     barItem.members.push(event);
                 }
             });
-        })
-        .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupBarDialog.unableToAddToBar:Unable to add ${event.first_name} to your bar`)))
-        }))
+
+            this.groupData = res.group;
+            this.groupData.bars = this.barList;
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupBarDialog.addedToBar:${event.first_name} added to your bar!`));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupBarDialog.unableToAddToBar:Unable to add ${event.first_name} to your bar`)))
+        }));
     }
 
     removeUserFromBar(event,bar){
-
         this.groupService.removeUserFromBar(this.groupId, bar.bar_tag, event)
         .then(()=> {
             this.utilityService.warningNotification($localize`:@@groupBarDialog.removedFromBarTag:${event.first_name} removed from ${bar.bar_tag}!`);
@@ -91,6 +91,9 @@ import { PublicFunctions } from 'modules/public.functions';
                     barItem.tag_members = barItem.tag_members.filter(memberId => memberId !== event._id);
                 }
             });
+
+            this.groupData.bars = this.barList;
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
         })
         .catch(() => this.utilityService.rejectAsyncPromise($localize`:@@groupBarDialog.unableToRemoveFromBarTag:Unable to remove ${event.first_name} from ${bar.bar_tag}`));
     }
@@ -100,10 +103,6 @@ import { PublicFunctions } from 'modules/public.functions';
 
     addTag() {
         this.groupService.addBar(this.groupData._id, this.tag).then((res: any) => {
-            this.groupData = res.group;
-
-            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-
             this.barList = res.group.bars;
             this.barList.forEach(bar => {
                 bar.members = [];
@@ -114,6 +113,10 @@ import { PublicFunctions } from 'modules/public.functions';
                     });
                 });
             });
+
+            this.groupData = res.group;
+            this.groupData.bars = this.barList;
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
         }).catch(() => {});
         this.tag = "";
         this.addNewBar = false;
@@ -121,10 +124,6 @@ import { PublicFunctions } from 'modules/public.functions';
 
     removeTag(barTag) {
         this.groupService.removeBar(this.groupData._id, barTag).then((res: any)=>{
-            this.groupData = res.group;
-
-            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-
             this.barList = res.group.bars;
             this.barList.forEach(bar => {
                 bar.members = [];
@@ -135,6 +134,10 @@ import { PublicFunctions } from 'modules/public.functions';
                     });
                 });
             });
+
+            this.groupData = res.group;
+            this.groupData.bars = this.barList;
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
         }).catch(() => {});
         this.tag = "";
         this.addNewBar = false;
