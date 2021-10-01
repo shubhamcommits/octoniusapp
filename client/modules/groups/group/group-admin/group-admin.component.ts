@@ -49,6 +49,7 @@ export class GroupAdminComponent implements OnInit {
   constructor(
     private injector: Injector,
     private utilityService: UtilityService,
+    private groupService: GroupService,
     public dialog: MatDialog,
     private router: ActivatedRoute) { }
 
@@ -100,116 +101,97 @@ export class GroupAdminComponent implements OnInit {
    * @param { _id, first_name, email } member
    */
   onAddNewUser(groupId: string, member: any){
-
-    // Utility Service
-    let utilityService = this.injector.get(UtilityService)
-
-    // Group Service
-    let groupService = this.injector.get(GroupService);
-
     // Add a new member to group
-    utilityService.asyncNotification($localize`:@@groupAdmin.pleaseWaitAddingUserToGroup:Please wait we are adding the new user to your group...`,
+    this.utilityService.asyncNotification($localize`:@@groupAdmin.pleaseWaitAddingUserToGroup:Please wait we are adding the new user to your group...`,
     new Promise((resolve, reject)=>{
-      groupService.addNewUserToGroup(groupId, member)
-      .then(()=> resolve(utilityService.resolveAsyncPromise($localize`:@@groupAdmin.addedToGroup:${member.first_name} added to your group!`)))
-      .catch(() => reject(utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToAdd:Unable to add ${member.first_name} to your group, please try again!`)))
+      this.groupService.addNewUserToGroup(groupId, member)
+      .then(()=> resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.addedToGroup:${member.first_name} added to your group!`)))
+      .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToAdd:Unable to add ${member.first_name} to your group, please try again!`)))
     }))
   }
 
   saveSettings(selected) {
 
-    // Utility Service
-    let utilityService = this.injector.get(UtilityService);
-
-    // Group Service
-    let groupService = this.injector.get(GroupService);
-
     // Save the settings
-    utilityService.asyncNotification($localize`:@@groupAdmin.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+    this.utilityService.asyncNotification($localize`:@@groupAdmin.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
       new Promise((resolve, reject)=>{
         if (selected.source.name === 'share_files') {
-          groupService.saveSettings(this.groupId, {share_files: selected.checked})
+          this.groupService.saveSettings(this.groupId, {share_files: selected.checked})
             .then(()=> {
               this.groupData.share_files = selected.checked;
               this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
             })
-            .catch(() => reject(utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
         }
 
         if (selected.source.name === 'enabled_rights') {
-          groupService.saveSettings(this.groupId, {enabled_rights: selected.checked})
+          this.groupService.saveSettings(this.groupId, {enabled_rights: selected.checked})
             .then(()=> {
               this.enabledRights = selected.checked;
               this.groupData.enabled_rights = selected.checked;
               this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
             })
-            .catch(() => reject(utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
         }
 
         if (selected.source.name === 'enabled_project_type') {
-          groupService.saveSettings(this.groupId, {project_type: selected.checked})
+          this.groupService.saveSettings(this.groupId, {project_type: selected.checked})
             .then(()=> {
               this.enabledProjectType = selected.checked;
               this.groupData.project_type = selected.checked;
               this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
             })
-            .catch(() => reject(utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
         }
 
         if (selected.source.name === 'enabled_shuttle_type') {
-          groupService.saveSettings(this.groupId, {shuttle_type: selected.checked})
+          this.groupService.saveSettings(this.groupId, {shuttle_type: selected.checked})
             .then(()=> {
               this.enabledShuttleType = selected.checked;
               this.groupData.shuttle_type = selected.checked;
               this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
             })
-            .catch(() => reject(utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
         }
 
         if (selected.source.name === 'enable_allocation') {
-          groupService.saveSettings(this.groupId, {enable_allocation: selected.checked})
+          this.groupService.saveSettings(this.groupId, {enable_allocation: selected.checked})
             .then(()=> {
               this.enableAllocation = selected.checked;
               this.groupData.enable_allocation = selected.checked;
               this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
             })
-            .catch(() => reject(utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
         }
 
         if(selected.source.name === 'enabled_campaign'){
-          groupService.saveSettings(this.groupId, {enabled_campaign: selected.checked})
+          this.groupService.saveSettings(this.groupId, {enabled_campaign: selected.checked})
           .then(()=> {
             this.enabledCampaign = selected.checked;
             this.groupData.enabled_campaign = selected.checked;
             this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-            resolve(utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
           })
-          .catch(() => reject(utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
         }
       }));
   }
 
   selectShuttleSection(column: any) {
 
-    // Utility Service
-    let utilityService = this.injector.get(UtilityService);
-
-    // Group Service
-    let groupService = this.injector.get(GroupService);
-
-    utilityService.asyncNotification($localize`:@@groupAdmin.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
+    this.utilityService.asyncNotification($localize`:@@groupAdmin.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
       new Promise((resolve, reject)=>{
-        groupService.selectShuttleSection(this.groupId, column)
+        this.groupService.selectShuttleSection(this.groupId, column)
         .then((res)=> {
           this.publicFunctions.sendUpdatesToGroupData(res['group']);
-          resolve(utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
         })
-        .catch(() => reject(utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
       }));
   }
 
@@ -220,7 +202,8 @@ export class GroupAdminComponent implements OnInit {
       disableClose: true,
       data: { groupData: this.groupData }
     });
-    const sub = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+    const sub = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
+      this.groupData = await this.publicFunctions.getCurrentGroup();
     });
     dialogRef.afterClosed().subscribe(result => {
       sub.unsubscribe();

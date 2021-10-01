@@ -4,6 +4,7 @@ import { SubSink } from 'subsink';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
     selector: 'app-group-bar-dialog',
@@ -18,7 +19,9 @@ import { environment } from 'src/environments/environment';
         @Inject(MAT_DIALOG_DATA) public data: any,
         private mdDialogRef: MatDialogRef<GroupBarDialogComponent>
         ) { }
+
     @Output() closeEvent = new EventEmitter();
+
       // Base Url of the users uploads
     userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
     tag: string;
@@ -31,6 +34,10 @@ import { environment } from 'src/environments/environment';
     membersLoaded = false;
     addNewBar = false;
     searchBarPlaceHolder= 'Add a member to tag';
+
+    // PUBLIC FUNCTIONS
+    public publicFunctions = new PublicFunctions(this.injector);
+
     ngOnInit(): void {
         this.members = this.data.groupData._members;
         this.groupData = this.data.groupData;
@@ -87,9 +94,12 @@ import { environment } from 'src/environments/environment';
         this.addNewBar = !this.addNewBar;
     }
 
-    addTag(){
-        this.groupService.addBar(this.groupData._id, this.tag).then((res: any)=>{
-            this.data.groupData = res.group;
+    addTag() {
+        this.groupService.addBar(this.groupData._id, this.tag).then((res: any) => {
+            this.groupData = res.group;
+
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
             this.barList = res.group.bars;
             this.barList.forEach(bar => {
                 bar.members = [];
@@ -107,7 +117,10 @@ import { environment } from 'src/environments/environment';
 
     removeTag(barTag) {
         this.groupService.removeBar(this.groupData._id, barTag).then((res: any)=>{
-            this.data.groupData = res.group;
+            this.groupData = res.group;
+
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
             this.barList = res.group.bars;
             this.barList.forEach(bar => {
                 bar.members = [];
