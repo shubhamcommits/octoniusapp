@@ -519,36 +519,52 @@ export class ColumnsController {
         const { sectionId } = req.body;
 
         try {
+
             let column = await Column.findById({
                     _id: sectionId
                 })
-                .select("title archived")
                 .lean();
 
-            await Post.updateMany({
-                    'task._column': sectionId
-                }, {
-                    $set: {'archived': !(column.archived) }
-                });
+            if (column.archived) {
+                // Unarchive Section & Posts
+                // Unarchive the posts
+                await Post.updateMany({
+                        'task._column': sectionId
+                    }, {
+                        $set: {'archived': false }
+                    });
+                
+                // Find the group and update their respective group avatar
+                column = await Column.findOneAndUpdate({
+                        _id: sectionId
+                    }, {
+                        $set: { archived: false }
+                    }, {
+                        safe: true,
+                        new: true
+                    })
+                    .populate({ path: 'budget.expenses._user' })
+                    .lean();
 
-            let action = (column.archived) ? {
-                $set: { archived: !(column.archived) }
-            }: {
-                $set: {
-                    archived: !(column.archived),
-                    title: column.title + ' ' + moment().format('YYYY-MM-DD')
-                }
-            };
+            } else {
+                // Archive Section & Posts
+                // Duplicate the section
+                let newColumn = column;
+                delete newColumn._id;
+                newColumn.archived = true;
+                newColumn.title = column.title + ' ' + moment().format('YYYY-MM-DD');
+                newColumn = await Column.create(newColumn);
 
-            // Find the group and update their respective group avatar
-            column = await Column.findOneAndUpdate({
-                    _id: sectionId
-                }, action, {
-                    safe: true,
-                    new: true
-                })
-                .populate({ path: 'budget.expenses._user' })
-                .lean();
+                // Update the post to the new duplicated section
+                await Post.updateMany({
+                        'task._column': sectionId
+                    }, {
+                        $set: {
+                            'archived': true,
+                            'task._column': newColumn._id
+                        }
+                    });
+            }
 
             // Send status 200 response
             return res.status(200).json({

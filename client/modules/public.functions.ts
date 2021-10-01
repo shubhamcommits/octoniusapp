@@ -1357,7 +1357,7 @@ export class PublicFunctions {
                                     retValue = false;
                                 }
                             } else {
-                                const triggerSection = (trigger._section._id || trigger._section);
+                                const triggerSection = (trigger && trigger._section) ? (trigger._section._id || trigger._section) : '';
                                 let postSection;
                                 if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId) {
                                     postSection = (post.task._shuttle_section._id || post.task._shuttle_section);
