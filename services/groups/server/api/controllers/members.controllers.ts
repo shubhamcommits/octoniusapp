@@ -361,7 +361,7 @@ export class MembersControllers {
 
         try {
             const memberId = member._id;
-            const groupUpdate: any = await Group.findById(groupId);
+            let groupUpdate: any = await Group.findById(groupId);
             let foundBar = false;
             let userExists = false;
             let users;
@@ -391,8 +391,19 @@ export class MembersControllers {
                 }
             });
             groupUpdate.save();
+            
+            groupUpdate = await Group.findById(groupId)
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
+                })
+                .lean();
 
-             // Send status 200 response
+            // Send status 200 response
             return res.status(200).json({
                 message: 'New Member has been added to the bar!',
                 group: groupUpdate

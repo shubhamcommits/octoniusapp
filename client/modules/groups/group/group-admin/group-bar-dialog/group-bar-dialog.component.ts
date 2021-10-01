@@ -64,7 +64,11 @@ import { PublicFunctions } from 'modules/public.functions';
         this.utilityService.asyncNotification($localize`:@@groupBarDialog.pleaseWaitAddingNewUserToBar:Please wait we are adding the new user to bar...`,
         new Promise((resolve, reject)=>{
         this.groupService.addMemberToBar(this.groupId, bar.bar_tag, event)
-        .then(()=> {
+        .then((res: any)=> {
+          this.groupData = res.group;
+
+          this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupBarDialog.addedToBar:${event.first_name} added to your bar!`))
             this.barList.forEach(barItem => {
                 if(barItem.bar_tag === bar.bar_tag){
