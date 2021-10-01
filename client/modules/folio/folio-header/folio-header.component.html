@@ -40,8 +40,14 @@
         <div *ngIf="selectedFile">
             <p >{{selectedFile.name}}</p>
         </div>
-        <input style="display: none" (change)="onFileChanged($event)" type="file" class="custom-file-input" id="fileInput"
-      aria-describedby="inputGroupFileAddon01" #fileInput>
+        <input
+            (change)="onFileChanged($event)" 
+            type="file" 
+            class="custom-file-input hide-modal" 
+            id="fileInput"
+            aria-describedby="inputGroupFileAddon01" #fileInput
+            accept=".docx, .doc"
+        />
         <button 
             class="btn btn-warning"
             (click)="fileInput.click()">Upload File

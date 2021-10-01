@@ -205,6 +205,7 @@ export class FolioHeaderComponent implements OnInit {
 
         //Setting follioService Subject for binding content in quill
         this.follioService.setNewFollioValue(this.htmlData);
+        event.target.value = "";
       })
   }
 }

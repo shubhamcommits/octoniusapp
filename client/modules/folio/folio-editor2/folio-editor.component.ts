@@ -111,6 +111,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     follioService.follioSubject.subscribe(data => {
       if (data){
         this.quill.clipboard.dangerouslyPasteHTML(data);
+        this.saveQuillData();
       }
     })
     this.readOnly =
@@ -165,7 +166,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     // Fetch User Data
     if (!this.readOnly) {
       this.userData = await this.publicFunctions.getCurrentUser();
-      console.log("userData : ",this.userData);
       // check if the user is part of the group of the folio
       const groupIndex = await this.userData?._groups?.findIndex((group) => {
         return (group._id || group) == this.groupId;
@@ -239,19 +239,15 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     folio.subscribe(async () => {
       if (!folio.type) {
         folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
-        console.log("creating folio");
       }
-      console.log("folio data : ", folio.data.data);
       // update editor contents
       quill.setContents(folio.data.data.delta);
       this.quill2.setContents([{ insert: "\n" }]);
       this.metaData = folio.data.data.comment;
       // local -> server
       quill.on("text-change", (delta, oldDelta, source) => {
-        // console.log(delta.ops);
         if (delta.ops.length > 1 && delta.ops[1].insert) {
           let mentionMap = JSON.parse(JSON.stringify(delta.ops[1].insert));
-          // console.log("mention : ",mentionMap.mention);
           if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
             let filesService = this._Injector.get(FilesService);
             filesService
@@ -264,20 +260,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           }
         }
         if (source == "user") {
-          var toSend = {
-            p: ["data"],
-            od: folio.data.data,
-            oi: { comment: this.metaData, delta: quill.getContents().ops },
-          };
-          folio.submitOp(
-            toSend,
-            {
-              source: quill,
-            },
-            (err: Error) => {
-              if (err) console.error("Submit OP returned an error:", err);
-            }
-          );
+          this.saveQuillData()
         }
       });
 
@@ -290,7 +273,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       // server -> local
       folio.on("op", (op, source) => {
         if (source === quill) return;
-        console.log("server -> local : ", op[0].oi.delta);
         quill.setContents(op[0].oi.delta);
         this.metaData = op[0].oi.comment;
       });
@@ -308,10 +290,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           found = true;
         }
       })
-      console.log(index);
       if(found) this.commentsToDisplay.push(index);
     });
-    console.log(this.commentsToDisplay);
   }
 
   generateIndexes(index : number, length : number) {
@@ -336,18 +316,22 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   //Deletes the comment on confirmation
   onDeleteConfirm(){
-    console.log(this.metaData[this.commentToDelete]);
     var commentData = this.metaData[this.commentToDelete];
     this.quill.formatText(commentData.range.index, commentData.range.length, {
       background: "white",
     });
     this.metaData.splice(this.commentToDelete, 1);
+    this.saveQuillData();
+    this.commentToDelete = null;
+    this.deleteCommentBool = false;
+  }
+
+  saveQuillData() {
     var toSend = {
       p: ["data"],
       od: this.folio.data.data,
       oi: { comment: this.metaData, delta: this.quill.getContents().ops },
     };
-    console.log("to send : ", toSend);
     this.folio.submitOp(
       toSend,
       {
@@ -358,8 +342,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         return;
       }
     );
-    this.commentToDelete = null;
-    this.deleteCommentBool = false;
   }
 
   //Opens dialog box to enter commment
@@ -400,22 +382,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       this.quill.formatText(this.range.index, this.range.length, {
         background: "#fff72b",
       });
-      var toSend = {
-        p: ["data"],
-        od: this.folio.data.data,
-        oi: { comment: this.metaData, delta: this.quill.getContents().ops },
-      };
-      console.log("to send : ", toSend);
-      this.folio.submitOp(
-        toSend,
-        {
-          source: this.quill,
-        },
-        (err: Error) => {
-          if (err) console.error("Submit OP returned an error:", err);
-          return;
-        }
-      );
+      this.saveQuillData();
       this.quill2.deleteText(0, this.quill2.getLength());
       this.commentBool = false;
       this.selectedText = null;
@@ -435,21 +402,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   clearEditor() {
     this.quill.deleteText(0, this.quill.getLength());
     this.metaData = [];
-    var toSend = {
-      p: ["data"],
-      od: this.folio.data.data,
-      oi: { comment: this.metaData, delta: this.quill.getContents().ops },
-    };
-    console.log("to send : ", toSend);
-    this.folio.submitOp(
-      toSend,
-      {
-        source: this.quill,
-      },
-      (err: Error) => {
-        if (err) console.error("Submit OP returned an error:", err);
-      }
-    );
+    this.saveQuillData()
   }
 
   //Highlights the text in given range

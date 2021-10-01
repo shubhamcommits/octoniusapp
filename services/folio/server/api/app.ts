@@ -4,6 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
+const os = require('os');
 const { exec } = require("child_process");
 const fs = require('fs');
 const multipart = require('connect-multiparty');
@@ -74,7 +75,7 @@ app.post('/upload', multipartMiddleware, async (req: any, res) =>{
     }
     const htmlData = await createHtml("html", file_path, res);
 })
-
+ 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
     const error = new Error('404 not found');
@@ -93,7 +94,14 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 
 
 const createHtml = (toFormate="html", file_uri, res) => {
-    exec(`"C:/Program Files/LibreOffice/program/soffice" --convert-to "${toFormate}" --outdir "./uploads" "${file_uri}"`, (error, stdout, stderr) => {
+    const osType = os.type();
+    let sofficeCommand = "soffice" // default for linux
+    if(osType === "win32" || osType === "win64") {
+        //install liberOffice on you system https://www.libreoffice.org/download/download/
+        //set environment variable C:/Program Files/LibreOffice/program/ or where ever you installed
+        sofficeCommand = "soffice";
+    }
+    exec(`${sofficeCommand} --convert-to "${toFormate}" --outdir "./uploads" "${file_uri}"`, (error, stdout, stderr) => {
       if (error) {
           console.log(`error: ${error.message}`);
           return;
@@ -105,11 +113,16 @@ const createHtml = (toFormate="html", file_uri, res) => {
       console.log(`stdout:`);
       const htmlFile = "./uploads/"+path.parse(file_uri).name+".html";
       fs.readFile(htmlFile, 'utf-8', (err, data) => {
-        res.json({
-          "message": data,
-          "messages": "Temp"
-        });
-      })
+          if (!err) {
+              res.json({
+                "message": data,
+                "messages": "Temp"
+                });
+            }
+            else {
+                res.status(err.status || 500).send("Error while converting")
+            }
+        })
     }); 
   }
 
