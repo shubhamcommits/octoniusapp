@@ -1793,7 +1793,7 @@ export class GroupController {
             const groupId = req.params.groupId;
             const barTag = req.body.barTag;
 
-            const group: any = await Group.findById(groupId);
+            let group: any = await Group.findById(groupId);
             let tagExists = false;
             group.bars.forEach(bar => {
                 if (bar.bar_tag === barTag) {
@@ -1805,6 +1805,18 @@ export class GroupController {
             }
             group.bars.push({ bar_tag: barTag, tag_members: [] });
             await group.save();
+
+            group = await Group.findById(groupId)
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
+                })
+                .lean();
+
             return res.status(200).json({
                 message: 'Bar tag added successfully!',
                 group,
