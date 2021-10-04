@@ -73,7 +73,7 @@ app.post('/upload', multipartMiddleware, async (req: any, res) =>{
         file_path = './'+req.files.uploads[0].path;
         file_path = './uploads/'+path.basename(file_path);
     }
-    const htmlData = await createHtml("html", file_path, res);
+    const htmlData = await createHtml(file_path, res);
 })
  
 // Invalid routes handling middleware
@@ -93,7 +93,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 });
 
 
-const createHtml = (toFormate="html", file_uri, res) => {
+const createHtml = ( file_uri, res, toFormate="html:HTML:EmbedImages") => {
     const osType = os.type();
     let sofficeCommand = "soffice" // default for linux
     if(osType === "win32" || osType === "win64") {
@@ -101,7 +101,7 @@ const createHtml = (toFormate="html", file_uri, res) => {
         //set environment variable C:/Program Files/LibreOffice/program/ or where ever you installed
         sofficeCommand = "soffice";
     }
-    exec(`${sofficeCommand} --convert-to "${toFormate}" --outdir "./uploads" "${file_uri}"`, (error, stdout, stderr) => {
+    exec(`${sofficeCommand} --convert-to ${toFormate} --outdir "./uploads" "${file_uri}"`, (error, stdout, stderr) => {
       if (error) {
           console.log(`error: ${error.message}`);
           return;
