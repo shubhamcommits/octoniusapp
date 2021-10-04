@@ -224,7 +224,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     // Fetch User Data
     if (!this.readOnly) {
       this.userData = await this.publicFunctions.getCurrentUser();
-      console.log("userData : ",this.userData);
       // check if the user is part of the group of the folio
       const groupIndex = await this.userData?._groups?.findIndex((group) => {
         return (group._id || group) == this.groupId;
@@ -344,7 +343,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.folioId,
                 this.userData._id
               )
-              .then((res) => res.subscribe((result) => console.log(result)));
+              .then((res) => res.subscribe());
           }
         }
 
@@ -360,7 +359,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
               source: quill,
             },
             (err: Error) => {
-              if (err) console.error("Submit OP returned an error:", err);
             }
           );
         }
@@ -398,7 +396,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
             source: this.quill,
           },
           (err: any) => {
-            if (err) console.error("Submit OP returned an error:", err);
           }
         );
       } else if (source == "api") {
@@ -443,7 +440,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         source: this.quill,
       },
       (err: Error) => {
-        if (err) console.error("Submit OP returned an error:", err);
         return;
       }
     );
@@ -484,7 +480,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           source: this.quill,
         },
         (err: Error) => {
-          if (err) console.error("Submit OP returned an error:", err);
           return;
         }
       );
@@ -516,7 +511,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         source: this.quill,
       },
       (err: Error) => {
-        if (err) console.error("Submit OP returned an error:", err);
       }
     );
   }

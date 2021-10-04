@@ -1,5 +1,4 @@
 import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { PublicFunctions } from "modules/public.functions";
 import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
@@ -256,7 +255,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
                 this.folioId,
                 this.userData._id
               )
-              .then((res) => res.subscribe((result) => console.log(result)));
+              .then((res) => res.subscribe());
           }
         }
         if (source == "user") {
@@ -338,7 +337,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         source: this.quill,
       },
       (err: Error) => {
-        if (err) console.error("Submit OP returned an error:", err);
         return;
       }
     );
@@ -374,7 +372,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
                 this.folioId,
                 this.userData._id
               )
-              .then((res) => res.subscribe((result) => console.log(result)));
+              .then((res) => res.subscribe());
           }
         }
       });
