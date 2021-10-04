@@ -1653,7 +1653,6 @@ class table_TableContainer extends Container {
     setTimeout(() => {
       const colGroup = this.colGroup();
       if (!colGroup) return;
-      console.log(TableCol.blotName)
       const tableWidth = colGroup.children.reduce((sumWidth, col) => {
         let tableCol = col.formats()[TableCol.blotName];
         let width = 100;
@@ -2671,7 +2670,6 @@ function getColToolCellIndexesByBoundary(cells, boundary, conditionFn, container
 const Delta = external_commonjs_quill_commonjs2_quill_amd_quill_root_Quill_default.a.import('delta'); // rebuild delta
 
 function matchTableCell(node, delta, scroll) {
-  console.log('matchTableCell aya')
   const row = node.parentNode;
   const table = row.parentNode.tagName === 'TABLE' ? row.parentNode : row.parentNode.parentNode;
   const rows = Array.from(table.querySelectorAll('tr'));

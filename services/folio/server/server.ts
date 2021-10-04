@@ -128,7 +128,7 @@ if (cluster.isMaster) {
       })
     }
     /*
-    else if (pathnamfoliofolioe === '/cursors') {
+    else if (pathname === '/cursors') {
       wssCursors.handleUpgrade(request, socket, head, (ws) => {
         wssCursors.emit('connection', ws);
       }); 

@@ -326,23 +326,16 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   initializeFolio(folio: any, quill: Quill) {
     // Subscribe to the folio data and update the quill instance with the data
     folio.subscribe(async () => {
-      console.log(folio.type);
       if (!folio.type) {
         folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
-        console.log("creating folio");
       }
-      console.log("folio data : ", folio.data.data);
       // update editor contents
       quill.setContents(folio.data.data.delta);
       this.metaData = folio.data.data.comment;
       // local -> server
       quill.on("text-change", (delta, oldDelta, source) => {
-        console.log("delta : ", delta);
-        console.log("old delta : ", oldDelta);
-        console.log("source : ", source);
         if (delta.ops.length > 1 && delta.ops[1].insert) {
           let mentionMap = JSON.parse(JSON.stringify(delta.ops[1].insert));
-          console.log("mention Map : ", mentionMap);
           if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
             let filesService = this._Injector.get(FilesService);
             filesService
@@ -356,14 +349,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         if (source == "user") {
-          console.log("to send ops : ", delta.ops);
-          console.log("quill contents : ", quill.getContents().ops);
           var toSend = {
             p: ["data"],
             od: folio.data.data,
             oi: { comment: this.metaData, delta: quill.getContents().ops },
           };
-          console.log("to send : ", toSend);
           folio.submitOp(
             toSend,
             {
@@ -373,7 +363,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
               if (err) console.error("Submit OP returned an error:", err);
             }
           );
-          console.log("sent");
         }
       });
 
@@ -386,7 +375,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       // server -> local
       folio.on("op", (op, source) => {
         if (source === quill) return;
-        console.log("server -> local : ", op[0].oi.delta);
         quill.setContents(op[0].oi.delta);
         this.metaData = op[0].oi.comment;
       });
@@ -394,11 +382,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleFolio(folio: any, user: any, quill: Quill) {
-    console.log("handle folio");
     // local -> server
     quill.on("text-change", (delta: any, oldDelta, source) => {
       if (source == "user") {
-        console.log("before formatting delta : ", delta);
         var formattingDelta = delta.reduce(function (check, op) {
           return op.insert || op.delete ? false : check;
         }, true);
@@ -406,7 +392,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         // If it's not a formatting-only delta, collapse local selection
         // delta.comments = this.metaData;
         delta.userId = user._id;
-        console.log("handle Folio delta", delta);
         folio.submitOp(
           delta,
           {
@@ -425,7 +410,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       if (source !== this.quill) {
         this.quill.updateContents(op);
       }
-      console.log(op);
     });
   }
 
@@ -443,7 +427,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   //Deletes the comment on confirmation
   onDeleteConfirm(){
-    console.log(this.metaData[this.commentToDelete]);
     var commentData = this.metaData[this.commentToDelete];
     this.quill.formatText(commentData.range.index, commentData.range.length, {
       background: "white",
@@ -454,7 +437,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       od: this.folio.data.data,
       oi: { comment: this.metaData, delta: this.quill.getContents().ops },
     };
-    console.log("to send : ", toSend);
     this.folio.submitOp(
       toSend,
       {
@@ -478,7 +460,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   //Validates comment content and adds the comment
   submitComment() {
-    console.log(this.enteredComment);
     var txt = null;
     if (this.selectedText == null || this.selectedText == "") {
       txt = "No content is selected";
@@ -497,7 +478,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         od: this.folio.data.data,
         oi: { comment: this.metaData, delta: this.quill.getContents().ops },
       };
-      console.log("to send : ", toSend);
       this.folio.submitOp(
         toSend,
         {
@@ -530,7 +510,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       od: this.folio.data.data,
       oi: { comment: this.metaData, delta: this.quill.getContents().ops },
     };
-    console.log("to send : ", toSend);
     this.folio.submitOp(
       toSend,
       {
@@ -558,10 +537,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           found = true;
         }
       })
-      console.log(index);
       if(found) this.commentsToDisplay.push(index);
     });
-    console.log(this.commentsToDisplay);
   }
 
   generateIndexes(index : number, length : number) {
@@ -573,17 +550,14 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onCommentPress(event : KeyboardEvent) {
-    console.log(event);
     if(this.mentionCommentUser) this.handleAt(event) 
     else if (this.mentionCommentFile) this.handleHash(event)
     else if(event.key === '@') {
-      console.log(event.key);
       this.mentionText = ''
       this.mentionCommentUser = true;
       this.handleAt(event);
     }
     else if(event.key === '#') {
-      console.log(event.key);
       this.mentionText = ''
       this.mentionCommentFile = true;
       this.handleHash(event);
@@ -597,9 +571,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.mentionCommentUser = false;
       return;
     }
-    console.log(this.mentionText.slice(1));
     var members = await this.suggestMembers(this.groupId, this.mentionText.slice(1));
-    console.log(members);
   }
 
   async handleHash(event : KeyboardEvent) {
@@ -609,9 +581,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.mentionCommentFile = false;
       return;
     }
-    console.log(this.mentionText.slice(1));
     var files = await this.suggestFiles(this.groupId, this.mentionText.slice(1));
-    console.log(files);
   }
   /**
    * This function returns the mention module
