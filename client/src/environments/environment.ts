@@ -93,6 +93,7 @@ export const environment = {
 
   // Folio URLs
   FOLIO_BASE_URL: `${url.websocket}://${url.domain}:11000`,
+  FOLIO_UPLOAD_DOCX_URL: `${url.protocol}://${url.domain}:11000/upload`,
 
   // MANAGEMENT_URL: 'https://management.octonius.com',
   MANAGEMENT_URL: `${url.protocol}://${url.domain}:3300`

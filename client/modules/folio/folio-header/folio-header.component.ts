@@ -3,8 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { Title } from "@angular/platform-browser";
 import { PublicFunctions } from 'modules/public.functions';
-import { HttpClient } from '@angular/common/http';
-import { FolioServiceService } from 'src/app/folio-service.service';
+import { FolioService } from 'src/shared/services/folio-service/folio.service';
 
 @Component({
   selector: 'app-folio-header',
@@ -47,8 +46,7 @@ export class FolioHeaderComponent implements OnInit {
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,
     private titleService: Title,
-    private httpClient: HttpClient,
-    private follioService: FolioServiceService
+    private follioService: FolioService
   ) { }
 
   async ngOnInit() {
@@ -182,7 +180,6 @@ export class FolioHeaderComponent implements OnInit {
   }
 
   ngOnDestroy() {
-
     // Change the title of the tab
     this.titleService.setTitle('Octonius');
   }
@@ -198,14 +195,6 @@ export class FolioHeaderComponent implements OnInit {
     for (var i = 0; i < this.uploadedFiles.length; i++) {
       formData.append("uploads[]", this.uploadedFiles[i], this.uploadedFiles[i].name);
     }
-    this.httpClient.post('http://localhost:11000/upload', formData)
-      .subscribe((response: any) => {
-        // HTML data Converted
-        this.htmlData = response.message;
-
-        //Setting follioService Subject for binding content in quill
-        this.follioService.setNewFollioValue(this.htmlData);
-        event.target.value = "";
-      })
+    this.follioService.uploadFollioDocx(formData)
   }
 }
