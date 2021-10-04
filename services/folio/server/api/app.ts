@@ -93,7 +93,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 });
 
 
-const createHtml = ( file_uri, res, toFormate="html:HTML:EmbedImages") => {
+const createHtml = ( file_uri, res, toFormate="html:HTML:EmbedImages", deleteFile=true) => {
     const osType = os.type();
     let sofficeCommand = "soffice" // default for linux
     if(osType === "win32" || osType === "win64") {
@@ -112,8 +112,13 @@ const createHtml = ( file_uri, res, toFormate="html:HTML:EmbedImages") => {
       }
       console.log(`stdout:`);
       const htmlFile = "./uploads/"+path.parse(file_uri).name+".html";
+      const docxFile = "./uploads/"+path.parse(file_uri).name+".docx";
       fs.readFile(htmlFile, 'utf-8', (err, data) => {
           if (!err) {
+            if(deleteFile) {
+                fs.unlinkSync(htmlFile);
+                fs.unlinkSync(docxFile);
+            }
               res.json({
                 "message": data,
                 "messages": "Temp"
