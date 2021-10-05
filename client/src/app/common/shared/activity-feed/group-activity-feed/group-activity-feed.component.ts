@@ -350,7 +350,10 @@ export class GroupActivityFeedComponent implements OnInit {
     // Else if moreToLoad is true
     if (this.moreToLoad) {
       for (let post of posts) {
-        this.posts.push(post);
+        const index = this.posts.findIndex(postTmp => postTmp._id == post._id);
+        if (index < 0) {
+          this.posts.push(post);
+        }
       }
 
       // Calculate the lastPostId from the currently fetched posts
