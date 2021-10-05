@@ -39,7 +39,13 @@ const createHtml = async ( file_uri, res, toFormate="html:HTML:EmbedImages", del
             }
         })
     })
-  }
+}
 
+function createUploadFolder(req, res, next) {
+    if(!fs.existsSync('./uploads')) {
+        fs.mkdirSync('./uploads')
+    }
+    next()
+}
 
-  export default createHtml
+export {createHtml, createUploadFolder}

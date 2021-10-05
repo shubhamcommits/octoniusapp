@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import createHtml from '../utils/folio/convert-html';
+import {createHtml, createUploadFolder} from '../utils/folio/upload-docx-utils';
 const os = require('os');
 const { exec } = require("child_process");
 const fs = require('fs');
@@ -68,7 +68,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
     res.sendFile(path.join(__dirname, './views/index.html'));
 });
 
-app.post('/upload', multipartMiddleware, async (req: any, res) =>{
+app.post('/upload', createUploadFolder, multipartMiddleware, async (req: any, res) =>{
     let file_path = "";
     if ( req.files.uploads.length >=1 ) {
         file_path = './'+req.files.uploads[0].path;
