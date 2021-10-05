@@ -1,99 +1,29 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Injector,
-  OnDestroy,
-  AfterViewInit,
-} from "@angular/core";
-
-import { ActivatedRoute } from "@angular/router";
-
-import { HttpClient } from "@angular/common/http";
-
-// Public Functions
+import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PublicFunctions } from "modules/public.functions";
-
-// Reconnecting WebSockets
-import ReconnectingWebSocket from "reconnecting-websocket";
-
-// ShareDB Client
-import * as ShareDB from "sharedb/lib/client";
-
-// Register the Types of the Sharedb
-// ShareDB.types.register(require('rich-text').type);
-
-// Environment Variables
-import { environment } from "src/environments/environment";
-
-// Highlight.js
-import * as hljs from "highlight.js";
-
-// Highlight.js sublime css
-import "highlight.js/styles/monokai-sublime.css";
-
-// Configure hljs for languages
-hljs.configure({
-  languages: [
-    "javascript",
-    "ruby",
-    "bash",
-    "cpp",
-    "cs",
-    "css",
-    "dart",
-    "dockerfile",
-    "dos",
-    "excel",
-    "fortran",
-    "go",
-    "java",
-    "nginx",
-    "python",
-    "objectivec",
-    "yaml",
-    "yml",
-  ],
-});
-
-// Quill Import
-import Quill from "quill";
-
-// Import Quill Cursors
-import QuillCursors from "quill-cursors";
-
-// Imporrt Quill Autoformat module
-import Autoformat from "src/app/common/shared/quill-modules/quill-auto-format";
-
-// Register Quill Modules
-Quill.register({
-  "modules/cursors": QuillCursors,
-  "modules/autoformat": Autoformat,
-});
-
-// Subsink Class
+import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
-
-// Import Quill Editor Component
-import { QuillEditorComponent } from "src/app/common/shared/quill-editor/quill-editor.component";
+import { environment } from "src/environments/environment";
+import ReconnectingWebSocket from "reconnecting-websocket";
+import * as ShareDB from "sharedb/lib/client";
 import { FilesService } from "src/shared/services/files-service/files.service";
 import { StorageService } from "src/shared/services/storage-service/storage.service";
+import { FolioService } from 'src/shared/services/folio-service/folio.service';
+
+declare const Quill2: any;
+declare const quillBetterTable: any;
+Quill2.register({
+  'modules/better-table': quillBetterTable,
+}, true);
 
 @Component({
   selector: "app-folio-editor",
   templateUrl: "./folio-editor.component.html",
   styleUrls: ["./folio-editor.component.scss"],
 })
-export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
-  // EditorId variable
-  @Input("editorId") editorId: any = "normal-editor";
-
-  // ShowToolbar variable
-  @Input("toolbar") toolbar = true;
-
+export class FolioEditorComponent implements OnInit, AfterViewInit {
   // Quill instance variable
   quill: any;
-
+  quill2: any;
   // Quill modules variable
   modules: any;
 
@@ -118,25 +48,22 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   //Comment modal boolean
   commentBool: boolean = false;
 
+  // Table modal boolean
+  tableShow: boolean = false;
+
+
   //Delete comment modal boolean
   deleteCommentBool : boolean = false;
-
-  //Mention in comment boolean
-  mentionCommentUser : boolean = false;
-  mentionCommentFile : boolean = false;
-
-  //To handle mention text
-  mentionText : string = '';
 
   //comment To Delete
   commentToDelete : number;
 
   // User Data Variable
   userData: any;
-
+  
   // ShareDB Variable
   shareDBSocket: any;
-
+  
   // Websocket Options
   webSocketOptions = {
     // WebSocket: undefined,
@@ -165,17 +92,27 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   // SubSink Variable
   subSink = new SubSink();
 
-  // Create new Object of quillEditorComponent
-  quillEditorComponent = new QuillEditorComponent(this._Injector);
-
   // Uploads url for Files
   filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
+
+  @ViewChild('editable', { static: true })
+  editRef!: ElementRef;
+
+  @ViewChild('editable2', { static: true })
+  editRef2!: ElementRef;
 
   constructor(
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
+    private follioService: FolioService
   ) {
     // Get the State of the ReadOnly
+    follioService.follioSubject.subscribe(data => {
+      if (data){
+        this.quill.clipboard.dangerouslyPasteHTML(data);
+        this.saveQuillData();
+      }
+    })
     this.readOnly =
       this._ActivatedRoute.snapshot.queryParamMap.get("readOnly") == "true" ||
       false;
@@ -183,41 +120,45 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     // Initialise the modules in constructor
     this.modules = {
       syntax: true,
-      toolbar: this.toolbar,
-      cursors: {
-        hideDelayMs: 5000,
-        hideSpeedMs: 0,
-        transformOnTextChange: true,
-        autoRegisterListener: false,
-      },
+      toolbar: [
+        [{ 'font': [] }, { 'size': [] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'script': 'super' }, { 'script': 'sub' }],
+        [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+        ['direction', { 'align': [] }],
+        ['link', 'image', 'video', 'formula'],
+        ['clean'], ['comment'],['tables'],['clear']
+      ],
+      table: false,
+        'better-table': {
+          operationMenu: {
+            items: {
+              unmergeCells: {
+                text: 'Another unmerge cells name'
+              }
+            },
+            color: {
+              colors: ['green', 'red', 'yellow', 'blue', 'white'],
+              text: 'Background Colors:'
+            }
+          }
+        },
+        keyboard: {
+          bindings: quillBetterTable.keyboardBindings
+        },
       history: {
         delay: 2500,
         userOnly: true,
       },
-      autoformat: true,
-      mention: {},
+      mention: {}
     };
   }
 
-  async ngOnInit() {
-    // Initialise the connection for folio
+  ngOnInit() {
     this.folio = this.initializeConnection();
-
-    // If the toolbar is supposed to be visible, then enable following modules
-    if (this.toolbar) {
-      // Set Image Resize Module
-      this.modules.imageResize = this.quillEditorComponent.quillImageResize();
-
-      // Set Image Drop Module
-      this.modules.imageDrop = true;
-
-      // Set Image Compression Module
-      this.modules.imageCompress =
-        this.quillEditorComponent.quillImageCompress();
-    }
-
-    // Set the White as the background color for quill
-    // document.body.style.setProperty('background', '#ffffff', 'important')
+    
   }
 
   async ngAfterViewInit() {
@@ -230,24 +171,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       this.readOnly = this.readOnly || groupIndex < 0;
     }
-
-    // Set the Status of the toolbar
-    this.modules.toolbar =
-      this.toolbar === false
-        ? false
-        : this.quillEditorComponent.quillFullToolbar();
-
-    // Set the Mention Module
     this.modules.mention = this.metionModule();
-
-    // Initialise quill editor
-    this.quill = this.quillEditor(this.modules);
-
-    // Create the Cursor
-    if (!this.readOnly)
-      var cursor = this.createCursor(this.quill, this.userData);
-
-    //
+    this.initEditor();
     this.initializeFolio(this.folio, this.quill);
     document.querySelector(".ql-comment").innerHTML =
       '<img src="assets/images/comment.png" alt="" style="height:100%; width:100%"></div>';
@@ -260,19 +185,39 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     document.querySelector(".ql-clear").addEventListener("click", () => {
       this.clearEditor();
     });
+
+    document.querySelectorAll('.ql-tables').forEach(button => {
+      button.innerHTML = '<svg viewBox="0 0 18 18"> <rect class="ql-stroke" height="12" width="12" x="3" y="3"></rect> <rect class="ql-fill" height="2" width="3" x="5" y="5"></rect> <rect class="ql-fill" height="2" width="4" x="9" y="5"></rect> <g class="ql-fill ql-transparent"> <rect height="2" width="3" x="5" y="8"></rect> <rect height="2" width="4" x="9" y="8"></rect> <rect height="2" width="3" x="5" y="11"></rect> <rect height="2" width="4" x="9" y="11"></rect> </g> </svg>'
+      button.addEventListener('click', () => {
+        this.openTableOptions()    
+      });
+     });
+
+
   }
 
-  /**
-   * This function is responsible for closing the socket on destroying the component
-   */
   ngOnDestroy() {
     this.subSink.unsubscribe();
     this.shareDBSocket?.close();
   }
 
-  /**
-   * This fuction is responsible for initialising the connection to sharedb backend
-   */
+  initEditor(): void {    
+    this.quill = new Quill2(this.editRef.nativeElement, {
+      theme: 'snow',
+      modules: this.modules,
+    });
+
+    this.quill2 = new Quill2(this.editRef2.nativeElement,{
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline']
+        ],
+        mention : this.metionModule()
+      }
+    })
+  }
+
   initializeConnection() {
     // Connect with the Socket Backend
     this.shareDBSocket = new ReconnectingWebSocket(
@@ -288,41 +233,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     return shareDBConnection.get("documents", this.folioId);
   }
 
-  /**
-   * This function is responsible for initialising the quill editor
-   * @param modules
-   */
-  quillEditor(modules: Object) {
-    // Create Quill Instance locally
-    let quill: Quill;
-
-    // Return the instance with modules
-    return (quill = new Quill(`#${this.editorId}`, {
-      theme: "snow",
-      modules: modules,
-      readOnly: this.readOnly,
-      placeholder: $localize`:@@folioEditor.writeSomethingAwesome:Write something awesome...`,
-    }));
-  }
-
-  /**
-   * This function is responsible for creating the cursor
-   * @param quill
-   * @param user
-   */
-  createCursor(quill: Quill, user: any) {
-    // Get the Cursor Module
-    let cursorModule = quill.getModule("cursors");
-
-    // Return Cursor Name
-    return cursorModule.createCursor(user._id, user.full_name, "blue");
-  }
-
-  /**
-   * This function is responsible for fetching the folio
-   * @param folio
-   */
-  initializeFolio(folio: any, quill: Quill) {
+  initializeFolio(folio: any, quill: any) {
     // Subscribe to the folio data and update the quill instance with the data
     folio.subscribe(async () => {
       if (!folio.type) {
@@ -330,6 +241,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       // update editor contents
       quill.setContents(folio.data.data.delta);
+      this.quill2.setContents([{ insert: "\n" }]);
       this.metaData = folio.data.data.comment;
       // local -> server
       quill.on("text-change", (delta, oldDelta, source) => {
@@ -346,21 +258,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
               .then((res) => res.subscribe());
           }
         }
-
         if (source == "user") {
-          var toSend = {
-            p: ["data"],
-            od: folio.data.data,
-            oi: { comment: this.metaData, delta: quill.getContents().ops },
-          };
-          folio.submitOp(
-            toSend,
-            {
-              source: quill,
-            },
-            (err: Error) => {
-            }
-          );
+          this.saveQuillData()
         }
       });
 
@@ -377,147 +276,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.metaData = op[0].oi.comment;
       });
     });
-  }
-
-  handleFolio(folio: any, user: any, quill: Quill) {
-    // local -> server
-    quill.on("text-change", (delta: any, oldDelta, source) => {
-      if (source == "user") {
-        var formattingDelta = delta.reduce(function (check, op) {
-          return op.insert || op.delete ? false : check;
-        }, true);
-
-        // If it's not a formatting-only delta, collapse local selection
-        // delta.comments = this.metaData;
-        delta.userId = user._id;
-        folio.submitOp(
-          delta,
-          {
-            source: this.quill,
-          },
-          (err: any) => {
-          }
-        );
-      } else if (source == "api") {
-      }
-    });
-
-    // server -> local
-    folio.on("op", function (op, source) {
-      if (source !== this.quill) {
-        this.quill.updateContents(op);
-      }
-    });
-  }
-
-  //Opens confirmation dialog for deleting comment
-  openDeleteComment(index: any) {
-    this.deleteCommentBool = true;
-    this.commentToDelete = index;
-  }
-
-  //Cancels deleting comment procedure
-  onDeleteCancel(){
-    this.commentToDelete = null;
-    this.deleteCommentBool = false;
-  }
-
-  //Deletes the comment on confirmation
-  onDeleteConfirm(){
-    var commentData = this.metaData[this.commentToDelete];
-    this.quill.formatText(commentData.range.index, commentData.range.length, {
-      background: "white",
-    });
-    this.metaData.splice(this.commentToDelete, 1);
-    var toSend = {
-      p: ["data"],
-      od: this.folio.data.data,
-      oi: { comment: this.metaData, delta: this.quill.getContents().ops },
-    };
-    this.folio.submitOp(
-      toSend,
-      {
-        source: this.quill,
-      },
-      (err: Error) => {
-        return;
-      }
-    );
-    this.commentToDelete = null;
-    this.deleteCommentBool = false;
-  }
-
-  //Opens dialog box to enter commment
-  openComment() {
-    this.commentBool = true;
-    this.range = this.quill.getSelection(true);
-    this.selectedText = this.quill.getText(this.range.index, this.range.length);
-  }
-
-  //Validates comment content and adds the comment
-  submitComment() {
-    var txt = null;
-    if (this.selectedText == null || this.selectedText == "") {
-      txt = "No content is selected";
-      alert(txt);
-    } else if (this.enteredComment == null || this.enteredComment == "") {
-      txt = "Please enter the comment";
-      alert(txt);
-    } else {
-      var userName = this.userData.first_name + ' ' + this.userData.last_name;
-      this.metaData.push({ range: this.range, comment: this.enteredComment, user_name : userName, profile_pic : this.userData.profile_pic });
-      this.quill.formatText(this.range.index, this.range.length, {
-        background: "#fff72b",
-      });
-      var toSend = {
-        p: ["data"],
-        od: this.folio.data.data,
-        oi: { comment: this.metaData, delta: this.quill.getContents().ops },
-      };
-      this.folio.submitOp(
-        toSend,
-        {
-          source: this.quill,
-        },
-        (err: Error) => {
-          return;
-        }
-      );
-      this.commentBool = false;
-      this.selectedText = null;
-      this.enteredComment = null;
-    }
-  }
-
-  //Closes the comment dialog box
-  closeComment() {
-    this.commentBool = false;
-    this.selectedText = null;
-    this.enteredComment = null;
-  }
-
-  //Clears the entire editor
-  clearEditor() {
-    this.quill.deleteText(0, this.quill.getLength());
-    this.metaData = [];
-    var toSend = {
-      p: ["data"],
-      od: this.folio.data.data,
-      oi: { comment: this.metaData, delta: this.quill.getContents().ops },
-    };
-    this.folio.submitOp(
-      toSend,
-      {
-        source: this.quill,
-      },
-      (err: Error) => {
-      }
-    );
-  }
-
-  //Highlights the text in given range
-  highlight(range: any) {
-    this.quill.setSelection(range.index, range.length);
   }
 
   //To get comments on selection
@@ -543,43 +301,131 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     return arr;
   }
 
-  onCommentPress(event : KeyboardEvent) {
-    if(this.mentionCommentUser) this.handleAt(event) 
-    else if (this.mentionCommentFile) this.handleHash(event)
-    else if(event.key === '@') {
-      this.mentionText = ''
-      this.mentionCommentUser = true;
-      this.handleAt(event);
-    }
-    else if(event.key === '#') {
-      this.mentionText = ''
-      this.mentionCommentFile = true;
-      this.handleHash(event);
+   //Opens confirmation dialog for deleting comment
+   openDeleteComment(index: any) {
+    this.deleteCommentBool = true;
+    this.commentToDelete = index;
+  }
+
+  //Cancels deleting comment procedure
+  onDeleteCancel(){
+    this.commentToDelete = null;
+    this.deleteCommentBool = false;
+  }
+
+  //Deletes the comment on confirmation
+  onDeleteConfirm(){
+    var commentData = this.metaData[this.commentToDelete];
+    this.quill.formatText(commentData.range.index, commentData.range.length, {
+      background: "white",
+    });
+    this.metaData.splice(this.commentToDelete, 1);
+    this.saveQuillData();
+    this.commentToDelete = null;
+    this.deleteCommentBool = false;
+  }
+
+  saveQuillData() {
+    var toSend = {
+      p: ["data"],
+      od: this.folio.data.data,
+      oi: { comment: this.metaData, delta: this.quill.getContents().ops },
+    };
+    this.folio.submitOp(
+      toSend,
+      {
+        source: this.quill,
+      },
+      (err: Error) => {
+        return;
+      }
+    );
+  }
+
+  //Opens dialog box to enter commment
+  openComment() {
+    this.commentBool = true;
+    this.range = this.quill.getSelection(true);
+    this.selectedText = this.quill.getText(this.range.index, this.range.length);
+  }
+
+  //Validates comment content and adds the comment
+  submitComment() {
+    this.enteredComment = this.quill2.root.innerHTML;
+    var txt = null;
+    if (this.selectedText == null || this.selectedText == "") {
+      txt = "No content is selected";
+      alert(txt);
+    } else if (this.enteredComment == null || this.enteredComment == "") {
+      txt = "Please enter the comment";
+      alert(txt);
+    } else {
+      var userName = this.userData.first_name + ' ' + this.userData.last_name;
+      this.quill2.getContents().ops.map((value)=>{
+        if(value.insert.mention){
+          var mentionMap = value.insert;
+          if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
+            let filesService = this._Injector.get(FilesService);
+            filesService
+              .newFolioMention(
+                mentionMap.mention,
+                this.folioId,
+                this.userData._id
+              )
+              .then((res) => res.subscribe());
+          }
+        }
+      });
+      this.metaData.push({ range: this.range, comment: this.enteredComment, user_name : userName, profile_pic : this.userData.profile_pic });
+      this.quill.formatText(this.range.index, this.range.length, {
+        background: "#fff72b",
+      });
+      this.saveQuillData();
+      this.quill2.deleteText(0, this.quill2.getLength());
+      this.commentBool = false;
+      this.selectedText = null;
+      this.enteredComment = null;
     }
   }
 
-  async handleAt(event : KeyboardEvent) {
-    event.key === "Backspace" ? this.mentionText = this.mentionText.slice(0 , -1) : 
-    (event.key.length == 1) ? this.mentionText = this.mentionText + event.key : null;
-    if(this.mentionText.length < 1 || event.key === "Escape") {
-      this.mentionCommentUser = false;
-      return;
-    }
-    var members = await this.suggestMembers(this.groupId, this.mentionText.slice(1));
+  //Closes the comment dialog box
+  closeComment() {
+    this.quill2.deleteText(0, this.quill2.getLength());
+    this.commentBool = false;
+    this.selectedText = null;
+    this.enteredComment = null;
   }
 
-  async handleHash(event : KeyboardEvent) {
-    event.key === "Backspace" ? this.mentionText = this.mentionText.slice(0 , -1) : 
-    (event.key.length == 1) ? this.mentionText = this.mentionText + event.key : null;
-    if(this.mentionText.length < 1 || event.key === "Escape") {
-      this.mentionCommentFile = false;
-      return;
-    }
-    var files = await this.suggestFiles(this.groupId, this.mentionText.slice(1));
+  //Clears the entire editor
+  clearEditor() {
+    this.quill.deleteText(0, this.quill.getLength());
+    this.metaData = [];
+    this.saveQuillData()
   }
-  /**
-   * This function returns the mention module
-   */
+
+  //Highlights the text in given range
+  highlight(range: any) {
+    this.quill.setSelection(range.index, range.length);
+  }
+
+  // Open Table input options dialoge
+  openTableOptions() {
+    this.tableShow= true;  
+  }
+
+  // Get user's input from the create-table modal
+  dataFromTableModal(data:any){    
+    this.tableShow= false;
+    if(data){
+      this.createTable(data.rowCount,data.columnCount)
+    }
+  }
+  // Create table with specific values
+  createTable(rowCount:number,columnCount:number ){
+    const tableModule = this.quill.getModule('better-table');
+      tableModule.insertTable(rowCount, columnCount);
+  }
+  
   metionModule() {
     return {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
@@ -620,11 +466,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
-  /**
-   * This function is responsible for fetching the group members list
-   * @param groupId
-   * @param searchTerm
-   */
   async suggestMembers(groupId: string, searchTerm: string) {
     // Fetch the users list from the server
     let usersList: any = await this.publicFunctions.searchGroupMembers(
@@ -642,11 +483,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     return Array.from(new Set(usersList));
   }
 
-  /**
-   * This function is responsible for fetching the files list
-   * @param groupId
-   * @param searchTerm
-   */
   async suggestFiles(groupId: string, searchTerm: string) {
     // Storage Service Instance
     let storageService = this._Injector.get(StorageService);

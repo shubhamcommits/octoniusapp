@@ -2489,7 +2489,7 @@
       <trans-unit id="folioEditor.writeSomethingAwesome" datatype="html">
         <source>Write something awesome...</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
+          <context context-type="sourcefile">modules/folio/folio-editor2/folio-editor.component.ts</context>
           <context context-type="linenumber">231</context>
         </context-group>
       </trans-unit>

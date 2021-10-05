@@ -55,6 +55,11 @@ export const environment = {
   FLAMINGO_BASE_URL: 'http://localhost:80/flamingo',
   FLAMINGO_BASE_API_URL: 'http://localhost:80/api/flamingo',
 
+  // Folio URLs
+  FOLIO_BASE_URL: `ws://localhost:80/folio`,
+  FOLIO_HTTP_URL: `http://localhost:80/folio`,
+
+
   // Notifications URLs
   NOTIFICATIONS_BASE_URL: 'ws://localhost:80',
   NOTIFICATIONS_BASE_API_URL: 'http://localhost:80/api/notifications',

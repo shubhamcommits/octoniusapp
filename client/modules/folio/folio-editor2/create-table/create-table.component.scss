@@ -1,0 +1,74 @@
+.close {
+    color: rgb(172, 83, 83);
+    float:right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.table-modal{
+    padding-top: 90px;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.center{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.table-container{
+    padding: 1%;
+    z-index: 2;
+    position: absolute;
+    width: 25%;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid rgb(10, 9, 9);
+    border-radius: 10%;
+    text-align: center;
+    align-content: center;
+    input[type=number] {
+        width: 30px;
+      }
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
+    
+
+}
+
+.table-submit{
+    padding  : 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    &:hover{
+        border: 1px solid rgb(99, 99, 99);
+        background: #ccc;
+    }
+    width:fit-content;
+    height: min-content;
+    cursor: pointer;
+    font-size: small;
+    align-content: center;
+}
+.table-container-content{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 3%; 
+    padding-bottom: 40px;   
+    justify-content: space-between;
+    align-content: center;
+}
+
+
+.center-submit{
+    position: absolute;
+    left: 45%;
+    bottom: 5%;
+    transform: translate(-50%,-50%);
+}
