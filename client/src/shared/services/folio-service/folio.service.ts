@@ -13,7 +13,7 @@ export class FolioService {
   }
 
   uploadFollioDocx(formData) {
-    this._http.post(`${environment.FOLIO_UPLOAD_DOCX_URL}`, formData)
+    this._http.post(`${environment.FOLIO_HTTP_URL}/upload`, formData)
         .subscribe((response: any) => {
           // HTML data Converted
           // Setting follioService Subject for binding content in quill
