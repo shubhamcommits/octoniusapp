@@ -356,8 +356,6 @@ export class GroupActivityFeedComponent implements OnInit {
         }
       }
 
-      this.posts = await this.utilityService.removeDuplicates(this.posts, '_id');
-
       // Calculate the lastPostId from the currently fetched posts
       this.lastPostId = posts[posts.length - 1]._id
 
