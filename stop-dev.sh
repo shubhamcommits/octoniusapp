@@ -40,7 +40,7 @@ pm2 stop notifications-server
 
 pm2 delete notifications-server
 
-# Stops and kills the notifications server from port 9000
+# Stops and kills the integrations server from port 1300
 pm2 stop integrations-server
 
 pm2 delete integrations-server
@@ -65,6 +65,11 @@ pm2 delete flamingo-server
 pm2 stop search-server
 
 pm2 delete search-server
+
+# Stops and kills the libreoffice server from port 11200
+pm2 stop libreoffice
+
+pm2 delete libreoffice
 
 
 # Stops and kills the client server from port 4200
