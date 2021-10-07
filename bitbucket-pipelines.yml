@@ -73,9 +73,9 @@ pipelines:
        script:
          - pipe: atlassian/ssh-run:0.2.2
            variables:
-             SSH_USER: 'ubuntu'
+             SSH_USER: 'root'
              SERVER: $HOST_ADDRESS
-             COMMAND: 'cd /home/ubuntu/octonius-production; echo $HOST_PASSWORD | sudo -S ./deploy-octonius-prod.sh'  
+             COMMAND: 'cd /root/octonius-production; echo $HOST_PASSWORD | sudo -S ./deploy-octonius-prod.sh'  
     
     "{develop}":
     - step:
@@ -141,7 +141,7 @@ pipelines:
           - docker push $NGINX_IMAGE_NAME
 
     - step:
-       name: Deploy to production server
+       name: Deploy to stating server
        script:
          - pipe: atlassian/ssh-run:0.2.2
            variables:
