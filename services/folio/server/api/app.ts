@@ -5,9 +5,6 @@ import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 import {createHtml, createUploadFolder} from '../utils/folio/upload-docx-utils';
-const os = require('os');
-const { exec } = require("child_process");
-const fs = require('fs');
 const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart({
     uploadDir: './uploads'

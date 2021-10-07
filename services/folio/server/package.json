@@ -23,7 +23,6 @@
     "cors": "^2.8.5",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
-    "libreoffice-convert": "prasanarebase/libreoffice-convert#master",
     "moment": "^2.24.0",
     "mongoose": "~5.8.7",
     "morgan": "^1.9.1",
