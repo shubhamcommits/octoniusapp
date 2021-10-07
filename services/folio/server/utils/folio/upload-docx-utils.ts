@@ -14,23 +14,26 @@ const createHtml = async ( file_uri, res, toFormate="html:HTML:EmbedImages", del
     // }
     
     const docxFile = "./uploads/"+path.parse(file_uri).name+".docx";
-    const htmlFile = "./uploads/"+path.parse(file_uri).name+".html";
+    // const htmlFile = "./uploads/"+path.parse(file_uri).name+".html";
     const file = fs.readFileSync(docxFile);
-
-    libre.convert(file, 'html', undefined, (err, done) => {
+    libre.convert(file, toFormate, undefined, (err, done) => {
         if (err) {
           console.log(`Error converting file: ${err}`);
+          res.send(err);
         }
         
         // Here in done you have pdf file which you can save or transfer in another stream
         // fs.writeFileSync(htmlFile, done);
 
-        res.json({
+        else res.json({
             message: done.toString(),
             messages: "Temp"
         });
+        if(deleteFile) {
+                        // fs.unlinkSync(htmlFile);
+                        fs.unlinkSync(docxFile);
+                    }
     });
-
     // exec(`${sofficeCommand} --convert-to ${toFormate} --outdir "./uploads" "${file_uri}"`, (error, stdout, stderr) => {
     //   if (error) {
     //       console.log(`error: ${error.message}`);
