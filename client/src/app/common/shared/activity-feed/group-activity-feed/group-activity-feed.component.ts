@@ -152,17 +152,19 @@ export class GroupActivityFeedComponent implements OnInit {
       const post = await this.publicFunctions.getPost(postId);
       let dialogRef;
       if (post['type'] === 'task') {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.isIdeaModuleAvailable, this.columns);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns);
       } else {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.isIdeaModuleAvailable);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupData, this.isIdeaModuleAvailable);
       }
 
-      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-        this.editedPost(data);
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        closeEventSubs.unsubscribe();
-      });
+      if (dialogRef) {
+        const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+          this.editedPost(data);
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          closeEventSubs.unsubscribe();
+        });
+      }
     }
 
     // Return the function via stopping the loader
