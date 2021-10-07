@@ -66,10 +66,10 @@ pm2 stop search-server
 
 pm2 delete search-server
 
-# Stops and kills the libreoffice server from port 11200
-pm2 stop libreoffice
+# # Stops and kills the libreoffice server from port 11200
+# pm2 stop libreoffice-server
 
-pm2 delete libreoffice
+# pm2 delete libreoffice-server
 
 
 # Stops and kills the client server from port 4200

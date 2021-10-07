@@ -3,6 +3,9 @@
 # We label our stage as ‘builder’
 FROM mhart/alpine-node:12 as builder
 
+# Install Libreoffice
+RUN apk update && apk add libreoffice
+
 # Create app directory
 WORKDIR /usr/app
 
