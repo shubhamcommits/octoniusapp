@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -6,6 +6,7 @@ import { ResizeEvent } from 'angular-resizable-element';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { DatePipe } from '@angular/common';
 import moment from 'moment/moment'
+import { PublicFunctions } from 'modules/public.functions';
 declare var LeaderLine: any;
 
 @Component({
@@ -25,6 +26,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   @ViewChild("myDiv") divView1: ElementRef;
   @ViewChild("myDiv2") divView2: ElementRef;
+
+  groupData: any;
 
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -60,9 +63,19 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   tasksStartingHeight = 0;
   linesArray: any = [];
 
-  constructor(private utilityService: UtilityService, private postService: PostService, private datePipe: DatePipe) { }
+  // Public Functions
+  public publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private utilityService: UtilityService,
+    private postService: PostService,
+    private datePipe: DatePipe,
+    private injector: Injector) { }
 
   async ngOnInit() {
+
+    // Fetch the current group
+    this.groupData = await this.publicFunctions.getCurrentGroup();
 
     await this.parsedTasks(this.tasks);
     this.datesToShow.start = await this.min_date(this.tasksDataList);
@@ -405,26 +418,28 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   //open model
   openFullscreenModal(postData: any,): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.isIdeaModuleAvailable, this.columns ,this.tasks);
-    const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
-      this.onDeleteEvent(data);
-    });
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.updateTask(data);
-    });
-    const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
-      this.onDeleteEvent(data._id);
-    });
-    const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
-      this.onTaskClonned(data);
-    });
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns ,this.tasks);
+    if (dialogRef) {
+      const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+        this.onDeleteEvent(data);
+      });
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        this.updateTask(data);
+      });
+      const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
+        this.onDeleteEvent(data._id);
+      });
+      const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
+        this.onTaskClonned(data);
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      deleteEventSubs.unsubscribe();
-      closeEventSubs.unsubscribe();
-      parentAssignEventSubs.unsubscribe();
-      taskClonnedEventSubs.unsubscribe();
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        deleteEventSubs.unsubscribe();
+        closeEventSubs.unsubscribe();
+        parentAssignEventSubs.unsubscribe();
+        taskClonnedEventSubs.unsubscribe();
+      });
+    }
   }
 
   //refresh Chart

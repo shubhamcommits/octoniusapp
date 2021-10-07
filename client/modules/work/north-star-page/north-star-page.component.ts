@@ -14,6 +14,7 @@ export class NorthStarPageComponent implements OnInit {
 
   isIdeaModuleAvailable;
   userData;
+  groupData;
   northStarTasks: any = [];
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -29,6 +30,10 @@ export class NorthStarPageComponent implements OnInit {
 
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
+
+    // Fetch the current group
+    this.groupData = await this.publicFunctions.getCurrentGroup();
+
     await this.getUserNorthStarTasks(this.userData);
 
     // Send Updates to router state
@@ -87,21 +92,24 @@ export class NorthStarPageComponent implements OnInit {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.isIdeaModuleAvailable);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData, this.isIdeaModuleAvailable);
     const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
       this.onDeleteEvent(data);
     });
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.updateTask(data);
-    });
-    const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
-      this.onDeleteEvent(data._id);
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      closeEventSubs.unsubscribe();
-      deleteEventSubs.unsubscribe();
-      parentAssignEventSubs.unsubscribe();
-    });
+
+    if (dialogRef) {
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        this.updateTask(data);
+      });
+      const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
+        this.onDeleteEvent(data._id);
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+        deleteEventSubs.unsubscribe();
+        parentAssignEventSubs.unsubscribe();
+      });
+    }
   }
 
   onDeleteEvent(id) {

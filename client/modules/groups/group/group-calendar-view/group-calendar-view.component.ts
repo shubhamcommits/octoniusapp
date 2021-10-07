@@ -47,6 +47,9 @@ export class GroupCalendarViewComponent implements OnInit {
   // Current User Data
   userData: any;
 
+  // Current Group Data
+  groupData: any;
+
   // Timeline of events and tasks
   timeline: any = []
 
@@ -106,6 +109,9 @@ export class GroupCalendarViewComponent implements OnInit {
 
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
+
+    // Fetch the current group
+    this.groupData = await this.publicFunctions.getCurrentGroup();
 
     this.loadTimeline();
   }
@@ -227,28 +233,30 @@ export class GroupCalendarViewComponent implements OnInit {
     let dialogRef;
     if (this.post) {
       if (this.post.type === 'task' && !this.post.task._parent_task) {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.isIdeaModuleAvailable, this.columns,this.tasks);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns,this.tasks);
       } else {
         if (this.post.task._parent_task && !this.post.task._parent_task._id) {
           this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
             this.post.task._parent_task = post;
           });
         }
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.isIdeaModuleAvailable);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable);
       }
     }
 
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.updateEvent(data);
-    });
-    const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
-      this.onTaskClonned(data);
-    });
+    if (dialogRef) {
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        this.updateEvent(data);
+      });
+      const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
+        this.onTaskClonned(data);
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      closeEventSubs.unsubscribe();
-      taskClonnedEventSubs.unsubscribe();
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+        taskClonnedEventSubs.unsubscribe();
+      });
+    }
   }
 
   addEvent(): void {

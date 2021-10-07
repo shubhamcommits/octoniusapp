@@ -239,27 +239,29 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData._id, this.isIdeaModuleAvailable, this.sections,this.tasks);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData, this.isIdeaModuleAvailable, this.sections,this.tasks);
 
-    const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
-      this.onDeleteEvent(data);
-    });
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.updateTask(data);
-    });
-    const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
-      this.onDeleteEvent(data._id);
-    });
-    const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
-      this.onTaskClonned(data);
-    });
+    if (dialogRef) {
+      const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+        this.onDeleteEvent(data);
+      });
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        this.updateTask(data);
+      });
+      const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
+        this.onDeleteEvent(data._id);
+      });
+      const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
+        this.onTaskClonned(data);
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      deleteEventSubs.unsubscribe();
-      closeEventSubs.unsubscribe();
-      parentAssignEventSubs.unsubscribe();
-      taskClonnedEventSubs.unsubscribe();
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        deleteEventSubs.unsubscribe();
+        closeEventSubs.unsubscribe();
+        parentAssignEventSubs.unsubscribe();
+        taskClonnedEventSubs.unsubscribe();
+      });
+    }
   }
 
   onDeleteEvent(id) {

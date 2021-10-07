@@ -24,7 +24,9 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
   overdueTasks: any = [];
   overdueAndTodayTasks: any = [];
 
-  userData: any
+  userData: any;
+
+  groupData: any;
 
   post: any;
 
@@ -43,6 +45,9 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
 
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
+
+    // Fetch the current group
+    this.groupData = await this.publicFunctions.getCurrentGroup();
 
     await this.loadTasks();
     this.overdueAndTodayTasks = this.sortTasksByPriority(this.overdueTasks.concat(this.todayTasks));
@@ -172,7 +177,7 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
     let dialogRef;
     if (this.post.type === 'task' && !this.post.task._parent_task) {
       await this.publicFunctions.getAllColumns(this.post._group._id).then(data => this.columns = data);
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.isIdeaModuleAvailable, this.columns);
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns);
     } else {
       // for subtasks it is not returning the parent information, so need to make a workaround
       if (this.post.task._parent_task && !this.post.task._parent_task._id) {
@@ -180,19 +185,21 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
             this.post.task._parent_task = post;
           });
       }
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.isIdeaModuleAvailable);
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable);
     }
 
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.updateTask(data);
-    });
-    const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
-      this.onDeleteTask(data);
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      closeEventSubs.unsubscribe();
-      deleteEventSubs.unsubscribe();
-    });
+    if (dialogRef) {
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        this.updateTask(data);
+      });
+      const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+        this.onDeleteTask(data);
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+        deleteEventSubs.unsubscribe();
+      });
+    }
   }
 
   updateTask(task) {

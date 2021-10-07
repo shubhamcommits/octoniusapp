@@ -153,7 +153,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
       const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
       const post = await this.publicFunctions.getPost(postId);
-      this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupId, this.isIdeaModuleAvailable, this.columns);
+      this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns);
     }
   }
 
@@ -232,7 +232,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     }
   }
 
-
   async onTaskClonned(data) {
     // Start the loading spinner
     this.isLoading$.next(true);
@@ -257,8 +256,10 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
           // Filtering other tasks
           column.tasks.forEach(task => {
             if (task.bars !== undefined && task.bars.length > 0) {
+              const adminIndex = this.groupData._admins.findIndex(admin => admin._id == this.userData._id);
               task.bars.forEach(bar => {
-                if (bar.tag_members.includes(this.userData._id) || this.userData.role !== "member") {
+                const userBarIndex = bar.tag_members.findIndex(barMember => barMember._id == this.userData._id);
+                if (userBarIndex >= 0 || adminIndex >= 0 || this.userData.role !== "member") {
                   tasks.push(task);
                 }
               });
