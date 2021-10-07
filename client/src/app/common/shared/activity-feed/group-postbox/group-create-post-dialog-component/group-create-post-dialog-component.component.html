@@ -38,6 +38,7 @@
 
             <!-- Post Content starts -->
             <app-quill-editor
+                *ngIf="edit"
                 [editorId]="'postbox-editor'"
                 [toolbar]="true"
                 [readOnly]="false"
@@ -45,6 +46,14 @@
                 [groupId]="groupId"
                 (content)="quillContentChanged($event)">
             </app-quill-editor>
+
+            <app-quill-editor
+                *ngIf="!edit"
+                [editorId]="'postbox-editor'"
+                [toolbar]="false"
+                [readOnly]="true"
+                [contents]="postData.content"
+                [groupId]="groupId"></app-quill-editor>
             <!-- Post Content ends -->
 
             <!-- Attach files starts -->
@@ -72,7 +81,7 @@
         </div>
 
         <div class="clearfix save-content">
-            <button [disabled]="!contentChanged"
+            <button *ngIf="edit" [disabled]="!contentChanged"
               class="btn float-right btn-primary btn-md"
               (click)="updateDetails()" i18n="@@groupCreatePostDialog.save">
                 Save
