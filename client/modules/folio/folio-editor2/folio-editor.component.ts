@@ -2,13 +2,18 @@ import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild, View
 import { PublicFunctions } from "modules/public.functions";
 import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
-import { environment } from "src/environments/environment";
-import ReconnectingWebSocket from "reconnecting-websocket";
-import * as ShareDB from "sharedb/lib/client";
 import { FilesService } from "src/shared/services/files-service/files.service";
 import { StorageService } from "src/shared/services/storage-service/storage.service";
 import { FolioService } from 'src/shared/services/folio-service/folio.service';
 import { CustomModalComponent } from './custom-modal/custom-modal.component'
+import { environment } from "src/environments/environment";
+
+import ReconnectingWebSocket from "reconnecting-websocket";
+import * as ShareDB from "sharedb/lib/client";
+
+// Register the Types of the Sharedb
+ShareDB.types.register(require('rich-text').type);
+
 
 declare const Quill2: any;
 declare const quillBetterTable: any;
@@ -66,10 +71,10 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   // User Data Variable
   userData: any;
-  
+
   // ShareDB Variable
   shareDBSocket: any;
-  
+
   // Websocket Options
   webSocketOptions = {
     // WebSocket: undefined,
@@ -173,7 +178,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.folio = this.initializeConnection();
-    
   }
 
   async ngAfterViewInit() {
@@ -208,7 +212,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     document.querySelectorAll('.ql-tables').forEach(button => {
       button.innerHTML = '<svg viewBox="0 0 18 18"> <rect class="ql-stroke" height="12" width="12" x="3" y="3"></rect> <rect class="ql-fill" height="2" width="3" x="5" y="5"></rect> <rect class="ql-fill" height="2" width="4" x="9" y="5"></rect> <g class="ql-fill ql-transparent"> <rect height="2" width="3" x="5" y="8"></rect> <rect height="2" width="4" x="9" y="8"></rect> <rect height="2" width="3" x="5" y="11"></rect> <rect height="2" width="4" x="9" y="11"></rect> </g> </svg>'
       button.addEventListener('click', () => {
-        this.openTableOptions()    
+        this.openTableOptions()
       });
      });
 
@@ -220,7 +224,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     this.shareDBSocket?.close();
   }
 
-  initEditor(): void {    
+  initEditor(): void {
     this.quill = new Quill2(this.editRef.nativeElement, {
       theme: 'snow',
       modules: this.modules,
@@ -258,10 +262,12 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       if (!folio.type) {
         folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
       }
+
       // update editor contents
-      quill.setContents(folio.data.data.delta);
+      quill.setContents(folio?.data?.data?.delta);
       this.quill2.setContents([{ insert: "\n" }]);
-      this.metaData = folio.data.data.comment;
+
+      this.metaData = folio?.data?.data?.comment;
       // local -> server
       quill.on("text-change", (delta, oldDelta, source) => {
         if (delta.ops.length > 1 && delta.ops[1].insert) {
@@ -299,17 +305,19 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   //To get comments on selection
   mapComments(index : number, length : number) {
-    var selectedIndexes = this.generateIndexes(index, length);
-    this.metaData.forEach((value, index) => {
-      var valueIndexes = this.generateIndexes(value.range.index, value.range.length);
-      var found = false
-      valueIndexes.forEach((val) => {
-        if (selectedIndexes.includes(val)) {
-          found = true;
-        }
-      })
-      if(found) this.commentsToDisplay.push(index);
-    });
+    if (this.metaData) {
+      var selectedIndexes = this.generateIndexes(index, length);
+      this.metaData.forEach((value, index) => {
+        var valueIndexes = this.generateIndexes(value.range.index, value.range.length);
+        var found = false
+        valueIndexes.forEach((val) => {
+          if (selectedIndexes.includes(val)) {
+            found = true;
+          }
+        })
+        if(found) this.commentsToDisplay.push(index);
+      });
+    }
   }
 
   generateIndexes(index : number, length : number) {
@@ -429,11 +437,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   // Open Table input options dialoge
   openTableOptions() {
-    this.tableShow= true;  
+    this.tableShow= true;
   }
 
   // Get user's input from the create-table modal
-  dataFromTableModal(data:any){    
+  dataFromTableModal(data:any){
     this.tableShow= false;
     if(data){
       this.createTable(data.rowCount,data.columnCount)
@@ -477,9 +485,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           }
       }}
       componentRef.instance.dataToSubmit.unsubscribe();
-    })    
+    })
   }
-  
+
   metionModule() {
     return {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,

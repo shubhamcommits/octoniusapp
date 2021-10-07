@@ -21,7 +21,7 @@ import ReconnectingWebSocket from "reconnecting-websocket";
 import * as ShareDB from "sharedb/lib/client";
 
 // Register the Types of the Sharedb
-// ShareDB.types.register(require('rich-text').type);
+ShareDB.types.register(require('rich-text').type);
 
 // Environment Variables
 import { environment } from "src/environments/environment";
@@ -544,7 +544,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onCommentPress(event : KeyboardEvent) {
-    if(this.mentionCommentUser) this.handleAt(event) 
+    if(this.mentionCommentUser) this.handleAt(event)
     else if (this.mentionCommentFile) this.handleHash(event)
     else if(event.key === '@') {
       this.mentionText = ''
@@ -559,7 +559,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async handleAt(event : KeyboardEvent) {
-    event.key === "Backspace" ? this.mentionText = this.mentionText.slice(0 , -1) : 
+    event.key === "Backspace" ? this.mentionText = this.mentionText.slice(0 , -1) :
     (event.key.length == 1) ? this.mentionText = this.mentionText + event.key : null;
     if(this.mentionText.length < 1 || event.key === "Escape") {
       this.mentionCommentUser = false;
@@ -569,7 +569,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async handleHash(event : KeyboardEvent) {
-    event.key === "Backspace" ? this.mentionText = this.mentionText.slice(0 , -1) : 
+    event.key === "Backspace" ? this.mentionText = this.mentionText.slice(0 , -1) :
     (event.key.length == 1) ? this.mentionText = this.mentionText + event.key : null;
     if(this.mentionText.length < 1 || event.key === "Escape") {
       this.mentionCommentFile = false;
