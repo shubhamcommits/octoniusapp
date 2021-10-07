@@ -256,9 +256,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
           // Filtering other tasks
           column.tasks.forEach(task => {
             if (task.bars !== undefined && task.bars.length > 0) {
-              const adminIndex = this.groupData._admins.findIndex(admin => admin._id == this.userData._id);
+              const adminIndex = this.groupData._admins.findIndex(admin => (admin._id || admin) == this.userData._id);
               task.bars.forEach(bar => {
-                const userBarIndex = bar.tag_members.findIndex(barMember => barMember._id == this.userData._id);
+                const userBarIndex = bar.tag_members.findIndex(barMember => (barMember._id || barMember) == this.userData._id);
                 if (userBarIndex >= 0 || adminIndex >= 0 || this.userData.role !== "member") {
                   tasks.push(task);
                 }

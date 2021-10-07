@@ -294,9 +294,9 @@ export class UtilityService {
     let dialogOpen;
     let openPost = true;
     if (postData.bars !== undefined && postData.bars.length > 0) {
-      const adminIndex = groupData._admins.findIndex(admin => admin._id == userData._id);
+      const adminIndex = groupData._admins.findIndex(admin => (admin._id || admin) == userData._id);
       postData.bars.forEach(bar => {
-        const userBarIndex = bar.tag_members.findIndex(barMember => barMember._id == userData._id);
+        const userBarIndex = bar.tag_members.findIndex(barMember => (barMember._id || barMember) == userData._id);
         if ((userBarIndex < 0 || adminIndex < 0) && userData.role == "member") {
           openPost = false;
         }
