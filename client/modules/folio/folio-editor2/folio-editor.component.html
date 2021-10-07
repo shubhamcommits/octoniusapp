@@ -46,7 +46,7 @@
     <div class="comment-profile">
       <div class="profile">
         <div class="profile-pic">
-          <img style="height: 100%;" src="{{meta.profile_pic}}" alt="">
+          <app-secured-image [imgURL]="meta.profile_pic" [inlineStyle]='"height: 100%;"'></app-secured-image>
         </div>
         <div>{{meta.user_name}}</div>
       </div>
