@@ -1,7 +1,7 @@
  <!-- Folio wrapper starts here -->
  
 <app-create-table *ngIf="tableShow" (dataToSubmit)="dataFromTableModal($event)"></app-create-table>
-
+<div #customModal></div>
 <div [ngClass]="{'hide-modal' : !commentBool}" class="comment-modal center">
   <div class="comment-container center">
     <span class="close" (click)="closeComment()">&times;</span>
@@ -46,7 +46,7 @@
     <div class="comment-profile">
       <div class="profile">
         <div class="profile-pic">
-          <img style="height: 100%;" src="{{meta.profile_pic}}" alt="">
+          <app-secured-image [imgURL]="meta.profile_pic" [inlineStyle]='"height: 100%;"'></app-secured-image>
         </div>
         <div>{{meta.user_name}}</div>
       </div>

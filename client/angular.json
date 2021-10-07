@@ -48,6 +48,7 @@
               "src/shared/utilities/loading-bar/loading-bar.min.js",
               "node_modules/leader-line/leader-line.min.js",
               "src/assets/quill.min.js",
+              "src/assets/quill-image-resize.js",
               "src/assets/quill-better-table.js",
               "src/assets/quill.mention.min.js"
             ],

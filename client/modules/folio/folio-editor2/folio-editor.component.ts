@@ -1,4 +1,4 @@
-import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { PublicFunctions } from "modules/public.functions";
 import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
@@ -8,6 +8,7 @@ import * as ShareDB from "sharedb/lib/client";
 import { FilesService } from "src/shared/services/files-service/files.service";
 import { StorageService } from "src/shared/services/storage-service/storage.service";
 import { FolioService } from 'src/shared/services/folio-service/folio.service';
+import { CustomModalComponent } from './custom-modal/custom-modal.component'
 
 declare const Quill2: any;
 declare const quillBetterTable: any;
@@ -51,6 +52,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   // Table modal boolean
   tableShow: boolean = false;
 
+  //resize percentafe
+  percentage : string;
+
+  //image alignment
+  alignment : string;
 
   //Delete comment modal boolean
   deleteCommentBool : boolean = false;
@@ -101,9 +107,12 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   @ViewChild('editable2', { static: true })
   editRef2!: ElementRef;
 
+  @ViewChild('customModal',{read : ViewContainerRef}) entry! : ViewContainerRef;
+
   constructor(
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
+    private resolver: ComponentFactoryResolver,
     private follioService: FolioService
   ) {
     // Get the State of the ReadOnly
@@ -119,8 +128,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
     // Initialise the modules in constructor
     this.modules = {
+      imageModule: true,
       syntax: true,
-      toolbar: [
+      toolbar: {container :[
         [{ 'font': [] }, { 'size': [] }],
         ['bold', 'italic', 'underline', 'strike'],
         [{ 'color': [] }, { 'background': [] }],
@@ -129,8 +139,13 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
         ['direction', { 'align': [] }],
         ['link', 'image', 'video', 'formula'],
-        ['clean'], ['comment'],['tables'],['clear']
-      ],
+        ['clean'], ['comment'],['tables'],['clear'],['editimage']
+      ], handlers : {
+        'image' : () => {
+          const imgMod = this.quill.getModule('imageModule');
+          imgMod.insertImage(this.quill);
+        }
+      }},
       table: false,
         'better-table': {
           operationMenu: {
@@ -177,6 +192,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     document.querySelector(".ql-comment").innerHTML =
       '<img src="assets/images/comment.png" alt="" style="height:100%; width:100%"></div>';
     document.querySelector(".ql-clear").innerHTML = "<b>Clr</b>";
+    document.querySelector(".ql-editimage").innerHTML = "<b>EditImg</b>";
 
     document.querySelector(".ql-comment").addEventListener("click", () => {
       this.openComment();
@@ -184,6 +200,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
     document.querySelector(".ql-clear").addEventListener("click", () => {
       this.clearEditor();
+    });
+    document.querySelector(".ql-editimage").addEventListener("click", () => {
+      this.editImage();
     });
 
     document.querySelectorAll('.ql-tables').forEach(button => {
@@ -424,6 +443,41 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   createTable(rowCount:number,columnCount:number ){
     const tableModule = this.quill.getModule('better-table');
       tableModule.insertTable(rowCount, columnCount);
+  }
+
+  editImage(){
+    const selection = this.quill.getSelection();
+    this.entry.clear();
+    const factory = this.resolver.resolveComponentFactory(CustomModalComponent);
+    const componentRef = this.entry.createComponent(factory);
+    componentRef.instance.dataToSubmit.subscribe((data)=>{
+      const alignment = data.alignment;
+      const percentage = parseInt(data.percentage);
+      const imgMod = this.quill.getModule('imageModule');
+      if(percentage){
+        imgMod.resize(this.quill,selection,percentage);
+      }
+      if(alignment)
+      {
+        switch(alignment) {
+        case 'right' :
+          {
+            imgMod.alignRight(this.quill, selection);
+            break;
+          }
+        case 'left' :
+          {
+            imgMod.alignLeft(this.quill, selection);
+            break;
+          }
+        case 'center' :
+          {
+            imgMod.alignCenter(this.quill, selection);
+            break;
+          }
+      }}
+      componentRef.instance.dataToSubmit.unsubscribe();
+    })    
   }
   
   metionModule() {

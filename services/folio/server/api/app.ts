@@ -4,14 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import createHtml from '../utils/folio/convert-html';
-const os = require('os');
-const { exec } = require("child_process");
-const fs = require('fs');
-const multipart = require('connect-multiparty');
-const multipartMiddleware = multipart({
-    uploadDir: './uploads'
-});
+import routes from './routes/folio.routes';
 
 // Defining new Express application
 const app = express();
@@ -68,14 +61,7 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
     res.sendFile(path.join(__dirname, './views/index.html'));
 });
 
-app.post('/upload', multipartMiddleware, async (req: any, res) =>{
-    let file_path = "";
-    if ( req.files.uploads.length >=1 ) {
-        file_path = './'+req.files.uploads[0].path;
-        file_path = './uploads/'+path.basename(file_path);
-    }
-    const htmlData = await createHtml(file_path, res);
-})
+app.use('/',routes);
  
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
