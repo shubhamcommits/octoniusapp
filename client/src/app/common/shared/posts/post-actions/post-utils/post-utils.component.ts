@@ -74,19 +74,20 @@ export class PostUtilsComponent implements OnInit {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(): void {
-    const group = (this.post._group._id) ? this.post._group._id : this.post._group;
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, group, this.isIdeaModuleAvailable);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable);
 
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.closeModalEvent.emit(data);
-    });
-    const pinEventSubs = dialogRef.componentInstance.pinEvent.subscribe((data) => {
-      this.pinEvent.emit(data);
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      closeEventSubs.unsubscribe();
-      pinEventSubs.unsubscribe();
-    });
+    if (dialogRef) {
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        this.closeModalEvent.emit(data);
+      });
+      const pinEventSubs = dialogRef.componentInstance.pinEvent.subscribe((data) => {
+        this.pinEvent.emit(data);
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+        pinEventSubs.unsubscribe();
+      });
+    }
   }
 
   /**

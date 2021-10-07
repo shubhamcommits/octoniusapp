@@ -417,15 +417,6 @@ export class ComponentSearchBarComponent implements OnInit, AfterViewInit, OnDes
             // Updates the local data of the user to tell them about that their role has been updated
             this.publicFunctions.emitUserData(socketService, this.members[index]['_id'], this.members[index]);
 
-            let newRole = '';
-            if (role == 'member') {
-              newRole = 'Member';
-            } else if (role == 'admin') {
-              newRole = 'Admin';
-            } else if (role == 'manager') {
-              newRole = 'Work Manager';
-            }
-
             // Resolve the promise with success
             resolve(utilityService.resolveAsyncPromise($localize`:@@componentSearchBar.roleUpdated:User role updated!`))
           })

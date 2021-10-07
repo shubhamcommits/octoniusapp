@@ -38,14 +38,19 @@
               "node_modules/quill/dist/quill.bubble.css",
               "node_modules/quill-mention/dist/quill.mention.min.css",
               "src/shared/utilities/highlight.js/monokai-sublime.min.css",
-              "src/shared/utilities/loading-bar/loading-bar.min.css"
+              "src/shared/utilities/loading-bar/loading-bar.min.css",
+              "node_modules/quill-better-table/dist/quill-better-table.css"
             ],
             "scripts": [
               "src/shared/utilities/stripe.checkout.js",
               "node_modules/quill/dist/quill.js",
               "src/shared/utilities/highlight.js/highlight.min.js",
               "src/shared/utilities/loading-bar/loading-bar.min.js",
-              "node_modules/leader-line/leader-line.min.js"
+              "node_modules/leader-line/leader-line.min.js",
+              "src/assets/quill.min.js",
+              "src/assets/quill-image-resize.js",
+              "src/assets/quill-better-table.js",
+              "src/assets/quill.mention.min.js"
             ],
             "allowedCommonJsDependencies": [
               "lodash",

@@ -1,0 +1,22 @@
+<div class="table-modal center">
+    <div class="table-container center">
+      <span class="close" (click)="onClose()">&times;</span>
+      <br>
+      <div class="table-container-content">
+        <div>
+
+          <h2>Row</h2>
+            <input  type="number" min="1" [(ngModel)]="rowCount"/>
+        </div>
+        <p>X</p>
+        <div>
+          <h2>Column</h2>
+          <input type="number" min="1"[(ngModel)]="columnCount" />
+        </div>
+      </div>
+      <div class="table-submit center-submit" (click)="submitData()">
+           Submit
+         </div>
+        
+        </div>
+  </div>

@@ -31,10 +31,10 @@ export class GroupCalendarComponent implements OnInit {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
   // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.queryParamMap.get('group')
+  groupId = this.router.snapshot.queryParamMap.get('group');
 
   // Public Functions
-  public publicFunctions = new PublicFunctions(this.injector)
+  public publicFunctions = new PublicFunctions(this.injector);
 
   // Calendar Posts
   posts: any;
@@ -44,6 +44,9 @@ export class GroupCalendarComponent implements OnInit {
 
   // Current User Data
   userData: any;
+
+  // Current Group Data
+  groupData: any;
 
   // Timeline of events and tasks
   timeline: any = []
@@ -106,6 +109,9 @@ export class GroupCalendarComponent implements OnInit {
 
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
+
+    // Fetch the current group
+    this.groupData = await this.publicFunctions.getCurrentGroup();
 
     this.loadTimeline();
   }
@@ -227,28 +233,30 @@ export class GroupCalendarComponent implements OnInit {
     let dialogRef;
     if (this.post) {
       if (this.post.type === 'task' && !this.post.task._parent_task) {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.isIdeaModuleAvailable, this.columns);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns);
       } else {
         if (this.post.task._parent_task && !this.post.task._parent_task._id) {
           this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
             this.post.task._parent_task = post;
           });
         }
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupId, this.isIdeaModuleAvailable);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable);
       }
     }
 
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.updateEvent(data);
-    });
-    const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
-      this.onTaskClonned(data);
-    });
+    if (dialogRef) {
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        this.updateEvent(data);
+      });
+      const taskClonnedEventSubs = dialogRef.componentInstance.taskClonnedEvent.subscribe((data) => {
+        this.onTaskClonned(data);
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      closeEventSubs.unsubscribe();
-      taskClonnedEventSubs.unsubscribe();
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+        taskClonnedEventSubs.unsubscribe();
+      });
+    }
   }
 
   addEvent(): void {

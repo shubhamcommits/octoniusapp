@@ -290,32 +290,48 @@ export class UtilityService {
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openCreatePostFullscreenModal(postData: any, userData: any, groupId: string, isIdeaModuleAvailable: boolean, columns?: any, tasks?: any) {
+  openCreatePostFullscreenModal(postData: any, userData: any, groupData: any, isIdeaModuleAvailable: boolean, columns?: any, tasks?: any) {
+    let dialogOpen;
+    let openPost = true;
+    if (postData.bars !== undefined && postData.bars.length > 0) {
+      const adminIndex = groupData._admins.findIndex(admin => (admin._id || admin) == userData._id);
+      postData.bars.forEach(bar => {
+        const userBarIndex = bar.tag_members.findIndex(barMember => (barMember._id || barMember) == userData._id);
+        if ((userBarIndex < 0 || adminIndex < 0) && userData.role == "member") {
+          openPost = false;
+        }
+      });
+    }
 
-    const data = (columns) ?
-      {
-        postData: postData,
-        userData: userData,
-        groupId: groupId,
-        columns: columns,
-        Tasks:tasks,
-        isIdeaModuleAvailable: isIdeaModuleAvailable
-      }
-    :
-      {
-        postData: postData,
-        userData: userData,
-        groupId: groupId,
-        isIdeaModuleAvailable: isIdeaModuleAvailable
-      }
+    if (openPost) {
+      const data = (columns) ?
+        {
+          postData: postData,
+          userData: userData,
+          groupId: groupData._id,
+          columns: columns,
+          Tasks:tasks,
+          isIdeaModuleAvailable: isIdeaModuleAvailable
+        }
+      :
+        {
+          postData: postData,
+          userData: userData,
+          groupId: groupData._id,
+          isIdeaModuleAvailable: isIdeaModuleAvailable
+        }
 
-    return this.dialog.open(GroupCreatePostDialogComponent, {
-      width: '100%',
-      height: '100%',
-      disableClose: true,
-      panelClass: 'groupCreatePostDialog',
-      data: data
-    });
+        dialogOpen = this.dialog.open(GroupCreatePostDialogComponent, {
+        width: '100%',
+        height: '100%',
+        disableClose: true,
+        panelClass: 'groupCreatePostDialog',
+        data: data
+      });
+    } else {
+      this.warningNotification($localize`:@@utilityService.noRightToOpenPost:You does not have rights to access the post. Contact with the Manager!`);
+    }
+    return dialogOpen;
   }
 
   /**

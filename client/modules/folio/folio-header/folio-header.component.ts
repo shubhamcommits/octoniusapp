@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { Title } from "@angular/platform-browser";
 import { PublicFunctions } from 'modules/public.functions';
+import { FolioService } from 'src/shared/services/folio-service/folio.service';
 
 @Component({
   selector: 'app-folio-header',
@@ -10,6 +11,9 @@ import { PublicFunctions } from 'modules/public.functions';
   styleUrls: ['./folio-header.component.scss']
 })
 export class FolioHeaderComponent implements OnInit {
+
+
+  uploadedFiles: Array<File> = []
 
   // GroupID Variable
   groupId: any;
@@ -22,6 +26,11 @@ export class FolioHeaderComponent implements OnInit {
 
   // File Data Variable
   file: any
+
+  // Uploaded Files
+  selectedFile: any
+
+  htmlData: any
 
   // Edit Title
   editTitle = false
@@ -36,7 +45,8 @@ export class FolioHeaderComponent implements OnInit {
     private router: Router,
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,
-    private titleService: Title
+    private titleService: Title,
+    private follioService: FolioService
   ) { }
 
   async ngOnInit() {
@@ -170,9 +180,21 @@ export class FolioHeaderComponent implements OnInit {
   }
 
   ngOnDestroy() {
-
     // Change the title of the tab
     this.titleService.setTitle('Octonius');
   }
 
+  fileChange(element: any) {
+    this.uploadedFiles = element.target.files;
+  }
+
+  onFileChanged(event) {
+    this.uploadedFiles = event.target.files;
+
+    let formData = new FormData();
+    for (var i = 0; i < this.uploadedFiles.length; i++) {
+      formData.append("uploads[]", this.uploadedFiles[i], this.uploadedFiles[i].name);
+    }
+    this.follioService.uploadFollioDocx(formData)
+  }
 }

@@ -22,7 +22,9 @@ export class MyspaceAgendaComponent implements OnInit {
 
   now: string = moment().format();
 
-  userData: any
+  userData: any;
+
+  groupData: any;
 
   post: any;
 
@@ -39,6 +41,10 @@ export class MyspaceAgendaComponent implements OnInit {
   async ngOnInit() {
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
+
+    // Fetch the current group
+    this.groupData = await this.publicFunctions.getCurrentGroup();
+
     this.todayTimelineEvents = await this.getTodayTimelineEvents();
     this.thisWeekTimelineEvents = await this.getThisWeekTimelineEvents();
 
@@ -55,14 +61,16 @@ export class MyspaceAgendaComponent implements OnInit {
 
   openModal(event) {
     this.post = event;
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.post._group._id, this.isIdeaModuleAvailable);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable);
 
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.updateEvent(data);
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      closeEventSubs.unsubscribe();
-    });
+    if (dialogRef) {
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        this.updateEvent(data);
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+      });
+    }
   }
 
   ngOnDestroy() {

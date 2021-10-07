@@ -4,6 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
+import routes from './routes/folio.routes';
 
 // Defining new Express application
 const app = express();
@@ -60,6 +61,8 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
     res.sendFile(path.join(__dirname, './views/index.html'));
 });
 
+app.use('/',routes);
+ 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
     const error = new Error('404 not found');
@@ -75,6 +78,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
         }
     });
 });
+
 
 // Compressing the Application
 app.use(compression());

@@ -33,22 +33,24 @@ export class DoneTasksKanbanViewComponent implements OnInit {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.isIdeaModuleAvailable, this.columns);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns);
 
-    const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
-      this.deleteEvent.emit(data);
-    });
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.closeModalEvent.emit(data);
-    });
-    const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
-      this.deleteEvent.emit(data._id);
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      closeEventSubs.unsubscribe();
-      deleteEventSubs.unsubscribe();
-      parentAssignEventSubs.unsubscribe();
-    });
+    if (dialogRef) {
+      const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+        this.deleteEvent.emit(data);
+      });
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        this.closeModalEvent.emit(data);
+      });
+      const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
+        this.deleteEvent.emit(data._id);
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+        deleteEventSubs.unsubscribe();
+        parentAssignEventSubs.unsubscribe();
+      });
+    }
   }
 
 }

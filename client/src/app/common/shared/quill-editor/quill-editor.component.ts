@@ -197,7 +197,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
       ['direction', { 'align': [] }],
       ['link', 'image', 'video', 'formula'],
-      ['clean']
+      ['clean'], ['comment'],['clear']
     ]
   }
 
@@ -347,11 +347,11 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       id: file._id,
       value:
         (file.type == 'folio')
+        // Return the Array without duplicates
           ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
           : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData('authToken')['token']}" style="color: inherit" target="_blank">${file.original_name}</a>`
     }))
 
-    // Return the Array without duplicates
     return Array.from(new Set([...filesList, ...googleFilesList]))
   }
 

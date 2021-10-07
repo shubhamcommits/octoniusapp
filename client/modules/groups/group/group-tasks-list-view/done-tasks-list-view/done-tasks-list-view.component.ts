@@ -39,23 +39,25 @@ export class DoneTasksListViewComponent implements OnChanges {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, postData._group._id, this.isIdeaModuleAvailable, this.sections);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData, this.isIdeaModuleAvailable, this.sections);
 
-    const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
-      this.onDeleteEvent(data);
-    });
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-      this.updateTask(data);
-      this.closeDoneTaskModalEvent.emit(data);
-    });
-    const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
-      this.onDeleteEvent(data._id);
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      closeEventSubs.unsubscribe();
-      deleteEventSubs.unsubscribe();
-      parentAssignEventSubs.unsubscribe();
-    });
+    if (dialogRef) {
+      const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
+        this.onDeleteEvent(data);
+      });
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        this.updateTask(data);
+        this.closeDoneTaskModalEvent.emit(data);
+      });
+      const parentAssignEventSubs = dialogRef.componentInstance.parentAssignEvent.subscribe((data) => {
+        this.onDeleteEvent(data._id);
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+        deleteEventSubs.unsubscribe();
+        parentAssignEventSubs.unsubscribe();
+      });
+    }
   }
 
   onDeleteEvent(id) {
