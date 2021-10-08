@@ -122,9 +122,20 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   ) {
     // Get the State of the ReadOnly
     this.follioService.follioSubject.subscribe(data => {
-      if (data){
+      if (data) {
         this.quill.clipboard.dangerouslyPasteHTML(data);
-        this.saveQuillData();
+
+        if (this.quill && this.folio) {
+          this.quill.on("text-change", (delta, oldDelta, source) => {
+            this.folio.submitOp(delta, {
+              source: this.quill
+            }, (err: Error) => {
+              if (err)
+                console.error('Submit OP returned an error:', err);
+            });
+          });
+        }
+        //this.saveQuillData();
       }
     });
     this.readOnly =
