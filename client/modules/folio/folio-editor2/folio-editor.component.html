@@ -1,7 +1,9 @@
  <!-- Folio wrapper starts here -->
- 
+
 <app-create-table *ngIf="tableShow" (dataToSubmit)="dataFromTableModal($event)"></app-create-table>
+
 <div #customModal></div>
+
 <div [ngClass]="{'hide-modal' : !commentBool}" class="comment-modal center">
   <div class="comment-container center">
     <span class="close" (click)="closeComment()">&times;</span>
@@ -28,36 +30,40 @@
     </div>
   </div>
 </div>
-</div> 
+</div>
 <div class="folio-container">
-<!-- Quill Editor Component Starts -->
-<div class="editor-section">
-<div #editable class="folio">
-</div>
-</div>
-<div class="comments-section">
-<div class="comment-head">
-  <div class="center">
-  COMMENTS
+  <!-- Quill Editor Component Starts -->
+  <div class="editor-section">
+    <div #editable class="folio"></div>
   </div>
-</div>
-<div class="comment-area">
-  <div class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}" (click)="highlight(meta.range)" *ngFor="let meta of metaData;let ind = index">
-    <div class="comment-profile">
-      <div class="profile">
-        <div class="profile-pic">
-          <app-secured-image [imgURL]="meta.profile_pic" [inlineStyle]='"height: 100%;"'></app-secured-image>
-        </div>
-        <div>{{meta.user_name}}</div>
+  <!-- Quill Editor Component Ends -->
+
+  <!-- Comments Starts -->
+  <!--
+  <div class="comments-section">
+    <div class="comment-head">
+      <div class="center">
+      COMMENTS
       </div>
-      <div class="close" (click)="openDeleteComment(ind)">&times;</div>
     </div>
-    <div [innerHTML]="meta.comment">
+    <div class="comment-area">
+      <div class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}" (click)="highlight(meta.range)" *ngFor="let meta of metaData;let ind = index">
+        <div class="comment-profile">
+          <div class="profile">
+            <div class="profile-pic">
+              <app-secured-image [imgURL]="meta.profile_pic" [inlineStyle]='"height: 100%;"'></app-secured-image>
+            </div>
+            <div>{{meta.user_name}}</div>
+          </div>
+          <div class="close" (click)="openDeleteComment(ind)">&times;</div>
+        </div>
+        <div [innerHTML]="meta.comment">
+        </div>
+      </div>
     </div>
   </div>
-</div>
-</div>
-<!-- Quill Editor Component Ends -->
+  -->
+  <!-- Comments Ends -->
 
 </div>
 <!-- Folio wrapper ends here -->
