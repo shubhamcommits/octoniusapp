@@ -2,7 +2,7 @@ import http from 'http';
 import { app } from './api/app';
 import cluster from 'cluster';
 
-if (cluster.isMaster) {
+if (cluster.isPrimary) {
 
   // Environment State Variable
   const env = process.env.NODE_ENV
