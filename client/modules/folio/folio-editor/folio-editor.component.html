@@ -25,7 +25,7 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
  <div class="folio-container">
 <!-- Quill Editor Component Starts -->
 <div class="editor-section">
@@ -43,7 +43,12 @@
       <div class="comment-profile">
         <div class="profile">
           <div class="profile-pic">
-            <img style="height: 100%;" src="{{meta.profile_pic}}" alt="">
+            <!-- <img style="height: 100%;" src="{{meta.profile_pic}}" alt=""> -->
+            <app-secured-image
+                [imgURL]="meta?.profile_pic"
+                [service]="'user'"
+                [tooltip]="meta?.user_name"
+                [styleClass]="'feed-avatar'"></app-secured-image>
           </div>
           <div>{{meta.user_name}}</div>
         </div>
