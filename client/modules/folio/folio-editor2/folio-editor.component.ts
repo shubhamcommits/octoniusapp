@@ -266,7 +266,10 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     folio.subscribe(async () => {
 
       if (!folio.type) {
-        folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
+        //folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
+        folio.create([{
+          insert: '\n'
+        }], 'rich-text');
       }
 
       // update editors contents
@@ -303,7 +306,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           this.commentsToDisplay = [];
           this.mapComments(range.index, range.length);
         }
-      })
+      });
+
       // server -> local
       folio.on("op", (op, source) => {
         if (source === quill) return;
