@@ -3,7 +3,7 @@ import { app } from './api/app';
 import cluster from 'cluster';
 import url from 'url';
 
-if (cluster.isPrimary) {
+if (cluster.isMaster) {
 
   // Environment State Variable
   const env = process.env.NODE_ENV
