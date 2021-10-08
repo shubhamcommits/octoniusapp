@@ -124,20 +124,10 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     this.follioService.follioSubject.subscribe(data => {
       if (data) {
         this.quill.clipboard.dangerouslyPasteHTML(data);
-
-        if (this.quill && this.folio) {
-          this.quill.on("text-change", (delta, oldDelta, source) => {
-            this.folio.submitOp(delta, {
-              source: this.quill
-            }, (err: Error) => {
-              if (err)
-                console.error('Submit OP returned an error:', err);
-            });
-          });
-        }
-        //this.saveQuillData();
+        this.saveQuillData();
       }
     });
+
     this.readOnly =
       this._ActivatedRoute.snapshot.queryParamMap.get("readOnly") == "true" ||
       false;
