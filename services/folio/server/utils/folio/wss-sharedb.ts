@@ -1,10 +1,10 @@
+import sharedbServer from './sharedb-server';
 var ws = require('ws');
 var WebSocketJSONStream = require('websocket-json-stream');
-var shareDBServer = require('./sharedb-server');
 var debug = require('debug')('quill-sharedb-cursors:sharedb');
 import { v4 as uuid } from 'uuid';
 
-module.exports = function (server) {
+export default function (server) {
     var wss = new ws.Server({
         noServer: true
     });
@@ -18,7 +18,7 @@ module.exports = function (server) {
         debug('A new client (%s) connected.', ws.id);
 
         var stream = new WebSocketJSONStream(ws);
-        shareDBServer.listen(stream);
+        sharedbServer.listen(stream);
 
         ws.on('pong', function (data, flags) {
             debug('Pong received. (%s)', ws.id);
