@@ -124,13 +124,13 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     this.follioService.follioSubject.subscribe(data => {
       if (data) {
         this.quill.clipboard.dangerouslyPasteHTML(data);
-        this.folio.submitOp(this.quill.getContents().ops, {
-          source: this.quill
-        }, (err: Error) => {
-          if (err)
-            console.error('Submit OP returned an error:', err);
-        });
-        //this.saveQuillData();
+        // this.folio.submitOp(this.quill.getContents().ops, {
+        //   source: this.quill
+        // }, (err: Error) => {
+        //   if (err)
+        //     console.error('Submit OP returned an error:', err);
+        // });
+        this.saveQuillData();
       }
     });
 
@@ -151,7 +151,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
         ['direction', { 'align': [] }],
         ['link', 'image', 'video', 'formula'],
-        ['clean'], /*['comment']*/,['tables'],['clear'],['editimage']
+        ['clean'], ['comment'],['tables'],['clear'],['editimage']
       ], handlers : {
         'image' : () => {
           const imgMod = this.quill.getModule('imageModule');
@@ -203,14 +203,14 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     this.modules.mention = this.metionModule();
     this.initEditor();
     this.initializeFolio(this.folio, this.quill);
-    // document.querySelector(".ql-comment").innerHTML =
-    //  '<img src="assets/images/comment.png" alt="" style="height:100%; width:100%"></div>';
+    document.querySelector(".ql-comment").innerHTML =
+     '<img src="assets/images/comment.png" alt="" style="height:100%; width:100%"></div>';
     document.querySelector(".ql-clear").innerHTML = "<b>Clr</b>";
     document.querySelector(".ql-editimage").innerHTML = "<b>EditImg</b>";
 
-    // document.querySelector(".ql-comment").addEventListener("click", () => {
-    //  this.openComment();
-    //});
+    document.querySelector(".ql-comment").addEventListener("click", () => {
+     this.openComment();
+    });
 
     document.querySelector(".ql-clear").addEventListener("click", () => {
       this.clearEditor();
@@ -270,19 +270,22 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
     // Subscribe to the folio data and update the quill instance with the data
     folio.subscribe(async () => {
-
+      // Convert existing rich text documents to json0
+      this.richtextToJson0(folio, quill);
       if (!folio.type) {
-        //folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
+        // folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
         folio.create([{
           insert: '\n'
         }], 'rich-text');
       }
 
       // update editors contents
-      quill.setContents(folio?.data);
+      quill.setContents(folio?.data?.data?.delta);
+      // quill.setContents(folio?.data);
       this.quill2.setContents([{ insert: "\n" }]);
 
-      this.metaData = folio?.data?.comment;
+      this.metaData = folio?.data?.data?.comment;
+      // this.metaData = folio?.data?.comment;
 
       // local -> server
       quill.on("text-change", (delta, oldDelta, source) => {
@@ -297,13 +300,13 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         }
 
         if (source == "user") {
-          folio.submitOp(delta, {
-            source: quill
-          }, (err: Error) => {
-            if (err)
-              console.error('Submit OP returned an error:', err);
-          });
-          //this.saveQuillData()
+          // folio.submitOp(delta, {
+          //   source: quill
+          // }, (err: Error) => {
+          //   if (err)
+          //     console.error('Submit OP returned an error:', err);
+          // });
+          this.saveQuillData()
         }
       });
 
@@ -317,11 +320,25 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       // server -> local
       folio.on("op", (op, source) => {
         if (source === quill) return;
-        quill.updateContents(op);
-        //quill.setContents(op[0].oi.delta);
-        //this.metaData = op[0].oi.comment;
+        // quill.updateContents(op);
+        /**
+         * Disabling update contents and 
+         * using setcontents because other plugins do not have
+         * proper support for update contents
+         */
+        quill.setContents(op[0].oi.delta);
+        this.metaData = op[0].oi.comment;
       });
     });
+  }
+
+  richtextToJson0(folio: any, quill: any) {
+    if (folio?.type?.name === 'rich-text') {
+      quill.setContents(folio?.data);
+      folio.del();
+      folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
+      this.saveQuillData();
+    }
   }
 
   //To get comments on selection
@@ -383,7 +400,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   saveQuillData() {
     var toSend = {
       p: ["data"],
-      od: this.folio.data,
+      // In json0 the required data is inside data.data
+      od: this.folio.data.data,
       oi: { comment: this.metaData, delta: this.quill.getContents().ops },
     };
     this.folio.submitOp(
@@ -392,7 +410,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         source: this.quill,
       },
       (err: Error) => {
-console.log(err);
         return;
       }
     );
