@@ -1,12 +1,12 @@
 import { Component, ElementRef,Output, EventEmitter, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-custom-modal',
-  templateUrl: './custom-modal.component.html',
-  styleUrls: ['./custom-modal.component.scss']
+  selector: 'app-image-resize-modal',
+  templateUrl: './image-resize-modal.component.html',
+  styleUrls: ['./image-resize-modal.component.scss']
 })
 
-export class CustomModalComponent implements OnInit {
+export class ImageResizeModalComponent implements OnInit {
   @Output() dataToSubmit = new EventEmitter<any>();
   alignment? : string;
   percentage? : number;
