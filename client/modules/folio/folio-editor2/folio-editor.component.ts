@@ -124,7 +124,13 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     this.follioService.follioSubject.subscribe(data => {
       if (data) {
         this.quill.clipboard.dangerouslyPasteHTML(data);
-        this.saveQuillData();
+        this.folio.submitOp(this.quill.getContents().ops, {
+          source: this.quill
+        }, (err: Error) => {
+          if (err)
+            console.error('Submit OP returned an error:', err);
+        });
+        //this.saveQuillData();
       }
     });
 
