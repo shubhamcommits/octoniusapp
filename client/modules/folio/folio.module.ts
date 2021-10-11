@@ -8,10 +8,10 @@ import { FolioEditorComponent } from './folio-editor2/folio-editor.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { CreateTableComponent } from './folio-editor2/create-table/create-table.component';
-import { CustomModalComponent } from './folio-editor2/custom-modal/custom-modal.component';
+import { ImageResizeModalComponent } from './folio-editor2/image-resize-modal/image-resize-modal.component';
 import { SharedModule } from 'src/app/common/shared/shared.module';
 @NgModule({
-  declarations: [FolioHeaderComponent, FolioEditorComponent, CreateTableComponent, CustomModalComponent],
+  declarations: [FolioHeaderComponent, FolioEditorComponent, CreateTableComponent, ImageResizeModalComponent],
   imports: [
     CommonModule,
 

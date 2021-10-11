@@ -5,7 +5,7 @@ import { SubSink } from "subsink";
 import { FilesService } from "src/shared/services/files-service/files.service";
 import { StorageService } from "src/shared/services/storage-service/storage.service";
 import { FolioService } from 'src/shared/services/folio-service/folio.service';
-import { CustomModalComponent } from './custom-modal/custom-modal.component'
+import { ImageResizeModalComponent } from './image-resize-modal/image-resize-modal.component';
 import { environment } from "src/environments/environment";
 
 import ReconnectingWebSocket from "reconnecting-websocket";
@@ -112,7 +112,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   @ViewChild('editable2', { static: true })
   editRef2!: ElementRef;
 
-  @ViewChild('customModal',{read : ViewContainerRef}) entry! : ViewContainerRef;
+  @ViewChild('ImageResizeModal',{read : ViewContainerRef}) entry! : ViewContainerRef;
 
   constructor(
     private _Injector: Injector,
@@ -483,7 +483,7 @@ console.log(err);
   editImage(){
     const selection = this.quill.getSelection();
     this.entry.clear();
-    const factory = this.resolver.resolveComponentFactory(CustomModalComponent);
+    const factory = this.resolver.resolveComponentFactory(ImageResizeModalComponent);
     const componentRef = this.entry.createComponent(factory);
     componentRef.instance.dataToSubmit.subscribe((data)=>{
       const alignment = data.alignment;

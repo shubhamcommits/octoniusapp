@@ -1,8 +1,7 @@
 import express from 'express';
-import upload from '../controllers/upload';
-import { createUploadFolder} from '../../utils/folio/upload-docx-utils';
+import upload from '../controllers/folio.controller';
 const routes = express.Router();
 
-routes.post('/upload',createUploadFolder, upload.multipartMiddleware, upload.uploadcontroller);
+routes.post('/upload', upload.multipartMiddleware, upload.uploadcontroller);
 
 export default routes;
