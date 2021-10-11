@@ -1,7 +1,13 @@
 import express from 'express';
+import { Auths } from '../../utils/auths';
+
 import upload from '../controllers/folio.controller';
+
 const routes = express.Router();
 
-routes.post('/upload', upload.multipartMiddleware, upload.uploadcontroller);
+// Auths Helper Function
+const authsHelper = new Auths();
+
+routes.post('/upload', authsHelper.verifyToken, authsHelper.isLoggedIn, upload.multipartMiddleware, upload.uploadcontroller);
 
 export default routes;
