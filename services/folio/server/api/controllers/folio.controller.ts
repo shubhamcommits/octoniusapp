@@ -9,7 +9,7 @@ const uploadcontroller = async (req: any, res) =>{
   if ( req.files.uploads.length >= 1 ) {
     file_path = req.files.uploads[0].path;
   }
-console.log("1.- " + file_path);
+
   const htmlData = await createHtml(file_path);
 
   return res.status(200).json({
