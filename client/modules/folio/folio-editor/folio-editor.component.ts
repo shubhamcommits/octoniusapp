@@ -1,4 +1,4 @@
-import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { PublicFunctions } from "modules/public.functions";
 import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
@@ -25,7 +25,6 @@ declare const Quill2: any;
 declare const quillBetterTable: any;
 Quill2.register({
   'modules/better-table': quillBetterTable,
-  // 'modules/imageDrop': ImageDrop,
   'modules/imageResize': ImageResize
 }, true);
 
@@ -138,23 +137,24 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     this.modules = {
       imageModule: true,
       syntax: true,
-      toolbar: {container :[
-        [{ 'font': [] }, { 'size': [] }],
-        ['bold', 'italic', 'underline', 'strike'],
-        [{ 'color': [] }, { 'background': [] }],
-        [{ 'script': 'super' }, { 'script': 'sub' }],
-        [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-        ['direction', { 'align': [] }],
-        ['link', 'image', 'video', 'formula'],
-        ['clean'], ['comment'],['tables'],['clear']
-      ], handlers : {
-        'image' : () => {
-          const imgMod = this.quill.getModule('imageModule');
-          imgMod.insertImage(this.quill);
-        }
-      }},
-      table: false,
+      toolbar: {
+        container :[
+          [{ 'font': [] }, { 'size': [] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'script': 'super' }, { 'script': 'sub' }],
+          [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block'],
+          [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+          ['direction', { 'align': [] }],
+          ['link', 'image', 'video', 'formula'],
+          ['clean'], ['comment'],['tables'],['clear']
+        ], handlers : {
+          'image' : () => {
+            const imgMod = this.quill.getModule('imageModule');
+            imgMod.insertImage(this.quill);
+          }
+        }},
+        table: false,
         'better-table': {
           operationMenu: {
             items: {
@@ -171,12 +171,12 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         keyboard: {
           bindings: quillBetterTable.keyboardBindings
         },
-      history: {
-        delay: 2500,
-        userOnly: true,
-      },
-      mention: {}
-    };
+        history: {
+          delay: 2500,
+          userOnly: true,
+        },
+        mention: {}
+      };
   }
 
   ngOnInit() {
@@ -200,7 +200,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
 
     // Set Image Resize Module
-    this.modules.imageResize = this.quillImageResize()
+    this.modules.imageResize = this.quillImageResize();
 
     // Set Image Drop Module
     // this.modules.imageDrop = true
@@ -285,18 +285,33 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
       // local -> server
       quill.on("text-change", (delta, oldDelta, source) => {
+        if (delta.ops.length > 1) {
+          delta.ops.forEach(op => {
+            if (op.insert) {
+              let insertMap = JSON.parse(JSON.stringify(op.insert));
 
-        if (delta.ops.length > 1 && delta.ops[1].insert) {
-          let mentionMap = JSON.parse(JSON.stringify(delta.ops[1].insert));
-          if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
-            let filesService = this._Injector.get(FilesService);
-            filesService.newFolioMention(mentionMap.mention, this.folioId, this.userData._id)
-              .then((res) => res.subscribe());
-          }
+              // Add mentions
+              if (insertMap.mention && insertMap.mention.denotationChar === "@") {
+                let filesService = this._Injector.get(FilesService);
+                filesService.newFolioMention(insertMap.mention, this.folioId, this.userData._id)
+                  .then((res) => res.subscribe());
+              }
+
+              // Harcode save resize image
+              /*
+              if (insertMap.image) {
+                const index = this.folio.data.data.delta.findIndex(op => op.insert && op.insert.image && op.insert.image.id == insertMap.image.id);
+                if (index >= 0) {
+                  this.folio.data.data.delta[index].insert.image = insertMap.image;
+                }
+              }
+              */
+            }
+          });
         }
 
         if (source == "user") {
-          this.saveQuillData()
+          this.saveQuillData();
         }
       });
 
@@ -419,10 +434,10 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     this.enteredComment = this.quill2.root.innerHTML;
     var txt = null;
     if (this.selectedText == null || this.selectedText == "") {
-      txt = "No content is selected";
+      txt = $localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.noContentSelected:No content is selected`;
       alert(txt);
     } else if (this.enteredComment == null || this.enteredComment == "") {
-      txt = "Please enter the comment";
+      txt = $localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.pleaseEnterComment:Please enter the comment`;
       alert(txt);
     } else {
       var userName = this.userData.first_name + ' ' + this.userData.last_name;
@@ -444,7 +459,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       this.quill.formatText(this.range.index, this.range.length, {
         background: "#fff72b",
       });
+
       this.saveQuillData();
+
       this.quill2.deleteText(0, this.quill2.getLength());
       this.commentBool = false;
       this.selectedText = null;
@@ -580,13 +597,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       value:
         file.type == "folio"
           ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-          : `<a href="${this.filesBaseUrl}/${
-              file.modified_name
-            }?authToken=Bearer ${
-              storageService.getLocalData("authToken")["token"]
-            }" style="color: inherit" target="_blank">${
-              file.original_name
-            }</a>`,
+          : (file.type == "flamingo")
+            ? `<a href="/document/flamingo/${file._id}?group=${file._group._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`,
     }));
 
     // Return the Array without duplicates
