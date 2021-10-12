@@ -5,8 +5,13 @@ import { SubSink } from "subsink";
 import { FilesService } from "src/shared/services/files-service/files.service";
 import { StorageService } from "src/shared/services/storage-service/storage.service";
 import { FolioService } from 'src/shared/services/folio-service/folio.service';
-import { ImageResizeModalComponent } from './image-resize-modal/image-resize-modal.component';
 import { environment } from "src/environments/environment";
+
+// Quill Image Resize
+import ImageResize from './quill-image-resize/quill.image-resize.js';
+
+// Image Drop Module
+// import ImageDrop from './quill-image-drop/quill.image-drop.js';
 
 import ReconnectingWebSocket from "reconnecting-websocket";
 import * as ShareDB from "sharedb/lib/client";
@@ -19,6 +24,8 @@ declare const Quill2: any;
 declare const quillBetterTable: any;
 Quill2.register({
   'modules/better-table': quillBetterTable,
+  // 'modules/imageDrop': ImageDrop,
+  'modules/imageResize': ImageResize
 }, true);
 
 @Component({
@@ -27,6 +34,15 @@ Quill2.register({
   styleUrls: ["./folio-editor.component.scss"],
 })
 export class FolioEditorComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('editable', { static: true })
+  editRef!: ElementRef;
+
+  @ViewChild('editable2', { static: true })
+  editRef2!: ElementRef;
+
+  @ViewChild('ImageResizeModal',{read : ViewContainerRef}) entry! : ViewContainerRef;
+
   // Quill instance variable
   quill: any;
   quill2: any;
@@ -106,14 +122,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   // Uploads url for Files
   filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
 
-  @ViewChild('editable', { static: true })
-  editRef!: ElementRef;
-
-  @ViewChild('editable2', { static: true })
-  editRef2!: ElementRef;
-
-  @ViewChild('ImageResizeModal',{read : ViewContainerRef}) entry! : ViewContainerRef;
-
   constructor(
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
@@ -123,20 +131,13 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     // Get the State of the ReadOnly
     this.follioService.follioSubject.subscribe(data => {
       if (data) {
+        this.clearEditor();
         this.quill.clipboard.dangerouslyPasteHTML(data);
-        // this.folio.submitOp(this.quill.getContents().ops, {
-        //   source: this.quill
-        // }, (err: Error) => {
-        //   if (err)
-        //     console.error('Submit OP returned an error:', err);
-        // });
         this.saveQuillData();
       }
     });
 
-    this.readOnly =
-      this._ActivatedRoute.snapshot.queryParamMap.get("readOnly") == "true" ||
-      false;
+    this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get("readOnly") == "true" || false;
 
     // Initialise the modules in constructor
     this.modules = {
@@ -151,7 +152,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
         ['direction', { 'align': [] }],
         ['link', 'image', 'video', 'formula'],
-        ['clean'], ['comment'],['tables'],['clear'],['editimage']
+        ['clean'], ['comment'],['tables'],['clear']
       ], handlers : {
         'image' : () => {
           const imgMod = this.quill.getModule('imageModule');
@@ -201,12 +202,19 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     }
 
     this.modules.mention = this.metionModule();
+
+
+    // Set Image Resize Module
+    this.modules.imageResize = this.quillImageResize()
+
+    // Set Image Drop Module
+    // this.modules.imageDrop = true
+
     this.initEditor();
     this.initializeFolio(this.folio, this.quill);
     document.querySelector(".ql-comment").innerHTML =
      '<img src="assets/images/comment.png" alt="" style="height:100%; width:100%"></div>';
     document.querySelector(".ql-clear").innerHTML = "<b>Clr</b>";
-    document.querySelector(".ql-editimage").innerHTML = "<b>EditImg</b>";
 
     document.querySelector(".ql-comment").addEventListener("click", () => {
      this.openComment();
@@ -215,9 +223,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     document.querySelector(".ql-clear").addEventListener("click", () => {
       this.clearEditor();
     });
-    document.querySelector(".ql-editimage").addEventListener("click", () => {
-      this.editImage();
-    });
 
     document.querySelectorAll('.ql-tables').forEach(button => {
       button.innerHTML = '<svg viewBox="0 0 18 18"> <rect class="ql-stroke" height="12" width="12" x="3" y="3"></rect> <rect class="ql-fill" height="2" width="3" x="5" y="5"></rect> <rect class="ql-fill" height="2" width="4" x="9" y="5"></rect> <g class="ql-fill ql-transparent"> <rect height="2" width="3" x="5" y="8"></rect> <rect height="2" width="4" x="9" y="8"></rect> <rect height="2" width="3" x="5" y="11"></rect> <rect height="2" width="4" x="9" y="11"></rect> </g> </svg>'
@@ -225,8 +230,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         this.openTableOptions()
       });
      });
-
-
   }
 
   ngOnDestroy() {
@@ -300,12 +303,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         }
 
         if (source == "user") {
-          // folio.submitOp(delta, {
-          //   source: quill
-          // }, (err: Error) => {
-          //   if (err)
-          //     console.error('Submit OP returned an error:', err);
-          // });
           this.saveQuillData()
         }
       });
@@ -322,7 +319,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         if (source === quill) return;
         // quill.updateContents(op);
         /**
-         * Disabling update contents and 
+         * Disabling update contents and
          * using setcontents because other plugins do not have
          * proper support for update contents
          */
@@ -404,6 +401,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       od: this.folio.data.data,
       oi: { comment: this.metaData, delta: this.quill.getContents().ops },
     };
+
     this.folio.submitOp(
       toSend,
       {
@@ -434,18 +432,12 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       alert(txt);
     } else {
       var userName = this.userData.first_name + ' ' + this.userData.last_name;
-      this.quill2.getContents().ops.map((value)=>{
-        if(value.insert.mention){
+      this.quill2.getContents().ops.map((value) => {
+        if (value.insert.mention) {
           var mentionMap = value.insert;
           if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
             let filesService = this._Injector.get(FilesService);
-            filesService
-              .newFolioMention(
-                mentionMap.mention,
-                this.folioId,
-                this.userData._id
-              )
-              .then((res) => res.subscribe());
+            filesService.newFolioMention(mentionMap.mention, this.folioId, this.userData._id).then((res) => res.subscribe());
           }
         }
       });
@@ -500,42 +492,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   // Create table with specific values
   createTable(rowCount:number,columnCount:number ){
     const tableModule = this.quill.getModule('better-table');
-      tableModule.insertTable(rowCount, columnCount);
-  }
-
-  editImage(){
-    const selection = this.quill.getSelection();
-    this.entry.clear();
-    const factory = this.resolver.resolveComponentFactory(ImageResizeModalComponent);
-    const componentRef = this.entry.createComponent(factory);
-    componentRef.instance.dataToSubmit.subscribe((data)=>{
-      const alignment = data.alignment;
-      const percentage = parseInt(data.percentage);
-      const imgMod = this.quill.getModule('imageModule');
-      if(percentage){
-        imgMod.resize(this.quill,selection,percentage);
-      }
-      if(alignment)
-      {
-        switch(alignment) {
-        case 'right' :
-          {
-            imgMod.alignRight(this.quill, selection);
-            break;
-          }
-        case 'left' :
-          {
-            imgMod.alignLeft(this.quill, selection);
-            break;
-          }
-        case 'center' :
-          {
-            imgMod.alignCenter(this.quill, selection);
-            break;
-          }
-      }}
-      componentRef.instance.dataToSubmit.unsubscribe();
-    })
+    tableModule.insertTable(rowCount, columnCount);
   }
 
   metionModule() {
@@ -623,5 +580,41 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
     // Return the Array without duplicates
     return Array.from(new Set(filesList));
+  }
+
+  /**
+   * This function is returns the configuration for quill image and compress it if required
+   */
+  quillImageCompress() {
+    return {
+      quality: 0.9,
+      maxWidth: 1000,
+      maxHeight: 1000,
+      imageType: 'image/jpeg'
+    }
+  }
+
+  /**
+   * This function is returns the configuration for quill image resize module
+   */
+  quillImageResize() {
+    return {
+      displaySize: true,
+      handleStyles: {
+        backgroundColor: 'black',
+        border: 'none',
+        color: 'white',
+        zIndex: '1000'
+      },
+      toolbarStyles: {
+        backgroundColor: 'black',
+        border: 'none',
+        color: 'white',
+        zIndex: '1000'
+      },
+      displayStyles: {
+        zIndex: '1000'
+      }
+    }
   }
 }

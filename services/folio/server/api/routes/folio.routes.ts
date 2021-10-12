@@ -8,6 +8,6 @@ const routes = express.Router();
 // Auths Helper Function
 const authsHelper = new Auths();
 
-routes.post('/upload',authsHelper.verifyToken, authsHelper.isLoggedIn, upload.createUploadFolder, upload.multipartMiddleware, upload.uploadcontroller);
+routes.post('/upload', authsHelper.verifyToken, authsHelper.isLoggedIn, upload.createUploadFolder, upload.multipartMiddleware, upload.uploadcontroller);
 
 export default routes;

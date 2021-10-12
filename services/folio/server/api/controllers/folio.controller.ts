@@ -2,6 +2,7 @@ import createHtml from '../../utils/folio/convert-to-html';
 const path = require('path');
 const multipart = require('connect-multiparty');
 const fs = require('fs');
+
 const multipartMiddleware = multipart({
     uploadDir: process.env.FILE_UPLOAD_FOLDER
 });
@@ -27,4 +28,4 @@ function createUploadFolder(req, res, next) {
     next()
 }
 
-export default {createUploadFolder, uploadcontroller, multipartMiddleware};
+export default { createUploadFolder, uploadcontroller, multipartMiddleware };
