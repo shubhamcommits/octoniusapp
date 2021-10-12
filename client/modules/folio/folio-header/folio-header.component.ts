@@ -1,9 +1,10 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { Title } from "@angular/platform-browser";
 import { PublicFunctions } from 'modules/public.functions';
 import { FolioService } from 'src/shared/services/folio-service/folio.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-folio-header',
@@ -12,6 +13,7 @@ import { FolioService } from 'src/shared/services/folio-service/folio.service';
 })
 export class FolioHeaderComponent implements OnInit {
 
+  userData;
 
   uploadedFiles: Array<File> = []
 
@@ -46,7 +48,7 @@ export class FolioHeaderComponent implements OnInit {
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,
     private titleService: Title,
-    private follioService: FolioService
+    private folioService: FolioService
   ) { }
 
   async ngOnInit() {
@@ -57,9 +59,10 @@ export class FolioHeaderComponent implements OnInit {
     // Set the readOnly
     this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get('readOnly') == 'true' || false
 
-    const userData = await this.publicFunctions.getCurrentUser()
+    this.userData = await this.publicFunctions.getCurrentUser();
+
     // check if the user is part of the group of the folio
-    const groupIndex = await userData?._groups?.findIndex(group => { return (group._id || group) == this.groupId });
+    const groupIndex = await this.userData?._groups?.findIndex(group => { return (group._id || group) == this.groupId });
     this.readOnly = this.readOnly || (groupIndex < 0);
 
     // Set the fileId variable
@@ -189,12 +192,29 @@ export class FolioHeaderComponent implements OnInit {
   }
 
   onFileChanged(event) {
-    this.uploadedFiles = event.target.files;
+    // Utility Service Instance
+    let utilityService = this._Injector.get(UtilityService);
 
-    let formData = new FormData();
-    for (var i = 0; i < this.uploadedFiles.length; i++) {
-      formData.append("uploads[]", this.uploadedFiles[i], this.uploadedFiles[i].name);
-    }
-    this.follioService.uploadFollioDocx(formData)
+    // Call the HTTP Request Asynschronously
+    utilityService.asyncNotification(
+      $localize`:@@folioHeader.pleaseWaitTransformingFile:Please wait we are transforming the file...`,
+      new Promise((resolve, reject) => {
+        this.uploadedFiles = event.target.files;
+
+        let formData = new FormData();
+        for (var i = 0; i < this.uploadedFiles.length; i++) {
+          formData.append("uploads[]", this.uploadedFiles[i], this.uploadedFiles[i].name);
+        }
+        this.folioService.uploadFollioDocx(formData).then((res: any) => {
+            // Setting follioService Subject for binding content in quill
+            this.folioService.setNewFollioValue(res.folio);
+
+            resolve(utilityService.resolveAsyncPromise($localize`:@@folioHeader.newFolioTransformed:New folio has been transformed!`));
+
+          })
+          .catch(() => {
+            reject(utilityService.rejectAsyncPromise($localize`:@@folioHeader.unexpectedErrorUploading:Unexpected error occurred while uploading, please try again!`))
+          });
+      }));
   }
 }

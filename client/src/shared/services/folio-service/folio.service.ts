@@ -8,17 +8,8 @@ import { Subject } from 'rxjs';
 })
 export class FolioService {
 
-  constructor(private _http: HttpClient) { 
+  constructor(private _http: HttpClient) {
     this.setUploadLoading(false)
-  }
-
-  uploadFollioDocx(formData) {
-    this._http.post(`${environment.FOLIO_HTTP_URL}/upload`, formData)
-        .subscribe((response: any) => {
-          // HTML data Converted
-          // Setting follioService Subject for binding content in quill
-        this.setNewFollioValue(response.message);
-        })
   }
 
   follioSubject = new Subject<String>();
@@ -31,5 +22,9 @@ export class FolioService {
 
   setNewFollioValue(data: String) {
     this.follioSubject.next(data)
+  }
+
+  uploadFollioDocx(formData) {
+    return this._http.post(`${environment.FOLIO_HTTP_URL}/upload`, formData).toPromise();
   }
 }
