@@ -1,10 +1,8 @@
 const { exec } = require("child_process");
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 
 const createHtml = async ( file_uri, toFormate="html:HTML:EmbedImages") => {
-    const osType = os.type();
     let sofficeCommand = "soffice" // default for linux
 
     return new Promise( (resolve, reject) => {
