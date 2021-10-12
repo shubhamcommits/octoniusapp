@@ -273,10 +273,10 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       // Convert existing rich text documents to json0
       this.richtextToJson0(folio, quill);
       if (!folio.type) {
-        // folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
-        folio.create([{
-          insert: '\n'
-        }], 'rich-text');
+        folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
+        // folio.create([{
+        //   insert: '\n'
+        // }], 'rich-text');
       }
 
       // update editors contents
