@@ -6,6 +6,7 @@ import { FilesService } from "src/shared/services/files-service/files.service";
 import { StorageService } from "src/shared/services/storage-service/storage.service";
 import { FolioService } from 'src/shared/services/folio-service/folio.service';
 import { environment } from "src/environments/environment";
+import { UtilityService } from "src/shared/services/utility-service/utility.service";
 
 // Quill Image Resize
 import ImageResize from './quill-image-resize/quill.image-resize.js';
@@ -79,12 +80,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   //image alignment
   alignment : string;
 
-  //Delete comment modal boolean
-  deleteCommentBool : boolean = false;
-
-  //comment To Delete
-  commentToDelete : number;
-
   // User Data Variable
   userData: any;
 
@@ -125,8 +120,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   constructor(
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
-    private resolver: ComponentFactoryResolver,
-    private follioService: FolioService
+    private follioService: FolioService,
+    private utilityService: UtilityService
   ) {
     // Get the State of the ReadOnly
     this.follioService.follioSubject.subscribe(data => {
@@ -212,20 +207,18 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
     this.initEditor();
     this.initializeFolio(this.folio, this.quill);
-    document.querySelector(".ql-comment").innerHTML =
-     '<img src="assets/images/comment.png" alt="" style="height:100%; width:100%"></div>';
-    document.querySelector(".ql-clear").innerHTML = "<b>Clr</b>";
+    document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
+     document.querySelector(".ql-comment").addEventListener("click", () => {
+      this.openComment();
+     });
 
-    document.querySelector(".ql-comment").addEventListener("click", () => {
-     this.openComment();
-    });
-
+    document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
     document.querySelector(".ql-clear").addEventListener("click", () => {
-      this.clearEditor();
+      this.clearFolioContent();
     });
 
     document.querySelectorAll('.ql-tables').forEach(button => {
-      button.innerHTML = '<svg viewBox="0 0 18 18"> <rect class="ql-stroke" height="12" width="12" x="3" y="3"></rect> <rect class="ql-fill" height="2" width="3" x="5" y="5"></rect> <rect class="ql-fill" height="2" width="4" x="9" y="5"></rect> <g class="ql-fill ql-transparent"> <rect height="2" width="3" x="5" y="8"></rect> <rect height="2" width="4" x="9" y="8"></rect> <rect height="2" width="3" x="5" y="11"></rect> <rect height="2" width="4" x="9" y="11"></rect> </g> </svg>'
+      button.innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>'
       button.addEventListener('click', () => {
         this.openTableOptions()
       });
@@ -369,32 +362,30 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     return arr;
   }
 
-   //Opens confirmation dialog for deleting comment
-   openDeleteComment(index: any) {
-    this.deleteCommentBool = true;
-    this.commentToDelete = index;
-  }
+   // Delete Comment
+   deleteComment(index: any) {
+    this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.commentCompletelyRemoved:By doing this, the comment be completely removed!`)
+      .then((res) => {
+        if (res.value) {
+          this.utilityService.asyncNotification($localize`:@@folioEditor.pleaseWaitDeletingComment:Please wait we are deleting the comment...`, new Promise(async (resolve, reject) => {
+            try {
+              if (this.metaData) {
+                var commentData = this.metaData[index];
+                this.quill.formatText(commentData.range.index, commentData.range.length, {
+                  background: "white",
+                });
 
-  //Cancels deleting comment procedure
-  onDeleteCancel(){
-    this.commentToDelete = null;
-    this.deleteCommentBool = false;
-  }
-
-  //Deletes the comment on confirmation
-  async onDeleteConfirm(){
-    if (this.metaData) {
-      var commentData = this.metaData[this.commentToDelete];
-      this.quill.formatText(commentData.range.index, commentData.range.length, {
-        background: "white",
+                this.metaData.splice(index, 1);
+                this.metaData = await this.sortComments();
+                this.saveQuillData();
+              }
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@folioEditor.commentDeleted:Comment deleted!`));
+            } catch (err) {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@folioEditor.unableDeleteComment:Unable to delete the comment, please try again!`));
+            }
+          }));
+        }
       });
-
-      this.metaData.splice(this.commentToDelete, 1);
-      this.metaData = await this.sortComments();
-      this.saveQuillData();
-      this.commentToDelete = null;
-      this.deleteCommentBool = false;
-    }
   }
 
   saveQuillData() {
@@ -467,6 +458,22 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     this.commentBool = false;
     this.selectedText = null;
     this.enteredComment = null;
+  }
+
+  clearFolioContent() {
+    this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.contentCompletelyRemoved:By doing this, the content of the folio will be completely removed!`)
+      .then((res) => {
+        if (res.value) {
+          this.utilityService.asyncNotification($localize`:@@folioEditor.pleaseWaitDeletingContent:Please wait we are deleting the content...`, new Promise(async (resolve, reject) => {
+            try {
+              this.clearEditor();
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@folioEditor.contentDeleted:Content of the folio deleted!`));
+            } catch (err) {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@folioEditor.unableDeleteContent:Unable to delete the content of the folio, please try again!`));
+            }
+          }));
+        }
+      });
   }
 
   //Clears the entire editor

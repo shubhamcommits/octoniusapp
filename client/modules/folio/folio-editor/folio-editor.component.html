@@ -2,8 +2,6 @@
 
 <app-create-table *ngIf="tableShow" (dataToSubmit)="dataFromTableModal($event)"></app-create-table>
 
-<div #ImageResizeModal></div>
-
 <div [ngClass]="{'hide-modal' : !commentBool}" class="comment-modal center">
   <div class="comment-container center">
     <span class="close" (click)="closeComment()">&times;</span>
@@ -18,19 +16,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="deleteCommentBool" class="comment-modal center">
-<div class="comment-container center">
-  <h1>Confirm to delete the comment</h1>
-  <div class="row-buttons">
-    <div class="comment-submit" (click)='onDeleteConfirm()'>
-      Confirm
-    </div>
-    <div class="comment-submit" (click)='onDeleteCancel()'>
-      Cancel
-    </div>
-  </div>
-</div>
-</div>
+
 <div class="folio-container">
   <!-- Quill Editor Component Starts -->
   <div class="editor-section">
@@ -54,7 +40,7 @@
             </div>
             <div>{{meta.user_name}}</div>
           </div>
-          <div class="close" (click)="openDeleteComment(ind)">&times;</div>
+          <div class="close" (click)="deleteComment(ind)">&times;</div>
         </div>
         <div [innerHTML]="meta.comment">
         </div>
