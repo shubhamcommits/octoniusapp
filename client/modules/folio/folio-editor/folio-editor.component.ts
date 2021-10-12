@@ -288,7 +288,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       this.quill2.setContents([{ insert: "\n" }]);
 
       this.metaData = folio?.data?.data?.comment;
-      // this.metaData = folio?.data?.comment;
+      this.metaData = await this.sortComments();
 
       // local -> server
       quill.on("text-change", (delta, oldDelta, source) => {
@@ -325,6 +325,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
          */
         quill.setContents(op[0].oi.delta);
         this.metaData = op[0].oi.comment;
+        this.metaData = this.sortComments();
       });
     });
   }
@@ -381,13 +382,15 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   }
 
   //Deletes the comment on confirmation
-  onDeleteConfirm(){
+  async onDeleteConfirm(){
     if (this.metaData) {
       var commentData = this.metaData[this.commentToDelete];
       this.quill.formatText(commentData.range.index, commentData.range.length, {
         background: "white",
       });
+
       this.metaData.splice(this.commentToDelete, 1);
+      this.metaData = await this.sortComments();
       this.saveQuillData();
       this.commentToDelete = null;
       this.deleteCommentBool = false;
@@ -421,7 +424,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   }
 
   //Validates comment content and adds the comment
-  submitComment() {
+  async submitComment() {
     this.enteredComment = this.quill2.root.innerHTML;
     var txt = null;
     if (this.selectedText == null || this.selectedText == "") {
@@ -446,6 +449,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         this.metaData = [];
       }
       this.metaData.push({ range: this.range, comment: this.enteredComment, user_name : userName, profile_pic : this.userData.profile_pic });
+      this.metaData = await this.sortComments();
       this.quill.formatText(this.range.index, this.range.length, {
         background: "#fff72b",
       });
@@ -616,5 +620,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         zIndex: '1000'
       }
     }
+  }
+
+  sortComments() {
+    return this.metaData.sort((c1, c2) => (c1.range.index > c2.range.index) ? 1 : -1)
   }
 }

@@ -39,8 +39,7 @@
   <!-- Quill Editor Component Ends -->
 
   <!-- Comments Starts -->
-
-  <div class="comments-section">
+  <div class="comments-section" *ngIf="metaData && metaData.length > 0">
     <div class="comment-head">
       <div class="center">
       COMMENTS
@@ -62,8 +61,6 @@
       </div>
     </div>
   </div>
-
   <!-- Comments Ends -->
-
 </div>
 <!-- Folio wrapper ends here -->
