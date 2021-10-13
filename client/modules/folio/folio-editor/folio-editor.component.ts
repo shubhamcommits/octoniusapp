@@ -9,23 +9,33 @@ import { environment } from "src/environments/environment";
 import { UtilityService } from "src/shared/services/utility-service/utility.service";
 
 // Quill Image Resize
-import ImageResize from './quill-image-resize/quill.image-resize.js';
+//import ImageResize from './quill-image-resize/quill.image-resize.js';
+
+import BlotFormatter, { DeleteAction, ResizeAction, ImageSpec } from "quill-blot-formatter";
+//import { Action, Aligner, DefaultAligner, DefaultToolbar, Toolbar, Alignment, AlignOptions } from 'quill-blot-formatter';
 
 // Image Drop Module
-// import ImageDrop from './quill-image-drop/quill.image-drop.js';
+import ImageDrop from './quill-image-drop/quill.image-drop.js';
+
+// Quill Image Compress
+//import ImageCompress from 'quill-image-compress';
 
 import ReconnectingWebSocket from "reconnecting-websocket";
 import * as ShareDB from "sharedb/lib/client";
 
+
 // Register the Types of the Sharedb
 ShareDB.types.register(require('rich-text').type);
-
 
 declare const Quill2: any;
 declare const quillBetterTable: any;
 Quill2.register({
+  //'modules/imageResize': ImageResize,
+  'modules/blotFormatter': BlotFormatter,
   'modules/better-table': quillBetterTable,
-  'modules/imageResize': ImageResize
+  'modules/imageDrop': ImageDrop,
+  //'modules/imageCompress': ImageCompress,
+  //'modules/table': quillTable.TableModule,
 }, true);
 
 @Component({
@@ -40,8 +50,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   @ViewChild('editable2', { static: true })
   editRef2!: ElementRef;
-
-  @ViewChild('ImageResizeModal',{read : ViewContainerRef}) entry! : ViewContainerRef;
 
   // Quill instance variable
   quill: any;
@@ -135,7 +143,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
     // Initialise the modules in constructor
     this.modules = {
-      imageModule: true,
+      //imageModule: true,
       syntax: true,
       toolbar: {
         container :[
@@ -149,12 +157,23 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           ['link', 'image', 'video', 'formula'],
           ['clean'], ['comment'],['tables'],['clear']
         ], handlers : {
+          /*
           'image' : () => {
             const imgMod = this.quill.getModule('imageModule');
             imgMod.insertImage(this.quill);
+          },
+          */
+          'comment': () => {
+            this.openComment();
+          },
+          'tables': () => {
+            this.openTableOptions();
+          },
+          'clear': () => {
+            this.clearFolioContent();
           }
         }},
-        table: false,
+        table: true,
         'better-table': {
           operationMenu: {
             items: {
@@ -175,7 +194,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           delay: 2500,
           userOnly: true,
         },
-        mention: {}
+        mention: this.metionModule(),
+        //imageResize: this.quillImageResize(),
+        imageDrop: true,
+        //imageCompress: this.quillImageCompress(),
+        blotFormatter: this.quillBlotFormatter()
       };
   }
 
@@ -196,33 +219,12 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       this.readOnly = this.readOnly || groupIndex < 0;
     }
 
-    this.modules.mention = this.metionModule();
-
-
-    // Set Image Resize Module
-    this.modules.imageResize = this.quillImageResize();
-
-    // Set Image Drop Module
-    // this.modules.imageDrop = true
-
     this.initEditor();
     this.initializeFolio(this.folio, this.quill);
+
     document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
-     document.querySelector(".ql-comment").addEventListener("click", () => {
-      this.openComment();
-     });
-
     document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
-    document.querySelector(".ql-clear").addEventListener("click", () => {
-      this.clearFolioContent();
-    });
-
-    document.querySelectorAll('.ql-tables').forEach(button => {
-      button.innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>'
-      button.addEventListener('click', () => {
-        this.openTableOptions()
-      });
-     });
+    document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
   }
 
   ngOnDestroy() {
@@ -652,7 +654,121 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     }
   }
 
+  quillBlotFormatter() {
+    return {
+      specs: [CustomImageSpec],
+
+    };
+  }
+
   sortComments() {
     return this.metaData.sort((c1, c2) => (c1.range.index > c2.range.index) ? 1 : -1)
   }
 }
+
+export class CustomImageSpec extends ImageSpec {
+  getActions() {
+    return [/*AlignAction,*/ DeleteAction, ResizeAction];
+  }
+}
+/*
+
+CUSTOM ALIGN ACTION FOR BOLT-FORMAT
+
+export default class AlignAction extends Action {
+  toolbar: Toolbar;
+  aligner: Aligner;
+
+  constructor(public formatter: BlotFormatter) {
+    super(formatter);
+    this.aligner = new CustomAligner(formatter.options.align);
+    this.toolbar = new DefaultToolbar();
+  }
+
+  onCreate() {
+    const toolbar = this.toolbar.create(this.formatter, this.aligner);
+    this.formatter.overlay.appendChild(toolbar);
+  }
+
+  onDestroy() {
+    const toolbar = this.toolbar.getElement();
+    if (!toolbar) {
+      return;
+    }
+
+    this.formatter.overlay.removeChild(toolbar);
+    this.toolbar.destroy();
+  }
+
+  onUpdate() {
+    //this.formatter.overlay
+  }
+}
+
+const LEFT_ALIGN = 'left';
+const CENTER_ALIGN = 'center';
+const RIGHT_ALIGN = 'right';
+
+export class CustomAligner implements Aligner {
+  alignments: { [id: string]: Alignment; };
+  alignAttribute: string;
+  applyStyle: boolean;
+
+  constructor(options: AlignOptions) {
+    this.applyStyle = options.aligner.applyStyle;
+    this.alignAttribute = options.attribute;
+    this.alignments = {
+      [LEFT_ALIGN]: {
+        name: LEFT_ALIGN,
+        icon: options.icons.left,
+        apply: (el: HTMLElement) => {
+          this.setAlignment(el, LEFT_ALIGN);
+          this.setStyle(el, 'inline', 'left', '0 1em 1em 0');
+        },
+      },
+      [CENTER_ALIGN]: {
+        name: CENTER_ALIGN,
+        icon: options.icons.center,
+        apply: (el: HTMLElement) => {
+          this.setAlignment(el, CENTER_ALIGN);
+          this.setStyle(el, 'block', null, 'auto');
+        },
+      },
+      [RIGHT_ALIGN]: {
+        name: RIGHT_ALIGN,
+        icon: options.icons.right,
+        apply: (el: HTMLElement) => {
+          this.setAlignment(el, RIGHT_ALIGN);
+          this.setStyle(el, 'inline', 'right', '0 0 1em 1em');
+        },
+      },
+    };
+  }
+
+  getAlignments(): Alignment[] {
+    return Object.keys(this.alignments).map(k => this.alignments[k]);
+  }
+
+  clear(el: HTMLElement): void {
+    el.removeAttribute(this.alignAttribute);
+    this.setStyle(el, null, null, null);
+  }
+
+  isAligned(el: HTMLElement, alignment: Alignment): boolean {
+    return el.getAttribute(this.alignAttribute) === alignment.name;
+  }
+
+  setAlignment(el: HTMLElement, value: string) {
+console.log({el});
+    el.setAttribute(this.alignAttribute, value);
+  }
+
+  setStyle(el: HTMLElement, display: string, float: string, margin: string) {
+    if (this.applyStyle) {
+      el.style.setProperty('display', display);
+      el.style.setProperty('float', float);
+      el.style.setProperty('margin', margin);
+    }
+  }
+}
+*/
