@@ -2923,7 +2923,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.contentCompletelyRemoved" datatype="html">
-        <source>By doing this, the content of the folio will be completely removed!</source
+        <source>By doing this, the content of the folio will be completely removed!</source>
         <target state="translated">Dadurch wird der Inhalt des Folios vollständig entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
