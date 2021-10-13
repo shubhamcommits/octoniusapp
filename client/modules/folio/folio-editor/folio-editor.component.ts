@@ -182,7 +182,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
               }
             },
             color: {
-              colors: ['green', 'red', 'yellow', 'blue', 'white'],
+              colors: ['#808080', '#e7e6e6', 'red', '#b90000','green' , 'yellow', 'blue', 'white'],
               text: 'Background Colors:'
             }
           }
@@ -662,7 +662,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   }
 
   sortComments() {
-    return this.metaData.sort((c1, c2) => (c1.range.index > c2.range.index) ? 1 : -1)
+    return (this.metaData) ? this.metaData.sort((c1, c2) => (c1.range.index > c2.range.index) ? 1 : -1) : [];
   }
 }
 
