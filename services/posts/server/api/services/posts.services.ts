@@ -688,15 +688,14 @@ export class PostService {
         _id: postId
       }).lean();
 
+      const group: any = await Group.findOne({ _id: post._group }).select('_admins').lean();
+      const adminIndex = group?._admins.findIndex((admin: any) => (admin._id || admin) == userId);
       // Get user data
       const user: any = await User.findOne({ _id: userId });
 
-      if (
-        // If user is not an admin or owner
-        !(user.role === 'admin' || user.role === 'owner')
-        // ...user is not the post author...
-        && !post._posted_by.equals(userId)
-      ) {
+      // If user is not an admin or owner, or user is not the post author
+      if (!(user.role === 'admin' || user.role === 'owner')
+          && !post._posted_by.equals(userId) && adminIndex < 0) {
         // Deny access!
         throw (new Error("User not allowed to remove this post!"));
       }
