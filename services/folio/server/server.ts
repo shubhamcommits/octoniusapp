@@ -2,6 +2,7 @@ import http from 'http';
 import { app } from './api/app';
 import cluster from 'cluster';
 import url from 'url';
+import wssSharedb from './utils/folio/wss-sharedb';
 
 if (cluster.isMaster) {
 
@@ -47,11 +48,13 @@ if (cluster.isMaster) {
   // Creating Folio Microservice Server
   const server = http.createServer(app);
 
-  // Import Sharedb connection
-  var wssShareDB = require('./utils/folio/wss-sharedb')(server);
-  
-  // Import Cursors connection
-  //var wssCursors = require('./utils/folio/wss-cursors')(server);
+  var wssShareDB = wssSharedb(server);
+
+//var wssCursors = require('./utils/folio/wss-cursors')(server);
+/**
+ * Settup Cursors connection STARTS
+ */
+
   
   // Turn on the sockets to create the connection
   server.on('upgrade', (request, socket, head) => {

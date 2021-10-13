@@ -1029,7 +1029,7 @@ class table_column_tool_TableColumnTool {
 
     for (let index = 0; index < Math.max(cellsNumber, existCells.length); index++) {
       let col = tableCols.at(index);
-      let colWidth = col && parseInt(col.formats()[col.statics.blotName].width, 10); // if cell already exist
+      let colWidth = (col && col.formats()[col.statics.blotName]) ? parseInt(col.formats()[col.statics.blotName].width, 10) : 0; // if cell already exist
 
       let toolCell = null;
 
@@ -2150,7 +2150,7 @@ class table_selection_TableSelection {
     this.quill.root.addEventListener('mouseup', mouseUpHandler, false);
     const self = this;
     const startTd = e.target.closest('td[data-row]');
-    const startTdRect = getRelativeRect(startTd.getBoundingClientRect(), this.quill.root.parentNode);
+    const startTdRect = getRelativeRect(startTd?.getBoundingClientRect(), this.quill.root.parentNode);
     this.dragging = true;
     this.boundary = computeBoundaryFromRects(startTdRect, startTdRect);
     this.correctBoundary();
@@ -2160,7 +2160,7 @@ class table_selection_TableSelection {
     function mouseMoveHandler(e) {
       if (e.button !== 0 || !e.target.closest(".quill-better-table")) return;
       const endTd = e.target.closest('td[data-row]');
-      const endTdRect = getRelativeRect(endTd.getBoundingClientRect(), self.quill.root.parentNode);
+      const endTdRect = getRelativeRect(endTd?.getBoundingClientRect(), self.quill.root.parentNode);
       self.boundary = computeBoundaryFromRects(startTdRect, endTdRect);
       self.correctBoundary();
       self.selectedTds = self.computeSelectedTds();
@@ -2187,7 +2187,7 @@ class table_selection_TableSelection {
         y,
         width,
         height
-      } = getRelativeRect(tableCell.domNode.getBoundingClientRect(), this.quill.root.parentNode);
+      } = getRelativeRect(tableCell?.domNode?.getBoundingClientRect(), this.quill.root.parentNode);
       let isCellIntersected = (x + table_selection_ERROR_LIMIT >= this.boundary.x && x + table_selection_ERROR_LIMIT <= this.boundary.x1 || x - table_selection_ERROR_LIMIT + width >= this.boundary.x && x - table_selection_ERROR_LIMIT + width <= this.boundary.x1) && (y + table_selection_ERROR_LIMIT >= this.boundary.y && y + table_selection_ERROR_LIMIT <= this.boundary.y1 || y - table_selection_ERROR_LIMIT + height >= this.boundary.y && y - table_selection_ERROR_LIMIT + height <= this.boundary.y1);
 
       if (isCellIntersected) {
@@ -2678,7 +2678,7 @@ function matchTableCell(node, delta, scroll) {
   const cellId = cells.indexOf(node) + 1;
   const colspan = node.getAttribute('colspan') || false;
   const rowspan = node.getAttribute('rowspan') || false;
-  const cellBg = node.getAttribute('data-cell-bg') || node.style.backgroundColor; // The td from external table has no 'data-cell-bg' 
+  const cellBg = node.getAttribute('data-cell-bg') || node.style.backgroundColor; // The td from external table has no 'data-cell-bg'
   // bugfix: empty table cells copied from other place will be removed unexpectedly
 
   if (delta.length() === 0) {
