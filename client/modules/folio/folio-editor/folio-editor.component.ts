@@ -432,41 +432,51 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   //Validates comment content and adds the comment
   async submitComment() {
     this.enteredComment = this.quill2.root.innerHTML;
-    var txt = null;
+
     if (this.selectedText == null || this.selectedText == "") {
-      txt = $localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.noContentSelected:No content is selected`;
-      alert(txt);
-    } else if (this.enteredComment == null || this.enteredComment == "") {
-      txt = $localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.pleaseEnterComment:Please enter the comment`;
-      alert(txt);
-    } else {
-      var userName = this.userData.first_name + ' ' + this.userData.last_name;
-      this.quill2.getContents().ops.map((value) => {
-        if (value.insert.mention) {
-          var mentionMap = value.insert;
-          if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
-            let filesService = this._Injector.get(FilesService);
-            filesService.newFolioMention(mentionMap.mention, this.folioId, this.userData._id).then((res) => res.subscribe());
-          }
+      await this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.noContentSelected:No content is selected`).then(res => {
+        if (res.value) {
+          this.saveComment();
         }
       });
-
-      if (!this.metaData) {
-        this.metaData = [];
-      }
-      this.metaData.push({ range: this.range, comment: this.enteredComment, user_name : userName, profile_pic : this.userData.profile_pic });
-      this.metaData = await this.sortComments();
-      this.quill.formatText(this.range.index, this.range.length, {
-        background: "#fff72b",
+    } else if (this.enteredComment == null || this.enteredComment == "" || this.enteredComment == "<p><br></p>") {
+      await this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.pleaseEnterComment:Please enter the comment`).then(res => {
+        if (res.value) {
+          this.saveComment();
+        }
       });
-
-      this.saveQuillData();
-
-      this.quill2.deleteText(0, this.quill2.getLength());
-      this.commentBool = false;
-      this.selectedText = null;
-      this.enteredComment = null;
+    } else {
+      this.saveComment();
     }
+  }
+
+  async saveComment() {
+    var userName = this.userData.first_name + ' ' + this.userData.last_name;
+    this.quill2.getContents().ops.map((value) => {
+      if (value.insert.mention) {
+        var mentionMap = value.insert;
+        if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
+          let filesService = this._Injector.get(FilesService);
+          filesService.newFolioMention(mentionMap.mention, this.folioId, this.userData._id).then((res) => res.subscribe());
+        }
+      }
+    });
+
+    if (!this.metaData) {
+      this.metaData = [];
+    }
+    this.metaData.push({ range: this.range, comment: this.enteredComment, user_name : userName, profile_pic : this.userData.profile_pic });
+    this.metaData = await this.sortComments();
+    this.quill.formatText(this.range.index, this.range.length, {
+      background: "#fff72b",
+    });
+
+    this.saveQuillData();
+
+    this.quill2.deleteText(0, this.quill2.getLength());
+    this.commentBool = false;
+    this.selectedText = null;
+    this.enteredComment = null;
   }
 
   //Closes the comment dialog box
