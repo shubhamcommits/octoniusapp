@@ -8,7 +8,7 @@ const createHtml = async (file_uri, toFormate="html:HTML:EmbedImages") => {
         case 'darwin': sofficeCommand = '/Applications/LibreOffice.app/Contents/MacOS/soffice';
             break;
         default:
-            return; // callback(new Error(`Operating system not yet supported: ${process.platform}`));
+            break; // callback(new Error(`Operating system not yet supported: ${process.platform}`));
     }
 
     return new Promise( (resolve, reject) => {
@@ -22,8 +22,8 @@ const createHtml = async (file_uri, toFormate="html:HTML:EmbedImages") => {
                 return;
             }
 
-            const htmlFile = "./uploads/"+path.parse(file_uri).name+".html";
-            const docxFile = "./uploads/"+path.parse(file_uri).name+".docx";
+            const htmlFile = "./uploads/" + path.parse(file_uri).name + ".html";
+            const docxFile = "./uploads/" + path.parse(file_uri).name + ".docx";
 
             let data = fs.readFileSync(htmlFile, 'utf-8').toString();
 
