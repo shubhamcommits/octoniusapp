@@ -28,9 +28,9 @@ export default class ImageDrop {
 	handleDrop(evt) {
 		evt.preventDefault();
 		if (evt.dataTransfer && evt.dataTransfer.files && evt.dataTransfer.files.length) {
-			if (document.caretRangeFromPoint) {
+			if (document.caretPositionFromPoint) {
 				const selection = document.getSelection();
-				const range = document.caretRangeFromPoint(evt.clientX, evt.clientY);
+				const range = document.caretPositionFromPoint(evt.clientX, evt.clientY);
 				if (selection && range) {
 					selection.setBaseAndExtent(range.startContainer, range.startOffset, range.startContainer, range.startOffset);
 				}
