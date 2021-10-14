@@ -126,20 +126,25 @@ export class FolioHeaderComponent implements OnInit {
    * @param file
    */
   public async edit(fileId: any, file: any) {
-    return new Promise((resolve) => {
 
-      // Files Service
-      let fileService = this._Injector.get(FilesService);
+    // Utility Service Instance
+    let utilityService = this._Injector.get(UtilityService);
 
-      // Edit the file details
-      fileService.edit(fileId, file)
-        .then((res) => {
-          resolve(res['file'])
-        })
-        .catch(() => {
-          resolve({})
-        })
-    })
+    // Files Service
+    let fileService = this._Injector.get(FilesService);
+
+    // Call the HTTP Request Asynschronously
+    utilityService.asyncNotification(
+      $localize`:@@folioHeader.pleaseWaitRenamingFolio:Please wait we are renaming the folio...`,
+      new Promise((resolve, reject) => {
+        // Edit the file details
+        fileService.edit(fileId, file).then((res) => {
+            resolve(utilityService.resolveAsyncPromise($localize`:@@folioHeader.folioRenamed:Folio has been renamed!`));
+          })
+          .catch(() => {
+            reject(utilityService.rejectAsyncPromise($localize`:@@folioHeader.unexpectedErrorRenaming:Unexpected error occurred while renaming the folio, please try again!`));
+          });
+      }));
   }
 
   enableEdit() {
