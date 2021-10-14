@@ -38,18 +38,20 @@
   <!-- Comments Starts -->
   <div class="comments-section" *ngIf="metaData && metaData.length > 0">
     <div class="comment-head">
-      <h5 class="center" i18n="@@folioEditor.comments"><i class="material-icons">comment</i> COMMENTS</h5>
+      <h5 class="center">
+        <i class="material-icons">comment</i>
+        <span i18n="@@folioEditor.comments">COMMENTS</span>
+      </h5>
     </div>
 
     <div class="comment-area">
       <div class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}" (click)="highlight(meta.range)" *ngFor="let meta of metaData;let ind = index">
         <div class="comment-profile">
           <div class="profile">
-            
               <app-secured-image *ngIf="meta.profile_pic"
-                [imgURL]="meta.profile_pic" [service]="'user'" [inlineStyle]='"cursor: default; height:30px; width:30px"'  [styleClass]="'feed-avatar'"></app-secured-image>
-
-
+                [imgURL]="meta.profile_pic" [service]="'user'"
+                [inlineStyle]='"cursor: default; height:30px; width:30px"'
+                [styleClass]="'feed-avatar'"></app-secured-image>
             <h6>{{meta.user_name}}</h6>
           </div>
 
