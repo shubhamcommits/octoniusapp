@@ -10780,7 +10780,7 @@
       </trans-unit>
       <trans-unit id="memberListMenu.cloneTask" datatype="html">
         <source>CLONE TASK</source>
-        <target state="translated">TAREA DE CLONACIÓN</target>
+        <target state="translated">CLONAR TAREA</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-list-menu/member-list-menu.component.html</context>
           <context context-type="linenumber">13</context>
