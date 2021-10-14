@@ -22,6 +22,7 @@ body{
     img{
         width: 100%;
     }
+    box-shadow: 0 4px 14px 0 rgb(37 38 94 / 10%);
 }
 
 // // this applies dark mode to FOLIO editor
@@ -57,8 +58,8 @@ body{
 
 .comment-head{
     position: relative;
-    border: 1px solid #ccc;
-    border-radius: 50px;
+    // border: 1px solid #ccc;
+    // border-radius: 50px;
     height: 42px;
 }
 
@@ -74,6 +75,7 @@ body{
     padding: 8px;
     border-radius: 5px;
     margin-bottom: 8px;
+    box-shadow: 0 4px 13px 0 rgb(37 38 94 / 10%);
 }
 
 .commentmsg:hover {
@@ -98,9 +100,8 @@ body{
     height: 10%;
 }
 
-.profile-pic {
-    height: 18px;
-    margin-right: 8px;
+h6{
+    line-height: 30px;
 }
 
 .comment-close {
@@ -175,3 +176,4 @@ body{
 .ql-container.ql-snow {
     border: none;
 }
+
