@@ -2851,7 +2851,7 @@
         <target state="translated">KOMMENTARE</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.areYouSure" datatype="html">
@@ -2859,19 +2859,19 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">384</context>
+          <context context-type="linenumber">388</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">439</context>
+          <context context-type="linenumber">443</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">445</context>
+          <context context-type="linenumber">449</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">493</context>
+          <context context-type="linenumber">497</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.commentCompletelyRemoved" datatype="html">
@@ -2879,7 +2879,7 @@
         <target state="translated">Dadurch wird der Kommentar komplett entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">384</context>
+          <context context-type="linenumber">388</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.pleaseWaitDeletingComment" datatype="html">
@@ -2887,7 +2887,7 @@
         <target state="translated">Bitte warten wir den Kommentar löschen...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">387</context>
+          <context context-type="linenumber">391</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.commentDeleted" datatype="html">
@@ -2895,7 +2895,7 @@
         <target state="translated">Kommentar gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">399</context>
+          <context context-type="linenumber">403</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.unableDeleteComment" datatype="html">
@@ -2903,7 +2903,7 @@
         <target state="translated">Kommentar kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">401</context>
+          <context context-type="linenumber">405</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.noContentSelected" datatype="html">
@@ -2911,7 +2911,7 @@
         <target state="translated">Es ist kein Inhalt ausgewählt</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">439</context>
+          <context context-type="linenumber">443</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.pleaseEnterComment" datatype="html">
@@ -2919,7 +2919,7 @@
         <target state="translated">Bitte geben Sie den Kommentar ein</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">445</context>
+          <context context-type="linenumber">449</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.contentCompletelyRemoved" datatype="html">
@@ -2927,7 +2927,7 @@
         <target state="translated">Dadurch wird der Inhalt des Folios vollständig entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">493</context>
+          <context context-type="linenumber">497</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.pleaseWaitDeletingContent" datatype="html">
@@ -2935,7 +2935,7 @@
         <target state="translated">Bitte warten Sie, wir löschen den Inhalt...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">496</context>
+          <context context-type="linenumber">500</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.contentDeleted" datatype="html">
@@ -2943,7 +2943,7 @@
         <target state="translated">Inhalt des Folios gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">499</context>
+          <context context-type="linenumber">503</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.unableDeleteContent" datatype="html">
@@ -2951,7 +2951,7 @@
         <target state="translated">Der Inhalt des Folios kann nicht gelöscht werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">501</context>
+          <context context-type="linenumber">505</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioHeader.newFolio" datatype="html">
@@ -2963,7 +2963,31 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
-          <context context-type="linenumber">164</context>
+          <context context-type="linenumber">169</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="folioHeader.pleaseWaitRenamingFolio" datatype="html">
+        <source>Please wait we are renaming the folio...</source>
+        <target state="translated">Bitte warten Sie, wir benennen das Folio um...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
+          <context context-type="linenumber">138</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="folioHeader.folioRenamed" datatype="html">
+        <source>Folio has been renamed!</source>
+        <target state="translated">Folio wurde umbenannt!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
+          <context context-type="linenumber">142</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="folioHeader.unexpectedErrorRenaming" datatype="html">
+        <source>Unexpected error occurred while renaming the folio, please try again!</source>
+        <target state="translated">Beim Umbenennen des Folios ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
+          <context context-type="linenumber">145</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioHeader.pleaseWaitTransformingFile" datatype="html">
@@ -2971,7 +2995,7 @@
         <target state="translated">Bitte warten Sie, wir transformieren die Datei...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
-          <context context-type="linenumber">200</context>
+          <context context-type="linenumber">205</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioHeader.newFolioTransformed" datatype="html">
@@ -2979,7 +3003,7 @@
         <target state="translated">Neues Folio wurde umgewandelt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
-          <context context-type="linenumber">212</context>
+          <context context-type="linenumber">217</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioHeader.unexpectedErrorUploading" datatype="html">
@@ -2987,7 +3011,7 @@
         <target state="translated">Beim Hochladen ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
-          <context context-type="linenumber">216</context>
+          <context context-type="linenumber">221</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.letsAddSomeSteps" datatype="html">

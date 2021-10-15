@@ -507,9 +507,12 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   //Clears the entire editor
   clearEditor() {
+    if (!this.quill) {
+      this.initEditor();
+    }
     this.quill.deleteText(0, this.quill.getLength());
     this.metaData = [];
-    this.saveQuillData()
+    this.saveQuillData();
   }
 
   //Highlights the text in given range
