@@ -1,4 +1,4 @@
-import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PublicFunctions } from "modules/public.functions";
 import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
@@ -8,11 +8,21 @@ import { FolioService } from 'src/shared/services/folio-service/folio.service';
 import { environment } from "src/environments/environment";
 import { UtilityService } from "src/shared/services/utility-service/utility.service";
 
+// Highlight.js
+import hljs from 'highlight.js';
+
+// Highlight.js sublime css
+import 'highlight.js/styles/monokai-sublime.css';
+
+// Configure hljs for languages
+hljs.configure({
+  languages: ['javascript', 'ruby', 'bash', 'cpp', 'cs', 'css', 'dart', 'dockerfile', 'dos', 'excel', 'fortran', 'go', 'java', 'nginx', 'python', 'objectivec', 'yaml', 'yml']
+});
+
 // Quill Image Resize
 //import ImageResize from './quill-image-resize/quill.image-resize.js';
 
-import BlotFormatter, { DeleteAction, ResizeAction, ImageSpec } from "quill-blot-formatter";
-//import { Action, Aligner, DefaultAligner, DefaultToolbar, Toolbar, Alignment, AlignOptions } from 'quill-blot-formatter';
+import BlotFormatter, { DeleteAction, ResizeAction, ImageSpec, AlignAction } from "quill-blot-formatter";
 
 // Image Drop Module
 import ImageDrop from './quill-image-drop/quill.image-drop.js';
@@ -127,11 +137,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   constructor(
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
-    private follioService: FolioService,
+    private folioService: FolioService,
     private utilityService: UtilityService
   ) {
     // Get the State of the ReadOnly
-    this.follioService.follioSubject.subscribe(data => {
+    this.folioService.follioSubject.subscribe(data => {
       if (data) {
         this.clearEditor();
         this.quill.clipboard.dangerouslyPasteHTML(data);
@@ -660,7 +670,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   quillBlotFormatter() {
     return {
       specs: [CustomImageSpec],
-
+      formats : ["height", "width", "class", "style"]
     };
   }
 
@@ -669,109 +679,10 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   }
 }
 
+
 export class CustomImageSpec extends ImageSpec {
   getActions() {
-    return [/*AlignAction,*/ DeleteAction, ResizeAction];
-  }
-}
-/*
-
-CUSTOM ALIGN ACTION FOR BOLT-FORMAT
-
-export default class AlignAction extends Action {
-  toolbar: Toolbar;
-  aligner: Aligner;
-
-  constructor(public formatter: BlotFormatter) {
-    super(formatter);
-    this.aligner = new CustomAligner(formatter.options.align);
-    this.toolbar = new DefaultToolbar();
-  }
-
-  onCreate() {
-    const toolbar = this.toolbar.create(this.formatter, this.aligner);
-    this.formatter.overlay.appendChild(toolbar);
-  }
-
-  onDestroy() {
-    const toolbar = this.toolbar.getElement();
-    if (!toolbar) {
-      return;
-    }
-
-    this.formatter.overlay.removeChild(toolbar);
-    this.toolbar.destroy();
-  }
-
-  onUpdate() {
-    //this.formatter.overlay
+    return [/*AlignAction, */DeleteAction, ResizeAction];
   }
 }
 
-const LEFT_ALIGN = 'left';
-const CENTER_ALIGN = 'center';
-const RIGHT_ALIGN = 'right';
-
-export class CustomAligner implements Aligner {
-  alignments: { [id: string]: Alignment; };
-  alignAttribute: string;
-  applyStyle: boolean;
-
-  constructor(options: AlignOptions) {
-    this.applyStyle = options.aligner.applyStyle;
-    this.alignAttribute = options.attribute;
-    this.alignments = {
-      [LEFT_ALIGN]: {
-        name: LEFT_ALIGN,
-        icon: options.icons.left,
-        apply: (el: HTMLElement) => {
-          this.setAlignment(el, LEFT_ALIGN);
-          this.setStyle(el, 'inline', 'left', '0 1em 1em 0');
-        },
-      },
-      [CENTER_ALIGN]: {
-        name: CENTER_ALIGN,
-        icon: options.icons.center,
-        apply: (el: HTMLElement) => {
-          this.setAlignment(el, CENTER_ALIGN);
-          this.setStyle(el, 'block', null, 'auto');
-        },
-      },
-      [RIGHT_ALIGN]: {
-        name: RIGHT_ALIGN,
-        icon: options.icons.right,
-        apply: (el: HTMLElement) => {
-          this.setAlignment(el, RIGHT_ALIGN);
-          this.setStyle(el, 'inline', 'right', '0 0 1em 1em');
-        },
-      },
-    };
-  }
-
-  getAlignments(): Alignment[] {
-    return Object.keys(this.alignments).map(k => this.alignments[k]);
-  }
-
-  clear(el: HTMLElement): void {
-    el.removeAttribute(this.alignAttribute);
-    this.setStyle(el, null, null, null);
-  }
-
-  isAligned(el: HTMLElement, alignment: Alignment): boolean {
-    return el.getAttribute(this.alignAttribute) === alignment.name;
-  }
-
-  setAlignment(el: HTMLElement, value: string) {
-console.log({el});
-    el.setAttribute(this.alignAttribute, value);
-  }
-
-  setStyle(el: HTMLElement, display: string, float: string, margin: string) {
-    if (this.applyStyle) {
-      el.style.setProperty('display', display);
-      el.style.setProperty('float', float);
-      el.style.setProperty('margin', margin);
-    }
-  }
-}
-*/

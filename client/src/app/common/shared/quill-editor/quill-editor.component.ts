@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Output, EventEmitter, Input, Injector } from '@angular/core';
 
 // Highlight.js
-import * as hljs from 'highlight.js';
+import hljs from 'highlight.js';
 
 // Highlight.js sublime css
 import 'highlight.js/styles/monokai-sublime.css';
