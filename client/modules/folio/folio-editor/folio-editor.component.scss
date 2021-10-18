@@ -17,8 +17,10 @@ body{
 }
 
 .folio {
-    height: 80vh;
+    // height: 80vh;
+    width: 826px;
     overflow-y: visible;
+    margin: 0 auto;
     img{
         width: 100%;
     }
@@ -37,11 +39,12 @@ body{
 // }
 
 .editor-section{
-    width: 65%;
+    width: auto;
 
     .ql-toolbar .ql-snow{
         border:none !important;
     }
+   
 }
 
 .comments-section{
