@@ -17,12 +17,15 @@ body{
 }
 
 .folio {
-    height: 80vh;
+    // height: 80vh;
+    width: 826px;
     overflow-y: visible;
+    margin: 0 auto;
     img{
         width: 100%;
     }
     box-shadow: 0 4px 14px 0 rgb(37 38 94 / 10%);
+    border:none;
 }
 
 // // this applies dark mode to FOLIO editor
@@ -36,7 +39,12 @@ body{
 // }
 
 .editor-section{
-    width: 73%;
+    width: auto;
+
+    .ql-toolbar .ql-snow{
+        border:none !important;
+    }
+   
 }
 
 .comments-section{
@@ -173,7 +181,4 @@ h6{
     justify-content:space-around;
 }
 
-.ql-container.ql-snow {
-    border: none;
-}
 
