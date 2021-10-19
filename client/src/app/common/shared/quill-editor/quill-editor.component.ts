@@ -24,7 +24,8 @@ import "quill-mention";
 import ImageCompress from 'quill-image-compress';
 
 // Quill Image Resize
-import ImageResize from './quill-image-resize/quill.image-resize.js';
+// import ImageResize from './quill-image-resize/quill.image-resize.js';
+import ImageResize from 'src/shared/utilities/quill-image-resize/ImageResize.js';
 
 // Image Drop Module
 import ImageDrop from './quill-image-drop/quill.image-drop.js';

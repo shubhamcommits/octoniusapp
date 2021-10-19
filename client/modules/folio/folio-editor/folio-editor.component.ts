@@ -20,9 +20,7 @@ hljs.configure({
 });
 
 // Quill Image Resize
-//import ImageResize from './quill-image-resize/quill.image-resize.js';
-
-import BlotFormatter, { DeleteAction, ResizeAction, ImageSpec, AlignAction } from "quill-blot-formatter";
+import ImageResize from 'src/shared/utilities/quill-image-resize/ImageResize.js';
 
 // Image Drop Module
 import ImageDrop from './quill-image-drop/quill.image-drop.js';
@@ -40,12 +38,9 @@ ShareDB.types.register(require('rich-text').type);
 declare const Quill2: any;
 declare const quillBetterTable: any;
 Quill2.register({
-  //'modules/imageResize': ImageResize,
-  'modules/blotFormatter': BlotFormatter,
+  'modules/imageResize': ImageResize,
   'modules/better-table': quillBetterTable,
-  'modules/imageDrop': ImageDrop,
-  //'modules/imageCompress': ImageCompress,
-  //'modules/table': quillTable.TableModule,
+  'modules/imageDrop': ImageDrop
 }, true);
 
 @Component({
@@ -167,12 +162,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           ['link', 'image', 'video', 'formula'],
           ['clean'], ['comment'],['tables'],['clear']
         ], handlers : {
-          /*
-          'image' : () => {
-            const imgMod = this.quill.getModule('imageModule');
-            imgMod.insertImage(this.quill);
-          },
-          */
           'comment': () => {
             this.openComment();
           },
@@ -205,10 +194,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           userOnly: true,
         },
         mention: this.metionModule(),
-        //imageResize: this.quillImageResize(),
+        // imageResize: this.quillImageResize(),
+        imageResize: true,
         imageDrop: true,
-        //imageCompress: this.quillImageCompress(),
-        blotFormatter: this.quillBlotFormatter()
       };
   }
 
@@ -282,9 +270,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       this.richtextToJson0(folio, quill);
       if (!folio.type) {
         folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
-        // folio.create([{
-        //   insert: '\n'
-        // }], 'rich-text');
       }
 
       // update editors contents
@@ -301,30 +286,19 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           delta.ops.forEach(op => {
             if (op.insert) {
               let insertMap = JSON.parse(JSON.stringify(op.insert));
-
               // Add mentions
               if (insertMap.mention && insertMap.mention.denotationChar === "@") {
                 let filesService = this._Injector.get(FilesService);
                 filesService.newFolioMention(insertMap.mention, this.folioId, this.userData._id)
                   .then((res) => res.subscribe());
               }
-
-              // Harcode save resize image
-              /*
-              if (insertMap.image) {
-                const index = this.folio.data.data.delta.findIndex(op => op.insert && op.insert.image && op.insert.image.id == insertMap.image.id);
-                if (index >= 0) {
-                  this.folio.data.data.delta[index].insert.image = insertMap.image;
-                }
-              }
-              */
             }
           });
         }
 
-        if (source == "user") {
+        //if (source == "user") {
           this.saveQuillData();
-        }
+        //}
       });
 
       quill.on("selection-change",(range, oldRange, source) => {
@@ -646,6 +620,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   /**
    * This function is returns the configuration for quill image resize module
    */
+/*
   quillImageResize() {
     return {
       displaySize: true,
@@ -666,23 +641,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       }
     }
   }
-
-  quillBlotFormatter() {
-    return {
-      specs: [CustomImageSpec],
-      formats : ["height", "width", "class", "style"]
-    };
-  }
-
+*/
   sortComments() {
     return (this.metaData) ? this.metaData.sort((c1, c2) => (c1.range.index > c2.range.index) ? 1 : -1) : [];
   }
 }
-
-
-export class CustomImageSpec extends ImageSpec {
-  getActions() {
-    return [/*AlignAction, */DeleteAction, ResizeAction];
-  }
-}
-
