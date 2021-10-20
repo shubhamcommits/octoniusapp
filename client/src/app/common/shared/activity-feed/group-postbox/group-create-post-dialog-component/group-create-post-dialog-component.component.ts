@@ -9,6 +9,7 @@ import moment from 'moment';
 // ShareDB Client
 import { BehaviorSubject } from 'rxjs';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-group-create-post-dialog-component',
@@ -108,12 +109,15 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   newComment;
 
+  myWorkplace = this.router.snapshot.queryParamMap.has('myWorkplace') ? this.router.snapshot.queryParamMap.get('myWorkplace') : false;
+
   constructor(
     private postService: PostService,
     private groupService: GroupService,
     private utilityService: UtilityService,
     private flowService: FlowService,
     private injector: Injector,
+    private router: ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<GroupCreatePostDialogComponent>
     ) {}
