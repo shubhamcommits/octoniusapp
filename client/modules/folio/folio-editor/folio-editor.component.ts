@@ -691,7 +691,10 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     return (this.headingsMetaData) ? this.headingsMetaData.sort((h1, h2) => (h1.range.index > h2.range.index) ? 1 : -1) : [];
   }
 
-  generateHeading(value: number) {
+  /**
+   * Creates a heading to be added to the table of content
+   */
+  generateHeading(value: any) {
     this.range = this.quill.getSelection(true);
     let [leaf, offsetLeaf] = this.quill.getLeaf(this.range.index);
 
@@ -702,16 +705,22 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     });
     this.quill.formatLine(this.range.index, this.range.length, 'header', value);
 
+    const elementType = leaf?.parent?.domNode?.localName;
     if (headingIndex >= 0) {
-      this.headingsMetaData.splice(headingIndex, 1);
-    } else {
-      let header = {
+      let header = this.headingsMetaData[headingIndex];
+      if (!value || header.headingLevel == value) {
+        this.headingsMetaData.splice(headingIndex, 1);
+      } else {
+        header.range = this.range,
+        header.headingLevel = value;
+        this.headingsMetaData[headingIndex] = header;
+      }
+    } else if (elementType && elementType.charAt(0) && elementType.charAt(0).toLowerCase() == 'h') {
+      this.headingsMetaData.push({
         text: leaf.text,
         range: this.range,
         headingLevel: value
-      };
-
-      this.headingsMetaData.push(header);
+      });
     }
 
     this.sortHeaders();
