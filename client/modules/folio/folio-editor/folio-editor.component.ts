@@ -1,4 +1,4 @@
-import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild, LOCALE_ID, Inject } from '@angular/core';
 import { PublicFunctions } from "modules/public.functions";
 import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
@@ -69,7 +69,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   commentsToDisplay = [];
 
   //Comments MetaData
-  metaData = [];
+  commentsMetaData = [];
+
+  // Table of content
+  headingsMetaData = [];
+  showHeadings = true;
 
   //Range for selected text
   range : {index : number, length : number};
@@ -123,6 +127,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   // Read Only State of the folio
   readOnly = true;
 
+  // Range in the URL
+  urlRange: any;
+
   // SubSink Variable
   subSink = new SubSink();
 
@@ -130,12 +137,12 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
     private folioService: FolioService,
     private utilityService: UtilityService
   ) {
-    // Get the State of the ReadOnly
     this.folioService.follioSubject.subscribe(data => {
       if (data) {
         this.clearEditor();
@@ -144,7 +151,17 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       }
     });
 
+    // Get the State of the ReadOnly
     this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get("readOnly") == "true" || false;
+
+    const urlIndex = this._ActivatedRoute.snapshot.queryParamMap.get("index");
+    const urlLength = this._ActivatedRoute.snapshot.queryParamMap.get("index");
+    if (urlIndex && urlLength) {
+      this.urlRange = {
+        index: urlIndex,
+        length: urlLength
+      };
+    }
 
     // Initialise the modules in constructor
     this.modules = {
@@ -156,11 +173,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           ['bold', 'italic', 'underline', 'strike'],
           [{ 'color': [] }, { 'background': [] }],
           [{ 'script': 'super' }, { 'script': 'sub' }],
-          [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block'],
+          [{ 'header': '1' }, { 'header': '2' }, 'blockquote'/*, 'code-block'*/],
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
-          ['clean'], ['comment'],['tables'],['clear']
+          ['clean'], ['comment'],['tables'],['clear']//, ['content']
         ], handlers : {
           'comment': () => {
             this.openComment();
@@ -170,7 +187,17 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           },
           'clear': () => {
             this.clearFolioContent();
+          },
+          // Generate the headings
+          'header': (value) => {
+            this.generateHeading(value);
+          },
+          /*
+          // Generate the table of Content
+          'content': () => {
+            this.generateTableOfContent();
           }
+          */
         }},
         table: true,
         'better-table': {
@@ -219,10 +246,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
     this.initEditor();
     this.initializeFolio(this.folio, this.quill);
-
-    document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
-    document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
-    document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
   }
 
   ngOnDestroy() {
@@ -232,8 +255,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   initEditor(): void {
     this.quill = new Quill2(this.editRef.nativeElement, {
-      theme: 'snow',
+      theme: this.readOnly ? 'bubble' : 'snow',
       modules: this.modules,
+      readOnly: this.readOnly
     });
 
     this.quill2 = new Quill2(this.editRef2.nativeElement,{
@@ -244,7 +268,12 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         ],
         mention : this.metionModule()
       }
-    })
+    });
+
+    document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
+    document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
+    document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
+    //document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
   }
 
   initializeConnection() {
@@ -277,8 +306,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       // quill.setContents(folio?.data);
       this.quill2.setContents([{ insert: "\n" }]);
 
-      this.metaData = folio?.data?.data?.comment;
-      this.metaData = await this.sortComments();
+      this.commentsMetaData = folio?.data?.data?.comment;
+      this.commentsMetaData = await this.sortComments();
+
+      this.headingsMetaData = folio?.data?.data?.headings;
+      this.headingsMetaData = await this.sortHeaders();
 
       // local -> server
       quill.on("text-change", (delta, oldDelta, source) => {
@@ -296,9 +328,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           });
         }
 
-        //if (source == "user") {
+        if (source == "user") {
           this.saveQuillData();
-        //}
+        }
       });
 
       quill.on("selection-change",(range, oldRange, source) => {
@@ -318,9 +350,16 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
          * proper support for update contents
          */
         quill.setContents(op[0].oi.delta);
-        this.metaData = op[0].oi.comment;
-        this.metaData = this.sortComments();
+        this.commentsMetaData = op[0].oi.comment;
+        this.commentsMetaData = this.sortComments();
+
+        this.headingsMetaData = op[0].oi.headings;
+        this.headingsMetaData = this.sortHeaders();
       });
+
+      if (this.urlRange) {
+        this.highlight(this.urlRange);
+      }
     });
   }
 
@@ -335,9 +374,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   //To get comments on selection
   mapComments(index : number, length : number) {
-    if (this.metaData) {
+    if (this.commentsMetaData) {
       var selectedIndexes = this.generateIndexes(index, length);
-      this.metaData.forEach((value, index) => {
+      this.commentsMetaData.forEach((value, index) => {
         var valueIndexes = this.generateIndexes(value.range.index, value.range.length);
         var found = false
         valueIndexes.forEach((val) => {
@@ -370,14 +409,14 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         if (res.value) {
           this.utilityService.asyncNotification($localize`:@@folioEditor.pleaseWaitDeletingComment:Please wait we are deleting the comment...`, new Promise(async (resolve, reject) => {
             try {
-              if (this.metaData) {
-                var commentData = this.metaData[index];
+              if (this.commentsMetaData) {
+                var commentData = this.commentsMetaData[index];
                 this.quill.formatText(commentData.range.index, commentData.range.length, {
                   background: "white",
                 });
 
-                this.metaData.splice(index, 1);
-                this.metaData = await this.sortComments();
+                this.commentsMetaData.splice(index, 1);
+                this.commentsMetaData = await this.sortComments();
                 this.saveQuillData();
               }
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@folioEditor.commentDeleted:Comment deleted!`));
@@ -394,7 +433,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       p: ["data"],
       // In json0 the required data is inside data.data
       od: this.folio.data.data,
-      oi: { comment: this.metaData, delta: this.quill.getContents().ops },
+      oi: { comment: this.commentsMetaData, delta: this.quill.getContents().ops, headings: this.headingsMetaData },
     };
 
     this.folio.submitOp(
@@ -448,11 +487,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       }
     });
 
-    if (!this.metaData) {
-      this.metaData = [];
+    if (!this.commentsMetaData) {
+      this.commentsMetaData = [];
     }
-    this.metaData.push({ range: this.range, comment: this.enteredComment, user_name : userName, profile_pic : this.userData.profile_pic });
-    this.metaData = await this.sortComments();
+    this.commentsMetaData.push({ range: this.range, comment: this.enteredComment, user_name : userName, profile_pic : this.userData.profile_pic });
+    this.commentsMetaData = await this.sortComments();
     this.quill.formatText(this.range.index, this.range.length, {
       background: "#fff72b",
     });
@@ -495,7 +534,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       this.initEditor();
     }
     this.quill.deleteText(0, this.quill.getLength());
-    this.metaData = [];
+    this.commentsMetaData = [];
+    this.headingsMetaData = [];
     this.saveQuillData();
   }
 
@@ -516,6 +556,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       this.createTable(data.rowCount,data.columnCount)
     }
   }
+
   // Create table with specific values
   createTable(rowCount:number,columnCount:number ){
     const tableModule = this.quill.getModule('better-table');
@@ -643,6 +684,152 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   }
 */
   sortComments() {
-    return (this.metaData) ? this.metaData.sort((c1, c2) => (c1.range.index > c2.range.index) ? 1 : -1) : [];
+    return (this.commentsMetaData) ? this.commentsMetaData.sort((c1, c2) => (c1.range.index > c2.range.index) ? 1 : -1) : [];
   }
+
+  sortHeaders() {
+    return (this.headingsMetaData) ? this.headingsMetaData.sort((h1, h2) => (h1.range.index > h2.range.index) ? 1 : -1) : [];
+  }
+
+  generateHeading(value: number) {
+    this.range = this.quill.getSelection(true);
+    let [leaf, offsetLeaf] = this.quill.getLeaf(this.range.index);
+    this.quill.formatLine(this.range.index, this.range.length, 'header', value);
+    let header = {
+      text: leaf.text,
+      range: this.range,
+      headingLevel: value
+    };
+
+    const headingIndex = this.headingsMetaData.findIndex(heading => {
+      let [line1, offset1] = this.quill.getLine(heading.range.index);
+      let [line2, offset2] = this.quill.getLine(this.range.index);
+      return line1 == line2;
+    });
+
+    if (headingIndex < 0) {
+      this.headingsMetaData.push(header);
+    } else {
+      this.headingsMetaData[headingIndex] = header;
+    }
+    this.sortHeaders();
+    this.saveQuillData();
+  }
+
+  createLink(range: any) {
+    // Create Selection Box
+    let selBox = document.createElement('textarea');
+
+    // Set the CSS Properties
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+
+    let url = environment.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
+    url += '/document/' + this.folioId + '?group=' + this.groupId + '&index=' + range.index +'&length=' + range.length +'&readOnly=true';
+
+    selBox.value = url;
+    // Append the element to the DOM
+    document.body.appendChild(selBox);
+
+    // Set the focus and Child
+    selBox.focus();
+    selBox.select();
+
+    // Execute Copy Command
+    document.execCommand('copy');
+
+    // Once Copied remove the child from the dom
+    document.body.removeChild(selBox);
+
+    // Show Confirmed notification
+    this.utilityService.simpleNotification($localize`:@@groupFiles.copiedToClipboard:Copied to Clipboard!`);
+  }
+
+  /*
+  Test code to generate a table of content automatically WIP
+  generateTableOfContent() {
+    this.headingsMetaData = [];
+
+    let root: any = document.createElement('div');
+    root.innerHTML = this.quill.root.innerHTML;
+
+    // Search for H1 elementes
+    const h1s = root.querySelectorAll('h1');
+    h1s.forEach(h1 => {
+      const h1String = '<h1>' + h1.innerText +'</h1>';
+      const indices = this.getIndicesOf(h1String, this.quill.root.innerHTML, false);
+console.log(indices);
+      indices.forEach(index => {
+        let header = {
+          text: h1.innerText,
+          range: {index: index, length: h1String.length},
+          headingLevel: 1
+        };
+
+        const headingIndex = this.headingsMetaData.findIndex(heading => {
+          let [line1, offset1] = this.quill.getLine(heading.range.index);
+          let [line2, offset2] = this.quill.getLine(header.range.index);
+          return line1 == line2;
+        });
+
+        if (headingIndex < 0) {
+          this.headingsMetaData.push(header);
+        } else {
+          this.headingsMetaData[headingIndex] = header;
+        }
+      });
+    });
+
+    // Search for H2 elementes
+    const h2s = root.querySelectorAll('h2');
+    h2s.forEach(h2 => {
+      const h2String = '<h2>' + h2.innerText +'</h2>';
+      const indices = this.getIndicesOf(h2String, this.quill.root.innerHTML, false);
+      indices.forEach(index => {
+        let header = {
+          text: h2.innerText,
+          range: {index: index, length: h2String.length},
+          headingLevel: 2
+        };
+
+        const headingIndex = this.headingsMetaData.findIndex(heading => {
+          let [line1, offset1] = this.quill.getLine(heading.range.index);
+          let [line2, offset2] = this.quill.getLine(header.range.index);
+          return line1 == line2;
+        });
+
+        if (headingIndex < 0) {
+          this.headingsMetaData.push(header);
+        } else {
+          this.headingsMetaData[headingIndex] = header;
+        }
+      });
+    });
+
+    this.sortHeaders();
+    this.saveQuillData();
+  }
+
+  getIndicesOf(searchStr, str, caseSensitive) {
+    var searchStrLen = searchStr.length;
+    if (searchStrLen == 0) {
+        return [];
+    }
+    var startIndex = 0, index, indices = [];
+    if (!caseSensitive) {
+        str = str.toLowerCase();
+        searchStr = searchStr.toLowerCase();
+    }
+    while ((index = str.indexOf(searchStr, startIndex)) > -1) {
+        indices.push(index);
+        startIndex = index + searchStrLen;
+    }
+    return indices;
+  }
+  */
 }

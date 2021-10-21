@@ -29,6 +29,29 @@
 </div>
 
 <div class="folio-container">
+  <!-- Table of Content Starts -->
+  <div class="comments-section" *ngIf="showHeadings && headingsMetaData && headingsMetaData.length > 0">
+    <div class="comment-head">
+      <h5 class="center">
+        <i class="material-icons">list_alt</i>
+        <span i18n="@@folioEditor.tableContent">Table of Content</span>
+      </h5>
+    </div>
+
+    <div (click)="highlight(heading.range)" *ngFor="let heading of headingsMetaData;let ind = index">
+      <div class="heading level1" *ngIf="heading.headingLevel == 1">
+        <span>{{ heading.text }}</span>
+        <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
+      </div>
+      <div class="heading level2" *ngIf="heading.headingLevel == 2">
+        <span>{{ heading.text }}</span>
+        <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
+      </div>
+      <!-- <h3 *ngIf="heading.headingLevel == 3"> {{ heading.text }} </h3> -->
+    </div>
+  </div>
+  <!-- Table of Content Ends -->
+
   <!-- Quill Editor Component Starts -->
   <div class="editor-section">
     <div #editable class="folio"></div>
@@ -36,7 +59,7 @@
   <!-- Quill Editor Component Ends -->
 
   <!-- Comments Starts -->
-  <div class="comments-section" *ngIf="metaData && metaData.length > 0">
+  <div class="comments-section" *ngIf="commentsMetaData && commentsMetaData.length > 0">
     <div class="comment-head">
       <h5 class="center">
         <i class="material-icons">comment</i>
@@ -45,7 +68,7 @@
     </div>
 
     <div class="comment-area">
-      <div class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}" (click)="highlight(meta.range)" *ngFor="let meta of metaData;let ind = index">
+      <div class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}" (click)="highlight(meta.range)" *ngFor="let meta of commentsMetaData;let ind = index">
         <div class="comment-profile">
           <div class="profile">
               <app-secured-image *ngIf="meta.profile_pic"
