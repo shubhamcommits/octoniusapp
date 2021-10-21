@@ -694,24 +694,26 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   generateHeading(value: number) {
     this.range = this.quill.getSelection(true);
     let [leaf, offsetLeaf] = this.quill.getLeaf(this.range.index);
-    this.quill.formatLine(this.range.index, this.range.length, 'header', value);
-    let header = {
-      text: leaf.text,
-      range: this.range,
-      headingLevel: value
-    };
 
     const headingIndex = this.headingsMetaData.findIndex(heading => {
       let [line1, offset1] = this.quill.getLine(heading.range.index);
       let [line2, offset2] = this.quill.getLine(this.range.index);
       return line1 == line2;
     });
+    this.quill.formatLine(this.range.index, this.range.length, 'header', value);
 
-    if (headingIndex < 0) {
-      this.headingsMetaData.push(header);
+    if (headingIndex >= 0) {
+      this.headingsMetaData.splice(headingIndex, 1);
     } else {
-      this.headingsMetaData[headingIndex] = header;
+      let header = {
+        text: leaf.text,
+        range: this.range,
+        headingLevel: value
+      };
+
+      this.headingsMetaData.push(header);
     }
+
     this.sortHeaders();
     this.saveQuillData();
   }

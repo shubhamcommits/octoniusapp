@@ -251,7 +251,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     if (this.members.length >= 0 && this.selectedMembers.size >= 0) {
 
       // Removing the user from array
-      this.members.slice(this.members.findIndex((member) => item._id === member), 1);
+      this.members.splice(this.members.findIndex((member) => item._id === member), 1);
 
       // Enable the user so that it can be added again
       item.showAddMem = true
