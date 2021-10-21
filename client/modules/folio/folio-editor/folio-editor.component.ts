@@ -703,8 +703,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       let [line2, offset2] = this.quill.getLine(this.range.index);
       return line1 == line2;
     });
-    this.quill.formatLine(this.range.index, this.range.length, 'header', value);
 
+    this.quill.formatLine(this.range.index, this.range.length, 'header', value);
     const elementType = leaf?.parent?.domNode?.localName;
     if (headingIndex >= 0) {
       let header = this.headingsMetaData[headingIndex];
