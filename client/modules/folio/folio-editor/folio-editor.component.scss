@@ -39,7 +39,8 @@ body{
 // }
 
 .editor-section{
-    width: auto;
+    width: 830px;
+    margin: 0 auto;
 
     .ql-toolbar .ql-snow{
         border:none !important;
@@ -48,7 +49,9 @@ body{
 }
 
 .comments-section{
-    width: 23%;
+    
+    padding: 10px;
+    width: 280px;
 }
 
 .center{
@@ -69,6 +72,7 @@ body{
     // border: 1px solid #ccc;
     // border-radius: 50px;
     height: 42px;
+    margin-bottom: 30px;
 }
 
 .comment-area{
@@ -183,15 +187,20 @@ h6{
 
 .heading {
   display: flex;
-  padding: 3%;
+  padding: 5px;
   justify-content: space-between;
+  &:hover{
+      color:#005fd5 !important;
+      cursor: pointer;
+  }
 }
 
 .level1 {
-
+font-weight: 700;
 }
 
 .level2 {
-
+    font-weight: 400;
+    margin-left: 10px;
 }
 
