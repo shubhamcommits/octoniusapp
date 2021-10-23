@@ -4,13 +4,13 @@ body{
 }
 
 .folio-container{
-    padding-top: 90px;
-    height: 100vh;
+    margin-top: 86px;
+    height: calc(100% - 80px);
     background-color: #ffffff !important;
     // -webkit-font-smoothing: antialiased;
     width: 100%;
     overflow-y: auto;
-    position: relative;
+    position: absolute;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -19,7 +19,8 @@ body{
 .folio {
     // height: 80vh;
     width: 826px;
-    overflow-y: visible;
+    height: calc(100% - 83px);
+    overflow-y:visible;
     margin: 0 auto;
     img{
         width: 100%;
@@ -27,6 +28,7 @@ body{
     box-shadow: 0 4px 14px 0 rgb(37 38 94 / 10%);
     border:none;
 }
+
 
 // // this applies dark mode to FOLIO editor
 // //for dark mode please make body bg color to same bg color
@@ -39,7 +41,7 @@ body{
 // }
 
 .editor-section{
-    width: 830px;
+    width: 50%;
     margin: 0 auto;
 
     .ql-toolbar .ql-snow{
@@ -48,18 +50,31 @@ body{
 
 }
 
-.comments-section{
-    
-    padding: 10px;
-    width: 280px;
+/* hide scrollbar but allow scrolling */
+.folio {
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll; 
 }
 
-.center{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
+.folio::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
 }
+
+
+
+.comments-section{
+    padding: 10px;
+    width: 20%;
+    margin-top: 30px;
+}
+.outline-section{
+    margin-top: 30px;
+    padding: 10px;
+    width: 20%;
+}
+
+
 
 .center-vertical{
     position: absolute;
@@ -147,11 +162,11 @@ h6{
 .comment-container{
     padding: 2%;
     z-index: 2;
-    position: fixed;
     width: 30%;
     background: white;
     border-radius: 5px;
     border: 1px solid #f3f4f6;
+    margin: 0 auto;
 }
 
 .close {
@@ -204,3 +219,11 @@ font-weight: 700;
     margin-left: 10px;
 }
 
+@media (max-width: 991.98px) { 
+    .folio{
+        width: auto;
+    }
+    .editor-section{
+        width: auto;
+    }
+}
