@@ -30,7 +30,7 @@
 
 <div class="folio-container">
   <!-- Table of Content Starts -->
-  <div class="comments-section" *ngIf="showHeadings && headingsMetaData && headingsMetaData.length > 0">
+  <div class="comments-section" *ngIf="fileData && fileData?.show_headings && headingsMetaData && headingsMetaData.length > 0">
     <div class="comment-head">
       <h5 class="center">
         <i class="material-icons">list_alt</i>

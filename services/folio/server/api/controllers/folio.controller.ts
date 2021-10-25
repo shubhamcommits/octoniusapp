@@ -1,4 +1,8 @@
+import { Response, Request, NextFunction } from 'express';
+import { File } from '../../models/file.model';
+import { sendError } from '../../utils/senderror';
 import createHtml from '../../utils/folio/convert-to-html';
+
 const path = require('path');
 const multipart = require('connect-multiparty');
 const fs = require('fs');
@@ -28,4 +32,27 @@ function createUploadFolder(req, res, next) {
     next()
 }
 
-export default { createUploadFolder, uploadcontroller, multipartMiddleware };
+async function displayHeadings(req: Request, res: Response, next: NextFunction) {
+  try {
+    // Fetch the publish From the request
+    let { body: { showHeadings } } = req;
+    
+    // Fetch the fileId From the request
+    const { fileId } = req.params;
+
+    let folioUpdated = await File.findOneAndUpdate(
+      { _id: fileId },
+      { $set: {show_headings: showHeadings }},
+      { new: true}).lean();
+
+    // Send Status 200 response
+    return res.status(200).json({
+        message: 'Folio updated',
+        folio: folioUpdated
+    });
+  } catch (err) {
+      return sendError(res, err, 'Internal Server Error!', 500);
+  }
+}
+
+export default { createUploadFolder, uploadcontroller, displayHeadings, multipartMiddleware };
