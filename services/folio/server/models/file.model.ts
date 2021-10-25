@@ -48,6 +48,11 @@ const FileSchema = new Schema({
             type: Number,
             default: 0
         }
+    },
+    show_headings: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 });
 

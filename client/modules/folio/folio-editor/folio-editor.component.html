@@ -3,7 +3,7 @@
 <app-create-table *ngIf="tableShow" (dataToSubmit)="dataFromTableModal($event)"></app-create-table>
 
 <div [ngClass]="{'hide-modal' : !commentBool}" class="comment-modal center">
-  <div class="comment-container center">
+  <div class="comment-container">
     <a class="close" (click)="closeComment()">
       <i  class="material-icons" style="cursor: pointer">close</i>
     </a>
@@ -30,13 +30,11 @@
 
 <div class="folio-container">
   <!-- Table of Content Starts -->
-  <div class="comments-section" *ngIf="showHeadings && headingsMetaData && headingsMetaData.length > 0">
-    <div class="comment-head">
-      <h5 class="center">
-        <i class="material-icons">list_alt</i>
-        <span i18n="@@folioEditor.tableContent">Table of Content</span>
-      </h5>
-    </div>
+  <div class="outline-section d-none d-lg-block" *ngIf="fileData && fileData?.show_headings && headingsMetaData && headingsMetaData.length > 0">
+    <h5 class="text-center mb-4">
+      <i class="material-icons">list_alt</i>
+      <span i18n="@@folioEditor.tableContent">Folio Outline</span>
+    </h5>
 
     <div (click)="highlight(heading.range)" *ngFor="let heading of headingsMetaData;let ind = index">
       <div class="heading level1" *ngIf="heading.headingLevel == 1">
@@ -59,13 +57,13 @@
   <!-- Quill Editor Component Ends -->
 
   <!-- Comments Starts -->
-  <div class="comments-section" *ngIf="commentsMetaData && commentsMetaData.length > 0">
-    <div class="comment-head">
-      <h5 class="center">
+  <div class="comments-section d-none d-lg-block" *ngIf="commentsMetaData && commentsMetaData.length > 0">
+
+      <h5 class="text-center mb-4">
         <i class="material-icons">comment</i>
         <span i18n="@@folioEditor.comments">COMMENTS</span>
       </h5>
-    </div>
+
 
     <div class="comment-area">
       <div class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}" (click)="highlight(meta.range)" *ngFor="let meta of commentsMetaData;let ind = index">

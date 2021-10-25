@@ -10,4 +10,6 @@ const authsHelper = new Auths();
 
 routes.post('/upload', authsHelper.verifyToken, authsHelper.isLoggedIn, upload.createUploadFolder, upload.multipartMiddleware, upload.uploadcontroller);
 
+routes.put('/:fileId/displayHeadings', authsHelper.verifyToken, authsHelper.isLoggedIn, upload.displayHeadings);
+
 export default routes;

@@ -73,7 +73,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   // Table of content
   headingsMetaData = [];
-  showHeadings = true;
 
   //Range for selected text
   range : {index : number, length : number};
@@ -118,6 +117,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   // Folio Variable
   folio: any;
 
+  fileData: any;
+
   // Folio ID Variable
   folioId = this._ActivatedRoute.snapshot.paramMap.get("id");
 
@@ -141,6 +142,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
     private folioService: FolioService,
+    private filesService: FilesService,
     private utilityService: UtilityService
   ) {
     this.folioService.follioSubject.subscribe(data => {
@@ -173,11 +175,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           ['bold', 'italic', 'underline', 'strike'],
           [{ 'color': [] }, { 'background': [] }],
           [{ 'script': 'super' }, { 'script': 'sub' }],
-          [{ 'header': '1' }, { 'header': '2' }, 'blockquote'/*, 'code-block'*/],
+          [{ 'header': '1' }, { 'header': '2' }, 'content', 'blockquote'/*, 'code-block'*/],
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
-          ['clean'], ['comment'],['tables'],['clear']//, ['content']
+          ['clean'], ['comment'],['tables'],['clear']
         ], handlers : {
           'comment': () => {
             this.openComment();
@@ -192,12 +194,10 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           'header': (value) => {
             this.generateHeading(value);
           },
-          /*
-          // Generate the table of Content
+          // Show/Hide the table of Content
           'content': () => {
-            this.generateTableOfContent();
+            this.displayHeadings();
           }
-          */
         }},
         table: true,
         'better-table': {
@@ -227,8 +227,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       };
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.folio = this.initializeConnection();
+    this.fileData = await this.getFile(this.folioId);
   }
 
   async ngAfterViewInit() {
@@ -273,7 +274,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
     document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
     document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
-    //document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
+    document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
   }
 
   initializeConnection() {
@@ -320,8 +321,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
               let insertMap = JSON.parse(JSON.stringify(op.insert));
               // Add mentions
               if (insertMap.mention && insertMap.mention.denotationChar === "@") {
-                let filesService = this._Injector.get(FilesService);
-                filesService.newFolioMention(insertMap.mention, this.folioId, this.userData._id)
+                this.filesService.newFolioMention(insertMap.mention, this.folioId, this.userData._id)
                   .then((res) => res.subscribe());
               }
             }
@@ -481,8 +481,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       if (value.insert.mention) {
         var mentionMap = value.insert;
         if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
-          let filesService = this._Injector.get(FilesService);
-          filesService.newFolioMention(mentionMap.mention, this.folioId, this.userData._id).then((res) => res.subscribe());
+          this.filesService.newFolioMention(mentionMap.mention, this.folioId, this.userData._id).then((res) => res.subscribe());
         }
       }
     });
@@ -758,7 +757,32 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     document.body.removeChild(selBox);
 
     // Show Confirmed notification
-    this.utilityService.simpleNotification($localize`:@@groupFiles.copiedToClipboard:Copied to Clipboard!`);
+    this.utilityService.simpleNotification($localize`:@@folioEditor.copiedToClipboard:Copied to Clipboard!`);
+  }
+
+  displayHeadings() {
+    this.folioService.displayHeadings(this.fileData?._id, !this.fileData?.show_headings).then(res => {
+      this.fileData.show_headings = !this.fileData?.show_headings;
+    }).catch (err => {
+      this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
+    });
+  }
+
+  /**
+   * This function is responsible for fetching a file's details
+   * @param fileId
+   */
+  public async getFile(fileId: any) {
+    return new Promise((resolve) => {
+      // Fetch the file details
+      this.filesService.getOne(fileId)
+        .then((res) => {
+          resolve(res['file'])
+        })
+        .catch(() => {
+          resolve({})
+        });
+    });
   }
 
   /*
@@ -774,7 +798,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     h1s.forEach(h1 => {
       const h1String = '<h1>' + h1.innerText +'</h1>';
       const indices = this.getIndicesOf(h1String, this.quill.root.innerHTML, false);
-console.log(indices);
       indices.forEach(index => {
         let header = {
           text: h1.innerText,
