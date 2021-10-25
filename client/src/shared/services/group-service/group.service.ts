@@ -174,6 +174,14 @@ export class GroupService {
     return this._http.post(this.baseURL + `/members/removeFromRag`, bodyData).toPromise();
   }
 
+  selectRAGRights(groupId: string, ragId: string, rightId: string) {
+    let bodyData = {
+      rightId: rightId,
+      ragId: ragId
+    };
+    return this._http.put(this.baseURL + `/${groupId}/selectRAGRights`, bodyData).toPromise();
+  }
+
   getRags(groupId: string){
     return this._http.get(this.baseURL + `/${groupId}/getRags`).toPromise()
   }

@@ -1870,6 +1870,42 @@ export class GroupController {
         }
     }
 
+    async selectRAGRights(req: Request, res: Response, next: NextFunction) {
+        try {
+            const groupId = req.params.groupId;
+            const ragId = req.body.ragId;
+            const rightId = req.body.rightId;
+
+            let group: any = await Group.findByIdAndUpdate(
+                { _id: groupId },
+                {
+                    $set: {
+                        "rags.$[rag].right": rightId
+                    }
+                },
+                {
+                    arrayFilters: [{ "rag._id": ragId }],
+                    new: true
+                })
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
+                })
+                .lean();
+
+            return res.status(200).json({
+                message: 'Rag updated successfully!',
+                group: group
+            });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    }
+
     /**
      * This function fetches the groups which exist in the database based on the list of @workspaceId
      * @param req 

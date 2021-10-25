@@ -27,23 +27,32 @@
             <button class="btn overdue" (click)="removeTag(rag.rag_tag)"> <i class="material-icons">delete</i> </button>
         </div>
 
-        <div class="d-flex">
-            <div class="useravatar" *ngFor="let member of rag.members">
-                <app-secured-image
-                  [imgURL]="member?.profile_pic"
-                  [service]="'user'"
-                  [tooltip]="member?.first_name + ' ' + member?.last_name"
-                  [styleClass]="'feed-avatar'"
-                  (click)="removeUserFromRag(member,rag)"></app-secured-image>
-            </div>
+        <div style="justify-content: space-between;">
+          <div class="d-flex">
+              <div class="useravatar" *ngFor="let member of rag.members">
+                  <app-secured-image
+                    [imgURL]="member?.profile_pic"
+                    [service]="'user'"
+                    [tooltip]="member?.first_name + ' ' + member?.last_name"
+                    [styleClass]="'feed-avatar'"
+                    (click)="removeUserFromRag(member,rag)"></app-secured-image>
+              </div>
 
-            <app-component-search-input-box class="ml-2" *ngIf="groupData"
-                [placeholder]="'add member'"
-                [groupId]="groupId" [groupData]="groupData" [type]="'ragMembers'"
-                [ragMemberList] = "rag.members"
-                [rag] = "rag.rag_tag"
-                (member)="addNewUserToRag($event, rag)">
-            </app-component-search-input-box>
+              <app-component-search-input-box class="ml-2" *ngIf="groupData"
+                  [placeholder]="'add member'"
+                  [groupId]="groupId" [groupData]="groupData" [type]="'ragMembers'"
+                  [ragMemberList] = "rag.members"
+                  [rag] = "rag.rag_tag"
+                  (member)="addNewUserToRag($event, rag)">
+              </app-component-search-input-box>
+          </div>
+
+          <div class="d-flex">
+            <mat-select [(value)]="rag.right"
+                  (selectionChange)="selectRAGRights(rag, $event.value)">
+                <mat-option *ngFor="let right of ragRights" [value]="right._id">{{ right.title }}</mat-option>
+              </mat-select>
+          </div>
         </div>
     </div>
 

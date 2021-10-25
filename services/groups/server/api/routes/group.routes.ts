@@ -112,6 +112,9 @@ routes.get('/:groupId/getRags', group.getRags);
 // PUT - Remove rag from group and posts that are related to that rag
 routes.put('/:groupId/removeRag', group.removeRag);
 
+// PUT - Add right to rag
+routes.put('/:groupId/selectRAGRights', group.selectRAGRights);
+
 // Update a smart group with the given rules.
 routes.post('/smart/:groupId', group.updateSmartGroup);
 

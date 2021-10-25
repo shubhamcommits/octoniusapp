@@ -12,13 +12,6 @@ import { PublicFunctions } from 'modules/public.functions';
     styleUrls: ['./group-rag-dialog.component.scss']
   })
   export class GroupRAGDialogComponent implements OnInit {
-    constructor(
-        private injector: Injector,
-        private utilityService: UtilityService,
-        private groupService: GroupService,
-        @Inject(MAT_DIALOG_DATA) public data: any,
-        private mdDialogRef: MatDialogRef<GroupRAGDialogComponent>
-        ) { }
 
     @Output() closeEvent = new EventEmitter();
 
@@ -35,8 +28,21 @@ import { PublicFunctions } from 'modules/public.functions';
     addNewRag = false;
     searchRagPlaceHolder= 'Add a member to tag';
 
+    ragRights = [
+      { _id: 'view', title: 'View' },
+      { _id: 'edit', title: 'Edit' },
+      { _id: 'delete', title: 'Delete' }
+    ];
+
     // PUBLIC FUNCTIONS
     public publicFunctions = new PublicFunctions(this.injector);
+    constructor(
+        private injector: Injector,
+        private utilityService: UtilityService,
+        private groupService: GroupService,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        private mdDialogRef: MatDialogRef<GroupRAGDialogComponent>
+        ) { }
 
     ngOnInit(): void {
         this.members = this.data.groupData._members;
@@ -145,5 +151,19 @@ import { PublicFunctions } from 'modules/public.functions';
 
   onCloseDialog() {
     this.closeEvent.emit(this.ragTag);
+  }
+
+  selectRAGRights(rag: any, rightId: string) {
+    // Change right to the RAG
+    this.utilityService.asyncNotification($localize`:@@groupRagDialog.pleaseWaitChangingRAGRight:Please wait we are updating the right of the RAG...`,
+    new Promise((resolve, reject)=>{
+    this.groupService.selectRAGRights(this.groupId, rag._id, rightId)
+      .then((res: any)=> {
+        this.groupData = res['group'];
+        this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+        resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupRagDialog.ragUpdated:RAG updated!`));
+      })
+      .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupRagDialog.unableToUpdateRag:Unable to update your RAG`)));
+    }));
   }
 }
