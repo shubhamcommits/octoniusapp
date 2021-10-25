@@ -17,7 +17,7 @@
           If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.
         </p>
     </div>
-    <div class="customFieldsList" *ngIf="ragList.length <= 0">
+    <div class="customFieldsList" *ngIf="!ragList || ragList?.length <= 0">
         <h3 class="text-center muted mt-3" i18n="@@groupRAGDialog.alwayseStriveTransparency">🎉 Always strive for transparency...</h3>
     </div>
 
