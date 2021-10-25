@@ -43,6 +43,8 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   @Input('ragMemberList') ragMemberList: any = [];
 
+  @Input('ragList') ragList: any = [];
+
   // Skill Emitter which emits the skill object on creation
   @Output('skill') skillEmitter = new EventEmitter();
 
@@ -103,9 +105,19 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
           else {
             if(this.type === 'ragTag') {
-              this.itemList = this.groupData.rags.map( item => item.rag_tag);
-              this.itemList = this.itemList.filter( item => item.includes(this.itemValue));
+              this.itemList = this.groupData.rags;
+              this.itemList = this.itemList.filter( item => item.rag_tag.includes(this.itemValue));
+
+              this.itemList.forEach(item => {
+                const index = this.ragList.findIndex(rag => rag._id == item._id);
+                if(index >= 0) {
+                  item.showAddButton = true;
+                } else {
+                  item.showAddButton = false;
+                }
+              });
             }
+
             if(this.type === 'ragMembers') {
               this.itemList = this.groupData._members.filter( member => {
                 let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase();

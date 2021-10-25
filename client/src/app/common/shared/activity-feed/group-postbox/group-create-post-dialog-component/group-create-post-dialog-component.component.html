@@ -207,7 +207,8 @@
           <div *ngIf="groupData && groupData.enabled_rights" class="ml-1">
               <div (click)="removeRagTag(i, ragTag)" *ngFor="let ragTag of ragTags; let i = index">
                 <div>
-                  <span class="tag"> {{ ragTag }}</span> <i class="material-icons" style="color: red;">clear</i>
+                  <span class="tag"> {{ ragTag }}</span>
+                  <i class="material-icons" style="color: red;">clear</i>
                 </div>
               </div>
 
@@ -217,6 +218,7 @@
                   [groupData] = "groupData"
                   [type]="'ragTag'"
                   [groupId]="groupId"
+                  [ragList] = "ragTags"
                   (ragTag)="addNewRagTag($event)">
               </app-component-search-input-box>
           </div>

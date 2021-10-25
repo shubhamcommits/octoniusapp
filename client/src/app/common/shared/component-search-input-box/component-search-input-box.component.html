@@ -22,8 +22,12 @@
                     <!-- Display full name of the member ends -->
 
                     <!-- Display full name of skill or tag starts -->
-                    <h4 class="mt-0 full-name-text" *ngIf="type == 'skill' || type == 'tag' || type === 'ragTag' ">
+                    <h4 class="mt-0 full-name-text" *ngIf="type == 'skill' || type == 'tag' ">
                       {{ item }}
+                    </h4>
+
+                    <h4 class="mt-0 full-name-text" *ngIf="type === 'ragTag' ">
+                      {{ item.rag_tag }}
                     </h4>
                     <!-- Display full name of skill or tag ends -->
                 </div>
@@ -49,7 +53,7 @@
                     <!-- Skill section ends -->
 
                     <!-- Tag section starts -->
-                    <section *ngIf="type == 'tag' || type === 'ragTag'">
+                    <section *ngIf="(type == 'tag' || type === 'ragTag') && item.showAddButton">
                         <!-- Add tags starts -->
                         <button (click)="onAddTag(item)"
                           class="btn btn-primary btn-sm"

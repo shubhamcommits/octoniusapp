@@ -366,8 +366,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
       this.postService.addRag(this.postData._id, rag)
         .then((res) => {
           // Resolve with success
-        this.postData.rags.push(rag);
-        this.ragTags.push(event);
+          this.postData.rags.push(rag);
+          this.ragTags.push(event);
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {

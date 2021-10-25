@@ -922,7 +922,7 @@ export class PostController {
         const post = await postService.addRag(postId, rag)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            })
+            });
 
         // Send status 200 response
         return res.status(200).json({
