@@ -293,11 +293,11 @@ export class UtilityService {
   openCreatePostFullscreenModal(postData: any, userData: any, groupData: any, isIdeaModuleAvailable: boolean, columns?: any, tasks?: any) {
     let dialogOpen;
     let openPost = true;
-    if (postData.bars !== undefined && postData.bars.length > 0) {
+    if (postData.rags !== undefined && postData.rags.length > 0) {
       const adminIndex = groupData._admins.findIndex(admin => (admin._id || admin) == userData._id);
-      postData.bars.forEach(bar => {
-        const userBarIndex = bar.tag_members.findIndex(barMember => (barMember._id || barMember) == userData._id);
-        if ((userBarIndex < 0 || adminIndex < 0) && userData.role == "member") {
+      postData.rags.forEach(rag => {
+        const userRagIndex = rag.tag_members.findIndex(ragMember => (ragMember._id || ragMember) == userData._id);
+        if ((userRagIndex < 0 || adminIndex < 0) && userData.role == "member") {
           openPost = false;
         }
       });

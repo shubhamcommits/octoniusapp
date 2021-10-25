@@ -203,21 +203,21 @@
             <!-- Change task column ends -->
           </div>
 
-          <p *ngIf="groupData && groupData.enabled_rights" class="box-title" style="margin-top: 18px;" i18n="@@groupCreatePostDialog.bar">BAR</p>
+          <p *ngIf="groupData && groupData.enabled_rights" class="box-title" style="margin-top: 18px;" i18n="@@groupCreatePostDialog.rag">RAG</p>
           <div *ngIf="groupData && groupData.enabled_rights" class="ml-1">
-              <div (click)="removeBarTag(i, barTag)" *ngFor="let barTag of barTags; let i = index">
+              <div (click)="removeRagTag(i, ragTag)" *ngFor="let ragTag of ragTags; let i = index">
                 <div>
-                  <span class="tag"> {{ barTag }}</span> <i class="material-icons" style="color: red;">clear</i>
+                  <span class="tag"> {{ ragTag }}</span> <i class="material-icons" style="color: red;">clear</i>
                 </div>
               </div>
 
               <app-component-search-input-box
                   *ngIf="groupData && checkDataExist(groupData)"
-                  [placeholder]="'Add bar tag'"
+                  [placeholder]="'Add rag tag'"
                   [groupData] = "groupData"
-                  [type]="'barTag'"
+                  [type]="'ragTag'"
                   [groupId]="groupId"
-                  (barTag)="addNewBarTag($event)">
+                  (ragTag)="addNewRagTag($event)">
               </app-component-search-input-box>
           </div>
           <br *ngIf="groupData && groupData.enabled_rights" />

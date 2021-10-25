@@ -142,39 +142,40 @@ export class GroupService {
     .toPromise()
   }
 
-  addBar(groupId: string, barTag: string){
+  addRag(groupId: string, ragTag: string){
     let bodyData = {
-      barTag
+      ragTag
     };
-    return this._http.put(this.baseURL + `/${groupId}/addBar`, bodyData).toPromise()
+    return this._http.put(this.baseURL + `/${groupId}/addRag`, bodyData).toPromise()
   }
 
-  removeBar(groupId: string, barTag: string){
+  removeRag(groupId: string, ragTag: string){
     let bodyData ={
-      barTag
+      ragTag
     };
-    return this._http.put(this.baseURL + `/${groupId}/removeBar`, bodyData).toPromise();
-  }
-  addMemberToBar(groupId: string, barTag: string, member){
-    let bodyData = {
-      groupId,
-      barTag,
-      member
-    }
-    return this._http.post(this.baseURL + `/members/addToBar`, bodyData).toPromise();
+    return this._http.put(this.baseURL + `/${groupId}/removeRag`, bodyData).toPromise();
   }
 
-  removeUserFromBar(groupId: string, barTag: string, member){
+  addMemberToRag(groupId: string, ragTag: string, member){
     let bodyData = {
       groupId,
-      barTag,
+      ragTag,
       member
     }
-    return this._http.post(this.baseURL + `/members/removeFromBar`, bodyData).toPromise();
+    return this._http.post(this.baseURL + `/members/addToRag`, bodyData).toPromise();
   }
 
-  getBars(groupId: string){
-    return this._http.get(this.baseURL + `/${groupId}/getBars`).toPromise()
+  removeUserFromRag(groupId: string, ragTag: string, member){
+    let bodyData = {
+      groupId,
+      ragTag,
+      member
+    }
+    return this._http.post(this.baseURL + `/members/removeFromRag`, bodyData).toPromise();
+  }
+
+  getRags(groupId: string){
+    return this._http.get(this.baseURL + `/${groupId}/getRags`).toPromise()
   }
 
   saveNewCustomField(newCustomField: { name: string; title: string; values: any[]; }, groupId: any) {

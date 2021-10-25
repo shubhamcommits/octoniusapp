@@ -1788,22 +1788,22 @@ export class GroupController {
         }
     }
 
-    async addBar(req: Request, res: Response, next: NextFunction) {
+    async addRag(req: Request, res: Response, next: NextFunction) {
         try {
             const groupId = req.params.groupId;
-            const barTag = req.body.barTag;
+            const ragTag = req.body.ragTag;
 
             let group: any = await Group.findById(groupId);
             let tagExists = false;
-            group.bars.forEach(bar => {
-                if (bar.bar_tag === barTag) {
+            group.rags.forEach(rag => {
+                if (rag.rag_tag === ragTag) {
                     tagExists = true;
                 }
             })
             if (tagExists) {
                 return sendError(res, new Error('Tag already exists'), 'Tag already exists', 404);
             }
-            group.bars.push({ bar_tag: barTag, tag_members: [] });
+            group.rags.push({ rag_tag: ragTag, tag_members: [] });
             await group.save();
 
             group = await Group.findById(groupId)
@@ -1818,7 +1818,7 @@ export class GroupController {
                 .lean();
 
             return res.status(200).json({
-                message: 'Bar tag added successfully!',
+                message: 'Rag tag added successfully!',
                 group,
             });
         } catch (error) {
@@ -1826,23 +1826,23 @@ export class GroupController {
         }
     }
 
-    async removeBar(req: Request, res: Response, next: NextFunction) {
+    async removeRag(req: Request, res: Response, next: NextFunction) {
         try {
             const groupId = req.params.groupId;
-            const barTag = req.body.barTag;
+            const ragTag = req.body.ragTag;
             const group: any = await Group.findById(groupId);
             let tagExists = false;
-            group.bars.forEach(bar => {
-                if (bar.bar_tag === barTag) {
+            group.rags.forEach(rag => {
+                if (rag.rag_tag === ragTag) {
                     tagExists = true;
                 }
             });
             if (tagExists) {
-                const filteredList = group.bars.filter(bar => bar.bar_tag !== barTag);
-                group.bars = filteredList;
+                const filteredList = group.rags.filter(rag => rag.rag_tag !== ragTag);
+                group.rags = filteredList;
                 let posts = await Post.updateMany({ _group: group._id }, {
                     $pull: {
-                        bars: { bar_tag: barTag }
+                        rags: { rag_tag: ragTag }
                     }
                 }
                 );
@@ -1856,14 +1856,14 @@ export class GroupController {
         }
     }
 
-    async getBars(req: Request, res: Response, next: NextFunction) {
+    async getRags(req: Request, res: Response, next: NextFunction) {
         try {
             const groupId = req.params.groupId;
             const group: any = await Group.findById(groupId);
-            const bars = group.bars;
+            const rags = group.rags;
             return res.status(200).json({
-                message: 'Fetched Bars!',
-                bars
+                message: 'Fetched Rags!',
+                rags
             });
         } catch (error) {
             return sendError(res, error, 'Internal Server Error!', 500);

@@ -915,33 +915,33 @@ export class PostController {
         return post;
     }
 
-    async addBarToPost(req: Request, res: Response, next: NextFunction) {
+    async addRagToPost(req: Request, res: Response, next: NextFunction) {
         const { postId } = req.params;
-        const { bar } = req.body;
+        const { rag } = req.body;
 
-        const post = await postService.addBar(postId, bar)
+        const post = await postService.addRag(postId, rag)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             })
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Task bar updated!',
+            message: 'Task rag updated!',
             post: post
         });
     }
-    async removeBarFromPost(req: Request, res: Response, next: NextFunction) {
+    async removeRagFromPost(req: Request, res: Response, next: NextFunction) {
         const { postId } = req.params;
-        const { bar } = req.body;
+        const { rag } = req.body;
 
-        const post = await postService.removeBar(postId, bar)
+        const post = await postService.removeRag(postId, rag)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
 
         // Send status 200 response
         return res.status(200).json({
-            message: 'Task bar updated!',
+            message: 'Task rag updated!',
             post: post
         });
     }

@@ -38,7 +38,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   shuttle: any;
   // Title of the Post
   title: string = '';
-  barTags = [];
+  ragTags = [];
   isIdeaModuleAvailable;
   isShuttleTasksModuleAvailable;
 
@@ -158,8 +158,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async initPostData() {
     // Set the title of the post
     this.title = this.postData.title;
-    if(this.postData.bars && this.postData.bars !== undefined) {
-      this.barTags = this.postData.bars.map( bar => bar.bar_tag);
+    if(this.postData.rags && this.postData.rags !== undefined) {
+      this.ragTags = this.postData.rags.map( rag => rag.rag_tag);
     }
 
     // Set the due date to be undefined
@@ -355,19 +355,19 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.updateDetails();
   }
 
-  async addNewBarTag(event){
-    let bar;
-    this.groupData.bars.forEach(element => {
-      if(element.bar_tag === event){
-        bar = element;
+  async addNewRagTag(event){
+    let rag;
+    this.groupData.rags.forEach(element => {
+      if(element.rag_tag === event){
+        rag = element;
       }
     });
     await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.addBar(this.postData._id, bar)
+      this.postService.addRag(this.postData._id, rag)
         .then((res) => {
           // Resolve with success
-        this.postData.bars.push(bar);
-        this.barTags.push(event);
+        this.postData.rags.push(rag);
+        this.ragTags.push(event);
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {
@@ -376,20 +376,20 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }));
   }
 
-  async removeBarTag(index, event){
-    let bar;
-    this.groupData.bars.forEach(element => {
-      if(element.bar_tag === event){
-        bar = element;
+  async removeRagTag(index, event){
+    let rag;
+    this.groupData.rags.forEach(element => {
+      if(element.rag_tag === event){
+        rag = element;
       }
     });
 
     await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.removeBar(this.postData._id, bar)
+      this.postService.removeRag(this.postData._id, rag)
         .then((res) => {
           // Resolve with success
-          this.barTags.splice(index, 1);
-          this.postData.bars = this.postData.bars.filter(barTag => barTag.bar_tag !== event);
+          this.ragTags.splice(index, 1);
+          this.postData.rags = this.postData.rags.filter(ragTag => ragTag.rag_tag !== event);
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {

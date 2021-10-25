@@ -103,14 +103,14 @@ routes.put('/:groupId/settings', group.saveSettings);
 // PUT - Enable/Disable Group Shuttle Type
 routes.put('/:groupId/settings/selectShuttleSection', group.selectShuttleSection);
 
-// PUT - Add bar to group
-routes.put('/:groupId/addBar', group.addBar);
+// PUT - Add rag to group
+routes.put('/:groupId/addRag', group.addRag);
 
 //
-routes.get('/:groupId/getBars', group.getBars);
+routes.get('/:groupId/getRags', group.getRags);
 
-// PUT - Remove bar from group and posts that are related to that bar
-routes.put('/:groupId/removeBar', group.removeBar);
+// PUT - Remove rag from group and posts that are related to that rag
+routes.put('/:groupId/removeRag', group.removeRag);
 
 // Update a smart group with the given rules.
 routes.post('/smart/:groupId', group.updateSmartGroup);

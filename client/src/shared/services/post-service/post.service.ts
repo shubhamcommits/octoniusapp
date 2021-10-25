@@ -35,21 +35,21 @@ export class PostService {
       toPromise()
   }
 
-  addBar(postId: string, bar: any) {
+  addRag(postId: string, rag: any) {
     // Call the HTTP Request
     const body = {
-      bar
+      rag
     };
-    return this._http.put(this.baseURL + `/${postId}/addBar`, body).
+    return this._http.put(this.baseURL + `/${postId}/addRag`, body).
       toPromise();
   }
 
-  removeBar(postId: string, bar: any) {
+  removeRag(postId: string, rag: any) {
     const body = {
-      bar
+      rag
     };
     // Call the HTTP Request
-    return this._http.put(this.baseURL + `/${postId}/removeBar`, body).
+    return this._http.put(this.baseURL + `/${postId}/removeRag`, body).
       toPromise();
   }
   /**
