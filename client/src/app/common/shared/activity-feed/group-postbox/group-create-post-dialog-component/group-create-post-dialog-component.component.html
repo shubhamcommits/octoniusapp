@@ -155,7 +155,7 @@
 
             <!-- Change task status starts -->
             <app-task-status class="ml-2"
-                *ngIf="groupData?._id == postData?._group?._id"
+                *ngIf="myWorkplace || groupData?._id == postData?._group?._id"
                 [postId]="postData?._id"
                 [groupId]="postData?._group?._id || postData?._group"
                 [userId]="userData?._id"
@@ -166,7 +166,7 @@
             </app-task-status>
 
             <app-task-status class="ml-2"
-                *ngIf="groupData?._id != postData?._group?._id"
+                *ngIf="!myWorkplace && groupData?._id != postData?._group?._id"
                 [postId]="postData?._id"
                 [groupId]="shuttle?._shuttle_group?._id || shuttle?._shuttle_group"
                 [userId]="userData?._id"

@@ -1,4 +1,4 @@
-import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild, LOCALE_ID, Inject } from '@angular/core';
 import { PublicFunctions } from "modules/public.functions";
 import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
@@ -8,11 +8,19 @@ import { FolioService } from 'src/shared/services/folio-service/folio.service';
 import { environment } from "src/environments/environment";
 import { UtilityService } from "src/shared/services/utility-service/utility.service";
 
-// Quill Image Resize
-//import ImageResize from './quill-image-resize/quill.image-resize.js';
+// Highlight.js
+import hljs from 'highlight.js';
 
-import BlotFormatter, { DeleteAction, ResizeAction, ImageSpec } from "quill-blot-formatter";
-//import { Action, Aligner, DefaultAligner, DefaultToolbar, Toolbar, Alignment, AlignOptions } from 'quill-blot-formatter';
+// Highlight.js sublime css
+import 'highlight.js/styles/monokai-sublime.css';
+
+// Configure hljs for languages
+hljs.configure({
+  languages: ['javascript', 'ruby', 'bash', 'cpp', 'cs', 'css', 'dart', 'dockerfile', 'dos', 'excel', 'fortran', 'go', 'java', 'nginx', 'python', 'objectivec', 'yaml', 'yml']
+});
+
+// Quill Image Resize
+import ImageResize from 'src/shared/utilities/quill-image-resize/ImageResize.js';
 
 // Image Drop Module
 import ImageDrop from './quill-image-drop/quill.image-drop.js';
@@ -30,12 +38,9 @@ ShareDB.types.register(require('rich-text').type);
 declare const Quill2: any;
 declare const quillBetterTable: any;
 Quill2.register({
-  //'modules/imageResize': ImageResize,
-  'modules/blotFormatter': BlotFormatter,
+  'modules/imageResize': ImageResize,
   'modules/better-table': quillBetterTable,
-  'modules/imageDrop': ImageDrop,
-  //'modules/imageCompress': ImageCompress,
-  //'modules/table': quillTable.TableModule,
+  'modules/imageDrop': ImageDrop
 }, true);
 
 @Component({
@@ -64,7 +69,10 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   commentsToDisplay = [];
 
   //Comments MetaData
-  metaData = [];
+  commentsMetaData = [];
+
+  // Table of content
+  headingsMetaData = [];
 
   //Range for selected text
   range : {index : number, length : number};
@@ -109,6 +117,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   // Folio Variable
   folio: any;
 
+  fileData: any;
+
   // Folio ID Variable
   folioId = this._ActivatedRoute.snapshot.paramMap.get("id");
 
@@ -118,6 +128,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   // Read Only State of the folio
   readOnly = true;
 
+  // Range in the URL
+  urlRange: any;
+
   // SubSink Variable
   subSink = new SubSink();
 
@@ -125,13 +138,14 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
-    private follioService: FolioService,
+    private folioService: FolioService,
+    private filesService: FilesService,
     private utilityService: UtilityService
   ) {
-    // Get the State of the ReadOnly
-    this.follioService.follioSubject.subscribe(data => {
+    this.folioService.follioSubject.subscribe(data => {
       if (data) {
         this.clearEditor();
         this.quill.clipboard.dangerouslyPasteHTML(data);
@@ -139,7 +153,17 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       }
     });
 
+    // Get the State of the ReadOnly
     this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get("readOnly") == "true" || false;
+
+    const urlIndex = this._ActivatedRoute.snapshot.queryParamMap.get("index");
+    const urlLength = this._ActivatedRoute.snapshot.queryParamMap.get("index");
+    if (urlIndex && urlLength) {
+      this.urlRange = {
+        index: urlIndex,
+        length: urlLength
+      };
+    }
 
     // Initialise the modules in constructor
     this.modules = {
@@ -151,18 +175,12 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           ['bold', 'italic', 'underline', 'strike'],
           [{ 'color': [] }, { 'background': [] }],
           [{ 'script': 'super' }, { 'script': 'sub' }],
-          [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block'],
+          [{ 'header': '1' }, { 'header': '2' }, 'content', 'blockquote'/*, 'code-block'*/],
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
           ['clean'], ['comment'],['tables'],['clear']
         ], handlers : {
-          /*
-          'image' : () => {
-            const imgMod = this.quill.getModule('imageModule');
-            imgMod.insertImage(this.quill);
-          },
-          */
           'comment': () => {
             this.openComment();
           },
@@ -171,6 +189,14 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           },
           'clear': () => {
             this.clearFolioContent();
+          },
+          // Generate the headings
+          'header': (value) => {
+            this.generateHeading(value);
+          },
+          // Show/Hide the table of Content
+          'content': () => {
+            this.displayHeadings();
           }
         }},
         table: true,
@@ -195,15 +221,15 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           userOnly: true,
         },
         mention: this.metionModule(),
-        //imageResize: this.quillImageResize(),
+        // imageResize: this.quillImageResize(),
+        imageResize: true,
         imageDrop: true,
-        //imageCompress: this.quillImageCompress(),
-        blotFormatter: this.quillBlotFormatter()
       };
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.folio = this.initializeConnection();
+    this.fileData = await this.getFile(this.folioId);
   }
 
   async ngAfterViewInit() {
@@ -221,10 +247,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
     this.initEditor();
     this.initializeFolio(this.folio, this.quill);
-
-    document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
-    document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
-    document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
   }
 
   ngOnDestroy() {
@@ -234,8 +256,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   initEditor(): void {
     this.quill = new Quill2(this.editRef.nativeElement, {
-      theme: 'snow',
+      theme: this.readOnly ? 'bubble' : 'snow',
       modules: this.modules,
+      readOnly: this.readOnly
     });
 
     this.quill2 = new Quill2(this.editRef2.nativeElement,{
@@ -246,7 +269,12 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         ],
         mention : this.metionModule()
       }
-    })
+    });
+
+    document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
+    document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
+    document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
+    document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
   }
 
   initializeConnection() {
@@ -272,9 +300,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       this.richtextToJson0(folio, quill);
       if (!folio.type) {
         folio.create({ data: { comment: [], delta: [{ insert: "\n" }] } });
-        // folio.create([{
-        //   insert: '\n'
-        // }], 'rich-text');
       }
 
       // update editors contents
@@ -282,8 +307,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       // quill.setContents(folio?.data);
       this.quill2.setContents([{ insert: "\n" }]);
 
-      this.metaData = folio?.data?.data?.comment;
-      this.metaData = await this.sortComments();
+      this.commentsMetaData = folio?.data?.data?.comment;
+      this.commentsMetaData = await this.sortComments();
+
+      this.headingsMetaData = folio?.data?.data?.headings;
+      this.headingsMetaData = await this.sortHeaders();
 
       // local -> server
       quill.on("text-change", (delta, oldDelta, source) => {
@@ -291,23 +319,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           delta.ops.forEach(op => {
             if (op.insert) {
               let insertMap = JSON.parse(JSON.stringify(op.insert));
-
               // Add mentions
               if (insertMap.mention && insertMap.mention.denotationChar === "@") {
-                let filesService = this._Injector.get(FilesService);
-                filesService.newFolioMention(insertMap.mention, this.folioId, this.userData._id)
+                this.filesService.newFolioMention(insertMap.mention, this.folioId, this.userData._id)
                   .then((res) => res.subscribe());
               }
-
-              // Harcode save resize image
-              /*
-              if (insertMap.image) {
-                const index = this.folio.data.data.delta.findIndex(op => op.insert && op.insert.image && op.insert.image.id == insertMap.image.id);
-                if (index >= 0) {
-                  this.folio.data.data.delta[index].insert.image = insertMap.image;
-                }
-              }
-              */
             }
           });
         }
@@ -334,9 +350,16 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
          * proper support for update contents
          */
         quill.setContents(op[0].oi.delta);
-        this.metaData = op[0].oi.comment;
-        this.metaData = this.sortComments();
+        this.commentsMetaData = op[0].oi.comment;
+        this.commentsMetaData = this.sortComments();
+
+        this.headingsMetaData = op[0].oi.headings;
+        this.headingsMetaData = this.sortHeaders();
       });
+
+      if (this.urlRange) {
+        this.highlight(this.urlRange);
+      }
     });
   }
 
@@ -351,9 +374,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   //To get comments on selection
   mapComments(index : number, length : number) {
-    if (this.metaData) {
+    if (this.commentsMetaData) {
       var selectedIndexes = this.generateIndexes(index, length);
-      this.metaData.forEach((value, index) => {
+      this.commentsMetaData.forEach((value, index) => {
         var valueIndexes = this.generateIndexes(value.range.index, value.range.length);
         var found = false
         valueIndexes.forEach((val) => {
@@ -386,14 +409,14 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         if (res.value) {
           this.utilityService.asyncNotification($localize`:@@folioEditor.pleaseWaitDeletingComment:Please wait we are deleting the comment...`, new Promise(async (resolve, reject) => {
             try {
-              if (this.metaData) {
-                var commentData = this.metaData[index];
+              if (this.commentsMetaData) {
+                var commentData = this.commentsMetaData[index];
                 this.quill.formatText(commentData.range.index, commentData.range.length, {
                   background: "white",
                 });
 
-                this.metaData.splice(index, 1);
-                this.metaData = await this.sortComments();
+                this.commentsMetaData.splice(index, 1);
+                this.commentsMetaData = await this.sortComments();
                 this.saveQuillData();
               }
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@folioEditor.commentDeleted:Comment deleted!`));
@@ -410,7 +433,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       p: ["data"],
       // In json0 the required data is inside data.data
       od: this.folio.data.data,
-      oi: { comment: this.metaData, delta: this.quill.getContents().ops },
+      oi: { comment: this.commentsMetaData, delta: this.quill.getContents().ops, headings: this.headingsMetaData },
     };
 
     this.folio.submitOp(
@@ -458,17 +481,16 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       if (value.insert.mention) {
         var mentionMap = value.insert;
         if (mentionMap.mention && mentionMap.mention.denotationChar === "@") {
-          let filesService = this._Injector.get(FilesService);
-          filesService.newFolioMention(mentionMap.mention, this.folioId, this.userData._id).then((res) => res.subscribe());
+          this.filesService.newFolioMention(mentionMap.mention, this.folioId, this.userData._id).then((res) => res.subscribe());
         }
       }
     });
 
-    if (!this.metaData) {
-      this.metaData = [];
+    if (!this.commentsMetaData) {
+      this.commentsMetaData = [];
     }
-    this.metaData.push({ range: this.range, comment: this.enteredComment, user_name : userName, profile_pic : this.userData.profile_pic });
-    this.metaData = await this.sortComments();
+    this.commentsMetaData.push({ range: this.range, comment: this.enteredComment, user_name : userName, profile_pic : this.userData.profile_pic });
+    this.commentsMetaData = await this.sortComments();
     this.quill.formatText(this.range.index, this.range.length, {
       background: "#fff72b",
     });
@@ -511,7 +533,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       this.initEditor();
     }
     this.quill.deleteText(0, this.quill.getLength());
-    this.metaData = [];
+    this.commentsMetaData = [];
+    this.headingsMetaData = [];
     this.saveQuillData();
   }
 
@@ -532,6 +555,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       this.createTable(data.rowCount,data.columnCount)
     }
   }
+
   // Create table with specific values
   createTable(rowCount:number,columnCount:number ){
     const tableModule = this.quill.getModule('better-table');
@@ -636,6 +660,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   /**
    * This function is returns the configuration for quill image resize module
    */
+/*
   quillImageResize() {
     return {
       displaySize: true,
@@ -656,122 +681,189 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       }
     }
   }
-
-  quillBlotFormatter() {
-    return {
-      specs: [CustomImageSpec],
-
-    };
-  }
-
-  sortComments() {
-    return (this.metaData) ? this.metaData.sort((c1, c2) => (c1.range.index > c2.range.index) ? 1 : -1) : [];
-  }
-}
-
-export class CustomImageSpec extends ImageSpec {
-  getActions() {
-    return [/*AlignAction,*/ DeleteAction, ResizeAction];
-  }
-}
-/*
-
-CUSTOM ALIGN ACTION FOR BOLT-FORMAT
-
-export default class AlignAction extends Action {
-  toolbar: Toolbar;
-  aligner: Aligner;
-
-  constructor(public formatter: BlotFormatter) {
-    super(formatter);
-    this.aligner = new CustomAligner(formatter.options.align);
-    this.toolbar = new DefaultToolbar();
-  }
-
-  onCreate() {
-    const toolbar = this.toolbar.create(this.formatter, this.aligner);
-    this.formatter.overlay.appendChild(toolbar);
-  }
-
-  onDestroy() {
-    const toolbar = this.toolbar.getElement();
-    if (!toolbar) {
-      return;
-    }
-
-    this.formatter.overlay.removeChild(toolbar);
-    this.toolbar.destroy();
-  }
-
-  onUpdate() {
-    //this.formatter.overlay
-  }
-}
-
-const LEFT_ALIGN = 'left';
-const CENTER_ALIGN = 'center';
-const RIGHT_ALIGN = 'right';
-
-export class CustomAligner implements Aligner {
-  alignments: { [id: string]: Alignment; };
-  alignAttribute: string;
-  applyStyle: boolean;
-
-  constructor(options: AlignOptions) {
-    this.applyStyle = options.aligner.applyStyle;
-    this.alignAttribute = options.attribute;
-    this.alignments = {
-      [LEFT_ALIGN]: {
-        name: LEFT_ALIGN,
-        icon: options.icons.left,
-        apply: (el: HTMLElement) => {
-          this.setAlignment(el, LEFT_ALIGN);
-          this.setStyle(el, 'inline', 'left', '0 1em 1em 0');
-        },
-      },
-      [CENTER_ALIGN]: {
-        name: CENTER_ALIGN,
-        icon: options.icons.center,
-        apply: (el: HTMLElement) => {
-          this.setAlignment(el, CENTER_ALIGN);
-          this.setStyle(el, 'block', null, 'auto');
-        },
-      },
-      [RIGHT_ALIGN]: {
-        name: RIGHT_ALIGN,
-        icon: options.icons.right,
-        apply: (el: HTMLElement) => {
-          this.setAlignment(el, RIGHT_ALIGN);
-          this.setStyle(el, 'inline', 'right', '0 0 1em 1em');
-        },
-      },
-    };
-  }
-
-  getAlignments(): Alignment[] {
-    return Object.keys(this.alignments).map(k => this.alignments[k]);
-  }
-
-  clear(el: HTMLElement): void {
-    el.removeAttribute(this.alignAttribute);
-    this.setStyle(el, null, null, null);
-  }
-
-  isAligned(el: HTMLElement, alignment: Alignment): boolean {
-    return el.getAttribute(this.alignAttribute) === alignment.name;
-  }
-
-  setAlignment(el: HTMLElement, value: string) {
-console.log({el});
-    el.setAttribute(this.alignAttribute, value);
-  }
-
-  setStyle(el: HTMLElement, display: string, float: string, margin: string) {
-    if (this.applyStyle) {
-      el.style.setProperty('display', display);
-      el.style.setProperty('float', float);
-      el.style.setProperty('margin', margin);
-    }
-  }
-}
 */
+  sortComments() {
+    return (this.commentsMetaData) ? this.commentsMetaData.sort((c1, c2) => (c1.range.index > c2.range.index) ? 1 : -1) : [];
+  }
+
+  sortHeaders() {
+    return (this.headingsMetaData) ? this.headingsMetaData.sort((h1, h2) => (h1.range.index > h2.range.index) ? 1 : -1) : [];
+  }
+
+  /**
+   * Creates a heading to be added to the table of content
+   */
+  generateHeading(value: any) {
+    this.range = this.quill.getSelection(true);
+    let [leaf, offsetLeaf] = this.quill.getLeaf(this.range.index);
+
+    const headingIndex = this.headingsMetaData.findIndex(heading => {
+      let [line1, offset1] = this.quill.getLine(heading.range.index);
+      let [line2, offset2] = this.quill.getLine(this.range.index);
+      return line1 == line2;
+    });
+
+    this.quill.formatLine(this.range.index, this.range.length, 'header', value);
+    const elementType = leaf?.parent?.domNode?.localName;
+    if (headingIndex >= 0) {
+      let header = this.headingsMetaData[headingIndex];
+      if (!value || header.headingLevel == value) {
+        this.headingsMetaData.splice(headingIndex, 1);
+      } else {
+        header.range = this.range,
+        header.headingLevel = value;
+        this.headingsMetaData[headingIndex] = header;
+      }
+    } else if (elementType && elementType.charAt(0) && elementType.charAt(0).toLowerCase() == 'h') {
+      this.headingsMetaData.push({
+        text: leaf.text,
+        range: this.range,
+        headingLevel: value
+      });
+    }
+
+    this.sortHeaders();
+    this.saveQuillData();
+  }
+
+  createLink(range: any) {
+    // Create Selection Box
+    let selBox = document.createElement('textarea');
+
+    // Set the CSS Properties
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+
+    let url = environment.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
+    url += '/document/' + this.folioId + '?group=' + this.groupId + '&index=' + range.index +'&length=' + range.length +'&readOnly=true';
+
+    selBox.value = url;
+    // Append the element to the DOM
+    document.body.appendChild(selBox);
+
+    // Set the focus and Child
+    selBox.focus();
+    selBox.select();
+
+    // Execute Copy Command
+    document.execCommand('copy');
+
+    // Once Copied remove the child from the dom
+    document.body.removeChild(selBox);
+
+    // Show Confirmed notification
+    this.utilityService.simpleNotification($localize`:@@folioEditor.copiedToClipboard:Copied to Clipboard!`);
+  }
+
+  displayHeadings() {
+    this.folioService.displayHeadings(this.fileData?._id, !this.fileData?.show_headings).then(res => {
+      this.fileData.show_headings = !this.fileData?.show_headings;
+    }).catch (err => {
+      this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
+    });
+  }
+
+  /**
+   * This function is responsible for fetching a file's details
+   * @param fileId
+   */
+  public async getFile(fileId: any) {
+    return new Promise((resolve) => {
+      // Fetch the file details
+      this.filesService.getOne(fileId)
+        .then((res) => {
+          resolve(res['file'])
+        })
+        .catch(() => {
+          resolve({})
+        });
+    });
+  }
+
+  /*
+  Test code to generate a table of content automatically WIP
+  generateTableOfContent() {
+    this.headingsMetaData = [];
+
+    let root: any = document.createElement('div');
+    root.innerHTML = this.quill.root.innerHTML;
+
+    // Search for H1 elementes
+    const h1s = root.querySelectorAll('h1');
+    h1s.forEach(h1 => {
+      const h1String = '<h1>' + h1.innerText +'</h1>';
+      const indices = this.getIndicesOf(h1String, this.quill.root.innerHTML, false);
+      indices.forEach(index => {
+        let header = {
+          text: h1.innerText,
+          range: {index: index, length: h1String.length},
+          headingLevel: 1
+        };
+
+        const headingIndex = this.headingsMetaData.findIndex(heading => {
+          let [line1, offset1] = this.quill.getLine(heading.range.index);
+          let [line2, offset2] = this.quill.getLine(header.range.index);
+          return line1 == line2;
+        });
+
+        if (headingIndex < 0) {
+          this.headingsMetaData.push(header);
+        } else {
+          this.headingsMetaData[headingIndex] = header;
+        }
+      });
+    });
+
+    // Search for H2 elementes
+    const h2s = root.querySelectorAll('h2');
+    h2s.forEach(h2 => {
+      const h2String = '<h2>' + h2.innerText +'</h2>';
+      const indices = this.getIndicesOf(h2String, this.quill.root.innerHTML, false);
+      indices.forEach(index => {
+        let header = {
+          text: h2.innerText,
+          range: {index: index, length: h2String.length},
+          headingLevel: 2
+        };
+
+        const headingIndex = this.headingsMetaData.findIndex(heading => {
+          let [line1, offset1] = this.quill.getLine(heading.range.index);
+          let [line2, offset2] = this.quill.getLine(header.range.index);
+          return line1 == line2;
+        });
+
+        if (headingIndex < 0) {
+          this.headingsMetaData.push(header);
+        } else {
+          this.headingsMetaData[headingIndex] = header;
+        }
+      });
+    });
+
+    this.sortHeaders();
+    this.saveQuillData();
+  }
+
+  getIndicesOf(searchStr, str, caseSensitive) {
+    var searchStrLen = searchStr.length;
+    if (searchStrLen == 0) {
+        return [];
+    }
+    var startIndex = 0, index, indices = [];
+    if (!caseSensitive) {
+        str = str.toLowerCase();
+        searchStr = searchStr.toLowerCase();
+    }
+    while ((index = str.indexOf(searchStr, startIndex)) > -1) {
+        indices.push(index);
+        startIndex = index + searchStrLen;
+    }
+    return indices;
+  }
+  */
+}

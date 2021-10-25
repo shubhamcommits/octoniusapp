@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Output, EventEmitter, Input, Injector } from '@angular/core';
 
 // Highlight.js
-import * as hljs from 'highlight.js';
+import hljs from 'highlight.js';
 
 // Highlight.js sublime css
 import 'highlight.js/styles/monokai-sublime.css';
@@ -24,7 +24,8 @@ import "quill-mention";
 import ImageCompress from 'quill-image-compress';
 
 // Quill Image Resize
-import ImageResize from './quill-image-resize/quill.image-resize.js';
+// import ImageResize from './quill-image-resize/quill.image-resize.js';
+import ImageResize from 'src/shared/utilities/quill-image-resize/ImageResize.js';
 
 // Image Drop Module
 import ImageDrop from './quill-image-drop/quill.image-drop.js';
