@@ -349,6 +349,10 @@ export class GroupActivityFeedComponent implements OnInit {
       this.moreToLoad = false
     }
 
+    posts = posts.filter(post => {
+      return this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'view');
+    });
+
     // Else if moreToLoad is true
     if (this.moreToLoad) {
       for (let post of posts) {
@@ -370,6 +374,10 @@ export class GroupActivityFeedComponent implements OnInit {
   async fetchPinnedPosts() {
     await this.postService.getPosts(this.groupId, 'pinned', true, null, { tags: this.filters['tags'], users: this.filters['users'] }).then(res => {
       this.pinnedPosts = res['posts'];
+
+      this.pinnedPosts = this.pinnedPosts.filter(post => {
+        return this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'view');
+      });
     });
   }
 
