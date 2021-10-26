@@ -20,6 +20,8 @@ export class PostTagsComponent implements OnChanges {
   // Post Data Variable
   @Input('post') post: any;
 
+  @Input() canEdit = true;
+
   // Tags Output Emitter
   @Output('tags') tagEmitter = new EventEmitter()
 
@@ -27,7 +29,6 @@ export class PostTagsComponent implements OnChanges {
   tags: any = []
 
   ngOnChanges() {
-
     // If post variable exist then add it to existing tags array
     if(this.post){
       this.tags = this.post.tags
@@ -58,11 +59,13 @@ export class PostTagsComponent implements OnChanges {
    */
   removeTag(index: any) {
 
-    // Remove the tag from the desired index
-    this.tags.splice(index, 1)
+    if (this.canEdit) {
+      // Remove the tag from the desired index
+      this.tags.splice(index, 1);
 
-    // Emit the tags to other components
-    this.tagEmitter.emit(this.tags)
+      // Emit the tags to other components
+      this.tagEmitter.emit(this.tags);
+    }
   }
 
 }

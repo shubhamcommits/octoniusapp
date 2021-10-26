@@ -9,14 +9,14 @@
         </div>
         <div class="right">
 
-            <app-idea-actions *ngIf="isIdeaModuleAvailable && post?.task?.is_idea"
+            <app-idea-actions *ngIf="isIdeaModuleAvailable && post?.task?.is_idea && canView"
               [post]="post"
               [userData]="userData"></app-idea-actions>
 
-            <app-comment-on-post (showCommentEditor)="showCommentEditor($event)"></app-comment-on-post>
+            <app-comment-on-post *ngIf="canEdit" (showCommentEditor)="showCommentEditor($event)"></app-comment-on-post>
 
             <!-- Like Post starts-->
-            <app-like-post *ngIf="post && userData"
+            <app-like-post *ngIf="post && userData && canEdit"
                 [post]="post"
                 [userData]="userData"
                 (postLiked)="onPostLikedEmitter($event)"
@@ -24,7 +24,7 @@
             <!-- Like Post ends-->
 
             <!-- Follow Post starts -->
-            <app-follow-post *ngIf="post"
+            <app-follow-post *ngIf="post && canView"
                 [post]="post"
                 [userData]="userData"
                 (postLiked)="onPostFollowEmitter($event)"
@@ -35,6 +35,8 @@
                 [post]="post"
                 [userData]="userData"
                 [groupData]="groupData"
+                [canEdit]="canEdit"
+                [canView]="canView"
                 (delete)="deletePost($event)"
                 (pinEvent)="onPostPin($event)"
                 (closeModalEvent)="postModalCloseEvent($event)">

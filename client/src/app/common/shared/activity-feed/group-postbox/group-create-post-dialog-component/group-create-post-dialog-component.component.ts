@@ -44,7 +44,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   // Quill Data Object
   quillData: any;
-  edit: boolean = false;
+  canEdit: boolean = false;
+  canView: boolean = true;
 
   // postEditor: any;
 
@@ -147,8 +148,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     await this.initPostData();
 
-    const isGroupManager = (this.groupData && this.groupData._admins) ? (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id) >= 0) : false;
-    this.edit = this.userData?.role == 'admin' || this.userData?.role == 'owner' || this.postData?._posted_by?._id == this.userData?._id || isGroupManager;
+    this.canEdit = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'edit');
+    this.canView = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'view');
   }
 
   formateDate(date){

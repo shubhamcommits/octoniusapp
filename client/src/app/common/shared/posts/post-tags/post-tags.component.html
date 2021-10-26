@@ -15,7 +15,7 @@
 
         <!-- Search tag component starts -->
         <app-component-search-input-box
-        *ngIf="userData && checkDataExist(userData)"
+        *ngIf="userData && checkDataExist(userData) && canEdit"
         [placeholder]="'Add tag'"
         [userData] = "userData"
         [type]="'tag'"

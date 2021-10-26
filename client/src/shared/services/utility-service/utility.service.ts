@@ -292,18 +292,7 @@ export class UtilityService {
    */
   openCreatePostFullscreenModal(postData: any, userData: any, groupData: any, isIdeaModuleAvailable: boolean, columns?: any, tasks?: any) {
     let dialogOpen;
-    let openPost = true;
-    if (postData.rags !== undefined && postData.rags.length > 0) {
-      const adminIndex = groupData._admins.findIndex(admin => (admin._id || admin) == userData._id);
-      postData.rags.forEach(rag => {
-        const userRagIndex = rag.tag_members.findIndex(ragMember => (ragMember._id || ragMember) == userData._id);
-        if ((userRagIndex < 0 || adminIndex < 0) && userData.role == "member") {
-          openPost = false;
-        }
-      });
-    }
-
-    if (openPost) {
+    if (this.canUserDoAction(postData, groupData, userData, 'view')) {
       const data = (columns) ?
         {
           postData: postData,
@@ -532,5 +521,29 @@ export class UtilityService {
 
   handleActiveStateTopNavBar(){
     return this.activeStateTopNavBarEvent;
+  }
+
+  /**
+   * This method is used to identify if the user can edit or view an elemnent
+   * @param postData
+   * @param groupData
+   * @param userData
+   * @param action
+   * @returns
+   */
+  canUserDoAction(postData: any, groupData: any, userData: any, action: string) {
+    let canEditRag = false;
+    if (groupData?.enabled_rights && postData?.rags && postData?.rags?.length > 0) {
+      postData.rags.forEach(rag => {
+        const userRagIndex = rag.tag_members.findIndex(ragMember => (ragMember._id || ragMember) == userData._id);
+        if (userRagIndex >= 0 && rag.right == action) {
+          canEditRag = true;
+        }
+      });
+    } else {
+      canEditRag = true;
+    }
+    const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin._id || admin) == userData?._id) >= 0) : false;
+    return userData?.role == 'admin' || userData?.role == 'owner' || postData?._posted_by?._id == userData?._id || isGroupManager || canEditRag;
   }
 }

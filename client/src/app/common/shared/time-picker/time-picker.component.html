@@ -1,10 +1,10 @@
 <div class="btn-group">
     <!-- Time Picker Toggle starts -->
-    <button class="btn btn-outline-primary dropdown-toggle btn-sm" 
-        type="button" 
-        data-toggle="dropdown" 
+    <button class="btn btn-outline-primary dropdown-toggle btn-sm"
+        type="button"
+        data-toggle="dropdown"
         aria-haspopup="true"
-        aria-expanded="false">
+        aria-expanded="false" [disabled]="!canEdit">
         {{ timeModal.hour + ":" + timeModal.minute }}
     </button>
     <!-- Time Toggler ends -->
@@ -12,8 +12,8 @@
     <!-- Input Placeholder for date picker starts -->
     <div class="dropdown-menu">
         <div class="time-picker" (click)="$event.stopPropagation()">
-            <ngb-timepicker 
-                [ngModel]="timeModal" 
+            <ngb-timepicker
+                [ngModel]="timeModal"
                 (ngModelChange)="emitTime($event)">
             </ngb-timepicker>
         </div>

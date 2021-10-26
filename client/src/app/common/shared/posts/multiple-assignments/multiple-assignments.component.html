@@ -12,7 +12,7 @@
       Unassigned
   </span>
 
-  <button *ngIf="(!post?.task?.allocation || post?.task?.allocation == 0) || (assigned_to?.length < 1)"
+  <button *ngIf="(!post?.task?.allocation || post?.task?.allocation == 0) || (assigned_to?.length < 1) && canEdit"
     mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">
       <span *ngIf="type != 'filter'"i18n="@@multipleAssignments.addAssignee">add assignee</span>
       <span *ngIf="type == 'filter'"i18n="@@multipleAssignments.addUser">add user</span>
