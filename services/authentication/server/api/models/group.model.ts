@@ -60,7 +60,7 @@ const GroupSchema = new Schema({
             }],
             right: {
                 type: String,
-                enum: ['view', 'edit', 'delete']
+                enum: ['view', 'edit']
             }
         }
     ],

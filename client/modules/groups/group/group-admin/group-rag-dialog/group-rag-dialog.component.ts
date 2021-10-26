@@ -30,8 +30,7 @@ import { PublicFunctions } from 'modules/public.functions';
 
     ragRights = [
       { _id: 'view', title: 'View' },
-      { _id: 'edit', title: 'Edit' },
-      { _id: 'delete', title: 'Delete' }
+      { _id: 'edit', title: 'Edit' }
     ];
 
     // PUBLIC FUNCTIONS
