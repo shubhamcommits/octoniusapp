@@ -533,9 +533,14 @@ export class UtilityService {
    */
   canUserDoAction(item: any, groupData: any, userData: any, action: string) {
     let canEditRag = false;
-    if (groupData?.enabled_rights && item?.rags && item?.rags?.length > 0) {
+    if (groupData?.enabled_rights && groupData?.rags && item?.rags && item?.rags?.length > 0) {
       item.rags.forEach(rag => {
-        const userRagIndex = rag.tag_members.findIndex(ragMember => (ragMember._id || ragMember) == userData._id);
+        const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => groupRag.rag_tag == rag) : -1;
+        let groupRag;
+        if (groupRagIndex >= 0) {
+          groupRag = groupData?.rags[groupRagIndex];
+        }
+        const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember._id || ragMember) == userData._id) : -1;
         if (userRagIndex >= 0 && rag.right == action) {
           canEditRag = true;
         }

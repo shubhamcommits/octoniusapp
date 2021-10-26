@@ -258,7 +258,12 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
             if (task?.rags && task?.rags?.length > 0) {
               const adminIndex = this.groupData?._admins?.findIndex(admin => (admin?._id || admin) == this.userData?._id);
               task.rags.forEach(rag => {
-                const userRagIndex = rag.tag_members.findIndex(ragMember => (ragMember._id || ragMember) == this.userData._id);
+                const groupRagIndex = (this.groupData?.rags) ? this.groupData?.rags?.findIndex(groupRag => groupRag.rag_tag == rag) : -1;
+                let groupRag;
+                if (groupRagIndex >= 0) {
+                  groupRag = this.groupData?.rags[groupRagIndex];
+                }
+                const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember._id || ragMember) == this.userData._id) : -1;
                 if (userRagIndex >= 0 || adminIndex >= 0 || this.userData.role !== "member") {
                   tasks.push(task);
                 }

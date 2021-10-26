@@ -769,7 +769,9 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
           // Find the index of the column to check if the same named column exist or not
           let index = (column.rags) ? column.rags.findIndex((ragTag: any) => ragTag == event) : -1;
           // Remove the column from the array
-          column.rags.splice(index, 1);
+          if (index >= 0) {
+            column.rags.splice(index, 1);
+          }
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.detailsUpdated:Details updated!`));
         })
         .catch(() => {

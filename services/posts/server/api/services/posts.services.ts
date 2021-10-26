@@ -1631,26 +1631,46 @@ export class PostService {
     }
   }
 
-  async addRag(postId: string, rag: any) {
+  async addRag(postId: string, rag: string) {
     try {
+      /*
       const task: any = await Post.findById(postId);
       const ragExists = task.rags.includes(rag);
       if (!ragExists) {
         task.rags.push({
-          rag_tag: rag.rag_tag,
+          rag_tag: rag,
           tag_members: rag.tag_members
         });
       }
       task.save();
+      */
+      const post = await Post.findByIdAndUpdate({
+            _id: postId
+        }, {
+            $addToSet: {
+                rags: rag
+            }
+        }, {
+            new: true
+        });
     } catch (error) {
       throw (error);
     }
   }
 
-  async removeRag(postId: string, rag: any) {
-    const task: any = await Post.findById(postId);
-    task.rags = task.rags.filter(ragDB => ragDB.rag_tag !== rag.rag_tag);
-    task.save();
+  async removeRag(postId: string, rag: string) {
+    // const task: any = await Post.findById(postId);
+    // task.rags = task.rags.filter(ragDB => ragDB.rag_tag !== rag.rag_tag);
+    // task.save();
+    const post = await Post.findByIdAndUpdate({
+          _id: postId
+      }, {
+          $pull: {
+              rags: rag
+          }
+      }, {
+          new: true
+      });
   }
 
   async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean, filteringGroups: any) {
