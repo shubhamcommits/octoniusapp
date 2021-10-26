@@ -111,9 +111,9 @@ export class ComponentSearchInputBoxComponent implements OnInit {
               this.itemList.forEach(item => {
                 const index = this.ragList.findIndex(rag => rag._id == item._id);
                 if(index >= 0) {
-                  item.showAddButton = true;
+                  item.showAddButton =false;
                 } else {
-                  item.showAddButton = false;
+                  item.showAddButton = true;
                 }
               });
             }

@@ -160,7 +160,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     // Set the title of the post
     this.title = this.postData.title;
     if(this.postData.rags && this.postData.rags !== undefined) {
-      this.ragTags = this.postData.rags.map( rag => rag.rag_tag);
+      this.ragTags = this.postData.rags.map(rag => rag.rag_tag);
     }
 
     // Set the due date to be undefined
@@ -356,10 +356,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.updateDetails();
   }
 
-  async addNewRagTag(event){
+  async addNewRagTag(event) {
     let rag;
     this.groupData.rags.forEach(element => {
-      if(element.rag_tag === event){
+      if(element.rag_tag === event.rag_tag){
         rag = element;
       }
     });
@@ -368,7 +368,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
         .then((res) => {
           // Resolve with success
           this.postData.rags.push(rag);
-          this.ragTags.push(event);
+          this.ragTags.push(rag.rag_tag);
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {
