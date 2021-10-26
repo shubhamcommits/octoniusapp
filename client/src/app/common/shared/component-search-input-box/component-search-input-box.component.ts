@@ -109,7 +109,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
               this.itemList = this.itemList.filter( item => item.rag_tag.includes(this.itemValue));
 
               this.itemList.forEach(item => {
-                const index = this.ragList.findIndex(rag => rag._id == item._id);
+                const index = (this.ragList) ? this.ragList.findIndex(rag => (rag._id == item._id) || ((rag.rag_tag || rag) == item.rag_tag)) : -1;
                 if(index >= 0) {
                   item.showAddButton =false;
                 } else {
@@ -125,7 +125,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
               });
 
               this.itemList.forEach(item => {
-                const index = this.ragMemberList.findIndex(member => member._id == item._id);
+                const index = (this.ragMemberList) ? this.ragMemberList.findIndex(member => member._id == item._id) : -1;
                 if(index >= 0) {
                   item.showAddMem = true;
                 } else {
@@ -262,8 +262,9 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
     if (this.members.length >= 0 && this.selectedMembers.size >= 0) {
 
+      const memberIndex = (this.members) ? this.members.findIndex((member) => item._id === member) : -1;
       // Removing the user from array
-      this.members.splice(this.members.findIndex((member) => item._id === member), 1);
+      this.members.splice(memberIndex, 1);
 
       // Enable the user so that it can be added again
       item.showAddMem = true

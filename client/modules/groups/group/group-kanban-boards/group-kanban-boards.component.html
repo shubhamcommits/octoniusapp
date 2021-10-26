@@ -43,6 +43,16 @@
                                   <span class="material-icons-outlined">auto_awesome</span>
                                   <span i18n="@@groupDashboard.showCF">Show CF Data</span>
                                 </li>
+                                <li class="dropdown-item" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData) && canEdit">
+                                  <app-component-search-input-box
+                                    [placeholder]="'Add rag tag'"
+                                    [groupData] = "groupData"
+                                    [type]="'ragTag'"
+                                    [groupId]="groupId"
+                                    [ragList]="column.rags"
+                                    (ragTag)="addNewRagTag(column, $event)">
+                                  </app-component-search-input-box>
+                                </li>
                             </ul>
                             <!-- Menu Drawer Ends -->
                         </div>
@@ -79,6 +89,17 @@
                   </span>
                 </div>
                 <!-- CUSTOM FIELDS STATS SECTION ENDS -->
+
+                <div class="project-container" *ngIf="groupData && groupData.enabled_rights && column && column.rags && column.rags.length > 0">
+                  <div *ngFor="let tag of column.rags; let i = index">
+                    <div>
+                      <span class="tag">
+                        {{ tag }}
+                        <i *ngIf="canEdit" (click)="removeRagTag(column, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
                 <!-- TASK CONTAINER STARTS -->
                 <div class="tasks-container" [id]="column._id"

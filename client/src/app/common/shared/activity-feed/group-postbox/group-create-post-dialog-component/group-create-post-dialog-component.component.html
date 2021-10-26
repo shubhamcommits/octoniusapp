@@ -212,8 +212,10 @@
           <div class="ml-1">
               <div *ngFor="let ragTag of ragTags; let i = index">
                 <div>
-                  <span class="tag"> {{ ragTag }}</span>
-                  <i *ngIf="canEdit" (click)="removeRagTag(i, ragTag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
+                  <span class="tag">
+                    {{ ragTag }}
+                    <i *ngIf="canEdit" (click)="removeRagTag(i, ragTag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
+                  </span>
                 </div>
               </div>
 

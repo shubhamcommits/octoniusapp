@@ -525,16 +525,16 @@ export class UtilityService {
 
   /**
    * This method is used to identify if the user can edit or view an elemnent
-   * @param postData
+   * @param item This element can be a post a file or a section
    * @param groupData
    * @param userData
-   * @param action
+   * @param action edit or view
    * @returns
    */
-  canUserDoAction(postData: any, groupData: any, userData: any, action: string) {
+  canUserDoAction(item: any, groupData: any, userData: any, action: string) {
     let canEditRag = false;
-    if (groupData?.enabled_rights && postData?.rags && postData?.rags?.length > 0) {
-      postData.rags.forEach(rag => {
+    if (groupData?.enabled_rights && item?.rags && item?.rags?.length > 0) {
+      item.rags.forEach(rag => {
         const userRagIndex = rag.tag_members.findIndex(ragMember => (ragMember._id || ragMember) == userData._id);
         if (userRagIndex >= 0 && rag.right == action) {
           canEditRag = true;
@@ -544,6 +544,7 @@ export class UtilityService {
       canEditRag = true;
     }
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin._id || admin) == userData?._id) >= 0) : false;
-    return userData?.role == 'admin' || userData?.role == 'owner' || postData?._posted_by?._id == userData?._id || isGroupManager || canEditRag;
+    const createdBy = !item.type || item.type != 'task' || (item.type == 'task' && item?._posted_by?._id == userData?._id);
+    return userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager || canEditRag;
   }
 }

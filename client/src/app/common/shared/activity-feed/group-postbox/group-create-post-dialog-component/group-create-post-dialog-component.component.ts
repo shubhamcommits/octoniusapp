@@ -44,7 +44,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   // Quill Data Object
   quillData: any;
-  canEdit: boolean = false;
+  canEdit: boolean = true;
   canView: boolean = true;
 
   // postEditor: any;

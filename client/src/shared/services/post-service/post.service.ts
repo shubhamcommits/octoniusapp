@@ -52,6 +52,7 @@ export class PostService {
     return this._http.put(this.baseURL + `/${postId}/removeRag`, body).
       toPromise();
   }
+
   /**
    * This function is responsible for fetching a post details
    * @param postId
