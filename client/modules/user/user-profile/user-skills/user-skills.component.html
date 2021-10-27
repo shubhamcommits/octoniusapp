@@ -6,12 +6,11 @@
         <!-- Template Heading ends -->
 
         <!-- Search skill component starts -->
-        <app-component-search-input-box
-        *ngIf="userData && checkDataExist(userData) && currentUser"
-        [placeholder]="'Type to add'"
-        [userData] = "userData"
-        [type]="'skill'"
-        (skill)="addNewSkill($event)">
+        <app-component-search-input-box *ngIf="userData && checkDataExist(userData) && currentUser"
+          [placeholder]="'Type to add'"
+          [userData]="userData"
+          [type]="'skill'"
+          (skill)="addNewSkill($event)">
         </app-component-search-input-box>
         <!-- Search skill component ends -->
 

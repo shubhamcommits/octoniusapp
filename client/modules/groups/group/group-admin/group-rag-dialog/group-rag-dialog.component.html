@@ -41,8 +41,8 @@
               <app-component-search-input-box class="ml-2" *ngIf="groupData"
                   [placeholder]="'add member'"
                   [groupId]="groupId" [groupData]="groupData" [type]="'ragMembers'"
-                  [ragMemberList] = "rag.members"
-                  [rag] = "rag.rag_tag"
+                  [ragMemberList]="rag.members"
+                  [rag]="rag.rag_tag"
                   (member)="addNewUserToRag($event, rag)">
               </app-component-search-input-box>
           </div>
