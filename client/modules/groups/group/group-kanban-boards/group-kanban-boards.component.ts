@@ -54,7 +54,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   isMobile = false;
 
   canEdit: boolean = true;
-  canView: boolean = true;
 
   constructor(
     private router: ActivatedRoute,
@@ -73,8 +72,11 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin'
                         || this.userData?.role == 'manager' || this.isGroupManager();
 
-    //this.canEdit = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'edit');
-    //this.canView = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'view');
+    this.columns.forEach(column => {
+      if (column.canEdit) {
+        this.canEdit = true;
+      }
+    });
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -210,24 +212,28 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
    * @param event
    */
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
+    const oldColumn = this.columns[this.columns.findIndex(col => col._id == event.previousContainer.id)];
+    const newColumn = this.columns[this.columns.findIndex(col => col._id == event.container.id)];
+    if (oldColumn && newColumn && oldColumn.canEdit && newColumn.canEdit) {
+      if (event.previousContainer === event.container) {
 
-      // Move items in array
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        // Move items in array
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
 
-    } else {
-      var post: any = event.previousContainer.data[event.previousIndex];
-
-      const shuttleIndex = (post && post.task && post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupId) : -1;
-      // Update the task column when changed with dropping events to reflect back in the task view modal
-      if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
-        post.task.shuttles[shuttleIndex]._shuttle_section = event.container.id;
       } else {
-        post.task._column = event.container.id;
-      }
+        var post: any = event.previousContainer.data[event.previousIndex];
 
-      // Call move task to a new column
-      this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id, shuttleIndex);
+        const shuttleIndex = (post && post.task && post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupId) : -1;
+        // Update the task column when changed with dropping events to reflect back in the task view modal
+        if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
+          post.task.shuttles[shuttleIndex]._shuttle_section = event.container.id;
+        } else {
+          post.task._column = event.container.id;
+        }
+
+        // Call move task to a new column
+        this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id, shuttleIndex);
+      }
     }
   }
 
@@ -444,7 +450,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
    * @param column
    */
   getPost(post: any, column: any) {
-
     // Adding the post to column
     column.tasks.unshift(post)
   }

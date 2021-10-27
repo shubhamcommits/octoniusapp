@@ -532,7 +532,7 @@ export class UtilityService {
    * @returns
    */
   canUserDoAction(item: any, groupData: any, userData: any, action: string) {
-    let canEditRag = false;
+    let canDoRagAction = false;
     if (groupData?.enabled_rights && groupData?.rags && item?.rags && item?.rags?.length > 0) {
       item.rags.forEach(rag => {
         const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => groupRag.rag_tag == rag) : -1;
@@ -542,14 +542,14 @@ export class UtilityService {
         }
         const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember._id || ragMember) == userData._id) : -1;
         if (userRagIndex >= 0 && rag.right == action) {
-          canEditRag = true;
+          canDoRagAction = true;
         }
       });
     } else {
-      canEditRag = true;
+      canDoRagAction = true;
     }
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin._id || admin) == userData?._id) >= 0) : false;
-    const createdBy = !item.type || item.type != 'task' || (item.type == 'task' && item?._posted_by?._id == userData?._id);
-    return userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager || canEditRag;
+    const createdBy = (item?._posted_by) ? (item?._posted_by?._id == userData?._id) : false;
+    return userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager || canDoRagAction;
   }
 }

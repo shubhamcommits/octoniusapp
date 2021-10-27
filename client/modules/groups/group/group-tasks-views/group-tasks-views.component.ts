@@ -110,7 +110,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
      */
     if (this.columns) {
       if (this.groupData.enabled_rights) {
-        this.filterRAGSections();
+        await this.filterRAGSections();
+      } else {
+        this.columns.forEach(column => {
+          column.canEdit = true;
+        });
       }
 
       this.columns?.forEach((column: any) => {
@@ -252,19 +256,17 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   }
 
   filterRAGSections() {
-    this.columns = this.columns.filter(column => {
-      if (column.rags && column.rags > 0) {
+    let columnsTmp = [];
+    this.columns.forEach(column => {
         const canEdit = this.utilityService.canUserDoAction(column, this.groupData, this.userData, 'edit');
         const canView = this.utilityService.canUserDoAction(column, this.groupData, this.userData, 'view');
 
+        column.canEdit = canEdit;
         if (canEdit || canView) {
-          return false;
-        } else {
-          return true;
+          columnsTmp.push(column);
         }
-      }
-      return true;
     });
+    this.columns = columnsTmp;
   }
 
   filterRAGTasks() {
