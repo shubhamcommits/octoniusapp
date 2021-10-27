@@ -100,10 +100,9 @@ export class ComponentSearchInputBoxComponent implements OnInit {
         if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event' || this.type === 'tag' || this.type === 'ragTag' || this.type === 'ragMembers' || this.type === 'workspaceMembers') {
 
           // If value is null then empty the array
-          if (this.itemValue == "")
+          if (this.itemValue == "") {
             this.itemList = []
-
-          else {
+          } else {
             if(this.type === 'ragTag') {
               this.itemList = this.groupData.rags;
               this.itemList = this.itemList.filter( item => item.rag_tag.includes(this.itemValue));
