@@ -258,10 +258,12 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         const canView = this.utilityService.canUserDoAction(column, this.groupData, this.userData, 'view');
 
         if (canEdit || canView) {
+          return false;
+        } else {
           return true;
         }
       }
-      return false;
+      return true;
     });
   }
 
