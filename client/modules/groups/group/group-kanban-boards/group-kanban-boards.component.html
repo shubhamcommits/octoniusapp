@@ -47,7 +47,7 @@
                                 <li class="dropdown-item" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData) && column.canEdit">
                                   <app-component-search-input-box
                                     [placeholder]="'Add rag tag'"
-                                    [groupData] = "groupData"
+                                    [groupData]="groupData"
                                     [type]="'ragTag'"
                                     [groupId]="groupId"
                                     [ragList]="column.rags"
@@ -180,7 +180,7 @@
                                 <li class="dropdown-item" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData) && column.canEdit">
                                   <app-component-search-input-box
                                     [placeholder]="'Add rag tag'"
-                                    [groupData] = "groupData"
+                                    [groupData]="groupData"
                                     [type]="'ragTag'"
                                     [groupId]="groupId"
                                     [ragList]="column.rags"

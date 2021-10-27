@@ -13,12 +13,12 @@
 
                   <p class="muted" style="margin-right: 10px;"> {{ section?.title }}</p>
 
-                  <div *ngIf="section?.canEdit">
+                  <div *ngIf="groupData && groupData.enabled_rights && section && section.rags && section.rags.length > 0">
                     <div *ngFor="let tag of section?.rags; let i = index">
                       <div>
                         <span class="tag">
                           {{ tag }}
-                          <i (click)="removeRagTag(section, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
+                          <i *ngIf="section?.canEdit" (click)="removeRagTag(section, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
                         </span>
                       </div>
                     </div>

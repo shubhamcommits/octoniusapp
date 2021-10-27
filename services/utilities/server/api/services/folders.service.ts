@@ -241,4 +241,46 @@ export class FoldersService {
             return folder;
         }
     }
+
+    async addRag(folderId: string, rag: string) {
+      try {
+        /*
+        const task: any = await Post.findById(postId);
+        const ragExists = task.rags.includes(rag);
+        if (!ragExists) {
+          task.rags.push({
+            rag_tag: rag,
+            tag_members: rag.tag_members
+          });
+        }
+        task.save();
+        */
+        const folder = await Folder.findByIdAndUpdate({
+              _id: folderId
+          }, {
+              $addToSet: {
+                  rags: rag
+              }
+          }, {
+              new: true
+          });
+      } catch (error) {
+        throw (error);
+      }
+    }
+  
+    async removeRag(folderId: string, rag: string) {
+      // const task: any = await Post.findById(postId);
+      // task.rags = task.rags.filter(ragDB => ragDB.rag_tag !== rag.rag_tag);
+      // task.save();
+      const folder = await Folder.findByIdAndUpdate({
+            _id: folderId
+        }, {
+            $pull: {
+                rags: rag
+            }
+        }, {
+            new: true
+        });
+    }
 }

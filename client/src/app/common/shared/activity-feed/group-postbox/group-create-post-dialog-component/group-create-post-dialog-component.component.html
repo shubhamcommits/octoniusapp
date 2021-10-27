@@ -222,7 +222,7 @@
               <app-component-search-input-box
                   *ngIf="groupData && checkDataExist(groupData) && canEdit"
                   [placeholder]="'Add rag tag'"
-                  [groupData] = "groupData"
+                  [groupData]="groupData"
                   [type]="'ragTag'"
                   [groupId]="groupId"
                   [ragList]="postData.rags"

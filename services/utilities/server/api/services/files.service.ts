@@ -414,4 +414,46 @@ export class FilesService {
             return file;
         }
     }
+
+    async addRag(fileId: string, rag: string) {
+      try {
+        /*
+        const task: any = await Post.findById(postId);
+        const ragExists = task.rags.includes(rag);
+        if (!ragExists) {
+          task.rags.push({
+            rag_tag: rag,
+            tag_members: rag.tag_members
+          });
+        }
+        task.save();
+        */
+        const file = await File.findByIdAndUpdate({
+              _id: fileId
+          }, {
+              $addToSet: {
+                  rags: rag
+              }
+          }, {
+              new: true
+          });
+      } catch (error) {
+        throw (error);
+      }
+    }
+  
+    async removeRag(fileId: string, rag: string) {
+      // const task: any = await Post.findById(postId);
+      // task.rags = task.rags.filter(ragDB => ragDB.rag_tag !== rag.rag_tag);
+      // task.save();
+      const file = await File.findByIdAndUpdate({
+            _id: fileId
+        }, {
+            $pull: {
+                rags: rag
+            }
+        }, {
+            new: true
+        });
+    }
 }

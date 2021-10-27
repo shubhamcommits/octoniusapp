@@ -151,4 +151,14 @@ export class FilesService {
    async moveToFolder(fileId: string, folderId: string) {
     return this._http.put(this.baseURL + `/files/${fileId}/move-to-folder`, { folderId: folderId }).toPromise();
   }
+
+  addRag(fileId: string, rag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/files/${fileId}/addRag`, {rag}).toPromise();
+  }
+
+  removeRag(fileId: string, rag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/files/${fileId}/removeRag`, {rag}).toPromise();
+  }
 }
