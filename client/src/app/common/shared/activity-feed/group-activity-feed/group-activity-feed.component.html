@@ -52,7 +52,7 @@
             <!-- Activity posts section starts -->
             <!-- Pinned posts starts -->
             <mat-accordion>
-              <mat-expansion-panel [expanded]="groupData.keep_pinned_open" style="background-color: #FBB732; margin-top: 10px;">
+              <mat-expansion-panel [expanded]="groupData?.keep_pinned_open" style="background-color: #FBB732; margin-top: 10px;">
                 <mat-expansion-panel-header class="column-title">
                   <mat-panel-title style="justify-content: space-between; width: 100%;">
                     <div style="color: #FFFFFF;">
@@ -61,7 +61,7 @@
                     </div>
                     <div *ngIf="isGroupManager()">
                       <mat-slide-toggle color="primary"
-                          [checked]="groupData.keep_pinned_open"
+                          [checked]="groupData?.keep_pinned_open"
                           [name]="'keep_pinned_open'"
                           (change)="saveSettings($event)"
                           [(ngModel)]="keepPinnedOpen">
