@@ -73,9 +73,14 @@ export class FilesService {
    * This function is responsible for fetching the file details on the basis of the fileId
    * @param fileId
    */
-  getOne(fileId: string){
-    if(fileId)
-      return this._http.get(this.baseURL + `/files/${fileId}`).toPromise()
+  getOne(fileId: string, readOnly?: boolean){
+    if(fileId) {
+      return this._http.get(this.baseURL + `/files/${fileId}`, {
+        params: {
+          readOnly: readOnly
+        }
+      }).toPromise();
+    }
   }
 
   /**

@@ -19,7 +19,7 @@ export class Auths {
             var query = url_parts.query;
 
             // Allow this situation for when selecting a workplace where user is not login yet
-            if (query.noAuth) {
+            if (query.noAuth || query.readOnly) {
                 next();
             } else {
                 let token = query?.authToken?.split(' ')[1];
@@ -78,7 +78,7 @@ export class Auths {
             // and in the highlight directive
             // TODO - find a solution to secure this calls
             // if (query.noAuth && url_parts.pathname.includes('/workspaces/')) {
-            if (query.noAuth || query.authToken) {
+            if (query.noAuth || query.authToken || query.readOnly) {
                 next();
             } else {
                 // Find the authentication logs
@@ -90,16 +90,13 @@ export class Auths {
 
                 // If logs are found
                 if (!!auth) {
-
                     // Send status 200 response
                     next();
                 } else {
-
                     // Send status 200 response
                     return res.status(401).json({
                         message: 'Unauthorized request, Please signIn to continue!',
-                    })
-
+                    });
                 }
             }
         } catch (err) {
