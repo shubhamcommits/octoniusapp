@@ -672,7 +672,7 @@ export class GroupFilesComponent implements OnInit {
     this.folders.forEach(folder => {
         const canEdit = this.utilityService.canUserDoAction(folder, this.groupData, this.userData, 'edit');
         const hide = this.utilityService.canUserDoAction(folder, this.groupData, this.userData, 'hide');
-        const canView = this.utilityService.canUserDoAction(folder, this.groupData, this.userData, 'view') && !hide;
+        const canView = this.utilityService.canUserDoAction(folder, this.groupData, this.userData, 'view') || !hide;
 
         folder.canEdit = canEdit;
         if (canEdit || canView) {
@@ -687,7 +687,7 @@ export class GroupFilesComponent implements OnInit {
     files.forEach(file => {
         const canEdit = this.utilityService.canUserDoAction(file, this.groupData, this.userData, 'edit');
         const hide = this.utilityService.canUserDoAction(file, this.groupData, this.userData, 'hide');
-        const canView = this.utilityService.canUserDoAction(file, this.groupData, this.userData, 'view') && !hide;
+        const canView = this.utilityService.canUserDoAction(file, this.groupData, this.userData, 'view') || !hide;
 
         file.canEdit = canEdit;
         if (canEdit || canView) {
