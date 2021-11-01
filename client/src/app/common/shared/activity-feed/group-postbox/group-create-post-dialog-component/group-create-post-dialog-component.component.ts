@@ -149,7 +149,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
     await this.initPostData();
 
     this.canEdit = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'edit');
-    this.canView = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'view');
+    const hide = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'hide');
+    this.canView = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'view') && !hide;
   }
 
   formateDate(date){

@@ -529,14 +529,14 @@ export class UtilityService {
           groupRag = groupData?.rags[groupRagIndex];
         }
 
-        const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember._id || ragMember) == userData._id) : -1;
+        const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
         if (userRagIndex >= 0 && groupRag.right == action) {
           canDoRagAction = true;
         }
       });
     }
 
-    const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin._id || admin) == userData?._id) >= 0) : false;
+    const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
     let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
     createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : false;
 
