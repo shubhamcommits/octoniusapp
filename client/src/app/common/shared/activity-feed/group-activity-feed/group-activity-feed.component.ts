@@ -349,10 +349,12 @@ export class GroupActivityFeedComponent implements OnInit {
       this.moreToLoad = false
     }
 
-    posts = posts.filter(post => {
-      const hide = this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'hide');
-      return this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'view') && !hide;
-    });
+    if (this.groupData?.enabled_rights && this.groupData?.rags && this.groupData?.rags.length > 0) {
+      posts = posts.filter(post => {
+        const hide = this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'hide');
+        return this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'view') || !hide;
+      });
+    }
 
     // Else if moreToLoad is true
     if (this.moreToLoad) {
@@ -378,7 +380,7 @@ export class GroupActivityFeedComponent implements OnInit {
 
       this.pinnedPosts = this.pinnedPosts.filter(post => {
         const hide = this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'hide');
-        return this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'view') && !hide;
+        return this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'view') || !hide;
       });
     });
   }
