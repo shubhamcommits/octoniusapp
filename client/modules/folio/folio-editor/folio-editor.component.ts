@@ -179,7 +179,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           ['bold', 'italic', 'underline', 'strike'],
           [{ 'color': [] }, { 'background': [] }],
           [{ 'script': 'super' }, { 'script': 'sub' }],
-          [{ 'header': '1' }, { 'header': '2' }, 'content', 'blockquote', 'code-block'],
+          [{ 'header': '1' }, { 'header': '2' }, /*'content',*/ 'blockquote', 'code-block'],
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
@@ -200,9 +200,12 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
             this.generateHeading(value);
           },
           // Show/Hide the table of Content
+          /*
+          TODO Commented until BRD pays
           'content': () => {
             this.displayHeadings();
           },
+          */
           /*
           // Show/Hide the table of Content
           'list': (value) => {
@@ -241,6 +244,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   async ngOnInit() {
     this.folio = this.initializeConnection();
     this.fileData = await this.getFile(this.folioId);
+    // TODO - Remove the following line when BRD pays
+    this.fileData.show_headings = false;
   }
 
   async ngAfterViewInit() {
@@ -285,7 +290,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
     document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
     document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
-    document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
+    // TODO Commented until BRD pays
+    // document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
   }
 
   initializeConnection() {
@@ -561,7 +567,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   // Get user's input from the create-table modal
   dataFromTableModal(data:any){
-    this.tableShow= false;
+    this.tableShow = false;
     if(data){
       this.createTable(data.rowCount,data.columnCount)
     }
