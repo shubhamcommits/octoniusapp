@@ -68,7 +68,7 @@
                     {{folder?.folder_name}}
                 </a>
 
-                <div *ngIf="groupData && groupData.enabled_rights && folder && folder.rags && folder.rags.length > 0">
+                <div *ngIf="groupData && groupData.enabled_rights && folder && folder.rags && folder.rags.length > 0" style="margin-left: 30px; margin-top: 18px;">
                   <div *ngFor="let tag of folder?.rags; let i = index">
                     <div>
                       <span class="tag">
@@ -149,7 +149,7 @@
                     {{file?.original_name}}
                 </a>
 
-                <div *ngIf="groupData && groupData.enabled_rights && file && file.rags && file.rags.length > 0">
+                <div *ngIf="groupData && groupData.enabled_rights && file && file.rags && file.rags.length > 0" style="margin-left: 30px; margin-top: 18px;">
                   <div *ngFor="let tag of file?.rags; let i = index">
                     <div>
                       <span class="tag">
