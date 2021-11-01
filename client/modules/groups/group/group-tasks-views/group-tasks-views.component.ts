@@ -259,7 +259,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     let columnsTmp = [];
     this.columns.forEach(column => {
         const canEdit = this.utilityService.canUserDoAction(column, this.groupData, this.userData, 'edit');
-        const canView = this.utilityService.canUserDoAction(column, this.groupData, this.userData, 'view');
+        const hide = this.utilityService.canUserDoAction(column, this.groupData, this.userData, 'hide');
+        const canView = this.utilityService.canUserDoAction(column, this.groupData, this.userData, 'view') && !hide;
 
         column.canEdit = canEdit;
         if (canEdit || canView) {
@@ -281,7 +282,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
               const adminIndex = this.groupData?._admins?.findIndex(admin => (admin?._id || admin) == this.userData?._id);
               task.rags.forEach(rag => {
                 const canEdit = this.utilityService.canUserDoAction(task, this.groupData, this.userData, 'edit');
-                const canView = this.utilityService.canUserDoAction(task, this.groupData, this.userData, 'view');
+                const hide = this.utilityService.canUserDoAction(task, this.groupData, this.userData, 'hide');
+                const canView = this.utilityService.canUserDoAction(task, this.groupData, this.userData, 'view') && !hide;
                 if (canEdit || canView) {
                   tasks.push(task);
                 }
