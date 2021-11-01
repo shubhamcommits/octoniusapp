@@ -528,8 +528,9 @@ export class UtilityService {
         if (groupRagIndex >= 0) {
           groupRag = groupData?.rags[groupRagIndex];
         }
+
         const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember._id || ragMember) == userData._id) : -1;
-        if (userRagIndex >= 0 && rag.right == action) {
+        if (userRagIndex >= 0 && groupRag.right == action) {
           canDoRagAction = true;
         }
       });
