@@ -787,6 +787,12 @@ app-branding-panel {
 .search .modal-dialog .modal-content {
   padding: 1.5rem;
 }
+
+.ql-editor{
+  scrollbar-width: none !important;
+}
+
+
 .ql-editor ul {
   padding-left: 0;
   font-size: 15px;
@@ -804,6 +810,14 @@ app-branding-panel {
   color: $dark-text !important;
   margin: 2px 0 !important;
 }
+.ql-editor blockquote{
+  margin: 0 !important;
+  font-size: 20px;
+  font-weight: 700;
+  border-left: 3px solid $border-color !important;
+  font-style: italic;
+}
+
 .ql-editor img {
   max-width:100%;
   height:auto;
