@@ -12,7 +12,7 @@
     <div class="description">
         <img src="assets/images/placeholder_bars.svg" alt="" style="width: 300px; margin-bottom: 24px">
         <p i18n="@@groupRAGDialog.createRulesToManage">
-          RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.
+          RAG is the option for creating special access entities of users inside a group, in order to give them fine-grained control over something.
           <br/>
           If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.
         </p>
@@ -23,11 +23,12 @@
 
     <div class="rag" *ngFor="let rag of ragList">
         <div class="d-flex" style="justify-content: space-between;">
-            <p class=""><span class="tag">{{rag.rag_tag}}</span> <span i18n="@@groupRAGDialog.tasksAreVisibleFor">tasks are visible for</span>: </p>
+            <p class="bold">RAG <span class="tag">{{rag.rag_tag}}</span> <span i18n="@@groupRAGDialog.tasksAreVisibleFor">settings</span>: </p>
             <button class="btn overdue" (click)="removeTag(rag.rag_tag)"> <i class="material-icons">delete</i> </button>
         </div>
 
         <div style="justify-content: space-between;">
+            <h6 class="mb-2 mt-3"><span class="material-icons muted">group</span>Members:</h6>
           <div class="d-flex">
               <div class="useravatar" *ngFor="let member of rag.members">
                   <app-secured-image
@@ -47,7 +48,9 @@
               </app-component-search-input-box>
           </div>
 
+          <h6 class="mb-2 mt-3"><span class="material-icons muted">lock</span>Permissions:</h6>
           <div class="d-flex">
+            
             <mat-select [(value)]="rag.right"
                   (selectionChange)="selectRAGRights(rag, $event.value)">
                 <mat-option *ngFor="let right of ragRights" [value]="right._id">{{ right.title }}</mat-option>
@@ -56,9 +59,9 @@
         </div>
     </div>
 
-    <button class="mt-3 btn badge-cf" (click)="showTagComponent()">
-        <span class="material-icons">lock</span>
-        <span i18n="@@groupRAGDialog.addRule">ADD RULE</span>
+    <button class="mt-3 btn btn-warning" (click)="showTagComponent()">
+        <span class="material-icons">add</span>
+        <span i18n="@@groupRAGDialog.addRule">New RAG entity</span>
     </button>
     <div *ngIf="addNewRag" class="ragnew">
         <input type="text" class="form-control mb-2" name="tag" [(ngModel)]="tag" (keyup.enter)="addTag()" placeholder="Enter RAG tag name">
