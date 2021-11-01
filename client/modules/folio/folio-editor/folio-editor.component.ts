@@ -22,6 +22,8 @@ hljs.configure({
 // Quill Image Resize
 import ImageResize from 'src/shared/utilities/quill-image-resize/ImageResize.js';
 
+import QuillClipboard from 'src/app/common/shared/quill-modules/quill-clipboard';
+
 // Image Drop Module
 import ImageDrop from './quill-image-drop/quill.image-drop.js';
 
@@ -42,6 +44,8 @@ Quill2.register({
   'modules/better-table': quillBetterTable,
   'modules/imageDrop': ImageDrop
 }, true);
+
+Quill2.register('modules/clipboard', QuillClipboard, true);
 
 @Component({
   selector: "app-folio-editor",
@@ -175,7 +179,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           ['bold', 'italic', 'underline', 'strike'],
           [{ 'color': [] }, { 'background': [] }],
           [{ 'script': 'super' }, { 'script': 'sub' }],
-          [{ 'header': '1' }, { 'header': '2' }, 'content', 'blockquote'/*, 'code-block'*/],
+          [{ 'header': '1' }, { 'header': '2' }, 'content', 'blockquote', 'code-block'],
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
@@ -197,7 +201,13 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           // Show/Hide the table of Content
           'content': () => {
             this.displayHeadings();
+          },
+          /*
+          // Show/Hide the table of Content
+          'list': (value) => {
+            this.generateList(value);
           }
+          */
         }},
         table: true,
         'better-table': {
@@ -767,6 +777,19 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
     });
   }
+
+  /**
+   * Creates a heading to be added to the table of content
+   */
+  /*
+   generateList(value: any) {
+    this.range = this.quill.getSelection(true);
+console.log(value);
+    this.quill.formatLine(this.range.index, this.range.length, 'list', value);
+
+    this.saveQuillData();
+  }
+  */
 
   /**
    * This function is responsible for fetching a file's details
