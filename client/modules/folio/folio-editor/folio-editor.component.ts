@@ -184,7 +184,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
           ['clean'], ['comment'],['tables'],['clear']
-        ], handlers : {
+        ],
+        handlers : {
           'comment': () => {
             this.openComment();
           },
@@ -209,32 +210,32 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           }
           */
         }},
-        table: true,
-        'better-table': {
-          operationMenu: {
-            items: {
-              unmergeCells: {
-                text: 'Another unmerge cells name'
-              }
-            },
-            color: {
-              colors: ['#808080', '#e7e6e6', 'red', '#b90000','green' , 'yellow', 'blue', 'white'],
-              text: 'Background Colors:'
+      table: true,
+      'better-table': {
+        operationMenu: {
+          items: {
+            unmergeCells: {
+              text: 'Another unmerge cells name'
             }
+          },
+          color: {
+            colors: ['#808080', '#e7e6e6', 'red', '#b90000','green' , 'yellow', 'blue', 'white'],
+            text: 'Background Colors:'
           }
-        },
-        keyboard: {
-          bindings: quillBetterTable.keyboardBindings
-        },
-        history: {
-          delay: 2500,
-          userOnly: true,
-        },
-        mention: this.metionModule(),
-        // imageResize: this.quillImageResize(),
-        imageResize: true,
-        imageDrop: true,
-      };
+        }
+      },
+      keyboard: {
+        bindings: quillBetterTable.keyboardBindings
+      },
+      history: {
+        delay: 2500,
+        userOnly: true,
+      },
+      mention: this.metionModule(),
+      // imageResize: this.quillImageResize(),
+      imageResize: true,
+      imageDrop: true,
+    };
   }
 
   async ngOnInit() {
