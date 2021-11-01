@@ -109,6 +109,14 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
      * Adding the property of tasks in every column
      */
     if (this.columns) {
+      if (this.groupData.enabled_rights) {
+        await this.filterRAGSections();
+      } else {
+        this.columns.forEach(column => {
+          column.canEdit = true;
+        });
+      }
+
       this.columns?.forEach((column: any) => {
         column.tasks = []
       });
@@ -128,7 +136,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     await this.sortTasksInColumns(this.columns, this.tasks);
 
     if (this.groupData.enabled_rights) {
-      this.initSections();
+      await this.filterRAGTasks();
     }
 
     let col = [];
@@ -247,7 +255,21 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     this.columns.push(data);
   }
 
-  initSections() {
+  filterRAGSections() {
+    let columnsTmp = [];
+    this.columns.forEach(column => {
+        const canEdit = this.utilityService.canUserDoAction(column, this.groupData, this.userData, 'edit');
+        const canView = this.utilityService.canUserDoAction(column, this.groupData, this.userData, 'view');
+
+        column.canEdit = canEdit;
+        if (canEdit || canView) {
+          columnsTmp.push(column);
+        }
+    });
+    this.columns = columnsTmp;
+  }
+
+  filterRAGTasks() {
     if (this.columns) {
       this.columns.forEach(column => {
         let tasks = [];
@@ -255,11 +277,12 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         if (column.tasks) {
           // Filtering other tasks
           column.tasks.forEach(task => {
-            if (task.bars !== undefined && task.bars.length > 0) {
-              const adminIndex = this.groupData._admins.findIndex(admin => (admin._id || admin) == this.userData._id);
-              task.bars.forEach(bar => {
-                const userBarIndex = bar.tag_members.findIndex(barMember => (barMember._id || barMember) == this.userData._id);
-                if (userBarIndex >= 0 || adminIndex >= 0 || this.userData.role !== "member") {
+            if (task?.rags && task?.rags?.length > 0) {
+              const adminIndex = this.groupData?._admins?.findIndex(admin => (admin?._id || admin) == this.userData?._id);
+              task.rags.forEach(rag => {
+                const canEdit = this.utilityService.canUserDoAction(task, this.groupData, this.userData, 'edit');
+                const canView = this.utilityService.canUserDoAction(task, this.groupData, this.userData, 'view');
+                if (canEdit || canView) {
                   tasks.push(task);
                 }
               });

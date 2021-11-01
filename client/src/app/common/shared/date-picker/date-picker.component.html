@@ -3,5 +3,5 @@
     [value]="value" class="{{styleClass}}" disabled>
 
   <mat-datepicker-toggle matSuffix [for]="dEvent"></mat-datepicker-toggle>
-  <mat-datepicker #dEvent disabled="false"></mat-datepicker>
+  <mat-datepicker #dEvent [disabled]="!canEdit"></mat-datepicker>
 </div>

@@ -25,7 +25,8 @@ const FolderSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Folder',
         required: false
-    }
+    },
+    rags: []
 });
 
 const Folder = mongoose.model('Folder', FolderSchema);

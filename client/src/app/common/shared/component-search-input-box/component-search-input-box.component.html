@@ -1,15 +1,15 @@
 <div *ngIf="userData">
 
-    <!-- INPUT BAR STARTS -->
+    <!-- INPUT RAG STARTS -->
     <input type="search" id="keyword" autocomplete="off" [placeholder]="placeholder" class="input-search"
         [(ngModel)]="itemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChange($event)" />
-    <!-- INPUT BAR ENDS -->
+    <!-- INPUT RAG ENDS -->
 
     <!-- ITEM LIST STARTS -->
     <section id="results" *ngIf="!(isLoading$ | async)" class="user-results" onfocusout="">
         <div class="media card-tile user-list mb-0" *ngFor=" let item of itemList; let index = index;">
             <!-- User Profile Image for type 'group' and 'workspace' -->
-            <app-secured-image *ngIf="type != 'skill' && type != 'tag' && type !== 'barTag'"
+            <app-secured-image *ngIf="type != 'skill' && type != 'tag' && type !== 'ragTag'"
                 [imgURL]="item?.profile_pic"
                 [service]="'user'"
                 [styleClass]="'feed-avatar-search'"></app-secured-image>
@@ -22,8 +22,12 @@
                     <!-- Display full name of the member ends -->
 
                     <!-- Display full name of skill or tag starts -->
-                    <h4 class="mt-0 full-name-text" *ngIf="type == 'skill' || type == 'tag' || type === 'barTag' ">
+                    <h4 class="mt-0 full-name-text" *ngIf="type == 'skill' || type == 'tag' ">
                       {{ item }}
+                    </h4>
+
+                    <h4 class="mt-0 full-name-text" *ngIf="type === 'ragTag' ">
+                      {{ item.rag_tag }}
                     </h4>
                     <!-- Display full name of skill or tag ends -->
                 </div>
@@ -49,7 +53,7 @@
                     <!-- Skill section ends -->
 
                     <!-- Tag section starts -->
-                    <section *ngIf="type == 'tag' || type === 'barTag'">
+                    <section *ngIf="(type == 'tag' || type === 'ragTag') && item.showAddButton">
                         <!-- Add tags starts -->
                         <button (click)="onAddTag(item)"
                           class="btn btn-primary btn-sm"
@@ -76,7 +80,7 @@
                         </div>
                     </section>
 
-                    <section *ngIf="type === 'barMembers'">
+                    <section *ngIf="type === 'ragMembers'">
                         <div>
                             <i *ngIf="item.showAddMem"
                                 class="material-icons mr-1 dropdown-toggle-split btn-sm working">check_circle</i>

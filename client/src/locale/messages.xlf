@@ -3340,77 +3340,77 @@
       <trans-unit id="groupBARDialog.boarAccessRights" datatype="html">
         <source>Board Access Rights [BAR]</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBARDialog.createRulesToManage" datatype="html">
         <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">14,17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBARDialog.alwayseStriveTransparency" datatype="html">
         <source>🎉 Always strive for transparency...</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBARDialog.tasksAreVisibleFor" datatype="html">
         <source>tasks are visible for</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBARDialog.addRule" datatype="html">
         <source>ADD RULE</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBARDialog.addTag" datatype="html">
         <source>Add tag</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">55</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBarDialog.pleaseWaitAddingNewUserToBar" datatype="html">
         <source>Please wait we are adding the new user to bar...</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.ts</context>
           <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBarDialog.addedToBar" datatype="html">
         <source><x id="PH" equiv-text="event.first_name"/> added to your bar!</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.ts</context>
           <context context-type="linenumber">78</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBarDialog.unableToAddToBar" datatype="html">
         <source>Unable to add <x id="PH" equiv-text="event.first_name"/> to your bar</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.ts</context>
           <context context-type="linenumber">80</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBarDialog.removedFromBarTag" datatype="html">
         <source><x id="PH" equiv-text="event.first_name"/> removed from <x id="PH_1" equiv-text="bar.bar_tag"/>!</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.ts</context>
           <context context-type="linenumber">87</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBarDialog.unableToRemoveFromBarTag" datatype="html">
         <source>Unable to remove <x id="PH" equiv-text="event.first_name"/> from <x id="PH_1" equiv-text="bar.bar_tag"/></source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.ts</context>
           <context context-type="linenumber">98</context>
         </context-group>
       </trans-unit>

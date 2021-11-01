@@ -51,13 +51,17 @@ const GroupSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false,
     },
-    bars: [
+    rags: [
         {
-            bar_tag: Schema.Types.String,
+            rag_tag: Schema.Types.String,
             tag_members: [{
                 type: Schema.Types.ObjectId,
                 ref: 'User'
-            }]
+            }],
+            right: {
+                type: String,
+                enum: ['view', 'edit']
+            }
         }
     ],
     project_type: {

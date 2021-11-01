@@ -39,9 +39,11 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   @Input('workspaceData') workspaceData:any = {};
 
-  @Input('bar') bar: string;
+  @Input('rag') rag: string;
 
-  @Input('barMemberList') barMemberList: any = [];
+  @Input('ragMemberList') ragMemberList: any = [];
+
+  @Input('ragList') ragList: any = [];
 
   // Skill Emitter which emits the skill object on creation
   @Output('skill') skillEmitter = new EventEmitter();
@@ -52,7 +54,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   // Tag Emitter which emits the tag object on creation
   @Output('tag') tagEmitter = new EventEmitter();
 
-  @Output('barTag') barTagEmitter = new EventEmitter();
+  @Output('ragTag') ragTagEmitter = new EventEmitter();
 
   // Public Functions class
   private publicFunctions = new PublicFunctions(this.injector);
@@ -95,25 +97,34 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     this.subSink.add(this.itemValueChanged
       .pipe(distinctUntilChanged(), debounceTime(500))
       .subscribe(async () => {
-        if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event' || this.type === 'tag' || this.type === 'barTag' || this.type === 'barMembers' || this.type === 'workspaceMembers') {
+        if (this.type == 'skill' || this.type == 'group' || this.type == 'task' || this.type == 'event' || this.type === 'tag' || this.type === 'ragTag' || this.type === 'ragMembers' || this.type === 'workspaceMembers') {
 
           // If value is null then empty the array
-          if (this.itemValue == "")
+          if (this.itemValue == "") {
             this.itemList = []
+          } else {
+            if(this.type === 'ragTag') {
+              this.itemList = this.groupData.rags;
+              this.itemList = this.itemList.filter( item => item.rag_tag.includes(this.itemValue));
 
-          else {
-            if(this.type === 'barTag') {
-              this.itemList = this.groupData.bars.map( item => item.bar_tag);
-              this.itemList = this.itemList.filter( item => item.includes(this.itemValue));
+              this.itemList.forEach(item => {
+                const index = (this.ragList) ? this.ragList.findIndex(rag => rag == item.rag_tag) : -1;
+                if (index >= 0) {
+                  item.showAddButton =false;
+                } else {
+                  item.showAddButton = true;
+                }
+              });
             }
-            if(this.type === 'barMembers') {
+
+            if(this.type === 'ragMembers') {
               this.itemList = this.groupData._members.filter( member => {
                 let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase();
                 return item.includes(this.itemValue.toLowerCase());
               });
 
               this.itemList.forEach(item => {
-                const index = this.barMemberList.findIndex(member => member._id == item._id);
+                const index = (this.ragMemberList) ? this.ragMemberList.findIndex(member => member._id == item._id) : -1;
                 if(index >= 0) {
                   item.showAddMem = true;
                 } else {
@@ -128,7 +139,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
                 return item.includes(this.itemValue.toLowerCase());
               });
               this.itemList.forEach(item => {
-                if(this.barMemberList.includes(item)){
+                if(this.ragMemberList.includes(item)){
                   item.showAddMem = true;
                 } else {
                   item.showAddMem = false;
@@ -250,8 +261,9 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
     if (this.members.length >= 0 && this.selectedMembers.size >= 0) {
 
+      const memberIndex = (this.members) ? this.members.findIndex((member) => item._id === member) : -1;
       // Removing the user from array
-      this.members.splice(this.members.findIndex((member) => item._id === member), 1);
+      this.members.splice(memberIndex, 1);
 
       // Enable the user so that it can be added again
       item.showAddMem = true
@@ -332,10 +344,10 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   }
 
   onAddNewMember(item: any) {
-    if(item.bars === undefined){
-      item.bars = [];
+    if(item.rags === undefined){
+      item.rags = [];
     }
-    item.bars.push(this.bar);
+    item.rags.push(this.rag);
     // Set the Add Member state to false
     item.showAddMem = false
 
@@ -410,8 +422,8 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     if (this.type === 'tag') {
       this.tagEmitter.emit(tag);
     }
-    else if (this.type === 'barTag') {
-      this.barTagEmitter.emit(tag);
+    else if (this.type === 'ragTag') {
+      this.ragTagEmitter.emit(tag);
     }
 
     // Update the tags array

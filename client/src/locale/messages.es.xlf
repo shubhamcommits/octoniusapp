@@ -3782,7 +3782,7 @@
         <source>Board Access Rights [BAR]</source>
         <target state="translated">Derechos de acceso a la Junta [BAR]</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
@@ -3790,7 +3790,7 @@
         <source> Create rules to manage board access rights and select which members can see certain tasks. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> By default all tasks are visible to the team, but with BAR tags you can control the access. </source>
         <target state="translated">Cree reglas para administrar los derechos de acceso al tablero y seleccione qué miembros pueden ver ciertas tareas.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> De forma predeterminada, todas las tareas son visibles para el equipo, pero con las etiquetas BAR puede controlar el acceso.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">14,17</context>
         </context-group>
       </trans-unit>
@@ -3798,7 +3798,7 @@
         <source>🎉 Always strive for transparency...</source>
         <target state="translated">🎉 Procura siempre la transparencia....</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
@@ -3806,7 +3806,7 @@
         <source>tasks are visible for</source>
         <target state="translated">las tareas son visibles para</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
@@ -3814,7 +3814,7 @@
         <source>ADD RULE</source>
         <target state="translated">AÑADIR REGLA</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
@@ -3822,7 +3822,7 @@
         <source>Add tag</source>
         <target state="translated">Agregar un tag</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.html</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
           <context context-type="linenumber">55</context>
         </context-group>
       </trans-unit>
@@ -3830,7 +3830,7 @@
         <source>Please wait we are adding the new user to bar...</source>
         <target state="translated">Espere, estamos agregando el nuevo usuario a la barra ...</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.ts</context>
           <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
@@ -3838,7 +3838,7 @@
         <source><x id="PH" equiv-text="event.first_name"/> added to your bar!</source>
         <target state="translated">¡<x id="PH" equiv-text="event.first_name"/> agregado a tu barra!</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.ts</context>
           <context context-type="linenumber">78</context>
         </context-group>
       </trans-unit>
@@ -3846,7 +3846,7 @@
         <source>Unable to add <x id="PH" equiv-text="event.first_name"/> to your bar</source>
         <target state="translated">No se puede agregar <x id="PH" equiv-text="event.first_name"/> a su barra</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.ts</context>
           <context context-type="linenumber">80</context>
         </context-group>
       </trans-unit>
@@ -3854,7 +3854,7 @@
         <source><x id="PH" equiv-text="event.first_name"/> removed from <x id="PH_1" equiv-text="bar.bar_tag"/>!</source>
         <target state="translated">¡<x id="PH" equiv-text="event.first_name"/> eliminado de <x id="PH_1" equiv-text="bar.bar_tag"/>!</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.ts</context>
           <context context-type="linenumber">87</context>
         </context-group>
       </trans-unit>
@@ -3862,7 +3862,7 @@
         <source>Unable to remove <x id="PH" equiv-text="event.first_name"/> from <x id="PH_1" equiv-text="bar.bar_tag"/></source>
         <target state="translated">No se puede eliminar a <x id="PH" equiv-text="event.first_name"/> de <x id="PH_1" equiv-text="bar.bar_tag"/></target>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-bar-dialog/group-bar-dialog.component.ts</context>
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.ts</context>
           <context context-type="linenumber">98</context>
         </context-group>
       </trans-unit>

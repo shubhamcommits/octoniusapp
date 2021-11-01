@@ -99,6 +99,7 @@
     margin-bottom: 16px;
     padding-left: 10px;
     padding-right: 10px;
+    padding-bottom: 10px;
 }
 
 .tasks-container {
@@ -189,6 +190,18 @@ section {
 .caption {
     font-size: 12px;
 }
+
 .blue {
     color: #005fd5;
+}
+
+.tag{
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 23px;
+  color: #005FD5;
+  background: #E4EDF8;
+  border-radius: 20px;
+  padding: 5px;
 }

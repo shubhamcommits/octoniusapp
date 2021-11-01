@@ -73,9 +73,14 @@ export class FilesService {
    * This function is responsible for fetching the file details on the basis of the fileId
    * @param fileId
    */
-  getOne(fileId: string){
-    if(fileId)
-      return this._http.get(this.baseURL + `/files/${fileId}`).toPromise()
+  getOne(fileId: string, readOnly?: boolean){
+    if(fileId) {
+      return this._http.get(this.baseURL + `/files/${fileId}`, {
+        params: {
+          readOnly: readOnly
+        }
+      }).toPromise();
+    }
   }
 
   /**
@@ -150,5 +155,15 @@ export class FilesService {
    */
    async moveToFolder(fileId: string, folderId: string) {
     return this._http.put(this.baseURL + `/files/${fileId}/move-to-folder`, { folderId: folderId }).toPromise();
+  }
+
+  addRag(fileId: string, rag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/files/${fileId}/addRag`, {rag}).toPromise();
+  }
+
+  removeRag(fileId: string, rag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/files/${fileId}/removeRag`, {rag}).toPromise();
   }
 }

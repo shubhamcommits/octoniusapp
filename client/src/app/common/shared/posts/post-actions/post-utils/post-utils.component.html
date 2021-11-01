@@ -6,26 +6,26 @@
 </span>
 
 <mat-menu #postOptions="matMenu">
-  <button mat-menu-item *ngIf="mode !== 'fullscreen' && (userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id || isGroupManager())" (click)="openFullscreenModal()">View</button>
+  <button mat-menu-item *ngIf="mode !== 'fullscreen' && (userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id || isGroupManager()) && canView" (click)="openFullscreenModal()">View</button>
   <button mat-menu-item (click)="copyToClipboard()" i18n="@@postUtils.copyLink">Copy Link</button>
-  <button mat-menu-item *ngIf="post?.type == 'normal' && !post?.pin_to_top" (click)="pinToTop(true)">
+  <button mat-menu-item *ngIf="post?.type == 'normal' && !post?.pin_to_top && canEdit" (click)="pinToTop(true)">
     <span class="material-icons-outlined">push_pin</span>
     <span i18n="@@postUtils.pin">Pin</span>
   </button>
-  <button mat-menu-item *ngIf="post?.type == 'normal' && post?.pin_to_top" (click)="pinToTop(false)">
+  <button mat-menu-item *ngIf="post?.type == 'normal' && post?.pin_to_top && canEdit" (click)="pinToTop(false)">
     <span class="material-icons-outlined">push_pin</span>
     <span i18n="@@postUtils.unpin">Unpin</span>
   </button>
 
-  <li class="dropdown-divider" *ngIf="post?.type !== 'task'"></li>
+  <li class="dropdown-divider" *ngIf="post?.type !== 'task' && canEdit"></li>
 
-  <button mat-menu-item [matMenuTriggerFor]="copyMenu" *ngIf="post?.type !== 'task'" i18n="@@postUtils.copyToGroup">Copy to Group</button>
-  <button mat-menu-item [matMenuTriggerFor]="moveMenu" *ngIf="post?.type !== 'task'" i18n="@@postUtils.moveToGroup">Move to Group</button>
+  <button mat-menu-item [matMenuTriggerFor]="copyMenu" *ngIf="post?.type !== 'task' && canEdit" i18n="@@postUtils.copyToGroup">Copy to Group</button>
+  <button mat-menu-item [matMenuTriggerFor]="moveMenu" *ngIf="post?.type !== 'task' && canEdit" i18n="@@postUtils.moveToGroup">Move to Group</button>
 
-  <li class="dropdown-divider" *ngIf="post?.type == 'task' && userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id"></li>
+  <li class="dropdown-divider" *ngIf="post?.type == 'task' && (userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id) && canEdit"></li>
 
   <button mat-menu-item (click)="deletePost()"
-      *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id || isGroupManager()"
+      *ngIf="canEdit"
       i18n="@@postUtils.delete">
     Delete
   </button>

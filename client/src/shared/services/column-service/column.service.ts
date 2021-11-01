@@ -194,4 +194,14 @@ export class ColumnService {
   archiveColumn(sectionId: string) {
     return this._http.put<any>(this.baseUrl + `/columns/archive`, { sectionId }).toPromise();
   }
+
+  addRag(sectionId: string, rag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseUrl + `/columns/${sectionId}/addRag`, {rag}).toPromise();
+  }
+
+  removeRag(sectionId: string, rag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseUrl + `/columns/${sectionId}/removeRag`, {rag}).toPromise();
+  }
 }
