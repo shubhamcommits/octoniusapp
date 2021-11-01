@@ -292,7 +292,7 @@ export class UtilityService {
    */
   openCreatePostFullscreenModal(postData: any, userData: any, groupData: any, isIdeaModuleAvailable: boolean, columns?: any, tasks?: any) {
     let dialogOpen;
-    if (this.canUserDoAction(postData, groupData, userData, 'view')) {
+    if (!groupData?.enabled_rights || this.canUserDoAction(postData, groupData, userData, 'view')) {
       const data = (columns) ?
         {
           postData: postData,
@@ -534,14 +534,13 @@ export class UtilityService {
           canDoRagAction = true;
         }
       });
-    } else {
-      canDoRagAction = true;
     }
+
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin._id || admin) == userData?._id) >= 0) : false;
     let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
     createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : false;
 
-    return userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager || canDoRagAction;
+    return userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager || (groupData?.enabled_rights && canDoRagAction);
   }
 
   handleDeleteGroupFavorite() {

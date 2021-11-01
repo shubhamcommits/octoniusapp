@@ -49,6 +49,7 @@ export class PostUtilsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+
     // Fetch the current workspace data
     const workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
