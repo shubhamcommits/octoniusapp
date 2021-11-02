@@ -212,12 +212,12 @@
                               <span i18n="@@groupFiles.copyFlamingo">Copy Flamingo</span>
                             </a>
 
-                            <a *ngIf="file?.type === 'file' && file?.canView" mat-menu-item (click)="openViewFileDialog(filesBaseUrl + '/' + file?.modified_name)">
+                            <a *ngIf="file?.type === 'file'" mat-menu-item (click)="openViewFileDialog(filesBaseUrl + '/' + file?.modified_name)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                                 <span i18n="@@groupFiles.view">View</span>
                             </a>
 
-                            <a *ngIf="file?.type === 'folio' && file?.canView" mat-menu-item (click)="openViewFolioDialog(file?._id)">
+                            <a *ngIf="file?.type === 'folio'" mat-menu-item (click)="openViewFolioDialog(file?._id)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                                 <span i18n="@@groupFiles.view">View</span>
                             </a>

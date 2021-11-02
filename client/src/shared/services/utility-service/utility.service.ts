@@ -538,7 +538,7 @@ export class UtilityService {
 
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
     let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
-    createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : false;
+    createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : createdBy;
 
     return userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager || (groupData?.enabled_rights && canDoRagAction);
   }

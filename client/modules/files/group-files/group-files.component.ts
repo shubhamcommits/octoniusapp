@@ -155,10 +155,14 @@ export class GroupFilesComponent implements OnInit {
   }
 
   getFile(file: any) {
+    file.canEdit = true;
+    file.canView = true;
     this.files.unshift(file);
   }
 
   getFolder(folder: any) {
+    folder.canEdit = true;
+    folder.canView = true;
     this.folders.unshift(folder);
   }
 
