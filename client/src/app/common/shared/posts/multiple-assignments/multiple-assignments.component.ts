@@ -93,26 +93,28 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
   }
 
   unassign(assigneeId: string) {
-    if (this.type == 'post') {
-      this.utilityService.asyncNotification($localize`:@@multipleAssignments.pleaseWaitWeAreUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-        this.postService.removeAssigneeFromPost(this.post._id, assigneeId)
-          .then((res) => {
-            const index = this.assigned_to.findIndex((assignee) => assignee._id == assigneeId);
-            this.assigned_to.splice(index, 1);
+    if (this.canEdit) {
+      if (this.type == 'post') {
+        this.utilityService.asyncNotification($localize`:@@multipleAssignments.pleaseWaitWeAreUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+          this.postService.removeAssigneeFromPost(this.post._id, assigneeId)
+            .then((res) => {
+              const index = this.assigned_to.findIndex((assignee) => assignee._id == assigneeId);
+              this.assigned_to.splice(index, 1);
 
-            // Resolve with success
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@multipleAssignments.assigneeRemoved:Assignee removed!`));
-          })
-          .catch((err) => {
-            reject(this.utilityService.rejectAsyncPromise($localize`:@@multipleAssignments.unableToUpdateDetails:Unable to update the details, please try again!`));
-          });
-      }));
-    } else if (this.type == 'flow') {
-      this.assigneeRemovedEmiter.emit({assigneeId: assigneeId});
-    } else if (this.type == 'filter') {
-      const index = this.assigned_to.findIndex((assignee) => assignee._id == assigneeId);
-      this.assigned_to.splice(index, 1);
-      this.assigneeRemovedEmiter.emit(assigneeId);
+              // Resolve with success
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@multipleAssignments.assigneeRemoved:Assignee removed!`));
+            })
+            .catch((err) => {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@multipleAssignments.unableToUpdateDetails:Unable to update the details, please try again!`));
+            });
+        }));
+      } else if (this.type == 'flow') {
+        this.assigneeRemovedEmiter.emit({assigneeId: assigneeId});
+      } else if (this.type == 'filter') {
+        const index = this.assigned_to.findIndex((assignee) => assignee._id == assigneeId);
+        this.assigned_to.splice(index, 1);
+        this.assigneeRemovedEmiter.emit(assigneeId);
+      }
     }
   }
 
