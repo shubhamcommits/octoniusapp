@@ -292,18 +292,7 @@ export class UtilityService {
    */
   openCreatePostFullscreenModal(postData: any, userData: any, groupData: any, isIdeaModuleAvailable: boolean, columns?: any, tasks?: any) {
     let dialogOpen;
-    let openPost = true;
-    if (postData.bars !== undefined && postData.bars.length > 0) {
-      const adminIndex = groupData._admins.findIndex(admin => (admin._id || admin) == userData._id);
-      postData.bars.forEach(bar => {
-        const userBarIndex = bar.tag_members.findIndex(barMember => (barMember._id || barMember) == userData._id);
-        if ((userBarIndex < 0 || adminIndex < 0) && userData.role == "member") {
-          openPost = false;
-        }
-      });
-    }
-
-    if (openPost) {
+    if (!groupData?.enabled_rights || this.canUserDoAction(postData, groupData, userData, 'view')) {
       const data = (columns) ?
         {
           postData: postData,
@@ -520,6 +509,38 @@ export class UtilityService {
       hasBackdrop: true,
       data: data
     });
+  }
+
+  /**
+   * This method is used to identify if the user can edit or view an elemnent
+   * @param item This element can be a post, a file, a folder or a section
+   * @param groupData
+   * @param userData
+   * @param action edit or view
+   * @returns
+   */
+  canUserDoAction(item: any, groupData: any, userData: any, action: string) {
+    let canDoRagAction = false;
+    if (groupData?.enabled_rights && groupData?.rags && item?.rags && item?.rags?.length > 0) {
+      item.rags.forEach(rag => {
+        const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => groupRag.rag_tag == rag) : -1;
+        let groupRag;
+        if (groupRagIndex >= 0) {
+          groupRag = groupData?.rags[groupRagIndex];
+        }
+
+        const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+        if (userRagIndex >= 0 && groupRag.right == action) {
+          canDoRagAction = true;
+        }
+      });
+    }
+
+    const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
+    let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
+    createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : false;
+
+    return userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager || (groupData?.enabled_rights && canDoRagAction);
   }
 
   handleDeleteGroupFavorite() {

@@ -53,7 +53,8 @@ const FileSchema = new Schema({
         type: Boolean,
         required: true,
         default: false
-    }
+    },
+    rags: []
 });
 
 const File = mongoose.model('File', FileSchema);

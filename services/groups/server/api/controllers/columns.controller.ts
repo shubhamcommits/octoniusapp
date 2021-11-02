@@ -575,4 +575,56 @@ export class ColumnsController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
+
+    async addRagToSection(req: Request, res: Response, next: NextFunction) {
+        try {
+            const sectionId = req.params.sectionId;
+            const rag = req.body.rag;
+
+            // Add User to group
+            const column = await Column.findByIdAndUpdate({
+                    _id: sectionId
+                }, {
+                    $addToSet: {
+                        rags: rag
+                    }
+                }, {
+                    new: true
+                });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Section saved!',
+                section: column
+            });
+        } catch(err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async removeRagFromSection(req: Request, res: Response, next: NextFunction) {
+        try {
+            const sectionId = req.params.sectionId;
+            const rag = req.body.rag;
+
+            // Add User to group
+            const column = await Column.findByIdAndUpdate({
+                    _id: sectionId
+                }, {
+                    $pull: {
+                        rags: rag
+                    }
+                }, {
+                    new: true
+                });
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Section saved!',
+                section: column
+            });
+        } catch(err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

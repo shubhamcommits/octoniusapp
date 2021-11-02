@@ -23,19 +23,22 @@ export class PostUtilsComponent implements OnInit {
   @Input() groupData: any;
 
   @Input() isIdeaModuleAvailable;
+  @Input() canEdit = true;
+  @Input() canView = true;
 
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter();
   @Output() closeModalEvent = new EventEmitter();
   @Output() pinEvent = new EventEmitter();
 
+  groupId = '';
+
+
   // Array of user groups
   public userGroups: any = [];
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);
-
-  groupId = '';
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
@@ -46,6 +49,7 @@ export class PostUtilsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+
     // Fetch the current workspace data
     const workspaceData = await this.publicFunctions.getCurrentWorkspace();
 

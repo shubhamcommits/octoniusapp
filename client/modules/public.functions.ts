@@ -33,14 +33,22 @@ export class PublicFunctions {
 
     private subSink = new SubSink();
 
-    public async getCurrentUser() {
+    public async getCurrentUser(readOnly?: boolean) {
         let userData: any = await this.getUserDetailsFromService();
 
-        if (JSON.stringify(userData) == JSON.stringify({}))
+        if (JSON.stringify(userData) == JSON.stringify({})) {
             userData = await this.getUserDetailsFromStorage();
+        }
 
-        if (JSON.stringify(userData) == JSON.stringify({}))
-            userData = await this.getUserDetailsFromHTTP();
+        if (JSON.stringify(userData) == JSON.stringify({})) {
+          if (!readOnly) {
+            userData = await this.getUserDetailsFromHTTP().catch(err => {
+              userData = {};
+            });
+          } else {
+            userData = {};
+          }
+        }
 
         this.sendUpdatesToUserData(userData);
 

@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { MatDialog } from '@angular/material/dialog';
-import { GroupBarDialogComponent } from './group-bar-dialog/group-bar-dialog.component';
+import { GroupRAGDialogComponent } from './group-rag-dialog/group-rag-dialog.component';
 
 @Component({
   selector: 'app-group-admin',
@@ -195,8 +195,8 @@ export class GroupAdminComponent implements OnInit {
       }));
   }
 
-  openBarModal(groupId){
-    const dialogRef = this.dialog.open(GroupBarDialogComponent, {
+  openRAGModal(groupId){
+    const dialogRef = this.dialog.open(GroupRAGDialogComponent, {
       width: '100%',
       height: '100%',
       disableClose: true,

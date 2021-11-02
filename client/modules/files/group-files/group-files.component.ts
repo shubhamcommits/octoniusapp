@@ -12,7 +12,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { PreviewFilesDialogComponent } from 'src/app/common/shared/preview-files-dialog/preview-files-dialog.component';
 import { FilesService } from './../../../src/shared/services/files-service/files.service';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 
@@ -143,6 +142,7 @@ export class GroupFilesComponent implements OnInit {
       .subscribe(async (res)=>{
 
         this.files = await this.publicFunctions.searchFiles(this.groupId, res);
+        this.files = await this.filterRAGFiles(this.files);
       }))
   }
 
@@ -180,7 +180,8 @@ export class GroupFilesComponent implements OnInit {
       // Start the loading spinner
       this.isLoading$.next(true);
 
-      const files: any = await this.publicFunctions.getFiles(this.groupId, this.lastFileId);
+      let files: any = await this.publicFunctions.getFiles(this.groupId, this.lastFileId);
+      files = await this.filterRAGFiles(files);
 
       if(files) {
         this.files = [...this.files, ...files];
@@ -395,11 +396,15 @@ export class GroupFilesComponent implements OnInit {
       }
       this.folders.unshift(parentFolder);
 
+      await this.initFolders();
+
       // Fetch the uploaded files from the server
       this.files = await this.publicFunctions.getFiles(this.groupId, folderId);
 
       // Set the lastFileId for scroll
       this.lastFileId = this.files[this.files.length - 1]?._id;
+
+      this.files = await this.filterRAGFiles(this.files);
     }
 
     // Stop the loading spinner
@@ -446,6 +451,8 @@ export class GroupFilesComponent implements OnInit {
     // Fetch the uploaded files from the server
     this.folders = await this.publicFunctions.getFolders(this.groupId);
 
+    await this.initFolders();
+
     // Fetch the uploaded files from the server
     this.files = await this.publicFunctions.getFiles(this.groupId, null);
 
@@ -453,6 +460,8 @@ export class GroupFilesComponent implements OnInit {
       // Set the lastFileId for scroll
       this.lastFileId = this.files[this.files.length - 1]?._id;
     }
+
+    this.files = await this.filterRAGFiles(this.files);
 
     this.currentFolder = null;
   }
@@ -574,5 +583,117 @@ export class GroupFilesComponent implements OnInit {
             reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToDuplicateFlamingo:Unable to duplicate the flamingo, please try again!`));
           });
     }));
+  }
+
+  async addNewFolderRagTag(folder, event) {
+    if (!folder.rags) {
+      folder.rags = [];
+    }
+
+    await this.utilityService.asyncNotification($localize`:@@groupFiles.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      this.foldersService.addRag(folder._id, event.rag_tag)
+        .then((res) => {
+          // Resolve with success
+          folder.rags.push(event.rag_tag);
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.detailsUpdated:Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToUpdateDetails:Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
+  async removeFolderRagTag(folder, event) {
+    await this.utilityService.asyncNotification($localize`:@@groupFiles.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      this.foldersService.removeRag(folder._id, event)
+        .then((res) => {
+          // Find the index of the column to check if the same named column exist or not
+          let index = (folder.rags) ? folder.rags.findIndex((ragTag: any) => ragTag == event) : -1;
+          // Remove the column from the array
+          if (index >= 0) {
+            folder.rags.splice(index, 1);
+          }
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.detailsUpdated:Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToUpdateDetails:Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
+  async addNewFileRagTag(folder, event) {
+    if (!folder.rags) {
+      folder.rags = [];
+    }
+
+    await this.utilityService.asyncNotification($localize`:@@groupFiles.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      this.filesService.addRag(folder._id, event.rag_tag)
+        .then((res) => {
+          // Resolve with success
+          folder.rags.push(event.rag_tag);
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.detailsUpdated:Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToUpdateDetails:Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
+  async removeFileRagTag(folder, event) {
+    await this.utilityService.asyncNotification($localize`:@@groupFiles.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      this.filesService.removeRag(folder._id, event)
+        .then((res) => {
+          // Find the index of the column to check if the same named column exist or not
+          let index = (folder.rags) ? folder.rags.findIndex((ragTag: any) => ragTag == event) : -1;
+          // Remove the column from the array
+          if (index >= 0) {
+            folder.rags.splice(index, 1);
+          }
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.detailsUpdated:Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToUpdateDetails:Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
+  async initFolders() {
+    if (this.groupData.enabled_rights) {
+      await this.filterRAGFolders();
+    } else {
+      this.folders.forEach(column => {
+        column.canEdit = true;
+      });
+    }
+  }
+
+  filterRAGFolders() {
+    let foldersTmp = [];
+    this.folders.forEach(folder => {
+        const canEdit = this.utilityService.canUserDoAction(folder, this.groupData, this.userData, 'edit');
+        const hide = this.utilityService.canUserDoAction(folder, this.groupData, this.userData, 'hide');
+        const canView = this.utilityService.canUserDoAction(folder, this.groupData, this.userData, 'view') || !hide;
+
+        folder.canEdit = canEdit;
+        if (canEdit || canView) {
+          foldersTmp.push(folder);
+        }
+    });
+    this.folders = foldersTmp;
+  }
+
+  filterRAGFiles(files: any) {
+    let filesTmp = [];
+    files.forEach(file => {
+        const canEdit = this.utilityService.canUserDoAction(file, this.groupData, this.userData, 'edit');
+        const hide = this.utilityService.canUserDoAction(file, this.groupData, this.userData, 'hide');
+        const canView = this.utilityService.canUserDoAction(file, this.groupData, this.userData, 'view') || !hide;
+
+        file.canEdit = canEdit;
+        if (canEdit || canView) {
+          filesTmp.push(file);
+        }
+    });
+    return filesTmp;
   }
 }

@@ -1631,26 +1631,46 @@ export class PostService {
     }
   }
 
-  async addBar(postId: string, bar: any) {
+  async addRag(postId: string, rag: string) {
     try {
+      /*
       const task: any = await Post.findById(postId);
-      const barExists = task.bars.includes(bar);
-      if (!barExists) {
-        task.bars.push({
-          bar_tag: bar.bar_tag,
-          tag_members: bar.tag_members
+      const ragExists = task.rags.includes(rag);
+      if (!ragExists) {
+        task.rags.push({
+          rag_tag: rag,
+          tag_members: rag.tag_members
         });
       }
       task.save();
+      */
+      const post = await Post.findByIdAndUpdate({
+            _id: postId
+        }, {
+            $addToSet: {
+                rags: rag
+            }
+        }, {
+            new: true
+        });
     } catch (error) {
       throw (error);
     }
   }
 
-  async removeBar(postId: string, bar: any) {
-    const task: any = await Post.findById(postId);
-    task.bars = task.bars.filter(barDB => barDB.bar_tag !== bar.bar_tag);
-    task.save();
+  async removeRag(postId: string, rag: string) {
+    // const task: any = await Post.findById(postId);
+    // task.rags = task.rags.filter(ragDB => ragDB.rag_tag !== rag.rag_tag);
+    // task.save();
+    const post = await Post.findByIdAndUpdate({
+          _id: postId
+      }, {
+          $pull: {
+              rags: rag
+          }
+      }, {
+          new: true
+      });
   }
 
   async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean, filteringGroups: any) {
@@ -2166,7 +2186,7 @@ export class PostService {
       let newPost = oldPost;
 
       delete newPost._id;
-      delete newPost.bars;
+      delete newPost.rags;
       delete newPost.records;
       delete newPost.comments;
       if (newPost.task && newPost.task.custom_fields) {
@@ -2449,7 +2469,7 @@ export class PostService {
       let newPost = oldPost;
 
       delete newPost._id;
-      delete newPost.bars;
+      delete newPost.rags;
       delete newPost.records;
       delete newPost.comments;
       if (newPost.task && newPost.task.custom_fields) {
@@ -2574,7 +2594,7 @@ export class PostService {
 
       // Delete unneeded fields
       delete template._id;
-      delete template.bars;
+      delete template.rags;
       delete template.records;
       delete template.comments;
       delete template.task._column;

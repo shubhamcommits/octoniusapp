@@ -1,5 +1,5 @@
 <div class="board">
-    <div class="board-wrapper" *ngIf="!isMobile"
+    <div class="board-wrapper" *ngIf="!isMobile && canEdit"
         cdkDropList [cdkDropListData]="columns" cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropColumn($event)">
 
         <!-- ALL COLUMN DETAILS FOR NO-MOBILE STARTS -->
@@ -14,6 +14,7 @@
                       <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type">
                       {{ column?.title | truncatetext:20 }}
                     </p>
+
                     <div class="inline-block">
                         <div class="dropdown">
                             <i class="material-icons action dropdown-toggle"
@@ -25,23 +26,33 @@
                                   <span class="material-icons-outlined">create</span>
                                   <span i18n="@@groupKanbanBoard.edit">Edit</span>
                                 </li>
-                                <li *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()"
+                                <li *ngIf="(userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()) && column.canEdit"
                                     class="dropdown-item" (click)="deleteColumn(column)">
                                   <span class="material-icons-outlined">delete</span>
                                   <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
-                                <li *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()"
+                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()) && column.canEdit"
                                     class="dropdown-item" (click)="archiveColumn(column)">
                                   <span class="material-icons-outlined">archive</span>
                                   <span i18n="@@groupDashboard.archive">Archive</span>
                                 </li>
-                                <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(column)">
+                                <li class="dropdown-item" *ngIf="groupData?.project_type && column.canEdit" (click)="makeColumnProjectDialog(column)">
                                   <img src="assets/images/Icon/icon_launch_project.svg" alt="" >
                                   <span i18n="@@groupDashboard.launchProject">Launch Project</span>
                                 </li>
-                                <li class="dropdown-item" (click)="openShowCFDialog(column)">
+                                <li *ngIf="column.canEdit" class="dropdown-item" (click)="openShowCFDialog(column)">
                                   <span class="material-icons-outlined">auto_awesome</span>
                                   <span i18n="@@groupDashboard.showCF">Show CF Data</span>
+                                </li>
+                                <li class="dropdown-item" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData) && column.canEdit">
+                                  <app-component-search-input-box
+                                    [placeholder]="'Add rag tag'"
+                                    [groupData]="groupData"
+                                    [type]="'ragTag'"
+                                    [groupId]="groupId"
+                                    [ragList]="column.rags"
+                                    (ragTag)="addNewRagTag(column, $event)">
+                                  </app-component-search-input-box>
                                 </li>
                             </ul>
                             <!-- Menu Drawer Ends -->
@@ -51,7 +62,7 @@
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS ENDS -->
 
                 <!-- EDIT COLUMN STARTS -->
-                <app-edit-column *ngIf="column" [column]="column" (column)="editColumn(column, $event)">
+                <app-edit-column *ngIf="column && column.canEdit" [column]="column" (column)="editColumn(column, $event)">
                 </app-edit-column>
                 <!-- EDIT COLUMN ENDS -->
 
@@ -80,13 +91,24 @@
                 </div>
                 <!-- CUSTOM FIELDS STATS SECTION ENDS -->
 
+                <div class="project-container" *ngIf="groupData && groupData.enabled_rights && column && column.rags && column.rags.length > 0">
+                  <div *ngFor="let tag of column.rags; let i = index">
+                    <div>
+                      <span class="tag">
+                        {{ tag }}
+                        <i *ngIf="column.canEdit" (click)="removeRagTag(column, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- TASK CONTAINER STARTS -->
                 <div class="tasks-container" [id]="column._id"
                     cdkDropList [cdkDropListData]="column.tasks"
                     (cdkDropListDropped)="drop($event)">
 
                     <!-- CREATE TASK STARTS -->
-                    <app-new-task [groupData]="groupData" [userData]="userData" [column]="column"
+                    <app-new-task *ngIf="column.canEdit" [groupData]="groupData" [userData]="userData" [column]="column"
                         (post)="getPost($event, column)" [isIdeaModuleAvailable]="isIdeaModuleAvailable"></app-new-task>
                     <!-- CREATE TASK ENDS -->
 
@@ -112,7 +134,8 @@
         </div>
         <!-- ALL COLUMN DETAILS FOR NO-MOBILE ENDS -->
       </div>
-      <div class="board-wrapper" *ngIf="isMobile">
+
+      <div class="board-wrapper" *ngIf="isMobile || !canEdit">
         <!-- ALL COLUMN DETAILS FOR MOBILE STARTS -->
         <div class="board-columns" *ngIf="columns">
 
@@ -124,6 +147,7 @@
                       <img src="assets/images/Icon/icon_project.svg" alt="" class="mr-2" *ngIf="column?.project_type">
                       {{ column?.title | truncatetext:20 }}
                     </p>
+
                     <div class="inline-block">
                         <div class="dropdown">
                             <i class="material-icons action dropdown-toggle"
@@ -135,23 +159,33 @@
                                   <span class="material-icons-outlined">create</span>
                                   <span i18n="@@groupKanbanBoard.edit">Edit</span>
                                 </li>
-                                <li *ngIf="userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()"
+                                <li *ngIf="(userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()) && column.canEdit"
                                     class="dropdown-item" (click)="deleteColumn(column)">
                                   <span class="material-icons-outlined">delete</span>
                                   <span i18n="@@groupDashboard.delete">Delete</span>
                                 </li>
-                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager())"
+                                <li *ngIf="(!isShuttleTasksModuleAvailable || column?._id != (groupData?._shuttle_section?._id || groupData?._shuttle_section)) && (userData?.role == 'admin' || userData?.role == 'owner' || isGroupManager()) && column.canEdit"
                                     class="dropdown-item" (click)="archiveColumn(column)">
                                   <span class="material-icons-outlined">archive</span>
                                   <span i18n="@@groupDashboard.archive">Archive</span>
                                 </li>
-                                <li class="dropdown-item" *ngIf="groupData?.project_type" (click)="makeColumnProjectDialog(column)">
+                                <li class="dropdown-item" *ngIf="groupData?.project_type && column.canEdit" (click)="makeColumnProjectDialog(column)">
                                   <img src="assets/images/Icon/icon_launch_project.svg" alt="" >
                                   <span i18n="@@groupDashboard.launchProject">Launch Project</span>
                                 </li>
-                                <li class="dropdown-item" (click)="openShowCFDialog(column)">
+                                <li *ngIf="column.canEdit" class="dropdown-item" (click)="openShowCFDialog(column)">
                                   <span class="material-icons-outlined">auto_awesome</span>
                                   <span i18n="@@groupDashboard.showCF">Show CF Data</span>
+                                </li>
+                                <li class="dropdown-item" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData) && column.canEdit">
+                                  <app-component-search-input-box
+                                    [placeholder]="'Add rag tag'"
+                                    [groupData]="groupData"
+                                    [type]="'ragTag'"
+                                    [groupId]="groupId"
+                                    [ragList]="column.rags"
+                                    (ragTag)="addNewRagTag(column, $event)">
+                                  </app-component-search-input-box>
                                 </li>
                             </ul>
                             <!-- Menu Drawer Ends -->
@@ -161,7 +195,7 @@
                 <!-- COLUMN TITLE AND EDIT/DELETE DETAILS ENDS -->
 
                 <!-- EDIT COLUMN STARTS -->
-                <app-edit-column *ngIf="column" [column]="column" (column)="editColumn(column, $event)">
+                <app-edit-column *ngIf="column && column.canEdit" [column]="column" (column)="editColumn(column, $event)">
                 </app-edit-column>
                 <!-- EDIT COLUMN ENDS -->
 
@@ -190,10 +224,21 @@
                 </div>
                 <!-- CUSTOM FIELDS STATS SECTION ENDS -->
 
+                <div class="project-container" *ngIf="groupData && groupData.enabled_rights && column && column.rags && column.rags.length > 0">
+                  <div *ngFor="let tag of column.rags; let i = index">
+                    <div>
+                      <span class="tag">
+                        {{ tag }}
+                        <i *ngIf="column.canEdit" (click)="removeRagTag(column, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- TASK CONTAINER STARTS -->
                 <div class="tasks-container" [id]="column._id">
                     <!-- CREATE TASK STARTS -->
-                    <app-new-task [groupData]="groupData" [userData]="userData" [column]="column"
+                    <app-new-task *ngIf="column.canEdit" [groupData]="groupData" [userData]="userData" [column]="column"
                         (post)="getPost($event, column)" [isIdeaModuleAvailable]="isIdeaModuleAvailable"></app-new-task>
                     <!-- CREATE TASK ENDS -->
 

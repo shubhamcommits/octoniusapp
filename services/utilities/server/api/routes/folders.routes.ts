@@ -34,6 +34,10 @@ routes.delete('/:folderId', folders.delete);
 // PUT - Handles the move of a folder to another folder
 routes.put('/:folderId/move-to-folder', folders.moveToFolder);
 
+//PUT - Adding removing RAGS with user ids
+routes.put('/:folderId/addRag', folders.addRagToPost);
+routes.put('/:folderId/removeRag', folders.removeRagFromPost);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

@@ -22,6 +22,8 @@ hljs.configure({
 // Quill Image Resize
 import ImageResize from 'src/shared/utilities/quill-image-resize/ImageResize.js';
 
+import QuillClipboard from 'src/app/common/shared/quill-modules/quill-clipboard';
+
 // Image Drop Module
 import ImageDrop from './quill-image-drop/quill.image-drop.js';
 
@@ -42,6 +44,8 @@ Quill2.register({
   'modules/better-table': quillBetterTable,
   'modules/imageDrop': ImageDrop
 }, true);
+
+Quill2.register('modules/clipboard', QuillClipboard, true);
 
 @Component({
   selector: "app-folio-editor",
@@ -175,12 +179,13 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           ['bold', 'italic', 'underline', 'strike'],
           [{ 'color': [] }, { 'background': [] }],
           [{ 'script': 'super' }, { 'script': 'sub' }],
-          [{ 'header': '1' }, { 'header': '2' }, 'content', 'blockquote'/*, 'code-block'*/],
+          [{ 'header': '1' }, { 'header': '2' }, /*'content',*/ 'blockquote', 'code-block'],
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
           ['clean'], ['comment'],['tables'],['clear']
-        ], handlers : {
+        ],
+        handlers : {
           'comment': () => {
             this.openComment();
           },
@@ -195,41 +200,52 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
             this.generateHeading(value);
           },
           // Show/Hide the table of Content
+          /*
+          TODO Commented until BRD pays
           'content': () => {
             this.displayHeadings();
+          },
+          */
+          /*
+          // Show/Hide the table of Content
+          'list': (value) => {
+            this.generateList(value);
           }
+          */
         }},
-        table: true,
-        'better-table': {
-          operationMenu: {
-            items: {
-              unmergeCells: {
-                text: 'Another unmerge cells name'
-              }
-            },
-            color: {
-              colors: ['#808080', '#e7e6e6', 'red', '#b90000','green' , 'yellow', 'blue', 'white'],
-              text: 'Background Colors:'
+      table: true,
+      'better-table': {
+        operationMenu: {
+          items: {
+            unmergeCells: {
+              text: 'Another unmerge cells name'
             }
+          },
+          color: {
+            colors: ['#808080', '#e7e6e6', 'red', '#b90000','green' , 'yellow', 'blue', 'white'],
+            text: 'Background Colors:'
           }
-        },
-        keyboard: {
-          bindings: quillBetterTable.keyboardBindings
-        },
-        history: {
-          delay: 2500,
-          userOnly: true,
-        },
-        mention: this.metionModule(),
-        // imageResize: this.quillImageResize(),
-        imageResize: true,
-        imageDrop: true,
-      };
+        }
+      },
+      keyboard: {
+        bindings: quillBetterTable.keyboardBindings
+      },
+      history: {
+        delay: 2500,
+        userOnly: true,
+      },
+      mention: this.metionModule(),
+      // imageResize: this.quillImageResize(),
+      imageResize: true,
+      imageDrop: true,
+    };
   }
 
   async ngOnInit() {
     this.folio = this.initializeConnection();
     this.fileData = await this.getFile(this.folioId);
+    // TODO - Remove the following line when BRD pays
+    this.fileData.show_headings = false;
   }
 
   async ngAfterViewInit() {
@@ -274,7 +290,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
     document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
     document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
-    document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
+    // TODO Commented until BRD pays
+    // document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
   }
 
   initializeConnection() {
@@ -550,7 +567,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   // Get user's input from the create-table modal
   dataFromTableModal(data:any){
-    this.tableShow= false;
+    this.tableShow = false;
     if(data){
       this.createTable(data.rowCount,data.columnCount)
     }
@@ -767,6 +784,19 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
     });
   }
+
+  /**
+   * Creates a heading to be added to the table of content
+   */
+  /*
+   generateList(value: any) {
+    this.range = this.quill.getSelection(true);
+console.log(value);
+    this.quill.formatLine(this.range.index, this.range.length, 'list', value);
+
+    this.saveQuillData();
+  }
+  */
 
   /**
    * This function is responsible for fetching a file's details

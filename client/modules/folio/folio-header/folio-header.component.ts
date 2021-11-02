@@ -59,11 +59,13 @@ export class FolioHeaderComponent implements OnInit {
     // Set the readOnly
     this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get('readOnly') == 'true' || false
 
-    this.userData = await this.publicFunctions.getCurrentUser();
+    this.userData = await this.publicFunctions.getCurrentUser(this.readOnly);
 
-    // check if the user is part of the group of the folio
-    const groupIndex = await this.userData?._groups?.findIndex(group => { return (group._id || group) == this.groupId });
-    this.readOnly = this.readOnly || (groupIndex < 0);
+    if (this.userData && JSON.stringify(this.userData) != JSON.stringify({})) {
+      // check if the user is part of the group of the folio
+      const groupIndex = await this.userData?._groups?.findIndex(group => { return (group._id || group) == this.groupId });
+      this.readOnly = this.readOnly || (groupIndex < 0);
+    }
 
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.firstChild.paramMap.get('id')
@@ -110,7 +112,7 @@ export class FolioHeaderComponent implements OnInit {
       let fileService = this._Injector.get(FilesService);
 
       // Fetch the file details
-      fileService.getOne(fileId)
+      fileService.getOne(fileId, this.readOnly)
         .then((res) => {
           resolve(res['file'])
         })

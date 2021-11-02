@@ -19,6 +19,7 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
   @Input() post;
   @Input() assigned_to = [];
   @Input() type; // post/flow
+  @Input() canEdit = true;
 
   @Output() assigneeAddedEmiter = new EventEmitter();
   @Output() assigneeRemovedEmiter = new EventEmitter();

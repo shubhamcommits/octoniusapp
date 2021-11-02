@@ -6,8 +6,6 @@
   </div>
 </mat-dialog-actions>
 <div class="post-dialog-content">
-
-
     <div class="post-content">
         <div class="content-box">
             <div class="modal-header">
@@ -30,6 +28,8 @@
                     [post]="postData"
                     [userData]="userData"
                     [groupData]="groupData"
+                    [canEdit]="canEdit"
+                    [canView]="canView"
                     mode="fullscreen"
                     (delete)="deletePost()">
                 </app-post-utils>
@@ -38,7 +38,7 @@
 
             <!-- Post Content starts -->
             <app-quill-editor
-                *ngIf="edit"
+                *ngIf="canEdit"
                 [editorId]="'postbox-editor'"
                 [toolbar]="true"
                 [readOnly]="false"
@@ -48,7 +48,7 @@
             </app-quill-editor>
 
             <app-quill-editor
-                *ngIf="!edit"
+                *ngIf="!canEdit"
                 [editorId]="'postbox-editor'"
                 [toolbar]="false"
                 [readOnly]="true"
@@ -74,6 +74,8 @@
                 [fullscreen]="true"
                 [groupData]="groupData"
                 [isIdeaModuleAvailable]="isIdeaModuleAvailable"
+                [canEdit]="canEdit"
+                [canView]="canView"
                 (pinEvent)="onPostPin($event)"
                 (newCommentEmitter)="newCommentAdded($event)">
             </app-post-actions>
@@ -81,13 +83,13 @@
         </div>
 
         <div class="clearfix save-content">
-            <button *ngIf="edit" [disabled]="!contentChanged"
+            <button *ngIf="canEdit" [disabled]="!contentChanged"
               class="btn float-right btn-primary btn-md"
               (click)="updateDetails()" i18n="@@groupCreatePostDialog.save">
                 Save
             </button>
 
-            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id)"
+            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
               class="btn float-left btn-warning btn-md"
               (click)="prepareToAddSubtasks()"
               i18n="@@groupCreatePostDialog.addSubtask">
@@ -160,7 +162,7 @@
                 [groupId]="postData?._group?._id || postData?._group"
                 [userId]="userData?._id"
                 [status]="postData?.task?.status"
-                [disabled]="postData?.archived"
+                [disabled]="postData?.archived && canEdit"
                 [shuttleType]="false"
                 (status)="changeTaskStatus($event)">
             </app-task-status>
@@ -171,12 +173,12 @@
                 [groupId]="shuttle?._shuttle_group?._id || shuttle?._shuttle_group"
                 [userId]="userData?._id"
                 [status]="shuttle?.shuttle_status"
-                [disabled]="postData?.archived"
+                [disabled]="postData?.archived && canEdit"
                 [shuttleType]="true"
                 (status)="changeShuttleTaskStatus($event)">
             </app-task-status>
             <!-- Change task status ends -->
-            </div>
+          </div>
 
           <div class="shuttle-box" *ngIf="columns">
             <p class="mt-1" *ngIf="(((shuttle?._shuttle_group?._id || shuttle?._shuttle_group) != groupId) && !postData?.task?._parent_task) || ((shuttle?._shuttle_group?._id || shuttle?._shuttle_group) == groupId)"
@@ -189,7 +191,7 @@
                 *ngIf="!postData?.task?.shuttle_type || (groupData?._id == postData?._group?._id && !postData?.task?._parent_task)"
                 [sectionId]="(postData?.task?._column?._id || postData?.task?._column)"
                 [columns]="columns"
-                [disabled]="postData?.archived"
+                [disabled]="postData?.archived && canEdit"
                 (moveTask)="moveTaskToColumn($event)">
             </app-change-column>
 
@@ -197,32 +199,38 @@
                 *ngIf="(postData?.task?.shuttle_type && groupData?._id != postData?._group?._id)"
                 [sectionId]="(shuttle?._shuttle_section?._id || shuttle?._shuttle_section)"
                 [columns]="columns"
-                [disabled]="postData?.archived"
+                [disabled]="postData?.archived && canEdit"
                 (moveTask)="moveShuttleTaskToSection($event)">
             </app-change-column>
             <!-- Change task column ends -->
           </div>
+        </div>
+        <!-- Status ends -->
 
-          <p *ngIf="groupData && groupData.enabled_rights" class="box-title" style="margin-top: 18px;" i18n="@@groupCreatePostDialog.bar">BAR</p>
-          <div *ngIf="groupData && groupData.enabled_rights" class="ml-1">
-              <div (click)="removeBarTag(i, barTag)" *ngFor="let barTag of barTags; let i = index">
+        <div class="content-box" *ngIf="groupData && groupData.enabled_rights">
+          <p class="box-title" style="margin-top: 18px;" i18n="@@groupCreatePostDialog.rag">RAG</p>
+          <div class="ml-1">
+              <div *ngFor="let ragTag of postData.rags; let i = index">
                 <div>
-                  <span class="tag"> {{ barTag }}</span> <i class="material-icons" style="color: red;">clear</i>
+                  <span class="tag">
+                    {{ ragTag }}
+                    <i *ngIf="canEdit" (click)="removeRagTag(ragTag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
+                  </span>
                 </div>
               </div>
 
               <app-component-search-input-box
-                  *ngIf="groupData && checkDataExist(groupData)"
-                  [placeholder]="'Add bar tag'"
-                  [groupData] = "groupData"
-                  [type]="'barTag'"
+                  *ngIf="groupData && checkDataExist(groupData) && canEdit"
+                  [placeholder]="'Add rag tag'"
+                  [groupData]="groupData"
+                  [type]="'ragTag'"
                   [groupId]="groupId"
-                  (barTag)="addNewBarTag($event)">
+                  [ragList]="postData.rags"
+                  (ragTag)="addNewRagTag($event)">
               </app-component-search-input-box>
           </div>
           <br *ngIf="groupData && groupData.enabled_rights" />
         </div>
-        <!-- Status ends -->
 
         <!-- Shuttle Task starts -->
         <app-shuttle-task *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type && postData?.task?.shuttle_type"
@@ -242,12 +250,13 @@
             <app-date-picker (date)="getDate($event, 'start_date')"
               [selectedDate]="formateDate(postData?.task.start_date)"
               [upperLimit]="formateDate(postData?.task.due_to)"
-              [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+              [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')"
+              [canEdit]="canEdit">
             </app-date-picker>
             <!--Date Picker ends -->
 
             <!-- Clean field starts -->
-            <i (click)="updateDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+            <i *ngIf="canEdit" (click)="updateDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
             <!-- Clean field ends -->
           </div>
           <div *ngIf="postData.type === 'event'" class="btn-group">
@@ -255,28 +264,35 @@
             <app-date-picker (date)="getDate($event, 'start_date')"
               [selectedDate]="postData?.event.start_date"
               [upperLimit]="postData?.event.due_to"
-              [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+              [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')"
+              [canEdit]="canEdit">
             </app-date-picker>
             <!--Date Picker ends -->
           </div>
 
           <!-- Time Picker starts -->
-          <app-time-picker class="ml-1" *ngIf="postData.type === 'event'" [time]="this.dueTime" (time)="getTime($event)">
+          <app-time-picker class="ml-1" *ngIf="postData.type === 'event'"
+            [time]="this.dueTime"
+            [canEdit]="canEdit"
+            (time)="getTime($event)">
           </app-time-picker>
           <!-- Time Picker ends -->
+
           <p class="box-title" i18n="@@groupCreatePostDialog.dueDate">Due date</p>
+
           <div *ngIf="postData?.type === 'task'">
             <!-- Date Picker starts -->
             <app-date-picker
               (date)="getDate($event, 'due_date')"
               [selectedDate]="formateDate(postData?.task.due_to)"
               [lowerLimit]=" (postData?.task?.is_milestone)? '' : formateDate(postData?.task.start_date)"
-              [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+              [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')"
+              [canEdit]="canEdit">
             </app-date-picker>
             <!--Date Picker ends -->
 
             <!-- Clean field starts -->
-            <i (click)="updateDate(null, 'due_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+            <i *ngIf="canEdit" (click)="updateDate(null, 'due_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
             <!-- Clean field ends -->
           </div>
           <div *ngIf="postData.type === 'event'" class="btn-group">
@@ -285,7 +301,8 @@
               (date)="getDate($event, 'due_date')"
               [selectedDate]="postData?.event.due_to"
               [lowerLimit]="postData?.event.start_date"
-              [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')">
+              [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')"
+              [canEdit]="canEdit">
             </app-date-picker>
             <!--Date Picker ends -->
           </div>
@@ -295,7 +312,8 @@
               class="ml-1"
               *ngIf="postData.type === 'event'"
               [time]="this.dueTime"
-              (time)="getTime($event)">
+              (time)="getTime($event)"
+              [canEdit]="canEdit">
           </app-time-picker>
           <!-- Time Picker ends -->
         </div>
@@ -306,6 +324,7 @@
             <p class="box-title" i18n="@@groupCreatePostDialog.assignee">Assignee</p>
 
             <app-multiple-assignments
+              [canEdit]="canEdit"
               [groupId]="groupId"
               [userData]="userData"
               [post]="postData"
@@ -336,6 +355,7 @@
 
             <!-- Post Tags starts -->
             <app-post-tags
+                [canEdit]="canEdit"
                 [post]="postData"
                 [userData]="userData"
                 [groupId]="groupId"
@@ -351,6 +371,7 @@
                 <p class="col">{{ cf.title }}</p>
                 <mat-select ngDefaultControl *ngIf="!cf.input_type"
                     [(value)]="selectedCFValues[cf.name]"
+                    [disabled]="!canEdit"
                     (selectionChange)="onCustomFieldChange($event, cf.name)"
                     appearance="fill"
                     class="col">
@@ -360,21 +381,22 @@
 
                 <div *ngIf="cf.input_type" class="col" style="display: flex; float: left; width: 125px;">
                   <input type="text" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]"
+                      [disabled]="!canEdit"
                       class="col" style="width: 94px;" [value]="selectedCFValues[cf.name]"
                       (keyup.enter)="saveInputCustomField($event, cf.name)" />
-                  <i (click)="saveCustomField(cf.name, selectedCFValues[cf.name]);" class="material-icons muted mr-5"
+                  <i *ngIf="canEdit" (click)="saveCustomField(cf.name, selectedCFValues[cf.name]);" class="material-icons muted mr-5"
                     style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i>
                 </div>
 
                 <!-- Clean field starts -->
-                <i (click)="saveCustomField(cf.name, null);"
+                <i *ngIf="canEdit" (click)="saveCustomField(cf.name, null);"
                   class="material-icons muted mr-5"
                   style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
                 <!-- Clean field ends -->
             </div>
         </div>
 
-        <app-task-actions *ngIf="postData?.type === 'task'"
+        <app-task-actions *ngIf="postData?.type === 'task' && canEdit"
           [postData]="postData"
           [groupData]="groupData"
           [userData]="userData"

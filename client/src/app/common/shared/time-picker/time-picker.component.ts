@@ -12,11 +12,13 @@ export class TimePickerComponent implements OnInit {
   // Time Modal
   @Input('time') timeModal = { hour: 13, minute: 30 };
 
-  // Meridian variable
-  meridian = true;
+  @Input() canEdit = true;
 
   // Output time event emitter
   @Output('time') time = new EventEmitter();
+
+  // Meridian variable
+  meridian = true;
 
   // Show Picker State
   showPicker = false;
@@ -26,7 +28,7 @@ export class TimePickerComponent implements OnInit {
 
   /**
    * This function is binded to the event change of @constant model
-   * @param timeObject 
+   * @param timeObject
    */
   emitTime(timeObject: any){
 

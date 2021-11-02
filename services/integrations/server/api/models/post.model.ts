@@ -53,7 +53,7 @@ const PostSchema = new Schema({
         ref: 'User',
         required: true
     },
-    bars: [],
+    rags: [],
     created_date: {
         type: Date,
         default: Date.now

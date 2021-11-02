@@ -106,10 +106,10 @@
   <div *ngIf="!parentTask && !isDependent && !isMilestone && (groupData?.shuttle_type && (!postData?.task?._shuttle_group || (postData?.task?._shuttle_group?._id || postData?.task?._shuttle_group) != groupData?._id))" class="set-parent" style="margin-top:16px; padding-top: 16px; border-top: 1px solid #e4edf8;">
    <span i18n="@@taskActions.makeSubtaskOf">MAKE SUBTASK OF</span>
 
-    <!-- INPUT BAR STARTS -->
+    <!-- INPUT STARTS -->
     <input type="search" id="keyword" autocomplete="off" placeholder="Search task" class="input-search"
       [(ngModel)]="itemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChange($event)" />
-    <!-- INPUT BAR ENDS -->
+    <!-- INPUT ENDS -->
     <div *ngIf="searchingOn === 'keyword'">
       <section id="results" *ngIf="!(isLoadingAction$ | async)" class="results" onfocusout="">
         <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">
@@ -139,10 +139,10 @@
        (click)="removeDependencyTask(i)">
       <b>X</b> {{ task.title | truncatetext: 50 }}
     </button>
-    <!-- INPUT BAR STARTS -->
+    <!-- INPUT STARTS -->
     <input type="search" id="dependencyKeyword" autocomplete="off" placeholder="Search task" class="input-search"
       [(ngModel)]="dependencyItemValue" (keyup)="onSearch($event)" (ngModelChange)="modelChangeForDependency($event)" />
-    <!-- INPUT BAR ENDS -->
+    <!-- INPUT ENDS -->
     <div *ngIf="searchingOn === 'dependencyKeyword'">
     <section id="results" *ngIf="!(isLoadingAction$ | async)" class="results" onfocusout="">
       <div class="media task-item user-list mb-0" *ngFor=" let task of tasksList; let index = index;">

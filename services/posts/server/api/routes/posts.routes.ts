@@ -171,9 +171,9 @@ routes.get('/test/recents/groups', postController.getRecentGroups);
 // PUT - Change custom field value
 routes.put('/:postId/customField', postController.saveCustomField.bind(postController));
 
-//PUT - Adding removing BARS with user ids
-routes.put('/:postId/addBar', postController.addBarToPost);
-routes.put('/:postId/removeBar', postController.removeBarFromPost);
+//PUT - Adding removing RAGS with user ids
+routes.put('/:postId/addRag', postController.addRagToPost);
+routes.put('/:postId/removeRag', postController.removeRagFromPost);
 
 // POST - Used to copy the post to another group
 routes.post('/copy-to-group', postController.copyToGroup);

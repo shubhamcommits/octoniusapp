@@ -53,15 +53,17 @@ export class GroupSmartAdminComponent implements OnInit {
     // Fetch current group from the service
     this.group = await this.publicFunctions.getCurrentGroup();
 
-    this.getCurrentSettings();
+    if (this.group) {
+      this.getCurrentSettings();
 
-    this.workspaceService.getProfileCustomFields(this.group._workspace).then((res) => {
-      if (res['workspace']['profile_custom_fields']) {
-        res['workspace']['profile_custom_fields'].forEach(field => {
-          this.customFields.push(field);
-        });
-      }
-    });
+      this.workspaceService.getProfileCustomFields(this.group?._workspace).then((res) => {
+        if (res['workspace']['profile_custom_fields']) {
+          res['workspace']['profile_custom_fields'].forEach(field => {
+            this.customFields.push(field);
+          });
+        }
+      });
+    }
   }
 
   /**
@@ -177,7 +179,7 @@ export class GroupSmartAdminComponent implements OnInit {
       // Setup payload for DB
       data = { type: 'skills', payload: this.condition };
     } else if (this.rule === 'Custom Fields') {
-      const index = this.currentSettings.customFields.findIndex(cf => cf.name == this.condition.name);
+      const index = this.currentSettings.customFields.findIndex(cf => (cf.name == this.condition.name && cf.value == this.condition.value));
       if (index >= 0) {
         this.utilityService.infoNotification($localize`:@@groupSmartAdmin.fieldAlreadyAdded:That field has already been added.`);
         return;
@@ -197,6 +199,8 @@ export class GroupSmartAdminComponent implements OnInit {
         this.rule = '';
         this.condition = '';
         this.conditions = [];
+        this.cfName = '';
+        this.cfValue = '';
         this.autoAdd();
       },
       error => {
@@ -212,7 +216,7 @@ export class GroupSmartAdminComponent implements OnInit {
    * on page load.
    */
   getCurrentSettings(): void {
-    this.groupService.getSmartGroupSettings(this.group._id).subscribe(
+    this.groupService.getSmartGroupSettings(this.group?._id).subscribe(
       res => {
         this.currentSettings.emailDomains = res.domains;
         this.currentSettings.jobPositions = res.positions;

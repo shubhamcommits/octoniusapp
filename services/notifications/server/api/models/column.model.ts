@@ -60,6 +60,7 @@ const ColumnSchema = new Schema({
     kanban_order: {
         type: Number
     },
+    rags: [],
     custom_fields_to_show_kanban: [{
         type: String,
         required: false

@@ -66,9 +66,9 @@
               [name]="'enabled_rights'"
               (change)="saveSettings($event)"
               [(ngModel)]="enabledRights">
-            <h6><b i18n="@@groupAdmin.enableBAR">Enable board access rights</b></h6>
-            <p class="card-text" i18n="@@groupAdmin.BARAllowAdminsToChose">BARs allow admins to chose who can see and work on specific tasks.<br> Sometimes this is necessary for transversal projects.</p>
-            <button button class="btn btn-primary btn-sm" (click)="openBarModal(groupId)" *ngIf="enabledRights" i18n="@@groupAdmin.manageBAR">Manage BAR</button>
+            <h6><b i18n="@@groupAdmin.enableRAG">Enable restricted access groups</b></h6>
+            <p class="card-text" i18n="@@groupAdmin.RAGAllowAdminsToChose">RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.<br> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.</p>
+            <button button class="btn btn-primary btn-sm" (click)="openRAGModal(groupId)" *ngIf="enabledRights" i18n="@@groupAdmin.manageRAG">Manage RAG</button>
           </mat-slide-toggle><br>
         </div>
 

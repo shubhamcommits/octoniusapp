@@ -38,13 +38,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
   shuttle: any;
   // Title of the Post
   title: string = '';
-  barTags = [];
+  //ragTags = [];
   isIdeaModuleAvailable;
   isShuttleTasksModuleAvailable;
 
   // Quill Data Object
   quillData: any;
-  edit: boolean = false;
+  canEdit: boolean = true;
+  canView: boolean = true;
 
   // postEditor: any;
 
@@ -147,8 +148,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     await this.initPostData();
 
-    const isGroupManager = (this.groupData && this.groupData._admins) ? (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id) >= 0) : false;
-    this.edit = this.userData?.role == 'admin' || this.userData?.role == 'owner' || this.postData?._posted_by?._id == this.userData?._id || isGroupManager;
+    this.canEdit = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'edit');
+    const hide = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'hide');
+    this.canView = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'view') || !hide;
   }
 
   formateDate(date){
@@ -158,10 +160,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async initPostData() {
     // Set the title of the post
     this.title = this.postData.title;
-    if(this.postData.bars && this.postData.bars !== undefined) {
-      this.barTags = this.postData.bars.map( bar => bar.bar_tag);
+    /*
+    if(this.postData.rags && this.postData.rags !== undefined) {
+      this.ragTags = this.postData.rags.map(rag => rag.rag_tag);
     }
-
+    */
     // Set the due date to be undefined
     this.dueDate = undefined;
     this.tags = [];
@@ -355,19 +358,17 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.updateDetails();
   }
 
-  async addNewBarTag(event){
-    let bar;
-    this.groupData.bars.forEach(element => {
-      if(element.bar_tag === event){
-        bar = element;
-      }
-    });
+  async addNewRagTag(event) {
+    if (!this.postData.rags) {
+      this.postData.rags = [];
+    }
+
     await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.addBar(this.postData._id, bar)
+      this.postService.addRag(this.postData._id, event.rag_tag)
         .then((res) => {
           // Resolve with success
-        this.postData.bars.push(bar);
-        this.barTags.push(event);
+          this.postData.rags.push(event.rag_tag);
+          //this.ragTags.push(event.rag_tag);
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {
@@ -376,20 +377,19 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }));
   }
 
-  async removeBarTag(index, event){
-    let bar;
-    this.groupData.bars.forEach(element => {
-      if(element.bar_tag === event){
-        bar = element;
-      }
-    });
+  async removeRagTag(event){
 
     await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.removeBar(this.postData._id, bar)
+      this.postService.removeRag(this.postData._id, event)
         .then((res) => {
           // Resolve with success
-          this.barTags.splice(index, 1);
-          this.postData.bars = this.postData.bars.filter(barTag => barTag.bar_tag !== event);
+          //this.ragTags.splice(index, 1);
+          // Find the index of the column to check if the same named column exist or not
+          let indexRag = (this.postData.rags) ? this.postData.rags.findIndex((ragTag: any) => ragTag == event) : -1;
+          // Remove the column from the array
+          if (indexRag >= 0) {
+            this.postData.rags.splice(indexRag, 1);
+          }
           resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
         })
         .catch(() => {

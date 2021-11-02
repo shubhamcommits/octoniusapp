@@ -350,28 +350,28 @@ export class MembersControllers {
     }
 
     /**
-     * Adding users to Bar
-     * Users who can see some private tasks depening on bar
+     * Adding users to Rag
+     * Users who can see some private tasks depening on rag
      * @param req 
      * @param res 
      * @param next 
      */
-    async addUserToBar(req: Request, res: Response, next: NextFunction) {
-        const { groupId, member, barTag } = req.body;
+    async addUserToRag(req: Request, res: Response, next: NextFunction) {
+        const { groupId, member, ragTag } = req.body;
 
         try {
             const memberId = member._id;
             let groupUpdate: any = await Group.findById(groupId);
-            let foundBar = false;
+            let foundRag = false;
             let userExists = false;
             let users;
-            groupUpdate.bars.forEach(bar => {
-                if (bar.bar_tag === barTag) {
-                  foundBar = true;
+            groupUpdate.rags.forEach(rag => {
+                if (rag.rag_tag === ragTag) {
+                  foundRag = true;
                 }
-                if (bar.bar_tag === barTag && bar.tag_members.includes(memberId)) {
+                if (rag.rag_tag === ragTag && rag.tag_members.includes(memberId)) {
                     userExists = true;
-                    users = bar.tag_members;
+                    users = rag.tag_members;
                 }
             });
             // If group wasn't found invalid id error
@@ -379,15 +379,15 @@ export class MembersControllers {
                 let msg = '';
                 groupUpdate ? msg = 'Group' : msg = 'User';
                 return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404);
-            } else if (!foundBar) {
-                return sendError(res, new Error('Bar tag does not exist!'), 'Bar not found!', 404);
+            } else if (!foundRag) {
+                return sendError(res, new Error('Rag tag does not exist!'), 'Rag not found!', 404);
             } else if (userExists) {
                 return sendError(res, new Error('User already tag member!'), 'Already member!', 404);
             }
             
-            groupUpdate.bars.forEach( bar => {
-                if (bar.bar_tag === barTag) {
-                    bar.tag_members.push(memberId);
+            groupUpdate.rags.forEach( rag => {
+                if (rag.rag_tag === ragTag) {
+                    rag.tag_members.push(memberId);
                 }
             });
             groupUpdate.save();
@@ -405,7 +405,7 @@ export class MembersControllers {
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'New Member has been added to the bar!',
+                message: 'New Member has been added to the rag!',
                 group: groupUpdate
             });
         } catch (err) {
@@ -414,14 +414,14 @@ export class MembersControllers {
     }
 
     /**
-     * Removing users from Bar
+     * Removing users from Rag
      * @param req
      * @param res
      * @param next 
      */
-    async removeUserFromBar(req: Request, res: Response, next: NextFunction) {
+    async removeUserFromRag(req: Request, res: Response, next: NextFunction) {
      // Get the groupId and userId
-     const { groupId, member, barTag } = req.body;
+     const { groupId, member, ragTag } = req.body;
      try {
          const memberId = member._id;
          const groupUpdate: any = await Group.findById(groupId);
@@ -434,26 +434,26 @@ export class MembersControllers {
          }
          let usersList;
          // tslint:disable-next-line: no-shadowed-variable
-         groupUpdate.bars.forEach( bar => {
-             if (bar.bar_tag === barTag) {
-                 usersList = bar.tag_members.filter( tagMember => String(tagMember) !== memberId);
-                 bar.tag_members = usersList;
+         groupUpdate.rags.forEach( rag => {
+             if (rag.rag_tag === ragTag) {
+                 usersList = rag.tag_members.filter( tagMember => String(tagMember) !== memberId);
+                 rag.tag_members = usersList;
              }
          });
          groupUpdate.save();
 
          // Send status 200 response
          return res.status(200).json({
-             message: `User has been removed from ${barTag} Bar.`
+             message: `User has been removed from ${ragTag} Rag.`
          });
      } catch (err) {
          return sendError(res, err, 'Internal Server Error!', 500);
      }
     }
 
-    async removeBar(req: Request, res: Response, next: NextFunction) {
+    async removeRag(req: Request, res: Response, next: NextFunction) {
         // Get the groupId and userId
-        const { groupId, barTag } = req.body;
+        const { groupId, ragTag } = req.body;
 
         try {
 
@@ -466,14 +466,14 @@ export class MembersControllers {
                 return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404)
             }
 
-            // remove bar from list
-            const bars = groupUpdate.bars.filter( bar => bar.bar_tag !== barTag);
-            groupUpdate.bars = bars;
+            // remove rag from list
+            const rags = groupUpdate.rags.filter( rag => rag.rag_tag !== ragTag);
+            groupUpdate.rags = rags;
             groupUpdate.save();
 
             // Send status 200 response
             return res.status(200).json({
-                message: `Bar tag with users has been removed`
+                message: `Rag tag with users has been removed`
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

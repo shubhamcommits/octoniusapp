@@ -53,6 +53,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
   isMobile = false;
 
+  canEdit: boolean = true;
+
   constructor(
     private router: ActivatedRoute,
     public utilityService: UtilityService,
@@ -69,6 +71,12 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
     this.canSeeBudget = this.userData?.role == 'owner' || this.userData?.role == 'admin'
                         || this.userData?.role == 'manager' || this.isGroupManager();
+
+    this.columns.forEach(column => {
+      if (column.canEdit) {
+        this.canEdit = true;
+      }
+    });
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -204,24 +212,28 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
    * @param event
    */
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
+    const oldColumn = this.columns[this.columns.findIndex(col => col._id == event.previousContainer.id)];
+    const newColumn = this.columns[this.columns.findIndex(col => col._id == event.container.id)];
+    if (oldColumn && newColumn && oldColumn.canEdit && newColumn.canEdit) {
+      if (event.previousContainer === event.container) {
 
-      // Move items in array
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        // Move items in array
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
 
-    } else {
-      var post: any = event.previousContainer.data[event.previousIndex];
-
-      const shuttleIndex = (post && post.task && post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupId) : -1;
-      // Update the task column when changed with dropping events to reflect back in the task view modal
-      if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
-        post.task.shuttles[shuttleIndex]._shuttle_section = event.container.id;
       } else {
-        post.task._column = event.container.id;
-      }
+        var post: any = event.previousContainer.data[event.previousIndex];
 
-      // Call move task to a new column
-      this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id, shuttleIndex);
+        const shuttleIndex = (post && post.task && post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupId) : -1;
+        // Update the task column when changed with dropping events to reflect back in the task view modal
+        if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
+          post.task.shuttles[shuttleIndex]._shuttle_section = event.container.id;
+        } else {
+          post.task._column = event.container.id;
+        }
+
+        // Call move task to a new column
+        this.moveTaskToNewColumn(post, event.previousContainer.id, event.container.id, shuttleIndex);
+      }
     }
   }
 
@@ -438,7 +450,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
    * @param column
    */
   getPost(post: any, column: any) {
-
     // Adding the post to column
     column.tasks.unshift(post)
   }
@@ -736,5 +747,41 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
 
   isGroupManager() {
     return (this.groupData && this.groupData._admins) ? (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id) >= 0) : false;
+  }
+
+  async addNewRagTag(column, event) {
+    if (!column.rags) {
+      column.rags = [];
+    }
+
+    await this.utilityService.asyncNotification($localize`:@@groupKanbanBoards.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      this.columnService.addRag(column._id, event.rag_tag)
+        .then((res) => {
+          // Resolve with success
+          column.rags.push(event.rag_tag);
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.detailsUpdated:Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToUpdateDetails:Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
+  async removeRagTag(column, event) {
+    await this.utilityService.asyncNotification($localize`:@@groupKanbanBoards.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      this.columnService.removeRag(column._id, event)
+        .then((res) => {
+          // Find the index of the column to check if the same named column exist or not
+          let index = (column.rags) ? column.rags.findIndex((ragTag: any) => ragTag == event) : -1;
+          // Remove the column from the array
+          if (index >= 0) {
+            column.rags.splice(index, 1);
+          }
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.detailsUpdated:Details updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToUpdateDetails:Unable to update the details, please try again!`));
+        });
+    }));
   }
 }

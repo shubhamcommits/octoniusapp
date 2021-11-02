@@ -74,4 +74,14 @@ export class FoldersService {
   async moveToFolder(folderId: string, parentFolderId: string) {
     return this._http.put(this.baseURL + `/folders/${folderId}/move-to-folder`, { parentFolderId: parentFolderId }).toPromise();
   }
+
+  addRag(folderId: string, rag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/folders/${folderId}/addRag`, {rag}).toPromise();
+  }
+
+  removeRag(folderId: string, rag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/folders/${folderId}/removeRag`, {rag}).toPromise();
+  }
 }

@@ -349,6 +349,13 @@ export class GroupActivityFeedComponent implements OnInit {
       this.moreToLoad = false
     }
 
+    if (this.groupData?.enabled_rights && this.groupData?.rags && this.groupData?.rags.length > 0) {
+      posts = posts.filter(post => {
+        const hide = this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'hide');
+        return this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'view') || !hide;
+      });
+    }
+
     // Else if moreToLoad is true
     if (this.moreToLoad) {
       for (let post of posts) {
@@ -359,7 +366,7 @@ export class GroupActivityFeedComponent implements OnInit {
       }
 
       // Calculate the lastPostId from the currently fetched posts
-      this.lastPostId = posts[posts.length - 1]._id
+      this.lastPostId = (posts[posts.length - 1]) ? posts[posts.length - 1]?._id : '';
 
       // If GLobal Feed is true then set the moreToLoad to false
       if (this.globalFeed)
@@ -370,6 +377,11 @@ export class GroupActivityFeedComponent implements OnInit {
   async fetchPinnedPosts() {
     await this.postService.getPosts(this.groupId, 'pinned', true, null, { tags: this.filters['tags'], users: this.filters['users'] }).then(res => {
       this.pinnedPosts = res['posts'];
+
+      this.pinnedPosts = this.pinnedPosts.filter(post => {
+        const hide = this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'hide');
+        return this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'view') || !hide;
+      });
     });
   }
 
