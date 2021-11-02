@@ -12036,7 +12036,7 @@
       </trans-unit>
       <trans-unit id="utilityService.noRightToOpenPost" datatype="html">
         <source>You does not have rights to access the post. Contact with the Manager!</source>
-        <target state="needs-adaptation">No tiene derechos para acceder a la publicación. ¡Contacta con el Gerente!</target>
+        <target state="translated">No tiene derechos para acceder a la publicación. ¡Contacta con el Gerente!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
           <context context-type="linenumber">321</context>
