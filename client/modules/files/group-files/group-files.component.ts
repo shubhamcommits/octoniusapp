@@ -384,15 +384,15 @@ export class GroupFilesComponent implements OnInit {
     if (folderId == 'root') {
       await this.initRootFolder();
     } else {
-      this.foldersService.getOne(folderId)
+      await this.foldersService.getOne(folderId)
         .then(res => {
           this.currentFolder = res['folder'];
+          this.currentFolder.canEdit = this.utilityService.canUserDoAction(this.currentFolder, this.groupData, this.userData, 'edit');
           this.folderOriginalName = this.currentFolder.folder_name;
         });
 
       // Fetch the uploaded files from the server
       this.folders = await this.publicFunctions.getFolders(this.groupId, folderId);
-
       const parentFolder = {
         _id: this.currentFolder?._parent || 'root',
         folder_name: '../',

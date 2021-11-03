@@ -20,10 +20,14 @@
 
         <div *ngIf="currentFolder" class="mt-n30">
           <!-- Folder Static Title starts -->
-          <span *ngIf="!editFolderTitle"
+          <span *ngIf="!currentFolder?.canEdit" style="float: left; margin-right: 30px;">
+            <h5>{{ currentFolder?.folder_name }}</h5>
+          </span>
+
+          <span *ngIf="currentFolder?.canEdit && !editFolderTitle"
               (click)="editFolderTitle = !editFolderTitle"
               matTooltip="Click me to rename"
-              matTooltipPosition="below">
+              matTooltipPosition="below" style="float: left; margin-right: 30px;">
             <h5>
               {{currentFolder?.folder_name}}
               <i class="material-icons muted" style="cursor: pointer; font-size: 14px;">mode</i>
@@ -32,12 +36,23 @@
           <!-- Folder Static Title ends -->
 
           <!-- Folder edit title name starts -->
-          <input *ngIf="editFolderTitle" type="search"
+          <input *ngIf="currentFolder?.canEdit && editFolderTitle" type="search"
               autocomplete="off"
               [(ngModel)]="currentFolder.folder_name"
               (keyup)="changeFolderTitle($event)"
-              class="input-search" />
+              class="input-search" style="float: left; margin-right: 30px;" />
           <!-- Folder edit title name ends -->
+
+          <div *ngIf="groupData && groupData.enabled_rights && currentFolder.rags && currentFolder.rags.length > 0" style="margin-left: 30px;">
+            <div *ngFor="let tag of currentFolder?.rags; let i = index">
+              <div>
+                <span class="tag">
+                  {{ tag }}
+                  <i *ngIf="currentFolder?.canEdit" (click)="removeFolderRagTag(currentFolder, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <br class="clearfix">

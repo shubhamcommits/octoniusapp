@@ -285,10 +285,12 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
                 const hide = this.utilityService.canUserDoAction(task, this.groupData, this.userData, 'hide');
                 const canView = this.utilityService.canUserDoAction(task, this.groupData, this.userData, 'view') || !hide;
                 if (canEdit || canView) {
+                  task.canView = true;
                   tasks.push(task);
                 }
               });
             } else {
+              task.canView = true;
               tasks.push(task);
             }
           });

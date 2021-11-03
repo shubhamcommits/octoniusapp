@@ -292,7 +292,7 @@ export class UtilityService {
    */
   openCreatePostFullscreenModal(postData: any, userData: any, groupData: any, isIdeaModuleAvailable: boolean, columns?: any, tasks?: any) {
     let dialogOpen;
-    if (!groupData?.enabled_rights || this.canUserDoAction(postData, groupData, userData, 'view')) {
+    if (!groupData?.enabled_rights || postData?.canView) {
       const data = (columns) ?
         {
           postData: postData,
@@ -521,26 +521,92 @@ export class UtilityService {
    */
   canUserDoAction(item: any, groupData: any, userData: any, action: string) {
     let canDoRagAction = false;
-    if (groupData?.enabled_rights && groupData?.rags && item?.rags && item?.rags?.length > 0) {
-      item.rags.forEach(rag => {
-        const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => groupRag.rag_tag == rag) : -1;
-        let groupRag;
-        if (groupRagIndex >= 0) {
-          groupRag = groupData?.rags[groupRagIndex];
-        }
+    if (groupData?.enabled_rights) {
+      if (groupData?.rags && item?.rags && item?.rags?.length > 0) {
+        item.rags.forEach(rag => {
+          const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => groupRag.rag_tag == rag) : -1;
+          let groupRag;
+          if (groupRagIndex >= 0) {
+            groupRag = groupData?.rags[groupRagIndex];
+          }
 
-        const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
-        if (userRagIndex >= 0 && groupRag.right == action) {
-          canDoRagAction = true;
+          const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+          if (userRagIndex >= 0 && groupRag.right == action) {
+            canDoRagAction = true;
+          }
+
+          let parent;
+          if (item?.task) {
+            if (item?.task?._column) {
+              // Task Columns
+              parent = item?.task?._column;
+            } else if (item?.task?._parent_task) {
+              // Parent Task
+              parent = item?.task?._parent_task;
+            }
+          } else if (item?._folder) {
+            // File Folder
+            parent = item?._folder
+          } else if (item?._parent) {
+            // Folder parent
+            parent = item?._parent
+          }
+          if (parent && parent?.rags && parent?.rags?.length > 0) {
+            parent?.rags.forEach(columnRag => {
+              const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => groupRag.rag_tag == columnRag) : -1;
+              let groupRag;
+              if (groupRagIndex >= 0) {
+                groupRag = groupData?.rags[groupRagIndex];
+              }
+
+              const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+              if (userRagIndex >= 0 && groupRag.right == action) {
+                canDoRagAction = true;
+              }
+            });
+          }
+        });
+      } else if (!item?.rags || item?.rags?.length == 0) {
+        let parent;
+        if (item?.task) {
+          if (item?.task?._column) {
+            // Task Columns
+            parent = item?.task?._column;
+          } else if (item?.task?._parent_task) {
+            // Parent Task
+            parent = item?.task?._parent_task;
+          }
+        } else if (item?._folder) {
+          // File Folder
+          parent = item?._folder
+        } else if (item?._parent) {
+          // Folder parent
+          parent = item?._parent
         }
-      });
+        if (parent && parent?.rags && parent?.rags?.length > 0) {
+          parent?.rags.forEach(columnRag => {
+            const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => groupRag.rag_tag == columnRag) : -1;
+            let groupRag;
+            if (groupRagIndex >= 0) {
+              groupRag = groupData?.rags[groupRagIndex];
+            }
+
+            const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+            if (userRagIndex >= 0 && groupRag.right == action) {
+              canDoRagAction = true;
+            }
+          });
+        }
+      } else {
+        canDoRagAction = true;
+      }
     }
 
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
     let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
     createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : createdBy;
 
-    return userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager || (groupData?.enabled_rights && canDoRagAction);
+    return userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager || !groupData?.enabled_rights || (groupData?.enabled_rights && canDoRagAction);
   }
 
   handleDeleteGroupFavorite() {
