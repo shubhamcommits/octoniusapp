@@ -6,7 +6,7 @@
 </span>
 
 <mat-menu #postOptions="matMenu">
-  <button mat-menu-item *ngIf="mode !== 'fullscreen' && (userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id || isGroupManager()) && canView" (click)="openFullscreenModal()">View</button>
+  <button mat-menu-item *ngIf="mode !== 'fullscreen'" (click)="openFullscreenModal()">View</button>
   <button mat-menu-item (click)="copyToClipboard()" i18n="@@postUtils.copyLink">Copy Link</button>
   <button mat-menu-item *ngIf="post?.type == 'normal' && !post?.pin_to_top && canEdit" (click)="pinToTop(true)">
     <span class="material-icons-outlined">push_pin</span>
@@ -25,7 +25,7 @@
   <li class="dropdown-divider" *ngIf="post?.type == 'task' && (userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id) && canEdit"></li>
 
   <button mat-menu-item (click)="deletePost()"
-      *ngIf="canEdit"
+      *ngIf="canDelete"
       i18n="@@postUtils.delete">
     Delete
   </button>

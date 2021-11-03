@@ -24,7 +24,6 @@ export class PostUtilsComponent implements OnInit {
 
   @Input() isIdeaModuleAvailable;
   @Input() canEdit = true;
-  @Input() canView = true;
 
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter();
@@ -33,6 +32,7 @@ export class PostUtilsComponent implements OnInit {
 
   groupId = '';
 
+  canDelete = false;
 
   // Array of user groups
   public userGroups: any = [];
@@ -54,6 +54,8 @@ export class PostUtilsComponent implements OnInit {
     const workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.groupId = (this.post._group._id) ? this.post._group._id : this.post._group;
+
+    this.canDelete = await this.utilityService.canUserDoTaskAction(this.post, this.groupData, this.userData, 'delete');
 
     // Fetches the user groups from the server
     await this.publicFunctions.getAllUserGroups(workspaceData['_id'], this.userData._id)

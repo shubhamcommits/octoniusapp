@@ -9,7 +9,7 @@
         </div>
         <div class="right">
 
-            <app-idea-actions *ngIf="isIdeaModuleAvailable && post?.task?.is_idea && canView"
+            <app-idea-actions *ngIf="isIdeaModuleAvailable && post?.task?.is_idea && canEdit"
               [post]="post"
               [userData]="userData"></app-idea-actions>
 
@@ -24,7 +24,7 @@
             <!-- Like Post ends-->
 
             <!-- Follow Post starts -->
-            <app-follow-post *ngIf="post && canView"
+            <app-follow-post *ngIf="post && canEdit"
                 [post]="post"
                 [userData]="userData"
                 (postLiked)="onPostFollowEmitter($event)"
@@ -36,7 +36,6 @@
                 [userData]="userData"
                 [groupData]="groupData"
                 [canEdit]="canEdit"
-                [canView]="canView"
                 (delete)="deletePost($event)"
                 (pinEvent)="onPostPin($event)"
                 (closeModalEvent)="postModalCloseEvent($event)">

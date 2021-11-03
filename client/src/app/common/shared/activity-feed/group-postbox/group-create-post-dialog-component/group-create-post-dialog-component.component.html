@@ -29,7 +29,6 @@
                     [userData]="userData"
                     [groupData]="groupData"
                     [canEdit]="canEdit"
-                    [canView]="canView"
                     mode="fullscreen"
                     (delete)="deletePost()">
                 </app-post-utils>
@@ -75,7 +74,6 @@
                 [groupData]="groupData"
                 [isIdeaModuleAvailable]="isIdeaModuleAvailable"
                 [canEdit]="canEdit"
-                [canView]="canView"
                 (pinEvent)="onPostPin($event)"
                 (newCommentEmitter)="newCommentAdded($event)">
             </app-post-actions>

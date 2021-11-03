@@ -101,17 +101,18 @@
                             [queryParams]="{ userId: folder?._created_by?._id || folder?._created_by?._id }"
                             [imgURL]="folder?._created_by?.profile_pic"
                             [service]="'user'"
-                            [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
+                            [styleClass]="'mr-3 feed-avatar'">
+                        </app-secured-image>
 
-                        <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+                        <i *ngIf="folder?.canEdit" class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
 
                         <mat-menu #menu="matMenu">
-                            <a mat-menu-item *ngIf="folder?.canEdit" (click)="deleteItem(folder?._id, folder?.type)">
+                            <a mat-menu-item *ngIf="folder?.canDelete" (click)="deleteItem(folder?._id, folder?.type)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
                                 <span i18n="@@groupFiles.delete">Delete</span>
                             </a>
 
-                            <div *ngIf="folders && folders?.length > 1 && folder?.canEdit">
+                            <div *ngIf="folders && folders?.length > 1">
                               <a mat-menu-item [matMenuTriggerFor]="moveFolderMenu">
                                 <i class="material-icons">arrow_forward</i>
                                 <span i18n="@@groupFiles.moveToFolder">Move to Folder</span>
@@ -124,7 +125,7 @@
                               </mat-menu>
                             </div>
 
-                            <div (click)="$event.stopPropagation()" class="dropdown-item" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData) && folder?.canEdit">
+                            <div (click)="$event.stopPropagation()" class="dropdown-item" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData)">
                                 <app-component-search-input-box
                                   [placeholder]="'Add rag tag'"
                                   [groupData]="groupData"
@@ -182,15 +183,18 @@
                             [queryParams]="{ userId: file?._posted_by?._id || file?._created_by?._id }"
                             [imgURL]="file?._posted_by?.profile_pic"
                             [service]="'user'"
-                            [styleClass]="'feed-avatar'"></app-secured-image>
+                            [styleClass]="'feed-avatar'">
+                        </app-secured-image>
+
                         <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+
                         <mat-menu #menu="matMenu">
                             <a mat-menu-item (click)="copyToClipboard(file)" *ngIf="file?.canEdit">
                               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
                               <span i18n="@@groupFiles.copyLink">Copy Link</span>
                             </a>
 
-                            <div *ngIf="file?.type == 'folio' || file?.type == 'flamingo' && file?.canEdit">
+                            <div *ngIf="(file?.type == 'folio' || file?.type == 'flamingo') && file?.canEdit">
                               <!--
                               <a mat-menu-item [matMenuTriggerFor]="transferMenu" (mouseover)="saveTransferAction('copy')">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
@@ -232,12 +236,14 @@
                                 <span i18n="@@groupFiles.view">View</span>
                             </a>
 
-                            <a *ngIf="file?.type === 'folio'" mat-menu-item (click)="openViewFolioDialog(file?._id)">
+                            <a *ngIf="file?.type === 'folio'" mat-menu-item
+                              routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id, myWorkplace: myWorkplace, readOnly: !file?.canEdit }">
+                              <!--(click)="openViewFolioDialog(file?._id)"-->
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                                 <span i18n="@@groupFiles.view">View</span>
                             </a>
 
-                            <a mat-menu-item *ngIf="file?.canEdit" (click)="deleteItem(file?._id, file?.type, file?.modified_name)">
+                            <a mat-menu-item *ngIf="file?.canDelete" (click)="deleteItem(file?._id, file?.type, file?.modified_name)">
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
                                 <span i18n="@@groupFiles.delete">Delete</span>
                             </a>

@@ -25,7 +25,6 @@ export class PostActionsComponent implements OnInit {
   @Input() groupData: any;
   @Input() isIdeaModuleAvailable;
   @Input() canEdit = true;
-  @Input() canView = true;
 
   // Delete Post Event Emitter
   @Output('delete') delete = new EventEmitter()

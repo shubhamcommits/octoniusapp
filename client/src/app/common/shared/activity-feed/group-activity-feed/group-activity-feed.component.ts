@@ -350,11 +350,15 @@ export class GroupActivityFeedComponent implements OnInit {
     }
 
     if (this.groupData?.enabled_rights && this.groupData?.rags && this.groupData?.rags.length > 0) {
-      posts = posts.filter(post => {
-        const hide = this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'hide');
-        return this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'view') || !hide;
+      posts = posts.filter(async post => {
+        const hide = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'hide');
+        return await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'view') || !hide;
       });
     }
+
+    posts.forEach(async post => {
+      post.canEdit = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'edit');
+    });
 
     // Else if moreToLoad is true
     if (this.moreToLoad) {
@@ -378,9 +382,13 @@ export class GroupActivityFeedComponent implements OnInit {
     await this.postService.getPosts(this.groupId, 'pinned', true, null, { tags: this.filters['tags'], users: this.filters['users'] }).then(res => {
       this.pinnedPosts = res['posts'];
 
-      this.pinnedPosts = this.pinnedPosts.filter(post => {
-        const hide = this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'hide');
-        return this.utilityService.canUserDoAction(post, this.groupData, this.userData, 'view') || !hide;
+      this.pinnedPosts = this.pinnedPosts.filter(async post => {
+        const hide = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'hide');
+        return await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'view') || !hide;
+      });
+
+      this.pinnedPosts.forEach(async post => {
+        post.canEdit = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'edit');
       });
     });
   }

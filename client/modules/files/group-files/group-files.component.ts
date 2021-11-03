@@ -387,7 +387,7 @@ export class GroupFilesComponent implements OnInit {
       await this.foldersService.getOne(folderId)
         .then(res => {
           this.currentFolder = res['folder'];
-          this.currentFolder.canEdit = this.utilityService.canUserDoAction(this.currentFolder, this.groupData, this.userData, 'edit');
+          this.currentFolder.canEdit = this.utilityService.canUserDoFileAction(this.currentFolder, this.groupData, this.userData, 'edit');
           this.folderOriginalName = this.currentFolder.folder_name;
         });
 
@@ -665,18 +665,24 @@ export class GroupFilesComponent implements OnInit {
     if (this.groupData.enabled_rights) {
       await this.filterRAGFolders();
     } else {
-      this.folders.forEach(column => {
-        column.canEdit = true;
+      this.folders.forEach(async folder => {
+        folder.canEdit = true;
+        folder.canDelete = await this.utilityService.canUserDoFileAction(folder, this.groupData, this.userData, 'delete');
       });
     }
   }
 
   filterRAGFolders() {
     let foldersTmp = [];
-    this.folders.forEach(folder => {
-        const canEdit = this.utilityService.canUserDoAction(folder, this.groupData, this.userData, 'edit');
-        const hide = this.utilityService.canUserDoAction(folder, this.groupData, this.userData, 'hide');
-        const canView = this.utilityService.canUserDoAction(folder, this.groupData, this.userData, 'view') || !hide;
+    this.folders.forEach(async folder => {
+        folder.canDelete = await this.utilityService.canUserDoFileAction(folder, this.groupData, this.userData, 'delete');
+        const canEdit = await this.utilityService.canUserDoFileAction(folder, this.groupData, this.userData, 'edit');
+        let canView = false;
+
+        if (!canEdit) {
+          const hide = await this.utilityService.canUserDoFileAction(folder, this.groupData, this.userData, 'hide');
+          canView = await this.utilityService.canUserDoFileAction(folder, this.groupData, this.userData, 'view') || !hide;
+        }
 
         folder.canEdit = canEdit;
         if (canEdit || canView) {
@@ -688,10 +694,15 @@ export class GroupFilesComponent implements OnInit {
 
   filterRAGFiles(files: any) {
     let filesTmp = [];
-    files.forEach(file => {
-        const canEdit = this.utilityService.canUserDoAction(file, this.groupData, this.userData, 'edit');
-        const hide = this.utilityService.canUserDoAction(file, this.groupData, this.userData, 'hide');
-        const canView = this.utilityService.canUserDoAction(file, this.groupData, this.userData, 'view') || !hide;
+    files.forEach(async file => {
+        file.canDelete = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'delete');
+        const canEdit = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'edit');
+        let canView = false;
+
+        if (!canEdit) {
+          const hide = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'hide');
+          canView = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'view') || !hide;
+        }
 
         file.canEdit = canEdit;
         if (canEdit || canView) {
