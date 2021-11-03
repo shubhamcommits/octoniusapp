@@ -1,7 +1,6 @@
 import express from 'express';
 import { Auths } from '../../utils';
 import { ColumnsController } from '../controllers';
-// import { Auths } from '../../../../posts/server/api/utils';
 
 // Create Router to handle the routes
 const router = express.Router();
@@ -19,6 +18,9 @@ router.use(auths.verifyToken);
 
 // // Checks whether the current user is loggedIn or not
 router.use(auths.isLoggedIn);
+
+// GET - retreive an specific section
+router.put('/:sectionId', columns.get);
 
 // get all existing columns
 router.get('/all', columns.getAllColumns);

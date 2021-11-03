@@ -272,14 +272,14 @@ export class PostService {
    * This is the helper function which returns the filtered posts
    * @param posts 
    */
-  async filterGroupPosts(posts: any, type?: string, numLikes?: number) {
+  filterGroupPosts(posts: any, type?: string, numLikes?: number) {
 
     // Filtered posts array
     var filteredPosts = posts;
 
     // If all types of posts are selected
     if (type == 'all' || type == 'group')
-      filteredPosts = await posts
+      filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-_id')
         .limit((numLikes && numLikes > 0) ? numLikes : 5)
         .populate({ path: '_posted_by', select: this.userFields })
@@ -292,7 +292,7 @@ export class PostService {
 
     // If normal posts are selected
     else if (type === 'normal')
-      filteredPosts = await posts
+      filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-_id')
         .limit((numLikes && numLikes > 0) ? numLikes : 5)
         .populate({ path: '_group', select: this.groupFields })
@@ -306,7 +306,7 @@ export class PostService {
 
     // If all tasks are selected
     else if (type === 'task')
-      filteredPosts = await posts
+      filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-task.due_to')
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
@@ -315,11 +315,10 @@ export class PostService {
         .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
         .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
-        .populate({ path: 'task._column', select: 'rags' })
         .lean();
 
     else if (type == 'pinned')
-      filteredPosts = await posts
+      filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-created_date')
         .populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
@@ -348,8 +347,7 @@ export class PostService {
         { path: '_posted_by', select: this.userFields },
         { path: 'task._parent_task', select: '_id title _assigned_to' },
         { path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' },
-        { path: 'task.shuttles._shuttle_section', select: '_id title' },
-        { path: 'task._column', select: 'rags' }
+        { path: 'task.shuttles._shuttle_section', select: '_id title' }
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -1899,7 +1897,6 @@ export class PostService {
         .populate('_assigned_to', this.userFields)
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
-        .populate({ path: 'task._column', select: 'rags' })
         .lean();
 
     } else {
@@ -1922,7 +1919,6 @@ export class PostService {
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
-        .populate({ path: 'task._column', select: 'rags' })
         .lean();
     }
 
@@ -1995,7 +1991,6 @@ export class PostService {
       .sort('-task.due_to')
       .select('_id _group task')
       .populate('_assigned_to', this.userFields)
-      .populate({ path: 'task._column', select: 'rags' })
       .lean();
 
     return posts;
@@ -2030,7 +2025,6 @@ export class PostService {
         .populate('_assigned_to', this.userFields)
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
-        .populate({ path: 'task._column', select: 'rags' })
         .lean();
 
     } else {
@@ -2047,7 +2041,6 @@ export class PostService {
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
-        .populate({ path: 'task._column', select: 'rags' })
         .lean();
     }
 
@@ -2089,7 +2082,6 @@ export class PostService {
       .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
-      .populate({ path: 'task._column', select: 'rags' })
       .lean();
 
     return posts;
@@ -2993,7 +2985,7 @@ export class PostService {
       .populate('_assigned_to').select(this.userFields )
       .populate('_group').select(this.groupFields )
       .populate('_posted_by').select(this.userFields )
-      .populate({path:'task._column',select:'_id title rags'}).select('task title content tags');
+      .populate({path:'task._column',select:'_id title'}).select('task title content tags');
 
     const user = await User.findById(userId);
     if(user && post){

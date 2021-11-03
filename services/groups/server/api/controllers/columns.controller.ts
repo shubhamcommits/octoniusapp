@@ -6,6 +6,31 @@ import moment from 'moment';
 export class ColumnsController {
 
     // get all existing columns
+    async get(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch GroupId from the query
+            const sectionId = req.params.sectionId;
+
+            let section = await Column.findOne({
+                _id: sectionId 
+            }).lean() || [];
+
+            section = await Column.populate(section, [
+                { path: 'budget.expenses._user' }
+            ]);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Section obtained Successfully!',
+                section: section
+            });
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    // get all existing columns
     async getAllColumns(req: Request, res: Response, next: NextFunction) {
         try {
 

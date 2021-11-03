@@ -13,6 +13,14 @@ export class ColumnService {
   baseUrl = environment.GROUPS_BASE_API_URL;
 
   /**
+   * This function is responsible for fetching an specific section by id
+   * @param sectionId
+   */
+   getSection(sectionId: string) {
+    return this._http.get(this.baseUrl + `/columns/${sectionId}`).toPromise();
+  }
+
+  /**
    * This function is responsible for fetching all the columns present in a board
    * @param groupId
    */

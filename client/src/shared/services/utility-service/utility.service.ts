@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
 import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
 import { PostService } from '../post-service/post.service';
+import { ColumnService } from '../column-service/column.service';
 
 @Injectable({
   providedIn: 'root'
@@ -633,7 +634,11 @@ export class UtilityService {
             }
           });
         } else if (item?.task?._column) {
-          canDoRagAction = this.canUserDoTaskAction(item?.task?._column, groupData, userData, action);
+          // Post Service Instance
+          let columnService = this.injector.get(ColumnService);
+          columnService.getSection(item?.task?._column?._id || item?.task?._column).then(res => {
+            canDoRagAction = this.canUserDoTaskAction(res['section'], groupData, userData, action);
+          });
         } else if (item?.task?._parent_task) {
           // Post Service Instance
           let postService = this.injector.get(PostService);
