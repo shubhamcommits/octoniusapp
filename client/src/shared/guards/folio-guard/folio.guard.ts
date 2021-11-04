@@ -46,7 +46,7 @@ export class FolioGuard implements CanActivate  {
     }
 
     let userData = await this.publicFunctions.getCurrentUser();
-    const fileId = this._ActivatedRoute.snapshot.firstChild.paramMap.get('id');
+    const fileId = next['_urlSegment'].segments[1].path;
     let file = await this.publicFunctions.getFile(fileId);
 
     const canEdit = await this.utilityService.canUserDoFileAction(file, currentGroup, userData, 'edit');
