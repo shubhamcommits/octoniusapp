@@ -732,6 +732,27 @@ export class PublicFunctions {
     }
 
     /**
+     * This function is responsible for fetching a file's details
+     * @param fileId
+     */
+    public async getFile(fileId: string, readOnly?: boolean) {
+      return new Promise((resolve) => {
+
+        // Files Service
+        let fileService = this.injector.get(FilesService);
+
+        // Fetch the file details
+        fileService.getOne(fileId, readOnly)
+          .then((res) => {
+            resolve(res['file'])
+          })
+          .catch(() => {
+            resolve({})
+          })
+      })
+    }
+
+    /**
      * This function is responsible for fetching the files from the server based on the groupId
      * @param groupId
      * @param folderId
