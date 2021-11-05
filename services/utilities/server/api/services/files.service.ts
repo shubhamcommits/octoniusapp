@@ -25,6 +25,7 @@ export class FilesService {
             { path: '_group', select: this.groupFields },
             { path: '_posted_by', select: this.userFields },
             { path: '_folder', select: this.folderFields },
+            { path: 'permissions._members', select: this.userFields }
         ])
 
         // Return file with populated properties
@@ -163,7 +164,8 @@ export class FilesService {
                 .populate([
                     { path: '_group', select: this.groupFields },
                     { path: '_posted_by', select: this.userFields },
-                    { path: '_folder', select: this.folderFields }
+                    { path: '_folder', select: this.folderFields },
+                    { path: 'permissions._members', select: this.userFields }
                 ])
                 .lean();
         }
@@ -192,7 +194,8 @@ export class FilesService {
             .limit(5)
             .populate([
                 { path: '_group', select: this.groupFields },
-                { path: '_posted_by', select: this.userFields }
+                { path: '_posted_by', select: this.userFields },
+                { path: 'permissions._members', select: this.userFields }
             ])
             .lean();
 
@@ -413,47 +416,5 @@ export class FilesService {
             // Return file
             return file;
         }
-    }
-
-    async addRag(fileId: string, rag: string) {
-      try {
-        /*
-        const task: any = await Post.findById(postId);
-        const ragExists = task.rags.includes(rag);
-        if (!ragExists) {
-          task.rags.push({
-            rag_tag: rag,
-            tag_members: rag.tag_members
-          });
-        }
-        task.save();
-        */
-        const file = await File.findByIdAndUpdate({
-              _id: fileId
-          }, {
-              $addToSet: {
-                  rags: rag
-              }
-          }, {
-              new: true
-          });
-      } catch (error) {
-        throw (error);
-      }
-    }
-  
-    async removeRag(fileId: string, rag: string) {
-      // const task: any = await Post.findById(postId);
-      // task.rags = task.rags.filter(ragDB => ragDB.rag_tag !== rag.rag_tag);
-      // task.save();
-      const file = await File.findByIdAndUpdate({
-            _id: fileId
-        }, {
-            $pull: {
-                rags: rag
-            }
-        }, {
-            new: true
-        });
     }
 }

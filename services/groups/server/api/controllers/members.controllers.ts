@@ -420,43 +420,10 @@ export class MembersControllers {
      * @param next 
      */
     async removeUserFromRag(req: Request, res: Response, next: NextFunction) {
-     // Get the groupId and userId
-     const { groupId, member, ragTag } = req.body;
-     try {
-         const memberId = member._id;
-         const groupUpdate: any = await Group.findById(groupId);
-
-         // If group wasn't found invalid id error
-         if (groupUpdate === null || groupUpdate === undefined) {
-             let msg = '';
-             groupUpdate ? msg = 'Group' : msg = 'User';
-             return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404)
-         }
-         let usersList;
-         // tslint:disable-next-line: no-shadowed-variable
-         groupUpdate.rags.forEach( rag => {
-             if (rag.rag_tag === ragTag) {
-                 usersList = rag.tag_members.filter( tagMember => String(tagMember) !== memberId);
-                 rag.tag_members = usersList;
-             }
-         });
-         groupUpdate.save();
-
-         // Send status 200 response
-         return res.status(200).json({
-             message: `User has been removed from ${ragTag} Rag.`
-         });
-     } catch (err) {
-         return sendError(res, err, 'Internal Server Error!', 500);
-     }
-    }
-
-    async removeRag(req: Request, res: Response, next: NextFunction) {
         // Get the groupId and userId
-        const { groupId, ragTag } = req.body;
-
+        const { groupId, member, ragTag } = req.body;
         try {
-
+            const memberId = member._id;
             const groupUpdate: any = await Group.findById(groupId);
 
             // If group wasn't found invalid id error
@@ -465,15 +432,19 @@ export class MembersControllers {
                 groupUpdate ? msg = 'Group' : msg = 'User';
                 return sendError(res, new Error(`${msg} not found, invalid Id!`), `${msg} not found, invalid Id!`, 404)
             }
-
-            // remove rag from list
-            const rags = groupUpdate.rags.filter( rag => rag.rag_tag !== ragTag);
-            groupUpdate.rags = rags;
+            let usersList;
+            // tslint:disable-next-line: no-shadowed-variable
+            groupUpdate.rags.forEach( rag => {
+                if (rag.rag_tag === ragTag) {
+                    usersList = rag.tag_members.filter( tagMember => String(tagMember) !== memberId);
+                    rag.tag_members = usersList;
+                }
+            });
             groupUpdate.save();
 
             // Send status 200 response
             return res.status(200).json({
-                message: `Rag tag with users has been removed`
+                message: `User has been removed from ${ragTag} Rag.`
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

@@ -35,24 +35,6 @@ export class PostService {
       toPromise()
   }
 
-  addRag(postId: string, rag: any) {
-    // Call the HTTP Request
-    const body = {
-      rag
-    };
-    return this._http.put(this.baseURL + `/${postId}/addRag`, body).
-      toPromise();
-  }
-
-  removeRag(postId: string, rag: any) {
-    const body = {
-      rag
-    };
-    // Call the HTTP Request
-    return this._http.put(this.baseURL + `/${postId}/removeRag`, body).
-      toPromise();
-  }
-
   /**
    * This function is responsible for fetching a post details
    * @param postId
@@ -598,4 +580,46 @@ export class PostService {
       isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
       }).toPromise();
   }
+
+  /**
+   *
+   * STARTING THE BLOCK OF METHODS TO UPDATE THE RIGHTS OF AN ITEM
+   * ITEM = post/section/file/folder
+   *
+   */
+  selectPermissionRight(permissionId: string, postId: string, right: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/post/permissions/${postId}/selectPermissionRight`, { right, permissionId }).toPromise();
+  }
+
+  removePermission(permissionId: string, postId: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/post/permissions/${postId}/removePermission`, { permissionId }).toPromise();
+  }
+
+  addTagToPermission(permissionId: string, postId: string, tag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/post/permissions/${postId}/addTagToPermission`, { permissionId, tag }).toPromise();
+  }
+
+  removePermissionTag(permissionId: string, postId: string, tag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/post/permissions/${postId}/removePermissionTag`, { permissionId, tag }).toPromise();
+  }
+
+  addMemberToPermission(postId: string, permissionId: string, member: any) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/post/permissions/${postId}/addMemberToPermission`, { permissionId, member }).toPromise();
+  }
+
+  removeMemberFromPermission(postId: string, permissionId: string, memberId: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/post/permissions/${postId}/removeMemberFromPermission`, { permissionId, memberId }).toPromise();
+  }
+  /**
+   *
+   * ENDS THE BLOCK OF METHODS TO UPDATE THE RIGHTS OF AN ITEM
+   * ITEM = post/section/file/folder
+   *
+   */
 }

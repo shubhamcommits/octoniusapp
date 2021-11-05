@@ -73,8 +73,4 @@ router.put('/setDisplayCustomFieldInColumn', columns.setDisplayCustomFieldInColu
 // PUT - Archives an entrie section and its tasks
 router.put('/archive', columns.archive);
 
-//PUT - Adding/removing RAGS in section
-router.put('/:sectionId/addRag', columns.addRagToSection);
-router.put('/:sectionId/removeRag', columns.removeRagFromSection);
-
 export { router as columnRoutes };

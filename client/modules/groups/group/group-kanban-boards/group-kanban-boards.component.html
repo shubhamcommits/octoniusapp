@@ -44,15 +44,9 @@
                                   <span class="material-icons-outlined">auto_awesome</span>
                                   <span i18n="@@groupDashboard.showCF">Show CF Data</span>
                                 </li>
-                                <li class="dropdown-item" *ngIf="groupData && checkDataExist(groupData) && groupData.enabled_rights">
-                                  <app-component-search-input-box
-                                    [placeholder]="'Add rag tag'"
-                                    [groupData]="groupData"
-                                    [type]="'ragTag'"
-                                    [groupId]="groupId"
-                                    [ragList]="column.rags"
-                                    (ragTag)="addNewRagTag(column, $event)">
-                                  </app-component-search-input-box>
+                                <li class="dropdown-item" *ngIf="groupData && checkDataExist(groupData) && groupData.enabled_rights" (click)="openPermissionModal(column)">
+                                  <span class="material-icons-outlined">vpn_lock</span>
+                                  <span i18n="@@groupDashboard.permissions">Permissions</span>
                                 </li>
                             </ul>
                             <!-- Menu Drawer Ends -->
@@ -90,17 +84,6 @@
                   </span>
                 </div>
                 <!-- CUSTOM FIELDS STATS SECTION ENDS -->
-
-                <div class="project-container" *ngIf="groupData && groupData.enabled_rights && column && column.rags && column.rags.length > 0">
-                  <div *ngFor="let tag of column.rags; let i = index">
-                    <div>
-                      <span class="tag">
-                        {{ tag }}
-                        <i *ngIf="column?.canEdit" (click)="removeRagTag(column, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
-                      </span>
-                    </div>
-                  </div>
-                </div>
 
                 <!-- TASK CONTAINER STARTS -->
                 <div class="tasks-container" [id]="column._id"
@@ -177,15 +160,9 @@
                                   <span class="material-icons-outlined">auto_awesome</span>
                                   <span i18n="@@groupDashboard.showCF">Show CF Data</span>
                                 </li>
-                                <li class="dropdown-item" *ngIf="groupData && checkDataExist(groupData) && groupData.enabled_rights">
-                                  <app-component-search-input-box
-                                    [placeholder]="'Add rag tag'"
-                                    [groupData]="groupData"
-                                    [type]="'ragTag'"
-                                    [groupId]="groupId"
-                                    [ragList]="column.rags"
-                                    (ragTag)="addNewRagTag(column, $event)">
-                                  </app-component-search-input-box>
+                                <li class="dropdown-item" *ngIf="groupData && checkDataExist(groupData) && groupData.enabled_rights" (click)="openPermissionModal(column)">
+                                  <span class="material-icons-outlined">vpn_lock</span>
+                                  <span i18n="@@groupDashboard.permissions">Permissions</span>
                                 </li>
                             </ul>
                             <!-- Menu Drawer Ends -->
@@ -223,17 +200,6 @@
                   </span>
                 </div>
                 <!-- CUSTOM FIELDS STATS SECTION ENDS -->
-
-                <div class="project-container" *ngIf="groupData && groupData.enabled_rights && column && column.rags && column.rags.length > 0">
-                  <div *ngFor="let tag of column.rags; let i = index">
-                    <div>
-                      <span class="tag">
-                        {{ tag }}
-                        <i *ngIf="column?.canEdit" (click)="removeRagTag(column, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
-                      </span>
-                    </div>
-                  </div>
-                </div>
 
                 <!-- TASK CONTAINER STARTS -->
                 <div class="tasks-container" [id]="column._id">

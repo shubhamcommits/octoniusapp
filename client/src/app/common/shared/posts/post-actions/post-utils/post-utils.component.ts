@@ -224,4 +224,21 @@ export class PostUtilsComponent implements OnInit {
   isGroupManager() {
     return (this.groupData && this.groupData._admins) ? (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id) >= 0) : false;
   }
+
+  /**
+   * This function is responsible for opening a dialog to edit permissions
+   */
+  openPermissionModal(): void {
+    const dialogRef = this.utilityService.openPermissionModal(this.post, this.groupData, this.userData, 'post');
+
+    if (dialogRef) {
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+      });
+    }
+  }
 }

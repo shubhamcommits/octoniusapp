@@ -171,22 +171,4 @@ export class GroupTasksListViewComponent implements OnChanges {
   onTaskClonned(data) {
     this.taskClonnedEvent.emit(data);
   }
-
-  async removeRagTag(column, event) {
-    await this.utilityService.asyncNotification($localize`:@@groupKanbanBoards.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.columnService.removeRag(column._id, event)
-        .then((res) => {
-          // Find the index of the column to check if the same named column exist or not
-          let index = (column.rags) ? column.rags.findIndex((ragTag: any) => ragTag == event) : -1;
-          // Remove the column from the array
-          if (index >= 0) {
-            column.rags.splice(index, 1);
-          }
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.detailsUpdated:Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToUpdateDetails:Unable to update the details, please try again!`));
-        });
-    }));
-  }
 }

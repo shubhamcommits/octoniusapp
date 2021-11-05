@@ -49,6 +49,7 @@ export class GroupController {
                         limit: 10
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .limit(20)
                 .lean() || [];
 
@@ -117,6 +118,7 @@ export class GroupController {
                         active: true
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean() || [];
 
             // Send the status 200 response
@@ -167,6 +169,7 @@ export class GroupController {
                         limit: 10
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .limit(20)
                 .lean() || [];
 
@@ -235,6 +238,7 @@ export class GroupController {
                         active: true
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean() || [];
 
             // Send the status 200 response
@@ -291,6 +295,7 @@ export class GroupController {
                         active: true
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean() || []
 
             // If there are no groups then we send error response
@@ -353,6 +358,7 @@ export class GroupController {
                         active: true
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean() || []
 
             // If there are no groups then we send error response
@@ -415,6 +421,7 @@ export class GroupController {
                         active: true
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean() || []
 
             // If there are no groups then we send error response
@@ -482,6 +489,7 @@ export class GroupController {
                         active: true
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean() || [];
 
             // Send the status 200 response
@@ -521,6 +529,7 @@ export class GroupController {
                         active: true
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean();
 
             // Check if group already exist with the same groupId
@@ -694,6 +703,7 @@ export class GroupController {
                         active: true
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean();
 
             if (!group) {
@@ -1037,6 +1047,7 @@ export class GroupController {
                         active: true
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean() || []
 
             return res.status(200).json({
@@ -1111,6 +1122,7 @@ export class GroupController {
                         active: true
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean();
 
             // Check if group already exist with the same groupId
@@ -1372,7 +1384,9 @@ export class GroupController {
                     match: {
                         active: true
                     }
-                }).lean();
+                })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
+                .lean();
 
             // Send status 200 response
             return res.status(200).json({
@@ -1613,6 +1627,7 @@ export class GroupController {
                         limit: 10
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean();
 
             return res.status(200).json({
@@ -1706,19 +1721,7 @@ export class GroupController {
                         validUsers.delete(adminId.toString());
                     }
                 });
-                /*
-                // Remove the group from the current members' _groups set
-                group['_members'].map(async (userId) => {
-                    await User.findByIdAndUpdate(userId, {
-                        $pull: { _groups: groupId }
-                    });
-                });
 
-                // Remove the current members from the group
-                await Group.findByIdAndUpdate(groupId, {
-                    $set: { _members: [] }
-                });
-                */
                 if (emailDomains.length > 0 || jobPositions.length > 0 || skills.length > 0 || customFields.length > 0) {
 
                     // Fetch the adminData for mailing
@@ -1777,6 +1780,7 @@ export class GroupController {
                         limit: 10
                     }
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean();
 
             return res.status(200).json({
@@ -1815,6 +1819,7 @@ export class GroupController {
                     path: '_admins',
                     select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
                 })
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean();
 
             return res.status(200).json({
@@ -1859,7 +1864,8 @@ export class GroupController {
     async getRags(req: Request, res: Response, next: NextFunction) {
         try {
             const groupId = req.params.groupId;
-            const group: any = await Group.findById(groupId);
+            const group: any = await Group.findById(groupId)
+            .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' });
             const rags = group.rags;
             return res.status(200).json({
                 message: 'Fetched Rags!',
@@ -1869,43 +1875,7 @@ export class GroupController {
             return sendError(res, error, 'Internal Server Error!', 500);
         }
     }
-
-    async selectRAGRights(req: Request, res: Response, next: NextFunction) {
-        try {
-            const groupId = req.params.groupId;
-            const ragId = req.body.ragId;
-            const rightId = req.body.rightId;
-
-            let group: any = await Group.findByIdAndUpdate(
-                { _id: groupId },
-                {
-                    $set: {
-                        "rags.$[rag].right": rightId
-                    }
-                },
-                {
-                    arrayFilters: [{ "rag._id": ragId }],
-                    new: true
-                })
-                .populate({
-                    path: '_members',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
-                })
-                .populate({
-                    path: '_admins',
-                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files'
-                })
-                .lean();
-
-            return res.status(200).json({
-                message: 'Rag updated successfully!',
-                group: group
-            });
-        } catch (error) {
-            return sendError(res, error, 'Internal Server Error!', 500);
-        }
-    }
-
+    
     /**
      * This function fetches the groups which exist in the database based on the list of @workspaceId
      * @param req 
@@ -1930,6 +1900,7 @@ export class GroupController {
                 ]
             })
                 .sort('_id')
+                .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
                 .lean() || [];
 
             // Send the status 200 response
@@ -2064,7 +2035,9 @@ export class GroupController {
                 match: {
                     active: true
                 }
-            }).lean();
+            })
+            .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
+            .lean();
 
             return res.status(200).json({
                 message: 'Group updated!',
@@ -2099,6 +2072,7 @@ export class GroupController {
             .populate({ path: '_followers', select: 'first_name last_name profile_pic role email' })
             .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
             .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
+            .populate({ path: 'permissions._members', select: 'first_name last_name profile_pic role email' })
             .lean() || [];
 
             // Send the status 200 response
@@ -2217,7 +2191,9 @@ export class GroupController {
                 match: {
                     active: true
                 }
-            }).lean();
+            })
+            .populate({ path: 'rags.tag_members', select: 'first_name last_name profile_pic role email' })
+            .lean();
 
             return res.status(200).json({
                 message: 'Group updated!',

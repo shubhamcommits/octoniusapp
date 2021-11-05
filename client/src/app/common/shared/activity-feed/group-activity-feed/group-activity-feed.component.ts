@@ -349,7 +349,7 @@ export class GroupActivityFeedComponent implements OnInit {
       this.moreToLoad = false
     }
 
-    if (this.groupData?.enabled_rights && this.groupData?.rags && this.groupData?.rags.length > 0) {
+    if (this.groupData?.enabled_rights && this.groupData?.permissions && this.groupData?.permissions.length > 0) {
       posts = posts.filter(async post => {
         const hide = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'hide');
         return await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'view') || !hide;

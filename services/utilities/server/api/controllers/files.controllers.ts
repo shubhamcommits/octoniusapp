@@ -351,35 +351,4 @@ export class FilesControllers {
             return sendError(res, new Error('Internal Server Error!'), 'Internal Server Error!', 500);
         }
     }
-
-    async addRagToPost(req: Request, res: Response, next: NextFunction) {
-        const { fileId } = req.params;
-        const { rag } = req.body;
-
-        const post = await filesService.addRag(fileId, rag)
-            .catch((err) => {
-                return sendError(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            });
-
-        // Send status 200 response
-        return res.status(200).json({
-            message: 'Task rag updated!',
-            post: post
-        });
-    }
-    async removeRagFromPost(req: Request, res: Response, next: NextFunction) {
-        const { fileId } = req.params;
-        const { rag } = req.body;
-
-        const post = await filesService.removeRag(fileId, rag)
-            .catch((err) => {
-                return sendError(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            });
-
-        // Send status 200 response
-        return res.status(200).json({
-            message: 'Task rag updated!',
-            post: post
-        });
-    }
 }

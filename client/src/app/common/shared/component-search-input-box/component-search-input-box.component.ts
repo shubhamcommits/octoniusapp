@@ -103,7 +103,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
           if (this.itemValue == "") {
             this.itemList = []
           } else {
-            if(this.type === 'ragTag') {
+            if(this.type === 'ragTag' || this.type === 'tag') {
               this.itemList = this.groupData.rags;
               this.itemList = this.itemList.filter( item => item.rag_tag.includes(this.itemValue));
 

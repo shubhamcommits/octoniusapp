@@ -152,18 +152,4 @@ import { PublicFunctions } from 'modules/public.functions';
   onCloseDialog() {
     this.closeEvent.emit(this.ragTag);
   }
-
-  selectRAGRights(rag: any, rightId: string) {
-    // Change right to the RAG
-    this.utilityService.asyncNotification($localize`:@@groupRagDialog.pleaseWaitChangingRAGRight:Please wait we are updating the right of the RAG...`,
-    new Promise((resolve, reject)=>{
-    this.groupService.selectRAGRights(this.groupId, rag._id, rightId)
-      .then((res: any)=> {
-        this.groupData = res['group'];
-        this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-        resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupRagDialog.ragUpdated:RAG updated!`));
-      })
-      .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupRagDialog.unableToUpdateRag:Unable to update your RAG`)));
-    }));
-  }
 }

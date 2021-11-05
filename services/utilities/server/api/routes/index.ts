@@ -1,6 +1,8 @@
 import { fileHandlerRoutes } from "./filehandler.routes";
 import { filesRoutes } from './files.routes';
 import { foldersRoutes } from './folders.routes';
+import { foldersPermissionsRoutes } from './folders-permissions.routes';
+import { filesPermissionsRoutes } from './files-permissions.routes';
 
 /*  =====================
  *  -- EXPORTS ROUTES --
@@ -18,5 +20,11 @@ export {
     filesRoutes as filesRoutes,
 
     // Folders Routes
-    foldersRoutes as foldersRoutes
+    foldersRoutes as foldersRoutes,
+
+    // Folders Permissions Routes
+    foldersPermissionsRoutes as foldersPermissionsRoutes,
+
+    // Files Permissions Routes
+    filesPermissionsRoutes as filesPermissionsRoutes
 }

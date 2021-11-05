@@ -42,17 +42,6 @@
               (keyup)="changeFolderTitle($event)"
               class="input-search" style="float: left; margin-right: 30px;" />
           <!-- Folder edit title name ends -->
-
-          <div *ngIf="groupData && groupData.enabled_rights && currentFolder.rags && currentFolder.rags.length > 0" style="margin-left: 30px;">
-            <div *ngFor="let tag of currentFolder?.rags; let i = index">
-              <div>
-                <span class="tag">
-                  {{ tag }}
-                  <i *ngIf="currentFolder?.canEdit" (click)="removeFolderRagTag(currentFolder, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
 
         <br class="clearfix">
@@ -82,17 +71,6 @@
                       onerror="this.src='assets/images/add-folder-icon.png'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                     {{folder?.folder_name}}
                 </a>
-
-                <div *ngIf="groupData && groupData.enabled_rights && folder && folder.rags && folder.rags.length > 0" style="margin-left: 30px; margin-top: 18px;">
-                  <div *ngFor="let tag of folder?.rags; let i = index">
-                    <div>
-                      <span class="tag">
-                        {{ tag }}
-                        <i *ngIf="folder?.canEdit" (click)="removeFolderRagTag(folder, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
-                      </span>
-                    </div>
-                  </div>
-                </div>
 
                 <div class="media-body">
                     <div class="float-right" *ngIf="folder?.folder_name != '../'">
@@ -125,16 +103,10 @@
                               </mat-menu>
                             </div>
 
-                            <div (click)="$event.stopPropagation()" class="dropdown-item" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData)">
-                                <app-component-search-input-box
-                                  [placeholder]="'Add rag tag'"
-                                  [groupData]="groupData"
-                                  [type]="'ragTag'"
-                                  [groupId]="groupId"
-                                  [ragList]="folder.rags"
-                                  (ragTag)="addNewFolderRagTag(folder, $event)">
-                                </app-component-search-input-box>
-                          </div>
+                            <button mat-menu-item (click)="openPermissionModal(folder, 'folder')" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData)">
+                              <span class="material-icons-outlined">vpn_lock</span>
+                              <span i18n="@@groupDashboard.permissions">Permissions</span>
+                            </button>
                         </mat-menu>
                     </div>
                 </div>
@@ -164,17 +136,6 @@
                       onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                     {{file?.original_name}}
                 </a>
-
-                <div *ngIf="groupData && groupData.enabled_rights && file && file.rags && file.rags.length > 0" style="margin-left: 30px; margin-top: 18px;">
-                  <div *ngFor="let tag of file?.rags; let i = index">
-                    <div>
-                      <span class="tag">
-                        {{ tag }}
-                        <i *ngIf="file?.canEdit" (click)="removeFileRagTag(file, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
-                      </span>
-                    </div>
-                  </div>
-                </div>
 
                 <div class="media-body">
                     <div class="float-right">
@@ -248,16 +209,10 @@
                                 <span i18n="@@groupFiles.delete">Delete</span>
                             </a>
 
-                            <div (click)="$event.stopPropagation()" class="dropdown-item" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData) && file?.canEdit">
-                                <app-component-search-input-box
-                                  [placeholder]="'Add rag tag'"
-                                  [groupData]="groupData"
-                                  [type]="'ragTag'"
-                                  [groupId]="groupId"
-                                  [ragList]="file.rags"
-                                  (ragTag)="addNewFileRagTag(file, $event)">
-                                </app-component-search-input-box>
-                          </div>
+                            <button mat-menu-item (click)="openPermissionModal(file, 'file')" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData) && file?.canEdit">
+                              <span class="material-icons-outlined">vpn_lock</span>
+                              <span i18n="@@groupDashboard.permissions">Permissions</span>
+                            </button>
                         </mat-menu>
                     </div>
                 </div>

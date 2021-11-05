@@ -47,15 +47,6 @@
                   (member)="addNewUserToRag($event, rag)">
               </app-component-search-input-box>
           </div>
-
-          <h6 class="mb-2 mt-3"><span class="material-icons muted">lock</span>Permissions:</h6>
-          <div class="d-flex">
-            
-            <mat-select [(value)]="rag.right"
-                  (selectionChange)="selectRAGRights(rag, $event.value)">
-                <mat-option *ngFor="let right of ragRights" [value]="right._id">{{ right.title }}</mat-option>
-              </mat-select>
-          </div>
         </div>
     </div>
 

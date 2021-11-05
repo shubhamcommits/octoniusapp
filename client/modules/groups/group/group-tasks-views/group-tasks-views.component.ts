@@ -282,7 +282,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         if (column.tasks) {
           // Filtering other tasks
           column.tasks.forEach(async task => {
-            if (task?.rags && task?.rags?.length > 0) {
+            if (task?.permissions && task?.permissions?.length > 0) {
               const canEdit = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'edit');
               let canView = false;
               if (!canEdit) {

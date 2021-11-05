@@ -589,78 +589,6 @@ export class GroupFilesComponent implements OnInit {
     }));
   }
 
-  async addNewFolderRagTag(folder, event) {
-    if (!folder.rags) {
-      folder.rags = [];
-    }
-
-    await this.utilityService.asyncNotification($localize`:@@groupFiles.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.foldersService.addRag(folder._id, event.rag_tag)
-        .then((res) => {
-          // Resolve with success
-          folder.rags.push(event.rag_tag);
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.detailsUpdated:Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToUpdateDetails:Unable to update the details, please try again!`));
-        });
-    }));
-  }
-
-  async removeFolderRagTag(folder, event) {
-    await this.utilityService.asyncNotification($localize`:@@groupFiles.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.foldersService.removeRag(folder._id, event)
-        .then((res) => {
-          // Find the index of the column to check if the same named column exist or not
-          let index = (folder.rags) ? folder.rags.findIndex((ragTag: any) => ragTag == event) : -1;
-          // Remove the column from the array
-          if (index >= 0) {
-            folder.rags.splice(index, 1);
-          }
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.detailsUpdated:Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToUpdateDetails:Unable to update the details, please try again!`));
-        });
-    }));
-  }
-
-  async addNewFileRagTag(folder, event) {
-    if (!folder.rags) {
-      folder.rags = [];
-    }
-
-    await this.utilityService.asyncNotification($localize`:@@groupFiles.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.filesService.addRag(folder._id, event.rag_tag)
-        .then((res) => {
-          // Resolve with success
-          folder.rags.push(event.rag_tag);
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.detailsUpdated:Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToUpdateDetails:Unable to update the details, please try again!`));
-        });
-    }));
-  }
-
-  async removeFileRagTag(folder, event) {
-    await this.utilityService.asyncNotification($localize`:@@groupFiles.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.filesService.removeRag(folder._id, event)
-        .then((res) => {
-          // Find the index of the column to check if the same named column exist or not
-          let index = (folder.rags) ? folder.rags.findIndex((ragTag: any) => ragTag == event) : -1;
-          // Remove the column from the array
-          if (index >= 0) {
-            folder.rags.splice(index, 1);
-          }
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.detailsUpdated:Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unableToUpdateDetails:Unable to update the details, please try again!`));
-        });
-    }));
-  }
-
   async initFolders() {
     if (this.groupData.enabled_rights) {
       await this.filterRAGFolders();
@@ -710,5 +638,22 @@ export class GroupFilesComponent implements OnInit {
         }
     });
     return filesTmp;
+  }
+
+  /**
+   * This function is responsible for opening a dialog to edit permissions
+   */
+  openPermissionModal(item: any, type: string): void {
+    const dialogRef = this.utilityService.openPermissionModal(item, this.groupData, this.userData, type);
+
+    if (dialogRef) {
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+      });
+    }
   }
 }

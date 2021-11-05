@@ -8,6 +8,7 @@ import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-f
 import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
 import { PostService } from '../post-service/post.service';
 import { ColumnService } from '../column-service/column.service';
+import { PermissionDialogComponent } from 'modules/groups/group/permission-dialog/permission-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -526,6 +527,21 @@ export class UtilityService {
     });
   }
 
+  openPermissionModal(item: any, groupData: any, userData: any, type: string) {
+    return this.dialog.open(PermissionDialogComponent, {
+      width: '60%',
+      height: '85%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: {
+        item: item,
+        groupData: groupData,
+        userData: userData,
+        type: type
+      }
+    });
+  }
+
   /**
    * This method is used to identify if the user can edit or view an elemnent
    * @param item This element can be a file or a folder
@@ -548,16 +564,17 @@ export class UtilityService {
 
       let canDoRagAction = false;
       if (groupData?.enabled_rights) {
-        if (item?.rags && item?.rags?.length > 0) {
-          item.rags.forEach(rag => {
-            const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => groupRag.rag_tag == rag) : -1;
+        if (item?.permissions && item?.permissions?.length > 0) {
+          item.permissions.forEach(permission => {
+            const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => permission.rags.includes(groupRag.rag_tag)) : -1;
             let groupRag;
             if (groupRagIndex >= 0) {
               groupRag = groupData?.rags[groupRagIndex];
             }
 
             const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
-            if (userRagIndex >= 0 && groupRag.right == action) {
+            const userPermissionIndex = (permission && permission._members) ? permission._members.findIndex(permissionMember => (permissionMember?._id || permissionMember) == userData?._id) : -1;
+            if ((userRagIndex >= 0 || userPermissionIndex >= 0) && permission.right == action) {
               canDoRagAction = true;
             }
           });
@@ -574,17 +591,18 @@ export class UtilityService {
 
   checkParentFolderRagAction(item: any, groupData: any, userData: any, action: string) {
     let canDoRagAction = false;
-    if (item?.rags && item?.rags?.length > 0) {
+    if (item?.permissions && item?.permissions?.length > 0) {
 
-      item?.rags.forEach(columnRag => {
-        const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => groupRag.rag_tag == columnRag) : -1;
+      item?.permissions.forEach(permission => {
+        const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => permission.rags.includes(groupRag.rag_tag)) : -1;
         let groupRag;
         if (groupRagIndex >= 0) {
           groupRag = groupData?.rags[groupRagIndex];
         }
 
         const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
-        if (userRagIndex >= 0 && groupRag.right == action) {
+        const userPermissionIndex = (permission && permission._members) ? permission._members.findIndex(permissionMember => (permissionMember?._id || permissionMember) == userData?._id) : -1;
+        if ((userRagIndex >= 0 || userPermissionIndex >= 0) && permission.right == action) {
           canDoRagAction = true;
         }
       });
@@ -620,16 +638,17 @@ export class UtilityService {
 
       let canDoRagAction = false;
       if (groupData?.enabled_rights) {
-        if (item?.rags && item?.rags?.length > 0) {
-          item.rags.forEach(rag => {
-            const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => groupRag.rag_tag == rag) : -1;
+        if (item?.permissions && item?.permissions?.length > 0) {
+          item.permissions.forEach(permission => {
+            const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => permission.rags.includes(groupRag.rag_tag)) : -1;
             let groupRag;
             if (groupRagIndex >= 0) {
               groupRag = groupData?.rags[groupRagIndex];
             }
 
             const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
-            if (userRagIndex >= 0 && groupRag.right == action) {
+            const userPermissionIndex = (permission && permission._members) ? permission._members.findIndex(permissionMember => (permissionMember?._id || permissionMember) == userData?._id) : -1;
+            if ((userRagIndex >= 0 || userPermissionIndex >= 0) && permission.right == action) {
               canDoRagAction = true;
             }
           });

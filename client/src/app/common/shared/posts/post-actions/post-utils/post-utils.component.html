@@ -24,6 +24,11 @@
 
   <li class="dropdown-divider" *ngIf="post?.type == 'task' && (userData?.role == 'admin' || userData?.role == 'owner' || post?._posted_by?._id == userData?._id) && canEdit"></li>
 
+  <button mat-menu-item (click)="openPermissionModal()" *ngIf="groupData && groupData?.enabled_rights">
+    <span class="material-icons-outlined">vpn_lock</span>
+    <span i18n="@@groupDashboard.permissions">Permissions</span>
+  </button>
+
   <button mat-menu-item (click)="deletePost()"
       *ngIf="canDelete"
       i18n="@@postUtils.delete">

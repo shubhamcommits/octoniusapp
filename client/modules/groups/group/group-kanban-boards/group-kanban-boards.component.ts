@@ -654,15 +654,14 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     task._content_mentions = post._content_mentions
 
     // Update the task comments
-    task.comments = post.comments
-
+    task.comments = post.comments;
   }
 
   /**
    * This function is responsible for closing the modals
    */
   closeModal() {
-    this.utilityService.closeAllModals()
+    this.utilityService.closeAllModals();
   }
 
   onTaskClonned(data) {
@@ -749,39 +748,20 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     return (this.groupData && this.groupData._admins) ? (this.groupData?._admins.findIndex((admin: any) => (admin._id || admin) == this.userData?._id) >= 0) : false;
   }
 
-  async addNewRagTag(column, event) {
-    if (!column.rags) {
-      column.rags = [];
+  /**
+   * This function is responsible for opening a dialog to edit permissions
+   */
+  openPermissionModal(item: any): void {
+    const dialogRef = this.utilityService.openPermissionModal(item, this.groupData, this.userData, 'section');
+
+    if (dialogRef) {
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+      });
     }
-
-    await this.utilityService.asyncNotification($localize`:@@groupKanbanBoards.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.columnService.addRag(column._id, event.rag_tag)
-        .then((res) => {
-          // Resolve with success
-          column.rags.push(event.rag_tag);
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.detailsUpdated:Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToUpdateDetails:Unable to update the details, please try again!`));
-        });
-    }));
-  }
-
-  async removeRagTag(column, event) {
-    await this.utilityService.asyncNotification($localize`:@@groupKanbanBoards.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.columnService.removeRag(column._id, event)
-        .then((res) => {
-          // Find the index of the column to check if the same named column exist or not
-          let index = (column.rags) ? column.rags.findIndex((ragTag: any) => ragTag == event) : -1;
-          // Remove the column from the array
-          if (index >= 0) {
-            column.rags.splice(index, 1);
-          }
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.detailsUpdated:Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToUpdateDetails:Unable to update the details, please try again!`));
-        });
-    }));
   }
 }

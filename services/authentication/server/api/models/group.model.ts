@@ -57,11 +57,7 @@ const GroupSchema = new Schema({
             tag_members: [{
                 type: Schema.Types.ObjectId,
                 ref: 'User'
-            }],
-            right: {
-                type: String,
-                enum: ['view', 'edit', 'hide']
-            }
+            }]
         }
     ],
     project_type: {

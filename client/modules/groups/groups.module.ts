@@ -87,6 +87,7 @@ import { AdvancedFilterDialogComponent } from './group/group-kanban-boards/board
 import { GroupReportsComponent } from './group/group-reports/group-reports.component';
 import { ShowCustomFieldsColumnDialogComponent } from './group/group-kanban-boards/show-custom-fields-column-dialog/show-custom-fields-column-dialog.component';
 import { GroupKanbanArchivedBoardsComponent } from './group/group-kanban-archived-boards/group-kanban-archived-boards.component';
+import { PermissionDialogComponent } from './group/permission-dialog/permission-dialog.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -153,6 +154,7 @@ import { GroupKanbanArchivedBoardsComponent } from './group/group-kanban-archive
     ShowCustomFieldsColumnDialogComponent,
     KanbanTaskCardComponent,
     GroupReportsComponent,
+    PermissionDialogComponent
   ],
   imports: [
     CommonModule,
@@ -199,7 +201,8 @@ import { GroupKanbanArchivedBoardsComponent } from './group/group-kanban-archive
     AutomationFlowDetailsDialogComponent,
     CreateProjectColumnDialogComponent,
     ShowCustomFieldsColumnDialogComponent,
-    GroupRAGDialogComponent
+    GroupRAGDialogComponent,
+    PermissionDialogComponent
   ]
 })
 export class GroupsModule { }

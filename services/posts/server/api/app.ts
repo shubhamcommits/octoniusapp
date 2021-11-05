@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 import fileUpload from 'express-fileupload';
-import { postRoutes, commentRoutes } from './routes';
+import { postRoutes, commentRoutes, postsPermissionsRoutes, sectionsPermissionsRoutes } from './routes';
 import bodyParser from 'body-parser';
 
 
@@ -83,8 +83,10 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Post Routes
-app.use('/api/comments', commentRoutes);
 app.use('/api', postRoutes);
+app.use('/api/comments', commentRoutes);
+app.use('/api/post/permissions', postsPermissionsRoutes);
+app.use('/api/section/permissions', sectionsPermissionsRoutes);
 
 // Correct REST naming
 // app.use('/api/users', userRoutes);

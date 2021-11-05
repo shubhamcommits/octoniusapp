@@ -915,37 +915,6 @@ export class PostController {
         return post;
     }
 
-    async addRagToPost(req: Request, res: Response, next: NextFunction) {
-        const { postId } = req.params;
-        const { rag } = req.body;
-
-        const post = await postService.addRag(postId, rag)
-            .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            });
-
-        // Send status 200 response
-        return res.status(200).json({
-            message: 'Task rag updated!',
-            post: post
-        });
-    }
-    async removeRagFromPost(req: Request, res: Response, next: NextFunction) {
-        const { postId } = req.params;
-        const { rag } = req.body;
-
-        const post = await postService.removeRag(postId, rag)
-            .catch((err) => {
-                return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            });
-
-        // Send status 200 response
-        return res.status(200).json({
-            message: 'Task rag updated!',
-            post: post
-        });
-    }
-
     /**
      * This function is responsible for fetching the posts of a workspace
      * @param req 

@@ -75,13 +75,43 @@ export class FoldersService {
     return this._http.put(this.baseURL + `/folders/${folderId}/move-to-folder`, { parentFolderId: parentFolderId }).toPromise();
   }
 
-  addRag(folderId: string, rag: string) {
+  /**
+   *
+   * STARTING THE BLOCK OF METHODS TO UPDATE THE RIGHTS OF A FOLDER
+   *
+   */
+  selectPermissionRight(permissionId: string, folderId: string, right: string) {
     // Call the HTTP Request
-    return this._http.put(this.baseURL + `/folders/${folderId}/addRag`, {rag}).toPromise();
+    return this._http.put(this.baseURL + `/folders/permissions/${folderId}/selectPermissionRight`, { right, permissionId }).toPromise();
   }
 
-  removeRag(folderId: string, rag: string) {
+  removePermission(permissionId: string, folderId: string) {
     // Call the HTTP Request
-    return this._http.put(this.baseURL + `/folders/${folderId}/removeRag`, {rag}).toPromise();
+    return this._http.put(this.baseURL + `/folders/permissions/${folderId}/removePermission`, { permissionId }).toPromise();
   }
+
+  addTagToPermission(permissionId: string, folderId: string, tag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/folders/permissions/${folderId}/addTagToPermission`, { permissionId, tag }).toPromise();
+  }
+
+  removePermissionTag(permissionId: string, folderId: string, tag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/folders/permissions/${folderId}/removePermissionTag`, { permissionId, tag }).toPromise();
+  }
+
+  addMemberToPermission(folderId: string, permissionId: string, member: any) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/folders/permissions/${folderId}/addMemberToPermission`, { permissionId, member }).toPromise();
+  }
+
+  removeMemberFromPermission(folderId: string, permissionId: string, memberId: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/folders/permissions/${folderId}/removeMemberFromPermission`, { permissionId, memberId }).toPromise();
+  }
+  /**
+   *
+   * ENDS THE BLOCK OF METHODS TO UPDATE THE RIGHTS OF A FOLDER
+   *
+   */
 }
