@@ -7,24 +7,32 @@
 .rag{
     padding: 14px 0;
     border-bottom: 1px solid #E4EDF8;
-    width: 70%;
+    // width: 70%;
     margin: 0 auto;
     text-align: left;
     border-radius: 0 !important;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
 }
 .md-36{
     font-size: 36px;
 }
 .tag{
     font-style: normal;
-    font-weight: bold;
-    font-size: 13px;
+    font-weight: 700;
+    font-size: 14px;
     line-height: 23px;
     color: #005FD5;
     background: #E4EDF8;
     border-radius: 20px;
     padding: 5px;
 }
+.tagrow{
+    display: flex;
+    align-items: center;
+}
+
 .text-blue{
     padding-top: 60px;
     color: #005FD5;
@@ -46,12 +54,22 @@
     margin: 10px auto;
     width: 300px;
 }
-.useravatar{
-    width: 50px;
-    text-align: center;
-    .feed-avatar{
-        width: 30px;
-        height: 30px;
-        margin: 0 auto;
-    }
+
+
+.d-flex{
+    justify-content: center;
+}
+
+.permission-label{
+    font-weight: 700;
+    padding: 6px;
+    background-color: #0bc6a0;
+    border-radius: 4px;
+}
+
+.toolbox{
+    display: flex;
+    align-items: center;
+    margin-left: 32px;
+    border-left: 1px solid #E4EDF8;
 }

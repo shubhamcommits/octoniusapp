@@ -7,7 +7,7 @@
       <div style="float: left; width: 50%; text-align: left;">
         <h2 mat-dialog-title>
           <span class="badge badge-cf">
-              <i class="material-icons-round">vpn_lock</i>
+              <i class="material-icons">vpn_lock</i>
           </span>
           <span i18n="@@permissionDialog.permissions">Permissions</span>
         </h2>
@@ -26,14 +26,15 @@
     </div>
 
     <div *ngIf="!editMode">
-      <div *ngFor="let permission of permissionsList" style="justify-content: space-between;" class="rag">
-          <div>
-            {{ permission?.right }} &nbsp;&nbsp;
-            <span i18n="@@permissionDialog.for">FOR</span>
+      <div *ngFor="let permission of permissionsList" class="rag">
+          <div class="">
+            <span class="permission-label mr-3"> <i class="material-icons mr-1">vpn_lock</i>{{ permission?.right }}</span>
+            
+            <span i18n="@@permissionDialog.for">for</span>
           </div>
 
-          <div>
-            <div class="useravatar" *ngFor="let member of permission._members">
+          <div class="d-flex">
+            <div *ngFor="let member of permission._members">
                 <app-secured-image
                   [imgURL]="member?.profile_pic"
                   [service]="'user'"
@@ -41,18 +42,18 @@
                   [styleClass]="'feed-avatar'"></app-secured-image>
             </div>
 
-            <div *ngFor="let tag of permission.rags; let i = index">
-              <div>
+            <div *ngFor="let tag of permission.rags; let i = index" class="tagrow">
+              
                 <span class="tag">
                   {{ tag }}
                 </span>
-              </div>
+
             </div>
 
-            <div>
-              <i (click)="editPermission(permission)" class="material-icons muted" style="cursor: pointer; font-size: 14px; color: #2AA578;">mode</i>
+            <div class="toolbox">
+              <i (click)="editPermission(permission)" class="material-icons text-success" style="cursor: pointer;">mode</i>
               &nbsp;&nbsp;
-              <i (click)="removePermission(permission?._id)" class="material-icons muted" style="cursor: pointer; font-size: 14px; color: #F67B99;">delete</i>
+              <i (click)="removePermission(permission?._id)" class="material-icons text-danger" style="cursor: pointer;">delete</i>
             </div>
           </div>
         </div>
@@ -66,13 +67,16 @@
     </div>
 
     <div *ngIf="editMode && permissionToEdit" style="padding-top: 20px;">
-      <div style="padding-top: 20px; margin-bottom: 20px;">
+      <div style="padding-top: 20px; margin-bottom: 20px; flex-direction: column;" class="d-flex">
         <div class="d-flex">
+          <mat-form-field appearance="fill">
+            <mat-label>Select permission</mat-label>
           <mat-select [(value)]="permissionToEdit.right"
               (selectionChange)="selectPermissionRight(permissionToEdit._id, $event.value)">
             <mat-option *ngFor="let right of permissionRights" [value]="right._id">{{ right.title }}</mat-option>
           </mat-select>
-          <span i18n="@@permissionDialog.for" *ngIf="permissionToEdit?._id">FOR</span>
+        </mat-form-field>
+          <span i18n="@@permissionDialog.for" *ngIf="permissionToEdit?._id" style="line-height: 50px;" class="ml-3">for</span>
         </div>
 
         <div class="d-flex" *ngIf="permissionToEdit?._id">
@@ -94,7 +98,7 @@
           </app-component-search-input-box>
         </div>
 
-        <div *ngIf="permissionToEdit?._id">
+        <div *ngIf="permissionToEdit?._id" class="d-flex">
           <div *ngFor="let tag of permissionToEdit.rags; let i = index">
             <div>
               <span class="tag">
