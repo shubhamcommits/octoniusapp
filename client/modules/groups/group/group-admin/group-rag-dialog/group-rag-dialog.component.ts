@@ -49,19 +49,6 @@ import { PublicFunctions } from 'modules/public.functions';
         this.groupData = this.data.groupData;
         this.ragList = this.groupData.rags;
         this.groupId = this.data.groupData._id;
-        if(this.ragList !== undefined){
-            this.ragList.forEach(rag => {
-                rag.members = [];
-                if (rag.tag_members !== undefined) {
-                    rag.tag_members.forEach( tagMember =>{
-                        this.members.forEach(member => {
-                            if(member._id === tagMember)
-                                rag.members.push(member);
-                        });
-                    });
-                }
-            });
-        }
         this.membersLoaded = true;
     }
 
@@ -73,7 +60,7 @@ import { PublicFunctions } from 'modules/public.functions';
           .then((res: any)=> {
             this.ragList.forEach(ragItem => {
                 if(ragItem.rag_tag === rag.rag_tag){
-                    ragItem.members.push(event);
+                    ragItem.tag_members.push(event);
                 }
             });
 
@@ -93,8 +80,7 @@ import { PublicFunctions } from 'modules/public.functions';
             this.utilityService.warningNotification($localize`:@@groupRagDialog.removedFromRagTag:${event.first_name} removed from ${rag.rag_tag}!`);
             this.ragList.forEach( ragItem => {
                 if(ragItem.rag_tag === rag.rag_tag){
-                    ragItem.members = ragItem.members.filter(member => member._id !== event._id);
-                    ragItem.tag_members = ragItem.tag_members.filter(memberId => memberId !== event._id);
+                  ragItem.tag_members = ragItem.tag_members.filter(memberId => memberId !== event._id);
                 }
             });
 
@@ -110,16 +96,6 @@ import { PublicFunctions } from 'modules/public.functions';
     addTag() {
         this.groupService.addRag(this.groupData._id, this.tag).then((res: any) => {
             this.ragList = res.group.rags;
-            this.ragList.forEach(rag => {
-                rag.members = [];
-                rag.tag_members.forEach( tagMember =>{
-                    this.members.forEach(member => {
-                        if(member._id === tagMember)
-                            rag.members.push(member);
-                    });
-                });
-            });
-
             this.groupData = res.group;
             this.groupData.rags = this.ragList;
             this.publicFunctions.sendUpdatesToGroupData(this.groupData);
@@ -131,16 +107,6 @@ import { PublicFunctions } from 'modules/public.functions';
     removeTag(ragTag) {
         this.groupService.removeRag(this.groupData._id, ragTag).then((res: any)=>{
             this.ragList = res.group.rags;
-            this.ragList.forEach(rag => {
-                rag.members = [];
-                rag.tag_members.forEach( tagMember =>{
-                    this.members.forEach(member => {
-                        if(member._id === tagMember)
-                            rag.members.push(member);
-                    });
-                });
-            });
-
             this.groupData = res.group;
             this.groupData.rags = this.ragList;
             this.publicFunctions.sendUpdatesToGroupData(this.groupData);
