@@ -35,7 +35,9 @@ export class GroupAdminComponent implements OnInit {
   enabledShuttleType: boolean = false;
 
   // Campaign Status
-  enabledCampaign: boolean
+  enabledCampaign: boolean;
+
+  switchAgora: boolean = false;
 
   shuttleTasksModuleAvailable: boolean = false;
 
@@ -63,6 +65,7 @@ export class GroupAdminComponent implements OnInit {
     this.enabledProjectType = this.groupData.project_type;
     this.enabledShuttleType = this.groupData.shuttle_type;
     this.enabledCampaign = this.groupData.enabled_campaign
+    this.switchAgora = this.groupData.type == 'agora';
 
     // Fetch Current User
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -179,6 +182,17 @@ export class GroupAdminComponent implements OnInit {
           })
           .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
         }
+
+        if(selected.source.name === 'switch-agora'){
+          this.groupService.saveSettings(this.groupId, { type: (selected.checked) ? 'agora' : 'normal' })
+            .then(()=> {
+              this.switchAgora = selected.checked;
+              this.groupData.type = (selected.checked) ? 'agora' : 'normal';
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
+            })
+            .catch((err) => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        }
       }));
   }
 
@@ -208,5 +222,9 @@ export class GroupAdminComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       sub.unsubscribe();
     });
+  }
+
+  convertAgora($event) {
+
   }
 }
