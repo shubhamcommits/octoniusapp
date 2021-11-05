@@ -250,9 +250,20 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     return this.isLoading$.next(false);
   }
 
-  newSectionAdded(data) {
-    // Push the Column
-    this.columns.push(data);
+  newSectionAdded(column: any) {
+    const canEdit = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'edit');
+    let canView = false;
+
+    if (!canEdit) {
+      const hide = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'hide');
+      canView = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'view') || !hide;
+    }
+
+    column.canEdit = canEdit;
+    if (canEdit || canView) {
+      // Push the Column
+      this.columns.push(column);
+    }
   }
 
   filterRAGSections() {
