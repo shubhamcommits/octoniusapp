@@ -54,7 +54,7 @@ const GroupSchema = new Schema({
     rags: [
         {
             rag_tag: Schema.Types.String,
-            tag_members: [{
+            _members: [{
                 type: Schema.Types.ObjectId,
                 ref: 'User'
             }]

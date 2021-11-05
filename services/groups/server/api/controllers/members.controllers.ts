@@ -369,9 +369,9 @@ export class MembersControllers {
                 if (rag.rag_tag === ragTag) {
                   foundRag = true;
                 }
-                if (rag.rag_tag === ragTag && rag.tag_members.includes(memberId)) {
+                if (rag.rag_tag === ragTag && rag._members.includes(memberId)) {
                     userExists = true;
-                    users = rag.tag_members;
+                    users = rag._members;
                 }
             });
             // If group wasn't found invalid id error
@@ -387,7 +387,7 @@ export class MembersControllers {
             
             groupUpdate.rags.forEach( rag => {
                 if (rag.rag_tag === ragTag) {
-                    rag.tag_members.push(memberId);
+                    rag._members.push(memberId);
                 }
             });
             groupUpdate.save();
@@ -436,8 +436,8 @@ export class MembersControllers {
             // tslint:disable-next-line: no-shadowed-variable
             groupUpdate.rags.forEach( rag => {
                 if (rag.rag_tag === ragTag) {
-                    usersList = rag.tag_members.filter( tagMember => String(tagMember) !== memberId);
-                    rag.tag_members = usersList;
+                    usersList = rag._members.filter( tagMember => String(tagMember) !== memberId);
+                    rag._members = usersList;
                 }
             });
             groupUpdate.save();

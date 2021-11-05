@@ -60,7 +60,7 @@ import { PublicFunctions } from 'modules/public.functions';
           .then((res: any)=> {
             this.ragList.forEach(ragItem => {
                 if(ragItem.rag_tag === rag.rag_tag){
-                    ragItem.tag_members.push(event);
+                    ragItem._members.push(event);
                 }
             });
 
@@ -80,7 +80,7 @@ import { PublicFunctions } from 'modules/public.functions';
             this.utilityService.warningNotification($localize`:@@groupRagDialog.removedFromRagTag:${event.first_name} removed from ${rag.rag_tag}!`);
             this.ragList.forEach( ragItem => {
                 if(ragItem.rag_tag === rag.rag_tag){
-                  ragItem.tag_members = ragItem.tag_members.filter(memberId => memberId !== event._id);
+                  ragItem._members = ragItem._members.filter(memberId => memberId !== event._id);
                 }
             });
 

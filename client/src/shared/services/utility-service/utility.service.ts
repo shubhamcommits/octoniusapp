@@ -572,7 +572,7 @@ export class UtilityService {
               groupRag = groupData?.rags[groupRagIndex];
             }
 
-            const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+            const userRagIndex = (groupRag && groupRag._members) ? groupRag._members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
             const userPermissionIndex = (permission && permission._members) ? permission._members.findIndex(permissionMember => (permissionMember?._id || permissionMember) == userData?._id) : -1;
             if ((userRagIndex >= 0 || userPermissionIndex >= 0) && permission.right == action) {
               canDoRagAction = true;
@@ -600,7 +600,7 @@ export class UtilityService {
           groupRag = groupData?.rags[groupRagIndex];
         }
 
-        const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+        const userRagIndex = (groupRag && groupRag._members) ? groupRag._members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
         const userPermissionIndex = (permission && permission._members) ? permission._members.findIndex(permissionMember => (permissionMember?._id || permissionMember) == userData?._id) : -1;
         if ((userRagIndex >= 0 || userPermissionIndex >= 0) && permission.right == action) {
           canDoRagAction = true;
@@ -646,7 +646,7 @@ export class UtilityService {
               groupRag = groupData?.rags[groupRagIndex];
             }
 
-            const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+            const userRagIndex = (groupRag && groupRag._members) ? groupRag._members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
             const userPermissionIndex = (permission && permission._members) ? permission._members.findIndex(permissionMember => (permissionMember?._id || permissionMember) == userData?._id) : -1;
             if ((userRagIndex >= 0 || userPermissionIndex >= 0) && permission.right == action) {
               canDoRagAction = true;
