@@ -53,7 +53,7 @@
                     <!-- Skill section ends -->
 
                     <!-- Tag section starts -->
-                    <section *ngIf="(type == 'tag' || type === 'ragTag') && item.showAddButton">
+                    <section *ngIf="(type == 'tag' && !tagList.includes(item)) || (type === 'ragTag' && item.showAddButton)">
                         <!-- Add tags starts -->
                         <button (click)="onAddTag(item)"
                           class="btn btn-primary btn-sm"

@@ -3,24 +3,28 @@
    <div class="col-md-auto" >
 
 
-  <button class="btn tagslabel"
-  style="margin-right: 1rem;"
-  (click)="removeTag(i)"
-  *ngFor="let tag of tags; let i = index"><b>X</b> {{ tag }}</button>
+      <button class="btn tagslabel"
+          style="margin-right: 1rem;"
+          (click)="removeTag(i)"
+          *ngFor="let tag of tags; let i = index">
+        <b>X</b>
+        {{ tag }}
+      </button>
 
-</div>
+    </div>
 <!-- Iterate over all the tags present for a particular user ends -->
 
     <div class="col-md-auto">
 
         <!-- Search tag component starts -->
         <app-component-search-input-box
-        *ngIf="userData && checkDataExist(userData) && canEdit"
-        [placeholder]="'Add tag'"
-        [userData]="userData"
-        [type]="'tag'"
-        [groupId]="groupId"
-        (tag)="addNewTag($event)">
+          *ngIf="userData && checkDataExist(userData) && canEdit"
+          [placeholder]="'Add tag'"
+          [userData]="userData"
+          [type]="'tag'"
+          [tagList]="post?.tags"
+          [groupId]="groupId"
+          (tag)="addNewTag($event)">
         </app-component-search-input-box>
         <!-- Search tag component ends -->
     </div>
