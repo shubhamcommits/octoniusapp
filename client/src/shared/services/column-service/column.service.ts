@@ -119,11 +119,7 @@ export class ColumnService {
    * @param columnId
    */
   deleteColumn(columnId: string) {
-    const column = {
-      columnId: columnId
-    }
-    return this._http.put(this.baseUrl + `/columns/delete`, column)
-    .toPromise()
+    return this._http.delete(this.baseUrl + `/columns/${columnId}/delete`).toPromise();
   }
 
   saveCustomFieldsToShow(columnId: string, customFieldsToShow: any[]) {

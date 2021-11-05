@@ -41,7 +41,7 @@ router.post('/', columns.addColumn);
 router.put('/edit/name', columns.editColumnName);
 
 // delete column 
-router.put('/delete', columns.deleteColumn);
+router.delete('/:sectionId/delete', columns.deleteColumn);
 
 // PUT - Save custom field to show
 router.put('/customFieldsToShow', columns.updateCustomFieldsToShow);

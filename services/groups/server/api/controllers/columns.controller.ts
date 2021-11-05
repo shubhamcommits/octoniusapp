@@ -262,11 +262,11 @@ export class ColumnsController {
     // delete column 
     async deleteColumn(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.body.columnId;
+            const sectionId = req.params.sectionId;
 
-            await Post.deleteMany({ 'task._column': id });
+            await Post.deleteMany({ 'task._column': sectionId });
 
-            await Column.findOneAndDelete({ _id: id });
+            await Column.findOneAndDelete({ _id: sectionId });
 
             // Send the status 200 response
             return res.status(200).json({

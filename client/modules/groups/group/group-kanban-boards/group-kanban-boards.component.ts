@@ -317,30 +317,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   }
 
   /**
-   * This function is responsible for removing the column
-   * @param groupId
-   */
-  removeColumn(columnId: string) {
-
-    // Column Service Instance
-    let columnService = this.injector.get(ColumnService)
-
-    // Utility Service Instance
-    let utilityService = this.injector.get(UtilityService)
-
-    // Call the HTTP Service function
-    utilityService.asyncNotification($localize`:@@groupKanbanBoards.pleaseWaitWeRemovingSection:Please wait we are removing your section...`, new Promise((resolve, reject) => {
-      columnService.deleteColumn(columnId)
-        .then((res) => {
-          resolve(utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.sectionRemoved:Section Removed!`));
-        })
-        .catch((err) => {
-          reject(utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToRemoveSection:Unable to remove the section at the moment, please try again!`))
-        })
-    }))
-  }
-
-  /**
    * This function is responsible for renaming a column
    * @param oldCol
    * @param newColTitle
@@ -385,13 +361,22 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     this.utilityService.getConfirmDialogAlert($localize`:@@groupKanbanBoards.areYouSure:Are you sure?`, $localize`:@@groupKanbanBoards.byDoingThisTasksWillBeDeleted:By doing this all the tasks from this section will be deleted!`)
       .then((res) => {
         if (res.value) {
-          // Find the index of the column to check if the same named column exist or not
-          let index = (this.columns) ? this.columns.findIndex((col: any) => col._id === column._id) : -1;
-          // Remove the column from the array
-          this.columns.splice(index, 1)
 
-          // This function removes the column
-          this.removeColumn(column._id)
+          // Call the HTTP Service function
+          this.utilityService.asyncNotification($localize`:@@groupKanbanBoards.pleaseWaitWeRemovingSection:Please wait we are removing your section...`, new Promise((resolve, reject) => {
+            this.columnService.deleteColumn(column?._id)
+              .then((res) => {
+                // Find the index of the column to check if the same named column exist or not
+                let index = (this.columns) ? this.columns.findIndex((col: any) => col._id === column._id) : -1;
+                // Remove the column from the array
+                this.columns.splice(index, 1);
+
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupKanbanBoards.sectionRemoved:Section Removed!`));
+              })
+              .catch((err) => {
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@groupKanbanBoards.unableToRemoveSection:Unable to remove the section at the moment, please try again!`))
+              })
+          }));
         }
       })
   }
