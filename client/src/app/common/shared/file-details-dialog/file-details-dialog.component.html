@@ -13,6 +13,7 @@
                 <h4 class="modal-title">
                     <!-- Post Title starts -->
                     <input
+                      [disabled]="!canEdit"
                       name="postTitle"
                       type="text"
                       [ngModel]="original_name"
