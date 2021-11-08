@@ -1355,6 +1355,199 @@ export class GroupController {
         }
     };
 
+    /**
+     * This function is responsible for adding a new custom field for the particular group
+     * @param { customFiel } req 
+     * @param res 
+     */
+    async addFilesCustomField(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the newCustomField from fileHandler middleware
+        const newCustomField = req.body['newCustomField'];
+
+        try {
+
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                //custom_fields: newCustomField
+                $push: { "files_custom_fields": newCustomField }
+            }, {
+                new: true
+            }).select('files_custom_fields');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    /**
+     * This function fetches the custom fields of the group corresponding to the @constant groupId 
+     * @param req - @constant groupId
+     */
+    async getFilesCustomFields(req: Request, res: Response) {
+        try {
+
+            const { groupId } = req.params;
+
+            // Find the Group based on the groupId
+            const group = await Group.findOne({
+                _id: groupId
+            })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .lean();
+
+            // Check if group already exist with the same groupId
+            if (!group) {
+                return sendError(res, new Error('Oops, group not found!'), 'Group not found, Invalid groupId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Group found!',
+                group
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    async removeFilesCustomField(req: Request, res: Response, next: NextFunction) {
+        // Fetch the groupId & fieldId
+        const { groupId, fieldId } = req.params;
+
+        try {
+
+            let group = await Group.findById({
+                _id: groupId
+            }).select('files_custom_fields').lean();
+
+            const cfIndex = group.files_custom_fields.findIndex(cf => cf._id == fieldId);
+            const cf = (group && group.files_custom_fields) ? group.files_custom_fields[cfIndex] : null;
+
+            // Find the group and update their respective group avatar
+            group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    $pull: {
+                        files_custom_fields: {
+                            _id: fieldId
+                        }
+                    }
+                }).lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            console.log(err);
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async addFilesCustomFieldValue(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the field and value from fileHandler middleware
+        const fieldId = req.body['fieldId'];
+        const value = req.body['value'];
+
+        try {
+            // Find the custom field in a group and add the value
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                $push: { "files_custom_fields.$[field].values": value }
+            }, {
+                arrayFilters: [{ "field._id": fieldId }],
+                new: true
+            }).select('files_custom_fields');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async setFilesCustomFieldColor(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Fetch the field and value from fileHandler middleware
+        const fieldId = req.body['fieldId'];
+        const color = req.body['color'];
+
+        try {
+            // Find the custom field in a group and add the value
+            const group = await Group.findByIdAndUpdate({
+                    _id: groupId
+                }, {
+                    $set: { "files_custom_fields.$[field].badge_color": color }
+                }, {
+                    arrayFilters: [{ "field._id": fieldId }],
+                    new: true
+                }).select('files_custom_fields')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async removeFilesCustomFieldValue(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { groupId } = req.params;
+
+        // Find the custom field in a group and remove the value
+        const fieldId = req.body['fieldId'];
+        const value = req.body['value'];
+
+        try {
+            // Find the group and update their respective group avatar
+            const group = await Group.findByIdAndUpdate({
+                _id: groupId
+            }, {
+                $pull: { "files_custom_fields.$[field].values": value }
+            }, {
+                arrayFilters: [{ "field._id": fieldId }],
+                new: true
+            }).select('files_custom_fields');
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Group custom fields updated!',
+                group: group
+            });
+        } catch (err) {
+            console.log(err);
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
     async saveSettings(req: Request, res: Response, next: NextFunction) {
 
         // Fetch the groupId

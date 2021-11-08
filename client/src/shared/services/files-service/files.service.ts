@@ -196,4 +196,18 @@ export class FilesService {
    * ENDS THE BLOCK OF METHODS TO UPDATE THE RIGHTS OF A FILE
    *
    */
+
+
+
+  /**
+   * This function is used to save a custom field value
+   * @param postId
+   */
+   saveCustomField(postId: string, customFieldName: string, customFieldValue: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/files/${postId}/customField`, {
+      customFieldName: customFieldName,
+      customFieldValue: customFieldValue
+    }).toPromise();
+  }
 }

@@ -94,6 +94,9 @@ export class SearchService {
               $or: [
                 { original_name: { $regex: query, $options: 'i' } },
                 { modified_name: { $regex: query, $options: 'i' } },
+                { description: { $regex: query, $options: 'i' }},
+                { tags: { $regex: query, $options: 'i' }},
+                //{ custom_fields: { $regex: query, $options: 'i' }},
               ]
             }
           ]    
