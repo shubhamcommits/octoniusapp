@@ -18,7 +18,8 @@ export class FilesBarComponent implements OnInit {
   // GroupData Variable
   @Input() groupData: any;
   @Input() userData;
-  @Input() isAdmin = false;
+
+  isAdmin = true;
 
   // Emitter to notify that a customField was edited/added
   @Output() customFieldEmitter = new EventEmitter();
@@ -26,6 +27,7 @@ export class FilesBarComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
+    this.isAdmin = this.isAdminUser();
   }
 
   openCustomFieldsDialog(): void {
@@ -41,5 +43,10 @@ export class FilesBarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       sub.unsubscribe();
     });
+  }
+
+  isAdminUser() {
+    const index = (this.groupData && this.groupData._admins) ? this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id) : -1;
+    return index >= 0;
   }
 }
