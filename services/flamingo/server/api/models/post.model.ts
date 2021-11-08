@@ -53,7 +53,19 @@ const PostSchema = new Schema({
         ref: 'User',
         required: true
     },
-    rags: [],
+    permissions: [
+        {
+            right: {
+                type: String,
+                enum: ['view', 'edit', 'hide']
+            },
+            rags: [],
+            _members: [{
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }]
+        }
+    ],
     created_date: {
         type: Date,
         default: Date.now

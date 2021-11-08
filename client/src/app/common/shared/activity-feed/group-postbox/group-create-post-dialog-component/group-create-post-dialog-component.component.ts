@@ -148,9 +148,13 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     await this.initPostData();
 
-    this.canEdit = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'edit');
-    const hide = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'hide');
-    this.canView = this.utilityService.canUserDoAction(this.postData, this.groupData, this.userData, 'view') || !hide;
+    this.canEdit = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'edit');
+    if (!this.canEdit) {
+      const hide = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'hide');
+      this.canView = await this.utilityService.canUserDoTaskAction(this.postData, this.groupData, this.userData, 'view') || !hide;
+    } else {
+      this.canView = true;
+    }
   }
 
   formateDate(date){
@@ -160,11 +164,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async initPostData() {
     // Set the title of the post
     this.title = this.postData.title;
-    /*
-    if(this.postData.rags && this.postData.rags !== undefined) {
-      this.ragTags = this.postData.rags.map(rag => rag.rag_tag);
-    }
-    */
+
     // Set the due date to be undefined
     this.dueDate = undefined;
     this.tags = [];
@@ -356,46 +356,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.tags = tags;
 
     this.updateDetails();
-  }
-
-  async addNewRagTag(event) {
-    if (!this.postData.rags) {
-      this.postData.rags = [];
-    }
-
-    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.addRag(this.postData._id, event.rag_tag)
-        .then((res) => {
-          // Resolve with success
-          this.postData.rags.push(event.rag_tag);
-          //this.ragTags.push(event.rag_tag);
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
-        });
-    }));
-  }
-
-  async removeRagTag(event){
-
-    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.removeRag(this.postData._id, event)
-        .then((res) => {
-          // Resolve with success
-          //this.ragTags.splice(index, 1);
-          // Find the index of the column to check if the same named column exist or not
-          let indexRag = (this.postData.rags) ? this.postData.rags.findIndex((ragTag: any) => ragTag == event) : -1;
-          // Remove the column from the array
-          if (indexRag >= 0) {
-            this.postData.rags.splice(indexRag, 1);
-          }
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
-        });
-    }));
   }
 
   // Check if the data provided is not empty{}

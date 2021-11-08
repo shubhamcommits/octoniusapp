@@ -61,7 +61,19 @@ const ColumnSchema = new Schema({
     kanban_order: {
         type: Number
     },
-    rags: [],
+    permissions: [
+        {
+            right: {
+                type: String,
+                enum: ['view', 'edit', 'hide']
+            },
+            rags: [],
+            _members: [{
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }]
+        }
+    ],
     custom_fields_to_show_kanban: [{
         type: String,
         required: false

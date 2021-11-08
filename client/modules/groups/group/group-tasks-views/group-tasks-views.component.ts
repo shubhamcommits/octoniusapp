@@ -135,7 +135,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
      */
     await this.sortTasksInColumns(this.columns, this.tasks);
 
-    if (this.groupData.enabled_rights) {
+    if (this.groupData?.enabled_rights) {
       await this.filterRAGTasks();
     }
 
@@ -250,17 +250,32 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     return this.isLoading$.next(false);
   }
 
-  newSectionAdded(data) {
-    // Push the Column
-    this.columns.push(data);
+  newSectionAdded(column: any) {
+    const canEdit = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'edit');
+    let canView = false;
+
+    if (!canEdit) {
+      const hide = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'hide');
+      canView = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'view') || !hide;
+    }
+
+    column.canEdit = canEdit;
+    if (canEdit || canView) {
+      // Push the Column
+      this.columns.push(column);
+    }
   }
 
   filterRAGSections() {
     let columnsTmp = [];
     this.columns.forEach(column => {
-        const canEdit = this.utilityService.canUserDoAction(column, this.groupData, this.userData, 'edit');
-        const hide = this.utilityService.canUserDoAction(column, this.groupData, this.userData, 'hide');
-        const canView = this.utilityService.canUserDoAction(column, this.groupData, this.userData, 'view') || !hide;
+        const canEdit = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'edit');
+        let canView = false;
+
+        if (!canEdit) {
+          const hide = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'hide');
+          canView = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'view') || !hide;
+        }
 
         column.canEdit = canEdit;
         if (canEdit || canView) {
@@ -277,18 +292,21 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
         if (column.tasks) {
           // Filtering other tasks
-          column.tasks.forEach(task => {
-            if (task?.rags && task?.rags?.length > 0) {
-              const adminIndex = this.groupData?._admins?.findIndex(admin => (admin?._id || admin) == this.userData?._id);
-              task.rags.forEach(rag => {
-                const canEdit = this.utilityService.canUserDoAction(task, this.groupData, this.userData, 'edit');
-                const hide = this.utilityService.canUserDoAction(task, this.groupData, this.userData, 'hide');
-                const canView = this.utilityService.canUserDoAction(task, this.groupData, this.userData, 'view') || !hide;
-                if (canEdit || canView) {
-                  tasks.push(task);
-                }
-              });
+          column.tasks.forEach(async task => {
+            if (task?.permissions && task?.permissions?.length > 0) {
+              const canEdit = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'edit');
+              let canView = false;
+              if (!canEdit) {
+                const hide = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'hide');
+                canView = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'view') || !hide;
+              }
+
+              if (canEdit || canView) {
+                task.canView = true;
+                tasks.push(task);
+              }
             } else {
+              task.canView = true;
               tasks.push(task);
             }
           });

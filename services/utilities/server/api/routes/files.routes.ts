@@ -47,10 +47,6 @@ routes.put('/:fileId/move-to-group', files.move);
 // PUT - Handles the move of a file to a folder
 routes.put('/:fileId/move-to-folder', files.moveToFolder);
 
-//PUT - Adding removing RAGS with user ids
-routes.put('/:fileId/addRag', files.addRagToPost);
-routes.put('/:fileId/removeRag', files.removeRagFromPost);
-
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

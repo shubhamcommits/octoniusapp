@@ -6,6 +6,32 @@ import moment from 'moment';
 export class ColumnsController {
 
     // get all existing columns
+    async get(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch GroupId from the query
+            const sectionId = req.params.sectionId;
+
+            let section = await Column.findOne({
+                _id: sectionId 
+            }).lean() || [];
+
+            section = await Column.populate(section, [
+                { path: 'budget.expenses._user' },
+                { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
+            ]);
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Section obtained Successfully!',
+                section: section
+            });
+        } catch (err) {
+            return sendError(res, new Error(err), 'Internal Server Error!', 500);
+        }
+    }
+
+    // get all existing columns
     async getAllColumns(req: Request, res: Response, next: NextFunction) {
         try {
 
@@ -20,7 +46,8 @@ export class ColumnsController {
             }).sort({kanban_order: 1}).lean() || [];
 
             columns = await Column.populate(columns, [
-                { path: 'budget.expenses._user' }
+                { path: 'budget.expenses._user' },
+                { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
             ]);
 
             // Send the status 200 response
@@ -48,7 +75,8 @@ export class ColumnsController {
             }).sort({kanban_order: 1}).lean() || [];
 
             columns = await Column.populate(columns, [
-                { path: 'budget.expenses._user' }
+                { path: 'budget.expenses._user' },
+                { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
             ]);
 
             // Send the status 200 response
@@ -80,7 +108,8 @@ export class ColumnsController {
 
               columns = await Column.populate(columns, [
                 { path: '_group' },
-                { path: 'budget.expenses._user' }
+                { path: 'budget.expenses._user' },
+                { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
               ]);
             } else if (workspaceId) {
                 // Only groups where user is manager
@@ -103,7 +132,8 @@ export class ColumnsController {
 
               columns = await Column.populate(columns, [
                   { path: '_group' },
-                  { path: 'budget.expenses._user' }
+                  { path: 'budget.expenses._user' },
+                  { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
               ]);
             }
 
@@ -136,7 +166,8 @@ export class ColumnsController {
 
               columns = await Column.populate(columns, [
                   { path: '_group' },
-                  { path: 'budget.expenses._user' }
+                  { path: 'budget.expenses._user' },
+                  { path: 'permissions._members', select: 'first_name last_name profile_pic role email' }
               ]);
             }
 
@@ -231,11 +262,11 @@ export class ColumnsController {
     // delete column 
     async deleteColumn(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = req.body.columnId;
+            const sectionId = req.params.sectionId;
 
-            await Post.deleteMany({ 'task._column': id });
+            await Post.deleteMany({ 'task._column': sectionId });
 
-            await Column.findOneAndDelete({ _id: id });
+            await Column.findOneAndDelete({ _id: sectionId });
 
             // Send the status 200 response
             return res.status(200).json({
@@ -467,7 +498,9 @@ export class ColumnsController {
             columns.forEach(async col => {
                 await Column.findByIdAndUpdate(col._id, {
                     $set: { 'kanban_order': col.position }
-                }).lean();
+                })
+                .populate({ path: 'permissions._members', select: 'first_name last_name profile_pic role email' })
+                .lean();
             });
 
             return res.status(200).json({
@@ -503,6 +536,7 @@ export class ColumnsController {
                 new: true
                 })
                 .select("custom_fields_to_show_kanban")
+                .populate({ path: 'permissions._members', select: 'first_name last_name profile_pic role email' })
                 .lean();
 
             // Send status 200 response
@@ -544,6 +578,7 @@ export class ColumnsController {
                         new: true
                     })
                     .populate({ path: 'budget.expenses._user' })
+                    .populate({ path: 'permissions._members', select: 'first_name last_name profile_pic role email' })
                     .lean();
 
             } else {
@@ -575,56 +610,4 @@ export class ColumnsController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     };
-
-    async addRagToSection(req: Request, res: Response, next: NextFunction) {
-        try {
-            const sectionId = req.params.sectionId;
-            const rag = req.body.rag;
-
-            // Add User to group
-            const column = await Column.findByIdAndUpdate({
-                    _id: sectionId
-                }, {
-                    $addToSet: {
-                        rags: rag
-                    }
-                }, {
-                    new: true
-                });
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Section saved!',
-                section: column
-            });
-        } catch(err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    }
-
-    async removeRagFromSection(req: Request, res: Response, next: NextFunction) {
-        try {
-            const sectionId = req.params.sectionId;
-            const rag = req.body.rag;
-
-            // Add User to group
-            const column = await Column.findByIdAndUpdate({
-                    _id: sectionId
-                }, {
-                    $pull: {
-                        rags: rag
-                    }
-                }, {
-                    new: true
-                });
-
-            // Send status 200 response
-            return res.status(200).json({
-                message: 'Section saved!',
-                section: column
-            });
-        } catch(err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    }
 }

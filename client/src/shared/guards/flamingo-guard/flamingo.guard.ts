@@ -39,7 +39,8 @@ export class FlamingoGuard implements CanActivate  {
     let publicFunctions = this.injector.get(PublicFunctions);
 
     if (flamingo && flamingo['_file']) {
-      const flamingoStatus = await publicFunctions.checkFlamingoStatus(flamingo['_file']._group._workspace._id, flamingo['_file']._group._workspace.management_private_api_key);
+      const file = flamingo['_file'];
+      const flamingoStatus = await publicFunctions.checkFlamingoStatus(file?._group._workspace._id, file?._group._workspace.management_private_api_key);
 
       if (!flamingoStatus) {
         this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsSubscriptionNoFlamingo:Oops seems like your subscription doesn\´t have Flamingo Module available!`);
@@ -57,12 +58,15 @@ export class FlamingoGuard implements CanActivate  {
         await this.groupService.getGroup(currentGroupId).then(res => {
           currentGroup = res['group'];
         });
-        const groupMembersIndex = currentGroup._members.findIndex((member: any) => member._id == currentUser._id);
-        const groupAdminsIndex = currentGroup._admins.findIndex((admin: any) => admin._id == currentUser._id);
-        const userGroupsIndex = currentUser._groups.findIndex((group: any) => group == currentGroupId);
 
-        if (groupMembersIndex >= 0 || groupAdminsIndex >= 0
-            || userGroupsIndex >= 0 || currentUser._private_group == currentGroupId) {
+        const canEdit = await this.utilityService.canUserDoFileAction(file, currentGroup, currentUser, 'edit');
+        let canView = false;
+        if (!canEdit) {
+          const hide = await this.utilityService.canUserDoFileAction(file, currentGroup, currentUser, 'hide');
+          canView = await this.utilityService.canUserDoFileAction(file, currentGroup, currentUser, 'view') || !hide;
+        }
+
+        if (canEdit || canView || currentUser._private_group == currentGroupId) {
           return true;
         } else {
           this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);

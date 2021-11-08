@@ -54,7 +54,19 @@ const FileSchema = new Schema({
         required: true,
         default: false
     },
-    rags: []
+    permissions: [
+        {
+            right: {
+                type: String,
+                enum: ['view', 'edit', 'hide']
+            },
+            rags: [],
+            _members: [{
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }]
+        }
+    ],
 });
 
 const File = mongoose.model('File', FileSchema);

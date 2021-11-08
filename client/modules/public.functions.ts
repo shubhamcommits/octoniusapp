@@ -732,6 +732,30 @@ export class PublicFunctions {
     }
 
     /**
+     * This function is responsible for fetching a file's details
+     * @param fileId
+     */
+    getFile(fileId: string, readOnly?: boolean) {
+      if (fileId) {
+        // Files Service
+        let fileService = this.injector.get(FilesService);
+
+        return new Promise((resolve) => {
+          // Fetch the file details
+          fileService.getOne(fileId, readOnly)
+            .then((res) => {
+              resolve(res['file'])
+            })
+            .catch(() => {
+              resolve({})
+            });
+        });
+      } else {
+        return Promise.resolve({});
+      }
+    }
+
+    /**
      * This function is responsible for fetching the files from the server based on the groupId
      * @param groupId
      * @param folderId
@@ -1347,14 +1371,14 @@ export class PublicFunctions {
                                   });
                               retValue = (usersMatch && usersMatch.length > 0);
                             }
-                            break;
+                            return Promise.resolve({});
                         case 'Custom Field':
                             if (post.task._parent_task) {
                                 retValue = false;
                             } else {
                               retValue = post.task.custom_fields[trigger.custom_field.name].toString() == trigger.custom_field.value.toString();
                             }
-                            break;
+                            return Promise.resolve({});
                         case 'Section is':
                             if (post.task._parent_task) {
                                 if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId) {
@@ -1374,7 +1398,7 @@ export class PublicFunctions {
                                 }
                                 retValue = triggerSection.toString() == postSection.toString();
                             }
-                            break;
+                            return Promise.resolve({});
                         case 'Status is':
                             if (post.task._parent_task) {
                                 if (post?.task?.shuttle_type && shuttleIndex >= 0) {
@@ -1389,12 +1413,12 @@ export class PublicFunctions {
                                     retValue = trigger.status.toUpperCase() == post.task.status.toUpperCase();
                                 }
                             }
-                            break;
+                            return Promise.resolve({});
                         case 'Task is CREATED':
                             if (!post.task._parent_task && isCreationTaskTrigger) {
                                 retValue = true;
                             }
-                            break;
+                            return Promise.resolve({});
                         case 'Subtasks Status':
                             let postService = this.injector.get(PostService);
                             if (retValue && post.task._parent_task && trigger.subtaskStatus.toUpperCase() == post.task.status.toUpperCase()) {
@@ -1408,10 +1432,10 @@ export class PublicFunctions {
                             } else {
                                 retValue = false;
                             }
-                            break;
+                            return Promise.resolve({});
                         default:
                             retValue = true;
-                            break;
+                            return Promise.resolve({});
                     }
                 }
             });
@@ -1474,9 +1498,9 @@ export class PublicFunctions {
                             shuttled_at: moment().format()
                           });
                         }
-                        break;
+                        return Promise.resolve({});
                     default:
-                        break;
+                        return Promise.resolve({});
                 }
             });
             return post;
@@ -1740,4 +1764,142 @@ export class PublicFunctions {
       return (taskPost?.task?.status != 'done') &&
         (moment.utc(taskPost?.task?.due_to).format('YYYY-MM-DD') < today);
     }
+
+    /**
+     *
+     * STARTING THE BLOCK OF METHODS TO UPDATE THE RIGHTS OF AN ITEM
+     * ITEM = post/section/file/folder
+     *
+     */
+    selectPermissionRight(permissionId: string, itemId: string, right: string, type: string) {
+      switch (type) {
+        case 'file':
+          // Create service instance
+          let filesService = this.injector.get(FilesService);
+          return filesService.selectPermissionRight(permissionId, itemId, right);
+        case 'folder':
+          // Create service instance
+          let foldersService = this.injector.get(FoldersService);
+          return foldersService.selectPermissionRight(permissionId, itemId, right);
+        case 'post':
+          // Create service instance
+          let postService = this.injector.get(PostService);
+          return postService.selectPermissionRight(permissionId, itemId, right);
+        case 'section':
+          // Create service instance
+          let columnService = this.injector.get(ColumnService);
+          return columnService.selectPermissionRight(permissionId, itemId, right);
+      }
+    }
+
+    removePermission(permissionId: string, itemId: string, type: string) {
+      switch (type) {
+        case 'file':
+          // Create service instance
+          let filesService = this.injector.get(FilesService);
+          return filesService.removePermission(permissionId, itemId);
+        case 'folder':
+          // Create service instance
+          let foldersService = this.injector.get(FoldersService);
+          return foldersService.removePermission(permissionId, itemId);
+        case 'post':
+          // Create service instance
+          let postService = this.injector.get(PostService);
+          return postService.removePermission(permissionId, itemId);
+        case 'section':
+          // Create service instance
+          let columnService = this.injector.get(ColumnService);
+          return columnService.removePermission(permissionId, itemId);
+      }
+    }
+
+    addTagToPermission(permissionId: string, itemId: string, tag: string, type: string) {
+      switch (type) {
+        case 'file':
+          // Create service instance
+          let filesService = this.injector.get(FilesService);
+          return filesService.addTagToPermission(permissionId, itemId, tag);
+        case 'folder':
+          // Create service instance
+          let foldersService = this.injector.get(FoldersService);
+          return foldersService.addTagToPermission(permissionId, itemId, tag);
+        case 'post':
+          // Create service instance
+          let postService = this.injector.get(PostService);
+          return postService.addTagToPermission(permissionId, itemId, tag);
+        case 'section':
+          // Create service instance
+          let columnService = this.injector.get(ColumnService);
+          return columnService.addTagToPermission(permissionId, itemId, tag);
+      }
+    }
+
+    removePermissionTag(permissionId: string, itemId: string, tag: string, type: string) {
+      switch (type) {
+        case 'file':
+          // Create service instance
+          let filesService = this.injector.get(FilesService);
+          return filesService.removePermissionTag(permissionId, itemId, tag);
+        case 'folder':
+          // Create service instance
+          let foldersService = this.injector.get(FoldersService);
+          return foldersService.removePermissionTag(permissionId, itemId, tag);
+        case 'post':
+          // Create service instance
+          let postService = this.injector.get(PostService);
+          return postService.removePermissionTag(permissionId, itemId, tag);
+        case 'section':
+          // Create service instance
+          let columnService = this.injector.get(ColumnService);
+          return columnService.removePermissionTag(permissionId, itemId, tag);
+      }
+    }
+
+    addMemberToPermission(itemId: string, permissionId: string, member: any, type: string) {
+      switch (type) {
+        case 'file':
+          // Create service instance
+          let filesService = this.injector.get(FilesService);
+          return filesService.addMemberToPermission(itemId, permissionId, member);
+        case 'folder':
+          // Create service instance
+          let foldersService = this.injector.get(FoldersService);
+          return foldersService.addMemberToPermission(itemId, permissionId, member);
+        case 'post':
+          // Create service instance
+          let postService = this.injector.get(PostService);
+          return postService.addMemberToPermission(itemId, permissionId, member);
+        case 'section':
+          // Create service instance
+          let columnService = this.injector.get(ColumnService);
+          return columnService.addMemberToPermission(itemId, permissionId, member);
+      }
+    }
+
+    removeMemberFromPermission(itemId: string, permissionId: string, memberId: string, type: string) {
+      switch (type) {
+        case 'file':
+          // Create service instance
+          let filesService = this.injector.get(FilesService);
+          return filesService.removeMemberFromPermission(itemId, permissionId, memberId);
+        case 'folder':
+          // Create service instance
+          let foldersService = this.injector.get(FoldersService);
+          return foldersService.removeMemberFromPermission(itemId, permissionId, memberId);
+        case 'post':
+          // Create service instance
+          let postService = this.injector.get(PostService);
+          return postService.removeMemberFromPermission(itemId, permissionId, memberId);
+        case 'section':
+          // Create service instance
+          let columnService = this.injector.get(ColumnService);
+          return columnService.removeMemberFromPermission(itemId, permissionId, memberId);
+      }
+    }
+    /**
+     *
+     * ENDS THE BLOCK OF METHODS TO UPDATE THE RIGHTS OF AN ITEM
+     * ITEM = post/section/file/folder
+     *
+     */
 }

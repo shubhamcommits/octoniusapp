@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import { fileHandlerRoutes, filesRoutes, foldersRoutes } from './routes';
+import { fileHandlerRoutes, filesRoutes, foldersRoutes, foldersPermissionsRoutes, filesPermissionsRoutes } from './routes';
 import fileUpload from 'express-fileupload';
 
 // Defining new Express application
@@ -83,6 +83,8 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 // app.use('/api/auths', authRoutes)
 app.use('/api/files', filesRoutes)
 app.use('/api/folders', foldersRoutes)
+app.use('/api/files/permissions', filesPermissionsRoutes)
+app.use('/api/folders/permissions', foldersPermissionsRoutes)
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

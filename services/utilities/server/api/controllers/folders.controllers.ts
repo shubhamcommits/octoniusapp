@@ -224,35 +224,4 @@ export class FoldersControllers {
             return sendError(res, new Error('Internal Server Error!'), 'Internal Server Error!', 500);
         }
     }
-
-    async addRagToPost(req: Request, res: Response, next: NextFunction) {
-        const { folderId } = req.params;
-        const { rag } = req.body;
-
-        const post = await foldersService.addRag(folderId, rag)
-            .catch((err) => {
-                return sendError(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            });
-
-        // Send status 200 response
-        return res.status(200).json({
-            message: 'Task rag updated!',
-            post: post
-        });
-    }
-    async removeRagFromPost(req: Request, res: Response, next: NextFunction) {
-        const { folderId } = req.params;
-        const { rag } = req.body;
-
-        const post = await foldersService.removeRag(folderId, rag)
-            .catch((err) => {
-                return sendError(res, new Error(err), 'Bad Request, please check into error stack!', 400);
-            });
-
-        // Send status 200 response
-        return res.status(200).json({
-            message: 'Task rag updated!',
-            post: post
-        });
-    }
 }

@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, Injector } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -6,6 +6,9 @@ import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
 import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
+import { PostService } from '../post-service/post.service';
+import { ColumnService } from '../column-service/column.service';
+import { PermissionDialogComponent } from 'modules/groups/group/permission-dialog/permission-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +18,25 @@ export class UtilityService {
   constructor(
     private modalService: NgbModal,
     private ngxUiLoaderService: NgxUiLoaderService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private injector: Injector
     ) { }
 
    groupDeleteEvent: EventEmitter<any> = new EventEmitter();
    groupUpdateEvent: EventEmitter<any> = new EventEmitter();
    activeStateTopNavBarEvent: EventEmitter<any> = new EventEmitter();
+
+   handleDeleteGroupFavorite() {
+     return this.groupDeleteEvent;
+   }
+
+   handleUpdateGroupData() {
+     return this.groupUpdateEvent;
+   }
+
+   handleActiveStateTopNavBar(){
+     return this.activeStateTopNavBarEvent;
+   }
 
 
   /**
@@ -292,7 +308,7 @@ export class UtilityService {
    */
   openCreatePostFullscreenModal(postData: any, userData: any, groupData: any, isIdeaModuleAvailable: boolean, columns?: any, tasks?: any) {
     let dialogOpen;
-    if (!groupData?.enabled_rights || this.canUserDoAction(postData, groupData, userData, 'view')) {
+    if (!groupData?.enabled_rights || postData?.canView) {
       const data = (columns) ?
         {
           postData: postData,
@@ -511,47 +527,149 @@ export class UtilityService {
     });
   }
 
+  openPermissionModal(item: any, groupData: any, userData: any, type: string) {
+    return this.dialog.open(PermissionDialogComponent, {
+      width: '60%',
+      height: '85%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: {
+        item: item,
+        groupData: groupData,
+        userData: userData,
+        type: type
+      }
+    });
+  }
+
   /**
    * This method is used to identify if the user can edit or view an elemnent
-   * @param item This element can be a post, a file, a folder or a section
+   * @param item This element can be a file or a folder
    * @param groupData
    * @param userData
-   * @param action edit or view
+   * @param action edit or view or hide
    * @returns
    */
-  canUserDoAction(item: any, groupData: any, userData: any, action: string) {
+  canUserDoFileAction(item: any, groupData: any, userData: any, action: string) {
+    const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
+    let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
+    createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : createdBy;
+
+    if (userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager) {
+      return true;
+    } else {
+      if (action == 'delete') {
+        return false;
+      }
+
+      let canDoRagAction = false;
+      if (groupData?.enabled_rights) {
+        if (item?.permissions && item?.permissions?.length > 0) {
+          item.permissions.forEach(permission => {
+            const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => permission.rags.includes(groupRag.rag_tag)) : -1;
+            let groupRag;
+            if (groupRagIndex >= 0) {
+              groupRag = groupData?.rags[groupRagIndex];
+            }
+
+            const userRagIndex = (groupRag && groupRag._members) ? groupRag._members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+            const userPermissionIndex = (permission && permission._members) ? permission._members.findIndex(permissionMember => (permissionMember?._id || permissionMember) == userData?._id) : -1;
+            if ((userRagIndex >= 0 || userPermissionIndex >= 0) && permission.right == action) {
+              canDoRagAction = true;
+            }
+          });
+        } else if (item?._folder || item?._parent) {
+          canDoRagAction = this.checkParentFolderRagAction(item?._folder || item?._parent, groupData, userData, action);
+        } else {
+          canDoRagAction = true;
+        }
+      }
+
+      return !groupData?.enabled_rights || canDoRagAction;
+    }
+  }
+
+  checkParentFolderRagAction(item: any, groupData: any, userData: any, action: string) {
     let canDoRagAction = false;
-    if (groupData?.enabled_rights && groupData?.rags && item?.rags && item?.rags?.length > 0) {
-      item.rags.forEach(rag => {
-        const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => groupRag.rag_tag == rag) : -1;
+    if (item?.permissions && item?.permissions?.length > 0) {
+
+      item?.permissions.forEach(permission => {
+        const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => permission.rags.includes(groupRag.rag_tag)) : -1;
         let groupRag;
         if (groupRagIndex >= 0) {
           groupRag = groupData?.rags[groupRagIndex];
         }
 
-        const userRagIndex = (groupRag && groupRag.tag_members) ? groupRag.tag_members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
-        if (userRagIndex >= 0 && groupRag.right == action) {
+        const userRagIndex = (groupRag && groupRag._members) ? groupRag._members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+        const userPermissionIndex = (permission && permission._members) ? permission._members.findIndex(permissionMember => (permissionMember?._id || permissionMember) == userData?._id) : -1;
+        if ((userRagIndex >= 0 || userPermissionIndex >= 0) && permission.right == action) {
           canDoRagAction = true;
         }
       });
+    } else if (item?._parent) {
+      canDoRagAction = this.checkParentFolderRagAction(item?._parent, groupData, userData, action);
+    } else {
+      canDoRagAction = true;
     }
+
+    return canDoRagAction;
+  }
+
+  /**
+   * This method is used to identify if the user can edit or view an elemnent
+   * @param item This element can be a post or a section
+   * @param groupData
+   * @param userData
+   * @param action edit or view or hide
+   * @returns
+   */
+  canUserDoTaskAction(item: any, groupData: any, userData: any, action: string) {
 
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
     let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
-    createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : false;
+    createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : createdBy;
 
-    return userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager || (groupData?.enabled_rights && canDoRagAction);
-  }
+    if (userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager) {
+      return true;
+    } else {
+      if (action == 'delete') {
+        return false;
+      }
 
-  handleDeleteGroupFavorite() {
-    return this.groupDeleteEvent;
-  }
+      let canDoRagAction = false;
+      if (groupData?.enabled_rights) {
+        if (item?.permissions && item?.permissions?.length > 0) {
+          item.permissions.forEach(permission => {
+            const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => permission.rags.includes(groupRag.rag_tag)) : -1;
+            let groupRag;
+            if (groupRagIndex >= 0) {
+              groupRag = groupData?.rags[groupRagIndex];
+            }
 
-  handleUpdateGroupData() {
-    return this.groupUpdateEvent;
-  }
+            const userRagIndex = (groupRag && groupRag._members) ? groupRag._members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+            const userPermissionIndex = (permission && permission._members) ? permission._members.findIndex(permissionMember => (permissionMember?._id || permissionMember) == userData?._id) : -1;
+            if ((userRagIndex >= 0 || userPermissionIndex >= 0) && permission.right == action) {
+              canDoRagAction = true;
+            }
+          });
+        } else if (item?.task?._column) {
+          // Post Service Instance
+          let columnService = this.injector.get(ColumnService);
+          columnService.getSection(item?.task?._column?._id || item?.task?._column).then(res => {
+            canDoRagAction = this.canUserDoTaskAction(res['section'], groupData, userData, action);
+          });
+        } else if (item?.task?._parent_task) {
+          // Post Service Instance
+          let postService = this.injector.get(PostService);
+          postService.get(item?.task?._parent_task._id).then(res => {
+            canDoRagAction = this.canUserDoTaskAction(res['post'], groupData, userData, action);
+          });
+        } else {
+          canDoRagAction = true;
+        }
+      }
 
-  handleActiveStateTopNavBar(){
-    return this.activeStateTopNavBarEvent;
+      return !groupData?.enabled_rights || canDoRagAction;
+    }
   }
 }

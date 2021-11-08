@@ -62,7 +62,7 @@
         <!-- Normal Post Title starts -->
         <h4 *ngIf="post.type != 'event'"
             [innerHTML]="(post?.title || 'Untitled') | safe: 'html'" class="post-title">
-    </h4>
+        </h4>
         <!-- Normal Post Title ends -->
 
         <div class="row" style="margin-left: 0; margin-right:0;" *ngIf="post?.type === 'event'">
@@ -123,6 +123,7 @@
             [post]="post"
             [userData]="userData"
             [groupData]="groupData"
+            [canEdit]="post.canEdit"
             (delete)="deletePost($event)"
             (pinEvent)="onPostPin($event)"
             (closeModalEvent)="postModalCloseEvent($event)">

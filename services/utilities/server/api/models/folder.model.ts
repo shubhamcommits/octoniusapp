@@ -26,7 +26,19 @@ const FolderSchema = new Schema({
         ref: 'Folder',
         required: false
     },
-    rags: []
+    permissions: [
+        {
+            right: {
+                type: String,
+                enum: ['view', 'edit', 'hide']
+            },
+            rags: [],
+            _members: [{
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }]
+        }
+    ],
 });
 
 const Folder = mongoose.model('Folder', FolderSchema);

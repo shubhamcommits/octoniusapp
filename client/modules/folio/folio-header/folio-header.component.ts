@@ -68,10 +68,10 @@ export class FolioHeaderComponent implements OnInit {
     }
 
     // Set the fileId variable
-    this.fileId = this._ActivatedRoute.snapshot.firstChild.paramMap.get('id')
+    this.fileId = this._ActivatedRoute.snapshot.firstChild.paramMap.get('id');
 
-    // Fetch Files Details
-    this.file = await this.getFile(this.fileId)
+    // Fetch File Details
+    this.file = await this.publicFunctions.getFile(this.fileId);
 
     // Set the name to keep a track of original_name
     this.fileOriginalName = this.file.original_name
@@ -99,27 +99,6 @@ export class FolioHeaderComponent implements OnInit {
 
     // Change the title of the tab
     this.titleService.setTitle('Octonius');
-  }
-
-  /**
-   * This function is responsible for fetching a file's details
-   * @param fileId
-   */
-  public async getFile(fileId: any) {
-    return new Promise((resolve) => {
-
-      // Files Service
-      let fileService = this._Injector.get(FilesService);
-
-      // Fetch the file details
-      fileService.getOne(fileId, this.readOnly)
-        .then((res) => {
-          resolve(res['file'])
-        })
-        .catch(() => {
-          resolve({})
-        })
-    })
   }
 
   /**

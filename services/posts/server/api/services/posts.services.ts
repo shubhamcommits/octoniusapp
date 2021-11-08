@@ -288,6 +288,7 @@ export class PostService {
         .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
         .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
 
     // If normal posts are selected
@@ -302,6 +303,7 @@ export class PostService {
         .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
         .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
 
     // If all tasks are selected
@@ -315,6 +317,7 @@ export class PostService {
         .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
         .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
 
     else if (type == 'pinned')
@@ -327,6 +330,7 @@ export class PostService {
         .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
         .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
 
     // Return group posts
@@ -347,7 +351,8 @@ export class PostService {
         { path: '_posted_by', select: this.userFields },
         { path: 'task._parent_task', select: '_id title _assigned_to' },
         { path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' },
-        { path: 'task.shuttles._shuttle_section', select: '_id title' }
+        { path: 'task.shuttles._shuttle_section', select: '_id title' },
+        { path: 'permissions._members', select: this.userFields }
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -356,7 +361,8 @@ export class PostService {
       post = await Post.populate(post, [
         { path: 'performance_task._assigned_to', select: this.userFields },
         { path: '_group', select: this.groupFields },
-        { path: '_posted_by', select: this.userFields }
+        { path: '_posted_by', select: this.userFields },
+        { path: 'permissions._members', select: this.userFields }
       ]);
 
     } else if (post.type === 'event') {
@@ -365,13 +371,15 @@ export class PostService {
       if (post._assigned_to.includes('all')) {
         post = await Post.populate(post, [
           { path: '_group', select: this.groupFields },
-          { path: '_posted_by', select: this.userFields }
+          { path: '_posted_by', select: this.userFields },
+          { path: 'permissions._members', select: this.userFields }
         ])
       } else {
         post = await Post.populate(post, [
           { path: '_assigned_to', select: this.userFields },
           { path: '_group', select: this.groupFields },
-          { path: '_posted_by', select: this.userFields }
+          { path: '_posted_by', select: this.userFields },
+          { path: 'permissions._members', select: this.userFields }
         ])
       }
 
@@ -381,7 +389,8 @@ export class PostService {
       // Populate normal post properties
       post = await Post.populate(post, [
         { path: '_group', select: this.groupFields },
-        { path: '_posted_by', select: this.userFields }
+        { path: '_posted_by', select: this.userFields },
+        { path: 'permissions._members', select: this.userFields }
       ]);
     }
 
@@ -669,6 +678,7 @@ export class PostService {
       .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
       .populate('performance_task._assigned_to', this.userFields)
+      .populate({ path: 'permissions._members', select: this.userFields })
       .lean();
 
     // Return the post
@@ -1269,6 +1279,7 @@ export class PostService {
         .populate('_assigned_to', 'first_name last_name profile_pic')
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
 
       return {
@@ -1314,6 +1325,7 @@ export class PostService {
         .populate('_assigned_to', 'first_name last_name profile_pic')
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
 
       return {
@@ -1361,6 +1373,7 @@ export class PostService {
         .populate('_assigned_to', 'first_name last_name profile_pic')
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
 
       return {
@@ -1402,7 +1415,10 @@ export class PostService {
             { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
           ]
         }]
-      }).sort('event.due_to').populate('_assigned_to', 'first_name last_name').populate('_group', 'group_name');
+      }).sort('event.due_to')
+      .populate('_assigned_to', 'first_name last_name')
+      .populate('_group', 'group_name')
+      .populate({ path: 'permissions._members', select: this.userFields }).lean();
 
       return {
         today: today,
@@ -1444,7 +1460,12 @@ export class PostService {
             { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
           ]
         }]
-      }).sort('event.due_to').limit(10).populate('_assigned_to', 'first_name last_name').populate('_group', 'group_name');
+      }).sort('event.due_to')
+      .limit(10)
+      .populate('_assigned_to', 'first_name last_name')
+      .populate('_group', 'group_name')
+      .populate({ path: 'permissions._members', select: this.userFields })
+      .lean();
 
       return {
         today: today,
@@ -1488,7 +1509,12 @@ export class PostService {
             { 'event.due_to': { $gte: todayForEvent, $lte: todayPlus7DaysForEvent } }
           ]
         }]
-      }).sort('event.due_to').limit(5).populate('_assigned_to', 'first_name last_name').populate('_group', 'group_name');
+      }).sort('event.due_to')
+      .limit(5)
+      .populate('_assigned_to', 'first_name last_name')
+      .populate('_group', 'group_name')
+      .populate({ path: 'permissions._members', select: this.userFields })
+      .lean();
 
       return {
         today: today,
@@ -1631,48 +1657,6 @@ export class PostService {
     }
   }
 
-  async addRag(postId: string, rag: string) {
-    try {
-      /*
-      const task: any = await Post.findById(postId);
-      const ragExists = task.rags.includes(rag);
-      if (!ragExists) {
-        task.rags.push({
-          rag_tag: rag,
-          tag_members: rag.tag_members
-        });
-      }
-      task.save();
-      */
-      const post = await Post.findByIdAndUpdate({
-            _id: postId
-        }, {
-            $addToSet: {
-                rags: rag
-            }
-        }, {
-            new: true
-        });
-    } catch (error) {
-      throw (error);
-    }
-  }
-
-  async removeRag(postId: string, rag: string) {
-    // const task: any = await Post.findById(postId);
-    // task.rags = task.rags.filter(ragDB => ragDB.rag_tag !== rag.rag_tag);
-    // task.save();
-    const post = await Post.findByIdAndUpdate({
-          _id: postId
-      }, {
-          $pull: {
-              rags: rag
-          }
-      }, {
-          new: true
-      });
-  }
-
   async getWorspacePostsResults(workspaceId: any, type: any, numDays: number, overdue: boolean, isNorthStar: boolean, filteringGroups: any) {
 
     const comparingDate = moment().local().subtract(numDays, 'days').format('YYYY-MM-DD');
@@ -1712,6 +1696,7 @@ export class PostService {
         .populate('_assigned_to', this.userFields)
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
 
     } else {
@@ -1729,6 +1714,7 @@ export class PostService {
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
     }
 
@@ -1769,6 +1755,7 @@ export class PostService {
         .populate('_assigned_to', this.userFields)
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
 
     } else {
@@ -1787,6 +1774,7 @@ export class PostService {
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
     }
 
@@ -1823,6 +1811,7 @@ export class PostService {
           .populate('_assigned_to', this.userFields)
           .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
           .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+          .populate({ path: 'permissions._members', select: this.userFields })
           .lean();
 
       } else {
@@ -1846,6 +1835,7 @@ export class PostService {
           .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
           .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
           .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+          .populate({ path: 'permissions._members', select: this.userFields })
           .lean();
       }
     } else {
@@ -1862,6 +1852,7 @@ export class PostService {
           .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
           .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
           .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+          .populate({ path: 'permissions._members', select: this.userFields })
           .lean();
     }
 
@@ -1897,6 +1888,7 @@ export class PostService {
         .populate('_assigned_to', this.userFields)
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
 
     } else {
@@ -1919,6 +1911,7 @@ export class PostService {
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
     }
 
@@ -2025,6 +2018,7 @@ export class PostService {
         .populate('_assigned_to', this.userFields)
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
 
     } else {
@@ -2041,6 +2035,7 @@ export class PostService {
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+        .populate({ path: 'permissions._members', select: this.userFields })
         .lean();
     }
 
@@ -2082,6 +2077,7 @@ export class PostService {
       .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
+      .populate({ path: 'permissions._members', select: this.userFields })
       .lean();
 
     return posts;
@@ -2186,7 +2182,7 @@ export class PostService {
       let newPost = oldPost;
 
       delete newPost._id;
-      delete newPost.rags;
+      delete newPost.permissions;
       delete newPost.records;
       delete newPost.comments;
       if (newPost.task && newPost.task.custom_fields) {
@@ -2272,10 +2268,7 @@ export class PostService {
           this.copyToGroup(task._id, groupId, '', oldGroupId, userId, newPost._id);
         });
       }
-      /*
-      // delete the comments
-      await Comment.deleteMany({_post: postId});
-      */
+
       // Return Post Object
       return newPost;
 
@@ -2469,7 +2462,7 @@ export class PostService {
       let newPost = oldPost;
 
       delete newPost._id;
-      delete newPost.rags;
+      delete newPost.permissions;
       delete newPost.records;
       delete newPost.comments;
       if (newPost.task && newPost.task.custom_fields) {
@@ -2594,7 +2587,7 @@ export class PostService {
 
       // Delete unneeded fields
       delete template._id;
-      delete template.rags;
+      delete template.permissions;
       delete template.records;
       delete template.comments;
       delete template.task._column;

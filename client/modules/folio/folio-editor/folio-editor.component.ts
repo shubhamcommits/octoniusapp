@@ -33,6 +33,9 @@ import ImageDrop from './quill-image-drop/quill.image-drop.js';
 import ReconnectingWebSocket from "reconnecting-websocket";
 import * as ShareDB from "sharedb/lib/client";
 
+import { pdfExporter } from "quill-to-pdf";
+import * as quillToWord from "quill-to-word";
+import { saveAs } from "file-saver";
 
 // Register the Types of the Sharedb
 ShareDB.types.register(require('rich-text').type);
@@ -183,7 +186,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
-          ['clean'], ['comment'],['tables'],['clear']
+          ['clean'], ['comment'],['tables'],['clear'],['export-pdf'/*, 'export-doc'*/]
         ],
         handlers : {
           'comment': () => {
@@ -210,6 +213,14 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           // Show/Hide the table of Content
           'list': (value) => {
             this.generateList(value);
+          },
+          */
+         'export-pdf': () => {
+            this.exportPdf();
+          },
+          /*
+          'export-doc': () => {
+            this.exportDoc();
           }
           */
         }},
@@ -292,6 +303,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
     // TODO Commented until BRD pays
     // document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
+    document.querySelector(".ql-export-pdf").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">picture_as_pdf</span>';
+    // document.querySelector('.ql-export-doc').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">file_download</span>';
   }
 
   initializeConnection() {
@@ -896,4 +909,23 @@ console.log(value);
     return indices;
   }
   */
+  async exportPdf() {
+    // we retrieve the delta object from the Quill instance
+    // the delta is the raw content of your Quill editor
+    const delta = this.quill.getContents();
+
+    // we pass the delta object to the generatePdf function of the pdfExporter
+    // be sure to AWAIT the result, because it returns a Promise
+    // it will resolve to a Blob of the PDF document
+    const blob = await pdfExporter.generatePdf(delta);
+
+    // we use saveAs from the file-saver package to download the blob
+    saveAs(blob as Blob, this.fileData?.original_name + ".pdf");
+  }
+
+  async exportDoc() {
+    const delta = this.quill.getContents();
+    const blob = await quillToWord.generateWord(delta, { exportAs: "blob" });
+    saveAs(blob, this.fileData?.original_name + ".docx");
+  }
 }

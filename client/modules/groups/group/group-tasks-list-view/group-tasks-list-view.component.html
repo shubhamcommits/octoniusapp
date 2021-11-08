@@ -12,17 +12,6 @@
                   <img *ngIf="isShuttleTasksModuleAvailable && section?._id == (groupData?._shuttle_section?._id || groupData?._shuttle_section)" src="assets/images/icon-task-shuttle.svg" alt="" style="width: 32px;">
 
                   <p class="muted" style="margin-right: 10px;"> {{ section?.title }}</p>
-
-                  <div *ngIf="groupData && groupData.enabled_rights && section && section.rags && section.rags.length > 0">
-                    <div *ngFor="let tag of section?.rags; let i = index">
-                      <div>
-                        <span class="tag">
-                          {{ tag }}
-                          <i *ngIf="section?.canEdit" (click)="removeRagTag(section, tag)" class="material-icons" style="color: red; cursor: pointer;">clear</i>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
                 </mat-panel-title>
                 <!-- COLUMN TITLE -->
                 <mat-panel-description>

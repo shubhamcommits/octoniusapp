@@ -43,7 +43,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   @Input('ragMemberList') ragMemberList: any = [];
 
-  @Input('ragList') ragList: any = [];
+  @Input('tagList') tagList: any = [];
 
   // Skill Emitter which emits the skill object on creation
   @Output('skill') skillEmitter = new EventEmitter();
@@ -103,12 +103,12 @@ export class ComponentSearchInputBoxComponent implements OnInit {
           if (this.itemValue == "") {
             this.itemList = []
           } else {
-            if(this.type === 'ragTag') {
+            if (this.type === 'ragTag') {
               this.itemList = this.groupData.rags;
               this.itemList = this.itemList.filter( item => item.rag_tag.includes(this.itemValue));
 
               this.itemList.forEach(item => {
-                const index = (this.ragList) ? this.ragList.findIndex(rag => rag == item.rag_tag) : -1;
+                const index = (this.tagList) ? this.tagList.findIndex(rag => rag == item.rag_tag) : -1;
                 if (index >= 0) {
                   item.showAddButton =false;
                 } else {
@@ -183,10 +183,11 @@ export class ComponentSearchInputBoxComponent implements OnInit {
             }
 
             // Don't add the null or existing skills value to the list
-            if (this.type === 'skill' || this.type === 'tag')
-              if (!this.itemList.includes(this.itemValue) && this.itemValue != "")
+            if (this.type === 'skill' || this.type === 'tag') {
+              if (!this.itemList.includes(this.itemValue) && this.itemValue != "") {
                 this.itemList = [this.itemValue, ...this.itemList];
-
+              }
+            }
           }
 
           // Stop the loading state once the values are loaded

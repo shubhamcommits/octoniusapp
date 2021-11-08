@@ -93,6 +93,7 @@
             <p class="card-text" i18n="@@groupAdmin.enableAllocationsFeaturesOnTasks"> This will enable allocation features on the tasks and resource management.</p>
           </mat-slide-toggle><br>
         </div>
+
         <!-- Campaign Module -->
         <div class="mt-5 mb-5 pt-3" *ngIf="campaignModuleAvailable">
           <mat-slide-toggle color="primary"
@@ -128,6 +129,19 @@
             </mat-select>
           </mat-form-field>
         </div>
+
+        <!-- Switch to Agora/Normal -->
+        <div class="mt-5 mb-5 pt-3" *ngIf="campaignModuleAvailable">
+          <mat-slide-toggle color="primary"
+              [checked]="switchAgora"
+              [name]="'switch-agora'"
+              (change)="saveSettings($event)"
+              [(ngModel)]="switchAgora">
+            <h6><b i18n="@@groupAdmin.convertAgora">Convert Group To Agora</b></h6>
+            <p class="card-text" i18n="@@groupAdmin.switchAgoraDescription"> This will switch the group type to Agora and all members of the workplace will be able to see it.</p>
+          </mat-slide-toggle><br>
+        </div>
+        <!-- Switch to Agora/Normal -->
     </div>
 
   </div>

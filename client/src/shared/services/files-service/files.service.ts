@@ -157,13 +157,43 @@ export class FilesService {
     return this._http.put(this.baseURL + `/files/${fileId}/move-to-folder`, { folderId: folderId }).toPromise();
   }
 
-  addRag(fileId: string, rag: string) {
+  /**
+   *
+   * STARTING THE BLOCK OF METHODS TO UPDATE THE RIGHTS OF A FILE
+   *
+   */
+  selectPermissionRight(permissionId: string, fileId: string, right: string) {
     // Call the HTTP Request
-    return this._http.put(this.baseURL + `/files/${fileId}/addRag`, {rag}).toPromise();
+    return this._http.put(this.baseURL + `/files/permissions/${fileId}/selectPermissionRight`, { right, permissionId }).toPromise();
   }
 
-  removeRag(fileId: string, rag: string) {
+  removePermission(permissionId: string, fileId: string) {
     // Call the HTTP Request
-    return this._http.put(this.baseURL + `/files/${fileId}/removeRag`, {rag}).toPromise();
+    return this._http.put(this.baseURL + `/files/permissions/${fileId}/removePermission`, { permissionId }).toPromise();
   }
+
+  addTagToPermission(permissionId: string, fileId: string, tag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/files/permissions/${fileId}/addTagToPermission`, { permissionId, tag }).toPromise();
+  }
+
+  removePermissionTag(permissionId: string, fileId: string, tag: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/files/permissions/${fileId}/removePermissionTag`, { permissionId, tag }).toPromise();
+  }
+
+  addMemberToPermission(fileId: string, permissionId: string, member: any) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/files/permissions/${fileId}/addMemberToPermission`, { permissionId, member }).toPromise();
+  }
+
+  removeMemberFromPermission(fileId: string, permissionId: string, memberId: string) {
+    // Call the HTTP Request
+    return this._http.put(this.baseURL + `/files/permissions/${fileId}/removeMemberFromPermission`, { permissionId, memberId }).toPromise();
+  }
+  /**
+   *
+   * ENDS THE BLOCK OF METHODS TO UPDATE THE RIGHTS OF A FILE
+   *
+   */
 }
