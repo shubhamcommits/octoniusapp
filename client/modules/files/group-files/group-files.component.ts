@@ -76,6 +76,8 @@ export class GroupFilesComponent implements OnInit {
   transferAction = '';
   groupData: any;
 
+  canEdit: boolean = true;
+
   // Variable for lastPostId
   lastFileId: string;
 
@@ -686,11 +688,6 @@ export class GroupFilesComponent implements OnInit {
         userData: this.userData
       }
     });
-  }
-
-  isAdminUser() {
-    const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
-    return index >= 0;
   }
 
   async onCustomFieldEmitter(customFields) {
