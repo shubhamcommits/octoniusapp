@@ -14,6 +14,7 @@ import { FilesService } from './../../../src/shared/services/files-service/files
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
+import { FileDetailsDialogComponent } from 'src/app/common/shared/file-details-dialog/file-details-dialog.component';
 
 @Component({
   selector: 'app-group-files',
@@ -655,5 +656,19 @@ export class GroupFilesComponent implements OnInit {
         closeEventSubs.unsubscribe();
       });
     }
+  }
+
+  openFileDetailsDialog(file: any) {
+    const dialogRef = this.dialog.open(FileDetailsDialogComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: {
+        fileData: file,
+        groupData: this.groupData,
+        userData: this.userData
+      }
+    });
   }
 }

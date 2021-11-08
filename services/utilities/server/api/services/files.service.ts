@@ -85,7 +85,6 @@ export class FilesService {
     async edit(fileId: string, fileData: any) {
 
         if (fileId) {
-
             // Find the file by Id
             let file: any = await File.findByIdAndUpdate(fileId,
                 {
@@ -416,5 +415,28 @@ export class FilesService {
             // Return file
             return file;
         }
+    }
+
+    async changeCustomFieldValue(fileId: string, customFieldName: any, customFieldValue: any) {
+      try {
+        let file = await File.findById(fileId);
+  
+        if (!file['custom_fields']) {
+            file['custom_fields'] = new Map<string, string>();
+        }
+        file['custom_fields'].set(customFieldName, customFieldValue);
+  
+        // Find the post and update the custom field
+        file = await File.findByIdAndUpdate({
+          _id: fileId
+        }, {
+          $set: { "custom_fields": file['custom_fields'] }
+        });
+  
+        return await this.populateFileProperties(file);
+  
+      } catch (error) {
+        throw (error);
+      }
     }
 }

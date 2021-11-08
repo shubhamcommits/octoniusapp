@@ -67,6 +67,23 @@ const FileSchema = new Schema({
             }]
         }
     ],
+    description: {
+        type: String,
+        trim: true
+    },
+    _description_mentions: [{
+        type: Schema.Types.Mixed,
+        ref: 'User'
+    }],
+    tags: [{
+        type: String,
+        default: []
+    }],
+    // Custom Fields
+    custom_fields: {
+        type: Map,
+        of: String
+    },
 });
 
 const File = mongoose.model('File', FileSchema);

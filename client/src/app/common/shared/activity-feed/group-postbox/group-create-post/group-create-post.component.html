@@ -194,12 +194,12 @@
     <!-- Attach files ends -->
 
     <!-- Post Tags starts -->
-    <app-post-tags
-      [post]="postData"
+    <app-tags
+      [item]="postData"
       [userData]="userData"
       [groupId]="groupId"
       (tags)="getTags($event)">
-    </app-post-tags>
+    </app-tags>
     <!-- Post Tags ends -->
 
   </div>

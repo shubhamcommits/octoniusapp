@@ -22,12 +22,12 @@
         <p class="box-title" i18n="@@activityFilters.tags">Tags</p>
 
         <!-- Post Tags starts -->
-        <app-post-tags
+        <app-tags
             [userData]="userData"
-            [post]="post"
+            [item]="post"
             [groupId]="groupData?._id"
             (tags)="onTagSelctionEmitter($event)">
-        </app-post-tags>
+        </app-tags>
         <!-- Post Tags ends -->
 
         <br />

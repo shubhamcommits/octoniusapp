@@ -206,6 +206,30 @@ export class GroupService {
     return this._http.put(this.baseURL + `/${groupId}/customFields/removeValue`, { fieldId, value }).toPromise();
   }
 
+  saveNewFilesCustomField(newCustomField: { name: string; title: string; values: any[]; }, groupId: any) {
+    return this._http.put(this.baseURL + `/${groupId}/filesCustomFields`, { newCustomField }).toPromise();
+  }
+
+  getGroupFilesCustomFields(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}/filesCustomFields`).toPromise();
+  }
+
+  removeFilesCustomField(fieldId: string, groupId: string) {
+    return this._http.delete(this.baseURL + `/${groupId}/filesCustomFields/${fieldId}`).toPromise();
+  }
+
+  addFilesCustomFieldNewValue(value: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/filesCustomFields/addValue`, { fieldId, value }).toPromise();
+  }
+
+  setFilesCustomFieldColor(color: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/filesCustomFields/color`, { fieldId, color }).toPromise();
+  }
+
+  removeFilesCustomFieldValue(value: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/filesCustomFields/removeValue`, { fieldId, value }).toPromise();
+  }
+
   saveSettings(groupId: string, settingsData: any) {
     return this._http.put(this.baseURL + `/${groupId}/settings`,{settingsData}).toPromise();
   }

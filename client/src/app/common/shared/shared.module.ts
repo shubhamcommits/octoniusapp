@@ -30,7 +30,7 @@ import { PostUtilsComponent } from './posts/post-actions/post-utils/post-utils.c
 import { SelectAssigneeComponent } from './select-assignee/select-assignee.component';
 import { TaskStatusComponent } from './posts/post-actions/task-status/task-status.component';
 import { ChangeColumnComponent } from './posts/post-actions/change-column/change-column.component';
-import { PostTagsComponent } from './posts/post-tags/post-tags.component';
+import { TagsComponent } from './tags/tags.component';
 import { InfiniteScrollComponent } from './infinite-scroll/infinite-scroll.component';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { SelectMemberComponent } from './select-member/select-member.component';
@@ -113,6 +113,7 @@ import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-sta
 import { CustomFieldTableCardComponent } from './dashboard/custom-field-table-card/custom-field-table-card.component';
 import { CustomFieldsTableSettingsDialogComponent } from './dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component';
 import { ShuttleTaskComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/shuttle-task/shuttle-task.component';
+import { FileDetailsDialogComponent } from './file-details-dialog/file-details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -146,7 +147,7 @@ import { ShuttleTaskComponent } from './activity-feed/group-postbox/group-create
 
     ChangeColumnComponent,
 
-    PostTagsComponent,
+    TagsComponent,
 
     InfiniteScrollComponent,
 
@@ -238,7 +239,8 @@ import { ShuttleTaskComponent } from './activity-feed/group-postbox/group-create
     WidgetSelectorDialogComponent,
     CustomFieldsTableSettingsDialogComponent,
     ColorPickerDialogComponent,
-    SheetComponent
+    SheetComponent,
+    FileDetailsDialogComponent
   ],
   imports: [
     CommonModule,
@@ -298,7 +300,7 @@ import { ShuttleTaskComponent } from './activity-feed/group-postbox/group-create
     EmailInputComponent,
     LoadingSpinnerComponent,
     PostViewComponent,
-    PostTagsComponent,
+    TagsComponent,
     SectionSeparatorComponent,
     SecuredImageComponent,
     SelectAssigneeComponent,
@@ -384,6 +386,8 @@ import { ShuttleTaskComponent } from './activity-feed/group-postbox/group-create
     CustomFieldsTableSettingsDialogComponent,
     ColorPickerDialogComponent,
 
+    FileDetailsDialogComponent,
+
     // Sheet Component
     SheetComponent,
 
@@ -409,7 +413,8 @@ import { ShuttleTaskComponent } from './activity-feed/group-postbox/group-create
     CustomToolTipComponent,
     WidgetSelectorDialogComponent,
     CustomFieldsTableSettingsDialogComponent,
-    ColorPickerDialogComponent
+    ColorPickerDialogComponent,
+    FileDetailsDialogComponent
   ]
 })
 export class SharedModule { }

@@ -327,13 +327,13 @@
             <p class="box-title" i18n="@@groupCreatePostDialog.tags">Tags</p>
 
             <!-- Post Tags starts -->
-            <app-post-tags
+            <app-tags
                 [canEdit]="canEdit"
-                [post]="postData"
+                [item]="postData"
                 [userData]="userData"
                 [groupId]="groupId"
                 (tags)="getTags($event)">
-            </app-post-tags>
+            </app-tags>
             <!-- Post Tags ends -->
         </div>
 
