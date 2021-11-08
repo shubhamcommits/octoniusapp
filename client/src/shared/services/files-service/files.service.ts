@@ -205,7 +205,7 @@ export class FilesService {
    */
    saveCustomField(postId: string, customFieldName: string, customFieldValue: string) {
     // Call the HTTP Request
-    return this._http.put(this.baseURL + `/${postId}/customField`, {
+    return this._http.put(this.baseURL + `/files/${postId}/customField`, {
       customFieldName: customFieldName,
       customFieldValue: customFieldValue
     }).toPromise();

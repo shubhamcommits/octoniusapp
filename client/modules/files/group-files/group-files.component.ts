@@ -15,6 +15,7 @@ import { FoldersService } from 'src/shared/services/folders-service/folders.serv
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { FileDetailsDialogComponent } from 'src/app/common/shared/file-details-dialog/file-details-dialog.component';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 
 @Component({
   selector: 'app-group-files',
@@ -82,6 +83,8 @@ export class GroupFilesComponent implements OnInit {
 
   authToken: string;
 
+  customFields: any = [];
+
   // More to load maintains check if we have more to load members on scroll
   public moreToLoad: boolean = true;
 
@@ -95,7 +98,8 @@ export class GroupFilesComponent implements OnInit {
     private flamingoService: FlamingoService,
     private foldersService: FoldersService,
     public dialog: MatDialog,
-    public storageService: StorageService
+    public storageService: StorageService,
+    private groupService: GroupService
   ) { }
 
   async ngOnInit() {
@@ -134,7 +138,19 @@ export class GroupFilesComponent implements OnInit {
         });
     }
 
-    this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`
+    this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
+
+    /**
+     * Obtain the custom fields
+     */
+     this.customFields = [];
+     await this.groupService.getGroupFilesCustomFields(this.groupId).then((res) => {
+       if (res['group']['files_custom_fields']) {
+         res['group']['files_custom_fields'].forEach(field => {
+           this.customFields.push(field);
+         });
+       }
+     });
   }
 
   ngAfterViewInit(){
@@ -670,5 +686,14 @@ export class GroupFilesComponent implements OnInit {
         userData: this.userData
       }
     });
+  }
+
+  isAdminUser() {
+    const index = this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id);
+    return index >= 0;
+  }
+
+  async onCustomFieldEmitter(customFields) {
+    this.customFields = [...customFields];
   }
 }

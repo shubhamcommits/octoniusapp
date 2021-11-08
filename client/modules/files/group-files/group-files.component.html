@@ -1,5 +1,11 @@
-<div class="container" dragDropFile (fileDropped)="fileDropped($event)">
+<app-files-bar *ngIf="groupData"
+  [groupData]="groupData"
+  [userData]="userData"
+  [isAdmin]="isAdminUser()"
+  (customFieldEmitter)="onCustomFieldEmitter($event)">
+</app-files-bar>
 
+<div class="container" dragDropFile (fileDropped)="fileDropped($event)">
     <div class="card-tile">
 
         <!-- Heading of the component starts -->

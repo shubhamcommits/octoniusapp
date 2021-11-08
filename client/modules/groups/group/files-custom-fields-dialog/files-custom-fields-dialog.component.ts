@@ -6,11 +6,11 @@ import { PublicFunctions } from 'modules/public.functions';
 import { ColorPickerDialogComponent } from 'src/app/common/shared/color-picker-dialog/color-picker-dialog.component';
 
 @Component({
-  selector: 'app-custom-fields-dialog',
-  templateUrl: './custom-fields-dialog.component.html',
-  styleUrls: ['./custom-fields-dialog.component.scss']
+  selector: 'app-files-custom-fields-dialog',
+  templateUrl: './files-custom-fields-dialog.component.html',
+  styleUrls: ['./files-custom-fields-dialog.component.scss']
 })
-export class CustomFieldsDialogComponent implements OnInit {
+export class FilesCustomFieldsDialogComponent implements OnInit {
 
   @Output() customFieldsEvent = new EventEmitter();
 
@@ -37,9 +37,9 @@ export class CustomFieldsDialogComponent implements OnInit {
   async ngOnInit() {
     this.groupData = this.data.groupData;
 
-    await this.groupService.getGroupCustomFields(this.groupData._id).then((res) => {
-      if (res['group']['custom_fields']) {
-        res['group']['custom_fields'].forEach(field => {
+    await this.groupService.getGroupFilesCustomFields(this.groupData._id).then((res) => {
+      if (res['group']['files_custom_fields']) {
+        res['group']['files_custom_fields'].forEach(field => {
           this.customFields.push(field);
         });
       }
@@ -59,7 +59,7 @@ export class CustomFieldsDialogComponent implements OnInit {
 
       // If index is found, then throw error notification
       if (index !== -1) {
-        this.utilityService.warningNotification($localize`:@@customFieldDialog.fieldAlreadyExist:Field already exist!`);
+        this.utilityService.warningNotification($localize`:@@filesCustomFieldDialog.fieldAlreadyExist:Field already exist!`);
       } else {
         const newCF = {
           name: this.newCustomFieldTitle.toLowerCase(),
@@ -72,8 +72,8 @@ export class CustomFieldsDialogComponent implements OnInit {
 
 
         // Save the new field
-        await this.groupService.saveNewCustomField(newCF, this.groupData._id).then((res) => {
-          const dbCustomFields = res['group']['custom_fields']
+        await this.groupService.saveNewFilesCustomField(newCF, this.groupData._id).then((res) => {
+          const dbCustomFields = res['group']['files_custom_fields']
           const index = dbCustomFields.findIndex((f: any) => f.name.toLowerCase() === newCF.name);
           if (index >= 0) {
             newCF['_id'] = dbCustomFields[index]._id;
@@ -102,11 +102,11 @@ export class CustomFieldsDialogComponent implements OnInit {
       .then((result) => {
         if (result.value) {
           // Remove the file
-          this.utilityService.asyncNotification($localize`:@@customFieldDialog.pleaseWaitDeletingCF:Please wait we are deleting the custom field...`, new Promise((resolve, reject) => {
+          this.utilityService.asyncNotification($localize`:@@filesCustomFieldDialog.pleaseWaitDeletingCF:Please wait we are deleting the custom field...`, new Promise((resolve, reject) => {
             const index = this.customFields.findIndex((f: any) => f.name.toLowerCase() === field.name.toLowerCase());
             if (index !== -1) {
               // Remove the value
-              this.groupService.removeCustomField(field._id, this.groupData._id)
+              this.groupService.removeFilesCustomField(field._id, this.groupData._id)
                 .then((res) => {
                   // Remove the field from the list
                   this.customFields.splice(index, 1);
@@ -116,9 +116,9 @@ export class CustomFieldsDialogComponent implements OnInit {
                   this.groupData.custom_fields_table_widget.inputTypeCFs = res['group'].custom_fields_table_widget.inputTypeCFs;
                   this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
-                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@customFieldDialog.fieldDeleted:Field deleted!`));
+                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@filesCustomFieldDialog.fieldDeleted:Field deleted!`));
                 }).catch((err) => {
-                  reject(this.utilityService.rejectAsyncPromise($localize`:@@customFieldDialog.unableToDeleteField:Unable to delete field, please try again!`));
+                  reject(this.utilityService.rejectAsyncPromise($localize`:@@filesCustomFieldDialog.unableToDeleteField:Unable to delete field, please try again!`));
                 });
             }
           }));
@@ -135,12 +135,12 @@ export class CustomFieldsDialogComponent implements OnInit {
 
       // If index is found, then throw error notification
       if (index !== -1) {
-        this.utilityService.warningNotification($localize`:@@customFieldDialog.valueAlreadyExists:Value already exists!`);
+        this.utilityService.warningNotification($localize`:@@filesCustomFieldDialog.valueAlreadyExists:Value already exists!`);
       } else {
         field.values.push(newValue);
 
         // Save the new value
-        this.groupService.addCustomFieldNewValue(newValue, field._id, this.groupData._id).then(res => {
+        this.groupService.addFilesCustomFieldNewValue(newValue, field._id, this.groupData._id).then(res => {
           this.groupData.custom_fields = res['group'].custom_fields;
           this.publicFunctions.sendUpdatesToGroupData(this.groupData);
         });
@@ -150,25 +150,12 @@ export class CustomFieldsDialogComponent implements OnInit {
     }
   }
 
-  setDisplayInKanbanCard(field) {
-    this.utilityService.asyncNotification($localize`:@@customFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
-      this.groupService.setCustomFieldDisplayKanbanCard(!field.display_in_kanban_card, field._id, this.groupData._id).then(res => {
-        this.groupData.custom_fields = res['group'].custom_fields;
-        this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-
-        resolve(this.utilityService.resolveAsyncPromise($localize`:@@customFieldDialog.fieldUpdated:Field updated!`));
-      }).catch((err) => {
-        reject(this.utilityService.rejectAsyncPromise($localize`:@@customFieldDialog.unableToUpdateField:Unable to update field, please try again!`));
-      });
-    }));
-  }
-
   removeValue(field, value: string) {
     const index = field.values.findIndex((v: string) => v.toLowerCase() === value.toLowerCase());
 
     if (index !== -1) {
       // Remove the value
-      this.groupService.removeCustomFieldValue(value, field._id, this.groupData._id)
+      this.groupService.removeFilesCustomFieldValue(value, field._id, this.groupData._id)
         .then((res) => {
           field.values.splice(index, 1);
 
@@ -200,17 +187,17 @@ export class CustomFieldsDialogComponent implements OnInit {
     const colorPickedSubs = dialogRef.componentInstance.colorPickedEvent.subscribe(async (data) => {
       const index = this.customFields.findIndex((cf: any) => cf.name == field.name);
 
-      this.utilityService.asyncNotification($localize`:@@customFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
-        this.groupService.setCustomFieldColor(data, field._id, this.groupData._id).then(res => {
+      this.utilityService.asyncNotification($localize`:@@filesCustomFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
+        this.groupService.setFilesCustomFieldColor(data, field._id, this.groupData._id).then(res => {
 
           this.customFields[index].badge_color = data;
           this.groupData.custom_fields = res['group'].custom_fields;
 
           this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@customFieldDialog.fieldUpdated:Field updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@filesCustomFieldDialog.fieldUpdated:Field updated!`));
         }).catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@customFieldDialog.unableToUpdateField:Unable to update field, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@filesCustomFieldDialog.unableToUpdateField:Unable to update field, please try again!`));
         });
       }));
     });
@@ -223,16 +210,16 @@ export class CustomFieldsDialogComponent implements OnInit {
   removeBadgeColor(field: any) {
     const index = this.customFields.findIndex((cf: any) => cf.name == field.name);
 
-    this.utilityService.asyncNotification($localize`:@@customFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
-      this.groupService.setCustomFieldColor('', field._id, this.groupData._id).then(res => {
+    this.utilityService.asyncNotification($localize`:@@filesCustomFieldDialog.pleaseWaitUpdatingCF:Please wait we are updating the custom field...`, new Promise((resolve, reject) => {
+      this.groupService.setFilesCustomFieldColor('', field._id, this.groupData._id).then(res => {
         this.groupData.custom_fields = res['group'].custom_fields;
 
         this.customFields[index].badge_color = '';
         this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
-        resolve(this.utilityService.resolveAsyncPromise($localize`:@@customFieldDialog.fieldUpdated:Field updated!`));
+        resolve(this.utilityService.resolveAsyncPromise($localize`:@@filesCustomFieldDialog.fieldUpdated:Field updated!`));
       }).catch((err) => {
-        reject(this.utilityService.rejectAsyncPromise($localize`:@@customFieldDialog.unableToUpdateField:Unable to update field, please try again!`));
+        reject(this.utilityService.rejectAsyncPromise($localize`:@@filesCustomFieldDialog.unableToUpdateField:Unable to update field, please try again!`));
       });
     }));
   }

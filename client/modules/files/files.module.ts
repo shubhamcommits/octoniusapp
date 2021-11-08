@@ -17,11 +17,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { FolioModule } from 'modules/folio/folio.module';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { DragDropFilesDirective } from './group-files/drag-drop-files/drag-drop-files.directive';
+import { FilesBarComponent } from './group-files/files-bar/files-bar.component';
 
 @NgModule({
   declarations: [
     GroupFilesComponent,
     GroupNewFileComponent,
+    FilesBarComponent,
     DragDropFilesDirective
   ],
   imports: [
