@@ -187,7 +187,12 @@ export class FilesService {
         // Fetch files on the basis of the params @lastPostId
         files = await File.find({
             _group: { "$in": groupsIdArray },
-            original_name: { $regex: new RegExp(query, 'i') }
+            $or: [
+                { original_name: { $regex: new RegExp(query, 'i') }},
+                { description: { $regex: new RegExp(query, 'i') }},
+                { tags: { $regex: new RegExp(query, 'i') }},
+                //{ custom_fields: { $regex: new RegExp(query, 'i') }},
+            ]
         })
             .sort('-_id')
             .limit(5)
