@@ -67,6 +67,7 @@ export class FilesCustomFieldsDialogComponent implements OnInit {
           input_type: this.newCustomFieldInputType,
           input_type_number: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'number') ? true : false,
           input_type_text: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'text') ? true : false,
+          input_type_date: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'date') ? true : false,
           values: []
         };
 
@@ -78,7 +79,7 @@ export class FilesCustomFieldsDialogComponent implements OnInit {
           if (index >= 0) {
             newCF['_id'] = dbCustomFields[index]._id;
           }
-          this.groupData.custom_fields = res['group'].custom_fields;
+          this.groupData.files_custom_fields = res['group'].files_custom_fields;
           this.publicFunctions.sendUpdatesToGroupData(this.groupData);
         });
 
@@ -111,9 +112,7 @@ export class FilesCustomFieldsDialogComponent implements OnInit {
                   // Remove the field from the list
                   this.customFields.splice(index, 1);
 
-                  this.groupData.custom_fields = res['group'].custom_fields;
-                  this.groupData.custom_fields_table_widget.selectTypeCFs = res['group'].custom_fields_table_widget.selectTypeCFs;
-                  this.groupData.custom_fields_table_widget.inputTypeCFs = res['group'].custom_fields_table_widget.inputTypeCFs;
+                  this.groupData.files_custom_fields = res['group'].files_custom_fields;
                   this.publicFunctions.sendUpdatesToGroupData(this.groupData);
 
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@filesCustomFieldDialog.fieldDeleted:Field deleted!`));

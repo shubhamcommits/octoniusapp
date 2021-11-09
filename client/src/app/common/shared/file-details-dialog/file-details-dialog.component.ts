@@ -101,6 +101,10 @@ export class FileDetailsDialogComponent implements OnInit {
     return date ? moment.utc(date).format("YYYY-MM-DD") : '';
   }
 
+  formateCFDate(date){
+    return moment(moment.utc(date), "YYYY-MM-DD").toDate();
+  }
+
   async initFileData() {
     // Set the title of the post
     this.original_name = this.fileData.original_name;
@@ -248,5 +252,13 @@ export class FileDetailsDialogComponent implements OnInit {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@fileDetailsDialog.unableToDeletePost:Unable to delete post, please try again!`));
         });
     }));
+  }
+
+  /**
+   * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
+   * @param dateObject
+   */
+  getDate(dateObject: any, cfName: string) {
+    this.saveCustomField(cfName, dateObject.toDate());
   }
 }

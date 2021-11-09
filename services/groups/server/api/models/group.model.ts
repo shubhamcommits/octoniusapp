@@ -170,6 +170,10 @@ const GroupSchema = new Schema({
                 type: Boolean,
                 default: false
             },
+            input_type_date: {
+                type: Boolean,
+                default: false
+            },
             values: {
                 type: [String],
                 required: true,
@@ -205,6 +209,10 @@ const GroupSchema = new Schema({
                 default: false
             },
             input_type_text: {
+                type: Boolean,
+                default: false
+            },
+            input_type_date: {
                 type: Boolean,
                 default: false
             },
