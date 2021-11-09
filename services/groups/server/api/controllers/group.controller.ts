@@ -1845,7 +1845,7 @@ export class GroupController {
             // Get Group condition rules
             const groupDoc = await Group
                 .findById(groupId)
-                .select('conditions');
+                .select('conditions _members _admins');
             
             const emailDomains = groupDoc['conditions'].email_domains ? groupDoc['conditions'].email_domains : [];
             const jobPositions = groupDoc['conditions'].job_positions ? groupDoc['conditions'].job_positions : [];
@@ -1857,8 +1857,6 @@ export class GroupController {
                 _workspace: workspaceId,
                 active: true
             });
-
-            const usersInGroup = await Group.findById(groupId).select('_members _admins').lean();
 
             const validUsers = new Set();
             if (emailDomains.length > 0) {
@@ -1940,9 +1938,9 @@ export class GroupController {
                             $addToSet: { _groups: groupId }
                         });
 
-                        if (!usersInGroup || !usersInGroup._members || !usersInGroup._admins
-                                || !usersInGroup._members.includes(user._id)
-                                || !usersInGroup._admins.includes(user._id)) {
+                        if (!groupDoc || !groupDoc._members || !groupDoc._admins
+                                || !groupDoc._members.includes(user._id)
+                                || !groupDoc._admins.includes(user._id)) {
                             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/join-group`, {
                                 userId: user._id,
                                 groupId: group._id,
