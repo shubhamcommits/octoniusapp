@@ -67,6 +67,7 @@ export class CustomFieldsDialogComponent implements OnInit {
           input_type: this.newCustomFieldInputType,
           input_type_number: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'number') ? true : false,
           input_type_text: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'text') ? true : false,
+          input_type_date: (this.newCustomFieldInputType && this.newCustomFieldInputSelectType == 'date') ? true : false,
           values: []
         };
 
