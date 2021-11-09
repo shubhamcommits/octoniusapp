@@ -1858,6 +1858,8 @@ export class GroupController {
                 active: true
             });
 
+            const usersInGroup = await Group.findById(groupId).select('_members _admins').lean();
+
             const validUsers = new Set();
             if (emailDomains.length > 0) {
                 // Filter users by email domain
@@ -1938,11 +1940,15 @@ export class GroupController {
                             $addToSet: { _groups: groupId }
                         });
 
-                        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/join-group`, {
-                            userId: user._id,
-                            groupId: group._id,
-                            added_by: req['userId']
-                        });
+                        if (!usersInGroup || !usersInGroup._members || !usersInGroup._admins
+                                || !usersInGroup._members.includes(user._id)
+                                || !usersInGroup._admins.includes(user._id)) {
+                            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/join-group`, {
+                                userId: user._id,
+                                groupId: group._id,
+                                added_by: req['userId']
+                            });
+                        }
 
                         // Send join group confirmation email
                         axios.post(`${process.env.MANAGEMENT_URL}/api/mail/group-joined`, {
