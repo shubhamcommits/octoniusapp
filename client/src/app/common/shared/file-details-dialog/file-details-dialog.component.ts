@@ -106,7 +106,7 @@ export class FileDetailsDialogComponent implements OnInit {
   }
 
   async initFileData() {
-    // Set the title of the post
+    // Set the title of the file
     this.original_name = this.fileData.original_name;
 
     // Set the due date to be undefined
@@ -235,21 +235,21 @@ export class FileDetailsDialogComponent implements OnInit {
   }
 
   /**
-   * Call function to delete post
+   * Call function to delete file
    */
   deleteFile() {
     const id = this.fileData._id;
-    this.utilityService.asyncNotification($localize`:@@fileDetailsDialog.pleaseWaitWeAreDeleting:Please wait we are deleting the post...`, new Promise((resolve, reject) => {
+    this.utilityService.asyncNotification($localize`:@@fileDetailsDialog.pleaseWaitWeAreDeleting:Please wait we are deleting the file...`, new Promise((resolve, reject) => {
       this.filesService.deleteFile(this.fileData._id, this.fileData.modified_name)
         .then((res) => {
-          // Emit the Deleted post to all the compoents in order to update the UI
+          // Emit the Deleted file to all the compoents in order to update the UI
           this.deleteEvent.emit(id);
           // Close the modal
           this.mdDialogRef.close();
 
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@fileDetailsDialog.postDeleted:Post deleted!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@fileDetailsDialog.fileDeleted:File deleted!`));
         }).catch((err) => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@fileDetailsDialog.unableToDeletePost:Unable to delete post, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@fileDetailsDialog.unableToDeleteFile:Unable to delete file, please try again!`));
         });
     }));
   }

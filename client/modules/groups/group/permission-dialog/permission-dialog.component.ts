@@ -107,7 +107,7 @@ export class PermissionDialogComponent implements OnInit {
       .then((res) => {
         if (res.value) {
           // Change right to the Permission
-          this.utilityService.asyncNotification($localize`:@@permissionDialog.pleaseWaitChangingPermissionRight:Please wait we are deleting the permission...`,
+          this.utilityService.asyncNotification($localize`:@@permissionDialog.pleaseWaitDeletingPermissionRight:Please wait we are deleting the permission...`,
           new Promise((resolve, reject)=>{
             this.publicFunctions.removePermission(permissionId, this.item?._id, this.type)
               .then((res: any) => {
@@ -119,11 +119,11 @@ export class PermissionDialogComponent implements OnInit {
                 }
 
                 this.item.permissions = this.permissionsList;
-                resolve(this.utilityService.resolveAsyncPromise($localize`:@@permissionDialog.permissionUpdated:Permission deleted!`));
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@permissionDialog.permissionDeleted:Permission deleted!`));
               })
               .catch((err) => {
                 console.log(err);
-                reject(this.utilityService.rejectAsyncPromise($localize`:@@permissionDialog.unableToUpdatePermission:Unable to delete your permission`))
+                reject(this.utilityService.rejectAsyncPromise($localize`:@@permissionDialog.unableToDeletePermission:Unable to delete your permission`))
               });
           }));
         }
@@ -131,7 +131,7 @@ export class PermissionDialogComponent implements OnInit {
   }
 
   async addTagToPermission(permissionId: string, tag: any) {
-    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the content...`, new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@permissionDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the content...`, new Promise((resolve, reject) => {
       this.publicFunctions.addTagToPermission(permissionId, this.item?._id, tag, this.type)
         .then(async (res) => {
           let ragIndex = this.permissionToEdit.rags.findIndex(rag => rag == tag);
@@ -143,17 +143,17 @@ export class PermissionDialogComponent implements OnInit {
 
           this.item.permissions = this.permissionsList;
 
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@permissionDialog.detailsUpdated:Details updated!`));
         })
         .catch((err) => {
           console.log(err);
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@permissionDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
   }
 
   async removePermissionTag(permissionId: string, tag: string) {
-    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the content...`, new Promise((resolve, reject) => {
+    await this.utilityService.asyncNotification($localize`:@@permissionDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the content...`, new Promise((resolve, reject) => {
       this.publicFunctions.removePermissionTag(permissionId, this.item?._id, tag, this.type)
         .then(async (res) => {
           let ragIndex = this.permissionToEdit.rags.findIndex(rag => rag == tag);

@@ -1094,14 +1094,14 @@ export class PublicFunctions {
 
         const isShuttleTasksModuleAvailable = await this.isShuttleTasksModuleAvailable();
 
-        utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
+        utilityService.asyncNotification($localize`:@@publicFunctions.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise(async (resolve, reject) => {
           await postService.selectShuttleSection(postId, groupId, shuttleSectionId, isShuttleTasksModuleAvailable)
             .then(async (res) => {
 
-              resolve(utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.detailsUpdated:Details updated!`));
+              resolve(utilityService.resolveAsyncPromise($localize`:@@publicFunctions.detailsUpdated:Details updated!`));
             })
             .catch(() => {
-              reject(utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
+              reject(utilityService.rejectAsyncPromise($localize`:@@publicFunctions.unableToUpdateDetails:Unable to update the details, please try again!`));
             });
         }));
     }
