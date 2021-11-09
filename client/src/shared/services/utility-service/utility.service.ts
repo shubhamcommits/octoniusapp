@@ -308,7 +308,7 @@ export class UtilityService {
    */
   openCreatePostFullscreenModal(postData: any, userData: any, groupData: any, isIdeaModuleAvailable: boolean, columns?: any, tasks?: any) {
     let dialogOpen;
-    if (!groupData?.enabled_rights || postData?.canView) {
+    if (!groupData?.enabled_rights || postData?.canView || postData?.canEdit) {
       const data = (columns) ?
         {
           postData: postData,

@@ -45,6 +45,8 @@ export class SubtasksComponent implements OnInit {
    */
   newSubtaskEvent(post: any) {
 
+    post.canEdit = true;
+
     // Adding the post to column
     this.subtasks.push(post);
   }
