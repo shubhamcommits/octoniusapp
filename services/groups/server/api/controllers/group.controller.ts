@@ -1845,7 +1845,7 @@ export class GroupController {
             // Get Group condition rules
             const groupDoc = await Group
                 .findById(groupId)
-                .select('conditions');
+                .select('conditions _members _admins');
             
             const emailDomains = groupDoc['conditions'].email_domains ? groupDoc['conditions'].email_domains : [];
             const jobPositions = groupDoc['conditions'].job_positions ? groupDoc['conditions'].job_positions : [];
@@ -1938,11 +1938,15 @@ export class GroupController {
                             $addToSet: { _groups: groupId }
                         });
 
-                        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/join-group`, {
-                            userId: user._id,
-                            groupId: group._id,
-                            added_by: req['userId']
-                        });
+                        if (!groupDoc || !groupDoc._members || !groupDoc._admins
+                                || !groupDoc._members.includes(user._id)
+                                || !groupDoc._admins.includes(user._id)) {
+                            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/join-group`, {
+                                userId: user._id,
+                                groupId: group._id,
+                                added_by: req['userId']
+                            });
+                        }
 
                         // Send join group confirmation email
                         axios.post(`${process.env.MANAGEMENT_URL}/api/mail/group-joined`, {
