@@ -82,6 +82,7 @@ export class GroupTasksListViewComponent implements OnChanges {
    * @param section
    */
   getPost(post: any, section: any) {
+    post.canEdit = true;
     // Adding the post to column
     section.tasks.unshift(post);
 
