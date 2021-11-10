@@ -91,11 +91,29 @@ routes.put('/:groupId/customFields/addValue', group.addCustomFieldValue);
 // PUT - Set the CF to be displayed in the kanban card
 routes.put('/:groupId/customFields/displayInKanbanCard', group.setCustomFieldDisplayKanbanCard);
 
-// PUT - Set the CF to be displayed in the kanban card
+// PUT - Set the CF color to be displayed
 routes.put('/:groupId/customFields/color', group.setCustomFieldColor);
 
 // PUT - Remove custom field value
 routes.put('/:groupId/customFields/removeValue', group.removeCustomFieldValue);
+
+// PUT - Save custom field
+routes.put('/:groupId/filesCustomFields', group.addFilesCustomField);
+
+// GET - Get custom fields
+routes.get('/:groupId/filesCustomFields', group.getFilesCustomFields);
+
+// DELETE - Delete custom field
+routes.delete('/:groupId/filesCustomFields/:fieldId', group.removeFilesCustomField);
+
+// PUT - Add new value to a custom field
+routes.put('/:groupId/filesCustomFields/addValue', group.addFilesCustomFieldValue);
+
+// PUT - Set the CF color to be displayed
+routes.put('/:groupId/filesCustomFields/color', group.setFilesCustomFieldColor);
+
+// PUT - Remove custom field value
+routes.put('/:groupId/filesCustomFields/removeValue', group.removeFilesCustomFieldValue);
 
 // PUT - Save a settings property
 routes.put('/:groupId/settings', group.saveSettings);

@@ -10,6 +10,10 @@ import { PostService } from '../post-service/post.service';
 import { ColumnService } from '../column-service/column.service';
 import { PermissionDialogComponent } from 'modules/groups/group/permission-dialog/permission-dialog.component';
 
+import * as XLSX from 'xlsx';
+import * as fileSaver from 'file-saver';
+import moment from 'moment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -308,7 +312,7 @@ export class UtilityService {
    */
   openCreatePostFullscreenModal(postData: any, userData: any, groupData: any, isIdeaModuleAvailable: boolean, columns?: any, tasks?: any) {
     let dialogOpen;
-    if (!groupData?.enabled_rights || postData?.canView) {
+    if (!groupData?.enabled_rights || postData?.canView || postData?.canEdit) {
       const data = (columns) ?
         {
           postData: postData,
@@ -671,5 +675,20 @@ export class UtilityService {
 
       return !groupData?.enabled_rights || canDoRagAction;
     }
+  }
+
+  /**
+   * Exports an array into an excel file
+   * @param arrayToExport
+   * @param fileName
+   */
+  saveAsExcelFile(arrayToExport: any, fileName: string): void {
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(arrayToExport);
+    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const data: Blob = new Blob([excelBuffer], {type: EXCEL_TYPE});
+    fileSaver.saveAs(data, fileName + '_export_' + moment(moment().utc(), "YYYY-MM-DD") + EXCEL_EXTENSION);
   }
 }

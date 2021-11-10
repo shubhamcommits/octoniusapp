@@ -51,11 +51,6 @@
                       Is a <span *ngIf="field.input_type_text">text</span><span *ngIf="field.input_type_number">number</span> Input Custom Field
                     </div>
 
-                    <div class="displayKanbanCard" *ngIf="field.name != 'priority'">
-                      <input class="" type="checkbox" (click)="setDisplayInKanbanCard(field)" [(ngModel)]="field.display_in_kanban_card">
-                      <label class="onoffswitch-label" style="margin-left: 9px;" i18n="@@groupCFDialog.displayinKanbanCard">Display in Kanban Card</label>
-                    </div>
-
                     <div *ngIf="field.name != 'priority'" style="display: flex;">
                       <div [ngStyle]="{'width': '30px', 'height': '30px', 'background-color': field?.badge_color }">
                         <button *ngIf="field?.badge_color"

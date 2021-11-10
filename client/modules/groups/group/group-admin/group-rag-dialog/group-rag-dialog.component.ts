@@ -75,19 +75,22 @@ import { PublicFunctions } from 'modules/public.functions';
     }
 
     removeUserFromRag(event,rag){
-        this.groupService.removeUserFromRag(this.groupId, rag.rag_tag, event)
-        .then(()=> {
-            this.utilityService.warningNotification($localize`:@@groupRagDialog.removedFromRagTag:${event.first_name} removed from ${rag.rag_tag}!`);
-            this.ragList.forEach( ragItem => {
-                if(ragItem.rag_tag === rag.rag_tag){
-                  ragItem._members = ragItem._members.filter(memberId => memberId !== event._id);
-                }
-            });
+      this.utilityService.asyncNotification($localize`:@@groupRagDialog.pleaseWaitRemovingUserToRag:Please wait we are removing the user from rag...`,
+        new Promise((resolve, reject) => {
+          this.groupService.removeUserFromRag(this.groupId, rag.rag_tag, event)
+            .then((res) => {
+                resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupRagDialog.removedFromRagTag:${event.first_name} removed from ${rag.rag_tag}!`));
+                this.ragList.forEach( ragItem => {
+                    if(ragItem.rag_tag == rag.rag_tag) {
+                      ragItem._members = ragItem._members.filter(member => (member?._id || member) !== event._id);
+                    }
+                });
 
-            this.groupData.rags = this.ragList;
-            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-        })
-        .catch(() => this.utilityService.rejectAsyncPromise($localize`:@@groupRagDialog.unableToRemoveFromRagTag:Unable to remove ${event.first_name} from ${rag.rag_tag}`));
+                this.groupData.rags = this.ragList;
+                this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+            })
+            .catch((err) => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupRagDialog.unableToRemoveFromRagTag:Unable to remove ${event.first_name} from ${rag.rag_tag}`)));
+        }));
     }
     showTagComponent(){
         this.addNewRag = !this.addNewRag;

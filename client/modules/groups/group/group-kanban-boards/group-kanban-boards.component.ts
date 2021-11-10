@@ -435,6 +435,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
    * @param column
    */
   getPost(post: any, column: any) {
+    post.canEdit = true;
     // Adding the post to column
     column.tasks.unshift(post)
   }

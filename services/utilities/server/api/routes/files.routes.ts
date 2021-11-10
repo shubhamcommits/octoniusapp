@@ -47,6 +47,10 @@ routes.put('/:fileId/move-to-group', files.move);
 // PUT - Handles the move of a file to a folder
 routes.put('/:fileId/move-to-folder', files.moveToFolder);
 
+// -| CUSTOM FIELDS |-
+// PUT - Change custom field value
+routes.put('/:fileId/customField', files.saveCustomField);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

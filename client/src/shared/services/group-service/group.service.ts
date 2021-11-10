@@ -2,13 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
+import { UtilityService } from '../utility-service/utility.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GroupService {
 
-  constructor(private _http: HttpClient) { }
+  constructor(
+    private _http: HttpClient,
+    private utilityService: UtilityService) { }
 
   baseURL = environment.GROUPS_BASE_API_URL;
 
@@ -206,6 +209,30 @@ export class GroupService {
     return this._http.put(this.baseURL + `/${groupId}/customFields/removeValue`, { fieldId, value }).toPromise();
   }
 
+  saveNewFilesCustomField(newCustomField: { name: string; title: string; values: any[]; }, groupId: any) {
+    return this._http.put(this.baseURL + `/${groupId}/filesCustomFields`, { newCustomField }).toPromise();
+  }
+
+  getGroupFilesCustomFields(groupId: string) {
+    return this._http.get(this.baseURL + `/${groupId}/filesCustomFields`).toPromise();
+  }
+
+  removeFilesCustomField(fieldId: string, groupId: string) {
+    return this._http.delete(this.baseURL + `/${groupId}/filesCustomFields/${fieldId}`).toPromise();
+  }
+
+  addFilesCustomFieldNewValue(value: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/filesCustomFields/addValue`, { fieldId, value }).toPromise();
+  }
+
+  setFilesCustomFieldColor(color: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/filesCustomFields/color`, { fieldId, color }).toPromise();
+  }
+
+  removeFilesCustomFieldValue(value: string, fieldId: string, groupId: string) {
+    return this._http.put(this.baseURL + `/${groupId}/filesCustomFields/removeValue`, { fieldId, value }).toPromise();
+  }
+
   saveSettings(groupId: string, settingsData: any) {
     return this._http.put(this.baseURL + `/${groupId}/settings`,{settingsData}).toPromise();
   }
@@ -298,5 +325,22 @@ export class GroupService {
    */
   saveCFTableWidgetSettings(groupId: string, settings: any) {
     return this._http.put<any>(`${this.baseURL}/${groupId}/saveCustomFieldsSettings`, {settings: settings}).toPromise();
+  }
+
+  async exportMembersToFile(members: any, name: string) {
+    members = await members.map(member => {
+      return {
+        first_name: member.first_name || '',
+        last_name: member.last_name || '',
+        email: member.email || '',
+        phone_number: member.phone_number || '',
+        mobile_number: member.mobile_number || '',
+        current_position: member.current_position || '',
+        bio: member.bio || '',
+        company_name: member.company_name || '',
+        role: member.role || ''
+      }
+    });
+    this.utilityService.saveAsExcelFile(members, name);
   }
 }

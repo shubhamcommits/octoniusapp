@@ -1,5 +1,10 @@
-<div class="container" dragDropFile (fileDropped)="fileDropped($event)">
+<app-files-bar *ngIf="groupData"
+  [groupData]="groupData"
+  [userData]="userData"
+  (customFieldEmitter)="onCustomFieldEmitter($event)">
+</app-files-bar>
 
+<div class="container" dragDropFile (fileDropped)="fileDropped($event)">
     <div class="card-tile">
 
         <!-- Heading of the component starts -->
@@ -202,6 +207,11 @@
                               <!--(click)="openViewFolioDialog(file?._id)"-->
                                 <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                                 <span i18n="@@groupFiles.view">View</span>
+                            </a>
+
+                            <a mat-menu-item (click)="openFileDetailsDialog(file)">
+                                <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">info</i>
+                                <span i18n="@@groupFiles.details">Details</span>
                             </a>
 
                             <a mat-menu-item *ngIf="file?.canDelete" (click)="deleteItem(file?._id, file?.type, file?.modified_name)">

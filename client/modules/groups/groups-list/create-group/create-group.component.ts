@@ -37,7 +37,7 @@ export class CreateGroupComponent implements OnInit {
       input: 'text',
       inputPlaceholder: $localize`:@@createGroup.tryToAddShortName:Try to add a short name`,
       inputAttributes: {
-        maxlength: 20,
+        // maxlength: 20,
         autocapitalize: 'off',
         autocorrect: 'off'
       },

@@ -3,11 +3,11 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 
 
 @Component({
-  selector: 'app-post-tags',
-  templateUrl: './post-tags.component.html',
-  styleUrls: ['./post-tags.component.scss']
+  selector: 'app-tags',
+  templateUrl: './tags.component.html',
+  styleUrls: ['./tags.component.scss']
 })
-export class PostTagsComponent implements OnChanges {
+export class TagsComponent implements OnChanges {
 
   constructor(public utilityService: UtilityService) { }
 
@@ -18,7 +18,7 @@ export class PostTagsComponent implements OnChanges {
   @Input('groupId') groupId: any;
 
   // Post Data Variable
-  @Input('post') post: any;
+  @Input('item') item: any;
 
   @Input() canEdit = true;
 
@@ -30,8 +30,12 @@ export class PostTagsComponent implements OnChanges {
 
   ngOnChanges() {
     // If post variable exist then add it to existing tags array
-    if(this.post){
-      this.tags = this.post.tags
+    if(this.item) {
+      this.tags = this.item.tags
+    }
+
+    if (!this.tags) {
+      this.tags = [];
     }
   }
 

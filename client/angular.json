@@ -60,7 +60,8 @@
               "quill-delta-to-html",
               "socket.io-client",
               "highlight.js",
-              "xlsx"
+              "xlsx",
+              "quill-to-word"
             ],
             "vendorChunk": true,
             "extractLicenses": false,

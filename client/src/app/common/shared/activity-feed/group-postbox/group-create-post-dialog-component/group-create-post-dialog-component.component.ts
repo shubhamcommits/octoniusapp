@@ -722,4 +722,12 @@ export class GroupCreatePostDialogComponent implements OnInit {
   onAllocationChanged(allocation) {
     this.postData.task.allocation = allocation;
   }
+
+  /**
+   * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
+   * @param dateObject
+   */
+   getCFDate(dateObject: any, cfName: string) {
+    this.saveCustomField(cfName, dateObject.toDate());
+  }
 }

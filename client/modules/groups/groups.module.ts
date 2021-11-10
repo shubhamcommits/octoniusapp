@@ -88,6 +88,7 @@ import { GroupReportsComponent } from './group/group-reports/group-reports.compo
 import { ShowCustomFieldsColumnDialogComponent } from './group/group-kanban-boards/show-custom-fields-column-dialog/show-custom-fields-column-dialog.component';
 import { GroupKanbanArchivedBoardsComponent } from './group/group-kanban-archived-boards/group-kanban-archived-boards.component';
 import { PermissionDialogComponent } from './group/permission-dialog/permission-dialog.component';
+import { FilesCustomFieldsDialogComponent } from './group/files-custom-fields-dialog/files-custom-fields-dialog.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -136,6 +137,7 @@ import { PermissionDialogComponent } from './group/permission-dialog/permission-
 
     GroupTasksViewsComponent,
     CustomFieldsDialogComponent,
+    FilesCustomFieldsDialogComponent,
     AdvancedFilterDialogComponent,
     DoneTasksListViewComponent,
     DoneTasksKanbanViewComponent,
@@ -196,6 +198,7 @@ import { PermissionDialogComponent } from './group/permission-dialog/permission-
   ],
   entryComponents: [
     CustomFieldsDialogComponent,
+    FilesCustomFieldsDialogComponent,
     AdvancedFilterDialogComponent,
     AutomationFlowsDialogComponent,
     AutomationFlowDetailsDialogComponent,

@@ -351,4 +351,29 @@ export class FilesControllers {
             return sendError(res, new Error('Internal Server Error!'), 'Internal Server Error!', 500);
         }
     }
+
+    async saveCustomField(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req['userId'];
+
+            // Fetch the groupId
+            const { fileId } = req.params;
+
+            // Fetch the newCustomField from fileHandler middleware
+            const customFieldValue = req.body['customFieldValue'];
+            const customFieldName = req.body['customFieldName'];
+
+            let file = await filesService.changeCustomFieldValue(fileId, customFieldName, customFieldValue);
+
+            file.custom_fields[customFieldName] = customFieldValue;
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Custom Field updated!',
+                file: file
+            });
+        } catch(err) {
+            return sendError(res, new Error(err), 'Bad Request, please check into error stack!', 400);
+        }
+    }
 }
