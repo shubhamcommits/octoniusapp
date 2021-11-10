@@ -2,6 +2,7 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
+import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 
 @Component({
   selector: 'app-admin-members',
@@ -13,6 +14,7 @@ export class AdminMembersComponent implements OnInit {
   constructor(
     public utilityService: UtilityService,
     private injector: Injector,
+    private workspaceService: WorkspaceService
   ) { }
 
   // UNSUBSCRIBE THE DATA
@@ -61,4 +63,7 @@ export class AdminMembersComponent implements OnInit {
     this.subSink.unsubscribe();
   }
 
+  exportMembers() {
+    this.workspaceService.exportMembersToFile(this.workspaceData?.members, this.workspaceData?.workspace_name);
+  }
 }

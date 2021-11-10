@@ -2,6 +2,7 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { SubSink } from 'subsink';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
+import { GroupService } from 'src/shared/services/group-service/group.service';
 
 @Component({
   selector: 'app-group-members',
@@ -12,7 +13,8 @@ export class GroupMembersComponent implements OnInit {
 
   constructor(
     private injector: Injector,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private groupService: GroupService
     ) { }
 
   // MEMBERS LIST
@@ -56,7 +58,8 @@ export class GroupMembersComponent implements OnInit {
     this.subSink.unsubscribe();
   }
 
-
-
+  exportMembers() {
+    this.groupService.exportMembersToFile(this.groupData?._admins.concat(this.groupData?._members), this.groupData?.group_name);
+  }
 }
 

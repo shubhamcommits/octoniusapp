@@ -2,13 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
+import { UtilityService } from '../utility-service/utility.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GroupService {
 
-  constructor(private _http: HttpClient) { }
+  constructor(
+    private _http: HttpClient,
+    private utilityService: UtilityService) { }
 
   baseURL = environment.GROUPS_BASE_API_URL;
 
@@ -322,5 +325,22 @@ export class GroupService {
    */
   saveCFTableWidgetSettings(groupId: string, settings: any) {
     return this._http.put<any>(`${this.baseURL}/${groupId}/saveCustomFieldsSettings`, {settings: settings}).toPromise();
+  }
+
+  async exportMembersToFile(members: any, name: string) {
+    members = await members.map(member => {
+      return {
+        first_name: member.first_name || '',
+        last_name: member.last_name || '',
+        email: member.email || '',
+        phone_number: member.phone_number || '',
+        mobile_number: member.mobile_number || '',
+        current_position: member.current_position || '',
+        bio: member.bio || '',
+        company_name: member.company_name || '',
+        role: member.role || ''
+      }
+    });
+    this.utilityService.saveAsExcelFile(members, name);
   }
 }

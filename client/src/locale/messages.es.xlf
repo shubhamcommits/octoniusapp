@@ -846,12 +846,20 @@
           <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="adminMembers.exportMembers" datatype="html">
+        <source>Export members</source>
+        <target state="translated">Exportar miembros</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/admin/admin-members/admin-members.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="adminMembers.searchUser" datatype="html">
         <source>Search user...</source>
         <target state="translated">Buscar usuario...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-members/admin-members.component.ts</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workplaceInformation.workspaceInfo" datatype="html">
@@ -5351,7 +5359,15 @@
         <target state="translated">Todos los miembros de su grupo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-members/group-members.component.html</context>
-          <context context-type="linenumber">6</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupMembers.exportMembers" datatype="html">
+        <source>Export members</source>
+        <target state="translated">Exportar miembros</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-members/group-members.component.html</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupMembers.searchUser" datatype="html">
@@ -5359,7 +5375,7 @@
         <target state="translated">Buscar usuario...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-members/group-members.component.ts</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupReports.yourCampaignFiles" datatype="html">
@@ -12355,7 +12371,7 @@
         <target state="translated">Suscripción pendiente</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">265</context>
+          <context context-type="linenumber">269</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.daysTrialLeft" datatype="html">
@@ -12363,7 +12379,7 @@
         <target state="translated">Quedan <x id="PH" equiv-text="timeRemaining"/> días de prueba.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">266</context>
+          <context context-type="linenumber">270</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.noRightToOpenPost" datatype="html">
@@ -12371,7 +12387,7 @@
         <target state="translated">No tiene derechos para acceder a la publicación. ¡Contacta con el Gerente!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">337</context>
+          <context context-type="linenumber">341</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.areYouSure" datatype="html">
@@ -12379,7 +12395,7 @@
         <target state="translated">¿Estás seguro?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">463</context>
+          <context context-type="linenumber">467</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.youWontRevert" datatype="html">
@@ -12387,7 +12403,7 @@
         <target state="translated">¡No podrá revertir esto!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">464</context>
+          <context context-type="linenumber">468</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.yesSure" datatype="html">
@@ -12395,7 +12411,7 @@
         <target state="translated">¡Sí, estoy seguro!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">469</context>
+          <context context-type="linenumber">473</context>
         </context-group>
       </trans-unit>
     </body>
