@@ -7364,7 +7364,7 @@
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.clean" datatype="html">
         <source> Clean </source>
-        <target state="translated"> Limpio</target>
+        <target state="translated"> Limpiar </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
           <context context-type="linenumber">26,28</context>
