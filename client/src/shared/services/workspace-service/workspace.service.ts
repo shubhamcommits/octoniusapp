@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { GroupService } from '../group-service/group.service';
 import { GroupsService } from '../groups-service/groups.service';
-import moment from 'moment';
+import { UtilityService } from '../utility-service/utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,8 @@ export class WorkspaceService {
     private _http: HttpClient,
     private injector: Injector,
     private groupsService: GroupsService,
-    private groupService: GroupService) { }
+    private groupService: GroupService,
+    private utilityService: UtilityService) { }
 
   /**
    * This function is responsible for fetching the workspace details
@@ -297,5 +298,23 @@ export class WorkspaceService {
 
   saveSettings(workspaceId: string, settingsData: any) {
     return this._http.put(this.BASE_API_URL + `/${workspaceId}/settings`,{settingsData}).toPromise();
+  }
+
+  async exportMembersToFile(members: any, name: string) {
+    members = await members.map(member => {
+      return {
+        first_name: member.first_name || '',
+        last_name: member.last_name || '',
+        email: member.email || '',
+        phone_number: member.phone_number || '',
+        mobile_number: member.mobile_number || '',
+        current_position: member.current_position || '',
+        bio: member.bio || '',
+        company_name: member.company_name || '',
+        role: member.role || ''
+      }
+    });
+
+    this.utilityService.saveAsExcelFile(members, name);
   }
 }
