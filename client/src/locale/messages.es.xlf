@@ -8189,8 +8189,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.exploreWork" datatype="html">
-        <source>Explore Work</source>
-        <target state="translated">Explorar el trabajo</target>
+        <source>Workplace</source>
+        <target state="translated">Workplace</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">53</context>
