@@ -7364,7 +7364,7 @@
       </trans-unit>
       <trans-unit id="userWorkloadCalendar.clean" datatype="html">
         <source> Clean </source>
-        <target state="translated"> Limpio</target>
+        <target state="translated"> Limpiar </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-workload/user-workload-calendar/user-workload-calendar.component.html</context>
           <context context-type="linenumber">26,28</context>
@@ -8189,8 +8189,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.exploreWork" datatype="html">
-        <source>Explore Work</source>
-        <target state="translated">Explorar el trabajo</target>
+        <source>Workplace</source>
+        <target state="translated">Workplace</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
           <context context-type="linenumber">53</context>
