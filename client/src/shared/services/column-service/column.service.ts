@@ -110,7 +110,7 @@ export class ColumnService {
       columnId: columnId,
       newColumnName: newColumnName
     }
-    return this._http.put(this.baseUrl + `/columns/edit/name`, column)
+    return this._http.put(this.baseUrl + `/columns/${columnId}/edit/name`, column)
     .toPromise()
   }
 
@@ -128,7 +128,7 @@ export class ColumnService {
       customFieldsToShow: customFieldsToShow
     };
 
-    return this._http.put(this.baseUrl + `/columns/customFieldsToShow`, column).toPromise();
+    return this._http.put(this.baseUrl + `/columns/${columnId}/customFieldsToShow`, column).toPromise();
   }
 
   changeColumnProjectType(columnId: string, projectType: boolean) {
@@ -137,7 +137,7 @@ export class ColumnService {
       projectType: projectType
     };
 
-    return this._http.put(this.baseUrl + `/columns/changeColumnProjectType`, column).toPromise();
+    return this._http.put(this.baseUrl + `/columns/${columnId}/changeColumnProjectType`, column).toPromise();
   }
 
   saveColumnProjectDates(columnId: string, startDate: any, dueDate: any) {
@@ -147,7 +147,7 @@ export class ColumnService {
       dueDate: moment(dueDate).format('YYYY-MM-DD')
     };
 
-    return this._http.put(this.baseUrl + `/columns/saveColumnProjectDates`, column).toPromise();
+    return this._http.put(this.baseUrl + `/columns/${columnId}/saveColumnProjectDates`, column).toPromise();
   }
 
   saveAmountBudget(columnId: string, amountPlanned: Number, currency?: string) {
@@ -156,7 +156,7 @@ export class ColumnService {
       amountPlanned: amountPlanned,
       currency: currency
     };
-    return this._http.put(this.baseUrl + `/columns/saveAmountBudget`, column).toPromise();
+    return this._http.put(this.baseUrl + `/columns/${columnId}/saveAmountBudget`, column).toPromise();
   }
 
   addBudgetExpense(columnId: string, expense: any) {
@@ -164,7 +164,7 @@ export class ColumnService {
       columnId: columnId,
       expense: expense
     };
-    return this._http.put(this.baseUrl + `/columns/addBudgetExpense`, column).toPromise();
+    return this._http.put(this.baseUrl + `/columns/${columnId}/addBudgetExpense`, column).toPromise();
   }
 
   updateBudgetExpense(columnId: string, expense: any) {
@@ -172,7 +172,7 @@ export class ColumnService {
       columnId: columnId,
       expense: expense
     };
-    return this._http.put(this.baseUrl + `/columns/updateBudgetExpense`, column).toPromise();
+    return this._http.put(this.baseUrl + `/columns/${columnId}/updateBudgetExpense`, column).toPromise();
   }
 
   deleteBudgetExpense(columnId: string, expenseId: string) {
@@ -180,7 +180,7 @@ export class ColumnService {
       columnId: columnId,
       expenseId: expenseId
     };
-    return this._http.put(this.baseUrl + `/columns/deleteBudgetExpense`, column).toPromise();
+    return this._http.put(this.baseUrl + `/columns/${columnId}/deleteBudgetExpense`, column).toPromise();
   }
 
   /**
@@ -193,11 +193,11 @@ export class ColumnService {
   }
 
   displayCustomFieldInColumn(columnId: string, showInColumn: boolean, customFieldName: string) {
-    return this._http.put<any>(this.baseUrl + `/columns/setDisplayCustomFieldInColumn`, {columnId, showInColumn, customFieldName}).toPromise();
+    return this._http.put<any>(this.baseUrl + `/columns/${columnId}/setDisplayCustomFieldInColumn`, {columnId, showInColumn, customFieldName}).toPromise();
   }
 
   archiveColumn(sectionId: string) {
-    return this._http.put<any>(this.baseUrl + `/columns/archive`, { sectionId }).toPromise();
+    return this._http.put<any>(this.baseUrl + `/columns/${sectionId}/archive`, { sectionId }).toPromise();
   }
 
   /**

@@ -38,39 +38,39 @@ router.get('/projectsByGroups', columns.getGroupProjectColumnsByGroups);
 router.post('/', columns.addColumn);
 
 // edit column name 
-router.put('/edit/name', columns.editColumnName);
+router.put('/:sectionId/edit/name', columns.editColumnName);
 
 // delete column 
 router.delete('/:sectionId/delete', columns.deleteColumn);
 
 // PUT - Save custom field to show
-router.put('/customFieldsToShow', columns.updateCustomFieldsToShow);
+router.put('/:sectionId/customFieldsToShow', columns.updateCustomFieldsToShow);
 
 // PUT - Change project type
-router.put('/changeColumnProjectType', columns.changeColumnProjectType);
+router.put('/:sectionId/changeColumnProjectType', columns.changeColumnProjectType);
 
 // PUT - Save custom field to show
-router.put('/saveColumnProjectDates', columns.saveColumnProjectDates);
+router.put('/:sectionId/saveColumnProjectDates', columns.saveColumnProjectDates);
 
 // PUT - Save amount planned for the budget
-router.put('/saveAmountBudget', columns.saveAmountBudget);
+router.put('/:sectionId/saveAmountBudget', columns.saveAmountBudget);
 
 // PUT - Add an expense to a budget
-router.put('/addBudgetExpense', columns.addBudgetExpense);
+router.put('/:sectionId/addBudgetExpense', columns.addBudgetExpense);
 
 // PUT - Update an expense in a budget
-router.put('/updateBudgetExpense', columns.updateBudgetExpense);
+router.put('/:sectionId/updateBudgetExpense', columns.updateBudgetExpense);
 
 // PUT - Remove an expense from a budget
-router.put('/deleteBudgetExpense', columns.deleteBudgetExpense);
+router.put('/:sectionId/deleteBudgetExpense', columns.deleteBudgetExpense);
 
 // PUT - Updates the order of the sections in the board views
 router.put('/updateColumnsPosition', columns.updateColumnsPosition);
 
 // PUT - Updates the order of the sections in the board views
-router.put('/setDisplayCustomFieldInColumn', columns.setDisplayCustomFieldInColumn);
+router.put('/:sectionId/setDisplayCustomFieldInColumn', columns.setDisplayCustomFieldInColumn);
 
 // PUT - Archives an entrie section and its tasks
-router.put('/archive', columns.archive);
+router.put('/:sectionId/archive', columns.archive);
 
 export { router as columnRoutes };
