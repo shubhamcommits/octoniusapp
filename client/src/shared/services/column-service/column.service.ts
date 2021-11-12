@@ -189,7 +189,7 @@ export class ColumnService {
    * @returns
    */
   updateColumnsPosition(columns: any) {
-    return this._http.put<any>(this.baseUrl + `/columns/updateColumnsPosition`, {columns: columns}).toPromise();
+    return this._http.put<any>(this.baseUrl + `/columns/${null}/updateColumnsPosition`, {columns: columns}).toPromise();
   }
 
   displayCustomFieldInColumn(columnId: string, showInColumn: boolean, customFieldName: string) {

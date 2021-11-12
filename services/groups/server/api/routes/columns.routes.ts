@@ -65,7 +65,7 @@ router.put('/:sectionId/updateBudgetExpense', columns.updateBudgetExpense);
 router.put('/:sectionId/deleteBudgetExpense', columns.deleteBudgetExpense);
 
 // PUT - Updates the order of the sections in the board views
-router.put('/updateColumnsPosition', columns.updateColumnsPosition);
+router.put('/:sectionId/updateColumnsPosition', columns.updateColumnsPosition);
 
 // PUT - Updates the order of the sections in the board views
 router.put('/:sectionId/setDisplayCustomFieldInColumn', columns.setDisplayCustomFieldInColumn);
