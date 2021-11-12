@@ -7,6 +7,8 @@ import { SubSink } from 'subsink';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-welcome-page',
@@ -24,6 +26,10 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
 
   queryParms:any;
 
+  // Active Directory variables
+  ssoAvailable: boolean = false;
+  activeDirectoryAvailable: boolean = false;
+
   publicFunctions = new PublicFunctions(this._Injector);
 
   // ADD ALL SUBSCRIPTIONS HERE TO DESTROY THEM ALL TOGETHER
@@ -36,7 +42,8 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
     public router: Router,
     public activeRouter :ActivatedRoute,
-    private _Injector: Injector
+    private _Injector: Injector,
+    private msalService: MsalService
   ) { }
 
   async ngOnInit() {
@@ -52,6 +59,9 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
       if (params['teams_permission_url']) {
         this.queryParms = params;
     }});
+
+    this.ssoAvailable = environment.SSO_ACTIVE;
+    this.activeDirectoryAvailable = environment.SSO_ACTIVE && environment.SSO_METHOD.includes('AD');
   }
 
   /**
@@ -178,5 +188,64 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
       size: 'lg',
       centered: true
     });
+  }
+
+  // AD methods
+  signInAD() {
+    const ssoType = 'AD';
+    this.msalService.loginPopup()
+      .subscribe({
+        next: async (result) => {
+          //console.log(result);
+          //console.log(this.msalService.instance.getAllAccounts());
+          const accountAD = result.account;
+
+          // build the user first_name and last_name
+          const nameAD = accountAD.name.split(' ');
+          let lastName = '';
+          for (let i = 1; i < nameAD.length; i++) {
+            lastName += nameAD[i];
+          }
+
+          let userData: any = {
+            email: accountAD.username,
+            first_name: nameAD[0],
+            last_name: lastName,
+            ssoType: ssoType
+          }
+
+          await this.authenticationService.authenticateSSOUser(userData, ssoType).then(res => {
+            const newAccount = res['newAccount'];
+            const accountData = res['account'];
+
+            if (newAccount || (!accountData || !accountData._workspaces || accountData._workspaces.length == 0)) {
+              this.clearAccountData();
+              this.storeAccountData(res);
+              this.router.navigate(['authentication', 'join-workplace'])
+                .then(() => {
+                  this.utilityService.successNotification($localize`:@@authSignUp.hi:Hi ${res['account']['first_name']}!`);
+                })
+                .catch((err) => {
+                  console.error('Error occurred while signing in the user', err);
+                  this.utilityService.errorNotification($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
+                  this.storageService.clear();
+                });
+            } else {
+              this.clearAccountData();
+              this.storeAccountData(res);
+              this.router.navigate(['authentication', 'select-workspace'])
+                .then(() => {
+                  this.utilityService.successNotification($localize`:@@authSignUp.hi:Hi ${res['account']['first_name']}!`);
+                })
+                .catch((err) => {
+                  console.error('Error occurred while signing in the user', err);
+                  this.utilityService.errorNotification($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
+                  this.storageService.clear();
+                });
+            }
+          });
+        },
+        error: (error) => console.log(error)
+      });
   }
 }

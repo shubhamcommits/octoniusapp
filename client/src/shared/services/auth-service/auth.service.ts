@@ -126,6 +126,11 @@ export class AuthService {
     return this.httpClient.get(this.AUTH_BASE_API_URL + '/email-exists', { params: { email: email } }).toPromise();
   }
 
+  authenticateSSOUser(userData: any, ssoType: string) {
+    // Call the API
+    return this.httpClient.post(this.AUTH_BASE_API_URL + '/authenticate-sso-user', { userData: userData, ssoType: ssoType }).toPromise();
+  }
+
   getNumberUsersByEmailAndPassword(email: string, password: string) {
     return this.httpClient.get(this.AUTH_BASE_API_URL + '/num-user-by-email-pwd', { params: { email: email, password: password } }).toPromise();
   }

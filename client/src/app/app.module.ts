@@ -86,6 +86,14 @@ import { ServerErrorInterceptor } from 'src/shared/error-handler/server-error.in
 import { HttpCancelService } from 'src/shared/services/httpcancel-service/httpcancel.service';
 import { ManageHttpInterceptor } from 'src/shared/services/manage-http-interceptor-service/manage-http-interceptor.service';
 
+/**
+ * Active Directory
+ */
+import { MsalModule } from '@azure/msal-angular';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { environment } from 'src/environments/environment';
+
+const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
 
 /**
  * 9. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -129,6 +137,22 @@ import { ManageHttpInterceptor } from 'src/shared/services/manage-http-intercept
     MatSidenavModule,
     // SHARED MODULES
     // SharedModule,
+
+    // SSO Active Directory
+    MsalModule.forRoot( new PublicClientApplication({
+      auth: {
+        //clientId: 'Enter_the_Application_Id_here', // This is your client ID
+        //authority: 'Enter_the_Cloud_Instance_Id_Here'/'Enter_the_Tenant_Info_Here', // This is your tenant ID
+        //redirectUri: 'Enter_the_Redirect_Uri_Here'// This is your redirect URI
+        clientId: environment.active_directory_client_application_id,
+        authority: environment.active_directory_authority_cloud_id,
+        redirectUri: environment.active_directory_redirect_url
+      },
+      cache: {
+        cacheLocation: 'localStorage',
+        storeAuthStateInCookie: isIE, // Set to true for Internet Explorer 11
+      }
+    }), null, null)
   ],
 
   providers: [
