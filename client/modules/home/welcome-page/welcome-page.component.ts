@@ -214,7 +214,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
             ssoType: ssoType
           }
 
-          await this.authenticationService.authenticateSSOUser(userData, ssoType).then(res => {
+          await this.authenticationService.authenticateSSOUser(userData).then(res => {
             const newAccount = res['newAccount'];
             const accountData = res['account'];
 
@@ -223,11 +223,11 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
               this.storeAccountData(res);
               this.router.navigate(['authentication', 'join-workplace'])
                 .then(() => {
-                  this.utilityService.successNotification($localize`:@@authSignUp.hi:Hi ${res['account']['first_name']}!`);
+                  this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}!`);
                 })
                 .catch((err) => {
                   console.error('Error occurred while signing in the user', err);
-                  this.utilityService.errorNotification($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
+                  this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
                   this.storageService.clear();
                 });
             } else {
@@ -235,11 +235,11 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
               this.storeAccountData(res);
               this.router.navigate(['authentication', 'select-workspace'])
                 .then(() => {
-                  this.utilityService.successNotification($localize`:@@authSignUp.hi:Hi ${res['account']['first_name']}!`);
+                  this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}!`);
                 })
                 .catch((err) => {
                   console.error('Error occurred while signing in the user', err);
-                  this.utilityService.errorNotification($localize`:@@authSignUp.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
+                  this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
                   this.storageService.clear();
                 });
             }
