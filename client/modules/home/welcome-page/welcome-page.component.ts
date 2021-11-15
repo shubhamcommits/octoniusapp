@@ -193,59 +193,66 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
   // AD methods
   signInAD() {
     const ssoType = 'AD';
-    this.msalService.loginPopup()
-      .subscribe({
-        next: async (result) => {
-          //console.log(result);
-          //console.log(this.msalService.instance.getAllAccounts());
-          const accountAD = result.account;
 
-          // build the user first_name and last_name
-          const nameAD = accountAD.name.split(' ');
-          let lastName = '';
-          for (let i = 1; i < nameAD.length; i++) {
-            lastName += nameAD[i];
-          }
+    this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
+      new Promise((resolve, reject) => {
+        this.msalService.loginPopup()
+          .subscribe({
+            next: async (result) => {
+              //console.log(result);
+              //console.log(this.msalService.instance.getAllAccounts());
+              const accountAD = result.account;
 
-          let userData: any = {
-            email: accountAD.username,
-            first_name: nameAD[0],
-            last_name: lastName,
-            ssoType: ssoType
-          }
+              // build the user first_name and last_name
+              const nameAD = accountAD.name.split(' ');
+              let lastName = '';
+              for (let i = 1; i < nameAD.length; i++) {
+                lastName += nameAD[i];
+              }
 
-          await this.authenticationService.authenticateSSOUser(userData).then(res => {
-            const newAccount = res['newAccount'];
-            const accountData = res['account'];
+              let userData: any = {
+                email: accountAD.username,
+                first_name: nameAD[0],
+                last_name: lastName,
+                ssoType: ssoType
+              }
 
-            if (newAccount || (!accountData || !accountData._workspaces || accountData._workspaces.length == 0)) {
-              this.clearAccountData();
-              this.storeAccountData(res);
-              this.router.navigate(['authentication', 'join-workplace'])
-                .then(() => {
-                  this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}!`);
-                })
-                .catch((err) => {
-                  console.error('Error occurred while signing in the user', err);
-                  this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
-                  this.storageService.clear();
-                });
-            } else {
-              this.clearAccountData();
-              this.storeAccountData(res);
-              this.router.navigate(['authentication', 'select-workspace'])
-                .then(() => {
-                  this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}!`);
-                })
-                .catch((err) => {
-                  console.error('Error occurred while signing in the user', err);
-                  this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`);
-                  this.storageService.clear();
-                });
+              await this.authenticationService.authenticateSSOUser(userData).then(res => {
+                const newAccount = res['newAccount'];
+                const accountData = res['account'];
+
+                if (newAccount || (!accountData || !accountData._workspaces || accountData._workspaces.length == 0)) {
+                  this.clearAccountData();
+                  this.storeAccountData(res);
+                  this.router.navigate(['authentication', 'join-workplace'])
+                    .then(() => {
+                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}!`));
+                    })
+                    .catch((err) => {
+                      console.error('Error occurred while signing in the user', err);
+                      reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
+                      this.storageService.clear();
+                    });
+                } else {
+                  this.clearAccountData();
+                  this.storeAccountData(res);
+                  this.router.navigate(['authentication', 'select-workspace'])
+                    .then(() => {
+                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}!`));
+                    })
+                    .catch((err) => {
+                      console.error('Error occurred while signing in the user', err);
+                      reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
+                      this.storageService.clear();
+                    });
+                }
+              });
+            },
+            error: (error) => {
+              console.log(error);
+              reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
             }
           });
-        },
-        error: (error) => console.log(error)
-      });
+        }));
   }
 }
