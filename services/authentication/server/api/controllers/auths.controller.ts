@@ -155,7 +155,7 @@ export class AuthsController {
                         }
                     }, {
                         new: true
-                    })
+                    });
 
                     // Error updating the account
                     if (!accountUpdate) {
@@ -764,6 +764,18 @@ export class AuthsController {
                     newAccount: true,
                     account: account
                 });
+            } else {
+                account = await Account.findByIdAndUpdate({
+                        _id: account._id
+                    }, {
+                        $set: {
+                            ssoType: userData.ssoType
+                        }
+                    }, {
+                        new: true
+                    })
+                    .populate('_workspaces', '_id workspace_name workspace_avatar')
+                    .lean();
             }
 
             // Send status 200 response
