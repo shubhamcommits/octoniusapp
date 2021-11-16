@@ -82,7 +82,7 @@ export const environment = {
   // AD properties
   active_directory_client_application_id: `${window["env"]["active_directory_client_application_id"]}`,
   active_directory_authority_cloud_id: `${window["env"]["active_directory_authority_cloud_id"]}`,
-  active_directory_redirect_url: `http://localhost:80/home`,
+  active_directory_redirect_url: `http://localhost:80/`,
 
   // LDAP properties
   LDAP_METHOD: `${window["env"]["LDAP_METHOD"]}`,
