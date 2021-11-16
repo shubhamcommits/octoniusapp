@@ -11,7 +11,7 @@ const AccountSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: false
     },
     _workspaces: [{
         type: Schema.Types.ObjectId,
@@ -24,6 +24,11 @@ const AccountSchema = new Schema({
     last_name: {
         type: String,
         required: true
+    },
+    ssoType: {
+        type: String,
+        required: false,
+        enum: ['AD', 'google', 'LDAP']
     },
     created_date: {
         type: Date,

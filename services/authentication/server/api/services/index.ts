@@ -1,3 +1,4 @@
+import { AuthsService } from "./auths.service";
 import { ManagementService } from "./management.service";
 
 /*  =======================
@@ -7,5 +8,8 @@ import { ManagementService } from "./management.service";
 export {
 
     // Management Service
-    ManagementService as ManagementService
+    ManagementService as ManagementService,
+
+    // Auths Service
+    AuthsService as AuthsService
 }

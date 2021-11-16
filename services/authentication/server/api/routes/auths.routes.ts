@@ -14,7 +14,7 @@ const routes = express.Router();
 // POST - Signs In the user
 routes.post('/sign-in', auth.signIn);
 
-// POST - Signs In the user
+// POST - Add the user to the workplace
 routes.post('/join-workspace', auth.joinWorkspace);
 
 // POST - Signs In the user in the selected workspace and generate a new token
@@ -34,6 +34,9 @@ routes.post('/sign-out', authsHelper.verifyToken, authsHelper.isLoggedIn, auth.s
 
 // GET - Get other user details on the basis of email
 routes.get('/email-exists', auth.getOtherUserByEmail);
+
+// POST - Authenticate the user with sso
+routes.post('/authenticate-sso-user', auth.authenticateSSOUsser);
 
 // GET - obtain if the user can create new workspaces
 routes.get('/blockNewWorkplaces', auth.isNewWorkplacesAvailable);

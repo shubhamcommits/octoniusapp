@@ -7,6 +7,9 @@ import { SubSink } from 'subsink';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
+import { environment } from 'src/environments/environment';
+import { AnyRecord } from 'dns';
 
 @Component({
   selector: 'app-welcome-page',
@@ -24,6 +27,11 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
 
   queryParms:any;
 
+  // Active Directory variables
+  ssoAvailable: boolean = false;
+  activeDirectoryAvailable: boolean = false;
+  ldapAvailable: boolean = false;
+
   publicFunctions = new PublicFunctions(this._Injector);
 
   // ADD ALL SUBSCRIPTIONS HERE TO DESTROY THEM ALL TOGETHER
@@ -36,7 +44,8 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
     public router: Router,
     public activeRouter :ActivatedRoute,
-    private _Injector: Injector
+    private _Injector: Injector,
+    private msalService: MsalService
   ) { }
 
   async ngOnInit() {
@@ -52,6 +61,10 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
       if (params['teams_permission_url']) {
         this.queryParms = params;
     }});
+
+    this.ssoAvailable = environment.SSO_ACTIVE;
+    this.activeDirectoryAvailable = environment.SSO_ACTIVE && environment.SSO_METHOD.includes('AD');
+    this.ldapAvailable = environment.SSO_ACTIVE && environment.SSO_METHOD.includes('LDAP');
   }
 
   /**
@@ -88,9 +101,12 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
       if (this.account.email == null || this.account.password == null || this.account.email == '' || this.account.password == '') {
         this.utilityService.warningNotification($localize`:@@welcomePage.insufficientData:Insufficient data, kindly fill up all the fields correctly!`);
       } else {
-        let userData: Object = {
+        let userData: any = {
           email: this.account.email.trim(),
           password: this.account.password.trim()
+        }
+        if (this.ldapAvailable) {
+          userData.ldap = true;
         }
         this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
           this.signInServiceFunction(userData));
@@ -178,5 +194,69 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
       size: 'lg',
       centered: true
     });
+  }
+
+  // AD methods
+  signInAD() {
+    this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
+      new Promise((resolve, reject) => {
+        this.msalService.loginPopup()
+          .subscribe({
+            next: async (result) => {
+              //console.log(result);
+              //console.log(this.msalService.instance.getAllAccounts());
+              const accountAD = result.account;
+
+              // build the user first_name and last_name
+              const nameAD = accountAD.name.split(' ');
+              let lastName = '';
+              for (let i = 1; i < nameAD.length; i++) {
+                lastName += nameAD[i];
+              }
+
+              let userData: any = {
+                email: accountAD.username,
+                first_name: nameAD[0],
+                last_name: lastName,
+                ssoType: 'AD'
+              }
+
+              await this.authenticationService.authenticateSSOUser(userData).then(res => {
+                const newAccount = res['newAccount'];
+                const accountData = res['account'];
+
+                if (newAccount || (!accountData || !accountData._workspaces || accountData._workspaces.length == 0)) {
+                  this.clearAccountData();
+                  this.storeAccountData(res);
+                  this.router.navigate(['authentication', 'join-workplace'])
+                    .then(() => {
+                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}!`));
+                    })
+                    .catch((err) => {
+                      console.error('Error occurred while signing in the user', err);
+                      reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
+                      this.storageService.clear();
+                    });
+                } else {
+                  this.clearAccountData();
+                  this.storeAccountData(res);
+                  this.router.navigate(['authentication', 'select-workspace'])
+                    .then(() => {
+                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hi:Hi ${res['account']['first_name']}!`));
+                    })
+                    .catch((err) => {
+                      console.error('Error occurred while signing in the user', err);
+                      reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
+                      this.storageService.clear();
+                    });
+                }
+              });
+            },
+            error: (error) => {
+              console.log(error);
+              reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
+            }
+          });
+        }));
   }
 }

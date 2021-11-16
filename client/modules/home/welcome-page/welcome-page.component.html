@@ -32,13 +32,16 @@
             </div>
 
             <!-- FORGOT PASSWORD MODULE STARTS -->
-
             <ng-template #content let-modal>
               <forgot-password></forgot-password>
             </ng-template>
             <!-- FORGOT PASSWORD MODULE ENDS -->
 
             <button type="submit" class="btn btn-primary btn-block btn_login" (click)="signIn()" i18n="@@welcomePage.logIn">LOG IN</button>
+          </div>
+
+          <div *ngIf="ssoAvailable" style="width: 100%; margin:80px auto; padding-top: 50px; align-items: center; text-align: center; border-top: 1px solid #005fd521;">
+            <button *ngIf="activeDirectoryAvailable" class="btn btn-primary btn-block btn_login" (click)="signInAD()" i18n="@@welcomePage.accessWithAD">ACCESS WITH ACTIVE DIRECTORY</button>
           </div>
 
           <div style="width: 100%; margin:80px auto; align-items: center; text-align: center; border-top: 1px solid #005fd521;">
