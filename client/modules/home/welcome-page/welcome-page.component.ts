@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -9,7 +8,6 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { ActivatedRoute, Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from 'src/environments/environment';
-import { AnyRecord } from 'dns';
 
 @Component({
   selector: 'app-welcome-page',
@@ -61,9 +59,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
       if (params['teams_permission_url']) {
         this.queryParms = params;
     }});
-console.log(environment.SSO_AD_METHOD);
-console.log(environment.SSO_AD_METHOD);
-console.log(environment.LDAP_METHOD);
+
     this.ssoAvailable = (environment.SSO_AD_METHOD && environment.SSO_AD_METHOD == 'AD');
     this.activeDirectoryAvailable = environment.SSO_AD_METHOD && environment.SSO_AD_METHOD == 'AD';
     this.ldapAvailable = environment.LDAP_METHOD && environment.LDAP_METHOD == 'LDAP';
