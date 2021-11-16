@@ -62,9 +62,9 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
         this.queryParms = params;
     }});
 
-    this.ssoAvailable = environment.SSO_ACTIVE;
-    this.activeDirectoryAvailable = environment.SSO_ACTIVE && environment.SSO_METHOD.includes('AD');
-    this.ldapAvailable = environment.SSO_ACTIVE && environment.SSO_METHOD.includes('LDAP');
+    this.ssoAvailable = (environment.SSO_AD_METHOD && environment.SSO_AD_METHOD == 'AD');
+    this.activeDirectoryAvailable = environment.SSO_AD_METHOD && environment.SSO_AD_METHOD == 'AD';
+    this.ldapAvailable = environment.LDAP_METHOD && environment.LDAP_METHOD == 'LDAP';
   }
 
   /**
@@ -253,7 +253,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
               });
             },
             error: (error) => {
-              console.log(error);
+              console.log({error});
               reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
             }
           });

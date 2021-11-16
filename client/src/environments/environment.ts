@@ -99,13 +99,15 @@ export const environment = {
   MANAGEMENT_URL: `${url.protocol}://${url.domain}:3300`,
 
   // SSO properties
-  SSO_ACTIVE: true,
-  SSO_METHOD: ['AD', 'LDAP'],
+  SSO_AD_METHOD: 'AD',
 
   // AD properties
   active_directory_client_application_id: '76b84bff-cd16-4a4b-848c-f283b579e9d2',
   active_directory_authority_cloud_id: 'https://login.microsoftonline.com/74db1134-f8bb-44a7-93d1-25583009d9f1/',
-  active_directory_redirect_url: 'http://localhost:4200/home'
+  active_directory_redirect_url: 'http://localhost:4200/home',
+
+  // LDAP properties
+  LDAP_METHOD: 'LDAP',
 };
 
 

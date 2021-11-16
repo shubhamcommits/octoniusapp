@@ -51,7 +51,7 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
       this.account.email = email;
     }
 
-    this.ldapAvailable = environment.SSO_ACTIVE && environment.SSO_METHOD.includes('LDAP');
+    this.ldapAvailable = environment.LDAP_METHOD && environment.LDAP_METHOD == 'LDAP';
   }
 
   /**
