@@ -91,11 +91,11 @@ export const environment = {
   MANAGEMENT_URL: `${window["env"]["protocol"]}://${window["env"]["mgmt_portal_domain"]}`,
 
   // SSO properties
-  SSO_ACTIVE: window["env"]["SSO_ACTIVE"],
-  SSO_METHOD: window["env"]["SSO_METHOD"],
+  SSO_ACTIVE: `${window["env"]["SSO_ACTIVE"]}`,
+  SSO_METHOD: `${window["env"]["SSO_METHOD"]}`,
 
   // AD properties
-  active_directory_client_application_id: window["env"]["active_directory_client_application_id"],
-  active_directory_authority_cloud_id: window["env"]["active_directory_authority_cloud_id"],
+  active_directory_client_application_id: `${window["env"]["active_directory_client_application_id"]}`,
+  active_directory_authority_cloud_id: `${window["env"]["active_directory_authority_cloud_id"]}`,
   active_directory_redirect_url: `${window["env"]["protocol"]}://${window["env"]["domain"]}/home`
 };
