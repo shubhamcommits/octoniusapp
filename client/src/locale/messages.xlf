@@ -5382,7 +5382,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.accessWithAD" datatype="html">
-        <source>ACCESS WITH ACTIVE DIRECTORY</source>
+        <source>Access with Azure AD</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
           <context context-type="linenumber">44</context>

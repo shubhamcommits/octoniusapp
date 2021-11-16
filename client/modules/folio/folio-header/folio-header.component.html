@@ -1,5 +1,7 @@
 <nav class="navbar navbar-expand-md fixed-top" style="min-height: 86px;">
 
+    <img src="assets/images/logo.svg" alt="">
+
     <!-- Go Back starts -->
     <span *ngIf="!this.readOnly" class="navbar-brand ml-5 mr-5" matTooltip="Go Back to Files" matTooltipPosition="below"
         (click)="goBackToFiles()">
@@ -10,7 +12,7 @@
     <!-- Go Back ends -->
 
     <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto ml-4">
+        <ul class="navbar-nav ml-4">
             <li class="nav-item active" *ngIf="file">
                 <!-- Folio Static Title starts -->
                 <span *ngIf="!editTitle"
@@ -31,6 +33,8 @@
             </li>
         </ul>
     </div>
+
+  
 
     <div *ngIf="!this.readOnly" class="d-flex justify-content-around">
         <div *ngIf="selectedFile">
