@@ -61,7 +61,9 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
       if (params['teams_permission_url']) {
         this.queryParms = params;
     }});
-
+console.log(environment.SSO_AD_METHOD);
+console.log(environment.SSO_AD_METHOD);
+console.log(environment.LDAP_METHOD);
     this.ssoAvailable = (environment.SSO_AD_METHOD && environment.SSO_AD_METHOD == 'AD');
     this.activeDirectoryAvailable = environment.SSO_AD_METHOD && environment.SSO_AD_METHOD == 'AD';
     this.ldapAvailable = environment.LDAP_METHOD && environment.LDAP_METHOD == 'LDAP';
