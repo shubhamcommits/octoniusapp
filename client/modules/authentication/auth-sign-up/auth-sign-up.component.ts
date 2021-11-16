@@ -1,6 +1,7 @@
 import { Component, Injector, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
+import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -21,6 +22,8 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
     first_name: null,
     last_name: null
   };
+
+  ldapAvailable: boolean = false;
 
   publicFunctions = new PublicFunctions(this._Injector);
 
@@ -47,6 +50,8 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
     if (email) {
       this.account.email = email;
     }
+
+    this.ldapAvailable = environment.SSO_ACTIVE && environment.SSO_METHOD.includes('LDAP');
   }
 
   /**
@@ -72,6 +77,12 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
       );
   }
 
+  checkRepeatPassword() {
+    if (!this.ldapAvailable && this.account.password != this.account.repeatPassword) {
+      this.utilityService.warningNotification($localize`:@@authSignUp.wrongRepeatPassword:Passwords do not match!`);
+    }
+  }
+
   /**
    * This function is responsible for signing up a user in to the workspace
    * @param workspace
@@ -84,9 +95,11 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
   async signUp() {
     try {
       if (this.account.email == null || this.account.email == ''
-          || this.account.password == null || this.account.password == ''
-          || this.account.first_name == null || this.account.first_name == ''
-          || this.account.last_name == null || this.account.last_name == '') {
+            || this.account.password == null || this.account.password == ''
+            || this.account.repeatPassword == null || this.account.repeatPassword == ''
+            || this.account.repeatPassword != this.account.password
+            || this.account.first_name == null || this.account.first_name == ''
+            || this.account.last_name == null || this.account.last_name == '') {
         this.utilityService.warningNotification($localize`:@@authSignUp.insufficientData:Insufficient data, kindly fill up all the fields correctly!`);
       } else {
         // Preparing the user data

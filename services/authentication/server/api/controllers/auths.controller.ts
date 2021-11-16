@@ -4,6 +4,7 @@ import { sendError, Auths, PasswordHelper, axios } from '../../utils';
 import { AuthsService, ManagementService } from '../services';
 import http from 'axios';
 import moment from 'moment';
+import LDAPAuthService from '../services/ldap-auth.service';
 
 // Password Helper Class
 const passwordHelper = new PasswordHelper();
@@ -13,6 +14,7 @@ const auths = new Auths();
 
 const managementService = new ManagementService();
 const authsService = new AuthsService();
+const ldapAuthService = new LDAPAuthService();
 
 export class AuthsController {
 
@@ -87,7 +89,7 @@ export class AuthsController {
      */
     async signUp(req: Request, res: Response, next: NextFunction) {
         // Userdata variable which stores all the details
-        const { userData } = req.body;
+        const { userData, ldap } = req.body;
 
         await new AuthsController().checkUserAvailability(userData.email)
             .then(async () => {
@@ -460,7 +462,7 @@ export class AuthsController {
         try {
 
             // Request Body data
-            const { email, password } = req.body;
+            const { email, password, ldap } = req.body;
 
             // Find the account with having the same email as in req.body
             let account = await Account.findOne({
@@ -474,7 +476,7 @@ export class AuthsController {
                     email: email
                 }).select('_account').lean();
 
-                if (!users) {
+                if (!users || users.length == 0) {
                     return sendError(res, new Error('Email not found!'), 'Email not found!', 401);
                 }
 
@@ -488,24 +490,27 @@ export class AuthsController {
                 return sendError(res, new Error('Email not found!'), 'Email not found!', 401);
             }
 
-            // Plain password received from the req.body
-            const plainPassword = password;
-
-            // Decrypting Password
-            const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, account['password']);
-
-            // If we are unable to decrypt the password from the server
-            if (!passDecrypted.password) {
-                return sendError(res, new Error('Unable to decrypt the password from the server'), 'Please enter a valid email or password!', 401);
+            let ldapUser;
+            if (ldap) {
+                ldapUser = await ldapAuthService.auth(email, password);
             }
+            
+            if (!ldap || !ldapUser) {
+                // Plain password received from the req.body
+                const plainPassword = password;
 
-            // Generate new token and logs the auth record
-            // let token = await auths.generateToken(user, workspace_name);
+                // Decrypting Password
+                const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, account['password']);
+
+                // If we are unable to decrypt the password from the server
+                if (!passDecrypted.password) {
+                    return sendError(res, new Error('Unable to decrypt the password from the server'), 'Please enter a valid email or password!', 401);
+                }
+            }
 
             // Send the status 200 response 
             return res.status(200).json({
                 message: `User signed in!`,
-                // token: token,
                 account: account
             });
 
@@ -754,7 +759,7 @@ export class AuthsController {
 
             let account = await Account.findOne({email: userData.email})
                 .populate('_workspaces', '_id workspace_name workspace_avatar').lean();
-
+            
             if (!account) {
                 account = await authsService.signUp(userData);
 

@@ -100,7 +100,7 @@ export const environment = {
 
   // SSO properties
   SSO_ACTIVE: true,
-  SSO_METHOD: ['AD'],
+  SSO_METHOD: ['AD', 'LDAP'],
 
   // AD properties
   active_directory_client_application_id: '76b84bff-cd16-4a4b-848c-f283b579e9d2',

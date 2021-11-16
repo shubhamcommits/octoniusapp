@@ -9,6 +9,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { ActivatedRoute, Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from 'src/environments/environment';
+import { AnyRecord } from 'dns';
 
 @Component({
   selector: 'app-welcome-page',
@@ -29,6 +30,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
   // Active Directory variables
   ssoAvailable: boolean = false;
   activeDirectoryAvailable: boolean = false;
+  ldapAvailable: boolean = false;
 
   publicFunctions = new PublicFunctions(this._Injector);
 
@@ -62,6 +64,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
 
     this.ssoAvailable = environment.SSO_ACTIVE;
     this.activeDirectoryAvailable = environment.SSO_ACTIVE && environment.SSO_METHOD.includes('AD');
+    this.ldapAvailable = environment.SSO_ACTIVE && environment.SSO_METHOD.includes('LDAP');
   }
 
   /**
@@ -98,9 +101,12 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
       if (this.account.email == null || this.account.password == null || this.account.email == '' || this.account.password == '') {
         this.utilityService.warningNotification($localize`:@@welcomePage.insufficientData:Insufficient data, kindly fill up all the fields correctly!`);
       } else {
-        let userData: Object = {
+        let userData: any = {
           email: this.account.email.trim(),
           password: this.account.password.trim()
+        }
+        if (this.ldapAvailable) {
+          userData.ldap = true;
         }
         this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
           this.signInServiceFunction(userData));
@@ -192,8 +198,6 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
 
   // AD methods
   signInAD() {
-    const ssoType = 'AD';
-
     this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
       new Promise((resolve, reject) => {
         this.msalService.loginPopup()
@@ -214,7 +218,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
                 email: accountAD.username,
                 first_name: nameAD[0],
                 last_name: lastName,
-                ssoType: ssoType
+                ssoType: 'AD'
               }
 
               await this.authenticationService.authenticateSSOUser(userData).then(res => {
