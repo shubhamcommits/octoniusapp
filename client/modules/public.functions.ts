@@ -17,6 +17,7 @@ import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clou
 import { environment } from 'src/environments/environment';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
+import { AuthService } from 'src/shared/services/auth-service/auth.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -1904,4 +1905,42 @@ export class PublicFunctions {
      * ITEM = post/section/file/folder
      *
      */
+
+    /**
+     * Obtain the possible integrations from the workspaces in the DB
+     */
+    async getPossibleIntegrations() {
+
+      const allWorkspacesIntegratinos: any = await this.getAllWorkspaces();
+      let possibleIntegrations = {
+        is_google_connected: false,
+        is_azure_ad_connected: false,
+        is_ldap_connected: false
+      }
+
+      allWorkspacesIntegratinos.forEach(workspace => {
+        if (workspace.integrations.is_google_connected) {
+          possibleIntegrations.is_google_connected = workspace.integrations.is_google_connected;
+        }
+        if (workspace.integrations.is_azure_ad_connected) {
+          possibleIntegrations.is_azure_ad_connected = workspace.integrations.is_azure_ad_connected;
+        }
+        if (workspace.integrations.is_ldap_connected) {
+          possibleIntegrations.is_ldap_connected = workspace.integrations.is_ldap_connected;
+        }
+      });
+
+      return possibleIntegrations;
+    }
+
+    /**
+     * This functions calls the auth service to obtain all with workplaces in the DB
+     */
+    async getAllWorkspaces() {
+      const authService = this.injector.get(AuthService);
+      return new Promise(async (resolve) => {
+        await await authService.getAllWorkspacesIntegrations()
+          .then((res) => resolve(res['workspace']))
+      });
+    }
 }

@@ -494,7 +494,7 @@ export class AuthsController {
 
             if (account._workspaces && account._workspaces.length > 0) {
                 for (let i = 0; (i < account._workspaces.length || workplaceLDAPIntegrations); i++) {
-                    if (account._workspaces.integrations) {
+                    if (account._workspaces.integrations && account._workspaces.integrations.is_ldap_connected) {
                         workplaceLDAPIntegrations = {
                             ldap_url: account._workspaces.integrations.ldap_url,
                             ldap_dn: account._workspaces.integrations.ldap_dn,
@@ -809,4 +809,22 @@ export class AuthsController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    async getAllWorkspacesIntegrations(req: Request, res: Response, next: NextFunction) {
+
+        try {
+            // Find the workspace and update their respective workspace settings
+            const workspace = await Workspace.find()
+                .select('integrations')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Workspaces found!',
+                workspace: workspace
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }
