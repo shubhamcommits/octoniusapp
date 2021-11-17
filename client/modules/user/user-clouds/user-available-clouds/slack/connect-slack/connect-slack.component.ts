@@ -103,7 +103,7 @@ export class ConnectSlackComponent implements OnInit {
       .then((result) => {
         if (result.value) {
           localStorage.setItem("slackAuth", "connected");
-          window.location.href = environment.slack_redirect_url;
+          window.location.href = `https://slack.com/oauth/v2/authorize?client_id=${environment.SLACK_CLIENT_ID}&scope=commands,incoming-webhook`;
         }
       });
   }

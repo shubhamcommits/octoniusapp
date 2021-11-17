@@ -22,11 +22,11 @@ export const environment = {
 
   domain: url['domain'],
 
-  //slack redirect url for authentication
-  slack_redirect_url:`https://slack.com/oauth/v2/authorize?client_id=2561616476.1793890184164&scope=commands,incoming-webhook`,
-
   // Browser Storage Key
   storageKey: `storageKey@20xx`,
+
+  //SLACK Properties
+  SLACK_CLIENT_ID: '2561616476.1793890184164',
 
   // GOOGLE properties
   SSO_GOOGLE_METHOD: 'GOOGLE',

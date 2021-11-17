@@ -10,6 +10,9 @@ export const environment = {
   // Browser Storage Key
   storageKey: 'storageKey@20xx',
 
+  //SLACK Properties
+  SLACK_CLIENT_ID: window["env"]["SLACK_CLIENT_ID"],
+
   // GOOGLE properties
   SSO_GOOGLE_METHOD: window["env"]["SSO_GOOGLE_METHOD"],
   GOOGLE_CLIENT_ID: window["env"]["GOOGLE_CLIENT_ID"],
