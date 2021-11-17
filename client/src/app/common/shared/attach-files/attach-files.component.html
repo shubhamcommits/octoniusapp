@@ -5,7 +5,7 @@
 
 <!-- Cloud Files Starts -->
 <!-- TODO -> this part is commented until we fix the save of the cloud files
-<button type="button" class="btn btn-link" *ngIf="showIcons">
+<button type="button" class="btn btn-link" *ngIf="showIcons && workspaceData?.integrations?.is_google_connected">
   <i class="material-icons" matTooltipPosition="above"
       matTooltip="Upload Google Drive files" (click)="loadGoogleCloudFiles()">
       cloud_upload
