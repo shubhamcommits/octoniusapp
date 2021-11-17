@@ -111,9 +111,8 @@ export const environment = {
 
   // GOOGLE SSO properties
   SSO_GOOGLE_METHOD: 'GOOGLE',
-  SSO_GOOGLE_CLIENT_ID: '1041190517071-02jkla4f2qq7q2s15037mp22a0pmi7dv.apps.googleusercontent.com',
+  SSO_GOOGLE_CLIENT_ID: '971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com',
 };
-
 
 /*
  * For easier debugging in development mode, you can import the following file
