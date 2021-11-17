@@ -442,6 +442,9 @@ services:
       - active_directory_authority_cloud_id=${active_directory_authority_cloud_id}
       - active_directory_redirect_url=${active_directory_redirect_url}
       - LDAP_METHOD=${LDAP_METHOD}
+      - SSO_GOOGLE_METHOD=GOOGLE=${SSO_GOOGLE_METHOD}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
