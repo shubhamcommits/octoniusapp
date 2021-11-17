@@ -26,7 +26,7 @@ export const environment = {
   GOOGLE_CLIENT_ID: window["env"]["GOOGLE_CLIENT_ID"],
   GOOGLE_CLIENT_SECRET: window["env"]["GOOGLE_CLIENT_SECRET"],
   GOOGLE_REDIRECT_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}`,
-  scope: [
+  GOOGLE_SCOPE: [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/calendar',
     'https://www.googleapis.com/auth/calendar.events'
