@@ -11,7 +11,7 @@
     window["env"]["active_directory_authority_cloud_id"] = "";
     window["env"]["active_directory_redirect_url"] = "";
     window["env"]["LDAP_METHOD"] = "";
-    window["env"]["SSO_GOOGLE_METHOD=GOOGLE"] = "";
+    window["env"]["SSO_GOOGLE_METHOD"] = "";
     window["env"]["GOOGLE_CLIENT_ID"] = "";
     window["env"]["GOOGLE_CLIENT_SECRET"] = "";
   })(this);
