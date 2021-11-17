@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { Auth, User, Workspace, Group, Account } from '../models';
 import { sendError, Auths, PasswordHelper, axios } from '../../utils';
-import { ManagementService } from '../services';
+import { AuthsService, ManagementService } from '../services';
 import http from 'axios';
 import moment from 'moment';
+import LDAPAuthService from '../services/ldap-auth.service';
 
 // Password Helper Class
 const passwordHelper = new PasswordHelper();
@@ -12,6 +13,8 @@ const passwordHelper = new PasswordHelper();
 const auths = new Auths();
 
 const managementService = new ManagementService();
+const authsService = new AuthsService();
+const ldapAuthService = new LDAPAuthService();
 
 export class AuthsController {
 
@@ -86,36 +89,17 @@ export class AuthsController {
      */
     async signUp(req: Request, res: Response, next: NextFunction) {
         // Userdata variable which stores all the details
-        const { userData } = req.body;
+        const { userData, ldap } = req.body;
 
         await new AuthsController().checkUserAvailability(userData.email)
             .then(async () => {
-                // Encrypting user password
-                const passEncrypted: any = await passwordHelper.encryptPassword(userData.password);
 
-                // If we are unable to encrypt the password and store into the server
-                if (!passEncrypted.password) {
-                    return sendError(res, new Error('Unable to encrypt the password to the server'), 'Unable to encrypt the password to the server, please try with a different password!', 401);
-                }
-
-                // Updating the password value with the encrypted password
-                userData.password = passEncrypted.password;
-
-                // Adding _workspace property to userData variable
-                userData._workspaces = [];
-
-                // Create new user with all the properties of userData
-                let account: any = await Account.create(userData);
-
+                let account = await authsService.signUp(userData);
+                
                 // Error creating the new account
                 if (!account) {
                     return sendError(res, new Error('Unable to create the account, some unexpected error occurred!'), 'Unable to create the account, some unexpected error occurred!', 500);
                 }
-
-                // // Send signup confirmation email
-                // axios.post(`${process.env.MANAGEMENT_URL}/api/mail/sign-up`, {
-                //     user: account
-                // });
 
                 // Signup user and return the token
                 return res.status(200).json({
@@ -173,7 +157,7 @@ export class AuthsController {
                         }
                     }, {
                         new: true
-                    })
+                    });
 
                     // Error updating the account
                     if (!accountUpdate) {
@@ -478,7 +462,7 @@ export class AuthsController {
         try {
 
             // Request Body data
-            const { email, password } = req.body;
+            const { email, password, ldap } = req.body;
 
             // Find the account with having the same email as in req.body
             let account = await Account.findOne({
@@ -492,7 +476,7 @@ export class AuthsController {
                     email: email
                 }).select('_account').lean();
 
-                if (!users) {
+                if (!users || users.length == 0) {
                     return sendError(res, new Error('Email not found!'), 'Email not found!', 401);
                 }
 
@@ -506,24 +490,27 @@ export class AuthsController {
                 return sendError(res, new Error('Email not found!'), 'Email not found!', 401);
             }
 
-            // Plain password received from the req.body
-            const plainPassword = password;
-
-            // Decrypting Password
-            const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, account['password']);
-
-            // If we are unable to decrypt the password from the server
-            if (!passDecrypted.password) {
-                return sendError(res, new Error('Unable to decrypt the password from the server'), 'Please enter a valid email or password!', 401);
+            let ldapUser;
+            if (ldap) {
+                ldapUser = await ldapAuthService.auth(email, password);
             }
+            
+            if (!ldap || !ldapUser) {
+                // Plain password received from the req.body
+                const plainPassword = password;
 
-            // Generate new token and logs the auth record
-            // let token = await auths.generateToken(user, workspace_name);
+                // Decrypting Password
+                const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, account['password']);
+
+                // If we are unable to decrypt the password from the server
+                if (!passDecrypted.password) {
+                    return sendError(res, new Error('Unable to decrypt the password from the server'), 'Please enter a valid email or password!', 401);
+                }
+            }
 
             // Send the status 200 response 
             return res.status(200).json({
                 message: `User signed in!`,
-                // token: token,
                 account: account
             });
 
@@ -759,6 +746,48 @@ export class AuthsController {
             return res.status(200).json({
                 message: message,
                 status: status
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async authenticateSSOUsser(req: Request, res: Response, next: NextFunction) {
+
+        try {
+            const { userData } = req.body;
+
+            let account = await Account.findOne({email: userData.email})
+                .populate('_workspaces', '_id workspace_name workspace_avatar').lean();
+            
+            if (!account) {
+                account = await authsService.signUp(userData);
+
+                // Send status 200 response
+                return res.status(200).json({
+                    message: 'Account Created',
+                    newAccount: true,
+                    account: account
+                });
+            } else {
+                account = await Account.findByIdAndUpdate({
+                        _id: account._id
+                    }, {
+                        $set: {
+                            ssoType: userData.ssoType
+                        }
+                    }, {
+                        new: true
+                    })
+                    .populate('_workspaces', '_id workspace_name workspace_avatar')
+                    .lean();
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Account',
+                newAccount: false,
+                account: account
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);

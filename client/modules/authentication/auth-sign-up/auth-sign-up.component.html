@@ -34,7 +34,7 @@
           <div class="form-group">
             <label for="repeatPassword" class="muted" i18n="@@authSignUp.repeatPassword">Repeat your password</label>
             <input type="password" class="form-control" name="repeatPassword"
-              [(ngModel)]="account.repeatPassword" (keyup.enter)="signUp()">
+              [(ngModel)]="account.repeatPassword" (focusout)="checkRepeatPassword()" (keyup.enter)="signUp()">
           </div>
 
           <div class="form-group">
@@ -45,8 +45,8 @@
 
           <!-- FORM FIELD FOR NEW WORKPLACE & SIGNUP COMPONENT -->
           <div class="form-group">
-                  <label for="last_name" class="muted" i18n="@@authSignUp.lastName">Last Name</label>
-                  <input type="text" [(ngModel)]="account.last_name" class="form-control" name="last_name">
+            <label for="last_name" class="muted" i18n="@@authSignUp.lastName">Last Name</label>
+            <input type="text" [(ngModel)]="account.last_name" class="form-control" name="last_name">
           </div>
 
           <button type="submit" class="btn btn-primary btn-block btn_login" (click)="signUp()" i18n="@@authSignUp.signUp">SIGN UP</button>

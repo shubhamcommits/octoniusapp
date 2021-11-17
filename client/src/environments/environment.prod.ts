@@ -22,14 +22,14 @@ export const environment = {
   storageKey: `storageKey@20xx`,
 
   // Google developer console credentials
-  developerKey: `AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I`,
-  clientId: `971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com`,
-  apiKey: `AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I`,
-  clientSecret: `erp6ZMRG6XFiMqHkjTDby2UI`,
-  google_redirect_url: `${window["env"]["protocol"]}://${window["env"]["domain"]}`,
-  scope: [
-    `https://www.googleapis.com/auth/drive`,
-    `https://www.googleapis.com/auth/calendar`
+  SSO_GOOGLE_METHOD: window["env"]["SSO_GOOGLE_METHOD"],
+  GOOGLE_CLIENT_ID: window["env"]["GOOGLE_CLIENT_ID"],
+  GOOGLE_CLIENT_SECRET: window["env"]["GOOGLE_CLIENT_SECRET"],
+  GOOGLE_REDIRECT_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}`,
+  GOOGLE_SCOPE: [
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/calendar',
+    'https://www.googleapis.com/auth/calendar.events'
   ].join(` `),
 
   // Base Client Url
@@ -88,5 +88,16 @@ export const environment = {
   FOLIO_HTTP_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/folio`,
 
   // MANAGEMENT_URL
-  MANAGEMENT_URL: `${window["env"]["protocol"]}://${window["env"]["mgmt_portal_domain"]}`
+  MANAGEMENT_URL: `${window["env"]["protocol"]}://${window["env"]["mgmt_portal_domain"]}`,
+
+  // SSO properties
+  SSO_AD_METHOD: window["env"]["SSO_AD_METHOD"],
+
+  // AD properties
+  active_directory_client_application_id: window["env"]["active_directory_client_application_id"],
+  active_directory_authority_cloud_id: window["env"]["active_directory_authority_cloud_id"],
+  active_directory_redirect_url: `${window["env"]["protocol"]}://${window["env"]["domain"]}/`,
+
+  // LDAP properties
+  LDAP_METHOD: window["env"]["LDAP_METHOD"],
 };

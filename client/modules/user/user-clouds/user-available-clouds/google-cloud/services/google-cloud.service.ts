@@ -110,8 +110,8 @@ export class GoogleCloudService {
    */
   getAccessToken(refreshToken: string) {
     return this._httpBackend.post('https://www.googleapis.com/oauth2/v4/token', {
-      client_id: environment.clientId,
-      client_secret: environment.clientSecret,
+      client_id: environment.GOOGLE_CLIENT_ID,
+      client_secret: environment.GOOGLE_CLIENT_SECRET,
       grant_type: 'refresh_token',
       refresh_token: refreshToken
     }, {
@@ -129,10 +129,10 @@ export class GoogleCloudService {
   getGoogleDriveTokenFromAuthResult(code: any, access_token: any) {
     return this._httpBackend.post('https://www.googleapis.com/oauth2/v4/token', {
       code: code,
-      client_id: environment.clientId,
-      client_secret: environment.clientSecret,
+      client_id: environment.GOOGLE_CLIENT_ID,
+      client_secret: environment.GOOGLE_CLIENT_SECRET,
       grant_type: 'authorization_code',
-      redirect_uri: environment.google_redirect_url
+      redirect_uri: environment.GOOGLE_REDIRECT_URL
     }, {
       headers: {
         'Authorization': `Bearer ${access_token}`

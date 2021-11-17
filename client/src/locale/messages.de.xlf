@@ -240,7 +240,7 @@
       </trans-unit>
       <trans-unit id="workspaceAddDomain.chooseToMakeYourWorkspace" datatype="html">
         <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
-        <target state="translated">Wählen Sie aus, ob Sie die Anmeldung am Arbeitsplatz entweder nur über eine Einladung vornehmen oder jeder anderen Person mit einer bestimmten E-Mail-Adresse erlauben, sich anzumelden.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (z. B. - wenn Sie example.com angeben, können sich Benutzer mit einer E-Mail-Adresse mit der Domain example.com anmelden!)</target>
+        <target state="translated"> Wählen Sie aus, ob Sie die Anmeldung am Arbeitsplatz entweder nur über eine Einladung vornehmen oder jeder anderen Person mit einer bestimmten E-Mail-Adresse erlauben, sich anzumelden.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (z. B. - wenn Sie example.com angeben, können sich Benutzer mit einer E-Mail-Adresse mit der Domain example.com anmelden!)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">7,11</context>
@@ -1059,7 +1059,7 @@
         <target state="translated">Beim Einrichten ist ein Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-join-workplace/auth-join-workplace.component.ts</context>
-          <context context-type="linenumber">100</context>
+          <context context-type="linenumber">101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authNewWorkplace.createNewWorkspace" datatype="html">
@@ -1251,7 +1251,7 @@
         <target state="translated">Richtiges E-Mail-Format!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
-          <context context-type="linenumber">68</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authSignUp.followStandardFormat" datatype="html">
@@ -1259,7 +1259,7 @@
         <target state="translated">Beachten Sie das Standardformat, z. B. - user@example.com</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
-          <context context-type="linenumber">70</context>
+          <context context-type="linenumber">75</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authSignUp.wrongFormat" datatype="html">
@@ -1267,7 +1267,15 @@
         <target state="translated">Falsches Format!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
-          <context context-type="linenumber">71</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="authSignUp.wrongRepeatPassword" datatype="html">
+        <source>Passwords do not match!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
+          <context context-type="linenumber">82</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authSignUp.insufficientData" datatype="html">
@@ -1275,7 +1283,7 @@
         <target state="translated">Unzureichende Daten, bitte füllen Sie alle Felder korrekt aus!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
-          <context context-type="linenumber">90</context>
+          <context context-type="linenumber">103</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authSignUp.pleaseWaitWhileSettingUp" datatype="html">
@@ -1283,7 +1291,7 @@
         <target state="translated">Bitte warten Sie, während wir Ihr neues Konto einrichten...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
-          <context context-type="linenumber">100</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authSignUp.unexpectedErrorOccurred" datatype="html">
@@ -1291,7 +1299,7 @@
         <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
-          <context context-type="linenumber">105</context>
+          <context context-type="linenumber">118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authSignUp.hi" datatype="html">
@@ -1299,11 +1307,11 @@
         <target state="translated">Hallo <x id="PH" equiv-text="res['account']['first_name']"/>!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
-          <context context-type="linenumber">121</context>
+          <context context-type="linenumber">134</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
-          <context context-type="linenumber">122</context>
+          <context context-type="linenumber">135</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authSignUp.oopsErrorSigningUp" datatype="html">
@@ -1311,11 +1319,11 @@
         <target state="translated">Bei der Anmeldung ist ein Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
-          <context context-type="linenumber">126</context>
+          <context context-type="linenumber">139</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
-          <context context-type="linenumber">128</context>
+          <context context-type="linenumber">141</context>
         </context-group>
       </trans-unit>
       <trans-unit id="authSignUp.errorSigningUp" datatype="html">
@@ -1323,7 +1331,7 @@
         <target state="translated">Bei der Anmeldung ist ein Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/authentication/auth-sign-up/auth-sign-up.component.ts</context>
-          <context context-type="linenumber">133</context>
+          <context context-type="linenumber">146</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resetPassword.resetYourPassword" datatype="html">
@@ -6083,7 +6091,23 @@
         <target state="translated">Anmelden</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.accessWithAD" datatype="html">
+        <source>Access with Azure AD</source>
+        <target state="translated">Zugriff mit Azure AD</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.accessWithGoogle" datatype="html">
+        <source>Access with Google</source>
+        <target state="translated">Zugriff mit Google</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.firstTimeHere" datatype="html">
@@ -6091,7 +6115,7 @@
         <target state="translated"> Sie haben kein Konto? Registrieren. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
-          <context context-type="linenumber">45,47</context>
+          <context context-type="linenumber">55,57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.signUp" datatype="html">
@@ -6099,7 +6123,7 @@
         <target state="translated"> REGISTRIEREN </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
-          <context context-type="linenumber">50,52</context>
+          <context context-type="linenumber">60,62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.correctEmailFormat" datatype="html">
@@ -6107,7 +6131,7 @@
         <target state="translated">Richtiges E-Mail-Format!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.followTheStandard" datatype="html">
@@ -6115,7 +6139,7 @@
         <target state="translated">Beachten Sie das Standardformat, z. B. - user@example.com</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">75</context>
+          <context context-type="linenumber">90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.wrongFormat" datatype="html">
@@ -6123,7 +6147,7 @@
         <target state="translated">Falsches Format!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">76</context>
+          <context context-type="linenumber">91</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.insufficientData" datatype="html">
@@ -6131,7 +6155,7 @@
         <target state="translated">Unzureichende Daten, bitte füllen Sie alle Felder korrekt aus!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">89</context>
+          <context context-type="linenumber">104</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.pleaseWaitWhileWeSighYouIn" datatype="html">
@@ -6139,7 +6163,15 @@
         <target state="translated">Bitte warten Sie, während wir Sie einschreiben...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">95</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">203</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">269</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.unexpectedError" datatype="html">
@@ -6147,7 +6179,7 @@
         <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">100</context>
+          <context context-type="linenumber">118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.hi" datatype="html">
@@ -6155,19 +6187,19 @@
         <target state="translated">Hallo </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">137</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">138</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">135</context>
+          <context context-type="linenumber">153</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">136</context>
+          <context context-type="linenumber">154</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.welcomeBack" datatype="html">
@@ -6175,19 +6207,19 @@
         <target state="translated">willkommen zurück!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">137</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">138</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">135</context>
+          <context context-type="linenumber">153</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">136</context>
+          <context context-type="linenumber">154</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.oopsErrorSigningIn" datatype="html">
@@ -6195,23 +6227,75 @@
         <target state="translated">Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">124</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">126</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">140</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
           <context context-type="linenumber">142</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">147</context>
+          <context context-type="linenumber">144</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">158</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">160</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">165</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.hiAD" datatype="html">
+        <source>Hi <x id="PH" equiv-text="res['account']['first_name']"/>!</source>
+        <target state="translated">Hallo <x id="PH" equiv-text="res['account']['first_name']"/>!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">235</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">247</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.oopsErrorSigningUp" datatype="html">
+        <source>Oops some error occurred while signing you up, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">239</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">251</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">259</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">295</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">307</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">315</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.hiGoogle" datatype="html">
+        <source>Hi <x id="PH" equiv-text="res['account']['first_name']"/>!</source>
+        <target state="translated">Hallo <x id="PH" equiv-text="res['account']['first_name']"/>!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">291</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">303</context>
         </context-group>
       </trans-unit>
       <trans-unit id="myspaceAgenda.today" datatype="html">
@@ -8930,7 +9014,7 @@
       </trans-unit>
       <trans-unit id="shuttleTask.section" datatype="html">
         <source> Section </source>
-        <target state="translated">Abschnitt</target>
+        <target state="translated"> Abschnitt </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/shuttle-task/shuttle-task.component.html</context>
           <context context-type="linenumber">54,56</context>
@@ -10318,7 +10402,7 @@
       </trans-unit>
       <trans-unit id="cfTableSettingsDialog.customizeYourDashboard" datatype="html">
         <source> Customize your analytics </source>
-        <target state="translated">Passen Sie Ihre Analysen an</target>
+        <target state="translated"> Passen Sie Ihre Analysen an</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component.html</context>
           <context context-type="linenumber">13,15</context>
@@ -12116,7 +12200,7 @@
       </trans-unit>
       <trans-unit id="seet.unableToSaveSettingsCampaign" datatype="html">
         <source>Unable to save the settings to your campaign, please try again!</source>
-        <target status="translated">Die Einstellungen für Ihre Kampagne konnten nicht gespeichert werden. Bitte versuchen Sie es erneut.</target>
+        <target status="translated" state="translated"> Die Einstellungen für Ihre Kampagne konnten nicht gespeichert werden. Bitte versuchen Sie es erneut.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/sheet/sheet.component.ts</context>
           <context context-type="linenumber">208</context>

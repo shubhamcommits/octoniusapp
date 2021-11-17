@@ -64,8 +64,6 @@ const routes: Routes = [
       canActivate: [AuthenticationGuard, FlamingoGuard]
   },
 
-
-
   // NOT FOUND ROUTE
   {
     path: '**',

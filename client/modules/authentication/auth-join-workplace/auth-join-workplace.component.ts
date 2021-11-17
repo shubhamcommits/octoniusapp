@@ -96,7 +96,8 @@ export class AuthJoinWorkplaceComponent implements OnInit {
             .then(() => {
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@authJoinWorkplace.welcomeToWorkplace:Hi ${res['user']['first_name']}, welcome to your new workplace!`))
             })
-            .catch(() => {
+            .catch((err) => {
+              this.storageService.clear();
               reject(this.utilityService.rejectAsyncPromise($localize`:@@authJoinWorkplace.oopsErrorOccuredSettingUp:Oops some error occurred while setting you up, please try again!`))
             })
 
