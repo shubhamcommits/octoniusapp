@@ -100,4 +100,8 @@ export const environment = {
 
   // LDAP properties
   LDAP_METHOD: window["env"]["LDAP_METHOD"],
+
+  // GOOGLE SSO properties
+  SSO_GOOGLE_METHOD: window["env"]["SSO_GOOGLE_METHOD"],
+  SSO_GOOGLE_CLIENT_ID: window["env"]["SSO_GOOGLE_CLIENT_ID"],
 };

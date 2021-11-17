@@ -28,7 +28,7 @@ const AccountSchema = new Schema({
     ssoType: {
         type: String,
         required: false,
-        enum: ['AD', 'google', 'LDAP']
+        enum: ['AD', 'GOOGLE', 'LDAP']
     },
     created_date: {
         type: Date,

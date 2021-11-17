@@ -8,6 +8,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { ActivatedRoute, Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from 'src/environments/environment';
+import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-welcome-page',
@@ -29,6 +30,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
   ssoAvailable: boolean = false;
   activeDirectoryAvailable: boolean = false;
   ldapAvailable: boolean = false;
+  googleAvailable: boolean = false;
 
   publicFunctions = new PublicFunctions(this._Injector);
 
@@ -43,7 +45,8 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     public router: Router,
     public activeRouter :ActivatedRoute,
     private _Injector: Injector,
-    private msalService: MsalService
+    private msalService: MsalService,
+    private socialAuthService: SocialAuthService
   ) { }
 
   async ngOnInit() {
@@ -63,6 +66,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     this.ssoAvailable = (environment.SSO_AD_METHOD && environment.SSO_AD_METHOD == 'AD');
     this.activeDirectoryAvailable = environment.SSO_AD_METHOD && environment.SSO_AD_METHOD == 'AD';
     this.ldapAvailable = environment.LDAP_METHOD && environment.LDAP_METHOD == 'LDAP';
+    this.googleAvailable = environment.SSO_GOOGLE_METHOD && environment.SSO_GOOGLE_METHOD == 'GOOGLE';
   }
 
   /**
@@ -255,6 +259,61 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
               reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
             }
           });
+        }));
+  }
+
+  loginWithGoogle(): void {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+      .then(() => this.router.navigate(['mainpage']));
+
+      this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
+      new Promise((resolve, reject) => {
+        this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+          .then(async (res) => {
+              //console.log(res);
+              const accountGoogle = res;
+              let userData: any = {
+                email: accountGoogle.email,
+                first_name: accountGoogle.firstName,
+                last_name: accountGoogle.lastName,
+                ssoType: 'GOOGLE'
+              }
+
+              await this.authenticationService.authenticateSSOUser(userData).then(res => {
+                const newAccount = res['newAccount'];
+                const accountData = res['account'];
+
+                if (newAccount || (!accountData || !accountData._workspaces || accountData._workspaces.length == 0)) {
+                  this.clearAccountData();
+                  this.storeAccountData(res);
+                  this.router.navigate(['authentication', 'join-workplace'])
+                    .then(() => {
+                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hi2:Hi ${res['account']['first_name']}!`));
+                    })
+                    .catch((err) => {
+                      console.error('Error occurred while signing in the user', err);
+                      reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
+                      this.storageService.clear();
+                    });
+                } else {
+                  this.clearAccountData();
+                  this.storeAccountData(res);
+                  this.router.navigate(['authentication', 'select-workspace'])
+                    .then(() => {
+                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hi2:Hi ${res['account']['first_name']}!`));
+                    })
+                    .catch((err) => {
+                      console.error('Error occurred while signing in the user', err);
+                      reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
+                      this.storageService.clear();
+                    });
+                }
+              });
+            })
+            .catch((error) => {
+              console.log({error});
+              reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
+            });
         }));
   }
 }
