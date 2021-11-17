@@ -103,7 +103,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.enablingDecentralizedUserRoles" datatype="html">
-        <source>Turn this <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-success&quot;>"/>ON<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> to allow everyone to create Groups(private). This will reduce the number of user roles to Workplace Admin, Group Manager, Member, and Guest.</source>
+        <source>Turn this <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-success&quot;&gt;"/>ON<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> to allow everyone to create Groups(private). This will reduce the number of user roles to Workplace Admin, Group Manager, Member, and Guest.</source>
         <target state="translated">Indem Sie dies aktivieren, erlauben Sie jedem, Gruppen (privat) zu erstellen. Dadurch wird die Anzahl der Benutzerrollen auf Arbeitsplatzadministrator, Gruppenmanager, Mitglied und Gast reduziert.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
@@ -111,8 +111,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="adminGeneral.CentralizedUserRoles" datatype="html">
-        <source>Leave this <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-warning&quot;>"/>OFF<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> if your organization uses centralized user roles. Your Workplace Admins must assign Work Managers(only WM can create private Groups). This will create the following roles: Workplace Admin, Work Manager, Group Manager, Member, Guest.</source>
-        <target state="translated">Lassen Sie diese <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-warning&quot;>"/>OF,<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> wenn Ihre Organisation zentralisierte Benutzerrollen verwendet. Ihre Arbeitsplatzadministratoren müssen Arbeitsmanager zuweisen (nur WM kann private Gruppen erstellen). Dadurch werden die folgenden Rollen erstellt: Arbeitsplatzadministrator, Arbeitsmanager, Gruppenmanager, Mitglied, Gast.</target>
+        <source>Leave this <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-warning&quot;&gt;"/>OFF<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> if your organization uses centralized user roles. Your Workplace Admins must assign Work Managers(only WM can create private Groups). This will create the following roles: Workplace Admin, Work Manager, Group Manager, Member, Guest.</source>
+        <target state="translated">Lassen Sie diese <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-warning&quot;&gt;"/>OF,<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> wenn Ihre Organisation zentralisierte Benutzerrollen verwendet. Ihre Arbeitsplatzadministratoren müssen Arbeitsmanager zuweisen (nur WM kann private Gruppen erstellen). Dadurch werden die folgenden Rollen erstellt: Arbeitsplatzadministrator, Arbeitsmanager, Gruppenmanager, Mitglied, Gast.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/admin-general.component.html</context>
           <context context-type="linenumber">35,37</context>
@@ -239,16 +239,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceAddDomain.chooseToMakeYourWorkspace" datatype="html">
-        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
-        <target state="translated"> Wählen Sie aus, ob Sie die Anmeldung am Arbeitsplatz entweder nur über eine Einladung vornehmen oder jeder anderen Person mit einer bestimmten E-Mail-Adresse erlauben, sich anzumelden.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/> (z. B. - wenn Sie example.com angeben, können sich Benutzer mit einer E-Mail-Adresse mit der Domain example.com anmelden!)</target>
+        <source> Choose to make your workplace sign up process either via invitation only, or allow anyone else with a certain email address domain to sign up.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (ex - if you specify example.com, then users having email address with domain as example.com, can sign up!) </source>
+        <target state="translated"> Wählen Sie aus, ob Sie die Anmeldung am Arbeitsplatz entweder nur über eine Einladung vornehmen oder jeder anderen Person mit einer bestimmten E-Mail-Adresse erlauben, sich anzumelden.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> (z. B. - wenn Sie example.com angeben, können sich Benutzer mit einer E-Mail-Adresse mit der Domain example.com anmelden!)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">7,11</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceAddDomain.usingWorkspaceName" datatype="html">
-        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/>", any email adress from these domain can signup:</source>
-        <target state="translated">Arbeitsplatznamen verwenden"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b>"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b>"/>", Jede E-Mail-Adresse dieser Domain kann sich anmelden:</target>
+        <source>Using workplace name"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>", any email adress from these domain can signup:</source>
+        <target state="translated">Arbeitsplatznamen verwenden"<x id="START_BOLD_TEXT" ctype="x-b" equiv-text="&lt;b&gt;"/><x id="INTERPOLATION" equiv-text="{{ workspaceData?.workspace_name }}"/><x id="CLOSE_BOLD_TEXT" ctype="x-b" equiv-text="&lt;/b&gt;"/>", Jede E-Mail-Adresse dieser Domain kann sich anmelden:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workplace-add-domain/workplace-add-domain.component.html</context>
           <context context-type="linenumber">13</context>
@@ -567,7 +567,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.WADef1" datatype="html">
-        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>manage the workplace settings, manually invite people, handle payments etc <x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>restore or archive groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>create private groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>access the global dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>assign roles to other members<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></source>
+        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>manage the workplace settings, manually invite people, handle payments etc <x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>restore or archive groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>create private groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>access the global dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>assign roles to other members<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
@@ -583,7 +583,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.WMDef1" datatype="html">
-        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/> create private groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>manage users and roles inside the groups they create<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>access the global dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>delete their groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></source>
+        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/> create private groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>manage users and roles inside the groups they create<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>access the global dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>delete their groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
@@ -599,7 +599,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.GMDef1" datatype="html">
-        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>they are created by the WM, inside a group<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>manage users and roles inside the group they belong<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>can access the group dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>can't create other groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>can delete their groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></source>
+        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>they are created by the WM, inside a group<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>manage users and roles inside the group they belong<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can access the group dashboard<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can't create other groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can delete their groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
@@ -615,7 +615,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.MDef1" datatype="html">
-        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>they can create AGORAs<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>can create content inside the groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></source>
+        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>they can create AGORAs<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can create content inside the groups<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
@@ -631,7 +631,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="workspaceRolesInformationDialog.GDef1" datatype="html">
-        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>isolated to the Group they are invited<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li>"/>can't access any Agora(Public Groups)<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li>"/></source>
+        <source><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>isolated to the Group they are invited<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/><x id="START_LIST_ITEM" ctype="x-li" equiv-text="&lt;li&gt;"/>can't access any Agora(Public Groups)<x id="CLOSE_LIST_ITEM" ctype="x-li" equiv-text="&lt;/li&gt;"/></source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component.html</context>
@@ -1711,8 +1711,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.dragDropOrAdd" datatype="html">
-        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Or use the NEW button for folders uploading.</source>
-        <target state="translated">Ziehen Sie Dateien per Drag &amp; Drop hierher, um sie einfach hochzuladen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Oder verwenden Sie die Schaltfläche NEU für das Hochladen von Ordnern.</target>
+        <source>Drag and drop files here for easy upload. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Or use the NEW button for folders uploading.</source>
+        <target state="translated">Ziehen Sie Dateien per Drag &amp; Drop hierher, um sie einfach hochzuladen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Oder verwenden Sie die Schaltfläche NEU für das Hochladen von Ordnern.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.html</context>
           <context context-type="linenumber">12</context>
@@ -2775,8 +2775,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPublish.done" datatype="html">
-        <source> Done?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> When you are ready, you can click this button to PUBLISH the FORM and <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> let people answer.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> When it’s done, come back here and click UNPUBLISH in order to stop data <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> collection. </source>
-        <target state="translated"> Fertig?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> Wenn Sie bereit sind, können Sie auf diese Schaltfläche klicken, um das Formular zu VERÖFFENTLICHEN und <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> die Leute antworten zu lassen.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> Wenn es fertig ist, kommen Sie hierher zurück und klicken Sie auf VERÖFFENTLICHEN, um die Datenerfassung <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> zu beenden </target>
+        <source> Done?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> When you are ready, you can click this button to PUBLISH the FORM and <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> let people answer.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> When it’s done, come back here and click UNPUBLISH in order to stop data <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> collection. </source>
+        <target state="translated"> Fertig?<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> Wenn Sie bereit sind, können Sie auf diese Schaltfläche klicken, um das Formular zu VERÖFFENTLICHEN und <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> die Leute antworten zu lassen.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> Wenn es fertig ist, kommen Sie hierher zurück und klicken Sie auf VERÖFFENTLICHEN, um die Datenerfassung <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> zu beenden </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-publish/flamingo-publish.component.html</context>
           <context context-type="linenumber">7,13</context>
@@ -3323,8 +3323,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAutomationFlowsDialog.saveTime" datatype="html">
-        <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Turn your Octonius board into an automation machine.</source>
-        <target state="translated">Sparen Sie Zeit bei manuellen Prozessen und lassen Sie Octonius die schwere Arbeit erledigen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Verwandeln Sie Ihr Octonius-Board in eine Automatisierungsmaschine.</target>
+        <source>Save time on manual processes and let Octonius do the heavy lifting. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Turn your Octonius board into an automation machine.</source>
+        <target state="translated">Sparen Sie Zeit bei manuellen Prozessen und lassen Sie Octonius die schwere Arbeit erledigen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Verwandeln Sie Ihr Octonius-Board in eine Automatisierungsmaschine.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flows-dialog/automation-flows-dialog.component.html</context>
           <context context-type="linenumber">19</context>
@@ -3403,8 +3403,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupCFDialog.isAnInputCF" datatype="html">
-        <source> Is a <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;>"/>text<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/><x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;>"/>number<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Input Custom Field </source>
-        <target state="translated">Ist eine <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;>"/>Text<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/><x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;>"/>Zahl <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> benutzerdefiniertes Eingabefeld</target>
+        <source> Is a <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;&gt;"/>text<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;&gt;"/>number<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Input Custom Field </source>
+        <target state="translated">Ist eine <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;&gt;"/>Text<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;&gt;"/>Zahl <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> benutzerdefiniertes Eingabefeld</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/custom-fields-dialog/custom-fields-dialog.component.html</context>
           <context context-type="linenumber">50,52</context>
@@ -3563,7 +3563,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="filesCustomFieldDialog.isAnInputCF" datatype="html">
-        <source> Is a <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;>"/>text<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/><x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;>"/>number<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> Input Custom Field </source>
+        <source> Is a <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngIf=&quot;field.input_type_text&quot;&gt;"/>text<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngIf=&quot;field.input_type_number&quot;&gt;"/>number<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Input Custom Field </source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/files-custom-fields-dialog/files-custom-fields-dialog.component.html</context>
@@ -3791,8 +3791,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.searchForOtherEmployees" datatype="html">
-        <source>Search for other employees within the organization and add them to your Group. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> This is how you usually create your team.</source>
-        <target state="translated">Suchen Sie nach anderen Mitarbeitern innerhalb der Organisation und fügen Sie sie zu Ihrer Gruppe hinzu. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Auf diese Weise erstellen Sie normalerweise Ihr Team.</target>
+        <source>Search for other employees within the organization and add them to your Group. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> This is how you usually create your team.</source>
+        <target state="translated">Suchen Sie nach anderen Mitarbeitern innerhalb der Organisation und fügen Sie sie zu Ihrer Gruppe hinzu. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Auf diese Weise erstellen Sie normalerweise Ihr Team.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
           <context context-type="linenumber">18</context>
@@ -3823,7 +3823,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.RAGAllowAdminsToChose" datatype="html">
-        <source>RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.</source>
+        <source>RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
@@ -4035,7 +4035,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupRAGDialog.createRulesToManage" datatype="html">
-        <source> RAG is the option for creating special access entities of users inside a group, in order to give them fine-grained control over something. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc. </source>
+        <source> RAG is the option for creating special access entities of users inside a group, in order to give them fine-grained control over something. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc. </source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.html</context>
@@ -6099,7 +6099,15 @@
         <target state="translated">Zugriff mit Azure AD</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.accessWithGoogle" datatype="html">
+        <source>Access with Google</source>
+        <target state="translated">Zugriff mit Google</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.firstTimeHere" datatype="html">
@@ -6107,7 +6115,7 @@
         <target state="translated"> Sie haben kein Konto? Registrieren. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
-          <context context-type="linenumber">48,50</context>
+          <context context-type="linenumber">55,57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.signUp" datatype="html">
@@ -6115,7 +6123,7 @@
         <target state="translated"> REGISTRIEREN </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
-          <context context-type="linenumber">53,55</context>
+          <context context-type="linenumber">60,62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.correctEmailFormat" datatype="html">
@@ -6123,7 +6131,7 @@
         <target state="translated">Richtiges E-Mail-Format!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.followTheStandard" datatype="html">
@@ -6131,7 +6139,7 @@
         <target state="translated">Beachten Sie das Standardformat, z. B. - user@example.com</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">86</context>
+          <context context-type="linenumber">90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.wrongFormat" datatype="html">
@@ -6139,7 +6147,7 @@
         <target state="translated">Falsches Format!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">91</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.insufficientData" datatype="html">
@@ -6147,7 +6155,7 @@
         <target state="translated">Unzureichende Daten, bitte füllen Sie alle Felder korrekt aus!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">100</context>
+          <context context-type="linenumber">104</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.pleaseWaitWhileWeSighYouIn" datatype="html">
@@ -6155,11 +6163,15 @@
         <target state="translated">Bitte warten Sie, während wir Sie einschreiben...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">109</context>
+          <context context-type="linenumber">113</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">199</context>
+          <context context-type="linenumber">203</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">269</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.unexpectedError" datatype="html">
@@ -6167,7 +6179,7 @@
         <target state="translated">Es ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">114</context>
+          <context context-type="linenumber">118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.hi" datatype="html">
@@ -6175,19 +6187,19 @@
         <target state="translated">Hallo </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">133</context>
+          <context context-type="linenumber">137</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">134</context>
+          <context context-type="linenumber">138</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">149</context>
+          <context context-type="linenumber">153</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">150</context>
+          <context context-type="linenumber">154</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.welcomeBack" datatype="html">
@@ -6195,19 +6207,19 @@
         <target state="translated">willkommen zurück!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">133</context>
+          <context context-type="linenumber">137</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">134</context>
+          <context context-type="linenumber">138</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">149</context>
+          <context context-type="linenumber">153</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">150</context>
+          <context context-type="linenumber">154</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.oopsErrorSigningIn" datatype="html">
@@ -6215,40 +6227,28 @@
         <target state="translated">Bei der Anmeldung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">138</context>
+          <context context-type="linenumber">142</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">140</context>
+          <context context-type="linenumber">144</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">154</context>
+          <context context-type="linenumber">158</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">156</context>
+          <context context-type="linenumber">160</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">161</context>
+          <context context-type="linenumber">165</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="welcomePage.hi2" datatype="html">
+      <trans-unit id="welcomePage.hiAD" datatype="html">
         <source>Hi <x id="PH" equiv-text="res['account']['first_name']"/>!</source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">231</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">243</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="welcomePage.oopsErrorSigningUp" datatype="html">
-        <source>Oops some error occurred while signing you up, please try again!</source>
-        <target state="needs-translation"/>
+        <target state="translated">Hallo <x id="PH" equiv-text="res['account']['first_name']"/>!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
           <context context-type="linenumber">235</context>
@@ -6257,9 +6257,45 @@
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
           <context context-type="linenumber">247</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.oopsErrorSigningUp" datatype="html">
+        <source>Oops some error occurred while signing you up, please try again!</source>
+        <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">255</context>
+          <context context-type="linenumber">239</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">251</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">259</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">295</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">307</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">315</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.hiGoogle" datatype="html">
+        <source>Hi <x id="PH" equiv-text="res['account']['first_name']"/>!</source>
+        <target state="translated">Hallo <x id="PH" equiv-text="res['account']['first_name']"/>!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">291</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">303</context>
         </context-group>
       </trans-unit>
       <trans-unit id="myspaceAgenda.today" datatype="html">
@@ -7567,8 +7603,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="northStarPage.setAndAchieveStrategic" datatype="html">
-        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
-        <target state="translated"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun </target>
+        <source> Set and achieve strategic goals. Align your organization. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Connect your company goals and the work to support them in one place. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>You can see progress to keep teams on track. And teams can work wisely to get the right things done. </source>
+        <target state="translated"> Setzen und erreichen Sie strategische Ziele. Richten Sie Ihre Organisation aus. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Verknüpfen Sie Ihre Unternehmensziele und die Arbeit zu deren Erreichung an einem Ort. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Sie können den Fortschritt sehen, um die Teams auf Kurs zu halten. Und die Teams können klug arbeiten, um die richtigen Dinge zu tun </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/north-star-page/north-star-page.component.html</context>
           <context context-type="linenumber">15,18</context>
@@ -7583,8 +7619,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="pulse.pulseIsMicroAnnouncement" datatype="html">
-        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulses create transparency and a sense of mission for your organization. </source>
-        <target state="translated"> Ein Pulse ist eine Mikro-Mitteilung einer Gruppe. Es ist wie Twitter für Unternehmen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Auch wenn Sie keinen Zugang zu einer Gruppe haben, können Sie sehen, was dort passiert. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br>"/>Pulse schaffen Transparenz und ein Gefühl der Mission für Ihre Organisation </target>
+        <source> A pulse is a micro announcement from a Group. It’s like twitter for Enterprise. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Even if you don’t have access to a group, you can still see what’s happening there. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Pulses create transparency and a sense of mission for your organization. </source>
+        <target state="translated"> Ein Pulse ist eine Mikro-Mitteilung einer Gruppe. Es ist wie Twitter für Unternehmen. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Auch wenn Sie keinen Zugang zu einer Gruppe haben, können Sie sehen, was dort passiert. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Pulse schaffen Transparenz und ein Gefühl der Mission für Ihre Organisation </target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/pulse/pulse.component.html</context>
           <context context-type="linenumber">14,18</context>
@@ -7615,7 +7651,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.carousel.slide-number" datatype="html">
-        <source> Slide <x id="INTERPOLATION" equiv-text="OnHover$ = new"/> of <x id="INTERPOLATION_1" equiv-text=";&#10;  private _pa"/> </source>
+        <source> Slide <x id="INTERPOLATION" equiv-text="OnHover$ = new"/> of <x id="INTERPOLATION_1" equiv-text=";&#xA;  private _pa"/> </source>
         <target state="needs-adaptation"> Dia {cused$ = neu Be} von {privat _pau} </target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/carousel/carousel.ts</context>
@@ -7752,7 +7788,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.progressbar.value" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="; }&#10;&#10;  /**&#10;   *"/></source>
+        <source><x id="INTERPOLATION" equiv-text="; }&#xA;&#xA;  /**&#xA;   *"/></source>
         <target state="needs-adaptation">{(): Zahl { re}</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/progressbar/progressbar.ts</context>
@@ -7856,8 +7892,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.AM" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="NgbTime;&#10;&#10;  pr"/></source>
-        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="ssor,&#10;    OnCh"/></target>
+        <source><x id="INTERPOLATION" equiv-text="NgbTime;&#xA;&#xA;  pr"/></source>
+        <target state="needs-adaptation"><x id="INTERPOLATION" equiv-text="ssor,&#xA;    OnCh"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
           <context context-type="linenumber">115,121</context>
@@ -9573,8 +9609,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupPostbox.whatAreYouWorkingOn" datatype="html">
-        <source> What are you working on, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>? </source>
-        <target state="translated"> Woran arbeiten Sie, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>? </target>
+        <source> What are you working on, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>? </source>
+        <target state="translated"> Woran arbeiten Sie, <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="{{ userData?.first_name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>? </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-postbox.component.html</context>
           <context context-type="linenumber">17,19</context>

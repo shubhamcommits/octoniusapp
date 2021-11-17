@@ -232,7 +232,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
                   this.storeAccountData(res);
                   this.router.navigate(['authentication', 'join-workplace'])
                     .then(() => {
-                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hi2:Hi ${res['account']['first_name']}!`));
+                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiAD:Hi ${res['account']['first_name']}!`));
                     })
                     .catch((err) => {
                       console.error('Error occurred while signing in the user', err);
@@ -244,7 +244,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
                   this.storeAccountData(res);
                   this.router.navigate(['authentication', 'select-workspace'])
                     .then(() => {
-                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hi2:Hi ${res['account']['first_name']}!`));
+                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiAD:Hi ${res['account']['first_name']}!`));
                     })
                     .catch((err) => {
                       console.error('Error occurred while signing in the user', err);
@@ -288,7 +288,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
                   this.storeAccountData(res);
                   this.router.navigate(['authentication', 'join-workplace'])
                     .then(() => {
-                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hi2:Hi ${res['account']['first_name']}!`));
+                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
                     })
                     .catch((err) => {
                       console.error('Error occurred while signing in the user', err);
@@ -300,7 +300,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
                   this.storeAccountData(res);
                   this.router.navigate(['authentication', 'select-workspace'])
                     .then(() => {
-                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hi2:Hi ${res['account']['first_name']}!`));
+                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
                     })
                     .catch((err) => {
                       console.error('Error occurred while signing in the user', err);

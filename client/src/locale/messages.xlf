@@ -5385,143 +5385,143 @@
         <source>Access with Azure AD</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.accessWithGoogle" datatype="html">
+        <source>Access with Google</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.firstTimeHere" datatype="html">
         <source> First time here? Create your account. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
-          <context context-type="linenumber">48,50</context>
+          <context context-type="linenumber">55,57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.signUp" datatype="html">
         <source> SIGN UP </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.html</context>
-          <context context-type="linenumber">53,55</context>
+          <context context-type="linenumber">60,62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.correctEmailFormat" datatype="html">
         <source>Correct Email Format!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.followTheStandard" datatype="html">
         <source>Follow the standard format, e.g. - user@example.com</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">86</context>
+          <context context-type="linenumber">90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.wrongFormat" datatype="html">
         <source>Wrong Format!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">91</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.insufficientData" datatype="html">
         <source>Insufficient data, kindly fill up all the fields correctly!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">100</context>
+          <context context-type="linenumber">104</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.pleaseWaitWhileWeSighYouIn" datatype="html">
         <source>Please wait while we sign you in...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">109</context>
+          <context context-type="linenumber">113</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">199</context>
+          <context context-type="linenumber">203</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">269</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.unexpectedError" datatype="html">
         <source>There&apos;s some unexpected error occurred, please try again later!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">114</context>
+          <context context-type="linenumber">118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="welcomePage.hi" datatype="html">
         <source>Hi </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">133</context>
+          <context context-type="linenumber">137</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">134</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">149</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">150</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="welcomePage.welcomeBack" datatype="html">
-        <source>welcome back!</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">133</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">134</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">149</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">150</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="welcomePage.oopsErrorSigningIn" datatype="html">
-        <source>Oops some error occurred while signing you in, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
           <context context-type="linenumber">138</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">140</context>
+          <context context-type="linenumber">153</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
           <context context-type="linenumber">154</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.welcomeBack" datatype="html">
+        <source>welcome back!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">156</context>
+          <context context-type="linenumber">137</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">161</context>
+          <context context-type="linenumber">138</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">153</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">154</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="welcomePage.hi2" datatype="html">
+      <trans-unit id="welcomePage.oopsErrorSigningIn" datatype="html">
+        <source>Oops some error occurred while signing you in, please try again!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">142</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">144</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">158</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">160</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">165</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.hiAD" datatype="html">
         <source>Hi <x id="PH" equiv-text="res[&apos;account&apos;][&apos;first_name&apos;]"/>!</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">231</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">243</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="welcomePage.oopsErrorSigningUp" datatype="html">
-        <source>Oops some error occurred while signing you up, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
           <context context-type="linenumber">235</context>
@@ -5530,9 +5530,43 @@
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
           <context context-type="linenumber">247</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.oopsErrorSigningUp" datatype="html">
+        <source>Oops some error occurred while signing you up, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
-          <context context-type="linenumber">255</context>
+          <context context-type="linenumber">239</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">251</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">259</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">295</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">307</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">315</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="welcomePage.hiGoogle" datatype="html">
+        <source>Hi <x id="PH" equiv-text="res[&apos;account&apos;][&apos;first_name&apos;]"/>!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">291</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/home/welcome-page/welcome-page.component.ts</context>
+          <context context-type="linenumber">303</context>
         </context-group>
       </trans-unit>
       <trans-unit id="myspaceAgenda.today" datatype="html">
