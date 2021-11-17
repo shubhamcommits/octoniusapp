@@ -10,13 +10,12 @@ export const environment = {
   // Browser Storage Key
   storageKey: 'storageKey@20xx',
 
-  // Google developer console credentials
-  developerKey: 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I',
-  clientId: '971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com',
-  apiKey: 'AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I',
-  clientSecret: 'erp6ZMRG6XFiMqHkjTDby2UI',
-  google_redirect_url: 'http://localhost:4200',
-  scope: [
+  // GOOGLE properties
+  SSO_GOOGLE_METHOD: window["env"]["SSO_GOOGLE_METHOD"],
+  GOOGLE_CLIENT_ID: window["env"]["GOOGLE_CLIENT_ID"],
+  GOOGLE_CLIENT_SECRET: window["env"]["GOOGLE_CLIENT_SECRET"],
+  GOOGLE_REDIRECT_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}`,
+  GOOGLE_SCOPE: [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/calendar',
     'https://www.googleapis.com/auth/calendar.events'
@@ -86,8 +85,4 @@ export const environment = {
 
   // LDAP properties
   LDAP_METHOD: window["env"]["LDAP_METHOD"],
-
-  // GOOGLE SSO properties
-  SSO_GOOGLE_METHOD: window["env"]["SSO_GOOGLE_METHOD"],
-  SSO_GOOGLE_CLIENT_ID: window["env"]["SSO_GOOGLE_CLIENT_ID"],
 };

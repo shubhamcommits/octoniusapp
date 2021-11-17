@@ -182,7 +182,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(environment.SSO_GOOGLE_CLIENT_ID) // your client id
+            provider: new GoogleLoginProvider(environment.GOOGLE_CLIENT_ID) // your client id
           }
         ]
       }

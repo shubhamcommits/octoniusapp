@@ -28,16 +28,15 @@ export const environment = {
   // Browser Storage Key
   storageKey: `storageKey@20xx`,
 
-  // Google developer console credentials
-  developerKey: `AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I`,
-  clientId: `971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com`,
-  apiKey: `AIzaSyDGM66BZhGSmBApm3PKL-xCrri-3Adb06I`,
-  clientSecret: `erp6ZMRG6XFiMqHkjTDby2UI`,
-  google_redirect_url: `${url.protocol}://${url.domain}:4200`,
-  scope: [
-    `https://www.googleapis.com/auth/drive`,
-    `https://www.googleapis.com/auth/calendar`,
-    `https://www.googleapis.com/auth/calendar.events`
+  // GOOGLE properties
+  SSO_GOOGLE_METHOD: 'GOOGLE',
+  GOOGLE_CLIENT_ID: `971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com`,
+  GOOGLE_CLIENT_SECRET: `erp6ZMRG6XFiMqHkjTDby2UI`,
+  GOOGLE_REDIRECT_URL: `${url.protocol}://${url.domain}:4200`,
+  GOOGLE_SCOPE: [
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/calendar',
+    'https://www.googleapis.com/auth/calendar.events'
   ].join(` `),
 
   // Base Client Url
@@ -108,10 +107,6 @@ export const environment = {
 
   // LDAP properties
   LDAP_METHOD: 'LDAP',
-
-  // GOOGLE SSO properties
-  SSO_GOOGLE_METHOD: 'GOOGLE',
-  SSO_GOOGLE_CLIENT_ID: '971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com',
 };
 
 /*

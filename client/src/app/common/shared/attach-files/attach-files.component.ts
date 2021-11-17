@@ -154,8 +154,8 @@ export class AttachFilesComponent implements OnInit {
     // Authorise the user and pass the results to the selection of picker
     gapi.auth.authorize(
       {
-        'client_id': environment.clientId,
-        'scope': environment.scope,
+        'client_id': environment.GOOGLE_CLIENT_ID,
+        'scope': environment.GOOGLE_SCOPE,
         'immediate': false,
         'approval_prompt':'force',
       },
