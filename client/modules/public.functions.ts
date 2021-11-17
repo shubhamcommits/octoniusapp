@@ -1169,10 +1169,10 @@ export class PublicFunctions {
     /**
      * This function opens up the window to signin to google and connect the account
      */
-    async authorizeGoogleSignIn() {
+    async authorizeGoogleSignIn(integrations: any) {
         return new Promise(async (resolve) => {
             await gapi.auth.authorize({
-                'client_id': environment.GOOGLE_CLIENT_ID,
+                'client_id': integrations.google_client_id,
                 'scope': environment.GOOGLE_SCOPE,
                 'immediate': false,
                 'access_type': 'offline',
@@ -1201,7 +1201,9 @@ export class PublicFunctions {
         let access_token: any = null
 
         // Refresh token variable
-        let refresh_token: any = null
+        let refresh_token: any = null;
+
+        const workspaceData: any = await this.getCurrentWorkspace();
 
         // If its a default refresh in the background
         if (!googleSignInResult) {
@@ -1216,7 +1218,7 @@ export class PublicFunctions {
 
             // Assign the access_token from the refresh token
             if (refresh_token != null && refresh_token != undefined)
-                tokenResults = await this.getAccessToken(refresh_token)
+                tokenResults = await this.getAccessToken(refresh_token, workspaceData?.integrations)
 
             // Set the access_token
             access_token = tokenResults.access_token
@@ -1227,7 +1229,7 @@ export class PublicFunctions {
         if (googleSignInResult && !googleSignInResult.error && googleSignInResult.access_token) {
 
             // Fetch the Google Drive Token Object
-            let tokenResults: any = await this.getGoogleDriveTokenFromAuthResult(googleSignInResult.code, googleSignInResult.access_token)
+            let tokenResults: any = await this.getGoogleDriveTokenFromAuthResult(googleSignInResult.code, googleSignInResult.access_token, workspaceData?.integrations)
 
             // Set the access_token
             access_token = tokenResults.access_token
@@ -1292,10 +1294,10 @@ export class PublicFunctions {
      * This function fetches the access token stored in the user's profile
      * @param refreshToken
      */
-    async getAccessToken(refreshToken: string) {
+    async getAccessToken(refreshToken: string, integrations: any) {
         let googleService = this.injector.get(GoogleCloudService)
         return new Promise(async (resolve) => {
-            await googleService.getAccessToken(refreshToken)
+            await googleService.getAccessToken(refreshToken, integrations)
                 .then((res) => resolve(res))
         })
     }
@@ -1305,10 +1307,10 @@ export class PublicFunctions {
      * @param code
      * @param access_token
      */
-    async getGoogleDriveTokenFromAuthResult(code: string, access_token: string) {
+    async getGoogleDriveTokenFromAuthResult(code: string, access_token: string, integrations: any) {
         let googleService = this.injector.get(GoogleCloudService)
         return new Promise(async (resolve) => {
-            await googleService.getGoogleDriveTokenFromAuthResult(code, access_token)
+            await googleService.getGoogleDriveTokenFromAuthResult(code, access_token, integrations)
                 .then((res) => resolve(res))
         })
     }

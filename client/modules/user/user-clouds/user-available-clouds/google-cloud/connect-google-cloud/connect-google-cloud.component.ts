@@ -10,23 +10,27 @@ import { GoogleCloudService } from '../services/google-cloud.service';
 })
 export class ConnectGoogleCloudComponent implements OnInit {
 
+  // Google User Output Emitter
+  @Output('googleUser') googleUser = new EventEmitter();
+
   googleAuthSuccessful: any;
+
+  workspaceData: any;
 
   // Public Functions
   private publicFunctions = new PublicFunctions(this.injector)
 
-  // Subsink 
-  private subSink = new SubSink()
-
-  // Google User Output Emitter
-  @Output('googleUser') googleUser = new EventEmitter()
+  // Subsink
+  private subSink = new SubSink();
 
   constructor(
     private googleService: GoogleCloudService,
     private injector: Injector
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     // Subscribe to google authentication state
     this.subSink.add(this.googleService.googleAuthSuccessful.subscribe(auth => this.googleAuthSuccessful = auth))
@@ -37,8 +41,10 @@ export class ConnectGoogleCloudComponent implements OnInit {
    */
   async signInToGoogle() {
 
+
+
     // Open up the SignIn Window in order to authorize the google user
-    let googleSignInResult: any = await this.publicFunctions.authorizeGoogleSignIn()
+    let googleSignInResult: any = await this.publicFunctions.authorizeGoogleSignIn(this.workspaceData?.integrations);
 
     if (googleSignInResult != null) {
 

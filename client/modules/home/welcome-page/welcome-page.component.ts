@@ -107,9 +107,6 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
           email: this.account.email.trim(),
           password: this.account.password.trim()
         }
-        if (this.ldapAvailable) {
-          userData.ldap = true;
-        }
         this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
           this.signInServiceFunction(userData));
       }

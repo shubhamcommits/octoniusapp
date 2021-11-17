@@ -86,10 +86,6 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
-      - LDAP_URL=${LDAP_URL}
-      - LDAP_DN=${LDAP_DN}
-      - LDAP_PASSWORD=${LDAP_PASSWORD}
-      - LDAP_SEARCH_BASE=${LDAP_SEARCH_BASE}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
@@ -382,9 +378,6 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
       - TEAMS_BOT_URL=${TEAMS_BOT_URL}
-      - SLACK_CLIENT_ID=${SLACK_CLIENT_ID}
-      - SLACK_CLIENT_SECRET=${SLACK_CLIENT_SECRET}
-      - SLACK_BOT_ACCESS_TOKEN=${SLACK_BOT_ACCESS_TOKEN}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
@@ -437,11 +430,6 @@ services:
       - DOMAIN=${DOMAIN}
       - WEBSOCKET=${WEBSOCKET}
       - mgmt_portal_domain=${mgmt_portal_domain}
-      - SSO_AD_METHOD=${SSO_AD_METHOD}
-      - active_directory_client_application_id=${active_directory_client_application_id}
-      - active_directory_authority_cloud_id=${active_directory_authority_cloud_id}
-      - active_directory_redirect_url=${active_directory_redirect_url}
-      - LDAP_METHOD=${LDAP_METHOD}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo

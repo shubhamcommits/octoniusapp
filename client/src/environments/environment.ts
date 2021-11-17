@@ -25,13 +25,9 @@ export const environment = {
   // Browser Storage Key
   storageKey: `storageKey@20xx`,
 
-  //SLACK Properties
-  SLACK_CLIENT_ID: '2561616476.1793890184164',
-
   // GOOGLE properties
   SSO_GOOGLE_METHOD: 'GOOGLE',
   GOOGLE_CLIENT_ID: `971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com`,
-  GOOGLE_CLIENT_SECRET: `erp6ZMRG6XFiMqHkjTDby2UI`,
   GOOGLE_REDIRECT_URL: `${url.protocol}://${url.domain}:4200`,
   GOOGLE_SCOPE: [
     'https://www.googleapis.com/auth/drive',

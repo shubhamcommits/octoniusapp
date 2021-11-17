@@ -1,8 +1,8 @@
 <div class="col-md-8">
-    <app-google-account-details *ngIf="googleUser" [googleUser]="googleUser"></app-google-account-details>
+    <app-google-account-details *ngIf="googleUser && workspaceData?.integrations?.is_google_connected" [googleUser]="googleUser"></app-google-account-details>
 </div>
 <div class="col-md-8">
-    <app-slack-account-details *ngIf="slackAuthSuccessful" [slackAuthSuccessful]="slackAuthSuccessful"></app-slack-account-details>
+    <app-slack-account-details *ngIf="slackAuthSuccessful && workspaceData?.integrations?.is_google_connected" [slackAuthSuccessful]="slackAuthSuccessful"></app-slack-account-details>
 </div>
 <div class="col-md-8">
     <app-team-account-details></app-team-account-details>

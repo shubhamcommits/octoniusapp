@@ -86,12 +86,6 @@ function prodConfigInit() {
 
   // Proxy Port
   process.env.PROXY_PORT = process.env.PROXY_PORT
-
-  // LDAP Properties
-  process.env.LDAP_URL = process.env.LDAP_URL
-  process.env.LDAP_DN = process.env.LDAP_DN
-  process.env.LDAP_PASSWORD = process.env.LDAP_PASSWORD
-  process.env.LDAP_SEARCH_BASE = process.env.LDAP_SEARCH_BASE
 };
 
 export { prodConfigInit as productionConfig } 

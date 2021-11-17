@@ -1,9 +1,8 @@
-import { Component, EventEmitter, Injector, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, Injector, Input, OnInit, SimpleChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { environment } from 'src/environments/environment';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-connect-slack',
@@ -12,8 +11,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ConnectSlackComponent implements OnInit {
 
-  slackAuthSuccessful: Boolean;
   @Input() userData:any;
+
+  workspaceData: any;
+  slackAuthSuccessful: Boolean;
 
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -21,8 +22,7 @@ export class ConnectSlackComponent implements OnInit {
     public utilityService: UtilityService,
     public userService: UserService,
     private injector: Injector,
-    private router: ActivatedRoute,
-    private _router: Router,
+    private router: ActivatedRoute
   ) { }
 
   async ngOnInit() {
@@ -34,7 +34,9 @@ export class ConnectSlackComponent implements OnInit {
       this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
     });
 
-    if(!this.userData){
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    if (!this.userData) {
       this.userData = await this.publicFunctions.getCurrentUser();
     }
     this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
@@ -44,7 +46,7 @@ export class ConnectSlackComponent implements OnInit {
         if (params['code']) {
           try {
             this.utilityService.asyncNotification($localize`:@@connectSlack.pleaseWaitAuthenticatinSlack:Please wait, while we are authenticating the slack...`, new Promise((resolve, reject) => {
-              this.userService.slackAuth(params['code'], this.userData)
+              this.userService.slackAuth(params['code'], this.userData, this.workspaceData?._id)
               .subscribe((res) => {
                   // Resolve the promise
                   setTimeout(() => {
@@ -67,9 +69,6 @@ export class ConnectSlackComponent implements OnInit {
         }
       });
     }
-
-
-
   }
 
 
@@ -103,7 +102,7 @@ export class ConnectSlackComponent implements OnInit {
       .then((result) => {
         if (result.value) {
           localStorage.setItem("slackAuth", "connected");
-          window.location.href = `https://slack.com/oauth/v2/authorize?client_id=${environment.SLACK_CLIENT_ID}&scope=commands,incoming-webhook`;
+          window.location.href = `https://slack.com/oauth/v2/authorize?client_id=${this.workspaceData?.integrations?.slack_client_id}&scope=commands,incoming-webhook`;
         }
       });
   }

@@ -149,12 +149,12 @@ export class AttachFilesComponent implements OnInit {
   /**
    * Authorize the google signin
    */
-  onAuthApiLoad() {
+  onAuthApiLoad(integrations: any) {
 
     // Authorise the user and pass the results to the selection of picker
     gapi.auth.authorize(
       {
-        'client_id': environment.GOOGLE_CLIENT_ID,
+        'client_id': integrations.google_client_id,
         'scope': environment.GOOGLE_SCOPE,
         'immediate': false,
         'approval_prompt':'force',
