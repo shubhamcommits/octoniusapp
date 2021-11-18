@@ -430,7 +430,6 @@ services:
       - DOMAIN=${DOMAIN}
       - WEBSOCKET=${WEBSOCKET}
       - mgmt_portal_domain=${mgmt_portal_domain}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo

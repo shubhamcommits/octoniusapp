@@ -7,7 +7,7 @@ import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
-import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
+//import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { environment } from 'src/environments/environment';
 
@@ -48,7 +48,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     public activeRouter :ActivatedRoute,
     private _Injector: Injector,
     private msalService: MsalService,
-    private socialAuthService: SocialAuthService
+    //private socialAuthService: SocialAuthService
   ) { }
 
   async ngOnInit() {
@@ -280,14 +280,22 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
   loginWithGoogle(): void {
       this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
         new Promise((resolve, reject) => {
-          this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+          this.signInToGoogle()
+          //this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
             .then(async (res) => {
                 //console.log(res);
-                const accountGoogle = res;
+                const accountGoogle: any = res.user;
+                // build the user first_name and last_name
+                const nameGoogle = accountGoogle.displayName.split(' ');
+                let lastName = '';
+                for (let i = 1; i < nameGoogle.length; i++) {
+                  lastName += nameGoogle[i];
+                }
+
                 let userData: any = {
-                  email: accountGoogle.email,
-                  first_name: accountGoogle.firstName,
-                  last_name: accountGoogle.lastName,
+                  email: accountGoogle.emailAddress,
+                  first_name: nameGoogle[0],
+                  last_name: lastName,
                   ssoType: 'GOOGLE'
                 }
 
@@ -327,5 +335,29 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
                 reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
               });
           }));
+    }
+
+    /**
+     * This function is responsible for connecting the google acount to the main octonius server
+     */
+    async signInToGoogle() {
+      let googleUserDetails: any;
+      let access_token;
+      // Open up the SignIn Window in order to authorize the google user
+      let googleSignInResult: any = await this.publicFunctions.authorizeGoogleSignInForLogIn(this.possibleIntegrations);
+
+      if (googleSignInResult && !googleSignInResult.error && googleSignInResult.access_token) {
+        // Fetch the Google Drive Token Object
+        let tokenResults: any = await this.publicFunctions.getGoogleDriveTokenFromAuthResult(googleSignInResult.code, googleSignInResult.access_token, this.possibleIntegrations);
+        // Set the access_token
+        access_token = tokenResults.access_token;
+      }
+
+      if (access_token != null) {
+        // Fetch the google user details
+        googleUserDetails = await this.publicFunctions.getGoogleUserDetails(access_token);
+      }
+
+      return googleUserDetails;
     }
 }

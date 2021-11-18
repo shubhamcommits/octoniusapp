@@ -1180,7 +1180,26 @@ export class PublicFunctions {
                 'approval_prompt': 'force',
                 'response_type': 'token code',
                 'grant_type': 'authorization_code'
-            })
+              })
+                .then((res: any) => resolve(res))
+                .catch(() => resolve(null))
+        })
+    }
+
+    /**
+     * This function opens up the window to signin to google and connect the account
+     */
+    async authorizeGoogleSignInForLogIn(integrations: any) {
+        return new Promise(async (resolve) => {
+            await gapi.auth.authorize({
+                'client_id': integrations.google_client_id,
+                'scope': environment.GOOGLE_LOGIN_SCOPE,
+                'immediate': false,
+                'access_type': 'offline',
+                'response_type': 'token code',
+                //'approval_prompt': 'force',
+                //'grant_type': 'authorization_code'
+              })
                 .then((res: any) => resolve(res))
                 .catch(() => resolve(null))
         })
@@ -1914,6 +1933,8 @@ export class PublicFunctions {
       const allWorkspacesIntegratinos: any = await this.getAllWorkspaces();
       let possibleIntegrations = {
         is_google_connected: false,
+        google_client_id: '',
+        google_client_secret_key: '',
         is_azure_ad_connected: false,
         azure_ad_clientId: '',
         azure_ad_authority_cloud_url: '',
@@ -1924,6 +1945,8 @@ export class PublicFunctions {
         if (workspace.integrations) {
           if (workspace.integrations.is_google_connected) {
             possibleIntegrations.is_google_connected = workspace.integrations.is_google_connected;
+            possibleIntegrations.google_client_id = workspace.integrations.google_client_id;
+            possibleIntegrations.google_client_secret_key = workspace.integrations.google_client_secret_key;
           }
           if (workspace.integrations.is_azure_ad_connected) {
             possibleIntegrations.is_azure_ad_connected = workspace.integrations.is_azure_ad_connected;

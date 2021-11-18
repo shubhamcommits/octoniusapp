@@ -41,8 +41,6 @@ export class ConnectGoogleCloudComponent implements OnInit {
    */
   async signInToGoogle() {
 
-
-
     // Open up the SignIn Window in order to authorize the google user
     let googleSignInResult: any = await this.publicFunctions.authorizeGoogleSignIn(this.workspaceData?.integrations);
 

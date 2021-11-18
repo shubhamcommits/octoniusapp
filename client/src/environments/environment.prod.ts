@@ -19,11 +19,13 @@ export const environment = {
   storageKey: `storageKey@20xx`,
 
   // Google developer console credentials
-  GOOGLE_CLIENT_ID: window["env"]["GOOGLE_CLIENT_ID"],
   GOOGLE_SCOPE: [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/calendar',
     'https://www.googleapis.com/auth/calendar.events'
+  ].join(` `),
+  GOOGLE_LOGIN_SCOPE: [
+    'https://www.googleapis.com/auth/userinfo.email'
   ].join(` `),
 
   // Base Client Url

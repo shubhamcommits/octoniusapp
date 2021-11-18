@@ -26,11 +26,13 @@ export const environment = {
   storageKey: `storageKey@20xx`,
 
   // GOOGLE properties
-  GOOGLE_CLIENT_ID: `971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com`,
   GOOGLE_SCOPE: [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/calendar',
     'https://www.googleapis.com/auth/calendar.events'
+  ].join(` `),
+  GOOGLE_LOGIN_SCOPE: [
+    'https://www.googleapis.com/auth/userinfo.email'
   ].join(` `),
 
   // Base Client Url
