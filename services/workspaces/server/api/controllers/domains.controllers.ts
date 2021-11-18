@@ -30,8 +30,7 @@ export class DomainsControllers {
             // Add the domain to the 'allowed_domains' set 
             const workspace: any = await Workspace.findOneAndUpdate({
                 $and: [
-                    { _id: workspaceId },
-                    { _owner: userId }
+                    { _id: workspaceId }
                 ]
             }, {
                 $addToSet: {
@@ -43,7 +42,7 @@ export class DomainsControllers {
 
             // Unable to update the workspace
             if (!workspace) {
-                return sendError(res, new Error('Unable to update the workspace, reason might be - Invalid workspaceId or user in not the workspace owner'), 'Unable to update the workspace, reason might be - Invalid workspaceId or user in not the workspace owner', 404);
+                return sendError(res, new Error('Unable to update the workspace, reason might be - Invalid workspaceId'), 'Unable to update the workspace, reason might be - Invalid workspaceId', 404);
             }
 
             // Send the status 200 response
@@ -123,8 +122,7 @@ export class DomainsControllers {
             // Remove domain from domains array
             const workspace: any = await Workspace.findOneAndUpdate({
                 $and: [
-                    { _id: workspaceId },
-                    { _owner: userId }
+                    { _id: workspaceId }
                 ]
             }, {
                 $pull: {
@@ -136,7 +134,7 @@ export class DomainsControllers {
 
             // Unable to remove the domain from domains list
             if (!workspace) {
-                return sendError(res, new Error('Unable to remove the domain from the allowed domains list as due to Invalid workspaceId or user in not the workspace owner'), 'Unable to remove the domain from the allowed domains list as due to Invalid workspaceId or user in not the workspace owner', 404);
+                return sendError(res, new Error('Unable to remove the domain from the allowed domains list as due to Invalid workspaceId'), 'Unable to remove the domain from the allowed domains list as due to Invalid workspaceId', 404);
             }
 
             // Disable all users from that domain from that workspace
