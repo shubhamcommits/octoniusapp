@@ -3,19 +3,19 @@
     <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
   </mat-dialog-actions>
 
-  <h2 mat-dialog-title>
+  <h2 mat-dialog-title class="text-center">
     <span class="badge badge-cf">
-      <i class="material-icons-round">cable</i>
+      <i class="material-icons">cable</i>
     </span>
     <span i18n="@@workspaceIntegrationsDialog.workplaceIntegrations">Workplace Integrations</span>
   </h2>
 
-  <div class="description">
-    <!--
-    <img src="assets/images/placeholder_bars.svg" alt="" style="width: 300px; margin-bottom: 24px">
-    -->
-    <p i18n="@@workspaceIntegrationsDialog.workplaceIntegrationsDescription">
-      From here we manage the possible integrations with third party applications.
+  <div class="description text-center">
+
+    <img src="assets/images/placeholder_workplace_integrations.svg" alt="" style="width: 180px; margin: 14px">
+
+    <p i18n="@@workspaceIntegrationsDialog.workplaceIntegrationsDescription" class="text-descr">
+      Manage integrations with third party applications.
     </p>
   </div>
 
@@ -73,7 +73,7 @@
             <input type="text" class="form-control" name="ldap_password" [(ngModel)]="workplaceData.integrations.ldap_password" placeholder="Please provide the LDAP Password">
             <br/>
             <label for="ldap_search_base" i18n="@@workspaceIntegrationsDialog.ldapSearchBase">Search Base:</label>
-            <input type="text" class="form-control" name="ldap_search_base" [(ngModel)]="workplaceData.integrations.ldap_search_base" placeholder="Please provide the LDAP Searh Base">
+            <input type="text" class="form-control" name="ldap_search_base" [(ngModel)]="workplaceData.integrations.ldap_search_base" placeholder="Please provide the LDAP Search Base">
           </div>
         </div>
       </div>
@@ -138,7 +138,7 @@
     <!-- SLACK INTEGRATION ENDS -->
   </div>
 
-  <div style="margin-top: 20px;">
+  <div style="margin-top: 20px; text-align: center;">
     <button class="col-md-4 btn btn-primary" (click)="saveSettings()" i18n="@@workspaceIntegrationsDialog.save">
       Save
     </button>
