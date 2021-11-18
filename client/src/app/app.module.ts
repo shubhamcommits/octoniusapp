@@ -150,8 +150,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
           cacheLocation: 'localStorage',
           storeAuthStateInCookie: isIE, // Set to true for Internet Explorer 11
         }
-      }), null, null),
-    //SocialLoginModule
+      }), null, null)
   ],
 
   providers: [
