@@ -105,6 +105,10 @@ services:
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
       - PROXY_HOST=${PROXY_HOST}
       - PROXY_PORT=${PROXY_PORT}
+      - LDAP_URL=${LDAP_URL}
+      - LDAP_DN=${LDAP_DN}
+      - LDAP_PASSWORD=${LDAP_PASSWORD}
+      - LDAP_SEARCH_BASE=${LDAP_SEARCH_BASE}
     deploy:
       replicas: ${REPLICAS}
       placement:
@@ -439,6 +443,14 @@ services:
       - DOMAIN=${DOMAIN}
       - WEBSOCKET=${WEBSOCKET}
       - mgmt_portal_domain=${mgmt_portal_domain}
+      - SSO_AD_METHOD=${SSO_AD_METHOD}
+      - active_directory_client_application_id=${active_directory_client_application_id}
+      - active_directory_authority_cloud_id=${active_directory_authority_cloud_id}
+      - active_directory_redirect_url=${active_directory_redirect_url}
+      - LDAP_METHOD=${LDAP_METHOD}
+      - SSO_GOOGLE_METHOD=${SSO_GOOGLE_METHOD}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
     deploy:
       replicas: ${REPLICAS}
       placement:

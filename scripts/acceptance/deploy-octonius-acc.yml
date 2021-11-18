@@ -430,6 +430,10 @@ services:
       - DOMAIN=${DOMAIN}
       - WEBSOCKET=${WEBSOCKET}
       - mgmt_portal_domain=${mgmt_portal_domain}
+      - active_directory_client_application_id=${active_directory_client_application_id}
+      - active_directory_authority_cloud_id=${active_directory_authority_cloud_id}
+      - active_directory_redirect_url=${active_directory_redirect_url}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
