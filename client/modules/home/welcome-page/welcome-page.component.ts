@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -17,7 +17,9 @@ declare const gapi: any;
   templateUrl: './welcome-page.component.html',
   styleUrls: ['./welcome-page.component.scss']
 })
-export class WelcomePageComponent implements OnInit, OnDestroy {
+export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  @ViewChild('googleBtn') googleBtn: ElementRef;
 
   // Defining User Object, which accepts the following properties
   account: { email: string, password: string, repeatPassword: string } = {
@@ -50,11 +52,29 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     public router: Router,
     public activeRouter :ActivatedRoute,
     private _Injector: Injector,
-    private msalService: MsalService,
-    //private socialAuthService: SocialAuthService
-  ) { }
+    private msalService: MsalService
+  ) {
+    this.initView();
+  }
 
   async ngOnInit() {
+    await this.initView();
+  }
+
+  async ngAfterViewInit() {
+    await this.initSSO();
+    this.googleInit();
+  }
+
+  /**
+   * This function unsubscribes the observables
+   */
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
+    this.utilityService.clearAllNotifications();
+  }
+
+  async initView() {
     this.clearAccountData();
 
     this.publicFunctions.sendUpdatesToGroupData({});
@@ -68,6 +88,10 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
         this.queryParms = params;
     }});
 
+    await this.initSSO();
+  }
+
+  async initSSO() {
     this.possibleIntegrations = await this.publicFunctions.getPossibleIntegrations();
 
     this.activeDirectoryAvailable = this.possibleIntegrations && this.possibleIntegrations?.is_azure_ad_connected && this.possibleIntegrations?.azure_ad_clientId && this.possibleIntegrations?.azure_ad_authority_cloud_url;
@@ -88,18 +112,6 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
         }
       });
     }
-  }
-
-  ngAfterViewInit(){
-    this.googleInit();
-  }
-
-  /**
-   * This function unsubscribes the observables
-   */
-  ngOnDestroy(): void {
-    this.subSink.unsubscribe();
-    this.utilityService.clearAllNotifications();
   }
 
   /**
@@ -284,18 +296,20 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
       }));
   }
 
-  public googleInit() {
-    gapi.load('auth2', () => {
-      this.auth2 = gapi.auth2.init({
-        client_id: this.possibleIntegrations.google_client_id,
-        cookiepolicy: 'single_Host_Origin',
-        scope: environment.GOOGLE_LOGIN_SCOPE
+  googleInit() {
+    if( this.possibleIntegrations) {
+      gapi.load('auth2', () => {
+        this.auth2 = gapi.auth2.init({
+          client_id: this.possibleIntegrations?.google_client_id,
+          cookiepolicy: 'single_Host_Origin',
+          scope: environment.GOOGLE_LOGIN_SCOPE
+        });
+        this.attachSignin(this.googleBtn.nativeElement);
       });
-      this.attachSignin(document.getElementById('googleBtn'));
-    });
+    }
   }
 
-  attachSignin(element) {
+  attachSignin(element: any) {
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
         this.utilityService.infoNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`);

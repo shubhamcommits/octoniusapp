@@ -83,7 +83,7 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
               this.publicFunctions.sendUpdatesToAccountData({})
               this.publicFunctions.sendUpdatesToWorkspaceData({})
               this.socketService.disconnectSocket();
-              this.router.navigate(['/home'])
+              this.router.navigate(['/']);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@iconsSidebar.successfullyLoggedOut:Successfully Logged out!`));
             }).catch((err) => {
               console.log('Error occurred while logging out!', err);
