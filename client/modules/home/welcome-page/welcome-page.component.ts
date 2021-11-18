@@ -63,10 +63,12 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
         this.queryParms = params;
     }});
 
-    this.ssoAvailable = (environment.SSO_AD_METHOD && environment.SSO_AD_METHOD == 'AD');
-    this.activeDirectoryAvailable = environment.SSO_AD_METHOD && environment.SSO_AD_METHOD == 'AD';
-    this.ldapAvailable = environment.LDAP_METHOD && environment.LDAP_METHOD == 'LDAP';
-    this.googleAvailable = environment.SSO_GOOGLE_METHOD && environment.SSO_GOOGLE_METHOD == 'GOOGLE';
+    const possibleIntegrations: any = await this.publicFunctions.getPossibleIntegrations();
+
+    this.activeDirectoryAvailable = possibleIntegrations && possibleIntegrations.is_azure_ad_connected;
+    this.ldapAvailable = possibleIntegrations && possibleIntegrations.is_ldap_connected;
+    this.googleAvailable = possibleIntegrations && possibleIntegrations.is_google_connected;
+    this.ssoAvailable = this.activeDirectoryAvailable || this.ldapAvailable || this.googleAvailable;
   }
 
   /**
@@ -106,9 +108,6 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
         let userData: any = {
           email: this.account.email.trim(),
           password: this.account.password.trim()
-        }
-        if (this.ldapAvailable) {
-          userData.ldap = true;
         }
         this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
           this.signInServiceFunction(userData));

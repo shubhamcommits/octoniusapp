@@ -4,14 +4,16 @@
     <div class="col-md-4">
       <app-workplace-information [workspaceData]="workspaceData" [routerState]="'general'"
         (workspaceUpdatedEvent)="onWorkspaceUpdated($event)"></app-workplace-information>
+
+      <app-workplace-integrations [workspaceData]="workspaceData" [routerState]="'general'"
+        (workspaceUpdatedEvent)="onWorkspaceUpdated($event)"></app-workplace-integrations>
     </div>
 
     <div class="col-md-8">
       <app-workplace-add-domain [workspaceData]="workspaceData"></app-workplace-add-domain>
 
       <app-workplace-invite-user [workspaceData]="workspaceData" [userData]="userData"></app-workplace-invite-user>
-      <app-workplace-profile-custom-fields [workspaceData]="workspaceData" [userData]="userData">
-      </app-workplace-profile-custom-fields>
+      <app-workplace-profile-custom-fields [workspaceData]="workspaceData" [userData]="userData"></app-workplace-profile-custom-fields>
 
 
       <div class="card-tile invite-users">

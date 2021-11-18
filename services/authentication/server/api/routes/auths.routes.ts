@@ -41,6 +41,9 @@ routes.post('/authenticate-sso-user', auth.authenticateSSOUsser);
 // GET - obtain if the user can create new workspaces
 routes.get('/blockNewWorkplaces', auth.isNewWorkplacesAvailable);
 
+// GET - Get a list of all the workspaces with their integrations
+routes.get('/all-workspaces-integrations', auth.getAllWorkspacesIntegrations);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

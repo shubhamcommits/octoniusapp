@@ -23,8 +23,6 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
     last_name: null
   };
 
-  ldapAvailable: boolean = false;
-
   publicFunctions = new PublicFunctions(this._Injector);
 
   // ADD ALL SUBSCRIPTIONS HERE TO DESTROY THEM ALL TOGETHER
@@ -50,8 +48,6 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
     if (email) {
       this.account.email = email;
     }
-
-    this.ldapAvailable = environment.LDAP_METHOD && environment.LDAP_METHOD == 'LDAP';
   }
 
   /**
@@ -78,7 +74,7 @@ export class AuthSignUpComponent implements OnInit, OnDestroy {
   }
 
   checkRepeatPassword() {
-    if (!this.ldapAvailable && this.account.password != this.account.repeatPassword) {
+    if (this.account.password != this.account.repeatPassword) {
       this.utilityService.warningNotification($localize`:@@authSignUp.wrongRepeatPassword:Passwords do not match!`);
     }
   }

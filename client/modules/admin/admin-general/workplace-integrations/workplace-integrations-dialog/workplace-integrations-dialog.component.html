@@ -1,0 +1,124 @@
+<div class="integrationsDialog" *ngIf="workplaceData">
+  <mat-dialog-actions class="d-flex justify-content-end" align="end">
+    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+  </mat-dialog-actions>
+
+  <h2 mat-dialog-title>
+    <span class="badge badge-cf">
+      <i class="material-icons-round">cable</i>
+    </span>
+    <span i18n="@@workspaceIntegrationsDialog.workplaceIntegrations">Workplace Integrations</span>
+  </h2>
+
+  <div class="description">
+    <!--
+    <img src="assets/images/placeholder_bars.svg" alt="" style="width: 300px; margin-bottom: 24px">
+    -->
+    <p i18n="@@workspaceIntegrationsDialog.workplaceIntegrationsDescription">
+      From here we manage the possible integrations with third party applications.
+    </p>
+  </div>
+
+  <div class="content">
+    <!-- GOOGLE INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-5 mb-5 pt-3">
+        <mat-slide-toggle color="primary"
+            [checked]="workplaceData?.integrations?.is_google_connected"
+            [name]="'enabled_google'"
+            [(ngModel)]="workplaceData.integrations.is_google_connected">
+          <h6><b i18n="@@workspaceIntegrationsDialog.enableGoogleIntegrations">Enable Google Integrations</b></h6>
+          <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableGoogleIntegrationsDescription">This will allow the users to sign in with google and synchronize with their google drive.</p>
+        </mat-slide-toggle><br>
+
+        <div class="integration-properties" *ngIf="workplaceData?.integrations?.is_google_connected">
+          <div class="form-group">
+            <label for="google_client_id" i18n="@@workspaceIntegrationsDialog.clientId">Client ID:</label>
+            <input type="text" class="form-control" name="google_client_id" [(ngModel)]="workplaceData.integrations.google_client_id" placeholder="Please provide the Google Client ID">
+            <br/>
+            <label for="google_secret_key" i18n="@@workspaceIntegrationsDialog.secretKey">Secret Key:</label>
+            <input type="text" class="form-control" name="google_secret_key" [(ngModel)]="workplaceData.integrations.google_client_secret_key" placeholder="Please provide the Google Secret Key">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- GOOGLE INTEGRATION ENDS -->
+
+    <!-- LDAP INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-5 mb-5 pt-3">
+        <mat-slide-toggle color="primary"
+            [checked]="workplaceData?.integrations?.is_ldap_connected"
+            [name]="'enabled_ldap'"
+            [(ngModel)]="workplaceData.integrations.is_ldap_connected">
+          <h6><b i18n="@@workspaceIntegrationsDialog.enableLDAPIntegrations">Enable LDAP Integrations</b></h6>
+          <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableLDAPIntegrationsDescription">This will allow the users to sign in with the LDAP company account.</p>
+        </mat-slide-toggle><br>
+
+        <div class="integration-properties" *ngIf="workplaceData?.integrations?.is_ldap_connected">
+          <div class="form-group">
+            <label for="ldap_url" i18n="@@workspaceIntegrationsDialog.ldapUrl">URL:</label>
+            <input type="text" class="form-control" name="ldap_url" [(ngModel)]="workplaceData.integrations.ldap_url" placeholder="Please provide the LDAP URL">
+            <br/>
+            <label for="ldap_dn" i18n="@@workspaceIntegrationsDialog.ldapDn">Distinguished Name:</label>
+            <input type="text" class="form-control" name="ldap_dn" [(ngModel)]="workplaceData.integrations.ldap_dn" placeholder="Please provide the LDAP DN">
+            <br/>
+            <label for="ldap_password" i18n="@@workspaceIntegrationsDialog.ldapPassword">Password:</label>
+            <input type="text" class="form-control" name="ldap_password" [(ngModel)]="workplaceData.integrations.ldap_password" placeholder="Please provide the LDAP Password">
+            <br/>
+            <label for="ldap_search_base" i18n="@@workspaceIntegrationsDialog.ldapSearchBase">Search Base:</label>
+            <input type="text" class="form-control" name="ldap_search_base" [(ngModel)]="workplaceData.integrations.ldap_search_base" placeholder="Please provide the LDAP Searh Base">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- LDAP INTEGRATION ENDS -->
+
+    <!-- AZURE AD INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-5 mb-5 pt-3">
+        <mat-slide-toggle color="primary"
+            [checked]="workplaceData?.integrations?.is_azure_ad_connected"
+            [name]="'enabled_azure'"
+            [(ngModel)]="workplaceData.integrations.is_azure_ad_connected">
+          <h6><b i18n="@@workspaceIntegrationsDialog.enableAzureIntegrations">Enable Azure Active Directory Integrations</b></h6>
+          <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableAzureIntegrationsDescription">This will allow the users to sign in with the Azure Active Directory company account.</p>
+        </mat-slide-toggle><br>
+      </div>
+    </div>
+    <!-- AZURE AD INTEGRATION ENDS -->
+
+    <!-- SLACK INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-5 mb-5 pt-3">
+        <mat-slide-toggle color="primary"
+            [checked]="workplaceData?.integrations?.is_slack_connected"
+            [name]="'enabled_slack'"
+            [(ngModel)]="workplaceData.integrations.is_slack_connected">
+          <h6><b i18n="@@workspaceIntegrationsDialog.enableSlackIntegrations">Enable Slack Integrations</b></h6>
+          <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableSlackIntegrationsDescription">This will allow the users to receive notifications in Slack and create task from slack.</p>
+        </mat-slide-toggle><br>
+
+        <div class="integration-properties" *ngIf="workplaceData?.integrations?.is_slack_connected">
+          <div class="form-group">
+            <label for="slack_client_id" i18n="@@workspaceIntegrationsDialog.slackClientId">Client ID:</label>
+            <input type="text" class="form-control" name="slack_client_id" [(ngModel)]="workplaceData.integrations.slack_client_id" placeholder="Please provide the Slack Client ID">
+            <br/>
+            <label for="slack_client_secret_key" i18n="@@workspaceIntegrationsDialog.slackClientSecretKey">Client Secret Key:</label>
+            <input type="text" class="form-control" name="slack_client_secret_key" [(ngModel)]="workplaceData.integrations.slack_client_secret_key" placeholder="Please provide the Slack Client Secret Key">
+            <br/>
+            <label for="slack_bot_access_token" i18n="@@workspaceIntegrationsDialog.slackBotAccessToken">Bot Access Token:</label>
+            <input type="text" class="form-control" name="slack_bot_access_token" [(ngModel)]="workplaceData.integrations.slack_bot_access_token" placeholder="Please provide the Slack Bot Access Token">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SLACK INTEGRATION ENDS -->
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button class="col-md-4 btn btn-primary" (click)="saveSettings()" i18n="@@workspaceIntegrationsDialog.save">
+      Save
+    </button>
+  </div>
+</div>

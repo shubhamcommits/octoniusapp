@@ -392,9 +392,6 @@ services:
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
       - TEAMS_BOT_URL=${TEAMS_BOT_URL}
-      - SLACK_CLIENT_ID=${SLACK_CLIENT_ID}
-      - SLACK_CLIENT_SECRET=${SLACK_CLIENT_SECRET}
-      - SLACK_BOT_ACCESS_TOKEN=${SLACK_BOT_ACCESS_TOKEN}
     deploy:
       replicas: ${REPLICAS}
       placement:

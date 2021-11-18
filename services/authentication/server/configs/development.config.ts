@@ -95,12 +95,6 @@ function devConfigInit() {
 
   // Proxy Port
   process.env.PROXY_PORT = process.env.PROXY_PORT
-
-  // LDAP Properties
-  process.env.LDAP_URL = process.env.LDAP_URL || 'ldap://ldap.forumsys.com'
-  process.env.LDAP_DN = process.env.LDAP_DN || 'cn=read-only-admin,dc=example,dc=com'
-  process.env.LDAP_PASSWORD = process.env.LDAP_PASSWORD || 'password'
-  process.env.LDAP_SEARCH_BASE = process.env.LDAP_SEARCH_BASE || 'dc=example,dc=com'
 };
 
 export { devConfigInit as developmentConfig }

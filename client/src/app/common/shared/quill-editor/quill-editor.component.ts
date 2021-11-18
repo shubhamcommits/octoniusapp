@@ -65,32 +65,6 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 })
 export class QuillEditorComponent implements OnInit, OnChanges {
 
-  constructor(
-    private Injector: Injector
-  ) {
-
-    // Initialise the modules in constructor
-    this.modules = {
-      syntax: true,
-      toolbar: this.toolbar,
-      mention: {},
-      history: {
-        'delay': 2500,
-        'userOnly': true
-      },
-      // autoformat: true
-    }
-  }
-
-  // Quill instance variable
-  quill: any;
-
-  // Quill modules variable
-  modules: any;
-
-  // Uploads url for Files
-  filesBaseUrl = environment.UTILITIES_FILES_UPLOADS
-
   // EditorId variable
   @Input('editorId') editorId: any;
 
@@ -109,8 +83,36 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   // Output the content present in the editor
   @Output('content') content = new EventEmitter();
 
+  // Quill instance variable
+  quill: any;
+
+  // Quill modules variable
+  modules: any;
+
+  workspaceData: any;
+
+  // Uploads url for Files
+  filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
+
   // Public Functions class
   public publicFunctions = new PublicFunctions(this.Injector);
+
+  constructor(
+    private Injector: Injector
+  ) {
+
+    // Initialise the modules in constructor
+    this.modules = {
+      syntax: true,
+      toolbar: this.toolbar,
+      mention: {},
+      history: {
+        'delay': 2500,
+        'userOnly': true
+      },
+      // autoformat: true
+    }
+  }
 
   ngOnChanges() {
 
@@ -125,7 +127,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
     // Set the Status of the toolbar
     this.modules.toolbar = (this.toolbar === false) ? false : this.quillFullToolbar()
@@ -149,6 +151,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       this.modules.imageCompress = this.quillImageCompress()
     }
 
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
   ngAfterViewInit() {
@@ -327,7 +330,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
     let googleFilesList: any = [];
 
     // Fetch Access Token
-    if (storageService.existData('googleUser')) {
+    if (storageService.existData('googleUser') && this.workspaceData?.integrations?.is_google_connected) {
 
       // Fetch the access token from the storage
       let accessToken = storageService.getLocalData('googleUser')['accessToken']
@@ -353,7 +356,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
           : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData('authToken')['token']}" style="color: inherit" target="_blank">${file.original_name}</a>`
     }))
 
-    return Array.from(new Set([...filesList, ...googleFilesList]))
+    return Array.from(new Set([...filesList, ...googleFilesList]));
   }
 
   /**

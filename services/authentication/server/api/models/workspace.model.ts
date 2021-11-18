@@ -97,6 +97,51 @@ const workspaceSchema = new Schema({
         type: String,
         required: true,
         default: 'TZCDAC3CDCJILSRGA2II'
+    },
+    integrations: {
+        is_google_connected: {
+            type: Boolean,
+            default: false
+        },
+        google_client_id: {
+            type: String
+        },
+        google_client_secret_key: {
+            type: String
+        },
+        is_slack_connected: {
+            type: Boolean,
+            default: false
+        },
+        slack_client_id: {
+            type: String
+        },
+        slack_client_secret_key: {
+            type: String
+        },
+        slack_bot_access_token: {
+            type: String
+        },
+        is_azure_ad_connected: {
+            type: Boolean,
+            default: false
+        },
+        is_ldap_connected: {
+            type: Boolean,
+            default: false
+        },
+        ldap_url: {
+            type: String
+        },
+        ldap_dn: {
+            type: String
+        },
+        ldap_password: {
+            type: String
+        },
+        ldap_search_base: {
+            type: String
+        }
     }
 });
 

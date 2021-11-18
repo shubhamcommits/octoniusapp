@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-user-available-clouds',
@@ -8,19 +8,23 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 })
 export class UserAvailableCloudsComponent implements OnInit {
 
-  constructor(
-    private utilityService: UtilityService,
-  ) { }
-
   // Google User Output Event Emitter
   @Input() userData:any;
   @Output('googleUser') googleUser = new EventEmitter();
 
-  ngOnInit() {
+  workspaceData: any;
+
+  public publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private injector: Injector,
+  ) { }
+
+  async ngOnInit() {
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
   emitGoogleUser(googleUser: any) {
     this.googleUser.emit(googleUser)
   }
-
 }
