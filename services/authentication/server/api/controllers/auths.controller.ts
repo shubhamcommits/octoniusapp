@@ -491,16 +491,16 @@ export class AuthsController {
             }
 
             let workplaceLDAPIntegrations: any;
-
             if (account._workspaces && account._workspaces.length > 0) {
-                for (let i = 0; (i < account._workspaces.length || workplaceLDAPIntegrations); i++) {
-                    if (account._workspaces.integrations && account._workspaces.integrations.is_ldap_connected) {
+                for (let i = 0; (i < account._workspaces.length && !workplaceLDAPIntegrations); i++) {
+                    let workplace = account._workspaces[i];
+                    if (workplace && workplace.integrations && workplace.integrations.is_ldap_connected) {
                         workplaceLDAPIntegrations = {
-                            ldap_url: account._workspaces.integrations.ldap_url,
-                            ldap_dn: account._workspaces.integrations.ldap_dn,
-                            ldap_password: account._workspaces.integrations.ldap_password,
-                            ldap_search_base: account._workspaces.integrations.ldap_search_base,
-                            is_ldap_connected: account._workspaces.integrations.is_ldap_connected
+                            ldap_url: workplace.integrations.ldap_url,
+                            ldap_dn: workplace.integrations.ldap_dn,
+                            ldap_password: workplace.integrations.ldap_password,
+                            ldap_search_base: workplace.integrations.ldap_search_base,
+                            is_ldap_connected: workplace.integrations.is_ldap_connected
                         }
                     }
                 }

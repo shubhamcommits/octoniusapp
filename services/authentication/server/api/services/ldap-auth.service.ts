@@ -25,7 +25,7 @@ export default class LDAPAuthService {
             user = await authenticate(options);
             return user;
         } catch (err) {
-            console.log(`\n⛔️ Error: Email not found on LDAP!`);
+            console.log(`\n⛔️ Error: Email not found on LDAP!`, err);
         }
         return user;
     }
