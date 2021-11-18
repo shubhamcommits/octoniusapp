@@ -1950,7 +1950,11 @@ export class PublicFunctions {
       const authService = this.injector.get(AuthService);
       return new Promise(async (resolve) => {
         await await authService.getAllWorkspacesIntegrations()
-          .then((res) => resolve(res['workspace']))
+          .then((res) => {
+            if (res) {
+              resolve(res['workspace']);
+            }
+          })
       });
     }
 }
