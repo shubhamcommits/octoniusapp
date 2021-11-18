@@ -1187,25 +1187,6 @@ export class PublicFunctions {
     }
 
     /**
-     * This function opens up the window to signin to google and connect the account
-     */
-    async authorizeGoogleSignInForLogIn(integrations: any) {
-        return new Promise(async (resolve) => {
-            await gapi.auth.authorize({
-                'client_id': integrations.google_client_id,
-                'scope': environment.GOOGLE_LOGIN_SCOPE,
-                'immediate': false,
-                'access_type': 'offline',
-                'response_type': 'token code',
-                //'approval_prompt': 'force',
-                //'grant_type': 'authorization_code'
-              })
-                .then((res: any) => resolve(res))
-                .catch(() => resolve(null))
-        })
-    }
-
-    /**
      * This function handles the google signin result and connect the account to octonius server
      * @param googleSignInResult
      */

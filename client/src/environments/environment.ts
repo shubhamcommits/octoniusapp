@@ -32,7 +32,8 @@ export const environment = {
     'https://www.googleapis.com/auth/calendar.events'
   ].join(` `),
   GOOGLE_LOGIN_SCOPE: [
-    'https://www.googleapis.com/auth/userinfo.email'
+    'profile',
+    'email'
   ].join(` `),
 
   // Base Client Url
