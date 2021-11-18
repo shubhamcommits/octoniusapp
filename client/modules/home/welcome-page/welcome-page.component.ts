@@ -67,8 +67,8 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
 
     this.possibleIntegrations = await this.publicFunctions.getPossibleIntegrations();
 
-    this.activeDirectoryAvailable = this.possibleIntegrations && this.possibleIntegrations.is_azure_ad_connected && this.possibleIntegrations.azure_ad_clientId && this.possibleIntegrations.azure_ad_authority_cloud_url;
-    this.googleAvailable = this.possibleIntegrations && this.possibleIntegrations.is_google_connected;
+    this.activeDirectoryAvailable = this.possibleIntegrations && this.possibleIntegrations?.is_azure_ad_connected && this.possibleIntegrations?.azure_ad_clientId && this.possibleIntegrations?.azure_ad_authority_cloud_url;
+    this.googleAvailable = this.possibleIntegrations && this.possibleIntegrations?.is_google_connected;
     this.ssoAvailable = this.activeDirectoryAvailable || this.googleAvailable;
 
     if (this.possibleIntegrations?.is_azure_ad_connected) {
