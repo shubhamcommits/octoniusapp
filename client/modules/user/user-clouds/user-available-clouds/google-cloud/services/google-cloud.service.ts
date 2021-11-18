@@ -108,10 +108,10 @@ export class GoogleCloudService {
    * This function fetches the access token from the google server
    * @param refreshToken
    */
-  getAccessToken(refreshToken: string) {
+  getAccessToken(refreshToken: string, integrations: any) {
     return this._httpBackend.post('https://www.googleapis.com/oauth2/v4/token', {
-      client_id: environment.GOOGLE_CLIENT_ID,
-      client_secret: environment.GOOGLE_CLIENT_SECRET,
+      client_id: integrations.google_client_id,
+      client_secret: integrations.google_client_secret_key,
       grant_type: 'refresh_token',
       refresh_token: refreshToken
     }, {
@@ -126,13 +126,13 @@ export class GoogleCloudService {
    * This function is responsible for fetching the google drive token(authorization code) from the access_token
    * @param authResult
    */
-  getGoogleDriveTokenFromAuthResult(code: any, access_token: any) {
+  getGoogleDriveTokenFromAuthResult(code: any, access_token: any, integrations: any) {
     return this._httpBackend.post('https://www.googleapis.com/oauth2/v4/token', {
       code: code,
-      client_id: environment.GOOGLE_CLIENT_ID,
-      client_secret: environment.GOOGLE_CLIENT_SECRET,
+      client_id: integrations.google_client_id,
+      client_secret: integrations.google_client_secret_key,
       grant_type: 'authorization_code',
-      redirect_uri: environment.GOOGLE_REDIRECT_URL
+      redirect_uri: environment.clientUrl
     }, {
       headers: {
         'Authorization': `Bearer ${access_token}`

@@ -69,9 +69,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   // Quill modules variable
   modules: any;
 
-  // Public functions class member
-  publicFunctions = new PublicFunctions(this._Injector);
-
   //Comments to Display
   commentsToDisplay = [];
 
@@ -138,11 +135,16 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   // Range in the URL
   urlRange: any;
 
+  workspaceData: any;
+
   // SubSink Variable
   subSink = new SubSink();
 
   // Uploads url for Files
   filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
+
+  // Public functions class member
+  publicFunctions = new PublicFunctions(this._Injector);
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
@@ -253,6 +255,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit() {
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     this.folio = this.initializeConnection();
     this.fileData = await this.getFile(this.folioId);
     // TODO - Remove the following line when BRD pays
@@ -671,8 +674,27 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
             : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`,
     }));
 
+    let googleFilesList: any = [];
+
+    // Fetch Access Token
+    if (storageService.existData('googleUser') && this.workspaceData?.integrations?.is_google_connected) {
+
+      // Fetch the access token from the storage
+      let accessToken = storageService.getLocalData('googleUser')['accessToken']
+
+      // Get Google file list
+      googleFilesList = await this.publicFunctions.searchGoogleFiles(searchTerm, accessToken) || []
+
+      // Google File List
+      if (googleFilesList.length > 0)
+        googleFilesList = googleFilesList.map((file: any) => ({
+          id: '5b9649d1f5acc923a497d1da',
+          value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
+        }))
+    }
+
     // Return the Array without duplicates
-    return Array.from(new Set(filesList));
+    return Array.from(new Set([...filesList, ...googleFilesList]));
   }
 
   /**

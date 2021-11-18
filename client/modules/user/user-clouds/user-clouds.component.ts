@@ -55,7 +55,7 @@ export class UserCloudsComponent implements OnInit {
     this.subSink.add(this.googleService.googleAuthSuccessfulBehavior.subscribe(auth => this.googleAuthSuccessful = auth))
 
     // Intialise the userData variable
-    this.userData = await this.publicFunctions.getCurrentUser()
+    // this.userData = await this.publicFunctions.getCurrentUser()
 
     // Check if google user exist locally or not
     this.googleUserExist() == true ? this.googleService.googleAuthSuccessfulBehavior.next(true): this.googleService.googleAuthSuccessfulBehavior.next(false)

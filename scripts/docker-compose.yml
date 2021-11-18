@@ -272,9 +272,6 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
-      - SLACK_CLIENT_ID=${SLACK_CLIENT_ID}
-      - SLACK_CLIENT_SECRET=${SLACK_CLIENT_SECRET}
-      - SLACK_BOT_ACCESS_TOKEN=${SLACK_BOT_ACCESS_TOKEN}
     depends_on:
       - mongodb
     links:

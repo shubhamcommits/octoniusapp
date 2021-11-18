@@ -4,9 +4,9 @@
         <div class="card-block">
             <h2 i18n="@@userAvailableCluds.availableIntegrations">Available integrations</h2>
             <hr>
-            <app-connect-google-cloud (googleUser)="emitGoogleUser($event)"></app-connect-google-cloud>
+            <app-connect-google-cloud *ngIf="workspaceData?.integrations?.is_google_connected" (googleUser)="emitGoogleUser($event)"></app-connect-google-cloud>
             <br />
-            <app-connect-slack [userData]="userData"></app-connect-slack>
+            <app-connect-slack *ngIf="workspaceData?.integrations?.is_slack_connected" [userData]="userData"></app-connect-slack>
             <br />
             <!--
             <div class="row">

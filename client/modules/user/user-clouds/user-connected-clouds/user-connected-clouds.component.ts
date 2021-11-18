@@ -11,7 +11,8 @@ export class UserConnectedCloudsComponent implements OnInit {
 
   @Input('googleUser') googleUser: any;
   @Input() slackAuthSuccessful:boolean;
-  userData: any
+
+  workspaceData: any;
 
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -21,6 +22,6 @@ export class UserConnectedCloudsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    
-  } 
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+  }
 }

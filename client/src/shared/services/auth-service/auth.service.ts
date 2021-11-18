@@ -150,4 +150,11 @@ export class AuthService {
       }
     }).toPromise();
   }
+
+  /**
+   * This functions calls the back-end to obtain all with workplaces in the DB
+   */
+  getAllWorkspacesIntegrations() {
+    return this.httpClient.get(this.AUTH_BASE_API_URL + '/all-workspaces-integrations').toPromise();
+  }
 }

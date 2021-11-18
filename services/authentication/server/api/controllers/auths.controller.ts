@@ -462,12 +462,12 @@ export class AuthsController {
         try {
 
             // Request Body data
-            const { email, password, ldap } = req.body;
+            const { email, password } = req.body;
 
             // Find the account with having the same email as in req.body
             let account = await Account.findOne({
                 email: email
-            }).populate('_workspaces', '_id workspace_name workspace_avatar').lean();
+            }).populate('_workspaces', '_id workspace_name workspace_avatar integrations').lean();
 
             // TODO - workaround until we figure out where is the email set to null in Account model.
             if (!account) {
@@ -482,7 +482,7 @@ export class AuthsController {
 
                 account = await Account.findOne({
                     _id: (users[0]._account._id || users[0]._account)
-                }).populate('_workspaces', '_id workspace_name workspace_avatar').lean();
+                }).populate('_workspaces', '_id workspace_name workspace_avatar integrations').lean();
             }
 
             // If user wasn't found or user was previsously removed/disabled, return error
@@ -490,12 +490,28 @@ export class AuthsController {
                 return sendError(res, new Error('Email not found!'), 'Email not found!', 401);
             }
 
+            let workplaceLDAPIntegrations: any;
+            if (account._workspaces && account._workspaces.length > 0) {
+                for (let i = 0; (i < account._workspaces.length && !workplaceLDAPIntegrations); i++) {
+                    let workplace = account._workspaces[i];
+                    if (workplace && workplace.integrations && workplace.integrations.is_ldap_connected) {
+                        workplaceLDAPIntegrations = {
+                            ldap_url: workplace.integrations.ldap_url,
+                            ldap_dn: workplace.integrations.ldap_dn,
+                            ldap_password: workplace.integrations.ldap_password,
+                            ldap_search_base: workplace.integrations.ldap_search_base,
+                            is_ldap_connected: workplace.integrations.is_ldap_connected
+                        }
+                    }
+                }
+            }
+
             let ldapUser;
-            if (ldap) {
-                ldapUser = await ldapAuthService.auth(email, password);
+            if (workplaceLDAPIntegrations && workplaceLDAPIntegrations.is_ldap_connected) {
+                ldapUser = await ldapAuthService.auth(email, password, workplaceLDAPIntegrations);
             }
             
-            if (!ldap || !ldapUser) {
+            if (!workplaceLDAPIntegrations || !workplaceLDAPIntegrations.is_ldap_connected || !ldapUser) {
                 // Plain password received from the req.body
                 const plainPassword = password;
 
@@ -793,4 +809,22 @@ export class AuthsController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    async getAllWorkspacesIntegrations(req: Request, res: Response, next: NextFunction) {
+
+        try {
+            // Find the workspace and update their respective workspace settings
+            const workspace = await Workspace.find()
+                .select('integrations')
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Workspaces found!',
+                workspace: workspace
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
 }

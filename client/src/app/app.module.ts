@@ -41,7 +41,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 // ANGULAR MODULES
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler, Injectable, LOCALE_ID } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -92,7 +92,6 @@ import { ManageHttpInterceptor } from 'src/shared/services/manage-http-intercept
 import { MsalModule } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { environment } from 'src/environments/environment';
-import { GoogleLoginProvider, SocialLoginModule } from 'angularx-social-login';
 
 const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
 
@@ -140,18 +139,18 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     // SharedModule,
 
     // SSO Active Directory
+
     MsalModule.forRoot( new PublicClientApplication({
         auth: {
-          clientId: environment.active_directory_client_application_id,
-          authority: environment.active_directory_authority_cloud_id,
-          redirectUri: environment.active_directory_redirect_url
+          clientId: '',
+          authority: '',
+          redirectUri: environment.clientUrl
         },
         cache: {
           cacheLocation: 'localStorage',
           storeAuthStateInCookie: isIE, // Set to true for Internet Explorer 11
         }
-      }), null, null),
-    SocialLoginModule
+      }), null, null)
   ],
 
   providers: [
@@ -175,18 +174,6 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     },
     { provide: HTTP_INTERCEPTORS, useClass: ManageHttpInterceptor, multi: true },
     //{ provide: LOCALE_ID, useValue: 'en-US' }
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: true, //keeps the user signed in
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(environment.GOOGLE_CLIENT_ID) // your client id
-          }
-        ]
-      }
-    }
   ],
   bootstrap: [AppComponent]
 })

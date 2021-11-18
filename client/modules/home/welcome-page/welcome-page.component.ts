@@ -7,8 +7,9 @@ import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
+//import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
+import { PublicClientApplication } from '@azure/msal-browser';
 import { environment } from 'src/environments/environment';
-import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-welcome-page',
@@ -29,10 +30,11 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
   // Active Directory variables
   ssoAvailable: boolean = false;
   activeDirectoryAvailable: boolean = false;
-  ldapAvailable: boolean = false;
   googleAvailable: boolean = false;
 
   publicFunctions = new PublicFunctions(this._Injector);
+
+  possibleIntegrations: any;
 
   // ADD ALL SUBSCRIPTIONS HERE TO DESTROY THEM ALL TOGETHER
   private subSink = new SubSink();
@@ -46,7 +48,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
     public activeRouter :ActivatedRoute,
     private _Injector: Injector,
     private msalService: MsalService,
-    private socialAuthService: SocialAuthService
+    //private socialAuthService: SocialAuthService
   ) { }
 
   async ngOnInit() {
@@ -63,10 +65,26 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
         this.queryParms = params;
     }});
 
-    this.ssoAvailable = (environment.SSO_AD_METHOD && environment.SSO_AD_METHOD == 'AD');
-    this.activeDirectoryAvailable = environment.SSO_AD_METHOD && environment.SSO_AD_METHOD == 'AD';
-    this.ldapAvailable = environment.LDAP_METHOD && environment.LDAP_METHOD == 'LDAP';
-    this.googleAvailable = environment.SSO_GOOGLE_METHOD && environment.SSO_GOOGLE_METHOD == 'GOOGLE';
+    this.possibleIntegrations = await this.publicFunctions.getPossibleIntegrations();
+
+    this.activeDirectoryAvailable = this.possibleIntegrations && this.possibleIntegrations?.is_azure_ad_connected && this.possibleIntegrations?.azure_ad_clientId && this.possibleIntegrations?.azure_ad_authority_cloud_url;
+    this.googleAvailable = this.possibleIntegrations && this.possibleIntegrations?.is_google_connected;
+    this.ssoAvailable = this.activeDirectoryAvailable || this.googleAvailable;
+
+    if (this.possibleIntegrations?.is_azure_ad_connected) {
+      const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
+      this.msalService.instance = new PublicClientApplication({
+        auth: {
+          clientId: this.possibleIntegrations?.azure_ad_clientId,
+          authority: this.possibleIntegrations?.azure_ad_authority_cloud_url,
+          redirectUri: environment.clientUrl
+        },
+        cache: {
+          cacheLocation: 'localStorage',
+          storeAuthStateInCookie: isIE, // Set to true for Internet Explorer 11
+        }
+      });
+    }
   }
 
   /**
@@ -106,9 +124,6 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
         let userData: any = {
           email: this.account.email.trim(),
           password: this.account.password.trim()
-        }
-        if (this.ldapAvailable) {
-          userData.ldap = true;
         }
         this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
           this.signInServiceFunction(userData));
@@ -263,57 +278,86 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
   }
 
   loginWithGoogle(): void {
-    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
-      .then(() => this.router.navigate(['mainpage']));
-
       this.utilityService.asyncNotification($localize`:@@welcomePage.pleaseWaitWhileWeSighYouIn:Please wait while we sign you in...`,
-      new Promise((resolve, reject) => {
-        this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
-          .then(async (res) => {
-              //console.log(res);
-              const accountGoogle = res;
-              let userData: any = {
-                email: accountGoogle.email,
-                first_name: accountGoogle.firstName,
-                last_name: accountGoogle.lastName,
-                ssoType: 'GOOGLE'
-              }
-
-              await this.authenticationService.authenticateSSOUser(userData).then(res => {
-                const newAccount = res['newAccount'];
-                const accountData = res['account'];
-
-                if (newAccount || (!accountData || !accountData._workspaces || accountData._workspaces.length == 0)) {
-                  this.clearAccountData();
-                  this.storeAccountData(res);
-                  this.router.navigate(['authentication', 'join-workplace'])
-                    .then(() => {
-                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
-                    })
-                    .catch((err) => {
-                      console.error('Error occurred while signing in the user', err);
-                      reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
-                      this.storageService.clear();
-                    });
-                } else {
-                  this.clearAccountData();
-                  this.storeAccountData(res);
-                  this.router.navigate(['authentication', 'select-workspace'])
-                    .then(() => {
-                      resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
-                    })
-                    .catch((err) => {
-                      console.error('Error occurred while signing in the user', err);
-                      reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
-                      this.storageService.clear();
-                    });
+        new Promise((resolve, reject) => {
+          this.signInToGoogle()
+          //this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+            .then(async (res) => {
+                //console.log(res);
+                const accountGoogle: any = res.user;
+                // build the user first_name and last_name
+                const nameGoogle = accountGoogle.displayName.split(' ');
+                let lastName = '';
+                for (let i = 1; i < nameGoogle.length; i++) {
+                  lastName += nameGoogle[i];
                 }
+
+                let userData: any = {
+                  email: accountGoogle.emailAddress,
+                  first_name: nameGoogle[0],
+                  last_name: lastName,
+                  ssoType: 'GOOGLE'
+                }
+
+                await this.authenticationService.authenticateSSOUser(userData).then(res => {
+                  const newAccount = res['newAccount'];
+                  const accountData = res['account'];
+
+                  if (newAccount || (!accountData || !accountData._workspaces || accountData._workspaces.length == 0)) {
+                    this.clearAccountData();
+                    this.storeAccountData(res);
+                    this.router.navigate(['authentication', 'join-workplace'])
+                      .then(() => {
+                        resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
+                      })
+                      .catch((err) => {
+                        console.error('Error occurred while signing in the user', err);
+                        reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
+                        this.storageService.clear();
+                      });
+                  } else {
+                    this.clearAccountData();
+                    this.storeAccountData(res);
+                    this.router.navigate(['authentication', 'select-workspace'])
+                      .then(() => {
+                        resolve(this.utilityService.successNotification($localize`:@@welcomePage.hiGoogle:Hi ${res['account']['first_name']}!`));
+                      })
+                      .catch((err) => {
+                        console.error('Error occurred while signing in the user', err);
+                        reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
+                        this.storageService.clear();
+                      });
+                  }
+                });
+              })
+              .catch((error) => {
+                console.log({error});
+                reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
               });
-            })
-            .catch((error) => {
-              console.log({error});
-              reject(this.utilityService.errorNotification($localize`:@@welcomePage.oopsErrorSigningUp:Oops some error occurred while signing you up, please try again!`));
-            });
-        }));
-  }
+          }));
+    }
+
+    /**
+     * This function is responsible for connecting the google acount to the main octonius server
+     */
+    async signInToGoogle() {
+      let googleUserDetails: any;
+      let access_token;
+      // Open up the SignIn Window in order to authorize the google user
+      let googleSignInResult: any = await this.publicFunctions.authorizeGoogleSignInForLogIn(this.possibleIntegrations);
+
+      if (googleSignInResult && !googleSignInResult.error && googleSignInResult.access_token) {
+        // Fetch the Google Drive Token Object
+        let tokenResults: any = await this.publicFunctions.getGoogleDriveTokenFromAuthResult(googleSignInResult.code, googleSignInResult.access_token, this.possibleIntegrations);
+        // Set the access_token
+        access_token = tokenResults.access_token;
+      }
+
+      if (access_token != null) {
+        // Fetch the google user details
+        googleUserDetails = await this.publicFunctions.getGoogleUserDetails(access_token);
+      }
+
+      return googleUserDetails;
+    }
 }

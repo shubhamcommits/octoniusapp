@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'
+import { Component, OnInit, Output, EventEmitter, Input, Injector } from '@angular/core'
+import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment'
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -43,14 +44,21 @@ export class AttachFilesComponent implements OnInit {
 
   authToken: string;
 
+  workspaceData: any;
+
+  public publicFunctions = new PublicFunctions(this.injector);
+
   constructor(
+    private injector: Injector,
     private postService: PostService,
     private utilityService: UtilityService,
     public storageService: StorageService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
+
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
 
   /**
@@ -149,12 +157,12 @@ export class AttachFilesComponent implements OnInit {
   /**
    * Authorize the google signin
    */
-  onAuthApiLoad() {
+  onAuthApiLoad(integrations: any) {
 
     // Authorise the user and pass the results to the selection of picker
     gapi.auth.authorize(
       {
-        'client_id': environment.GOOGLE_CLIENT_ID,
+        'client_id': integrations.google_client_id,
         'scope': environment.GOOGLE_SCOPE,
         'immediate': false,
         'approval_prompt':'force',

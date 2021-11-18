@@ -11,18 +11,17 @@ export const environment = {
   storageKey: 'storageKey@20xx',
 
   // GOOGLE properties
-  SSO_GOOGLE_METHOD: window["env"]["SSO_GOOGLE_METHOD"],
-  GOOGLE_CLIENT_ID: window["env"]["GOOGLE_CLIENT_ID"],
-  GOOGLE_CLIENT_SECRET: window["env"]["GOOGLE_CLIENT_SECRET"],
-  GOOGLE_REDIRECT_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}`,
   GOOGLE_SCOPE: [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/calendar',
     'https://www.googleapis.com/auth/calendar.events'
   ].join(' '),
+  GOOGLE_LOGIN_SCOPE: [
+    'https://www.googleapis.com/auth/userinfo.email'
+  ].join(` `),
 
   // Base Client Url
-  clientUrl: 'http://localhost:4200',
+  clientUrl: `${window["env"]["protocol"]}://${window["env"]["domain"]}`,
 
   // Octo-doc URL
   REAL_TIME_URL: 'localhost:80/editor',
@@ -74,15 +73,4 @@ export const environment = {
 
   // MANAGEMENT_URL: 'https://management.octonius.com',
   MANAGEMENT_URL: `${window["env"]["protocol"]}://${window["env"]["mgmt_portal_domain"]}`,
-
-  // SSO properties
-  SSO_AD_METHOD: window["env"]["SSO_AD_METHOD"],
-
-  // AD properties
-  active_directory_client_application_id: window["env"]["active_directory_client_application_id"],
-  active_directory_authority_cloud_id: window["env"]["active_directory_authority_cloud_id"],
-  active_directory_redirect_url: `${window["env"]["protocol"]}://${window["env"]["domain"]}/`,
-
-  // LDAP properties
-  LDAP_METHOD: window["env"]["LDAP_METHOD"],
 };

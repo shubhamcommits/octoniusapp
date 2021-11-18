@@ -7,25 +7,25 @@ export default class LDAPAuthService {
     constructor() {
     }
 
-    async auth(email: string, password: string) {
+    async auth(email: string, password: string, workplaceLDAPIntegration: any) {
         let user;
         try {
             // auth with admin
             let options: any = {
                 ldapOpts: {
-                    url: process.env.LDAP_URL,
+                    url: workplaceLDAPIntegration.ldap_url,
                 },
-                adminDn: process.env.LDAP_DN,
-                adminPassword: process.env.LDAP_PASSWORD,
+                adminDn: workplaceLDAPIntegration.ldap_dn,
+                adminPassword: workplaceLDAPIntegration.ldap_password,
                 userPassword: password,
-                userSearchBase: process.env.LDAP_SEARCH_BASE,
+                userSearchBase: workplaceLDAPIntegration.ldap_search_base,
                 usernameAttribute: 'mail',
                 username: email
             }
             user = await authenticate(options);
             return user;
         } catch (err) {
-            console.log(`\n⛔️ Error: Email not found on LDAP!`);
+            console.log(`\n⛔️ Error: Email not found on LDAP!`, err);
         }
         return user;
     }
