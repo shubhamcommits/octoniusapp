@@ -28,8 +28,11 @@
             [name]="'enabled_google'"
             [(ngModel)]="workplaceData.integrations.is_google_connected">
           <h6><b i18n="@@workspaceIntegrationsDialog.enableGoogleIntegrations">Enable Google Integrations</b></h6>
-          <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableGoogleIntegrationsDescription">This will allow the users to sign in with google and synchronize with their google drive.</p>
-        </mat-slide-toggle><br>
+        </mat-slide-toggle>
+
+        <br/>
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableGoogleIntegrationsDescription">This will allow the users to sign in with google and synchronize with their google drive.</p>
+        <br/>
 
         <div class="integration-properties" *ngIf="workplaceData?.integrations?.is_google_connected">
           <div class="form-group">
@@ -52,8 +55,11 @@
             [name]="'enabled_ldap'"
             [(ngModel)]="workplaceData.integrations.is_ldap_connected">
           <h6><b i18n="@@workspaceIntegrationsDialog.enableLDAPIntegrations">Enable LDAP Integrations</b></h6>
-          <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableLDAPIntegrationsDescription">This will allow the users to sign in with the LDAP company account.</p>
-        </mat-slide-toggle><br>
+        </mat-slide-toggle>
+
+        <br/>
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableLDAPIntegrationsDescription">This will allow the users to sign in with the LDAP company account.</p>
+        <br/>
 
         <div class="integration-properties" *ngIf="workplaceData?.integrations?.is_ldap_connected">
           <div class="form-group">
@@ -82,8 +88,11 @@
             [name]="'enabled_azure'"
             [(ngModel)]="workplaceData.integrations.is_azure_ad_connected">
           <h6><b i18n="@@workspaceIntegrationsDialog.enableAzureIntegrations">Enable Azure Active Directory Integrations</b></h6>
-          <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableAzureIntegrationsDescription">This will allow the users to sign in with the Azure Active Directory company account.</p>
-        </mat-slide-toggle><br>
+        </mat-slide-toggle>
+
+        <br/>
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableAzureIntegrationsDescription">This will allow the users to sign in with the Azure Active Directory company account.</p>
+        <br/>
 
         <div class="integration-properties" *ngIf="workplaceData?.integrations?.is_azure_ad_connected">
           <div class="form-group">
@@ -106,8 +115,11 @@
             [name]="'enabled_slack'"
             [(ngModel)]="workplaceData.integrations.is_slack_connected">
           <h6><b i18n="@@workspaceIntegrationsDialog.enableSlackIntegrations">Enable Slack Integrations</b></h6>
-          <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableSlackIntegrationsDescription">This will allow the users to receive notifications in Slack and create task from slack.</p>
-        </mat-slide-toggle><br>
+        </mat-slide-toggle>
+
+        <br/>
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableSlackIntegrationsDescription">This will allow the users to receive notifications in Slack and create task from slack.</p>
+        <br/>
 
         <div class="integration-properties" *ngIf="workplaceData?.integrations?.is_slack_connected">
           <div class="form-group">
