@@ -91,9 +91,7 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit(){
-    if (this.googleAvailable) {
-      this.googleInit();
-    }
+    this.googleInit();
   }
 
   /**
