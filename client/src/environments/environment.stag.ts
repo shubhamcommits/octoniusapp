@@ -12,7 +12,6 @@ export const environment = {
 
   // GOOGLE properties
   GOOGLE_CLIENT_ID: window["env"]["GOOGLE_CLIENT_ID"],
-  GOOGLE_REDIRECT_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}`,
   GOOGLE_SCOPE: [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/calendar',
@@ -20,7 +19,7 @@ export const environment = {
   ].join(' '),
 
   // Base Client Url
-  clientUrl: 'http://localhost:4200',
+  clientUrl: `${window["env"]["protocol"]}://${window["env"]["domain"]}`,
 
   // Octo-doc URL
   REAL_TIME_URL: 'localhost:80/editor',
@@ -72,9 +71,4 @@ export const environment = {
 
   // MANAGEMENT_URL: 'https://management.octonius.com',
   MANAGEMENT_URL: `${window["env"]["protocol"]}://${window["env"]["mgmt_portal_domain"]}`,
-
-  // AD properties
-  active_directory_client_application_id: window["env"]["active_directory_client_application_id"],
-  active_directory_authority_cloud_id: window["env"]["active_directory_authority_cloud_id"],
-  active_directory_redirect_url: `${window["env"]["protocol"]}://${window["env"]["domain"]}/`,
 };

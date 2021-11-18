@@ -132,7 +132,7 @@ export class GoogleCloudService {
       client_id: integrations.google_client_id,
       client_secret: integrations.google_client_secret_key,
       grant_type: 'authorization_code',
-      redirect_uri: environment.GOOGLE_REDIRECT_URL
+      redirect_uri: environment.clientUrl
     }, {
       headers: {
         'Authorization': `Bearer ${access_token}`

@@ -126,6 +126,12 @@ const workspaceSchema = new Schema({
             type: Boolean,
             default: false
         },
+        azure_ad_clientId: {
+            type: String
+        },
+        azure_ad_authority_cloud_url: {
+            type: String
+        },
         is_ldap_connected: {
             type: Boolean,
             default: false

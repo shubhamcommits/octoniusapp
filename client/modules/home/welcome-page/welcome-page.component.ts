@@ -8,6 +8,8 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { ActivatedRoute, Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-welcome-page',
@@ -65,9 +67,24 @@ export class WelcomePageComponent implements OnInit, OnDestroy {
 
     this.possibleIntegrations = await this.publicFunctions.getPossibleIntegrations();
 
-    this.activeDirectoryAvailable = this.possibleIntegrations && this.possibleIntegrations.is_azure_ad_connected;
+    this.activeDirectoryAvailable = this.possibleIntegrations && this.possibleIntegrations.is_azure_ad_connected && this.possibleIntegrations.azure_ad_clientId && this.possibleIntegrations.azure_ad_authority_cloud_url;
     this.googleAvailable = this.possibleIntegrations && this.possibleIntegrations.is_google_connected;
     this.ssoAvailable = this.activeDirectoryAvailable || this.googleAvailable;
+
+    if (this.possibleIntegrations?.is_azure_ad_connected) {
+      const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
+      this.msalService.instance = new PublicClientApplication({
+        auth: {
+          clientId: this.possibleIntegrations?.azure_ad_clientId,
+          authority: this.possibleIntegrations?.azure_ad_authority_cloud_url,
+          redirectUri: environment.clientUrl
+        },
+        cache: {
+          cacheLocation: 'localStorage',
+          storeAuthStateInCookie: isIE, // Set to true for Internet Explorer 11
+        }
+      });
+    }
   }
 
   /**

@@ -27,7 +27,6 @@ export const environment = {
 
   // GOOGLE properties
   GOOGLE_CLIENT_ID: `971238950983-aef7kjl23994hjj9e8m5tch4a22b5dut.apps.googleusercontent.com`,
-  GOOGLE_REDIRECT_URL: `${url.protocol}://${url.domain}:4200`,
   GOOGLE_SCOPE: [
     'https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/calendar',
@@ -91,11 +90,6 @@ export const environment = {
 
   // MANAGEMENT_URL: 'https://management.octonius.com',
   MANAGEMENT_URL: `${url.protocol}://${url.domain}:3300`,
-
-  // AD properties
-  active_directory_client_application_id: '76b84bff-cd16-4a4b-848c-f283b579e9d2',
-  active_directory_authority_cloud_id: 'https://login.microsoftonline.com/74db1134-f8bb-44a7-93d1-25583009d9f1/',
-  active_directory_redirect_url: 'http://localhost:4200/home',
 };
 
 /*

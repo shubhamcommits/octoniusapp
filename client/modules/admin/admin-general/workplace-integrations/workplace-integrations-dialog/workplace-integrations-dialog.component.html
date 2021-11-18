@@ -84,6 +84,16 @@
           <h6><b i18n="@@workspaceIntegrationsDialog.enableAzureIntegrations">Enable Azure Active Directory Integrations</b></h6>
           <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableAzureIntegrationsDescription">This will allow the users to sign in with the Azure Active Directory company account.</p>
         </mat-slide-toggle><br>
+
+        <div class="integration-properties" *ngIf="workplaceData?.integrations?.is_azure_ad_connected">
+          <div class="form-group">
+            <label for="azure_ad_clientId" i18n="@@workspaceIntegrationsDialog.azureADAClientId">Client ID:</label>
+            <input type="text" class="form-control" name="azure_ad_clientId" [(ngModel)]="workplaceData.integrations.azure_ad_clientId" placeholder="Please provide the Client ID">
+            <br/>
+            <label for="azure_ad_authority_cloud_url" i18n="@@workspaceIntegrationsDialog.azureADAuthorityCloudUrl">Authority Cloud Tenant URL:</label>
+            <input type="text" class="form-control" name="azure_ad_authority_cloud_url" [(ngModel)]="workplaceData.integrations.azure_ad_authority_cloud_url" placeholder="Please provide the Authority Cloud Tenant URL">
+          </div>
+        </div>
       </div>
     </div>
     <!-- AZURE AD INTEGRATION ENDS -->

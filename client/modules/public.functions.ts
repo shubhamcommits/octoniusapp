@@ -1915,6 +1915,8 @@ export class PublicFunctions {
       let possibleIntegrations = {
         is_google_connected: false,
         is_azure_ad_connected: false,
+        azure_ad_clientId: '',
+        azure_ad_authority_cloud_url: '',
         is_ldap_connected: false
       }
 
@@ -1924,6 +1926,8 @@ export class PublicFunctions {
         }
         if (workspace.integrations.is_azure_ad_connected) {
           possibleIntegrations.is_azure_ad_connected = workspace.integrations.is_azure_ad_connected;
+          possibleIntegrations.azure_ad_clientId = workspace.integrations.azure_ad_clientId;
+          possibleIntegrations.azure_ad_authority_cloud_url = workspace.integrations.azure_ad_authority_cloud_url;
         }
         if (workspace.integrations.is_ldap_connected) {
           possibleIntegrations.is_ldap_connected = workspace.integrations.is_ldap_connected;

@@ -140,11 +140,12 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     // SharedModule,
 
     // SSO Active Directory
+
     MsalModule.forRoot( new PublicClientApplication({
         auth: {
-          clientId: environment.active_directory_client_application_id,
-          authority: environment.active_directory_authority_cloud_id,
-          redirectUri: environment.active_directory_redirect_url
+          clientId: '',
+          authority: '',
+          redirectUri: environment.clientUrl
         },
         cache: {
           cacheLocation: 'localStorage',
