@@ -44,23 +44,4 @@ export class SlackService {
             }]
         });
     }
-
-    async disconnectSlack(userId: string) {
-        // Find User by user's _id
-        var user = await User.findById(userId);
-
-        // Extract the integrations
-        var integration = user['integrations'];
-        
-        // update the is_slack_connected false
-        integration.is_slack_connected = false;
-        integration.slack = null;
-
-        // Update user integrations
-        const updatedUser = await User.findOneAndUpdate({ _id: userId },
-            { $set: { integrations: integration }},
-            { new: true });
-
-        return updatedUser;
-    }
 }

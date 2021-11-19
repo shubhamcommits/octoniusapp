@@ -45,14 +45,12 @@ export class ConnectGoogleCloudComponent implements OnInit {
     let googleSignInResult: any = await this.publicFunctions.authorizeGoogleSignIn(this.workspaceData?.integrations);
 
     if (googleSignInResult != null) {
-
       // Call the handle google signin function
       let googleUserDetails = await this.publicFunctions.handleGoogleSignIn(googleSignInResult)
 
       // Emit Google User details to parent components
       this.googleUser.emit(googleUserDetails)
     }
-
   }
 
   ngOnDestroy() {

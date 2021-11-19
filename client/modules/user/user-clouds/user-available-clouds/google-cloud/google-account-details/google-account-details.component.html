@@ -19,7 +19,9 @@
                             <span i18n="@@googleAccountDetails.driveUsage">Drive Usage</span>
                             <span class="sr-only">(current)</span>
                         </a>
-                        {{ googleDriveUsed }} %
+                        <span *ngIf="googleUser.storageQuota.limit">
+                          {{ googleDriveUsed }} %
+                        </span>
                     </li>
                 </ul>
             </div>
