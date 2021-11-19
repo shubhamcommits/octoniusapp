@@ -6,6 +6,7 @@ import FormData from 'form-data';
 import { Auths, sendError } from '../../utils';
 import { helperFunctions } from '../../utils';
 import axios from 'axios'
+
 // Creating Service class in order to build wrapper class
 const slackService = new SlackService();
 const teamService = new TeamService();
@@ -26,7 +27,6 @@ export class IntegrationController {
      * @param next 
      */
     async notify(req: Request, res: Response, next: NextFunction) {
-
 
         try {
             // Find user by user _id

@@ -1,11 +1,12 @@
 import e, { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import moment from 'moment/moment'
-import { Group, Column, Auth, User, Workspace  } from '../models';
+import { Group, Column, Auth, User } from '../models';
 import { Auths, sendError } from '../../utils';
 import FormData from 'form-data';
 // import { validateId } from "../../utils/helperFunctions";
 import axios from "axios";
+import { SlackService } from "../service";
 
 
 /*  ===============================
@@ -14,6 +15,7 @@ import axios from "axios";
  */
 // Authentication Utilities Class
 const auths = new Auths();
+const slackService = new SlackService();
 
 export class SlackController {
 
@@ -581,14 +583,12 @@ export class SlackController {
      */
     async authSlack(req: Request , res: Response, next: NextFunction){
         
-        const workspaceData = await Workspace.findById(req.body.workspaceId).select('integrations').lean();
-
         // validate the code and get the slack user data
         const responce = await axios.get('https://slack.com/api/oauth.v2.access', {
             params: {
                 code: req.body.code,
-                client_id: workspaceData?.integrations?.slack_client_id,
-                client_secret: workspaceData?.integrations?.slack_client_secret_key
+                client_id: process.env.SLACK_CLIENT_ID,
+                client_secret: process.env.SLACK_CLIENT_SECRET
             }
         });
         
@@ -664,20 +664,7 @@ export class SlackController {
      */
     async disconnectSlack(req: Request , res: Response, next: NextFunction){
         try {
-            // Find User by user's _id
-            var user = await User.findById(req.params.userID);
-
-            // Extract the integrations
-            var integration = user['integrations'];
-            
-            // update the is_slack_connected false
-            integration.is_slack_connected = false;
-            integration.slack = null;
-
-            // Update user integrations
-            const updatedUser = await User.findOneAndUpdate({ _id: req.params.userID },
-                { $set: { integrations: integration }},
-                { new: true });
+            await slackService.disconnectSlack(req.params.userID);
         
             res.status(200).json({message:"Diconnected Successfully"});
 

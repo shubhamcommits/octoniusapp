@@ -116,9 +116,11 @@ export class WelcomePageComponent implements OnInit, AfterViewInit, OnDestroy {
     if( this.possibleIntegrations) {
       gapi.load('auth2', () => {
         this.auth2 = gapi.auth2.init({
-          client_id: this.possibleIntegrations?.google_client_id,
-          cookiepolicy: 'single_Host_Origin',
-          scope: environment.GOOGLE_LOGIN_SCOPE
+          'client_id': this.possibleIntegrations.google_client_id,
+          'scope': environment.GOOGLE_LOGIN_SCOPE,
+          'immediate': false,
+          'access_type': 'offline',
+          'response_type': 'token code'
         });
       });
     }

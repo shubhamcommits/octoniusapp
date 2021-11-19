@@ -10,7 +10,6 @@ const usersService = new UsersService();
 const workspaceService = new WorkspaceService();
 
 const auths = new Auths();
-
 export class WorkspaceController {
 
     /**
@@ -908,9 +907,26 @@ export class WorkspaceController {
         let { body: { settingsData } } = req;
 
         try {
+            let workspace: any;
+
+            if (!settingsData?.integrations?.is_slack_connected) {
+                workspace = await Workspace.findById({_id: workspaceId}).select('integrations').lean();
+
+                // Delete the slack connectivity from all users
+                if (workspace && workspace?.integrations && workspace?.integrations?.is_slack_connected){
+                    await User.updateMany({
+                        _workspace: workspaceId
+                    }, {
+                        $set: { 
+                            'integration.is_slack_connected': null,
+                            'integration.slack': null
+                        }
+                    });
+                }
+            }
 
             // Find the workspace and update their respective workspace settings
-            const workspace = await Workspace.findByIdAndUpdate({
+            workspace = await Workspace.findByIdAndUpdate({
                     _id: workspaceId
                 }, settingsData, {
                     new: true

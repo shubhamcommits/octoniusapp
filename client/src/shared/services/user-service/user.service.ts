@@ -137,8 +137,8 @@ export class UserService {
   /**
    * This function is responsible for verifying the slack oAuth
    */
-  slackAuth(code: string, user: Object, workspaceId: string): Observable<any> {
-    return this._http.post(this.INTEGRATIONS_API_URL + `/slack/slack-auth`, { code, user, workspaceId });
+  slackAuth(code: string, user: Object): Observable<any> {
+    return this._http.post(this.INTEGRATIONS_API_URL + `/slack/slack-auth`, { code, user });
   }
 
    /**

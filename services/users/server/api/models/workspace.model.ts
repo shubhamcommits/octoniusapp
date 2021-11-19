@@ -123,15 +123,6 @@ const workspaceSchema = new Schema({
             type: Boolean,
             default: false
         },
-        slack_client_id: {
-            type: String
-        },
-        slack_client_secret_key: {
-            type: String
-        },
-        slack_bot_access_token: {
-            type: String
-        },
         is_azure_ad_connected: {
             type: Boolean,
             default: false
