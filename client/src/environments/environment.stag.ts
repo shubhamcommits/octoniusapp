@@ -5,7 +5,7 @@ export const environment = {
   hmr: false,
 
   //slack redirect url for authentication
-  slack_redirect_url:`https://slack.com/oauth/v2/authorize?client_id=2561616476.1793890184164&scope=commands,incoming-webhook`,
+  slack_redirect_url:`https://slack.com/oauth/v2/authorize?client_id=${window["env"]["SLACK_CLIENT_ID"]}&scope=commands,incoming-webhook`,
 
   // Browser Storage Key
   storageKey: 'storageKey@20xx',
