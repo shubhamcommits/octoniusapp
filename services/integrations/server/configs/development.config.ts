@@ -27,6 +27,11 @@ function devConfigInit() {
   // Files Uploads Folder
   process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || path.join(__dirname, '../uploads/');
 
+  // Slack Keys
+  process.env.SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID || "2561616476.1145669381443"
+  process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET || "acaf1f9b8e2c2607124c74ea9273a2ed"
+  process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN || "xoxb-2561616476-1145480914898-bFLn6YJrfzbJ9jvCTU34uNuu"
+
   process.env.TEAMS_BOT_URL = process.env.TEAMS_BOT_URL || 'https://connect.octonius.com'
   
   // External Key

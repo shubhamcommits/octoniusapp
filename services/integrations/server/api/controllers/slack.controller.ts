@@ -1,7 +1,7 @@
 import e, { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import moment from 'moment/moment'
-import { Group, Column, Auth, User, Workspace  } from '../models';
+import { Group, Column, Auth, User } from '../models';
 import { Auths, sendError } from '../../utils';
 import FormData from 'form-data';
 // import { validateId } from "../../utils/helperFunctions";
@@ -581,14 +581,12 @@ export class SlackController {
      */
     async authSlack(req: Request , res: Response, next: NextFunction){
         
-        const workspaceData = await Workspace.findById(req.body.workspaceId).select('integrations').lean();
-
         // validate the code and get the slack user data
         const responce = await axios.get('https://slack.com/api/oauth.v2.access', {
             params: {
                 code: req.body.code,
-                client_id: workspaceData?.integrations?.slack_client_id,
-                client_secret: workspaceData?.integrations?.slack_client_secret_key
+                client_id: process.env.SLACK_CLIENT_ID,
+                client_secret: process.env.SLACK_CLIENT_SECRET
             }
         });
         

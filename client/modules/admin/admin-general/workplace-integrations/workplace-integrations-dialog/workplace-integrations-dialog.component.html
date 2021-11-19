@@ -120,19 +120,6 @@
         <br/>
         <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableSlackIntegrationsDescription">This will allow the users to receive notifications in Slack and create task from slack.</p>
         <br/>
-
-        <div class="integration-properties" *ngIf="workplaceData?.integrations?.is_slack_connected">
-          <div class="form-group">
-            <label for="slack_client_id" i18n="@@workspaceIntegrationsDialog.slackClientId">Client ID:</label>
-            <input type="text" class="form-control" name="slack_client_id" [(ngModel)]="workplaceData.integrations.slack_client_id" placeholder="Please provide the Slack Client ID">
-            <br/>
-            <label for="slack_client_secret_key" i18n="@@workspaceIntegrationsDialog.slackClientSecretKey">Client Secret Key:</label>
-            <input type="text" class="form-control" name="slack_client_secret_key" [(ngModel)]="workplaceData.integrations.slack_client_secret_key" placeholder="Please provide the Slack Client Secret Key">
-            <br/>
-            <label for="slack_bot_access_token" i18n="@@workspaceIntegrationsDialog.slackBotAccessToken">Bot Access Token:</label>
-            <input type="text" class="form-control" name="slack_bot_access_token" [(ngModel)]="workplaceData.integrations.slack_bot_access_token" placeholder="Please provide the Slack Bot Access Token">
-          </div>
-        </div>
       </div>
     </div>
     <!-- SLACK INTEGRATION ENDS -->
