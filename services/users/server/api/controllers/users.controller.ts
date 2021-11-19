@@ -630,14 +630,33 @@ export class UsersControllers {
             const userId = req['userId'];
             // const token = req['token'];
 
-            const user = await User.findByIdAndUpdate(
+            let user = await User.findById(
                 {
                     _id: userId
-                }, {
-                    'integrations.gdrive.token': token
-                }, {
-                    new: true
-                });
+                }).select('integrations').lean();
+            if (user.integrations.gdrive) {
+                user = await User.findByIdAndUpdate(
+                    {
+                        _id: userId
+                    }, {
+                        'integrations.gdrive.token': token
+                    }, {
+                        new: true
+                    });
+            } else {
+                const gdrive = {
+                    token: token
+                }
+                user = await User.findByIdAndUpdate(
+                    {
+                        _id: userId
+                    }, {
+                        'integrations.gdrive': gdrive
+                    }, {
+                        new: true
+                    });
+            }
+            
         
             return res.status(200).json({
                 message: 'Saved gdrive token.',

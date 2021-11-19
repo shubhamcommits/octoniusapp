@@ -664,7 +664,14 @@ export class SlackController {
      */
     async disconnectSlack(req: Request , res: Response, next: NextFunction){
         try {
-            await slackService.disconnectSlack(req.params.userID);
+            await User.findByIdAndUpdate({
+                    _id: req.params.userID
+                }, {
+                    $set: { 
+                        'integrations.is_slack_connected': false,
+                        'integrations.slack': null
+                    }
+                }, { new: true });
         
             res.status(200).json({message:"Diconnected Successfully"});
 

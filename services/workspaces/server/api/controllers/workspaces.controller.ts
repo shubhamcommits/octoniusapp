@@ -907,19 +907,29 @@ export class WorkspaceController {
         let { body: { settingsData } } = req;
 
         try {
-            let workspace: any;
-
+            let workspace: any = await Workspace.findById({_id: workspaceId}).select('integrations').lean();
             if (!settingsData?.integrations?.is_slack_connected) {
-                workspace = await Workspace.findById({_id: workspaceId}).select('integrations').lean();
-
                 // Delete the slack connectivity from all users
                 if (workspace && workspace?.integrations && workspace?.integrations?.is_slack_connected){
                     await User.updateMany({
                         _workspace: workspaceId
                     }, {
                         $set: { 
-                            'integration.is_slack_connected': null,
-                            'integration.slack': null
+                            'integrations.is_slack_connected': false,
+                            'integrations.slack': null
+                        }
+                    });
+                }
+            }
+
+            if (!settingsData?.integrations?.is_google_connected) {
+                // Delete the google connectivity from all users
+                if (workspace && workspace?.integrations && workspace?.integrations?.is_google_connected){
+                    await User.updateMany({
+                        _workspace: workspaceId
+                    }, {
+                        $set: { 
+                            'integrations.gdrive': null
                         }
                     });
                 }

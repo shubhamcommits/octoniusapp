@@ -28,11 +28,11 @@ export class GoogleAccountDetailsComponent implements OnInit {
   disconnectGoogleAccount() {
     this.googleCloudService.disconnectGoogleCloud(this.googleUser['refreshToken'])
       .then(() => {
-        localStorage.removeItem('googleUser')
-        sessionStorage.clear()
-        this.googleUser = undefined
-        this.googleCloudService.googleAuthSuccessfulBehavior.next(false)
-      })
+        localStorage.removeItem('googleUser');
+        sessionStorage.clear();
+        this.googleUser = undefined;
+        this.googleCloudService.googleAuthSuccessfulBehavior.next(false);
+      });
   }
 
 }
