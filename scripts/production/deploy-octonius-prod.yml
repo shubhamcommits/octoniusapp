@@ -442,6 +442,7 @@ services:
       - DOMAIN=${DOMAIN}
       - WEBSOCKET=${WEBSOCKET}
       - mgmt_portal_domain=${mgmt_portal_domain}
+      - SLACK_CLIENT_ID=${SLACK_CLIENT_ID}
     deploy:
       replicas: ${REPLICAS}
       placement:

@@ -433,6 +433,7 @@ services:
       - DOMAIN=${DOMAIN}
       - WEBSOCKET=${WEBSOCKET}
       - mgmt_portal_domain=${mgmt_portal_domain}
+      - SLACK_CLIENT_ID=${SLACK_CLIENT_ID}
     depends_on:
       - mongo-0.mongo
       - mongo-1.mongo
