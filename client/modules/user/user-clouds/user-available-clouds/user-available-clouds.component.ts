@@ -31,13 +31,9 @@ export class UserAvailableCloudsComponent implements OnInit {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     if (!this.workspaceData?.integrations?.is_google_connected && this.storageService.existData('googleUser')) {
-
-      this.googleCloudService.disconnectGoogleCloud(this.googleUser['refreshToken'])
-        .then(() => {
-          localStorage.removeItem('googleUser');
-          sessionStorage.clear();
-          this.googleCloudService.googleAuthSuccessfulBehavior.next(false);
-        })
+      localStorage.removeItem('googleUser');
+      sessionStorage.clear();
+      this.googleCloudService.googleAuthSuccessfulBehavior.next(false);
     }
 
     if (!this.workspaceData?.integrations?.is_slack_connected && this.userData?.integrations?.is_slack_connected) {
