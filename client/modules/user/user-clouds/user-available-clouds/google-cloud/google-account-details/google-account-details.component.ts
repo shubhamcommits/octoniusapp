@@ -10,27 +10,23 @@ import { GoogleCloudService } from '../services/google-cloud.service';
 export class GoogleAccountDetailsComponent implements OnInit {
 
   constructor(
-    private storageService: StorageService,
     private googleCloudService: GoogleCloudService
   ) { }
 
-  @Input('googleUser') googleUser: any = this.getUserDataFromStorage() || {}
+  @Input('googleUser') googleUser: any;
 
   googleDriveUsed = 0;
 
   ngOnInit() {
-    if (JSON.stringify(this.googleUser) != JSON.stringify("{}"))
+    if (JSON.stringify(this.googleUser) != JSON.stringify("{}") && this.googleUser.storageQuota.limit) {
       this.googleDriveUsed = Math.round(
         (this.googleUser.storageQuota.usage / this.googleUser.storageQuota.limit) * 100
-      )
-  }
-
-  getUserDataFromStorage() {
-    return (this.storageService.existData('googleUser') === null) ? {} : this.storageService.getLocalData('googleUser')['userData']
+      );
+    }
   }
 
   disconnectGoogleAccount() {
-    this.googleCloudService.disconnectGoogleCloud(this.storageService.getLocalData('googleUser')['refreshToken'])
+    this.googleCloudService.disconnectGoogleCloud(this.googleUser['refreshToken'])
       .then(() => {
         localStorage.removeItem('googleUser')
         sessionStorage.clear()

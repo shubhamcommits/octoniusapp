@@ -116,14 +116,14 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
     }
 
-    // await this.initNotifications();
-
-    await this.publicFunctions.handleGoogleSignIn()
-
-    // This function is responsible for keep the cloud connected and refreshes the token in every 30mins(limit is 50 mins)
-    setInterval(async () => {
+    if (this.userData?.integrations?.gdrive?.token) {
       await this.publicFunctions.handleGoogleSignIn()
-    }, 1800000);
+
+      // This function is responsible for keep the cloud connected and refreshes the token in every 30mins(limit is 50 mins)
+      setInterval(async () => {
+        await this.publicFunctions.handleGoogleSignIn()
+      }, 1800000);
+    }
   }
 
   ngAfterViewInit() {
