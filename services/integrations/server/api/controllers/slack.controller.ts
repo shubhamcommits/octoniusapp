@@ -6,6 +6,7 @@ import { Auths, sendError } from '../../utils';
 import FormData from 'form-data';
 // import { validateId } from "../../utils/helperFunctions";
 import axios from "axios";
+import { SlackService } from "../service";
 
 
 /*  ===============================
@@ -14,6 +15,7 @@ import axios from "axios";
  */
 // Authentication Utilities Class
 const auths = new Auths();
+const slackService = new SlackService();
 
 export class SlackController {
 
@@ -662,20 +664,7 @@ export class SlackController {
      */
     async disconnectSlack(req: Request , res: Response, next: NextFunction){
         try {
-            // Find User by user's _id
-            var user = await User.findById(req.params.userID);
-
-            // Extract the integrations
-            var integration = user['integrations'];
-            
-            // update the is_slack_connected false
-            integration.is_slack_connected = false;
-            integration.slack = null;
-
-            // Update user integrations
-            const updatedUser = await User.findOneAndUpdate({ _id: req.params.userID },
-                { $set: { integrations: integration }},
-                { new: true });
+            await slackService.disconnectSlack(req.params.userID);
         
             res.status(200).json({message:"Diconnected Successfully"});
 
