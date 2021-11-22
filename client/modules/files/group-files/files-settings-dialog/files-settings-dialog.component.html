@@ -28,11 +28,16 @@
             [name]="'files_for_admins'"
             [(ngModel)]="groupData.files_for_admins"
             (change)="saveSettings($event)">
-          <span i18n="@@filesSettingsDialog.onlyAdmins">Only Admins</span>
+            
+              
+            <span class="material-icons">
+              security
+              </span>    
+          <span i18n="@@filesSettingsDialog.onlyAdmins">GOD Mode</span>
         </mat-slide-toggle>
 
         <br/>
-        <p class="card-text" i18n="@@filesSettingsDialog.enableOnlyAdminsDescription">This will block the no admin users to edit the files in the group.</p>
+        <p class="card-text" i18n="@@filesSettingsDialog.enableOnlyAdminsDescription">Turning this ON will lock the permissions to VIEW-only for Members and Guests. Only Group Managers will be able to upload and delete files.</p>
         <br/>
       </div>
     </div>
