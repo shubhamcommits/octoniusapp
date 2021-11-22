@@ -42,9 +42,6 @@ export class GroupFilesComponent implements OnInit {
   // Current User Data
   userData: any;
 
-  // Public Functions
-  public publicFunctions = new PublicFunctions(this.injector)
-
   // Query value variable mapped with search field
   query: string = "";
 
@@ -90,6 +87,11 @@ export class GroupFilesComponent implements OnInit {
   // More to load maintains check if we have more to load members on scroll
   public moreToLoad: boolean = true;
 
+  isAdmin = true;
+
+  // Public Functions
+  public publicFunctions = new PublicFunctions(this.injector);
+
   constructor(
     @Inject(LOCALE_ID) public locale: string,
     public utilityService: UtilityService,
@@ -110,6 +112,8 @@ export class GroupFilesComponent implements OnInit {
 
     // Fetch the current group
     this.groupData = await this.publicFunctions.getCurrentGroup();
+
+    this.isAdmin = this.isAdminUser();
 
     const folderId = await this.router.snapshot.queryParamMap.has('folder') ? this.router.snapshot.queryParamMap.get('folder') : false
     if (!folderId) {
@@ -623,7 +627,7 @@ export class GroupFilesComponent implements OnInit {
     let foldersTmp = [];
     this.folders.forEach(async folder => {
         folder.canDelete = await this.utilityService.canUserDoFileAction(folder, this.groupData, this.userData, 'delete');
-        const canEdit = await this.utilityService.canUserDoFileAction(folder, this.groupData, this.userData, 'edit');
+        const canEdit = await this.utilityService.canUserDoFileAction(folder, this.groupData, this.userData, 'edit') && (!this.groupData?.files_for_admins || this.isAdmin);
         let canView = false;
 
         if (!canEdit) {
@@ -643,7 +647,7 @@ export class GroupFilesComponent implements OnInit {
     let filesTmp = [];
     files.forEach(async file => {
         file.canDelete = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'delete');
-        const canEdit = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'edit');
+        const canEdit = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'edit') && (!this.groupData?.files_for_admins || this.isAdmin);
         let canView = false;
 
         if (!canEdit) {
@@ -692,5 +696,10 @@ export class GroupFilesComponent implements OnInit {
 
   async onCustomFieldEmitter(customFields) {
     this.customFields = [...customFields];
+  }
+
+  isAdminUser() {
+    const index = (this.groupData && this.groupData._admins) ? this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id) : -1;
+    return index >= 0 || this.userData.role == 'owner';
   }
 }

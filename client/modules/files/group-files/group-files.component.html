@@ -13,7 +13,7 @@
         <!-- Heading of the component ends -->
 
         <!-- Group New File starts -->
-        <app-group-new-file *ngIf="groupId && userData && checkDataExist(userData) && groupData && checkDataExist(groupData)"
+        <app-group-new-file *ngIf="groupId && userData && checkDataExist(userData) && groupData && checkDataExist(groupData) && (!groupData?.files_for_admins || isAdmin)"
           [groupId]="groupId" [userData]="userData" [folderId]="currentFolder?._id" [workspaceId]="workspaceId" [groupData]="groupData"
           (file)="getFile($event)" (folder)="getFolder($event)">
         </app-group-new-file>

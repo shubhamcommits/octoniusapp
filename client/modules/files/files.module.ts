@@ -18,13 +18,17 @@ import { FolioModule } from 'modules/folio/folio.module';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { DragDropFilesDirective } from './group-files/drag-drop-files/drag-drop-files.directive';
 import { FilesBarComponent } from './group-files/files-bar/files-bar.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { FilesSettingsDialogComponent } from './group-files/files-settings-dialog/files-settings-dialog.component';
 
 @NgModule({
   declarations: [
     GroupFilesComponent,
     GroupNewFileComponent,
     FilesBarComponent,
-    DragDropFilesDirective
+    DragDropFilesDirective,
+    FilesSettingsDialogComponent
   ],
   imports: [
     CommonModule,
@@ -42,6 +46,9 @@ import { FilesBarComponent } from './group-files/files-bar/files-bar.component';
 
     // Folio Editor Module
     FolioModule,
+
+    MatDialogModule,
+    MatSlideToggleModule,
   ],
   providers: [
     // Files Service

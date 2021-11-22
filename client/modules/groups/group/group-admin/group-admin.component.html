@@ -131,7 +131,7 @@
         </div>
 
         <!-- Switch to Agora/Normal -->
-        <div class="mt-5 mb-5 pt-3" *ngIf="campaignModuleAvailable">
+        <div class="mt-5 mb-5 pt-3" *ngIf="groupData?.group_name != 'Global'">
           <mat-slide-toggle color="primary"
               [checked]="switchAgora"
               [name]="'switch-agora'"

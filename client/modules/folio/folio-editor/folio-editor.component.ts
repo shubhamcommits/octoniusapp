@@ -188,7 +188,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
-          ['clean'], ['comment'],['tables'],['clear'],['export-pdf'/*, 'export-doc'*/]
+          ['comment'],['tables'],['clear'],['export-pdf'/*, 'export-doc'*/]
         ],
         handlers : {
           'comment': () => {
