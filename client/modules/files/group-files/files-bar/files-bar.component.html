@@ -10,9 +10,8 @@
 
       <span *ngIf="isAdmin" class="separator"></span>
 
-      <button class="btn badge-cf" (click)="openSettingsDialog()">
+      <button *ngIf="isAdmin" class="btn badge-cf" (click)="openSettingsDialog()">
         <i class="material-icons">settings</i>
-
         <span i18n="@@groupBoardBar.customFields">Settings</span>
       </button>
     </div>
