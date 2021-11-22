@@ -436,6 +436,8 @@ export class FilesService {
           _id: fileId
         }, {
           $set: { "custom_fields": file['custom_fields'] }
+        }, {
+            new: true
         });
   
         return await this.populateFileProperties(file);

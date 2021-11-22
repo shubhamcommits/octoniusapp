@@ -365,6 +365,9 @@ export class FilesControllers {
 
             let file = await filesService.changeCustomFieldValue(fileId, customFieldName, customFieldValue);
 
+            if (!file['custom_fields']) {
+                file['custom_fields'] = new Map<string, string>();
+            }
             file.custom_fields[customFieldName] = customFieldValue;
 
             // Send status 200 response
