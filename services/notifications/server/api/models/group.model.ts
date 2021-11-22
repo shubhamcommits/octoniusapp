@@ -96,6 +96,10 @@ const GroupSchema = new Schema({
         type: String,
         default: null
     }],
+    files_for_admins: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
     type: {
         type: String,
         default: 'normal'

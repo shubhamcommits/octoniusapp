@@ -26,7 +26,6 @@
     "https-proxy-agent": "^5.0.0",
     "jsonwebtoken": "^8.5.1",
     "ldap-authentication": "^2.2.9",
-    "ldapjs": "^2.3.1",
     "moment": "^2.24.0",
     "mongoose": "^5.13.13",
     "morgan": "^1.9.1",

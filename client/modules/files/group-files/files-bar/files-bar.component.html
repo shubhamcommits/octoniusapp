@@ -7,5 +7,13 @@
 
         <span i18n="@@groupBoardBar.customFields">Custom Fields</span>
       </button>
+
+      <span *ngIf="isAdmin" class="separator"></span>
+
+      <button class="btn badge-cf" (click)="openSettingsDialog()">
+        <i class="material-icons">settings</i>
+
+        <span i18n="@@groupBoardBar.customFields">Settings</span>
+      </button>
     </div>
 </nav>

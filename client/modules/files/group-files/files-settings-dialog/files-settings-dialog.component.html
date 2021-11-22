@@ -1,0 +1,41 @@
+<div class="integrationsDialog">
+  <mat-dialog-actions class="d-flex justify-content-end" align="end">
+    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+  </mat-dialog-actions>
+
+  <h2 mat-dialog-title class="text-center">
+    <span class="badge badge-cf">
+      <i class="material-icons">settings</i>
+    </span>
+    <span i18n="@@filesSettingsDialog.groupFilesSettings">Group Files Settings</span>
+  </h2>
+
+  <div class="description text-center">
+
+    <img src="assets/images/placeholder_workplace_integrations.svg" alt="" style="width: 180px; margin: 14px">
+
+    <p i18n="@@filesSettingsDialog.groupFilesSettingsDescription" class="text-descr">
+      Manage the files settings for the group.
+    </p>
+  </div>
+
+  <div class="content">
+    <!-- Only for Admins STARTS -->
+    <div class="integration">
+      <div class="mt-2 mb-2 pt-3">
+        <mat-slide-toggle color="primary" class="badge-cf" style="margin-left: 10px"
+            [checked]="groupData?.files_for_admins"
+            [name]="'files_for_admins'"
+            [(ngModel)]="groupData.files_for_admins"
+            (change)="saveSettings($event)">
+          <span i18n="@@filesSettingsDialog.onlyAdmins">Only Admins</span>
+        </mat-slide-toggle>
+
+        <br/>
+        <p class="card-text" i18n="@@filesSettingsDialog.enableOnlyAdminsDescription">This will block the no admin users to edit the files in the group.</p>
+        <br/>
+      </div>
+    </div>
+    <!-- Only for Admins ENDS -->
+  </div>
+</div>

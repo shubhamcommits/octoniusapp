@@ -4,11 +4,9 @@ import {
   Router,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
-  ActivatedRoute,
 } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { PublicFunctions } from 'modules/public.functions';
 
 @Injectable({
@@ -22,7 +20,6 @@ export class FolioGuard implements CanActivate  {
   constructor(
     private injector: Injector,
     private router: Router,
-    private _ActivatedRoute: ActivatedRoute,
     private groupService: GroupService,
     private utilityService: UtilityService
   ) {
@@ -49,7 +46,9 @@ export class FolioGuard implements CanActivate  {
     const fileId = next['_urlSegment'].segments[1].path;
     let file = await this.publicFunctions.getFile(fileId);
 
-    const canEdit = await this.utilityService.canUserDoFileAction(file, currentGroup, userData, 'edit');
+    const isAdmin = await this.isAdminUser(currentGroup, userData);
+
+    const canEdit = await this.utilityService.canUserDoFileAction(file, currentGroup, userData, 'edit') && (!currentGroup?.files_for_admins || isAdmin);
     let canView = false;
     if (!canEdit) {
       const hide = await this.utilityService.canUserDoFileAction(file, currentGroup, userData, 'hide');
@@ -63,5 +62,10 @@ export class FolioGuard implements CanActivate  {
       this.router.navigate(['dashboard', 'myspace', 'inbox']);
       return false;
     }
+  }
+
+  isAdminUser(groupData: any, userData: any) {
+    const index = (groupData && groupData._admins) ? groupData._admins.findIndex((admin: any) => admin._id === userData._id) : -1;
+    return index >= 0 || userData.role == 'owner';
   }
 }
