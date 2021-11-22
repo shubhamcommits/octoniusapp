@@ -14,6 +14,7 @@ export default class LDAPAuthService {
             let options: any = {
                 ldapOpts: {
                     url: workplaceLDAPIntegration.ldap_url,
+                    tlsOptions: { rejectUnauthorized: false }
                 },
                 adminDn: workplaceLDAPIntegration.ldap_dn,
                 adminPassword: workplaceLDAPIntegration.ldap_password,
