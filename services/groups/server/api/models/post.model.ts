@@ -68,7 +68,7 @@ const PostSchema = new Schema({
     ],
     created_date: {
         type: Date,
-        default: Date.now
+        default: moment().format()
     },
     files: [{
         original_name: {
@@ -167,7 +167,7 @@ const PostSchema = new Schema({
             values: [{
                 date: {
                     type: Date,
-                    default: Date.now
+                    default: moment().format()
                 },
                 value: {
                     type: Number,

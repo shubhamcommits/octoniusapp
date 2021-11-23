@@ -52,6 +52,37 @@ export class FilesControllers {
     }
 
     /**
+     * This function is used to fetch list of the files
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async getFilter(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Fetch the File Name From the request
+            let { query: { groupId, folderId, filterBit, filterData } } = req;
+
+            // Files List
+            let files: any = [];
+
+            filterData = JSON.parse(filterData.toString());
+
+            // Get files list
+            files = await filesService.getFilter(groupId.toString(), folderId.toString(), filterBit.toString(), filterData);
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'Files list fetched!',
+                files: files
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
      * This function is responsible for fetching a file details
      * @param req 
      * @param res 

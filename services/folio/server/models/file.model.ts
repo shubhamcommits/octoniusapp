@@ -1,3 +1,4 @@
+import moment from 'moment';
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -23,7 +24,7 @@ const FileSchema = new Schema({
     },
     created_date: {
         type: Date,
-        default: Date.now
+        default: moment().format()
     },
     _posted_by: {
         type: Schema.Types.ObjectId,

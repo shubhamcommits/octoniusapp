@@ -1,7 +1,9 @@
 <app-files-bar *ngIf="groupData"
   [groupData]="groupData"
   [userData]="userData"
-  (customFieldEmitter)="onCustomFieldEmitter($event)">
+  (customFieldEmitter)="onCustomFieldEmitter($event)"
+  (sortEmitter)="onSortEmitter($event)"
+  (filterEmitter)="onFilterEmitter($event)">
 </app-files-bar>
 
 <div class="container" dragDropFile (fileDropped)="fileDropped($event)">

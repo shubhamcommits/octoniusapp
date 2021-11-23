@@ -56,6 +56,17 @@ export class FilesService {
     }
   }
 
+  getFilteredFiles(groupId: string, folderId: string, filterBit: string, filterData: any) {
+    return this._http.get(this.baseURL + `/files/filter`, {
+      params: {
+        groupId: groupId,
+        folderId: folderId,
+        filterBit: filterBit,
+        filterData: JSON.stringify(filterData)
+      }
+    }).toPromise();
+  }
+
   /**
    * This function is responsible for fetching the file details on the basis of the groupId
    * @param groupId
