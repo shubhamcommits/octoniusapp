@@ -145,9 +145,7 @@ export class FilesBarComponent implements OnInit {
       this.filterCFInputValue = '';
     }
     const obj = { bit: bit, data: this.cfFilter || '' }
-    if (!cf || (cf?.input_type_date && cfValue && cfValue != '')
-        || (cf?.input_type_number && cfValue && cfValue != '')
-        || (cf?.input_type_text && cfValue && cfValue != '')) {
+    if (!cf || (cf && cfValue && cfValue != '')) {
       this.filterEmitter.emit(obj);
     }
   }
