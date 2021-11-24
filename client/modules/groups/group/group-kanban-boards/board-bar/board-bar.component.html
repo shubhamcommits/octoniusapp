@@ -80,31 +80,31 @@
         </a>
       </mat-menu>
 
-      <mat-menu #menuSort="matMenu">
-        <a mat-menu-item (click)="sortTasks('none')" [ngStyle]="{'color' : (sortby==='none') ? 'green' : 'black'}">
+      <mat-menu #menuSort="matMenu" class="widepanel">
+        <a mat-menu-item (click)="sortTasks('none')" [ngStyle]="{'color' : (sortby==='none') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.none">None</span>
         </a>
 
         <a mat-menu-item (click)="sortTasks('due_date')"
-          [ngStyle]="{'color' : (sortby==='due_date') ? 'green' : 'black'}">
+          [ngStyle]="{'color' : (sortby==='due_date') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.dueDate">Due Date</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('tags')" [ngStyle]="{'color' : (sortby==='tags') ? 'green' : 'black'}">
+        <a mat-menu-item (click)="sortTasks('tags')" [ngStyle]="{'color' : (sortby==='tags') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.tags">Tags</span>
         </a>
 
-        <a mat-menu-item (click)="sortTasks('status')" [ngStyle]="{'color' : (sortby==='status') ? 'green' : 'black'}">
+        <a mat-menu-item (click)="sortTasks('status')" [ngStyle]="{'color' : (sortby==='status') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.status">Status</span>
         </a>
 
         <a mat-menu-item (click)="sortTasks('ideas')" *ngIf="isIdeaModuleAvailable"
-          [ngStyle]="{'color' : (sortby==='due_date') ? 'green' : 'black'}">
+          [ngStyle]="{'color' : (sortby==='due_date') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.ideas">Ideas</span>
         </a>
 
-        <a mat-menu-item [matMenuTriggerFor]="menuCustomFieldsSort" class="dropdownbtn"
-          [ngStyle]="{'color' : (sortby==='priority') ? 'green' : 'black'}">
+        <a mat-menu-item [matMenuTriggerFor]="menuCustomFieldsSort" class="dropdownbtn widepanel"
+          [ngStyle]="{'color' : (sortby==='priority') ? '#005fd5' : 'black'}">
             <span i18n="@@groupBoardBar.sort.customField">Custom Field</span>
         </a>
 
@@ -115,18 +115,18 @@
         </mat-menu>
       </mat-menu>
 
-      <mat-menu #menuFilter="matMenu" style="overflow: visible !important;" class="filter-menu">
-        <a mat-menu-item (click)="filterTask('none')" [ngStyle]="{'color' : (filterfor==='none') ? 'green' : 'black'}">
+      <mat-menu #menuFilter="matMenu" style="overflow: visible !important;" class="filter-menu widepanel">
+        <a mat-menu-item (click)="filterTask('none')" [ngStyle]="{'color' : (filterfor==='none') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.filter.none">None</span>
         </a>
 
         <a mat-menu-item (click)="filterTask('mytask')"
-          [ngStyle]="{'color' : (filterfor==='mytask') ? 'green' : 'black'}">
+          [ngStyle]="{'color' : (filterfor==='mytask') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.filter.myTasks">My Tasks</span>
         </a>
 
-        <span mat-menu-item class="cursordefault overflowvisible"
-          [ngStyle]="{'color' : (filterfor==='users') ? 'green' : 'black'}">
+        <span mat-menu-item class="overflowvisible"
+          [ngStyle]="{'color' : (filterfor==='users') ? '#005fd5' : 'black'}">
           <div (click)="$event.stopPropagation();">
             <app-member-list-menu [groupMembers]="groupMembers" [filterfor]="filterfor" [menuLable]="menuLable"
               [menuFor]="menuFor" (userSelctionEmitter)="onUserSelctionEmitter($event)">
@@ -134,9 +134,9 @@
           </div>
         </span>
 
-        <span mat-menu-item class="cursordefault overflowvisible">
+        <span mat-menu-item class="overflowvisible widepanel">
           <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-            <button [matMenuTriggerFor]="menuDueDate" class="dropdownbtn">
+            <button [matMenuTriggerFor]="menuDueDate" class="dropdownbtn" style="padding: 0;">
               <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='due_before_today' ||
                 filterfor==='due_today' ||
                 filterfor==='due_tomorrow'||
@@ -193,12 +193,12 @@
         </span>
 
         <a mat-menu-item (click)="filterTask('ideas')" *ngIf="isIdeaModuleAvailable"
-          [ngStyle]="{'color' : (filterfor==='ideas') ? 'green' : 'black'}">
+          [ngStyle]="{'color' : (filterfor==='ideas') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.filter.ideas">Ideas</span>
         </a>
 
         <a mat-menu-item (click)="openAdvancedFilterDialog()" *ngIf="isIdeaModuleAvailable"
-          [ngStyle]="{'color' : (filterfor==='custom_field') ? 'green' : 'black'}">
+          [ngStyle]="{'color' : (filterfor==='custom_field') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.filter.advancedFilters">Advanced Filters</span>
         </a>
       </mat-menu>
