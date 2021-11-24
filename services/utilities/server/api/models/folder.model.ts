@@ -1,3 +1,4 @@
+import moment from 'moment';
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -9,7 +10,7 @@ const FolderSchema = new Schema({
     },
     created_date: {
         type: Date,
-        default: Date.now
+        default: moment().format()
     },
     _created_by: {
         type: Schema.Types.ObjectId,

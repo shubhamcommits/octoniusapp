@@ -1,3 +1,4 @@
+import moment from 'moment';
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
@@ -16,7 +17,7 @@ const FlowSchema = new Schema({
     steps: [{
         created_date: {
             type: Date,
-            default: Date.now
+            default: moment().format()
         },
         trigger: [{
             name: {

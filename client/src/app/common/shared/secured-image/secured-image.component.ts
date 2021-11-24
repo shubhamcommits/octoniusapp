@@ -43,16 +43,16 @@ export class SecuredImageComponent implements OnChanges  {
 
   ngOnChanges(): void {
 
-    this.isLocalImg = this.imgURL && this.imgURL.includes('assets/images');
+    this.isLocalImg = this.imgURL && this.imgURL.indexOf('assets/images') != -1;
 
     switch (this.service) {
       case 'workspace':
-        if(!this.imgURL || this.imgURL == 'undefined') {
+        if(!this.imgURL || this.imgURL == 'undefined' || this.isLocalImg) {
           this.imgURL = "assets/images/organization.png";
           this.isLocalImg = true;
         }
 
-        if (!this.isLocalImg) {
+        if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_WORKSPACES_UPLOADS) == -1) {
           this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.imgURL);
         } else {
           this.src$.next(this.imgURL);
@@ -61,12 +61,12 @@ export class SecuredImageComponent implements OnChanges  {
         this.onErrorUrl = "assets/images/organization.png";
         break;
       case 'group':
-        if(!this.imgURL || this.imgURL == 'undefined') {
+        if(!this.imgURL || this.imgURL == 'undefined' || this.isLocalImg) {
           this.imgURL = "assets/images/icon-new-group.svg";
           this.isLocalImg = true;
         }
 
-        if (!this.isLocalImg) {
+        if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_GROUPS_UPLOADS) == -1) {
           this.src$.next(environment.UTILITIES_GROUPS_UPLOADS + '/' + this.imgURL);
         } else {
           this.src$.next(this.imgURL);
@@ -75,12 +75,12 @@ export class SecuredImageComponent implements OnChanges  {
         this.onErrorUrl = "assets/images/icon-new-group.svg";
         break;
       case 'user':
-        if(!this.imgURL || this.imgURL == 'undefined') {
+        if(!this.imgURL || this.imgURL == 'undefined' || this.isLocalImg) {
           this.imgURL = "assets/images/user.png";
           this.isLocalImg = true;
         }
 
-        if (!this.isLocalImg) {
+        if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_USERS_UPLOADS) == -1) {
           this.src$.next(environment.UTILITIES_USERS_UPLOADS + '/' + this.imgURL);
         } else {
           this.src$.next(this.imgURL);
@@ -89,12 +89,12 @@ export class SecuredImageComponent implements OnChanges  {
         this.onErrorUrl = "assets/images/user.png";
         break;
       case 'flamingo':
-          if(!this.imgURL || this.imgURL == 'undefined') {
+          if(!this.imgURL || this.imgURL == 'undefined' || this.isLocalImg) {
             this.imgURL = "http://placehold.it/180";
             this.isLocalImg = true;
           }
 
-          if (!this.isLocalImg) {
+          if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_FLAMINGOS_UPLOADS) == -1) {
             this.src$.next(environment.UTILITIES_FLAMINGOS_UPLOADS + '/' + this.imgURL);
           } else {
             this.src$.next(this.imgURL);

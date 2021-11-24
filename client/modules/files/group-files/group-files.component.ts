@@ -16,6 +16,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { FileDetailsDialogComponent } from 'src/app/common/shared/file-details-dialog/file-details-dialog.component';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-group-files',
@@ -83,6 +84,12 @@ export class GroupFilesComponent implements OnInit {
   authToken: string;
 
   customFields: any = [];
+
+  sortingBit: String = 'none';
+  sortingData: any;
+
+  filteringBit: String = 'none'
+  filteringData: any;
 
   // More to load maintains check if we have more to load members on scroll
   public moreToLoad: boolean = true;
@@ -166,7 +173,7 @@ export class GroupFilesComponent implements OnInit {
 
         this.files = await this.publicFunctions.searchFiles(this.groupId, res);
         this.files = await this.filterRAGFiles(this.files);
-      }))
+      }));
   }
 
   /**
@@ -514,23 +521,26 @@ export class GroupFilesComponent implements OnInit {
    * @param files
    */
    fileDropped(files: FileList) {
+    if (!this.groupData?.files_for_admins || this.isAdmin) {
+      // Loop through each file and begin the process of uploading
+      Array.prototype.forEach.call(files, (file: File) => {
+        let fileData = {
+          _group: this.groupId,
+          _folder: (this.currentFolder) ? this.currentFolder._id : null,
+          _posted_by: this.userData._id,
+          type: 'file',
+          mime_type: '',
+          _workspace: this.workspaceId
+        }
+        // Adding Mime Type of the file uploaded
+        fileData.mime_type = file.type
 
-    // Loop through each file and begin the process of uploading
-    Array.prototype.forEach.call(files, (file: File) => {
-      let fileData = {
-        _group: this.groupId,
-        _folder: (this.currentFolder) ? this.currentFolder._id : null,
-        _posted_by: this.userData._id,
-        type: 'file',
-        mime_type: '',
-        _workspace: this.workspaceId
-      }
-      // Adding Mime Type of the file uploaded
-      fileData.mime_type = file.type
-
-      // Call the Upload file service function
-      this.uploadFile(fileData, file);
-    });
+        // Call the Upload file service function
+        this.uploadFile(fileData, file);
+      });
+    } else {
+      this.utilityService.infoNotification($localize`:@@groupFiles.noAuthorize:You are not authorized to upload files in this group!`);
+    }
   }
 
   /**
@@ -701,5 +711,129 @@ export class GroupFilesComponent implements OnInit {
   isAdminUser() {
     const index = (this.groupData && this.groupData._admins) ? this.groupData._admins.findIndex((admin: any) => admin._id === this.userData._id) : -1;
     return index >= 0 || this.userData.role == 'owner';
+  }
+
+  async onSortEmitter(sort: any) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    this.sortingBit = sort.bit;
+    this.sortingData = sort.data;
+
+    await this.sorting();
+
+    // Stop the loading spinner
+    this.isLoading$.next(false);
+  }
+
+  async onFilterEmitter(filter: any) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    let files: any = await this.publicFunctions.getFilteredFiles(this.groupId, (this.currentFolder?._id || ''), filter.bit, filter.data);
+    this.files = await this.filterRAGFiles(files);
+
+    if (this.sortingBit && this.sortingBit != '') {
+      await this.sorting();
+    }
+
+    // Stop the loading spinner
+    this.isLoading$.next(false);
+  }
+
+  async sorting() {
+    if (this.sortingBit == 'created_date' || this.sortingBit == 'none') {
+      this.folders.sort((t1, t2) => {
+        if (t1.created_date && t2.created_date) {
+          if (moment.utc(t1.created_date).isBefore(t2.created_date)) {
+            return this.sortingBit == 'created_date' ? -1 : 1;
+          } else {
+            return this.sortingBit == 'created_date' ? 1 : -1;
+          }
+        } else {
+          if (t1.created_date && !t2.created_date) {
+            return -1;
+          } else if (!t1.created_date && t2.created_date) {
+            return 1;
+          }
+        }
+      });
+      this.files.sort((t1, t2) => {
+        if (t1.created_date && t2.created_date) {
+          if (moment.utc(t1.created_date).isBefore(t2.created_date)) {
+            return this.sortingBit == 'created_date' ? -1 : 1;
+          } else {
+            return this.sortingBit == 'created_date' ? 1 : -1;
+          }
+        } else {
+          if (t1.created_date && !t2.created_date) {
+            return -1;
+          } else if (!t1.created_date && t2.created_date) {
+            return 1;
+          }
+        }
+      });
+    } else if (this.sortingBit == 'custom_field') {
+      this.files.sort((t1, t2) => {
+        if (this.sortingData?.input_type_date) {
+          return (t1?.custom_fields && t2?.custom_fields)
+            ? (t1?.custom_fields[this.sortingData.name] && t2?.custom_fields[this.sortingData.name])
+              ?((moment.utc(t1?.custom_fields[this.sortingData.name]).isBefore(t2?.custom_fields[this.sortingData.name]))
+                ? -1 : (moment.utc(t1?.custom_fields[this.sortingData.name]).isAfter(t2?.custom_fields[this.sortingData.name]))
+                  ? 1 : 0)
+              : ((t1?.custom_fields[this.sortingData.name] && !t2?.custom_fields[this.sortingData.name])
+                ? -1 : ((!t1?.custom_fields[this.sortingData.name] && t2?.custom_fields[this.sortingData.name]))
+                  ? 1 : 0)
+            : ((t1?.custom_fields && !t2?.custom_fields)
+              ? -1 : ((!t1?.custom_fields && t2?.custom_fields))
+                ? 1 : 0);
+        } else {
+          return (t1?.custom_fields && t2?.custom_fields)
+            ? (t1?.custom_fields[this.sortingData.name] && t2?.custom_fields[this.sortingData.name])
+              ?((t1?.custom_fields[this.sortingData.name] > t2?.custom_fields[this.sortingData.name])
+                ? -1 : (t1?.custom_fields[this.sortingData.name] < t2?.custom_fields[this.sortingData.name])
+                  ? 1 : 0)
+              : ((t1?.custom_fields[this.sortingData.name] && !t2?.custom_fields[this.sortingData.name])
+                ? -1 : ((!t1?.custom_fields[this.sortingData.name] && t2?.custom_fields[this.sortingData.name]))
+                  ? 1 : 0)
+            : ((t1?.custom_fields && !t2?.custom_fields)
+              ? -1 : ((!t1?.custom_fields && t2?.custom_fields))
+                ? 1 : 0);
+        }
+      });
+    } else if (this.sortingBit == 'name') {
+      this.folders.sort((t1, t2) => {
+        const name1 = t1?.folder_name?.toLowerCase();
+        const name2 = t2?.folder_name?.toLowerCase();
+        if (name1 > name2) { return 1; }
+        if (name1 < name2) { return -1; }
+        return 0;
+      });
+      this.files.sort((t1, t2) => {
+        const name1 = t1?.original_name?.toLowerCase();
+        const name2 = t2?.original_name?.toLowerCase();
+        if (name1 > name2) { return 1; }
+        if (name1 < name2) { return -1; }
+        return 0;
+      });
+    } else if (this.sortingBit == 'tags') {
+      this.files.sort((t1, t2) => {
+        if (t1?.tags && t1?.tags.length > 0 && t2?.tags && t2?.tags.length > 0) {
+          const name1 = t1?.tags[0]?.toLowerCase();
+          const name2 = t2?.tags[0]?.toLowerCase();
+          if (name1 > name2) { return 1; }
+          if (name1 < name2) { return -1; }
+          return 0;
+        } else {
+          if ((t1?.tags && t1?.tags.length > 0) && (!t2?.tags || t2?.tags.length == 0)) {
+            return -1;
+          } else if ((!t1?.tags || t1?.tags.length == 0) && (t2?.tags && t2?.tags.length > 0)) {
+            return 1;
+          }
+        }
+      });
+    } else if (this.sortingBit == 'reverse' || this.sortingBit == 'inverse') {
+      this.files.reverse();
+    }
   }
 }

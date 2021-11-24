@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { File, Group, Flamingo } from '../models';
 import { Question } from '../models/questions.model';
 
@@ -168,6 +169,170 @@ export class FilesService {
                 ])
                 .lean();
         }
+
+        // Return all the files with the populated properties
+        return files;
+
+    }
+
+    /**
+     * This function is responsible for returning the filtered files of a folder
+     * @param groupId 
+     */
+    async getFilter(groupId: string, folderId: string, filterBit: string, filterData: any) {
+
+        let files: any = []
+
+        let query = {};
+
+        if (filterBit == 'created_today') {
+            const todayStartDay = moment().local().startOf('day').format();
+            const todayEndDay = moment().local().endOf('day').format();
+            if (folderId) {
+                query = {
+                    $and: [
+                        { _group: groupId },
+                        { _folder: folderId },
+                        { created_date:  { $gte: todayStartDay, $lte: todayEndDay }}
+                    ]
+                };
+            } else {
+                query = {
+                    $and: [
+                        { _group: groupId },
+                        { created_date:  { $gte: todayStartDay, $lte: todayEndDay }},
+                        { _folder: null }
+                    ]
+                };
+            }
+        } else if (filterBit == 'created_last_week') {
+            const todayForFiles = moment().local().endOf('day').format();
+            const todayMinus7DaysForFiles = moment().local().subtract(7, 'days').endOf('day').format();
+            if (folderId) {
+                query = {
+                    $and: [
+                        { _group: groupId },
+                        { _folder: folderId },
+                        { created_date:  { $gte: todayMinus7DaysForFiles, $lte: todayForFiles }}
+                    ]
+                };
+            } else {
+                query = {
+                    $and: [
+                        { _group: groupId },
+                        { created_date:  { $gte: todayMinus7DaysForFiles, $lte: todayForFiles }},
+                        { _folder: null }
+                    ]
+                };
+            }
+        } else if (filterBit == 'created_14_days') {
+            const todayForFiles = moment().local().endOf('day').format();
+            const todayMinus7DaysForFiles = moment().local().subtract(14, 'days').endOf('day').format();
+            if (folderId) {
+                query = {
+                    $and: [
+                        { _group: groupId },
+                        { _folder: folderId },
+                        { created_date:  { $gte: todayMinus7DaysForFiles, $lte: todayForFiles }}
+                    ]
+                };
+            } else {
+                query = {
+                    $and: [
+                        { _group: groupId },
+                        { created_date:  { $gte: todayMinus7DaysForFiles, $lte: todayForFiles }},
+                        { _folder: null }
+                    ]
+                };
+            }
+        } else if (filterBit == "users") {
+            if (folderId) {
+                query = {
+                    $and: [
+                        { _group: groupId },
+                        { _folder: folderId },
+                        { _posted_by:  filterData }
+                    ]
+                };
+            } else {
+                query = {
+                    $and: [
+                        { _group: groupId },
+                        { _posted_by:  filterData },
+                        { _folder: null }
+                    ]
+                };
+            }
+        } else if (filterBit == "custom_field") {
+            const cf = filterData.cf;
+            const cfValue = filterData.cfValue;
+
+            if (folderId) {
+                query = {
+                    $and: [
+                        { _group: groupId },
+                        { _folder: folderId }
+                    ]
+                };
+            } else {
+                query = {
+                    $and: [
+                        { _group: groupId },
+                        { _folder: null }
+                    ]
+                };
+            }
+            
+            files = await File.find(query)
+                .sort('-_id')
+                .populate([
+                        { path: '_group', select: this.groupFields },
+                        { path: '_posted_by', select: this.userFields },
+                        { path: '_folder', select: this.folderFields },
+                        { path: 'permissions._members', select: this.userFields }
+                    ])
+                .lean();
+
+            if (cf.input_type_date) {
+                const todayStartDay = moment(cfValue).local().startOf('day').format();
+                const todayEndDay = moment(cfValue).local().endOf('day').format();
+                files = files.filter(file => {
+                    return (file.custom_fields && file.custom_fields != undefined && file.custom_fields != 'undefined'
+                    && moment(file.custom_fields[cf.name]).isSameOrAfter(todayStartDay)
+                    && moment(file.custom_fields[cf.name]).isSameOrBefore(todayEndDay))
+                    
+                });
+            } else {
+                files = files.filter(file => file.custom_fields && file.custom_fields[cf.name] && file.custom_fields[cf.name] == cfValue);
+            }
+            return files;
+        } else {
+            if (folderId) {
+                query = {
+                    $and: [
+                        { _group: groupId },
+                        { _folder: folderId }
+                    ]
+                };
+            } else {
+                query = {
+                    $and: [
+                        { _group: groupId },
+                        { _folder: null }
+                    ]
+                };
+            }
+        }
+
+        files = await File.find(query)
+            .sort('-_id')
+            .populate([
+                    { path: '_group', select: this.groupFields },
+                    { path: '_posted_by', select: this.userFields },
+                    { path: '_folder', select: this.folderFields },
+                    { path: 'permissions._members', select: this.userFields }
+                ])
+            .lean();
 
         // Return all the files with the populated properties
         return files;
@@ -436,6 +601,8 @@ export class FilesService {
           _id: fileId
         }, {
           $set: { "custom_fields": file['custom_fields'] }
+        }, {
+            new: true
         });
   
         return await this.populateFileProperties(file);

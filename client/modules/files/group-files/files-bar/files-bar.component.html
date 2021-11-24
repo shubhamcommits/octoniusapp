@@ -1,6 +1,22 @@
-<nav class="navbar d-none d-sm-block" *ngIf="isAdmin">
+<nav class="navbar d-none d-sm-block">
     <div class="rightside">
-      <button class="btn badge-cf" (click)="openCustomFieldsDialog()">
+      <button class="btn badge-filters" [matMenuTriggerFor]="menuSort">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" class="badge-filters">
+          <path d="M16.199 17.219v-7.01h-2v7.01h-3l4 3.99 4-3.99h-3zm-7-14.01l-4 3.99h3v7.01h2v-7.01h3l-4-3.99z"/>
+        </svg>
+        <span i18n="@@filesBar.sort">Sort</span>
+      </button>
+
+      <button class="btn badge-filters" [matMenuTriggerFor]="menuFilter">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" class="badge-filters">
+          <path d="M9.597 18.209h4v-2h-4v2zm-7-12v2h18v-2h-18zm3 7h12v-2h-12v2z"/>
+        </svg>
+        <span i18n="@@filesBar.filter">Filter</span>
+      </button>
+
+      <span class="separator" *ngIf="isAdmin"></span>
+
+      <button class="btn badge-cf" (click)="openCustomFieldsDialog()" *ngIf="isAdmin">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" class="badge-cf">
           <path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15zM11.5 9.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zm-1.51 3.49L9 15.17l-.99-2.18L5.83 12l2.18-.99L9 8.83l.99 2.18 2.18.99-2.18.99z"/>
         </svg>
@@ -16,3 +32,132 @@
       </button>
     </div>
 </nav>
+
+<mat-menu #menuSort="matMenu" class="widepanel">
+  <a mat-menu-item (click)="sort('none')" [ngStyle]="{'color' : (sortby==='none') ? '#005fd5' : 'black'}">
+    <span i18n="@@filesBar.sort.none">None</span>
+  </a>
+
+  <a mat-menu-item (click)="sort('name')" [ngStyle]="{'color' : (sortby==='name') ? '#005fd5' : 'black'}">
+    <span i18n="@@filesBar.sort.name">Name</span>
+  </a>
+
+  <a mat-menu-item (click)="sort('created_date')"
+    [ngStyle]="{'color' : (sortby==='created_date') ? '#005fd5' : 'black'}">
+    <span i18n="@@filesBar.sort.creationDate">Creation Date</span>
+  </a>
+
+  <a mat-menu-item (click)="sort('tags')" [ngStyle]="{'color' : (sortby==='tags') ? '#005fd5' : 'black'}">
+    <span i18n="@@filesBar.sort.tags">Tags</span>
+  </a>
+
+  <a mat-menu-item [matMenuTriggerFor]="menuCustomFieldsSort" class="dropdownbtn widepanel"
+    [ngStyle]="{'color' : (sortby==='priority') ? '#005fd5' : 'black'}">
+      <span i18n="@@filesBar.sort.customField">Custom Field</span>
+  </a>
+</mat-menu>
+
+<mat-menu #menuFilter="matMenu" style="overflow: visible !important;" class="filter-menu widepanel">
+  <a mat-menu-item (click)="filter('none')" [ngStyle]="{'color' : (filterfor==='none') ? '#005fd5' : 'black'}">
+    <span i18n="@@filesBar.filter.none">None</span>
+  </a>
+
+  <a mat-menu-item class="overflowvisible widepanel">
+    <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+      <button [matMenuTriggerFor]="menuDueDate" class="dropdownbtn" style="padding:0">
+        <span [ngStyle]="{'cursor': 'pointer','color' : (filterfor==='created_today' ||
+          filterfor==='created_last_week' ||
+          filterfor==='created_14_days') ? '#005fd5' : 'black'}"
+          i18n="@@filesBar.filter.creationDate">Creation Date</span>
+        <span>
+          <div class="label-priority low selectedPriority" *ngIf="(filterfor==='created_today' ||
+            filterfor==='created_last_week' ||
+            filterfor==='created_14_days')">
+            {{
+              filterfor==='created_today'?"Today":
+              filterfor==='created_last_week'?"Last week":
+              filterfor==='created_14_days'?"Last 14 days":""
+            }}
+          </div>
+        </span>
+      </button>
+    </div>
+  </a>
+
+  <span mat-menu-item class="cursordefault overflowvisible"
+    [ngStyle]="{'color' : (filterfor==='users') ? '#005fd5' : 'black'}">
+    <div (click)="$event.stopPropagation();">
+      <app-member-list-menu [groupMembers]="groupMembers" [filterfor]="filterfor" [menuLable]="menuLable"
+        [menuFor]="menuFor" (userSelctionEmitter)="onUserSelctionEmitter($event)">
+      </app-member-list-menu>
+    </div>
+  </span>
+
+  <a mat-menu-item [matMenuTriggerFor]="menuCustomFieldsFilter" class="dropdownbtn"
+    [ngStyle]="{'color' : (sortby==='priority') ? '#005fd5' : 'black'}">
+      <span i18n="@@filesBar.sort.customField">Custom Field</span>
+  </a>
+</mat-menu>
+
+<mat-menu #menuCustomFieldsSort="matMenu">
+  <a mat-menu-item *ngFor="let cf of customFields" (click)="sort('custom_field', cf)" style="margin: 10px;text-decoration: none;">
+    <span>{{ cf.title }}</span>
+  </a>
+</mat-menu>
+
+<mat-menu #menuDueDate="matMenu">
+  <a mat-menu-item (click)="filter('created_today')" style="margin: 10px;text-decoration: none;">
+    <span i18n="@@filesBar.filter.today">Today</span>
+  </a>
+
+  <a mat-menu-item (click)="filter('created_last_week')" style="margin: 10px;text-decoration: none;">
+    <span i18n="@@filesBar.filter.lastWeek">Last week</span>
+  </a>
+
+  <a mat-menu-item (click)="filter('created_14_days')" style="margin: 10px;text-decoration: none;">
+    <span i18n="@@filesBar.filter.last14Days">Last 14 days</span>
+  </a>
+</mat-menu>
+
+<mat-menu #menuCustomFieldsFilter="matMenu">
+  <a mat-menu-item *ngFor="let cf of customFields" [matMenuTriggerFor]="menuCustomFieldsValuesFilter" style="margin: 10px;text-decoration: none;">
+    <span>{{ cf.title }}</span>
+
+    <mat-menu #menuCustomFieldsValuesFilter="matMenu">
+      <span *ngIf="!cf.input_type">
+        <a mat-menu-item *ngFor="let cfValue of cf.values" (click)="filter('custom_field', cf, cfValue)" style="margin: 10px;text-decoration: none;">
+          <span>{{ cfValue }}</span>
+        </a>
+      </span>
+
+      <span *ngIf="cf.input_type_text">
+        <div class="form-group" (click)="$event.stopPropagation()">
+          <label [for]="cf.name">{{menuLable}}</label>
+          <input type="text" class="form-control" [id]="cf.name"
+              [(ngModel)]="filterCFInputValue"
+              (focusout)="filter('custom_field', cf, filterCFInputValue)"
+              (keyup.enter)="filter('custom_field', cf, filterCFInputValue)" autofocus>
+        </div>
+      </span>
+
+      <span *ngIf="cf.input_type_number">
+        <div class="form-group" (click)="$event.stopPropagation()">
+          <label [for]="cf.name">{{menuLable}}</label>
+          <input type="number" class="form-control" [id]="cf.name"
+              [(ngModel)]="filterCFNumberInputValue"
+              (focusout)="filter('custom_field', cf, filterCFNumberInputValue)"
+              (keyup.enter)="filter('custom_field', cf, filterCFNumberInputValue)" autofocus>
+        </div>
+      </span>
+
+      <span *ngIf="cf.input_type_date">
+        <!-- Date Picker starts -->
+        <app-date-picker (date)="filter('custom_field', cf, $event.toDate())"
+          [selectedDate]="formateCFDate(selectedCFFilterDate)"
+          [styleClass]="'btn-group input-date'">
+        </app-date-picker>
+        <!--Date Picker ends -->
+      </span>
+    </mat-menu>
+  </a>
+</mat-menu>
