@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -14,7 +15,8 @@ export class ResultInsightsComponent implements OnChanges, OnInit  {
   scaleResponses = new Map();
 
   constructor(
-    public utilityService: UtilityService
+    public utilityService: UtilityService,
+    private flamingoService: FlamingoService
   ) { }
 
   async ngOnChanges() {
@@ -39,19 +41,7 @@ export class ResultInsightsComponent implements OnChanges, OnInit  {
    * @returns
    */
   getPositiveResponsesStats(questionId: string) {
-    let responsesMatch = []
-    this.responses?.forEach(response => {
-
-      const answerIndex = response?.answers?.findIndex(answer => answer._question._id == questionId);
-      const answer = response?.answers[answerIndex];
-
-      if (answer?._question?.type == 'Yes/No' && answer?.positive_answer) {
-        responsesMatch.push({
-          positive_answer: answer.positive_answer
-        });
-      }
-    });
-    return responsesMatch?.length;
+    return this.flamingoService.getPositiveResponsesStats(this.responses, questionId);
   }
 
   /**
@@ -60,19 +50,7 @@ export class ResultInsightsComponent implements OnChanges, OnInit  {
    * @returns
    */
    getNegativeResponsesStats(questionId: string) {
-    let responsesMatch = []
-    this.responses?.forEach(response => {
-
-      const answerIndex = response?.answers?.findIndex(answer => answer?._question?._id == questionId);
-      const answer = response?.answers[answerIndex];
-
-      if (answer?._question.type == 'Yes/No' && answer?.negative_answer) {
-        responsesMatch.push({
-          negative_answer: answer?.negative_answer
-        });
-      }
-    });
-    return responsesMatch?.length;
+    return this.flamingoService.getNegativeResponsesStats(this.responses, questionId);
   }
 
   /**
@@ -82,48 +60,14 @@ export class ResultInsightsComponent implements OnChanges, OnInit  {
    * @returns
    */
   getDropdawnResponsesStats(questionId: string, selectedOption: string) {
-    let responsesMatch = []
-    this.responses?.forEach(response => {
-
-      const answerIndex = response?.answers?.findIndex(answer => answer._question._id == questionId);
-      const answer = response?.answers[answerIndex];
-
-      if (answer._question.type == 'Dropdown' && answer.dropdown_answer == selectedOption) {
-        responsesMatch.push({
-          dropdown_answer: answer.dropdown_answer
-        });
-      }
-    });
-    return responsesMatch?.length;
+    return this.flamingoService.getDropdawnResponsesStats(this.responses, questionId, selectedOption);
   }
 
   getScaleResponses(questionId: string) {
-    let responsesMatch = []
-    this.responses?.forEach(response => {
-
-      const answerIndex = response?.answers?.findIndex(answer => answer?._question?._id == questionId);
-      const answer = response?.answers[answerIndex];
-      responsesMatch.push({
-        scale_answer: answer?.scale_answer
-      });
-    });
-    return responsesMatch;
+    return this.flamingoService.getScaleResponses(this.responses, questionId);
   }
 
   getMultipleResponsesStats(questionId: string, selectedOption: string) {
-    let responsesMatch = []
-
-    this.responses?.forEach(response => {
-
-      const answerIndex = response?.answers?.findIndex(answer => answer._question._id == questionId);
-      const answer = response?.answers[answerIndex];
-
-      if (answer?._question?.type == 'Multiple' && answer?.answer_multiple?.findIndex(answer => answer == selectedOption) >= 0) {
-        responsesMatch.push({
-          answer_multiple: answer?.answer_multiple
-        });
-      }
-    });
-    return responsesMatch?.length;
+    return this.flamingoService.getMultipleResponsesStats(this.responses, questionId, selectedOption);
   }
 }

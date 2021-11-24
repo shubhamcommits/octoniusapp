@@ -124,4 +124,95 @@ export class FlamingoService {
    async copyFlamingo(fileId: string) {
     return this._http.put(this.baseURL + `/${fileId}/copy`, { }).toPromise();
   }
+
+  /**
+   * This methods calculates the number of positive answers for a specific Yes/No question
+   * @param questionId
+   * @returns
+   */
+  getPositiveResponsesStats(responses: any, questionId: string) {
+    let responsesMatch = []
+    responses?.forEach(response => {
+
+      const answerIndex = response?.answers?.findIndex(answer => answer?._question?._id == questionId);
+      const answer = response?.answers[answerIndex];
+
+      if (answer && answer?._question?.type == 'Yes/No' && answer?.positive_answer) {
+        responsesMatch.push({
+          positive_answer: answer.positive_answer
+        });
+      }
+    });
+    return responsesMatch?.length;
+  }
+
+  /**
+   * This methods calculates the number of negative answers for a specific Yes/No question
+   * @param questionId
+   * @returns
+   */
+   getNegativeResponsesStats(responses: any, questionId: string) {
+    let responsesMatch = []
+    responses?.forEach(response => {
+
+      const answerIndex = response?.answers?.findIndex(answer => answer?._question?._id == questionId);
+      const answer = response?.answers[answerIndex];
+
+      if (answer && answer?._question?.type == 'Yes/No' && answer?.negative_answer) {
+        responsesMatch.push({
+          negative_answer: answer?.negative_answer
+        });
+      }
+    });
+    return responsesMatch?.length;
+  }
+
+  /**
+   * This methods calculates the number of answers for a specific option in a Dropdown question
+   * @param questionId
+   * @param selectedOption
+   * @returns
+   */
+  getDropdawnResponsesStats(responses: any, questionId: string, selectedOption: string) {
+    let responsesMatch = []
+    responses?.forEach(response => {
+      const answerIndex = response?.answers?.findIndex(answer => answer?._question?._id == questionId);
+      const answer = response?.answers[answerIndex];
+
+      if (answer && answer?._question?.type == 'Dropdown' && answer?.dropdown_answer == selectedOption) {
+        responsesMatch.push({
+          dropdown_answer: answer.dropdown_answer
+        });
+      }
+    });
+    return responsesMatch?.length;
+  }
+
+  getScaleResponses(responses: any, questionId: string) {
+    let responsesMatch = []
+    responses?.forEach(response => {
+      const answerIndex = response?.answers?.findIndex(answer => answer?._question?._id == questionId);
+      const answer = response?.answers[answerIndex];
+      responsesMatch.push({
+        scale_answer: answer?.scale_answer
+      });
+    });
+    return responsesMatch;
+  }
+
+  getMultipleResponsesStats(responses: any, questionId: string, selectedOption: string) {
+    let responsesMatch = []
+
+    responses?.forEach(response => {
+      const answerIndex = response?.answers?.findIndex(answer => answer?._question?._id == questionId);
+      const answer = response?.answers[answerIndex];
+
+      if (answer && answer?._question?.type == 'Multiple' && answer?.answer_multiple?.findIndex(answer => answer == selectedOption) >= 0) {
+        responsesMatch.push({
+          answer_multiple: answer?.answer_multiple
+        });
+      }
+    });
+    return responsesMatch?.length;
+  }
 }

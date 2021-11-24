@@ -3224,7 +3224,7 @@
       </trans-unit>
       <trans-unit id="flamingoResultInsights.responses" datatype="html">
         <source> Responses: <x id="INTERPOLATION" equiv-text="{{ responses?.length }}"/> </source>
-        <target state="translated"> Respuestas: {{answers? .Length}}</target>
+        <target state="translated"> Respuestas: <x id="INTERPOLATION" equiv-text="{{ responses?.length }}"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-result/result-insights/result-insights.component.html</context>
           <context context-type="linenumber">4,6</context>
