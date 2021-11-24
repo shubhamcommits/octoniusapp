@@ -24,13 +24,15 @@ export class SearchHeaderComponent implements OnInit {
 
   workplaceId: any;
 
+  showAdvancedFilters: boolean = false;
+
+  // Public Functions Object
+  public publicFunctions = new PublicFunctions(this.injector);
+
   constructor(
     private searchService: SearchService,
     private injector: Injector
   ) { }
-
-  // Public Functions Object
-  public publicFunctions = new PublicFunctions(this.injector);
 
   async ngOnInit() {
     await this.publicFunctions.getCurrentUser().then((res)=>{
@@ -127,14 +129,14 @@ export class SearchHeaderComponent implements OnInit {
 
     }
   }
-    /**
+  /**
    * User Query Ends
    */
 
-   /**
-    * File Query Starts
-    */
-   searchFiles(fileQuery){
+  /**
+   * File Query Starts
+   */
+  searchFiles(fileQuery){
     try {
       new Promise((resolve, reject)=>{
         this.searchService.getSearchResults(fileQuery, 'files').then((res: any)=>{
@@ -155,8 +157,9 @@ export class SearchHeaderComponent implements OnInit {
     } catch (error) {
 
     }
-   }
-   /**
-    * File Query Ends
-    */
+  }
+  /**
+  * File Query Ends
+  */
+
 }

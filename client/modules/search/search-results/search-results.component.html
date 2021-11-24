@@ -1,44 +1,100 @@
-<div *ngIf="type=='post'" style="text-align: left;">
-  <p class="octo-search-category">
-    <span i18n="@@searchResult.title">Title:&nbsp;</span>
-    <a [href]="generatePostURL()" target="_blank">
-      {{ data.title }}
-    </a>
-  </p>
-  <div [innerHTML]="data?.html" class="search-content"></div>
-  <p><strong i18n="@@searchResult.tags">Tags: </strong></p>
-  <ul>
-    <li *ngFor="let tag of data.tags" class="label">{{ tag }}</li>
-  </ul>
-</div>
+<div *ngIf="data && (type=='post' || type=='file')" style="text-align: left;">
+  <div>
+    <span class="octo-search-category" *ngIf="type=='post'">{{ data?.title }}</span>
+    <span class="octo-search-category" *ngIf="type=='file'">{{ data?.original_name }}</span>
 
-<div *ngIf="type=='user'" style="text-align: left;">
-  <p class="octo-search-category">
-    <span i18n="@@searchResult.fullName">Full Name</span>:&nbsp;
-    <a [href]="generateUserURL(data._id)" target="_blank">
-      {{ data.first_name }} {{ data.last_name }}
+    <a *ngIf="type=='post'" [href]="generatePostURL()" target="_blank" i18n="@@searchResult.openNewTab">
+      Open in new tab
     </a>
-  </p>
-  <p><strong i18n="@@searchResult.mail">mail: </strong>{{ data.email }}</p>
-  <p><strong i18n="@@searchResult.skills">Skills: </strong></p>
-  <ul>
-      <li *ngFor="let skill of data.skills" class="label"> {{ skill }}</li>
-  </ul>
-</div>
 
-<div *ngIf="type=='file'" style="text-align: left;">
-  <p class="octo-search-category">
-    <span i18n="@@searchResult.fileName">File Name:&nbsp;</span>
-    <a *ngIf="data?.type === 'file' || data?.type === undefined" [href]="generateFileURL()" target="_blank">
-      {{ data.original_name }}
+    <a *ngIf="type=='file' && data?.type === 'file' || data?.type === undefined" [href]="generateFileURL()" target="_blank" i18n="@@searchResult.openNewTab">
+      Open in new tab
     </a>
-    <a *ngIf="data?.type === 'folio'" target="_blank"
+    <a *ngIf="type=='file' && data?.type === 'folio'" target="_blank" i18n="@@searchResult.openNewTab"
       routerLink="/document/{{data?._id}}" [queryParams]="{ group: data?._group?._id || data?._group }">
-      {{ data.original_name }}
+      Open in new tab
     </a>
-  </p>
-  <!-- <p><strong>Modified File Name: </strong>{{ data.modified_name }}</p> -->
-  <p><strong i18n="@@searchResult.group">Group: </strong>{{ data.groupName }}</p>
-  <p><strong i18n="@@searchResult.fileType">File type: </strong>{{ data.mime_type }}</p>
-  <p><strong i18n="@@searchResult.postedBy">Posted By: </strong><a [href]="generateUserURL(data._posted_by)" target="_blank">{{ data.postedBy }}</a></p>
+  </div>
+
+  <div>
+    <strong i18n="@@searchResult.tags">Tags: </strong>
+    <ul>
+      <li *ngFor="let tag of data?.tags" class="label">{{ tag }}</li>
+    </ul>
+  </div>
+
+  <div>
+    <strong i18n="@@searchResult.createdOn">Created On: </strong>
+    <span>{{ data?.created_date | date:'MMM dd, yyyy' }}</span>
+  </div>
+
+  <div>
+    <strong i18n="@@searchResult.owner">Owner: </strong>
+    <div *ngIf="data?._posted_by" id="avatar-assignee" style="margin-bottom: 30px;">
+      <app-secured-image
+        [imgURL]="data?._posted_by?.profile_pic"
+        [service]="'user'"
+        [styleClass]="'feed-avatar-small'"
+        style="float: left; cursor: auto;"></app-secured-image>
+
+      <div style="padding-top: 10px;" class="ml-1">
+        {{data?._posted_by?.first_name}}
+        {{ data?._posted_by?.last_name }}
+      </div>
+    </div>
+  </div>
+
+  <div [innerHTML]="data?.html" class="search-content"></div>
+
+  <div>
+    <strong i18n="@@searchResult.customFields">Custom Fields: </strong>
+    <ul *ngIf="customFieldsKeys">
+      <li *ngFor="let key of customFieldsKeys" class="label">
+        <span *ngIf="type == 'file'">{{ key }}: {{ data?.custom_fields[key] }}</span>
+        <span *ngIf="type == 'post'">{{ key }}: {{ data?.task?.custom_fields[key] }}</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div *ngIf="data && type=='user'" style="text-align: left;">
+  <div class="octo-search-category">
+    <app-secured-image
+      [imgURL]="data?.profile_pic"
+      [service]="'user'"
+      [styleClass]="'feed-avatar-small'"
+      style="float: left; cursor: auto;"></app-secured-image>
+
+    {{ data?.first_name }} {{ data?.last_name }}
+
+    <a [href]="generateUserURL(data._id)" target="_blank" i18n="@@searchResult.openNewTab">
+      Open in new tab
+    </a>
+  </div>
+
+  <p><strong i18n="@@searchResult.role">Role: </strong>{{ data?.role }}</p>
+  <p><strong i18n="@@searchResult.email">E-Mail: </strong>{{ data?.email }}</p>
+  <p><strong i18n="@@searchResult.phone">Phone Number: </strong>{{ data?.phone_number }}</p>
+  <p><strong i18n="@@searchResult.mobile">Mobile Number: </strong>{{ data?.mobile_number }}</p>
+  <p><strong i18n="@@searchResult.currentPosition">Current Position: </strong>{{ data?.current_position }}</p>
+  <p><strong i18n="@@searchResult.company">Company: </strong>{{ data?.company_name }}</p>
+  <p><strong i18n="@@searchResult.joined">Joined on: </strong>{{ data?.company_join_date | date:'MMM dd, yyyy' }}</p>
+
+  <p><strong i18n="@@searchResult.bio">Bio: </strong> {{ data?.bio }}</p>
+
+  <div>
+    <strong i18n="@@searchResult.skills">Skills: </strong>
+    <ul>
+        <li *ngFor="let skill of data.skills" class="label"> {{ skill }}</li>
+    </ul>
+  </div>
+
+  <div>
+    <strong i18n="@@searchResult.profileFields">Profile Fields: </strong>
+    <ul *ngIf="customFieldsKeys">
+      <li *ngFor="let key of customFieldsKeys" class="label">
+        <span>{{ key }}: {{ data?.profile_custom_fields[key] }}</span>
+      </li>
+    </ul>
+  </div>
 </div>

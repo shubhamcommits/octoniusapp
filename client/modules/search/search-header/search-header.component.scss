@@ -9,10 +9,14 @@ input {
     border: none;
 }
 
-.inner-addon { 
-    position: relative; 
-    height: 100%;
-
+.inner-addon {
+  position: relative;
+  height: 100%;
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* style icon */

@@ -1,8 +1,24 @@
-<div class="inner-addon left-addon">
-  <i class="material-icons">search</i>
-  <input type="text" name="search" id="" placeholder="Search" class="search-input" autocomplete="false"
-    [(ngModel)]="searchQuery"
-    (ngModelChange)="search()">
+<div>
+  <mat-dialog-actions class="d-flex justify-content-end" align="end">
+    <i mat-dialog-close class="material-icons" style="cursor: pointer">close</i>
+  </mat-dialog-actions>
+
+  <div mat-dialog-title class="inner-addon">
+    <div class="left-addon" style="width: 100%;">
+      <i class="material-icons">search</i>
+      <input type="text" name="search" id="" placeholder="Search" class="search-input" autocomplete="false"
+        [(ngModel)]="searchQuery" (ngModelChange)="search()" style="width: 90%;">
+    </div>
+<!--
+    <div class="right-addon">
+      <i class="material-icons" style="cursor: pointer;" (click)="showAdvancedFilters=!showAdvancedFilters">tune</i>
+    </div>
+  -->
+
+    <div *ngIf="showAdvancedFilters">
+      Advanced Filters
+    </div>
+  </div>
   <div class="row" style="overflow: hidden;">
     <div class="col-md-4" style="border-right: 2px solid #E4EDF8;">
       <p *ngIf="searchedPosts.length>0" class="octo-search-category" i18n="@@searchHeader.posts">POSTS</p>
@@ -15,8 +31,9 @@
       <a *ngFor="let file of searchedFiles" href="#" onclick="return false"
           (click)="selected=file; selectedType='file'" class="octo-search-results">{{ file.original_name }}</a>
     </div>
+
     <div class="col-md-8">
-        <app-search-results *ngIf="selected" [data]="selected" [type]='selectedType'></app-search-results>
+      <app-search-results *ngIf="selected" [data]="selected" [type]='selectedType'></app-search-results>
     </div>
   </div>
 </div>
