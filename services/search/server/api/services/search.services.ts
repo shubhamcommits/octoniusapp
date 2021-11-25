@@ -34,7 +34,7 @@ export class SearchService {
     }
   };
 
-  async createPostQuery(userGroups, query, advancedFilters) {
+  async createPostQuery(userGroups, queryText, advancedFilters) {
 
     if (advancedFilters.owners.length > 0) {
       advancedFilters.owners = advancedFilters.owners.map(member => {
@@ -42,49 +42,124 @@ export class SearchService {
       });
     }
 
-    return Post.aggregate([
-      {
-        $match: {
-          $and: [
-            { _group: { $in: userGroups } },
-            {
-              $or: [
-                { content: { $regex: query, $options: 'i' } },
-                { title: { $regex: query, $options: 'i' } },
-                { tags: { $regex: query, $options: 'i' } }
-              ]
-            },
-            // { _posted_by: { $in: advancedFilters.owners } },
-            // { tags: { $in: advancedFilters.tags } }
-          ]    
-        }
-      },
-    ]).sort({ created_date: -1 });
+    let query: any = {};
+    if (advancedFilters.owners && advancedFilters.owners.length > 0
+        && advancedFilters.tags && advancedFilters.tags.length > 0) {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          {
+            $or: [
+              { content: { $regex: queryText, $options: 'i' } },
+              { title: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' } }
+            ]
+          },
+          { _posted_by: { $in: advancedFilters.owners } },
+          { tags: { $in: advancedFilters.tags } }
+        ]
+      };
+    } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
+        && advancedFilters.tags && advancedFilters.tags.length > 0) {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          {
+            $or: [
+              { content: { $regex: queryText, $options: 'i' } },
+              { title: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' } }
+            ]
+          },
+          { tags: { $in: advancedFilters.tags } }
+        ]
+      };
+    } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
+        && (advancedFilters.tags || advancedFilters.tags.length == 0)) {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          {
+            $or: [
+              { content: { $regex: queryText, $options: 'i' } },
+              { title: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' } }
+            ]
+          },
+          { _posted_by: { $in: advancedFilters.owners } }
+        ]
+      };
+    } else {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          {
+            $or: [
+              { content: { $regex: queryText, $options: 'i' } },
+              { title: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' } }
+            ]
+          }
+        ]
+      };
+    }
+
+    return Post.find(query)
+      .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+      .sort({ created_date: -1 })
+      .lean();
   }
 
-  async createUserQuery(user, query, advancedFilters) {
-    return User.find({
-      $and: [
-        { _workspace: user._workspace || user._workspace._id },
-        { active: {$eq : true}},
-        {
-          $or: [
-            { first_name: { $regex: query, $options: 'i' } },
-            { last_name: { $regex: query, $options: 'i' } },
-            { email: { $regex: query, $options: 'i' } },
-            { skills: { $regex: query, $options: 'i' } },
-            { bio: { $regex: query, $options: 'i' } },
-            { company_name: { $regex: query, $options: 'i' } },
-            { phone_number: { $regex: query, $options: 'i' } },
-            { role: { $regex: query, $options: 'i' } }
-          ]
-        },
-        //{ skills: { $in: advancedFilters.skills } }
-      ]
-    });
+  async createUserQuery(user, queryText, advancedFilters) {
+
+    let query: any = {};
+    if (advancedFilters.skills && advancedFilters.skills.length > 0) {
+      query = {
+        $and: [
+          { _workspace: user._workspace || user._workspace._id },
+          { active: {$eq : true}},
+          {
+            $or: [
+              { first_name: { $regex: queryText, $options: 'i' } },
+              { last_name: { $regex: queryText, $options: 'i' } },
+              { email: { $regex: queryText, $options: 'i' } },
+              { skills: { $regex: queryText, $options: 'i' } },
+              { bio: { $regex: queryText, $options: 'i' } },
+              { company_name: { $regex: queryText, $options: 'i' } },
+              { phone_number: { $regex: queryText, $options: 'i' } },
+              { role: { $regex: queryText, $options: 'i' } }
+            ]
+          },
+          { skills: { $in: advancedFilters.skills } }
+        ]
+      };
+    } else {
+      query = {
+        $and: [
+          { _workspace: user._workspace || user._workspace._id },
+          { active: {$eq : true}},
+          {
+            $or: [
+              { first_name: { $regex: queryText, $options: 'i' } },
+              { last_name: { $regex: queryText, $options: 'i' } },
+              { email: { $regex: queryText, $options: 'i' } },
+              { skills: { $regex: queryText, $options: 'i' } },
+              { bio: { $regex: queryText, $options: 'i' } },
+              { company_name: { $regex: queryText, $options: 'i' } },
+              { phone_number: { $regex: queryText, $options: 'i' } },
+              { role: { $regex: queryText, $options: 'i' } }
+            ]
+          }
+        ]
+      };
+    }
+
+    return User.find(query)
+      .sort({first_name: -1})
+      .lean();
   }
 
-  async createFilesQuery(userGroups, query, advancedFilters) {
+  async createFilesQuery(userGroups, queryText, advancedFilters) {
     
     if (advancedFilters.owners.length > 0) {
       advancedFilters.owners = advancedFilters.owners.map(member => {
@@ -92,46 +167,169 @@ export class SearchService {
       });
     }
 
-    return File.aggregate([
-      {
-        $match: {
-          $and: [
-            { _group: { $in: userGroups } },
-            {
-              $or: [
-                { original_name: { $regex: query, $options: 'i' } },
-                { modified_name: { $regex: query, $options: 'i' } },
-                { tags: { $regex: query, $options: 'i' }},
-                // { description: { $regex: query, $options: 'i' }},
-                // { custom_fields: { $regex: query, $options: 'i' }},
-              ]
-            },
-            //{ _posted_by: { $in: advancedFilters.owners } },
-            //{ tags: { $in: advancedFilters.tags } },
-            //{ description: { $regex: advancedFilters.metadata, $options: 'i' }},
-          ]    
-        }
-      },
-    ]).sort({ created_date: -1 });
+    let query: any = {};
+    if (advancedFilters.owners && advancedFilters.owners.length > 0
+        && advancedFilters.tags && advancedFilters.tags.length > 0
+        && advancedFilters.metadata && advancedFilters.metadata != '') {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          {
+            $or: [
+              { original_name: { $regex: queryText, $options: 'i' } },
+              { modified_name: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }},
+              // { custom_fields: { $regex: queryText, $options: 'i' }},
+            ]
+          },
+          { _posted_by: { $in: advancedFilters.owners } },
+          { tags: { $in: advancedFilters.tags } },
+          { description: { $regex: advancedFilters.metadata, $options: 'i' }},
+        ]    
+      };
+    } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
+        && advancedFilters.tags && advancedFilters.tags.length > 0
+        && advancedFilters.metadata && advancedFilters.metadata != '') {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          {
+            $or: [
+              { original_name: { $regex: queryText, $options: 'i' } },
+              { modified_name: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }},
+              // { custom_fields: { $regex: queryText, $options: 'i' }},
+            ]
+          },
+          { tags: { $in: advancedFilters.tags } },
+          { description: { $regex: advancedFilters.metadata, $options: 'i' }},
+        ]    
+      };
+    } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
+        && (advancedFilters.tags || advancedFilters.tags.length == 0)
+        && advancedFilters.metadata && advancedFilters.metadata != '') {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          {
+            $or: [
+              { original_name: { $regex: queryText, $options: 'i' } },
+              { modified_name: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }},
+              // { custom_fields: { $regex: queryText, $options: 'i' }},
+            ]
+          },
+          { _posted_by: { $in: advancedFilters.owners } },
+          { description: { $regex: advancedFilters.metadata, $options: 'i' }},
+        ]    
+      };
+    } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
+        && advancedFilters.tags && advancedFilters.tags.length > 0
+        && (!advancedFilters.metadata || advancedFilters.metadata == '')) {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          {
+            $or: [
+              { original_name: { $regex: queryText, $options: 'i' } },
+              { modified_name: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }},
+              // { custom_fields: { $regex: queryText, $options: 'i' }},
+            ]
+          },
+          { _posted_by: { $in: advancedFilters.owners } },
+          { tags: { $in: advancedFilters.tags } }
+        ]    
+      };
+    } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
+        && (advancedFilters.tags || advancedFilters.tags.length == 0)
+        && advancedFilters.metadata && advancedFilters.metadata != '') {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          {
+            $or: [
+              { original_name: { $regex: queryText, $options: 'i' } },
+              { modified_name: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }},
+              // { custom_fields: { $regex: queryText, $options: 'i' }},
+            ]
+          },
+          { description: { $regex: advancedFilters.metadata, $options: 'i' }},
+        ]    
+      };
+    } else if (advancedFilters.owners && advancedFilters.owners.length > 0
+        && (advancedFilters.tags || advancedFilters.tags.length == 0)
+        && (!advancedFilters.metadata || advancedFilters.metadata == '')) {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          {
+            $or: [
+              { original_name: { $regex: queryText, $options: 'i' } },
+              { modified_name: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }},
+              // { custom_fields: { $regex: queryText, $options: 'i' }},
+            ]
+          },
+          { _posted_by: { $in: advancedFilters.owners } },
+        ]    
+      };
+    } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
+        && advancedFilters.tags && advancedFilters.tags.length > 0
+        && (!advancedFilters.metadata || advancedFilters.metadata == '')) {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          {
+            $or: [
+              { original_name: { $regex: queryText, $options: 'i' } },
+              { modified_name: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }},
+              // { custom_fields: { $regex: queryText, $options: 'i' }},
+            ]
+          },
+          { tags: { $in: advancedFilters.tags } }
+        ]    
+      };
+    } else {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          {
+            $or: [
+              { original_name: { $regex: queryText, $options: 'i' } },
+              { modified_name: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }},
+              // { custom_fields: { $regex: queryText, $options: 'i' }},
+            ]
+          }
+        ]    
+      };
+    }
+
+    return File.find(query)
+      .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+      .sort({ created_date: -1 })
+      .lean();
   }
 
-  async createCommentsQuery(query, advancedFilters) {
-    return Comment.aggregate([
-      {
-        $lookup: {
-          from: 'posts',
-          localField: '_post',
-          foreignField: '_id',
-          as: 'post'
-        }
-      },
-      {
-        $match: {
-          $and: [
-            { content: { $regex: query, $options: 'i' } }
-          ]    
-        }
-      }
-    ]).sort({ created_date: -1 });
+  async createCommentsQuery(queryText, advancedFilters) {
+    return Comment.find({
+        $and: [
+          { content: { $regex: queryText, $options: 'i' } }
+        ]    
+      })
+      .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+      .sort({ created_date: -1 })
+      .lean();
   }
 }
