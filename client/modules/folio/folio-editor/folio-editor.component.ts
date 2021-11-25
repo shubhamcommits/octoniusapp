@@ -255,9 +255,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit() {
-    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    if (!this.readOnly) {
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    }
     this.folio = this.initializeConnection();
-    this.fileData = await this.getFile(this.folioId);
+    this.fileData = await this.getFile(this.folioId, this.readOnly);
     // TODO - Remove the following line when BRD pays
     this.fileData.show_headings = false;
   }
@@ -837,10 +839,10 @@ console.log(value);
    * This function is responsible for fetching a file's details
    * @param fileId
    */
-  public async getFile(fileId: any) {
+  public async getFile(fileId: any, readOnly:boolean) {
     return new Promise((resolve) => {
       // Fetch the file details
-      this.filesService.getOne(fileId)
+      this.filesService.getOne(fileId, readOnly)
         .then((res) => {
           resolve(res['file'])
         })
