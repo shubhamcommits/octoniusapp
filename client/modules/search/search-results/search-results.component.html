@@ -28,30 +28,30 @@
     <span>{{ data?.created_date | date:'MMM dd, yyyy' }}</span>
   </div>
 
-  <div>
+  <div *ngIf="data?._posted_by">
     <strong i18n="@@searchResult.owner">Owner: </strong>
-    <div *ngIf="data?._posted_by" id="avatar-assignee" style="margin-bottom: 30px;">
+    <div id="avatar-assignee" style="margin-bottom: 30px;">
       <app-secured-image
-        [imgURL]="data?._posted_by?.profile_pic"
+        [imgURL]="data?._posted_by.profile_pic"
         [service]="'user'"
         [styleClass]="'feed-avatar-small'"
         style="float: left; cursor: auto;"></app-secured-image>
 
       <div style="padding-top: 10px;" class="ml-1">
-        {{data?._posted_by?.first_name}}
-        {{ data?._posted_by?.last_name }}
+        {{data?._posted_by.first_name}}
+        {{ data?._posted_by.last_name }}
       </div>
     </div>
   </div>
 
   <div [innerHTML]="data?.html" class="search-content"></div>
 
-  <div>
+  <div *ngIf="customFieldsKeys && customFieldsKeys.length > 0 && (data?.custom_fields || data?.task?.custom_fields)">
     <strong i18n="@@searchResult.customFields">Custom Fields: </strong>
-    <ul *ngIf="customFieldsKeys">
+    <ul>
       <li *ngFor="let key of customFieldsKeys" class="label">
-        <span *ngIf="type == 'file'">{{ key }}: {{ data?.custom_fields[key] }}</span>
-        <span *ngIf="type == 'post'">{{ key }}: {{ data?.task?.custom_fields[key] }}</span>
+        <span *ngIf="type == 'file' && data?.custom_fields">{{ key }}: {{ data?.custom_fields[key] }}</span>
+        <span *ngIf="type == 'post' && data?.task?.custom_fields">{{ key }}: {{ data?.task?.custom_fields[key] }}</span>
       </li>
     </ul>
   </div>

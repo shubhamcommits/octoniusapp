@@ -9,27 +9,116 @@
       <input type="text" name="search" id="" placeholder="Search" class="search-input" autocomplete="false"
         [(ngModel)]="searchQuery" (ngModelChange)="search()" style="width: 90%;">
     </div>
-<!--
-    <div class="right-addon">
-      <i class="material-icons" style="cursor: pointer;" (click)="showAdvancedFilters=!showAdvancedFilters">tune</i>
-    </div>
-  -->
+  </div>
 
-    <div *ngIf="showAdvancedFilters">
-      Advanced Filters
+  <div>
+    <i class="material-icons" style="cursor: pointer;" (click)="showAdvancedFilters=!showAdvancedFilters">tune</i>
+  </div>
+
+  <div *ngIf="showAdvancedFilters">
+    <div class="row">
+      <div class="col" i18n="@@searchHeader.type">Type</div>
+      <div class="col">
+        <mat-select [(value)]="advancedFilters.type" appearance="fill" (selectionChange)="advancedFiltersTypeChanged()">
+          <mat-option value="all" i18n="@@searchHeader.everything">Everything</mat-option>
+          <mat-option value="file" i18n="@@searchHeader.file">File</mat-option>
+          <mat-option value="post" i18n="@@searchHeader.post">Post</mat-option>
+          <mat-option value="user" i18n="@@searchHeader.user">User</mat-option>
+        </mat-select>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post'">
+      <div class="col" i18n="@@searchHeader.tag">Tag</div>
+      <div class="col">
+        <ul class="col-md-auto" >
+          <li *ngFor="let tag of advancedFilters?.tags; let i = index">
+            <button class="btn tagslabel"
+                style="margin-right: 1rem;"
+                (click)="removeTag(i)">
+              <b>X</b>
+            </button>
+            {{ tag }}
+          </li>
+        </ul>
+
+        <app-component-search-input-box
+          [placeholder]="'Add tag'"
+          [type]="'tag'"
+          [tagList]="advancedFilters?.tags"
+          (tag)="addNewTag($event)">
+        </app-component-search-input-box>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="advancedFilters.type == 'user'">
+      <div class="col" i18n="@@searchHeader.skill">Skill</div>
+      <div class="col">
+        <ul class="skills">
+          <li *ngFor="let skill of advancedFilters?.skills; let i = index;">
+              {{skill}}
+              <button type="button" name="button" class="btn btn-link" (click)="removeSkill(i)">
+                <i class="material-icons" matTooltipPosition="above" matTooltip="Delete this skill">delete_sweep</i>
+              </button>
+          </li>
+        </ul>
+
+        <app-component-search-input-box
+          [placeholder]="'Add skill'"
+          [type]="'skill'"
+          [tagList]="advancedFilters?.skills"
+          (skill)="addNewSkill($event)">
+        </app-component-search-input-box>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post'">
+      <div class="col" i18n="@@searchHeader.owner">Owner</div>
+      <div class="col">
+        <div class="useravatar" *ngFor="let member of advancedFilters.owners">
+          <app-secured-image
+            [imgURL]="member?.profile_pic"
+            [service]="'user'"
+            [tooltip]="member?.first_name + ' ' + member?.last_name"
+            [styleClass]="'feed-avatar'"
+            (click)="removeMemberSearch(member._id)"></app-secured-image>
+        </div>
+        <app-component-search-input-box class="ml-2" *ngIf="workplaceData"
+            [placeholder]="'Member'" [ragMemberList]="advancedFilters?.owners"
+            [workspaceData]="workplaceData?._id" [workspaceData]="workplaceData" [type]="'workspaceMembers'"
+            (member)="addNewMember($event)">
+        </app-component-search-input-box>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="advancedFilters.type == 'file'">
+      <div class="col" i18n="@@searchHeader.fileMetadata" *ngIf="advancedFilters.type == 'file'">File metadata</div>
+      <div class="col">
+        <input type="search" id="keyword" autocomplete="off" placeholder="Search Content" class="input-search"
+          [(ngModel)]="advancedFilters.metadata" />
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" (click)="this.showAdvancedFilters = !this.showAdvancedFilters" i18n="@@searchHeader.close">
+          Close
+      </button>
     </div>
   </div>
-  <div class="row" style="overflow: hidden;">
+
+  <div class="results row" style="overflow: hidden;">
     <div class="col-md-4" style="border-right: 2px solid #E4EDF8;">
       <p *ngIf="searchedPosts.length>0" class="octo-search-category" i18n="@@searchHeader.posts">POSTS</p>
       <a *ngFor="let post of searchedPosts" href="#" onclick="return false"
-          (click)="selected=post; selectedType='post'" class="octo-search-results">{{ post.title }}</a>
+        (click)="selected=post; selectedType='post'" class="octo-search-results">{{ post.title }}</a>
+
       <p *ngIf="searchedUsers.length>0" class="octo-search-category" i18n="@@searchHeader.users">USERS</p>
       <a *ngFor="let user of searchedUsers" href="#" onclick="return false"
-          (click)="selected=user; selectedType='user'" class="octo-search-results">{{ user.first_name }} {{ user.last_name }}</a>
+        (click)="selected=user; selectedType='user'" class="octo-search-results">{{ user.first_name }} {{ user.last_name }}</a>
+
       <p *ngIf="searchedFiles.length>0" class="octo-search-category" i18n="@@searchHeader.files">FILES</p>
       <a *ngFor="let file of searchedFiles" href="#" onclick="return false"
-          (click)="selected=file; selectedType='file'" class="octo-search-results">{{ file.original_name }}</a>
+        (click)="selected=file; selectedType='file'" class="octo-search-results">{{ file.original_name }}</a>
     </div>
 
     <div class="col-md-8">

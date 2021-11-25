@@ -29,7 +29,6 @@ export class SearchResultsComponent implements OnChanges {
     this.data = changes.data.currentValue;
 
     if (this.data) {
-
       // Obtain the creator
       if (this.data?._posted_by){
         this.data._posted_by = await this.publicFunctions.getOtherUser(this.data?._posted_by);

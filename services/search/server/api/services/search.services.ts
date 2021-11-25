@@ -13,22 +13,35 @@ export class SearchService {
     try {
       const user = await User.findOne({ _id: req.userId });
 
+      let query = req.params.query;
+
+      if (!query || query == undefined || query == 'undefined') {
+        query = '';
+      }
+
       switch (req.params.filter) {
         case 'posts':
-          return this.createPostQuery(user['_groups'], req.params.query);
+          return this.createPostQuery(user['_groups'], query, JSON.parse(req.query.advancedFilters));
         case 'users':
-          return this.createUserQuery(user, req.params.query);
+          return this.createUserQuery(user, query, JSON.parse(req.query.advancedFilters));
         case 'files':
-          return this.createFilesQuery(user['_groups'], req.params.query);
+          return this.createFilesQuery(user['_groups'], query, JSON.parse(req.query.advancedFilters));
         case 'comments':
-          return this.createCommentsQuery(req.params.query);
+          return this.createCommentsQuery(query, JSON.parse(req.query.advancedFilters));
       }
     } catch (err) {
       sendErr(res, err);
     }
   };
 
-  async createPostQuery(userGroups, query) {
+  async createPostQuery(userGroups, query, advancedFilters) {
+
+    if (advancedFilters.owners.length > 0) {
+      advancedFilters.owners = advancedFilters.owners.map(member => {
+        return member._id;
+      });
+    }
+
     return Post.aggregate([
       {
         $match: {
@@ -40,14 +53,16 @@ export class SearchService {
                 { title: { $regex: query, $options: 'i' } },
                 { tags: { $regex: query, $options: 'i' } }
               ]
-            }
+            },
+            // { _posted_by: { $in: advancedFilters.owners } },
+            // { tags: { $in: advancedFilters.tags } }
           ]    
         }
       },
     ]).sort({ created_date: -1 });
   }
 
-  async createUserQuery(user, query) {
+  async createUserQuery(user, query, advancedFilters) {
     return User.find({
       $and: [
         { _workspace: user._workspace || user._workspace._id },
@@ -63,29 +78,21 @@ export class SearchService {
             { phone_number: { $regex: query, $options: 'i' } },
             { role: { $regex: query, $options: 'i' } }
           ]
-        }
+        },
+        //{ skills: { $in: advancedFilters.skills } }
       ]
     });
   }
 
-  async createFilesQuery(userGroups, query) {
+  async createFilesQuery(userGroups, query, advancedFilters) {
+    
+    if (advancedFilters.owners.length > 0) {
+      advancedFilters.owners = advancedFilters.owners.map(member => {
+        return member._id;
+      });
+    }
+
     return File.aggregate([
-      {
-        $lookup: {
-          from: 'users',
-          localField: '_posted_by',
-          foreignField: '_id',
-          as: 'postedBy'
-        }
-      },
-      {
-        $lookup: {
-          from: 'groups',
-          localField: '_group',
-          foreignField: '_id',
-          as: 'group'
-        }
-      },
       {
         $match: {
           $and: [
@@ -94,18 +101,21 @@ export class SearchService {
               $or: [
                 { original_name: { $regex: query, $options: 'i' } },
                 { modified_name: { $regex: query, $options: 'i' } },
-                { description: { $regex: query, $options: 'i' }},
                 { tags: { $regex: query, $options: 'i' }},
-                //{ custom_fields: { $regex: query, $options: 'i' }},
+                // { description: { $regex: query, $options: 'i' }},
+                // { custom_fields: { $regex: query, $options: 'i' }},
               ]
-            }
+            },
+            //{ _posted_by: { $in: advancedFilters.owners } },
+            //{ tags: { $in: advancedFilters.tags } },
+            //{ description: { $regex: advancedFilters.metadata, $options: 'i' }},
           ]    
         }
       },
     ]).sort({ created_date: -1 });
   }
 
-  async createCommentsQuery(query) {
+  async createCommentsQuery(query, advancedFilters) {
     return Comment.aggregate([
       {
         $lookup: {
