@@ -32,16 +32,16 @@
     <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post'">
       <div class="filter-label" i18n="@@searchHeader.tag">Tag</div>
       <div class="filter-cell">
-        
+
           <div *ngFor="let tag of advancedFilters?.tags; let i = index">
             <button class="btn tagslabel"
                 style="margin-right: 1rem;"
                 (click)="removeTag(i)">
                 {{ tag }}
                 <i class="material-icons" matTooltipPosition="above" matTooltip="Delete this tag">close</i>
-             
+
             </button>
-            
+
           </div>
 
         <app-component-search-input-box
@@ -58,9 +58,9 @@
       <div class="filter-cell">
 
           <div *ngFor="let skill of advancedFilters?.skills; let i = index;">
-              
+
               <button type="button" name="button" class="btn tagslabel" (click)="removeSkill(i)">
-                
+
                 {{skill}}
                 <i class="material-icons" matTooltipPosition="above" matTooltip="Delete this skill">close</i>
               </button>
@@ -99,13 +99,17 @@
       <div class="filter-label" i18n="@@searchHeader.fileMetadata" *ngIf="advancedFilters.type == 'file'">File metadata</div>
       <div class="filter-cell">
         <input type="search" id="keyword" autocomplete="off" placeholder="Search Content" class="input-search"
-          [(ngModel)]="advancedFilters.metadata" />
+          [(ngModel)]="advancedFilters.metadata" (ngModelChange)="search()"/>
       </div>
     </div>
 
     <div class="actions">
-      <button class="btn btn-primary" (click)="this.showAdvancedFilters = !this.showAdvancedFilters" i18n="@@searchHeader.close">
-          Apply
+      <button class="btn btn-outline-danger" (click)="clear()" i18n="@@searchHeader.clear">
+        Clear
+      </button>
+      &nbsp;&nbsp;
+      <button class="btn btn-primary" (click)="showAdvancedFilters = !showAdvancedFilters" i18n="@@searchHeader.close">
+        Close
       </button>
     </div>
   </div>

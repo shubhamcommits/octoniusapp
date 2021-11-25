@@ -11,9 +11,7 @@ export class SearchHeaderComponent implements OnInit {
 
 
   searchedPosts = [];
-
   searchedUsers = [];
-
   searchedFiles = [];
 
   selected: any;
@@ -179,11 +177,25 @@ export class SearchHeaderComponent implements OnInit {
 
   removeMemberSearch(memberId: string) {
     const index = (this.advancedFilters && this.advancedFilters.owners) ? this.advancedFilters.owners.findIndex(member => member._id == memberId) : -1;
-
     if (index >=0) {
       this.advancedFilters.owners.splice(index, 1);
 
       this.search();
     }
+  }
+
+  clear() {
+    this.searchQuery = '';
+    this.showAdvancedFilters = false;
+    this.advancedFilters = {
+      type: 'all',
+      owners: [],
+      metadata: '',
+      skills: [],
+      tags: []
+    };
+    this.searchedPosts = [];
+    this.searchedUsers = [];
+    this.searchedFiles = [];
   }
 }
