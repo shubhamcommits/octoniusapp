@@ -52,7 +52,7 @@ export class SearchHeaderComponent implements OnInit {
     this.selected = null;
     this.selectedType = null;
 
-    if ((this.searchQuery=='' || this.searchQuery == " ")
+    if ((this.searchQuery =='' || this.searchQuery == " ")
         && this.advancedFilters.owners.length == 0
         && this.advancedFilters.skills.length == 0
         && this.advancedFilters.tags.length == 0
