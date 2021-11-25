@@ -88,23 +88,6 @@ export class SearchHeaderComponent implements OnInit {
           });
         }
       });
-
-      let user: any;
-      await this.publicFunctions.getCurrentUser().then(
-        userResult => {
-          user = userResult;
-        }
-      );
-      await this.searchService.getSearchResults(postQuery, 'comments', this.advancedFilters).then((res: any) => {
-        if (res.results.length > 0) {
-          const result = res.results.filter((restult) => this.searchedPosts.every((post) => post._id !== restult._post));
-          result.forEach(comment => {
-            if (user._groups.includes(comment.post[0]._group)) {
-              this.searchedPosts.push(comment.post[0]);
-            }
-          });
-        }
-      });
     } catch (error) {
 
     }
