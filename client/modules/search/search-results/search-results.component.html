@@ -4,22 +4,17 @@
     <span class="octo-search-category" *ngIf="type=='post'">{{ data?.title }}</span>
     <span class="octo-search-category" *ngIf="type=='file'">{{ data?.original_name }}</span>
 
-    <a *ngIf="type=='post'" [href]="generatePostURL()" target="_blank" i18n="@@searchResult.openNewTab">
-      <span class="material-icons">
-        open_in_new
-        </span>
+    <a *ngIf="type=='post'" [href]="generatePostURL()" target="_blank">
+      <span class="material-icons">open_in_new</span>
     </a>
 
-    <a *ngIf="type=='file' && data?.type === 'file' || data?.type === undefined" [href]="generateFileURL()" target="_blank" i18n="@@searchResult.openNewTab">
-      <span class="material-icons">
-        open_in_new
-        </span>
+    <a *ngIf="type=='file' && data?.type === 'file' || data?.type === undefined" [href]="generateFileURL()" target="_blank">
+      <span class="material-icons">open_in_new</span>
     </a>
-    <a *ngIf="type=='file' && data?.type === 'folio'" target="_blank" i18n="@@searchResult.openNewTab"
+
+    <a *ngIf="type=='file' && data?.type === 'folio'" target="_blank"
       routerLink="/document/{{data?._id}}" [queryParams]="{ group: data?._group?._id || data?._group }">
-      <span class="material-icons">
-        open_in_new
-        </span>
+      <span class="material-icons">open_in_new</span>
     </a>
   </div>
 
@@ -75,10 +70,8 @@
 
     {{ data?.first_name }} {{ data?.last_name }}
 
-    <a [href]="generateUserURL(data._id)" target="_blank" i18n="@@searchResult.openNewTab">
-      <span class="material-icons">
-        badge
-        </span>
+    <a [href]="generateUserURL(data._id)" target="_blank">
+      <span class="material-icons">badge</span>
     </a>
   </div>
 
