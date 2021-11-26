@@ -8,7 +8,9 @@ import { NavigationEnd, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
-import moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { SearchHeaderComponent } from 'modules/search/search-header/search-header.component';
+
 
 @Component({
   selector: 'app-navbar',
@@ -25,6 +27,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private userService: UserService,
     private utilityService: UtilityService,
     private storageService: StorageService,
+    public dialog: MatDialog,
     private injector: Injector,
     private _router: Router
   ) { }
@@ -205,10 +208,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.utilityService.closeAllModals();
   }
 
-  openModal(content: any) {
-    this.utilityService.openModal(content, {
-      size: 'l',
-      windowClass: 'search'
+  openSearchModal() {
+    const dialogRef = this.dialog.open(SearchHeaderComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true
     });
   }
 
@@ -218,7 +222,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async onFavoriteGroupSaved() {
     this.userData = await this.getCurrentUser();
-    // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
   }
 

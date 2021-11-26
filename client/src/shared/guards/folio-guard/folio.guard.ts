@@ -34,7 +34,7 @@ export class FolioGuard implements CanActivate  {
     const readOnly = (state.root.queryParamMap.get('readOnly') == 'true') ? true : false;
 
     let currentGroup;
-    await this.groupService.getGroup(currentGroupId).then(res => {
+    await this.groupService.getGroup(currentGroupId, readOnly).then(res => {
       currentGroup = res['group'];
     });
 

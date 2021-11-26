@@ -14,8 +14,11 @@ export class SearchService {
 
   localURL: string = environment.SEARCH_BASE_API_URL;
 
-  getSearchResults(query, filter) {
-    return this._http.get(this.localURL + `/getSearchResults/${filter}/${query}`).toPromise();
+  getSearchResults(query: string, filter: string, advancedFilters: any) {
+    return this._http.get(this.localURL + `/getSearchResults/${filter}/${query}`, {
+      params:{
+        advancedFilters: JSON.stringify(advancedFilters)
+      }}).toPromise();
   }
 
   /********************

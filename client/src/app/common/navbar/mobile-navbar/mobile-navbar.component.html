@@ -33,11 +33,11 @@
             <app-work-navbar *ngIf="isWorkNavbar$ | async"></app-work-navbar>
             <!-- MENU ITEMS ENDS -->
              <!-- SEARCH starts -->
-             <button class="btn btn-link navbar-right d-none d-sm-block" (click)="openModal(search)">
+             <button class="btn btn-link navbar-right d-none d-sm-block" (click)="openSearchModal()">
               <span class="material-icons">search</span>
             </button>
             <!-- search for xs screens -->
-            <button class="btn btn-link btn-block d-block d-sm-none" (click)="openModal(search)">
+            <button class="btn btn-link btn-block d-block d-sm-none" (click)="openSearchModal()">
               <span class="material-icons">search</span>
             </button>
             <!-- SEARCH ends -->
@@ -51,12 +51,5 @@
     </div>
 
     <router-outlet *ngIf="myAuthCheck()"></router-outlet>
-
-    <!-- Search Modal -->
-    <ng-template #search let-modal>
-      <app-search-header (close)="closeModal()"></app-search-header>
-    </ng-template>
-
-
   </mat-sidenav-content>
 </mat-sidenav-container>

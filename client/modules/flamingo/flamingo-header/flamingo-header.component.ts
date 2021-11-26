@@ -4,6 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { Title } from "@angular/platform-browser";
 import { PublicFunctions } from 'modules/public.functions';
+import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import moment from 'moment';
+import * as XLSX from 'xlsx';
+import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-flamingo-header',
@@ -35,6 +40,8 @@ export class FlamingoHeaderComponent implements OnInit {
   publicFunctions = new PublicFunctions(this._Injector);
 
   constructor(
+    private flamingoService: FlamingoService,
+    private utilityService: UtilityService,
     private router: Router,
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,
@@ -159,4 +166,127 @@ export class FlamingoHeaderComponent implements OnInit {
     this.activeState = state;
   }
 
+  async exportToExcel() {
+    let flamingo;
+    // Fetch Flamingo Details
+    await this.flamingoService.getOne(this.fileId).then((res) => {
+      flamingo = res['flamingo'];
+    });
+
+    if (flamingo && flamingo?._questions && flamingo?.responses) {
+      let insights: any = [];
+
+      await flamingo?._questions?.forEach(async question => {
+        if (question.type != 'ShortText') {
+          let response: any = {
+            text: question?.text,
+            type: question?.type,
+          }
+
+          if (question?.type == 'Yes/No') {
+            response.positive_text = question?.positive_option_text;
+            response.positive_responses = this.flamingoService.getPositiveResponsesStats(flamingo?.responses, question?._id);
+            response.negative_text = question?.negative_option_text;
+            response.negative_responses = this.flamingoService.getNegativeResponsesStats(flamingo?.responses, question?._id);
+          }
+
+          if (question?.type == 'Scale') {
+            let sizes = Array.from(new Array(question.scale.size), (x,i) => i);
+            let percentages = [];
+            let countsData = Array.from(new Array(question.scale.size), (x,i) => {
+              return flamingo?.responses?.filter(response => {
+                return response.scale_answer == i
+              }).length;
+            });
+            countsData.forEach(count => {percentages?.push((Math.round(((count*100/flamingo?.responses?.length) + Number.EPSILON) * 100) / 100))});
+
+            sizes.forEach((size, index) => {
+              response.size = size;
+              response.percentage = percentages[index] + ' %';
+            });
+          }
+
+          if (question?.type == 'Dropdown') {
+            question?.options.forEach(option => {
+              response.option = option;
+              response.option_response = this.flamingoService.getDropdawnResponsesStats(flamingo?.responses, question?._id, option);
+            });
+          }
+
+          if (question?.type == 'Multiple') {
+            question?.options.forEach(option => {
+              response.option = option;
+              response.option_response = this.flamingoService.getMultipleResponsesStats(flamingo?.responses, question?._id, option);
+            });
+          }
+
+          insights.push(response);
+        }
+      });
+
+      let responses = [];
+
+      flamingo?.responses?.forEach(response => {
+        let activeResponse: any = {
+          created_date: response?.created_date
+        }
+
+        response?.answers?.forEach(answer => {
+          activeResponse.text = answer?._question?.text;
+          activeResponse.type = answer?._question?.type;
+
+          if (answer?._question?.type == 'ShortText') {
+            activeResponse.text_answer = answer?.text_answer;
+          }
+
+          if (answer?._question?.type == 'Yes/No') {
+            if (answer?.positive_answer) {
+              activeResponse.positive_text_answer = answer?._question?.positive_option_text;
+              activeResponse.negative_text_answer = '';
+            }
+            if (answer?.negative_answer) {
+              activeResponse.positive_text_answer = '';
+              activeResponse.negative_text_answer = answer?._question?.negative_option_text;
+            }
+          }
+
+          if (answer?._question?.type == 'Scale') {
+            activeResponse.scale_text_answer = answer?._question?.scale?.size;
+          }
+
+          if (answer?._question?.type == 'Dropdown') {
+            activeResponse.dropdown_text_answer = answer?.dropdown_answer;
+          }
+
+          if (answer?._question?.type == 'Multiple') {
+            let multipleAnswer = '';
+            answer?.answer_multiple?.forEach(answerMulti => {
+              multipleAnswer += answerMulti + '; ';
+            });
+            activeResponse.multiple_text_answer = multipleAnswer;
+          }
+        });
+
+        responses.push(activeResponse);
+      });
+
+      this.saveAsExcelFile(insights, responses, this.file.original_name);
+    }
+  }
+
+  /**
+   * Exports an array into an excel file
+   * @param arrayToExport
+   * @param fileName
+   */
+  saveAsExcelFile(insightsArray: any, responsesArray: any, fileName: string): void {
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+    const insightsWorksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(insightsArray);
+    const responsesWorksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(responsesArray);
+    const workbook: XLSX.WorkBook = { Sheets: { 'responses': responsesWorksheet, 'insights': insightsWorksheet }, SheetNames: ['responses', 'insights'] };
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const data: Blob = new Blob([excelBuffer], {type: EXCEL_TYPE});
+    fileSaver.saveAs(data, fileName + '_export_' + moment(moment().utc(), "YYYY-MM-DD") + EXCEL_EXTENSION);
+  }
 }

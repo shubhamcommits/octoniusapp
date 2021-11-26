@@ -60,7 +60,11 @@ export class StorageService {
    * This function fetches the localstorage data which is associated with the key and exists in the encrypted form
    */
   getLocalData(key: any) {
-    return this.decryptData(key, JSON.parse(localStorage.getItem(key)));
+    try {
+      return this.decryptData(key, JSON.parse(localStorage.getItem(key)));
+    } catch(err) {
+      return {};
+    }
   }
 
   /**

@@ -296,7 +296,7 @@ export class PostService {
     // Call the HTTP Request
     return this._http.get(this.baseURL + `/group/tags`, {
       params: {
-        groupId: groupId.toString().trim(),
+        groupId: (groupId) ? groupId.toString().trim() : '',
         tag: tag.toString().trim()
       }
     }).
