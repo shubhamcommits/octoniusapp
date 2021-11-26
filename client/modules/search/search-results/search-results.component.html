@@ -1,3 +1,4 @@
+<!-- START POST AND FILE -->
 <div *ngIf="data && (type=='post' || type=='file')" style="text-align: left;">
   <div class="mb-2 mt-2">
     <span class="octo-search-category" *ngIf="type=='post'">{{ data?.title }}</span>
@@ -24,9 +25,9 @@
 
   <div class="mb-2">
     <strong i18n="@@searchResult.tags">Tags: </strong>
-   
+
       <span *ngFor="let tag of data?.tags" class="label">{{ tag }}</span>
-   
+
   </div>
 
   <div class="mb-2">
@@ -44,7 +45,7 @@
         style="float: left; cursor: auto;"></app-secured-image>
 
       <div style="padding-top: 10px;" class="ml-1">
-        {{data?._posted_by.first_name}}
+        {{ data?._posted_by.first_name }}
         {{ data?._posted_by.last_name }}
       </div>
     </div>
@@ -52,17 +53,18 @@
 
   <div [innerHTML]="data?.html" class="search-content mb-2"></div>
 
-  <div *ngIf="customFieldsKeys && customFieldsKeys.length > 0 && (data?.custom_fields || data?.task?.custom_fields)" class="mb-2">
+  <div *ngIf="customFields && customFields.length > 0 && (data?.custom_fields || data?.task?.custom_fields)" class="mb-2">
     <strong i18n="@@searchResult.customFields">Custom Fields: </strong>
-  
-      <div *ngFor="let key of customFieldsKeys" class="label">
-        <span *ngIf="type == 'file' && data?.custom_fields">{{ key }}: {{ data?.custom_fields[key] }}</span>
-        <span *ngIf="type == 'post' && data?.task?.custom_fields">{{ key }}: {{ data?.task?.custom_fields[key] }}</span>
-      </div>
-    
+
+    <div *ngFor="let cf of customFields" class="label" [ngStyle]="{'background': (cf.badge_color) ? cf.badge_color : '#48CDC1' }">
+      <span *ngIf="type == 'file' && data?.custom_fields && data?.custom_fields[cf.name]">{{ cf.title }}: {{ data?.custom_fields[cf.name] }}</span>
+      <span *ngIf="type == 'post' && data?.task?.custom_fields && data?.task?.custom_fields[cf.name]">{{ cf.title }}: {{ data?.task?.custom_fields[cf.name] }}</span>
+    </div>
   </div>
 </div>
+<!-- END POST AND FILE -->
 
+<!-- START USER -->
 <div *ngIf="data && type=='user'" style="text-align: left;" class="mb-2">
   <div class="octo-search-category" style="line-height: 40px;">
     <app-secured-image
@@ -92,17 +94,15 @@
 
   <div class="mb-2 mt-2">
     <strong i18n="@@searchResult.skills">Skills: </strong>
-
-        <span *ngFor="let skill of data.skills" class="label"> {{ skill }}</span>
-
+      <span *ngFor="let skill of data.skills" class="label"> {{ skill }}</span>
   </div>
 
-  <div class="mb-2 mt-2">
-    <strong i18n="@@searchResult.profileFields">Profile Fields: </strong>
-    <span *ngIf="customFieldsKeys">
-      <span *ngFor="let key of customFieldsKeys" class="label">
-        {{ key }}: {{ data?.profile_custom_fields[key] }}
-      </span>
-    </span>
+  <div *ngIf="customFields && customFields.length > 0 && data?.profile_custom_fields" class="mb-2">
+    <strong i18n="@@searchResult.customFields">Custom Fields: </strong>
+
+    <div *ngFor="let cf of customFields" class="label" style="background: #48CDC1;">
+      <span *ngIf="data?.profile_custom_fields && data?.profile_custom_fields[cf.name]">{{ cf.title }}: {{ data?.profile_custom_fields[cf.name] }}</span>
+    </div>
   </div>
 </div>
+<!-- END USER -->

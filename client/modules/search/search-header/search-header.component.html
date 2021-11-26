@@ -114,23 +114,24 @@
 
   <div class="results row" style="overflow: hidden;">
     <div class="col-md-4" style="border-right: 2px solid #E4EDF8;">
-      <p *ngIf="searchedPosts.length > 0" class="octo-search-category" i18n="@@searchHeader.posts"><span class="material-icons">
-        message
-        </span>
-        
-        POSTS</p>
+      <p *ngIf="searchedPosts.length > 0" class="octo-search-category">
+        <span class="material-icons">message</span>
+        <span i18n="@@searchHeader.posts">POSTS</span>
+      </p>
       <a *ngFor="let post of searchedPosts" href="#" onclick="return false"
         (click)="selected=post; selectedType='post'" class="octo-search-results">{{ post.title }}</a>
 
-      <p *ngIf="searchedUsers.length > 0" class="octo-search-category" i18n="@@searchHeader.users"><span class="material-icons">
-        supervisor_account
-        </span>USERS</p>
+      <p *ngIf="searchedUsers.length > 0" class="octo-search-category">
+        <span class="material-icons">supervisor_account</span>
+        <span i18n="@@searchHeader.users">USERS</span>
+      </p>
       <a *ngFor="let user of searchedUsers" href="#" onclick="return false"
         (click)="selected=user; selectedType='user'" class="octo-search-results">{{ user.first_name }} {{ user.last_name }}</a>
 
-      <p *ngIf="searchedFiles.length > 0" class="octo-search-category" i18n="@@searchHeader.files"><span class="material-icons">
-        insert_drive_file
-        </span>FILES</p>
+      <p *ngIf="searchedFiles.length > 0" class="octo-search-category">
+        <span class="material-icons">insert_drive_file</span>
+        <span i18n="@@searchHeader.files">FILES</span>
+      </p>
       <a *ngFor="let file of searchedFiles" href="#" onclick="return false"
         (click)="selected=file; selectedType='file'" class="octo-search-results">{{ file.original_name }}</a>
     </div>

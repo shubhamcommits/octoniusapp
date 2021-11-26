@@ -6,6 +6,8 @@ import { Comment } from './comment.model';
 
 import { Auth } from './auth.model';
 import { Column } from './column.model';
+import { Group } from "./group.model";
+import { Workspace } from "./workspace.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -32,5 +34,11 @@ export {
     Column as Column,
 
     // AUTH
-    Auth as Auth
+    Auth as Auth,
+
+    // Group
+    Group as Group,
+
+    // Workspace
+    Workspace as Workspace
 };

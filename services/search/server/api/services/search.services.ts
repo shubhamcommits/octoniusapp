@@ -11,7 +11,7 @@ export class SearchService {
   async getSearchResults(req, res) {
     // Focus on only searching within own workspace
     try {
-      const user = await User.findOne({ _id: req.userId });
+      const user = await User.findOne({ _id: req.userId }).lean();
 
       let query = req.params.query;
 
@@ -78,6 +78,7 @@ export class SearchService {
 
     return await User.find(query)
       .sort({first_name: -1})
+      .populate({ path: '_workspace', select: 'profile_custom_fields' })
       .lean();
   }
 
@@ -153,6 +154,7 @@ export class SearchService {
 
     let posts = await Post.find(query)
       .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+      .populate({ path: '_group', select: 'custom_fields' })
       .sort({ created_date: -1 })
       .lean();
 
@@ -179,6 +181,7 @@ export class SearchService {
       if (comment && comment._post && index < 0) {
         const post = await Post.findOne({_id: (comment._post._id || comment._post)})
           .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+          .populate({ path: '_group', select: 'custom_fields' })
           .sort({ created_date: -1 })
           .lean();
 
@@ -348,6 +351,7 @@ export class SearchService {
 
     return await File.find(query)
       .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+      .populate({ path: '_group', select: 'custom_fields' })
       .sort({ created_date: -1 })
       .lean();
   }

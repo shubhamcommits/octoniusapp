@@ -14,7 +14,7 @@ export class SearchResultsComponent implements OnChanges {
   @Input() data: any;
   @Input() type: string;
 
-  customFieldsKeys: any = [];
+  customFields: any = [];
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);
@@ -31,11 +31,38 @@ export class SearchResultsComponent implements OnChanges {
     if (this.data) {
       // Get the CF names used
       if (this.type == 'file' && this.data?.custom_fields) {
-        this.customFieldsKeys = Object.keys(this.data?.custom_fields);
+        const customFieldsKeys = Object.keys(this.data?.custom_fields);
+        this.customFields = [];
+        if (this.data._group && this.data._group.custom_fields) {
+          this.data._group.custom_fields.forEach(cf => {
+            const index = (customFieldsKeys) ? customFieldsKeys.findIndex(key => key == cf.name) : -1;
+            if (index >= 0 && this.data?.custom_fields[cf.name] && this.data?.custom_fields[cf.name] != '') {
+              this.customFields.push(cf);
+            }
+          });
+        }
       } else if (this.type == 'post' && this.data?.task && this.data?.task?.custom_fields) {
-        this.customFieldsKeys = Object.keys(this.data?.task?.custom_fields);
+        const customFieldsKeys = Object.keys(this.data?.task?.custom_fields);
+        this.customFields = [];
+        if (this.data._group && this.data._group.custom_fields) {
+          this.data._group.custom_fields.forEach(cf => {
+            const index = (customFieldsKeys) ? customFieldsKeys.findIndex(key => key == cf.name) : -1;
+            if (index >= 0 && this.data?.task?.custom_fields[cf.name] && this.data?.task?.custom_fields[cf.name] != '') {
+              this.customFields.push(cf);
+            }
+          });
+        }
       } else if (this.type == 'user' && this.data?.profile_custom_fields) {
-        this.customFieldsKeys = Object.keys(this.data?.profile_custom_fields);
+        const customFieldsKeys = Object.keys(this.data?.profile_custom_fields);
+        this.customFields = [];
+        if (this.data._workspace && this.data._workspace.profile_custom_fields) {
+          this.data._workspace.profile_custom_fields.forEach(cf => {
+            const index = (customFieldsKeys) ? customFieldsKeys.findIndex(key => key == cf.name) : -1;
+            if (index >= 0 && this.data?.profile_custom_fields[cf.name] && this.data?.profile_custom_fields[cf.name] != '') {
+              this.customFields.push(cf);
+            }
+          });
+        }
       }
     }
 
