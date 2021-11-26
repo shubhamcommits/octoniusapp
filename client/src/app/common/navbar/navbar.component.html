@@ -39,7 +39,7 @@
             <li class="nav-item">
 
               <!-- SEARCH starts -->
-              <a class="nav-link" (click)="openModal(search)">
+              <a class="nav-link" (click)="openSearchModal()">
                 <span class="material-icons">search</span>
               </a>
               <!-- SEARCH ends -->
@@ -51,10 +51,5 @@
         <!-- COLLAPSABLE MENU ENDS -->
       </div>
   </nav>
-    <router-outlet *ngIf="myAuthCheck()"></router-outlet>
-    <!-- Search Modal -->
-    <ng-template #search let-modal>
-      <app-search-header (close)="closeModal()"></app-search-header>
-    </ng-template>
-
+  <router-outlet *ngIf="myAuthCheck()"></router-outlet>
 </mat-drawer-container>

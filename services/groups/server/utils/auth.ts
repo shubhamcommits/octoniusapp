@@ -1,5 +1,5 @@
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
-import { Auth } from "../api/models";
+import { Auth, Group } from "../api/models";
 import { Request, Response, NextFunction } from 'express';
 import { sendError } from ".";
 
@@ -14,36 +14,46 @@ export class Auths {
      */
     async verifyToken(req: Request, res: Response, next: NextFunction) {
         try {
+            var url = require('url');
+            var url_parts = url.parse(req.url, true);
+            var query = url_parts.query;
 
-            // Authorization header is not present on request
-            if (!req.headers.authorization) {
-                return res.status(401).json({
-                    message: 'Unauthorized request, it must include an authorization header!'
-                });
-            }
-
-            // Split the authorization header
-            const token = req.headers.authorization.split(' ')[1];
-
-            // Token is not present on authorization header
-            if (!token) {
-                return res.status(401).json({
-                    message: 'Unauthorized request, it must include an authorization token!'
-                });
-            }
-
-            // Verify the token
-            jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
-                if (err || !decoded) {
-                    return res.status(401).json({
-                        message: 'Unauthorized request, it must have a valid authorization token!'
-                    });
-                } else {
-                    // Assigning and feeding the userId into the req object
-                    req['userId'] = decoded['subject'];
+            if (query.readOnly == 'true' || query.readOnly == true) {
+                const group = await Group.findOne({_id: url_parts.pathname.substring(1)}).select('enabled_rights').lean();
+                if (group && !group.enabled_rights) {
                     next();
                 }
-            });
+            } else {
+                // Authorization header is not present on request
+                if (!req.headers.authorization) {
+                    return res.status(401).json({
+                        message: 'Unauthorized request, it must include an authorization header!'
+                    });
+                }
+
+                // Split the authorization header
+                const token = req.headers.authorization.split(' ')[1];
+
+                // Token is not present on authorization header
+                if (!token) {
+                    return res.status(401).json({
+                        message: 'Unauthorized request, it must include an authorization token!'
+                    });
+                }
+
+                // Verify the token
+                jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+                    if (err || !decoded) {
+                        return res.status(401).json({
+                            message: 'Unauthorized request, it must have a valid authorization token!'
+                        });
+                    } else {
+                        // Assigning and feeding the userId into the req object
+                        req['userId'] = decoded['subject'];
+                        next();
+                    }
+                });
+            }
         } catch (err) {
             return sendError(res, err);
         }
@@ -57,16 +67,20 @@ export class Auths {
      */
     async isLoggedIn(req: Request, res: Response, next: NextFunction) {
         try {
-            const auth = await Auth.findOne({
-                _user: req['userId'],
-                isLoggedIn: true,
-                token: req.headers.authorization.split(' ')[1]
-            });
-
-            if (!!auth) {
+            const readOnly = req.query.readOnly;
+            if (readOnly) {
                 next();
+            } else {
+                const auth = await Auth.findOne({
+                    _user: req['userId'],
+                    isLoggedIn: true,
+                    token: req.headers.authorization.split(' ')[1]
+                });
+    
+                if (!!auth) {
+                    next();
+                }
             }
-
         } catch (err) {
             return sendError(res, err, 'Unauthorized request, Please sign In to continue!', 401)
         }

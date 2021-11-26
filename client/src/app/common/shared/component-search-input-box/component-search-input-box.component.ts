@@ -23,7 +23,7 @@ export class ComponentSearchInputBoxComponent implements OnInit {
 
   @Input('placeholder') placeholder: string = '';
 
-  // Type are 'task', 'event', 'group', 'skill', 'tag'
+  // Type are 'task', 'event', 'group', 'skill', 'tag', 'ragTag', 'ragMembers', 'workspaceMembers'
   @Input('type') type: string;
 
   // Incase the type is 'workspace'
@@ -139,7 +139,8 @@ export class ComponentSearchInputBoxComponent implements OnInit {
                 return item.includes(this.itemValue.toLowerCase());
               });
               this.itemList.forEach(item => {
-                if(this.ragMemberList.includes(item)){
+                const index = (this.ragMemberList) ? this.ragMemberList.findIndex(member => member._id == item._id) : -1;
+                if(index >= 0) {
                   item.showAddMem = true;
                 } else {
                   item.showAddMem = false;
@@ -389,8 +390,10 @@ export class ComponentSearchInputBoxComponent implements OnInit {
     // Emit the message to add the skill
     this.skillEmitter.emit(skill);
 
-    // Update the userData skills set to show the skill added status
-    this.userData.skills.push(skill);
+    if (this.userData && this.userData.skill) {
+      // Update the userData skills set to show the skill added status
+      this.userData.skills.push(skill);
+    }
 
     // Set the itemList to []
     this.itemList = [];
@@ -406,11 +409,14 @@ export class ComponentSearchInputBoxComponent implements OnInit {
   hasSkill(skill: string) {
 
     // Check if the skill exist in the users' skills array
-    if (this.userData.skills.includes(skill))
+    const index = (this.userData && this.userData.skills)
+      ? this.userData.skills.findIndex(s => s == skill)
+      : ((this.tagList) ? this.tagList.findIndex(s => s == skill) : -1);
+    if (index >= 0) {
       return true;
-
-    else
-      return false
+    } else {
+      return false;
+    }
   }
 
   /**
