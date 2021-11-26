@@ -1,34 +1,40 @@
 <div *ngIf="data && (type=='post' || type=='file')" style="text-align: left;">
-  <div>
+  <div class="mb-2 mt-2">
     <span class="octo-search-category" *ngIf="type=='post'">{{ data?.title }}</span>
     <span class="octo-search-category" *ngIf="type=='file'">{{ data?.original_name }}</span>
 
     <a *ngIf="type=='post'" [href]="generatePostURL()" target="_blank" i18n="@@searchResult.openNewTab">
-      Open in new tab
+      <span class="material-icons">
+        open_in_new
+        </span>
     </a>
 
     <a *ngIf="type=='file' && data?.type === 'file' || data?.type === undefined" [href]="generateFileURL()" target="_blank" i18n="@@searchResult.openNewTab">
-      Open in new tab
+      <span class="material-icons">
+        open_in_new
+        </span>
     </a>
     <a *ngIf="type=='file' && data?.type === 'folio'" target="_blank" i18n="@@searchResult.openNewTab"
       routerLink="/document/{{data?._id}}" [queryParams]="{ group: data?._group?._id || data?._group }">
-      Open in new tab
+      <span class="material-icons">
+        open_in_new
+        </span>
     </a>
   </div>
 
-  <div>
+  <div class="mb-2">
     <strong i18n="@@searchResult.tags">Tags: </strong>
-    <ul>
-      <li *ngFor="let tag of data?.tags" class="label">{{ tag }}</li>
-    </ul>
+   
+      <span *ngFor="let tag of data?.tags" class="label">{{ tag }}</span>
+   
   </div>
 
-  <div>
+  <div class="mb-2">
     <strong i18n="@@searchResult.createdOn">Created On: </strong>
     <span>{{ data?.created_date | date:'MMM dd, yyyy' }}</span>
   </div>
 
-  <div *ngIf="data?._posted_by">
+  <div *ngIf="data?._posted_by" class="mb-2">
     <strong i18n="@@searchResult.owner">Owner: </strong>
     <div id="avatar-assignee" style="margin-bottom: 30px;">
       <app-secured-image
@@ -44,21 +50,21 @@
     </div>
   </div>
 
-  <div [innerHTML]="data?.html" class="search-content"></div>
+  <div [innerHTML]="data?.html" class="search-content mb-2"></div>
 
-  <div *ngIf="customFieldsKeys && customFieldsKeys.length > 0 && (data?.custom_fields || data?.task?.custom_fields)">
+  <div *ngIf="customFieldsKeys && customFieldsKeys.length > 0 && (data?.custom_fields || data?.task?.custom_fields)" class="mb-2">
     <strong i18n="@@searchResult.customFields">Custom Fields: </strong>
-    <ul>
-      <li *ngFor="let key of customFieldsKeys" class="label">
+  
+      <div *ngFor="let key of customFieldsKeys" class="label">
         <span *ngIf="type == 'file' && data?.custom_fields">{{ key }}: {{ data?.custom_fields[key] }}</span>
         <span *ngIf="type == 'post' && data?.task?.custom_fields">{{ key }}: {{ data?.task?.custom_fields[key] }}</span>
-      </li>
-    </ul>
+      </div>
+    
   </div>
 </div>
 
-<div *ngIf="data && type=='user'" style="text-align: left;">
-  <div class="octo-search-category">
+<div *ngIf="data && type=='user'" style="text-align: left;" class="mb-2">
+  <div class="octo-search-category" style="line-height: 40px;">
     <app-secured-image
       [imgURL]="data?.profile_pic"
       [service]="'user'"
@@ -68,7 +74,9 @@
     {{ data?.first_name }} {{ data?.last_name }}
 
     <a [href]="generateUserURL(data._id)" target="_blank" i18n="@@searchResult.openNewTab">
-      Open in new tab
+      <span class="material-icons">
+        badge
+        </span>
     </a>
   </div>
 
@@ -80,21 +88,21 @@
   <p><strong i18n="@@searchResult.company">Company: </strong>{{ data?.company_name }}</p>
   <p><strong i18n="@@searchResult.joined">Joined on: </strong>{{ data?.company_join_date | date:'MMM dd, yyyy' }}</p>
 
-  <p><strong i18n="@@searchResult.bio">Bio: </strong> {{ data?.bio }}</p>
+  <p class="mb-2 mt-2"><strong i18n="@@searchResult.bio">Bio: </strong> {{ data?.bio }}</p>
 
-  <div>
+  <div class="mb-2 mt-2">
     <strong i18n="@@searchResult.skills">Skills: </strong>
-    <ul>
-        <li *ngFor="let skill of data.skills" class="label"> {{ skill }}</li>
-    </ul>
+
+        <span *ngFor="let skill of data.skills" class="label"> {{ skill }}</span>
+
   </div>
 
-  <div>
+  <div class="mb-2 mt-2">
     <strong i18n="@@searchResult.profileFields">Profile Fields: </strong>
-    <ul *ngIf="customFieldsKeys">
-      <li *ngFor="let key of customFieldsKeys" class="label">
-        <span>{{ key }}: {{ data?.profile_custom_fields[key] }}</span>
-      </li>
-    </ul>
+    <span *ngIf="customFieldsKeys">
+      <span *ngFor="let key of customFieldsKeys" class="label">
+        {{ key }}: {{ data?.profile_custom_fields[key] }}
+      </span>
+    </span>
   </div>
 </div>
