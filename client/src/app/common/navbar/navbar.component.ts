@@ -108,7 +108,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (this.routerState === 'group' || this.routerState === 'home') {
           this.nextGroupNavbarState();
         }
-        else if (this.routerState === 'work') {
+        else if (this.routerState === 'work' || this.routerState === 'lounge') {
           this.nextWorkNavbar();
         }
         else if (this.routerState === 'user-account') {

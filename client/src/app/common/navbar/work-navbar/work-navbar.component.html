@@ -1,4 +1,4 @@
-<ul class="nav mr-auto">
+<ul class="nav mr-auto"  *ngIf="isWorkNavbar$ | async">
   <li class="nav-item mr-3">
     <!-- <i class="material-icons-outlined float-left mr-2">dashboard</i> -->
     <app-secured-image
@@ -44,6 +44,17 @@
   </li>
   <!-- Dashboard Page Route ends -->
 
+  <!-- Lounge Page Route starts -->
+  <li class="nav-item d-none d-md-block">
+    <a class="nav-link"
+        routerLink="/dashboard/work/lounge"
+        routerLinkActive="active">
+          <span i18n="@@workNavbar.lounge">Lounge</span>
+          <span class="sr-only">(current)</span>
+    </a>
+  </li>
+  <!-- Lounge Page Route ends -->
+
   <!-- Pulse Group Route starts
   <li class="nav-item">
     <a class="nav-link" routerLink="/dashboard/work/pulse" routerLinkActive="active">Pulse
@@ -51,4 +62,14 @@
     </a>
   </li>
   Pulse Group Route ends -->
+</ul>
+
+<ul class="nav mr-auto"  *ngIf="isLoungeNavbar$ | async">
+  <!-- Back Route starts -->
+  <li class="nav-item d-none d-md-block">
+    <a class="nav-link" (click)="goBackLounge()">
+      <i class="material-icons">arrow_back</i>
+    </a>
+  </li>
+  <!-- Back Page Route ends -->
 </ul>

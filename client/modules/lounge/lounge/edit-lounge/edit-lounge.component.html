@@ -1,0 +1,31 @@
+<!-- EDIT LOUNGE STARTS -->
+<div class="edit-lounge">
+
+  <mat-dialog-actions class="d-flex justify-content-end" align="end">
+    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+  </mat-dialog-actions>
+
+  <div>
+    <div mat-dialog-title>
+      {{ lounge.name }}
+    </div>
+
+    <input class="form-control" type="text" [(ngModel)]="this.newLoungeName" [placeholder]="namePlaceholder">
+
+    <mat-form-field appearance="fill" *ngIf="lounge?.type == 'lounge' && categories">
+      <mat-select
+          [(value)]="lounge._parent">
+        <mat-option *ngFor="let category of categories; let j=index" [value]="category._id">{{ category.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="container">
+      <button class="col-md-4 btn btn-danger"
+          (click)="onCloseDialog()" i18n="@@editLounge.cancel">Cancel</button>
+
+        <button class="col-md-4 btn btn-primary"
+            (click)="saveLoungeName()" i18n="@@editLounge.save">Save</button>
+    </div>
+  </div>
+</div>
+<!-- EDIT LOUNGE ENDS -->
