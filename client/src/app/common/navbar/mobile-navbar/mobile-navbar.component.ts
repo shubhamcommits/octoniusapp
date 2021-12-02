@@ -10,6 +10,8 @@ import { PublicFunctions } from 'modules/public.functions';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { SearchHeaderComponent } from 'modules/search/search-header/search-header.component';
 
 @Component({
   selector: 'app-mobile-navbar',
@@ -61,9 +63,8 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private userService: UserService,
     private utilityService: UtilityService,
-    private _ActivatedRoute: ActivatedRoute,
     private storageService: StorageService,
-    private socketService: SocketService,
+    public dialog: MatDialog,
     private injector: Injector,
     private _router: Router
   ) { }
@@ -212,10 +213,11 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.utilityService.closeAllModals();
   }
 
-  openModal(content: any) {
-    this.utilityService.openModal(content, {
-      size: 'l',
-      windowClass: 'search'
+  openSearchModal() {
+    const dialogRef = this.dialog.open(SearchHeaderComponent, {
+      width: '100%',
+      height: '100%',
+      disableClose: true
     });
   }
 

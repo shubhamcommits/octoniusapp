@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, Injector, LOCALE_ID, Inject } from '@angular/core';
+import { Component, OnChanges, Input, SimpleChanges, Injector, LOCALE_ID, Inject } from '@angular/core';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
@@ -9,41 +9,91 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss']
 })
-export class SearchResultsComponent implements OnInit {
+export class SearchResultsComponent implements OnChanges {
 
   @Input() data: any;
   @Input() type: string;
 
+  customFields: any = [];
+
+  // Public Functions Object
+  public publicFunctions = new PublicFunctions(this.injector);
+
   constructor(
       @Inject(LOCALE_ID) public locale: string,
-      public storageService: StorageService
+      public storageService: StorageService,
+      private injector: Injector
     ) { }
 
-  ngOnInit() {
-  }
+  async ngOnChanges(changes: SimpleChanges) {
+    this.data = changes.data.currentValue;
 
-  ngOnChanges(changes: SimpleChanges) {
+    if (this.data) {
+      // Get the CF names used
+      if (this.type == 'file' && this.data?.custom_fields) {
+        const customFieldsKeys = Object.keys(this.data?.custom_fields);
+        this.customFields = [];
+        if (this.data._group && this.data._group.custom_fields) {
+          this.data._group.custom_fields.forEach(cf => {
+            const index = (customFieldsKeys) ? customFieldsKeys.findIndex(key => key == cf.name) : -1;
+            if (index >= 0 && this.data?.custom_fields[cf.name] && this.data?.custom_fields[cf.name] != '') {
+              this.customFields.push(cf);
+            }
+          });
+        }
+      } else if (this.type == 'post' && this.data?.task && this.data?.task?.custom_fields) {
+        const customFieldsKeys = Object.keys(this.data?.task?.custom_fields);
+        this.customFields = [];
+        if (this.data._group && this.data._group.custom_fields) {
+          this.data._group.custom_fields.forEach(cf => {
+            const index = (customFieldsKeys) ? customFieldsKeys.findIndex(key => key == cf.name) : -1;
+            if (index >= 0 && this.data?.task?.custom_fields[cf.name] && this.data?.task?.custom_fields[cf.name] != '') {
+              this.customFields.push(cf);
+            }
+          });
+        }
+      } else if (this.type == 'user' && this.data?.profile_custom_fields) {
+        const customFieldsKeys = Object.keys(this.data?.profile_custom_fields);
+        this.customFields = [];
+        if (this.data._workspace && this.data._workspace.profile_custom_fields) {
+          this.data._workspace.profile_custom_fields.forEach(cf => {
+            const index = (customFieldsKeys) ? customFieldsKeys.findIndex(key => key == cf.name) : -1;
+            if (index >= 0 && this.data?.profile_custom_fields[cf.name] && this.data?.profile_custom_fields[cf.name] != '') {
+              this.customFields.push(cf);
+            }
+          });
+        }
+      }
+    }
 
-    // Fetch the changed contents
-    let changedContent = changes.data.currentValue.content
-
-    // Add the data content
-    this.data.content = changedContent
-
+    /**
+     * START of Generate the html of the content of the post or the description of the file
+     */
     // Create an empyt cfg object
-    let cfg = {}
-
-    if(this.data.content != "" && this.data.content != null){
-
+    let cfg = {};
+    let converter;
+    let html;
+    if (this.type == 'post' && this.data && this.data.content && this.data.content != "") {
       // Initiate the converter
-      var converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.content)['ops'], cfg)
+      converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.content)['ops'], cfg);
+    }
 
+    if (this.type == 'file' && this.data && this.data.description && this.data.description != "") {
+      // Initiate the converter
+      converter = new QuillDeltaToHtmlConverter(JSON.parse(this.data.description)['ops'], cfg);
+    }
+
+    if (converter) {
       // Convert into html
-      var html = converter.convert()
+      html = converter.convert();
+    }
 
-      // Add the html dynamically
+    if (html) {
       this.data.html = html
     }
+    /**
+     * END of Generate the html of the content of the post or the description of the file
+     */
   }
 
   generatePostURL() {

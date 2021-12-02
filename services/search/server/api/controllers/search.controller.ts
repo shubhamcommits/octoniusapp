@@ -9,15 +9,16 @@ const searchService = new SearchService();
 export class SearchController {
 
   async getSearchResults(req: Request, res: Response, next: NextFunction) {
-    await searchService.getSearchResults(req, res).then((results) => {
-      res.status(200).json({
+    try {
+      const results = await searchService.getSearchResults(req, res);
+      
+      return res.status(200).json({
         message: 'successfully retrieved results',
         results
       });
-    })
-    .catch((err) => {
-        return sendErr(res, new Error(err), 'Unable to fetch results.', 400)
-    });
+    } catch(err) {
+      return sendErr(res, new Error(err), 'Unable to fetch results.', 400)
+    };
   };
 
   /*
