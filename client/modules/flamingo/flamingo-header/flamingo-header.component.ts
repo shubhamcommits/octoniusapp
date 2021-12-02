@@ -251,7 +251,7 @@ export class FlamingoHeaderComponent implements OnInit {
           }
 
           if (answer?._question?.type == 'Scale') {
-            activeResponse.scale_text_answer = answer?._question?.scale?.size;
+            activeResponse.scale_text_answer = answer?.scale_answer;
           }
 
           if (answer?._question?.type == 'Dropdown') {
