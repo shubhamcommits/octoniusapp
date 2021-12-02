@@ -31,9 +31,6 @@ routes.get('/all', lounge.getAllLounges);
 // GET - Get all workspace lounges
 routes.get('/allCategories', lounge.getAllCategories);
 
-// GET - Get all stories in a lounge or workspace
-routes.get('/allStories', lounge.getAllStories);
-
 // POST - Add new lounge to workspace
 routes.post('/', lounge.addLounge);
 

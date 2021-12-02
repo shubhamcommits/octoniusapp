@@ -24,7 +24,8 @@ const StorySchema = new Schema({
     },
     _lounge: {
         type: Schema.Types.ObjectId,
-        ref: 'Lounge'
+        ref: 'Lounge',
+        required: true
     },
     _group: {
         type: Schema.Types.ObjectId,

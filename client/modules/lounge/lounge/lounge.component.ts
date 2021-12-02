@@ -27,6 +27,7 @@ export class LoungeComponent implements OnInit, OnDestroy {
   isManager: boolean = false;
 
   categories = [];
+  globalStoriesCategory;
 
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
@@ -73,7 +74,7 @@ export class LoungeComponent implements OnInit, OnDestroy {
   }
 
   initCategories() {
-    this.categories.forEach(async cat => {
+    this.categories.forEach(cat => {
       cat.items = [];
 
       if (cat._lounges && cat._lounges.length > 0) {
@@ -91,10 +92,17 @@ export class LoungeComponent implements OnInit, OnDestroy {
           return -1;
         }
       });
+
+      if (cat.name == 'Global stories') {
+        this.globalStoriesCategory = cat;
+      }
     });
   }
 
   onCategoryEmiter(category: any) {
+    if (category.name == 'Global stories') {
+      this.globalStoriesCategory = category;
+    }
     this.categories.push(category);
   }
 
@@ -102,17 +110,23 @@ export class LoungeComponent implements OnInit, OnDestroy {
     this.openEditLoungeDialog(lounge);
   }
 
-  onEventEmiter(event: any) {
-    console.log(event);
-  }
-
   onStoryEmiter(story: any) {
-    console.log(story);
+    this.categories.forEach(cat => {
+      if (cat._id == story?._lounge?._id) {
+        if (!cat._stories) {
+          cat._stories = [];
+        }
+        if (!cat.items) {
+          cat.items = [];
+        }
+        cat._stories.unshift(story);
+        cat.items.unshift(story);
+      }
+    });
   }
 
   openEditLoungeDialog(lounge: any) {
-    const data =
-      {
+    const data = {
         lounge: lounge,
         categories: this.categories
       };

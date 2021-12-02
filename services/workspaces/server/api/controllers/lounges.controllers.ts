@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 export class LoungeController {
 
     /**
-      * This function add's the domain to the allowed_domain set which allows those specific domains to signup to the workspace
+      * This function add's the lounge to the workspace
       * @param { userId, body: { lounge } }req 
       * @param res 
       * @param next 
@@ -16,7 +16,7 @@ export class LoungeController {
             // Request Data
             const { body: { lounge } } = req;
 
-            // If lounge or domain is null or not provided then we throw BAD REQUEST 
+            // If lounge is null or not provided then we throw BAD REQUEST 
             if (!lounge) {
                 return res.status(400).json({
                     message: 'Please provide lounge as a parameter!'
@@ -50,6 +50,7 @@ export class LoungeController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
     /**
       * This function add's the domain to the allowed_domain set which allows those specific domains to signup to the workspace
       * @param { userId, body: { lounge } }req 
@@ -275,56 +276,20 @@ export class LoungeController {
 
             await Story.deleteMany({ _lounge: loungeId });
             await Lounge.deleteMany({ _parent: loungeId });
-            await Lounge.findOneAndDelete({ _id: loungeId });
+            const lounge = await Lounge.findOneAndDelete({ _id: loungeId }).lean();
+            if (lounge._parent) {
+                await Lounge.findByIdAndUpdate({
+                        _id: (lounge._parent._id || lounge._parent)
+                    }, {
+                        $pull: {
+                            _lounges: loungeId
+                        }
+                    });
+            }
 
             // Send the status 200 response
             return res.status(200).json({
                 message: `Lounge removed from workspace`});
-        } catch (err) {
-            return sendError(res, err, 'Internal Server Error!', 500);
-        }
-    }
-
-    /**
-     * This function is responsible for fetching the list of allowed domains from which users can sign-up
-     * @param { params: { workspaceId } }req 
-     * @param res 
-     * @param next 
-     */
-    async getAllStories(req: Request, res: Response, next: NextFunction) {
-        try {
-
-            const { workspaceId, loungeId } = req.query;
-
-            // If workspaceId is null or not provided then we throw BAD REQUEST 
-            if (!workspaceId) {
-                return res.status(400).json({
-                    message: 'Please provide workspaceId as the query parameter!'
-                });
-            }
-
-            let query  = (loungeId && loungeId != '')
-                ? {
-                    _workspace: workspaceId,
-                    _lounge: loungeId
-                }
-                : {
-                    _workspace: workspaceId
-                }
-
-            // Find the list of lounges
-            const stories: any = await Story.find(query).lean();
-
-            // Unable to find the domains
-            if (!stories) {
-                return sendError(res, new Error('Unable to fetch the data as the workspaceId is invalid!'), 'Unable to fetch the data as the workspaceId is invalid!', 404);
-            }
-
-            // Send the status 200 response
-            return res.status(200).json({
-                message: `Found ${stories.length} stories!`,
-                stories: stories || []
-            })
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
@@ -376,4 +341,3 @@ export class LoungeController {
         }
     }
 }
-

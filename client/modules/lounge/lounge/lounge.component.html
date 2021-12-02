@@ -19,10 +19,12 @@
 
   <div class="row">
     <app-lounge-new-element class="new-element" *ngIf="isManager"
+      [lounge]="globalStoriesCategory"
+      [canCreateCategory]="true"
       (categoryEmitter)="onCategoryEmiter($event)"
-      (eventEmitter)="onEventEmiter($event)"
       (loungeEmitter)="onLoungeEmiter($event)"
-      (storyEmitter)="onStoryEmiter($event)"></app-lounge-new-element>
+      (storyEmitter)="onStoryEmiter($event)"
+      (eventEmitter)="onStoryEmiter($event)"></app-lounge-new-element>
   </div>
 
   <div class="media-body">

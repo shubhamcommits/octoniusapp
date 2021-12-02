@@ -20,20 +20,6 @@ export class LoungeService {
   }
 
   /**
-   * This function is responsible for fetching all the stories & events present in a workspace
-   * @param workspaceId
-   * @param loungeId
-   */
-  getAllStories(workspaceId: string, loungeId?: string) {
-    return this._http.get(this.baseUrl + `/lounges/allStories`, {
-      params:{
-        workspaceId: workspaceId,
-        loungeId: loungeId || ''
-      }
-    }).toPromise()
-  }
-
-  /**
    * This function is responsible for fetching all the lounges present in a workspace
    * @param workspaceId
    */
@@ -91,5 +77,36 @@ export class LoungeService {
     formData.append('elementPropertyName', elementPropertyName);
 
     return this._http.put<any>(this.baseUrl + `/lounges/${workspaceId}/updateImage/${elementId}`, formData).toPromise();
+  }
+
+  /**
+   * This function is responsible for adding a story to the workspace
+   * @param story
+   */
+  addStory(story: any) {
+    return this._http.post(this.baseUrl + `/stories`, { story }).toPromise();
+  }
+
+  /**
+   * This function is responsible for fetching all the stories & events present in a workspace
+   * @param workspaceId
+   * @param loungeId
+   */
+  getAllStories(workspaceId: string, loungeId?: string) {
+    return this._http.get(this.baseUrl + `/stories/all`, {
+      params: {
+        workspaceId: workspaceId,
+        loungeId: loungeId || ''
+      }
+    }).toPromise()
+  }
+
+  /**
+   * This function is responsible to renaming a story
+   * @param storyId
+   * @param newName
+   */
+  editStory(storyId: string, properties: any) {
+    return this._http.put(this.baseUrl + `/stories/${storyId}`, { properties }).toPromise();
   }
 }

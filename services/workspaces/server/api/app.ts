@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import compression from 'compression';
 import fileUpload from 'express-fileupload';
 import { developmentConfig, productionConfig } from '../configs';
-import { domainRoutes, loungesRoutes, memberRoutes, mgmtRoutes, workspaceRoutes } from './routes';
+import { domainRoutes, loungesRoutes, memberRoutes, mgmtRoutes, workspaceRoutes, storiesRoutes } from './routes';
 
 // Defining new Express application
 const app = express();
@@ -81,6 +81,7 @@ app.use('/api/domains', domainRoutes);
 app.use('/api/members', memberRoutes);
 app.use('/api/management', mgmtRoutes);
 app.use('/api/lounges', loungesRoutes);
+app.use('/api/stories', storiesRoutes);
 app.use('/api', workspaceRoutes);
 
 // Invalid routes handling middleware

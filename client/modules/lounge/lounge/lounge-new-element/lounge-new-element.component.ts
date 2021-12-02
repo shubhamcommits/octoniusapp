@@ -11,6 +11,7 @@ import { LoungeService } from 'src/shared/services/lounge-service/lounge.service
 export class LoungeNewElementComponent implements OnInit, OnDestroy {
 
   @Input() canCreateCategory: boolean = true;
+  @Input() lounge;
 
   // Output story event emitter
   @Output() storyEmitter = new EventEmitter();
@@ -48,7 +49,6 @@ export class LoungeNewElementComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit() {
-
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }
@@ -60,17 +60,31 @@ export class LoungeNewElementComponent implements OnInit, OnDestroy {
   async createStory() {
     await this.initElement();
 
-
     this.elementData.name = $localize`:@@loungeNewElement.newStory:New Story`;
     this.elementData.type = 'story';
+    if (this.lounge) {
+      this.elementData._lounge = this.lounge;
+    }
+
+    this.loungeService.addStory(this.elementData).then(res => {
+      this.storyEmitter.emit(res['story']);
+      this.initElement();
+    });
   }
 
   async createEvent() {
     await this.initElement();
 
-
     this.elementData.name = $localize`:@@loungeNewElement.newEvent:New Event`;
     this.elementData.type = 'event';
+    if (this.lounge) {
+      this.elementData._lounge = this.lounge;
+    }
+
+    this.loungeService.addStory(this.elementData).then(res => {
+      this.eventEmitter.emit(res['story']);
+      this.initElement();
+    });
   }
 
   async createLounge() {
@@ -86,7 +100,7 @@ export class LoungeNewElementComponent implements OnInit, OnDestroy {
   async createCategory() {
     await this.initElement();
 
-    this.elementData.name = $localize`:@@loungeNewElement.newCategory:New Category`;
+    this.elementData.name = (this.lounge) ? $localize`:@@loungeNewElement.newCategory:New Category` : 'Global stories';
     this.elementData.type = 'category';
 
     this.loungeService.addLounge(this.elementData).then(res => {
@@ -101,7 +115,9 @@ export class LoungeNewElementComponent implements OnInit, OnDestroy {
       _posted_by: this.userData?._id,
       _workspace: this.workspaceData?._id,
       type: '',
-      name: ''
+      name: '',
+      _parent: null,
+      _lounge: null
     }
   }
 }

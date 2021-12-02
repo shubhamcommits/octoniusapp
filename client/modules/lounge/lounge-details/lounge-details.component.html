@@ -13,9 +13,10 @@
   <div class="row">
     <app-lounge-new-element class="new-element" *ngIf="isManager"
       [canCreateCategory]="false"
-      (eventEmitter)="onEventEmiter($event)"
-      (loungeEmitter)="onLoungeEmiter($event)"
-      (storyEmitter)="onStoryEmiter($event)"></app-lounge-new-element>
+      [lounge]="loungeData"
+      (eventEmitter)="onStoryEmiter($event)"
+      (storyEmitter)="onStoryEmiter($event)"
+      (loungeEmitter)="onLoungeEmiter($event)"></app-lounge-new-element>
 
     <div style="right: 40px; position: absolute; margin-top: 20px;">
       <i *ngIf="isManager" class="material-icons muted dropdown-toggle" style="cursor: pointer;" data-toggle="dropdown">

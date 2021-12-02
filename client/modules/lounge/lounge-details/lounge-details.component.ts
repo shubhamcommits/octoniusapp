@@ -110,12 +110,9 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
     this.openEditLoungeDialog(lounge);
   }
 
-  onEventEmiter(event: any) {
-    console.log(event);
-  }
-
   onStoryEmiter(story: any) {
-    console.log(story);
+    this.loungeData._stories.unshift(story);
+    this.loungeData.items.unshift(story);
   }
 
   openEditLoungeDialog(lounge: any) {

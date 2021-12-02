@@ -8,23 +8,23 @@
 <!-- Menu Drawer Starts -->
 <ul class="dropdown-menu">
 
-    <li class="dropdown-item" (click)="createStory()">
+    <li *ngIf="lounge" class="dropdown-item" (click)="createStory()">
       <span i18n="@@loungeNewElement.story">Story</span>
     </li>
 
-    <li class="dropdown-divider"></li>
+    <li *ngIf="lounge" class="dropdown-divider"></li>
 
-    <li class="dropdown-item" (click)="createEvent()">
+    <li *ngIf="lounge" class="dropdown-item" (click)="createEvent()">
       <span i18n="@@loungeNewElement.event">Event</span>
     </li>
 
-    <li class="dropdown-divider"></li>
+    <li *ngIf="lounge" class="dropdown-divider"></li>
 
-    <li class="dropdown-item" (click)="createLounge()">
+    <li *ngIf="lounge" class="dropdown-item" (click)="createLounge()">
       <span i18n="@@loungeNewElement.lounge">Lounge</span>
     </li>
 
-    <li class="dropdown-divider" *ngIf="canCreateCategory"></li>
+    <li *ngIf="canCreateCategory && lounge" class="dropdown-divider"></li>
 
     <li class="dropdown-item" (click)="createCategory()" *ngIf="canCreateCategory">
       <span i18n="@@loungeNewElement.category">Category</span>
