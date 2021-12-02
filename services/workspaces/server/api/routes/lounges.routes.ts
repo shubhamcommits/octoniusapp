@@ -1,5 +1,6 @@
 import express from 'express';
 import { Auths } from '../../utils';
+import { loungeImageFileHandler } from '../../utils/filehandler';
 import { LoungeController } from '../controllers';
 
 // Create lounge controller Class
@@ -38,6 +39,9 @@ routes.post('/', lounge.addLounge);
 
 // POST - Edit a lounge
 routes.put('/:loungeId', lounge.editLounge);
+
+// POST - Edit image
+routes.put('/:workspaceId/updateImage/:elementId', loungeImageFileHandler, lounge.editImage);
 
 // DELETE - Removes the lounge from the workspace
 routes.delete('/:loungeId', lounge.removeLounge);

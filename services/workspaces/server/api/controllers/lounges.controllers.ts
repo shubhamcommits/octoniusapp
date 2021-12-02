@@ -329,5 +329,51 @@ export class LoungeController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * Updates the image property of an element defined by the ID,
+     * the type, and the property name passed by parameters
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async editImage(req: Request, res: Response, next: NextFunction) {
+        const { params: { elementId }, body } = req;
+
+        try {
+            let element: any;
+            if (body.type == 'event' || body.type == 'story') {
+                element = await Story.findOneAndUpdate({
+                        _id: elementId
+                    }, {
+                        $set: body
+                    }, {
+                        new: true
+                    })
+                    .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                    .lean();
+            } else if (body.type == 'lounge' || body.type == 'category') {
+                element = await Lounge.findOneAndUpdate({
+                        _id: elementId
+                    }, {
+                        $set: body
+                    }, {
+                        new: true
+                    })
+                    .populate({ path: '_lounges', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                    .populate({ path: '_stories', select: 'name type icon_pic _lounge _group _workspace _posted_by created_date' })
+                    .lean();
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `Image updated!`,
+                element: element
+            })
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }
 

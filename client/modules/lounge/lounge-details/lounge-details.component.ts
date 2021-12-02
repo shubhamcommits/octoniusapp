@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import moment from 'moment';
 import { EditLoungeComponent } from '../lounge/edit-lounge/edit-lounge.component';
 import { ActivatedRoute } from '@angular/router';
+import { LoungeImageUpdateComponent } from '../lounge-image-update/lounge-image-update.component';
 
 @Component({
   selector: 'app-lounge-details',
@@ -31,8 +32,7 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
   isManager: boolean = false;
 
   loungeData: any = {};
-
-  canEditLounge: boolean = false;
+  categories: any = [];
 
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
@@ -73,6 +73,10 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
     });
 
     await this.initLounge();
+
+    this.loungeService.getAllCategories(this.workspaceData._id).then (res => {
+      this.categories = res['lounges'] || [];
+    });
 
     // Stops the spinner and return the value with ngOnInit
     return this.isLoading$.next(false);
@@ -118,8 +122,8 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
     const data =
       {
         lounge: lounge,
-        parent: this.loungeData?._id
-        //categories: this.categories
+        parent: this.loungeData?._id,
+        categories: this.categories
       };
 
     const dialogRef = this.dialog.open(EditLoungeComponent, {
@@ -182,5 +186,41 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
 
   isManagerUser() {
     return this.userData.role == 'manager' || this.userData.role == 'admin' || this.userData.role == 'owner';
+  }
+
+  /**
+    * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
+    * @param content
+    */
+  async openDetails(property) {
+    const data =
+    {
+      elementData: this.loungeData,
+      elementPropertyName: property
+    };
+
+    const dialogRef = this.dialog.open(LoungeImageUpdateComponent, {
+      width: '50%',
+      height: '75%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: data
+    });
+
+    const loungeNameEventSubs = dialogRef.componentInstance.elementImageUpdatedEvent.subscribe((data) => {
+      this.editLounge(data);
+    });
+    /*
+    const newLoungeEventSubs = dialogRef.componentInstance.newLoungeEvent.subscribe((data) => {
+      this.onNewLoungeCreated(data);
+    });
+
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {});
+    */
+    dialogRef.afterClosed().subscribe(result => {
+      loungeNameEventSubs.unsubscribe();
+      //newLoungeEventSubs.unsubscribe();
+      //closeEventSubs.unsubscribe();
+    });
   }
 }

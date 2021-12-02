@@ -22,24 +22,24 @@ const StorySchema = new Schema({
         type: String,
         default: 'assets/images/lounge-icon.jpg'
     },
-    _lounge: [{
+    _lounge: {
         type: Schema.Types.ObjectId,
         ref: 'Lounge'
-    }],
-    _group: [{
+    },
+    _group: {
         type: Schema.Types.ObjectId,
         ref: 'Group'
-    }],
+    },
     _workspace: {
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'Workspace'
     },
-    _posted_by: [{
+    _posted_by: {
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'User'
-    }],
+    },
     created_date: {
         type: Date,
         required: true,

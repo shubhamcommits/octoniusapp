@@ -1,5 +1,5 @@
 <div>
-  <div class="media" style="margin-bottom: 30px;">
+  <div class="row" style="margin-bottom: 30px;">
     <img src="assets/images/lounge_header.jpg" class="mr-3" style="width: 100%" />
 
     <div class="media-header">
@@ -15,69 +15,71 @@
         “Great stories can only happen to those who can tell them” - Paul Auster
       </span>
     </div>
+  </div>
 
+  <div class="row">
     <app-lounge-new-element class="new-element" *ngIf="isManager"
       (categoryEmitter)="onCategoryEmiter($event)"
       (eventEmitter)="onEventEmiter($event)"
       (loungeEmitter)="onLoungeEmiter($event)"
       (storyEmitter)="onStoryEmiter($event)"></app-lounge-new-element>
+  </div>
 
-    <div class="media-body">
-      <div *ngFor="let category of categories; let index = index" class="category">
+  <div class="media-body">
+    <div *ngFor="let category of categories; let index = index" class="category">
 
-        <!-- SECTION SEPARATOR INDICATOR STARTS -->
-        <app-section-separator *ngIf="index > 0"></app-section-separator>
-        <!-- SECTION SEPARATOR INDICATOR ENDS -->
+      <!-- SECTION SEPARATOR INDICATOR STARTS -->
+      <app-section-separator *ngIf="index > 0"></app-section-separator>
+      <!-- SECTION SEPARATOR INDICATOR ENDS -->
 
-        <div class="category-name row">
-          <span class="name"
-              [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
-              [queryParams]="{ lounge: category?._id  }">
-            {{ category.name }}
-          </span>
+      <div class="category-name row">
+        <span class="name"
+            [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
+            [queryParams]="{ lounge: category?._id  }">
+          {{ category.name }}
+        </span>
 
-          <i *ngIf="isManager && category.name != 'Global stories'" (click)="openEditLoungeDialog(category)"
-              class="material-icons muted" style="cursor: pointer; font-size: 14px;">
-            settings
-          </i>
-        </div>
+        <i *ngIf="isManager && category.name != 'Global stories'" (click)="openEditLoungeDialog(category)"
+            class="material-icons muted" style="cursor: pointer; font-size: 14px;">
+          settings
+        </i>
+      </div>
 
-        <div class="category-body row">
-          <div *ngIf="category.items && category.items.length > 0" class="col-md-3 col-sm-6 col-xs-12">
-            <div *ngFor="let item of category.items" class="card">
-              <div *ngIf="item.type == 'lounge'"
-                  [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
-                  [queryParams]="{ lounge: item?._id  }">
-                <span *ngIf="item.type == 'lounge'" class="badge badge-members">
-                  {{ item?._stories?.length || 0 }}
-                  <span i18n="@@lounge.stories">stories</span>
-                </span>
+      <div class="category-body row">
+        <div *ngIf="category.items && category.items.length > 0" class="col-md-3 col-sm-6 col-xs-12">
+          <div *ngFor="let item of category.items" class="card">
+            <div *ngIf="item.type == 'lounge'"
+                [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
+                [queryParams]="{ lounge: item?._id  }">
+              <span *ngIf="item.type == 'lounge'" class="badge badge-members">
+                {{ item?._stories?.length || 0 }}
+                <span i18n="@@lounge.stories">stories</span>
+              </span>
 
-                <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
-                    [styleClass]="'card-img-top'"></app-secured-image>
+              <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
+                  [styleClass]="'card-img-top'"></app-secured-image>
 
-                <div class="card-body">
-                  <a>
-                    <h2 class="card-title">{{ item.name }}</h2>
-                  </a>
-                </div>
+              <div class="card-body">
+                <a>
+                  <h2 class="card-title">{{ item.name }}</h2>
+                </a>
               </div>
+            </div>
 
-              <div *ngIf="item.type == 'story' || item.type == 'event'"
-                  [routerLink]="['/dashboard', 'work', 'lounge', 'story']"
-                  [queryParams]="{ story: item?._id  }">
-                <span *ngIf="item.type == 'story' || item.type == 'event'" class="badge badge-members">
-                  {{ item?.type }}
-                </span>
+            <div *ngIf="item.type == 'story' || item.type == 'event'"
+                [routerLink]="['/dashboard', 'work', 'lounge', 'story']"
+                [queryParams]="{ story: item?._id  }">
+              <span *ngIf="item.type == 'story' || item.type == 'event'" class="badge badge-members">
+                {{ item?.type }}
+              </span>
 
-                <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
-                    [styleClass]="'card-img-top'"></app-secured-image>
+              <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
+                  [styleClass]="'card-img-top'"></app-secured-image>
 
-                <div class="card-body">
-                  <a>
-                    <h2 class="card-title">{{ item.name }}</h2>
-                  </a>
-                </div>
+              <div class="card-body">
+                <a>
+                  <h2 class="card-title">{{ item.name }}</h2>
+                </a>
               </div>
             </div>
           </div>

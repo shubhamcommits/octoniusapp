@@ -11,10 +11,10 @@
 <div class="container">
 
     <!-- IMAGE CROPPER TOOL STARTS -->
-    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="1 / 1"
-    [resizeToWidth]="300"
-    [cropperMinWidth]="300"
-    [onlyScaleDown]="true"
+    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" [aspectRatio]="1 / 1"
+        [resizeToWidth]="300"
+        [cropperMinWidth]="300"
+        [onlyScaleDown]="false"
         [roundCropper]="false" format="png,jpeg,webp,bmp,ico" outputType="file" (imageCropped)="imageCropped($event)"
         (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
     </image-cropper>

@@ -8,26 +8,13 @@ h5{
   font-weight: 700 !important;
 }
 
-.media img {
-  float: left;
-}
-
 .media-header {
   position: absolute;
-  color: white;
-  width: 42%;
-  background: #223044;
   opacity: 0.6;
-  height: 205px;
   padding: 30px 30px;
 
-  .title {
-    color: white;
-    font-size: 30px;
-  }
-
-  .quote {
-    font-style: italic;
+  img {
+    width: 42%;
   }
 }
 
@@ -36,21 +23,18 @@ h5{
 
   .new-element {
     align-items: center;
-    padding: 6px 14px;
+    margin: 6px 14px;
 
-    position: absolute;
-    width: 100px;
-    height: 36px;
-    top: 370px;
+    //position: absolute;
+    //width: 100px;
+    //height: 36px;
+    //top: 370px;
   }
 
   .media-body {
     align-items: left;
     margin: 15px 15px;
-
-    position: absolute;
     width: 100%;
-    top: 440px;
   }
 
   .category-name {

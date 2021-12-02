@@ -1,0 +1,30 @@
+<div>
+  <mat-dialog-actions class="d-flex justify-content-end" align="end">
+    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+  </mat-dialog-actions>
+
+  <div>
+    <!-- TITLE STARTS -->
+    <div class="modal-header">
+      <h4 class="modal-title" i18n="@@loungeImageUpdate.updateImage">Update Image</h4>
+    </div>
+    <!-- WORKSPACE HEADER ENDS -->
+
+    <!-- WORKSPACE MODAL CHANGE IMAGE STARTS -->
+    <div class="modal-body">
+      <div class="form-group">
+          <app-secured-image *ngIf="elementData"
+            [imgURL]="elementData[elementPropertyName]"
+            [service]="'lounge'"></app-secured-image>
+
+          <div class="input-group mb-3">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" accept="image/*" (change)="imageChangeEvent($event.target.files)" />
+              <label class="custom-file-label" i18n="@@loungeImageUpdate.chooseFile">Choose file</label>
+            </div>
+          </div>
+      </div>
+    </div>
+    <!-- WORKSPACE MODAL CHANGE IMAGE ENDS -->
+  </div>
+</div>

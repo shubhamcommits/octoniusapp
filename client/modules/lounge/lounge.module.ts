@@ -11,6 +11,7 @@ import { LoungeNewElementComponent } from './lounge/lounge-new-element/lounge-ne
 import { EditLoungeComponent } from './lounge/edit-lounge/edit-lounge.component';
 import { FormsModule } from '@angular/forms';
 import { LoungeDetailsComponent } from './lounge-details/lounge-details.component';
+import { LoungeImageUpdateComponent } from './lounge-image-update/lounge-image-update.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { LoungeDetailsComponent } from './lounge-details/lounge-details.componen
     LoungeComponent,
     LoungeNewElementComponent,
     EditLoungeComponent,
-    LoungeDetailsComponent
+    LoungeDetailsComponent,
+    LoungeImageUpdateComponent
   ],
   imports: [
     CommonModule,

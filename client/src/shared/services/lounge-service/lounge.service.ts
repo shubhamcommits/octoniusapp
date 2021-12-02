@@ -82,4 +82,14 @@ export class LoungeService {
   deleteLounge(loungeId: string) {
     return this._http.delete(this.baseUrl + `/lounges/${loungeId}`).toPromise();
   }
+
+  updateImage(workspaceId: string, elementId: string, image: any, elementPropertyName: string, elementType: string) {
+    // PREPARING FORM DATA
+    let formData = new FormData();
+    formData.append('image', image);
+    formData.append('type', elementType);
+    formData.append('elementPropertyName', elementPropertyName);
+
+    return this._http.put<any>(this.baseUrl + `/lounges/${workspaceId}/updateImage/${elementId}`, formData).toPromise();
+  }
 }
