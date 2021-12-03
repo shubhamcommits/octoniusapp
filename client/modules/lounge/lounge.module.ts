@@ -15,7 +15,7 @@ import { LoungeImageUpdateComponent } from './lounge-image-update/lounge-image-u
 import { StoryDetailsComponent } from './story-details/story-details.component';
 import { StoryActionsBarComponent } from './story-details/story-actions-bar/story-actions-bar.component';
 import { LikeStoryComponent } from './story-details/like-story/like-story.component';
-
+import { FollowStoryComponent } from './story-details/follow-story/follow-story.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,8 @@ import { LikeStoryComponent } from './story-details/like-story/like-story.compon
     StoryDetailsComponent,
     StoryActionsBarComponent,
     LoungeImageUpdateComponent,
-    LikeStoryComponent
+    LikeStoryComponent,
+    FollowStoryComponent
   ],
   imports: [
     CommonModule,

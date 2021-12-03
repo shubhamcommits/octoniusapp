@@ -137,4 +137,12 @@ export class LoungeService {
   unlikeStory(storyId: string) {
     return this._http.put(this.baseUrl + `/stories/${storyId}/unlike`, {}).toPromise();
   }
+
+  followStory(storyId: string) {
+    return this._http.put(this.baseUrl + `/stories/${storyId}/follow`, {}).toPromise();
+  }
+
+  unfollowStory(storyId: string) {
+    return this._http.put(this.baseUrl + `/stories/${storyId}/unfollow`, {}).toPromise();
+  }
 }

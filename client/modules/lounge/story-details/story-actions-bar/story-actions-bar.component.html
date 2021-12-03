@@ -50,7 +50,7 @@
       <li *ngIf="!notGoingToEvent && (this.goingToEvent || this.maybeGoingToEvent)" class="dropdown-item" (click)="rejectAssistance()">
         <div class="not-going-to-event">
           <i class="material-icons">check_circle</i>
-          <span i18n="@@storyActionsBar.going">NOT GOING</span>
+          <span i18n="@@storyActionsBar.notGoing">NOT GOING</span>
         </div>
       </li>
     </ul>
@@ -59,13 +59,23 @@
   <!-- EVENT ATTENDANCE ENDS -->
 
   <div style="right: 40px; position: absolute; margin-top: -40px;">
-
+    <!-- LIKE action starts -->
     <app-like-story
       [userData]="userData"
       [storyData]="storyData"
       (storyLiked)="editStory($event)"
       (storyUnLiked)="editStory($event)"></app-like-story>
+    <!-- LIKE action ends -->
 
+    <!-- FOLLOW action starts -->
+    <app-follow-story
+      [userData]="userData"
+      [storyData]="storyData"
+      (storyFollowed)="editStory($event)"
+      (storyUnfollowed)="editStory($event)"></app-follow-story>
+    <!-- FOLLOW action ends -->
+
+    <!-- EDIT action starts -->
     <i *ngIf="isManager" class="material-icons muted" style="cursor: pointer;" data-toggle="dropdown">
       more_horiz
     </i>
@@ -92,5 +102,6 @@
       </li>
     </ul>
     <!-- Menu Drawer Ends -->
+    <!-- EDIT action ends -->
   </div>
 </div>

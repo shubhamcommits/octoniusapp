@@ -56,6 +56,10 @@ const StorySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+    _followers: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     _posted_by: {
         type: Schema.Types.ObjectId,
         required: true,

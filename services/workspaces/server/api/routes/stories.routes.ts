@@ -51,6 +51,12 @@ routes.put('/:storyId/like', story.like);
 // POST - Unlike a story
 routes.put('/:storyId/unlike', story.unlike);
 
+// POST - Follow a story
+routes.put('/:storyId/follow', story.follow);
+
+// POST - Unfollow a story
+routes.put('/:storyId/unfollow', story.unfollow);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
