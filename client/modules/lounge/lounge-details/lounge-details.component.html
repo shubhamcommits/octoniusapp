@@ -19,7 +19,7 @@
       (loungeEmitter)="onLoungeEmiter($event)"></app-lounge-new-element>
 
     <div style="right: 40px; position: absolute; margin-top: 20px;">
-      <i *ngIf="isManager" class="material-icons muted dropdown-toggle" style="cursor: pointer;" data-toggle="dropdown">
+      <i *ngIf="isManager" class="material-icons muted" style="cursor: pointer;" data-toggle="dropdown">
         settings
       </i>
 
@@ -29,11 +29,11 @@
           <span class="material-icons-outlined">create</span>
           <span i18n="@@groupKanbanBoard.edit">Edit</span>
         </li>
-        <li class="dropdown-item" (click)="openDetails('header_pic')">
+        <li class="dropdown-item" (click)="openImageSelector('header_pic')">
           <span class="material-icons-outlined">panorama</span>
           <span i18n="@@groupKanbanBoard.editHeaderImage">Edit Header Image</span>
         </li>
-        <li class="dropdown-item" (click)="openDetails('icon_pic')">
+        <li class="dropdown-item" (click)="openImageSelector('icon_pic')">
           <span class="material-icons-outlined">insert_photo</span>
           <span i18n="@@groupKanbanBoard.editIconImage">Edit Icon Image</span>
         </li>
@@ -53,7 +53,7 @@
     <div class="category-body row">
       <div *ngIf="loungeData?.items && loungeData?.items.length > 0" class="col-md-3 col-sm-6 col-xs-12">
         <div *ngFor="let item of loungeData?.items" class="card">
-          <div *ngIf="item.type == 'lounge'"
+          <div *ngIf="item.type == 'lounge'" (click)="cleanStoredData()"
               [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
               [queryParams]="{ lounge: item?._id  }">
             <span *ngIf="item.type == 'lounge'" class="badge badge-members">
@@ -71,9 +71,9 @@
             </div>
           </div>
 
-          <div *ngIf="item.type == 'story' || item.type == 'event'"
+          <div *ngIf="item.type == 'story' || item.type == 'event'" (click)="cleanStoredData()"
               [routerLink]="['/dashboard', 'work', 'lounge', 'story']"
-              [queryParams]="{ lounge: item?._id  }">
+              [queryParams]="{ story: item?._id  }">
             <span *ngIf="item.type == 'story' || item.type == 'event'" class="badge badge-members">
               {{ item?.type }}
             </span>

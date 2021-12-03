@@ -8,7 +8,7 @@ import { LoungeService } from 'src/shared/services/lounge-service/lounge.service
 import { MatDialog } from '@angular/material/dialog';
 import moment from 'moment';
 import { EditLoungeComponent } from '../lounge/edit-lounge/edit-lounge.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoungeImageUpdateComponent } from '../lounge-image-update/lounge-image-update.component';
 
 @Component({
@@ -47,7 +47,7 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
     private injector: Injector,
     public dialog: MatDialog,
     private router: ActivatedRoute,
-    private location: Location,
+    private _router: Router,
     private loungeService: LoungeService
   ) {
     this.loungeId = this.router.snapshot.queryParamMap.get('lounge');
@@ -70,6 +70,7 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
 
     await this.loungeService.getLounge(this.loungeId).then (res => {
       this.loungeData = res['lounge'] || {};
+      this.publicFunctions.sendUpdatesToLoungeData(this.loungeData);
     });
 
     await this.initLounge();
@@ -104,6 +105,8 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
         return -1;
       }
     });
+
+    this.publicFunctions.sendUpdatesToLoungeData(this.loungeData);
   }
 
   onLoungeEmiter(lounge: any) {
@@ -113,6 +116,7 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
   onStoryEmiter(story: any) {
     this.loungeData._stories.unshift(story);
     this.loungeData.items.unshift(story);
+    this.publicFunctions.sendUpdatesToLoungeData(this.loungeData);
   }
 
   openEditLoungeDialog(lounge: any) {
@@ -152,11 +156,14 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
    */
   async editLounge(lounge: any) {
     this.loungeData = lounge;
+    await this.initLounge();
+    this.publicFunctions.sendUpdatesToLoungeData(this.loungeData);
   }
 
   onNewLoungeCreated(lounge: any) {
     this.loungeData._lounges.unshift(lounge);
     this.loungeData.items.unshift(lounge);
+    this.publicFunctions.sendUpdatesToLoungeData(this.loungeData);
   }
 
   deleteLounge(loungeId: string) {
@@ -169,7 +176,10 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
           this.utilityService.asyncNotification($localize`:@@loungeDetails.pleaseWaitWeRemovingLounge:Please wait we are removing your lounge...`, new Promise((resolve, reject) => {
             this.loungeService.deleteLounge(loungeId)
               .then((res) => {
-                this.location.back();
+                this.publicFunctions.sendUpdatesToLoungeData({});
+                this.publicFunctions.sendUpdatesToStoryData({});
+
+                this.goBack();
 
                 resolve(this.utilityService.resolveAsyncPromise($localize`:@@loungeDetails.loungeRemoved:Lounge Removed!`));
               })
@@ -181,6 +191,21 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
+  async goBack() {
+    if (this.loungeData.type == 'category') {
+      this._router.navigate(['/dashboard', 'work', 'lounge']);
+    } else if (this.loungeData._parent) {
+      this._router.navigate(
+        ['/dashboard', 'work', 'lounge', 'details'],
+        {
+          queryParams: {
+            lounge: this.loungeData._parent._id
+          }
+        }
+      );
+    }
+  }
+
   isManagerUser() {
     return this.userData.role == 'manager' || this.userData.role == 'admin' || this.userData.role == 'owner';
   }
@@ -189,7 +214,7 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
     * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
     * @param content
     */
-  async openDetails(property) {
+  async openImageSelector(property) {
     const data =
     {
       elementData: this.loungeData,
@@ -198,26 +223,22 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
 
     const dialogRef = this.dialog.open(LoungeImageUpdateComponent, {
       width: '50%',
-      height: '75%',
       disableClose: true,
       hasBackdrop: true,
       data: data
     });
 
-    const loungeNameEventSubs = dialogRef.componentInstance.elementImageUpdatedEvent.subscribe((data) => {
+    const elementImageUpdatedEventSubs = dialogRef.componentInstance.elementImageUpdatedEvent.subscribe((data) => {
       this.editLounge(data);
     });
-    /*
-    const newLoungeEventSubs = dialogRef.componentInstance.newLoungeEvent.subscribe((data) => {
-      this.onNewLoungeCreated(data);
-    });
 
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {});
-    */
     dialogRef.afterClosed().subscribe(result => {
-      loungeNameEventSubs.unsubscribe();
-      //newLoungeEventSubs.unsubscribe();
-      //closeEventSubs.unsubscribe();
+      elementImageUpdatedEventSubs.unsubscribe();
     });
+  }
+
+  cleanStoredData() {
+    this.publicFunctions.sendUpdatesToLoungeData({});
+    this.publicFunctions.sendUpdatesToStoryData({});
   }
 }

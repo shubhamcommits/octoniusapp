@@ -1,4 +1,4 @@
-<ul class="nav mr-auto"  *ngIf="isWorkNavbar$ | async">
+<ul class="nav mr-auto" *ngIf="isWorkNavbar$ | async">
   <li class="nav-item mr-3">
     <!-- <i class="material-icons-outlined float-left mr-2">dashboard</i> -->
     <app-secured-image
@@ -72,4 +72,48 @@
     </a>
   </li>
   <!-- Back Page Route ends -->
+
+  <!-- Lounge Title starts -->
+  <li *ngIf="loungeData" class="nav-item d-none d-md-block" style="margin-top: 20px;">
+    <!-- Static Title starts -->
+    <span *ngIf="!editTitle"
+        (click)="(isUserManager && loungeData.name != 'Global stories') ? editTitle = !editTitle : null"
+        matTooltip="Click me to rename"
+        matTooltipPosition="below">{{ loungeData?.name }}
+    </span>
+    <!-- Static Title ends -->
+
+    <!-- edit title name starts -->
+    <input *ngIf="editTitle" type="search"
+      autocomplete="off"
+      [(ngModel)]="loungeData.name"
+      (keyup)="changeTitle($event)"
+      [placeholder]="(loungeData.type == 'category') ? 'Add a title for your category' : 'Add a title for your lounge'"
+      class="input-search" />
+    <!-- edit title name ends -->
+  </li>
+  <!-- Lounge Title ends -->
+
+  <!-- Story Title starts -->
+  <li *ngIf="storyData" class="nav-item d-none d-md-block" style="margin-top: 20px;">
+    <i class="material-icons" *ngIf="storyData.type == 'story'">travel_explore</i>
+    <i class="material-icons" *ngIf="storyData.type == 'event'">event</i>
+    <!-- Static Title starts -->
+    <span *ngIf="!editTitle"
+        (click)="(isUserManager) ? editTitle = !editTitle : null"
+        matTooltip="Click me to rename"
+        matTooltipPosition="below">{{ storyData?.name }}
+    </span>
+    <!-- Static Title ends -->
+
+    <!-- edit title name starts -->
+    <input *ngIf="editTitle" type="search"
+      autocomplete="off"
+      [(ngModel)]="storyData.name"
+      (keyup)="changeTitle($event)"
+      [placeholder]="(storyData.type == 'story') ? 'Add a title for your story' : 'Event title'"
+      class="input-search" />
+    <!-- edit title name ends -->
+  </li>
+  <!-- Story Title ends -->
 </ul>

@@ -181,4 +181,9 @@ export class LoungeComponent implements OnInit, OnDestroy {
   isManagerUser() {
     return this.userData.role == 'manager' || this.userData.role == 'admin' || this.userData.role == 'owner';
   }
+
+  cleanStoredData() {
+    this.publicFunctions.sendUpdatesToLoungeData({});
+    this.publicFunctions.sendUpdatesToStoryData({});
+  }
 }

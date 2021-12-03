@@ -316,6 +316,10 @@ export class LoungeController {
                         new: true
                     })
                     .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                    .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                    .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                    .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                    .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
                     .lean();
             } else if (body.type == 'lounge' || body.type == 'category') {
                 element = await Lounge.findOneAndUpdate({

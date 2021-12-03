@@ -35,7 +35,7 @@
       <!-- SECTION SEPARATOR INDICATOR ENDS -->
 
       <div class="category-name row">
-        <span class="name"
+        <span class="name" (click)="cleanStoredData()"
             [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
             [queryParams]="{ lounge: category?._id  }">
           {{ category.name }}
@@ -50,7 +50,7 @@
       <div class="category-body row">
         <div *ngIf="category.items && category.items.length > 0" class="col-md-3 col-sm-6 col-xs-12">
           <div *ngFor="let item of category.items" class="card">
-            <div *ngIf="item.type == 'lounge'"
+            <div *ngIf="item.type == 'lounge'" (click)="cleanStoredData()"
                 [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
                 [queryParams]="{ lounge: item?._id  }">
               <span *ngIf="item.type == 'lounge'" class="badge badge-members">
@@ -68,7 +68,7 @@
               </div>
             </div>
 
-            <div *ngIf="item.type == 'story' || item.type == 'event'"
+            <div *ngIf="item.type == 'story' || item.type == 'event'" (click)="cleanStoredData()"
                 [routerLink]="['/dashboard', 'work', 'lounge', 'story']"
                 [queryParams]="{ story: item?._id  }">
               <span *ngIf="item.type == 'story' || item.type == 'event'" class="badge badge-members">

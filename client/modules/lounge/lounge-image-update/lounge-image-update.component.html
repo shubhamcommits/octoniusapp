@@ -13,11 +13,12 @@
     <!-- WORKSPACE MODAL CHANGE IMAGE STARTS -->
     <div class="modal-body">
       <div class="form-group">
-          <app-secured-image *ngIf="elementData"
+          <app-secured-image *ngIf="elementData && elementData[elementPropertyName]"
             [imgURL]="elementData[elementPropertyName]"
-            [service]="'lounge'"></app-secured-image>
+            [service]="'lounge'"
+            [inlineStyle]="'max-width: 555px;'"></app-secured-image>
 
-          <div class="input-group mb-3">
+          <div class="input-group mb-3" style="margin-top: 10px">
             <div class="custom-file">
               <input type="file" class="custom-file-input" accept="image/*" (change)="imageChangeEvent($event.target.files)" />
               <label class="custom-file-label" i18n="@@loungeImageUpdate.chooseFile">Choose file</label>

@@ -12,6 +12,9 @@ import { EditLoungeComponent } from './lounge/edit-lounge/edit-lounge.component'
 import { FormsModule } from '@angular/forms';
 import { LoungeDetailsComponent } from './lounge-details/lounge-details.component';
 import { LoungeImageUpdateComponent } from './lounge-image-update/lounge-image-update.component';
+import { StoryDetailsComponent } from './story-details/story-details.component';
+import { StoryActionsBarComponent } from './story-details/story-actions-bar/story-actions-bar.component';
+import { LikeStoryComponent } from './story-details/like-story/like-story.component';
 
 
 @NgModule({
@@ -20,7 +23,10 @@ import { LoungeImageUpdateComponent } from './lounge-image-update/lounge-image-u
     LoungeNewElementComponent,
     EditLoungeComponent,
     LoungeDetailsComponent,
-    LoungeImageUpdateComponent
+    StoryDetailsComponent,
+    StoryActionsBarComponent,
+    LoungeImageUpdateComponent,
+    LikeStoryComponent
   ],
   imports: [
     CommonModule,

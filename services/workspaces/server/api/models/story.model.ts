@@ -15,12 +15,16 @@ const StorySchema = new Schema({
         enum: ['story', 'event']
     },
     header_pic: {
-        type: String,
-        default: 'assets/images/lounge_details_header.jpg'
+        type: String
     },
     icon_pic: {
         type: String,
         default: 'assets/images/lounge-icon.jpg'
+    },
+    content: {
+        type: String,
+        trim: true,
+        default: ''
     },
     _lounge: {
         type: Schema.Types.ObjectId,
@@ -36,6 +40,22 @@ const StorySchema = new Schema({
         required: true,
         ref: 'Workspace'
     },
+    _assistants: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    _rejected_assistants: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    _maybe_assistants: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    _liked_by: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     _posted_by: {
         type: Schema.Types.ObjectId,
         required: true,

@@ -45,11 +45,15 @@ export class StoriesController {
                             _stories: storyMongo?._id
                         }
                     });
-
-                    storyMongo = await Story.findById({_id: storyMongo._id})
-                        .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
-                        .lean();
             }
+
+            storyMongo = await Story.findById({_id: storyMongo._id})
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
+                .lean();
 
             // Send the status 200 response
             return res.status(200).json({
@@ -134,6 +138,10 @@ export class StoriesController {
                     new: true
                 })
                 .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
                 .lean();
 
             // Send the status 200 response
@@ -167,6 +175,10 @@ export class StoriesController {
             // Find the story
             const story: any = await Story.findById({ _id: storyId })
                 .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
                 .lean();
 
             // Unable to find the domains
@@ -216,6 +228,253 @@ export class StoriesController {
             // Send the status 200 response
             return res.status(200).json({
                 message: `Lounge removed from workspace`});
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+      * This function confirm the assistance to an event
+      * @param { userId, params: { storyId } }req 
+      * @param res 
+      * @param next 
+      */
+    async confirmEvent(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Request Data
+            const { params: {storyId} } = req;
+            const userId = req['userId'];
+            
+            // If storyId is null or not provided then we throw BAD REQUEST 
+            if (!storyId) {
+                return res.status(400).json({
+                    message: 'Please provide story and the properties!'
+                })
+            }
+
+            // Edit the story 
+            const story = await Story.findByIdAndUpdate({
+                    _id: storyId
+                }, {
+                    $pull: {
+                        _rejected_assistants: userId,
+                        _maybe_assistants: userId
+                    },
+                    $addToSet: {
+                        _assistants: userId
+                    }
+                }, {
+                    new: true
+                })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
+                .lean();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: "Story edited!",
+                story: story
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+      * This function confirm the assistance to an event
+      * @param { userId, params: { storyId } }req 
+      * @param res 
+      * @param next 
+      */
+    async rejectEvent(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Request Data
+            const { params: {storyId} } = req;
+            const userId = req['userId'];
+            
+            // If storyId is null or not provided then we throw BAD REQUEST 
+            if (!storyId) {
+                return res.status(400).json({
+                    message: 'Please provide story and the properties!'
+                })
+            }
+
+            // Edit the story 
+            const story = await Story.findByIdAndUpdate({
+                    _id: storyId
+                }, {
+                    $pull: {
+                        _assistants: userId,
+                        _maybe_assistants: userId
+                    },
+                    $addToSet: {
+                        _rejected_assistants: userId
+                    }
+                }, {
+                    new: true
+                })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
+                .lean();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: "Story edited!",
+                story: story
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+      * This function confirm the assistance to an event
+      * @param { userId, params: { storyId } }req 
+      * @param res 
+      * @param next 
+      */
+    async doubtEvent(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Request Data
+            const { params: {storyId} } = req;
+            const userId = req['userId'];
+            
+            // If storyId is null or not provided then we throw BAD REQUEST 
+            if (!storyId) {
+                return res.status(400).json({
+                    message: 'Please provide story and the properties!'
+                })
+            }
+
+            // Edit the story 
+            const story = await Story.findByIdAndUpdate({
+                    _id: storyId
+                }, {
+                    $pull: {
+                        _rejected_assistants: userId,
+                        _assistants: userId
+                    },
+                    $addToSet: {
+                        _maybe_assistants: userId
+                    }
+                }, {
+                    new: true
+                })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
+                .lean();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: "Story edited!",
+                story: story
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+      * This function confirm the assistance to an event
+      * @param { userId, params: { storyId } }req 
+      * @param res 
+      * @param next 
+      */
+    async like(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Request Data
+            const { params: {storyId} } = req;
+            const userId = req['userId'];
+            
+            // If storyId is null or not provided then we throw BAD REQUEST 
+            if (!storyId) {
+                return res.status(400).json({
+                    message: 'Please provide story and the properties!'
+                })
+            }
+
+            // Edit the story 
+            const story = await Story.findByIdAndUpdate({
+                    _id: storyId
+                }, {
+                    $addToSet: {
+                        _liked_by: userId
+                    }
+                }, {
+                    new: true
+                })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
+                .lean();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: "Story edited!",
+                story: story
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+      * This function confirm the assistance to an event
+      * @param { userId, params: { storyId } }req 
+      * @param res 
+      * @param next 
+      */
+    async unlike(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Request Data
+            const { params: {storyId} } = req;
+            const userId = req['userId'];
+            
+            // If storyId is null or not provided then we throw BAD REQUEST 
+            if (!storyId) {
+                return res.status(400).json({
+                    message: 'Please provide story and the properties!'
+                })
+            }
+
+            // Edit the story 
+            const story = await Story.findByIdAndUpdate({
+                    _id: storyId
+                }, {
+                    $pull: {
+                        _liked_by: userId
+                    }
+                }, {
+                    new: true
+                })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
+                .lean();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: "Story edited!",
+                story: story
+            });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }

@@ -109,4 +109,32 @@ export class LoungeService {
   editStory(storyId: string, properties: any) {
     return this._http.put(this.baseUrl + `/stories/${storyId}`, { properties }).toPromise();
   }
+
+  getStory(storyId: string) {
+    return this._http.get(this.baseUrl + `/stories/one/${storyId}`).toPromise();
+  }
+
+  deleteStory(storyId: string) {
+    return this._http.delete(this.baseUrl + `/stories/${storyId}`).toPromise();
+  }
+
+  confirmAssistance(storyId: string) {
+    return this._http.put(this.baseUrl + `/stories/${storyId}/confirmEvent`, {}).toPromise();
+  }
+
+  rejectAssistance(storyId: string) {
+    return this._http.put(this.baseUrl + `/stories/${storyId}/rejectEvent`, {}).toPromise();
+  }
+
+  doubtAssistance(storyId: string) {
+    return this._http.put(this.baseUrl + `/stories/${storyId}/doubtEvent`, {}).toPromise();
+  }
+
+  likeStory(storyId: string) {
+    return this._http.put(this.baseUrl + `/stories/${storyId}/like`, {}).toPromise();
+  }
+
+  unlikeStory(storyId: string) {
+    return this._http.put(this.baseUrl + `/stories/${storyId}/unlike`, {}).toPromise();
+  }
 }

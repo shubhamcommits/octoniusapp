@@ -1,0 +1,58 @@
+<div *ngIf="storyData" class="category">
+  <div class="row">
+    <div *ngIf="!storyData?.header_pic" [ngStyle]="{'cursor': canEditStory ? 'pointer' : 'auto'}"
+      class="mr-3" style="height: 345px; width: 100%; background-color: #E4EDF8; border-color: #E4EDF8;" (click)="openImageSelector('header_pic')">
+    </div>
+
+    <app-secured-image *ngIf="storyData?.header_pic" [ngStyle]="{'cursor': canEditStory ? 'pointer' : 'auto'}"
+      [imgURL]="storyData?.header_pic" [service]="'lounge'"
+      [styleClass]="'mr-3'" [inlineStyle]="'width: 100%;'" (click)="openImageSelector('header_pic')"></app-secured-image>
+
+    <div *ngIf="canEditStory" (click)="openImageSelector('header_pic')"
+      style=" cursor: pointer; width: 120px; margin-left: auto; margin-right: auto; margin-top: -170px; background-color: #FFFFFF; height: 20px;">
+        <span *ngIf="!storyData?.header_pic" i18n="@@storyDetails.addImage">+ Add image</span>
+        <span *ngIf="storyData?.header_pic" i18n="@@storyDetails.changeImage">+ Change image</span>
+    </div>
+  </div>
+
+  <app-story-actions-bar class="row"
+    [storyData]="storyData"
+    [workspaceData]="workspaceData"
+    [userData]="userData"
+    [isManager]="isManager"
+    [canEditStory]="canEditStory"
+    (onEditActionEvent)="canEditStory = !canEditStory"></app-story-actions-bar>
+
+  <div class="media-body">
+    <div class="category-body row">
+      <app-quill-editor *ngIf="storyData.content && !canEditStory"
+        [editorId]="'story_viewer'"
+        [toolbar]="false"
+        [readOnly]="true"
+        [contents]="storyData.content">
+      </app-quill-editor>
+
+      <app-quill-editor style="height: 300px;" *ngIf="canEditStory"
+        [editorId]="'story_editor'"
+        [toolbar]="true"
+        [readOnly]="false"
+        [contents]="storyData.content"
+        (content)="getQuillData($event)">
+      </app-quill-editor>
+    </div>
+
+    <div class="row" style="margin-top: 45px;">
+      <button type="button" *ngIf="canEditStory" class="btn btn-md btn-primary"
+        (click)="saveStory()" style="width: 100px;"
+        i18n="@@storyDetails.save">
+          Save
+      </button>
+    </div>
+  </div>
+
+  <!-- LOADING SPINNER STARTS -->
+  <ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+  </ng-container>
+  <!-- LOADING SPINNER ENDS -->
+</div>
