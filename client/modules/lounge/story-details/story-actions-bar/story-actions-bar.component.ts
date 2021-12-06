@@ -1,5 +1,4 @@
 import { Component, OnInit, Injector, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { Location } from '@angular/common'
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
@@ -21,8 +20,10 @@ export class StoryActionsBarComponent implements OnInit {
   @Input() userData: any = {};
   @Input() canEditStory: boolean = false;
   @Input() isManager: boolean = false;
+  @Input() showComments: boolean = false;
 
   @Output() onEditActionEvent = new EventEmitter();
+  @Output() onShowCommentsActionEvent = new EventEmitter();
 
   goingToEvent: boolean = false;
   notGoingToEvent: boolean = false;
@@ -178,5 +179,10 @@ export class StoryActionsBarComponent implements OnInit {
   async editStory(story: any) {
     this.storyData = story;
     this.publicFunctions.sendUpdatesToStoryData(this.storyData);
+  }
+
+  showCommentsAction() {
+    this.showComments = !this.showComments;
+    this.onShowCommentsActionEvent.emit(this.showComments);
   }
 }

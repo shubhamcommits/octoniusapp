@@ -6,6 +6,7 @@ import { User } from './user.model';
 import { File } from './file.model';
 import { Column } from './column.model';
 import { Account } from "./account.model";
+import { Story } from "./story.model";
 
 /*  =====================
  *  -- MODELS EXPORTS --
@@ -35,5 +36,8 @@ export {
     Column as Column,
 
     // FILE
-    File as File
+    File as File,
+
+    // Story
+    Story as Story
 }

@@ -112,12 +112,13 @@ export class FilesService {
    * @param query
    * @param postRef
    */
-  searchFiles(groupId: string, query: any, postRef?: any) {
+  searchFiles(groupId: string, query: any, postRef?: any, workspaceId?: string) {
     return this._http.get(this.baseURL + `/files/search`, {
       params: {
         groupId: groupId,
         query: query,
-        postRef: postRef
+        postRef: postRef,
+        workspaceId: workspaceId
       }
     }).toPromise()
   }

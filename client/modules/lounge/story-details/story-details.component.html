@@ -21,7 +21,9 @@
     [userData]="userData"
     [isManager]="isManager"
     [canEditStory]="canEditStory"
-    (onEditActionEvent)="canEditStory = !canEditStory"></app-story-actions-bar>
+    [showComments]="showComments"
+    (onEditActionEvent)="canEditStory = !canEditStory"
+    (onShowCommentsActionEvent)="showCommentsAction($event)"></app-story-actions-bar>
 
   <div class="media-body">
     <div class="category-body row">
@@ -36,6 +38,7 @@
         [editorId]="'story_editor'"
         [toolbar]="true"
         [readOnly]="false"
+        [workspaceId]="storyData._workspace._id || storyData._workspace"
         [contents]="storyData.content"
         (content)="getQuillData($event)">
       </app-quill-editor>
@@ -48,6 +51,25 @@
           Save
       </button>
     </div>
+
+    <!-- COMMENTS SECTION STARTS -->
+    <div class="row" *ngIf="showComments">
+      <comment-section *ngIf="userData && storyData"
+        [userData]="userData"
+        [editorId]="'_new_comment'"
+        [storyId]="storyData?._id"
+        [workspaceId]="storyData?._workspace?._id || storyData?._workspace"
+        (comment)="newCommentReceived($event)">
+      </comment-section>
+
+      <app-comment-list style="width: 90%;"
+        [storyId]="storyData?._id"
+        [userData]="userData"
+        [length]="(storyData?._comments?.length || 0)"
+        [newComment]="newComment"
+        (removeCommentEvent)="onRemoveComment($event)"></app-comment-list>
+    </div>
+    <!-- COMMENTS SECTION ENDS -->
   </div>
 
   <!-- LOADING SPINNER STARTS -->

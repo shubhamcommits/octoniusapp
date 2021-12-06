@@ -882,10 +882,10 @@ export class PublicFunctions {
      * This function is responsible for fetching the files from the server
      * @param query
      */
-    searchFiles(groupId: string, query: any, groupRef?: any) {
+    searchFiles(groupId: string, query: any, groupRef?: any, workspaceId?: string) {
         return new Promise((resolve) => {
             let filesService = this.injector.get(FilesService)
-            filesService.searchFiles(groupId, query, groupRef)
+            filesService.searchFiles(groupId, query, groupRef, workspaceId)
                 .then((res) => resolve(res['files']))
                 .catch(() => resolve([]))
         })

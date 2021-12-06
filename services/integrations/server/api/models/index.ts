@@ -8,6 +8,8 @@ import { User } from './user.model';
 import { Workspace } from './workspace.model';
 import { Comment } from './comment.model';
 import { Notification } from './notification.model';
+import { Story } from "./story.model";
+
 /*  =====================
  *  -- EXPORTS MODELS --
  *  =====================
@@ -43,4 +45,7 @@ export {
 
      // NOTIFICATION 
      Notification as Notification,
+
+     // Story
+     Story as Story
 };

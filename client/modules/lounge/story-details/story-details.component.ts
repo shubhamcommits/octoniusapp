@@ -33,7 +33,13 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   canEditStory: boolean = false;
 
   // Quill Data Object
-  quillData: any
+  quillData: any;
+
+  // Content Mentions Variables keeps a track of mentioned members
+  _content_mentions: any = [];
+
+  newComment: any;
+  showComments: boolean = false;
 
   // IsLoading behaviou subject maintains the state for loading spinner
   public isLoading$ = new BehaviorSubject(false);
@@ -128,7 +134,6 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     // Set the quill data object to the quillData output
     this.quillData = quillData
 
-    /*
     // Filter the Mention users content and map them into arrays of Ids
     if(this.quillData && this.quillData?.mention){
       this._content_mentions = this.quillData?.mention?.users?.map((user) => user.insert.mention.id);
@@ -140,7 +145,6 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
 
     // Set the values of the array
     this._content_mentions = Array.from(new Set(this._content_mentions))
-    */
   }
 
   saveStory() {
@@ -148,7 +152,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
       new Promise(async (resolve, reject) => {
         const content = this.quillData ? JSON.stringify(this.quillData.contents) : "";
         // Call HTTP Request to change the assignee
-        this.loungeService.editStory(this.storyData?._id, { 'content': content }).then(res => {
+        this.loungeService.editStory(this.storyData?._id, { 'content': content, '_content_mentions': this._content_mentions }).then(res => {
             this.storyData = res['story'];
             this.canEditStory = !this.canEditStory;
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@storyDetails.storyUpdated:Story updated`))
@@ -157,6 +161,25 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
             reject(this.utilityService.rejectAsyncPromise($localize`:@@storyDetails.unableToUpdate:Unable to update the story, please try again!`))
           });
       }));
+  }
+
+  newCommentReceived(comment: any) {
+    if (!this.storyData._comments) {
+      this.storyData._comments = [];
+    }
+    this.storyData._comments.unshift(comment);
+    this.newComment = comment;
+  }
+
+  showCommentsAction(action: boolean) {
+    this.showComments = action;
+  }
+
+  onRemoveComment(commentId: string) {
+    const index = (this.storyData._comments) ? this.storyData._comments.findIndex(c => c._id == commentId) : -1;
+    if (index >= 0) {
+      this.storyData._comments.splice(index, 1);
+    }
   }
 
   isManagerUser() {

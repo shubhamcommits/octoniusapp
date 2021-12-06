@@ -59,6 +59,15 @@
   <!-- EVENT ATTENDANCE ENDS -->
 
   <div style="right: 40px; position: absolute; margin-top: -40px;">
+    <!-- COMMENT action starts -->
+    <span *ngIf="userData && storyData">
+      <a class="btn btn-link">
+        <i [ngClass]="(storyData?._comments && storyData?._comments?.length>0) ? 'material-icons text-primary' : 'material-icons-outlined muted'" (click)="showCommentsAction()">comment</i>
+      </a>
+      {{ storyData?._comments?.length || 0 }}
+    </span>
+    <!-- COMMENT action ends-->
+
     <!-- LIKE action starts -->
     <app-like-story
       [userData]="userData"

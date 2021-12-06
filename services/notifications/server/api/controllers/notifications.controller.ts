@@ -260,7 +260,6 @@ export class NotificationsController {
             if (assigned_to && assigned_to?.length > 0) {
                 const index = assigned_to.findIndex(assignee => assignee._id == posted_by);
                 if (index < 0) {
-
                     assigned_to.forEach(async assignedTo => {
                         if (assignedTo._id !== userId) {
                             await helperFunctions.sendNotificationsFeedFromService(assignedTo._id, io, true);
@@ -274,8 +273,6 @@ export class NotificationsController {
                         }
                     });
                 }
-
-
             }
 
             if (posted_by._id !== userId) {
@@ -291,7 +288,7 @@ export class NotificationsController {
             }
 
             followers.forEach(async follower => {
-                const index = assigned_to.findIndex(assignee => assignee._id == follower);
+                const index = (assigned_to) ? assigned_to.findIndex(assignee => assignee._id == follower) : -1;
                 if (index < 0 && follower !== posted_by._id && follower !== userId) {
                     await notificationService.taskStatusChanged(postId, status, userId, null, followers, req.body.io);
                     await helperFunctions.sendNotificationsFeedFromService(follower, io, true);
@@ -354,7 +351,7 @@ export class NotificationsController {
             }
             if (followers) {
                 followers.forEach(async follower => {
-                    const index = assigned_to.findIndex(assignee => assignee === follower);
+                    const index = (assigned_to) ? assigned_to.findIndex(assignee => assignee === follower) : -1;
                     if (follower !== posted_by && index < 0) {
                         await notificationService.newComment(comment, postId, follower);
                         await helperFunctions.sendNotificationsFeedFromService(follower, io, true);
@@ -581,25 +578,19 @@ export class NotificationsController {
             }
 
             let index: any;
-            if (comment._post?._assigned_to) {
-                index = comment._post._assigned_to.findIndex(assignee => assignee === comment._commented_by);
-                if (comment._post._posted_by && index < 0) {
-                    await notificationService.likeComment(comment, comment._post._posted_by, user);
-                    await helperFunctions.sendNotificationsFeedFromService(comment._post._posted_by, io, true);
-
-                }
+            index = (comment._post._assigned_to) ? comment._post._assigned_to.findIndex(assignee => assignee === comment._commented_by) : -1;
+            if (comment._post._posted_by && index < 0) {
+                await notificationService.likeComment(comment, comment._post._posted_by, user);
+                await helperFunctions.sendNotificationsFeedFromService(comment._post._posted_by, io, true);
             }
-
 
             if (comment._post?._followers) {
                 comment._post._followers.forEach(async follower => {
-                    if (comment._post._assigned_to) {
-                        index = comment._post._assigned_to.findIndex(assignee => assignee === follower);
-                        if (index < 0 && follower !== comment._commented_by) {
-                            await notificationService.likeComment(comment, follower, user);
-                            await helperFunctions.sendNotificationsFeedFromService(follower, io, true);
+                    index = (comment._post._assigned_to) ? comment._post._assigned_to.findIndex(assignee => assignee === follower) : -1;
+                    if (index < 0 && follower !== comment._commented_by) {
+                        await notificationService.likeComment(comment, follower, user);
+                        await helperFunctions.sendNotificationsFeedFromService(follower, io, true);
 
-                        }
                     }
                 });
             }

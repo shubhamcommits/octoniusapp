@@ -1,4 +1,4 @@
-import { Comment, Post, User, Notification } from '../models';
+import { Comment, Post, User, Notification, Story } from '../models';
 import http from 'axios';
 import { sendErr } from '../utils/sendError';
 import moment from 'moment';
@@ -20,7 +20,7 @@ const fs = require('fs');
         try {
           let {
             userId,
-            query: { postId },
+            query: { postId, storyId },
             body: { comment }
           } = req;
 
@@ -34,6 +34,7 @@ const fs = require('fs');
             _highlighted_content_range: comment['_highlighted_content_range'],
             _commented_by: userId,
             _post: postId,
+            _story: storyId,
             files: comment.files
           };
 
@@ -44,46 +45,86 @@ const fs = require('fs');
           newComment = await this.getComment(newComment._id);
           newComment.files = comment.files;
 
-          // Update post: add new comment id, increase post count
-          const post = await Post.findOneAndUpdate({
-            _id: postId
-          }, {
-              $push: {
-                comments: newComment._id
-              },
-              $inc: {
-                comments_count: 1
-              }
+          if (postId) {
+            // Update post: add new comment id, increase post count
+            const post = await Post.findOneAndUpdate({
+              _id: postId
             }, {
-              new: true
-            }).select('title _posted_by task _content_mentions _assigned_to _followers');
+                $push: {
+                  comments: newComment._id
+                },
+                $inc: {
+                  comments_count: 1
+                }
+              }, {
+                new: true
+              }).select('title _posted_by task _content_mentions _assigned_to _followers');
 
-          followRedirects.maxBodyLength = 60 * 1024 * 1024;
-          // const parsed_newComment = JSON.stringify(newComment);
-          var forward_data_object = {
-            _id: null,
-            _commented_by: '',
-            _post_id: null
-          };
+            followRedirects.maxBodyLength = 60 * 1024 * 1024;
+            // const parsed_newComment = JSON.stringify(newComment);
+            var forward_data_object = {
+              _id: null,
+              _commented_by: '',
+              _post_id: null,
+              _story_id: null
+            };
 
-          forward_data_object._id = newComment._id;
-          forward_data_object._commented_by = newComment._commented_by;
-          forward_data_object._post_id = newComment._post._id;
-          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
-              comment: JSON.stringify(forward_data_object),
-              posted_by: post['_posted_by'],
-              assigned_to: post['_assigned_to'],
-              followers: post['_followers']
-          },{maxContentLength: 60 * 1024 * 1024 }
-          );
-      
+            forward_data_object._id = newComment._id;
+            forward_data_object._commented_by = newComment._commented_by;
+            
+            if (newComment._post) {
+              forward_data_object._post_id = newComment._post._id;
+            }
+
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
+                comment: JSON.stringify(forward_data_object),
+                posted_by: post['_posted_by'],
+                assigned_to: post['_assigned_to'],
+                followers: post['_followers']
+              }, { maxContentLength: 60 * 1024 * 1024 }
+            );
+          } else if (storyId) {
+            // Update post: add new comment id, increase post count
+            const story = await Story.findOneAndUpdate({
+              _id: storyId
+            }, {
+                $addToSet: {
+                  _comments: newComment._id
+                }
+              }, {
+                new: true
+              }).select('title _posted_by _content_mentions _assigned_to _followers');
+            /*
+            followRedirects.maxBodyLength = 60 * 1024 * 1024;
+            // const parsed_newComment = JSON.stringify(newComment);
+            var forward_data_object = {
+              _id: null,
+              _commented_by: '',
+              _post_id: null,
+              _story_id: null
+            };
+
+            forward_data_object._id = newComment._id;
+            forward_data_object._commented_by = newComment._commented_by;
+            
+            if (newComment._story) {
+              forward_data_object._story_id = newComment._story._id;
+            }
+
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment`, {
+                comment: JSON.stringify(forward_data_object),
+                posted_by: story['_posted_by'],
+                assigned_to: story['_assistants'],
+                followers: story['_followers']
+              }, { maxContentLength: 60 * 1024 * 1024 }
+            );
+            */
+          }
       
           if (newComment._content_mentions.length !== 0) {
             // Create Notification for mentions on comments
-            // notifications.newCommentMentions(comment);
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-comment-mention`, {
                 comment: JSON.stringify(newComment)
-                // post: post
             });
           }
       
@@ -176,11 +217,10 @@ const fs = require('fs');
        * Function to get all comments of a post
        * @param { postId }
        */
-      getAllComments = async (postId) => {
+      getAllComments = async (postId, storyId) => {
         try {
-          const comments = await Comment.find({
-            _post: postId
-          })
+          let query = (storyId) ? { _story: storyId } : { _post: postId };
+          const comments = await Comment.find(query)
             //  sorting them on ID will make the more recent ones be fetched first
             .sort('-_id')
             .populate('_commented_by', 'first_name last_name profile_pic')
@@ -198,11 +238,10 @@ const fs = require('fs');
        * Function to get first 5 comments on a post
        * @param { postId }
        */
-      getComments = async (postId) => {
+      getComments = async (postId, storyId) => {
         try {
-          const comments = await Comment.find({
-            _post: postId
-          })
+          let query = (storyId) ? { _story: storyId } : { _post: postId };
+          const comments = await Comment.find(query)
             //  sorting them on ID will make the more recent ones be fetched first
             .sort('-_id')
             .limit(5)
@@ -255,10 +294,20 @@ const fs = require('fs');
             _id: commentId
           }).lean();
       
-          // Get post data
-          const post:any = await Post.findOne({
-            _id: comment._post
-          }).lean();
+          let post: any;
+          let story: any;
+          if (comment._post) {
+            // Get post data
+            post = await Post.findOne({
+              _id: comment._post
+            }).lean();
+          } else if (comment._story) {
+            // Get story data
+            story = await Story.findOne({
+              _id: comment._story
+            }).lean();
+          }
+          
       
           // Get user data
           const user:any = await User.findOne({ _id: userId });
@@ -299,40 +348,71 @@ const fs = require('fs');
               //all files removed);
             });
           }
-          //chec/delete document files that were exported
-          const filepath = `${process.env.FILE_UPLOAD_FOLDER}${post._id + post._group + 'export' + '.docx'}`;
-          //check if file exists
-          fs.access(filepath, fs.F_OK, error => {
-            //if error there was no file
-            if (!error) {
-              //the file was there now unlink it
-              fs.unlink(filepath, (err) => {
-                //handle error when file was not deleted properly
-                if (err) { throw (err); }
-                //deleted document
-              })
-            }
-          })
-          
+
+          let commentRemoved: any;
+          if (post) {
+            // TODO - not sure if the files are being deleted. Wrong name
+            //chec/delete document files that were exported
+            const filepath = `${process.env.FILE_UPLOAD_FOLDER}${post._id + post._group + 'export' + '.docx'}`;
+            //check if file exists
+            fs.access(filepath, fs.F_OK, error => {
+              //if error there was no file
+              if (!error) {
+                //the file was there now unlink it
+                fs.unlink(filepath, (err) => {
+                  //handle error when file was not deleted properly
+                  if (err) { throw (err); }
+                  //deleted document
+                })
+              }
+            })
+
+            // Update post: remove new comment id, decrease post count
+            await Post.findOneAndUpdate({
+                _id: post._id
+              }, {
+                $pull: {
+                  comments: comment._id
+                },
+                $inc: {
+                  comments_count: -1
+                }
+              }, {
+                new: true
+              });
+          } else if (story) {
+            // TODO - not sure if the files are being deleted. Wrong name
+            //chec/delete document files that were exported
+            const filepath = `${process.env.FILE_UPLOAD_FOLDER}${story._id + 'export' + '.docx'}`;
+            //check if file exists
+            fs.access(filepath, fs.F_OK, error => {
+              //if error there was no file
+              if (!error) {
+                //the file was there now unlink it
+                fs.unlink(filepath, (err) => {
+                  //handle error when file was not deleted properly
+                  if (err) { throw (err); }
+                  //deleted document
+                })
+              }
+            })
+                    
+            // Update story: remove new comment id
+            await Story.findOneAndUpdate({
+                _id: story._id
+              }, {
+                $pull: {
+                  _comments: comment._id
+                }
+              }, {
+                new: true
+              });
+          }
+
           await Notification.deleteMany({ _origin_comment: commentId });
 
-          const commentRemoved = await Comment.findByIdAndRemove(commentId);
-      
-          // Update post: remove new comment id, decrease post count
-          const updatedPost = await Post.findOneAndUpdate({
-            _id: post._id
-          }, {
-              $pull: {
-                comments: comment._id
-              },
-              $inc: {
-                comments_count: -1
-              }
-            }, {
-              new: true
-            });
-      
-      
+          commentRemoved = await Comment.findByIdAndRemove(commentId);
+
           return commentRemoved;
         } catch (err) {
           throw(err);

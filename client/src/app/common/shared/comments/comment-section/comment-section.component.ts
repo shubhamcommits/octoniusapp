@@ -9,21 +9,18 @@ import moment from 'moment/moment';
 })
 export class CommentSectionComponent implements OnInit {
 
-  constructor(
-    private utilityService: UtilityService,
-    private commentService: CommentService
-  ) { }
-
   // EditorId of the Quill Comment Content
   @Input('editorId') editorId: any
 
   // GroupId Input Variable
-  @Input('groupId') groupId: any
+  @Input('groupId') groupId: any;
+  @Input('workspaceId') workspaceId: any;
 
   // User Data Variable
   @Input('userData') userData: any
 
   @Input('postId') postId: any;
+  @Input('storyId') storyId: any;
 
   // Comment Emitter
   @Output('comment') comment: any = new EventEmitter()
@@ -41,6 +38,11 @@ export class CommentSectionComponent implements OnInit {
 
   // Cloud files
   cloudFiles: any = [];
+
+  constructor(
+    private utilityService: UtilityService,
+    private commentService: CommentService
+  ) { }
 
   ngOnInit() {
   }
@@ -88,6 +90,7 @@ export class CommentSectionComponent implements OnInit {
       files: [],
       _content_mentions: this._content_mentions,
       _postId: this.postId,
+      _storyId: this.storyId,
       _highlighted_content_range: []
     }
 
@@ -110,28 +113,22 @@ export class CommentSectionComponent implements OnInit {
     }
 
     // Append Comment Data
-    formData.append('comment', JSON.stringify(commentData))
+    formData.append('comment', JSON.stringify(commentData));
 
     if ((content && content !== '') || this.files.length > 0) {
-      this.newComment(formData).then((res) => {
-        // Emit the Comment to the other compoentns
-        this.comment.emit(commentData);
-      });
+      await this.utilityService.asyncNotification($localize`:@@commentSection.pleaseWaitUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+        this.commentService.new(formData, this.postId, this.storyId)
+          .then((res) => {
+            // Emit the Comment to the other compoentns
+            this.comment.emit(res['comment']);
+            // Resolve with success
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@commentSection.commentAdded:Comment added!`));
+          })
+          .catch(() => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@commentSection.unableToSubmitComment:Unable to submit the comment, please try again!`));
+          });
+      }));
     }
-  }
-
-  async newComment(commentData: FormData) {
-    await this.utilityService.asyncNotification($localize`:@@commentSection.pleaseWaitUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.commentService.new(commentData, this.postId)
-        .then((res) => {
-          // Resolve with success
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@commentSection.commentAdded:Comment added!`));
-        })
-        .catch(() => {
-          reject(this.utilityService.rejectAsyncPromise($localize`:@@commentSection.unableToSubmitComment:Unable to submit the comment, please try again!`));
-        });
-    }));
-
   }
 
   /**
