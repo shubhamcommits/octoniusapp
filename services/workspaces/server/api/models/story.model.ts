@@ -68,6 +68,10 @@ const StorySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Comment'
     }],
+    event_date: {
+        type: Date,
+        default: moment().format()
+    },
     _posted_by: {
         type: Schema.Types.ObjectId,
         required: true,

@@ -12,9 +12,36 @@
         {{ storyData?._posted_by?.last_name }}
       </div>
     </div>
-    <div class="muted" style="padding-top: 10px;">
+
+    <div class="muted" style="padding-top: 10px;" *ngIf="storyData?.type == 'story'">
       <span i18n="@@storyActionsBar.on">on</span>
+      &nbsp;&nbsp;
       {{ storyData?.created_date | date:'MMM dd, yyyy HH:mm' }}
+    </div>
+
+    <div class="muted" style="padding-top: 10px;" *ngIf="storyData?.type == 'event'">
+      <span i18n="@@storyActionsBar.on">on</span>
+      &nbsp;&nbsp;
+      <span *ngIf="!canEditStory">{{ storyData?.event_date | date:'MMM dd, yyyy HH:mm' }}</span>
+      <!-- Date Picker starts -->
+      <app-date-picker *ngIf="canEditStory" (date)="getDate($event)"
+        [selectedDate]="formateDate(storyData?.event_date)"
+        class="btn-group input-date">
+      </app-date-picker>
+      <!--Date Picker ends -->
+
+      <!-- Time Picker starts -->
+      <app-time-picker *ngIf="canEditStory"
+        class="ml-3"
+        [time]="eventTime"
+        (time)="getTime($event)">
+      </app-time-picker>
+      <!-- Time Picker ends -->
+
+      <!-- Clean field starts -->
+      <i *ngIf="canEditStory" (click)="updateDate(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+      <!-- Clean field ends -->
+
     </div>
   </div>
 

@@ -7,6 +7,7 @@ import { LoungeService } from 'src/shared/services/lounge-service/lounge.service
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoungeImageUpdateComponent } from '../../lounge-image-update/lounge-image-update.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-story-actions-bar',
@@ -29,6 +30,11 @@ export class StoryActionsBarComponent implements OnInit {
   notGoingToEvent: boolean = false;
   maybeGoingToEvent: boolean = false;
 
+  eventTime: any = {
+    hour: 1,
+    minute: 30
+  }
+
   // Base URL
   baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
 
@@ -45,6 +51,11 @@ export class StoryActionsBarComponent implements OnInit {
 
   async ngOnInit() {
     await this.initAssistance();
+
+    if (this.storyData.event_date) {
+      this.eventTime.hour = this.storyData.event_date.getHours();
+      this.eventTime.minute = this.storyData.event_date.getMinutes();
+    }
   }
 
   canEditAction() {
@@ -184,5 +195,46 @@ export class StoryActionsBarComponent implements OnInit {
   showCommentsAction() {
     this.showComments = !this.showComments;
     this.onShowCommentsActionEvent.emit(this.showComments);
+  }
+
+  formateDate(date){
+    return moment(moment.utc(date), "MMM dd, yyyy HH:mm").toDate();
+  }
+
+  /**
+   * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
+   * @param dateObject
+   */
+  getDate(dateObject: any) {
+    this.updateDate(dateObject.toDate());
+  }
+
+  updateDate(date: any) {
+    this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
+      this.loungeService.editStory(this.storyData?._id, { 'event_date': date }).then(res => {
+          this.storyData = res['story'];
+          // Resolve with success
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.dateUpdated:Date updated!`));
+        })
+        .catch(() => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
+        });
+    }));
+  }
+
+  /**
+   * This function is responsible for receiving the time from @module <app-time-picker></app-time-picker>
+   * @param timeObject
+   */
+  getTime(timeObject: any) {
+    this.eventTime = timeObject;
+    const now = moment(this.storyData.event_date);
+    now.hours(this.eventTime.hour);
+    now.minute(this.eventTime.minute);
+    this.storyData.event_date  = now;
+
+    this.loungeService.editStory(this.storyData?._id, { 'event_date': moment(this.storyData.event_date).format("MMM dd, yyyy HH:mm") }).then(res => {
+      this.storyData = res['story'];
+    });
   }
 }
