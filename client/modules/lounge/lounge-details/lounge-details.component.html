@@ -25,7 +25,7 @@
 
       <!-- Menu Drawer Starts -->
       <ul class="dropdown-menu">
-        <li class="dropdown-item" (click)="openEditLoungeDialog(loungeData)">
+        <li class="dropdown-item" *ngIf="loungeData.name != 'Global stories'" (click)="openEditLoungeDialog(loungeData)">
           <span class="material-icons-outlined">create</span>
           <span i18n="@@groupKanbanBoard.edit">Edit</span>
         </li>
@@ -37,7 +37,7 @@
           <span class="material-icons-outlined">insert_photo</span>
           <span i18n="@@groupKanbanBoard.editIconImage">Edit Icon Image</span>
         </li>
-        <li class="dropdown-item" (click)="deleteLounge(loungeData?._id)">
+        <li class="dropdown-item" *ngIf="loungeData.name != 'Global stories'" (click)="deleteLounge(loungeData?._id)">
           <span class="material-icons-outlined">delete</span>
           <span i18n="@@groupDashboard.delete">Delete</span>
         </li>
