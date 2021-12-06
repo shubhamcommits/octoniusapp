@@ -312,7 +312,7 @@ export class WorkspaceController {
             // Create Global stories category for lounges
             await Lounge.create({
                 name: 'Global stories',
-                type: 'catogory',
+                type: 'category',
                 _workspace: workspaceUpdate._id,
                 _posted_by: user,
                 created_date: moment().format()
