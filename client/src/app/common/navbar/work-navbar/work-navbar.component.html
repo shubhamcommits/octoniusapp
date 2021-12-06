@@ -74,12 +74,18 @@
   <!-- Back Page Route ends -->
 
   <!-- Lounge Title starts -->
-  <li *ngIf="loungeData" class="nav-item d-none d-md-block" style="margin-top: 20px;">
+  <li *ngIf="existsElement(loungeData)" class="nav-item d-none d-md-block" style="margin-top: 20px;">
     <!-- Static Title starts -->
-    <span *ngIf="!editTitle"
+    <span *ngIf="!editTitle && loungeData.name == 'Global stories'"
+        (click)="(isUserManager && loungeData.name != 'Global stories') ? editTitle = !editTitle : null">
+      {{ loungeData?.name }}
+    </span>
+
+    <span *ngIf="!editTitle && loungeData.name != 'Global stories'"
         (click)="(isUserManager && loungeData.name != 'Global stories') ? editTitle = !editTitle : null"
         matTooltip="Click me to rename"
-        matTooltipPosition="below">{{ loungeData?.name }}
+        matTooltipPosition="below">
+      {{ loungeData?.name }}
     </span>
     <!-- Static Title ends -->
 
@@ -95,7 +101,7 @@
   <!-- Lounge Title ends -->
 
   <!-- Story Title starts -->
-  <li *ngIf="storyData" class="nav-item d-none d-md-block" style="margin-top: 20px;">
+  <li *ngIf="existsElement(storyData)" class="nav-item d-none d-md-block" style="margin-top: 20px;">
     <i class="material-icons" *ngIf="storyData.type == 'story'">travel_explore</i>
     <i class="material-icons" *ngIf="storyData.type == 'event'">event</i>
     <!-- Static Title starts -->
