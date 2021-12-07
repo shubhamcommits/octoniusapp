@@ -48,7 +48,7 @@ export class StoriesController {
             }
 
             storyMongo = await Story.findById({_id: storyMongo._id})
-                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
@@ -137,7 +137,7 @@ export class StoriesController {
                 }, {
                     new: true
                 })
-                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
@@ -174,7 +174,7 @@ export class StoriesController {
 
             // Find the story
             const story: any = await Story.findById({ _id: storyId })
-                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
@@ -267,7 +267,7 @@ export class StoriesController {
                 }, {
                     new: true
                 })
-                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
@@ -318,7 +318,7 @@ export class StoriesController {
                 }, {
                     new: true
                 })
-                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
@@ -369,7 +369,7 @@ export class StoriesController {
                 }, {
                     new: true
                 })
-                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
@@ -416,7 +416,7 @@ export class StoriesController {
                 }, {
                     new: true
                 })
-                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
@@ -463,7 +463,7 @@ export class StoriesController {
                 }, {
                     new: true
                 })
-                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
@@ -510,7 +510,7 @@ export class StoriesController {
                 }, {
                     new: true
                 })
-                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
@@ -557,7 +557,7 @@ export class StoriesController {
                 }, {
                     new: true
                 })
-                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
@@ -596,7 +596,7 @@ export class StoriesController {
             const stories: any = await Story.find({ _workspace: workspaceId })
                 .sort('-created_date')
                 .limit(3)
-                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
                 .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
                 .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })

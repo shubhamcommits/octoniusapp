@@ -36,8 +36,9 @@ export class LoungeController {
                     });
 
                 loungeMongo = await Lounge.findById({_id: loungeMongo._id})
-                    .populate({ path: '_lounges', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
-                    .populate({ path: '_stories', select: 'name type icon_pic _lounge _group _workspace _posted_by created_date' })
+                    .populate({ path: '_parent', select: 'name type' })
+                    .populate({ path: '_lounges', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
+                    .populate({ path: '_stories', select: 'name type icon_pic _lounge _workspace _posted_by created_date' })
                     .lean();
             }
 
@@ -75,7 +76,7 @@ export class LoungeController {
             // If the lounge is changing _parent we need to remove it from the array of lounges
             // and add it to the array of the new _parent
             if (properties._parent && lounge._parent
-                    && (properties._parent._id || properties._parent) != (lounge._parent._if || lounge._parent)) {
+                    && (properties._parent._id || properties._parent) != (lounge._parent._id || lounge._parent)) {
                 
                 await Lounge.findByIdAndUpdate({
                         _id: (lounge._parent._id || lounge._parent)
@@ -110,8 +111,9 @@ export class LoungeController {
                 }, {
                     new: true
                 })
-                .populate({ path: '_lounges', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
-                .populate({ path: '_stories', select: 'name type icon_pic _lounge _group _workspace _posted_by created_date' })
+                .populate({ path: '_parent', select: 'name type' })
+                .populate({ path: '_lounges', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_stories', select: 'name type icon_pic _lounge _workspace _posted_by created_date' })
                 .lean();
 
             // Send the status 200 response
@@ -144,8 +146,9 @@ export class LoungeController {
 
             // Find the list of lounges
             const lounge: any = await Lounge.findById({ _id: loungeId })
-                .populate({ path: '_lounges', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
-                .populate({ path: '_stories', select: 'name type icon_pic _lounge _group _workspace _posted_by created_date' })
+                .populate({ path: '_parent', select: 'name type' })
+                .populate({ path: '_lounges', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_stories', select: 'name type icon_pic _lounge _workspace _posted_by created_date' })
                 .lean();
 
             // Unable to find the domains
@@ -194,8 +197,9 @@ export class LoungeController {
 
             // Find the list of lounges
             const lounges: any = await Lounge.find(query)
-                .populate({ path: '_lounges', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
-                .populate({ path: '_stories', select: 'name type icon_pic _lounge _group _workspace _posted_by created_date' })
+                .populate({ path: '_parent', select: 'name type' })
+                .populate({ path: '_lounges', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_stories', select: 'name type icon_pic _lounge _workspace _posted_by created_date' })
                 .lean();
 
             // Unable to find the domains
@@ -236,8 +240,9 @@ export class LoungeController {
                     _workspace: workspaceId,
                     type: 'category'
                 })
-                .populate({ path: '_lounges', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories', options: { limit: 5 }})
-                .populate({ path: '_stories', select: 'name type icon_pic _lounge _group _workspace _posted_by created_date', options: { limit: 5 }})
+                .populate({ path: '_parent', select: 'name type' })
+                .populate({ path: '_lounges', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories', options: { limit: 5 }})
+                .populate({ path: '_stories', select: 'name type icon_pic _lounge _workspace _posted_by created_date', options: { limit: 5 }})
                 .lean();
             
 
@@ -315,7 +320,7 @@ export class LoungeController {
                     }, {
                         new: true
                     })
-                    .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                    .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
                     .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
                     .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
                     .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
@@ -329,8 +334,9 @@ export class LoungeController {
                     }, {
                         new: true
                     })
-                    .populate({ path: '_lounges', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
-                    .populate({ path: '_stories', select: 'name type icon_pic _lounge _group _workspace _posted_by created_date' })
+                    .populate({ path: '_parent', select: 'name type' })
+                    .populate({ path: '_lounges', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
+                    .populate({ path: '_stories', select: 'name type icon_pic _lounge _workspace _posted_by created_date' })
                     .lean();
             }
 

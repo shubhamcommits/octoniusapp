@@ -70,7 +70,7 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
 
     await this.loungeService.getLounge(this.loungeId).then (res => {
       this.loungeData = res['lounge'] || {};
-      if (this.loungeData.header_pic) {
+      if (this.loungeData.header_pic && !this.loungeData.header_pic.includes('assets/images')) {
         this.loungeData.header_pic = this.baseUrl + '/' + this.loungeData.header_pic + '?noAuth=true';
       } else {
         this.loungeData.header_pic = 'assets/images/lounge_details_header.jpg';
@@ -125,11 +125,14 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
   }
 
   openEditLoungeDialog(lounge: any) {
-    const data =
+    const data = (this.loungeData?.type == 'category' || (this.loungeData?._parent && this.loungeData?._parent?.type == 'category')) ?
       {
         lounge: lounge,
         parent: this.loungeData?._id,
         categories: this.categories
+      } : {
+        lounge: lounge,
+        parent: this.loungeData?._id
       };
 
     const dialogRef = this.dialog.open(EditLoungeComponent, {
