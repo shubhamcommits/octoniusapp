@@ -1,7 +1,7 @@
-<div *ngIf="loungeData" class="category" style="margin-bottom: 30px;">
-  <div class="row">
+<div *ngIf="loungeData" class="category container-fluid" style="margin-bottom: 30px;">
+  <div class="header-hero">
     <app-secured-image [imgURL]="loungeData?.header_pic" [service]="'lounge'"
-      [styleClass]="'mr-3'" [inlineStyle]="'width: 100%;'"></app-secured-image>
+      [styleClass]="'img-fluid'"></app-secured-image>
     <!--
     <div class="media-header">
       <app-secured-image [imgURL]="loungeData?.icon_pic" [service]="'lounge'"
@@ -51,42 +51,45 @@
     </div>
 
     <div class="category-body row">
-      <div *ngIf="loungeData?.items && loungeData?.items.length > 0" class="col-md-3 col-sm-6 col-xs-12">
-        <div *ngFor="let item of loungeData?.items" class="card">
+      <div *ngIf="loungeData?.items && loungeData?.items.length > 0" class="cards-list">
+        <div *ngFor="let item of loungeData?.items" class="card img-fluid">
+
+
           <div *ngIf="item.type == 'lounge'" (click)="cleanStoredData()"
-              [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
-              [queryParams]="{ lounge: item?._id  }">
-            <span *ngIf="item.type == 'lounge'" class="badge badge-members">
-              {{ item?._stories?.length || 0 }}
-              <span i18n="@@lounge.stories">stories</span>
-            </span>
+          [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
+          [queryParams]="{ lounge: item?._id  }">
+          <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
+            [styleClass]="'card-img-top'"></app-secured-image>
 
-            <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
-                [styleClass]="'card-img-top'"></app-secured-image>
-
-            <div class="card-body">
-              <a>
-                <h2 class="card-title">{{ item.name }}</h2>
-              </a>
-            </div>
+        <div class="card-img-overlay">
+          <span *ngIf="item.type == 'lounge'" class="badge badge-members">
+            {{ item?._stories?.length || 0 }}
+            <span i18n="@@lounge.stories">stories</span>
+          </span>
+          <div class="title-overlay">
+            <a>
+              <h2 class="card-title">{{ item.name }}</h2>
+            </a>
           </div>
+        </div>
+      </div>
 
-          <div *ngIf="item.type == 'story' || item.type == 'event'" (click)="cleanStoredData()"
-              [routerLink]="['/dashboard', 'work', 'lounge', 'story']"
-              [queryParams]="{ story: item?._id  }">
-            <span *ngIf="item.type == 'story' || item.type == 'event'" class="badge badge-members">
-              {{ item?.type }}
-            </span>
-
-            <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
-                [styleClass]="'card-img-top'"></app-secured-image>
-
-            <div class="card-body">
-              <a>
-                <h2 class="card-title">{{ item.name }}</h2>
-              </a>
-            </div>
+      <div *ngIf="item.type == 'story' || item.type == 'event'" (click)="cleanStoredData()"
+          [routerLink]="['/dashboard', 'work', 'lounge', 'story']"
+          [queryParams]="{ story: item?._id  }">
+          <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
+          [styleClass]="'card-img-top'"></app-secured-image>
+        <div class="card-img-overlay">
+          <span *ngIf="item.type == 'story' || item.type == 'event'" class="badge badge-members">
+            {{ item?.type }}
+          </span>
+          <div class="title-overlay">
+          <a>
+            <h2 class="card-title">{{ item.name }}</h2>
+          </a>
           </div>
+        </div>
+      </div>
         </div>
       </div>
     </div>
