@@ -69,7 +69,7 @@ export class EditLoungeComponent implements OnInit {
       let newLounge = {
         name: this.newLoungeName,
         type: 'lounge',
-        _parent: (!parent) ? this.lounge._parent : this.parent,
+        _parent: (!this.parent) ? this.lounge._parent : this.parent,
         _workspace: this.workspaceData._id,
         _posted_by: this.userData._id,
         created_date: moment().format()
