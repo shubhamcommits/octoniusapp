@@ -70,6 +70,11 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
 
     await this.loungeService.getLounge(this.loungeId).then (res => {
       this.loungeData = res['lounge'] || {};
+      if (!this.loungeData.header_pic) {
+        this.loungeData.header_pic = this.baseUrl + '/' + this.loungeData.header_pic + '?noAuth=true';
+      } else {
+        this.loungeData.header_pic = 'assets/images/lounge_details_header.jpg';
+      }
       this.publicFunctions.sendUpdatesToLoungeData(this.loungeData);
     });
 

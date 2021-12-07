@@ -1,6 +1,6 @@
 <div *ngIf="loungeData" class="category container-fluid" style="margin-bottom: 30px;">
-  <div class="header-hero" style="background-image: url({{ baseUrl + '/' + loungeData?.header_pic + '?noAuth=true'}});">
-   
+  <div class="header-hero" style="background-image: url({{ loungeData?.header_pic }});">
+
     <!--
     <div class="media-header">
       <app-secured-image [imgURL]="loungeData?.icon_pic" [service]="'lounge'"
