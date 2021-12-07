@@ -131,7 +131,6 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
         }
       );
     } else if (this.existsElement(this.loungeData)) {
-console.log(this.loungeData);
       const type = this.loungeData.type;
       const loungeId = (this.loungeData._parent) ? (this.loungeData._parent._id || this.loungeData._parent) : null;
       this.publicFunctions.sendUpdatesToLoungeData({});
@@ -146,7 +145,6 @@ console.log(this.loungeData);
           }
         );
       } else {
-console.log("wrong11111!!!!");
         this.router.navigate(['/dashboard', 'work', 'lounge']);
       }
     }
