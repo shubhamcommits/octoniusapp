@@ -1,0 +1,50 @@
+@import "src/assets/scss/variables";
+
+a{
+    text-decoration: none !important;
+    color: inherit;
+}
+
+.smart-card {
+  background: #FFFFFF;
+  border: none;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 3px 0 #005fd521;
+  min-height: 260px;
+  // height: 100%;
+}
+
+
+.card-title{
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: #242D3A;
+}
+
+
+
+.post-title {
+  font-style: normal;
+  font-size: 14px;
+  line-height: 38px;
+  display: flex;
+  align-items: center;
+  margin-left: -5px;
+}
+
+.title-nowrap {
+  width: 90%;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+.group-avatar{
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+}

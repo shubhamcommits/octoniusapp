@@ -145,4 +145,9 @@ export class LoungeService {
   unfollowStory(storyId: string) {
     return this._http.put(this.baseUrl + `/stories/${storyId}/unfollow`, {}).toPromise();
   }
+
+  getRecentStories(workspaceId: string) {
+    return this._http.get(this.baseUrl + `/stories/${workspaceId}/recent`).toPromise();
+  }
+
 }

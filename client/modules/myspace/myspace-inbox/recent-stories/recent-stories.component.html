@@ -1,0 +1,23 @@
+
+<div class="smart-card" style="padding: 10px;">
+
+  <div class="row" style="margin: 0 0 20px;">
+    <div class="card-title mt-1" i18n="@@recentStories.recentWork">
+      Recent stories
+    </div>
+  </div>
+
+  <!-- groups list  -->
+  <div *ngFor="let story of recentStories" class="media" style="cursor: pointer;"
+      [routerLink]="['/dashboard', 'work', 'lounge', 'story']" [queryParams]="{ story: story?._id  }">
+    <app-secured-image
+      [imgURL]="story?.icon_pic"
+      [service]="'lounge'"
+      [styleClass]="'mr-3 group-avatar'"></app-secured-image>
+
+    <div class="media-body">
+      <h5 class="mt-0 post-title title-nowrap">{{ story?.name }}</h5>
+    </div>
+  </div>
+</div>
+

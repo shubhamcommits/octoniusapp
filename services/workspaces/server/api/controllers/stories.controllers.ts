@@ -573,4 +573,48 @@ export class StoriesController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+     * This function is responsible for fetching the list of most recent stories
+     * @param { params: { workspaceId } }req 
+     * @param res 
+     * @param next 
+     */
+    async getMostRecent(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { workspaceId } = req.params;
+
+            // If storyId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide workspaceId as the query parameter!'
+                })
+            }
+
+            // Find the story
+            const stories: any = await Story.find({ _workspace: workspaceId })
+                .sort('-created_date')
+                .limit(3)
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
+                .lean();
+
+            // Unable to find the domains
+            if (!stories) {
+                return sendError(res, new Error('Unable to fetch the data as the workspaceId is invalid!'), 'Unable to fetch the data as the workspaceId is invalid!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `Found stories!`,
+                stories: stories
+            })
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

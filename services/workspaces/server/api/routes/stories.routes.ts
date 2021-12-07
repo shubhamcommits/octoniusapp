@@ -57,6 +57,9 @@ routes.put('/:storyId/follow', story.follow);
 // POST - Unfollow a story
 routes.put('/:storyId/unfollow', story.unfollow);
 
+// GET - Get most recent stories
+routes.get('/:workspaceId/recent', story.getMostRecent);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
