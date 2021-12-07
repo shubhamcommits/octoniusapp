@@ -2,7 +2,8 @@
 <div class="smart-card" style="padding: 10px;">
 
   <div class="row" style="margin: 0 0 20px;">
-    <div class="card-title mt-1" i18n="@@recentStories.recentWork">
+    <div class="card-title mt-1" style="cursor: pointer;" i18n="@@recentStories.recentWork"
+        [routerLink]="['/dashboard', 'work', 'lounge']">
       Recent stories
     </div>
   </div>
