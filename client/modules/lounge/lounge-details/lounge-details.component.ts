@@ -70,12 +70,6 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
 
     await this.loungeService.getLounge(this.loungeId).then (res => {
       this.loungeData = res['lounge'] || {};
-      if (this.loungeData.header_pic && !this.loungeData.header_pic.includes('assets/images')) {
-        this.loungeData.header_pic = this.baseUrl + '/' + this.loungeData.header_pic + '?noAuth=true';
-      } else {
-        this.loungeData.header_pic = 'assets/images/lounge_details_header.jpg';
-      }
-      this.publicFunctions.sendUpdatesToLoungeData(this.loungeData);
     });
 
     await this.initLounge();
@@ -111,6 +105,12 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
       }
     });
 
+    if (this.loungeData.header_pic && !this.loungeData.header_pic.includes('assets/images')) {
+      this.loungeData.header_pic = this.baseUrl + '/' + this.loungeData.header_pic + '?noAuth=true';
+    } else {
+      this.loungeData.header_pic = 'assets/images/lounge_details_header.jpg';
+    }
+
     this.publicFunctions.sendUpdatesToLoungeData(this.loungeData);
   }
 
@@ -143,7 +143,7 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
       data: data
     });
 
-    const loungeNameEventSubs = dialogRef.componentInstance.loungeNameEvent.subscribe((data) => {
+    const loungeEditEventSubs = dialogRef.componentInstance.loungeEditEvent.subscribe((data) => {
       this.editLounge(data);
     });
 
@@ -153,7 +153,7 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {});
 
     dialogRef.afterClosed().subscribe(result => {
-      loungeNameEventSubs.unsubscribe();
+      loungeEditEventSubs.unsubscribe();
       newLoungeEventSubs.unsubscribe();
       closeEventSubs.unsubscribe();
     });
@@ -165,7 +165,6 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
   async editLounge(lounge: any) {
     this.loungeData = lounge;
     await this.initLounge();
-    this.publicFunctions.sendUpdatesToLoungeData(this.loungeData);
   }
 
   onNewLoungeCreated(lounge: any) {

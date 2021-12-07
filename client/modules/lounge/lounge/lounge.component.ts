@@ -139,7 +139,7 @@ export class LoungeComponent implements OnInit, OnDestroy {
       data: data
     });
 
-    const loungeNameEventSubs = dialogRef.componentInstance.loungeNameEvent.subscribe((data) => {
+    const loungeEditEventSubs = dialogRef.componentInstance.loungeEditEvent.subscribe((data) => {
       this.editLounge(data);
     });
 
@@ -149,7 +149,7 @@ export class LoungeComponent implements OnInit, OnDestroy {
     const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {});
 
     dialogRef.afterClosed().subscribe(result => {
-      loungeNameEventSubs.unsubscribe();
+      loungeEditEventSubs.unsubscribe();
       newLoungeEventSubs.unsubscribe();
       closeEventSubs.unsubscribe();
     });

@@ -12,7 +12,7 @@ import { LoungeService } from 'src/shared/services/lounge-service/lounge.service
 export class EditLoungeComponent implements OnInit {
 
   // Output Created Column
-  @Output() loungeNameEvent = new EventEmitter();
+  @Output() loungeEditEvent = new EventEmitter();
   @Output() newLoungeEvent = new EventEmitter();
   @Output() closeEvent = new EventEmitter();
 
@@ -52,16 +52,21 @@ export class EditLoungeComponent implements OnInit {
   /**
    * This function emits the column to the parent components
    */
-  saveLoungeName() {
+  saveLounge() {
     if (this.lounge._id) {
-      if (!this.newLoungeName || this.newLoungeName == '') {
-        return this.onCloseDialog();
+      let properties: any = {};
+      if (this.newLoungeName && this.newLoungeName != '') {
+        properties.name = this.newLoungeName;
       }
 
-      this.loungeService.editLounge(this.lounge._id, { name: this.newLoungeName }).then(res => {
-        this.lounge.name = this.newLoungeName;
+      if (this.lounge?.type == 'lounge' && this.categories) {
+        properties._parent = this.lounge._parent._id;
+      }
+
+      this.loungeService.editLounge(this.lounge._id, properties).then(res => {
+        this.lounge = res['lounge'];
         this.mdDialogRef.close();
-        this.loungeNameEvent.emit(this.lounge);
+        this.loungeEditEvent.emit(this.lounge);
       });
 
     } else {
