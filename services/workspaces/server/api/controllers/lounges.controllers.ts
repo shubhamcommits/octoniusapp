@@ -236,8 +236,8 @@ export class LoungeController {
                     _workspace: workspaceId,
                     type: 'category'
                 })
-                .populate({ path: '_lounges', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories' })
-                .populate({ path: '_stories', select: 'name type icon_pic _lounge _group _workspace _posted_by created_date' })
+                .populate({ path: '_lounges', select: 'name type icon_pic _parent _group _workspace _posted_by created_date _lounges _stories', options: { limit: 5 }})
+                .populate({ path: '_stories', select: 'name type icon_pic _lounge _group _workspace _posted_by created_date', options: { limit: 5 }})
                 .lean();
             
 
