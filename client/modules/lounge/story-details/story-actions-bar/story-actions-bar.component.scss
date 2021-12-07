@@ -4,6 +4,8 @@
   margin: 10px;
   border-bottom: 1px solid #E4EDF8;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .going-to-event {
@@ -39,4 +41,19 @@
 
 .dropdown-item {
   cursor: pointer;
+}
+.story-actions-left{
+  display: flex;
+}
+
+.story-actions-right{
+  display: flex;
+
+}
+
+.metrics{
+  margin-left: 0;
+}
+button{
+  width: 34px;
 }

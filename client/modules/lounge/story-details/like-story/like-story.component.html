@@ -1,7 +1,7 @@
 <span *ngIf="userData && storyData">
-  <a class="btn btn-link">
+  <button class="btn btn-link">
     <i matTooltipPosition="above" matTooltip="Unlike Story" class="material-icons text-primary" *ngIf="isLikedByUser(); else likeif" (click)="unlikeStory()">thumb_up</i>
     <ng-template #likeif><i class="material-icons-outlined muted" matTooltipPosition="above" matTooltip="Like Story" (click)="likeStory()">thumb_up</i></ng-template>
-  </a>
-  {{ storyData?._liked_by?.length || 0 }}
+  </button>
+ <span class="metrics"> {{ storyData?._liked_by?.length || 0 }}</span>
 </span>

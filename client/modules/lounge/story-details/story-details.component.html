@@ -1,5 +1,9 @@
+<div class="container">
+
+
+
 <div *ngIf="storyData" class="category">
-  <div class="row">
+  <div class="header-hero" style="background-image: url({{storyData?.header_pic}});">
     <div *ngIf="!storyData?.header_pic" [ngStyle]="{'cursor': canEditStory ? 'pointer' : 'auto'}"
       class="mr-3" style="height: 345px; width: 100%; background-color: #E4EDF8; border-color: #E4EDF8;" (click)="openImageSelector('header_pic')">
     </div>
@@ -9,9 +13,13 @@
       [styleClass]="'mr-3'" [inlineStyle]="'width: 100%;'" (click)="openImageSelector('header_pic')"></app-secured-image>
 
     <div *ngIf="canEditStory" (click)="openImageSelector('header_pic')"
-      style=" cursor: pointer; width: 120px; margin-left: auto; margin-right: auto; margin-top: -170px; background-color: #FFFFFF; height: 20px;">
-        <span *ngIf="!storyData?.header_pic" i18n="@@storyDetails.addImage">+ Add image</span>
-        <span *ngIf="storyData?.header_pic" i18n="@@storyDetails.changeImage">+ Change image</span>
+      style=" cursor: pointer; width: 300px; margin-left: auto; margin-right: auto; margin-top: -170px; background-color: #FFFFFF; height: 20px;">
+        <span *ngIf="!storyData?.header_pic" i18n="@@storyDetails.addImage" class="btn btn-warning"><span class="material-icons">
+          add_photo_alternate
+          </span> Add image</span>
+        <span *ngIf="storyData?.header_pic" i18n="@@storyDetails.changeImage" class="btn btn-warning"><span class="material-icons">
+          add_photo_alternate
+          </span> Change image</span>
     </div>
   </div>
 
@@ -77,4 +85,6 @@
     <app-loading-spinner></app-loading-spinner>
   </ng-container>
   <!-- LOADING SPINNER ENDS -->
+</div>
+
 </div>

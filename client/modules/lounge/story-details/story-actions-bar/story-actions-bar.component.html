@@ -1,21 +1,20 @@
 <div *ngIf="storyData" class="story-actions">
-  <div style="display: inline-flex;">
-    <div style="width: 150px;">
+  <div class="story-actions-left">
+    
       <app-secured-image
         [imgURL]="storyData?._posted_by?.profile_pic"
         [service]="'user'"
         [styleClass]="'feed-avatar-small'"
         style="float: left; cursor: auto;"></app-secured-image>
 
-      <div style="padding-top: 10px;" class="ml-1">
+      <div style="padding-top: 10px;" class="ml-1 mr-1">
         {{ storyData?._posted_by?.first_name }}
         {{ storyData?._posted_by?.last_name }}
       </div>
-    </div>
+
 
     <div class="muted" style="padding-top: 10px;" *ngIf="storyData?.type == 'story'">
       <span i18n="@@storyActionsBar.on">on</span>
-      &nbsp;&nbsp;
       {{ storyData?.created_date | date:'MMM dd, yyyy HH:mm' }}
     </div>
 
@@ -85,13 +84,13 @@
   </div>
   <!-- EVENT ATTENDANCE ENDS -->
 
-  <div style="right: 40px; position: absolute; margin-top: -40px;">
+  <div class="story-actions-right">
     <!-- COMMENT action starts -->
     <span *ngIf="userData && storyData">
-      <a class="btn btn-link">
+      <button class="btn btn-link">
         <i [ngClass]="(storyData?._comments && storyData?._comments?.length>0) ? 'material-icons text-primary' : 'material-icons-outlined muted'" (click)="showCommentsAction()">comment</i>
-      </a>
-      {{ storyData?._comments?.length || 0 }}
+      </button>
+      <span class="metrics"> {{ storyData?._comments?.length || 0 }}</span>
     </span>
     <!-- COMMENT action ends-->
 
@@ -111,10 +110,22 @@
       (storyUnfollowed)="editStory($event)"></app-follow-story>
     <!-- FOLLOW action ends -->
 
+    <!-- statistics action starts-->
+    <span>
+      <button class="btn btn-link"><i class="material-icons muted">leaderboard</i></button>
+      <span class="metrics"> 0</span>      
+    </span>
+    
+      
+      
+
     <!-- EDIT action starts -->
-    <i *ngIf="isManager" class="material-icons muted" style="cursor: pointer;" data-toggle="dropdown">
-      more_horiz
-    </i>
+    <span>
+      <button *ngIf="isManager" class="btn btn-link" data-toggle="dropdown">
+        <i class="material-icons muted">more_horiz</i>
+      </button>
+    </span>
+   
 
     <!-- Menu Drawer Starts -->
     <ul class="dropdown-menu">
