@@ -1,8 +1,9 @@
 import { sendError, Auths, axios } from '../../utils';
-import { Group, Workspace, User, Account } from '../models';
+import { Group, Workspace, User, Account, Lounge } from '../models';
 import { Request, Response, NextFunction } from 'express';
 import { UsersService, WorkspaceService } from '../services';
 import http from 'axios';
+import moment from 'moment';
 
 // User Service Instance
 const usersService = new UsersService();
@@ -307,6 +308,15 @@ export class WorkspaceController {
                     new: true
                 });
             }
+
+            // Create Global stories category for lounges
+            await Lounge.create({
+                name: 'Global stories',
+                type: 'category',
+                _workspace: workspaceUpdate._id,
+                _posted_by: user,
+                created_date: moment().format()
+            });
 
             // Generate new token and logs the auth record
             let token = await auths.generateToken(userUpdate, workspaceUpdate.workspace_name);

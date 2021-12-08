@@ -1,5 +1,4 @@
 import { Response, Request, NextFunction } from "express";
-import http from 'axios';
 
 /**
  * This function is the boiler plate for file handler mechanism for user comments attachements

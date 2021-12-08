@@ -1,0 +1,102 @@
+<div *ngIf="loungeData" class="category container-fluid" style="margin-bottom: 30px;">
+  <div class="header-hero" style="background-image: url({{loungeData?.header_pic}});">
+
+    <!--
+    <div class="media-header">
+      <app-secured-image [imgURL]="loungeData?.icon_pic" [service]="'lounge'"
+        [styleClass]="'mr-3'"></app-secured-image>
+    </div>
+    -->
+  </div>
+
+  <div class="row">
+    <app-lounge-new-element class="new-element" *ngIf="isManager"
+      [canCreateCategory]="false"
+      [lounge]="loungeData"
+      (eventEmitter)="onStoryEmiter($event)"
+      (storyEmitter)="onStoryEmiter($event)"
+      (loungeEmitter)="onLoungeEmiter($event)"></app-lounge-new-element>
+
+    <div style="right: 40px; position: absolute; margin-top: 20px;">
+      <i *ngIf="isManager" class="material-icons muted" style="cursor: pointer;" data-toggle="dropdown">
+        settings
+      </i>
+
+      <!-- Menu Drawer Starts -->
+      <ul class="dropdown-menu">
+        <li class="dropdown-item" *ngIf="loungeData.name != 'Global stories'" (click)="openEditLoungeDialog(loungeData)">
+          <span class="material-icons-outlined">create</span>
+          <span i18n="@@groupKanbanBoard.edit">Edit</span>
+        </li>
+        <li class="dropdown-item" (click)="openImageSelector('header_pic')">
+          <span class="material-icons-outlined">panorama</span>
+          <span i18n="@@groupKanbanBoard.editHeaderImage">Edit Header Image</span>
+        </li>
+        <li class="dropdown-item" (click)="openImageSelector('icon_pic')">
+          <span class="material-icons-outlined">insert_photo</span>
+          <span i18n="@@groupKanbanBoard.editIconImage">Edit Icon Image</span>
+        </li>
+        <li class="dropdown-item" *ngIf="loungeData.name != 'Global stories'" (click)="deleteLounge(loungeData?._id)">
+          <span class="material-icons-outlined">delete</span>
+          <span i18n="@@groupDashboard.delete">Delete</span>
+        </li>
+      </ul>
+      <!-- Menu Drawer Ends -->
+    </div>
+  </div>
+  <div class="media-body">
+    <div class="category-name row">
+      <span class="name">{{ loungeData?.name }}</span>
+    </div>
+
+    <div class="category-body row">
+      <div *ngIf="loungeData?.items && loungeData?.items.length > 0" class="cards-list">
+        <div *ngFor="let item of loungeData?.items" class="card img-fluid">
+
+
+          <div *ngIf="item.type == 'lounge'" (click)="cleanStoredData()"
+          [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
+          [queryParams]="{ lounge: item?._id  }">
+          <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
+            [styleClass]="'card-img-top'"></app-secured-image>
+
+        <div class="card-img-overlay">
+          <span *ngIf="item.type == 'lounge'" class="badge badge-members">
+            {{ item?._stories?.length || 0 }}
+            <span i18n="@@lounge.stories">stories</span>
+          </span>
+          <div class="title-overlay">
+            <a>
+              <h2 class="card-title">{{ item.name }}</h2>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="item.type == 'story' || item.type == 'event'" (click)="cleanStoredData()"
+          [routerLink]="['/dashboard', 'work', 'lounge', 'story']"
+          [queryParams]="{ story: item?._id  }">
+          <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
+          [styleClass]="'card-img-top'"></app-secured-image>
+        <div class="card-img-overlay">
+          <span *ngIf="item.type == 'story' || item.type == 'event'" class="badge badge-members">
+            {{ item?.type }}
+          </span>
+          <div class="title-overlay">
+          <a>
+            <h2 class="card-title">{{ item.name }}</h2>
+          </a>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING SPINNER STARTS -->
+  <ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+  </ng-container>
+  <!-- LOADING SPINNER ENDS -->
+</div>

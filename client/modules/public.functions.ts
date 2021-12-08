@@ -282,6 +282,38 @@ export class PublicFunctions {
         });
     }
 
+    getLoungeFromService() {
+        return new Promise((resolve) => {
+            const utilityService = this.injector.get(UtilityService);
+            this.subSink.add(utilityService.loungeData.subscribe((res) => {
+                if (JSON.stringify(res) != JSON.stringify({}))
+                    resolve(res)
+            })
+            )
+        })
+    }
+
+    sendUpdatesToLoungeData(loungeData: Object) {
+        const utilityService = this.injector.get(UtilityService);
+        utilityService.updateLoungeData(loungeData);
+    }
+
+    getStoryFromService() {
+        return new Promise((resolve) => {
+            const utilityService = this.injector.get(UtilityService);
+            this.subSink.add(utilityService.storyData.subscribe((res) => {
+                if (JSON.stringify(res) != JSON.stringify({}))
+                    resolve(res)
+            })
+            )
+        })
+    }
+
+    sendUpdatesToStoryData(storyData: Object) {
+        const utilityService = this.injector.get(UtilityService);
+        utilityService.updateStoryData(storyData);
+    }
+
     /**
      * This function fetches the group details
      * @param groupId
@@ -850,10 +882,10 @@ export class PublicFunctions {
      * This function is responsible for fetching the files from the server
      * @param query
      */
-    searchFiles(groupId: string, query: any, groupRef?: any) {
+    searchFiles(groupId: string, query: any, groupRef?: any, workspaceId?: string) {
         return new Promise((resolve) => {
             let filesService = this.injector.get(FilesService)
-            filesService.searchFiles(groupId, query, groupRef)
+            filesService.searchFiles(groupId, query, groupRef, workspaceId)
                 .then((res) => resolve(res['files']))
                 .catch(() => resolve([]))
         })

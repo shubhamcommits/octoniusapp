@@ -13,7 +13,7 @@ import { Answer } from './answers.model';
 import { Question } from './questions.model';
 import { File } from './file.model';
 import { Folder } from './folder.model';
-
+import { Story } from "./story.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -64,5 +64,8 @@ export {
      Answer as Answer,
 
     //QUESTION
-    Question as Question
+    Question as Question,
+
+    // Story
+    Story as Story
 };

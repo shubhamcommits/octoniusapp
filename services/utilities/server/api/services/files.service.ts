@@ -415,6 +415,22 @@ export class FilesService {
         }
     }
 
+    async findWorkspaceGroupsShareFiles(workspaceId: string) {
+        const groups = await Group.find({
+                $and: [
+                    { share_files: true },
+                    { _workspace: workspaceId },
+                ]
+            }).select('_id');
+
+        let groupsIds = [];
+        groups.forEach(group => {
+            groupsIds.push(group._id);
+        });
+
+        return groupsIds;
+    }
+
     async findGroupsShareFiles(groupId: string) {
         const groups = await Group.find({
             $and: [

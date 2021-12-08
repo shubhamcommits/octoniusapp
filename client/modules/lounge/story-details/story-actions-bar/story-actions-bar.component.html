@@ -1,0 +1,152 @@
+<div *ngIf="storyData" class="story-actions">
+  <div class="story-actions-left">
+
+      <app-secured-image
+        [imgURL]="storyData?._posted_by?.profile_pic"
+        [service]="'user'"
+        [styleClass]="'feed-avatar-small'"
+        style="float: left; cursor: auto;"></app-secured-image>
+
+      <div style="padding-top: 10px;" class="ml-1 mr-1">
+        {{ storyData?._posted_by?.first_name }}
+        {{ storyData?._posted_by?.last_name }}
+      </div>
+
+
+    <div class="muted" style="padding-top: 10px;" *ngIf="storyData?.type == 'story'">
+      <span i18n="@@storyActionsBar.on">on</span>
+      {{ storyData?.created_date | date:'MMM dd, yyyy HH:mm' }}
+    </div>
+
+    <div class="muted" style="padding-top: 10px;" *ngIf="storyData?.type == 'event'">
+      <span i18n="@@storyActionsBar.on">on</span>
+      &nbsp;&nbsp;
+      <span *ngIf="!canEditStory">{{ storyData?.event_date | date:'MMM dd, yyyy HH:mm' }}</span>
+      <!-- Date Picker starts -->
+      <app-date-picker *ngIf="canEditStory" (date)="getDate($event)"
+        [selectedDate]="formateDate(storyData?.event_date)"
+        class="btn-group input-date">
+      </app-date-picker>
+      <!--Date Picker ends -->
+
+      <!-- Time Picker starts -->
+      <app-time-picker *ngIf="canEditStory"
+        class="ml-3"
+        [time]="eventTime"
+        (time)="getTime($event)">
+      </app-time-picker>
+      <!-- Time Picker ends -->
+
+      <!-- Clean field starts -->
+      <i *ngIf="canEditStory" (click)="updateDate(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+      <!-- Clean field ends -->
+
+    </div>
+  </div>
+
+  <!-- EVENT ATTENDANCE STARTS -->
+  <div *ngIf="storyData?.type == 'event'">
+    <div *ngIf="goingToEvent" class="going-to-event dropdown-toggle" data-toggle="dropdown">
+      <i class="material-icons">check_circle</i>
+      <span i18n="@@storyActionsBar.going">GOING</span>
+    </div>
+    <div *ngIf="maybeGoingToEvent" class="maybe-to-event dropdown-toggle" data-toggle="dropdown">
+      <i class="material-icons">check_circle</i>
+      <span i18n="@@storyActionsBar.maybe">MAYBE</span>
+    </div>
+    <div *ngIf="notGoingToEvent || (!this.goingToEvent && !this.maybeGoingToEvent)" class="not-going-to-event dropdown-toggle" data-toggle="dropdown">
+      <i class="material-icons">check_circle</i>
+      <span i18n="@@storyActionsBar.going">NOT GOING</span>
+    </div>
+
+    <!-- Menu Drawer Starts -->
+    <ul class="dropdown-menu">
+      <li *ngIf="!goingToEvent" class="dropdown-item" (click)="confirmAssistance()">
+        <div class="going-to-event">
+          <i class="material-icons">check_circle</i>
+          <span i18n="@@storyActionsBar.going">GOING</span>
+        </div>
+      </li>
+      <li *ngIf="!maybeGoingToEvent" class="dropdown-item" (click)="doubtAssistance()">
+        <div class="maybe-to-event">
+          <i class="material-icons">check_circle</i>
+          <span i18n="@@storyActionsBar.maybe">MAYBE</span>
+        </div>
+      </li>
+      <li *ngIf="!notGoingToEvent && (this.goingToEvent || this.maybeGoingToEvent)" class="dropdown-item" (click)="rejectAssistance()">
+        <div class="not-going-to-event">
+          <i class="material-icons">check_circle</i>
+          <span i18n="@@storyActionsBar.notGoing">NOT GOING</span>
+        </div>
+      </li>
+    </ul>
+    <!-- Menu Drawer Ends -->
+  </div>
+  <!-- EVENT ATTENDANCE ENDS -->
+
+  <div class="story-actions-right">
+    <!-- COMMENT action starts -->
+    <span *ngIf="userData && storyData">
+      <button class="btn btn-link">
+        <i [ngClass]="(storyData?._comments && storyData?._comments?.length>0) ? 'material-icons text-primary' : 'material-icons-outlined muted'" (click)="showCommentsAction()">comment</i>
+      </button>
+      <span class="metrics"> {{ storyData?._comments?.length || 0 }}</span>
+    </span>
+    <!-- COMMENT action ends-->
+
+    <!-- LIKE action starts -->
+    <app-like-story
+      [userData]="userData"
+      [storyData]="storyData"
+      (storyLiked)="editStory($event)"
+      (storyUnLiked)="editStory($event)"></app-like-story>
+    <!-- LIKE action ends -->
+
+    <!-- FOLLOW action starts -->
+    <app-follow-story
+      [userData]="userData"
+      [storyData]="storyData"
+      (storyFollowed)="editStory($event)"
+      (storyUnfollowed)="editStory($event)"></app-follow-story>
+    <!-- FOLLOW action ends -->
+
+    <!-- statistics action starts-->
+    <span>
+      <button class="btn btn-link"><i class="material-icons muted">leaderboard</i></button>
+      <span class="metrics">{{ storyData?._read_by?.length || 0 }}</span>
+    </span>
+
+
+
+
+    <!-- EDIT action starts -->
+    <button *ngIf="isManager" class="btn btn-link" data-toggle="dropdown">
+      <span><i class="material-icons muted">more_horiz</i></span>
+    </button>
+
+
+    <!-- Menu Drawer Starts -->
+    <ul class="dropdown-menu">
+      <li class="dropdown-item" (click)="canEditAction()">
+        <span class="material-icons-outlined">create</span>
+        <span i18n="@@storyActionsBar.edit">Edit</span>
+      </li>
+      <!--
+      <li class="dropdown-item" (click)="openImageSelector('header_pic')">
+        <span class="material-icons-outlined">panorama</span>
+        <span i18n="@@storyActionsBar.editHeaderImage">Edit Header Image</span>
+      </li>
+      -->
+      <li class="dropdown-item" (click)="openImageSelector('icon_pic')">
+        <span class="material-icons-outlined">insert_photo</span>
+        <span i18n="@@storyActionsBar.editIconImage">Edit Icon Image</span>
+      </li>
+      <li class="dropdown-item" (click)="deleteStory(storyData?._id)">
+        <span class="material-icons-outlined">delete</span>
+        <span i18n="@@storyActionsBar.delete">Delete</span>
+      </li>
+    </ul>
+    <!-- Menu Drawer Ends -->
+    <!-- EDIT action ends -->
+  </div>
+</div>

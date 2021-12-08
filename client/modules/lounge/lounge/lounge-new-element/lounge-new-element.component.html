@@ -1,0 +1,39 @@
+<!-- Create new file starts -->
+<button class="btn btn-warning mb-3 mt-3" type="button" data-toggle="dropdown">
+    <i class="material-icons-outlined">add</i>
+    <span i18n="@@loungeNewElement.new">New</span>
+</button>
+<!-- Create new file ends -->
+
+<!-- Menu Drawer Starts -->
+<ul class="dropdown-menu">
+
+    <li *ngIf="lounge" class="dropdown-item" (click)="createStory()">
+      <span i18n="@@loungeNewElement.story">Story</span>
+    </li>
+
+    <li *ngIf="lounge" class="dropdown-divider"></li>
+
+    <li *ngIf="lounge" class="dropdown-item" (click)="createEvent()">
+      <span i18n="@@loungeNewElement.event">Event</span>
+    </li>
+
+    <li *ngIf="lounge" class="dropdown-divider"></li>
+
+    <li *ngIf="lounge" class="dropdown-item" (click)="createLounge()">
+      <span i18n="@@loungeNewElement.lounge">Lounge</span>
+    </li>
+
+    <li *ngIf="canCreateCategory && lounge" class="dropdown-divider"></li>
+
+    <li class="dropdown-item" (click)="createCategory()" *ngIf="canCreateCategory">
+      <span i18n="@@loungeNewElement.category">Category</span>
+    </li>
+</ul>
+<!-- Menu Drawer Ends -->
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->

@@ -1,0 +1,59 @@
+
+.story-actions {
+  padding: 10px;
+  margin: 10px;
+  border-bottom: 1px solid #E4EDF8;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.going-to-event {
+  background: #2AA578;
+  border-radius: 20px;
+  align-items: center;
+  padding: 6px 14px;
+  width: 100px;
+  color: #FFFFFF;
+}
+
+.maybe-to-event {
+  background: #FBB732;
+  border-radius: 20px;
+  align-items: center;
+  padding: 6px 14px;
+  width: 100px;
+  color: #FFFFFF;
+}
+
+.not-going-to-event {
+  background: #EE5D5D;
+  border-radius: 20px;
+  align-items: center;
+  padding: 6px 14px;
+  width: 130px;
+  color: #FFFFFF;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
+.story-actions-left{
+  display: flex;
+}
+
+.story-actions-right{
+  display: flex;
+
+}
+
+.metrics{
+  margin-left: 0;
+}
+button{
+  width: 34px;
+}

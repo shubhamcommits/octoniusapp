@@ -8,6 +8,7 @@ import { Auth } from './auth.model';
 import { Column } from './column.model';
 import { Group } from "./group.model";
 import { Workspace } from "./workspace.model";
+import { Story } from "./story.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -40,5 +41,8 @@ export {
     Group as Group,
 
     // Workspace
-    Workspace as Workspace
+    Workspace as Workspace,
+
+    // Story
+    Story as Story
 };

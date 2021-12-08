@@ -12,7 +12,9 @@
   </mat-drawer>
 
 
-    <nav class="navbar navbar-expand-md" *ngIf="myAuthCheck()">
+    <!--<nav *ngIf="myAuthCheck()" [ngClass]="(existsElement(storyData) && storyData?.type == 'event' && storyData?.header_pic) ? 'story-event-navbar navbar-expand-md' : 'navbar navbar-expand-md'">-->
+    <nav *ngIf="myAuthCheck()" class="navbar navbar-expand-md">
+
       <div class="container-fluid">
 
         <!-- COLLAPSABLE MENU STARTS -->

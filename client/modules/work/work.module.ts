@@ -9,11 +9,10 @@ import { NorthStarPageComponent } from './north-star-page/north-star-page.compon
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 
 import { MatSelectModule } from '@angular/material/select';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-
     // Pulse Component
     PulseComponent,
     NorthStarPageComponent,
@@ -23,7 +22,9 @@ import { MatSelectModule } from '@angular/material/select';
     CommonModule,
     SharedModule,
     WorkRoutingModule,
-    MatSelectModule
+    MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

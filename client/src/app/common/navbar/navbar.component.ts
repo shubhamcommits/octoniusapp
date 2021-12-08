@@ -33,10 +33,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   // CURRENT USER DATA
-  userData: any
+  userData: any;
 
   // Current Workspace Data
-  workspaceData: any
+  workspaceData: any;
+
+  storyData: any;
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector)
@@ -108,13 +110,18 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (this.routerState === 'group' || this.routerState === 'home') {
           this.nextGroupNavbarState();
         }
-        else if (this.routerState === 'work') {
+        else if (this.routerState === 'work' || this.routerState === 'lounge') {
           this.nextWorkNavbar();
         }
         else if (this.routerState === 'user-account') {
           this.nextUserAccountNavbarState();
         }
       }
+    }));
+
+    // Subscribe to the change in story data from the socket server
+    this.subSink.add(this.utilityService.storyData.subscribe((res) => {
+      this.storyData = res;
     }));
   }
 
@@ -227,5 +234,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   showSideBar() {
     return !this.isDocumentPage;
+  }
+
+  existsElement(element: any) {
+    return (element) && (JSON.stringify(element) != JSON.stringify({}));
   }
 }

@@ -1,6 +1,5 @@
 <!-- Quill Editor Component Starts -->
-<div [ngClass]="(this.editorId === 'postbox-editor')?'normal-editor': 'postbox-editor'" 
-    *ngIf="this.editorId" 
-    id="{{ editorId }}">
+<div *ngIf="editorId" [id]="editorId"
+  [ngClass]="(editorId === 'postbox-editor')?'normal-editor': 'postbox-editor'">
 </div>
 <!-- Quill Editor Component Ends -->

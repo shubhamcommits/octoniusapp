@@ -17,7 +17,7 @@ export class SecuredImageComponent implements OnChanges  {
   // So basically turn src into src$
   @Input() imgURL: string = ''; // url of the file
   @Input() tooltip: string = ''; // tooltip
-  @Input() service: string = 'user'; // service where the file is part of ['workspace', 'group', 'user']
+  @Input() service: string = 'user'; // service where the file is part of ['workspace', 'group', 'user', 'lounge']
   @Input() placement: string = 'right'; // placement
   @Input() styleClass: string = ''; // css class used
   @Input() alt: string = ''; // alternative text
@@ -59,6 +59,24 @@ export class SecuredImageComponent implements OnChanges  {
         }
         this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
         this.onErrorUrl = "assets/images/organization.png";
+        break;
+      case 'lounge':
+        if(!this.imgURL || this.imgURL == 'undefined' || this.isLocalImg) {
+          if (this.imgURL && this.imgURL.indexOf('assets/images/lounge_details_header') != -1) {
+            this.imgURL = "assets/images/lounge_details_header.jpg";
+          } else {
+            this.imgURL = "assets/images/lounge-icon.jpg";
+          }
+          this.isLocalImg = true;
+        }
+
+        if (!this.isLocalImg && this.imgURL.indexOf(environment.UTILITIES_WORKSPACES_UPLOADS) == -1) {
+          this.src$.next(environment.UTILITIES_WORKSPACES_UPLOADS + '/' + this.imgURL);
+        } else {
+          this.src$.next(this.imgURL);
+        }
+        this.dataUrl$ = this.src$.pipe(switchMap(url => this.loadImage(url)));
+        this.onErrorUrl = "assets/images/lounge-icon.jpg";
         break;
       case 'group':
         if(!this.imgURL || this.imgURL == 'undefined' || this.isLocalImg) {
