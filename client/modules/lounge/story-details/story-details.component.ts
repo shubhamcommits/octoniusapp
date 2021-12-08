@@ -180,6 +180,7 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     }
     this.storyData._comments.unshift(comment);
     this.newComment = comment;
+    this.showComments = !this.showComments;
   }
 
   showCommentsAction(action: boolean) {

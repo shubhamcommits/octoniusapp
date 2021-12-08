@@ -55,8 +55,8 @@
     </div>
 
     <!-- COMMENTS SECTION STARTS -->
-    <div class="row" *ngIf="showComments">
-      <comment-section *ngIf="userData && storyData"
+    <div class="row">
+      <comment-section *ngIf="userData && storyData && showComments"
         [userData]="userData"
         [editorId]="'_new_comment'"
         [storyId]="storyData?._id"
