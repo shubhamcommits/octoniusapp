@@ -42,7 +42,7 @@ export class VelocityCardComponent implements OnChanges {
   async initView() {
 
     if (this.filteringGroups) {
-      this.filteringGroups = this.filteringGroups.map(group => group._id);
+      this.filteringGroups = this.filteringGroups.map(group => (group._id || group));
     }
 
     // Call the HTTP API to fetch the current workspace details

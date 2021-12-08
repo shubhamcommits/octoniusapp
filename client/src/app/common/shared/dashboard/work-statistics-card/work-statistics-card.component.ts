@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -37,14 +37,19 @@ export class WorkStatisticsCardComponent implements OnChanges {
     private injector: Injector
   ) { }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    /*
+    for (const propName in changes) {
+      const change = changes[propName];
+      const to = change.currentValue;
+    }
+    */
     this.initView();
   }
 
   async initView() {
-
     if (this.filteringGroups) {
-      this.filteringGroups = this.filteringGroups.map(group => group._id);
+      this.filteringGroups = this.filteringGroups.map(group => (group._id || group));
     }
 
     // Call the HTTP API to fetch the current workspace details
