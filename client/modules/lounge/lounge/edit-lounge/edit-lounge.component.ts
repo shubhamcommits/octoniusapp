@@ -41,6 +41,10 @@ export class EditLoungeComponent implements OnInit {
     this.categories = this.data.categories;
     this.parent = this.data.parent;
 
+    if (!this.lounge._parent) {
+      this.lounge._parent = {_id : (this.parent) ? this.parent : ''};
+    }
+
     this.namePlaceholder = (this.lounge.type == 'lounge')
       ? $localize`:@@editLounge.renameTheLounge:Rename the lounge`
       : $localize`:@@editLounge.renameTheCategory:Rename the category`;
