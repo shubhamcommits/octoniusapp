@@ -64,6 +64,10 @@ const StorySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
+    _read_by: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     _comments: [{
         type: Schema.Types.ObjectId,
         ref: 'Comment'

@@ -617,4 +617,51 @@ export class StoriesController {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
     }
+
+    /**
+      * This function to follow the story
+      * @param { userId, params: { storyId } }req 
+      * @param res 
+      * @param next 
+      */
+    async addReader(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            // Request Data
+            const { params: {storyId} } = req;
+            const userId = req['userId'];
+            
+            // If storyId is null or not provided then we throw BAD REQUEST 
+            if (!storyId) {
+                return res.status(400).json({
+                    message: 'Please provide story and the user!'
+                })
+            }
+
+            // Edit the story 
+            const story = await Story.findByIdAndUpdate({
+                    _id: storyId
+                }, {
+                    $addToSet: {
+                        _read_by: userId
+                    }
+                }, {
+                    new: true
+                })
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
+                .lean();
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: "Story edited!",
+                story: story
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
 }

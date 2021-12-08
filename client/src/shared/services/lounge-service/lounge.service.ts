@@ -150,4 +150,7 @@ export class LoungeService {
     return this._http.get(this.baseUrl + `/stories/${workspaceId}/recent`).toPromise();
   }
 
+  addReader(storyId: string) {
+    return this._http.put(this.baseUrl + `/stories/${storyId}/addReader`, {}).toPromise();
+  }
 }

@@ -1,6 +1,6 @@
 <div *ngIf="storyData" class="story-actions">
   <div class="story-actions-left">
-    
+
       <app-secured-image
         [imgURL]="storyData?._posted_by?.profile_pic"
         [service]="'user'"
@@ -113,19 +113,17 @@
     <!-- statistics action starts-->
     <span>
       <button class="btn btn-link"><i class="material-icons muted">leaderboard</i></button>
-      <span class="metrics"> 0</span>      
+      <span class="metrics">{{ storyData?._read_by?.length || 0 }}</span>
     </span>
-    
-      
-      
+
+
+
 
     <!-- EDIT action starts -->
-    <span>
-      <button *ngIf="isManager" class="btn btn-link" data-toggle="dropdown">
-        <i class="material-icons muted">more_horiz</i>
-      </button>
-    </span>
-   
+    <button *ngIf="isManager" class="btn btn-link" data-toggle="dropdown">
+      <span><i class="material-icons muted">more_horiz</i></span>
+    </button>
+
 
     <!-- Menu Drawer Starts -->
     <ul class="dropdown-menu">

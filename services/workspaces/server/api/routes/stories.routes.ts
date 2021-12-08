@@ -60,6 +60,9 @@ routes.put('/:storyId/unfollow', story.unfollow);
 // GET - Get most recent stories
 routes.get('/:workspaceId/recent', story.getMostRecent);
 
+// POST - Add a reader to a story
+routes.put('/:storyId/addReader', story.addReader);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
