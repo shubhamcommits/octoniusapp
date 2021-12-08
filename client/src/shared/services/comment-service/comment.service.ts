@@ -45,9 +45,6 @@ export class CommentService {
    * @param formData
    */
   new(formData: any, postId: string, storyId?: string ) {
-console.log(formData);
-console.log(postId);
-console.log(storyId);
     if (storyId) {
       return this._http.post(this.baseURL + '/comments/new-comment', formData, {
         params: {
