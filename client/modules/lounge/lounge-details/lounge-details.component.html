@@ -24,7 +24,7 @@
 
       <!-- Menu Drawer Starts -->
       <ul class="dropdown-menu">
-        <li class="dropdown-item" *ngIf="loungeData.name != 'Global stories'" (click)="openEditLoungeDialog(loungeData)">
+        <li class="dropdown-item" *ngIf="loungeData.name != 'Global stories'" (click)="openEditLoungeDialog(loungeData, 'edit')">
           <span class="material-icons-outlined">create</span>
           <span i18n="@@groupKanbanBoard.edit">Edit</span>
         </li>

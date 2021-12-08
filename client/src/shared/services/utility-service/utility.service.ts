@@ -185,7 +185,7 @@ export class UtilityService {
    * @param text
    * @param title - optional
    */
-  errorNotification(text: string, title?: string){
+  errorNotification(text: string, title?: string) {
     const Toast = Swal.mixin({
       toast: true,
       position: 'bottom',
@@ -206,7 +206,7 @@ export class UtilityService {
    * @param text
    * @param title - optional
    */
-  infoNotification(text: string, title?: string){
+  infoNotification(text: string, title?: string) {
     const Toast = Swal.mixin({
       toast: true,
       position: 'bottom',
@@ -228,7 +228,7 @@ export class UtilityService {
    * @param text
    * @param title - optional
    */
-  workplaceBlockedNotification(text: string){
+  workplaceBlockedNotification(text: string) {
     const Toast = Swal.mixin({
       toast: true,
       position: 'bottom',
@@ -248,7 +248,7 @@ export class UtilityService {
    * @param text
    * @param promise - which resolves() or rejects() on the basis of response
    */
-  asyncNotification(text: string, promise: Promise<any>){
+  asyncNotification(text: string, promise: Promise<any>) {
     const Toast = Swal.mixin({
       toast: true,
       position: 'bottom',

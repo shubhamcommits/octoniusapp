@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-edit-lounge',
@@ -33,7 +34,8 @@ export class EditLoungeComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<EditLoungeComponent>,
     private injector: Injector,
-    private loungeService: LoungeService
+    private loungeService: LoungeService,
+    private utilityService: UtilityService
     ) { }
 
   async ngOnInit() {
@@ -67,27 +69,49 @@ export class EditLoungeComponent implements OnInit {
         properties._parent = this.lounge._parent._id;
       }
 
-      this.loungeService.editLounge(this.lounge._id, properties).then(res => {
-        this.lounge = res['lounge'];
-        this.mdDialogRef.close();
-        this.loungeEditEvent.emit(this.lounge);
-      });
+      this.utilityService.asyncNotification($localize`:@@editLounge.pleaseWaitWeUpdateLounge:Please wait we are updating the lounge...`,
+        new Promise(async (resolve, reject) => {
+          this.loungeService.editLounge(this.lounge._id, properties).then(res => {
+              this.lounge = res['lounge'];
+              this.mdDialogRef.close();
+              this.loungeEditEvent.emit(this.lounge);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@editLounge.loungeUpdated:Lounge updated`))
+            })
+            .catch(() => {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@editLounge.unableToUpdate:Unable to update the lounge, please try again!`))
+            });
+        }));
 
     } else {
-
+      const loungeParent = (this.lounge._parent._id || this.lounge._parent);
+      const parent =
+        (this.parent)
+          ? ((this.parent == loungeParent) ? this.parent : loungeParent)
+          : loungeParent;
+      if (!parent || parent._id == '' || !this.newLoungeName || this.newLoungeName == '') {
+        this.utilityService.errorNotification($localize`:@@editLounge.missingProperties:The element you are trying to create is missing some properties.`);
+        return;
+      }
       let newLounge = {
         name: this.newLoungeName,
         type: 'lounge',
-        _parent: (!this.parent) ? this.lounge._parent : this.parent,
+        _parent: parent,
         _workspace: this.workspaceData._id,
         _posted_by: this.userData._id,
         created_date: moment().format()
       }
 
-      this.loungeService.addLounge(newLounge).then(res => {
-        this.mdDialogRef.close();
-        this.newLoungeEvent.emit(res['lounge']);
-      });
+      this.utilityService.asyncNotification($localize`:@@editLounge.pleaseWaitWeAddLounge:Please wait we are adding the lounge...`,
+        new Promise(async (resolve, reject) => {
+          this.loungeService.addLounge(newLounge).then(res => {
+              this.mdDialogRef.close();
+              this.newLoungeEvent.emit(res['lounge']);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@editLounge.loungeAdded:Lounge Added`));
+            })
+            .catch(() => {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@editLounge.unableToAdd:Unable to add the lounge, please try again!`));
+            });
+        }));
     }
 
   }

@@ -12,6 +12,7 @@ export class LoungeNewElementComponent implements OnInit, OnDestroy {
 
   @Input() canCreateCategory: boolean = true;
   @Input() lounge;
+  @Input() categories;
 
   // Output story event emitter
   @Output() storyEmitter = new EventEmitter();
@@ -57,13 +58,15 @@ export class LoungeNewElementComponent implements OnInit, OnDestroy {
     this.isLoading$.complete()
   }
 
-  async createStory() {
+  async createStory(category?: any) {
     await this.initElement();
 
     this.elementData.name = $localize`:@@loungeNewElement.newStory:New Story`;
     this.elementData.type = 'story';
-    if (this.lounge) {
+    if (this.lounge && !category) {
       this.elementData._lounge = this.lounge;
+    } else if (category) {
+      this.elementData._lounge = category;
     }
 
     this.loungeService.addStory(this.elementData).then(res => {
@@ -72,13 +75,15 @@ export class LoungeNewElementComponent implements OnInit, OnDestroy {
     });
   }
 
-  async createEvent() {
+  async createEvent(category?: any) {
     await this.initElement();
 
     this.elementData.name = $localize`:@@loungeNewElement.newEvent:New Event`;
     this.elementData.type = 'event';
-    if (this.lounge) {
+    if (this.lounge && !category) {
       this.elementData._lounge = this.lounge;
+    } else if (category) {
+      this.elementData._lounge = category;
     }
 
     this.loungeService.addStory(this.elementData).then(res => {

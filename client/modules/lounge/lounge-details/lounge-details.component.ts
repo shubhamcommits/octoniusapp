@@ -115,7 +115,7 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
   }
 
   onLoungeEmiter(lounge: any) {
-    this.openEditLoungeDialog(lounge);
+    this.openEditLoungeDialog(lounge, 'new');
   }
 
   onStoryEmiter(story: any) {
@@ -124,8 +124,8 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
     this.publicFunctions.sendUpdatesToLoungeData(this.loungeData);
   }
 
-  openEditLoungeDialog(lounge: any) {
-    const data = (this.loungeData?.type == 'category' || (this.loungeData?._parent && this.loungeData?._parent?.type == 'category')) ?
+  openEditLoungeDialog(lounge: any, action_type: string) {
+    const data = (this.loungeData?.type == 'category' || (action_type == 'edit' && this.loungeData?._parent?.type == 'category')) ?
       {
         lounge: lounge,
         parent: this.loungeData?._id,
@@ -168,9 +168,12 @@ export class LoungeDetailsComponent implements OnInit, OnDestroy {
   }
 
   onNewLoungeCreated(lounge: any) {
-    this.loungeData._lounges.unshift(lounge);
-    this.loungeData.items.unshift(lounge);
-    this.publicFunctions.sendUpdatesToLoungeData(this.loungeData);
+    if ((this.loungeData.type == 'lounge' && (lounge._parent._id || lounge._parent) == (this.loungeData._parent._id || this.loungeData._parent))
+        || (this.loungeData.type == 'category' && (lounge._parent._id || lounge._parent) == this.loungeData._id)) {
+      this.loungeData._lounges.unshift(lounge);
+      this.loungeData.items.unshift(lounge);
+      this.publicFunctions.sendUpdatesToLoungeData(this.loungeData);
+    }
   }
 
   deleteLounge(loungeId: string) {
