@@ -3,14 +3,8 @@
 
 
 <div *ngIf="storyData" class="category">
-  <div class="header-hero" style="background-image: url({{storyData?.header_pic}});">
-    <div *ngIf="!storyData?.header_pic" [ngStyle]="{'cursor': canEditStory ? 'pointer' : 'auto'}"
-      class="mr-3" style="height: 345px; width: 100%; background-color: #E4EDF8; border-color: #E4EDF8;" (click)="openImageSelector('header_pic')">
-    </div>
-
-    <app-secured-image *ngIf="storyData?.header_pic" [ngStyle]="{'cursor': canEditStory ? 'pointer' : 'auto'}"
-      [imgURL]="storyData?.header_pic" [service]="'lounge'"
-      [styleClass]="'mr-3'" [inlineStyle]="'width: 100%;'" (click)="openImageSelector('header_pic')"></app-secured-image>
+  <div class="header-hero" [ngStyle]="{'cursor': canEditStory ? 'pointer' : 'auto'}" style="background-image: url({{storyData?.header_pic}});"
+      (click)="openImageSelector('header_pic')">
 
     <div *ngIf="canEditStory" (click)="openImageSelector('header_pic')"
       style=" cursor: pointer; width: 300px; margin-left: auto; margin-right: auto; margin-top: -170px; background-color: #FFFFFF; height: 20px;">
