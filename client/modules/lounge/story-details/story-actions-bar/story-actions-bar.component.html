@@ -49,14 +49,17 @@
     <div *ngIf="goingToEvent" class="going-to-event dropdown-toggle" data-toggle="dropdown">
       <i class="material-icons">check_circle</i>
       <span i18n="@@storyActionsBar.going">GOING</span>
+      &nbsp;&nbsp;({{ storyData?._assistants?.length || 0 }})
     </div>
     <div *ngIf="maybeGoingToEvent" class="maybe-to-event dropdown-toggle" data-toggle="dropdown">
       <i class="material-icons">check_circle</i>
       <span i18n="@@storyActionsBar.maybe">MAYBE</span>
+      &nbsp;&nbsp;({{ storyData?._maybe_assistants?.length || 0 }})
     </div>
     <div *ngIf="notGoingToEvent || (!this.goingToEvent && !this.maybeGoingToEvent)" class="not-going-to-event dropdown-toggle" data-toggle="dropdown">
       <i class="material-icons">check_circle</i>
       <span i18n="@@storyActionsBar.going">NOT GOING</span>
+      &nbsp;&nbsp;({{ storyData?._rejected_assistants?.length || 0 }})
     </div>
 
     <!-- Menu Drawer Starts -->
@@ -65,18 +68,21 @@
         <div class="going-to-event">
           <i class="material-icons">check_circle</i>
           <span i18n="@@storyActionsBar.going">GOING</span>
+          &nbsp;&nbsp;({{ storyData?._assistants?.length || 0 }})
         </div>
       </li>
       <li *ngIf="!maybeGoingToEvent" class="dropdown-item" (click)="doubtAssistance()">
         <div class="maybe-to-event">
           <i class="material-icons">check_circle</i>
           <span i18n="@@storyActionsBar.maybe">MAYBE</span>
+          &nbsp;&nbsp;({{ storyData?._maybe_assistants?.length || 0 }})
         </div>
       </li>
       <li *ngIf="!notGoingToEvent && (this.goingToEvent || this.maybeGoingToEvent)" class="dropdown-item" (click)="rejectAssistance()">
         <div class="not-going-to-event">
           <i class="material-icons">check_circle</i>
           <span i18n="@@storyActionsBar.notGoing">NOT GOING</span>
+          &nbsp;&nbsp;({{ storyData?._rejected_assistants?.length || 0 }})
         </div>
       </li>
     </ul>

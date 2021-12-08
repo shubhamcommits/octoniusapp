@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Injector, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
@@ -14,7 +14,7 @@ import moment from 'moment';
   templateUrl: './story-actions-bar.component.html',
   styleUrls: ['./story-actions-bar.component.scss']
 })
-export class StoryActionsBarComponent implements OnInit {
+export class StoryActionsBarComponent implements OnInit, OnChanges {
 
   @Input() storyData: any;
   @Input() workspaceData: any = {};
@@ -58,15 +58,21 @@ export class StoryActionsBarComponent implements OnInit {
     }
   }
 
+  async ngOnChanges() {
+    await this.initAssistance();
+  }
+
   canEditAction() {
     this.canEditStory = true;
     this.onEditActionEvent.emit();
   }
 
   initAssistance() {
-    this.goingToEvent = (((this.storyData?._assistants) ? this.storyData?._assistants.findIndex(assistant => assistant._id == this.userData._id) : -1) >= 0);
-    this.maybeGoingToEvent = (((this.storyData?._maybe_assistants) ? this.storyData?._maybe_assistants.findIndex(assistant => assistant._id == this.userData._id) : -1) >= 0);
-    this.notGoingToEvent = (((this.storyData?._rejected_assistants) ? this.storyData?._rejected_assistants.findIndex(assistant => assistant._id == this.userData._id) : -1) >= 0);
+    if (this.storyData) {
+      this.goingToEvent = (((this.storyData?._assistants) ? this.storyData?._assistants.findIndex(assistant => assistant._id == this.userData._id) : -1) >= 0);
+      this.maybeGoingToEvent = (((this.storyData?._maybe_assistants) ? this.storyData?._maybe_assistants.findIndex(assistant => assistant._id == this.userData._id) : -1) >= 0);
+      this.notGoingToEvent = (((this.storyData?._rejected_assistants) ? this.storyData?._rejected_assistants.findIndex(assistant => assistant._id == this.userData._id) : -1) >= 0);
+    }
   }
 
   confirmAssistance() {
