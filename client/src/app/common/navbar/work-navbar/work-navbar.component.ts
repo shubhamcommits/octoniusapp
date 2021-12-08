@@ -162,10 +162,17 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
       // Set the edit title to false
       this.editTitle = false
 
-      // Call the HTTP PUT request to change the data on server
-      await this.loungeService.editStory(this.storyData?._id, {
-        name: event.target.value
-      });
+      if (this.existsElement(this.storyData)) {
+        // Call the HTTP PUT request to change the data on server
+        await this.loungeService.editStory(this.storyData?._id, {
+          name: event.target.value
+        });
+      } else if (this.existsElement(this.loungeData)) {
+        // Call the HTTP PUT request to change the data on server
+        await this.loungeService.editLounge(this.loungeData?._id, {
+          name: event.target.value
+        });
+      }
     }
     // KeyCode = 27 - User Hits Escape
     else if (event.keyCode == 27) {
