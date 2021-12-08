@@ -68,13 +68,9 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     this.isManager = this.isManagerUser();
 
     if (this.storyId) {
-      await this.loungeService.getStory(this.storyId).then (res => {
+      await this.loungeService.getStory(this.storyId).then (async res => {
         this.storyData = res['story'] || {};
-        if (this.storyData.header_pic && !this.storyData.header_pic.includes('assets/images')) {
-          this.storyData.header_pic = this.baseUrl + '/' + this.storyData.header_pic + '?noAuth=true';
-        } else {
-          this.storyData.header_pic = 'assets/images/lounge_details_header.jpg';
-        }
+        await this.initStoryHeaderImage();
         this.publicFunctions.sendUpdatesToStoryData(this.storyData);
       });
     }
@@ -92,11 +88,20 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
     this.isLoading$.complete();
   }
 
+
+  initStoryHeaderImage() {
+    if (this.storyData.header_pic && !this.storyData.header_pic.includes('assets/images')) {
+      this.storyData.header_pic = this.baseUrl + '/' + this.storyData.header_pic + '?noAuth=true';
+    } else {
+      this.storyData.header_pic = 'assets/images/lounge_details_header.jpg';
+    }
+  }
   /**
    * Edit the lounge in the proper array with the new values
    */
   async editStory(story: any) {
     this.storyData = story;
+    await this.initStoryHeaderImage();
     this.publicFunctions.sendUpdatesToStoryData(this.storyData);
   }
 
@@ -157,8 +162,9 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
       new Promise(async (resolve, reject) => {
         const content = this.quillData ? JSON.stringify(this.quillData.contents) : "";
         // Call HTTP Request to change the assignee
-        this.loungeService.editStory(this.storyData?._id, { 'content': content, '_content_mentions': this._content_mentions }).then(res => {
+        this.loungeService.editStory(this.storyData?._id, { 'content': content, '_content_mentions': this._content_mentions }).then(async res => {
             this.storyData = res['story'];
+            await this.initStoryHeaderImage();
             this.canEditStory = !this.canEditStory;
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@storyDetails.storyUpdated:Story updated`))
           })
