@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-//import { PulseComponent } from './pulse/pulse.component';
 import { NorthStarPageComponent } from './north-star-page/north-star-page.component';
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 import { AdminGuard } from 'src/shared/guards/admin-guard/admin.guard';
@@ -21,11 +20,19 @@ const routes: Routes = [
   // North Star
   { path: 'northstar', component: NorthStarPageComponent },
 
-  { path: 'dashboard', component: DashboardPageComponent, canActivate: [AdminGuard] },
   // Dashboard Page
+  { path: 'dashboard', component: DashboardPageComponent, canActivate: [AdminGuard] },
 
-  // Pulse Groups
-  // { path: 'pulse', component: PulseComponent },
+  // Lounge Module
+  {
+    path: 'lounge',
+    loadChildren: () => import('modules/lounge/lounge.module')
+      .then((module) => module.LoungeModule),
+    data: {
+      preload: false,
+      state: 'lounge'
+    }
+  },
 ];
 
 @NgModule({

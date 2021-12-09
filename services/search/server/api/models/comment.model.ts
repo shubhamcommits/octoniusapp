@@ -32,8 +32,11 @@ const CommentSchema = new Schema({
     },
     _post: {
         type: Schema.Types.ObjectId,
-        ref: 'Post',
-        required: true
+        ref: 'Post'
+    },
+    _story: {
+        type: Schema.Types.ObjectId,
+        ref: 'Story'
     },
     likes_count: {
         type: Number,

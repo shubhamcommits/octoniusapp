@@ -8,6 +8,8 @@ import { Notification } from './notification.model';
 import { Workspace } from './workspace.model';
 import { Comment } from './comment.model';
 import { Account } from './account.model';
+import { Lounge } from './lounge.model';
+import { Story } from './story.model';
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -43,5 +45,11 @@ export {
     Notification as Notification,
 
     // POST
-    Post as Post
+    Post as Post,
+
+    // Lounge
+    Lounge as Lounge,
+
+    // Story
+    Story as Story
 };

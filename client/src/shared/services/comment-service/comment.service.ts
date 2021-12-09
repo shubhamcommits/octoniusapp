@@ -44,7 +44,14 @@ export class CommentService {
    * This function is responsible for adding a new comment
    * @param formData
    */
-  new(formData: FormData, postId: string) {
+  new(formData: any, postId: string, storyId?: string ) {
+    if (storyId) {
+      return this._http.post(this.baseURL + '/comments/new-comment', formData, {
+        params: {
+          storyId : storyId
+        }
+      }).toPromise();
+    }
     return this._http.post(this.baseURL + '/comments/new-comment', formData, {
       params: {
         postId : postId
@@ -80,9 +87,15 @@ export class CommentService {
    * This function is responsible for fetching all comments
    * @param postId
    */
-  getAllComments(postId: any): Observable<any>{
+  getAllComments(postId: any, storyId?: string): Observable<any>{
+    if (storyId) {
+      return this._http.get(this.baseURL + '/comments/allComments', {
+        params: { storyId }
+      });
+    }
+
     return this._http.get(this.baseURL + '/comments/allComments', {
-      params: {postId}
+      params: { postId }
     });
   }
 
@@ -90,9 +103,15 @@ export class CommentService {
    * This function is responsible for fetching top 5 comments
    * @param postId
    */
-  getComments(postId: any): Observable<any>{
+  getComments(postId: any, storyId?: string): Observable<any>{
+    if (storyId) {
+      return this._http.get(this.baseURL + '/comments/comments', {
+        params: { storyId }
+      });
+    }
+
     return this._http.get(this.baseURL + '/comments/comments', {
-      params: {postId}
+      params: { postId }
     });
   }
 

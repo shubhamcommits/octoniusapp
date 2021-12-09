@@ -12,13 +12,6 @@ import moment from 'moment/moment'
 })
 export class PostCommentComponent implements OnInit {
 
-  constructor(
-    private injector: Injector
-  ) { }
-
-  // Baseurl
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   // GroupId Input Variable
   @Input('groupId') groupId: any
 
@@ -63,8 +56,15 @@ export class PostCommentComponent implements OnInit {
   // Cloud files
   cloudFiles: any = [];
 
+  // Baseurl
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
+
   // Public Functions class object
   publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private injector: Injector
+  ) { }
 
   async ngOnInit() {
     if (this.comment && this.comment._liked_by) {
@@ -129,7 +129,7 @@ export class PostCommentComponent implements OnInit {
     // Utility Service Instancr
     let utilityService = this.injector.get(UtilityService);
 
-    // Ask User to delete the group or not
+    // Ask User to delete the comment or not
     utilityService.getConfirmDialogAlert()
       .then((result) => {
         if (result.value) {

@@ -392,7 +392,9 @@ import { FileDetailsDialogComponent } from './file-details-dialog/file-details-d
     SheetComponent,
 
     // Material Module
-    MaterialModule
+    MaterialModule,
+
+    CommentSectionComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

@@ -30,14 +30,14 @@ export class DashboardPageComponent implements OnInit {
   ];
 
   groupsList;
-  filteringGroups;
+  filteringGroups: any;
 
   userData: any;
   workspaceData: any;
 
   // Projects
   projects: any = [];
-  filteringProjects;
+  filteringProjects: any;
 
   // PUBLIC FUNCTIONS
   public publicFunctions = new PublicFunctions(this.injector);
@@ -139,9 +139,8 @@ export class DashboardPageComponent implements OnInit {
    * This function is resposible for fetching project columns present in the workplace
    */
   async getProjectColumns() {
-
     if (this.filteringGroups && this.filteringGroups.length > 0) {
-      const filteringGroupsTmp = this.filteringGroups.map(group => group._id);
+      const filteringGroupsTmp = this.filteringGroups.map(group => (group._id || group));
 
       return new Promise((resolve, reject) => {
         this.columnService.getGroupProjectColumnsByGroups(this.workspaceData._id, filteringGroupsTmp)

@@ -42,6 +42,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RecentActivityComponent } from './myspace-inbox/recent-activity/recent-activity.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatBadgeModule } from '@angular/material/badge';
+import { RecentStoriesComponent } from './myspace-inbox/recent-stories/recent-stories.component';
 // import { MomentModule } from "ngx-moment";
 
 /**
@@ -66,7 +67,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     MyspaceWorkplaceComponent,
 
     RecentGroupsComponent,
-    RecentActivityComponent
+    RecentActivityComponent,
+    RecentStoriesComponent
   ],
   imports: [
     CommonModule,

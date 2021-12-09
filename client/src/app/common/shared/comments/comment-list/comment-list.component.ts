@@ -10,6 +10,7 @@ import { CommentService } from 'src/shared/services/comment-service/comment.serv
 export class CommentListComponent implements OnChanges {
 
   @Input() postId;
+  @Input() storyId;
   @Input() groupId;
   @Input() userData;
   @Input() length;
@@ -57,10 +58,17 @@ export class CommentListComponent implements OnChanges {
 
   initComments() {
     this.comments = [];
-    this.commentService.getComments(this.postId).subscribe((res) => {
-      this.comments = res['comments'];
-      this.displayShowMore = this.length > this.comments.length;
-    });
+    if (this.postId) {
+      this.commentService.getComments(this.postId).subscribe((res) => {
+        this.comments = res['comments'];
+        this.displayShowMore = this.length > this.comments.length;
+      });
+    } else if (this.storyId) {
+      this.commentService.getComments(null, this.storyId).subscribe((res) => {
+        this.comments = res['comments'];
+        this.displayShowMore = this.length > this.comments.length;
+      });
+    }
   }
 
   removeComment(commentId: string) {
@@ -72,7 +80,7 @@ export class CommentListComponent implements OnChanges {
     this.length = this.length--;
     this.displayShowMore = this.length > 5;
 
-    this.removeCommentEvent.emit();
+    this.removeCommentEvent.emit(commentId);
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
@@ -81,11 +89,17 @@ export class CommentListComponent implements OnChanges {
   loadAllComments() {
     // Start the loading spinner
     this.isLoading$.next(true);
-
-    this.commentService.getAllComments(this.postId).subscribe((res) => {
-      this.comments = res['comments'];
-      this.displayShowMore = false;
-    });
+    if (this.postId) {
+      this.commentService.getAllComments(this.postId).subscribe((res) => {
+        this.comments = res['comments'];
+        this.displayShowMore = false;
+      });
+    } else if (this.storyId) {
+      this.commentService.getAllComments(null, this.storyId).subscribe((res) => {
+        this.comments = res['comments'];
+        this.displayShowMore = this.length > this.comments.length;
+      });
+    }
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);

@@ -79,6 +79,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
 
   // GroupId variable
   @Input('groupId') groupId: any;
+  @Input() workspaceId: any;
 
   // Output the content present in the editor
   @Output('content') content = new EventEmitter();
@@ -115,7 +116,6 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-
     if (this.quill) {
       // Fetch the delta ops from the JSON string
       let delta = (this.isJSON(this.contents))
@@ -152,9 +152,9 @@ export class QuillEditorComponent implements OnInit, OnChanges {
     }
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-  }
+  //}
 
-  ngAfterViewInit() {
+  //ngAfterViewInit() {
 
     // Initialise quill editor
     this.quill = this.quillEditor(this.modules)
@@ -250,6 +250,11 @@ export class QuillEditorComponent implements OnInit, OnChanges {
     if (typeof this.groupId === 'object' && this.groupId !== null) {
       this.groupId = this.groupId._id;
     }
+
+    if (typeof this.workspaceId === 'object' && this.workspaceId !== null) {
+      this.workspaceId = this.workspaceId._id;
+    }
+
     return {
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ["@", "#"],
@@ -262,7 +267,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
         if (mentionChar === "@") {
 
           // Initialise values with list of members
-          values = await this.suggestMembers(this.groupId, searchTerm)
+          values = await this.suggestMembers(searchTerm)
 
           // Adding All Object to mention all the members
           values.unshift({
@@ -274,7 +279,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
         } else if (mentionChar === "#") {
 
           // Initialise values with list of files
-          values = await this.suggestFiles(this.groupId, searchTerm)
+          values = await this.suggestFiles(searchTerm)
         }
 
         // If searchTerm length is 0, then show the full list
@@ -298,11 +303,15 @@ export class QuillEditorComponent implements OnInit, OnChanges {
    * @param groupId
    * @param searchTerm
    */
-  async suggestMembers(groupId: string, searchTerm: string) {
+  async suggestMembers(searchTerm: string) {
 
     // Fetch the users list from the server
-    let usersList: any = await this.publicFunctions.searchGroupMembers(groupId, searchTerm)
-
+    let usersList: any = [];
+    if (this.groupId) {
+      usersList = await this.publicFunctions.searchGroupMembers(this.groupId, searchTerm)
+    } else if (this.workspaceId) {
+      usersList = await this.publicFunctions.searchWorkspaceMembers(this.workspaceId, searchTerm);
+    }
     // Map the users list
     usersList = usersList['users'].map((user) => ({
       id: user._id,
@@ -318,13 +327,18 @@ export class QuillEditorComponent implements OnInit, OnChanges {
    * @param groupId
    * @param searchTerm
    */
-  async suggestFiles(groupId: string, searchTerm: string) {
+  async suggestFiles(searchTerm: string) {
 
     // Storage Service Instance
     let storageService = this.Injector.get(StorageService);
 
     // Fetch the users list from the server
-    let filesList: any = await this.publicFunctions.searchFiles(groupId, searchTerm, 'true');
+    let filesList: any = [];
+    if (this.groupId) {
+      filesList = await this.publicFunctions.searchFiles(this.groupId, searchTerm, 'true');
+    } else if (this.workspaceId) {
+      filesList = await this.publicFunctions.searchFiles(null, searchTerm, 'true', this.workspaceId);
+    }
 
     let googleFilesList: any = [];
 
@@ -350,9 +364,10 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       id: file._id,
       value:
         (file.type == 'folio')
-        // Return the Array without duplicates
           ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-          : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData('authToken')['token']}" style="color: inherit" target="_blank">${file.original_name}</a>`
+          : (file.type == "flamingo")
+            ? `<a href="/document/flamingo/${file._id}?group=${file._group._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`,
     }))
 
     return Array.from(new Set([...filesList, ...googleFilesList]));
@@ -364,7 +379,6 @@ export class QuillEditorComponent implements OnInit, OnChanges {
    * @param {String} theme - 'snow' or 'bubble'
    */
   quillEditor(modules: any, theme?: string) {
-
     // Return the instance with modules
     return new Quill(`#${this.editorId}`, {
       theme: theme || 'snow',

@@ -1,0 +1,11 @@
+<span *ngIf="userData && storyData">
+  <button class="btn btn-link">
+    <i class="material-icons-outlined muted" *ngIf="!isFollowedByUser(); else followIf" matTooltipPosition="above"
+      matTooltip="Follow Story" (click)="followStory()">star_outline</i>
+    <ng-template #followIf>
+      <i class="material-icons text-warning" matTooltipPosition="above"
+        matTooltip="Unfollow Story" (click)="unfollowStory()">star</i>
+    </ng-template>
+  </button>
+ <span class="metrics"> {{ storyData?._followers?.length || 0 }}</span>
+</span>

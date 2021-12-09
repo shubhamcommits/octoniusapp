@@ -7,6 +7,7 @@ import { Comment } from './comment.model';
 import { Flow } from './flow.model';
 import { Notification } from './notification.model';
 import { Column } from './column.model';
+import { Story } from "./story.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -39,5 +40,8 @@ export {
     Column as Column,
 
     // NOTIFICATION
-    Notification as Notification
+    Notification as Notification,
+
+    // Story
+    Story as Story
 };

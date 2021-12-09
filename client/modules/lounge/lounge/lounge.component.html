@@ -1,0 +1,103 @@
+<div class="container-fluid">
+  <div class="row header-hero">
+
+
+    <div class="media-header">
+      <h5 class="title">
+        <span i18n="@@lounge.welcomeTo">Welcome to {{ workspaceData.company_name }} Lounge</span>
+      </h5>
+
+      <span i18n="@@lounge.dailySourceOfNews">
+        The daily source of news from your organization.
+      </span>
+      <br/><br/>
+      <span class="quote" i18n="@@lounge.quotePaulAuster">
+        “Great stories can only happen to those who can tell them” - Paul Auster
+      </span>
+    </div>
+  </div>
+
+  <div class="row">
+    <app-lounge-new-element class="new-element" *ngIf="isManager"
+      [lounge]="globalStoriesCategory"
+      [canCreateCategory]="true"
+      [categories]="categories"
+      (categoryEmitter)="onCategoryEmiter($event)"
+      (loungeEmitter)="onLoungeEmiter($event)"
+      (storyEmitter)="onStoryEmiter($event)"
+      (eventEmitter)="onStoryEmiter($event)"></app-lounge-new-element>
+  </div>
+
+  <div class="media-body">
+    <div *ngFor="let category of categories; let index = index" class="category">
+
+      <!-- SECTION SEPARATOR INDICATOR STARTS -->
+      <app-section-separator *ngIf="index > 0"></app-section-separator>
+      <!-- SECTION SEPARATOR INDICATOR ENDS -->
+
+      <div class="category-name row">
+        <span class="name" (click)="cleanStoredData()"
+            [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
+            [queryParams]="{ lounge: category?._id  }">
+          {{ category.name }}
+        </span>
+
+        <i *ngIf="isManager && category.name != 'Global stories'" (click)="openEditLoungeDialog(category)"
+            class="material-icons muted" style="cursor: pointer; font-size: 14px;">
+          settings
+        </i>
+      </div>
+
+      <div class="category-body row">
+        <div *ngIf="category.items && category.items.length > 0" class="cards-list">
+          <div *ngFor="let item of category.items" class="card img-fluid">
+
+
+            <div *ngIf="item.type == 'lounge'" (click)="cleanStoredData()"
+                [routerLink]="['/dashboard', 'work', 'lounge', 'details']"
+                [queryParams]="{ lounge: item?._id  }">
+                <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
+                  [styleClass]="'card-img-top'"></app-secured-image>
+
+              <div class="card-img-overlay">
+                <span *ngIf="item.type == 'lounge'" class="badge badge-members">
+                  {{ item?._stories?.length || 0 }}
+                  <span i18n="@@lounge.stories">stories</span>
+                </span>
+                <div class="title-overlay">
+                  <a>
+                    <h2 class="card-title">{{ item.name }}</h2>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="item.type == 'story' || item.type == 'event'" (click)="cleanStoredData()"
+                [routerLink]="['/dashboard', 'work', 'lounge', 'story']"
+                [queryParams]="{ story: item?._id  }">
+                <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
+                [styleClass]="'card-img-top'"></app-secured-image>
+              <div class="card-img-overlay">
+                <span class="badge badge-members">
+                  {{ item?.type }}
+                </span>
+                <div class="title-overlay">
+                <a>
+                  <h2 class="card-title">{{ item.name }}</h2>
+                </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING SPINNER STARTS -->
+  <ng-container *ngIf="isLoading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+  </ng-container>
+  <!-- LOADING SPINNER ENDS -->
+</div>

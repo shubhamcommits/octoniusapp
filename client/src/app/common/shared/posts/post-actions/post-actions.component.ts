@@ -134,6 +134,7 @@ export class PostActionsComponent implements OnInit {
   newCommentReceived(comment: any) {
     this.post.comments_count++;
     this.newComment = comment;
+    this.showCommentQuillEditor = !this.showCommentQuillEditor
     this.newCommentEmitter.emit(comment);
   }
 

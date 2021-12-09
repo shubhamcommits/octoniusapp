@@ -93,6 +93,22 @@ export class UtilityService {
   routerStateData = this.routerStateDataSource.asObservable();
 
   /**
+   * Both of the variables listed down below are used to share the data through this common service among different components in the app
+   * @constant loungeDataSource
+   * @constant loungeData
+   */
+  private loungeDataSource = new BehaviorSubject<any>({});
+  loungeData = this.loungeDataSource.asObservable();
+
+  /**
+   * Both of the variables listed down below are used to share the data through this common service among different components in the app
+   * @constant storyDataSource
+   * @constant storyData
+   */
+  private storyDataSource = new BehaviorSubject<any>({});
+  storyData = this.storyDataSource.asObservable();
+
+  /**
    * This function checks whether the input string is a vaild email or not
    * @param email
    */
@@ -169,7 +185,7 @@ export class UtilityService {
    * @param text
    * @param title - optional
    */
-  errorNotification(text: string, title?: string){
+  errorNotification(text: string, title?: string) {
     const Toast = Swal.mixin({
       toast: true,
       position: 'bottom',
@@ -190,7 +206,7 @@ export class UtilityService {
    * @param text
    * @param title - optional
    */
-  infoNotification(text: string, title?: string){
+  infoNotification(text: string, title?: string) {
     const Toast = Swal.mixin({
       toast: true,
       position: 'bottom',
@@ -212,7 +228,7 @@ export class UtilityService {
    * @param text
    * @param title - optional
    */
-  workplaceBlockedNotification(text: string){
+  workplaceBlockedNotification(text: string) {
     const Toast = Swal.mixin({
       toast: true,
       position: 'bottom',
@@ -232,7 +248,7 @@ export class UtilityService {
    * @param text
    * @param promise - which resolves() or rejects() on the basis of response
    */
-  asyncNotification(text: string, promise: Promise<any>){
+  asyncNotification(text: string, promise: Promise<any>) {
     const Toast = Swal.mixin({
       toast: true,
       position: 'bottom',
@@ -412,12 +428,27 @@ export class UtilityService {
 
   /**
    * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param loungeData
+   */
+  public updateLoungeData(loungeData: any){
+    this.loungeDataSource.next(loungeData);
+  }
+
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param storyData
+   */
+   public updateStoryData(storyData: any){
+    this.storyDataSource.next(storyData);
+  }
+
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
    * @param routerStateData
    */
   public updateRouterStateData(routerStateData: any){
     this.routerStateDataSource.next(routerStateData);
   }
-
 
   /**
    * This function starts the foreground loader of master loader
