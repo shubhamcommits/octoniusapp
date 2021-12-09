@@ -18,9 +18,10 @@
       {{ storyData?.created_date | date:'MMM dd, yyyy HH:mm' }}
     </div>
 
-    <div class="muted" style="padding-top: 10px;" *ngIf="storyData?.type == 'event'">
-      <span i18n="@@storyActionsBar.on">on</span>
-      &nbsp;&nbsp;
+    <div class="ml-2 date-event" *ngIf="storyData?.type == 'event'">
+      <span class="material-icons-outlined mr-1">
+        local_activity
+        </span>
       <span *ngIf="!canEditStory">{{ storyData?.event_date | date:'MMM dd, yyyy HH:mm' }}</span>
       <!-- Date Picker starts -->
       <app-date-picker *ngIf="canEditStory" (date)="getDate($event)"
@@ -94,7 +95,7 @@
     <!-- COMMENT action starts -->
     <span *ngIf="userData && storyData">
       <button class="btn btn-link">
-        <i [ngClass]="(storyData?._comments && storyData?._comments?.length>0) ? 'material-icons text-primary' : 'material-icons-outlined muted'" (click)="showCommentsAction()">comment</i>
+        <i matTooltipPosition="above" matTooltip="Write a comment" [ngClass]="(storyData?._comments && storyData?._comments?.length>0) ? 'material-icons text-primary' : 'material-icons-outlined muted'" (click)="showCommentsAction()">comment</i>
       </button>
       <span class="metrics"> {{ storyData?._comments?.length || 0 }}</span>
     </span>
@@ -118,7 +119,7 @@
 
     <!-- statistics action starts-->
     <span>
-      <button class="btn btn-link"><i class="material-icons muted">leaderboard</i></button>
+      <button class="btn btn-link"><i class="material-icons muted" matTooltipPosition="above" matTooltip="Readers">leaderboard</i></button>
       <span class="metrics">{{ storyData?._read_by?.length || 0 }}</span>
     </span>
 

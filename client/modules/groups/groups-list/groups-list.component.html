@@ -1,13 +1,16 @@
 <div class="container-fluid">
-    <div class="row">
-        <ng-container *ngIf="userData && workspaceData && userData?.role != 'guest'">
-            <app-create-group class="col-md-3" [userData]="userData" [workspaceData]="workspaceData"
-                (group)="receiveGroupUpdates($event)">
-            </app-create-group>
-        </ng-container>
-    </div>
+    
 
     <!-- STARTS USER GROUPS -->
+    <div class="media-body">
+        <div class="row">
+            <ng-container *ngIf="userData && workspaceData && userData?.role != 'guest'">
+                <app-create-group class="col-md-3" [userData]="userData" [workspaceData]="workspaceData"
+                    (group)="receiveGroupUpdates($event)">
+                </app-create-group>
+            </ng-container>
+        </div>
+        
     <div class="row">
       <ng-container *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
           <div class="cards-list">
@@ -103,6 +106,7 @@
         </ng-container>
       </div>
     </div>
+</div>
     <!-- ENDS NOT JOINED AGORA GROUPS -->
 
     <!-- INFINITE SCROLL STARTS FOR AGORA GROUPS -->

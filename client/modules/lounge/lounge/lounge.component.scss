@@ -63,7 +63,7 @@ h2{
 
 .media-body {
   align-items: left;
-  margin: 15px 15px;
+  margin: 15px;
   width: 100%;
 }
 
@@ -74,13 +74,10 @@ h2{
 
     .name {
       float: left;
-      font-weight: bold;
+      font-weight: 700;
       font-size: 20px;
-      line-height: 27px;
       display: flex;
       align-items: center;
-      letter-spacing: 0.25px;
-      color: #223044;
       margin-right: 10px;
       cursor: pointer;
     }

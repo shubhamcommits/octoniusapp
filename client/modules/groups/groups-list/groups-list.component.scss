@@ -2,6 +2,10 @@
     margin-left: 0 !important;
     margin-right: 0 !important;
 }
+.row{
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
 
 .container {
     margin-top: 30px;
@@ -61,6 +65,11 @@ app-loading-spinner{
     cursor: default;
 }
 
+.media-body {
+  align-items: left;
+  margin: 15px;
+  width: 100%;
+}
 
 .cards-list{
     display: flex;
@@ -96,6 +105,8 @@ app-loading-spinner{
 
     .card-title{
         color: #fff;
+        font-weight: 400 !important;
+        font-size: 15px !important;
       }
 
    
@@ -111,20 +122,14 @@ app-loading-spinner{
 
   }
 
-
-
-
-h2{
-    font-weight: 400 !important;
-    font-size: 15px !important;
-}
 .col-md-3{
     padding: 8px;
 }
 
 .section-title{
-    font-family: "Nunito", sans-serif;
-    font-size: 16px !important;
-    font-weight: 700 !important;
+    font-weight: 700;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
     margin-top: 24px;
 }
