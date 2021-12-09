@@ -160,7 +160,7 @@ export class FilesService {
             }
             files = await File.find(query)
                 .sort('-_id')
-                .limit(10)
+                //.limit(10)
                 .populate([
                     { path: '_group', select: this.groupFields },
                     { path: '_posted_by', select: this.userFields },
@@ -360,7 +360,7 @@ export class FilesService {
             ]
         })
             .sort('-_id')
-            .limit(5)
+            //.limit(5)
             .populate([
                 { path: '_group', select: this.groupFields },
                 { path: '_posted_by', select: this.userFields },
