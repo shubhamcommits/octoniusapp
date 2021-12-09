@@ -1,6 +1,7 @@
 import { sendError } from '../../utils';
 import { Lounge, Story } from '../models';
 import { Request, Response, NextFunction } from 'express';
+import moment from 'moment';
 
 export class StoriesController {
 
@@ -660,6 +661,61 @@ export class StoriesController {
                 message: "Story edited!",
                 story: story
             });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for fetching the list of most recent stories
+     * @param { params: { workspaceId } }req 
+     * @param res 
+     * @param next 
+     */
+    async getAttendingEvents(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { workspaceId } = req.params;
+            const userId = req['userId'];
+
+            // If storyId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId || !userId) {
+                return res.status(400).json({
+                    message: 'Please provide workspaceId and a userId as the query parameter!'
+                })
+            }
+            
+            const today = moment().local().add(1, 'days').format('YYYY-MM-DD');
+
+            // Find the story
+            const stories: any = await Story.find({
+                    $and: [
+                        { _workspace: workspaceId },
+                        { $or: [
+                            { _assistants: userId },
+                            { _maybe_assistants: userId }
+                        ]},
+                        { event_date: { $gte: today }},
+                    ]
+                })
+                .sort('event_date')
+                .populate({ path: '_lounge', select: 'name type icon_pic _parent _workspace _posted_by created_date _lounges _stories' })
+                .populate({ path: '_posted_by', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_rejected_assistants', select: 'first_name last_name profile_pic role' })
+                .populate({ path: '_maybe_assistants', select: 'first_name last_name profile_pic role' })
+                .lean();
+
+            // Unable to find the domains
+            if (!stories) {
+                return sendError(res, new Error('Unable to fetch the data as the workspaceId is invalid!'), 'Unable to fetch the data as the workspaceId is invalid!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `Found stories!`,
+                stories: stories
+            })
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
         }
