@@ -7,13 +7,16 @@
       (click)="openImageSelector('header_pic')">
 
     <div *ngIf="canEditStory" (click)="openImageSelector('header_pic')"
-      style=" cursor: pointer; width: 300px; text-align:center; margin-left: auto; margin-right: auto; margin-top: 70px;">
-        <span *ngIf="!storyData?.header_pic" i18n="@@storyDetails.addImage" class="btn btn-warning"><span class="material-icons">
-          add_photo_alternate
-          </span> Add image</span>
-        <span *ngIf="storyData?.header_pic" i18n="@@storyDetails.changeImage" class="btn btn-warning"><span class="material-icons">
-          add_photo_alternate
-          </span> Change image</span>
+        style=" cursor: pointer; width: 300px; text-align:center; margin-left: auto; margin-right: auto; margin-top: 70px;">
+      <span *ngIf="!storyData?.header_pic" class="btn btn-warning">
+        <span class="material-icons">add_photo_alternate</span>
+        <span i18n="@@storyDetails.addImage">Add image</span>
+      </span>
+
+      <span *ngIf="storyData?.header_pic" class="btn btn-warning">
+        <span class="material-icons">add_photo_alternate</span>
+        <span i18n="@@storyDetails.changeImage">Change image</span>
+      </span>
     </div>
   </div>
 

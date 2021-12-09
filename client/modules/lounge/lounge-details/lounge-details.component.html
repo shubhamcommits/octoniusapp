@@ -1,12 +1,5 @@
 <div *ngIf="loungeData" class="category container-fluid" style="margin-bottom: 30px;">
   <div class="header-hero" style="background-image: url({{loungeData?.header_pic}});">
-
-    <!--
-    <div class="media-header">
-      <app-secured-image [imgURL]="loungeData?.icon_pic" [service]="'lounge'"
-        [styleClass]="'mr-3'"></app-secured-image>
-    </div>
-    -->
   </div>
 
   <div class="row">
@@ -26,15 +19,15 @@
       <ul class="dropdown-menu">
         <li class="dropdown-item" *ngIf="loungeData.name != 'Global stories'" (click)="openEditLoungeDialog(loungeData, 'edit')">
           <span class="material-icons-outlined">create</span>
-          <span i18n="@@groupKanbanBoard.edit">Edit</span>
+          <span i18n="@@loungeDetails.edit">Edit</span>
         </li>
         <li class="dropdown-item" (click)="openImageSelector('header_pic')">
           <span class="material-icons-outlined">panorama</span>
-          <span i18n="@@groupKanbanBoard.editHeaderImage">Edit Header Image</span>
+          <span i18n="@@loungeDetails.editHeaderImage">Edit Header Image</span>
         </li>
         <li class="dropdown-item" (click)="openImageSelector('icon_pic')">
           <span class="material-icons-outlined">insert_photo</span>
-          <span i18n="@@groupKanbanBoard.editIconImage">Edit Icon Image</span>
+          <span i18n="@@loungeDetails.editIconImage">Edit Icon Image</span>
         </li>
         <li class="dropdown-item" *ngIf="loungeData.name != 'Global stories'" (click)="deleteLounge(loungeData?._id)">
           <span class="material-icons-outlined">delete</span>
@@ -63,7 +56,7 @@
         <div class="card-img-overlay">
           <span *ngIf="item.type == 'lounge'" class="badge badge-members">
             {{ item?._stories?.length || 0 }}
-            <span i18n="@@lounge.stories">stories</span>
+            <span i18n="@@loungeDetails.stories">stories</span>
           </span>
           <div class="title-overlay">
             <a>

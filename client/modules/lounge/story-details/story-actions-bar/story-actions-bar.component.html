@@ -59,7 +59,7 @@
     </div>
     <div *ngIf="notGoingToEvent || (!this.goingToEvent && !this.maybeGoingToEvent)" class="not-going-to-event dropdown-toggle" data-toggle="dropdown">
       <i class="material-icons">check_circle</i>
-      <span i18n="@@storyActionsBar.going">NOT GOING</span>
+      <span i18n="@@storyActionsBar.notGoing">NOT GOING</span>
       &nbsp;&nbsp;({{ storyData?._rejected_assistants?.length || 0 }})
     </div>
 
@@ -95,7 +95,11 @@
     <!-- COMMENT action starts -->
     <span *ngIf="userData && storyData">
       <button class="btn btn-link">
-        <i matTooltipPosition="above" matTooltip="Write a comment" [ngClass]="(storyData?._comments && storyData?._comments?.length>0) ? 'material-icons text-primary' : 'material-icons-outlined muted'" (click)="showCommentsAction()">comment</i>
+        <i matTooltipPosition="above" matTooltip="Write a comment"
+            [ngClass]="(storyData?._comments && storyData?._comments?.length>0) ? 'material-icons text-primary' : 'material-icons-outlined muted'"
+            (click)="showCommentsAction()">
+          comment
+        </i>
       </button>
       <span class="metrics"> {{ storyData?._comments?.length || 0 }}</span>
     </span>

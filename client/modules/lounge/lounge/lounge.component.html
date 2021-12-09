@@ -78,7 +78,7 @@
                 <app-secured-image [imgURL]="item?.icon_pic" [service]="'lounge'"
                 [styleClass]="'card-img-top'"></app-secured-image>
               <div class="card-img-overlay">
-                <span *ngIf="item.type == 'story' || item.type == 'event'" class="badge badge-members">
+                <span class="badge badge-members">
                   {{ item?.type }}
                 </span>
                 <div class="title-overlay">
