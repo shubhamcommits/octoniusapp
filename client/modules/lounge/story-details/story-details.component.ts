@@ -158,9 +158,10 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
   }
 
   saveStory() {
-    this.utilityService.asyncNotification($localize`:@@storyDetails.pleaseWaitWeUpdateStory:Please wait we are updating the story...`,
+    if (this.quillData) {
+      this.utilityService.asyncNotification($localize`:@@storyDetails.pleaseWaitWeUpdateStory:Please wait we are updating the story...`,
       new Promise(async (resolve, reject) => {
-        const content = this.quillData ? JSON.stringify(this.quillData.contents) : "";
+        const content = JSON.stringify(this.quillData.contents);
         // Call HTTP Request to change the assignee
         this.loungeService.editStory(this.storyData?._id, { 'content': content, '_content_mentions': this._content_mentions }).then(async res => {
             this.storyData = res['story'];
@@ -172,6 +173,9 @@ export class StoryDetailsComponent implements OnInit, OnDestroy {
             reject(this.utilityService.rejectAsyncPromise($localize`:@@storyDetails.unableToUpdate:Unable to update the story, please try again!`))
           });
       }));
+    } else {
+      this.canEditStory = !this.canEditStory;
+    }
   }
 
   newCommentReceived(comment: any) {

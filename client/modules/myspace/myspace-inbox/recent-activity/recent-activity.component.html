@@ -67,12 +67,12 @@
         </div>
 
         <div class="notification_tag d-none d-sm-block">
-          <div class="tags" *ngIf="notification?.type != 'join-group' && notification?.type != 'leave-group' && notification?._origin_post?._group?.group_name">
+          <div *ngIf="notification?.type != 'join-group' && notification?.type != 'leave-group' && notification?._origin_post?._group?.group_name">
             <span class="badge">
               {{ notification?._origin_post?._group?.group_name | truncatetext: 20 }}
             </span>
           </div>
-          <div class="tags" *ngIf="(notification?.type == 'join-group' || notification?.type == 'leave-group') && notification?._origin_group?.group_name">
+          <div *ngIf="(notification?.type == 'join-group' || notification?.type == 'leave-group') && notification?._origin_group?.group_name">
             <span class="badge">
               {{ notification?._origin_group?.group_name | truncatetext: 20 }}
             </span>
@@ -102,6 +102,7 @@
       <!-- NOTIFICATION ITEM ENDS-->
     </div>
   </mat-tab>
+
   <mat-tab label="">
     <ng-template mat-tab-label>
       <span *ngIf="notificationsData.unreadPosts.length > 0"
@@ -153,11 +154,9 @@
         </div>
 
         <div class="notification_tag d-none d-sm-block">
-          <div class="tags">
-            <span class="badge" *ngIf="notification?._origin_post?._group?.group_name">
-              {{ notification?._origin_post?._group?.group_name }}
-            </span>
-          </div>
+          <span class="badge" *ngIf="notification?._origin_post?._group?.group_name">
+            {{ notification?._origin_post?._group?.group_name }}
+          </span>
         </div>
 
         <div class="notification_more">
@@ -171,6 +170,73 @@
             <a mat-menu-item (click)="markNotificationAsRead(notification._id, userData._id, index, notification?.type)">
               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">check_circle_outline</i>
               <span i18n="@@recentActivity.markAsRead">Mark As Read</span>
+            </a>
+          </mat-menu>
+        </div>
+      </div>
+      <!-- NOTIFICATION ITEM ENDS-->
+    </div>
+  </mat-tab>
+
+  <mat-tab label="">
+    <ng-template mat-tab-label>
+      <span *ngIf="attendingEvents.length > 0"
+        [matBadge]="attendingEvents.length"
+        matBadgeOverlap="false" matBadgeColor="warn"
+        i18n="@@recentActivity.events">Events</span>
+      <span *ngIf="attendingEvents.length == 0"
+        i18n="@@recentActivity.events">Events</span>
+    </ng-template>
+
+    <!-- Empty State starts -->
+    <div *ngIf="attendingEvents.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
+      <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
+      <p class="muted text-center" i18n="@@recentActivity.everyoneIsSilent">No events. Get involved.</p>
+    </div>
+    <!-- Empty State ends -->
+
+    <div *ngIf="attendingEvents.length > 0 && !(isLoading$ | async)" >
+      <!-- NOTIFICATION ITEM STARTS-->
+      <div class="notification-item" *ngFor="let event of attendingEvents; let index = index">
+        <div class="notification_actor">
+          <app-secured-image
+            [imgURL]="event?.icon_pic"
+            [service]="'lounge'"
+            [styleClass]="'avatar'"
+            style="margin-right:15px"></app-secured-image>
+        </div>
+
+        <div class="event_title">
+          {{ event?.name | truncatetext: 45 }}
+
+          <div class="">
+            <span class="badge-event going" *ngIf="isAssistingEvent(event?._assistants)">GOING</span>
+            <span class="badge-event maygo" *ngIf="isAssistingEvent(event?._maybe_assistants)"> MAY GO</span>
+          </div>
+        </div>
+
+        <div class="notification_date_time">
+          <span class="text-primary small"><span class="material-icons">
+            local_activity
+            </span> {{ event?.event_date | date: 'MMM dd, yyyy HH:mm' }}</span>
+        </div>
+
+        <div class="notification_tag float-right d-none d-sm-block">
+          <app-secured-image
+            [imgURL]="event?._posted_by?.profile_pic"
+            [service]="'user'"
+            [styleClass]="'avatar'"
+            style="margin-right:15px"></app-secured-image>
+
+          {{ event?._posted_by?.first_name || 'Deleted' }} {{ event?._posted_by?.last_name || 'User' }}
+        </div>
+
+        <div class="notification_more">
+          <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
+          <mat-menu #menu="matMenu">
+            <a mat-menu-item [routerLink]="['/dashboard', 'work', 'lounge', 'story']" [queryParams]="{ story: event?._id  }">
+              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+              <span i18n="@@recentActivity.view">View</span>
             </a>
           </mat-menu>
         </div>

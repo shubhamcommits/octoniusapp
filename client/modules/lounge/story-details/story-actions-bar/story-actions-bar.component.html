@@ -15,14 +15,14 @@
 
     <div class="muted" style="padding-top: 10px;" *ngIf="storyData?.type == 'story'">
       <span i18n="@@storyActionsBar.on">on</span>
-      {{ storyData?.created_date | date:'MMM dd, yyyy HH:mm' }}
+      {{ storyData?.created_date | date:'MMM dd, yyyy' }}
     </div>
 
     <div class="ml-2 date-event" *ngIf="storyData?.type == 'event'">
-      <span class="material-icons-outlined mr-1">
-        local_activity
-        </span>
+      <span class="material-icons-outlined mr-1">local_activity</span>
+
       <span *ngIf="!canEditStory">{{ storyData?.event_date | date:'MMM dd, yyyy HH:mm' }}</span>
+
       <!-- Date Picker starts -->
       <app-date-picker *ngIf="canEditStory" (date)="getDate($event)"
         [selectedDate]="formateDate(storyData?.event_date)"
@@ -114,11 +114,13 @@
     <!-- LIKE action ends -->
 
     <!-- FOLLOW action starts -->
+    <!--
     <app-follow-story
       [userData]="userData"
       [storyData]="storyData"
       (storyFollowed)="editStory($event)"
       (storyUnfollowed)="editStory($event)"></app-follow-story>
+    -->
     <!-- FOLLOW action ends -->
 
     <!-- statistics action starts-->

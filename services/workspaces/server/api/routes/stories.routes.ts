@@ -63,6 +63,11 @@ routes.get('/:workspaceId/recent', story.getMostRecent);
 // POST - Add a reader to a story
 routes.put('/:storyId/addReader', story.addReader);
 
+
+
+// GET - Get events user will or may attend
+routes.get('/:workspaceId/attendingEvents', story.getAttendingEvents);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { retry } from 'rxjs/internal/operators/retry';
 import { take } from 'rxjs/internal/operators/take';
 import { environment } from 'src/environments/environment';
+import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { SubSink } from 'subsink';
 
@@ -17,6 +18,7 @@ export class RecentActivityComponent implements OnInit {
 
   // Current User Data
   userData: any;
+  workspaceData: any;
 
   // NOTIFICATIONS DATA
   public notificationsData: any = {
@@ -24,6 +26,8 @@ export class RecentActivityComponent implements OnInit {
     unreadNotifications: [],
     unreadPosts: []
   }
+
+  attendingEvents = [];
 
   selectedTab = 0;
 
@@ -41,7 +45,8 @@ export class RecentActivityComponent implements OnInit {
   constructor(
     private _router: Router,
     private injector: Injector,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private loungeService: LoungeService
   ) {
     // Subscribe to the change in notifications data from the server
     this.subSink.add(this.socketService.currentData.subscribe((res) => {
@@ -51,8 +56,8 @@ export class RecentActivityComponent implements OnInit {
       }
     }));
 
-     // Notifications Feed Socket
-     this.subSink.add(this.enableNotificationsFeedSocket(socketService));
+    // Notifications Feed Socket
+    this.subSink.add(this.enableNotificationsFeedSocket(socketService));
   }
 
   async ngOnInit() {
@@ -61,8 +66,13 @@ export class RecentActivityComponent implements OnInit {
 
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     await this.initNotifications();
+
+    this.loungeService.getAttendingEvents(this.workspaceData?._id).then(res => {
+      this.attendingEvents = res['stories'];
+    });
 
     // Return the function via stopping the loader
     this.isLoading$.next(false);
@@ -194,11 +204,16 @@ export class RecentActivityComponent implements OnInit {
   selectedDefaultTab() {
     if (this.notificationsData.unreadNotifications.length > 0) {
       this.selectedTab = 0;
-    } else if (this.notificationsData.unreadNotifications.length == 0
-      && this.notificationsData.unreadPosts.length > 0) {
+    } else if (this.notificationsData.unreadPosts.length > 0) {
       this.selectedTab = 1;
+    } else if (this.attendingEvents.length > 0) {
+      this.selectedTab = 2;
     } else {
       this.selectedTab = 0;
     }
+  }
+
+  isAssistingEvent(participants: any) {
+    return participants.findIndex((assist) => (assist._id || assist) == this.userData?._id) >= 0
   }
 }
