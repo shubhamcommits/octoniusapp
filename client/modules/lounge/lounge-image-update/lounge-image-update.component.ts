@@ -49,7 +49,8 @@ export class LoungeImageUpdateComponent implements OnInit {
    */
   imageChangeEvent(files: FileList) {
     const image = files.item(0);
-    this.updateImage(image);
+    const newFile = new File([image], image.name.replace(/\s/g, "_"), {type: image.type});
+    this.updateImage(newFile);
   }
 
   /**
