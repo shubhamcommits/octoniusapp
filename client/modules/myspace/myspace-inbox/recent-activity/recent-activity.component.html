@@ -191,7 +191,7 @@
     <!-- Empty State starts -->
     <div *ngIf="attendingEvents.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
       <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
-      <p class="muted text-center" i18n="@@recentActivity.everyoneIsSilent">No events. </p>
+      <p class="muted text-center" i18n="@@recentActivity.everyoneIsSilent">No events. Get involved.</p>
     </div>
     <!-- Empty State ends -->
 
@@ -206,7 +206,7 @@
             style="margin-right:15px"></app-secured-image>
         </div>
 
-        <div class="notification_title">
+        <div class="event_title">
           {{ event?.name | truncatetext: 45 }}
 
           <div class="">
@@ -216,10 +216,12 @@
         </div>
 
         <div class="notification_date_time">
-          <span class="muted small float-right">{{ event?.event_date | date: 'MMM dd, yyyy HH:mm' }}</span>
+          <span class="text-primary small"><span class="material-icons">
+            local_activity
+            </span> {{ event?.event_date | date: 'MMM dd, yyyy HH:mm' }}</span>
         </div>
 
-        <div class="notification_tag d-none d-sm-block">
+        <div class="notification_tag float-right d-none d-sm-block">
           <app-secured-image
             [imgURL]="event?._posted_by?.profile_pic"
             [service]="'user'"
@@ -232,7 +234,7 @@
         <div class="notification_more">
           <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
           <mat-menu #menu="matMenu">
-            <a mat-menu-item [routerLink]="['/dashboard', 'work', 'lounge', 'story']" [queryParams]="{ story: event?._id  }">>
+            <a mat-menu-item [routerLink]="['/dashboard', 'work', 'lounge', 'story']" [queryParams]="{ story: event?._id  }">
               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
               <span i18n="@@recentActivity.view">View</span>
             </a>
