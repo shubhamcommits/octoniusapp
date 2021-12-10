@@ -51,11 +51,6 @@ export class StoryActionsBarComponent implements OnInit, OnChanges {
 
   async ngOnInit() {
     await this.initAssistance();
-
-    if (this.storyData.event_date) {
-      this.eventTime.hour = this.storyData.event_date.getHours();
-      this.eventTime.minute = this.storyData.event_date.getMinutes();
-    }
   }
 
   async ngOnChanges() {
@@ -64,6 +59,13 @@ export class StoryActionsBarComponent implements OnInit, OnChanges {
 
   canEditAction() {
     this.canEditStory = true;
+
+    if (this.storyData.event_date) {
+      const eventMoment = moment(this.storyData.event_date);
+      this.eventTime.hour = eventMoment.hours();
+      this.eventTime.minute = eventMoment.minutes();
+    }
+
     this.onEditActionEvent.emit();
   }
 
@@ -212,7 +214,29 @@ export class StoryActionsBarComponent implements OnInit, OnChanges {
    * @param dateObject
    */
   getDate(dateObject: any) {
-    this.updateDate(dateObject.toDate());
+    const now = moment(dateObject.toDate());
+    now.hours(this.eventTime.hour);
+    now.minute(this.eventTime.minute);
+    this.storyData.event_date  = now;
+    this.updateDate(this.storyData.event_date);
+  }
+
+  /**
+   * This function is responsible for receiving the time from @module <app-time-picker></app-time-picker>
+   * @param timeObject
+   */
+  getTime(timeObject: any) {
+    this.eventTime = timeObject;
+    const now = moment(this.storyData.event_date);
+    now.hours(this.eventTime.hour);
+    now.minute(this.eventTime.minute);
+    this.storyData.event_date  = now;
+    this.updateDate(this.storyData.event_date);
+    /*
+    this.loungeService.editStory(this.storyData?._id, { 'event_date': moment(this.storyData.event_date).format("MMM dd, yyyy HH:mm") }).then(res => {
+      this.storyData = res['story'];
+    });
+    */
   }
 
   updateDate(date: any) {
@@ -226,21 +250,5 @@ export class StoryActionsBarComponent implements OnInit, OnChanges {
           reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
         });
     }));
-  }
-
-  /**
-   * This function is responsible for receiving the time from @module <app-time-picker></app-time-picker>
-   * @param timeObject
-   */
-  getTime(timeObject: any) {
-    this.eventTime = timeObject;
-    const now = moment(this.storyData.event_date);
-    now.hours(this.eventTime.hour);
-    now.minute(this.eventTime.minute);
-    this.storyData.event_date  = now;
-
-    this.loungeService.editStory(this.storyData?._id, { 'event_date': moment(this.storyData.event_date).format("MMM dd, yyyy HH:mm") }).then(res => {
-      this.storyData = res['story'];
-    });
   }
 }
