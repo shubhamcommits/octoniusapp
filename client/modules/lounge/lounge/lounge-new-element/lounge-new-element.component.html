@@ -10,10 +10,14 @@
 
     <!-- CREATE STORY STARTS -->
     <li *ngIf="lounge && !categories" class="dropdown-item" (click)="createStory()">
-      <span i18n="@@loungeNewElement.story">Story</span>
+      <span i18n="@@loungeNewElement.story"><span class="material-icons-outlined">
+        history_edu
+        </span> Story</span>
     </li>
     <li *ngIf="lounge && categories" class="dropdown-item" mat-menu-item [matMenuTriggerFor]="categoriesMenu" (click)="$event.stopPropagation()">
-      <span i18n="@@loungeNewElement.story">Story</span>
+      <span i18n="@@loungeNewElement.story"><span class="material-icons-outlined">
+        history_edu
+        </span> Story</span>
     </li>
 
     <mat-menu #categoriesMenu="matMenu">
@@ -27,10 +31,14 @@
 
     <!-- CREATE EVENT STARTS -->
     <li *ngIf="lounge && !categories" class="dropdown-item" (click)="createEvent()">
-      <span i18n="@@loungeNewElement.event">Event</span>
+      <span i18n="@@loungeNewElement.event"><span class="material-icons-outlined">
+        local_activity
+        </span> Event</span>
     </li>
     <li *ngIf="lounge && categories" class="dropdown-item" mat-menu-item [matMenuTriggerFor]="categoriesEventMenu" (click)="$event.stopPropagation()">
-      <span i18n="@@loungeNewElement.event">Event</span>
+      <span i18n="@@loungeNewElement.event"><span class="material-icons-outlined">
+        local_activity
+        </span> Event</span>
     </li>
 
     <mat-menu #categoriesEventMenu="matMenu">
@@ -44,7 +52,9 @@
 
     <!-- CREATE LOUNGE STARTS -->
     <li *ngIf="lounge" class="dropdown-item" (click)="createLounge()">
-      <span i18n="@@loungeNewElement.lounge">Lounge</span>
+      <span i18n="@@loungeNewElement.lounge"><span class="material-icons-outlined">
+        weekend
+        </span> Lounge</span>
     </li>
     <!-- CREATE LOUNGE ENDS -->
 
@@ -52,7 +62,9 @@
 
     <!-- CREATE CATEGORY STARTS -->
     <li class="dropdown-item" (click)="createCategory()" *ngIf="canCreateCategory">
-      <span i18n="@@loungeNewElement.category">Category</span>
+      <span i18n="@@loungeNewElement.category"><span class="material-icons-outlined">
+        sell
+        </span> Category</span>
     </li>
     <!-- CREATE CATEGORY ENDS -->
 </ul>
