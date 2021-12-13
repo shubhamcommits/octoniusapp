@@ -320,6 +320,22 @@
               </div>
             </div>
 
+            <div id="avatar-assignee" style="margin-bottom: 30px;">
+              <p class="box-title" style="padding-top: 20px;" i18n="@@groupCreatePostDialog.createdBy">Created by</p>
+
+              <app-secured-image
+                [imgURL]="postData?._posted_by?.profile_pic"
+                [service]="'user'"
+                [styleClass]="'feed-avatar-small'"
+                style="float: left; cursor: auto;"></app-secured-image>
+
+              <div style="padding-top: 10px;" class="ml-1">
+                {{ postData?._posted_by?.first_name }}
+                {{ postData?._posted_by?.last_name }}
+                <span class="muted" i18n="@@groupCreatePostDialog.on">on {{ postData?.created_date | date: 'MMM dd, yyyy'}}</span>
+              </div>
+            </div>
+
         </div>
         <!-- Assignee Modal ends -->
 
