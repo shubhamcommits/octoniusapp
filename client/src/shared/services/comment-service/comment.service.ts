@@ -20,9 +20,7 @@ export class CommentService {
   like(commentId: string) {
 
     // Call the HTTP Request
-    return this._http.post(this.baseURL + `/comments/like`, {}, {
-      params: { commentId }
-    }).
+    return this._http.post(this.baseURL + `/comments/${commentId}/like`, {}, {}).
       toPromise()
   }
 
@@ -33,9 +31,7 @@ export class CommentService {
   unlike(commentId: string) {
 
     // Call the HTTP Request
-    return this._http.post(this.baseURL + `/comments/unlike`, {}, {
-      params: { commentId }
-    }).
+    return this._http.post(this.baseURL + `/comments/${commentId}/unlike`, {}, {}).
       toPromise()
   }
 
@@ -66,9 +62,7 @@ export class CommentService {
    * @param formData
    */
   edit(formData: FormData, commentId: string) {
-    return this._http.post(this.baseURL + '/comments/edit-comment', formData, {
-      params: {commentId}
-    }).toPromise();
+    return this._http.post(this.baseURL + `/comments/${commentId}/edit-comment`, formData, {}).toPromise();
   }
 
 
@@ -77,9 +71,7 @@ export class CommentService {
    * @param commentId
    */
   getComment(commentId: any){
-    return this._http.get(this.baseURL + '/comments/get-comment', {
-      params: {commentId}
-    }).toPromise();
+    return this._http.get(this.baseURL + `/comments/${commentId}/get-comment`, {}).toPromise();
   }
 
 
@@ -133,9 +125,7 @@ export class CommentService {
    * @param commentId
    */
   remove(commentId: any){
-    return this._http.post(this.baseURL + '/comments/remove-comment', {} , {
-      params: {commentId}
-    }).toPromise();
+    return this._http.post(this.baseURL + `/comments/${commentId}/remove-comment`, {}).toPromise();
   }
 
 
@@ -144,9 +134,7 @@ export class CommentService {
    * @param commentId
    */
   markRead(commentId: any){
-    this._http.post(this.baseURL + '/comments/mark-read', {}, {
-      params: {commentId}
-    }).toPromise();
+    this._http.post(this.baseURL + `/comments/${commentId}/mark-read`, {}).toPromise();
   }
 
   getCommentsCount(postId: string, period?: any) {

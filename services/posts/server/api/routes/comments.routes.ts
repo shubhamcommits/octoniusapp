@@ -20,10 +20,10 @@ router.use(auths.isLoggedIn);
 router.post('/new-comment', commentFileHandler, commentsController.addComment);
 
 // This route is used to edit a comment
-router.post('/edit-comment', commentFileHandler, commentsController.editComment);
+router.post('/:commentId/edit-comment', commentFileHandler, commentsController.editComment);
 
 // This route is used to retrieve a comment
-router.get('/get-comment', commentsController.getComment);
+router.get('/:commentId/get-comment', commentsController.getComment);
 
 // This route is used to get first 5 comments
 router.get('/allComments', commentsController.getAllComments);
@@ -35,16 +35,16 @@ router.get('/comments', commentsController.getComments);
 router.get('/next-comments', commentsController.getNextComments);
 
 // This route is used to remove a comment
-router.post('/remove-comment', commentsController.removeComment);
+router.post('/:commentId/remove-comment', commentsController.removeComment);
 
 // This route is used to mark a comment as read
-router.post('/mark-read', commentsController.markCommentAsRead);
+router.post('/:commentId/mark-read', commentsController.markCommentAsRead);
 
 // This route is used to like a comment
-router.post('/like', commentsController.like);
+router.post('/:commentId/like', commentsController.like);
 
 // This route is used to unlike a comment
-router.post('/unlike', commentsController.unlike);
+router.post('/:commentId/unlike', commentsController.unlike);
 
 // GET - Get number of posts
 router.get('/count', commentsController.getCommentsCount);
