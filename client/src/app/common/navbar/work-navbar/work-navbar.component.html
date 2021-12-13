@@ -101,9 +101,9 @@
   <!-- Lounge Title ends -->
 
   <!-- Story Title starts -->
-  <li *ngIf="existsElement(storyData)" class="nav-item d-none d-md-block" style="margin-top: 20px;">
-    <i class="material-icons" *ngIf="storyData.type == 'story'">travel_explore</i>
-    <i class="material-icons" *ngIf="storyData.type == 'event'">event</i>
+  <li *ngIf="existsElement(storyData)" class="nav-item d-none d-md-block">
+    <i class="material-icons-outlined" *ngIf="storyData.type == 'story'">history_edu</i>
+    <i class="material-icons-outlined" *ngIf="storyData.type == 'event'">local_activity</i>
     <!-- Static Title starts -->
     <span *ngIf="!editTitle"
         (click)="(isUserManager) ? editTitle = !editTitle : null"

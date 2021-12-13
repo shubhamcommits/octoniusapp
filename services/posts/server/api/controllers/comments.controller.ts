@@ -62,7 +62,7 @@ export class CommentsController{
      * @param next 
      */
     async getComment(req: Request, res: Response, next: NextFunction){
-        const { commentId } = req.query;
+        const { commentId } = req.params;
         try {
             
             // Service function to get comment
@@ -156,7 +156,7 @@ export class CommentsController{
      */
     async removeComment(req: Request, res: Response, next: NextFunction){
         try {
-            const { query: { commentId } } = req;
+            const { params: { commentId } } = req;
             const userId = req['userId'];
             // Service function to remove comment
             const commentRemoved = await commentsService.removeComment(userId, commentId);
@@ -183,7 +183,7 @@ export class CommentsController{
      */
     async markCommentAsRead(req: Request, res: Response, next: NextFunction){
         try {
-            const { query: { commentId } } = req;
+            const { params: { commentId } } = req;
             const userId = req['userId'];
             // Service function to mark comment as read
             const message = await commentsService.markCommentAsRead(userId, commentId);
@@ -206,7 +206,7 @@ export class CommentsController{
      */
     async like(req: Request, res: Response, next: NextFunction){
         try {
-            const { query: { commentId } } = req;
+            const { params: { commentId } } = req;
             const userId = req['userId'];
             // Service function call
             const data = await commentsService.likeComment(userId, commentId);
@@ -231,7 +231,7 @@ export class CommentsController{
      */
     async unlike(req: Request, res: Response, next: NextFunction){
         try {
-            const { query: { commentId } } = req;
+            const { params: { commentId } } = req;
             const userId = req['userId'];
 
             // Call service functio to unlike

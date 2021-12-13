@@ -143,7 +143,7 @@ const fs = require('fs');
         try {
           let {
             userId,
-            query: { commentId },
+            params: { commentId },
             body: { comment }
           } = req;
       
@@ -158,8 +158,6 @@ const fs = require('fs');
           }
 
           comment = JSON.parse(comment)
-
-          // console.log("comentndfvdvvsdc",comment);
       
           // Update comment
           const updatedComment = await Comment.findOneAndUpdate({
@@ -204,7 +202,7 @@ const fs = require('fs');
           })
             .populate('_commented_by', '_id first_name last_name profile_pic')
             .populate({path: '_post', select: '_id _group', populate: {path: '_group'}})
-            // .populate({ path: '_post', populate: { path: '_group' } })
+            .populate({ path: '_story', select: 'name type icon_pic _lounge _workspace _posted_by created_date' })
             .lean();
       
           return comment;
@@ -463,17 +461,19 @@ const fs = require('fs');
             })
             .populate('_liked_by', 'first_name last_name')
             .populate('_post', '_posted_by _assigned_to _followers')
+            .populate({ path: '_story', select: 'name type icon_pic _lounge _workspace _posted_by created_date' })
             .lean();
 
           const user = await User.findOne({
             _id: userId
           }).select('first_name last_name');
       
-          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-comment`, {
-            comment: comment,
-            user: userId
-          });
-
+          if (comment._post) {
+            await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-comment`, {
+              comment: comment,
+              user: userId
+            });
+          }
           return {
               comment: comment,
               user: user
@@ -502,6 +502,7 @@ const fs = require('fs');
             })
             .populate('_liked_by', 'first_name last_name')
             .populate('post', '_posted_by')
+            .populate({ path: '_story', select: 'name type icon_pic _lounge _workspace _posted_by created_date' })
             .lean();
       
           const user = await User.findOne({

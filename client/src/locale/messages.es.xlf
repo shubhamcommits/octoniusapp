@@ -4651,8 +4651,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupInviteUser.guestMembersHaveAccess" datatype="html">
-        <source>Guest members have access only to the group they are invited. They can not see any private or public groups from your organization.</source>
-        <target state="translated">Los miembros invitados sólo tienen acceso al grupo al que han sido invitados. No pueden ver ningún grupo privado o público de su organización.</target>
+        <source>Working with people outside your organization? Go on, add them to your group as a guest. Guest members have access only to the group they are invited. They can not see any private or public groups from your organization.</source>
+        <target state="translated">¿Trabaja con personas ajenas a su organización? Los miembros invitados sólo tienen acceso al grupo al que han sido invitados. No pueden ver ningún grupo privado o público de su organización.</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/invite-user/invite-user.component.html</context>
           <context context-type="linenumber">8</context>
@@ -6728,7 +6729,7 @@
       </trans-unit>
       <trans-unit id="loungeDetails.byDoingThisTasksWillBeDeleted" datatype="html">
         <source>By doing this all the stories and lounges from this lounge will be deleted!</source>
-        <target state="translated">¡Al hacer esto, se eliminarán todas las historias y salas de esta sala!</target>
+        <target state="translated">¡Al hacer esto, se eliminarán todas las historias y lounges de este lounge!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge-details/lounge-details.component.ts</context>
           <context context-type="linenumber">181</context>
@@ -6736,7 +6737,7 @@
       </trans-unit>
       <trans-unit id="loungeDetails.pleaseWaitWeRemovingLounge" datatype="html">
         <source>Please wait we are removing your lounge...</source>
-        <target state="translated">Espere, estamos eliminando la sala...</target>
+        <target state="translated">Espere, estamos eliminando el lounge...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge-details/lounge-details.component.ts</context>
           <context context-type="linenumber">186</context>
@@ -6744,7 +6745,7 @@
       </trans-unit>
       <trans-unit id="loungeDetails.loungeRemoved" datatype="html">
         <source>Lounge Removed!</source>
-        <target state="translated">¡Sala Eliminada!</target>
+        <target state="translated">¡Lounge Eliminado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge-details/lounge-details.component.ts</context>
           <context context-type="linenumber">194</context>
@@ -6752,7 +6753,7 @@
       </trans-unit>
       <trans-unit id="loungeDetails.unableToRemoveLounge" datatype="html">
         <source>Unable to remove the lounge at the moment, please try again!</source>
-        <target state="translated">No se puede eliminar la sala en este momento, inténtelo de nuevo.</target>
+        <target state="translated">No se puede eliminar el lounge en este momento, inténtelo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge-details/lounge-details.component.ts</context>
           <context context-type="linenumber">197</context>
@@ -6824,7 +6825,7 @@
       </trans-unit>
       <trans-unit id="editLounge.renameTheLounge" datatype="html">
         <source>Rename the lounge</source>
-        <target state="translated">Renombrar la sala</target>
+        <target state="translated">Renombrar el lounge</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/edit-lounge/edit-lounge.component.ts</context>
           <context context-type="linenumber">51</context>
@@ -6840,7 +6841,7 @@
       </trans-unit>
       <trans-unit id="editLounge.pleaseWaitWeUpdateLounge" datatype="html">
         <source>Please wait we are updating the lounge...</source>
-        <target state="translated">Espere, estamos actualizando la sala...</target>
+        <target state="translated">Espere, estamos actualizando el lounge...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/edit-lounge/edit-lounge.component.ts</context>
           <context context-type="linenumber">72</context>
@@ -6848,7 +6849,7 @@
       </trans-unit>
       <trans-unit id="editLounge.loungeUpdated" datatype="html">
         <source>Lounge updated</source>
-        <target state="translated">Sala actualizada</target>
+        <target state="translated">Lounge actualizado</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/edit-lounge/edit-lounge.component.ts</context>
           <context context-type="linenumber">78</context>
@@ -6856,7 +6857,7 @@
       </trans-unit>
       <trans-unit id="editLounge.unableToUpdate" datatype="html">
         <source>Unable to update the lounge, please try again!</source>
-        <target state="translated">No se puede actualizar la sala, ¡inténtelo de nuevo!</target>
+        <target state="translated">No se puede actualizar el lounge, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/edit-lounge/edit-lounge.component.ts</context>
           <context context-type="linenumber">81</context>
@@ -6872,7 +6873,7 @@
       </trans-unit>
       <trans-unit id="editLounge.pleaseWaitWeAddLounge" datatype="html">
         <source>Please wait we are adding the lounge...</source>
-        <target state="translated">Espere, estamos añadiendo la sala...</target>
+        <target state="translated">Espere, estamos añadiendo el lounge...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/edit-lounge/edit-lounge.component.ts</context>
           <context context-type="linenumber">104</context>
@@ -6880,7 +6881,7 @@
       </trans-unit>
       <trans-unit id="editLounge.loungeAdded" datatype="html">
         <source>Lounge Added</source>
-        <target state="translated">Sala añadida</target>
+        <target state="translated">Lounge añadido</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/edit-lounge/edit-lounge.component.ts</context>
           <context context-type="linenumber">109</context>
@@ -6888,8 +6889,7 @@
       </trans-unit>
       <trans-unit id="editLounge.unableToAdd" datatype="html">
         <source>Unable to add the lounge, please try again!</source>
-        <target state="translated">No se puede agregar la sala, ¡inténtelo de nuevo!</target>
-
+        <target state="translated">No se puede agregar el lounge, ¡inténtelo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/edit-lounge/edit-lounge.component.ts</context>
           <context context-type="linenumber">112</context>
@@ -6905,7 +6905,7 @@
       </trans-unit>
       <trans-unit id="loungeNewElement.story" datatype="html">
         <source>Story</source>
-        <target state="translated">Historia</target>
+        <target state="translated">Story</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/lounge-new-element/lounge-new-element.component.html</context>
           <context context-type="linenumber">13</context>
@@ -6929,7 +6929,7 @@
       </trans-unit>
       <trans-unit id="loungeNewElement.lounge" datatype="html">
         <source>Lounge</source>
-        <target state="translated">Sala</target>
+        <target state="translated">Lounge</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/lounge-new-element/lounge-new-element.component.html</context>
           <context context-type="linenumber">47</context>
@@ -6945,7 +6945,7 @@
       </trans-unit>
       <trans-unit id="loungeNewElement.newStory" datatype="html">
         <source>New Story</source>
-        <target state="translated">Nueva Historia</target>
+        <target state="translated">Nuevo Story</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/lounge-new-element/lounge-new-element.component.ts</context>
           <context context-type="linenumber">64</context>
@@ -6961,7 +6961,7 @@
       </trans-unit>
       <trans-unit id="loungeNewElement.newLounge" datatype="html">
         <source>New Lounge</source>
-        <target state="translated">Nueva Sala</target>
+        <target state="translated">Nuevo Lounge</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/lounge-new-element/lounge-new-element.component.ts</context>
           <context context-type="linenumber">98</context>
@@ -6977,7 +6977,7 @@
       </trans-unit>
       <trans-unit id="lounge.welcomeTo" datatype="html">
         <source>Welcome to <x id="INTERPOLATION" equiv-text="{{ workspaceData.company_name }}"/> Lounge</source>
-        <target state="translated">Bienvenido a la Sala <x id="INTERPOLATION" equiv-text="{{ workspaceData.company_name }}"/></target>
+        <target state="translated">Bienvenido al Lounge <x id="INTERPOLATION" equiv-text="{{ workspaceData.company_name }}"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/lounge.component.html</context>
           <context context-type="linenumber">7</context>
@@ -7029,7 +7029,7 @@
       </trans-unit>
       <trans-unit id="storyActionsBar.maybe" datatype="html">
         <source>MAYBE</source>
-        <target state="translated">QUIZÁS VAYA</target>
+        <target state="translated">QUIZÁS</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.html</context>
           <context context-type="linenumber">57</context>
@@ -7157,7 +7157,7 @@
       </trans-unit>
       <trans-unit id="storyDetails.storyRemoved" datatype="html">
         <source>Story Removed!</source>
-        <target state="translated">¡Historia Eliminada!</target>
+        <target state="translated">¡Story Eliminado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-actions-bar/story-actions-bar.component.ts</context>
           <context context-type="linenumber">141</context>
@@ -7245,7 +7245,7 @@
       </trans-unit>
       <trans-unit id="storyDetails.storyUpdated" datatype="html">
         <source>Story updated</source>
-        <target state="translated">Historia actualizada</target>
+        <target state="translated">Story actualizado</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/story-details/story-details.component.ts</context>
           <context context-type="linenumber">169</context>
@@ -7489,7 +7489,7 @@
       </trans-unit>
       <trans-unit id="recentStories.recentWork" datatype="html">
         <source> Recent stories </source>
-        <target state="translated">Historias recientes</target>
+        <target state="translated">Stories recientes</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/myspace/myspace-inbox/recent-stories/recent-stories.component.html</context>
           <context context-type="linenumber">6,8</context>
@@ -9515,7 +9515,7 @@
       </trans-unit>
       <trans-unit id="workNavbar.lounge" datatype="html">
         <source>Lounge</source>
-        <target state="translated">Sala</target>
+        <target state="translated">Lounge</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
           <context context-type="linenumber">52</context>
