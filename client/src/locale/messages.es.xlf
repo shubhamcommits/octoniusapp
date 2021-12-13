@@ -4651,8 +4651,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="groupInviteUser.guestMembersHaveAccess" datatype="html">
-        <source>Guest members have access only to the group they are invited. They can not see any private or public groups from your organization.</source>
-        <target state="translated">Los miembros invitados sólo tienen acceso al grupo al que han sido invitados. No pueden ver ningún grupo privado o público de su organización.</target>
+        <source>Working with people outside your organization? Go on, add them to your group as a guest. Guest members have access only to the group they are invited. They can not see any private or public groups from your organization.</source>
+        <target state="needs-adaptation">Los miembros invitados sólo tienen acceso al grupo al que han sido invitados. No pueden ver ningún grupo privado o público de su organización.</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/invite-user/invite-user.component.html</context>
           <context context-type="linenumber">8</context>
@@ -6889,7 +6890,6 @@
       <trans-unit id="editLounge.unableToAdd" datatype="html">
         <source>Unable to add the lounge, please try again!</source>
         <target state="translated">No se puede agregar el lounge, ¡inténtelo de nuevo!</target>
-
         <context-group purpose="location">
           <context context-type="sourcefile">modules/lounge/lounge/edit-lounge/edit-lounge.component.ts</context>
           <context context-type="linenumber">112</context>
