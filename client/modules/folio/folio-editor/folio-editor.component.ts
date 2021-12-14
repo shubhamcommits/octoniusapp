@@ -89,6 +89,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   //Comment modal boolean
   commentBool: boolean = false;
+  //Comment modal type. this will be use to re-use the modal for comments and headings
+  commentType: string = 'comment';
 
   // Table modal boolean
   tableShow: boolean = false;
@@ -184,7 +186,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           ['bold', 'italic', 'underline', 'strike'],
           [{ 'color': [] }, { 'background': [] }],
           [{ 'script': 'super' }, { 'script': 'sub' }],
-          [{ 'header': '1' }, { 'header': '2' }, /*'content',*/ 'blockquote', 'code-block'],
+          [{ 'header': '1' }, { 'header': '2' }, 'outline', 'content', 'blockquote', 'code-block'],
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
@@ -204,13 +206,14 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           'header': (value) => {
             this.generateHeading(value);
           },
+          // Generate the headings
+          'outline': (value) => {
+            this.generateHeadingOutline();
+          },
           // Show/Hide the table of Content
-          /*
-          TODO Commented until BRD pays
           'content': () => {
             this.displayHeadings();
           },
-          */
           /*
           // Show/Hide the table of Content
           'list': (value) => {
@@ -260,8 +263,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     }
     this.folio = this.initializeConnection();
     this.fileData = await this.getFile(this.folioId, this.readOnly);
-    // TODO - Remove the following line when BRD pays
-    this.fileData.show_headings = false;
   }
 
   async ngAfterViewInit() {
@@ -305,9 +306,9 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
     document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
     document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
+    document.querySelector('.ql-outline').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list</span>';
     document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
-    // TODO Commented until BRD pays
-    // document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
+    document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
     document.querySelector(".ql-export-pdf").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">picture_as_pdf</span>';
     // document.querySelector('.ql-export-doc').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">file_download</span>';
   }
@@ -485,6 +486,14 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   //Opens dialog box to enter commment
   openComment() {
     this.commentBool = true;
+    this.commentType = 'comment';
+    this.range = this.quill.getSelection(true);
+    this.selectedText = this.quill.getText(this.range.index, this.range.length);
+  }
+
+  generateHeadingOutline() {
+    this.commentBool = true;
+    this.commentType = 'heading';
     this.range = this.quill.getSelection(true);
     this.selectedText = this.quill.getText(this.range.index, this.range.length);
   }
@@ -496,17 +505,29 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     if (this.selectedText == null || this.selectedText == "") {
       await this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.noContentSelected:No content is selected`).then(res => {
         if (res.value) {
-          this.saveComment();
+          if (this.commentType == 'comment') {
+            this.saveComment();
+          } else if (this.commentType == 'heading') {
+            this.saveHeading();
+          }
         }
       });
     } else if (this.enteredComment == null || this.enteredComment == "" || this.enteredComment == "<p><br></p>") {
       await this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.pleaseEnterComment:Please enter the comment`).then(res => {
         if (res.value) {
-          this.saveComment();
+          if (this.commentType == 'comment') {
+            this.saveComment();
+          } else if (this.commentType == 'heading') {
+            this.saveHeading();
+          }
         }
       });
     } else {
-      this.saveComment();
+      if (this.commentType == 'comment') {
+        this.saveComment();
+      } else if (this.commentType == 'heading') {
+        this.saveHeading();
+      }
     }
   }
 
@@ -532,10 +553,29 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
     this.saveQuillData();
 
-    this.quill2.deleteText(0, this.quill2.getLength());
-    this.commentBool = false;
-    this.selectedText = null;
-    this.enteredComment = null;
+    this.closeComment();
+  }
+
+  saveHeading() {
+    const headingIndex = this.headingsMetaData.findIndex(heading => {
+      let [line1, offset1] = this.quill.getLine(heading.range.index);
+      let [line2, offset2] = this.quill.getLine(this.range.index);
+      return line1 == line2;
+    });
+
+    if (headingIndex >= 0) {
+      this.headingsMetaData.splice(headingIndex, 1);
+    } else {
+      this.headingsMetaData.push({
+        text: this.enteredComment,
+        range: this.range,
+        headingLevel: 3
+      });
+    }
+
+    this.sortHeaders();
+    this.saveQuillData();
+    this.closeComment();
   }
 
   //Closes the comment dialog box
@@ -774,6 +814,25 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
         range: this.range,
         headingLevel: value
       });
+    }
+
+    this.sortHeaders();
+    this.saveQuillData();
+  }
+
+  deleteHeading(heading: any) {
+    const headingIndex = this.headingsMetaData.findIndex(h => {
+      let [line1, offset1] = this.quill.getLine(h.range.index);
+      let [line2, offset2] = this.quill.getLine(heading.range.index);
+      return line1 == line2;
+    });
+
+    if ((heading.headingLevel == 1 || heading.headingLevel == 2) && headingIndex >= 0) {
+      this.quill.formatLine(heading.range.index, heading.range.length, 'header', false);
+    }
+
+    if (headingIndex >= 0) {
+      this.headingsMetaData.splice(headingIndex, 1);
     }
 
     this.sortHeaders();
