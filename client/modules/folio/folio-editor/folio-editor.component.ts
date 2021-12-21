@@ -215,7 +215,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
             this.displayHeadings();
           },
           /*
-          // Show/Hide the table of Content
+          // Automatic generate the table of Content
           'list': (value) => {
             this.generateList(value);
           },
@@ -564,7 +564,16 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     });
 
     if (headingIndex >= 0) {
-      this.headingsMetaData.splice(headingIndex, 1);
+      let header = this.headingsMetaData[headingIndex];
+      if (header.headingLevel == 3) {
+        this.headingsMetaData.splice(headingIndex, 1);
+      } else {
+        header.text = this.enteredComment,
+        header.range = this.range,
+        header.headingLevel = 3;
+        this.headingsMetaData[headingIndex] = header;
+      }
+      this.quill.formatLine(this.range.index, this.range.length, 'header', 0);
     } else {
       this.headingsMetaData.push({
         text: this.enteredComment,
@@ -798,17 +807,20 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     });
 
     this.quill.formatLine(this.range.index, this.range.length, 'header', value);
-    const elementType = leaf?.parent?.domNode?.localName;
+    // const elementType = leaf?.parent?.parent?.domNode?.localName;
+
     if (headingIndex >= 0) {
       let header = this.headingsMetaData[headingIndex];
       if (!value || header.headingLevel == value) {
         this.headingsMetaData.splice(headingIndex, 1);
       } else {
+        header.text = leaf.text,
         header.range = this.range,
         header.headingLevel = value;
         this.headingsMetaData[headingIndex] = header;
       }
-    } else if (elementType && elementType.charAt(0) && elementType.charAt(0).toLowerCase() == 'h') {
+    //} else if (elementType && elementType.charAt(0) && elementType.charAt(0).toLowerCase() == 'h') {
+    } else {
       this.headingsMetaData.push({
         text: leaf.text,
         range: this.range,
