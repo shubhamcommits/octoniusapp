@@ -190,11 +190,15 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
-          ['comment'],['tables'],['clear'],['export-pdf'/*, 'export-doc'*/]
+          ['comment', 'comment_display'],['tables'],['clear'],['export-pdf'/*, 'export-doc'*/]
         ],
         handlers : {
           'comment': () => {
             this.openComment();
+          },
+          // Show/Hide the table of Comments
+          'comment_display': () => {
+            this.displayComments();
           },
           'tables': () => {
             this.openTableOptions();
@@ -305,6 +309,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     });
 
     document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
+    document.querySelector(".ql-comment_display").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">forum</span>';
     document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
     document.querySelector('.ql-outline').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list</span>';
     document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
@@ -887,10 +892,18 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   displayHeadings() {
     this.folioService.displayHeadings(this.fileData?._id, !this.fileData?.show_headings).then(res => {
-      this.fileData.show_headings = !this.fileData?.show_headings;
-    }).catch (err => {
-      this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
-    });
+        this.fileData.show_headings = !this.fileData?.show_headings;
+      }).catch (err => {
+        this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
+      });
+  }
+
+  displayComments() {
+    this.folioService.displayComments(this.fileData?._id, !this.fileData?.show_comments).then(res => {
+        this.fileData.show_comments = !this.fileData?.show_comments;
+      }).catch (err => {
+        this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
+      });
   }
 
   /**

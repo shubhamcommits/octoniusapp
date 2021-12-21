@@ -12,4 +12,6 @@ routes.post('/upload', authsHelper.verifyToken, authsHelper.isLoggedIn, upload.c
 
 routes.put('/:fileId/displayHeadings', authsHelper.verifyToken, authsHelper.isLoggedIn, upload.displayHeadings);
 
+routes.put('/:fileId/displayComments', authsHelper.verifyToken, authsHelper.isLoggedIn, upload.displayComments);
+
 export default routes;

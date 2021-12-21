@@ -55,4 +55,27 @@ async function displayHeadings(req: Request, res: Response, next: NextFunction) 
   }
 }
 
-export default { createUploadFolder, uploadcontroller, displayHeadings, multipartMiddleware };
+async function displayComments(req: Request, res: Response, next: NextFunction) {
+  try {
+    // Fetch the publish From the request
+    let { body: { showHeadings } } = req;
+    
+    // Fetch the fileId From the request
+    const { fileId } = req.params;
+
+    let folioUpdated = await File.findOneAndUpdate(
+      { _id: fileId },
+      { $set: {show_comments: showHeadings }},
+      { new: true}).lean();
+
+    // Send Status 200 response
+    return res.status(200).json({
+        message: 'Folio updated',
+        folio: folioUpdated
+    });
+  } catch (err) {
+      return sendError(res, err, 'Internal Server Error!', 500);
+  }
+}
+
+export default { createUploadFolder, uploadcontroller, displayHeadings, displayComments, multipartMiddleware };

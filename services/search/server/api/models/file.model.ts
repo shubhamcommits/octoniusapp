@@ -55,6 +55,11 @@ const FileSchema = new Schema({
         required: true,
         default: false
     },
+    show_comments: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     permissions: [
         {
             right: {
