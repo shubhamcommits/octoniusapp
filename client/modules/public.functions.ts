@@ -1444,8 +1444,10 @@ export class PublicFunctions {
                                 let postSection;
                                 if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId) {
                                     postSection = (post.task._shuttle_section._id || post.task._shuttle_section);
-                                } else {
+                                } else if (post.task._column) {
                                     postSection = (post.task._column._id || post.task._column);
+                                } else {
+                                    postSection = '';
                                 }
                                 retValue = triggerSection.toString() == postSection.toString();
                             }

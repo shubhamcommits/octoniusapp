@@ -132,14 +132,14 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
       this.tasks = this.tasks.concat(shuttleTasks);
     }
 
+    if (this.groupData?.enabled_rights) {
+      await this.filterRAGTasks();
+    }
+
     /**
      * Sort the tasks into their respective columns
      */
     await this.sortTasksInColumns(this.columns, this.tasks);
-
-    if (this.groupData?.enabled_rights) {
-      await this.filterRAGTasks();
-    }
 
     let col = [];
     if (this.columns) {
@@ -288,34 +288,31 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   }
 
   filterRAGTasks() {
-    if (this.columns) {
-      this.columns.forEach(column => {
-        let tasks = [];
+    let tasks = [];
 
-        if (column.tasks) {
-          // Filtering other tasks
-          column.tasks.forEach(async task => {
-            if (task?.permissions && task?.permissions?.length > 0) {
-              const canEdit = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'edit');
-              let canView = false;
-              if (!canEdit) {
-                const hide = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'hide');
-                canView = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'view') || !hide;
-              }
+    if (this.tasks) {
+      // Filtering other tasks
+      this.tasks.forEach(async task => {
+        if (task?.permissions && task?.permissions?.length > 0) {
+          const canEdit = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'edit');
+          let canView = false;
+          if (!canEdit) {
+            const hide = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'hide');
+            canView = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'view') || !hide;
+          }
 
-              if (canEdit || canView) {
-                task.canView = true;
-                tasks.push(task);
-              }
-            } else {
-              task.canView = true;
-              tasks.push(task);
-            }
-          });
+          if (canEdit || canView) {
+            task.canView = true;
+            tasks.push(task);
+          }
+        } else {
+          task.canView = true;
+          tasks.push(task);
         }
-        column.tasks = tasks;
       });
     }
+
+    this.tasks = tasks;
   }
 
   async filtering() {
