@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import moment from 'moment';
+import * as XLSX from 'xlsx';
+import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-group-tasks-views',
@@ -465,5 +467,64 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     } else {
       this.columns = this.unchangedColumns.columns;
     }
+  }
+
+  async onExportToEmitter(exportType: any) {
+    let exportTasks = [];
+    for (let i = 0; i < this.columns.length; i++) {
+      let section = this.columns[i];
+
+      for (let j = 0; j < section.tasks.length; j++) {
+        let post = section.tasks[j];
+        let task: any = {
+          title: post.title || '',
+          posted_by: (post._posted_by.first_name + ' ' + post._posted_by.last_name) || '',
+          created_date: post.created_date || '',
+          tags: post.tags || '',
+          status: post.task.status || '',
+        };
+
+        if (post.task.start_date) {
+          task.due_to = (post.task.start_date) ? moment.utc(post.task.start_date).format("MMM D, YYYY") : '';
+        }
+        task.due_to = (post.task.due_to) ? moment.utc(post.task.due_to).format("MMM D, YYYY") : '';
+
+        if (post.task._parent_task) {
+          task.section = '';
+          task.parent_task = post.task._parent_task.title || '';
+        } else {
+          task.section = section.title || '';
+          task.parent_task = '';
+        }
+
+        let assignedTo = '';
+        if (post.task._assigned_to && post.task._assigned_to.length > 0) {
+          post.task._assigned_to.forEach(user => {
+            assignedTo += user.first_name + ' ' + user.last_name + '; ';
+          });
+
+          task.assigned_to = assignedTo;
+        }
+
+        if (this.isIdeaModuleAvailable && post.task.is_idea && post.task.idea) {
+          task.idea_positive = post.task.idea.positive_votes || 0;
+          task.idea_negative = post.task.idea.negative_votes || 0;
+        }
+
+        if (post.task.isNorthStar && post.task.northStar) {
+          task.northStar_targetValue = post.task.northStar.target_value || 0;
+          let sum = 0;
+          for (let k = 0; k < post.task.values.length; k++) {
+              sum += post.task.values[k];
+          }
+          task.northStar_currentValue = sum;
+          task.northStar_type = post.task.northStar.type;
+        }
+
+        exportTasks.push(task);
+      }
+    }
+
+    this.groupService.exportTasksToFile(exportType, exportTasks, this.groupData?.group_name + '_tasks');
   }
 }

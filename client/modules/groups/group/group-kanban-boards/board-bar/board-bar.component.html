@@ -202,5 +202,12 @@
           <span i18n="@@groupBoardBar.filter.advancedFilters">Advanced Filters</span>
         </a>
       </mat-menu>
+
+      <span class="separator"></span>
+
+      <button class="btn badge-automator" (click)="exportTo('excel')">
+        <span class="material-icons-outlined mr-2">file_download</span>
+        <span i18n="@@groupBoardBar.export">Export</span>
+      </button>
     </div>
 </nav>
