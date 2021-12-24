@@ -36,7 +36,7 @@ fi
     cd services
 
     # Define the service Directory array
-    serviceArray=( 'authentication/server' 'groups/server' 'workspaces/server' 'search/server' 'users/server' 'posts/server' 'notifications/server' 'integrations/server' 'utilities/server' 'folio/server' 'flamingo/server' 'client' )
+    serviceArray=( 'authentication/server' 'groups/server' 'workspaces/server' 'search/server' 'users/server' 'posts/server' 'notifications/server' 'integrations/server' 'utilities/server' 'folio/server' 'flamingo/server' 'approval/server' 'client' )
 
     # Loop through all the directories and install the packages 
     for i in "${serviceArray[@]}"

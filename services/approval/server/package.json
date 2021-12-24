@@ -1,0 +1,38 @@
+{
+  "name": "search-server",
+  "version": "1.0.0",
+  "main": "server.ts",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev server.ts",
+    "build": "tsc",
+    "build:dev": "cd ../client/ && ng build && gzipper --verbose ./dist -i js,css && cd dist/ && rm *.js *.css && cd ../../server/ && ts-node-dev server.ts",
+    "build:prod": "cd ../client/ && ng build --prod && gzipper --verbose ./dist -i js,css && cd dist/ && rm *.js *.css && cd ../../server/ && NODE_ENV=production ts-node server.ts",
+    "stage": "NODE_ENV=production ts-node server.ts",
+    "prod": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.2",
+    "@types/express-fileupload": "^1.1.2",
+    "@types/jsonwebtoken": "^8.3.8",
+    "@types/morgan": "^1.7.37",
+    "axios": "0.21.1",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "mongoose": "~5.8.7",
+    "morgan": "^1.9.1",
+    "ts-node": "^8.6.2",
+    "ts-node-dev": "^1.1.8",
+    "tslint": "^5.20.1",
+    "typescript": "~4.0.5"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.0.1",
+    "gzipper": "^3.4.2"
+  }
+}
