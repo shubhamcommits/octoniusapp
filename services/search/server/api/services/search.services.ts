@@ -156,6 +156,7 @@ export class SearchService {
       .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
       .populate({ path: '_group', select: 'custom_fields' })
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .sort({ created_date: -1 })
       .lean();
 
@@ -353,6 +354,7 @@ export class SearchService {
     return await File.find(query)
       .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .populate({ path: '_group', select: 'custom_fields' })
       .sort({ created_date: -1 })
       .lean();

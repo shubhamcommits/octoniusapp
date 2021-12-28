@@ -64,6 +64,17 @@
           [length]="fileData?.comments?.length"
           [newComment]="newComment"></app-comment-list>
         -->
+
+
+        <!-- APPROVALS HISTORY STARTS -->
+        <div class="content-box" *ngIf="fileData?.approval_active && fileData?.approval_history && fileData?.approval_history?.length > 0">
+          <app-approvals-history
+            [groupId]="groupData._id"
+            [userData]="userData"
+            [itemData]="fileData"
+            [type]="'file'"></app-approvals-history>
+        </div>
+        <!-- APPROVALS HISTORY ENDS -->
     </div>
 
     <!-- Top Right Section starts -->

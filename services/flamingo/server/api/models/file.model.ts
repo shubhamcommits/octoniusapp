@@ -100,8 +100,7 @@ const FileSchema = new Schema({
             _assigned_to: {
                 type: Schema.Types.ObjectId,
                 ref: 'User',
-                required: true,
-                default: []
+                required: true
             },
             confirmation_code: {
                 type: String
@@ -117,6 +116,27 @@ const FileSchema = new Schema({
             }
         }
     ],
+    approval_history: [
+        {
+            _actor: {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            rejection_description: {
+                type: String
+            },
+            action: {
+                type: String,
+                required: true,
+                enum: ['created', 'deleted', 'launch', 'rejected', 'approved']
+            },
+            approval_date: {
+                type: Date,
+                default: moment().format()
+            }
+        }
+    ]
 });
 
 const File = mongoose.model('File', FileSchema);

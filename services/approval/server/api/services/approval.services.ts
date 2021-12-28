@@ -31,6 +31,7 @@ export class ApprovalService {
               })
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields' })
             .lean();
           } else {
@@ -53,6 +54,7 @@ export class ApprovalService {
               })
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields' })
             .lean();
           }
@@ -75,6 +77,7 @@ export class ApprovalService {
               })
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields' })
             .lean();
           } else {
@@ -97,6 +100,7 @@ export class ApprovalService {
               })
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields' })
             .lean();
           }
@@ -122,6 +126,7 @@ export class ApprovalService {
           return await File.findById(itemId)
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields' })
             .lean();
         case 'post':
@@ -137,6 +142,7 @@ export class ApprovalService {
           return await Post.findById(itemId)
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields' })
             .lean();
       }
@@ -197,6 +203,7 @@ export class ApprovalService {
               })
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields' })
             .lean();
         case 'post':
@@ -217,6 +224,7 @@ export class ApprovalService {
               })
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields' })
             .lean();
       }
@@ -244,6 +252,7 @@ export class ApprovalService {
               })
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields' })
             .lean();
         case 'post':
@@ -260,6 +269,7 @@ export class ApprovalService {
               })
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields' })
             .lean();
       }
@@ -299,6 +309,7 @@ export class ApprovalService {
               })
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields' })
             .lean();
         case 'post':
@@ -323,6 +334,7 @@ export class ApprovalService {
               })
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields' })
             .lean();
       }
@@ -385,6 +397,7 @@ export class ApprovalService {
                 })
               .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
               .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
               .populate({ path: '_group', select: 'custom_fields' })
               .lean();
             } else {
@@ -432,6 +445,7 @@ export class ApprovalService {
                 })
               .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
               .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
               .populate({ path: '_group', select: 'custom_fields' })
               .lean();
             } else {

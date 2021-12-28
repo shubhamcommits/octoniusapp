@@ -115,6 +115,7 @@ import { CustomFieldsTableSettingsDialogComponent } from './dashboard/custom-fie
 import { ShuttleTaskComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/shuttle-task/shuttle-task.component';
 import { FileDetailsDialogComponent } from './file-details-dialog/file-details-dialog.component';
 import { ApprovalActionsComponent } from './approvals/approval-actions/approval-actions.component';
+import { ApprovalsHistoryComponent } from './approvals/approvals-history/approvals-history.component';
 
 @NgModule({
   declarations: [
@@ -242,7 +243,8 @@ import { ApprovalActionsComponent } from './approvals/approval-actions/approval-
     ColorPickerDialogComponent,
     SheetComponent,
     FileDetailsDialogComponent,
-    ApprovalActionsComponent
+    ApprovalActionsComponent,
+    ApprovalsHistoryComponent
   ],
   imports: [
     CommonModule,
@@ -397,7 +399,8 @@ import { ApprovalActionsComponent } from './approvals/approval-actions/approval-
     MaterialModule,
 
     CommentSectionComponent,
-    ApprovalActionsComponent
+    ApprovalActionsComponent,
+    ApprovalsHistoryComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
