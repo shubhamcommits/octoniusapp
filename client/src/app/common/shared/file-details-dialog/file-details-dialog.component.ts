@@ -85,7 +85,10 @@ export class FileDetailsDialogComponent implements OnInit {
 
     await this.initFileData();
 
-    this.canEdit = await this.utilityService.canUserDoTaskAction(this.fileData, this.groupData, this.userData, 'edit');
+    this.canEdit = (this.fileData?.approval_flow_launched) ? !this.fileData?.approval_flow_launched : true;
+    if (this.canEdit) {
+      this.canEdit = await this.utilityService.canUserDoTaskAction(this.fileData, this.groupData, this.userData, 'edit');
+    }
     if (!this.canEdit) {
       const hide = await this.utilityService.canUserDoTaskAction(this.fileData, this.groupData, this.userData, 'hide');
       this.canView = await this.utilityService.canUserDoTaskAction(this.fileData, this.groupData, this.userData, 'view') || !hide;
@@ -260,5 +263,14 @@ export class FileDetailsDialogComponent implements OnInit {
    */
   getDate(dateObject: any, cfName: string) {
     this.saveCustomField(cfName, dateObject.toDate());
+  }
+
+  onAssigneeEmitter(fileData: any) {
+    this.fileData = fileData;
+  }
+
+  onApprovalFlowLaunchedEmiter(fileData: any) {
+    this.fileData = fileData;
+    this.canEdit = !this.fileData?.approval_flow_launched;
   }
 }

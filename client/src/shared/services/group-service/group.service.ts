@@ -19,11 +19,12 @@ export class GroupService {
    * This function is responsible for fetching the group details
    * @param groupId
    */
-  getGroup(groupId: string, readOnly?: boolean) {
-    return this.getGroupObservale(groupId, readOnly).toPromise();
+  getGroup(groupId: string) {
+    return this.getGroupObservale(groupId).toPromise();
   }
 
-  getGroupObservale(groupId: string, readOnly?: boolean) {
+  getGroupObservale(groupId: string/*, readOnly?: boolean*/) {
+    /*
     if (readOnly) {
       return this._http.get(this.baseURL + `/${groupId}`, {
         params: {
@@ -31,7 +32,7 @@ export class GroupService {
         }
       });
     }
-
+    */
     return this._http.get(this.baseURL + `/${groupId}`);
   }
 

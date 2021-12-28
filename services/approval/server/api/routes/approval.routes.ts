@@ -19,7 +19,25 @@ router.use(auth.verifyToken);
 // Check if user is logged in
 router.use(auth.isLoggedIn);
 
-// -| Main search |-
-router.get('/getSearchResults/:filter/:query', approval.getSearchResults);
+// PUT - activateApprovalForItem
+router.put('/:itemId/activateApprovalForItem', approval.activateApprovalForItem);
+
+// PUT - addUserToFlow
+router.put('/:itemId/addUserToFlow', approval.addUserToFlow);
+
+// PUT - removeUserFromFlow
+router.put('/:itemId/removeUserFromFlow', approval.removeUserFromFlow);
+
+// PUT - launchApprovalFlow
+router.put('/:itemId/launchApprovalFlow', approval.launchApprovalFlow);
+
+// PUT - approveItem
+router.put('/:itemId/approveItem', approval.approveItem);
+
+// PUT - confirmAction
+router.put('/:itemId/confirmAction', approval.confirmAction);
+
+// PUT - rejectItem
+router.put('/:itemId/rejectItem', approval.rejectItem);
 
 export { router as approvalRoutes };

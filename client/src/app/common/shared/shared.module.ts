@@ -114,6 +114,7 @@ import { CustomFieldTableCardComponent } from './dashboard/custom-field-table-ca
 import { CustomFieldsTableSettingsDialogComponent } from './dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component';
 import { ShuttleTaskComponent } from './activity-feed/group-postbox/group-create-post-dialog-component/shuttle-task/shuttle-task.component';
 import { FileDetailsDialogComponent } from './file-details-dialog/file-details-dialog.component';
+import { ApprovalActionsComponent } from './approvals/approval-actions/approval-actions.component';
 
 @NgModule({
   declarations: [
@@ -240,7 +241,8 @@ import { FileDetailsDialogComponent } from './file-details-dialog/file-details-d
     CustomFieldsTableSettingsDialogComponent,
     ColorPickerDialogComponent,
     SheetComponent,
-    FileDetailsDialogComponent
+    FileDetailsDialogComponent,
+    ApprovalActionsComponent
   ],
   imports: [
     CommonModule,
@@ -394,7 +396,8 @@ import { FileDetailsDialogComponent } from './file-details-dialog/file-details-d
     // Material Module
     MaterialModule,
 
-    CommentSectionComponent
+    CommentSectionComponent,
+    ApprovalActionsComponent
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

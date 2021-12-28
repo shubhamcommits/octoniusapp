@@ -590,6 +590,10 @@ export class UtilityService {
     let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
     createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : createdBy;
 
+    if (action == 'edit' && item?.approval_flow_launched) {
+      return false;
+    }
+
     if (userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager) {
       return true;
     } else {

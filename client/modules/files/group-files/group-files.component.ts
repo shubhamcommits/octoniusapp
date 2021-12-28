@@ -657,9 +657,8 @@ export class GroupFilesComponent implements OnInit {
     let filesTmp = [];
     files.forEach(async file => {
         file.canDelete = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'delete');
-        const canEdit = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'edit') && (!this.groupData?.files_for_admins || this.isAdmin);
+        let canEdit = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'edit') && (!this.groupData?.files_for_admins || this.isAdmin);
         let canView = false;
-
         if (!canEdit) {
           const hide = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'hide');
           canView = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'view') || !hide;

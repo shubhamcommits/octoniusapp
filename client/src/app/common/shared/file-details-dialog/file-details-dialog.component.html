@@ -158,6 +158,19 @@
               <!-- Clean field ends -->
           </div>
       </div>
+
+      <!-- APPROVAL STARTS -->
+      <div class="content-box">
+        <app-approval-actions
+          [groupId]="groupData._id"
+          [userData]="userData"
+          [itemData]="fileData"
+          [type]="'file'"
+          [canEdit]="canEdit"
+          (assigneeEmiter)="onAssigneeEmitter($event)"
+          (approvalFlowLaunchedEmiter)="onApprovalFlowLaunchedEmiter($event)"></app-approval-actions>
+      </div>
+      <!-- APPROVAL ENDS -->
     </div>
     <!-- Top Right Section ends -->
 </div>

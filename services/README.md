@@ -46,6 +46,8 @@
 
 **PORT 11000** - `http://localhost:10000/api` -> `/api/folio`
 
+*   `/`
+
 
 **PORT 12000** - `http://localhost:12000/api` -> `/api/search`
 
@@ -58,5 +60,10 @@
 
 
 **PORT 14000** - `http://localhost:14000/api` -> `/api/flamingo`
+
+*   `/`
+
+
+**PORT 15000** - `http://localhost:15000/api` -> `/api/approval`
 
 *   `/`

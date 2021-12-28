@@ -1,4 +1,4 @@
-import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild, LOCALE_ID, Inject } from '@angular/core';
+import { Injector, AfterViewInit, Component, ElementRef, ViewChild, LOCALE_ID, Inject } from '@angular/core';
 import { PublicFunctions } from "modules/public.functions";
 import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
@@ -55,7 +55,7 @@ Quill2.register('modules/clipboard', QuillClipboard, true);
   templateUrl: "./folio-editor.component.html",
   styleUrls: ["./folio-editor.component.scss"],
 })
-export class FolioEditorComponent implements OnInit, AfterViewInit {
+export class FolioEditorComponent implements AfterViewInit {
 
   @ViewChild('editable', { static: true })
   editRef!: ElementRef;
@@ -254,7 +254,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     };
   }
 
-  async ngOnInit() {
+  async ngAfterViewInit() {
+
     if (!this.readOnly) {
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     }
@@ -262,9 +263,6 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     this.fileData = await this.getFile(this.folioId, this.readOnly);
     // TODO - Remove the following line when BRD pays
     this.fileData.show_headings = false;
-  }
-
-  async ngAfterViewInit() {
 
     // Fetch User Data
     if (!this.readOnly) {
@@ -274,7 +272,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       const groupIndex = await this.userData?._groups?.findIndex((group) => {
         return (group._id || group) == this.groupId;
       });
-      this.readOnly = this.readOnly || groupIndex < 0;
+
+      let groupData: any = this.userData?._groups[groupIndex];
+      let canEdit = await this.utilityService.canUserDoFileAction(this.fileData, groupData, this.userData, 'edit') && (!groupData?.files_for_admins || this.isAdminUser(groupData));
+
+      this.readOnly = this.readOnly || groupIndex < 0 || !canEdit;
     }
 
     this.initEditor();
@@ -437,8 +439,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     return arr;
   }
 
-   // Delete Comment
-   deleteComment(index: any) {
+  // Delete Comment
+  deleteComment(index: any) {
     this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.commentCompletelyRemoved:By doing this, the comment be completely removed!`)
       .then((res) => {
         if (res.value) {
@@ -524,7 +526,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     if (!this.commentsMetaData) {
       this.commentsMetaData = [];
     }
-    this.commentsMetaData.push({ range: this.range, comment: this.enteredComment, user_name : userName, profile_pic : this.userData.profile_pic });
+    this.commentsMetaData.push({ range: this.range, comment: this.enteredComment, userId: this.userData._id, user_name : userName, profile_pic : this.userData.profile_pic });
     this.commentsMetaData = await this.sortComments();
     this.quill.formatText(this.range.index, this.range.length, {
       background: "#fff72b",
@@ -951,5 +953,10 @@ console.log(value);
     const delta = this.quill.getContents();
     const blob = await quillToWord.generateWord(delta, { exportAs: "blob" });
     saveAs(blob, this.fileData?.original_name + ".docx");
+  }
+
+  isAdminUser(groupData: any) {
+    const index = (groupData && groupData._admins) ? groupData._admins.findIndex((admin: any) => admin._id === this.userData._id) : -1;
+    return index >= 0 || this.userData.role == 'owner';
   }
 }

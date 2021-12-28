@@ -63,6 +63,10 @@ export const environment = {
   NOTIFICATIONS_BASE_URL: 'ws://localhost:80',
   NOTIFICATIONS_BASE_API_URL: 'http://localhost:80/api/notifications',
 
+  // Approval URLs
+  APPROVAL_BASE_URL: 'http://localhost:80/flamingo',
+  APPROVAL_BASE_API_URL: 'http://localhost:80/api/approval',
+
   // Utilities URLs
   UTILITIES_BASE_URL: 'http://localhost:80/utilities',
   UTILITIES_BASE_API_URL: 'http://localhost:80/api/utilities',
