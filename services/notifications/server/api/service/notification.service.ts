@@ -495,7 +495,7 @@ export class NotificationsService {
             // send email to assigned users
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/launch-approval-flow`, {
                 API_KEY: workspace['management_private_api_key'],
-                user: assigned.email,
+                user: assigned,
                 item: JSON.stringify(item)
             })
             .catch((err)=>{
@@ -528,7 +528,7 @@ export class NotificationsService {
 
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/reject-item`, {
                 API_KEY: workspace['management_private_api_key'],
-                user: assigned.email,
+                user: assigned,
                 item: JSON.stringify(item)
             })
             .catch((err)=>{
@@ -562,7 +562,7 @@ export class NotificationsService {
             // send email user
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/item-approved`, {
               API_KEY: workspace['management_private_api_key'],
-              user: assigned.email,
+              user: assigned,
               item: JSON.stringify(item)
             })
             .catch((err)=>{

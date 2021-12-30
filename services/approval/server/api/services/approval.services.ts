@@ -297,8 +297,9 @@ export class ApprovalService {
 
       axios.post(`${process.env.MANAGEMENT_URL}/api/mail/approve-item-code`, {
         API_KEY: workspace['management_private_api_key'],
-        user: user.email,
-        code: confirmationCode
+        user: user,
+        code: confirmationCode,
+        item: JSON.stringify(item)
       })
       .catch((err)=>{
           console.log(err)
