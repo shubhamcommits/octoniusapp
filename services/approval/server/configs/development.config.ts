@@ -85,6 +85,12 @@ function devConfigInit() {
   process.env.APPROVAL_PORT = process.env.APPROVAL_PORT || '15000'
   process.env.APPROVAL_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.APPROVAL_PORT}`
   process.env.APPROVAL_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.APPROVAL_PORT}/api/approval-service`
+
+  // Proxy Host
+  process.env.PROXY_HOST = process.env.PROXY_HOST
+
+  // Proxy Port
+  process.env.PROXY_PORT = process.env.PROXY_PORT
 };
 
 export { devConfigInit as developmentConfig }

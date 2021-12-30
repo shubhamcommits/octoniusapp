@@ -582,6 +582,7 @@ export class NotificationsController {
             if (comment._post._posted_by && index < 0) {
                 await notificationService.likeComment(comment, comment._post._posted_by, user);
                 await helperFunctions.sendNotificationsFeedFromService(comment._post._posted_by, io, true);
+                // TODO - Add notification on integrations
             }
 
             if (comment._post?._followers) {
@@ -590,6 +591,7 @@ export class NotificationsController {
                     if (index < 0 && follower !== comment._commented_by) {
                         await notificationService.likeComment(comment, follower, user);
                         await helperFunctions.sendNotificationsFeedFromService(follower, io, true);
+                        // TODO - Add notification on integrations
 
                     }
                 });
@@ -636,6 +638,7 @@ export class NotificationsController {
         try {
             // Call Service Function for joining a group
             await notificationService.joinGroup(userId, groupId, added_by, io);
+            // TODO - Add notification on integrations
 
             // Send status 200 response
             return res.status(200).json({
@@ -657,6 +660,7 @@ export class NotificationsController {
         try {
             // Call Service Function for leaving the group
             await notificationService.leaveGroup(userId, groupId, removed_by, io);
+            // TODO - Add notification on integrations
 
             // Send status 200 response
             return res.status(200).json({

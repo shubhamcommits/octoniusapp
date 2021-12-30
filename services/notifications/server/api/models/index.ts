@@ -7,6 +7,7 @@ import { File } from './file.model';
 import { Column } from './column.model';
 import { Account } from "./account.model";
 import { Story } from "./story.model";
+import { Workspace } from "./workspace.model";
 
 /*  =====================
  *  -- MODELS EXPORTS --
@@ -39,5 +40,8 @@ export {
     File as File,
 
     // Story
-    Story as Story
+    Story as Story,
+
+    // Workspace
+    Workspace as Workspace
 }

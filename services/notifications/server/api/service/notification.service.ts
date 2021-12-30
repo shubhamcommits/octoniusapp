@@ -1,6 +1,6 @@
-import { Notification, User, File } from "../models";
+import { Notification, User, File, Workspace } from "../models";
 import { Readable } from 'stream';
-import { helperFunctions } from '../../utils';
+import { helperFunctions, axios } from '../../utils';
 
 /*  ===============================
  *  -- NOTIFICATIONS Service --
@@ -465,6 +465,110 @@ export class NotificationsService {
 
             await helperFunctions.sendNotificationsFeedFromService(userId, io, true);
 
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new event to them
+     * @param { _id, event._assigned_to, _posted_by } post 
+     */
+    async launchApprovalFlow(item, assigned, posted_by, io) {
+        try {
+            await Notification.create({
+                _actor: posted_by,
+                _owner: assigned._id,
+                _origin_item: item._id,
+                message: 'launched the approval flow',
+                type: 'launch-approval-flow'
+            });
+
+            await helperFunctions.sendNotificationsFeedFromService(assigned._id, io, true);
+
+            // SEND EMAIL TO ALL USERS IN THE FLOW TO INFORM THEY NEED TO REVIEW THE ITEM
+            // Obtain the workspace for the api key for the email
+            const workspace: any = await Workspace.findById({
+              _id: item._group._workspace._id || item._group._workspace
+            }).select('management_private_api_key').lean();
+      
+            // send email to assigned users
+            axios.post(`${process.env.MANAGEMENT_URL}/api/mail/launch-approval-flow`, {
+                API_KEY: workspace['management_private_api_key'],
+                user: assigned.email,
+                item: JSON.stringify(item)
+            })
+            .catch((err)=>{
+                console.log(err)
+            });
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new event to them
+     * @param { _id, event._assigned_to, _posted_by } post 
+     */
+    async rejectItem(item, assigned, rejected_by, io) {
+        try {
+            await Notification.create({
+                _actor: rejected_by,
+                _owner: assigned._id,
+                _origin_item: item._id,
+                message: 'rejected the item',
+                type: 'reject-item'
+            });
+
+            await helperFunctions.sendNotificationsFeedFromService(assigned._id, io, true);
+
+            const workspace: any = await Workspace.findById({
+                _id: item._group._workspace._id || item._group._workspace
+              }).select('management_private_api_key').lean();
+
+            axios.post(`${process.env.MANAGEMENT_URL}/api/mail/reject-item`, {
+                API_KEY: workspace['management_private_api_key'],
+                user: assigned.email,
+                item: JSON.stringify(item)
+            })
+            .catch((err)=>{
+                console.log(err)
+            });
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
+     * This function is responsible to notifying all the user on assigning of a new event to them
+     * @param { _id, event._assigned_to, _posted_by } post 
+     */
+    async itemApproved(item, assigned, io) {
+        try {
+            await Notification.create({
+                _owner: assigned._id,
+                _origin_item: item._id,
+                message: 'the item has been approved by all assignees',
+                type: 'approved-item'
+            });
+
+            await helperFunctions.sendNotificationsFeedFromService(assigned._id, io, true);
+
+            // Obtain the workspace for the api key for the email
+            const workspace: any = await Workspace.findById({
+              _id: item._group._workspace._id || item._group._workspace
+            }).select('management_private_api_key').lean();
+
+            // send email user
+            axios.post(`${process.env.MANAGEMENT_URL}/api/mail/item-approved`, {
+              API_KEY: workspace['management_private_api_key'],
+              user: assigned.email,
+              item: JSON.stringify(item)
+            })
+            .catch((err)=>{
+                console.log(err)
+            });
+      
         } catch (err) {
             throw err;
         }

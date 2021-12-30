@@ -1,12 +1,12 @@
 import moment from 'moment';
-import { Post, User, File, Comment } from '../models';
-import { sendErr } from '../utils/sendError';
+import { Post, File, Workspace, User } from '../models';
+import { sendError, axios } from '../utils';
+import http from 'axios';
 
 /*  ===============================
  *  -- APPROVAL Service --
  *  ===============================
  */
-
 export class ApprovalService {
 
   async activateApprovalForItem(itemId: string, type: string, approval: boolean, userId: string) {
@@ -184,9 +184,11 @@ export class ApprovalService {
 
   async launchApprovalFlow(itemId: string, type: string, approval_flow_launched: boolean, userId: string) {
     try {
+      let item: any;
+
       switch (type) {
         case 'file':
-          return await File.findOneAndUpdate(
+          item = await File.findOneAndUpdate(
               { _id: itemId}, 
               {
                 $set: {
@@ -201,13 +203,13 @@ export class ApprovalService {
                   }
                 }
               })
-            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
-            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
+            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields' })
+            .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
         case 'post':
-          return await Post.findOneAndUpdate(
+          item = await Post.findOneAndUpdate(
               { _id: itemId}, 
               {
                 $set: {
@@ -222,12 +224,21 @@ export class ApprovalService {
                   }
                 }
               })
-            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
-            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
+            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields' })
+            .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
       }
+
+      // SEND NOTIFICATION TO ALL USERS IN THE FLOW TO INFORM THEY NEED TO REVIEW THE ITEM
+      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/launch-approval-flow`, {
+          item: JSON.stringify(item),
+          posted_by: userId,
+        }, { maxContentLength: 60 * 1024 * 1024 }
+      );
+
+      return item;
     } catch (err) {
       throw err;
     }
@@ -250,10 +261,10 @@ export class ApprovalService {
                 arrayFilters: [{ "approval._id": approvalId }],
                 new: true
               })
-            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
-            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
+            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields' })
+            .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
         case 'post':
           item = await Post.findOneAndUpdate(
@@ -267,14 +278,31 @@ export class ApprovalService {
                 arrayFilters: [{ "approval._id": approvalId }],
                 new: true
               })
-            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
-            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
+            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields' })
+            .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
       }
 
-      // TODO - SEND EMAIL
+      // SEND EMAIL WITH CODE TO USER
+      // Obtain the workspace for the api key for the email
+      const workspace: any = await Workspace.findById({
+        _id: item._group._workspace._id || item._group._workspace
+      }).select('management_private_api_key').lean();
+      
+      // GET emal of the user to send the code
+      const index = item.approval_flow.findIndex(approval => approval._id == approvalId);
+      const user: any = item.approval_flow[index]._assigned_to;
+
+      axios.post(`${process.env.MANAGEMENT_URL}/api/mail/approve-item-code`, {
+        API_KEY: workspace['management_private_api_key'],
+        user: user.email,
+        code: confirmationCode
+      })
+      .catch((err)=>{
+          console.log(err)
+      });
 
       return item;
     } catch (err) {
@@ -307,10 +335,10 @@ export class ApprovalService {
               {
                 new: true
               })
-            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
-            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
+            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields' })
+            .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
         case 'post':
           item = await Post.findOneAndUpdate(
@@ -332,14 +360,19 @@ export class ApprovalService {
               {
                 new: true
               })
-            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
-            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
+            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
+            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields' })
+            .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
       }
 
-      // TODO - SEND EMAIL
+      // SEND NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS REJECTED
+      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/reject-item`, {
+          item: JSON.stringify(item),
+          rejected_by: userId,
+        }, { maxContentLength: 60 * 1024 * 1024 }
+      );
 
       return item;
     } catch (err) {
@@ -349,6 +382,7 @@ export class ApprovalService {
 
   async confirmAction(itemId: string, type: string, approvalId: string, code: string, userId: string) {
     try {
+      let item: any;
       switch (type) {
         case 'file':
           const fileDB = await File.findById({_id: itemId}).lean();
@@ -376,7 +410,7 @@ export class ApprovalService {
                   new: true
                 }).lean();
               
-              return await File.findOneAndUpdate(
+              item = await File.findOneAndUpdate(
                 { _id: itemId}, 
                 {
                   $set: {
@@ -397,7 +431,7 @@ export class ApprovalService {
                 })
               .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
               .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+              .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
               .populate({ path: '_group', select: 'custom_fields' })
               .lean();
             } else {
@@ -424,7 +458,7 @@ export class ApprovalService {
                   new: true
                 }).lean();
               
-              return await Post.findOneAndUpdate(
+              item = await Post.findOneAndUpdate(
                 { _id: itemId}, 
                 {
                   $set: {
@@ -445,7 +479,7 @@ export class ApprovalService {
                 })
               .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
               .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+              .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
               .populate({ path: '_group', select: 'custom_fields' })
               .lean();
             } else {
@@ -455,6 +489,23 @@ export class ApprovalService {
             throw new Error("There is no approval with the id provided.");
           }
       }
+
+      // IF ALL USERS APPROVED THE ITEM, SEND EMAIL & NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS APPROVED
+      let flowCompleted = true;
+      if (item && item.approval_flow) {
+        flowCompleted = await this.isApprovalFlowCompleted(item.approval_flow);
+      } else  {
+        flowCompleted = false;
+      }
+
+      if (flowCompleted) {
+        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
+            item: JSON.stringify(item)
+          }, { maxContentLength: 60 * 1024 * 1024 }
+        );
+      }
+
+      return item;
     } catch (err) {
       throw err;
     }
@@ -472,5 +523,14 @@ export class ApprovalService {
           result += characters.charAt(Math.floor(Math.random() * charactersLength));
       }
       return result;
+  }
+
+  isApprovalFlowCompleted(flow) {
+    for (let i = 0; i < flow.length; i++) {
+      if (!flow[i].confirmed || !flow[i].confirmation_date) {
+        return false;
+      }
+    }
+    return true
   }
 }

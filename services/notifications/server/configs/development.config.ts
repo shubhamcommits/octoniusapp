@@ -85,6 +85,12 @@ function devConfigInit() {
   process.env.INTEGRATION_PORT = process.env.INTEGRATION_PORT || '13000'
   process.env.INTEGRATION_SERVER =  `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.INTEGRATION_PORT}`
   process.env.INTEGRATION_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.INTEGRATION_PORT}/api`
+
+  // Proxy Host
+  process.env.PROXY_HOST = process.env.PROXY_HOST
+
+  // Proxy Port
+  process.env.PROXY_PORT = process.env.PROXY_PORT
 };
 
 export { devConfigInit as developmentConfig }
