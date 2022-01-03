@@ -78,6 +78,9 @@ function prodConfigInit() {
   process.env.APPROVAL_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/approval`
   process.env.APPROVAL_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/approval`
 
+  // Management URL
+  process.env.MANAGEMENT_URL = process.env.MANAGEMENT_URL 
+
   // Proxy Host
   process.env.PROXY_HOST = process.env.PROXY_HOST
 

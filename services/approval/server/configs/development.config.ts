@@ -86,6 +86,9 @@ function devConfigInit() {
   process.env.APPROVAL_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.APPROVAL_PORT}`
   process.env.APPROVAL_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.APPROVAL_PORT}/api/approval-service`
 
+  // Management URL
+  process.env.MANAGEMENT_URL = 'http://localhost:3300'
+
   // Proxy Host
   process.env.PROXY_HOST = process.env.PROXY_HOST
 

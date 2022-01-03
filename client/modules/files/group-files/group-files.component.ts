@@ -883,7 +883,6 @@ export class GroupFilesComponent implements OnInit {
     const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
 
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
     if (fileData
         && fileData.approval_active && fileData.approval_flow_launched
@@ -891,40 +890,81 @@ export class GroupFilesComponent implements OnInit {
       const page = pdfDoc.addPage();
       const { width, height } = page.getSize();
 
-      const xStartPosition = 35;
       let yStartPosition = (height / 2) + 300;
+      const initialXStartPosition = 35;
+
+      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
       //let approvalText = '';
       for (let i = 0; i < fileData.approval_flow.length; i++) {
         let approval = fileData.approval_flow[i];
-        let approvalText = approval._assigned_to.first_name + ' ' + approval._assigned_to.last_name + ': ';
-        if (approval.confirmed && approval.confirmation_date) {
-          approvalText += 'APPROVED on ' + moment(moment.utc(approval.approval_date), "YYYY-MM-DD").toDate();
-        } else {
-          approvalText += 'PENDING';
-        }
 
-        //page.moveTo(xStartPosition, yStartPosition)
-
+        let xStartPosition = initialXStartPosition;
         page.drawText(
-          approvalText,
+          approval._assigned_to.first_name + ' ' + approval._assigned_to.last_name + ': ',
           {
             x: xStartPosition,
             y: yStartPosition,
             size: 10,
-            font: helveticaFont,
+            font: font,
             color: rgb(0.2, 0.2, 0.2),
-            maxWidth: width,
+            //maxWidth: width,
             //rotate: degrees(-45),
           }
         );
+
+        xStartPosition += 150;
+
+        if (approval.confirmed && approval.confirmation_date) {
+          page.drawText(
+            'APPROVED',
+            {
+              x: xStartPosition,
+              y: yStartPosition,
+              size: 10,
+              font: font,
+              color: rgb(0.44, 0.59, 0.41),
+              //maxWidth: width,
+              //rotate: degrees(-45),
+            }
+          );
+
+          xStartPosition += 100;
+
+          page.drawText(
+            ' on ' + moment.utc(approval.approval_date).format("MMM DD, yyyy HH:MM"),
+            {
+              x: xStartPosition,
+              y: yStartPosition,
+              size: 10,
+              font: font,
+              color: rgb(0.2, 0.2, 0.2),
+              //maxWidth: width,
+              //rotate: degrees(-45),
+            }
+          );
+
+        } else {
+          page.drawText(
+            'PENDING',
+            {
+              x: xStartPosition,
+              y: yStartPosition,
+              size: 10,
+              font: font,
+              color: rgb(0.11, 0.96, 0.59),
+              //maxWidth: width,
+              //rotate: degrees(-45),
+            }
+          );
+        }
 
         yStartPosition += 20;
 
         if (i < fileData.approval_flow.length - 1) {
           page.drawLine({
-            start: { x: xStartPosition, y: yStartPosition },
-            end: { x: (width - xStartPosition), y: yStartPosition },
+            start: { x: initialXStartPosition, y: yStartPosition },
+            end: { x: (width - initialXStartPosition), y: yStartPosition },
             thickness: 1,
             color: rgb(0.2, 0.2, 0.2),
             //opacity: 0.75,

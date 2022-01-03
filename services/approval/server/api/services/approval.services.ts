@@ -247,69 +247,100 @@ export class ApprovalService {
   async approveItem(itemId: string, type: string, approvalId: string) {
     try {
       const confirmationCode = await this.generateConfirmationCode();
-      let item: any;
       switch (type) {
         case 'file':
-          item = await File.findOneAndUpdate(
-              { _id: itemId}, 
-              {
-                $set: {
-                  "approval_flow.$[approval].confirmation_code": confirmationCode
-                }
-              },
-              {
-                arrayFilters: [{ "approval._id": approvalId }],
-                new: true
-              })
-            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields _workspace' })
-            .lean();
+          return await this.approveFile(itemId, confirmationCode, approvalId);
         case 'post':
-          item = await Post.findOneAndUpdate(
-              { _id: itemId}, 
-              {
-                $set: {
-                  "approval_flow.$[approval].confirmation_code": confirmationCode
-                }
-              },
-              {
-                arrayFilters: [{ "approval._id": approvalId }],
-                new: true
-              })
-            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields _workspace' })
-            .lean();
+          return await this.approvePost(itemId, confirmationCode, approvalId);
       }
-
-      // SEND EMAIL WITH CODE TO USER
-      // Obtain the workspace for the api key for the email
-      const workspace: any = await Workspace.findById({
-        _id: item._group._workspace._id || item._group._workspace
-      }).select('management_private_api_key').lean();
-      
-      // GET emal of the user to send the code
-      const index = item.approval_flow.findIndex(approval => approval._id == approvalId);
-      const user: any = item.approval_flow[index]._assigned_to;
-
-      axios.post(`${process.env.MANAGEMENT_URL}/api/mail/approve-item-code`, {
-        API_KEY: workspace['management_private_api_key'],
-        user: user,
-        code: confirmationCode,
-        item: JSON.stringify(item)
-      })
-      .catch((err)=>{
-          console.log(err)
-      });
-
-      return item;
     } catch (err) {
       throw err;
     }
   };
+
+  async approveFile(itemId: string, confirmationCode: string, approvalId: string) {
+    let item = await File.findOneAndUpdate(
+      { _id: itemId }, 
+      {
+        $set: {
+          "approval_flow.$[approval].confirmation_code": confirmationCode
+        }
+      },
+      {
+        arrayFilters: [{ "approval._id": approvalId }],
+        new: true
+      })
+      .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
+      .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+      .populate({ path: '_group', select: 'custom_fields _workspace' })
+      .lean();
+
+    // SEND EMAIL WITH CODE TO USER
+    // Obtain the workspace for the api key for the email
+    const workspace: any = await Workspace.findById({
+      _id: item._group._workspace
+    }).select('management_private_api_key').lean();
+
+    // GET emal of the user to send the code
+    const index = item.approval_flow.findIndex(approval => approval._id == approvalId);
+    const user: any = item.approval_flow[index]._assigned_to;
+
+    axios.post(`${process.env.MANAGEMENT_URL}/api/mail/approve-item-code`, {
+      API_KEY: workspace['management_private_api_key'],
+      user: user,
+      code: confirmationCode,
+      item: JSON.stringify(item)
+    })
+    .catch((err)=>{
+      console.log(err);
+      throw err;
+    });
+
+    return item;
+  }
+
+  async approvePost(itemId: string, confirmationCode: string, approvalId: string) {
+    let item = await Post.findOneAndUpdate(
+      { _id: itemId}, 
+      {
+        $set: {
+          "approval_flow.$[approval].confirmation_code": confirmationCode
+        }
+      },
+      {
+        arrayFilters: [{ "approval._id": approvalId }],
+        new: true
+      })
+      .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
+      .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+      .populate({ path: '_group', select: 'custom_fields _workspace' })
+      .lean();
+
+    // SEND EMAIL WITH CODE TO USER
+    // Obtain the workspace for the api key for the email
+    const workspace: any = await Workspace.findById({
+      _id: item._group._workspace
+    }).select('management_private_api_key').lean();
+    
+    // GET emal of the user to send the code
+    const index = item.approval_flow.findIndex(approval => approval._id == approvalId);
+    const user: any = item.approval_flow[index]._assigned_to;
+
+    axios.post(`${process.env.MANAGEMENT_URL}/api/mail/approve-item-code`, {
+      API_KEY: workspace['management_private_api_key'],
+      user: user,
+      code: confirmationCode,
+      item: JSON.stringify(item)
+    })
+    .catch((err)=>{
+      console.log(err);
+      throw err;
+    });
+
+    return item;
+  }
 
   async rejectItem(itemId: string, type: string, approvalId: string, description: string, userId: string) {
     try {
