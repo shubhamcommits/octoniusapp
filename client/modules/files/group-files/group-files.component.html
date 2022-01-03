@@ -216,15 +216,20 @@
                               <span i18n="@@groupFiles.details">Details</span>
                           </a>
 
-                          <a mat-menu-item *ngIf="file?.canDelete" (click)="deleteItem(file?._id, file?.type, file?.modified_name)">
-                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
-                              <span i18n="@@groupFiles.delete">Delete</span>
+                          <a *ngIf="(file?.type == 'file' && getFileExtension(file?.original_name) == 'pdf')" mat-menu-item (click)="exportToPDF(file)">
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">picture_as_pdf</i>
+                              <span i18n="@@groupFiles.exportToPDF">Export To PDF</span>
                           </a>
 
                           <button mat-menu-item (click)="openPermissionModal(file, 'file')" *ngIf="groupData && groupData.enabled_rights && checkDataExist(groupData) && file?.canEdit">
                             <span class="material-icons-outlined">vpn_lock</span>
                             <span i18n="@@groupDashboard.permissions">Permissions</span>
                           </button>
+
+                          <a mat-menu-item *ngIf="file?.canDelete" (click)="deleteItem(file?._id, file?.type, file?.modified_name)">
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
+                              <span i18n="@@groupFiles.delete">Delete</span>
+                          </a>
                       </mat-menu>
                   </div>
               </div>

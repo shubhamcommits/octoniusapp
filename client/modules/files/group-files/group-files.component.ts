@@ -16,7 +16,12 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { FileDetailsDialogComponent } from 'src/app/common/shared/file-details-dialog/file-details-dialog.component';
 import { GroupService } from 'src/shared/services/group-service/group.service';
+
 import moment from 'moment';
+
+import { pdfExporter } from "quill-to-pdf";
+import { saveAs } from "file-saver";
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 @Component({
   selector: 'app-group-files',
@@ -505,12 +510,16 @@ export class GroupFilesComponent implements OnInit {
    * @param fileName - Name of the file to obtain the icon img
    */
   getFileIcon(fileName: string) {
+    return "assets/images/" + this.getFileExtension(fileName) + "-file-icon.png";
+  }
+
+  getFileExtension(fileName: string) {
     let file = fileName.split(".");
     let fileType = file[file.length-1].toLowerCase();
     if (fileType == 'mp4') {
       fileType = 'mov';
     }
-    return "assets/images/" + fileType + "-file-icon.png";
+    return fileType;
   }
 
   /**
@@ -834,5 +843,99 @@ export class GroupFilesComponent implements OnInit {
     } else if (this.sortingBit == 'reverse' || this.sortingBit == 'inverse') {
       this.files.reverse();
     }
+  }
+
+  async exportToPDF(fileData: any) {
+    let blob;
+    switch (fileData.type) {
+      case 'file':
+        this.modifyPdf(fileData);
+        break;
+      case 'folio':
+        if (fileData
+            && fileData.approval_active && fileData.approval_flow_launched
+            && fileData.approval_flow && fileData.approval_flow.length > 0) {
+        }
+        break;
+      case 'campaign':
+        if (fileData
+            && fileData.approval_active && fileData.approval_flow_launched
+            && fileData.approval_flow && fileData.approval_flow.length > 0) {
+        }
+        break;
+      default:
+        break;
+    }
+    //saveAs(blob as Blob, fileData?.original_name + ".pdf");
+    /*
+    if (this.fileData
+        && this.fileData.approval_active && this.fileData.approval_flow_launched
+        && this.fileData.approval_flow && this.fileData.approval_flow.length > 0) {
+      const blobApproval = new Blob([blob, ",another data"], { type: "application/pdf" });
+      // we use saveAs from the file-saver package to download the blob
+      saveAs(blobApproval as Blob, this.fileData?.original_name + ".pdf");
+    }
+    */
+  }
+
+  async modifyPdf(fileData: any) {
+    const url = this.filesBaseUrl + '/' + fileData?.modified_name + '?authToken=Bearer ' + this.storageService.getLocalData('authToken')['token'];
+    const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
+
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+    if (fileData
+        && fileData.approval_active && fileData.approval_flow_launched
+        && fileData.approval_flow && fileData.approval_flow.length > 0) {
+      const page = pdfDoc.addPage();
+      const { width, height } = page.getSize();
+
+      const xStartPosition = 35;
+      let yStartPosition = (height / 2) + 300;
+
+      //let approvalText = '';
+      for (let i = 0; i < fileData.approval_flow.length; i++) {
+        let approval = fileData.approval_flow[i];
+        let approvalText = approval._assigned_to.first_name + ' ' + approval._assigned_to.last_name + ': ';
+        if (approval.confirmed && approval.confirmation_date) {
+          approvalText += 'APPROVED on ' + moment(moment.utc(approval.approval_date), "YYYY-MM-DD").toDate();
+        } else {
+          approvalText += 'PENDING';
+        }
+
+        //page.moveTo(xStartPosition, yStartPosition)
+
+        page.drawText(
+          approvalText,
+          {
+            x: xStartPosition,
+            y: yStartPosition,
+            size: 10,
+            font: helveticaFont,
+            color: rgb(0.2, 0.2, 0.2),
+            maxWidth: width,
+            //rotate: degrees(-45),
+          }
+        );
+
+        yStartPosition += 20;
+
+        if (i < fileData.approval_flow.length - 1) {
+          page.drawLine({
+            start: { x: xStartPosition, y: yStartPosition },
+            end: { x: (width - xStartPosition), y: yStartPosition },
+            thickness: 1,
+            color: rgb(0.2, 0.2, 0.2),
+            //opacity: 0.75,
+          });
+
+          yStartPosition += 20;
+        }
+      }
+    }
+
+    const pdfBytes = await pdfDoc.save();
+    saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
   }
 }
