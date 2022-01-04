@@ -91,6 +91,9 @@ function devConfigInit() {
 
   // Proxy Port
   process.env.PROXY_PORT = process.env.PROXY_PORT
+
+  // Management URL
+  process.env.MANAGEMENT_URL = 'http://localhost:3300'
 };
 
 export { devConfigInit as developmentConfig }

@@ -80,6 +80,9 @@ function prodConfigInit() {
 
   // Proxy Port
   process.env.PROXY_PORT = process.env.PROXY_PORT
+  
+  // Management URL
+  process.env.MANAGEMENT_URL = process.env.MANAGEMENT_URL 
 };
 
 export { prodConfigInit as productionConfig }
