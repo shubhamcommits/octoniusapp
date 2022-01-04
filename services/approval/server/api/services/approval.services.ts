@@ -184,11 +184,9 @@ export class ApprovalService {
 
   async launchApprovalFlow(itemId: string, type: string, approval_flow_launched: boolean, userId: string) {
     try {
-      let item: any;
-
       switch (type) {
         case 'file':
-          item = await File.findOneAndUpdate(
+          const file: any = await File.findOneAndUpdate(
               { _id: itemId}, 
               {
                 $set: {
@@ -208,8 +206,17 @@ export class ApprovalService {
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
+
+          // SEND NOTIFICATION TO ALL USERS IN THE FLOW TO INFORM THEY NEED TO REVIEW THE ITEM
+          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/launch-approval-flow`, {
+              item: JSON.stringify(file),
+              posted_by: userId,
+            }, { maxContentLength: 60 * 1024 * 1024 }
+          );
+
+          return file;
         case 'post':
-          item = await Post.findOneAndUpdate(
+          const post: any = await Post.findOneAndUpdate(
               { _id: itemId}, 
               {
                 $set: {
@@ -229,16 +236,16 @@ export class ApprovalService {
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
+
+          // SEND NOTIFICATION TO ALL USERS IN THE FLOW TO INFORM THEY NEED TO REVIEW THE ITEM
+          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/launch-approval-flow`, {
+              item: JSON.stringify(post),
+              posted_by: userId,
+            }, { maxContentLength: 60 * 1024 * 1024 }
+          );
+
+          return post;
       }
-
-      // SEND NOTIFICATION TO ALL USERS IN THE FLOW TO INFORM THEY NEED TO REVIEW THE ITEM
-      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/launch-approval-flow`, {
-          item: JSON.stringify(item),
-          posted_by: userId,
-        }, { maxContentLength: 60 * 1024 * 1024 }
-      );
-
-      return item;
     } catch (err) {
       throw err;
     }
@@ -246,19 +253,19 @@ export class ApprovalService {
 
   async approveItem(itemId: string, type: string, approvalId: string) {
     try {
-      const confirmationCode = await this.generateConfirmationCode();
       switch (type) {
         case 'file':
-          return await this.approveFile(itemId, confirmationCode, approvalId);
+          return await this.approveFile(itemId, approvalId);
         case 'post':
-          return await this.approvePost(itemId, confirmationCode, approvalId);
+          return await this.approvePost(itemId, approvalId);
       }
     } catch (err) {
       throw err;
     }
   };
 
-  async approveFile(itemId: string, confirmationCode: string, approvalId: string) {
+  async approveFile(itemId: string, approvalId: string) {
+    const confirmationCode = await this.generateConfirmationCode();
     let item = await File.findOneAndUpdate(
       { _id: itemId }, 
       {
@@ -300,7 +307,8 @@ export class ApprovalService {
     return item;
   }
 
-  async approvePost(itemId: string, confirmationCode: string, approvalId: string) {
+  async approvePost(itemId: string, approvalId: string) {
+    const confirmationCode = await this.generateConfirmationCode();
     let item = await Post.findOneAndUpdate(
       { _id: itemId}, 
       {
@@ -344,11 +352,9 @@ export class ApprovalService {
 
   async rejectItem(itemId: string, type: string, approvalId: string, description: string, userId: string) {
     try {
-      const confirmationCode = await this.generateConfirmationCode();
-      let item: any;
       switch (type) {
         case 'file':
-          item = await File.findOneAndUpdate(
+          const file: any = await File.findOneAndUpdate(
               { _id: itemId}, 
               {
                 $set: {
@@ -372,8 +378,17 @@ export class ApprovalService {
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
+
+          // SEND NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS REJECTED
+          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/reject-item`, {
+              item: JSON.stringify(file),
+              rejected_by: userId,
+            }, { maxContentLength: 60 * 1024 * 1024 }
+          );
+
+          return file;
         case 'post':
-          item = await Post.findOneAndUpdate(
+          const post: any = await Post.findOneAndUpdate(
               { _id: itemId}, 
               {
                 $set: {
@@ -397,16 +412,16 @@ export class ApprovalService {
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
             .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
+
+          // SEND NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS REJECTED
+          await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/reject-item`, {
+              item: JSON.stringify(post),
+              rejected_by: userId,
+            }, { maxContentLength: 60 * 1024 * 1024 }
+          );
+
+          return post;
       }
-
-      // SEND NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS REJECTED
-      await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/reject-item`, {
-          item: JSON.stringify(item),
-          rejected_by: userId,
-        }, { maxContentLength: 60 * 1024 * 1024 }
-      );
-
-      return item;
     } catch (err) {
       throw err;
     }
@@ -414,7 +429,6 @@ export class ApprovalService {
 
   async confirmAction(itemId: string, type: string, approvalId: string, code: string, userId: string) {
     try {
-      let item: any;
       switch (type) {
         case 'file':
           const fileDB = await File.findById({_id: itemId}).lean();
@@ -442,7 +456,7 @@ export class ApprovalService {
                   new: true
                 }).lean();
               
-              item = await File.findOneAndUpdate(
+              const file: any = await File.findOneAndUpdate(
                 { _id: itemId}, 
                 {
                   $set: {
@@ -466,6 +480,21 @@ export class ApprovalService {
               .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
               .populate({ path: '_group', select: 'custom_fields _workspace' })
               .lean();
+
+            // IF ALL USERS APPROVED THE ITEM, SEND EMAIL & NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS APPROVED
+            let flowCompleted = true;
+            if (file && file.approval_flow) {
+              flowCompleted = await this.isApprovalFlowCompleted(file.approval_flow);
+            } else  {
+              flowCompleted = false;
+            }
+      
+            if (flowCompleted) {
+              await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
+                  item: JSON.stringify(file)
+                }, { maxContentLength: 60 * 1024 * 1024 }
+              );
+            }
             } else {
               throw new Error("The code inserted doesn´t match the confirmation code.");
             }
@@ -490,7 +519,7 @@ export class ApprovalService {
                   new: true
                 }).lean();
               
-              item = await Post.findOneAndUpdate(
+                const post: any = await Post.findOneAndUpdate(
                 { _id: itemId}, 
                 {
                   $set: {
@@ -514,6 +543,21 @@ export class ApprovalService {
               .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
               .populate({ path: '_group', select: 'custom_fields _workspace' })
               .lean();
+
+            // IF ALL USERS APPROVED THE ITEM, SEND EMAIL & NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS APPROVED
+            let flowCompleted = true;
+            if (post && post.approval_flow) {
+              flowCompleted = await this.isApprovalFlowCompleted(post.approval_flow);
+            } else  {
+              flowCompleted = false;
+            }
+      
+            if (flowCompleted) {
+              await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
+                  item: JSON.stringify(post)
+                }, { maxContentLength: 60 * 1024 * 1024 }
+              );
+            }
             } else {
               throw new Error("The code inserted doesn´t match the confirmation code.");
             }
@@ -522,22 +566,6 @@ export class ApprovalService {
           }
       }
 
-      // IF ALL USERS APPROVED THE ITEM, SEND EMAIL & NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS APPROVED
-      let flowCompleted = true;
-      if (item && item.approval_flow) {
-        flowCompleted = await this.isApprovalFlowCompleted(item.approval_flow);
-      } else  {
-        flowCompleted = false;
-      }
-
-      if (flowCompleted) {
-        await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
-            item: JSON.stringify(item)
-          }, { maxContentLength: 60 * 1024 * 1024 }
-        );
-      }
-
-      return item;
     } catch (err) {
       throw err;
     }
