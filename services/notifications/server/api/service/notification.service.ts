@@ -476,13 +476,23 @@ export class NotificationsService {
      */
     async launchApprovalFlow(item, assigned, posted_by, io) {
         try {
-            await Notification.create({
-                _actor: posted_by,
-                _owner: assigned._id,
-                _origin_item: item._id,
-                message: 'launched the approval flow',
-                type: 'launch-approval-flow'
-            });
+            if (item.type == 'task') {
+                await Notification.create({
+                    _actor: posted_by,
+                    _owner: assigned._id,
+                    _origin_post: item._id,
+                    message: 'launched the approval flow',
+                    type: 'launch-approval-flow'
+                });
+            } else {
+                await Notification.create({
+                    _actor: posted_by,
+                    _owner: assigned._id,
+                    _origin_folio: item._id,
+                    message: 'launched the approval flow',
+                    type: 'launch-approval-flow'
+                });
+            }
 
             await helperFunctions.sendNotificationsFeedFromService(assigned._id, io, true);
 
@@ -512,13 +522,23 @@ export class NotificationsService {
      */
     async rejectItem(item, assigned, rejected_by, io) {
         try {
-            await Notification.create({
-                _actor: rejected_by,
-                _owner: assigned._id,
-                _origin_item: item._id,
-                message: 'rejected the item',
-                type: 'reject-item'
-            });
+            if (item.type == 'task') {
+                await Notification.create({
+                    _actor: rejected_by,
+                    _owner: assigned._id,
+                    _origin_post: item._id,
+                    message: 'rejected the item',
+                    type: 'reject-item'
+                });
+            } else {
+                await Notification.create({
+                    _actor: rejected_by,
+                    _owner: assigned._id,
+                    _origin_folio: item._id,
+                    message: 'rejected the item',
+                    type: 'reject-item'
+                });
+            }
 
             await helperFunctions.sendNotificationsFeedFromService(assigned._id, io, true);
 
@@ -545,12 +565,21 @@ export class NotificationsService {
      */
     async itemApproved(item, assigned, io) {
         try {
-            await Notification.create({
-                _owner: assigned._id,
-                _origin_item: item._id,
-                message: 'the item has been approved by all assignees',
-                type: 'approved-item'
-            });
+            if (item.type == 'task') {
+                await Notification.create({
+                    _owner: assigned._id,
+                    _origin_post: item._id,
+                    message: 'the item has been approved by all assignees',
+                    type: 'approved-item'
+                });
+            } else {
+                await Notification.create({
+                    _owner: assigned._id,
+                    _origin_folio: item._id,
+                    message: 'the item has been approved by all assignees',
+                    type: 'approved-item'
+                });
+            }
 
             await helperFunctions.sendNotificationsFeedFromService(assigned._id, io, true);
 

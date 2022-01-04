@@ -34,6 +34,8 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   showDescription: boolean = false;
   confirmation: string = "";
 
+  flowCompleted: boolean = false;
+
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Public Functions class object
@@ -48,7 +50,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
     private injector: Injector
   ) { }
 
-  ngOnChanges() {
+  async ngOnChanges() {
 
     this.subSink.add(this.utilityService.currentGroupData.subscribe((res) => {
       if (JSON.stringify(res) != JSON.stringify({})) {
@@ -67,6 +69,8 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
 
     if (!this.itemData.approval_flow) {
       this.itemData.approval_flow = [];
+    } else {
+      this.flowCompleted = await this.isApprovalFlowCompleted();
     }
   }
 
@@ -165,11 +169,12 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   confirmAction(action: string, approvalId: string) {
     if (this.confirmation && this.confirmation != '') {
       if (action == 'approved') {
-        this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmation).then(res => {
+        this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmation).then(async res => {
           this.itemData = res['item'];
           this.showApproveCode = false;
           this.showDescription = false;
           this.confirmation = '';
+          this.flowCompleted = await this.isApprovalFlowCompleted();
         });
       } else if (action == 'rejected'){
         this.approvalService.rejectItem(this.itemData._id, this.type, approvalId, this.confirmation).then(res => {
@@ -178,7 +183,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           this.showApproveCode = false;
           this.showDescription = false;
           this.confirmation = '';
-
+          this.flowCompleted = false;
           this.approvalFlowLaunchedEmiter.emit(this.itemData);
         });
       }
@@ -189,5 +194,14 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
         this.utilityService.errorNotification($localize`:@@approvalActions.areYouSure:Please provide a reason to reject the item.`);
       }
     }
+  }
+
+  isApprovalFlowCompleted() {
+    for (let i = 0; i < this.itemData.approval_flow.length; i++) {
+      if (!this.itemData.approval_flow[i].confirmed || !this.itemData.approval_flow[i].confirmation_date) {
+        return false;
+      }
+    }
+    return true
   }
 }

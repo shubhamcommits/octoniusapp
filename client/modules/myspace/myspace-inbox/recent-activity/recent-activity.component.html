@@ -96,13 +96,18 @@
         <div class="notification_more">
           <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
           <mat-menu #menu="matMenu">
-            <a mat-menu-item *ngIf="notification?.type !== 'mention_folio'"
+            <a mat-menu-item *ngIf="notification?.type !== 'mention_folio' && (notification?.type != 'approved-item' && notification?.type != 'reject-item' && notification?.type != 'launch-approval-flow')"
               (click)="viewNotification(notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group?._id)">
               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
               <span i18n="@@recentActivity.view">View</span>
             </a>
             <a mat-menu-item *ngIf="notification?.type === 'mention_folio'"
               (click)="viewFolioNotification(notification?._origin_folio?._id, notification?._origin_folio?._group?._id)">
+              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+              <span i18n="@@recentActivity.view">View</span>
+            </a>
+            <a mat-menu-item *ngIf="notification?.type == 'approved-item' || notification?.type == 'reject-item' || notification?.type == 'launch-approval-flow'"
+              (click)="viewApprovalNotification(notification)">
               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
               <span i18n="@@recentActivity.view">View</span>
             </a>
@@ -177,7 +182,7 @@
           <i class="material-icons-outlined ml-2 muted" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
           <mat-menu #menu="matMenu">
             <a mat-menu-item *ngIf="notification?.type !== 'mention_folio'"
-              (click)="viewPost(notification?._origin_post?._id, notification?._origin_post?.type, notification?._origin_post?._group?._id)">
+              (click)="viewPost(notification?._origin_post?._id, notification?._origin_post?._group?._id)">
               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
               <span i18n="@@recentActivity.view">View</span>
             </a>

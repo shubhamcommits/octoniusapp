@@ -58,11 +58,13 @@
         <div class="action" *ngIf="!itemData?.approval_flow_launched">
           <i class="material-icons" style="color: #EE5D5D;" (click)="unassign(approval?._id)">highlight_off</i>
         </div>
-        <div class="action" *ngIf="itemData?.approval_flow_launched && userData._id != (approval?._assigned_to._id || approval?._assigned_to)">
+
+        <div class="action" *ngIf="(itemData?.approval_flow_launched && userData._id != (approval?._assigned_to._id || approval?._assigned_to)) || flowCompleted">
           <span class="approved" *ngIf="approval?.confirmed" i18n="@@approvalActions.approved">APPROVED</span>
           <span class="pending" *ngIf="!approval?.confirmed" i18n="@@approvalActions.pending">PENDING</span>
         </div>
-        <div class="action" *ngIf="itemData?.approval_flow_launched && userData._id == (approval?._assigned_to._id || approval?._assigned_to)">
+
+        <div class="action" *ngIf="itemData?.approval_flow_launched && userData._id == (approval?._assigned_to._id || approval?._assigned_to) && !flowCompleted">
           <!-- EVENT ATTENDANCE STARTS -->
           <div *ngIf="!approval?.confirmed" class="dropdown-toggle" data-toggle="dropdown">
             <span class="pending toggle-button" i18n="@@approvalActions.pending">PENDING</span>
