@@ -32,7 +32,7 @@ export class ApprovalService {
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields' })
+            .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
           } else {
             return await File.findOneAndUpdate(
@@ -55,7 +55,7 @@ export class ApprovalService {
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields' })
+            .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
           }
         case 'post':
@@ -78,7 +78,7 @@ export class ApprovalService {
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields' })
+            .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
           } else {
             return await Post.findOneAndUpdate(
@@ -101,7 +101,7 @@ export class ApprovalService {
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields' })
+            .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
           }
       }
@@ -127,7 +127,7 @@ export class ApprovalService {
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields' })
+            .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
         case 'post':
           let post: any = await Post.findById({ _id: itemId });
@@ -143,7 +143,7 @@ export class ApprovalService {
             .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
             .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields' })
+            .populate({ path: '_group', select: 'custom_fields _workspace' })
             .lean();
       }
     } catch (err) {
@@ -464,7 +464,7 @@ export class ApprovalService {
               .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
               .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
               .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-              .populate({ path: '_group', select: 'custom_fields' })
+              .populate({ path: '_group', select: 'custom_fields _workspace' })
               .lean();
             } else {
               throw new Error("The code inserted doesn´t match the confirmation code.");
@@ -512,7 +512,7 @@ export class ApprovalService {
               .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
               .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' })
               .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-              .populate({ path: '_group', select: 'custom_fields' })
+              .populate({ path: '_group', select: 'custom_fields _workspace' })
               .lean();
             } else {
               throw new Error("The code inserted doesn´t match the confirmation code.");

@@ -489,7 +489,7 @@ export class NotificationsService {
             // SEND EMAIL TO ALL USERS IN THE FLOW TO INFORM THEY NEED TO REVIEW THE ITEM
             // Obtain the workspace for the api key for the email
             const workspace: any = await Workspace.findById({
-              _id: item._group._workspace._id || item._group._workspace
+              _id: item._group._workspace
             }).select('management_private_api_key').lean();
       
             // send email to assigned users
@@ -523,7 +523,7 @@ export class NotificationsService {
             await helperFunctions.sendNotificationsFeedFromService(assigned._id, io, true);
 
             const workspace: any = await Workspace.findById({
-                _id: item._group._workspace._id || item._group._workspace
+                _id: item._group._workspace
               }).select('management_private_api_key').lean();
 
             axios.post(`${process.env.MANAGEMENT_URL}/api/mail/reject-item`, {
@@ -556,7 +556,7 @@ export class NotificationsService {
 
             // Obtain the workspace for the api key for the email
             const workspace: any = await Workspace.findById({
-              _id: item._group._workspace._id || item._group._workspace
+              _id: item._group._workspace
             }).select('management_private_api_key').lean();
 
             // send email user
