@@ -396,8 +396,8 @@ async function rejectedItem(data:any) {
 async function itemApproved(data:any) {
     
     const item = data.item;
-    const userId = data.userId;
-    
+    const userId = data.userid;
+
     const userData = await User.findById(userId, (err, data) => {
         if(err){
         } else {
