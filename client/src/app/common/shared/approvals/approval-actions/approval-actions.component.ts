@@ -120,13 +120,6 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
       if (index < 0) {
         this.approvalService.addUserToFlow(this.itemData?._id, this.type, member._id).then(res => {
           this.itemData = res['item'];
-          /*
-          this.itemData.approval_flow.push({
-            _assigned_to: member,
-            confirmed: false,
-            confirmation_date: null
-          });
-          */
         });
       }
     });

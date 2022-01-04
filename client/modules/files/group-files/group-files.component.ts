@@ -169,6 +169,12 @@ export class GroupFilesComponent implements OnInit {
          });
        }
      });
+
+     if (this._router.routerState.snapshot.root.queryParamMap.has('itemId')) {
+       const itemId = this._router.routerState.snapshot.root.queryParamMap.get('itemId');
+       const file = await this.publicFunctions.getFile(itemId);
+       this.openFileDetailsDialog(file);
+     }
   }
 
   ngAfterViewInit(){

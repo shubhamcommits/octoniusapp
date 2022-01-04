@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { environment } from 'src/environments/environment';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { PublicFunctions } from 'modules/public.functions';
 
 @Component({
   selector: 'app-flamingo-answer',
@@ -26,6 +27,9 @@ export class FlamingoAnswerComponent implements OnInit {
 
   FLAMINGO_UPLOADS = environment.UTILITIES_FLAMINGOS_UPLOADS;
 
+  // Public Functions
+  public publicFunctions = new PublicFunctions(this._Injector);
+
   constructor(
     private utilityService: UtilityService,
     private flamingoService: FlamingoService,
@@ -39,7 +43,7 @@ export class FlamingoAnswerComponent implements OnInit {
     this.fileId = this._ActivatedRoute.snapshot.params['id'];
 
     // Fetch Files Details
-    this.flamingo = await this.getFlamingo(this.fileId);
+    this.flamingo = await this.publicFunctions.getFlamingo(this.fileId);
 
     // if the flamingo is not publish, we send the user to the home page.
     // -- Should do this on the guard, but I am not able to obtain the flamingo ID
@@ -184,27 +188,6 @@ export class FlamingoAnswerComponent implements OnInit {
           });
     }));
   }
-
-  /**
-  * This function is responsible for fetching a flamingo's details
-  * @param fileId
-  */
-  public async getFlamingo(fileId: any) {
-    return new Promise((resolve) => {
-
-      // Flamingo Service
-      let flamingoService = this._Injector.get(FlamingoService);
-
-      // Fetch the Flamingo details
-      flamingoService.getOne(fileId)
-        .then((res) => {
-          resolve(res['flamingo'])
-        })
-        .catch(() => {
-          resolve({})
-        })
-      })
-    }
 
     checkMandatoryQuestion() {
       if (this.activeQuestion?.mandatory) {

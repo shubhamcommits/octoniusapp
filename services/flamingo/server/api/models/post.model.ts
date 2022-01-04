@@ -111,6 +111,58 @@ const PostSchema = new Schema({
         type: Boolean,
         default: false
     },
+    approval_active: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    approval_flow_launched: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    approval_flow: [
+        {
+            _assigned_to: {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            confirmation_code: {
+                type: String
+            },
+            confirmed: {
+                type: Boolean,
+                required: true,
+                default: false
+            },
+            confirmation_date: {
+                type: Date,
+                default: moment().format()
+            }
+        }
+    ],
+    approval_history: [
+        {
+            _actor: {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            rejection_description: {
+                type: String
+            },
+            action: {
+                type: String,
+                required: true,
+                enum: ['created', 'deleted', 'launch', 'rejected', 'approved']
+            },
+            approval_date: {
+                type: Date,
+                default: moment().format()
+            }
+        }
+    ],
 
     // TASK
     task: {

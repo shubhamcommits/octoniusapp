@@ -117,6 +117,16 @@
           [length]="postData?.comments_count"
           [newComment]="newComment"></app-comment-list>
 
+        <!-- APPROVALS HISTORY STARTS -->
+        <div class="content-box" *ngIf="postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0">
+          <app-approvals-history
+            [groupId]="groupData?._id"
+            [userData]="userData"
+            [itemData]="postData"
+            [type]="'post'"></app-approvals-history>
+        </div>
+        <!-- APPROVALS HISTORY ENDS -->
+
     </div>
 
     <!-- Top Right Section starts -->
@@ -415,6 +425,19 @@
           (transformIntoIdeaEmitter)="transformToIdea($event)"
           (shuttleGroupEmitter)="setShuttleGroup($event)">
         </app-task-actions>
+
+        <!-- APPROVAL STARTS -->
+        <div class="content-box" *ngIf="postData?.type === 'task'">
+          <app-approval-actions
+            [groupId]="groupData?._id"
+            [userData]="userData"
+            [itemData]="postData"
+            [type]="'post'"
+            [canEdit]="canEdit"
+            (assigneeEmiter)="onAssigneeEmitter($event)"
+            (approvalFlowLaunchedEmiter)="onApprovalFlowLaunchedEmiter($event)"></app-approval-actions>
+        </div>
+        <!-- APPROVAL ENDS -->
     </div>
     <!-- Top Right Section ends -->
 </div>

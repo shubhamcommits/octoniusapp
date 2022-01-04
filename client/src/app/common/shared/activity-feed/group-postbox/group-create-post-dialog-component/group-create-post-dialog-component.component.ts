@@ -730,4 +730,13 @@ export class GroupCreatePostDialogComponent implements OnInit {
    getCFDate(dateObject: any, cfName: string) {
     this.saveCustomField(cfName, dateObject.toDate());
   }
+
+  onAssigneeEmitter(itemData: any) {
+    this.postData = itemData;
+  }
+
+  onApprovalFlowLaunchedEmiter(itemData: any) {
+    this.postData = itemData;
+    this.canEdit = !this.postData?.approval_flow_launched;
+  }
 }
