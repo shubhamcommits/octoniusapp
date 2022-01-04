@@ -3,7 +3,7 @@
   <span i18n="@@approvalActions.approvals">Approvals</span>
 
   <mat-slide-toggle color="primary" style=" margin-left: 15px;"
-    [checked]="itemData.approval_active"
+    [checked]="itemData?.approval_active"
     [name]="'approval_active'"
     [disabled]="!canEdit"
     (change)="activateApprovalFlow()">
@@ -11,7 +11,7 @@
 </p>
 
 <!-- Assignee section starts -->
-<section *ngIf="itemData.approval_active">
+<section *ngIf="itemData?.approval_active">
   <button *ngIf="canEdit"
     mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">
       <span i18n="@@approvalActions.addMember">add member</span>
@@ -111,7 +111,7 @@
   </div>
   <!-- LIST OF ASSIGNEE USERS TO APPROVE ENDS -->
 
-  <button *ngIf="canEdit && !itemData.approval_flow_launched && itemData?.approval_flow && itemData?.approval_flow?.length > 0" mat-button  class="btn tagslabel"
+  <button *ngIf="canEdit && !itemData?.approval_flow_launched && itemData?.approval_flow && itemData?.approval_flow?.length > 0" mat-button  class="btn tagslabel"
       (click)="launchApprovalFlow()">
     <span i18n="@@approvalActions.launchApprovalFlow">Launch Approval Flow</span>
   </button>

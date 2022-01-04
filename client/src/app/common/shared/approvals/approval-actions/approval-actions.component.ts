@@ -67,10 +67,12 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
       }
     }));
 
-    if (!this.itemData.approval_flow) {
+    if (!this.itemData?.approval_flow) {
       this.itemData.approval_flow = [];
     } else {
-      this.flowCompleted = await this.isApprovalFlowCompleted();
+      if (this.itemData) {
+        this.flowCompleted = await this.isApprovalFlowCompleted();
+      }
     }
   }
 
@@ -174,7 +176,9 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           this.showApproveCode = false;
           this.showDescription = false;
           this.confirmation = '';
-          this.flowCompleted = await this.isApprovalFlowCompleted();
+          if (this.itemData) {
+            this.flowCompleted = await this.isApprovalFlowCompleted();
+          }
         });
       } else if (action == 'rejected'){
         this.approvalService.rejectItem(this.itemData._id, this.type, approvalId, this.confirmation).then(res => {
@@ -197,8 +201,8 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   }
 
   isApprovalFlowCompleted() {
-    for (let i = 0; i < this.itemData.approval_flow.length; i++) {
-      if (!this.itemData.approval_flow[i].confirmed || !this.itemData.approval_flow[i].confirmation_date) {
+    for (let i = 0; i < this.itemData?.approval_flow?.length; i++) {
+      if (!this.itemData?.approval_flow[i].confirmed || !this.itemData?.approval_flow[i].confirmation_date) {
         return false;
       }
     }
