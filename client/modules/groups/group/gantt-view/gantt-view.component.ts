@@ -370,7 +370,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         this.tasks = res['posts'];
 
         this.refreshChart();
-      });;
+      });
   }
 
   //onupdate task
@@ -418,7 +418,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   //open model
   openFullscreenModal(postData: any,): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns ,this.tasks);
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns, this.tasks);
     if (dialogRef) {
       const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
         this.onDeleteEvent(data);
@@ -552,14 +552,13 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
         behavior: 'smooth'});
 
     }
-
-}
+  }
 
   async parsedProjects(columnsData:any){
 
     let index=0;
-    this.projectsdata=[];
-    let tasktobedeleted:any=[];
+    this.projectsdata = [];
+    let tasktobedeleted: any = [];
     columnsData.forEach(column => {
 
       if(column?.due_date && column?.start_date && column?.project_type){
@@ -569,10 +568,14 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
           startingIndex: this.find_index(moment(column?.start_date).format("YYYY-MM-DD")),
           noOfTasks:column?.tasks?.length || 0,
           id:column._id,
+          _id:column._id,
           startheight: index===0?100:((60*this.projectsdata[index-1].tasks.length)+(this.projectsdata[index-1].startheight)+160),
           tasks:[],
           taskAfterDueDate:undefined,
-          taskAfterDueDateStart:this.find_index(moment(column?.due_date).format("YYYY-MM-DD"))
+          taskAfterDueDateStart:this.find_index(moment(column?.due_date).format("YYYY-MM-DD")),
+          start_date: column?.start_date,
+          due_date: column?.due_date,
+          canEdit: column?.canEdit
         }
 
         for (let i = 0; i < this.tasksDataList.length; i++) {
@@ -616,8 +619,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   //Parsing the data
   async parsedTasks(tasksdata:any) {
-
-    if (tasksdata.length > 0) {
+    if (tasksdata && tasksdata.length > 0) {
       //Sorted Tasks
       var SortedTask: any = [];
 
@@ -755,7 +757,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             dependency: sortedTask?.task._dependency_task,
             image: (sortedTask?._assigned_to?.length > 0) ? this.baseUrl + '/' + sortedTask._assigned_to[0].profile_pic : undefined,
             noOfParticipants: (sortedTask?._assigned_to?.length > 1) ? sortedTask?._assigned_to?.length - 1 : undefined,
-            projectId:(sortedTask?.task?._column._id)?sortedTask?.task?._column._id:sortedTask?.task?._column,
+            projectId: (sortedTask?.task?._column) ? sortedTask?.task?._column._id || sortedTask?.task?._column : '',
+            canEdit: sortedTask.canEdit,
             task: sortedTask
           });
         } else {
@@ -775,7 +778,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
               dependency: sortedTask?.task._dependency_task,
               image: (sortedTask?._assigned_to?.length > 0) ? this.baseUrl + '/' + sortedTask._assigned_to[0].profile_pic : undefined,
               noOfParticipants: (sortedTask?._assigned_to?.length > 1) ? sortedTask?._assigned_to?.length - 1 : undefined,
-              projectId:(sortedTask?.task?._column._id)?sortedTask?.task?._column._id:sortedTask?.task?._column,
+              projectId: (sortedTask?.task?._column) ? sortedTask?.task?._column._id || sortedTask?.task?._column : '',
+              canEdit: sortedTask.canEdit,
               task: sortedTask
             });
           }
@@ -863,5 +867,15 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   }
   formateDate(date: any, format: string){
     return date ? moment.utc(date).format(format) : '';
+  }
+
+  newTask(post: any, projectId: string) {
+    post.canEdit = true;
+    // Adding the post to column
+    const index = this.projectsdata ? this.projectsdata.findIndex(project => project.id == projectId) : -1;
+    post.task.start_date = this.projectsdata[index].start_date;
+    post.task.due_date = moment(this.projectsdata[index].start_date).add(1,'days');
+    post.id = post._id;
+    this.dateupdate(post, post.task.start_date, post.task.due_date.format("YYYY-MM-DD"), 1, 1, this.groupData?._id);
   }
 }

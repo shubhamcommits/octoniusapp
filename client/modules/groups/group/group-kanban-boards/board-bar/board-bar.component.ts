@@ -38,6 +38,9 @@ export class BoardBarComponent implements OnInit {
   // Emitter to notify that a customField was edited/added
   @Output() customFieldEmitter = new EventEmitter();
 
+  // Emitter to export the tasks
+  @Output() exportToEmitter = new EventEmitter();
+
   public publicFunctions = new PublicFunctions(this.injector);
 
   sortby: string = 'none'
@@ -147,5 +150,9 @@ export class BoardBarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       sub.unsubscribe();
     });
+  }
+
+  exportTo(exportType: string) {
+    this.exportToEmitter.emit(exportType);
   }
 }
