@@ -645,7 +645,6 @@ export class PostController {
         const { params: { postId }, body: { date_due_to, start_date, s_days, e_days, group_id } } = req;
 
         try {
-            
             async function update(p_Id, d_date, s_date , s_day, e_day, rec){
                 if (s_day != 0){
                     var post = await postService.changeTaskDate(p_Id,'start_date',s_date)
@@ -676,7 +675,6 @@ export class PostController {
                     
                 } 
             }
-
 
             await update(postId,date_due_to,start_date,s_days,e_days,false);
         

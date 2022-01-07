@@ -89,6 +89,8 @@ export class FolioEditorComponent implements AfterViewInit {
 
   //Comment modal boolean
   commentBool: boolean = false;
+  //Comment modal type. this will be use to re-use the modal for comments and headings
+  commentType: string = 'comment';
 
   // Table modal boolean
   tableShow: boolean = false;
@@ -184,15 +186,19 @@ export class FolioEditorComponent implements AfterViewInit {
           ['bold', 'italic', 'underline', 'strike'],
           [{ 'color': [] }, { 'background': [] }],
           [{ 'script': 'super' }, { 'script': 'sub' }],
-          [{ 'header': '1' }, { 'header': '2' }, /*'content',*/ 'blockquote', 'code-block'],
+          [{ 'header': '1' }, { 'header': '2' }, 'outline', 'content', 'blockquote', 'code-block'],
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
-          ['comment'],['tables'],['clear'],['export-pdf'/*, 'export-doc'*/]
+          ['comment', 'comment_display'],['tables'],['clear'],['export-pdf'/*, 'export-doc'*/]
         ],
         handlers : {
           'comment': () => {
             this.openComment();
+          },
+          // Show/Hide the table of Comments
+          'comment_display': () => {
+            this.displayComments();
           },
           'tables': () => {
             this.openTableOptions();
@@ -204,15 +210,16 @@ export class FolioEditorComponent implements AfterViewInit {
           'header': (value) => {
             this.generateHeading(value);
           },
+          // Generate the headings
+          'outline': (value) => {
+            this.generateHeadingOutline();
+          },
           // Show/Hide the table of Content
-          /*
-          TODO Commented until BRD pays
           'content': () => {
             this.displayHeadings();
           },
-          */
           /*
-          // Show/Hide the table of Content
+          // Automatic generate the table of Content
           'list': (value) => {
             this.generateList(value);
           },
@@ -256,16 +263,13 @@ export class FolioEditorComponent implements AfterViewInit {
 
   async ngAfterViewInit() {
 
-    if (!this.readOnly) {
-      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-    }
     this.folio = this.initializeConnection();
     this.fileData = await this.publicFunctions.getFile(this.folioId, this.readOnly);
-    // TODO - Remove the following line when BRD pays
-    this.fileData.show_headings = false;
 
-    // Fetch User Data
     if (!this.readOnly) {
+      // Fetch Workspace Data
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+      // Fetch User Data
       this.userData = await this.publicFunctions.getCurrentUser();
 
       // check if the user is part of the group of the folio
@@ -306,10 +310,11 @@ export class FolioEditorComponent implements AfterViewInit {
     });
 
     document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
+    document.querySelector(".ql-comment_display").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">forum</span>';
     document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
+    document.querySelector('.ql-outline').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list</span>';
     document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
-    // TODO Commented until BRD pays
-    // document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
+    document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
     document.querySelector(".ql-export-pdf").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">picture_as_pdf</span>';
     // document.querySelector('.ql-export-doc').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">file_download</span>';
   }
@@ -487,6 +492,14 @@ export class FolioEditorComponent implements AfterViewInit {
   //Opens dialog box to enter commment
   openComment() {
     this.commentBool = true;
+    this.commentType = 'comment';
+    this.range = this.quill.getSelection(true);
+    this.selectedText = this.quill.getText(this.range.index, this.range.length);
+  }
+
+  generateHeadingOutline() {
+    this.commentBool = true;
+    this.commentType = 'heading';
     this.range = this.quill.getSelection(true);
     this.selectedText = this.quill.getText(this.range.index, this.range.length);
   }
@@ -498,17 +511,29 @@ export class FolioEditorComponent implements AfterViewInit {
     if (this.selectedText == null || this.selectedText == "") {
       await this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.noContentSelected:No content is selected`).then(res => {
         if (res.value) {
-          this.saveComment();
+          if (this.commentType == 'comment') {
+            this.saveComment();
+          } else if (this.commentType == 'heading') {
+            this.saveHeading();
+          }
         }
       });
     } else if (this.enteredComment == null || this.enteredComment == "" || this.enteredComment == "<p><br></p>") {
       await this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.pleaseEnterComment:Please enter the comment`).then(res => {
         if (res.value) {
-          this.saveComment();
+          if (this.commentType == 'comment') {
+            this.saveComment();
+          } else if (this.commentType == 'heading') {
+            this.saveHeading();
+          }
         }
       });
     } else {
-      this.saveComment();
+      if (this.commentType == 'comment') {
+        this.saveComment();
+      } else if (this.commentType == 'heading') {
+        this.saveHeading();
+      }
     }
   }
 
@@ -534,10 +559,38 @@ export class FolioEditorComponent implements AfterViewInit {
 
     this.saveQuillData();
 
-    this.quill2.deleteText(0, this.quill2.getLength());
-    this.commentBool = false;
-    this.selectedText = null;
-    this.enteredComment = null;
+    this.closeComment();
+  }
+
+  saveHeading() {
+    const headingIndex = this.headingsMetaData.findIndex(heading => {
+      let [line1, offset1] = this.quill.getLine(heading.range.index);
+      let [line2, offset2] = this.quill.getLine(this.range.index);
+      return line1 == line2;
+    });
+
+    if (headingIndex >= 0) {
+      let header = this.headingsMetaData[headingIndex];
+      if (header.headingLevel == 3) {
+        this.headingsMetaData.splice(headingIndex, 1);
+      } else {
+        header.text = this.enteredComment,
+        header.range = this.range,
+        header.headingLevel = 3;
+        this.headingsMetaData[headingIndex] = header;
+      }
+      this.quill.formatLine(this.range.index, this.range.length, 'header', 0);
+    } else {
+      this.headingsMetaData.push({
+        text: this.enteredComment,
+        range: this.range,
+        headingLevel: 3
+      });
+    }
+
+    this.sortHeaders();
+    this.saveQuillData();
+    this.closeComment();
   }
 
   //Closes the comment dialog box
@@ -760,22 +813,44 @@ export class FolioEditorComponent implements AfterViewInit {
     });
 
     this.quill.formatLine(this.range.index, this.range.length, 'header', value);
-    const elementType = leaf?.parent?.domNode?.localName;
+    // const elementType = leaf?.parent?.parent?.domNode?.localName;
+
     if (headingIndex >= 0) {
       let header = this.headingsMetaData[headingIndex];
       if (!value || header.headingLevel == value) {
         this.headingsMetaData.splice(headingIndex, 1);
       } else {
+        header.text = leaf.text,
         header.range = this.range,
         header.headingLevel = value;
         this.headingsMetaData[headingIndex] = header;
       }
-    } else if (elementType && elementType.charAt(0) && elementType.charAt(0).toLowerCase() == 'h') {
+    //} else if (elementType && elementType.charAt(0) && elementType.charAt(0).toLowerCase() == 'h') {
+    } else {
       this.headingsMetaData.push({
         text: leaf.text,
         range: this.range,
         headingLevel: value
       });
+    }
+
+    this.sortHeaders();
+    this.saveQuillData();
+  }
+
+  deleteHeading(heading: any) {
+    const headingIndex = this.headingsMetaData.findIndex(h => {
+      let [line1, offset1] = this.quill.getLine(h.range.index);
+      let [line2, offset2] = this.quill.getLine(heading.range.index);
+      return line1 == line2;
+    });
+
+    if ((heading.headingLevel == 1 || heading.headingLevel == 2) && headingIndex >= 0) {
+      this.quill.formatLine(heading.range.index, heading.range.length, 'header', false);
+    }
+
+    if (headingIndex >= 0) {
+      this.headingsMetaData.splice(headingIndex, 1);
     }
 
     this.sortHeaders();
@@ -818,10 +893,18 @@ export class FolioEditorComponent implements AfterViewInit {
 
   displayHeadings() {
     this.folioService.displayHeadings(this.fileData?._id, !this.fileData?.show_headings).then(res => {
-      this.fileData.show_headings = !this.fileData?.show_headings;
-    }).catch (err => {
-      this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
-    });
+        this.fileData.show_headings = !this.fileData?.show_headings;
+      }).catch (err => {
+        this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
+      });
+  }
+
+  displayComments() {
+    this.folioService.displayComments(this.fileData?._id, !this.fileData?.show_comments).then(res => {
+        this.fileData.show_comments = !this.fileData?.show_comments;
+      }).catch (err => {
+        this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
+      });
   }
 
   /**

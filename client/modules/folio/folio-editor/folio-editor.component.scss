@@ -54,7 +54,7 @@ body{
 .folio {
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
-    overflow-y: scroll; 
+    overflow-y: scroll;
 }
 
 .folio::-webkit-scrollbar {
@@ -211,15 +211,20 @@ h6{
 }
 
 .level1 {
-font-weight: 700;
+  font-weight: 700;
 }
 
 .level2 {
-    font-weight: 400;
-    margin-left: 10px;
+  font-weight: 500;
+  margin-left: 10px;
 }
 
-@media (max-width: 991.98px) { 
+.level3 {
+  font-weight: 300;
+  margin-left: 20px;
+}
+
+@media (max-width: 991.98px) {
     .folio{
         width: auto;
     }

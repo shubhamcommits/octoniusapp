@@ -12,4 +12,6 @@ routes.post('/upload', authsHelper.verifyToken, authsHelper.isLoggedIn, folio.cr
 
 routes.put('/:fileId/displayHeadings', authsHelper.verifyToken, authsHelper.isLoggedIn, folio.displayHeadings);
 
+routes.put('/:fileId/displayComments', authsHelper.verifyToken, authsHelper.isLoggedIn, upload.displayComments);
+
 export default routes;

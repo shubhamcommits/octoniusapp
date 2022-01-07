@@ -352,4 +352,10 @@ export class GroupService {
     });
     this.utilityService.saveAsExcelFile(members, name);
   }
+
+  async exportTasksToFile(exportType: string, sections: any, name: string) {
+    if (exportType == 'excel') {
+      this.utilityService.saveAsExcelFile(sections, name);
+    }
+  }
 }

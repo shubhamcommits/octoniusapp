@@ -67,16 +67,19 @@
                 <div *ngIf="i == selectedProjectIndex && i!==0" class="pvl" [ngStyle]="{'left':(item.taskAfterDueDateStart*step+step)+'px','height':((item.startheight)+(60*item.tasks.length))+'px','border-left':'1px solid #9D9FA2'}"></div>
                 <div *ngIf="i == selectedProjectIndex && i===0" class="pvl" [ngStyle]="{'left':(item.taskAfterDueDateStart*step+step-2)+'px','height':(item.startheight+50)+'px','border-left': '2px dashed #005FD5'}"></div>
               </div>
-              <!-- <div *ngFor="let item of projectsdata;let i = index" [attr.id]="item.id" [ngStyle]="{'top':(item.startheight-76)+'px','left': (item.startingIndex*50)+'px','position':'absolute'}"> -->
+
               <div *ngFor="let item of projectsdata;let i = index" [attr.id]="item.id" [ngStyle]="{'top':(item.startheight)+'px','left': (item.startingIndex*50)+'px','position':'absolute','height':(60*item.tasks.length+100)+'px',
                 'border-left':'2px solid #26A69A','border-right':'2px dashed #005FD5','width':(item.differencedays*step+step)+'px'}">
 
                 <div *ngIf="item.taskAfterDueDate" [ngStyle]="{'position':'absolute',left:(item.differencedays*step+step)+'px',
                 'height':(60*item.tasks.length+100)+'px','width':(item.taskAfterDueDate*50)+'px','border-right':'2px dashed #EB5757'}"></div>
-                <div>
 
-                <!-- <div class="vl" [ngStyle]="{'left':(current_date_index*step+15)+'px'}"></div> -->
+                <div class="project-header">
                   <p class="project-name" [ngStyle]="{'width':item.data.title.length*15+'px'}">{{item.data.title}}</p>
+
+
+                  <app-new-task *ngIf="item?.canEdit" [groupData]="groupData" [userData]="userData" [column]="item"
+                  (post)="newTask($event, item.id)" [isIdeaModuleAvailable]="isIdeaModuleAvailable"></app-new-task>
                 </div>
 
                 <div *ngFor="let task of item.tasks; let j =index"  [ngStyle]="{'left':(-1*item.startingIndex*50)+'px','position':'absolute','top':(60*j+60)+'px',

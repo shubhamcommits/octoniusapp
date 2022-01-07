@@ -68,7 +68,7 @@ export class PostService {
         }
       }
 
-      const numLikes = (filters.numLikes) ? +(filters.numLikes) : 0;
+      const numLikes = (filters && filters.numLikes) ? +(filters.numLikes) : 0;
       
       // Fetch posts on the basis of the params @lastPostId
       if (lastPostId) {
