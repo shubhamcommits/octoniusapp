@@ -263,13 +263,14 @@ export class FolioEditorComponent implements AfterViewInit {
 
   async ngAfterViewInit() {
 
+    if (!this.readOnly) {
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    }
     this.folio = this.initializeConnection();
     this.fileData = await this.publicFunctions.getFile(this.folioId, this.readOnly);
 
+    // Fetch User Data
     if (!this.readOnly) {
-      // Fetch Workspace Data
-      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-      // Fetch User Data
       this.userData = await this.publicFunctions.getCurrentUser();
 
       // check if the user is part of the group of the folio
