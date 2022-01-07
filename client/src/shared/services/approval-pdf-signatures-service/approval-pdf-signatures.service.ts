@@ -130,9 +130,9 @@ export class ApprovalPDFSignaturesService {
     );
 
     const status = await this.isApprovalFlowCompleted(fileData.approval_flow);
-
+    const statusStr = (status) ? 'COMPLETED' : 'PENDING';
     page.drawText(
-      'Status: ' + (status) ? 'COMPLETED' : 'PENDING',
+      'Status: ' + statusStr,
       {
         x: x + 5,
         y: y - 25,
