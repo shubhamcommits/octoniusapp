@@ -104,7 +104,7 @@ export class ApprovalPDFSignaturesService {
       if (approval.confirmed && approval.confirmation_date) {
         await this.drawSignedApproval(page, approval, fonts);
       } else {
-        await this.drawPendingApproval(page, approval, fonts);
+        // await this.drawPendingApproval(page, approval, fonts);
       }
       yPosition -= 75;
       page.moveTo(initialXPosition, yPosition);
@@ -129,8 +129,8 @@ export class ApprovalPDFSignaturesService {
       }
     );
 
-    const status = await this.isApprovalFlowCompleted(fileData.approval_flow);
-    const statusStr = (status) ? 'COMPLETED' : 'PENDING';
+    const status: any = await this.isApprovalFlowCompleted(fileData.approval_flow);
+    const statusStr = (status.completed) ? 'COMPLETED' : 'PENDING (' + (fileData.approval_flow.length - status.numUnsigned) + '/' + fileData.approval_flow.length + ')';
     page.drawText(
       'Status: ' + statusStr,
       {
@@ -293,12 +293,17 @@ export class ApprovalPDFSignaturesService {
   }
 
   isApprovalFlowCompleted(flow) {
+    let numUnsigned = 0;
     for (let i = 0; i < flow.length; i++) {
       if (!flow[i].confirmed || !flow[i].confirmation_date) {
-        return false;
+        numUnsigned++;
       }
     }
-    return true
+
+    return {
+      completed: (numUnsigned == 0),
+      numUnsigned: numUnsigned
+    };
   }
 
   async getFlowLauncher(histories: any) {
