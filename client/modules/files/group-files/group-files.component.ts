@@ -20,7 +20,6 @@ import moment from 'moment';
 import { pdfExporter } from "quill-to-pdf";
 import { saveAs } from "file-saver";
 import { PDFDocument } from 'pdf-lib';
-import { ApprovalService } from 'src/shared/services/approval-service/approval.service';
 import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-signatures-service/approval-pdf-signatures.service';
 
 @Component({
@@ -116,7 +115,6 @@ export class GroupFilesComponent implements OnInit {
     public dialog: MatDialog,
     public storageService: StorageService,
     private groupService: GroupService,
-    private approvalService: ApprovalService,
     private approvalPDFSignaturesService: ApprovalPDFSignaturesService
   ) { }
 
@@ -898,25 +896,6 @@ export class GroupFilesComponent implements OnInit {
         && fileData.approval_flow && fileData.approval_flow.length > 0) {
       pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc);
     } else {
-      pdfBytes = await pdfDoc.save();
-    }
-
-    saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
-  }
-
-  async modifyPdfFromService(fileData: any) {
-    const token = this.storageService.getLocalData('authToken')['token'];
-    let pdfBytes;
-    if (fileData
-        && fileData.approval_active && fileData.approval_flow_launched
-        && fileData.approval_flow && fileData.approval_flow.length > 0) {
-      pdfBytes = await this.approvalService.addSignaturesPage(fileData._id, token)
-        .then(res => res['pdfBytes'])
-        .catch(err => console.log(err));
-    } else {
-      const url = this.filesBaseUrl + '/' + fileData?.modified_name + '?authToken=Bearer ' + token;
-      const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
-      const pdfDoc = await PDFDocument.load(existingPdfBytes);
       pdfBytes = await pdfDoc.save();
     }
 
