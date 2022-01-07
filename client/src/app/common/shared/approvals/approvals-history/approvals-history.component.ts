@@ -66,7 +66,6 @@ export class ApprovalsHistoryComponent implements OnChanges, OnInit {
           return -1;
         }
       }
-
-    })
+    });
   }
 }

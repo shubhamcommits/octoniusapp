@@ -16,12 +16,12 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { FileDetailsDialogComponent } from 'src/app/common/shared/file-details-dialog/file-details-dialog.component';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-
 import moment from 'moment';
-
 import { pdfExporter } from "quill-to-pdf";
 import { saveAs } from "file-saver";
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { PDFDocument } from 'pdf-lib';
+import { ApprovalService } from 'src/shared/services/approval-service/approval.service';
+import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-signatures-service/approval-pdf-signatures.service';
 
 @Component({
   selector: 'app-group-files',
@@ -115,7 +115,9 @@ export class GroupFilesComponent implements OnInit {
     private foldersService: FoldersService,
     public dialog: MatDialog,
     public storageService: StorageService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private approvalService: ApprovalService,
+    private approvalPDFSignaturesService: ApprovalPDFSignaturesService
   ) { }
 
   async ngOnInit() {
@@ -885,103 +887,39 @@ export class GroupFilesComponent implements OnInit {
   }
 
   async modifyPdf(fileData: any) {
-    const url = this.filesBaseUrl + '/' + fileData?.modified_name + '?authToken=Bearer ' + this.storageService.getLocalData('authToken')['token'];
+    const token = this.storageService.getLocalData('authToken')['token'];
+    const url = this.filesBaseUrl + '/' + fileData?.modified_name + '?authToken=Bearer ' + token;
     const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
-
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
+    let pdfBytes;
     if (fileData
         && fileData.approval_active && fileData.approval_flow_launched
         && fileData.approval_flow && fileData.approval_flow.length > 0) {
-      const page = pdfDoc.addPage();
-      const { width, height } = page.getSize();
-
-      let yStartPosition = (height / 2) + 300;
-      const initialXStartPosition = 35;
-
-      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-
-      //let approvalText = '';
-      for (let i = 0; i < fileData.approval_flow.length; i++) {
-        let approval = fileData.approval_flow[i];
-
-        let xStartPosition = initialXStartPosition;
-        page.drawText(
-          approval._assigned_to.first_name + ' ' + approval._assigned_to.last_name + ': ',
-          {
-            x: xStartPosition,
-            y: yStartPosition,
-            size: 10,
-            font: font,
-            color: rgb(0.2, 0.2, 0.2),
-            //maxWidth: width,
-            //rotate: degrees(-45),
-          }
-        );
-
-        xStartPosition += 150;
-
-        if (approval.confirmed && approval.confirmation_date) {
-          page.drawText(
-            'APPROVED',
-            {
-              x: xStartPosition,
-              y: yStartPosition,
-              size: 10,
-              font: font,
-              color: rgb(0.44, 0.59, 0.41),
-              //maxWidth: width,
-              //rotate: degrees(-45),
-            }
-          );
-
-          xStartPosition += 100;
-
-          page.drawText(
-            ' on ' + moment.utc(approval.approval_date).format("MMM DD, yyyy HH:MM"),
-            {
-              x: xStartPosition,
-              y: yStartPosition,
-              size: 10,
-              font: font,
-              color: rgb(0.2, 0.2, 0.2),
-              //maxWidth: width,
-              //rotate: degrees(-45),
-            }
-          );
-
-        } else {
-          page.drawText(
-            'PENDING',
-            {
-              x: xStartPosition,
-              y: yStartPosition,
-              size: 10,
-              font: font,
-              color: rgb(0.11, 0.96, 0.59),
-              //maxWidth: width,
-              //rotate: degrees(-45),
-            }
-          );
-        }
-
-        yStartPosition += 20;
-
-        if (i < fileData.approval_flow.length - 1) {
-          page.drawLine({
-            start: { x: initialXStartPosition, y: yStartPosition },
-            end: { x: (width - initialXStartPosition), y: yStartPosition },
-            thickness: 1,
-            color: rgb(0.2, 0.2, 0.2),
-            //opacity: 0.75,
-          });
-
-          yStartPosition += 20;
-        }
-      }
+      pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc);
+    } else {
+      pdfBytes = await pdfDoc.save();
     }
 
-    const pdfBytes = await pdfDoc.save();
+    saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
+  }
+
+  async modifyPdfFromService(fileData: any) {
+    const token = this.storageService.getLocalData('authToken')['token'];
+    let pdfBytes;
+    if (fileData
+        && fileData.approval_active && fileData.approval_flow_launched
+        && fileData.approval_flow && fileData.approval_flow.length > 0) {
+      pdfBytes = await this.approvalService.addSignaturesPage(fileData._id, token)
+        .then(res => res['pdfBytes'])
+        .catch(err => console.log(err));
+    } else {
+      const url = this.filesBaseUrl + '/' + fileData?.modified_name + '?authToken=Bearer ' + token;
+      const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
+      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+      pdfBytes = await pdfDoc.save();
+    }
+
     saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
   }
 }

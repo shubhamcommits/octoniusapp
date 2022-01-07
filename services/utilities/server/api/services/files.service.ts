@@ -26,7 +26,7 @@ export class FilesService {
             { path: '_group', select: this.groupFields },
             { path: '_posted_by', select: this.userFields },
             { path: '_folder', select: this.folderFields },
-            { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' },
+            { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' },
             { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
             { path: 'permissions._members', select: this.userFields }
         ])
@@ -140,7 +140,7 @@ export class FilesService {
                 .populate([
                     { path: '_group', select: this.groupFields },
                     { path: '_posted_by', select: this.userFields },
-                    { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' },
+                    { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' },
                     { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
                     { path: '_folder', select: this.folderFields }
                 ])
@@ -169,7 +169,7 @@ export class FilesService {
                     { path: '_group', select: this.groupFields },
                     { path: '_posted_by', select: this.userFields },
                     { path: '_folder', select: this.folderFields },
-                    { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' },
+                    { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' },
                     { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
                     { path: 'permissions._members', select: this.userFields }
                 ])
@@ -294,7 +294,7 @@ export class FilesService {
                 .populate([
                         { path: '_group', select: this.groupFields },
                         { path: '_posted_by', select: this.userFields },
-                        { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' },
+                        { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' },
                         { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
                         { path: '_folder', select: this.folderFields },
                         { path: 'permissions._members', select: this.userFields }
@@ -337,7 +337,7 @@ export class FilesService {
             .populate([
                     { path: '_group', select: this.groupFields },
                     { path: '_posted_by', select: this.userFields },
-                    { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' },
+                    { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' },
                     { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
                     { path: '_folder', select: this.folderFields },
                     { path: 'permissions._members', select: this.userFields }
@@ -374,7 +374,7 @@ export class FilesService {
             .populate([
                 { path: '_group', select: this.groupFields },
                 { path: '_posted_by', select: this.userFields },
-                { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic' },
+                { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' },
                 { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
                 { path: 'permissions._members', select: this.userFields }
             ])
