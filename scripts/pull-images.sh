@@ -17,6 +17,9 @@ docker login
 # Client Microservice Image Name
 CLIENT_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:client
 
+# Approval Microservice Image Name
+APPROVAL_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:approval-server
+
 # Auths Microservice Image Name
 AUTHS_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:auths-server
 
@@ -58,6 +61,7 @@ MONGO_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:mongodb
 
 # Pull the new Docker image from the Docker registry
           docker pull $MONGO_IMAGE_NAME
+          docker pull $APPROVALS_IMAGE_NAME
           docker pull $AUTHS_IMAGE_NAME
           docker pull $GROUPS_IMAGE_NAME
           docker pull $WORKSPACES_IMAGE_NAME

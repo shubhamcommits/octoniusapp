@@ -25,6 +25,7 @@ docker login
 
 # Pull the new Docker image from the Docker registry
           docker pull $MONGO_IMAGE_NAME
+          docker pull $APPROVAL_IMAGE_NAME
           docker pull $AUTHS_IMAGE_NAME
           docker pull $GROUPS_IMAGE_NAME
           docker pull $WORKSPACES_IMAGE_NAME

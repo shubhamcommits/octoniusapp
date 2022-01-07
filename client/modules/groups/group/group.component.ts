@@ -39,10 +39,11 @@ export class GroupComponent implements OnInit, OnDestroy {
       state: 'group'
     });
 
-    const userService = this.injector.get(UserService);
+    // const userService = this.injector.get(UserService);
 
-    const userData = await this.publicFunctions.getCurrentUser();
+    // const userData = await this.publicFunctions.getCurrentUser();
 
+    /*
     if (userData && this.groupId) {
       userService.increaseGroupVisit(userData._id, this.groupId).then(res => {
         if (res) {
@@ -50,6 +51,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         }
       });
     }
+    */
   }
 
   /**

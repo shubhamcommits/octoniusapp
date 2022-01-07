@@ -48,7 +48,8 @@ export class FolioHeaderComponent implements OnInit {
     private _ActivatedRoute: ActivatedRoute,
     private _Injector: Injector,
     private titleService: Title,
-    private folioService: FolioService
+    private folioService: FolioService,
+    private utilityService: UtilityService
   ) { }
 
   async ngOnInit() {
@@ -64,7 +65,6 @@ export class FolioHeaderComponent implements OnInit {
     if (this.userData && JSON.stringify(this.userData) != JSON.stringify({})) {
       // check if the user is part of the group of the folio
       const groupIndex = await this.userData?._groups?.findIndex(group => { return (group._id || group) == this.groupId });
-      this.readOnly = this.readOnly || (groupIndex < 0);
     }
 
     // Set the fileId variable
@@ -72,6 +72,9 @@ export class FolioHeaderComponent implements OnInit {
 
     // Fetch File Details
     this.file = await this.publicFunctions.getFile(this.fileId);
+
+    let canEdit = (this.file?.approval_flow_launched) ? !this.file?.approval_flow_launched : true;
+    this.readOnly = this.readOnly || !canEdit;
 
     // Set the name to keep a track of original_name
     this.fileOriginalName = this.file.original_name
@@ -202,5 +205,10 @@ export class FolioHeaderComponent implements OnInit {
             reject(utilityService.rejectAsyncPromise($localize`:@@folioHeader.unexpectedErrorUploading:Unexpected error occurred while uploading, please try again!`))
           });
       }));
+  }
+
+  isAdminUser(groupData: any) {
+    const index = (groupData && groupData._admins) ? groupData._admins.findIndex((admin: any) => admin._id === this.userData._id) : -1;
+    return index >= 0 || this.userData.role == 'owner';
   }
 }

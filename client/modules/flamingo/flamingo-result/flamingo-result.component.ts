@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { PublicFunctions } from 'modules/public.functions';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -13,10 +14,13 @@ export class FlamingoResultComponent implements OnInit {
   flamingo: any;
   fileId: string;
 
+  // Public functions class member
+  publicFunctions = new PublicFunctions(this._Injector);
+
   constructor(
     private _ActivatedRoute: ActivatedRoute,
-    private flamingoService: FlamingoService,
-    public utilityService: UtilityService
+    public utilityService: UtilityService,
+    private _Injector: Injector
   ) { }
 
   async ngOnInit() {
@@ -25,8 +29,6 @@ export class FlamingoResultComponent implements OnInit {
     this.fileId = this._ActivatedRoute.snapshot.params['id'];
 
     // Fetch Flamingo Details
-    await this.flamingoService.getOne(this.fileId).then((res) => {
-      this.flamingo = res['flamingo'];
-    });
+    this.flamingo = await this.publicFunctions.getFlamingo(this.fileId);
   }
 }

@@ -18,6 +18,7 @@ import { environment } from 'src/environments/environment';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
+import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -786,6 +787,27 @@ export class PublicFunctions {
       } else {
         return Promise.resolve({});
       }
+    }
+
+    /**
+    * This function is responsible for fetching a flamingo's details
+    * @param fileId
+    */
+    public async getFlamingo(fileId: any) {
+      return new Promise((resolve) => {
+
+        // Flamingo Service
+        let flamingoService = this.injector.get(FlamingoService);
+
+        // Fetch the Flamingo details
+        flamingoService.getOne(fileId)
+          .then((res) => {
+            resolve(res['flamingo'])
+          })
+          .catch(() => {
+            resolve({})
+          });
+      });
     }
 
     /**

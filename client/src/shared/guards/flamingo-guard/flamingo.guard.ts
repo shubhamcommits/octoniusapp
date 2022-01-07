@@ -32,11 +32,11 @@ export class FlamingoGuard implements CanActivate  {
     const currentGroupId = state.root.queryParamMap.get('group');
     const fileId = next['_urlSegment']?.segments[2].path;
 
-    // Fetch Files Details
-    const flamingo = await this.getFile(fileId);
-
     // Public Functions Instance
     let publicFunctions = this.injector.get(PublicFunctions);
+
+    // Fetch Files Details
+    const flamingo = await publicFunctions.getFlamingo(fileId);
 
     if (flamingo && flamingo['_file']) {
       const file = flamingo['_file'];
@@ -77,26 +77,5 @@ export class FlamingoGuard implements CanActivate  {
     } else {
       this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsFlamingoDoesNotExists:Oops seems like the Flamingo doesn\'t exists!`);
     }
-  }
-
-  /**
-  * This function is responsible for fetching a flamingo's details
-  * @param fileId
-  */
-  public async getFile(fileId: any) {
-    return new Promise((resolve) => {
-
-      // Flamingo Service
-      let flamingoService = this.injector.get(FlamingoService);
-
-      // Fetch the Flamingo details
-      flamingoService.getOne(fileId)
-        .then((res) => {
-          resolve(res['flamingo'])
-        })
-        .catch(() => {
-          resolve({})
-        })
-    })
   }
 }

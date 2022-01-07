@@ -167,11 +167,7 @@ export class FlamingoHeaderComponent implements OnInit {
   }
 
   async exportToExcel() {
-    let flamingo;
-    // Fetch Flamingo Details
-    await this.flamingoService.getOne(this.fileId).then((res) => {
-      flamingo = res['flamingo'];
-    });
+    let flamingo: any = await this.publicFunctions.getFlamingo(this.fileId);
 
     if (flamingo && flamingo?._questions && flamingo?.responses) {
       let insights: any = [];

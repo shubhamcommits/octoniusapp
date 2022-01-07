@@ -17,6 +17,10 @@ import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.s
 import { FileDetailsDialogComponent } from 'src/app/common/shared/file-details-dialog/file-details-dialog.component';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import moment from 'moment';
+import { pdfExporter } from "quill-to-pdf";
+import { saveAs } from "file-saver";
+import { PDFDocument } from 'pdf-lib';
+import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-signatures-service/approval-pdf-signatures.service';
 
 @Component({
   selector: 'app-group-files',
@@ -110,7 +114,8 @@ export class GroupFilesComponent implements OnInit {
     private foldersService: FoldersService,
     public dialog: MatDialog,
     public storageService: StorageService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private approvalPDFSignaturesService: ApprovalPDFSignaturesService
   ) { }
 
   async ngOnInit() {
@@ -164,6 +169,12 @@ export class GroupFilesComponent implements OnInit {
          });
        }
      });
+
+     if (this._router.routerState.snapshot.root.queryParamMap.has('itemId')) {
+       const itemId = this._router.routerState.snapshot.root.queryParamMap.get('itemId');
+       const file = await this.publicFunctions.getFile(itemId);
+       this.openFileDetailsDialog(file);
+     }
   }
 
   ngAfterViewInit(){
@@ -505,12 +516,16 @@ export class GroupFilesComponent implements OnInit {
    * @param fileName - Name of the file to obtain the icon img
    */
   getFileIcon(fileName: string) {
+    return "assets/images/" + this.getFileExtension(fileName) + "-file-icon.png";
+  }
+
+  getFileExtension(fileName: string) {
     let file = fileName.split(".");
     let fileType = file[file.length-1].toLowerCase();
     if (fileType == 'mp4') {
       fileType = 'mov';
     }
-    return "assets/images/" + fileType + "-file-icon.png";
+    return fileType;
   }
 
   /**
@@ -657,9 +672,8 @@ export class GroupFilesComponent implements OnInit {
     let filesTmp = [];
     files.forEach(async file => {
         file.canDelete = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'delete');
-        const canEdit = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'edit') && (!this.groupData?.files_for_admins || this.isAdmin);
+        let canEdit = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'edit') && (!this.groupData?.files_for_admins || this.isAdmin);
         let canView = false;
-
         if (!canEdit) {
           const hide = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'hide');
           canView = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'view') || !hide;
@@ -835,5 +849,56 @@ export class GroupFilesComponent implements OnInit {
     } else if (this.sortingBit == 'reverse' || this.sortingBit == 'inverse') {
       this.files.reverse();
     }
+  }
+
+  async exportToPDF(fileData: any) {
+    let blob;
+    switch (fileData.type) {
+      case 'file':
+        this.modifyPdf(fileData);
+        break;
+      case 'folio':
+        if (fileData
+            && fileData.approval_active && fileData.approval_flow_launched
+            && fileData.approval_flow && fileData.approval_flow.length > 0) {
+        }
+        break;
+      case 'campaign':
+        if (fileData
+            && fileData.approval_active && fileData.approval_flow_launched
+            && fileData.approval_flow && fileData.approval_flow.length > 0) {
+        }
+        break;
+      default:
+        break;
+    }
+    //saveAs(blob as Blob, fileData?.original_name + ".pdf");
+    /*
+    if (this.fileData
+        && this.fileData.approval_active && this.fileData.approval_flow_launched
+        && this.fileData.approval_flow && this.fileData.approval_flow.length > 0) {
+      const blobApproval = new Blob([blob, ",another data"], { type: "application/pdf" });
+      // we use saveAs from the file-saver package to download the blob
+      saveAs(blobApproval as Blob, this.fileData?.original_name + ".pdf");
+    }
+    */
+  }
+
+  async modifyPdf(fileData: any) {
+    const token = this.storageService.getLocalData('authToken')['token'];
+    const url = this.filesBaseUrl + '/' + fileData?.modified_name + '?authToken=Bearer ' + token;
+    const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+
+    let pdfBytes;
+    if (fileData
+        && fileData.approval_active && fileData.approval_flow_launched
+        && fileData.approval_flow && fileData.approval_flow.length > 0) {
+      pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc);
+    } else {
+      pdfBytes = await pdfDoc.save();
+    }
+
+    saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
   }
 }

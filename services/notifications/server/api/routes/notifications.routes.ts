@@ -1,8 +1,9 @@
 import express from 'express';
-import { NotificationsController } from '../controllers'
+import { NotificationsController, ApprovalNotificationsController } from '../controllers'
 
 const routes = express.Router();
 const notificationFunctions = new NotificationsController();
+const approvalFunctions = new ApprovalNotificationsController();
 
 //This route is responsible for notifying the user on mention on new comment
 routes.post('/new-comment-mention', notificationFunctions.newCommentMentions);
@@ -45,5 +46,14 @@ routes.post('/join-group', notificationFunctions.joinGroup);
 
 // This route is responsible for notifying the user when is removed from a group
 routes.post('/leave-group', notificationFunctions.leaveGroup);
+
+// This route is responsible for notifying the user when a approval flow is launched
+routes.post('/launch-approval-flow', approvalFunctions.launchApprovalFlow);
+
+// POST - reject-item
+routes.post('/reject-item', approvalFunctions.rejectItem);
+
+// POST - item-approved
+routes.post('/item-approved', approvalFunctions.itemApproved);
 
 export { routes as notificationRoutes };

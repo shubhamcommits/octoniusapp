@@ -62,6 +62,41 @@ services:
     networks:
       - acc
         
+  approval-server:
+    container_name: octonius_approval-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:approval-server
+    ports:
+      - ${PPROVAL_SERVER_PORT}:${MACHINE_PORT}
+    restart: always
+    volumes:
+      - ${VOLUME_NODE_MODULES}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${MACHINE_PORT}
+      - HOST=${HOST}
+      - JWT_KEY=${JWT_KEY}
+      - DB_URL=${DB_URL}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
+      - PROTOCOL=${PROTOCOL}
+      - DOMAIN=${DOMAIN}
+      - MANAGEMENT_URL=${MANAGEMENT_URL}
+      - PROXY_AVAILABLE=${PROXY_AVAILABLE}
+      - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+      - PROXY_HOST=${PROXY_HOST}
+      - PROXY_PORT=${PROXY_PORT}
+    depends_on:
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
+    links:
+      - mongo-0.mongo
+      - mongo-1.mongo
+      - mongo-2.mongo
+    networks:
+      - acc
+
   auths-server:
     container_name: octonius_auths-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:auths-server
@@ -438,6 +473,7 @@ services:
       - mongo-0.mongo
       - mongo-1.mongo
       - mongo-2.mongo
+      - approval-server
       - auths-server
       - groups-server
       - workspaces-server
@@ -461,6 +497,7 @@ services:
       - mongo-0.mongo
       - mongo-1.mongo
       - mongo-2.mongo
+      - approval-server
       - auths-server
       - groups-server
       - workspaces-server

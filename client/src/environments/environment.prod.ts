@@ -73,6 +73,10 @@ export const environment = {
   NOTIFICATIONS_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}`,
   NOTIFICATIONS_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/notifications`,
 
+  // Approval URLs
+  APPROVAL_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}`,
+  APPROVAL_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/approval`,
+
   // Utilities URLs
   UTILITIES_BASE_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/utilities`,
   UTILITIES_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/utilities`,

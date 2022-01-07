@@ -90,7 +90,8 @@
     </h5>
 
     <div class="comment-area">
-      <div class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}" (click)="highlight(meta.range)" *ngFor="let meta of commentsMetaData;let ind = index">
+      <div *ngFor="let meta of commentsMetaData;let ind = index" (click)="highlight(meta.range)"
+          class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}">
         <div class="comment-profile">
           <div class="profile">
               <app-secured-image *ngIf="meta.profile_pic"
@@ -100,7 +101,7 @@
             <h6>{{meta.user_name}}</h6>
           </div>
 
-          <a class="close" (click)="deleteComment(ind)">
+          <a class="close" (click)="deleteComment(ind)" *ngIf="!readOnly || userData?._id == meta.userId">
             <i  class="material-icons muted" style="cursor: pointer">close</i>
           </a>
         </div>

@@ -80,6 +80,10 @@ export const environment = {
   FLAMINGO_BASE_URL: `${url.protocol}://${url.domain}:14000`,
   FLAMINGO_BASE_API_URL: `${url.protocol}://${url.domain}:14000/api`,
 
+  // Approval URLs
+  APPROVAL_BASE_URL: `${url.protocol}://${url.domain}:15000`,
+  APPROVAL_BASE_API_URL: `${url.protocol}://${url.domain}:15000/api`,
+
   // Utilities URLs
   UTILITIES_BASE_URL: `${url.protocol}://${url.domain}:10000`,
   UTILITIES_BASE_API_URL: `${url.protocol}://${url.domain}:10000/api`,

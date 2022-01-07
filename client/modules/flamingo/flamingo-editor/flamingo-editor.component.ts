@@ -63,7 +63,7 @@ export class FlamingoEditorComponent implements OnInit {
 
     this.workspaceId = userData?._workspace
     // Fetch Files Details
-    this.flamingo = await this.getFile(this.fileId);
+    this.flamingo = await this.publicFunctions.getFlamingo(this.fileId);
 
     if (this.flamingo) {
       this.questions = this.flamingo._questions;
@@ -398,26 +398,5 @@ export class FlamingoEditorComponent implements OnInit {
             reject(utilityService.rejectAsyncPromise($localize`:@@flamingoEditor.unexpectedErrorUpdatingQuestion:Unexpected error occurred while updating Question, please try again!`))
           })
       }))
-  }
-
-  /**
-  * This function is responsible for fetching a flamingo's details
-  * @param fileId
-  */
-  public async getFile(fileId: any) {
-    return new Promise((resolve) => {
-
-      // Flamingo Service
-      let flamingoService = this._Injector.get(FlamingoService);
-
-      // Fetch the Flamingo details
-      flamingoService.getOne(fileId)
-        .then((res) => {
-          resolve(res['flamingo'])
-        })
-        .catch(() => {
-          resolve({})
-        })
-    })
   }
 }

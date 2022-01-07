@@ -1,0 +1,34 @@
+<p class="box-title">
+  <i class="material-icons">approval</i>
+  <span i18n="@@approvalsHistory.approvalsHistory">Approvals History</span>
+</p>
+
+<div class="notification-item" *ngFor="let approval of itemData?.approval_history; let index = index">
+  <div class="notification_actor">
+    <app-secured-image
+      [imgURL]="approval?._actor?.profile_pic"
+      [service]="'user'"
+      [styleClass]="'avatar'"
+      style="margin-right:15px"></app-secured-image>
+  </div>
+
+  <div class="notification_title">
+    {{ approval?._actor?.first_name || 'Deleted' }} {{ approval?._actor?.last_name || 'User' }}
+
+    &nbsp;
+
+    <span *ngIf="approval?.action === 'created'" class="approval-created" i18n="@@recentActivity.createdApprovalFlow">Created the approval flow for this item</span>
+    <span *ngIf="approval?.action === 'deleted'" class="approval-deleted" i18n="@@recentActivity.deletedApprovalFlow">Deleted the approval flow on this item</span>
+    <span *ngIf="approval?.action === 'launch'" class="approval-launch" i18n="@@recentActivity.launchedApprovalFlow">Launched the approval flow for this item</span>
+    <span *ngIf="approval?.action === 'rejected'" class="approval-rejected" i18n="@@recentActivity.rejectedApproval">Rejected this item: </span>
+    <span *ngIf="approval?.action === 'approved'" class="approval-approved" i18n="@@recentActivity.approvedApproval">Approved this item</span>
+
+    &nbsp;
+
+    <span class="rejected-description" *ngIf="approval?.action === 'rejected'">{{ approval?.rejection_description | truncatetext: 50 }}</span>
+  </div>
+
+  <div class="notification_date_time">
+    <span class="muted small float-right">{{ approval?.approval_date | date: 'MMM dd, yyyy HH:mm' }}</span>
+  </div>
+</div>

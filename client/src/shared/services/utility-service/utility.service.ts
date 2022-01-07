@@ -13,6 +13,8 @@ import { PermissionDialogComponent } from 'modules/groups/group/permission-dialo
 import * as XLSX from 'xlsx';
 import * as fileSaver from 'file-saver';
 import moment from 'moment';
+import { FilesService } from '../files-service/files.service';
+import { FlamingoService } from '../flamingo-service/flamingo.service';
 
 @Injectable({
   providedIn: 'root'
@@ -590,6 +592,10 @@ export class UtilityService {
     let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
     createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : createdBy;
 
+    if (action == 'edit' && item?.approval_flow_launched) {
+      return false;
+    }
+
     if (userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager) {
       return true;
     } else {
@@ -663,6 +669,10 @@ export class UtilityService {
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
     let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
     createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : createdBy;
+
+    if (action == 'edit' && item?.approval_flow_launched) {
+      return false;
+    }
 
     if (userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager) {
       return true;
