@@ -28,7 +28,7 @@ export class ApprovalService {
    * @param approval
    * @param type
    */
-   activateApprovalForItem(itemId: string, approval: boolean, type: string) {
+  activateApprovalForItem(itemId: string, approval: boolean, type: string) {
     const data = {
       type: type,
       approval: approval
@@ -41,7 +41,7 @@ export class ApprovalService {
    * @param itemId
    * @param type
    */
-   addUserToFlow(itemId: string, type: string, userId: string) {
+  addUserToFlow(itemId: string, type: string, userId: string) {
     const data = {
       type: type,
       userId: userId
@@ -54,7 +54,7 @@ export class ApprovalService {
    * @param itemId
    * @param type
    */
-   removeUserFromFlow(itemId: string, type: string, approvalId: string) {
+  removeUserFromFlow(itemId: string, type: string, approvalId: string) {
     const data = {
       type: type,
       approvalId: approvalId
