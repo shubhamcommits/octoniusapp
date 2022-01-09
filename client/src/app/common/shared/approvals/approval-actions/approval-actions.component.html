@@ -12,7 +12,7 @@
 
 <!-- Assignee section starts -->
 <section *ngIf="itemData?.approval_active">
-  <button *ngIf="canEdit"
+  <button *ngIf="itemData?.approval_active && !itemData?.approval_flow_launched"
     mat-button [matMenuTriggerFor]="assigneeSearch" #trigger="matMenuTrigger" class="btn tagslabel">
       <span i18n="@@approvalActions.addMember">add member</span>
   </button>
