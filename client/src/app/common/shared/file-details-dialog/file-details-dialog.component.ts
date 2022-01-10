@@ -100,10 +100,6 @@ export class FileDetailsDialogComponent implements OnInit {
     return this.isLoading$.next(false);
   }
 
-  formateDate(date: any) {
-    return date ? moment.utc(date).format("YYYY-MM-DD") : '';
-  }
-
   formateCFDate(date){
     return moment(moment.utc(date), "YYYY-MM-DD").toDate();
   }
