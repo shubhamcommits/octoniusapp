@@ -3,6 +3,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-new-task',
@@ -84,6 +85,7 @@ export class NewTaskComponent implements OnInit {
 
     // Prepare Post Data
     var postData: any;
+    const today = moment().startOf('day').format();
 
     if (this.subtask) {
       postData = {
@@ -91,6 +93,7 @@ export class NewTaskComponent implements OnInit {
         content: '',
         type: 'task',
         _posted_by: this.userData._id,
+        created_date: today,
         _group: this.groupData._id,
         _content_mentions: [],
         task: {
@@ -112,6 +115,7 @@ export class NewTaskComponent implements OnInit {
           content: '',
           type: 'task',
           _posted_by: this.userData._id,
+          created_date: today,
           _group: this.groupData._id,
           _content_mentions: [],
           task: {
@@ -140,6 +144,7 @@ export class NewTaskComponent implements OnInit {
           content: '',
           type: 'task',
           _posted_by: this.userData._id,
+          created_date: today,
           _group: this.groupData._id,
           _content_mentions: [],
           task: {
