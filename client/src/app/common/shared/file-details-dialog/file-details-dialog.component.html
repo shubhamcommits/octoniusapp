@@ -108,7 +108,7 @@
             <div style="padding-top: 10px;" class="ml-1">
               {{fileData?._posted_by?.first_name}}
               {{ fileData?._posted_by?.last_name }}
-              <span *ngIf="fileData?.created_date" class="muted" i18n="@@groupCreatePostDialog.on">on {{ fileData?.created_date | date: 'MMM dd, yyyy'}}</span>
+              <span *ngIf="fileData?.created_date" class="muted" i18n="@@fileDetailsDialog.on">on {{ fileData?.created_date | date: 'MMM dd, yyyy'}}</span>
             </div>
           </div>
 
