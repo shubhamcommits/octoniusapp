@@ -85,13 +85,11 @@ export class FileDetailsDialogComponent implements OnInit {
 
     await this.initFileData();
 
-    this.canEdit = (this.fileData?.approval_flow_launched) ? !this.fileData?.approval_flow_launched : true;
-    if (this.canEdit) {
-      this.canEdit = await this.utilityService.canUserDoTaskAction(this.fileData, this.groupData, this.userData, 'edit');
-    }
+    this.canEdit = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'edit');
+
     if (!this.canEdit) {
-      const hide = await this.utilityService.canUserDoTaskAction(this.fileData, this.groupData, this.userData, 'hide');
-      this.canView = await this.utilityService.canUserDoTaskAction(this.fileData, this.groupData, this.userData, 'view') || !hide;
+      const hide = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'hide');
+      this.canView = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'view') || !hide;
     } else {
       this.canView = true;
     }
@@ -265,8 +263,8 @@ export class FileDetailsDialogComponent implements OnInit {
     this.fileData = fileData;
   }
 
-  onApprovalFlowLaunchedEmiter(fileData: any) {
+  async onApprovalFlowLaunchedEmiter(fileData: any) {
     this.fileData = fileData;
-    this.canEdit = !this.fileData?.approval_flow_launched;
+    this.canEdit = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'edit');
   }
 }

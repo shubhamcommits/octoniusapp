@@ -117,7 +117,7 @@ export class ApprovalPDFSignaturesService {
     const { x, y } = page.getPosition();
 
     page.drawText(
-      'EnvelopeId: ' + 'CryptoSignatureCode',
+      'EnvelopeId: ' + this.truncateCode(fileData.approval_envelope, 30),
       {
         x: x + 5,
         y: y - 10,
@@ -236,7 +236,7 @@ export class ApprovalPDFSignaturesService {
     );
 
     page.drawText(
-      'CryptoSignatureCode',
+      this.truncateCode(approval.signature_code, 15),
       {
         x: x + 10,
         y: y - 44,
@@ -266,7 +266,7 @@ export class ApprovalPDFSignaturesService {
     );
 
     page.drawText(
-      'Signed on: ' + moment.utc(approval.approval_date).format("MMM DD, yyyy HH:MM"),
+      'Signed on: ' + moment.utc(approval.approval_date).format("MMM DD, yyyy HH:mm"),
       {
         x: x + 200,
         y: y - 25,
@@ -335,5 +335,31 @@ export class ApprovalPDFSignaturesService {
       }
 
     })
+  }
+
+  truncateCode(value: string, length: number): string {
+    const elipses = "...";
+
+    if (!value) {
+      return value;
+    }
+
+    if (value.length <= length){
+      return value;
+    }
+
+    // truncate to about correct lenght
+    let truncatedText = value.slice(0, length);
+
+    // now nibble ends till correct length
+    while (truncatedText.length > length - elipses.length) {
+
+        let lastSpace = truncatedText.lastIndexOf(" ");
+        if(lastSpace === -1) break;
+        truncatedText = truncatedText.slice(0, lastSpace).replace(/[!,.?;:]$/, '');
+
+    };
+
+   return truncatedText + elipses;
   }
 }

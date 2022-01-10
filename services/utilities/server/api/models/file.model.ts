@@ -100,6 +100,10 @@ const FileSchema = new Schema({
         required: true,
         default: false
     },
+    approval_envelope: {
+        type: String,
+        required: false
+    },
     approval_flow: [
         {
             _assigned_to: {
@@ -118,6 +122,10 @@ const FileSchema = new Schema({
             confirmation_date: {
                 type: Date,
                 default: moment().format()
+            },
+            signature_code: {
+                type: String,
+                required: false
             }
         }
     ],

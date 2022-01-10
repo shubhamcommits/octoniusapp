@@ -125,14 +125,14 @@ export class ApprovalController {
 
   async rejectItem(req: Request, res: Response, next: NextFunction) {
     try {
-      const { body: { type, approvalId, description }, params: { itemId } } = req;
+      const { body: { type, description }, params: { itemId } } = req;
       const userId = req['userId'];
       
-      if (!type || !itemId || !approvalId || !description || !userId) {
-        return sendErr(res, new Error('Please provide the itemId, approvalId, description, userId and a type as the query parameter'), 'Please provide the itemId, approvalId, description, userId and a type as the query paramater!', 400);
+      if (!type || !itemId || !description || !userId) {
+        return sendErr(res, new Error('Please provide the itemId, description, userId and a type as the query parameter'), 'Please provide the itemId, approvalId, description, userId and a type as the query paramater!', 400);
       }
       
-      const item = await approvalService.rejectItem(itemId, type, approvalId, description, userId);
+      const item = await approvalService.rejectItem(itemId, type, description, userId);
       
       return res.status(200).json({
         message: 'successfully retrieved results',

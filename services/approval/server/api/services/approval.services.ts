@@ -1,13 +1,18 @@
 import moment from 'moment';
-import { Post, File, Workspace, User } from '../models';
-import { sendError, axios } from '../utils';
+import { Post, File, Workspace } from '../models';
+import { axios } from '../utils';
 import http from 'axios';
+
+import * as CryptoJS from 'crypto-js';
 
 /*  ===============================
  *  -- APPROVAL Service --
  *  ===============================
  */
 export class ApprovalService {
+
+  fileFieldsForCrypto = 'original_name modified_name type mime_type created_date _posted_by _group description _description_mentions tags custom_fields';
+  postFieldsForCrypto = 'title content _content_mentions type _posted_by created_date tags _assigned_to';
 
   async activateApprovalForItem(itemId: string, type: string, approval: boolean, userId: string) {
     try {
@@ -182,26 +187,7 @@ export class ApprovalService {
   async launchApprovalFlow(itemId: string, type: string, approval_flow_launched: boolean, userId: string) {
     try {
       if (type == 'file') {
-        const file: any = await File.findOneAndUpdate(
-            { _id: itemId}, 
-            {
-              $set: {
-                approval_flow_launched: approval_flow_launched || false
-              },
-              $push: {
-                approval_history: {
-                  _actor: userId,
-                  rejection_description: '',
-                  action: 'launch',
-                  approval_date: moment().format()
-                }
-              }
-            })
-          .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
-          .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-          .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-          .populate({ path: '_group', select: 'custom_fields _workspace' })
-          .lean();
+        const file : any = await this.launchFileApprovalFlow(itemId, approval_flow_launched, userId);
 
         // SEND NOTIFICATION TO ALL USERS IN THE FLOW TO INFORM THEY NEED TO REVIEW THE ITEM
         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/launch-approval-flow`, {
@@ -212,26 +198,7 @@ export class ApprovalService {
 
         return file;
       } else if (type == 'post') {
-        const post: any = await Post.findOneAndUpdate(
-            { _id: itemId}, 
-            {
-              $set: {
-                approval_flow_launched: approval_flow_launched || false
-              },
-              $push: {
-                approval_history: {
-                  _actor: userId,
-                  rejection_description: '',
-                  action: 'launch',
-                  approval_date: moment().format()
-                }
-              }
-            })
-          .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
-          .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-          .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-          .populate({ path: '_group', select: 'custom_fields _workspace' })
-          .lean();
+        const post : any = await this.launchPostApprovalFlow(itemId, approval_flow_launched, userId);
 
         // SEND NOTIFICATION TO ALL USERS IN THE FLOW TO INFORM THEY NEED TO REVIEW THE ITEM
         await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/launch-approval-flow`, {
@@ -246,6 +213,72 @@ export class ApprovalService {
       throw err;
     }
   };
+
+  async launchFileApprovalFlow(itemId: string, approval_flow_launched: boolean, userId: string) {
+    let file: any = await File.findById(
+        { _id: itemId})
+      .select(this.fileFieldsForCrypto)
+      .lean();
+
+    const approval_envelope = await this.encryptData(JSON.stringify(file));
+    
+    file = await File.findOneAndUpdate(
+        { _id: itemId}, 
+        {
+          $set: {
+            approval_flow_launched: approval_flow_launched || false,
+            approval_envelope: approval_envelope
+          },
+          $push: {
+            approval_history: {
+              _actor: userId,
+              rejection_description: '',
+              action: 'launch',
+              approval_date: moment().format()
+            }
+          }
+        })
+      .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
+      .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+      .populate({ path: '_group', select: 'custom_fields _workspace' })
+      .lean();
+
+    return file;
+  }
+
+  async launchPostApprovalFlow(itemId: string, approval_flow_launched: boolean, userId: string) {
+    let post: any = await Post.findById(
+        { _id: itemId})
+      .select(this.postFieldsForCrypto)
+      .lean();
+
+    const approval_envelope = await this.encryptData(JSON.stringify(post));
+    
+    post = await Post.findOneAndUpdate(
+        { _id: itemId}, 
+        {
+          $set: {
+            approval_flow_launched: approval_flow_launched || false,
+            approval_envelope: approval_envelope
+          },
+          $push: {
+            approval_history: {
+              _actor: userId,
+              rejection_description: '',
+              action: 'launch',
+              approval_date: moment().format()
+            }
+          }
+        })
+      .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic email' })
+      .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+      .populate({ path: '_group', select: 'custom_fields _workspace' })
+      .lean();
+
+    return post;
+  }
 
   async approveItem(itemId: string, type: string, approvalId: string) {
     try {
@@ -345,7 +378,7 @@ export class ApprovalService {
     return item;
   }
 
-  async rejectItem(itemId: string, type: string, approvalId: string, description: string, userId: string) {
+  async rejectItem(itemId: string, type: string, description: string, userId: string) {
     try {
       if (type == 'file') {
         const file: any = await File.findOneAndUpdate(
@@ -423,145 +456,186 @@ export class ApprovalService {
 
   async confirmAction(itemId: string, type: string, approvalId: string, code: string, userId: string) {
     try {
-      if (type == 'file') {
-        const fileDB = await File.findById({_id: itemId}).select('approval_flow').lean();
-        const approvalFileIndex = await ((fileDB && fileDB.approval_flow) ? fileDB.approval_flow.findIndex(approval => approval._id == approvalId) : -1);
+      const itemCorrect = await this.confirmItemDidNotChange(itemId, type);
 
-        if (approvalFileIndex >= 0) {
-          if (fileDB.approval_flow[approvalFileIndex].confirmation_code == code) {
-            // TODO - find the way to do the update in one call
-            await File.findOneAndUpdate(
-              { _id: itemId}, 
-              {
-                $set: {
-                  "approval_flow.$[approval].confirmation_date": moment().format(),
-                },
-                $push: {
-                    approval_history: {
-                    _actor: userId,
-                    rejection_description: '',
-                    action: 'approved',
-                    approval_date: moment().format()
+      if (itemCorrect) {
+        if (type == 'file') {
+          const fileDB = await File.findById({_id: itemId}).select('approval_flow').lean();
+          const approvalFileIndex = await ((fileDB && fileDB.approval_flow) ? fileDB.approval_flow.findIndex(approval => approval._id == approvalId) : -1);
+  
+          if (approvalFileIndex >= 0) {
+            if (fileDB.approval_flow[approvalFileIndex].confirmation_code == code) {
+              const fileSignatureDate = moment().format();
+              const fileCrypto: any = {
+                approvalId,
+                itemId,
+                userId,
+                code,
+                fileSignatureDate
+              };
+              const fileSignatureCode = await this.encryptData(JSON.stringify(fileCrypto));
+              // TODO - find the way to do the update in one call
+              await File.findOneAndUpdate(
+                { _id: itemId}, 
+                {
+                  $set: {
+                    "approval_flow.$[approval].signature_code": fileSignatureCode,
                   }
-                }
-              },
-              {
-                arrayFilters: [{ "approval._id": approvalId }],
-                new: true
-              }).lean();
-            
-            const file: any = await File.findOneAndUpdate(
-              { _id: itemId}, 
-              {
-                $set: {
-                  "approval_flow.$[approval].confirmed": true,
                 },
-                $push: {
-                    approval_history: {
-                    _actor: userId,
-                    rejection_description: '',
-                    action: 'approved',
-                    approval_date: moment().format()
+                {
+                  arrayFilters: [{ "approval._id": approvalId }],
+                  new: true
+                }).lean();
+
+              await File.findOneAndUpdate(
+                { _id: itemId}, 
+                {
+                  $set: {
+                    "approval_flow.$[approval].confirmation_date": fileSignatureDate,
                   }
-                }
-              },
-              {
-                arrayFilters: [{ "approval._id": approvalId }],
-                new: true
-              })
-            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
-            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields _workspace' })
-            .lean();
-
-            // IF ALL USERS APPROVED THE ITEM, SEND EMAIL & NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS APPROVED
-            let flowCompleted = true;
-            if (file && file.approval_flow) {
-              flowCompleted = await this.isApprovalFlowCompleted(file.approval_flow);
-            } else  {
-              flowCompleted = false;
+                },
+                {
+                  arrayFilters: [{ "approval._id": approvalId }],
+                  new: true
+                }).lean();
+              
+              const file: any = await File.findOneAndUpdate(
+                { _id: itemId}, 
+                {
+                  $set: {
+                    "approval_flow.$[approval].confirmed": true,
+                  },
+                  $push: {
+                      approval_history: {
+                      _actor: userId,
+                      rejection_description: '',
+                      action: 'approved',
+                      approval_date: moment().format()
+                    }
+                  }
+                },
+                {
+                  arrayFilters: [{ "approval._id": approvalId }],
+                  new: true
+                })
+              .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+              .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+              .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+              .populate({ path: '_group', select: 'custom_fields _workspace' })
+              .lean();
+  
+              // IF ALL USERS APPROVED THE ITEM, SEND EMAIL & NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS APPROVED
+              let flowCompleted = true;
+              if (file && file.approval_flow) {
+                flowCompleted = await this.isApprovalFlowCompleted(file.approval_flow);
+              } else  {
+                flowCompleted = false;
+              }
+        
+              if (flowCompleted) {
+                await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
+                    item: JSON.stringify(file)
+                  }, { maxContentLength: 60 * 1024 * 1024 }
+                );
+              }
+  
+              return file;
+            } else {
+              throw new Error("The code inserted doesn't match the confirmation code.");
             }
-      
-            if (flowCompleted) {
-              await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
-                  item: JSON.stringify(file)
-                }, { maxContentLength: 60 * 1024 * 1024 }
-              );
-            }
-
-            return file;
           } else {
-            throw new Error("The code inserted doesn't match the confirmation code.");
+            throw new Error("There is no approval with the id provided.");
           }
-        } else {
-          throw new Error("There is no approval with the id provided.");
-        }
-      } else if (type == 'post') {
-        const postDB = await Post.findById({_id: itemId}).select('approval_flow').lean();
-        const approvalPostIndex = await ((postDB && postDB.approval_flow) ? postDB.approval_flow.findIndex(approval => approval._id == approvalId) : -1);
-        if (approvalPostIndex >= 0) {
-          if (postDB.approval_flow[approvalPostIndex].confirmation_code == code) {
-            // TODO - find the way to do the update in one call
-            await Post.findOneAndUpdate(
-              { _id: itemId}, 
-              {
-                $set: {
-                  "approval_flow.$[approval].confirmation_date": moment().format(),
-                }
-              },
-              {
-                arrayFilters: [{ "approval._id": approvalId }],
-                new: true
-              }).lean();
-            
-              const post: any = await Post.findOneAndUpdate(
-              { _id: itemId}, 
-              {
-                $set: {
-                  "approval_flow.$[approval].confirmed": true,
-                },
-                $push: {
-                    approval_history: {
-                    _actor: userId,
-                    rejection_description: '',
-                    action: 'approved',
-                    approval_date: moment().format()
+        } else if (type == 'post') {
+          const postDB = await Post.findById({_id: itemId}).select('approval_flow').lean();
+          const approvalPostIndex = await ((postDB && postDB.approval_flow) ? postDB.approval_flow.findIndex(approval => approval._id == approvalId) : -1);
+          if (approvalPostIndex >= 0) {
+            if (postDB.approval_flow[approvalPostIndex].confirmation_code == code) {
+              const postSignatureDate = moment().format();
+              const postCrypto: any = {
+                  approvalId,
+                  itemId,
+                  userId,
+                  code,
+                  postSignatureDate
+                };
+              const postSignatureCode = await this.encryptData(JSON.stringify(postCrypto));
+              // TODO - find the way to do the update in one call
+              await Post.findOneAndUpdate(
+                { _id: itemId}, 
+                {
+                  $set: {
+                    "approval_flow.$[approval].signature_code": postSignatureCode,
                   }
-                }
-              },
-              {
-                arrayFilters: [{ "approval._id": approvalId }],
-                new: true
-              })
-            .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
-            .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-            .populate({ path: '_group', select: 'custom_fields _workspace' })
-            .lean();
+                },
+                {
+                  arrayFilters: [{ "approval._id": approvalId }],
+                  new: true
+                }).lean();
 
-            // IF ALL USERS APPROVED THE ITEM, SEND EMAIL & NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS APPROVED
-            let flowCompleted = true;
-            if (post && post.approval_flow) {
-              flowCompleted = await this.isApprovalFlowCompleted(post.approval_flow);
-            } else  {
-              flowCompleted = false;
+                await Post.findOneAndUpdate(
+                  { _id: itemId}, 
+                  {
+                    $set: {
+                      "approval_flow.$[approval].confirmation_date": postSignatureDate,
+                    }
+                  },
+                  {
+                    arrayFilters: [{ "approval._id": approvalId }],
+                    new: true
+                  }).lean();
+              
+                const post: any = await Post.findOneAndUpdate(
+                { _id: itemId}, 
+                {
+                  $set: {
+                    "approval_flow.$[approval].confirmed": true,
+                  },
+                  $push: {
+                      approval_history: {
+                      _actor: userId,
+                      rejection_description: '',
+                      action: 'approved',
+                      approval_date: postSignatureDate
+                    }
+                  }
+                },
+                {
+                  arrayFilters: [{ "approval._id": approvalId }],
+                  new: true
+                })
+              .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+              .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+              .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+              .populate({ path: '_group', select: 'custom_fields _workspace' })
+              .lean();
+  
+              // IF ALL USERS APPROVED THE ITEM, SEND EMAIL & NOTIFICATION TO ALL USERS IN THE FLOW (INCLUDING CREATOR) TO INFORM THE ITEM WAS APPROVED
+              let flowCompleted = true;
+              if (post && post.approval_flow) {
+                flowCompleted = await this.isApprovalFlowCompleted(post.approval_flow);
+              } else  {
+                flowCompleted = false;
+              }
+        
+              if (flowCompleted) {
+                await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
+                    item: JSON.stringify(post)
+                  }, { maxContentLength: 60 * 1024 * 1024 }
+                );
+              }
+  
+              return post;
+            } else {
+              throw new Error("The code inserted doesn't match the confirmation code.");
             }
-      
-            if (flowCompleted) {
-              await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
-                  item: JSON.stringify(post)
-                }, { maxContentLength: 60 * 1024 * 1024 }
-              );
-            }
-
-            return post;
           } else {
-            throw new Error("The code inserted doesn't match the confirmation code.");
+            throw new Error("There is no approval with the id provided.");
           }
-        } else {
-          throw new Error("There is no approval with the id provided.");
         }
+      } else {
+        this.rejectItem(itemId, type, 'The item is corrupted and cannot be approved.', userId);
+        throw new Error("The item is corrupted and cannot be approved.");
       }
     } catch (err) {
       throw err;
@@ -589,5 +663,51 @@ export class ApprovalService {
       }
     }
     return true
+  }
+
+  /**
+   * This function encrypts the data which is associated with storageKey
+   * Following CryptoJS Standard functions
+   * @param data
+   */
+  encryptData(data: string) {
+    return CryptoJS.SHA512(data).toString();
+  }
+
+  async confirmItemDidNotChange(itemId: string, type: string) {
+
+    if (type == 'file') {
+      let file: any = await File.findById(
+        { _id: itemId})
+      .select(this.fileFieldsForCrypto)
+      .lean();
+      
+      const approval_envelope =  await this.encryptData(JSON.stringify(file));
+
+      const fileEnvelope = await File.findById(
+          { _id: itemId})
+        .select('approval_envelope')
+        .lean();
+
+      if (fileEnvelope.approval_envelope == approval_envelope) {
+        return true;
+      }
+    } else if (type == 'post') {
+      let post: any = await Post.findById(
+          { _id: itemId})
+        .select(this.postFieldsForCrypto)
+        .lean();
+
+      const approval_envelope = await this.encryptData(JSON.stringify(post));
+      const postEnvelope = await Post.findById(
+          { _id: itemId})
+        .select('approval_envelope')
+        .lean();
+      if (postEnvelope.approval_envelope == approval_envelope) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
