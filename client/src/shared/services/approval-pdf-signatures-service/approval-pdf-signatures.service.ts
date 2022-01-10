@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import moment from 'moment/moment';
 import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib';
-//import fontkit from '@pdf-lib/fontkit'
+import fontkit from '@pdf-lib/fontkit';
 
 @Injectable({
   providedIn: 'root'
@@ -16,22 +16,18 @@ export class ApprovalPDFSignaturesService {
     const page = pdfDoc.addPage();
     const { width, height } = page.getSize();
 
-    /*
-    const islandMomentsBytes = await fetch(
-      'https://www.octonius.com/wp-content/uploads/octonius_assets/IslandMoments-Regular.ttf',
-      {
-        mode: 'no-cors',
-        headers: {
-          "Content-Type": "font/ttf"
-        }
-      }).then(res => res.arrayBuffer());
-    */
-    //const calligraffittiFontBytes = fs.readFileSync(path.join(__dirname, '../utils/signatures/Calligraffitti-Regular.ttf'));
+    pdfDoc.registerFontkit(fontkit);
+    const url = 'https://www.octonius.com/wp-content/uploads/octonius_assets/IslandMoments-Regular.ttf';
+    //const url = 'fonts/IslandMoments-Regular.ttf'
+    //const url = 'https://pdf-lib.js.org/assets/ubuntu/Ubuntu-R.ttf';
+    //const url = 'https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVZ0e.ttf';
+    //const islandMomentsBytes = await fetch(url, {mode: 'no-cors'}).then(res => res.arrayBuffer());
+    const islandMomentsBytes = await fetch(url).then(res => res.arrayBuffer());
 
     const fonts = {
       helvetica: await pdfDoc.embedFont(StandardFonts.Helvetica),
       //calligraffitti: await pdfDoc.embedFont(calligraffittiFontBytes),
-      //islandMoments: await pdfDoc.registerFontkit(islandMomentsBytes),
+      islandMoments: await pdfDoc.embedFont(new Uint8Array(islandMomentsBytes))
     };
 
     page.resetPosition();
@@ -55,12 +51,8 @@ export class ApprovalPDFSignaturesService {
     );
 
     //const jpgUrl = 'https://pdf-lib.js.org/assets/cat_riding_unicorn.jpg'
-    //const jpgImageBytes = await fetch(jpgUrl).then((res) => res.arrayBuffer());
-/*
-    const jpgImageBytes = await fetch(
-      'https://www.octonius.com/wp-content/uploads/octonius_assets/octo-signature.jpg', {
-        mode: 'no-cors'
-      }).then((res) => res.arrayBuffer())
+    const jpgUrl = 'https://www.octonius.com/wp-content/uploads/octonius_assets/octo-signature.jpg';
+    const jpgImageBytes = await fetch(jpgUrl).then((res) => res.arrayBuffer())
 
     const jpgImage = await pdfDoc.embedJpg(jpgImageBytes)
 
@@ -74,7 +66,7 @@ export class ApprovalPDFSignaturesService {
         height: 38,
         opacity: 0.75,
       });
-*/
+
     yPosition -= 20;
     page.moveTo(initialXPosition, yPosition);
 
@@ -228,7 +220,7 @@ export class ApprovalPDFSignaturesService {
         x: x + 10,
         y: y - 30,
         size: 18,
-        font: fonts.helvetica,
+        font: fonts.islandMoments,
         color: rgb(0, 0.4, 1),
         //maxWidth: width,
         //rotate: degrees(-45),

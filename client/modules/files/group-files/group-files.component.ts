@@ -868,7 +868,9 @@ export class GroupFilesComponent implements OnInit {
     let blob;
     switch (fileData.type) {
       case 'file':
-        this.modifyPdf(fileData);
+        if (fileData.mime_type.includes('pdf')) {
+          this.modifyPdf(fileData);
+        }
         break;
       case 'folio':
         if (fileData
