@@ -695,7 +695,6 @@ export class GroupFilesComponent implements OnInit {
 
     if (dialogRef) {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-
       });
 
       dialogRef.afterClosed().subscribe(result => {
@@ -716,6 +715,20 @@ export class GroupFilesComponent implements OnInit {
         userData: this.userData
       }
     });
+
+    if (dialogRef) {
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        file = data;
+        const index = (this.files) ? this.files.findIndex(file => file._id == data._id) : -1;
+        if (index >= 0) {
+          this.files[index] = data;
+        }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+      });
+    }
   }
 
   async onCustomFieldEmitter(customFields) {
@@ -855,7 +868,9 @@ export class GroupFilesComponent implements OnInit {
     let blob;
     switch (fileData.type) {
       case 'file':
-        this.modifyPdf(fileData);
+        if (fileData.mime_type.includes('pdf')) {
+          this.modifyPdf(fileData);
+        }
         break;
       case 'folio':
         if (fileData

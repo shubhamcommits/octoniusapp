@@ -345,7 +345,7 @@ async function launchedApprovalFlow(data:any) {
     const notificationObject = {
         name: postedBy.first_name + ' ' + postedBy.last_name,
         text: `${postedBy.first_name} ${postedBy.last_name} launched the approval flow in the item ${itemTitle} and assigned you to review it.`,
-        image: userData.profile_pic,
+        image: userData.profile_pic || '',
         content: '\n',
         item_id: item._id,
         btn_title:'view item',
@@ -383,7 +383,7 @@ async function rejectedItem(data:any) {
     const notificationObject = {
         name: rejectedBy.first_name + ' ' + rejectedBy.last_name,
         text: `${rejectedBy.first_name} ${rejectedBy.last_name} has rejected the item ${itemTitle}.`,
-        image: userData.profile_pic,
+        image: userData.profile_pic || '',
         content: '\n',
         item_id: item._id,
         btn_title:'view item',
@@ -413,7 +413,7 @@ async function itemApproved(data:any) {
     const notificationObject = {
         name: userData.first_name + ' ' + userData.last_name,
         text: `The item ${itemTitle} has been approved by every assigned member.`,
-        image: userData.profile_pic,
+        image: userData.profile_pic || '',
         content: '\n',
         item_id: item._id,
         btn_title:'view item',

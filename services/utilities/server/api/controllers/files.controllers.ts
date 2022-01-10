@@ -231,7 +231,7 @@ export class FilesControllers {
 
             // TODO try to add a join query in the searchFiles method instead of making two calls to the DB
             let groupsIdArray = [];
-            if (workspaceId) {
+            if (workspaceId && workspaceId != 'undefined') {
                 await filesService.findWorkspaceGroupsShareFiles(workspaceId.toString()).then(groups => {
                     groupsIdArray = groups;
                 });

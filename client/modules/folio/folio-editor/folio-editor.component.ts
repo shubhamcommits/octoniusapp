@@ -507,6 +507,7 @@ export class FolioEditorComponent implements AfterViewInit {
 
   //Validates comment content and adds the comment
   async submitComment() {
+
     this.enteredComment = this.quill2.root.innerHTML;
 
     if (this.selectedText == null || this.selectedText == "") {
@@ -564,6 +565,10 @@ export class FolioEditorComponent implements AfterViewInit {
   }
 
   saveHeading() {
+    if (!this.fileData?.show_headings) {
+      this.displayHeadings();
+    }
+
     const headingIndex = this.headingsMetaData.findIndex(heading => {
       let [line1, offset1] = this.quill.getLine(heading.range.index);
       let [line2, offset2] = this.quill.getLine(this.range.index);
@@ -804,6 +809,11 @@ export class FolioEditorComponent implements AfterViewInit {
    * Creates a heading to be added to the table of content
    */
   generateHeading(value: any) {
+
+    if (!this.fileData?.show_headings) {
+      this.displayHeadings();
+    }
+
     this.range = this.quill.getSelection(true);
     let [leaf, offsetLeaf] = this.quill.getLeaf(this.range.index);
 
@@ -814,7 +824,6 @@ export class FolioEditorComponent implements AfterViewInit {
     });
 
     this.quill.formatLine(this.range.index, this.range.length, 'header', value);
-    // const elementType = leaf?.parent?.parent?.domNode?.localName;
 
     if (headingIndex >= 0) {
       let header = this.headingsMetaData[headingIndex];
@@ -826,7 +835,6 @@ export class FolioEditorComponent implements AfterViewInit {
         header.headingLevel = value;
         this.headingsMetaData[headingIndex] = header;
       }
-    //} else if (elementType && elementType.charAt(0) && elementType.charAt(0).toLowerCase() == 'h') {
     } else {
       this.headingsMetaData.push({
         text: leaf.text,
