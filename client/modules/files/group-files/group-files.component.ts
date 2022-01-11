@@ -872,7 +872,6 @@ export class GroupFilesComponent implements OnInit {
   async exportToPDF(fileData: any) {
     this.isLoading$.next(true);
 
-    let blob;
     switch (fileData.type) {
       case 'file':
         if (fileData.mime_type.includes('pdf')) {
@@ -882,21 +881,11 @@ export class GroupFilesComponent implements OnInit {
       case 'folio':
         this.modifyFolio(fileData);
         break;
-      case 'campaign':
-        break;
+      //case 'campaign':
+      //  break;
       default:
         break;
     }
-    //saveAs(blob as Blob, fileData?.original_name + ".pdf");
-    /*
-    if (this.fileData
-        && this.fileData.approval_active && this.fileData.approval_flow_launched
-        && this.fileData.approval_flow && this.fileData.approval_flow.length > 0) {
-      const blobApproval = new Blob([blob, ",another data"], { type: "application/pdf" });
-      // we use saveAs from the file-saver package to download the blob
-      saveAs(blobApproval as Blob, this.fileData?.original_name + ".pdf");
-    }
-    */
   }
 
   async modifyPdf(fileData: any) {
@@ -923,7 +912,7 @@ export class GroupFilesComponent implements OnInit {
     const folio = await this.initializeConnection(fileData._id);
 
     folio.subscribe(async () => {
-      let quillElement = document.createElement("quillElement");
+      const quillElement = document.createElement("quillElement");
       const quillInstance = new Quill(quillElement);
       quillInstance.setContents(folio?.data?.data?.delta);
       const blob = await pdfExporter.generatePdf(quillInstance.getContents());
