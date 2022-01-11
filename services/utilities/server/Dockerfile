@@ -16,7 +16,7 @@ RUN yarn install
 COPY ./ ./
 
 # Copy img & ttf files for approval pdfs to the uploads folder
-COPY ./utils/assets ./uploads/assets
+COPY ./utils/assets/ ./uploads/assets/
 
 # Build into standard javascript modules
 RUN yarn run build
