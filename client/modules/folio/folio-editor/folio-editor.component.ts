@@ -57,11 +57,9 @@ Quill2.register('modules/clipboard', QuillClipboard, true);
 })
 export class FolioEditorComponent implements AfterViewInit {
 
-  @ViewChild('editable', { static: true })
-  editRef!: ElementRef;
+  @ViewChild('editable', { static: true }) editRef!: ElementRef;
 
-  @ViewChild('editable2', { static: true })
-  editRef2!: ElementRef;
+  @ViewChild('editable2', { static: true }) editRef2!: ElementRef;
 
   // Quill instance variable
   quill: any;
