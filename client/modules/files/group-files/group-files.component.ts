@@ -898,7 +898,7 @@ export class GroupFilesComponent implements OnInit {
     if (fileData
         && fileData.approval_active && fileData.approval_flow_launched
         && fileData.approval_flow && fileData.approval_flow.length > 0) {
-      pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc);
+      pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc, token);
     } else {
       pdfBytes = await pdfDoc.save();
     }
@@ -921,7 +921,7 @@ export class GroupFilesComponent implements OnInit {
       if (fileData
           && fileData.approval_active && fileData.approval_flow_launched
           && fileData.approval_flow && fileData.approval_flow.length > 0) {
-        const pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc);
+        const pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc, this.storageService.getLocalData('authToken')['token']);
         saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
       } else {
         saveAs(blob as Blob, fileData?.original_name + ".pdf");

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import moment from 'moment/moment';
 import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
+import { environment } from 'src/environments/environment';
+import { StorageService } from '../storage-service/storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,20 +12,16 @@ export class ApprovalPDFSignaturesService {
 
   constructor() { }
 
-  async addSignaturePage(fileData: any, pdfDoc: PDFDocument) {
+  async addSignaturePage(fileData: any, pdfDoc: PDFDocument, token: string) {
     //const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
     const page = pdfDoc.addPage();
     const { width, height } = page.getSize();
 
     pdfDoc.registerFontkit(fontkit);
-    const url = 'https://www.octonius.com/wp-content/uploads/octonius_assets/IslandMoments-Regular.ttf';
-    //const url = 'fonts/IslandMoments-Regular.ttf'
-    //const url = 'https://pdf-lib.js.org/assets/ubuntu/Ubuntu-R.ttf';
-    //const url = 'https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVZ0e.ttf';
-    //const islandMomentsBytes = await fetch(url, {mode: 'no-cors'}).then(res => res.arrayBuffer());
-    const islandMomentsBytes = await fetch(url).then(res => res.arrayBuffer());
 
+    const url = environment.UTILITIES_FILES_UPLOADS + '/assets/IslandMoments-Regular.ttf?authToken=Bearer ' + token;
+    const islandMomentsBytes = await fetch(url).then(res => res.arrayBuffer());
     const fonts = {
       helvetica: await pdfDoc.embedFont(StandardFonts.Helvetica),
       //calligraffitti: await pdfDoc.embedFont(calligraffittiFontBytes),
@@ -50,11 +48,9 @@ export class ApprovalPDFSignaturesService {
       }
     );
 
-    //const jpgUrl = 'https://pdf-lib.js.org/assets/cat_riding_unicorn.jpg'
-    const jpgUrl = 'https://www.octonius.com/wp-content/uploads/octonius_assets/octo-signature.jpg';
-    const jpgImageBytes = await fetch(jpgUrl).then((res) => res.arrayBuffer())
-
-    const jpgImage = await pdfDoc.embedJpg(jpgImageBytes)
+    const jpgUrl = environment.UTILITIES_FILES_UPLOADS + '/assets/octo-signature.jpeg?authToken=Bearer ' + token;
+    const jpgImageBytes = await fetch(jpgUrl).then(res => res.arrayBuffer());
+    const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
 
     yPosition -= 15;
     page.moveTo(initialXPosition, yPosition);
@@ -219,7 +215,7 @@ export class ApprovalPDFSignaturesService {
       {
         x: x + 10,
         y: y - 30,
-        size: 18,
+        size: 25,
         font: fonts.islandMoments,
         color: rgb(0, 0.4, 1),
         //maxWidth: width,
@@ -249,7 +245,7 @@ export class ApprovalPDFSignaturesService {
       {
         x: x + 200,
         y: y - 10,
-        size: 14,
+        size: 12,
         font: fonts.helvetica,
         color: rgb(0.2, 0.2, 0.2),
         //maxWidth: width,
@@ -262,7 +258,7 @@ export class ApprovalPDFSignaturesService {
       {
         x: x + 200,
         y: y - 25,
-        size: 14,
+        size: 12,
         font: fonts.helvetica,
         color: rgb(0.2, 0.2, 0.2),
         //maxWidth: width,
@@ -275,7 +271,7 @@ export class ApprovalPDFSignaturesService {
       {
         x: x + 200,
         y: y - 40,
-        size: 14,
+        size: 12,
         font: fonts.helvetica,
         color: rgb(0.2, 0.2, 0.2),
         //maxWidth: width,
