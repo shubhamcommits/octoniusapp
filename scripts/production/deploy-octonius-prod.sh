@@ -22,6 +22,10 @@ mkdir -p data \
 
 # Give permissions to data folder
 sudo chmod u+x data
+
+# Copy assets folder to utilities uploads
+cp -R assets/ data/uploads/utilities/
+
 # Login to dockerhub
 docker login
 
