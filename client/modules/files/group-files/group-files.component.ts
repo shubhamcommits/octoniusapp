@@ -944,6 +944,7 @@ export class GroupFilesComponent implements OnInit {
     this.isLoading$.next(false);
   }
 
+  // TODO - FIND A SOLUTION TO OBTAIN THE FOLIO DATA FROM DB WITHOUT SOCKET
   initializeConnection(folioId: string) {
     // Connect with the Socket Backend
     this.shareDBSocket = new ReconnectingWebSocket(environment.FOLIO_BASE_URL + "/editor", [], {});

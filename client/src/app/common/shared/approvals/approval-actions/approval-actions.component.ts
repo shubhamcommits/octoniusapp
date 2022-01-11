@@ -1,6 +1,7 @@
 import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncapsulation, Injector, OnInit } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { PublicFunctions } from 'modules/public.functions';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApprovalService } from 'src/shared/services/approval-service/approval.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -43,6 +44,9 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
 
   // Subsink Object
   subSink = new SubSink();
+
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
 
   constructor(
     private approvalService: ApprovalService,
@@ -87,6 +91,9 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   }
 
   activateApprovalFlow() {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
     this.approvalService.activateApprovalForItem(this.itemData._id, !this.itemData.approval_active, this.type).then(res => {
       this.itemData.approval_active = !this.itemData.approval_active;
 
@@ -94,20 +101,36 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
         this.itemData.approval_flow = [];
         this.itemData.approval_flow_launched = false;
       }
+    }).catch(err => {
+      this.utilityService.errorNotification(err.error.message);
     });
+
+    // Return the function via stopping the loader
+    this.isLoading$.next(false);
   }
 
   unassign(approvalId: string) {
     if (this.canEdit) {
+      // Start the loading spinner
+      this.isLoading$.next(true);
+
       const index = (this.itemData.approval_flow) ? this.itemData.approval_flow.findIndex((approval) => approval?._id == approvalId) : -1;
       this.approvalService.removeUserFromFlow(this.itemData?._id, this.type, approvalId).then(res => {
         this.itemData.approval_flow.splice(index, 1);
         this.assigneeEmiter.emit(this.itemData);
+      }).catch(err => {
+        this.utilityService.errorNotification(err.error.message);
       });
     }
+
+    // Return the function via stopping the loader
+    this.isLoading$.next(false);
   }
 
   getMemberDetails(selectedMember: any) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
     let assignees = [];
 
     if (selectedMember._id == 'all') {
@@ -126,37 +149,55 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
       if (index < 0) {
         this.approvalService.addUserToFlow(this.itemData?._id, this.type, member._id).then(res => {
           this.itemData = res['item'];
+        }).catch(err => {
+          this.utilityService.errorNotification(err.error.message);
         });
       }
     });
 
     this.assigneeEmiter.emit(this.itemData);
+
+    // Return the function via stopping the loader
+    this.isLoading$.next(false);
   }
 
   launchApprovalFlow() {
     this.utilityService.getConfirmDialogAlert($localize`:@@approvalActions.areYouSure:Are you sure?`, $localize`:@@approvalActions.launchFlowConfirmation:By doing this, the approval flow will be launched, and all assigned members will receive notifications!`)
       .then((res) => {
         if (res.value) {
+          // Start the loading spinner
+          this.isLoading$.next(true);
+
           this.approvalService.launchApprovalFlow(this.itemData._id, this.type, !this.itemData?.approval_flow_launched).then(res => {
             this.canEdit = false;
             this.itemData.approval_flow_launched = true;
 
             this.approvalFlowLaunchedEmiter.emit(this.itemData);
+          }).catch(err => {
+            this.utilityService.errorNotification(err.error.message);
           });
         }
       });
+
+    // Return the function via stopping the loader
+    this.isLoading$.next(false);
   }
 
   doAction(action: string, approvalId: string) {
     this.utilityService.getConfirmDialogAlert($localize`:@@approvalActions.areYouSure:Are you sure?`, $localize`:@@approvalActions.actionConfirmation:By doing this, the item will be ${action}!`)
       .then((res) => {
         if (res.value) {
+          // Start the loading spinner
+          this.isLoading$.next(true);
+
           if (action == 'approved') {
             this.approvalService.approveItem(this.itemData._id, this.type, approvalId).then(res => {
               const index = (this.itemData.approval_flow) ? this.itemData.approval_flow.findIndex((approval) => approval?._id == approvalId) : -1;
               this.itemData.approval_flow[index].rejected = false;
               this.showApproveCode = true;
               this.showDescription = false;
+            }).catch(err => {
+              this.utilityService.errorNotification(err.error.message);
             });
           } else if (action == 'rejected') {
             const index = (this.itemData.approval_flow) ? this.itemData.approval_flow.findIndex((approval) => approval?._id == approvalId) : -1;
@@ -166,9 +207,15 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           }
         }
       });
+
+    // Return the function via stopping the loader
+    this.isLoading$.next(false);
   }
 
   confirmAction(action: string, approvalId: string) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
     if (this.confirmation && this.confirmation != '') {
       if (action == 'approved') {
         this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmation).then(async res => {
@@ -179,6 +226,8 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           if (this.itemData) {
             this.flowCompleted = await this.isApprovalFlowCompleted();
           }
+        }).catch(err => {
+          this.utilityService.errorNotification(err.error.message);
         });
       } else if (action == 'rejected'){
         this.approvalService.rejectItem(this.itemData._id, this.type, approvalId, this.confirmation).then(res => {
@@ -189,6 +238,8 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           this.confirmation = '';
           this.flowCompleted = false;
           this.approvalFlowLaunchedEmiter.emit(this.itemData);
+        }).catch(err => {
+          this.utilityService.errorNotification(err.error.message);
         });
       }
     } else {
@@ -198,6 +249,9 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
         this.utilityService.errorNotification($localize`:@@approvalActions.areYouSure:Please provide a reason to reject the item.`);
       }
     }
+
+    // Return the function via stopping the loader
+    this.isLoading$.next(false);
   }
 
   isApprovalFlowCompleted() {

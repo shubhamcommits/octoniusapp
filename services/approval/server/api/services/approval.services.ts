@@ -460,23 +460,24 @@ export class ApprovalService {
 
       if (itemCorrect) {
         if (type == 'file') {
-          const fileDB = await File.findById({_id: itemId}).select('approval_flow').lean();
+          const fileDB: any = await File.findById({_id: itemId}).select('approval_flow').lean();
           const approvalFileIndex = await ((fileDB && fileDB.approval_flow) ? fileDB.approval_flow.findIndex(approval => approval._id == approvalId) : -1);
   
           if (approvalFileIndex >= 0) {
             if (fileDB.approval_flow[approvalFileIndex].confirmation_code == code) {
               const fileSignatureDate = moment().format();
               const fileCrypto: any = {
-                approvalId,
-                itemId,
-                userId,
-                code,
-                fileSignatureDate
+                approvalId: approvalId,
+                itemId: itemId,
+                userId: userId,
+                approval_envelope: fileDB['approval_envelope'],
+                code: code,
+                fileSignatureDate: fileSignatureDate
               };
               const fileSignatureCode = await this.encryptData(JSON.stringify(fileCrypto));
               // TODO - find the way to do the update in one call
               await File.findOneAndUpdate(
-                { _id: itemId}, 
+                { _id: itemId},
                 {
                   $set: {
                     "approval_flow.$[approval].signature_code": fileSignatureCode,
@@ -547,17 +548,18 @@ export class ApprovalService {
             throw new Error("There is no approval with the id provided.");
           }
         } else if (type == 'post') {
-          const postDB = await Post.findById({_id: itemId}).select('approval_flow').lean();
+          const postDB: any = await Post.findById({_id: itemId}).select('approval_flow').lean();
           const approvalPostIndex = await ((postDB && postDB.approval_flow) ? postDB.approval_flow.findIndex(approval => approval._id == approvalId) : -1);
           if (approvalPostIndex >= 0) {
             if (postDB.approval_flow[approvalPostIndex].confirmation_code == code) {
               const postSignatureDate = moment().format();
               const postCrypto: any = {
-                  approvalId,
-                  itemId,
-                  userId,
-                  code,
-                  postSignatureDate
+                  approvalId: approvalId,
+                  itemId: itemId,
+                  userId: userId,
+                  approval_envelope: postDB['approval_envelope'],
+                  code: code,
+                  postSignatureDate: postSignatureDate
                 };
               const postSignatureCode = await this.encryptData(JSON.stringify(postCrypto));
               // TODO - find the way to do the update in one call
