@@ -1,9 +1,10 @@
 import { Injectable, Injector } from '@angular/core';
+import { Location } from '@angular/common';
 import {
   CanActivate,
   Router,
   ActivatedRouteSnapshot,
-  RouterStateSnapshot,
+  RouterStateSnapshot
 } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
@@ -21,7 +22,8 @@ export class FolioGuard implements CanActivate  {
     private injector: Injector,
     private router: Router,
     private groupService: GroupService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private location: Location
   ) {
 
   }
@@ -34,7 +36,7 @@ export class FolioGuard implements CanActivate  {
     const readOnly = (state.root.queryParamMap.get('readOnly') == 'true') ? true : false;
 
     let currentGroup;
-    await this.groupService.getGroup(currentGroupId, readOnly).then(res => {
+    await this.groupService.getGroup(currentGroupId).then(res => {
       currentGroup = res['group'];
     });
 
@@ -44,11 +46,11 @@ export class FolioGuard implements CanActivate  {
 
     let userData = await this.publicFunctions.getCurrentUser();
     const fileId = next['_urlSegment'].segments[1].path;
-    let file = await this.publicFunctions.getFile(fileId);
+    let file: any = await this.publicFunctions.getFile(fileId);
 
     const isAdmin = await this.isAdminUser(currentGroup, userData);
 
-    const canEdit = await this.utilityService.canUserDoFileAction(file, currentGroup, userData, 'edit') && (!currentGroup?.files_for_admins || isAdmin);
+    let canEdit = await this.utilityService.canUserDoFileAction(file, currentGroup, userData, 'edit') && (!currentGroup?.files_for_admins || isAdmin);
     let canView = false;
     if (!canEdit) {
       const hide = await this.utilityService.canUserDoFileAction(file, currentGroup, userData, 'hide');

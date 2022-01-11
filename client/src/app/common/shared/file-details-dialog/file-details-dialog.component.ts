@@ -85,20 +85,17 @@ export class FileDetailsDialogComponent implements OnInit {
 
     await this.initFileData();
 
-    this.canEdit = await this.utilityService.canUserDoTaskAction(this.fileData, this.groupData, this.userData, 'edit');
+    this.canEdit = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'edit');
+
     if (!this.canEdit) {
-      const hide = await this.utilityService.canUserDoTaskAction(this.fileData, this.groupData, this.userData, 'hide');
-      this.canView = await this.utilityService.canUserDoTaskAction(this.fileData, this.groupData, this.userData, 'view') || !hide;
+      const hide = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'hide');
+      this.canView = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'view') || !hide;
     } else {
       this.canView = true;
     }
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
-  }
-
-  formateDate(date: any) {
-    return date ? moment.utc(date).format("YYYY-MM-DD") : '';
   }
 
   formateCFDate(date){
@@ -260,5 +257,14 @@ export class FileDetailsDialogComponent implements OnInit {
    */
   getDate(dateObject: any, cfName: string) {
     this.saveCustomField(cfName, dateObject.toDate());
+  }
+
+  onAssigneeEmitter(fileData: any) {
+    this.fileData = fileData;
+  }
+
+  async onApprovalFlowLaunchedEmiter(fileData: any) {
+    this.fileData = fileData;
+    this.canEdit = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'edit');
   }
 }

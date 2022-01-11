@@ -18,6 +18,7 @@ import { environment } from 'src/environments/environment';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
+import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -789,6 +790,27 @@ export class PublicFunctions {
     }
 
     /**
+    * This function is responsible for fetching a flamingo's details
+    * @param fileId
+    */
+    public async getFlamingo(fileId: any) {
+      return new Promise((resolve) => {
+
+        // Flamingo Service
+        let flamingoService = this.injector.get(FlamingoService);
+
+        // Fetch the Flamingo details
+        flamingoService.getOne(fileId)
+          .then((res) => {
+            resolve(res['flamingo'])
+          })
+          .catch(() => {
+            resolve({})
+          });
+      });
+    }
+
+    /**
      * This function is responsible for fetching the files from the server based on the groupId
      * @param groupId
      * @param folderId
@@ -1444,8 +1466,10 @@ export class PublicFunctions {
                                 let postSection;
                                 if (post?.task?.shuttle_type && (post?.task?._shuttle_group?._id || post?.task?._shuttle_group) == groupId) {
                                     postSection = (post.task._shuttle_section._id || post.task._shuttle_section);
-                                } else {
+                                } else if (post.task._column) {
                                     postSection = (post.task._column._id || post.task._column);
+                                } else {
+                                    postSection = '';
                                 }
                                 retValue = triggerSection.toString() == postSection.toString();
                             }

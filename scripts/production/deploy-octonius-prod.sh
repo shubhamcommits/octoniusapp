@@ -22,11 +22,16 @@ mkdir -p data \
 
 # Give permissions to data folder
 sudo chmod u+x data
+
+# Copy assets folder to utilities uploads
+cp -R assets/ data/uploads/utilities/
+
 # Login to dockerhub
 docker login
 
 # Pull the new Docker image from the Docker registry
           docker pull $MONGO_IMAGE_NAME
+          docker pull $APPROVAL_IMAGE_NAME
           docker pull $AUTHS_IMAGE_NAME
           docker pull $GROUPS_IMAGE_NAME
           docker pull $WORKSPACES_IMAGE_NAME

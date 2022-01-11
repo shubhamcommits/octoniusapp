@@ -38,7 +38,7 @@ export class SlackService {
                                 "text": data['btn_title'],
                                 "emoji": true
                             },
-                            url: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${data['group_id']}&myWorkplace=false&postId=${data['post_id']}`
+                            url: data['itemUrl']
                         }]
                 }]
             }]

@@ -17,7 +17,14 @@ import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.s
 import { FileDetailsDialogComponent } from 'src/app/common/shared/file-details-dialog/file-details-dialog.component';
 import { GroupService } from 'src/shared/services/group-service/group.service';
 import moment from 'moment';
+import { pdfExporter } from "quill-to-pdf";
+import { saveAs } from "file-saver";
+import { PDFDocument } from 'pdf-lib';
+import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-signatures-service/approval-pdf-signatures.service';
 
+import ReconnectingWebSocket from 'reconnecting-websocket';
+import * as ShareDB from "sharedb/lib/client";
+import Quill from 'quill';
 @Component({
   selector: 'app-group-files',
   templateUrl: './group-files.component.html',
@@ -91,6 +98,8 @@ export class GroupFilesComponent implements OnInit {
   filteringBit: String = 'none'
   filteringData: any;
 
+  shareDBSocket;
+
   // More to load maintains check if we have more to load members on scroll
   public moreToLoad: boolean = true;
 
@@ -110,7 +119,8 @@ export class GroupFilesComponent implements OnInit {
     private foldersService: FoldersService,
     public dialog: MatDialog,
     public storageService: StorageService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private approvalPDFSignaturesService: ApprovalPDFSignaturesService
   ) { }
 
   async ngOnInit() {
@@ -164,6 +174,12 @@ export class GroupFilesComponent implements OnInit {
          });
        }
      });
+
+     if (this._router.routerState.snapshot.root.queryParamMap.has('itemId')) {
+       const itemId = this._router.routerState.snapshot.root.queryParamMap.get('itemId');
+       const file = await this.publicFunctions.getFile(itemId);
+       this.openFileDetailsDialog(file);
+     }
   }
 
   ngAfterViewInit(){
@@ -505,12 +521,16 @@ export class GroupFilesComponent implements OnInit {
    * @param fileName - Name of the file to obtain the icon img
    */
   getFileIcon(fileName: string) {
+    return "assets/images/" + this.getFileExtension(fileName) + "-file-icon.png";
+  }
+
+  getFileExtension(fileName: string) {
     let file = fileName.split(".");
     let fileType = file[file.length-1].toLowerCase();
     if (fileType == 'mp4') {
       fileType = 'mov';
     }
-    return "assets/images/" + fileType + "-file-icon.png";
+    return fileType;
   }
 
   /**
@@ -657,9 +677,8 @@ export class GroupFilesComponent implements OnInit {
     let filesTmp = [];
     files.forEach(async file => {
         file.canDelete = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'delete');
-        const canEdit = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'edit') && (!this.groupData?.files_for_admins || this.isAdmin);
+        let canEdit = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'edit') && (!this.groupData?.files_for_admins || this.isAdmin);
         let canView = false;
-
         if (!canEdit) {
           const hide = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'hide');
           canView = await this.utilityService.canUserDoFileAction(file, this.groupData, this.userData, 'view') || !hide;
@@ -681,7 +700,6 @@ export class GroupFilesComponent implements OnInit {
 
     if (dialogRef) {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
-
       });
 
       dialogRef.afterClosed().subscribe(result => {
@@ -702,6 +720,20 @@ export class GroupFilesComponent implements OnInit {
         userData: this.userData
       }
     });
+
+    if (dialogRef) {
+      const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
+        file = data;
+        const index = (this.files) ? this.files.findIndex(file => file._id == data._id) : -1;
+        if (index >= 0) {
+          this.files[index] = data;
+        }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        closeEventSubs.unsubscribe();
+      });
+    }
   }
 
   async onCustomFieldEmitter(customFields) {
@@ -835,5 +867,81 @@ export class GroupFilesComponent implements OnInit {
     } else if (this.sortingBit == 'reverse' || this.sortingBit == 'inverse') {
       this.files.reverse();
     }
+  }
+
+  async exportToPDF(fileData: any) {
+    this.isLoading$.next(true);
+
+    switch (fileData.type) {
+      case 'file':
+        if (fileData.mime_type.includes('pdf')) {
+          this.modifyPdf(fileData);
+        }
+        break;
+      case 'folio':
+        this.modifyFolio(fileData);
+        break;
+      //case 'campaign':
+      //  break;
+      default:
+        break;
+    }
+  }
+
+  async modifyPdf(fileData: any) {
+    const token = this.storageService.getLocalData('authToken')['token'];
+    const url = this.filesBaseUrl + '/' + fileData?.modified_name + '?authToken=Bearer ' + token;
+    const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+
+    let pdfBytes;
+    if (fileData
+        && fileData.approval_active && fileData.approval_flow_launched
+        && fileData.approval_flow && fileData.approval_flow.length > 0) {
+      pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc, token);
+    } else {
+      pdfBytes = await pdfDoc.save();
+    }
+
+    saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
+
+    this.isLoading$.next(false);
+  }
+
+  async modifyFolio(fileData: any) {
+    const folio = await this.initializeConnection(fileData._id);
+
+    folio.subscribe(async () => {
+      const quillElement = document.createElement("quillElement");
+      const quillInstance = new Quill(quillElement);
+      quillInstance.setContents(folio?.data?.data?.delta);
+      const blob = await pdfExporter.generatePdf(quillInstance.getContents());
+      const pdfDoc = await PDFDocument.load(await blob.arrayBuffer());
+
+      if (fileData
+          && fileData.approval_active && fileData.approval_flow_launched
+          && fileData.approval_flow && fileData.approval_flow.length > 0) {
+        const pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc, this.storageService.getLocalData('authToken')['token']);
+        saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
+      } else {
+        saveAs(blob as Blob, fileData?.original_name + ".pdf");
+      }
+
+      this.shareDBSocket?.close();
+    });
+
+    this.isLoading$.next(false);
+  }
+
+  // TODO - FIND A SOLUTION TO OBTAIN THE FOLIO DATA FROM DB WITHOUT SOCKET
+  initializeConnection(folioId: string) {
+    // Connect with the Socket Backend
+    this.shareDBSocket = new ReconnectingWebSocket(environment.FOLIO_BASE_URL + "/editor", [], {});
+
+    // Initialise the Realtime DB Connection
+    let shareDBConnection = new ShareDB.Connection(this.shareDBSocket);
+
+    // Return the Document with the respective folioId
+    return shareDBConnection.get("documents", folioId);
   }
 }

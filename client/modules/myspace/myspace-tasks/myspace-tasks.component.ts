@@ -63,13 +63,43 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
   }
 
   async loadTasks() {
-    this.todayTasks = await this.getUserTodayTasks();
-    this.thisWeekTasks = await this.getUserThisWeekTasks();
-    this.overdueTasks = await this.getUserOverdueTasks();
-    this.nextWeekTasks = await this.getUserNextWeekTasks();
-    this.futureTasks = await this.getUserFutureTasks();
+    this.todayTasks = this.filterRAGTasks(await this.getUserTodayTasks());
+    this.thisWeekTasks = this.filterRAGTasks(await this.getUserThisWeekTasks());
+    this.overdueTasks = this.filterRAGTasks(await this.getUserOverdueTasks());
+    this.nextWeekTasks = this.filterRAGTasks(await this.getUserNextWeekTasks());
+    this.futureTasks = this.filterRAGTasks(await this.getUserFutureTasks());
 
     this.markOverdueTasks();
+  }
+
+
+
+  filterRAGTasks(tasks) {
+    let tasksTmp = [];
+
+    if (tasks) {
+      // Filtering other tasks
+      tasks.forEach(async task => {
+        if (task?.permissions && task?.permissions?.length > 0) {
+          const canEdit = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'edit');
+          let canView = false;
+          if (!canEdit) {
+            const hide = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'hide');
+            canView = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'view') || !hide;
+          }
+
+          if (canEdit || canView) {
+            task.canView = true;
+            tasksTmp.push(task);
+          }
+        } else {
+          task.canView = true;
+          tasksTmp.push(task);
+        }
+      });
+    }
+
+    return tasksTmp;
   }
 
   formateDate(date){

@@ -29,6 +29,10 @@ export class FolioService {
   }
 
   displayHeadings(fileId: string, showHeadings: boolean) {
-    return this._http.put(`${environment.FOLIO_HTTP_URL}/${fileId}/displayHeadings`, {showHeadings}).toPromise();
+    return this._http.put(`${environment.FOLIO_HTTP_URL}/${fileId}/displayHeadings`, { showHeadings }).toPromise();
+  }
+
+  displayComments(fileId: string, showComments: boolean) {
+    return this._http.put(`${environment.FOLIO_HTTP_URL}/${fileId}/displayComments`, { showComments }).toPromise();
   }
 }

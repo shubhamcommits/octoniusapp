@@ -19,6 +19,7 @@ pipelines:
           
           # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
           - export CLIENT_IMAGE_NAME=octoniusapp/octonius-prod:client
+          - export APPROVAL_IMAGE_NAME=octoniusapp/octonius-prod:approval-server
           - export AUTHS_IMAGE_NAME=octoniusapp/octonius-prod:auths-server
           - export GROUPS_IMAGE_NAME=octoniusapp/octonius-prod:groups-server
           - export WORKSPACES_IMAGE_NAME=octoniusapp/octonius-prod:workspaces-server
@@ -34,6 +35,7 @@ pipelines:
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
           - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
+          - docker build -t $APPROVAL_IMAGE_NAME --compress=true --force-rm=true ./services/approval/server
           - docker build -t $AUTHS_IMAGE_NAME --compress=true --force-rm=true ./services/authentication/server
           - docker build -t $GROUPS_IMAGE_NAME --compress=true --force-rm=true ./services/groups/server
           - docker build -t $WORKSPACES_IMAGE_NAME --compress=true --force-rm=true ./services/workspaces/server
@@ -55,6 +57,7 @@ pipelines:
 
           # push the new Docker image to the Docker registry
           - docker push $CLIENT_IMAGE_NAME
+          - docker push $APPROVAL_IMAGE_NAME
           - docker push $AUTHS_IMAGE_NAME
           - docker push $GROUPS_IMAGE_NAME
           - docker push $WORKSPACES_IMAGE_NAME
@@ -91,6 +94,7 @@ pipelines:
           
           # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
           - export CLIENT_IMAGE_NAME=octoniusapp/octonius:client
+          - export APPROVAL_IMAGE_NAME=octoniusapp/octonius:approval-server
           - export AUTHS_IMAGE_NAME=octoniusapp/octonius:auths-server
           - export GROUPS_IMAGE_NAME=octoniusapp/octonius:groups-server
           - export WORKSPACES_IMAGE_NAME=octoniusapp/octonius:workspaces-server
@@ -106,6 +110,7 @@ pipelines:
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
           - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
+          - docker build -t $APPROVAL_IMAGE_NAME --compress=true --force-rm=true ./services/approval/server
           - docker build -t $AUTHS_IMAGE_NAME --compress=true --force-rm=true ./services/authentication/server
           - docker build -t $GROUPS_IMAGE_NAME --compress=true --force-rm=true ./services/groups/server
           - docker build -t $WORKSPACES_IMAGE_NAME --compress=true --force-rm=true ./services/workspaces/server
@@ -127,6 +132,7 @@ pipelines:
 
           # push the new Docker image to the Docker registry
           - docker push $CLIENT_IMAGE_NAME
+          - docker push $APPROVAL_IMAGE_NAME
           - docker push $AUTHS_IMAGE_NAME
           - docker push $GROUPS_IMAGE_NAME
           - docker push $WORKSPACES_IMAGE_NAME

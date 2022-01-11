@@ -189,15 +189,23 @@ export class RecentActivityComponent implements OnInit {
     this._router.navigate(['/document', folioId], { queryParams: { group: groupId } });
   }
 
+  viewApprovalNotification(notification: any) {
+    if (notification?._origin_post && notification?._origin_psot?.type == 'task') {
+      const groupId = notification?._origin_psot?._group._id || notification?._origin_post?._group;
+      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, myWorkplace: false, postId: notification?._origin_post?._id } });
+    } else if (notification?._origin_folio) {
+      const groupId = notification?._origin_folio?._group._id || notification?._origin_folio?._group;
+      this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId, myWorkplace: false, itemId: notification?._origin_folio?._id } });
+    }
+  }
+
   /**
    * This function opens the dialog of the post where notification has occurred
    * @param postId - userId of the current user
-   * @param postType - post type
    * @param group - group Id
    */
-  viewPost(postId: string, postType: string, group: any) {
+  viewPost(postId: string, group: any) {
     const groupId = (group._id) ? group._id : group;
-
     this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, myWorkplace: false, postId: postId } });
   }
 

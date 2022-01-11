@@ -25,6 +25,12 @@ async function parsedNotificationData(data: any) {
                 return await postMention(data);
             case 'COMMENTMENTION':
                 return await commentMention(data);
+            case 'LAUNCHAPPROVALFLOW':
+                return await launchedApprovalFlow(data);
+            case 'ITEMREJECTED':
+                return await rejectedItem(data);
+            case 'ITEMAPPROVED':
+                return await itemApproved(data);
             default:
                 return "am here working";
         }
@@ -62,7 +68,8 @@ async function taskAssigned(data:any){
         group_id:groupId,
         post_id: data.postId,
         content: '\n ',
-        btn_title:'view task'
+        btn_title:'view task',
+        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.postId}`
     }
 
     return notificationObject;
@@ -93,7 +100,8 @@ async function statusChanged(data:any) {
         content: '\n ',
         group_id: groupId,
         post_id: data.postId,
-        btn_title:'view task'
+        btn_title:'view task',
+        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.postId}`
     }
 
     return notificationObject;
@@ -120,7 +128,8 @@ async function commented(data:any) {
         content: '\n ',
         group_id: groupId,
         post_id: data.postId,
-        btn_title:'view comment'
+        btn_title:'view comment',
+        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.postId}`
     }
 
     return notificationObject;
@@ -153,7 +162,8 @@ async function followPost(data:any) {
         content: '\n ',
         group_id: groupId,
         post_id: data.postId,
-        btn_title:'view post'
+        btn_title:'view post',
+        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.postId}`
     }
 
     return notificationObject;
@@ -192,7 +202,8 @@ async function likePost(data:any) {
         content: '\n ',
         group_id: postObject['_group'],
         post_id: data.postId,
-        btn_title:'view post'
+        btn_title:'view post',
+        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${postObject['_group']}&myWorkplace=false&postId=${data.postId}`
     }
 
     return notificationObject;
@@ -232,7 +243,8 @@ async function likeComment(data:any) {
         content: '\n ',
         groupId: groupId,
         post_id: data.postId,
-        btn_title:'view post'
+        btn_title:'view post',
+        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.postId}`
     }
 
     return notificationObject;
@@ -258,10 +270,11 @@ async function postMention(data:any) {
         name: assigneFromFullName,
         text: `${assigneFromFullName} mentioned ${data.mentioned_all?'all':'you'} in ${postTitle}`,
         image: assigneFromProfilePic,
-        group_id:groupId,
+        group_id: groupId,
         post_id: data.postId,
         content: '\n ',
-        btn_title:'view task'
+        btn_title:'view task',
+        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.postId}`
     }
 
     return notificationObject;
@@ -297,7 +310,114 @@ async function commentMention(data:any) {
         content: '\n',
         group_id: groupId,
         post_id: data.comment._post._id,
-        btn_title:'view comment'
+        btn_title:'view comment',
+        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.comment._post._id}`
+    }    
+
+    return notificationObject;
+}
+
+async function launchedApprovalFlow(data:any) {
+    
+    const item = data.item;
+    const userId = data.userId;
+    const posted_by = data.posted_by;
+    
+    const userData = await User.findById(userId, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+    
+    const postedBy = await User.findById(posted_by._id || posted_by, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+
+    const itemTitle = item.title || item.original_name;
+    const itemUrl = (item.type == 'task')
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${item._group._id}&myWorkplace=false&postId=${item._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/files?group=${item._group._id}&myWorkplace=false&itemId=${item._id}`;
+
+    const notificationObject = {
+        name: postedBy.first_name + ' ' + postedBy.last_name,
+        text: `${postedBy.first_name} ${postedBy.last_name} launched the approval flow in the item ${itemTitle} and assigned you to review it.`,
+        image: userData.profile_pic || '',
+        content: '\n',
+        item_id: item._id,
+        btn_title:'view item',
+        itemUrl: itemUrl
+    }    
+
+    return notificationObject;
+}
+
+async function rejectedItem(data:any) {
+    
+    const item = data.item;
+    const userId = data.userId;
+    const rejected_by = data.rejected_by;
+    
+    const userData = await User.findById(userId, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+    
+    const rejectedBy = await User.findById(rejected_by._id || rejected_by, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+
+    const itemTitle = item.title || item.original_name;
+    const itemUrl = (item.type == 'task')
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${item._group._id}&myWorkplace=false&postId=${item._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/files?group=${item._group._id}&myWorkplace=false&itemId=${item._id}`;
+
+    const notificationObject = {
+        name: rejectedBy.first_name + ' ' + rejectedBy.last_name,
+        text: `${rejectedBy.first_name} ${rejectedBy.last_name} has rejected the item ${itemTitle}.`,
+        image: userData.profile_pic || '',
+        content: '\n',
+        item_id: item._id,
+        btn_title:'view item',
+        itemUrl: itemUrl
+    }    
+
+    return notificationObject;
+}
+
+async function itemApproved(data:any) {
+    
+    const item = data.item;
+    const userId = data.userid;
+
+    const userData = await User.findById(userId, (err, data) => {
+        if(err){
+        } else {
+            return data;
+        }
+    });
+
+    const itemTitle = item.title || item.original_name;
+    const itemUrl = (item.type == 'task')
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${item._group._id}&myWorkplace=false&postId=${item._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/files?group=${item._group._id}&myWorkplace=false&itemId=${item._id}`;
+
+    const notificationObject = {
+        name: userData.first_name + ' ' + userData.last_name,
+        text: `The item ${itemTitle} has been approved by every assigned member.`,
+        image: userData.profile_pic || '',
+        content: '\n',
+        item_id: item._id,
+        btn_title:'view item',
+        itemUrl: itemUrl
     }    
 
     return notificationObject;

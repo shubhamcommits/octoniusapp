@@ -30,6 +30,12 @@
 
 <div class="folio-container">
   <!-- Table of Content Starts -->
+  <div class="outline-section d-none d-lg-block" *ngIf="fileData && fileData?.show_headings && (!headingsMetaData || headingsMetaData.length == 0)">
+    <h5 class="text-center mb-4">
+      <i class="material-icons">list_alt</i>
+      <span i18n="@@folioEditor.tableContent">Folio Outline</span>
+    </h5>
+  </div>
   <div class="outline-section d-none d-lg-block" *ngIf="fileData && fileData?.show_headings && headingsMetaData && headingsMetaData.length > 0">
     <h5 class="text-center mb-4">
       <i class="material-icons">list_alt</i>
@@ -39,11 +45,24 @@
     <div (click)="highlight(heading.range)" *ngFor="let heading of headingsMetaData;let ind = index">
       <div class="heading level1" *ngIf="heading.headingLevel == 1">
         <span>{{ heading.text }}</span>
-        <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
+        <div>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)">delete</i>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
+        </div>
       </div>
       <div class="heading level2" *ngIf="heading.headingLevel == 2">
         <span>{{ heading.text }}</span>
-        <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
+        <div>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)">delete</i>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
+        </div>
+      </div>
+      <div class="heading level3" *ngIf="heading.headingLevel == 3">
+        <span [innerHTML]="heading.text"></span>
+        <div>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="deleteHeading(heading)">delete</i>
+          <i class="material-icons-outlined" style="cursor: pointer;" (click)="createLink(heading.range)">link</i>
+        </div>
       </div>
       <!-- <h3 *ngIf="heading.headingLevel == 3"> {{ heading.text }} </h3> -->
     </div>
@@ -57,16 +76,22 @@
   <!-- Quill Editor Component Ends -->
 
   <!-- Comments Starts -->
-  <div class="comments-section d-none d-lg-block" *ngIf="commentsMetaData && commentsMetaData.length > 0">
+  <div class="comments-section d-none d-lg-block" *ngIf="fileData && fileData?.show_comments && (!commentsMetaData || commentsMetaData.length == 0)">
+    <h5 class="text-center mb-4">
+      <i class="material-icons">comment</i>
+      <span i18n="@@folioEditor.comments">COMMENTS</span>
+    </h5>
+  </div>
 
-      <h5 class="text-center mb-4">
-        <i class="material-icons">comment</i>
-        <span i18n="@@folioEditor.comments">COMMENTS</span>
-      </h5>
-
+  <div class="comments-section d-none d-lg-block" *ngIf="fileData && fileData?.show_comments && commentsMetaData && commentsMetaData.length > 0">
+    <h5 class="text-center mb-4">
+      <i class="material-icons">comment</i>
+      <span i18n="@@folioEditor.comments">COMMENTS</span>
+    </h5>
 
     <div class="comment-area">
-      <div class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}" (click)="highlight(meta.range)" *ngFor="let meta of commentsMetaData;let ind = index">
+      <div *ngFor="let meta of commentsMetaData;let ind = index" (click)="highlight(meta.range)"
+          class="commentmsg" [ngClass]="{'commentmsg-highlight' : commentsToDisplay.includes(ind)}">
         <div class="comment-profile">
           <div class="profile">
               <app-secured-image *ngIf="meta.profile_pic"
@@ -76,7 +101,7 @@
             <h6>{{meta.user_name}}</h6>
           </div>
 
-          <a class="close" (click)="deleteComment(ind)">
+          <a class="close" (click)="deleteComment(ind)" *ngIf="!readOnly || userData?._id == meta.userId">
             <i  class="material-icons muted" style="cursor: pointer">close</i>
           </a>
         </div>

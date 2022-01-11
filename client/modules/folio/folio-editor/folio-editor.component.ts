@@ -1,4 +1,4 @@
-import { Injector, AfterViewInit, Component, ElementRef, OnInit, ViewChild, LOCALE_ID, Inject } from '@angular/core';
+import { Injector, AfterViewInit, Component, ElementRef, ViewChild, LOCALE_ID, Inject } from '@angular/core';
 import { PublicFunctions } from "modules/public.functions";
 import { ActivatedRoute } from "@angular/router";
 import { SubSink } from "subsink";
@@ -55,13 +55,11 @@ Quill2.register('modules/clipboard', QuillClipboard, true);
   templateUrl: "./folio-editor.component.html",
   styleUrls: ["./folio-editor.component.scss"],
 })
-export class FolioEditorComponent implements OnInit, AfterViewInit {
+export class FolioEditorComponent implements AfterViewInit {
 
-  @ViewChild('editable', { static: true })
-  editRef!: ElementRef;
+  @ViewChild('editable', { static: true }) editRef!: ElementRef;
 
-  @ViewChild('editable2', { static: true })
-  editRef2!: ElementRef;
+  @ViewChild('editable2', { static: true }) editRef2!: ElementRef;
 
   // Quill instance variable
   quill: any;
@@ -89,6 +87,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   //Comment modal boolean
   commentBool: boolean = false;
+  //Comment modal type. this will be use to re-use the modal for comments and headings
+  commentType: string = 'comment';
 
   // Table modal boolean
   tableShow: boolean = false;
@@ -184,15 +184,19 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           ['bold', 'italic', 'underline', 'strike'],
           [{ 'color': [] }, { 'background': [] }],
           [{ 'script': 'super' }, { 'script': 'sub' }],
-          [{ 'header': '1' }, { 'header': '2' }, /*'content',*/ 'blockquote', 'code-block'],
+          [{ 'header': '1' }, { 'header': '2' }, 'outline', 'content', 'blockquote', 'code-block'],
           [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
           ['direction', { 'align': [] }],
           ['link', 'image', 'video', 'formula'],
-          ['comment'],['tables'],['clear'],['export-pdf'/*, 'export-doc'*/]
+          ['comment', 'comment_display'],['tables'],['clear'],['export-pdf'/*, 'export-doc'*/]
         ],
         handlers : {
           'comment': () => {
             this.openComment();
+          },
+          // Show/Hide the table of Comments
+          'comment_display': () => {
+            this.displayComments();
           },
           'tables': () => {
             this.openTableOptions();
@@ -204,15 +208,16 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
           'header': (value) => {
             this.generateHeading(value);
           },
+          // Generate the headings
+          'outline': (value) => {
+            this.generateHeadingOutline();
+          },
           // Show/Hide the table of Content
-          /*
-          TODO Commented until BRD pays
           'content': () => {
             this.displayHeadings();
           },
-          */
           /*
-          // Show/Hide the table of Content
+          // Automatic generate the table of Content
           'list': (value) => {
             this.generateList(value);
           },
@@ -254,17 +259,13 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     };
   }
 
-  async ngOnInit() {
+  async ngAfterViewInit() {
+
     if (!this.readOnly) {
       this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     }
     this.folio = this.initializeConnection();
-    this.fileData = await this.getFile(this.folioId, this.readOnly);
-    // TODO - Remove the following line when BRD pays
-    this.fileData.show_headings = false;
-  }
-
-  async ngAfterViewInit() {
+    this.fileData = await this.publicFunctions.getFile(this.folioId, this.readOnly);
 
     // Fetch User Data
     if (!this.readOnly) {
@@ -274,7 +275,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
       const groupIndex = await this.userData?._groups?.findIndex((group) => {
         return (group._id || group) == this.groupId;
       });
-      this.readOnly = this.readOnly || groupIndex < 0;
+
+      let groupData: any = this.userData?._groups[groupIndex];
+      let canEdit = await this.utilityService.canUserDoFileAction(this.fileData, groupData, this.userData, 'edit') && (!groupData?.files_for_admins || this.isAdminUser(groupData));
+
+      this.readOnly = this.readOnly || groupIndex < 0 || !canEdit;
     }
 
     this.initEditor();
@@ -304,10 +309,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     });
 
     document.querySelector(".ql-comment").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">comment</span>';
+    document.querySelector(".ql-comment_display").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">forum</span>';
     document.querySelector(".ql-clear").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">auto_fix_high</span>';
+    document.querySelector('.ql-outline').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list</span>';
     document.querySelector('.ql-tables').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">table_chart</span>';
-    // TODO Commented until BRD pays
-    // document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
+    document.querySelector('.ql-content').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">list_alt</span>';
     document.querySelector(".ql-export-pdf").innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">picture_as_pdf</span>';
     // document.querySelector('.ql-export-doc').innerHTML = '<span class="material-icons-outlined" style="font-size: 20px;">file_download</span>';
   }
@@ -437,8 +443,8 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     return arr;
   }
 
-   // Delete Comment
-   deleteComment(index: any) {
+  // Delete Comment
+  deleteComment(index: any) {
     this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.commentCompletelyRemoved:By doing this, the comment be completely removed!`)
       .then((res) => {
         if (res.value) {
@@ -485,28 +491,49 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
   //Opens dialog box to enter commment
   openComment() {
     this.commentBool = true;
+    this.commentType = 'comment';
+    this.range = this.quill.getSelection(true);
+    this.selectedText = this.quill.getText(this.range.index, this.range.length);
+  }
+
+  generateHeadingOutline() {
+    this.commentBool = true;
+    this.commentType = 'heading';
     this.range = this.quill.getSelection(true);
     this.selectedText = this.quill.getText(this.range.index, this.range.length);
   }
 
   //Validates comment content and adds the comment
   async submitComment() {
+
     this.enteredComment = this.quill2.root.innerHTML;
 
     if (this.selectedText == null || this.selectedText == "") {
       await this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.noContentSelected:No content is selected`).then(res => {
         if (res.value) {
-          this.saveComment();
+          if (this.commentType == 'comment') {
+            this.saveComment();
+          } else if (this.commentType == 'heading') {
+            this.saveHeading();
+          }
         }
       });
     } else if (this.enteredComment == null || this.enteredComment == "" || this.enteredComment == "<p><br></p>") {
       await this.utilityService.getConfirmDialogAlert($localize`:@@folioEditor.areYouSure:Are you sure?`, $localize`:@@folioEditor.pleaseEnterComment:Please enter the comment`).then(res => {
         if (res.value) {
-          this.saveComment();
+          if (this.commentType == 'comment') {
+            this.saveComment();
+          } else if (this.commentType == 'heading') {
+            this.saveHeading();
+          }
         }
       });
     } else {
-      this.saveComment();
+      if (this.commentType == 'comment') {
+        this.saveComment();
+      } else if (this.commentType == 'heading') {
+        this.saveHeading();
+      }
     }
   }
 
@@ -524,7 +551,7 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     if (!this.commentsMetaData) {
       this.commentsMetaData = [];
     }
-    this.commentsMetaData.push({ range: this.range, comment: this.enteredComment, user_name : userName, profile_pic : this.userData.profile_pic });
+    this.commentsMetaData.push({ range: this.range, comment: this.enteredComment, userId: this.userData._id, user_name : userName, profile_pic : this.userData.profile_pic });
     this.commentsMetaData = await this.sortComments();
     this.quill.formatText(this.range.index, this.range.length, {
       background: "#fff72b",
@@ -532,10 +559,42 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
     this.saveQuillData();
 
-    this.quill2.deleteText(0, this.quill2.getLength());
-    this.commentBool = false;
-    this.selectedText = null;
-    this.enteredComment = null;
+    this.closeComment();
+  }
+
+  saveHeading() {
+    if (!this.fileData?.show_headings) {
+      this.displayHeadings();
+    }
+
+    const headingIndex = this.headingsMetaData.findIndex(heading => {
+      let [line1, offset1] = this.quill.getLine(heading.range.index);
+      let [line2, offset2] = this.quill.getLine(this.range.index);
+      return line1 == line2;
+    });
+
+    if (headingIndex >= 0) {
+      let header = this.headingsMetaData[headingIndex];
+      if (header.headingLevel == 3) {
+        this.headingsMetaData.splice(headingIndex, 1);
+      } else {
+        header.text = this.enteredComment,
+        header.range = this.range,
+        header.headingLevel = 3;
+        this.headingsMetaData[headingIndex] = header;
+      }
+      this.quill.formatLine(this.range.index, this.range.length, 'header', 0);
+    } else {
+      this.headingsMetaData.push({
+        text: this.enteredComment,
+        range: this.range,
+        headingLevel: 3
+      });
+    }
+
+    this.sortHeaders();
+    this.saveQuillData();
+    this.closeComment();
   }
 
   //Closes the comment dialog box
@@ -748,6 +807,11 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
    * Creates a heading to be added to the table of content
    */
   generateHeading(value: any) {
+
+    if (!this.fileData?.show_headings) {
+      this.displayHeadings();
+    }
+
     this.range = this.quill.getSelection(true);
     let [leaf, offsetLeaf] = this.quill.getLeaf(this.range.index);
 
@@ -758,22 +822,42 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
     });
 
     this.quill.formatLine(this.range.index, this.range.length, 'header', value);
-    const elementType = leaf?.parent?.domNode?.localName;
+
     if (headingIndex >= 0) {
       let header = this.headingsMetaData[headingIndex];
       if (!value || header.headingLevel == value) {
         this.headingsMetaData.splice(headingIndex, 1);
       } else {
+        header.text = leaf.text,
         header.range = this.range,
         header.headingLevel = value;
         this.headingsMetaData[headingIndex] = header;
       }
-    } else if (elementType && elementType.charAt(0) && elementType.charAt(0).toLowerCase() == 'h') {
+    } else {
       this.headingsMetaData.push({
         text: leaf.text,
         range: this.range,
         headingLevel: value
       });
+    }
+
+    this.sortHeaders();
+    this.saveQuillData();
+  }
+
+  deleteHeading(heading: any) {
+    const headingIndex = this.headingsMetaData.findIndex(h => {
+      let [line1, offset1] = this.quill.getLine(h.range.index);
+      let [line2, offset2] = this.quill.getLine(heading.range.index);
+      return line1 == line2;
+    });
+
+    if ((heading.headingLevel == 1 || heading.headingLevel == 2) && headingIndex >= 0) {
+      this.quill.formatLine(heading.range.index, heading.range.length, 'header', false);
+    }
+
+    if (headingIndex >= 0) {
+      this.headingsMetaData.splice(headingIndex, 1);
     }
 
     this.sortHeaders();
@@ -816,10 +900,18 @@ export class FolioEditorComponent implements OnInit, AfterViewInit {
 
   displayHeadings() {
     this.folioService.displayHeadings(this.fileData?._id, !this.fileData?.show_headings).then(res => {
-      this.fileData.show_headings = !this.fileData?.show_headings;
-    }).catch (err => {
-      this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
-    });
+        this.fileData.show_headings = !this.fileData?.show_headings;
+      }).catch (err => {
+        this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
+      });
+  }
+
+  displayComments() {
+    this.folioService.displayComments(this.fileData?._id, !this.fileData?.show_comments).then(res => {
+        this.fileData.show_comments = !this.fileData?.show_comments;
+      }).catch (err => {
+        this.utilityService.errorNotification($localize`:@@folioEditor.unableUpdateFolio:Unable to update the folio, please try again!`);
+      });
   }
 
   /**
@@ -834,23 +926,6 @@ console.log(value);
     this.saveQuillData();
   }
   */
-
-  /**
-   * This function is responsible for fetching a file's details
-   * @param fileId
-   */
-  public async getFile(fileId: any, readOnly:boolean) {
-    return new Promise((resolve) => {
-      // Fetch the file details
-      this.filesService.getOne(fileId, readOnly)
-        .then((res) => {
-          resolve(res['file'])
-        })
-        .catch(() => {
-          resolve({})
-        });
-    });
-  }
 
   /*
   Test code to generate a table of content automatically WIP
@@ -951,5 +1026,10 @@ console.log(value);
     const delta = this.quill.getContents();
     const blob = await quillToWord.generateWord(delta, { exportAs: "blob" });
     saveAs(blob, this.fileData?.original_name + ".docx");
+  }
+
+  isAdminUser(groupData: any) {
+    const index = (groupData && groupData._admins) ? groupData._admins.findIndex((admin: any) => admin._id === this.userData._id) : -1;
+    return index >= 0 || this.userData.role == 'owner';
   }
 }

@@ -1,6 +1,7 @@
 import * as sockets from "./socket";
 import * as helperFunctions from './helperFunctions';
 import { sendErr } from './sendError';
+import { axios } from "./proxy";
 
 /*  =====================
  *  -- UTILS EXPORTS --
@@ -16,4 +17,6 @@ export{
 
     // Send Error
     sendErr as sendError,
+
+    axios as axios
 }

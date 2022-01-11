@@ -1,5 +1,6 @@
-import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
+import { Component, Inject, Injector, LOCALE_ID, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -16,11 +17,15 @@ export class FlamingoPublishComponent implements OnInit {
 
   flamingoURL;
 
+  // Public functions class member
+  publicFunctions = new PublicFunctions(this._Injector);
+
   constructor(
     @Inject(LOCALE_ID) public locale: string,
     private _ActivatedRoute: ActivatedRoute,
     private flamingoService: FlamingoService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private _Injector: Injector
   ) { }
 
   async ngOnInit() {
@@ -35,9 +40,7 @@ export class FlamingoPublishComponent implements OnInit {
     this.flamingoURL = url + '/document/flamingo/' + this.fileId + '/answer';
 
     // Fetch Flamingo Details
-    await this.flamingoService.getOne(this.fileId).then((res) => {
-      this.flamingo = res['flamingo'];
-    });
+    this.flamingo = await this.publicFunctions.getFlamingo(this.fileId);
   }
 
   /**
