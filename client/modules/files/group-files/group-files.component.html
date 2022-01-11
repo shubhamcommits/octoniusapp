@@ -216,7 +216,7 @@
                               <span i18n="@@groupFiles.details">Details</span>
                           </a>
 
-                          <a *ngIf="(file?.type == 'file' && getFileExtension(file?.original_name) == 'pdf')" mat-menu-item (click)="exportToPDF(file)">
+                          <a *ngIf="file?.type == 'folio' || (file?.type == 'file' && getFileExtension(file?.original_name) == 'pdf')" mat-menu-item (click)="exportToPDF(file)">
                               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">picture_as_pdf</i>
                               <span i18n="@@groupFiles.exportToPDF">Export To PDF</span>
                           </a>

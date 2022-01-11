@@ -22,6 +22,9 @@ import { saveAs } from "file-saver";
 import { PDFDocument } from 'pdf-lib';
 import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-signatures-service/approval-pdf-signatures.service';
 
+import ReconnectingWebSocket from 'reconnecting-websocket';
+import * as ShareDB from "sharedb/lib/client";
+import Quill from 'quill';
 @Component({
   selector: 'app-group-files',
   templateUrl: './group-files.component.html',
@@ -94,6 +97,8 @@ export class GroupFilesComponent implements OnInit {
 
   filteringBit: String = 'none'
   filteringData: any;
+
+  shareDBSocket;
 
   // More to load maintains check if we have more to load members on scroll
   public moreToLoad: boolean = true;
@@ -865,7 +870,8 @@ export class GroupFilesComponent implements OnInit {
   }
 
   async exportToPDF(fileData: any) {
-    let blob;
+    this.isLoading$.next(true);
+
     switch (fileData.type) {
       case 'file':
         if (fileData.mime_type.includes('pdf')) {
@@ -873,30 +879,13 @@ export class GroupFilesComponent implements OnInit {
         }
         break;
       case 'folio':
-        if (fileData
-            && fileData.approval_active && fileData.approval_flow_launched
-            && fileData.approval_flow && fileData.approval_flow.length > 0) {
-        }
+        this.modifyFolio(fileData);
         break;
-      case 'campaign':
-        if (fileData
-            && fileData.approval_active && fileData.approval_flow_launched
-            && fileData.approval_flow && fileData.approval_flow.length > 0) {
-        }
-        break;
+      //case 'campaign':
+      //  break;
       default:
         break;
     }
-    //saveAs(blob as Blob, fileData?.original_name + ".pdf");
-    /*
-    if (this.fileData
-        && this.fileData.approval_active && this.fileData.approval_flow_launched
-        && this.fileData.approval_flow && this.fileData.approval_flow.length > 0) {
-      const blobApproval = new Blob([blob, ",another data"], { type: "application/pdf" });
-      // we use saveAs from the file-saver package to download the blob
-      saveAs(blobApproval as Blob, this.fileData?.original_name + ".pdf");
-    }
-    */
   }
 
   async modifyPdf(fileData: any) {
@@ -909,11 +898,50 @@ export class GroupFilesComponent implements OnInit {
     if (fileData
         && fileData.approval_active && fileData.approval_flow_launched
         && fileData.approval_flow && fileData.approval_flow.length > 0) {
-      pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc);
+      pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc, token);
     } else {
       pdfBytes = await pdfDoc.save();
     }
 
     saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
+
+    this.isLoading$.next(false);
+  }
+
+  async modifyFolio(fileData: any) {
+    const folio = await this.initializeConnection(fileData._id);
+
+    folio.subscribe(async () => {
+      const quillElement = document.createElement("quillElement");
+      const quillInstance = new Quill(quillElement);
+      quillInstance.setContents(folio?.data?.data?.delta);
+      const blob = await pdfExporter.generatePdf(quillInstance.getContents());
+      const pdfDoc = await PDFDocument.load(await blob.arrayBuffer());
+
+      if (fileData
+          && fileData.approval_active && fileData.approval_flow_launched
+          && fileData.approval_flow && fileData.approval_flow.length > 0) {
+        const pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc, this.storageService.getLocalData('authToken')['token']);
+        saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
+      } else {
+        saveAs(blob as Blob, fileData?.original_name + ".pdf");
+      }
+
+      this.shareDBSocket?.close();
+    });
+
+    this.isLoading$.next(false);
+  }
+
+  // TODO - FIND A SOLUTION TO OBTAIN THE FOLIO DATA FROM DB WITHOUT SOCKET
+  initializeConnection(folioId: string) {
+    // Connect with the Socket Backend
+    this.shareDBSocket = new ReconnectingWebSocket(environment.FOLIO_BASE_URL + "/editor", [], {});
+
+    // Initialise the Realtime DB Connection
+    let shareDBConnection = new ShareDB.Connection(this.shareDBSocket);
+
+    // Return the Document with the respective folioId
+    return shareDBConnection.get("documents", folioId);
   }
 }
