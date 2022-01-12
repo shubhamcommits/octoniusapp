@@ -86,7 +86,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
 
   async ngOnInit() {
     this.codePlaceholder = $localize`:@@approvalActions.code:Code`;
-    this.descriptionPlaceholder = $localize`:@@approvalActions.description:Description?`;
+    this.descriptionPlaceholder = $localize`:@@approvalActions.description:Description`;
   }
 
   ngOnDestroy(): void {
@@ -250,6 +250,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           if (this.itemData) {
             this.flowCompleted = await this.isApprovalFlowCompleted();
           }
+          this.approvalFlowLaunchedEmiter.emit(this.itemData);
 
           // Return the function via stopping the loader
           this.isLoading$.next(false);
