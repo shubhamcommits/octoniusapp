@@ -36,6 +36,9 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   confirmationCode: string = "";
   confirmation: string = "";
 
+  descriptionPlaceholder = 'Desctiption';
+  codePlaceholder = 'Code';
+
   flowCompleted: boolean = false;
 
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
@@ -82,7 +85,8 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   }
 
   async ngOnInit() {
-
+    this.codePlaceholder = $localize`:@@approvalActions.code:Code`;
+    this.descriptionPlaceholder = $localize`:@@approvalActions.description:Description?`;
   }
 
   ngOnDestroy(): void {
