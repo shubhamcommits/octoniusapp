@@ -27,7 +27,7 @@ export class ApprovalService {
               $push: {
                 approval_history: {
                   _actor: userId,
-                  rejection_description: '',
+                  description: '',
                   action: 'created',
                   approval_date: moment().format()
                 }
@@ -50,7 +50,7 @@ export class ApprovalService {
               $push: {
                 approval_history: {
                   _actor: userId,
-                  rejection_description: '',
+                  description: '',
                   action: 'deleted',
                   approval_date: moment().format()
                 }
@@ -73,7 +73,7 @@ export class ApprovalService {
               $push: {
                 approval_history: {
                   _actor: userId,
-                  rejection_description: '',
+                  description: '',
                   action: 'created',
                   approval_date: moment().format()
                 }
@@ -96,7 +96,7 @@ export class ApprovalService {
               $push: {
                 approval_history: {
                   _actor: userId,
-                  rejection_description: '',
+                  description: '',
                   action: 'deleted',
                   approval_date: moment().format()
                 }
@@ -232,7 +232,7 @@ export class ApprovalService {
           $push: {
             approval_history: {
               _actor: userId,
-              rejection_description: '',
+              description: '',
               action: 'launch',
               approval_date: moment().format()
             }
@@ -265,7 +265,7 @@ export class ApprovalService {
           $push: {
             approval_history: {
               _actor: userId,
-              rejection_description: '',
+              description: '',
               action: 'launch',
               approval_date: moment().format()
             }
@@ -391,7 +391,7 @@ export class ApprovalService {
               $push: {
                 approval_history: {
                   _actor: userId,
-                  rejection_description: description,
+                  description: description,
                   action: 'rejected',
                   approval_date: moment().format()
                 }
@@ -425,7 +425,7 @@ export class ApprovalService {
               $push: {
                 approval_history: {
                   _actor: userId,
-                  rejection_description: description,
+                  description: description,
                   action: 'rejected',
                   approval_date: moment().format()
                 }
@@ -454,7 +454,7 @@ export class ApprovalService {
     }
   };
 
-  async confirmAction(itemId: string, type: string, approvalId: string, code: string, userId: string) {
+  async confirmAction(itemId: string, type: string, approvalId: string, code: string, description: string, userId: string) {
     try {
       const itemCorrect = await this.confirmItemDidNotChange(itemId, type);
 
@@ -499,6 +499,18 @@ export class ApprovalService {
                   arrayFilters: [{ "approval._id": approvalId }],
                   new: true
                 }).lean();
+
+              await File.findOneAndUpdate(
+                { _id: itemId}, 
+                {
+                  $set: {
+                    "approval_flow.$[approval].description": description,
+                  }
+                },
+                {
+                  arrayFilters: [{ "approval._id": approvalId }],
+                  new: true
+                }).lean();
               
               const file: any = await File.findOneAndUpdate(
                 { _id: itemId}, 
@@ -509,7 +521,7 @@ export class ApprovalService {
                   $push: {
                       approval_history: {
                       _actor: userId,
-                      rejection_description: '',
+                      description: '',
                       action: 'approved',
                       approval_date: moment().format()
                     }
@@ -586,6 +598,18 @@ export class ApprovalService {
                     arrayFilters: [{ "approval._id": approvalId }],
                     new: true
                   }).lean();
+
+                await Post.findOneAndUpdate(
+                  { _id: itemId}, 
+                  {
+                    $set: {
+                      "approval_flow.$[approval].description": description,
+                    }
+                  },
+                  {
+                    arrayFilters: [{ "approval._id": approvalId }],
+                    new: true
+                  }).lean();
               
                 const post: any = await Post.findOneAndUpdate(
                 { _id: itemId}, 
@@ -596,7 +620,7 @@ export class ApprovalService {
                   $push: {
                       approval_history: {
                       _actor: userId,
-                      rejection_description: '',
+                      description: '',
                       action: 'approved',
                       approval_date: postSignatureDate
                     }

@@ -93,11 +93,12 @@ export class ApprovalService {
   }
 
 
-  confirmAction(itemId: string, type: string, approvalId: string, code: string) {
+  confirmAction(itemId: string, type: string, approvalId: string, code: string, description: string) {
     const data = {
       type: type,
       code: code,
-      approvalId: approvalId
+      approvalId: approvalId,
+      description: description
     }
     return this._http.put(this.baseUrl + `/${itemId}/confirmAction`, data).toPromise();
   }

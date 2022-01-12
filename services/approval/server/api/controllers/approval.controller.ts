@@ -105,14 +105,14 @@ export class ApprovalController {
 
   async confirmAction(req: Request, res: Response, next: NextFunction) {
     try {
-      const { body: { type, approvalId, code }, params: { itemId } } = req;
+      const { body: { type, approvalId, code, description }, params: { itemId } } = req;
       const userId = req['userId'];
 
       if (!type || !itemId || !approvalId || !code || !userId) {
         return sendErr(res, new Error('Please provide the itemId, approvalId, code, userId and a type as the query parameter'), 'Please provide the itemId, approvalId, code, userId and a type as the query paramater!', 400);
       }
       
-      const item = await approvalService.confirmAction(itemId, type, approvalId, code, userId);
+      const item = await approvalService.confirmAction(itemId, type, approvalId, code, description, userId);
       
       return res.status(200).json({
         message: 'successfully retrieved results',

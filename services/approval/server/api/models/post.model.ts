@@ -147,6 +147,9 @@ const PostSchema = new Schema({
             signature_code: {
                 type: String,
                 required: false
+            },
+            description: {
+                type: String
             }
         }
     ],
@@ -157,7 +160,7 @@ const PostSchema = new Schema({
                 ref: 'User',
                 required: true
             },
-            rejection_description: {
+            description: {
                 type: String
             },
             action: {
