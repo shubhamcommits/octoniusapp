@@ -207,10 +207,12 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           // Start the loading spinner
           this.isLoading$.next(true);
 
+          this.confirmationCode = '';
+          this.confirmation = '';
+
           if (action == 'approved') {
             this.approvalService.approveItem(this.itemData._id, this.type, approvalId).then(res => {
               const index = (this.itemData.approval_flow) ? this.itemData.approval_flow.findIndex((approval) => approval?._id == approvalId) : -1;
-              this.itemData.approval_flow[index].rejected = false;
               this.showApproveCode = true;
               this.showDescription = false;
 
@@ -224,7 +226,6 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
             });
           } else if (action == 'rejected') {
             const index = (this.itemData.approval_flow) ? this.itemData.approval_flow.findIndex((approval) => approval?._id == approvalId) : -1;
-            this.itemData.approval_flow[index].rejected = true;
             this.showApproveCode = false;
             this.showDescription = true;
 

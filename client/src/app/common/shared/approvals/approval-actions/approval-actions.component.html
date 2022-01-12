@@ -69,16 +69,13 @@
           <div *ngIf="!approval?.confirmed" class="dropdown-toggle" data-toggle="dropdown">
             <span class="pending toggle-button" i18n="@@approvalActions.pending">PENDING</span>
           </div>
-          <div *ngIf="approval?.confirmed && !approval.rejected" class="approve toggle-button dropdown-toggle" data-toggle="dropdown">
+          <div *ngIf="approval?.confirmed" class="approve toggle-button dropdown-toggle" data-toggle="dropdown">
             <span i18n="@@approvalActions.approved">APPROVED</span>
-          </div>
-          <div *ngIf="approval?.confirmed && approval.rejected" class="reject toggle-button dropdown-toggle" data-toggle="dropdown">
-            <span i18n="@@approvalActions.rejected">REJECTED</span>
           </div>
 
           <!-- Menu Drawer Starts -->
           <ul class="dropdown-menu">
-            <li class="dropdown-item" (click)="doAction('approved', approval._id)">
+            <li *ngIf="!approval?.confirmed" class="dropdown-item" (click)="doAction('approved', approval._id)">
               <div class="approve action-button">
                 <i class="material-icons">check_circle</i>
                 &nbsp;
