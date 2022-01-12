@@ -86,7 +86,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
 
   async ngOnInit() {
     this.codePlaceholder = $localize`:@@approvalActions.code:Code`;
-    this.descriptionPlaceholder = $localize`:@@approvalActions.description:Description?`;
+    this.descriptionPlaceholder = $localize`:@@approvalActions.description:Description`;
   }
 
   ngOnDestroy(): void {
@@ -239,8 +239,8 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    if (this.confirmationCode && this.confirmationCode != '') {
-      if (action == 'approved') {
+    if (action == 'approved') {
+      if (this.confirmationCode && this.confirmationCode != '') {
         this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmationCode, this.confirmation).then(async res => {
           this.itemData = res['item'];
           this.showApproveCode = false;
@@ -250,6 +250,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           if (this.itemData) {
             this.flowCompleted = await this.isApprovalFlowCompleted();
           }
+          this.approvalFlowLaunchedEmiter.emit(this.itemData);
 
           // Return the function via stopping the loader
           this.isLoading$.next(false);
@@ -259,7 +260,14 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           // Return the function via stopping the loader
           this.isLoading$.next(false);
         });
-      } else if (action == 'rejected'){
+      } else {
+        this.utilityService.errorNotification($localize`:@@approvalActions.areYouSure:Please provide the code sent to you.`);
+
+        // Return the function via stopping the loader
+        this.isLoading$.next(false);
+      }
+    } else if (action == 'rejected') {
+      if (this.confirmation && this.confirmation != '') {
         this.approvalService.rejectItem(this.itemData._id, this.type, approvalId, this.confirmation).then(res => {
           this.itemData.approval_flow_launched = false;
           this.itemData.approval_flow = [];
@@ -278,12 +286,11 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           // Return the function via stopping the loader
           this.isLoading$.next(false);
         });
-      }
-    } else {
-      if (action == 'approved') {
-        this.utilityService.errorNotification($localize`:@@approvalActions.areYouSure:Please provide the code sent to you.`);
-      } else if (action == 'rejected') {
+      } else {
         this.utilityService.errorNotification($localize`:@@approvalActions.areYouSure:Please provide a reason to reject the item.`);
+
+        // Return the function via stopping the loader
+        this.isLoading$.next(false);
       }
     }
   }

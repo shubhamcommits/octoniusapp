@@ -13,16 +13,6 @@ export class ApprovalService {
   baseUrl = environment.APPROVAL_BASE_API_URL;
 
   /**
-   * This function is responsible for fetching an specific section by id
-   * @param sectionId
-   */
-  /*
-   getSection(sectionId: string) {
-    return this._http.get(this.baseUrl + `/columns/${sectionId}`).toPromise();
-  }
-  */
-
-  /**
    * This function is responsible to activate the approval option in the item
    * @param itemId
    * @param approval
