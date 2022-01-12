@@ -60,6 +60,10 @@ async function taskAssigned(data:any){
     const assigneFromProfilePic = assigneeFromData['profile_pic'];
     const postTitle = postData['title'];
     const groupId = postData['_group'];
+
+    const itemUrl = (postData.type == 'task')
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&myWorkplace=false&postId=${postData._id}`;
      
     const notificationObject = {
         name: assigneFromFullName,
@@ -68,8 +72,8 @@ async function taskAssigned(data:any){
         group_id:groupId,
         post_id: data.postId,
         content: '\n ',
-        btn_title:'view task',
-        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.postId}`
+        btn_title:`view ${postData.type}`,
+        itemUrl: itemUrl
     }
 
     return notificationObject;
@@ -93,6 +97,11 @@ async function statusChanged(data:any) {
     } else {
         notification_text = `${userFullName} changed status for ${postTitle}`;
     }
+
+    const itemUrl = (postData.type == 'task')
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&myWorkplace=false&postId=${postData._id}`;
+
     const notificationObject = {
         name: userFullName,
         text: notification_text,
@@ -100,8 +109,8 @@ async function statusChanged(data:any) {
         content: '\n ',
         group_id: groupId,
         post_id: data.postId,
-        btn_title:'view task',
-        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.postId}`
+        btn_title:`view ${postData.type}`,
+        itemUrl: itemUrl
     }
 
     return notificationObject;
@@ -120,6 +129,10 @@ async function commented(data:any) {
     const postUserFullName = postUserData['full_name'];
     const userFullName = userData['full_name'];
     const userProfilePic = userData['profile_pic'];
+
+    const itemUrl = (postData.type == 'task')
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&myWorkplace=false&postId=${postData._id}`;
     
     const notificationObject = {
         name: userFullName,
@@ -129,7 +142,7 @@ async function commented(data:any) {
         group_id: groupId,
         post_id: data.postId,
         btn_title:'view comment',
-        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.postId}`
+        itemUrl: itemUrl
     }
 
     return notificationObject;
@@ -155,6 +168,10 @@ async function followPost(data:any) {
     const followerName = userData['full_name'];
     const profile_img = userData['profile_pic'];
 
+    const itemUrl = (postData.type == 'task')
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&myWorkplace=false&postId=${postData._id}`;
+
     const notificationObject = {
         name: followerName,
         text: `${followerName} is following ${postTitle} `,
@@ -162,8 +179,8 @@ async function followPost(data:any) {
         content: '\n ',
         group_id: groupId,
         post_id: data.postId,
-        btn_title:'view post',
-        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.postId}`
+        btn_title:`view ${postData.type}`,
+        itemUrl: itemUrl
     }
 
     return notificationObject;
@@ -195,6 +212,10 @@ async function likePost(data:any) {
 
     const userObject = userData.toObject();
 
+    const itemUrl = (postData.type == 'task')
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${postObject['_group']}&myWorkplace=false&postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${postObject['_group']}&myWorkplace=false&postId=${postData._id}`;
+
     const notificationObject = {
         name: userObject['full_name'],
         text: `${userObject['full_name']} likes ${postUserFullName}'s ${postObject['title']}`,
@@ -202,8 +223,8 @@ async function likePost(data:any) {
         content: '\n ',
         group_id: postObject['_group'],
         post_id: data.postId,
-        btn_title:'view post',
-        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${postObject['_group']}&myWorkplace=false&postId=${data.postId}`
+        btn_title:`view ${postData.type}`,
+        itemUrl: itemUrl
     }
 
     return notificationObject;
@@ -235,6 +256,10 @@ async function likeComment(data:any) {
     const userFullName = userData['full_name'];
     const commentedByUserFullName = commentedByUser['full_name'];
     const profile_pic = userData['profile_pic'];
+
+    const itemUrl = (postData.type == 'task')
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&myWorkplace=false&postId=${postData._id}`;
     
     const notificationObject = {
         name: userFullName,
@@ -243,8 +268,8 @@ async function likeComment(data:any) {
         content: '\n ',
         groupId: groupId,
         post_id: data.postId,
-        btn_title:'view post',
-        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.postId}`
+        btn_title:`view ${postData.type}`,
+        itemUrl: itemUrl
     }
 
     return notificationObject;
@@ -265,6 +290,10 @@ async function postMention(data:any) {
     const assigneFromProfilePic = data.posted_by.profile_pic;
     const postTitle = postData['title'];
     const groupId = postData['_group'];
+
+    const itemUrl = (postData.type == 'task')
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&myWorkplace=false&postId=${postData._id}`;
      
     const notificationObject = {
         name: assigneFromFullName,
@@ -273,8 +302,8 @@ async function postMention(data:any) {
         group_id: groupId,
         post_id: data.postId,
         content: '\n ',
-        btn_title:'view task',
-        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.postId}`
+        btn_title:`view ${postData.type}`,
+        itemUrl: itemUrl
     }
 
     return notificationObject;
@@ -302,7 +331,11 @@ async function commentMention(data:any) {
     const commented_by = userData['full_name'];
     const commented_by_profile_pic = userData['profile_pic'];
     const postTitle = postData['title'];
-    
+
+    const itemUrl = (postData.type == 'task')
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&myWorkplace=false&postId=${postData._id}`;
+
     const notificationObject = {
         name: commented_by,
         text: `${commented_by} mentioned ${data.comment._content_mentions.includes('all')?'all':'you'} in a comment to ${postTitle}`,
@@ -311,7 +344,7 @@ async function commentMention(data:any) {
         group_id: groupId,
         post_id: data.comment._post._id,
         btn_title:'view comment',
-        itemUrl: `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&myWorkplace=false&postId=${data.comment._post._id}`
+        itemUrl: itemUrl
     }    
 
     return notificationObject;
