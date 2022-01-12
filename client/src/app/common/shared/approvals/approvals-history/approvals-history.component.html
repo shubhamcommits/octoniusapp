@@ -25,7 +25,7 @@
 
     &nbsp;
 
-    <span class="rejected-description" *ngIf="approval?.action === 'rejected'">{{ approval?.rejection_description | truncatetext: 50 }}</span>
+    <span class="rejected-description" *ngIf="approval?.action == 'approved' || approval?.action == 'rejected'">{{ approval?.description | truncatetext: 50 }}</span>
   </div>
 
   <div class="notification_date_time">

@@ -33,7 +33,11 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
 
   showApproveCode: boolean = false;
   showDescription: boolean = false;
+  confirmationCode: string = "";
   confirmation: string = "";
+
+  descriptionPlaceholder = 'Desctiption';
+  codePlaceholder = 'Code';
 
   flowCompleted: boolean = false;
 
@@ -81,7 +85,8 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   }
 
   async ngOnInit() {
-
+    this.codePlaceholder = $localize`:@@approvalActions.code:Code`;
+    this.descriptionPlaceholder = $localize`:@@approvalActions.description:Description?`;
   }
 
   ngOnDestroy(): void {
@@ -101,12 +106,15 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
         this.itemData.approval_flow = [];
         this.itemData.approval_flow_launched = false;
       }
+
+      // Return the function via stopping the loader
+      this.isLoading$.next(false);
     }).catch(err => {
       this.utilityService.errorNotification(err.error.message);
-    });
 
-    // Return the function via stopping the loader
-    this.isLoading$.next(false);
+      // Return the function via stopping the loader
+      this.isLoading$.next(false);
+    });
   }
 
   unassign(approvalId: string) {
@@ -118,13 +126,16 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
       this.approvalService.removeUserFromFlow(this.itemData?._id, this.type, approvalId).then(res => {
         this.itemData.approval_flow.splice(index, 1);
         this.assigneeEmiter.emit(this.itemData);
+
+        // Return the function via stopping the loader
+        this.isLoading$.next(false);
       }).catch(err => {
         this.utilityService.errorNotification(err.error.message);
+
+        // Return the function via stopping the loader
+        this.isLoading$.next(false);
       });
     }
-
-    // Return the function via stopping the loader
-    this.isLoading$.next(false);
   }
 
   getMemberDetails(selectedMember: any) {
@@ -149,16 +160,19 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
       if (index < 0) {
         this.approvalService.addUserToFlow(this.itemData?._id, this.type, member._id).then(res => {
           this.itemData = res['item'];
+
+          // Return the function via stopping the loader
+          this.isLoading$.next(false);
         }).catch(err => {
           this.utilityService.errorNotification(err.error.message);
+
+          // Return the function via stopping the loader
+          this.isLoading$.next(false);
         });
       }
     });
 
     this.assigneeEmiter.emit(this.itemData);
-
-    // Return the function via stopping the loader
-    this.isLoading$.next(false);
   }
 
   launchApprovalFlow() {
@@ -173,14 +187,17 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
             this.itemData.approval_flow_launched = true;
 
             this.approvalFlowLaunchedEmiter.emit(this.itemData);
+
+            // Return the function via stopping the loader
+            this.isLoading$.next(false);
           }).catch(err => {
             this.utilityService.errorNotification(err.error.message);
+
+            // Return the function via stopping the loader
+            this.isLoading$.next(false);
           });
         }
       });
-
-    // Return the function via stopping the loader
-    this.isLoading$.next(false);
   }
 
   doAction(action: string, approvalId: string) {
@@ -196,38 +213,51 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
               this.itemData.approval_flow[index].rejected = false;
               this.showApproveCode = true;
               this.showDescription = false;
+
+              // Return the function via stopping the loader
+              this.isLoading$.next(false);
             }).catch(err => {
               this.utilityService.errorNotification(err.error.message);
+
+              // Return the function via stopping the loader
+              this.isLoading$.next(false);
             });
           } else if (action == 'rejected') {
             const index = (this.itemData.approval_flow) ? this.itemData.approval_flow.findIndex((approval) => approval?._id == approvalId) : -1;
             this.itemData.approval_flow[index].rejected = true;
             this.showApproveCode = false;
             this.showDescription = true;
+
+            // Return the function via stopping the loader
+            this.isLoading$.next(false);
           }
         }
       });
-
-    // Return the function via stopping the loader
-    this.isLoading$.next(false);
   }
 
   confirmAction(action: string, approvalId: string) {
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    if (this.confirmation && this.confirmation != '') {
+    if (this.confirmationCode && this.confirmationCode != '') {
       if (action == 'approved') {
-        this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmation).then(async res => {
+        this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmationCode, this.confirmation).then(async res => {
           this.itemData = res['item'];
           this.showApproveCode = false;
           this.showDescription = false;
+          this.confirmationCode = '';
           this.confirmation = '';
           if (this.itemData) {
             this.flowCompleted = await this.isApprovalFlowCompleted();
           }
+
+          // Return the function via stopping the loader
+          this.isLoading$.next(false);
         }).catch(err => {
           this.utilityService.errorNotification(err.error.message);
+
+          // Return the function via stopping the loader
+          this.isLoading$.next(false);
         });
       } else if (action == 'rejected'){
         this.approvalService.rejectItem(this.itemData._id, this.type, approvalId, this.confirmation).then(res => {
@@ -235,11 +265,18 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           this.itemData.approval_flow = [];
           this.showApproveCode = false;
           this.showDescription = false;
+          this.confirmationCode = '';
           this.confirmation = '';
           this.flowCompleted = false;
           this.approvalFlowLaunchedEmiter.emit(this.itemData);
+
+          // Return the function via stopping the loader
+          this.isLoading$.next(false);
         }).catch(err => {
           this.utilityService.errorNotification(err.error.message);
+
+          // Return the function via stopping the loader
+          this.isLoading$.next(false);
         });
       }
     } else {
@@ -249,9 +286,6 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
         this.utilityService.errorNotification($localize`:@@approvalActions.areYouSure:Please provide a reason to reject the item.`);
       }
     }
-
-    // Return the function via stopping the loader
-    this.isLoading$.next(false);
   }
 
   isApprovalFlowCompleted() {
