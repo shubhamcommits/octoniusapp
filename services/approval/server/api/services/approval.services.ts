@@ -519,7 +519,7 @@ export class ApprovalService {
                     "approval_flow.$[approval].confirmed": true,
                   },
                   $push: {
-                      approval_history: {
+                    approval_history: {
                       _actor: userId,
                       description: description,
                       action: 'approved',
