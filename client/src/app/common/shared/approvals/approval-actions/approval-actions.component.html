@@ -99,8 +99,8 @@
       </div>
 
       <div *ngIf="(showDescription || showApproveCode) && userData._id == (approval?._assigned_to._id || approval?._assigned_to)" class="assignee-row">
-        <input *ngIf="showApproveCode" type="text" class="form-control" [(ngModel)]="confirmationCode">
-        <input type="text" class="form-control" [(ngModel)]="confirmation">
+        <input type="text" class="form-control" [(ngModel)]="confirmation" placeholder="Description">
+        <input *ngIf="showApproveCode" type="text" class="form-control" [(ngModel)]="confirmationCode" placeholder="Code">
         <button *ngIf="showApproveCode" class="btn confirm-btn" (click)="confirmAction('approved', approval._id)" span i18n="@@approvalActions.confirm">
           Confirm
         </button>
