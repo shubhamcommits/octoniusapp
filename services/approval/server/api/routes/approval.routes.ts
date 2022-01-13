@@ -28,6 +28,9 @@ router.put('/:itemId/addUserToFlow', approval.addUserToFlow);
 // PUT - removeUserFromFlow
 router.put('/:itemId/removeUserFromFlow', approval.removeUserFromFlow);
 
+// PUT - saveDueDate
+router.put('/:itemId/saveDueDate', approval.saveDueDate);
+
 // PUT - launchApprovalFlow
 router.put('/:itemId/launchApprovalFlow', approval.launchApprovalFlow);
 

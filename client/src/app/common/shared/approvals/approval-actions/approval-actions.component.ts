@@ -1,6 +1,7 @@
 import { Component, Input, Output, OnChanges, EventEmitter, ViewChild, ViewEncapsulation, Injector, OnInit } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { PublicFunctions } from 'modules/public.functions';
+import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApprovalService } from 'src/shared/services/approval-service/approval.service';
@@ -40,6 +41,8 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
   codePlaceholder = 'Code';
 
   flowCompleted: boolean = false;
+
+  today = moment().startOf('day').format('YYYY-MM-DD');
 
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
@@ -103,6 +106,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
       this.itemData.approval_active = !this.itemData.approval_active;
 
       if (!this.itemData.approval_active) {
+        this.itemData.approval_due_date = null;
         this.itemData.approval_flow = [];
         this.itemData.approval_flow_launched = false;
       }
@@ -173,6 +177,28 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
     });
 
     this.assigneeEmiter.emit(this.itemData);
+  }
+
+  /**
+   * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
+   * @param dateObject
+   */
+  getDate(dateObject: any) {
+    if (dateObject) {
+      this.itemData.approval_due_date = moment(dateObject.toDate()).hours(12).format('YYYY-MM-DD');
+    } else {
+      this.itemData.approval_due_date = null;
+    }
+
+    this.utilityService.asyncNotification($localize`:@@approvalActions.pleaseWaitWeSaveDate:Please wait we are saving the date...`, new Promise((resolve, reject) => {
+      this.approvalService.saveDueDate(this.itemData?._id, this.type, this.itemData.approval_due_date)
+        .then((res) => {
+          resolve(this.utilityService.resolveAsyncPromise($localize`:@@approvalActions.projectSaved:Date Saved!`));
+        })
+        .catch((err) => {
+          reject(this.utilityService.rejectAsyncPromise($localize`:@@approvalActions.unableToSAveProject:Unable to save the date at the moment, please try again!`))
+        });
+    }));
   }
 
   launchApprovalFlow() {
@@ -277,6 +303,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           this.confirmationCode = '';
           this.confirmation = '';
           this.flowCompleted = false;
+          this.itemData.approval_due_date = null;
           this.approvalFlowLaunchedEmiter.emit(this.itemData);
 
           // Return the function via stopping the loader
@@ -303,5 +330,9 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
       }
     }
     return true
+  }
+
+  formateDate(date){
+    return moment(moment.utc(date), "YYYY-MM-DD").toDate();
   }
 }

@@ -64,6 +64,25 @@ export class ApprovalController {
     };
   };
 
+  async saveDueDate(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { body: { type, dueDate }, params: { itemId } } = req;
+      
+      if (!type || !itemId) {
+        return sendErr(res, new Error('Please provide the itemId and a type as the query parameter'), 'Please provide the itemId and a type as the query paramater!', 400);
+      }
+
+      const item = await approvalService.saveDueDate(itemId, type, dueDate);
+      
+      return res.status(200).json({
+        message: 'successfully retrieved results',
+        item
+      });
+    } catch(err) {
+      return sendErr(res, new Error(err), 'Unable to fetch results.', 400)
+    };
+  };
+
   async launchApprovalFlow(req: Request, res: Response, next: NextFunction) {
     try {
       const { body: { type, approval_flow_launched }, params: { itemId } } = req;

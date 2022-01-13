@@ -45,7 +45,8 @@ export class ApprovalService {
               $set: {
                 approval_flow: [],
                 approval_flow_launched: false,
-                approval_active: false
+                approval_active: false,
+                approval_due_date: null
               },
               $push: {
                 approval_history: {
@@ -91,7 +92,8 @@ export class ApprovalService {
               $set: {
                 approval_flow: [],
                 approval_flow_launched: false,
-                approval_active: false
+                approval_active: false,
+                approval_due_date: null
               },
               $push: {
                 approval_history: {
@@ -177,6 +179,44 @@ export class ApprovalService {
               }
             }
           })
+          .lean();
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  async saveDueDate(itemId: string, type: string, dueDate: any) {
+    try {
+      if (type == 'file') {
+        return await File.findOneAndUpdate(
+          { _id: itemId},
+          {
+            $set: {
+              approval_due_date: dueDate
+            }
+          }, {
+            new: true
+          })
+        .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+        .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate({ path: '_group', select: 'custom_fields _workspace' })
+        .lean();
+      } else if (type == 'post') {
+        return await Post.findOneAndUpdate({
+            _id: itemId
+          }, {
+            $set: {
+              approval_due_date: dueDate
+            }
+          }, {
+            new: true
+          })
+          .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+          .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+          .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+          .populate({ path: '_group', select: 'custom_fields _workspace' })
           .lean();
       }
     } catch (err) {
@@ -386,7 +426,8 @@ export class ApprovalService {
             {
               $set: {
                 approval_flow: [],
-                approval_flow_launched: false
+                approval_flow_launched: false,
+                approval_due_date: null
               },
               $push: {
                 approval_history: {
@@ -420,7 +461,8 @@ export class ApprovalService {
             {
               $set: {
                 approval_flow: [],
-                approval_flow_launched: false
+                approval_flow_launched: false,
+                approval_due_date: null
               },
               $push: {
                 approval_history: {

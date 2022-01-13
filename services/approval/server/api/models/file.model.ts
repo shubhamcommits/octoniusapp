@@ -95,6 +95,10 @@ const FileSchema = new Schema({
         required: true,
         default: false
     },
+    approval_due_date: {
+        type: Date,
+        default: moment().format()
+    },
     approval_envelope: {
         type: String,
         required: false

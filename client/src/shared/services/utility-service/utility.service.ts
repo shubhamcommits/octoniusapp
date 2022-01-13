@@ -13,8 +13,6 @@ import { PermissionDialogComponent } from 'modules/groups/group/permission-dialo
 import * as XLSX from 'xlsx';
 import * as fileSaver from 'file-saver';
 import moment from 'moment';
-import { FilesService } from '../files-service/files.service';
-import { FlamingoService } from '../flamingo-service/flamingo.service';
 
 @Injectable({
   providedIn: 'root'
