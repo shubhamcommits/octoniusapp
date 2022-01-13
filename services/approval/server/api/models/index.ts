@@ -3,12 +3,12 @@ import { Post } from './post.model';
 import { User } from './user.model';
 import { File } from './file.model';
 import { Comment } from './comment.model';
-
 import { Auth } from './auth.model';
 import { Column } from './column.model';
 import { Group } from "./group.model";
 import { Workspace } from "./workspace.model";
 import { Story } from "./story.model";
+import { Notification } from "./notification.model";
 
 /*  =====================
  *  -- EXPORTS MODELS --
@@ -44,5 +44,8 @@ export {
     Workspace as Workspace,
 
     // Story
-    Story as Story
+    Story as Story,
+
+    // Notification
+    Notification as Notification
 };
