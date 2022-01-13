@@ -351,7 +351,7 @@ export class NotificationsService {
                 $and: [
                     { _owner: userId },
                     { read: true },
-                    { type: { $ne: 'new-post' } }
+                    { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
                 ]
             })
                 .limit(5)
@@ -381,7 +381,7 @@ export class NotificationsService {
                 $and: [
                     { _owner: userId },
                     { read: false },
-                    { type: { $ne: 'new-post' } }
+                    { type: { $nin: ["new-post", "launch-approval-flow-due-date"] }}
                 ]
             })
                 .sort('-created_date')
@@ -411,6 +411,34 @@ export class NotificationsService {
                     { _owner: userId },
                     { read: false },
                     { type: 'new-post' }
+                ]
+            })
+                .sort('-created_date')
+                .populate('_actor', 'first_name last_name profile_pic')
+                .populate({ path: '_origin_post', populate: { path: '_group' } })
+                .populate('_origin_comment')
+                .populate('_owner', 'first_name last_name profile_pic')
+                .populate('_origin_folio')
+                .populate({ path: '_origin_folio', populate: { path: '_group' } })
+                .lean();
+
+            return notifications;
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    /**
+     * This function is responsible for fetching the latest new post notifications
+     * @param userId 
+     */
+    async getPendingApprovals(userId: string) {
+        try {
+            const notifications = await Notification.find({
+                $and: [
+                    { _owner: userId },
+                    { read: false },
+                    { type: 'launch-approval-flow-due-date' }
                 ]
             })
                 .sort('-created_date')
@@ -484,6 +512,16 @@ export class NotificationsService {
                     message: 'launched the approval flow',
                     type: 'launch-approval-flow'
                 });
+
+                if (item.approval_due_date) {
+                    await Notification.create({
+                        _actor: posted_by,
+                        _owner: assigned._id,
+                        _origin_post: item._id,
+                        message: 'launched the approval flow',
+                        type: 'launch-approval-flow-due-date'
+                    });
+                }
             } else {
                 await Notification.create({
                     _actor: posted_by,
@@ -492,6 +530,16 @@ export class NotificationsService {
                     message: 'launched the approval flow',
                     type: 'launch-approval-flow'
                 });
+
+                if (item.approval_due_date) {
+                    await Notification.create({
+                        _actor: posted_by,
+                        _owner: assigned._id,
+                        _origin_folio: item._id,
+                        message: 'launched the approval flow',
+                        type: 'launch-approval-flow-due-date'
+                    });
+                }
             }
 
             await helperFunctions.sendNotificationsFeedFromService(assigned._id, io, true);

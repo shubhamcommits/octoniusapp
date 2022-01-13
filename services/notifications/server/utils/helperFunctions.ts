@@ -26,8 +26,9 @@ async function generateFeed(userId: string, io: any,backend?:any) {
         const unreadNotifications = await notifications.getUnread(userId);
         const readNotifications = await notifications.getRead(userId);
         const unreadPosts = await notifications.getNewPost(userId);
+        const pendingApprovals =  await notifications.getPendingApprovals(userId);
 
-        const feed = { unreadNotifications, readNotifications, unreadPosts, new:backend};
+        const feed = { unreadNotifications, readNotifications, unreadPosts, pendingApprovals, new:backend};
         // I moved this line from outside this function to inside
         io.sockets.in(userId).emit('notificationsFeed', feed);
     } catch (err) {
