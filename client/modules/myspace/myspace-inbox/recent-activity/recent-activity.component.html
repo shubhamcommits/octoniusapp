@@ -1,5 +1,6 @@
 <div class="notifications">
 <mat-tab-group mat-align-tabs="start" [selectedIndex]="selectedTab">
+  <!-- RECENT ACTIVITY STARTS-->
   <mat-tab>
     <ng-template mat-tab-label>
       <span *ngIf="notificationsData.unreadNotifications.length > 0"
@@ -73,7 +74,7 @@
           <span class="notification_post_title" *ngIf="notification?.type !== 'mention_folio' && notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
           <span class="notification_post_title" *ngIf="notification?.type === 'mention_folio' && notification?._origin_folio">{{ notification?._origin_folio?.original_name | truncatetext: 20 }}</span>
           <span class="notification_post_title" *ngIf="(notification?.type === 'join-group' || notification?.type === 'leave-group') && notification?._origin_group">{{ notification?._origin_group?.group_name | truncatetext: 20 }}</span>
-          <span class="notification_post_title" *ngIf="notification?._origin_item">{{ (notification?._origin_item?.original_name || notification?._origin_item?.title) | truncatetext: 20 }}</span>
+          <!-- <span class="notification_post_title" *ngIf="notification?._origin_item">{{ (notification?._origin_item?.original_name || notification?._origin_item?.title) | truncatetext: 20 }}</span> -->
         </div>
 
         <div class="notification_date_time">
@@ -121,7 +122,9 @@
       <!-- NOTIFICATION ITEM ENDS-->
     </div>
   </mat-tab>
+  <!-- RECENT ACTIVITY ENDS-->
 
+  <!-- NEWS FEED STARTS-->
   <mat-tab label="">
     <ng-template mat-tab-label>
       <span *ngIf="notificationsData.unreadPosts.length > 0"
@@ -196,7 +199,9 @@
       <!-- NOTIFICATION ITEM ENDS-->
     </div>
   </mat-tab>
+  <!-- NEWS FEED ENDS-->
 
+  <!-- EVENTS STARTS-->
   <mat-tab label="">
     <ng-template mat-tab-label>
       <span *ngIf="attendingEvents.length > 0"
@@ -263,6 +268,75 @@
       <!-- NOTIFICATION ITEM ENDS-->
     </div>
   </mat-tab>
+  <!-- EVENTS ENDS-->
+
+  <!-- APPROVALS STARTS-->
+  <mat-tab label="">
+    <ng-template mat-tab-label>
+      <span *ngIf="notificationsData.pendingApprovals.length > 0"
+        [matBadge]="notificationsData.pendingApprovals.length"
+        matBadgeOverlap="false" matBadgeColor="warn"
+        i18n="@@recentActivity.pendingApprovals">Pending Approvals</span>
+      <span *ngIf="notificationsData.pendingApprovals.length == 0"
+        i18n="@@recentActivity.pendingApprovals">Pending Approvals</span>
+    </ng-template>
+
+    <!-- Empty State starts -->
+    <div *ngIf="notificationsData.pendingApprovals.length === 0 && !(isLoading$ | async)" style="text-align: center; margin-top: 30px;">
+      <img src='assets/images/placeholder_newsfeed.png' class="placeholder-img">
+      <p class="muted text-center" i18n="@@recentActivity.noPendingApprovals">No pending approvals.</p>
+    </div>
+    <!-- Empty State ends -->
+
+    <div *ngIf="notificationsData.pendingApprovals.length > 0 && !(isLoading$ | async)" >
+      <!-- NOTIFICATION ITEM STARTS-->
+      <div class="notification-item" *ngFor="let notification of notificationsData?.pendingApprovals; let index = index">
+        <div class="notification_actor">
+          <app-secured-image *ngIf="notification?._actor"
+            [imgURL]="notification?._actor?.profile_pic"
+            [service]="'user'"
+            [styleClass]="'avatar'"
+            style="margin-right:15px"></app-secured-image>
+
+          <app-secured-image *ngIf="!notification?._actor"
+            [imgURL]="notification?._owner?.profile_pic"
+            [service]="'user'"
+            [styleClass]="'avatar'"
+            style="margin-right:15px"></app-secured-image>
+        </div>
+
+        <div class="notification_title">
+          <span *ngIf="notification?._actor">
+            {{ notification?._actor?.first_name || 'Deleted' }} {{ notification?._actor?.last_name || 'User' }}
+          </span>
+          <span *ngIf="!notification?._actor">
+            {{ notification?._owner?.first_name || 'Deleted' }} {{ notification?._owner?.last_name || 'User' }}
+          </span>
+          &nbsp;
+
+          <span class="launch_approval_flow_notification" i18n="@@recentActivity.requestYoToReviewItem">requested you to review the item:</span>
+
+          &nbsp;
+
+          <span class="notification_post_title" *ngIf="notification?._origin_post">{{ notification?._origin_post?.title | truncatetext: 20 }}</span>
+          <span class="notification_post_title" *ngIf="notification?._origin_folio">{{ notification?._origin_folio?.original_name | truncatetext: 20 }}</span>
+
+          &nbsp;<span i18n="@@recentActivity.bofore">before</span>
+          <span *ngIf="notification?._origin_post" class="notification_post_title"> {{ notification?._origin_post?.approval_due_date | date: 'MMM d, y' }}</span>
+          <span *ngIf="notification?._origin_folio" class="notification_post_title"> {{ notification?._origin_folio?.approval_due_date | date: 'MMM d, y' }}</span>
+        </div>
+
+        <div class="notification_more">
+          <a mat-menu-item (click)="viewApprovalNotification(notification)">
+            <i class="material-icons-outlined ml-2 muted" style="margin-right: .7rem;">visibility</i>
+            <span i18n="@@recentActivity.view">View</span>
+          </a>
+        </div>
+      </div>
+      <!-- NOTIFICATION ITEM ENDS-->
+    </div>
+  </mat-tab>
+  <!-- APPROVALS ENDS-->
 </mat-tab-group>
 
 <!-- Loading Spinner Starts -->

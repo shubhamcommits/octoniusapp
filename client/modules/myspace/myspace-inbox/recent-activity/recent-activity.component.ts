@@ -24,10 +24,13 @@ export class RecentActivityComponent implements OnInit {
   public notificationsData: any = {
     readNotifications: [],
     unreadNotifications: [],
-    unreadPosts: []
+    unreadPosts: [],
+    pendingApprovals: []
   }
 
   attendingEvents = [];
+
+  approvals = [];
 
   selectedTab = 0;
 
@@ -212,6 +215,8 @@ export class RecentActivityComponent implements OnInit {
   selectedDefaultTab() {
     if (this.notificationsData.unreadNotifications.length > 0) {
       this.selectedTab = 0;
+    } else if (this.notificationsData.pendingApprovals.length > 0) {
+      this.selectedTab = 3;
     } else if (this.notificationsData.unreadPosts.length > 0) {
       this.selectedTab = 1;
     } else if (this.attendingEvents.length > 0) {

@@ -53,6 +53,20 @@ export class ApprovalService {
   }
 
   /**
+   * This function is responsible to saving the due date of the approval flow of the item
+   * @param itemId
+   * @param type
+   */
+   saveDueDate(itemId: string, type: string, dueDate: any) {
+    const data = {
+      type: type,
+      dueDate: dueDate
+    }
+
+    return this._http.put(this.baseUrl + `/${itemId}/saveDueDate`, data).toPromise();
+  }
+
+  /**
    * This function is responsible to launch the approval flow of the item
    * @param itemId
    * @param type
