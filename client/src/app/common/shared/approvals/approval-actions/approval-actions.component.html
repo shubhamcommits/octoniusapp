@@ -8,6 +8,8 @@
     [disabled]="!canEdit"
     (change)="activateApprovalFlow()">
   </mat-slide-toggle>
+
+  <span *ngIf="itemData?.approval_due_date" class="muted"> {{ itemData?.approval_due_date | date: 'MMM dd, yyy' }} </span>
 </p>
 
 <!-- Assignee section starts -->
@@ -108,6 +110,19 @@
     </div>
   </div>
   <!-- LIST OF ASSIGNEE USERS TO APPROVE ENDS -->
+
+  <div *ngIf="itemData?.approval_active && !itemData?.approval_flow_launched" style="margin-bottom: 10px;">
+    <p class="card-text" i18n="@@approvalActions.selectDueDate">Select DUE DATE for your flow.</p>
+    <app-date-picker class="input-date due"
+      [selectedDate]="itemData?.approval_due_date"
+      [lowerLimit]="today"
+      (date)="getDate($event)">
+    </app-date-picker>
+
+    <!-- Clean field starts -->
+    <i (click)="getDate(null)" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <!-- Clean field ends -->
+  </div>
 
   <button *ngIf="canEdit && !itemData?.approval_flow_launched && itemData?.approval_flow && itemData?.approval_flow?.length > 0" mat-button  class="btn tagslabel"
       (click)="launchApprovalFlow()">

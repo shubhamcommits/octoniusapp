@@ -1,6 +1,8 @@
 import { NotificationsService } from "../api/service"
 import { Post, Comment, User } from "../api/models";
 import { Readable } from 'stream';
+import moment from 'moment';
+
 const ObjectId = require('mongoose').Types.ObjectId;
 
 // Create Notifications controller class
@@ -26,8 +28,9 @@ async function generateFeed(userId: string, io: any,backend?:any) {
         const unreadNotifications = await notifications.getUnread(userId);
         const readNotifications = await notifications.getRead(userId);
         const unreadPosts = await notifications.getNewPost(userId);
+        const pendingApprovals =  await sortPendingApprovals(await notifications.getPendingApprovals(userId));
 
-        const feed = { unreadNotifications, readNotifications, unreadPosts, new:backend};
+        const feed = { unreadNotifications, readNotifications, unreadPosts, pendingApprovals, new:backend};
         // I moved this line from outside this function to inside
         io.sockets.in(userId).emit('notificationsFeed', feed);
     } catch (err) {
@@ -148,6 +151,16 @@ function validateId(id: any) {
         return false;
     }
     return true;
+}
+
+function sortPendingApprovals(notifications: any) {
+    return notifications.sort((n1, n2) => {
+        let n1Date = (n1._origin_post) ? n1._origin_post.approval_due_date : (n1._origin_folio) ? n1._origin_folio.approval_due_date : null;
+        let n2Date = (n2._origin_post) ? n2._origin_post.approval_due_date : (n2._origin_folio) ? n2._origin_folio.approval_due_date : null;
+        return (n1Date && n2Date)
+            ? (moment.utc(n1Date).isBefore(n2Date)) ? -1 : 1
+            : (n1Date && !n2Date) ? -1 : 1;
+      });
 }
 
 

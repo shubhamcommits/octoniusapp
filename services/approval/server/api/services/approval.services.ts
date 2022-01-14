@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { Post, File, Workspace } from '../models';
+import { Notification, Post, File, Workspace } from '../models';
 import { axios } from '../utils';
 import http from 'axios';
 
@@ -45,7 +45,8 @@ export class ApprovalService {
               $set: {
                 approval_flow: [],
                 approval_flow_launched: false,
-                approval_active: false
+                approval_active: false,
+                approval_due_date: null
               },
               $push: {
                 approval_history: {
@@ -91,7 +92,8 @@ export class ApprovalService {
               $set: {
                 approval_flow: [],
                 approval_flow_launched: false,
-                approval_active: false
+                approval_active: false,
+                approval_due_date: null
               },
               $push: {
                 approval_history: {
@@ -177,6 +179,44 @@ export class ApprovalService {
               }
             }
           })
+          .lean();
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  async saveDueDate(itemId: string, type: string, dueDate: any) {
+    try {
+      if (type == 'file') {
+        return await File.findOneAndUpdate(
+          { _id: itemId},
+          {
+            $set: {
+              approval_due_date: dueDate
+            }
+          }, {
+            new: true
+          })
+        .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+        .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate({ path: '_group', select: 'custom_fields _workspace' })
+        .lean();
+      } else if (type == 'post') {
+        return await Post.findOneAndUpdate({
+            _id: itemId
+          }, {
+            $set: {
+              approval_due_date: dueDate
+            }
+          }, {
+            new: true
+          })
+          .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+          .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+          .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+          .populate({ path: '_group', select: 'custom_fields _workspace' })
           .lean();
       }
     } catch (err) {
@@ -381,12 +421,36 @@ export class ApprovalService {
   async rejectItem(itemId: string, type: string, description: string, userId: string) {
     try {
       if (type == 'file') {
-        const file: any = await File.findOneAndUpdate(
+        let file: any = await File.findOne({ _id: itemId })
+          .select('approval_flow approval_due_date')
+          .lean();
+
+        // Mark notifications as read if it has a due date
+        if (file.approval_due_date && file.approval_flow && file.approval_flow.length > 0) {
+          for (let i = 0; i < file.approval_flow.length; i++) {
+            let approval = file.approval_flow[i];
+            await Notification.findOneAndUpdate({
+                $and: [
+                  { _owner: approval._assigned_to },
+                  { read: false },
+                  { type: "launch-approval-flow-due-date" },
+                  { _origin_folio: file._id }
+                ]
+              }, {
+                $set: {
+                  read: true
+                }
+              });
+          }
+        }
+
+        file = await File.findOneAndUpdate(
             { _id: itemId}, 
             {
               $set: {
                 approval_flow: [],
-                approval_flow_launched: false
+                approval_flow_launched: false,
+                approval_due_date: null
               },
               $push: {
                 approval_history: {
@@ -415,12 +479,36 @@ export class ApprovalService {
 
         return file;
       } else if (type == 'post') {
-        const post: any = await Post.findOneAndUpdate(
+        let post: any = await Post.findOne({ _id: itemId })
+          .select("approval_flow approval_due_date")
+          .lean();
+
+        // Mark notifications as read if it has a due date
+        if (post.approval_due_date && post.approval_flow && post.approval_flow.length > 0) {
+          for (let i = 0; i < post.approval_flow.length; i++) {
+            let approval = post.approval_flow[i];
+            await Notification.findOneAndUpdate({
+                $and: [
+                  { _owner: approval._assigned_to },
+                  { read: false },
+                  { type: "launch-approval-flow-due-date" },
+                  { _origin_post: post._id }
+                ]
+              }, {
+                $set: {
+                  read: true
+                }
+              });
+          }
+        }
+
+        post = await Post.findOneAndUpdate(
             { _id: itemId}, 
             {
               $set: {
                 approval_flow: [],
-                approval_flow_launched: false
+                approval_flow_launched: false,
+                approval_due_date: null
               },
               $push: {
                 approval_history: {
@@ -510,11 +598,28 @@ export class ApprovalService {
                 flowCompleted = false;
               }
         
+              // If all assigned members approved the item, we notify everybody
               if (flowCompleted) {
                 await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
                     item: JSON.stringify(file)
                   }, { maxContentLength: 60 * 1024 * 1024 }
                 );
+              }
+
+              // Mark notification as read if it has a due date
+              if (file.approval_due_date) {
+                await Notification.findOneAndUpdate({
+                    $and: [
+                      { _owner: userId },
+                      { read: false },
+                      { type: "launch-approval-flow-due-date" },
+                      { _origin_folio: file._id }
+                    ]
+                  }, {
+                    $set: {
+                      read: true
+                    }
+                  });
               }
   
               return file;
@@ -574,11 +679,28 @@ export class ApprovalService {
                 flowCompleted = false;
               }
         
+              // If all assigned members approved the item, we notify everybody
               if (flowCompleted) {
                 await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
                     item: JSON.stringify(post)
                   }, { maxContentLength: 60 * 1024 * 1024 }
                 );
+              }
+
+              // Mark notification as read if it has a due date
+              if (post.approval_due_date) {
+                await Notification.findOneAndUpdate({
+                    $and: [
+                      { _owner: userId },
+                      { read: false },
+                      { type: "launch-approval-flow-due-date" },
+                      { _origin_post: post._id }
+                    ]
+                  }, {
+                    $set: {
+                      read: true
+                    }
+                  });
               }
   
               return post;
