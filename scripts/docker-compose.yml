@@ -4,7 +4,7 @@ services:
 
   mongodb:
     container_name: mongodb
-    image: mongo:latest
+    image: mongo:5.0
     restart: always
     volumes:
       - acc_db_data:/data/db
