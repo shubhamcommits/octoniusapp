@@ -470,7 +470,6 @@ export class ColumnsController {
               $pull: {
                 'budget.expenses': { _id: expenseId }}
             }, {
-              safe: true,
               new: true
             });
 
@@ -532,7 +531,6 @@ export class ColumnsController {
                 }, 
                     action
                 , {
-                safe: true,
                 new: true
                 })
                 .select("custom_fields_to_show_kanban")
@@ -574,7 +572,6 @@ export class ColumnsController {
                     }, {
                         $set: { archived: false }
                     }, {
-                        safe: true,
                         new: true
                     })
                     .populate({ path: 'budget.expenses._user' })
