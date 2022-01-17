@@ -28,7 +28,7 @@
     "express-fileupload": "^1.1.6",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
-    "mongoose": "^6.1.7",
+    "mongoose": "~5.13.14",
     "morgan": "^1.9.1",
     "rich-text": "^4.1.0",
     "sharedb": "^1.9.1",
