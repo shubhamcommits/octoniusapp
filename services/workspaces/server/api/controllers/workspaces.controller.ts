@@ -25,7 +25,7 @@ export class WorkspaceController {
             let { workspace_name } = req.query;
 
             // Find the workspace on the basis of workspace_name
-            const workspace = await Workspace.findOne({ workspace_name: workspace_name })
+            const workspace: any = await Workspace.findOne({ workspace_name: workspace_name })
 
             // Workspace name already exists
             if (workspace) {
@@ -72,7 +72,7 @@ export class WorkspaceController {
                 .exec();
 
             // Workspace Company Members Count
-            const membersCount = await User.find({
+            const membersCount: any = await User.find({
                 $and: [
                     { _workspace: workspaceId },
                     { role: { $ne: 'guest' }},
@@ -140,7 +140,7 @@ export class WorkspaceController {
             newWorkspace.management_private_api_key = await auths.generateMgmtPrivateApiKey();
 
             // Create new workspace
-            const workspace = await Workspace.create(newWorkspace);
+            const workspace: any = await Workspace.create(newWorkspace);
 
             // Error creating workspace
             if (!workspace) {
@@ -214,7 +214,7 @@ export class WorkspaceController {
             };
 
             // Create new global group
-            let group = await Group.create(globalGroup);
+            let group: any = await Group.create(globalGroup);
 
             // Error creating global group
             if (!group) {
@@ -238,7 +238,7 @@ export class WorkspaceController {
             });
 
             // Add Global group to user's groups
-            var userUpdate = await User.findByIdAndUpdate({
+            var userUpdate: any = await User.findByIdAndUpdate({
                 _id: user._id
             }, {
                 $push: {
@@ -263,7 +263,7 @@ export class WorkspaceController {
             };
 
             // Check if the group exist or not
-            const privateGroup = await Group.findOne({
+            const privateGroup: any = await Group.findOne({
                 group_name: newGroupData.group_name,
                 _admins: newGroupData._admins,
                 workspace_name: newGroupData.workspace_name
@@ -275,7 +275,7 @@ export class WorkspaceController {
             } else {
 
                 // Create personal group
-                let group = await Group.create(newGroupData);
+                let group: any = await Group.create(newGroupData);
 
                 const default_CF = {
                     title: 'Priority',
@@ -432,7 +432,7 @@ export class WorkspaceController {
             // Fetch the workspaceData From the request
             let { body: { workspaceData } } = req;
 
-            let updatedWorkspace = await Workspace.findOneAndUpdate(
+            let updatedWorkspace: any = await Workspace.findOneAndUpdate(
                 { _id: workspaceId },
                 { $set: workspaceData },
                 { new : true })
@@ -547,7 +547,7 @@ export class WorkspaceController {
         const { workspaceId, query } = req.params;
 
         try {
-            const positions = await User
+            const positions: any = await User
                 .find({
                     _workspace: workspaceId,
                     current_position: { $regex: new RegExp(query.toString(), 'i') }
@@ -614,16 +614,16 @@ export class WorkspaceController {
             }
 
             let addInvite = true;
-            const account = await Account.findOne({ email: user.email });
+            const account: any = await Account.findOne({ email: user.email });
 
             if (account) {
-                let userDB = await User.findOne({ _account: account._id, _workspaces: user.workspaceId });
+                let userDB: any = await User.findOne({ _account: account._id, _workspaces: user.workspaceId });
 
                 if (userDB && user.type == 'group') {
                     // if the user already exists just add it to the group
 
                     // Add new user to group
-                    const groupUpdate = await Group.findOneAndUpdate({
+                    const groupUpdate: any = await Group.findOneAndUpdate({
                         _id: user.groupId
                     }, {
                         $push: {
@@ -650,7 +650,7 @@ export class WorkspaceController {
                 }
             }
             
-            let workspace = await Workspace.findOne({
+            let workspace: any = await Workspace.findOne({
                 $and: [
                     { _id: user.workspaceId }
                 ]
@@ -714,7 +714,7 @@ export class WorkspaceController {
         try {
 
             // Find the workspace and add a new custom field
-            const workspace = await Workspace.findByIdAndUpdate({
+            const workspace: any = await Workspace.findByIdAndUpdate({
                 _id: workspaceId
             }, {
                 $push: { "profile_custom_fields": newCustomField }
@@ -742,7 +742,7 @@ export class WorkspaceController {
             const { workspaceId } = req.params;
 
             // Find the workspace based on the workspaceId
-            const workspace = await Workspace.findOne({
+            const workspace: any = await Workspace.findOne({
                 _id: workspaceId
             }).select('profile_custom_fields').lean();
 
@@ -767,7 +767,7 @@ export class WorkspaceController {
 
         try {
             // Find the workspace and remove a respective custom field
-            const workspace = await Workspace.findByIdAndUpdate({
+            const workspace: any = await Workspace.findByIdAndUpdate({
                 _id: workspaceId
             },
                 {
@@ -800,7 +800,7 @@ export class WorkspaceController {
 
         try {
             // Find the custom field in a workspace and add the value
-            const workspace = await Workspace.findByIdAndUpdate({
+            const workspace: any = await Workspace.findByIdAndUpdate({
                 _id: workspaceId
             }, {
                 $push: { "profile_custom_fields.$[field].values": value }
@@ -830,7 +830,7 @@ export class WorkspaceController {
 
         try {
             // Find the workspace and remove a custom field value
-            const workspace = await Workspace.findByIdAndUpdate({
+            const workspace: any = await Workspace.findByIdAndUpdate({
                 _id: workspaceId
             }, {
                 $pull: { "profile_custom_fields.$[field].values": value }
