@@ -177,7 +177,7 @@ export class DomainsControllers {
                     idsToRemove.push(member._id);
 
                     // Remove the user from the mgmt portal
-                    const user = await User.find({_id: member}).lean()
+                    const user: any = await User.find({_id: member}).lean()
                     let userMgmt = {
                         _id: user._id,
                         _account_id: user._account._id,

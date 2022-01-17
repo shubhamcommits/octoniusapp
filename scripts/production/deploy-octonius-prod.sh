@@ -8,6 +8,7 @@ set +o allexport
 
 # Make Suitable Directories
 mkdir -p data \
+      data/mongo/db   \
       data/mongo/db1 \
       data/mongo/db2  \
       data/mongo/db0   \
@@ -47,4 +48,5 @@ docker login
           docker pull $NGINX_IMAGE_NAME
 
 # Deploy the Stack
-env $(cat .env | grep ^[A-Z] | xargs) docker stack deploy -c deploy-octonius-prod.yml octonius --with-registry-auth
+env $(cat .env | grep ^[A-Z] | xargs) docker stack deploy -c deploy-octonius-prod.yml --with-registry-auth octonius
+#env $(cat .env | grep ^[A-Z] | xargs) docker-compose --compatibility -f deploy-octonius-prod.yml -p octonius up -d

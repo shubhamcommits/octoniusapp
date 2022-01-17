@@ -263,7 +263,7 @@ export class UsersControllers {
             }
 
             // Send user to the mgmt portal
-            const workspace = await Workspace.find({
+            const workspace: any = await Workspace.find({
                 _id: user._workspace
             }).select('management_private_api_key');
 
@@ -346,7 +346,7 @@ export class UsersControllers {
                     select: '_id email _workspaces first_name last_name created_date'
                 });
 
-                const workspace = await Workspace.find({
+                const workspace: any = await Workspace.find({
                     _id: user._workspace
                 }).select('management_private_api_key');
 
