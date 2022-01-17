@@ -463,14 +463,13 @@ export class ColumnsController {
         try {
 
             // Find the group and update their respective group avatar
-            const column = await Column.updateOne({
+            const column = await Column.findOneAndUpdate({
                 _id: columnId
             }, 
             { 
               $pull: {
                 'budget.expenses': { _id: expenseId }}
             }, {
-              safe: true,
               new: true
             });
 
@@ -532,7 +531,6 @@ export class ColumnsController {
                 }, 
                     action
                 , {
-                safe: true,
                 new: true
                 })
                 .select("custom_fields_to_show_kanban")
@@ -574,7 +572,6 @@ export class ColumnsController {
                     }, {
                         $set: { archived: false }
                     }, {
-                        safe: true,
                         new: true
                     })
                     .populate({ path: 'budget.expenses._user' })
