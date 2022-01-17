@@ -463,7 +463,7 @@ export class ColumnsController {
         try {
 
             // Find the group and update their respective group avatar
-            const column = await Column.updateOne({
+            const column = await Column.findOneAndUpdate({
                 _id: columnId
             }, 
             { 
