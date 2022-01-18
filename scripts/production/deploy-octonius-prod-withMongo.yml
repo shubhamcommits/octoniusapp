@@ -2,6 +2,22 @@ version: '3.7'
 
 services:
 
+  mongodb:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
+    volumes:
+      - octonius_production_db_data:/data/db
+    ports:
+      - ${MONGO_PORT1}:${MONGO_MACHINE_PORT}
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      resources:
+        reservations:
+          memory: 128M
+    networks:
+      - octonius_production
+
   approval-server:
     image: ${DOCKER_USER}/${DOCKER_REPO}:approval-server
     ports:
@@ -460,6 +476,13 @@ services:
       - octonius_production
 
 volumes:
+  octonius_production_db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/mongo/db
+      o: bind
+
   octonius_production_groups_uploads_data:
     driver: local
     driver_opts:

@@ -26,6 +26,7 @@ sudo chmod u+x data
 
 # Copy assets folder to utilities uploads
 cp -R assets/ data/uploads/utilities/
+cp -R assets/ /mnt/volume_fra1_01/data/uploads/utilities/
 
 # Login to dockerhub
 docker login
