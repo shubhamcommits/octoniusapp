@@ -6,7 +6,6 @@ mongoose.Promise = global.Promise;
 // Set up mongoose connection
 var DB_URL = process.env.DB_URL;
 
-/*
 const options = {
   useNewUrlParser: true,
   useFindAndModify: false,
@@ -14,9 +13,6 @@ const options = {
   useUnifiedTopology: true,
   auto_reconnect: true,
   bufferMaxEntries: 0
-};
-*/
-const options = {
 };
 
 // Connect mongoose to db
