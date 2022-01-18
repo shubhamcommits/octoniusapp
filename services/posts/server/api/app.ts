@@ -1,13 +1,12 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import cors from 'cors';
+import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
 import fileUpload from 'express-fileupload';
 import { postRoutes, commentRoutes, postsPermissionsRoutes, sectionsPermissionsRoutes } from './routes';
-import bodyParser from 'body-parser';
-
 
 // Defining new Express application
 const app = express();
@@ -24,14 +23,14 @@ else {
 require('../db');
 
 // Adding The 'body-parser' middleware only handles JSON and urlencoded data
-app.use(express.json());
+app.use(express.json())
+
+// body parsers
+app.use(bodyParser.json({limit:'60mb'}));
+app.use(bodyParser.urlencoded({limit: '60mb',parameterLimit: 100000, extended: true }));
 
 // cors middleware for orign and Headers
 app.use(cors());
-
-//body parsers
-app.use(bodyParser.json({limit:'60mb'}));
-app.use(bodyParser.urlencoded({limit: '60mb',parameterLimit: 100000, extended: true }));
 
 // Use Morgan middleware for logging every request status on console
 app.use(morgan('dev'));
