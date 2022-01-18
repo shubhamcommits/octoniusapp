@@ -2,12 +2,76 @@ version: '3.7'
 
 services:
 
-  mongodb:
+  mongo-setup:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
+    restart: on-failure
+    networks:
+      - octonius_production
+    volumes:
+      - ./mongo_setup_scripts:/scripts
+    entrypoint: [ "/scripts/setup.sh" ]
+    depends_on:
+      - mongo-0-mongo
+      - mongo-1-mongo
+      - mongo-2-mongo
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      resources:
+        reservations:
+          memory: 128M
+  
+  mongo-2-mongo:
+    hostname: mongo-2-mongo
     image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
     volumes:
-      - octonius_production_db_data:/data/db
+      - octonius_production_db_data2:/data/db
+    ports:
+      - ${MONGO_PORT3}:${MONGO_MACHINE_PORT}
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "prod_octo_rs", "--journal", "--dbpath", "/data/db" ]
+    networks:
+      - octonius_production
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      resources:
+        reservations:
+          memory: 128M
+    networks:
+      - octonius_production
+
+  mongo-1-mongo:
+    hostname: mongo-1-mongo
+    image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
+    volumes:
+      - octonius_production_db_data1:/data/db
+    ports:
+      - ${MONGO_PORT2}:${MONGO_MACHINE_PORT}
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "prod_octo_rs", "--journal", "--dbpath", "/data/db" ]
+    networks:
+      - octonius_production
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      resources:
+        reservations:
+          memory: 128M
+    networks:
+      - octonius_production
+
+  mongo-0-mongo:
+    hostname: mongo-0-mongo
+    image: ${DOCKER_USER}/${DOCKER_REPO}:mongodb
+    volumes:
+      - octonius_production_db_data0:/data/db
     ports:
       - ${MONGO_PORT1}:${MONGO_MACHINE_PORT}
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "prod_octo_rs", "--journal", "--dbpath", "/data/db" ]
+    networks:
+      - octonius_production
     deploy:
       replicas: 1
       placement:
@@ -476,11 +540,25 @@ services:
       - octonius_production
 
 volumes:
-  octonius_production_db_data:
+  octonius_production_db_data2:
     driver: local
     driver_opts:
       type: none
-      device: /mnt/volume_fra1_01/data/mongo/db
+      device: /mnt/volume_fra1_01/data/mongo/db2
+      o: bind
+
+  octonius_production_db_data1:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/mongo/db1
+      o: bind
+
+  octonius_production_db_data0:
+    driver: local
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/mongo/db0
       o: bind
 
   octonius_production_groups_uploads_data:
@@ -534,3 +612,5 @@ volumes:
 
 networks:
   octonius_production:
+    driver: overlay
+    internal: true

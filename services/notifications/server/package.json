@@ -22,7 +22,7 @@
     "express": "^4.17.1",
     "farmhash": "^3.0.0",
     "moment": "^2.24.0",
-    "mongoose": "^5.13.11",
+    "mongoose": "~5.13.14",
     "morgan": "^1.9.1",
     "socket.io": "^4.0.0",
     "ts-node": "^8.6.2",

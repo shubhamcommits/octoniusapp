@@ -51,14 +51,17 @@ export class UserSkillsComponent implements OnInit {
    */
   addNewSkill($event: string){
     return new Promise((resolve, reject)=>{
-      this.userService.addSkill($event)
-      .toPromise()
-      .then(()=> {
-        this.autoUpdateGroups();
-        resolve(this.utilityService.successNotification($localize`:@@userSkills.newSkillAdded:New skill Added!`));
-      })
-      .catch(() => reject(this.utilityService.errorNotification($localize`:@@userSkills.unableToAddSkill:Unable to add new skill, please try again!`)));
-    })
+      this.userService.addSkill($event).toPromise()
+        .then(()=> {
+          if (!this.userData.skills) {
+            this.userData.skills = [];
+          }
+          this.userData.skills.push($event);
+          this.autoUpdateGroups();
+          resolve(this.utilityService.successNotification($localize`:@@userSkills.newSkillAdded:New skill Added!`));
+        })
+        .catch(() => reject(this.utilityService.errorNotification($localize`:@@userSkills.unableToAddSkill:Unable to add new skill, please try again!`)));
+    });
   }
 
   /**

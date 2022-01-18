@@ -102,7 +102,7 @@ const FileSchema = new Schema({
     },
     approval_due_date: {
         type: Date,
-        default: moment().format()
+        default: null
     },
     approval_envelope: {
         type: String,
