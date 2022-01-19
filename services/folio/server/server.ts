@@ -48,9 +48,9 @@ if (cluster.isMaster) {
   // Creating Folio Microservice Server
   const server = http.createServer(app);
 
-  //var wssShareDB = wssSharedb(server);
+  var wssShareDB = wssSharedb(server);
 
-//  var wssCursors = require('./utils/folio/wss-cursors')(server);
+//var wssCursors = require('./utils/folio/wss-cursors')(server);
 /**
  * Settup Cursors connection STARTS
  */
@@ -63,11 +63,11 @@ if (cluster.isMaster) {
     const pathname = url.parse(request.url).pathname;
 
     // If path is sharedb, then emit the connection
-//    if (pathname === '/editor') {
-//      wssShareDB.handleUpgrade(request, socket, head, (ws) => {
-//        wssShareDB.emit('connection', ws)
-//      })
-//    }
+    if (pathname === '/editor') {
+      wssShareDB.handleUpgrade(request, socket, head, (ws) => {
+        wssShareDB.emit('connection', ws)
+      })
+    }
     /*
     else if (pathname === '/cursors') {
       wssCursors.handleUpgrade(request, socket, head, (ws) => {
@@ -75,9 +75,9 @@ if (cluster.isMaster) {
       }); 
     }
     */
-//    else {
-//      socket.destroy()
-//    }
+    else {
+      socket.destroy()
+    }
   });
 
   // Exposing the server to the desired port
