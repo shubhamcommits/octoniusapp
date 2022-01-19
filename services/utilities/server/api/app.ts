@@ -47,8 +47,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-// // Handle POST requests that come in formatted as JSON
-// app.use(express.json());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
 
 // Handling GZIPPED ROUTES
 const encodeResToGzip = (contentType: any) => {

@@ -46,6 +46,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     }
 });
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
 // Handle POST requests that come in formatted as JSON
 app.use(express.json());
 
