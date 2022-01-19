@@ -61,7 +61,19 @@ services:
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "octo_rs", "--journal", "--dbpath", "/data/db" ]
     networks:
       - acc
-        
+
+  libreoffice-server:
+    image: libreoffice/online
+    container_name: libreoffice-app
+    expose:
+      - 9980
+    ports:
+      - "9980:9980"
+    environment:
+      - username=admin
+      - password=adminadmin
+    restart: always
+
   approval-server:
     container_name: octonius_approval-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:approval-server

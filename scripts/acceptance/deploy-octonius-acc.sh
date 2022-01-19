@@ -42,6 +42,7 @@ docker login
           docker pull $FLAMINGO_IMAGE_NAME
           docker pull $CLIENT_IMAGE_NAME
           docker pull $NGINX_IMAGE_NAME
+          docker pull libreoffice/online
 
 # Deploy the Stack
 env $(cat .env | grep ^[A-Z] | xargs) docker-compose --compatibility -f deploy-octonius-acc.yml -p octonius up -d
