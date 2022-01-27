@@ -123,8 +123,15 @@
           <!-- File Details Starts -->
           <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
               *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
-              <a *ngIf="file?.type === 'file' || file?.type === 'campaign'" class="mt-0" target="_blank"
+              <a *ngIf="(file?.type === 'file' && getFileExtension(file?.original_name) != 'docx') || file?.type === 'campaign'" class="mt-0" target="_blank"
                 href="{{filesBaseUrl}}/{{file?.modified_name}}?authToken={{authToken}}">
+                  <img [src]="getFileIcon(file?.original_name)"
+                    onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                  <span *ngIf="file?.type=='campaign'"><b>Campaign File: </b></span>{{file?.original_name}}
+              </a>
+
+              <a *ngIf="file?.type == 'file' && getFileExtension(file?.original_name) == 'docx'" class="mt-0"
+                routerLink="/document/office/{{file?._id}}" [queryParams]="{ myWorkplace: myWorkplace, canEdit: !file?.canEdit }">
                   <img [src]="getFileIcon(file?.original_name)"
                     onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                   <span *ngIf="file?.type=='campaign'"><b>Campaign File: </b></span>{{file?.original_name}}

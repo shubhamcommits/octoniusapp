@@ -2,6 +2,7 @@ import { FilesControllers } from './files.controllers';
 import { FoldersControllers } from './folders.controllers';
 import { FoldersPermissionsControllers } from './folders-permissions.controllers';
 import { FilesPermissionsControllers } from './files-permissions.controllers';
+import { LibreofficeControllers } from './libreoffice.controllers';
 
 /*  =====================
  *  -- EXPORTS ROUTES --
@@ -19,5 +20,8 @@ export {
     FoldersPermissionsControllers as FoldersPermissionsControllers,
 
     // Files Permissions Controller
-    FilesPermissionsControllers as FilesPermissionsControllers
+    FilesPermissionsControllers as FilesPermissionsControllers,
+
+    // Libreoffice Controllers
+    LibreofficeControllers as LibreofficeControllers
 }

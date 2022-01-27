@@ -80,6 +80,11 @@ function devConfigInit() {
   process.env.FLAMINGO_PORT = process.env.FLAMINGO_PORT || '14000'
   process.env.FLAMINGO_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}`
   process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}/api`
+
+  // Collabora Image Microservice
+  process.env.COLLABORA_PORT = process.env.COLLABORA_PORT || '9980'
+  process.env.COLLABORA_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.COLLABORA_PORT}`
+  process.env.COLLABORA_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.COLLABORA_PORT}/api`
 };
 
 export { devConfigInit as developmentConfig }
