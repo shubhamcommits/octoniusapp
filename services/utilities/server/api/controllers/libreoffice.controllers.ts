@@ -91,15 +91,21 @@ export class LibreofficeControllers {
         try {
             // Get File on the basis of the fileId
             const file = await filesService.getOne(fileId);
-            const user = await User.findById({ _id: userId }).lean();
 
+            if (!file) {
+                return res.status(400).json({
+                    message: 'File not found.'
+                });
+            }
+            
+            const user = await User.findById({ _id: userId }).lean();
 
             let canEdit = (file?.approval_flow_launched) ? !file?.approval_flow_launched : true;
             
             return res.json({
                 BaseFileName: file.original_name,
                 //Size: fileSize,
-                UserId: user._id,
+                UserId: user._id || '',
                 OwnerId: file._posted_by._id || file._posted_by,
                 //UserFriendlyName: user.username,
                 UserCanWrite: canEdit,
