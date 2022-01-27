@@ -54,7 +54,7 @@ export class OfficeEditorComponent implements OnInit {
 
   getWopiClientUrl() {
     // this.wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
-    let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${this.fileId}?authToken=${this.authToken}`;
+    let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/collaboraoffice/wopi/files/${this.fileId}?authToken=${this.authToken}`;
     this.collaboraOfficeService.getCollaboraUrl().then(res => {
 
       if (!environment.production) {
