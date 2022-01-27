@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import { fileHandlerRoutes, filesRoutes, foldersRoutes, foldersPermissionsRoutes, filesPermissionsRoutes } from './routes';
+import { fileHandlerRoutes, filesRoutes, foldersRoutes, foldersPermissionsRoutes, filesPermissionsRoutes, libreofficeRoutes } from './routes';
 import fileUpload from 'express-fileupload';
 
 // Defining new Express application
@@ -89,6 +89,7 @@ app.use('/api/files', filesRoutes)
 app.use('/api/folders', foldersRoutes)
 app.use('/api/files/permissions', filesPermissionsRoutes)
 app.use('/api/folders/permissions', foldersPermissionsRoutes)
+app.use('/api/libreoffice', libreofficeRoutes)
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

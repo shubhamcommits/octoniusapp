@@ -69,6 +69,10 @@ function prodConfigInit() {
   // Flamingo Microservice
   process.env.FLAMINGO_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/flamingo`
   process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/flamingo`
+
+  // Collabora Image Microservice
+  process.env.COLLABORA_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/libreoffice`
+  process.env.COLLABORA_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/libreoffice`
 };
 
 export { prodConfigInit as productionConfig } 

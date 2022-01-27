@@ -63,16 +63,18 @@ services:
       - acc
 
   libreoffice-server:
-    image: libreoffice/online
-    container_name: libreoffice-app
+    image: collabora/code:6.4.8.4
+    container_name: libreoffice-server
     expose:
-      - 9980
+      - ${LIBREOFFICE_SERVER_PORT}
     ports:
-      - "9980:9980"
+      - ${LIBREOFFICE_SERVER_PORT}:${MACHINE_PORT}
     environment:
       - username=admin
       - password=adminadmin
     restart: always
+    networks:
+      - acc
 
   approval-server:
     container_name: octonius_approval-server
@@ -556,6 +558,7 @@ services:
       - search-server
       - flamingo-server
       - client
+      - libreoffice-server
     networks:
       - acc
     
