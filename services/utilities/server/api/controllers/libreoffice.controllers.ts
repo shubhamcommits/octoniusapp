@@ -19,7 +19,7 @@ export class LibreofficeControllers {
             let collaboraOnlineHost = process.env.COLLABORA_SERVER;
             let httpClient = collaboraOnlineHost.startsWith('https') ? https : http;
             let data = '';
-
+console.log(collaboraOnlineHost + '/hosting/discovery');
             let request = httpClient.get(collaboraOnlineHost + '/hosting/discovery', (response) => {
                 response.on('data', (chunk) => { data += chunk.toString(); });
                 response.on('end', () => {
