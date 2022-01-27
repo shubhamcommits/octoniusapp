@@ -12,25 +12,25 @@ export class CollaboraOfficeService {
   baseUrl = environment.UTILITIES_BASE_API_URL;
 
   getCollaboraUrl() {
-    return this._http.get(this.baseUrl + '/libreoffice/collaboraUrl').toPromise();
+    return this._http.get(this.baseUrl + '/collaboraoffice/collaboraUrl').toPromise();
   }
 
   checkFileInfo(fileId: string) {
-    return this._http.get(this.baseUrl + `/libreoffice/wopi/files/${fileId}`, {
+    return this._http.get(this.baseUrl + `/collaboraoffice/wopi/files/${fileId}`, {
       params: {
       }
     }).toPromise();
   }
 
   getFile(fileId: string) {
-    return this._http.get(this.baseUrl + `/libreoffice/wopi/files/${fileId}/contents`, {
+    return this._http.get(this.baseUrl + `/collaboraoffice/wopi/files/${fileId}/contents`, {
       params: {
       }
     }).toPromise();
   }
 
   putFile(fileId: string) {
-    return this._http.put(this.baseUrl + `/libreoffice/wopi/files/${fileId}/contents`, {
+    return this._http.put(this.baseUrl + `/collaboraoffice/wopi/files/${fileId}/contents`, {
       params: {
       }
     }).toPromise();
