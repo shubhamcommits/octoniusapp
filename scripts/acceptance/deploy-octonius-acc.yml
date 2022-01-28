@@ -65,11 +65,10 @@ services:
   libreoffice-server:
     image: collabora/code:6.4.8.4
     container_name: libreoffice-server
-    expose:
-      - ${LIBREOFFICE_SERVER_PORT}
     ports:
-      - ${LIBREOFFICE_SERVER_PORT}:${MACHINE_PORT}
+      - "9980:9980"
     environment:
+      - domain=${DOMAIN}/api/utilities/collaboraoffice
       - username=admin
       - password=adminadmin
     restart: always
