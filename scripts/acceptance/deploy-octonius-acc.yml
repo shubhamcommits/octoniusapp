@@ -63,17 +63,17 @@ services:
       - acc
 
   libreoffice-server:
-    image: collabora/code:6.4.8.4
-    container_name: libreoffice-server
-    ports:
-      - "9980:9980"
-    environment:
-      - domain=${DOMAIN}/api/utilities/collaboraoffice
-      - username=admin
-      - password=adminadmin
-    restart: always
-    networks:
-      - acc
+     image: ${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server
+     container_name: libreoffice-server
+     ports:
+       - "9980:9980"
+     environment:
+       - domain=${DOMAIN}/api/utilities/collaboraoffice
+       - username=admin
+       - password=adminadmin
+     restart: always
+     networks:
+       - acc
 
   approval-server:
     container_name: octonius_approval-server
