@@ -1,7 +1,7 @@
 FROM libreoffice/online:master
 
 # Make LOOL script executable.
-RUN chmod +x /run-lool.sh
+#RUN chmod +x /run-lool.sh
 
 # Create volumes.
 VOLUME ["/etc/loolwsd"]
@@ -15,4 +15,4 @@ COPY ./loolwsd.xml /etc/loolwsd/loolwsd.xml
 # HTTP and HTTPS.
 EXPOSE 9980/tcp
 
-CMD ["sh", "-c", "/run-lool.sh"]
+#CMD ["sh", "-c", "/run-lool.sh"]
