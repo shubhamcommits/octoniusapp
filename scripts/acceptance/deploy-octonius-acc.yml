@@ -63,8 +63,8 @@ services:
       - acc
 
   libreoffice-server:
+     container_name: octonius_libreoffice-server
      image: ${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server
-     container_name: libreoffice-server
      ports:
        - "9980:9980"
      environment:
