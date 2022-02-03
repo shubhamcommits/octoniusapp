@@ -31,10 +31,10 @@ COPY /scripts/run-lool.sh /
 RUN useradd -s /bin/bash -m lool && \
 #    mkdir -p /usr/bin/loolforkit && chown -R lool:lool /usr/bin/loolforkit && \
     mkdir -p /var/cache/loolwsd && chown lool: /var/cache/loolwsd && \
-    mkdir -p /usr/bin/loolmount && chown lool: /usr/bin/loolmount && \
+#    mkdir -p /usr/bin/loolmount && chown lool: /usr/bin/loolmount && \
     mkdir -p /opt/lool/child-roots && \
 #    setcap cap_fowner,cap_mknod,cap_sys_chroot=ep /usr/bin/loolforkit && \
-    setcap cap_sys_admin=ep /usr/bin/loolmount && \
+#    setcap cap_sys_admin=ep /usr/bin/loolmount && \
     adduser --quiet --system --group --home /opt/lool lool && \
     rm -rf /var/cache/loolwsd/* && \
     rm -rf /opt/lool && \
