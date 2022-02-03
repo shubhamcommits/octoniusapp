@@ -21,7 +21,7 @@ RUN apt-get update && \
                fonts-noto-cjk
 
 # copy freshly built LibreOffice master and LibreOffice Online master with latest translations
-COPY /instdir /
+#COPY /instdir /
 
 # copy the shell script which can start LibreOffice Online (loolwsd)
 COPY /scripts/run-lool.sh /
