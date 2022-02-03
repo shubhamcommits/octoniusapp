@@ -25,7 +25,7 @@ services:
     volumes:
       - ${VOLUME_NODE_MODULES}
     environment:
-      - domain=${DOMAIN}/api/utilities/collaboraoffice
+      - domain=${DOMAIN}/api/utilities/libreoffice
       - username=admin
       - password=adminadmin
     networks:

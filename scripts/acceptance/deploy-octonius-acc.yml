@@ -68,7 +68,7 @@ services:
      ports:
        - "9980:9980"
      environment:
-       - domain=${DOMAIN}/api/utilities/collaboraoffice
+       - domain=${DOMAIN}/api/utilities/libreoffice
        - username=admin
        - password=adminadmin
      restart: always

@@ -89,7 +89,7 @@ app.use('/api/files', filesRoutes)
 app.use('/api/folders', foldersRoutes)
 app.use('/api/files/permissions', filesPermissionsRoutes)
 app.use('/api/folders/permissions', foldersPermissionsRoutes)
-app.use('/api/collaboraoffice', libreofficeRoutes)
+app.use('/api/libreoffice', libreofficeRoutes)
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

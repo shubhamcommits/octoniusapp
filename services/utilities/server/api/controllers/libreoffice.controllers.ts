@@ -14,13 +14,13 @@ let filesService = new FilesService();
 
 export class LibreofficeControllers {
 
-    async collaboraUrl(req: Request, res: Response, next: NextFunction) {
+    async libreofficeUrl(req: Request, res: Response, next: NextFunction) {
         try {
-            let collaboraOnlineHost = process.env.COLLABORA_SERVER;
-            let httpClient = collaboraOnlineHost.startsWith('https') ? https : http;
+            let libreofficeOnlineHost = process.env.LIBREOFFICE_SERVER;
+            let httpClient = libreofficeOnlineHost.startsWith('https') ? https : http;
             let data = '';
-console.log(collaboraOnlineHost + '/hosting/discovery');
-            let request = httpClient.get(collaboraOnlineHost + '/hosting/discovery', (response) => {
+console.log(libreofficeOnlineHost + '/hosting/discovery');
+            let request = httpClient.get(libreofficeOnlineHost + '/hosting/discovery', (response) => {
                 response.on('data', (chunk) => { data += chunk.toString(); });
                 response.on('end', () => {
                     let err;
@@ -32,7 +32,7 @@ console.log(collaboraOnlineHost + '/hosting/discovery');
                         return;
                     }
                     if (!response.complete) {
-                        err = 'No able to retrieve the discovery.xml file from the Collabora Online server with the submitted address.';
+                        err = 'No able to retrieve the discovery.xml file from the Libreoffice Online server with the submitted address.';
                         res.status(404).send(err);
                         console.log(err);
                         return;

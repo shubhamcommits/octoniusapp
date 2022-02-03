@@ -87,8 +87,8 @@ export const environment = {
   UTILITIES_WORKSPACES_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/workspaces`,
   UTILITIES_FLAMINGOS_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/flamingo`,
 
-  //COLLABORA_OFFICE_BASE_URL
-  COLLABORA_OFFICE_BASE_URL:  `${window["env"]["protocol"]}://${window["env"]["domain"]}/libreoffice`,
+  //LIBREOFFICE_BASE_URL
+  LIBREOFFICE_BASE_URL:  `${window["env"]["protocol"]}://${window["env"]["domain"]}/libreoffice`,
 
   // Folio URLs
   FOLIO_BASE_URL: `${window["env"]["websocket"]}://${window["env"]["domain"]}/folio`,

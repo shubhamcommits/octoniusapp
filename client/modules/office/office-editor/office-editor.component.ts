@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
-import { CollaboraOfficeService } from 'src/shared/services/collabora-office-service/collabora-office.service';
+import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -14,7 +14,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 })
 export class OfficeEditorComponent implements OnInit {
 
-  @ViewChild('collaboraSubmitForm', { static: true }) collaboraSubmitForm!: ElementRef;
+  @ViewChild('officeSubmitForm', { static: true }) officeSubmitForm!: ElementRef;
   @ViewChild('officeFrameholder', { static: true }) officeFrameholder: ElementRef;
 
   accessToken = '';
@@ -36,7 +36,7 @@ export class OfficeEditorComponent implements OnInit {
     private injector: Injector,
     public sanitizer: DomSanitizer,
     private utilityService: UtilityService,
-    private collaboraOfficeService: CollaboraOfficeService,
+    private libreofficeService: LibreofficeService,
     private storageService: StorageService,
     private _activatedRoute: ActivatedRoute
   ) { }
@@ -54,12 +54,12 @@ export class OfficeEditorComponent implements OnInit {
 
   getWopiClientUrl() {
     // this.wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
-    let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/collaboraoffice/wopi/files/${this.fileId}?authToken=${this.authToken}`;
-    this.collaboraOfficeService.getCollaboraUrl().then(res => {
+    let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreofficeService/wopi/files/${this.fileId}?authToken=${this.authToken}`;
+    this.libreofficeService.getLibreofficeUrl().then(res => {
 
       if (!environment.production) {
         const urlSplit = res['url'].split('http://localhost/');
-        this.wopiClientURL = environment.COLLABORA_OFFICE_BASE_URL + urlSplit[1];
+        this.wopiClientURL = environment.LIBREOFFICE_BASE_URL + urlSplit[1];
       } else {
         this.wopiClientURL = res['url'];
       }
@@ -67,9 +67,9 @@ export class OfficeEditorComponent implements OnInit {
 console.log(wopiSrc);
 console.log(this.wopiClientURL);
       this.accessToken = this.authToken;
-      this.collaboraSubmitForm.nativeElement.submit();
+      this.officeSubmitForm.nativeElement.submit();
     }).catch(error => {
-      this.utilityService.errorNotification('Not possible to retrieve the complete Collabora Online url');
+      this.utilityService.errorNotification('Not possible to retrieve the complete Office Online url');
     });
   }
 
@@ -93,7 +93,7 @@ console.log(this.wopiClientURL);
     );
     this.officeFrameholder.nativeElement.appendChild(officeFrame);
     this.accessToken = this.storageService.getLocalData('authToken')['token'];
-    this.collaboraSubmitForm.nativeElement.action = this.wopiClientURL;
-    this.collaboraSubmitForm.nativeElement.submit();
+    this.officeSubmitForm.nativeElement.action = this.wopiClientURL;
+    this.officeSubmitForm.nativeElement.submit();
   }
 }

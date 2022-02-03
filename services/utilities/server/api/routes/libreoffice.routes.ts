@@ -16,7 +16,7 @@ routes.use(authsHelper.verifyToken);
 // Checks whether the current user is loggedIn or not
 //routes.use(authsHelper.isLoggedIn);
 
-routes.get('/collaboraUrl', libreofficeController.collaboraUrl);
+routes.get('/libreofficeUrl', libreofficeController.libreofficeUrl);
 
 routes.get('/wopi/files/:fileId', libreofficeController.checkFileInfo);
 

@@ -81,10 +81,10 @@ function devConfigInit() {
   process.env.FLAMINGO_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}`
   process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}/api`
 
-  // Collabora Image Microservice
-  process.env.COLLABORA_PORT = process.env.COLLABORA_PORT || '9980'
-  process.env.COLLABORA_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.COLLABORA_PORT}`
-  process.env.COLLABORA_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.COLLABORA_PORT}/api`
+  // Libreoffice Image Microservice
+  process.env.LIBREOFFICE_PORT = process.env.LIBREOFFICE_PORT || '9980'
+  process.env.LIBREOFFICE_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.LIBREOFFICE_PORT}`
+  process.env.LIBREOFFICE_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.LIBREOFFICE_PORT}/api`
 };
 
 export { devConfigInit as developmentConfig }

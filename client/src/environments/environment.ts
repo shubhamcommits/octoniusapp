@@ -94,8 +94,8 @@ export const environment = {
   UTILITIES_WORKSPACES_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/workspaces`,
   UTILITIES_FLAMINGOS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/flamingo`,
 
-  COLLABORA_OFFICE_BASE_URL: `${url.protocol}://${url.domain}:9980/`,
-  COLLABORA_OFFICE_PORT: '9980',
+  LIBREOFFICE_BASE_URL: `${url.protocol}://${url.domain}:9980/`,
+  LIBREOFFICE_BASE_PORT: '9980',
 
   // Folio URLs
   FOLIO_BASE_URL: `${url.websocket}://${url.domain}:11000`,
