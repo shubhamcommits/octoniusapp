@@ -113,7 +113,6 @@ pipelines:
           - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
-          - docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice
           - docker build -t $CLIENT_IMAGE_NAME --compress=true --force-rm=true ./client
           - docker build -t $APPROVAL_IMAGE_NAME --compress=true --force-rm=true ./services/approval/server
           - docker build -t $AUTHS_IMAGE_NAME --compress=true --force-rm=true ./services/authentication/server
@@ -127,6 +126,7 @@ pipelines:
           - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
           - docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
           - docker build -t $FLAMINGO_IMAGE_NAME --compress=true --force-rm=true ./services/flamingo/server
+          - docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
           # Clear unnecessary Image build
