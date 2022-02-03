@@ -80,8 +80,8 @@ pipelines:
          - pipe: atlassian/ssh-run:0.2.2
            variables:
              SSH_USER: 'root'
-             SERVER: $HOST_ADDRESS
-             COMMAND: 'cd /root/octonius-production; echo $HOST_PASSWORD | sudo -S ./deploy-octonius-prod.sh'  
+             SERVER: $HOST_ADDRESS_PROD
+             COMMAND: 'cd /root/octonius-production; echo $HOST_PASSWORD_PROD | sudo -S ./deploy-octonius-prod.sh'  
     
     "{develop}":
     - step:
