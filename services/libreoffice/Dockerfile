@@ -28,7 +28,8 @@ COPY /scripts/run-lool.sh /
 
 # set up LibreOffice Online (normally done by postinstall script of package)
 # Fix permissions
-RUN mkdir -p /usr/bin/loolforkit && chown -R lool:lool /usr/bin/loolforkit && \
+RUN useradd -s /bin/bash -m lool && adduser lool docker && lool ALL=(ALL) NOPASSWD: /sbin/setcap, /usr/bin/echo && \
+    mkdir -p /usr/bin/loolforkit && chown -R lool:lool /usr/bin/loolforkit && \
     mkdir -p /var/cache/loolwsd && chown lool: /var/cache/loolwsd && \
     mkdir -p /opt/lool/child-roots && \
     setcap cap_fowner,cap_mknod,cap_sys_chroot=ep /usr/bin/loolforkit && \
