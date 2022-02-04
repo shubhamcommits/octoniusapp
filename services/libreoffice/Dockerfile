@@ -27,7 +27,9 @@ WORKDIR "/opt"
 
 RUN git clone --depth=1 https://git.libreoffice.org/online
 
-RUN NO_DOCKER_PUSH="yes" ONLINE_EXTRA_BUILD_OPTIONS="--enable-anonymization --disable-werror" /opt/online/docker/l10n-docker-nightly.sh
+WORKDIR "/opt/online/docker"
+
+RUN NO_DOCKER_PUSH="yes" ONLINE_EXTRA_BUILD_OPTIONS="--enable-anonymization --disable-werror" ./l10n-docker-nightly.sh
 
 EXPOSE 9980/tcp
 
