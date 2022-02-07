@@ -71,8 +71,9 @@ function prodConfigInit() {
   process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/flamingo`
 
   // LIBREOFFICE Image Microservice
-  process.env.LIBREOFFICE_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}/libreoffice`
-  process.env.LIBREOFFICE_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}/api/libreoffice`
+  process.env.LIBREOFFICE_DOMAIN = process.env.LIBREOFFICE_DOMAIN
+  process.env.LIBREOFFICE_SERVER = `http://${process.env.LIBREOFFICE_DOMAIN}/libreoffice`
+  process.env.LIBREOFFICE_SERVER_API = `http://${process.env.LIBREOFFICE_DOMAIN}/api/libreoffice`
 };
 
 export { prodConfigInit as productionConfig } 
