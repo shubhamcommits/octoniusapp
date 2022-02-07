@@ -63,7 +63,7 @@ export class OfficeEditorComponent implements OnInit {
       } else {
         this.wopiClientURL = res['url'];
       }
-      this.wopiClientURL += '?WOPISrc=' + wopiSrc;
+      this.wopiClientURL += 'WOPISrc=' + wopiSrc;
 console.log(wopiSrc);
 console.log(this.wopiClientURL);
       this.accessToken = this.authToken;
