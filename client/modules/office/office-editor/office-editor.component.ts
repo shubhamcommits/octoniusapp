@@ -54,14 +54,12 @@ export class OfficeEditorComponent implements OnInit {
 
   getWopiClientUrl() {
     // this.wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
-    let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreofficeService/wopi/files/${this.fileId}?authToken=${this.authToken}`;
+    let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${this.fileId}?authToken=${this.authToken}`;
     this.libreofficeService.getLibreofficeUrl().then(res => {
 
-      if (!environment.production) {
-        const urlSplit = res['url'].split('http://localhost/');
-        this.wopiClientURL = environment.LIBREOFFICE_BASE_URL + urlSplit[1];
-      } else {
-        this.wopiClientURL = res['url'];
+      this.wopiClientURL = res['url'];
+      if (this.wopiClientURL.includes('https')) {
+        this.wopiClientURL = this.wopiClientURL.replace('https', 'http');
       }
       this.wopiClientURL += 'WOPISrc=' + wopiSrc;
 console.log(wopiSrc);
