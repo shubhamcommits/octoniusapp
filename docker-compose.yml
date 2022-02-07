@@ -13,24 +13,6 @@ services:
     networks:
       - acc
 
-  libreoffice-server:
-    container_name: libreoffice-server
-    image: ${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server
-    ports:
-      - ${LIBREOFFICE_SERVER_PORT}:${MACHINE_PORT}
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./services/libreoffice
-    volumes:
-      - ${VOLUME_NODE_MODULES}
-    environment:
-      - domain=${DOMAIN}/api/utilities/libreoffice
-      - username=admin
-      - password=adminadmin
-    networks:
-      - acc
-
   approval-server:
     container_name: approval-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:approval-server
