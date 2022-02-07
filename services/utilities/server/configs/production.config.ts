@@ -73,8 +73,9 @@ function prodConfigInit() {
   // LIBREOFFICE Image Service
   process.env.LIBREOFFICE_PROTOCOL = process.env.LIBREOFFICE_PROTOCOL
   process.env.LIBREOFFICE_DOMAIN = process.env.LIBREOFFICE_DOMAIN
-  process.env.LIBREOFFICE_SERVER = `${process.env.LIBREOFFICE_PROTOCOL}://${process.env.LIBREOFFICE_DOMAIN}/libreoffice`
-  process.env.LIBREOFFICE_SERVER_API = `${process.env.LIBREOFFICE_PROTOCOL}://${process.env.LIBREOFFICE_DOMAIN}/api/libreoffice`
+  process.env.LIBREOFFICE_PORT = process.env.LIBREOFFICE_PORT || '9980'
+  process.env.LIBREOFFICE_SERVER = `${process.env.LIBREOFFICE_PROTOCOL}://${process.env.LIBREOFFICE_DOMAIN}:${process.env.LIBREOFFICE_PORT}/libreoffice`
+  process.env.LIBREOFFICE_SERVER_API = `${process.env.LIBREOFFICE_PROTOCOL}://${process.env.LIBREOFFICE_DOMAIN}:${process.env.LIBREOFFICE_PORT}/api/libreoffice`
 };
 
 export { prodConfigInit as productionConfig } 
