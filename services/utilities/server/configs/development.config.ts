@@ -82,10 +82,9 @@ function devConfigInit() {
   process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}/api`
 
   // Libreoffice Image Service
-  process.env.LIBREOFFICE_PROTOCOL = process.env.LIBREOFFICE_PROTOCOL || 'http'
-  process.env.LIBREOFFICE_DOMAIN = process.env.LIBREOFFICE_DOMAIN || '46.101.173.92'
-  process.env.LIBREOFFICE_PORT = process.env.LIBREOFFICE_PORT || '9980'
-  process.env.LIBREOFFICE_SERVER = `${process.env.LIBREOFFICE_PROTOCOL}://${process.env.LIBREOFFICE_DOMAIN}:${process.env.LIBREOFFICE_PORT}`
+  process.env.LIBREOFFICE_PROTOCOL = process.env.LIBREOFFICE_PROTOCOL || 'https'
+  process.env.LIBREOFFICE_DOMAIN = process.env.LIBREOFFICE_DOMAIN || 'docs.octonius.com'
+  process.env.LIBREOFFICE_SERVER = `${process.env.LIBREOFFICE_PROTOCOL}://${process.env.LIBREOFFICE_DOMAIN}`
 };
 
 export { devConfigInit as developmentConfig }
