@@ -19,7 +19,6 @@ export class LibreofficeControllers {
             let libreofficeOnlineHost = process.env.LIBREOFFICE_SERVER;
             let httpClient = libreofficeOnlineHost.startsWith('https') ? https : http;
             let data = '';
-console.log(libreofficeOnlineHost + '/hosting/discovery');
             let request = httpClient.get(libreofficeOnlineHost + '/hosting/discovery', (response) => {
                 response.on('data', (chunk) => { data += chunk.toString(); });
                 response.on('end', () => {
