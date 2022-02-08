@@ -86,7 +86,6 @@ function devConfigInit() {
   process.env.LIBREOFFICE_DOMAIN = process.env.LIBREOFFICE_DOMAIN || '46.101.173.92'
   process.env.LIBREOFFICE_PORT = process.env.LIBREOFFICE_PORT || '9980'
   process.env.LIBREOFFICE_SERVER = `${process.env.LIBREOFFICE_PROTOCOL}://${process.env.LIBREOFFICE_DOMAIN}:${process.env.LIBREOFFICE_PORT}`
-  process.env.LIBREOFFICE_SERVER_API = `${process.env.LIBREOFFICE_PROTOCOL}://${process.env.LIBREOFFICE_DOMAIN}:${process.env.LIBREOFFICE_PORT}/api`
 };
 
 export { devConfigInit as developmentConfig }

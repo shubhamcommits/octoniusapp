@@ -57,11 +57,7 @@ export class OfficeEditorComponent implements OnInit {
     let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${this.fileId}?authToken=${this.authToken}`;
     this.libreofficeService.getLibreofficeUrl().then(res => {
 
-      this.wopiClientURL = res['url'];
-      if (this.wopiClientURL.includes('https')) {
-        this.wopiClientURL = this.wopiClientURL.replace('https', 'http');
-      }
-      this.wopiClientURL += 'WOPISrc=' + wopiSrc;
+      this.wopiClientURL = res['url'] + 'WOPISrc=' + wopiSrc;
 console.log(wopiSrc);
 console.log(this.wopiClientURL);
       this.accessToken = this.authToken;

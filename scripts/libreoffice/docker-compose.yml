@@ -1,0 +1,20 @@
+version: "3.6"
+services:
+  libreoffice:
+    image: libreoffice/online:master
+    environment:
+      domain: docs.octonius.com
+      username: admin
+      password: secret
+      #extra_params: --o:ssl.enable=false --o:ssl.termination=true
+      DONT_GEN_SSL_CERT: 1
+    volumes:
+      - lo_config_volume:/etc/loolwsd
+    cap_add:
+      - MKNOD
+    ports:
+            - "9980:9980"
+    restart:
+      unless-stopped
+volumes:
+  lo_config_volume:
