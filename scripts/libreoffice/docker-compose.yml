@@ -3,7 +3,9 @@ services:
   libreoffice:
     image: libreoffice/online:master
     environment:
-      domain: docs.octonius.com
+      #domain: docs\.octonius\.com
+      #domain: (.*\.example\.com|host\.docker\.internal)
+      domain: app\.octonius\.com|workplace\.octonius\.com
       username: admin
       password: secret
       #extra_params: --o:ssl.enable=false --o:ssl.termination=true
@@ -13,7 +15,7 @@ services:
     cap_add:
       - MKNOD
     ports:
-            - "9980:9980"
+      - "9980:9980"
     restart:
       unless-stopped
 volumes:
