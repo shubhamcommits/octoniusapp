@@ -11,6 +11,7 @@ export class SearchHeaderComponent implements OnInit {
 
 
   searchedPosts = [];
+  searchedTasks = [];
   searchedUsers = [];
   searchedFiles = [];
 
@@ -47,6 +48,7 @@ export class SearchHeaderComponent implements OnInit {
 
   search() {
     this.searchedPosts = [];
+    this.searchedTasks = [];
     this.searchedUsers = [];
     this.searchedFiles = [];
     this.selected = null;
@@ -62,6 +64,10 @@ export class SearchHeaderComponent implements OnInit {
 
     if (this.advancedFilters.type == 'all' || this.advancedFilters.type == '' || this.advancedFilters.type == 'post') {
       this.searchPosts(this.searchQuery);
+    }
+
+    if (this.advancedFilters.type == 'all' || this.advancedFilters.type == '' || this.advancedFilters.type == 'task') {
+      this.searchTask(this.searchQuery);
     }
 
     if (this.advancedFilters.type == 'all' || this.advancedFilters.type == '' || this.advancedFilters.type == 'user') {
@@ -83,6 +89,27 @@ export class SearchHeaderComponent implements OnInit {
           const result = res.results.filter((restult) => this.searchedPosts.every((post) => post._id !== restult._id));
           result.forEach(post => {
             this.searchedPosts.push(post);
+          });
+        }
+      });
+    } catch (error) {
+
+    }
+  }
+  /**
+   * Post Query Ends
+   */
+
+  /**
+   * Task Query Starts
+   */
+  async searchTask(postQuery){
+    try {
+      await this.searchService.getSearchResults(postQuery, 'tasks', this.advancedFilters).then((res: any) => {
+        if (res.results.length > 0) {
+          const result = res.results.filter((restult) => this.searchedTasks.every((post) => post._id !== restult._id));
+          result.forEach(post => {
+            this.searchedTasks.push(post);
           });
         }
       });
@@ -195,6 +222,7 @@ export class SearchHeaderComponent implements OnInit {
       tags: []
     };
     this.searchedPosts = [];
+    this.searchedTasks = [];
     this.searchedUsers = [];
     this.searchedFiles = [];
   }

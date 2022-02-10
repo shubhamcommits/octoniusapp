@@ -22,6 +22,8 @@ export class SearchService {
       switch (req.params.filter) {
         case 'posts':
           return this.createPostQuery(user['_groups'], query, JSON.parse(req.query.advancedFilters));
+        case 'tasks':
+          return this.createTasksQuery(user['_groups'], query, JSON.parse(req.query.advancedFilters));
         case 'users':
           return this.createUserQuery(user, query, JSON.parse(req.query.advancedFilters));
         case 'files':
@@ -96,6 +98,7 @@ export class SearchService {
       query = {
         $and: [
           { _group: { $in: userGroups } },
+          { type: { $ne: 'task' }},
           {
             $or: [
               { content: { $regex: queryText, $options: 'i' } },
@@ -112,6 +115,7 @@ export class SearchService {
       query = {
         $and: [
           { _group: { $in: userGroups } },
+          { type: { $ne: 'task' }},
           {
             $or: [
               { content: { $regex: queryText, $options: 'i' } },
@@ -127,6 +131,7 @@ export class SearchService {
       query = {
         $and: [
           { _group: { $in: userGroups } },
+          { type: { $ne: 'task' }},
           {
             $or: [
               { content: { $regex: queryText, $options: 'i' } },
@@ -141,6 +146,7 @@ export class SearchService {
       query = {
         $and: [
           { _group: { $in: userGroups } },
+          { type: { $ne: 'task' }},
           {
             $or: [
               { content: { $regex: queryText, $options: 'i' } },
@@ -173,7 +179,123 @@ export class SearchService {
 
     // Filter the comments by the groups of the user
     comments = comments.filter(comment => {
-      return comment._post && comment._post._group
+      return comment._post && comment._post.type != 'task'  && comment._post._group
+        && userGroups.findIndex(group => group == comment._post._group)
+    });
+
+    // add the comments´ posts to the array if they are not there yet
+    comments.forEach(async comment => {
+      const index = (comment && comment._post) ? posts.findIndex(post => post._id == (comment._post._id || comment._post)) : -1;
+      if (comment && comment._post && index < 0) {
+        const post = await Post.findOne({_id: (comment._post._id || comment._post)})
+          .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+          .populate({ path: '_group', select: 'custom_fields' })
+          .sort({ created_date: -1 })
+          .lean();
+
+        posts.push(post);
+      }
+    });
+
+    return posts;
+  }
+
+  async createTasksQuery(userGroups, queryText, advancedFilters) {
+
+    if (advancedFilters.owners.length > 0) {
+      advancedFilters.owners = advancedFilters.owners.map(member => {
+        return member._id;
+      });
+    }
+
+    let query: any = {};
+    if (advancedFilters.owners && advancedFilters.owners.length > 0
+        && advancedFilters.tags && advancedFilters.tags.length > 0) {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          { type: 'task' },
+          {
+            $or: [
+              { content: { $regex: queryText, $options: 'i' } },
+              { title: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' } }
+            ]
+          },
+          { _posted_by: { $in: advancedFilters.owners } },
+          { tags: { $in: advancedFilters.tags } }
+        ]
+      };
+    } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
+        && advancedFilters.tags && advancedFilters.tags.length > 0) {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          { type: 'task' },
+          {
+            $or: [
+              { content: { $regex: queryText, $options: 'i' } },
+              { title: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' } }
+            ]
+          },
+          { tags: { $in: advancedFilters.tags } }
+        ]
+      };
+    } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
+        && (advancedFilters.tags || advancedFilters.tags.length == 0)) {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          { type: 'task' },
+          {
+            $or: [
+              { content: { $regex: queryText, $options: 'i' } },
+              { title: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' } }
+            ]
+          },
+          { _posted_by: { $in: advancedFilters.owners } }
+        ]
+      };
+    } else {
+      query = {
+        $and: [
+          { _group: { $in: userGroups } },
+          { type: 'task' },
+          {
+            $or: [
+              { content: { $regex: queryText, $options: 'i' } },
+              { title: { $regex: queryText, $options: 'i' } },
+              { tags: { $regex: queryText, $options: 'i' } }
+            ]
+          }
+        ]
+      };
+    }
+
+    let posts = await Post.find(query)
+      .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+      .populate({ path: '_group', select: 'custom_fields' })
+      .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+      .sort({ created_date: -1 })
+      .lean();
+
+    // Search on the comments
+    let comments = await Comment.find({
+        $and: [
+          { content: { $regex: queryText, $options: 'i' } }
+        ]    
+      })
+      .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
+      .populate({ path: '_post', select: '_id _group' })
+      .sort({ created_date: -1 })
+      .lean();
+
+    // Filter the comments by the groups of the user
+    comments = comments.filter(comment => {
+      return comment._post && comment._post.type == 'task' && comment._post._group
         && userGroups.findIndex(group => group == comment._post._group)
     });
 
