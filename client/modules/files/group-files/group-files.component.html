@@ -92,6 +92,11 @@
                       <i *ngIf="folder?.canEdit" class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
 
                       <mat-menu #menu="matMenu">
+                          <a mat-menu-item (click)="copyFolderLinkToClipboard(folder)" *ngIf="folder?.canEdit">
+                            <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
+                            <span i18n="@@groupFiles.copyLink">Copy Link</span>
+                          </a>
+
                           <a mat-menu-item *ngIf="folder?.canDelete" (click)="deleteItem(folder?._id, folder?.type)">
                               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
                               <span i18n="@@groupFiles.delete">Delete</span>

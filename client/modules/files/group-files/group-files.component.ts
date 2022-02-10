@@ -318,11 +318,50 @@ export class GroupFilesComponent implements OnInit {
     });
   }
 
+  async copyFolderLinkToClipboard(folder: any) {
+    // Create Selection Box
+    let selBox = document.createElement('textarea');
+
+    // Set the CSS Properties
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+
+    let url = this.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
+    const currentFolderId = await this.router.snapshot.queryParamMap.has('folder') ? this.router.snapshot.queryParamMap.get('folder') : false;
+    if (!currentFolderId) {
+      url += this._router.url + '&folder=' + folder?._id;
+    } else {
+      let urlSplit = this._router.url.split('&folder=');
+      url += urlSplit[0] + '&folder=' + folder?._id;
+    }
+
+    selBox.value = url;
+    // Append the element to the DOM
+    document.body.appendChild(selBox);
+
+    // Set the focus and Child
+    selBox.focus();
+    selBox.select();
+
+    // Execute Copy Command
+    document.execCommand('copy');
+
+    // Once Copied remove the child from the dom
+    document.body.removeChild(selBox);
+
+    // Show Confirmed notification
+    this.utilityService.simpleNotification($localize`:@@groupFiles.copiedToClipboard:Copied to Clipboard!`);
+  }
+
   /**
    * This function is responsible for copying the folio link to the clipboard
    */
   copyToClipboard(file: any) {
-
     // Create Selection Box
     let selBox = document.createElement('textarea');
 
