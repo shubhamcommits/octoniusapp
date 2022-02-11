@@ -314,7 +314,7 @@ export class PostService {
     else if (type === 'task')
       filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-task.due_to')
-        .select('title type permissions task approval_flow_launched')
+        .select('title type permissions task approval_flow_launched tags _group')
         //.populate({ path: '_group', select: this.groupFields })
         //.populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
