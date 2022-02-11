@@ -35,7 +35,6 @@ export class MemberDialogComponent implements OnInit {
       await this.publicFunctions.getOtherUser(this.userId).then((res) => {
         if(JSON.stringify(res) != JSON.stringify({})){
           this.userData = res;
-console.log(this.userData.profile_custom_fields);
         }
       });
     }
