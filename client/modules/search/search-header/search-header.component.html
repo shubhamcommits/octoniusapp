@@ -93,6 +93,39 @@
       </div>
     </div>
 
+    <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task'">
+      <div class="filter-label" i18n="@@searchHeader.date">Date</div>
+      <div class="filter-cell">
+          <span i18n="@@searchHeader.from">From</span>:
+          <!-- Date Picker starts -->
+          <app-date-picker (date)="getDate($event, 'from')"
+            [selectedDate]="formateDate(advancedFilters?.from_date)"
+            [upperLimit]="formateDate(advancedFilters?.to_date)"
+            [styleClass]="'btn-group input-date'"
+            [canEdit]="true">
+          </app-date-picker>
+          <!--Date Picker ends -->
+
+          <!-- Clean field starts -->
+          <i (click)="getDate(null, 'from')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+          <!-- Clean field ends -->
+
+          <span style="margin-left: 30px;" i18n="@@searchHeader.to">To</span>:
+          <!-- Date Picker starts -->
+          <app-date-picker (date)="getDate($event, 'to')"
+            [selectedDate]="formateDate(advancedFilters?.to_date)"
+            [lowerLimit]="formateDate(advancedFilters?.from_date)"
+            [styleClass]="'btn-group input-date'"
+            [canEdit]="true">
+          </app-date-picker>
+          <!--Date Picker ends -->
+
+          <!-- Clean field starts -->
+          <i (click)="getDate(null, 'to')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+          <!-- Clean field ends -->
+      </div>
+    </div>
+
     <div class="advanced-filters" *ngIf="advancedFilters.type == 'file'">
       <div class="filter-label" i18n="@@searchHeader.fileMetadata" *ngIf="advancedFilters.type == 'file'">File metadata</div>
       <div class="filter-cell">

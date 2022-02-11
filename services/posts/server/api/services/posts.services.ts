@@ -282,7 +282,7 @@ export class PostService {
       filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-_id')
         .limit((numLikes && numLikes > 0) ? numLikes : 5)
-        .select('title type permissions task approval_flow_launched tags _group comments_count')
+        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions')
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         //.populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
@@ -300,7 +300,7 @@ export class PostService {
       filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-_id')
         .limit((numLikes && numLikes > 0) ? numLikes : 5)
-        .select('title type permissions task approval_flow_launched tags _group comments_count')
+        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions')
         //.populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
@@ -334,7 +334,7 @@ export class PostService {
     else if (type == 'pinned')
       filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-created_date')
-        .select('title type permissions task approval_flow_launched tags _group comments_count')
+        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions')
         //.populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
@@ -1305,7 +1305,7 @@ export class PostService {
         .populate('_posted_by', 'first_name last_name profile_pic')
         .populate('_assigned_to', 'first_name last_name profile_pic')
         .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: 'permissions._members', select: this.userFields })

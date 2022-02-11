@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, Injector } from '@angular/core';
 import { SearchService } from 'src/shared/services/search-service/search.service';
 import { PublicFunctions } from 'modules/public.functions';
+import moment from 'moment';
 
 @Component({
   selector: 'app-search-header',
@@ -30,7 +31,9 @@ export class SearchHeaderComponent implements OnInit {
     owners: [],
     metadata: '',
     skills: [],
-    tags: []
+    tags: [],
+    from_date: null,
+    to_date: null
   };
 
   // Public Functions Object
@@ -58,7 +61,9 @@ export class SearchHeaderComponent implements OnInit {
         && this.advancedFilters.owners.length == 0
         && this.advancedFilters.skills.length == 0
         && this.advancedFilters.tags.length == 0
-        && (this.advancedFilters.metadata == '' || this.advancedFilters.metadata == ' ')) {
+        && (this.advancedFilters.metadata == '' || this.advancedFilters.metadata == ' ')
+        && !this.advancedFilters.from_date
+        && !this.advancedFilters.to_date) {
       return;
     }
 
@@ -219,11 +224,33 @@ export class SearchHeaderComponent implements OnInit {
       owners: [],
       metadata: '',
       skills: [],
-      tags: []
+      tags: [],
+      from_date: null,
+      to_date: null
     };
     this.searchedPosts = [];
     this.searchedTasks = [];
     this.searchedUsers = [];
     this.searchedFiles = [];
+  }
+
+  /**
+   * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
+   * @param dateObject
+   */
+  getDate(dateObject: any, property: string) {
+    if (property == 'from') {
+      this.advancedFilters.from_date = dateObject.toDate();
+    }
+
+    if (property == 'to') {
+      this.advancedFilters.to_date = dateObject.toDate();
+    }
+
+    this.search();
+  }
+
+  formateDate(date){
+    return moment(moment.utc(date), "YYYY-MM-DD").toDate();
   }
 }

@@ -1,5 +1,6 @@
 import { Post, User, File, Comment } from '../models';
 import { sendErr } from '../utils/sendError';
+import moment from 'moment';
 
 /*  ===============================
  *  -- SEARCH Service --
@@ -92,6 +93,20 @@ export class SearchService {
       });
     }
 
+    let from_date;
+    let to_date;
+    if (advancedFilters.from_date) {
+      from_date = moment(advancedFilters.from_date).startOf('day').format();
+    } else {
+      from_date = moment().subtract(40, 'years').format();
+    }
+
+    if (advancedFilters.to_date) {
+      to_date = moment(advancedFilters.to_date).startOf('day').format();
+    } else {
+      to_date = moment().add(1, 'days').format();
+    }
+
     let query: any = {};
     if (advancedFilters.owners && advancedFilters.owners.length > 0
         && advancedFilters.tags && advancedFilters.tags.length > 0) {
@@ -107,7 +122,8 @@ export class SearchService {
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
-          { tags: { $in: advancedFilters.tags } }
+          { tags: { $in: advancedFilters.tags } },
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]
       };
     } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
@@ -123,7 +139,8 @@ export class SearchService {
               { tags: { $regex: queryText, $options: 'i' } }
             ]
           },
-          { tags: { $in: advancedFilters.tags } }
+          { tags: { $in: advancedFilters.tags } },
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]
       };
     } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
@@ -139,7 +156,8 @@ export class SearchService {
               { tags: { $regex: queryText, $options: 'i' } }
             ]
           },
-          { _posted_by: { $in: advancedFilters.owners } }
+          { _posted_by: { $in: advancedFilters.owners } },
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]
       };
     } else {
@@ -153,7 +171,8 @@ export class SearchService {
               { title: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' } }
             ]
-          }
+          },
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]
       };
     }
@@ -208,6 +227,20 @@ export class SearchService {
       });
     }
 
+    let from_date;
+    let to_date;
+    if (advancedFilters.from_date) {
+      from_date = moment(advancedFilters.from_date).startOf('day').format();
+    } else {
+      from_date = moment().subtract(40, 'years').format();
+    }
+
+    if (advancedFilters.to_date) {
+      to_date = moment(advancedFilters.to_date).startOf('day').format();
+    } else {
+      to_date = moment().add(1, 'days').format();
+    }
+
     let query: any = {};
     if (advancedFilters.owners && advancedFilters.owners.length > 0
         && advancedFilters.tags && advancedFilters.tags.length > 0) {
@@ -223,7 +256,8 @@ export class SearchService {
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
-          { tags: { $in: advancedFilters.tags } }
+          { tags: { $in: advancedFilters.tags } },
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]
       };
     } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
@@ -239,7 +273,8 @@ export class SearchService {
               { tags: { $regex: queryText, $options: 'i' } }
             ]
           },
-          { tags: { $in: advancedFilters.tags } }
+          { tags: { $in: advancedFilters.tags } },
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]
       };
     } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
@@ -255,7 +290,8 @@ export class SearchService {
               { tags: { $regex: queryText, $options: 'i' } }
             ]
           },
-          { _posted_by: { $in: advancedFilters.owners } }
+          { _posted_by: { $in: advancedFilters.owners } },
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]
       };
     } else {
@@ -269,7 +305,8 @@ export class SearchService {
               { title: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' } }
             ]
-          }
+          },
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]
       };
     }
@@ -324,6 +361,20 @@ export class SearchService {
       });
     }
 
+    let from_date;
+    let to_date;
+    if (advancedFilters.from_date) {
+      from_date = moment(advancedFilters.from_date).startOf('day').format();
+    } else {
+      from_date = moment().subtract(40, 'years').format();
+    }
+
+    if (advancedFilters.to_date) {
+      to_date = moment(advancedFilters.to_date).startOf('day').format();
+    } else {
+      to_date = moment().add(1, 'days').format();
+    }
+
     let query: any = {};
     if (advancedFilters.owners && advancedFilters.owners.length > 0
         && advancedFilters.tags && advancedFilters.tags.length > 0
@@ -343,6 +394,7 @@ export class SearchService {
           { _posted_by: { $in: advancedFilters.owners } },
           { tags: { $in: advancedFilters.tags } },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]    
       };
     } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
@@ -362,6 +414,7 @@ export class SearchService {
           },
           { tags: { $in: advancedFilters.tags } },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]    
       };
     } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
@@ -381,6 +434,7 @@ export class SearchService {
           },
           { _posted_by: { $in: advancedFilters.owners } },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]    
       };
     } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
@@ -399,7 +453,8 @@ export class SearchService {
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
-          { tags: { $in: advancedFilters.tags } }
+          { tags: { $in: advancedFilters.tags } },
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]    
       };
     } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
@@ -418,6 +473,7 @@ export class SearchService {
             ]
           },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]    
       };
     } else if (advancedFilters.owners && advancedFilters.owners.length > 0
@@ -436,6 +492,7 @@ export class SearchService {
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]    
       };
     } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
@@ -453,7 +510,8 @@ export class SearchService {
               // { custom_fields: { $regex: queryText, $options: 'i' }},
             ]
           },
-          { tags: { $in: advancedFilters.tags } }
+          { tags: { $in: advancedFilters.tags } },
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]    
       };
     } else {
@@ -468,7 +526,8 @@ export class SearchService {
               { description: { $regex: queryText, $options: 'i' }},
               // { custom_fields: { $regex: queryText, $options: 'i' }},
             ]
-          }
+          },
+          { created_date: { $gte: from_date, $lte: to_date } }
         ]    
       };
     }
