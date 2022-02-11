@@ -205,9 +205,10 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
 
     // Open the Modal
     let dialogRef;
+    const canOpen = !this.groupData?.enabled_rights || this.post?.canView || this.post?.canEdit;
     if (this.post.type === 'task' && !this.post.task._parent_task) {
       await this.publicFunctions.getAllColumns(this.post._group._id).then(data => this.columns = data);
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns);
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
     } else {
       // for subtasks it is not returning the parent information, so need to make a workaround
       if (this.post.task._parent_task && !this.post.task._parent_task._id) {
@@ -215,7 +216,7 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
             this.post.task._parent_task = post;
           });
       }
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable);
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
     }
 
     if (dialogRef) {
