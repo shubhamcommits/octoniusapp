@@ -12,6 +12,7 @@ export class MemberDialogComponent implements OnInit {
 
   userId;
   userData;
+  currentWorkspace;
 
   userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
@@ -27,12 +28,14 @@ export class MemberDialogComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
     this.userId = this.data.userId;
 
     if (this.userId) {
       await this.publicFunctions.getOtherUser(this.userId).then((res) => {
         if(JSON.stringify(res) != JSON.stringify({})){
           this.userData = res;
+console.log(this.userData.profile_custom_fields);
         }
       });
     }

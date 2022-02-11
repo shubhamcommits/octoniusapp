@@ -10,54 +10,47 @@
   <div class="content">
     <div class="container">
       <div class="row inner-content" *ngIf="userData">
-
           <div class="col-md-4">
+              <div class="card-block">
+                  <app-secured-image
+                    [imgURL]="userData?.profile_pic"
+                    [service]="'user'"
+                    [styleClass]="'peoplecard-avatar'"
+                    [placement]="'below'"></app-secured-image>
+                  <h6 class="user-name">
+                    <b>{{ userData?.first_name }} {{ userData?.last_name }}</b>
+                  </h6>
+                  <p class="card-text blue job-title">
+                    <span id="userData_current_position"> {{ userData?.current_position}} </span></p>
 
+                  <hr />
 
-                  <div class="card-block">
-                      <app-secured-image
-                        [imgURL]="userData?.profile_pic"
-                        [service]="'user'"
-                        [styleClass]="'peoplecard-avatar'"
-                        [placement]="'below'"></app-secured-image>
-                      <h6 class="user-name">
-                        <b>{{ userData?.first_name }} {{ userData?.last_name }}</b>
-                      </h6>
-                      <p class="card-text blue job-title">
-                        <span id="userData_current_position"> {{ userData?.current_position}} </span></p>
-
-                      <hr />
-
-                      <p class="card-text blue"><strong i18n="@@memberDialog.email">Email:</strong>
-                          {{ userData?.email}} </p>
-                      <p class="card-text blue"><strong i18n="@@memberDialog.phone">Phone:</strong>
-                          <span id="userData_phone_number"> {{ userData?.phone_number }} </span></p>
-                      <p class="card-text blue"><strong i18n="@@memberDialog.mobile">Mobile:</strong>
-                          <span id="userData_mobile_number"> {{ userData?.mobile_number }}</span></p>
-                      <p class="card-text blue"><strong i18n="@@memberDialog.company">Company:</strong>
-                          <span id="userData_company_name"> {{ userData?.company_name }} </span></p>
-                      <p class="card-text blue"><strong i18n="@@memberDialog.role">Role:</strong>
-                          {{ userData?.role }}</p>
-                          <p class="card-text blue"><strong i18n="@@memberDialog.joined">Joined:</strong>
-                            <span id="userData_company_join_date"> {{ userData?.company_join_date | date: 'longDate' }} </span></p>
-                  </div>
-
-
+                  <p class="card-text blue"><strong i18n="@@memberDialog.email">Email:</strong>
+                      {{ userData?.email}} </p>
+                  <p class="card-text blue"><strong i18n="@@memberDialog.phone">Phone:</strong>
+                      <span id="userData_phone_number"> {{ userData?.phone_number }} </span></p>
+                  <p class="card-text blue"><strong i18n="@@memberDialog.mobile">Mobile:</strong>
+                      <span id="userData_mobile_number"> {{ userData?.mobile_number }}</span></p>
+                  <p class="card-text blue"><strong i18n="@@memberDialog.company">Company:</strong>
+                      <span id="userData_company_name"> {{ userData?.company_name }} </span></p>
+                  <p class="card-text blue"><strong i18n="@@memberDialog.role">Role:</strong>
+                      {{ userData?.role }}</p>
+                      <p class="card-text blue"><strong i18n="@@memberDialog.joined">Joined:</strong>
+                      <span id="userData_company_join_date"> {{ userData?.company_join_date | date: 'longDate' }} </span></p>
+              </div>
           </div>
 
           <div class="col-md-8">
-            <div class="card-tile">
+            <div class="card-tile" *ngIf="userData && userData?.bio && userData?.bio != ''">
               <div class="card-block">
                 <p class="card-text"><strong i18n="@@memberDialog.biography">Biography:</strong></p>
-                  <span id="userData_bio" class="muted">  {{ userData?.bio }} </span>
-
-
-
-
+                <span id="userData_bio" class="muted">  {{ userData?.bio }} </span>
               </div>
             </div>
-            <hr />
-            <div class="card-tile">
+
+            <hr *ngIf="userData && userData?.skills && userData?.skills?.length > 0 && userData?.bio && userData?.bio != ''" />
+
+            <div class="card-tile" *ngIf="userData && userData?.skills && userData?.skills?.length > 0">
               <div class="card-block">
 
                   <!-- Template Heading starts -->
@@ -74,6 +67,28 @@
                   </ul>
                   <!-- Iterate over all the skills present for a particular user ends -->
 
+              </div>
+            </div>
+
+            <hr *ngIf="userData && userData?.skills && userData?.skills?.length > 0 && currentWorkspace && currentWorkspace?.profile_custom_fields && currentWorkspace?.profile_custom_fields?.length > 0 && userData?.profile_custom_fields" />
+
+            <div class="card-tile"
+                *ngIf="currentWorkspace && currentWorkspace?.profile_custom_fields && currentWorkspace?.profile_custom_fields?.length > 0 && userData && userData?.profile_custom_fields">
+              <div class="card-block">
+
+                  <!-- Template Heading starts -->
+                  <h6 class="card-title"><b i18n="@@memberDialog.profileFields">Profile Fields</b></h6>
+                  <!-- Template Heading ends -->
+                  <hr />
+
+                  <!-- Iterate over all the profile fields present for a particular workspace starts -->
+                  <ul class="skills">
+                      <li *ngFor="let pf of currentWorkspace?.profile_custom_fields">
+                        <span>{{ pf.title }}: &nbsp;</span>
+                        <span *ngIf="userData.profile_custom_fields[pf.name]">{{ userData.profile_custom_fields[pf.name] }}</span>
+                      </li>
+                  </ul>
+                  <!-- Iterate over all the profile fields present for a particular workspace ends -->
               </div>
             </div>
         </div>
