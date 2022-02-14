@@ -46,14 +46,18 @@ export class IdeaActionsComponent implements OnInit {
         this.voteValue = 1;
         if (!this.post.task.idea.positive_votes) {
           this.post.task.idea.positive_votes = [];
+          this.post.task.idea.positive_votes.push(this.userData);
+        } else {
+          this.post.task.idea.positive_votes.push(this.userData);
         }
-        this.post.task.idea.positive_votes.push(this.userData);
       } else {
         this.voteValue = -1;
         if (!this.post.task.idea.negative_votes) {
           this.post.task.idea.negative_votes = [];
+          this.post.task.idea.negative_votes.push(this.userData);
+        } else {
+          this.post.task.idea.negative_votes.push(this.userData);
         }
-        this.post.task.idea.negative_votes.push(this.userData);
       }
 
       // Call the Service Function to vote to a idea
