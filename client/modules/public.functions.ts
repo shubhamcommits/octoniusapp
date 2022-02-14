@@ -1429,7 +1429,7 @@ export class PublicFunctions {
     doesTriggersMatch(triggers: any[], post: any, groupId: string, isCreationTaskTrigger: boolean, shuttleIndex: number) {
         let retValue = true;
         if (triggers && triggers.length > 0) {
-            triggers.forEach(trigger => {
+            triggers.forEach(async trigger => {
                 if (retValue) {
                     switch (trigger.name) {
                         case 'Assigned to':
@@ -1508,6 +1508,13 @@ export class PublicFunctions {
                                 retValue = false;
                             }
                             return Promise.resolve({});
+                        case 'Approval Flow is Completed':
+                            if (post.approval_active && post.approval_flow_launched) {
+                                retValue = await this.isApprovalFlowCompleted(post.approval_flow);
+                            } else {
+                              retValue = false;
+                            }
+                            break;
                         default:
                             retValue = true;
                             return Promise.resolve({});
@@ -1518,6 +1525,15 @@ export class PublicFunctions {
             retValue = false;
         }
         return retValue;
+    }
+
+    isApprovalFlowCompleted(flow) {
+        for (let i = 0; i < flow.length; i++) {
+            if (!flow[i].confirmed || !flow[i].confirmation_date) {
+                return false;
+            }
+        }
+        return true
     }
 
     async executeActionFlow(flows: any[], flowIndex: number, stepIndex: number, post: any, childTasksUpdated: boolean, groupId: string, shuttleIndex: number) {

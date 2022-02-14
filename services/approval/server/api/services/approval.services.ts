@@ -400,7 +400,7 @@ export class ApprovalService {
       _id: item._group._workspace
     }).select('management_private_api_key').lean();
     
-    // GET emal of the user to send the code
+    // GET email of the user to send the code
     const index = item.approval_flow.findIndex(approval => approval._id == approvalId);
     const user: any = item.approval_flow[index]._assigned_to;
 
@@ -542,7 +542,7 @@ export class ApprovalService {
     }
   };
 
-  async confirmAction(itemId: string, type: string, approvalId: string, code: string, description: string, userId: string) {
+  async confirmAction(authorization: any, itemId: string, type: string, approvalId: string, code: string, description: string, userId: string, isShuttleTasksModuleAvailable: boolean) {
     try {
       const itemCorrect = await this.confirmItemDidNotChange(itemId, type);
 
@@ -679,12 +679,25 @@ export class ApprovalService {
                 flowCompleted = false;
               }
         
-              // If all assigned members approved the item, we notify everybody
+              // If all assigned members approved the item
               if (flowCompleted) {
+                // notify everybody
                 await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/item-approved`, {
                     item: JSON.stringify(post)
                   }, { maxContentLength: 60 * 1024 * 1024 }
                 );
+
+                // run automator
+                await http.put(`${process.env.POSTS_SERVER_API}/${itemId}/automator`, {
+                  userId: userId,
+                  isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable
+                }, {
+                  headers: {
+                    'Authorization': authorization
+                  }
+                }).then().catch(err => {
+                  console.log(err.response);
+                });
               }
 
               // Mark notification as read if it has a due date

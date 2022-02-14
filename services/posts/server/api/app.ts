@@ -90,9 +90,6 @@ app.use('/api/comments', commentRoutes);
 app.use('/api/post/permissions', postsPermissionsRoutes);
 app.use('/api/section/permissions', sectionsPermissionsRoutes);
 
-// Correct REST naming
-// app.use('/api/users', userRoutes);
-
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
     const error = new Error('404 not found');

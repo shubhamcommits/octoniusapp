@@ -1298,7 +1298,7 @@ export class PostController {
                                 post = await postService.executeActionFlow(step.action, post, userId, groupId, isChildStatusTrigger);
                             }
                         });
-                    } else {
+                    } else {
                         doTrigger = false;
                     }
                 });
@@ -1313,10 +1313,11 @@ export class PostController {
     /**
      * This method is used to check if the task match the automator triggers
      * 
-     * @param triggers 
-     * @param post 
-     * @param isCreationTaskTrigger 
-     * @param isChildStatusTrigger 
+     * @param triggers
+     * @param post
+     * @param groupId
+     * @param isCreationTaskTrigger
+     * @param isChildStatusTrigger
      */
     doesTriggersMatch(triggers: any[], post: any, groupId: string, isCreationTaskTrigger: boolean, isChildStatusTrigger: boolean) {
         let retValue = true;
@@ -1388,6 +1389,13 @@ export class PostController {
                                 retValue = true;
                             }
                             break;
+                        case 'Approval Flow is Completed':
+                            if (post.approval_active && post.approval_flow_launched) {
+                                retValue = await this.isApprovalFlowCompleted(post.approval_flow);
+                            } else {
+                                retValue = false;
+                            }
+                            break;
                         default:
                             retValue = true;
                             break;
@@ -1398,6 +1406,15 @@ export class PostController {
           retValue = false;
         }
         return retValue;
+    }
+
+    isApprovalFlowCompleted(flow) {
+        for (let i = 0; i < flow.length; i++) {
+            if (!flow[i].confirmed || !flow[i].confirmation_date) {
+                return false;
+            }
+        }
+        return true
     }
 
     /**
@@ -1679,7 +1696,40 @@ export class PostController {
             let post = await postService.selectShuttleStatus(postId, groupId, shuttleStatus, userId);
             
             // Execute Automation Flows
-            post = await this.executeAutomationFlows(groupId, post, userId, true, isShuttleTasksModuleAvailable);
+            post = await this.executeAutomationFlows(groupId, post, userId, false, isShuttleTasksModuleAvailable);
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Task updated!',
+                post: post
+            });
+        } catch (err) {
+            return sendErr(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async runAutomator(req: Request, res: Response, next: NextFunction) {
+        // Fetch the postId & groupId
+        const { postId } = req.params;
+
+        // Fetch userId and isShuttleTasksModuleAvailable
+        const { userId, isShuttleTasksModuleAvailable } = req.body;
+
+        try {
+            let post = await Post.findOne({
+                    _id: postId
+                })
+                .populate({ path: '_group', select: 'group_name group_avatar workspace_name' })
+                .populate({ path: '_assigned_to', select: 'first_name last_name profile_pic role email' })
+                .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
+                .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+                .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
+                .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' })
+                .populate({ path: 'task.shuttles._shuttle_section', select: '_id title' })
+                .lean();;
+
+            // Execute Automation Flows
+            post = await this.executeAutomationFlows(post._group, post, userId, false, isShuttleTasksModuleAvailable);
 
             // Send status 200 response
             return res.status(200).json({

@@ -29,8 +29,7 @@
       <div class="flowStepsBody">
         <div class="step" *ngFor="let step of flowSteps; let stepIndex = index">
 
-            <div class="index">{{ stepIndex + 1 }}</div>
-
+          <div class="index">{{ stepIndex + 1 }}</div>
 
           <!-- TRIGGER SECTION -->
           <div class="values" *ngIf="step.trigger">
@@ -137,6 +136,7 @@
                 </div>
               </div>
             </div>
+
             <div class="add-step">
               <i class="material-icons-outlined" *ngIf="!newTrigger" (click)="newTrigger = !newTrigger" style="cursor: pointer;">add</i>
             </div>

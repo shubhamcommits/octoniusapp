@@ -734,8 +734,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.postData = itemData;
   }
 
-  onApprovalFlowLaunchedEmiter(itemData: any) {
+  async onApprovalFlowLaunchedEmiter(itemData: any) {
     this.postData = itemData;
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
     this.canEdit = !this.postData?.approval_flow_launched;
   }
 }

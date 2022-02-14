@@ -29,9 +29,9 @@ export class IdeaActionsComponent implements OnInit {
         positive_votes: [],
         negative_votes: []
       }
-    } else {
-      this.votedPositiveIndex = this.post?.task?.idea?.positive_votes?.findIndex(userId => userId == this.userData._id);
-      this.votedNegativeIndex = this.post?.task?.idea?.negative_votes?.findIndex(userId => userId == this.userData._id);
+    } else if (this.userData) {
+      this.votedPositiveIndex = this.post?.task?.idea?.positive_votes?.findIndex(userId => userId == this.userData?._id);
+      this.votedNegativeIndex = this.post?.task?.idea?.negative_votes?.findIndex(userId => userId == this.userData?._id);
     }
   }
 
@@ -44,9 +44,15 @@ export class IdeaActionsComponent implements OnInit {
       // Increment votes
       if (positiveVote) {
         this.voteValue = 1;
+        if (!this.post.task.idea.positive_votes) {
+          this.post.task.idea.positive_votes = [];
+        }
         this.post.task.idea.positive_votes.push(this.userData);
       } else {
         this.voteValue = -1;
+        if (!this.post.task.idea.negative_votes) {
+          this.post.task.idea.negative_votes = [];
+        }
         this.post.task.idea.negative_votes.push(this.userData);
       }
 

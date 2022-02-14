@@ -262,13 +262,14 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
       });
   }
 
-  confirmAction(action: string, approvalId: string) {
+  async confirmAction(action: string, approvalId: string) {
     // Start the loading spinner
     this.isLoading$.next(true);
 
     if (action == 'approved') {
       if (this.confirmationCode && this.confirmationCode != '') {
-        this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmationCode, this.confirmation).then(async res => {
+        const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+        this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmationCode, this.confirmation, isShuttleTasksModuleAvailable).then(async res => {
           this.itemData = res['item'];
           this.showApproveCode = false;
           this.showDescription = false;
