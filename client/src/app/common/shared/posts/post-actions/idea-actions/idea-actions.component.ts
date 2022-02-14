@@ -30,8 +30,8 @@ export class IdeaActionsComponent implements OnInit {
         negative_votes: []
       }
     } else if (this.userData) {
-      this.votedPositiveIndex = this.post?.task?.idea?.positive_votes?.findIndex(userId => userId == this.userData?._id);
-      this.votedNegativeIndex = this.post?.task?.idea?.negative_votes?.findIndex(userId => userId == this.userData?._id);
+      this.votedPositiveIndex = (this.post.task.idea.positive_votes) ? this.post.task.idea.positive_votes.findIndex(userId => userId == this.userData._id) : -1;
+      this.votedNegativeIndex = (this.post.task.idea.negative_votes) ? this.post.task.idea.negative_votes.findIndex(userId => userId == this.userData._id) : -1;
     }
   }
 
@@ -74,8 +74,8 @@ export class IdeaActionsComponent implements OnInit {
     return postService.voteIdea(postId, this.voteValue)
       .then((res) => {
         this.post = res['post'];
-        this.votedPositiveIndex = this.post.task.idea.positive_votes.findIndex(userId => userId == this.userData._id);
-        this.votedNegativeIndex = this.post.task.idea.negative_votes.findIndex(userId => userId == this.userData._id);
+        this.votedPositiveIndex = (this.post.task.idea.positive_votes) ? this.post.task.idea.positive_votes.findIndex(userId => userId == this.userData._id) : -1;
+        this.votedNegativeIndex = (this.post.task.idea.negative_votes) ? this.post.task.idea.negative_votes.findIndex(userId => userId == this.userData._id) : -1;
       });
   }
 }

@@ -701,7 +701,7 @@ export class PostService {
       .populate('_posted_by', this.userFields)
       .populate('_assigned_to', this.userFields)
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
       .populate('performance_task._assigned_to', this.userFields)
