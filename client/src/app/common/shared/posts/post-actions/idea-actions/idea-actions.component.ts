@@ -45,26 +45,23 @@ export class IdeaActionsComponent implements OnInit {
         positive_votes: [],
         negative_votes: []
       }
+    } else {
+      if (!this.post.task.idea.positive_votes) {
+        this.post.task.idea.positive_votes = [];
+      }
+      if (!this.post.task.idea.negative_votes) {
+        this.post.task.idea.negative_votes = [];
+      }
     }
 
     if ((!positiveVote && this.votedNegativeIndex < 0) || (positiveVote && this.votedPositiveIndex < 0) && this.userData) {
       // Increment votes
       if (positiveVote) {
         this.voteValue = 1;
-        if (!this.post.task.idea.positive_votes) {
-          this.post.task.idea.positive_votes = [];
-          this.post.task.idea.positive_votes.push(this.userData);
-        } else {
-          this.post.task.idea.positive_votes.push(this.userData);
-        }
+        this.post.task.idea.positive_votes.push(this.userData);
       } else {
         this.voteValue = -1;
-        if (!this.post.task.idea.negative_votes) {
-          this.post.task.idea.negative_votes = [];
-          this.post.task.idea.negative_votes.push(this.userData);
-        } else {
-          this.post.task.idea.negative_votes.push(this.userData);
-        }
+        this.post.task.idea.negative_votes.push(this.userData);
       }
 
       // Call the Service Function to vote to a idea
