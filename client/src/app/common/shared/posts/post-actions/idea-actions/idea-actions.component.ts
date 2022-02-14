@@ -40,6 +40,13 @@ export class IdeaActionsComponent implements OnInit {
    */
   vote(positiveVote: boolean) {
 
+    if (!this.post.task.idea) {
+      this.post.task.idea = {
+        positive_votes: [],
+        negative_votes: []
+      }
+    }
+
     if ((!positiveVote && this.votedNegativeIndex < 0) || (positiveVote && this.votedPositiveIndex < 0) && this.userData) {
       // Increment votes
       if (positiveVote) {
