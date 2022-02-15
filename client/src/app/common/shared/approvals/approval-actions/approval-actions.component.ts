@@ -289,7 +289,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           this.isLoading$.next(false);
         });
       } else {
-        this.utilityService.errorNotification($localize`:@@approvalActions.areYouSure:Please provide the code sent to you.`);
+        this.utilityService.errorNotification($localize`:@@approvalActions.provideCode:Please provide the code sent to you.`);
 
         // Return the function via stopping the loader
         this.isLoading$.next(false);
@@ -316,7 +316,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           this.isLoading$.next(false);
         });
       } else {
-        this.utilityService.errorNotification($localize`:@@approvalActions.areYouSure:Please provide a reason to reject the item.`);
+        this.utilityService.errorNotification($localize`:@@approvalActions.provideReason:Please provide a reason to reject the item.`);
 
         // Return the function via stopping the loader
         this.isLoading$.next(false);
