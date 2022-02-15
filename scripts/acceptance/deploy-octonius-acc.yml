@@ -523,6 +523,24 @@ services:
       - flamingo-server
     networks:
       - acc
+
+  online:
+    image: collabora/code
+    # image: cibsoftware/libreoffice-online:6.2
+    environment:
+      domain: ${DOMAIN}
+      username: admin
+      password: admin
+      extra_params: --o:ssl.enable=false
+      # DONT_GEN_SSL_CERT: 1
+    volumes:
+      - config-volume:/etc/loolwsd
+    cap_add:
+      - MKNOD
+    ports:
+      - "9980:9980"
+    restart:
+      unless-stopped
     
   nginx:
     container_name: octonius_nginx
@@ -550,6 +568,7 @@ services:
       - acc
     
 volumes:
+  config-volume:
   #acc_db_data:
   #  driver: local
   #  driver_opts:
