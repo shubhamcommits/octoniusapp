@@ -10154,7 +10154,7 @@
       </trans-unit>
       <trans-unit id="northStar.updateProgress" datatype="html">
         <source>Update progress</source>
-        <target state="translated">Progreso de la actualización</target>
+        <target state="translated">Actualización Progreso</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/north-star/north-star.component.html</context>
           <context context-type="linenumber">83</context>
