@@ -8,6 +8,7 @@ let https = require('https');
 let Dom = require('xmldom').DOMParser;
 let xpath = require('xpath');
 const fs = require('fs');
+const path = require('path');
 
 // Create instance of files service
 let filesService = new FilesService();
@@ -26,30 +27,34 @@ export class LibreofficeControllers {
                     if (response.statusCode !== 200) {
                         err = 'Request failed. Satus Code: ' + response.statusCode;
                         response.resume();
-                        res.status(response.statusCode).send(err);
+                        //res.status(response.statusCode).send(err);
                         console.log(err)
-                        return;
+                        return sendError(res, new Error(err), err, response.statusCode);
+                        //return;
                     }
                     if (!response.complete) {
                         err = 'No able to retrieve the discovery.xml file from the Libreoffice Online server with the submitted address.';
-                        res.status(404).send(err);
+                        //res.status(404).send(err);
                         console.log(err);
-                        return;
+                        return sendError(res, new Error(err), err, 404);
+                        //return;
                     }
                     let doc = new Dom().parseFromString(data);
                     if (!doc) {
                         err = 'The retrieved discovery.xml file is not a valid XML file'
-                        res.status(404).send(err)
+                        //res.status(404).send(err)
                         console.log(err);
-                        return;
+                        return sendError(res, new Error(err), err, 404);
+                        //return;
                     }
                     let mimeType = 'text/plain';
                     let nodes = xpath.select("/wopi-discovery/net-zone/app[@name='" + mimeType + "']/action", doc);
                     if (!nodes || nodes.length !== 1) {
                         err = 'The requested mime type is not handled'
-                        res.status(404).send(err);
+                        //res.status(404).send(err);
                         console.log(err);
-                        return;
+                        return sendError(res, new Error(err), err, 404);
+                        //return;
                     }
 
                     let onlineUrl = nodes[0].getAttribute('urlsrc');
@@ -59,8 +64,9 @@ export class LibreofficeControllers {
                     });
                 });
                 response.on('error', function(err) {
-                    res.status(404).send('Request error: ' + err);
+                    //res.status(404).send('Request error: ' + err);
                     console.log('Request error: ' + err.message);
+                    return sendError(res, err, 'Request error: ' + err.message, 404);
                 });
             });
         } catch(err) {
@@ -82,9 +88,12 @@ export class LibreofficeControllers {
         const userId = req['userId'];
         
         if (!fileId) {
+            return sendError(res, new Error('Please pass the fileId in the request params.'), 'Please pass the fileId in the request params.', 400);
+            /*
             return res.status(400).json({
                 message: 'Please pass the fileId in the request params'
             });
+            */
         }
         
         try {
@@ -92,9 +101,12 @@ export class LibreofficeControllers {
             const file = await filesService.getOne(fileId);
 
             if (!file) {
+                return sendError(res, new Error('File not found.'), 'File not found.', 400);
+                /*
                 return res.status(400).json({
                     message: 'File not found.'
                 });
+                */
             }
             
             const user = await User.findById({ _id: userId }).lean();
@@ -128,9 +140,12 @@ export class LibreofficeControllers {
         const fileId = req.params.fileId;
 
         if (!fileId) {
+            return sendError(res, new Error('Please pass the fileId in the request params.'), 'Please pass the fileId in the request params.', 400);
+            /*
             return res.status(400).json({
                 message: 'Please pass the fileId in the request params'
             });
+            */
         }
 
         const file = await filesService.getOne(fileId);
@@ -143,8 +158,7 @@ export class LibreofficeControllers {
             // in a real case you should use the file id
             // for retrieving the file from the storage and
             // send back the file content as response
-            let fileContent = 'Hello world!';
-            res.send(fileContent);
+            res.send('');
         }
     }
 
@@ -160,12 +174,15 @@ export class LibreofficeControllers {
         const fileId = req.params.fileId;
 
         if (!fileId) {
+            return sendError(res, new Error('Please pass the fileId in the request params.'), 'Please pass the fileId in the request params.', 400);
+            /*
             return res.status(400).json({
                 message: 'Please pass the fileId in the request params'
             });
+            */
         }
 
-        //const file = await filesService.getOne(fileId);
+        const file = await filesService.getOne(fileId);
 
         // we log to the console so that is possible
         // to check that saving has triggered this wopi endpoint
@@ -174,10 +191,18 @@ export class LibreofficeControllers {
         if (req.body) {
             console.dir(req.body);
             console.log(req.body.toString());
+
+            //const filePath = path.join(__dirname, '/files', `${req.params.file_id}`);
+            //var wstream = fs.createWriteStream(filePath);
+            var wstream = fs.createWriteStream(`${process.env.FILE_UPLOAD_FOLDER}/uploads/${file.modified_name}`);
+            //wstream.write(req.rawBody);
+            wstream.write(req.body);
+            
             res.sendStatus(200);
         } else {
-            console.log('Not possible to get the file content.');
-            res.sendStatus(404);
+            //console.log('');
+            //res.sendStatus(404);
+            return sendError(res, new Error('Not possible to get the file content.'), 'Not possible to get the file content.', 404);
         }
     }
 }

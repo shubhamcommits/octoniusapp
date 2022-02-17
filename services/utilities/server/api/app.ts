@@ -8,6 +8,8 @@ import { developmentConfig, productionConfig } from '../configs';
 import { fileHandlerRoutes, filesRoutes, foldersRoutes, foldersPermissionsRoutes, filesPermissionsRoutes, libreofficeRoutes } from './routes';
 import fileUpload from 'express-fileupload';
 
+var rawBodyParser = require('raw-body-parser');
+
 // Defining new Express application
 const app = express();
 
@@ -27,6 +29,8 @@ app.use(express.json())
 // body parsers
 app.use(bodyParser.json({limit:'60mb'}));
 app.use(bodyParser.urlencoded({limit: '60mb',parameterLimit: 100000, extended: true }));
+
+app.use(rawBodyParser());
 
 // cors middleware for orign and Headers
 app.use(cors());

@@ -535,7 +535,7 @@ services:
       extra_params: --o:ssl.enable=false
       # DONT_GEN_SSL_CERT: 1
     volumes:
-      - config-volume:/etc/loolwsd
+      - acc_lool_config_volume:/etc/loolwsd
     cap_add:
       - MKNOD
     ports:
@@ -572,7 +572,6 @@ services:
       - acc
 
 volumes:
-  config-volume:
   #acc_db_data:
   #  driver: local
   #  driver_opts:
@@ -628,6 +627,8 @@ volumes:
       type: none
       device: ${PWD}/data/uploads/search
       o: bind
+
+  acc_lool_config_volume:
         
 networks:
   acc: 
