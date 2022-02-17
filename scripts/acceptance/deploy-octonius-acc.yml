@@ -525,6 +525,7 @@ services:
       - acc
 
   online:
+    container_name: octonius_office    
     image: collabora/code
     # image: cibsoftware/libreoffice-online:6.2
     environment:
@@ -541,7 +542,9 @@ services:
       - "9980:9980"
     restart:
       unless-stopped
-    
+    networks:
+      - acc
+
   nginx:
     container_name: octonius_nginx
     image: ${DOCKER_USER}/${DOCKER_REPO}:nginx
@@ -564,9 +567,10 @@ services:
       - search-server
       - flamingo-server
       - client
+      - online
     networks:
       - acc
-    
+
 volumes:
   config-volume:
   #acc_db_data:
