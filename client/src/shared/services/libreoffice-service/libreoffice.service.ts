@@ -30,7 +30,7 @@ export class LibreofficeService {
   }
 
   putFile(fileId: string) {
-    return this._http.put(this.baseUrl + `/libreoffice/wopi/files/${fileId}/contents`, {
+    return this._http.post(this.baseUrl + `/libreoffice/wopi/files/${fileId}/contents`, {
       params: {
       }
     }).toPromise();

@@ -151,7 +151,7 @@ export class LibreofficeControllers {
         const file = await filesService.getOne(fileId);
 
         if (file) {
-            const fileBuffer = fs.readFileSync(`${process.env.FILE_UPLOAD_FOLDER}/uploads/${file.modified_name}`);
+            const fileBuffer = fs.readFileSync(`${process.env.FILE_UPLOAD_FOLDER}/${file.modified_name}`);
             res.send(fileBuffer);
         } else {
             // we just return the content of a fake text file

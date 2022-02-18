@@ -67,6 +67,7 @@ console.log(this.wopiClientURL);
     });
   }
 
+  /*
   async loadDocument() {
     const existingOfficeframe = document.getElementById('officeFrame');
 
@@ -90,4 +91,5 @@ console.log(this.wopiClientURL);
     this.officeSubmitForm.nativeElement.action = this.wopiClientURL;
     this.officeSubmitForm.nativeElement.submit();
   }
+  */
 }
