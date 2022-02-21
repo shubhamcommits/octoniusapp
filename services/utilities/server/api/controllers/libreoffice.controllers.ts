@@ -189,8 +189,9 @@ export class LibreofficeControllers {
         console.log('wopi PutFile endpoint');
         //if (req.body && file) {
         if (req.body) {
+            console.dir(req);
             console.dir(req.body);
-            console.log(req.body.toString());
+            console.log(JSON.stringify(req.body));
 
             //const filePath = path.join(__dirname, '/files', `${req.params.file_id}`);
             //var wstream = fs.createWriteStream(filePath);
