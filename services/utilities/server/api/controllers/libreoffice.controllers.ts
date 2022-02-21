@@ -1,6 +1,5 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../../utils/senderror";
-import { removeBlankSpaces } from "../../utils/utilities";
 import { FilesService } from "../services";
 import { User } from "../models";
 
@@ -13,6 +12,7 @@ const path = require('path');
 
 // Create instance of files service
 let filesService = new FilesService();
+
 export class LibreofficeControllers {
 
     async libreofficeUrl(req: Request, res: Response, next: NextFunction) {
@@ -120,7 +120,7 @@ export class LibreofficeControllers {
                 UserId: user._id || '',
                 UserFriendlyName: file._posted_by.first_name + ' ' + file._posted_by.last_name,
                 UserExtraInfo: {
-                    avatar: process.env.UTILITIES_SERVER + '/uploads/users/' + removeBlankSpaces(file._posted_by.profile_pic),
+                    avatar: process.env.UTILITIES_SERVER + '/uploads/users/' + file._posted_by.profile_pic,
                     mail: file._posted_by.email
                 },
                 UserCanWrite: canEdit,
