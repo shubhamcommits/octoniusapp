@@ -61,7 +61,8 @@
               "socket.io-client",
               "highlight.js",
               "xlsx",
-              "quill-to-word"
+              "quill-to-word",
+              "pako"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
