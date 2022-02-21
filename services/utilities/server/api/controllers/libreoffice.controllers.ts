@@ -194,9 +194,10 @@ export class LibreofficeControllers {
 
             //const filePath = path.join(__dirname, '/files', `${req.params.file_id}`);
             //var wstream = fs.createWriteStream(filePath);
-            var wstream = fs.createWriteStream(`${process.env.FILE_UPLOAD_FOLDER}/uploads/${file.modified_name}`);
+            var wstream = fs.createWriteStream(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`);
             //wstream.write(req.rawBody);
-            wstream.write(req.body);
+            //wstream.write(req.body);
+            wstream.write(JSON.stringify(req.body));
             
             res.sendStatus(200);
         } else {
