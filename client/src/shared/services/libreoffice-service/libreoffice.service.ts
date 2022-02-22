@@ -14,25 +14,4 @@ export class LibreofficeService {
   getLibreofficeUrl() {
     return this._http.get(this.baseUrl + '/libreoffice/libreofficeUrl').toPromise();
   }
-
-  checkFileInfo(fileId: string) {
-    return this._http.get(this.baseUrl + `/libreoffice/wopi/files/${fileId}`, {
-      params: {
-      }
-    }).toPromise();
-  }
-
-  getFile(fileId: string) {
-    return this._http.get(this.baseUrl + `/libreoffice/wopi/files/${fileId}/contents`, {
-      params: {
-      }
-    }).toPromise();
-  }
-
-  putFile(fileId: string) {
-    return this._http.post(this.baseUrl + `/libreoffice/wopi/files/${fileId}/contents`, {
-      params: {
-      }
-    }).toPromise();
-  }
 }

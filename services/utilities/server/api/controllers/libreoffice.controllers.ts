@@ -1,4 +1,5 @@
 import { Response, Request, NextFunction } from "express";
+import { Auths } from '../../utils/auths';
 import { sendError } from "../../utils/senderror";
 import { FilesService } from "../services";
 import { User } from "../models";
@@ -112,8 +113,9 @@ export class LibreofficeControllers {
             
             const user = await User.findById({ _id: userId }).lean();
 
-            // TODO - calculate if user can edit file
-            let canEdit = (file?.approval_flow_launched) ? !file?.approval_flow_launched : true;
+            // calculate if user can edit file based on RAD
+            const authsHelper = new Auths();
+            const canEdit = await authsHelper.canUserDoFileAction(file, user);
             
             return res.json({
                 BaseFileName: file.original_name,
@@ -122,7 +124,7 @@ export class LibreofficeControllers {
                 UserId: user._id || '',
                 UserFriendlyName: user.first_name + ' ' + user.last_name,
                 UserExtraInfo: {
-                    avatar: process.env.UTILITIES_SERVER_API + '/uploads/users/' + user.profile_pic,
+                    avatar: process.env.UTILITIES_USERS_UPLOADS + '/' + user.profile_pic + '?noAuth=true',
                     mail: user.email
                 },
                 UserCanWrite: canEdit,
@@ -179,7 +181,7 @@ export class LibreofficeControllers {
     *  https://HOSTNAME/wopi/files/<document_id>/contents
     */
     async putFile(req, res) {
-        let session = req.query.access_token;
+        //let session = req.query.access_token;
         const fileId = req.params.fileId;
 
         if (!fileId) {
