@@ -22,7 +22,8 @@ routes.get('/wopi/files/:fileId', libreofficeController.checkFileInfo);
 
 routes.get('/wopi/files/:fileId/contents', libreofficeController.getFile);
 
-routes.post('/wopi/files/:fileId/contents', libreofficeController.putFile);
+//routes.post('/wopi/files/:fileId/contents', libreofficeController.putFile);
+routes.put('/wopi/files/:fileId/contents', libreofficeController.putFile);
 
 
 /*  ===================
