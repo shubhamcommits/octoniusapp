@@ -121,7 +121,7 @@ export class LibreofficeControllers {
                 UserId: user._id || '',
                 UserFriendlyName: file._posted_by.first_name + ' ' + file._posted_by.last_name,
                 UserExtraInfo: {
-                    avatar: process.env.UTILITIES_SERVER + '/uploads/users/' + file._posted_by.profile_pic,
+                    avatar: process.env.UTILITIES_SERVER_API + '/uploads/users/' + file._posted_by.profile_pic,
                     mail: file._posted_by.email
                 },
                 UserCanWrite: canEdit,
@@ -190,30 +190,30 @@ export class LibreofficeControllers {
             */
         }
 
-const file = await filesService.getOne(fileId);
+        const file = await filesService.getOne(fileId);
 
         // we log to the console so that is possible
         // to check that saving has triggered this wopi endpoint
         console.log('wopi PutFile endpoint');
         //if (req.body && file) {
-//        if (req.body) {
-            console.dir(req);
-            console.dir(req.body);
-            console.dir(req.rawBody);
-            console.log(JSON.stringify(req.body));
+        if (req.body) {
+            //console.dir(req);
+            //console.dir(req.body);
+            //console.dir(req.rawBody);
+            //console.log(JSON.stringify(req.body));
 
             //const filePath = path.join(__dirname, '/files', `${req.params.file_id}`);
             //var wstream = fs.createWriteStream(filePath);
-var wstream = fs.createWriteStream(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`);
-//wstream.write(req.rawBody);
-            //wstream.write(req.body);
-//wstream.write(JSON.stringify(req.body));
+            var wstream = fs.createWriteStream(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`);
+            //wstream.write(req.rawBody);
+            wstream.write(req.body);
+            //wstream.write(JSON.stringify(req.body));
             
             res.sendStatus(200);
-//        } else {
+        } else {
             //console.log('');
             //res.sendStatus(404);
-//            return sendError(res, new Error('Not possible to get the file content.'), 'Not possible to get the file content.', 404);
-//        }
+            return sendError(res, new Error('Not possible to get the file content.'), 'Not possible to get the file content.', 404);
+        }
     }
 }
