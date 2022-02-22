@@ -363,7 +363,7 @@ export class GroupFilesComponent implements OnInit {
   /**
    * This function is responsible for copying the folio link to the clipboard
    */
-  copyToClipboard(file: any) {
+  async copyToClipboard(file: any) {
     // Create Selection Box
     let selBox = document.createElement('textarea');
 
@@ -382,7 +382,11 @@ export class GroupFilesComponent implements OnInit {
     } else if (file?.type == 'flamingo') {
       url += '/document/flamingo/' + file?._id + '?group=' + this.groupId;
     } else if (file?.type == 'file') {
-      url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
+      if (this.isOfficeFile(file.original_name)) {
+        url = await this.getLibreOfficeURL(file._id);
+      } else {
+        url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
+      }
     }
 
     selBox.value = url;
@@ -572,6 +576,12 @@ export class GroupFilesComponent implements OnInit {
       fileType = 'mov';
     }
     return fileType;
+  }
+
+  isOfficeFile(fileName: string) {
+    const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xsl', 'xslx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'otp', 'pot', 'odf', 'odc', 'odb'];
+    const fileExtension = this.getFileExtension(fileName);
+    return officeExtensions.includes(fileExtension);
   }
 
   /**
@@ -986,16 +996,31 @@ export class GroupFilesComponent implements OnInit {
     return shareDBConnection.get("documents", folioId);
   }
 
-  openOfficeDoc(fileId: string) {
+  async openOfficeDoc(fileId: string) {
+
+    window.open(await this.getLibreOfficeURL(fileId), "_blank");
+
     // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
     let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${this.authToken}`;
     this.libreofficeService.getLibreofficeUrl().then(res => {
       let wopiClientURL = res['url'] + 'WOPISrc=' + wopiSrc;
-console.log(wopiSrc);
-console.log(wopiClientURL);
       window.open(wopiClientURL, "_blank");
     }).catch(error => {
-      this.utilityService.errorNotification('Not possible to retrieve the complete Office Online url');
+      this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
     });
+  }
+
+  async getLibreOfficeURL(fileId: string) {
+    let wopiClientURL = '';
+    // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
+    let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${this.authToken}`;
+    await this.libreofficeService.getLibreofficeUrl().then(res => {
+      wopiClientURL = res['url'] + 'WOPISrc=' + wopiSrc;
+      // window.open(wopiClientURL, "_blank");
+    }).catch(error => {
+      this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
+    });
+console.log(wopiClientURL);
+    return wopiClientURL;
   }
 }

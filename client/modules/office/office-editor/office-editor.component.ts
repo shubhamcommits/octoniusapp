@@ -56,42 +56,11 @@ export class OfficeEditorComponent implements OnInit {
     // this.wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
     let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${this.fileId}?authToken=${this.authToken}`;
     this.libreofficeService.getLibreofficeUrl().then(res => {
-
       this.wopiClientURL = res['url'] + 'WOPISrc=' + wopiSrc;
-console.log(wopiSrc);
-console.log(this.wopiClientURL);
       this.accessToken = this.authToken;
-console.log(this.officeSubmitForm);
-console.log(this.officeSubmitForm.nativeElement);
       this.officeSubmitForm.nativeElement.submit();
     }).catch(error => {
-      this.utilityService.errorNotification('Not possible to retrieve the complete Office Online url');
+      this.utilityService.errorNotification($localize`:@@officeEditor.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
     });
   }
-
-  /*
-  async loadDocument() {
-    const existingOfficeframe = document.getElementById('officeFrame');
-
-    if (existingOfficeframe) {
-      existingOfficeframe.parentNode.removeChild(existingOfficeframe);
-    }
-
-    await this.getWopiClientUrl();
-
-    const officeFrame = document.createElement('iframe');
-    officeFrame.name = 'officeFrame';
-    officeFrame.id = 'officeFrame';
-    officeFrame.title = 'Office Online Frame';
-    officeFrame.setAttribute('allowfullscreen', 'true');
-    officeFrame.setAttribute(
-      'sandbox',
-      'allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation allow-popups-to-escape-sandbox'
-    );
-    this.officeFrameholder.nativeElement.appendChild(officeFrame);
-    this.accessToken = this.storageService.getLocalData('authToken')['token'];
-    this.officeSubmitForm.nativeElement.action = this.wopiClientURL;
-    this.officeSubmitForm.nativeElement.submit();
-  }
-  */
 }

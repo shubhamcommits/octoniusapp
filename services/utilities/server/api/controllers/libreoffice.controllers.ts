@@ -13,6 +13,7 @@ const path = require('path');
 
 // Create instance of files service
 let filesService = new FilesService();
+let authsHelper = new Auths();
 
 export class LibreofficeControllers {
 
@@ -28,45 +29,35 @@ export class LibreofficeControllers {
                     if (response.statusCode !== 200) {
                         err = 'Request failed. Satus Code: ' + response.statusCode;
                         response.resume();
-                        //res.status(response.statusCode).send(err);
                         console.log(err)
                         return sendError(res, new Error(err), err, response.statusCode);
-                        //return;
                     }
                     if (!response.complete) {
                         err = 'No able to retrieve the discovery.xml file from the Libreoffice Online server with the submitted address.';
-                        //res.status(404).send(err);
                         console.log(err);
                         return sendError(res, new Error(err), err, 404);
-                        //return;
                     }
                     let doc = new Dom().parseFromString(data);
                     if (!doc) {
                         err = 'The retrieved discovery.xml file is not a valid XML file'
-                        //res.status(404).send(err)
                         console.log(err);
                         return sendError(res, new Error(err), err, 404);
-                        //return;
                     }
                     let mimeType = 'text/plain';
                     let nodes = xpath.select("/wopi-discovery/net-zone/app[@name='" + mimeType + "']/action", doc);
                     if (!nodes || nodes.length !== 1) {
                         err = 'The requested mime type is not handled'
-                        //res.status(404).send(err);
                         console.log(err);
                         return sendError(res, new Error(err), err, 404);
-                        //return;
                     }
 
                     let onlineUrl = nodes[0].getAttribute('urlsrc');
                     onlineUrl = onlineUrl.replace("http:", "https:");
                     res.json({
                         url: onlineUrl,
-                        //token: 'test'
                     });
                 });
                 response.on('error', function(err) {
-                    //res.status(404).send('Request error: ' + err);
                     console.log('Request error: ' + err.message);
                     return sendError(res, err, 'Request error: ' + err.message, 404);
                 });
@@ -91,11 +82,6 @@ export class LibreofficeControllers {
         
         if (!fileId) {
             return sendError(res, new Error('Please pass the fileId in the request params.'), 'Please pass the fileId in the request params.', 400);
-            /*
-            return res.status(400).json({
-                message: 'Please pass the fileId in the request params'
-            });
-            */
         }
         
         try {
@@ -104,22 +90,15 @@ export class LibreofficeControllers {
 
             if (!file) {
                 return sendError(res, new Error('File not found.'), 'File not found.', 400);
-                /*
-                return res.status(400).json({
-                    message: 'File not found.'
-                });
-                */
             }
             
             const user = await User.findById({ _id: userId }).lean();
 
             // calculate if user can edit file based on RAD
-            const authsHelper = new Auths();
             const canEdit = await authsHelper.canUserDoFileAction(file, user);
             
             return res.json({
                 BaseFileName: file.original_name,
-                //Size: fileSize,
                 OwnerId: file._posted_by._id || file._posted_by,
                 UserId: user._id || '',
                 UserFriendlyName: user.first_name + ' ' + user.last_name,
@@ -130,10 +109,8 @@ export class LibreofficeControllers {
                 UserCanWrite: canEdit,
                 UserCanNotWriteRelative: true, // to show Save As button
                 HidePrintOption: true,
-                //HideSaveOption: true,
                 DisableExport: true,
                 SupportsUpdate: true,
-                //PostMessageOrigin: 'http://192.168.1.144:8000',
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
@@ -152,11 +129,6 @@ export class LibreofficeControllers {
 
         if (!fileId) {
             return sendError(res, new Error('Please pass the fileId in the request params.'), 'Please pass the fileId in the request params.', 400);
-            /*
-            return res.status(400).json({
-                message: 'Please pass the fileId in the request params'
-            });
-            */
         }
 
         const file = await filesService.getOne(fileId);
@@ -181,41 +153,21 @@ export class LibreofficeControllers {
     *  https://HOSTNAME/wopi/files/<document_id>/contents
     */
     async putFile(req, res) {
-        //let session = req.query.access_token;
         const fileId = req.params.fileId;
 
         if (!fileId) {
             return sendError(res, new Error('Please pass the fileId in the request params.'), 'Please pass the fileId in the request params.', 400);
-            /*
-            return res.status(400).json({
-                message: 'Please pass the fileId in the request params'
-            });
-            */
         }
 
         const file = await filesService.getOne(fileId);
 
         // we log to the console so that is possible
         // to check that saving has triggered this wopi endpoint
-        console.log('wopi PutFile endpoint');
-        //if (req.body && file) {
         if (req.body) {
-            //console.dir(req);
-            //console.dir(req.body);
-            //console.dir(req.rawBody);
-            //console.log(JSON.stringify(req.body));
-
-            //const filePath = path.join(__dirname, '/files', `${req.params.file_id}`);
-            //var wstream = fs.createWriteStream(filePath);
             var wstream = fs.createWriteStream(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`);
-            //wstream.write(req.rawBody);
             wstream.write(req.body);
-            //wstream.write(JSON.stringify(req.body));
-            
             res.sendStatus(200);
         } else {
-            //console.log('');
-            //res.sendStatus(404);
             return sendError(res, new Error('Not possible to get the file content.'), 'Not possible to get the file content.', 404);
         }
     }
