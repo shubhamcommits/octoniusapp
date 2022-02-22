@@ -15,7 +15,7 @@ let filesService = new FilesService();
 
 export class LibreofficeControllers {
 
-    async libreofficeUrl(req: Request, res: Response, next: NextFunction) {
+    async libreofficeUrl(req, res) {
         try {
             let libreofficeOnlineHost = process.env.LIBREOFFICE_SERVER;
             let httpClient = libreofficeOnlineHost.startsWith('https') ? https : http;
@@ -83,7 +83,7 @@ export class LibreofficeControllers {
     *  The CheckFileInfo wopi endpoint is triggered by a GET request at
     *  https://HOSTNAME/wopi/files/<document_id>
     */
-    async checkFileInfo(req: Request, res: Response, next: NextFunction) {
+    async checkFileInfo(req, res) {
         const fileId = req.params.fileId;
         const userId = req['userId'];
         
@@ -126,7 +126,7 @@ export class LibreofficeControllers {
                 UserCanWrite: canEdit,
                 UserCanNotWriteRelative: true, // to show Save As button
                 HidePrintOption: true,
-                HideSaveOption: true,
+                //HideSaveOption: true,
                 DisableExport: true,
                 SupportsUpdate: true,
                 //PostMessageOrigin: 'http://192.168.1.144:8000',
@@ -143,7 +143,7 @@ export class LibreofficeControllers {
     *  The GetFile wopi endpoint is triggered by a request with a GET verb at
     *  https://HOSTNAME/wopi/files/<document_id>/contents
     */
-    async getFile(req: Request, res: Response, next: NextFunction) {
+    async getFile(req, res) {
         const fileId = req.params.fileId;
 
         if (!fileId) {
@@ -176,7 +176,7 @@ export class LibreofficeControllers {
     *  The PutFile wopi endpoint is triggered by a request with a POST verb at
     *  https://HOSTNAME/wopi/files/<document_id>/contents
     */
-    async putFile(req: Request, res: Response, next: NextFunction) {
+    async putFile(req, res) {
         let session = req.query.access_token;
         const fileId = req.params.fileId;
 
@@ -189,7 +189,7 @@ export class LibreofficeControllers {
             */
         }
 
-//const file = await filesService.getOne(fileId);
+const file = await filesService.getOne(fileId);
 
         // we log to the console so that is possible
         // to check that saving has triggered this wopi endpoint
@@ -198,12 +198,13 @@ export class LibreofficeControllers {
         if (req.body) {
             console.dir(req);
             console.dir(req.body);
+            console.dir(req.rawBody);
             console.log(JSON.stringify(req.body));
 
             //const filePath = path.join(__dirname, '/files', `${req.params.file_id}`);
             //var wstream = fs.createWriteStream(filePath);
-//var wstream = fs.createWriteStream(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`);
-            //wstream.write(req.rawBody);
+var wstream = fs.createWriteStream(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`);
+            wstream.write(req.rawBody);
             //wstream.write(req.body);
 //wstream.write(JSON.stringify(req.body));
             

@@ -16,8 +16,7 @@ const app = express();
 // Load configuration based on the environment states
 if (process.env.NODE_ENV !== 'production') {
     developmentConfig();
-}
-else {
+} else {
     productionConfig();
 }
 
@@ -27,8 +26,9 @@ require('../db');
 // Adding The 'body-parser' middleware only handles JSON and urlencoded data
 app.use(express.json())
 // body parsers
-app.use(bodyParser.json({limit:'60mb'}));
-app.use(bodyParser.urlencoded({limit: '60mb',parameterLimit: 100000, extended: true }));
+app.use(bodyParser.json({ limit:'60mb' }));
+app.use(bodyParser.urlencoded({ limit: '60mb', parameterLimit: 100000, extended: true }));
+app.use(bodyParser.raw({ limit: '60mb' }));
 
 //app.use(rawBodyParser());
 
