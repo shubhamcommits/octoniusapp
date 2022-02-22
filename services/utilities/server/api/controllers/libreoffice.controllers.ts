@@ -112,6 +112,7 @@ export class LibreofficeControllers {
             
             const user = await User.findById({ _id: userId }).lean();
 
+            // TODO - calculate if user can edit file
             let canEdit = (file?.approval_flow_launched) ? !file?.approval_flow_launched : true;
             
             return res.json({
@@ -119,10 +120,10 @@ export class LibreofficeControllers {
                 //Size: fileSize,
                 OwnerId: file._posted_by._id || file._posted_by,
                 UserId: user._id || '',
-                UserFriendlyName: file._posted_by.first_name + ' ' + file._posted_by.last_name,
+                UserFriendlyName: user.first_name + ' ' + user.last_name,
                 UserExtraInfo: {
-                    avatar: process.env.UTILITIES_SERVER_API + '/uploads/users/' + file._posted_by.profile_pic,
-                    mail: file._posted_by.email
+                    avatar: process.env.UTILITIES_SERVER_API + '/uploads/users/' + user.profile_pic,
+                    mail: user.email
                 },
                 UserCanWrite: canEdit,
                 UserCanNotWriteRelative: true, // to show Save As button
