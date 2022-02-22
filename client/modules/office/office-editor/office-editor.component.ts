@@ -61,6 +61,8 @@ export class OfficeEditorComponent implements OnInit {
 console.log(wopiSrc);
 console.log(this.wopiClientURL);
       this.accessToken = this.authToken;
+console.log(this.officeSubmitForm);
+console.log(this.officeSubmitForm.nativeElement);
       this.officeSubmitForm.nativeElement.submit();
     }).catch(error => {
       this.utilityService.errorNotification('Not possible to retrieve the complete Office Online url');

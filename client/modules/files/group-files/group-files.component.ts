@@ -25,6 +25,7 @@ import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-s
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as ShareDB from "sharedb/lib/client";
 import Quill from 'quill';
+import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
 @Component({
   selector: 'app-group-files',
   templateUrl: './group-files.component.html',
@@ -120,6 +121,7 @@ export class GroupFilesComponent implements OnInit {
     public dialog: MatDialog,
     public storageService: StorageService,
     private groupService: GroupService,
+    private libreofficeService: LibreofficeService,
     private approvalPDFSignaturesService: ApprovalPDFSignaturesService
   ) { }
 
@@ -982,5 +984,18 @@ export class GroupFilesComponent implements OnInit {
 
     // Return the Document with the respective folioId
     return shareDBConnection.get("documents", folioId);
+  }
+
+  openOfficeDoc(fileId: string) {
+    // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
+    let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${this.authToken}`;
+    this.libreofficeService.getLibreofficeUrl().then(res => {
+      let wopiClientURL = res['url'] + 'WOPISrc=' + wopiSrc;
+console.log(wopiSrc);
+console.log(wopiClientURL);
+      window.open(wopiClientURL, "_blank");
+    }).catch(error => {
+      this.utilityService.errorNotification('Not possible to retrieve the complete Office Online url');
+    });
   }
 }

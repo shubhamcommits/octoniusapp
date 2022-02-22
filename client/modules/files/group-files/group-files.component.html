@@ -135,8 +135,8 @@
                   <span *ngIf="file?.type=='campaign'"><b>Campaign File: </b></span>{{file?.original_name}}
               </a>
 
-              <a *ngIf="file?.type == 'file' && getFileExtension(file?.original_name) == 'docx'" class="mt-0"
-                routerLink="/document/office/{{file?._id}}" [queryParams]="{ myWorkplace: myWorkplace, canEdit: !file?.canEdit }">
+              <a *ngIf="file?.type == 'file' && getFileExtension(file?.original_name) == 'docx'" (click)="openOfficeDoc(file?._id)" class="mt-0" style="cursor: pointer;">
+                <!--routerLink="/document/office/{{file?._id}}" [queryParams]="{ myWorkplace: myWorkplace, canEdit: !file?.canEdit }">-->
                   <img [src]="getFileIcon(file?.original_name)"
                     onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                   <span *ngIf="file?.type=='campaign'"><b>Campaign File: </b></span>{{file?.original_name}}
