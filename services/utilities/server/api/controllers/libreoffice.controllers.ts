@@ -195,7 +195,7 @@ const file = await filesService.getOne(fileId);
         // to check that saving has triggered this wopi endpoint
         console.log('wopi PutFile endpoint');
         //if (req.body && file) {
-        if (req.body) {
+//        if (req.body) {
             console.dir(req);
             console.dir(req.body);
             console.dir(req.rawBody);
@@ -204,15 +204,15 @@ const file = await filesService.getOne(fileId);
             //const filePath = path.join(__dirname, '/files', `${req.params.file_id}`);
             //var wstream = fs.createWriteStream(filePath);
 var wstream = fs.createWriteStream(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`);
-            wstream.write(req.rawBody);
+//wstream.write(req.rawBody);
             //wstream.write(req.body);
 //wstream.write(JSON.stringify(req.body));
             
             res.sendStatus(200);
-        } else {
+//        } else {
             //console.log('');
             //res.sendStatus(404);
-            return sendError(res, new Error('Not possible to get the file content.'), 'Not possible to get the file content.', 404);
-        }
+//            return sendError(res, new Error('Not possible to get the file content.'), 'Not possible to get the file content.', 404);
+//        }
     }
 }
