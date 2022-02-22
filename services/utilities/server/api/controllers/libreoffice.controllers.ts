@@ -58,6 +58,7 @@ export class LibreofficeControllers {
                     }
 
                     let onlineUrl = nodes[0].getAttribute('urlsrc');
+                    onlineUrl = onlineUrl.replace("http:", "https:");
                     res.json({
                         url: onlineUrl,
                         //token: 'test'
