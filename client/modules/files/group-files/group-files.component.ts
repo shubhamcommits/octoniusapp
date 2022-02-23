@@ -997,30 +997,17 @@ export class GroupFilesComponent implements OnInit {
   }
 
   async openOfficeDoc(fileId: string) {
-
     window.open(await this.getLibreOfficeURL(fileId), "_blank");
-
-    // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
-    let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${this.authToken}`;
-    this.libreofficeService.getLibreofficeUrl().then(res => {
-      let wopiClientURL = res['url'] + 'WOPISrc=' + wopiSrc;
-      window.open(wopiClientURL, "_blank");
-    }).catch(error => {
-      this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
-    });
   }
 
   async getLibreOfficeURL(fileId: string) {
-    let wopiClientURL = '';
     // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
-    let wopiSrc =  `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${this.authToken}`;
+    let wopiClientURL = '';
     await this.libreofficeService.getLibreofficeUrl().then(res => {
-      wopiClientURL = res['url'] + 'WOPISrc=' + wopiSrc;
-      // window.open(wopiClientURL, "_blank");
+      wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${this.authToken}`;
     }).catch(error => {
       this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
     });
-console.log(wopiClientURL);
     return wopiClientURL;
   }
 }
