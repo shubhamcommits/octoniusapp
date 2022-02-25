@@ -999,17 +999,22 @@ export class GroupFilesComponent implements OnInit {
   }
 
   async openOfficeDoc(fileId: string) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
     window.open(await this.getLibreOfficeURL(fileId), "_blank");
+
+    this.isLoading$.next(false);
   }
 
   async getLibreOfficeURL(fileId: string) {
     // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
     let wopiClientURL = '';
     await this.libreofficeService.getLibreofficeUrl().then(res => {
-      wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${this.authToken}`;
-    }).catch(error => {
-      this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
-    });
+        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${this.authToken}`;
+      }).catch(error => {
+        this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
+      });
     return wopiClientURL;
   }
 }
