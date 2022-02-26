@@ -40,7 +40,7 @@ docker login
           docker pull $SEARCH_IMAGE_NAME
           docker pull $INTEGRATIONS_IMAGE_NAME
           docker pull $FLAMINGO_IMAGE_NAME
-          #docker pull $LIBREOFFICE_IMAGE_NAME
+          docker pull $LIBREOFFICE_IMAGE_NAME
           docker pull $CLIENT_IMAGE_NAME
           docker pull $NGINX_IMAGE_NAME
 
