@@ -526,14 +526,14 @@ services:
 
   online:
     container_name: octonius_office    
-    image: collabora/code
-    # image: cibsoftware/libreoffice-online:6.2
+    # image: collabora/code
+    image: ${DOCKER_USER}/${DOCKER_REPO}libreoffice-server
     environment:
       domain: ${DOMAIN}
       username: admin
       password: admin
-      extra_params: --o:ssl.enable=false
-      # DONT_GEN_SSL_CERT: 1
+      extra_params: --o:ssl.enable=false --o:ssl.termination=true
+      DONT_GEN_SSL_CERT: 1
     volumes:
       - acc_lool_config_volume:/etc/loolwsd
     cap_add:
