@@ -10,19 +10,23 @@ LIBREOFFICE_USERNAME=admin
 LIBREOFFICE_PASSWORD=password
 ```
 
-The `LIBREOFFICE_DOMAIN` is the allowed domain to access the office server.
-Please check in the `.env` file for the presence of key/value `LIBREOFFICE_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server`
+The `LIBREOFFICE_DOMAIN` is the allowed domain to access the office server, in order for the documents to open, the initiator domain must be equal with the value of `LIBREOFFICE_DOMAIN`.
+
+In the `.env` file there should check for the presence of key/value `LIBREOFFICE_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server`
 
 ----
-##### SSL Termination
+##### SSL Termination [info](https://avinetworks.com/glossary/ssl-termination)
+![ssl termination graphic](https://avinetworks.com/wp-content/uploads/2018/12/ssl-termination-diagram.png)
+
+You would need to define a domain for the office-server (i.e. `docs.example.com`) and traffic should be redirected to the **office-server** on port `9980` over a private network.
 
 There is an example `nginx-ssl-termination.conf` that you can use to proxy forward traffic to the office-server.
 
-<b> Nginx Conf Example </b>
+**Nginx Conf Example**
 
 ```
 upstream octonius-office {
-        server localhost:9980; # Redirect Traffic to Office Server
+        server localhost:9980; # Redirect Traffic to Office Server, use private IP or local dns entry
         zone octonius-office 64k;
         hash $arg_WOPISrc;
 }
