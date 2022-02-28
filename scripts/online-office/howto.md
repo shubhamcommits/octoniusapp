@@ -2,7 +2,7 @@
 
 ---
 ##### ENV Variables
-Firs you need to add/change in the `.env` the following values
+First you need to add/change in the `.env` the following values
 ```
 LIBREOFFICE_PROTOCOL=https
 LIBREOFFICE_DOMAIN=<APP-URL> 
@@ -21,6 +21,8 @@ In the `.env` file there should check for the presence of key/value `LIBREOFFICE
 You would need to define a domain for the office-server (i.e. `docs.example.com`) and traffic should be redirected to the **office-server** on port `9980` over a private network.
 
 There is an example `nginx-ssl-termination.conf` that you can use to proxy forward traffic to the office-server.
+
+Change the <URL> in the file for the libreoffice domail selected.
 
 **Nginx Conf Example**
 
