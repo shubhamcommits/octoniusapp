@@ -526,14 +526,13 @@ services:
 
   online:
     container_name: octonius_office    
-    # image: collabora/code
-    image: ${DOCKER_USER}/${DOCKER_REPO}libreoffice-server
+    image: ${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server
     environment:
       domain: ${DOMAIN}
-      username: admin
-      password: admin
+      username: ${LIBREOFFICE_USERNAME}
+      password: ${LIBREOFFICE_PASSWORD}
       extra_params: --o:ssl.enable=false --o:ssl.termination=true
-      DONT_GEN_SSL_CERT: 1
+      # DONT_GEN_SSL_CERT: 1
     volumes:
       - acc_lool_config_volume:/etc/loolwsd
     cap_add:
