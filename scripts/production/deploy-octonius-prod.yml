@@ -564,10 +564,10 @@ volumes:
 
   octonius_production_lool_config_volume:
     driver: local
-      driver_opts:
-        type: none
-        device: /mnt/volume_fra1_01/data/uploads/search
-        o: bind
+    driver_opts:
+      type: none
+      device: /mnt/volume_fra1_01/data/uploads/office
+      o: bind
 
 networks:
   octonius_production:
