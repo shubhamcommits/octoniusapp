@@ -11,7 +11,7 @@ LIBREOFFICE_PASSWORD=password
 ```
 
 The `LIBREOFFICE_DOMAIN` is the allowed domain to access the office server.
-In the `.env` file there should check for the presence of key/value `LIBREOFFICE_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server`
+Please check in the `.env` file for the presence of key/value `LIBREOFFICE_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server`
 
 ----
 ##### SSL Termination
