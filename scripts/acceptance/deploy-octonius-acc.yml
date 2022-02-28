@@ -61,7 +61,7 @@ services:
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "octo_rs", "--journal", "--dbpath", "/data/db" ]
     networks:
       - acc
-        
+
   approval-server:
     container_name: octonius_approval-server
     image: ${DOCKER_USER}/${DOCKER_REPO}:approval-server
@@ -331,6 +331,8 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
+      - LIBREOFFICE_DOMAIN=${LIBREOFFICE_DOMAIN}
+      - LIBREOFFICE_PROTOCOL=${LIBREOFFICE_PROTOCOL}
       - MANAGEMENT_URL=${MANAGEMENT_URL}
       - PROXY_AVAILABLE=${PROXY_AVAILABLE}
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
@@ -521,7 +523,27 @@ services:
       - flamingo-server
     networks:
       - acc
-    
+
+  online:
+    container_name: octonius_office    
+    image: ${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server
+    environment:
+      domain: ${DOMAIN}
+      username: ${LIBREOFFICE_USERNAME}
+      password: ${LIBREOFFICE_PASSWORD}
+      extra_params: --o:ssl.enable=false --o:ssl.termination=true
+      # DONT_GEN_SSL_CERT: 1
+    volumes:
+      - acc_lool_config_volume:/etc/loolwsd
+    cap_add:
+      - MKNOD
+    ports:
+      - "9980:9980"
+    restart:
+      unless-stopped
+    networks:
+      - acc
+
   nginx:
     container_name: octonius_nginx
     image: ${DOCKER_USER}/${DOCKER_REPO}:nginx
@@ -544,9 +566,10 @@ services:
       - search-server
       - flamingo-server
       - client
+      - online
     networks:
       - acc
-    
+
 volumes:
   #acc_db_data:
   #  driver: local
@@ -603,6 +626,8 @@ volumes:
       type: none
       device: ${PWD}/data/uploads/search
       o: bind
+
+  acc_lool_config_volume:
         
 networks:
   acc: 

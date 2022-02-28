@@ -232,15 +232,16 @@ export class GroupCalendarViewComponent implements OnInit {
     this.post = event.post
     let dialogRef;
     if (this.post) {
+      const canOpen = !this.groupData?.enabled_rights || this.post?.canView || this.post?.canEdit;
       if (this.post.type === 'task' && !this.post.task._parent_task) {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns,this.tasks);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
       } else {
         if (this.post.task._parent_task && !this.post.task._parent_task._id) {
           this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
             this.post.task._parent_task = post;
           });
         }
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
       }
     }
 

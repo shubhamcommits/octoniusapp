@@ -262,13 +262,14 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
       });
   }
 
-  confirmAction(action: string, approvalId: string) {
+  async confirmAction(action: string, approvalId: string) {
     // Start the loading spinner
     this.isLoading$.next(true);
 
     if (action == 'approved') {
       if (this.confirmationCode && this.confirmationCode != '') {
-        this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmationCode, this.confirmation).then(async res => {
+        const isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+        this.approvalService.confirmAction(this.itemData._id, this.type, approvalId, this.confirmationCode, this.confirmation, isShuttleTasksModuleAvailable).then(async res => {
           this.itemData = res['item'];
           this.showApproveCode = false;
           this.showDescription = false;
@@ -288,7 +289,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           this.isLoading$.next(false);
         });
       } else {
-        this.utilityService.errorNotification($localize`:@@approvalActions.areYouSure:Please provide the code sent to you.`);
+        this.utilityService.errorNotification($localize`:@@approvalActions.provideCode:Please provide the code sent to you.`);
 
         // Return the function via stopping the loader
         this.isLoading$.next(false);
@@ -315,7 +316,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
           this.isLoading$.next(false);
         });
       } else {
-        this.utilityService.errorNotification($localize`:@@approvalActions.areYouSure:Please provide a reason to reject the item.`);
+        this.utilityService.errorNotification($localize`:@@approvalActions.provideReason:Please provide a reason to reject the item.`);
 
         // Return the function via stopping the loader
         this.isLoading$.next(false);

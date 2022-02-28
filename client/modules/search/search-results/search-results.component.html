@@ -1,10 +1,10 @@
 <!-- START POST AND FILE -->
-<div *ngIf="data && (type=='post' || type=='file')" style="text-align: left;">
+<div *ngIf="data && (type=='post' || type=='task' || type=='file')" style="text-align: left;">
   <div class="mb-2 mt-2">
-    <span class="octo-search-category" *ngIf="type=='post'">{{ data?.title }}</span>
+    <span class="octo-search-category" *ngIf="type=='post' || type=='task'">{{ data?.title }}</span>
     <span class="octo-search-category" *ngIf="type=='file'">{{ data?.original_name }}</span>
 
-    <a *ngIf="type=='post'" [href]="generatePostURL()" target="_blank">
+    <a *ngIf="type=='post' || type=='task'" [href]="generatePostURL()" target="_blank">
       <span class="material-icons">open_in_new</span>
     </a>
 
@@ -53,7 +53,7 @@
 
     <div *ngFor="let cf of customFields" class="label" [ngStyle]="{'background': (cf.badge_color) ? cf.badge_color : '#48CDC1' }">
       <span *ngIf="type == 'file' && data?.custom_fields && data?.custom_fields[cf.name]">{{ cf.title }}: {{ data?.custom_fields[cf.name] }}</span>
-      <span *ngIf="type == 'post' && data?.task?.custom_fields && data?.task?.custom_fields[cf.name]">{{ cf.title }}: {{ data?.task?.custom_fields[cf.name] }}</span>
+      <span *ngIf="(type == 'post' || type=='task') && data?.task?.custom_fields && data?.task?.custom_fields[cf.name]">{{ cf.title }}: {{ data?.task?.custom_fields[cf.name] }}</span>
     </div>
   </div>
 </div>

@@ -61,12 +61,12 @@
           <i class="material-icons" style="color: #EE5D5D;" (click)="unassign(approval?._id)">highlight_off</i>
         </div>
 
-        <div class="action" *ngIf="(itemData?.approval_flow_launched && userData._id != (approval?._assigned_to._id || approval?._assigned_to)) || flowCompleted">
+        <div class="action" *ngIf="(itemData?.approval_flow_launched && userData?._id != (approval?._assigned_to._id || approval?._assigned_to)) || flowCompleted">
           <span class="approved" *ngIf="approval?.confirmed" i18n="@@approvalActions.approved">APPROVED</span>
           <span class="pending" *ngIf="!approval?.confirmed" i18n="@@approvalActions.pending">PENDING</span>
         </div>
 
-        <div class="action" *ngIf="itemData?.approval_flow_launched && userData._id == (approval?._assigned_to._id || approval?._assigned_to) && !flowCompleted">
+        <div class="action" *ngIf="itemData?.approval_flow_launched && userData?._id == (approval?._assigned_to._id || approval?._assigned_to) && !flowCompleted">
           <!-- EVENT ATTENDANCE STARTS -->
           <div *ngIf="!approval?.confirmed" class="dropdown-toggle" data-toggle="dropdown">
             <span class="pending toggle-button" i18n="@@approvalActions.pending">PENDING</span>
@@ -77,14 +77,14 @@
 
           <!-- Menu Drawer Starts -->
           <ul class="dropdown-menu">
-            <li *ngIf="!approval?.confirmed" class="dropdown-item" (click)="doAction('approved', approval._id)">
+            <li *ngIf="!approval?.confirmed" class="dropdown-item" (click)="doAction('approved', approval?._id)">
               <div class="approve action-button">
                 <i class="material-icons">check_circle</i>
                 &nbsp;
                 <span i18n="@@approvalActions.approved">APPROVED</span>
               </div>
             </li>
-            <li class="dropdown-item" (click)="doAction('rejected', approval._id)">
+            <li class="dropdown-item" (click)="doAction('rejected', approval?._id)">
               <div class="reject action-button">
                 <i class="material-icons">highlight_off</i>
                 &nbsp;
@@ -97,13 +97,13 @@
         </div>
       </div>
 
-      <div *ngIf="(showDescription || showApproveCode) && userData._id == (approval?._assigned_to._id || approval?._assigned_to)" class="assignee-row">
+      <div *ngIf="(showDescription || showApproveCode) && userData?._id == (approval?._assigned_to._id || approval?._assigned_to)" class="assignee-row">
         <input type="text" class="form-control" [(ngModel)]="confirmation" [placeholder]="descriptionPlaceholder">
         <input *ngIf="showApproveCode" type="text" class="form-control" [(ngModel)]="confirmationCode" [placeholder]="codePlaceholder">
-        <button *ngIf="showApproveCode" class="btn confirm-btn" (click)="confirmAction('approved', approval._id)" span i18n="@@approvalActions.confirm">
+        <button *ngIf="showApproveCode" class="btn confirm-btn" (click)="confirmAction('approved', approval?._id)" span i18n="@@approvalActions.confirm">
           Confirm
         </button>
-        <button *ngIf="showDescription" class="btn confirm-btn" (click)="confirmAction('rejected', approval._id)" span i18n="@@approvalActions.confirm">
+        <button *ngIf="showDescription" class="btn confirm-btn" (click)="confirmAction('rejected', approval?._id)" span i18n="@@approvalActions.confirm">
           Confirm
         </button>
       </div>

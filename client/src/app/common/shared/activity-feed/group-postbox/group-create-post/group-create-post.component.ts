@@ -327,7 +327,7 @@ export class GroupCreatePostComponent implements OnInit {
    * This function creates a new post in the activity
    */
   async createPost() {
-    const today = moment().startOf('day').format();
+    const today = moment().format();
     // Prepare Post Data
     let postData: any = {
       title: this.title,

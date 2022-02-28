@@ -193,8 +193,8 @@ export class RecentActivityComponent implements OnInit {
   }
 
   viewApprovalNotification(notification: any) {
-    if (notification?._origin_post && notification?._origin_psot?.type == 'task') {
-      const groupId = notification?._origin_psot?._group._id || notification?._origin_post?._group;
+    if (notification?._origin_post && notification?._origin_post?.type == 'task') {
+      const groupId = notification?._origin_post?._group._id || notification?._origin_post?._group;
       this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, myWorkplace: false, postId: notification?._origin_post?._id } });
     } else if (notification?._origin_folio) {
       const groupId = notification?._origin_folio?._group._id || notification?._origin_folio?._group;

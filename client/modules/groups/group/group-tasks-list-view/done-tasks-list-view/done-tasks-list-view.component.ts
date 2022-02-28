@@ -39,7 +39,8 @@ export class DoneTasksListViewComponent implements OnChanges {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(postData: any): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData, this.isIdeaModuleAvailable, this.sections);
+    const canOpen = !this.groupData?.enabled_rights || postData?.canView || postData?.canEdit;
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.sections);
 
     if (dialogRef) {
       const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {

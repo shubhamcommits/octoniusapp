@@ -29,9 +29,9 @@ export class IdeaActionsComponent implements OnInit {
         positive_votes: [],
         negative_votes: []
       }
-    } else {
-      this.votedPositiveIndex = this.post?.task?.idea?.positive_votes?.findIndex(userId => userId == this.userData._id);
-      this.votedNegativeIndex = this.post?.task?.idea?.negative_votes?.findIndex(userId => userId == this.userData._id);
+    } else if (this.userData) {
+      this.votedPositiveIndex = (this.post.task.idea.positive_votes) ? this.post.task.idea.positive_votes.findIndex(userId => userId == this.userData._id) : -1;
+      this.votedNegativeIndex = (this.post.task.idea.negative_votes) ? this.post.task.idea.negative_votes.findIndex(userId => userId == this.userData._id) : -1;
     }
   }
 
@@ -39,6 +39,20 @@ export class IdeaActionsComponent implements OnInit {
    * Vote
    */
   vote(positiveVote: boolean) {
+
+    if (!this.post.task.idea) {
+      this.post.task.idea = {
+        positive_votes: [],
+        negative_votes: []
+      }
+    } else {
+      if (!this.post.task.idea.positive_votes) {
+        this.post.task.idea.positive_votes = [];
+      }
+      if (!this.post.task.idea.negative_votes) {
+        this.post.task.idea.negative_votes = [];
+      }
+    }
 
     if ((!positiveVote && this.votedNegativeIndex < 0) || (positiveVote && this.votedPositiveIndex < 0) && this.userData) {
       // Increment votes
@@ -68,8 +82,8 @@ export class IdeaActionsComponent implements OnInit {
     return postService.voteIdea(postId, this.voteValue)
       .then((res) => {
         this.post = res['post'];
-        this.votedPositiveIndex = this.post.task.idea.positive_votes.findIndex(userId => userId == this.userData._id);
-        this.votedNegativeIndex = this.post.task.idea.negative_votes.findIndex(userId => userId == this.userData._id);
+        this.votedPositiveIndex = (this.post.task.idea.positive_votes) ? this.post.task.idea.positive_votes.findIndex(userId => userId == this.userData._id) : -1;
+        this.votedNegativeIndex = (this.post.task.idea.negative_votes) ? this.post.task.idea.negative_votes.findIndex(userId => userId == this.userData._id) : -1;
       });
   }
 }

@@ -150,11 +150,22 @@ export class GroupActivityFeedComponent implements OnInit {
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
       const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
       const post = await this.publicFunctions.getPost(postId);
+      let canOpen = true;
+      if (this.groupData?.enabled_rights) {
+        const canEdit = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'edit');
+        let canView = false;
+        if (!canEdit) {
+          const hide = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'hide');
+          canView = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'view') || !hide;
+        }
+        canOpen = canView || canEdit;
+      }
+
       let dialogRef;
       if (post['type'] === 'task') {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
       } else {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupData, this.isIdeaModuleAvailable);
+        dialogRef = this.utilityService.openCreatePostFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
       }
 
       if (dialogRef) {

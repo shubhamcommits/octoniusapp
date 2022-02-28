@@ -326,28 +326,22 @@ export class UtilityService {
   /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openCreatePostFullscreenModal(postData: any, userData: any, groupData: any, isIdeaModuleAvailable: boolean, columns?: any, tasks?: any) {
+  openCreatePostFullscreenModal(postId: string, groupId: string, isIdeaModuleAvailable: boolean, canOpen: boolean, columns?: any) {
     let dialogOpen;
 
-    if (!groupData || JSON.stringify(groupData) == JSON.stringify({})) {
-      groupData = postData?._group;
-    }
-
-    if (!groupData?.enabled_rights || postData?.canView || postData?.canEdit) {
+    // !groupData?.enabled_rights || postData?.canView || postData?.canEdit
+    if (canOpen) {
       const data = (columns) ?
         {
-          postData: postData,
-          userData: userData,
-          groupId: groupData._id,
+          postId: postId,
+          groupId: groupId,
           columns: columns,
-          Tasks:tasks,
           isIdeaModuleAvailable: isIdeaModuleAvailable
         }
       :
         {
-          postData: postData,
-          userData: userData,
-          groupId: groupData._id,
+          postId: postId,
+          groupId: groupId,
           isIdeaModuleAvailable: isIdeaModuleAvailable
         }
 
@@ -670,8 +664,8 @@ export class UtilityService {
   canUserDoTaskAction(item: any, groupData: any, userData: any, action: string) {
 
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
-    let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
-    createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : createdBy;
+    let createdBy = (item?._posted_by ) ? ((item?._posted_by?._id || item?._posted_by) == userData?._id) : false;
+    createdBy = (!createdBy && item?._created_by) ? ((item?._created_by?._id || item?._created_by) == userData?._id) : createdBy;
 
     if (action == 'edit' && item?.approval_flow_launched) {
       return false;
@@ -709,7 +703,7 @@ export class UtilityService {
         } else if (item?.task?._parent_task) {
           // Post Service Instance
           let postService = this.injector.get(PostService);
-          postService.get(item?.task?._parent_task._id).then(res => {
+          postService.get(item?.task?._parent_task._id || item?.task?._parent_task).then(res => {
             canDoRagAction = this.canUserDoTaskAction(res['post'], groupData, userData, action);
           });
         } else {

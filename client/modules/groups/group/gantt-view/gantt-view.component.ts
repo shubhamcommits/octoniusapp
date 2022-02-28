@@ -418,7 +418,8 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
 
   //open model
   openFullscreenModal(postData: any,): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns, this.tasks);
+    const canOpen = !this.groupData?.enabled_rights || postData?.canView || postData?.canEdit;
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
     if (dialogRef) {
       const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
         this.onDeleteEvent(data);
@@ -753,7 +754,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
             difference: sortedTask.task.is_milestone? 0 : Difference_In_Days,
             dependency_index: sortedTask?.parentIndex,
             custom_class: sortedTask?.task.status,
-            _groupid: sortedTask?._group._id,
+            _groupid: sortedTask?._group._id || sortedTask?._group,
             dependency: sortedTask?.task._dependency_task,
             image: (sortedTask?._assigned_to?.length > 0) ? this.baseUrl + '/' + sortedTask._assigned_to[0].profile_pic : undefined,
             noOfParticipants: (sortedTask?._assigned_to?.length > 1) ? sortedTask?._assigned_to?.length - 1 : undefined,
@@ -774,11 +775,11 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
               dependency_index: sortedTask?.parentIndex,
               difference: sortedTask.task.is_milestone? 0 : Difference_In_Days,
               custom_class: sortedTask?.task.status,
-              _groupid: sortedTask?._group._id,
+              _groupid: sortedTask?._group._id || sortedTask?._group,
               dependency: sortedTask?.task._dependency_task,
               image: (sortedTask?._assigned_to?.length > 0) ? this.baseUrl + '/' + sortedTask._assigned_to[0].profile_pic : undefined,
               noOfParticipants: (sortedTask?._assigned_to?.length > 1) ? sortedTask?._assigned_to?.length - 1 : undefined,
-              projectId: (sortedTask?.task?._column) ? sortedTask?.task?._column._id || sortedTask?.task?._column : '',
+              projectId: (sortedTask?.task?._column) ? sortedTask?.task?._column._id || sortedTask?.task?._column : '',
               canEdit: sortedTask.canEdit,
               task: sortedTask
             });

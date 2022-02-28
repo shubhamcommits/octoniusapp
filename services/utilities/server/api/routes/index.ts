@@ -3,6 +3,7 @@ import { filesRoutes } from './files.routes';
 import { foldersRoutes } from './folders.routes';
 import { foldersPermissionsRoutes } from './folders-permissions.routes';
 import { filesPermissionsRoutes } from './files-permissions.routes';
+import { libreofficeRoutes } from "./libreoffice.routes";
 
 /*  =====================
  *  -- EXPORTS ROUTES --
@@ -26,5 +27,8 @@ export {
     foldersPermissionsRoutes as foldersPermissionsRoutes,
 
     // Files Permissions Routes
-    filesPermissionsRoutes as filesPermissionsRoutes
+    filesPermissionsRoutes as filesPermissionsRoutes,
+
+    // Libreoffice Endpoints Routes
+    libreofficeRoutes as libreofficeRoutes
 }

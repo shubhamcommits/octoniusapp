@@ -85,7 +85,7 @@ export class NewTaskComponent implements OnInit {
 
     // Prepare Post Data
     var postData: any;
-    const today = moment().startOf('day').format();
+    const today = moment().format();
 
     if (this.subtask) {
       postData = {

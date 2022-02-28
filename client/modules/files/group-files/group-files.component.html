@@ -92,6 +92,11 @@
                       <i *ngIf="folder?.canEdit" class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
 
                       <mat-menu #menu="matMenu">
+                          <a mat-menu-item (click)="copyFolderLinkToClipboard(folder)" *ngIf="folder?.canEdit">
+                            <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
+                            <span i18n="@@groupFiles.copyLink">Copy Link</span>
+                          </a>
+
                           <a mat-menu-item *ngIf="folder?.canDelete" (click)="deleteItem(folder?._id, folder?.type)">
                               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete</i>
                               <span i18n="@@groupFiles.delete">Delete</span>
@@ -123,11 +128,19 @@
           <!-- File Details Starts -->
           <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
               *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
-              <a *ngIf="file?.type === 'file' || file?.type === 'campaign'" class="mt-0" target="_blank"
+
+              <a *ngIf="file?.type === 'file' && !isOfficeFile(file?.original_name)" class="mt-0" target="_blank"
                 href="{{filesBaseUrl}}/{{file?.modified_name}}?authToken={{authToken}}">
                   <img [src]="getFileIcon(file?.original_name)"
                     onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
-                  <span *ngIf="file?.type=='campaign'"><b>Campaign File: </b></span>{{file?.original_name}}
+                  {{file?.original_name}}
+              </a>
+
+              <a *ngIf="(file?.type == 'file' && isOfficeFile(file?.original_name)) || file?.type === 'campaign'"
+                (click)="openOfficeDoc(file?._id)" class="mt-0" style="cursor: pointer;">
+                  <img [src]="getFileIcon(file?.original_name)"
+                    onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+                  <span *ngIf="file?.type=='campaign'"><b i18n="@@groupFiles.campaignFile">Campaign File: </b></span>{{file?.original_name}}
               </a>
 
               <a *ngIf="file?.type === 'folio'" class="mt-0"

@@ -22,12 +22,13 @@
           <mat-option value="all" i18n="@@searchHeader.everything">Everything</mat-option>
           <mat-option value="file" i18n="@@searchHeader.file">File</mat-option>
           <mat-option value="post" i18n="@@searchHeader.post">Post</mat-option>
+          <mat-option value="task" i18n="@@searchHeader.task">Task</mat-option>
           <mat-option value="user" i18n="@@searchHeader.user">User</mat-option>
         </mat-select>
       </div>
     </div>
 
-    <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post'">
+    <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task'">
       <div class="filter-label" i18n="@@searchHeader.tag">Tag</div>
       <div class="filter-cell">
 
@@ -37,7 +38,6 @@
                 (click)="removeTag(i)">
                 {{ tag }}
                 <i class="material-icons" matTooltipPosition="above" matTooltip="Delete this tag">close</i>
-
             </button>
 
           </div>
@@ -74,7 +74,7 @@
       </div>
     </div>
 
-    <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post'">
+    <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task'">
       <div class="filter-label" i18n="@@searchHeader.owner">Owner</div>
       <div class="filter-cell">
         <div class="useravatar" *ngFor="let member of advancedFilters.owners">
@@ -90,6 +90,39 @@
             [workspaceData]="workplaceData?._id" [workspaceData]="workplaceData" [type]="'workspaceMembers'"
             (member)="addNewMember($event)">
         </app-component-search-input-box>
+      </div>
+    </div>
+
+    <div class="advanced-filters" *ngIf="advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task'">
+      <div class="filter-label" i18n="@@searchHeader.date">Date</div>
+      <div class="filter-cell">
+          <span i18n="@@searchHeader.from">From</span>:
+          <!-- Date Picker starts -->
+          <app-date-picker (date)="getDate($event, 'from')"
+            [selectedDate]="formateDate(advancedFilters?.from_date)"
+            [upperLimit]="formateDate(advancedFilters?.to_date)"
+            [styleClass]="'btn-group input-date'"
+            [canEdit]="true">
+          </app-date-picker>
+          <!--Date Picker ends -->
+
+          <!-- Clean field starts -->
+          <i (click)="getDate(null, 'from')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+          <!-- Clean field ends -->
+
+          <span style="margin-left: 30px;" i18n="@@searchHeader.to">To</span>:
+          <!-- Date Picker starts -->
+          <app-date-picker (date)="getDate($event, 'to')"
+            [selectedDate]="formateDate(advancedFilters?.to_date)"
+            [lowerLimit]="formateDate(advancedFilters?.from_date)"
+            [styleClass]="'btn-group input-date'"
+            [canEdit]="true">
+          </app-date-picker>
+          <!--Date Picker ends -->
+
+          <!-- Clean field starts -->
+          <i (click)="getDate(null, 'to')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+          <!-- Clean field ends -->
       </div>
     </div>
 
@@ -121,6 +154,13 @@
       <a *ngFor="let post of searchedPosts" href="#" onclick="return false"
         (click)="selected=post; selectedType='post'" class="octo-search-results">{{ post.title }}</a>
 
+      <p *ngIf="searchedTasks.length > 0" class="octo-search-category">
+        <span class="material-icons">task</span>
+        <span i18n="@@searchHeader.tasks">TASKS</span>
+      </p>
+      <a *ngFor="let task of searchedTasks" href="#" onclick="return false"
+        (click)="selected=task; selectedType='task'" class="octo-search-results">{{ task.title }}</a>
+
       <p *ngIf="searchedUsers.length > 0" class="octo-search-category">
         <span class="material-icons">supervisor_account</span>
         <span i18n="@@searchHeader.users">USERS</span>
@@ -141,7 +181,7 @@
     </div>
   </div>
 
-  <div class="search-placeholder" *ngIf="searchedPosts.length == 0 && searchedUsers.length == 0 && searchedFiles.length == 0">
+  <div class="search-placeholder" *ngIf="searchedPosts.length == 0 && searchedTasks.length == 0 && searchedUsers.length == 0 && searchedFiles.length == 0">
     <img src="assets/images/placeholder_search.svg">
   </div>
 </div>

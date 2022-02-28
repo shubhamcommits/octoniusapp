@@ -25,6 +25,7 @@ import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-s
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import * as ShareDB from "sharedb/lib/client";
 import Quill from 'quill';
+import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
 @Component({
   selector: 'app-group-files',
   templateUrl: './group-files.component.html',
@@ -120,6 +121,7 @@ export class GroupFilesComponent implements OnInit {
     public dialog: MatDialog,
     public storageService: StorageService,
     private groupService: GroupService,
+    private libreofficeService: LibreofficeService,
     private approvalPDFSignaturesService: ApprovalPDFSignaturesService
   ) { }
 
@@ -200,15 +202,17 @@ export class GroupFilesComponent implements OnInit {
     this.isLoading$.complete()
   }
 
-  getFile(file: any) {
+  async getFile(file: any) {
     file.canEdit = true;
     file.canView = true;
+    file.canDelete = true;
     this.files.unshift(file);
   }
 
   getFolder(folder: any) {
     folder.canEdit = true;
     folder.canView = true;
+    folder.canDelete = true;
     this.folders.unshift(folder);
   }
 
@@ -318,11 +322,50 @@ export class GroupFilesComponent implements OnInit {
     });
   }
 
+  async copyFolderLinkToClipboard(folder: any) {
+    // Create Selection Box
+    let selBox = document.createElement('textarea');
+
+    // Set the CSS Properties
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+
+    let url = this.clientUrl;
+    if (environment.production) {
+      url += '/' + this.locale;
+    }
+    const currentFolderId = await this.router.snapshot.queryParamMap.has('folder') ? this.router.snapshot.queryParamMap.get('folder') : false;
+    if (!currentFolderId) {
+      url += this._router.url + '&folder=' + folder?._id;
+    } else {
+      let urlSplit = this._router.url.split('&folder=');
+      url += urlSplit[0] + '&folder=' + folder?._id;
+    }
+
+    selBox.value = url;
+    // Append the element to the DOM
+    document.body.appendChild(selBox);
+
+    // Set the focus and Child
+    selBox.focus();
+    selBox.select();
+
+    // Execute Copy Command
+    document.execCommand('copy');
+
+    // Once Copied remove the child from the dom
+    document.body.removeChild(selBox);
+
+    // Show Confirmed notification
+    this.utilityService.simpleNotification($localize`:@@groupFiles.copiedToClipboard:Copied to Clipboard!`);
+  }
+
   /**
    * This function is responsible for copying the folio link to the clipboard
    */
-  copyToClipboard(file: any) {
-
+  async copyToClipboard(file: any) {
     // Create Selection Box
     let selBox = document.createElement('textarea');
 
@@ -341,7 +384,11 @@ export class GroupFilesComponent implements OnInit {
     } else if (file?.type == 'flamingo') {
       url += '/document/flamingo/' + file?._id + '?group=' + this.groupId;
     } else if (file?.type == 'file') {
-      url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
+      if (this.isOfficeFile(file.original_name)) {
+        url = await this.getLibreOfficeURL(file._id);
+      } else {
+        url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
+      }
     }
 
     selBox.value = url;
@@ -531,6 +578,12 @@ export class GroupFilesComponent implements OnInit {
       fileType = 'mov';
     }
     return fileType;
+  }
+
+  isOfficeFile(fileName: string) {
+    const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'otp', 'pot', 'odf', 'odc', 'odb'];
+    const fileExtension = this.getFileExtension(fileName);
+    return officeExtensions.includes(fileExtension);
   }
 
   /**
@@ -943,5 +996,25 @@ export class GroupFilesComponent implements OnInit {
 
     // Return the Document with the respective folioId
     return shareDBConnection.get("documents", folioId);
+  }
+
+  async openOfficeDoc(fileId: string) {
+    // Start the loading spinner
+    this.isLoading$.next(true);
+
+    window.open(await this.getLibreOfficeURL(fileId), "_blank");
+
+    this.isLoading$.next(false);
+  }
+
+  async getLibreOfficeURL(fileId: string) {
+    // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
+    let wopiClientURL = '';
+    await this.libreofficeService.getLibreofficeUrl().then(res => {
+        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${this.authToken}`;
+      }).catch(error => {
+        this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
+      });
+    return wopiClientURL;
   }
 }

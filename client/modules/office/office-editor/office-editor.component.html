@@ -1,0 +1,13 @@
+
+<div style="display: none">
+  <form [action]="wopiClientURL" enctype="multipart/form-data" method="post" target="office-online-viewer" #officeSubmitForm>
+    <input name="access_token" [value]="accessToken" type="hidden" />
+    <input type="submit" value="sumit" />
+  </form>
+</div>
+
+<iframe id="office-online-viewer" name="office-online-viewer" style="width: 100%;height: 90%;margin-top: 100px;">
+</iframe>
+<!--
+<span #officeFrameholder id="officeFrameholder"></span>
+-->

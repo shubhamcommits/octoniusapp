@@ -190,4 +190,69 @@ export class Auths {
         }
     }
 
+    canUserDoFileAction(item: any, userData: any) {
+        const isGroupManager = (item._group && item._group._admins) ? (item._group?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
+        let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
+        createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : createdBy;
+    
+        if (item?.approval_flow_launched) {
+          return false;
+        }
+    
+        if (userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager) {
+          return true;
+        } else {
+          let canDoRagAction = false;
+          if (item._group?.enabled_rights) {
+            if (item?.permissions && item?.permissions?.length > 0) {
+              item.permissions.forEach(permission => {
+                const groupRagIndex = (item._group?.rags) ? item._group?.rags?.findIndex(groupRag => permission.rags.includes(groupRag.rag_tag)) : -1;
+                let groupRag;
+                if (groupRagIndex >= 0) {
+                  groupRag = item._group?.rags[groupRagIndex];
+                }
+    
+                const userRagIndex = (groupRag && groupRag._members) ? groupRag._members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+                const userPermissionIndex = (permission && permission._members) ? permission._members.findIndex(permissionMember => (permissionMember?._id || permissionMember) == userData?._id) : -1;
+                if ((userRagIndex >= 0 || userPermissionIndex >= 0) && permission.right == 'edit') {
+                  canDoRagAction = true;
+                }
+              });
+            } else if (item?._folder || item?._parent) {
+              canDoRagAction = this.checkParentFolderRagAction(item?._folder || item?._parent, item._group, userData);
+            } else {
+              canDoRagAction = true;
+            }
+          }
+    
+          return !item._group?.enabled_rights || canDoRagAction;
+        }
+    }
+
+    checkParentFolderRagAction(item: any, groupData: any, userData: any) {
+        let canDoRagAction = false;
+        if (item?.permissions && item?.permissions?.length > 0) {
+    
+          item?.permissions.forEach(permission => {
+            const groupRagIndex = (groupData?.rags) ? groupData?.rags?.findIndex(groupRag => permission.rags.includes(groupRag.rag_tag)) : -1;
+            let groupRag;
+            if (groupRagIndex >= 0) {
+              groupRag = groupData?.rags[groupRagIndex];
+            }
+    
+            const userRagIndex = (groupRag && groupRag._members) ? groupRag._members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+            const userPermissionIndex = (permission && permission._members) ? permission._members.findIndex(permissionMember => (permissionMember?._id || permissionMember) == userData?._id) : -1;
+            if ((userRagIndex >= 0 || userPermissionIndex >= 0) && permission.right == 'edit') {
+              canDoRagAction = true;
+            }
+          });
+        } else if (item?._parent) {
+          canDoRagAction = this.checkParentFolderRagAction(item?._parent, groupData, userData);
+        } else {
+          canDoRagAction = true;
+        }
+    
+        return canDoRagAction;
+    }
+
 }

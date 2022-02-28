@@ -24,7 +24,7 @@
 
                 <i class="material-icons-outlined ml-2" *ngIf="isIdeaModuleAvailable && postData?.task?.is_idea" style="color: #FBB732;">emoji_objects</i>
 
-                <app-post-utils
+                <app-post-utils *ngIf="postData && groupData && userData"
                     [post]="postData"
                     [userData]="userData"
                     [groupData]="groupData"
@@ -37,26 +37,26 @@
 
             <!-- Post Content starts -->
             <app-quill-editor
-                *ngIf="canEdit"
+                *ngIf="canEdit && postData"
                 [editorId]="'postbox-editor'"
                 [toolbar]="true"
                 [readOnly]="false"
-                [contents]="postData.content"
+                [contents]="postData?.content"
                 [groupId]="groupId"
                 (content)="quillContentChanged($event)">
             </app-quill-editor>
 
             <app-quill-editor
-                *ngIf="!canEdit"
+                *ngIf="!canEdit && postData"
                 [editorId]="'postbox-editor'"
                 [toolbar]="false"
                 [readOnly]="true"
-                [contents]="postData.content"
+                [contents]="postData?.content"
                 [groupId]="groupId"></app-quill-editor>
             <!-- Post Content ends -->
 
             <!-- Attach files starts -->
-            <div class="attach-files">
+            <div class="attach-files" *ngIf="postData">
                 <app-attach-files
                     [post]="postData"
                     (files)="onAttach($event)"
@@ -67,7 +67,7 @@
 
             <!-- <div class="clearfix"></div> -->
 
-            <app-post-actions
+            <app-post-actions *ngIf="postData"
                 [post]="postData"
                 [userData]="userData"
                 [fullscreen]="true"
@@ -87,7 +87,7 @@
                 Save
             </button>
 
-            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
+            <button *ngIf="postData && !showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
               class="btn float-left btn-warning btn-md"
               (click)="prepareToAddSubtasks()"
               i18n="@@groupCreatePostDialog.addSubtask">
@@ -95,7 +95,7 @@
             </button>
         </div>
 
-        <div class="content-box" *ngIf="showSubtasks && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id)">
+        <div class="content-box" *ngIf="postData && showSubtasks && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id)">
           <app-subtasks
             [subtasks]="subtasks"
             [groupData]="groupData"
@@ -104,13 +104,13 @@
             (openSubtaskEmitter)="onOpenSubtask($event)"></app-subtasks>
         </div>
 
-        <app-north-star-stats *ngIf="postData?.task?.isNorthStar"
+        <app-north-star-stats *ngIf="postData && postData?.task?.isNorthStar"
           [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
           [northStar]="postData?.task?.northStar">
         </app-north-star-stats>
 
         <!-- COMMENTS -->
-        <app-comment-list
+        <app-comment-list *ngIf="postData"
           [postId]="postData?._id"
           [userData]="userData"
           [groupId]="postData?._group?._id || postData?._group"
@@ -118,7 +118,7 @@
           [newComment]="newComment"></app-comment-list>
 
         <!-- APPROVALS HISTORY STARTS -->
-        <div class="content-box" *ngIf="postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0">
+        <div class="content-box" *ngIf="postData && postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0">
           <app-approvals-history
             [groupId]="groupData?._id"
             [userData]="userData"
@@ -132,7 +132,7 @@
     <!-- Top Right Section starts -->
     <div class="post-properties">
         <!-- Parent Task starts -->
-        <div *ngIf="postData?.task?._parent_task && postData?.type === 'task' && groupData?._id == postData?._group?._id" class="content-box">
+        <div *ngIf="postData && postData?.task?._parent_task && postData?.type === 'task' && groupData?._id == postData?._group?._id" class="content-box">
           <p class="box-title"i18n="@@groupCreatePostDialog.parentTask"> Parent task</p>
 
           <div class="parent-task">
@@ -148,16 +148,16 @@
         <!-- Parent Task ends -->
 
         <!-- Is North Start starts -->
-        <app-north-star *ngIf="postData?.type === 'task'"
+        <app-north-star *ngIf="postData && postData?.type === 'task'"
           [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
-          [northStar]="postData.task.northStar"
+          [northStar]="postData?.task.northStar"
           (saveInitialNorthStarEmitter)="saveNorthStar($event)"
           (addProgressNorthStarEmitter)="saveNorthStar($event)">
         </app-north-star>
         <!-- Is North Start ends -->
 
         <!-- Status starts -->
-        <div class="content-box" *ngIf="!postData?.task?.isNorthStar && postData?.type === 'task'">
+        <div class="content-box" *ngIf="postData && !postData?.task?.isNorthStar && postData?.type === 'task'">
           <p class="box-title"i18n="@@groupCreatePostDialog.taskStatus"> Task Status</p>
 
           <div class="shuttle-box mb-2">
@@ -188,7 +188,7 @@
             <!-- Change task status ends -->
           </div>
 
-          <div class="shuttle-box" *ngIf="columns">
+          <div class="shuttle-box" *ngIf="postData && columns">
             <p class="mt-1" *ngIf="(((shuttle?._shuttle_group?._id || shuttle?._shuttle_group) != groupId) && !postData?.task?._parent_task) || ((shuttle?._shuttle_group?._id || shuttle?._shuttle_group) == groupId)"
                 style="margin-top: 18px; width:70px" i18n="@@groupCreatePostDialog.section">
               Section
@@ -216,7 +216,7 @@
         <!-- Status ends -->
 
         <!-- Shuttle Task starts -->
-        <app-shuttle-task *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type && postData?.task?.shuttle_type"
+        <app-shuttle-task *ngIf="isShuttleTasksModuleAvailable && groupData?.shuttle_type && postData && postData?.task?.shuttle_type"
           [postData]="postData"
           [groupData]="groupData"
           [userData]="userData"
@@ -224,11 +224,11 @@
         <!-- Shuttle Task ends -->
 
         <!-- Dates starts -->
-        <div class="content-box" *ngIf="postData?.type === 'task' || postData.type === 'event'">
+        <div class="content-box" *ngIf="postData && postData?.type === 'task' || postData?.type === 'event'">
           <p *ngIf="groupData && groupData.project_type && !postData?.task?.is_milestone"
             class="box-title" i18n="@@groupCreatePostDialog.startDate">Start date</p>
 
-          <div *ngIf="groupData && postData?.type === 'task' && groupData.project_type && !postData?.task?.is_milestone">
+          <div *ngIf="groupData && postData && postData?.type === 'task' && groupData.project_type && !postData?.task?.is_milestone">
             <!-- Date Picker starts -->
             <app-date-picker (date)="getDate($event, 'start_date')"
               [selectedDate]="formateDate(postData?.task.start_date)"
@@ -242,7 +242,7 @@
             <i *ngIf="canEdit" (click)="updateDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
             <!-- Clean field ends -->
           </div>
-          <div *ngIf="postData.type === 'event'" class="btn-group">
+          <div *ngIf="postData && postData?.type === 'event'" class="btn-group">
             <!-- Date Picker starts -->
             <app-date-picker (date)="getDate($event, 'start_date')"
               [selectedDate]="postData?.event.start_date"
@@ -254,7 +254,7 @@
           </div>
 
           <!-- Time Picker starts -->
-          <app-time-picker class="ml-1" *ngIf="postData.type === 'event'"
+          <app-time-picker class="ml-1" *ngIf="postData && postData?.type === 'event'"
             [time]="this.dueTime"
             [canEdit]="canEdit"
             (time)="getTime($event)">
@@ -263,7 +263,7 @@
 
           <p class="box-title" i18n="@@groupCreatePostDialog.dueDate">Due date</p>
 
-          <div *ngIf="postData?.type === 'task'">
+          <div *ngIf="postData && postData?.type === 'task'">
             <!-- Date Picker starts -->
             <app-date-picker
               (date)="getDate($event, 'due_date')"
@@ -278,7 +278,7 @@
             <i *ngIf="canEdit" (click)="updateDate(null, 'due_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
             <!-- Clean field ends -->
           </div>
-          <div *ngIf="postData.type === 'event'" class="btn-group">
+          <div *ngIf="postData && postData?.type === 'event'" class="btn-group">
             <!-- Date Picker starts -->
             <app-date-picker
               (date)="getDate($event, 'due_date')"
@@ -293,7 +293,7 @@
           <!-- Time Picker starts -->
           <app-time-picker
               class="ml-1"
-              *ngIf="postData.type === 'event'"
+              *ngIf="postData && postData?.type === 'event'"
               [time]="this.dueTime"
               (time)="getTime($event)"
               [canEdit]="canEdit">
@@ -303,7 +303,7 @@
         <!-- Dates ends -->
 
         <!-- Assignee Modal starts -->
-        <div class="content-box" *ngIf="postData?.type === 'task' || postData.type === 'event'">
+        <div class="content-box" *ngIf="postData && postData?.type === 'task' || postData?.type === 'event'">
             <p class="box-title" i18n="@@groupCreatePostDialog.assignee">Assignee</p>
 
             <app-multiple-assignments
@@ -333,13 +333,13 @@
             <div id="avatar-assignee" style="margin-bottom: 30px;">
               <p class="box-title" style="padding-top: 20px;" i18n="@@groupCreatePostDialog.createdBy">Created by</p>
 
-              <app-secured-image
+              <app-secured-image *ngIf="postData"
                 [imgURL]="postData?._posted_by?.profile_pic"
                 [service]="'user'"
                 [styleClass]="'feed-avatar-small'"
                 style="float: left; cursor: auto;"></app-secured-image>
 
-              <div style="padding-top: 10px;" class="ml-1">
+              <div style="padding-top: 10px;" class="ml-1" *ngIf="postData">
                 {{ postData?._posted_by?.first_name }}
                 {{ postData?._posted_by?.last_name }}
                 <span class="muted" i18n="@@groupCreatePostDialog.on">on {{ postData?.created_date | date: 'MMM dd, yyyy'}}</span>
@@ -353,7 +353,7 @@
             <p class="box-title" i18n="@@groupCreatePostDialog.tags">Tags</p>
 
             <!-- Post Tags starts -->
-            <app-tags
+            <app-tags *ngIf="postData"
                 [canEdit]="canEdit"
                 [item]="postData"
                 [userData]="userData"
@@ -363,7 +363,7 @@
             <!-- Post Tags ends -->
         </div>
 
-        <div class="content-box" *ngIf="postData?.type === 'task'">
+        <div class="content-box" *ngIf="postData && postData?.type === 'task'">
             <p class="box-title" i18n="@@groupCreatePostDialog.customFields">Custom fields</p>
 
             <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
@@ -405,7 +405,7 @@
             </div>
         </div>
 
-        <app-task-actions *ngIf="postData?.type === 'task' && canEdit"
+        <app-task-actions *ngIf="postData && groupData && userData && postData?.type === 'task' && canEdit"
           [postData]="postData"
           [groupData]="groupData"
           [userData]="userData"
@@ -427,7 +427,7 @@
         </app-task-actions>
 
         <!-- APPROVAL STARTS -->
-        <div class="content-box" *ngIf="postData?.type === 'task'">
+        <div class="content-box" *ngIf="postData && postData?.type === 'task'">
           <app-approval-actions
             [groupId]="groupData?._id"
             [userData]="userData"

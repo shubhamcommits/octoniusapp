@@ -61,7 +61,8 @@ export class MyspaceAgendaComponent implements OnInit {
 
   openModal(event) {
     this.post = event;
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable);
+    const canOpen = !this.groupData?.enabled_rights || this.post?.canView || this.post?.canEdit;
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
 
     if (dialogRef) {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {

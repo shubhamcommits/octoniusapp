@@ -171,6 +171,12 @@ export class FlamingoHeaderComponent implements OnInit {
 
     if (flamingo && flamingo?._questions && flamingo?.responses) {
       let insights: any = [];
+      let scaleResponses = new Map();
+
+      flamingo?._questions?.forEach(question => {
+        const responses = this.getScaleResponses(question._id, flamingo?.responses);
+        scaleResponses.set(question._id, responses);
+      });
 
       await flamingo?._questions?.forEach(async question => {
         if (question.type != 'ShortText') {
@@ -180,39 +186,41 @@ export class FlamingoHeaderComponent implements OnInit {
           }
 
           if (question?.type == 'Yes/No') {
-            response.positive_text = question?.positive_option_text;
-            response.positive_responses = this.flamingoService.getPositiveResponsesStats(flamingo?.responses, question?._id);
-            response.negative_text = question?.negative_option_text;
-            response.negative_responses = this.flamingoService.getNegativeResponsesStats(flamingo?.responses, question?._id);
+            //response.positive_text = question?.positive_option_text;
+            response[question?.positive_option_text] = this.flamingoService.getPositiveResponsesStats(flamingo?.responses, question?._id);
+            //response.negative_text = question?.negative_option_text;
+            response[question?.negative_option_text] = this.flamingoService.getNegativeResponsesStats(flamingo?.responses, question?._id);
           }
 
           if (question?.type == 'Scale') {
+            let responses = scaleResponses.get(question?._id);
             let sizes = Array.from(new Array(question.scale.size), (x,i) => i);
             let percentages = [];
             let countsData = Array.from(new Array(question.scale.size), (x,i) => {
-              return flamingo?.responses?.filter(response => {
+              return responses?.filter(response => {
                 return response.scale_answer == i
               }).length;
             });
+
             countsData.forEach(count => {percentages?.push((Math.round(((count*100/flamingo?.responses?.length) + Number.EPSILON) * 100) / 100))});
 
             sizes.forEach((size, index) => {
-              response.size = size;
-              response.percentage = percentages[index] + ' %';
+              //response.size = size;
+              response[size] = percentages[index] + ' %';
             });
           }
 
           if (question?.type == 'Dropdown') {
             question?.options.forEach(option => {
-              response.option = option;
-              response.option_response = this.flamingoService.getDropdawnResponsesStats(flamingo?.responses, question?._id, option);
+              //response.option = option;
+              response[option] = this.flamingoService.getDropdawnResponsesStats(flamingo?.responses, question?._id, option);
             });
           }
 
           if (question?.type == 'Multiple') {
             question?.options.forEach(option => {
-              response.option = option;
-              response.option_response = this.flamingoService.getMultipleResponsesStats(flamingo?.responses, question?._id, option);
+              //response.option = option;
+              response[option] = this.flamingoService.getMultipleResponsesStats(flamingo?.responses, question?._id, option);
             });
           }
 
@@ -228,30 +236,28 @@ export class FlamingoHeaderComponent implements OnInit {
         }
 
         response?.answers?.forEach(answer => {
-          activeResponse.text = answer?._question?.text;
-          activeResponse.type = answer?._question?.type;
+          //activeResponse.text = answer?._question?.text;
+          //activeResponse.type = answer?._question?.type;
 
           if (answer?._question?.type == 'ShortText') {
-            activeResponse.text_answer = answer?.text_answer;
+            activeResponse[answer?._question?.text] = answer?.text_answer;
           }
 
           if (answer?._question?.type == 'Yes/No') {
             if (answer?.positive_answer) {
-              activeResponse.positive_text_answer = answer?._question?.positive_option_text;
-              activeResponse.negative_text_answer = '';
+              activeResponse[answer?._question?.text] = answer?._question?.positive_option_text;
             }
             if (answer?.negative_answer) {
-              activeResponse.positive_text_answer = '';
-              activeResponse.negative_text_answer = answer?._question?.negative_option_text;
+              activeResponse[answer?._question?.text] = answer?._question?.negative_option_text;
             }
           }
 
           if (answer?._question?.type == 'Scale') {
-            activeResponse.scale_text_answer = answer?.scale_answer;
+            activeResponse[answer?._question?.text] = answer?.scale_answer;
           }
 
           if (answer?._question?.type == 'Dropdown') {
-            activeResponse.dropdown_text_answer = answer?.dropdown_answer;
+            activeResponse[answer?._question?.text] = answer?.dropdown_answer;
           }
 
           if (answer?._question?.type == 'Multiple') {
@@ -259,7 +265,7 @@ export class FlamingoHeaderComponent implements OnInit {
             answer?.answer_multiple?.forEach(answerMulti => {
               multipleAnswer += answerMulti + '; ';
             });
-            activeResponse.multiple_text_answer = multipleAnswer;
+            activeResponse[answer?._question?.text] = multipleAnswer;
           }
         });
 
@@ -268,6 +274,10 @@ export class FlamingoHeaderComponent implements OnInit {
 
       this.saveAsExcelFile(insights, responses, this.file.original_name);
     }
+  }
+
+  getScaleResponses(questionId: string, responses: any) {
+    return this.flamingoService.getScaleResponses(responses, questionId);
   }
 
   /**

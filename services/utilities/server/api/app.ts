@@ -5,8 +5,10 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import { fileHandlerRoutes, filesRoutes, foldersRoutes, foldersPermissionsRoutes, filesPermissionsRoutes } from './routes';
+import { fileHandlerRoutes, filesRoutes, foldersRoutes, foldersPermissionsRoutes, filesPermissionsRoutes, libreofficeRoutes } from './routes';
 import fileUpload from 'express-fileupload';
+
+//var rawBodyParser = require('raw-body-parser');
 
 // Defining new Express application
 const app = express();
@@ -14,8 +16,7 @@ const app = express();
 // Load configuration based on the environment states
 if (process.env.NODE_ENV !== 'production') {
     developmentConfig();
-}
-else {
+} else {
     productionConfig();
 }
 
@@ -25,8 +26,11 @@ require('../db');
 // Adding The 'body-parser' middleware only handles JSON and urlencoded data
 app.use(express.json())
 // body parsers
-app.use(bodyParser.json({limit:'60mb'}));
-app.use(bodyParser.urlencoded({limit: '60mb',parameterLimit: 100000, extended: true }));
+app.use(bodyParser.json({ limit:'60mb' }));
+app.use(bodyParser.urlencoded({ limit: '60mb', parameterLimit: 100000, extended: true }));
+app.use(bodyParser.raw({ limit: '60mb' }));
+
+//app.use(rawBodyParser());
 
 // cors middleware for orign and Headers
 app.use(cors());
@@ -47,8 +51,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-// // Handle POST requests that come in formatted as JSON
-// app.use(express.json());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
 
 // Handling GZIPPED ROUTES
 const encodeResToGzip = (contentType: any) => {
@@ -89,6 +93,7 @@ app.use('/api/files', filesRoutes)
 app.use('/api/folders', foldersRoutes)
 app.use('/api/files/permissions', filesPermissionsRoutes)
 app.use('/api/folders/permissions', foldersPermissionsRoutes)
+app.use('/api/libreoffice', libreofficeRoutes)
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

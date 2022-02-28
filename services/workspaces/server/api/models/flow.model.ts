@@ -22,7 +22,7 @@ const FlowSchema = new Schema({
         trigger: [{
             name: {
                 type: String,
-                enum: ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED', 'Subtasks Status']
+                enum: ['Assigned to', 'Custom Field', 'Section is', 'Status is', 'Task is CREATED', 'Subtasks Status', 'Approval Flow is Completed']
             },
             _user: [{
                 type: Schema.Types.ObjectId,

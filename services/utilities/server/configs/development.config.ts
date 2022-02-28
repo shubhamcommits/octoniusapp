@@ -75,11 +75,17 @@ function devConfigInit() {
   process.env.UTILITIES_PORT = process.env.UTILITIES_PORT || '10000'
   process.env.UTILITIES_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}`
   process.env.UTILITIES_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}/api`
+  process.env.UTILITIES_USERS_UPLOADS = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.UTILITIES_PORT}/uploads/users`
 
   // Flamingo Microservice
   process.env.FLAMINGO_PORT = process.env.FLAMINGO_PORT || '14000'
   process.env.FLAMINGO_SERVER = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}`
   process.env.FLAMINGO_SERVER_API = `${process.env.PROTOCOL}://${process.env.DOMAIN}:${process.env.FLAMINGO_PORT}/api`
+
+  // Libreoffice Image Service
+  process.env.LIBREOFFICE_PROTOCOL = process.env.LIBREOFFICE_PROTOCOL || 'https'
+  process.env.LIBREOFFICE_DOMAIN = process.env.LIBREOFFICE_DOMAIN || 'betadocs.octonius.com'
+  process.env.LIBREOFFICE_SERVER = `${process.env.LIBREOFFICE_PROTOCOL}://${process.env.LIBREOFFICE_DOMAIN}`
 };
 
 export { devConfigInit as developmentConfig }

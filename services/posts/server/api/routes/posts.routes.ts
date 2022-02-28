@@ -232,4 +232,7 @@ routes.put('/:postId/selectShuttleSection', postController.selectShuttleSection.
 // PUT - Change the status of the Shuttle task
 routes.put('/:postId/selectShuttleStatus', postController.selectShuttleStatus.bind(postController));
 
+// PUT - Run automator
+routes.put('/:postId/automator', postController.runAutomator.bind(postController));
+
 export { routes as postRoutes };

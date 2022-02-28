@@ -48,6 +48,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     }
 });
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
 // Handle POST requests that come in formatted as JSON
 app.use(express.json());
 
@@ -86,9 +89,6 @@ app.use('/api', postRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/post/permissions', postsPermissionsRoutes);
 app.use('/api/section/permissions', sectionsPermissionsRoutes);
-
-// Correct REST naming
-// app.use('/api/users', userRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {

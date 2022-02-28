@@ -162,8 +162,19 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
       const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
-      const post = await this.publicFunctions.getPost(postId);
-      this.utilityService.openCreatePostFullscreenModal(post, this.userData, this.groupData, this.isIdeaModuleAvailable, this.columns);
+      let post;
+      let canOpen = true;
+      if (this.groupData?.enabled_rights) {
+        post = await this.publicFunctions.getPost(postId);
+        const canEdit = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'edit');
+        let canView = false;
+        if (!canEdit) {
+          const hide = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'hide');
+          canView = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'view') || !hide;
+        }
+        canOpen = canView || canEdit;
+      }
+      this.utilityService.openCreatePostFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
     }
   }
 

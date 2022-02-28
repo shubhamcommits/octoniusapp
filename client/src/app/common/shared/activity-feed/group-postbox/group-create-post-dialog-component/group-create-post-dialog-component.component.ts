@@ -126,19 +126,18 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async ngOnInit() {
     // Start the loading spinner
     this.isLoading$.next(true);
-    this.postData = this.data.postData;
-    this.userData = this.data.userData;
+
+    const postId = this.data.postId;
+    this.postData = await this.publicFunctions.getPost(postId);
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
     this.isIdeaModuleAvailable = this.data.isIdeaModuleAvailable;
-    if(!this.data.Tasks){
-      this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
-    } else {
 
-      this.tasks = this.data.Tasks;
-    }
+    this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
 
     this.isShuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable();
+
+    this.userData = await this.publicFunctions.getCurrentUser();
 
     this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
 
@@ -163,13 +162,13 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   async initPostData() {
     // Set the title of the post
-    this.title = this.postData.title;
+    this.title = this.postData?.title;
 
     // Set the due date to be undefined
     this.dueDate = undefined;
     this.tags = [];
 
-    if (this.postData.type === 'task') {
+    if (this.postData?.type === 'task') {
       if (this.isShuttleTasksModuleAvailable && this.postData?.task?.shuttle_type && this.postData?.task?.shuttles) {
         this.shuttleIndex = await this.postData?.task?.shuttles?.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id);
         this.shuttle = this.postData?.task?.shuttles[this.shuttleIndex];
@@ -180,19 +179,19 @@ export class GroupCreatePostDialogComponent implements OnInit {
       }
 
       // Set the taskAssignee
-      this.taskAssignee = this.postData._assigned_to || [];
+      this.taskAssignee = this.postData?._assigned_to || [];
 
       // Set the due date variable for task
-      if ((this.postData.task.due_to && this.postData.task.due_to != null)
-        || (this.postData.event.due_to && this.postData.event.due_to != null)) {
+      if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
+        || (this.postData?.event.due_to && this.postData?.event.due_to != null)) {
         // Set the DueDate variable
-        this.dueDate = moment(this.postData.task.due_to || this.postData.event.due_to);
+        this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
       }
 
       // Set the due date variable for task
-      if (this.postData.task.start_date && this.postData.task.start_date != null) {
+      if (this.postData?.task.start_date && this.postData?.task.start_date != null) {
         // Set the DueDate variable
-        this.startDate = moment(this.postData.task.start_date);
+        this.startDate = moment(this.postData?.task.start_date);
       }
 
       this.setAssignedBy(this.postData);
@@ -204,21 +203,21 @@ export class GroupCreatePostDialogComponent implements OnInit {
           res['group']['custom_fields'].forEach(field => {
             this.customFields.push(field);
 
-            if (!this.postData.task.custom_fields) {
+            if (!this.postData?.task.custom_fields) {
               this.postData.task.custom_fields = new Map<string, string>();
             }
 
-            if (!this.postData.task.custom_fields[field.name]) {
+            if (!this.postData?.task.custom_fields[field.name]) {
               this.postData.task.custom_fields[field.name] = '';
               this.selectedCFValues[field.name] = '';
             } else {
-              this.selectedCFValues[field.name] = this.postData.task.custom_fields[field.name];
+              this.selectedCFValues[field.name] = this.postData?.task.custom_fields[field.name];
             }
           });
         }
       });
 
-      await this.postService.getSubTasks(this.postData._id).then((res) => {
+      await this.postService.getSubTasks(this.postData?._id).then((res) => {
         this.subtasks = res['subtasks'];
 
         if (this.subtasks && this.subtasks.length > 0) {
@@ -228,23 +227,23 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }
 
     // If post type is event, set the dueTime
-    if (this.postData.type === 'event') {
+    if (this.postData?.type === 'event') {
 
       // Set the due date variable for both task and event type posts
-      if (this.postData.event.due_to && this.postData.event.due_to != null) {
+      if (this.postData?.event.due_to && this.postData?.event.due_to != null) {
 
         // Set the DueDate variable
-        this.dueDate = moment(this.postData.task.due_to || this.postData.event.due_to);
+        this.dueDate = moment(this.postData?.task.due_to || this.postData?.event.due_to);
       }
 
       if (this.dueDate) {
         this.dueTime.hour = this.dueDate.getHours();
         this.dueTime.minute = this.dueDate.getMinutes();
       }
-      this.eventAssignedToCount = (this.postData._assigned_to) ? this.postData._assigned_to.size : 0;
+      this.eventAssignedToCount = (this.postData?._assigned_to) ? this.postData?._assigned_to.size : 0;
     }
 
-    this.tags = this.postData.tags;
+    this.tags = this.postData?.tags;
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);
@@ -310,7 +309,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
   async updateDate(date, property) {
     await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       if (property === 'due_date') {
-            this.postService.changeTaskDueDate(this.postData._id, date?moment(date).format('YYYY-MM-DD'):null)
+            this.postService.changeTaskDueDate(this.postData?._id, date?moment(date).format('YYYY-MM-DD'):null)
             .then((res) => {
               this.postData = res['post'];
               this.dueDate = moment(this.postData?.task?.due_to);
@@ -322,7 +321,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
             });
 
       } else if(property === 'start_date') {
-          this.postService.saveTaskDates(this.postData._id, date?moment(date).format('YYYY-MM-DD'):null, property)
+          this.postService.saveTaskDates(this.postData?._id, date?moment(date).format('YYYY-MM-DD'):null, property)
             .then((res) => {
               this.postData = res['post'];
               this.startDate = moment(this.postData?.task?.start_date);
@@ -374,7 +373,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   onPostPin(pin: any) {
     this.postData.pin_to_top = pin;
-    this.pinEvent.emit({pin: pin, _id: this.postData._id});
+    this.pinEvent.emit({pin: pin, _id: this.postData?._id});
   }
 
   /**
@@ -412,7 +411,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   saveCustomField(customFieldName: string, customFieldValue: string) {
     this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.saveCustomField(this.postData._id, customFieldName, customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable)
+      this.postService.saveCustomField(this.postData?._id, customFieldName, customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable)
         .then(async (res) => {
           this.selectedCFValues[customFieldName] = customFieldValue;
           this.postData.task.custom_fields[customFieldName] = customFieldValue;
@@ -437,20 +436,20 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     const post: any = {
       title: this.title,
-      type: this.postData.type,
-      content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData.content,
+      type: this.postData?.type,
+      content: this.quillData ? JSON.stringify(this.quillData.contents) : this.postData?.content,
       _content_mentions: this._content_mentions,
       tags: this.tags,
-      _read_by: this.postData._read_by,
-      isNorthStar: this.postData.task.isNorthStar,
-      is_idea: this.postData.task.is_idea,
+      _read_by: this.postData?._read_by,
+      isNorthStar: this.postData?.task.isNorthStar,
+      is_idea: this.postData?.task.is_idea,
       is_milestone: this.postData?.task?.is_milestone || false,
-      northStar: this.postData.task.northStar,
-      assigned_to: this.postData._assigned_to
+      northStar: this.postData?.task.northStar,
+      assigned_to: this.postData?._assigned_to
     };
 
     // If Post type is event, then add due_to property too
-    if (this.postData.type === 'event') {
+    if (this.postData?.type === 'event') {
 
       var due_to;
 
@@ -473,8 +472,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
       }
     }
 
-    if (this.postData.type === 'task') {
-      post.task = this.postData.task;
+    if (this.postData?.type === 'task') {
+      post.task = this.postData?.task;
 
       // Task due date
       post.date_due_to = this.dueDate;
@@ -483,13 +482,13 @@ export class GroupCreatePostDialogComponent implements OnInit {
         post.start_date = this.startDate;
       }
 
-      if (!this.postData.task._parent_task) {
+      if (!this.postData?.task._parent_task) {
         // Task column
-        post._column = this.postData.task._column._id || this.postData.task._column;
+        post._column = this.postData?.task._column._id || this.postData?.task._column;
       }
 
       // Task status
-      post.status = this.postData.task.status;
+      post.status = this.postData?.task.status;
     }
 
     // Create FormData Object
@@ -506,7 +505,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }
 
     // Call the edit post function
-    await this.editPost(this.postData._id, formData);
+    await this.editPost(this.postData?._id, formData);
   }
 
   async changeTaskStatus(event) {
@@ -537,7 +536,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   async moveTaskToColumn(event) {
     const columnId = event.newColumnId;
-    await this.publicFunctions.changeTaskColumn(this.postData._id, columnId, this.userData._id, this.groupId);
+    await this.publicFunctions.changeTaskColumn(this.postData?._id, columnId, this.userData._id, this.groupId);
     this.postData.task._column = columnId;
 
     this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
@@ -558,16 +557,16 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.postData = res['post'];
     this.setAssignedBy(this.postData);
 
-    if (this.postData.type === 'task') {
+    if (this.postData?.type === 'task') {
       this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
     }
   }
 
   async setAssignedBy(post) {
 
-    if (this.postData.records && this.postData.records.assignments && this.postData.records.assignments.length > 0) {
-      this.postData.records.assignments = this.postData.records.assignments.sort((a1, a2) => (moment(a1.date).isBefore(a2.date)) ? 1 : -1);
-      this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData.records.assignments[0]._assigned_from);
+    if (this.postData?.records && this.postData?.records.assignments && this.postData?.records.assignments.length > 0) {
+      this.postData.records.assignments = this.postData?.records.assignments.sort((a1, a2) => (moment(a1.date).isBefore(a2.date)) ? 1 : -1);
+      this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData?.records.assignments[0]._assigned_from);
     }
   }
 
@@ -593,9 +592,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * Call function to delete post
    */
   deletePost() {
-    const id = this.postData._id;
+    const id = this.postData?._id;
     this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.pleaseWaitWeAreDeleting:Please wait we are deleting the post...`, new Promise((resolve, reject) => {
-      this.postService.deletePost(this.postData._id)
+      this.postService.deletePost(this.postData?._id)
         .then((res) => {
           // Emit the Deleted post to all the compoents in order to update the UI
           this.deleteEvent.emit(id);
@@ -622,10 +621,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   async setShuttleGroup(data: any) {
     this.postData.task.shuttle_type = true;
-    if (!this.postData.task.shuttles) {
+    if (!this.postData?.task.shuttles) {
       this.postData.task.shuttles = [];
     }
-    this.postData.task.shuttles.unshift(data);
+    this.postData?.task.shuttles.unshift(data);
   }
 
   transformToNorthStart(data) {
@@ -735,8 +734,9 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.postData = itemData;
   }
 
-  onApprovalFlowLaunchedEmiter(itemData: any) {
+  async onApprovalFlowLaunchedEmiter(itemData: any) {
     this.postData = itemData;
+    this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
     this.canEdit = !this.postData?.approval_flow_launched;
   }
 }

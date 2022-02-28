@@ -58,7 +58,7 @@ export class PostUtilsComponent implements OnInit {
     this.canDelete = await this.utilityService.canUserDoTaskAction(this.post, this.groupData, this.userData, 'delete');
 
     // Fetches the user groups from the server
-    await this.publicFunctions.getAllUserGroups(workspaceData['_id'], this.userData._id)
+    await this.publicFunctions.getAllUserGroups(workspaceData['_id'], this.userData?._id)
       .then(async (groups: any) => {
         await groups.forEach(group => {
           if (group._id != this.groupId) {
@@ -80,7 +80,8 @@ export class PostUtilsComponent implements OnInit {
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
   openFullscreenModal(): void {
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post, this.userData, this.groupData, this.isIdeaModuleAvailable);
+    const canOpen = !this.groupData?.enabled_rights || this.post?.canView || this.post?.canEdit;
+    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
 
     if (dialogRef) {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
