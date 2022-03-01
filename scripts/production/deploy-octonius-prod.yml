@@ -278,6 +278,8 @@ services:
       - HEADER_EXTERNAL_KEY=${HEADER_EXTERNAL_KEY}
       - PROTOCOL=${PROTOCOL}
       - DOMAIN=${DOMAIN}
+      - LIBREOFFICE_DOMAIN=${LIBREOFFICE_DOMAIN}
+      - LIBREOFFICE_PROTOCOL=${LIBREOFFICE_PROTOCOL}
       - MANAGEMENT_URL=${MANAGEMENT_URL}
       - PROXY_AVAILABLE=${PROXY_AVAILABLE}
       - PROXY_PROTOCOL=${PROXY_PROTOCOL}
@@ -460,7 +462,7 @@ services:
       - octonius_production
 
   online:
-    container_name: octonius_office    
+    container_name: octonius_office
     image: ${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server
     environment:
       domain: ${DOMAIN}
@@ -469,7 +471,7 @@ services:
       extra_params: --o:ssl.enable=false --o:ssl.termination=true
       # DONT_GEN_SSL_CERT: 1
     deploy:
-      replicas: ${REPLICAS}
+      replicas: 1
       placement:
         constraints: [node.role == manager]
       update_config:
@@ -477,9 +479,6 @@ services:
         delay: 10s
       restart_policy:
         condition: on-failure
-    volumes:
-      - ${VOLUME_NODE_MODULES}
-      - octonius_production_lool_config_volume:/etc/loolwsd
     cap_add:
       - MKNOD
     ports:
@@ -561,13 +560,6 @@ volumes:
       type: none
       device: /mnt/volume_fra1_01/data/uploads/search
       o: bind 
-
-  octonius_production_lool_config_volume:
-    driver: local
-    driver_opts:
-      type: none
-      device: /mnt/volume_fra1_01/data/uploads/office
-      o: bind
 
 networks:
   octonius_production:
