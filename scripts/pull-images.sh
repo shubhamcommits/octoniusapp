@@ -53,6 +53,9 @@ INTEGRATIONS_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:integrations-server
 # Flamingo Microservice Image Name
 FLAMINGO_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:flamingo-server
 
+# Libreoffice Image Name
+LIBREOFFICE_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:libreoffice-server
+
 # Nginx Image Name
 NGINX_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:nginx
 
@@ -73,5 +76,6 @@ MONGO_IMAGE_NAME=${DOCKER_USER}/${DOCKER_REPO}:mongodb
           docker pull $SEARCH_IMAGE_NAME
           docker pull $INTEGRATIONS_IMAGE_NAME
           docker pull $FLAMINGO_IMAGE_NAME
+          docker pull $LIBREOFFICE_IMAGE_NAME
           docker pull $CLIENT_IMAGE_NAME
           docker pull $NGINX_IMAGE_NAME
