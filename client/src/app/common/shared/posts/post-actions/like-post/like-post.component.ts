@@ -43,7 +43,7 @@ export class LikePostComponent implements OnInit {
 
   /**
    * This function is responsible for calling the HTTP request to like a post
-   * @param postId 
+   * @param postId
    */
   onLikePost(postId: string){
 
@@ -84,7 +84,7 @@ export class LikePostComponent implements OnInit {
 
   /**
    * This function is responsible for calling the HTTP request to unlike a post
-   * @param postId 
+   * @param postId
    */
   onUnlikePost(postId: string){
 
@@ -108,7 +108,7 @@ export class LikePostComponent implements OnInit {
    */
   isLikedByUser() {
     if (this.post.hasOwnProperty('_liked_by')) {
-      if (this.post._liked_by.includes(this.userData._id))
+      if (this.post._liked_by.includes(this.userData?._id))
         return true;
       else
         return false
