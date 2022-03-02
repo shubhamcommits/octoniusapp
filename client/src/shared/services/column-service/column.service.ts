@@ -26,7 +26,7 @@ export class ColumnService {
    * @param groupId
    */
   getAllColumns(groupId: string) {
-    return this._http.get(this.baseUrl + `/columns/all`, {
+    return this._http.get(this.baseUrl + `/columns/${groupId}/all`, {
       params:{
         groupId: groupId
       }
@@ -38,7 +38,7 @@ export class ColumnService {
    * @param groupId
    */
   getAllArchivedColumns(groupId: string) {
-    return this._http.get(this.baseUrl + `/columns/archived`, {
+    return this._http.get(this.baseUrl + `/columns/${groupId}/archived`, {
       params:{
         groupId: groupId
       }
@@ -50,7 +50,7 @@ export class ColumnService {
    * @param groupId
    */
   getGroupProjectColumns(groupId: string) {
-    return this._http.get(this.baseUrl + `/columns/projects`, {
+    return this._http.get(this.baseUrl + `/columns/${groupId}/projects`, {
       params:{
         groupId: groupId
       }
@@ -62,7 +62,7 @@ export class ColumnService {
    * @param groupId
    */
   getAllProjectColumns(workspaceId: string, userId: string) {
-    return this._http.get(this.baseUrl + `/columns/projects`, {
+    return this._http.get(this.baseUrl + `/columns/${workspaceId}/projects`, {
       params:{
         workspaceId: workspaceId,
         userId: userId
@@ -77,7 +77,7 @@ export class ColumnService {
    * @returns
    */
   getGroupProjectColumnsByGroups(workspaceId: string, filteringGroups: []) {
-    return this._http.get(this.baseUrl + `/columns/projectsByGroups`, {
+    return this._http.get(this.baseUrl + `/columns/${workspaceId}/projectsByGroups`, {
       params:{
         workspaceId: workspaceId,
         filteringGroups: filteringGroups
