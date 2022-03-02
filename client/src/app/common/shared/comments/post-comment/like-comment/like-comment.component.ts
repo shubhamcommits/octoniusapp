@@ -112,7 +112,7 @@ export class LikeCommentComponent implements OnChanges {
    * Check if the comment is liked by the currently loggedIn user
    */
   isLikedByUser() {
-    const index = this.comment._liked_by.findIndex(user => (user._id || user) == this.userData._id);
+    const index = this.comment._liked_by.findIndex(user => (user._id || user) == this.userData?._id);
     if (index >= 0) {
       this.liked = true;
     } else {

@@ -263,13 +263,13 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     return this.isLoading$.next(false);
   }
 
-  newSectionAdded(column: any) {
-    const canEdit = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'edit');
+  async newSectionAdded(column: any) {
+    const canEdit = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'edit');
     let canView = false;
 
     if (!canEdit) {
-      const hide = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'hide');
-      canView = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'view') || !hide;
+      const hide = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'hide');
+      canView = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'view') || !hide;
     }
 
     column.canEdit = canEdit;
@@ -281,13 +281,13 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
   filterRAGSections() {
     let columnsTmp = [];
-    this.columns.forEach(column => {
-        const canEdit = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'edit');
+    this.columns.forEach(async column => {
+        const canEdit = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'edit');
         let canView = false;
 
         if (!canEdit) {
-          const hide = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'hide');
-          canView = this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'view') || !hide;
+          const hide = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'hide');
+          canView = await this.utilityService.canUserDoTaskAction(column, this.groupData, this.userData, 'view') || !hide;
         }
 
         column.canEdit = canEdit;

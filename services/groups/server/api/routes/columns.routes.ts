@@ -20,19 +20,19 @@ router.use(auths.verifyToken);
 router.use(auths.isLoggedIn);
 
 // GET - retreive an specific section
-router.put('/:sectionId', columns.get);
+router.get('/:sectionId', columns.get);
 
 // get all existing columns
-router.get('/all', columns.getAllColumns);
+router.get('/:groupId/all', columns.getAllColumns);
 
 // get all existing archived columns
-router.get('/archived', columns.getAllArchivedColumns);
+router.get('/:groupId/archived', columns.getAllArchivedColumns);
 
 // get all existing project columns
-router.get('/projects', columns.getAllProjectColumns);
+router.get('/:workspaceId/projects', columns.getAllProjectColumns);
 
 // get all existing project columns filtering by groups
-router.get('/projectsByGroups', columns.getGroupProjectColumnsByGroups);
+router.get('/:workspaceId/projectsByGroups', columns.getGroupProjectColumnsByGroups);
 
 // add a new column
 router.post('/', columns.addColumn);

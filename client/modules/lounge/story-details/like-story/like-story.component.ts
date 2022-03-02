@@ -57,7 +57,7 @@ export class LikeStoryComponent implements OnInit {
    * Check if the Story is liked by the currently loggedIn user
    */
   isLikedByUser() {
-    const index = (this.storyData && this.storyData._liked_by) ? this.storyData._liked_by.findIndex(liked => (liked._id || liked) == this.userData._id) : -1;
+    const index = (this.storyData && this.storyData._liked_by) ? this.storyData._liked_by.findIndex(liked => (liked._id || liked) == this.userData?._id) : -1;
     return index >= 0;
   }
 }
