@@ -661,7 +661,7 @@ export class UtilityService {
    * @param action edit or view or hide
    * @returns
    */
-  canUserDoTaskAction(item: any, groupData: any, userData: any, action: string) {
+  async canUserDoTaskAction(item: any, groupData: any, userData: any, action: string) {
 
     const isGroupManager = (groupData && groupData._admins) ? (groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
     let createdBy = (item?._posted_by ) ? ((item?._posted_by?._id || item?._posted_by) == userData?._id) : false;
@@ -697,14 +697,14 @@ export class UtilityService {
         } else if (item?.task?._column) {
           // Post Service Instance
           let columnService = this.injector.get(ColumnService);
-          columnService.getSection(item?.task?._column?._id || item?.task?._column).then(res => {
-            canDoRagAction = this.canUserDoTaskAction(res['section'], groupData, userData, action);
+          await columnService.getSection(item?.task?._column?._id || item?.task?._column).then(async res => {
+            canDoRagAction = await this.canUserDoTaskAction(res['section'], groupData, userData, action);
           });
         } else if (item?.task?._parent_task) {
           // Post Service Instance
           let postService = this.injector.get(PostService);
-          postService.get(item?.task?._parent_task._id || item?.task?._parent_task).then(res => {
-            canDoRagAction = this.canUserDoTaskAction(res['post'], groupData, userData, action);
+          await postService.get(item?.task?._parent_task._id || item?.task?._parent_task).then(async res => {
+            canDoRagAction = await this.canUserDoTaskAction(res['post'], groupData, userData, action);
           });
         } else {
           canDoRagAction = true;
