@@ -13,8 +13,8 @@ pipelines:
         condition:
           changesets:
             includePaths:
-              - "ooctonius/services/libreoffice-server/Dockerfile"
-              - "ooctonius/services/libreoffice-server/start-collabora-online.sh"        
+              - "services/libreoffice-server/Dockerfile"
+              - "services/libreoffice-server/start-collabora-online.sh"        
         script:
           - export LIBREOFFICE_IMAGE_NAME=octoniusapp/octonius-prod:libreoffice-server
           - docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice            
@@ -105,8 +105,8 @@ pipelines:
         condition:
           changesets:
             includePaths:
-              - "ooctonius/services/libreoffice-server/Dockerfile"
-              - "ooctonius/services/libreoffice-server/start-collabora-online.sh"        
+              - "services/libreoffice-server/Dockerfile"
+              - "services/libreoffice-server/start-collabora-online.sh"        
         script:
           - export LIBREOFFICE_IMAGE_NAME=octoniusapp/octonius:libreoffice-server
           - docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice            

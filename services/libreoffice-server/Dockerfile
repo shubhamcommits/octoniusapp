@@ -249,7 +249,6 @@ RUN ls -lah /opt/cool/child-roots/
 # RUN mkdir -p /opt/cool/child-roots/tmp && chown -R cool:cool /opt/cool
 EXPOSE 9980
 
-
 # switch to cool user (use numeric user id to be compatible with Kubernetes Pod Security Policies)
 USER cool
 CMD ["/start-collabora-online.sh"]
