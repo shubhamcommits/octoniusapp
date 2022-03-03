@@ -10,7 +10,6 @@ pipelines:
         name: Deploy Office Image to DockerHub
         services:
           - docker
-        deployment: production-office
         condition:
           changesets:
             includePaths:
@@ -103,7 +102,6 @@ pipelines:
         name: Deploy Office Image to DockerHub
         services:
           - docker
-        deployment: staging-office 
         condition:
           changesets:
             includePaths:
