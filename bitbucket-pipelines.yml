@@ -17,7 +17,7 @@ pipelines:
               - "services/libreoffice-server/start-collabora-online.sh"        
         script:
           - export LIBREOFFICE_IMAGE_NAME=octoniusapp/octonius-prod:libreoffice-server
-          - docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice            
+          - docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice-server            
           - docker login --username $DOCKER_ID --password $DOCKER_PASSWORD
           - docker push $LIBREOFFICE_IMAGE_NAME     
     - step:
@@ -45,7 +45,6 @@ pipelines:
           - export SEARCH_IMAGE_NAME=octoniusapp/octonius-prod:search-server
           - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius-prod:integrations-server
           - export FLAMINGO_IMAGE_NAME=octoniusapp/octonius-prod:flamingo-server
-          #- export LIBREOFFICE_IMAGE_NAME=octoniusapp/octonius-prod:libreoffice-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius-prod:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
@@ -62,7 +61,6 @@ pipelines:
           - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
           - docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
           - docker build -t $FLAMINGO_IMAGE_NAME --compress=true --force-rm=true ./services/flamingo/server
-          #- docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
           # Clear unnecessary Image build
@@ -85,7 +83,6 @@ pipelines:
           - docker push $SEARCH_IMAGE_NAME
           - docker push $INTEGRATIONS_IMAGE_NAME
           - docker push $FLAMINGO_IMAGE_NAME
-          #- docker push $LIBREOFFICE_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
     - step:
@@ -109,7 +106,7 @@ pipelines:
               - "services/libreoffice-server/start-collabora-online.sh"        
         script:
           - export LIBREOFFICE_IMAGE_NAME=octoniusapp/octonius:libreoffice-server
-          - docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice            
+          - docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice-server            
           - docker login --username $DOCKER_ID --password $DOCKER_PASSWORD
           - docker push $LIBREOFFICE_IMAGE_NAME
     - step:
@@ -137,7 +134,6 @@ pipelines:
           - export SEARCH_IMAGE_NAME=octoniusapp/octonius:search-server
           - export INTEGRATIONS_IMAGE_NAME=octoniusapp/octonius:integrations-server
           - export FLAMINGO_IMAGE_NAME=octoniusapp/octonius:flamingo-server
-          #- export LIBREOFFICE_IMAGE_NAME=octoniusapp/octonius:libreoffice-server
           - export NGINX_IMAGE_NAME=octoniusapp/octonius:nginx
 
           # build the Docker image (this will use the Dockerfile in the root of the repo)
@@ -154,7 +150,6 @@ pipelines:
           - docker build -t $SEARCH_IMAGE_NAME --compress=true --force-rm=true ./services/search/server
           - docker build -t $INTEGRATIONS_IMAGE_NAME --compress=true --force-rm=true ./services/integrations/server
           - docker build -t $FLAMINGO_IMAGE_NAME --compress=true --force-rm=true ./services/flamingo/server
-          #- docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice
           - docker build -t $NGINX_IMAGE_NAME --compress=true --force-rm=true ./nginx
 
           # Clear unnecessary Image build
@@ -177,7 +172,6 @@ pipelines:
           - docker push $SEARCH_IMAGE_NAME
           - docker push $INTEGRATIONS_IMAGE_NAME
           - docker push $FLAMINGO_IMAGE_NAME
-          #- docker push $LIBREOFFICE_IMAGE_NAME
           - docker push $NGINX_IMAGE_NAME
 
     - step:
