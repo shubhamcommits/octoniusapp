@@ -85,6 +85,21 @@ pipelines:
     
     "{develop}":
     - step:
+        name: Deploy Office Image to DockerHub
+        services:
+          - docker
+        deployment: staging   
+        condition:
+          changesets:
+            includePaths:
+              - "ooctonius/services/libreoffice-server/Dockerfile"
+              - "ooctonius/services/libreoffice-server/start-collabora-online.sh"        
+        script:
+          - export LIBREOFFICE_IMAGE_NAME=octoniusapp/octonius:libreoffice-server
+          - docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice            
+          - docker login --username $DOCKER_ID --password $DOCKER_PASSWORD
+          - docker push $LIBREOFFICE_IMAGE_NAME
+    - step:
         name: Deploy to dockerhub
         services:
           - docker
