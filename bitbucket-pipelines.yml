@@ -158,6 +158,12 @@ pipelines:
   custom:
     build_libre_office_server:
     - step:
+        name: Test Pipeline
+        services:
+          - docker
+        script: 
+          - ls    
+    - step:
        name: Build and Deploy stating server
        trigger: manual
        script:
@@ -180,4 +186,3 @@ definitions:
    services:
       docker:
          memory: 6000 
-  
