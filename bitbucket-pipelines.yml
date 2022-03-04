@@ -158,11 +158,15 @@ pipelines:
   custom:
     build_libre_office_server:
     - step:
-        name: Test Pipeline
-        services:
-          - docker
-        script: 
-          - ls    
+        name: Copy Files
+        script:
+          - pipe: atlassian/scp-deploy:1.2.1
+            variables:
+              USER: 'ubuntu'
+              SERVER: $HOST_ADDRESS
+              REMOTE_PATH: '/home/ubuntu/octonius/libreoffice-server'
+              LOCAL_PATH: 'services/libreoffice-server'
+              DEBUG: 'true'
     - step:
        name: Build and Deploy stating server
        trigger: manual
@@ -171,7 +175,7 @@ pipelines:
            variables:
              SSH_USER: 'ubuntu'
              SERVER: $HOST_ADDRESS
-             COMMAND: 'cd /home/ubuntu/octonius; export LIBREOFFICE_IMAGE_NAME=octoniusapp/octonius:libreoffice-server; echo $HOST_PASSWORD | sudo -S docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice && sudo -S docker login --username $DOCKER_ID --password $DOCKER_PASSWORD && docker push $LIBREOFFICE_IMAGE_NAME && sudo -S ./stop-octonius-acc.sh && sudo -S ./deploy-octonius-acc.sh'           
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S docker build --compress=true --force-rm=true -t octoniusapp/octonius:libreoffice-server ./libreoffice-server && sudo -S docker login --username $DOCKER_ID --password $DOCKER_PASSWORD && docker push octoniusapp/octonius:libreoffice-server && sudo -S ./stop-octonius-acc.sh && sudo -S ./deploy-octonius-acc.sh'           
     - step:
        name: Build production server
        trigger: manual
@@ -180,7 +184,7 @@ pipelines:
            variables:
              SSH_USER: 'ubuntu'
              SERVER: $HOST_ADDRESS
-             COMMAND: 'cd /home/ubuntu/octonius; export LIBREOFFICE_IMAGE_NAME=octoniusapp/octonius-prod:libreoffice-server; echo $HOST_PASSWORD | sudo -S docker build -t $LIBREOFFICE_IMAGE_NAME --compress=true --force-rm=true ./services/libreoffice && sudo -S docker login --username $DOCKER_ID --password $DOCKER_PASSWORD && docker push $LIBREOFFICE_IMAGE_NAME'           
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S docker build --compress=true --force-rm=true -t octoniusapp/octonius-prod:libreoffice-server ./libreoffice-server && sudo -S docker login --username $DOCKER_ID --password $DOCKER_PASSWORD && docker push octoniusapp/octonius-prod:libreoffice-server'           
 
 definitions:
    services:
