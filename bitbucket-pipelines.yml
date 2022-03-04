@@ -175,7 +175,7 @@ pipelines:
            variables:
              SSH_USER: 'ubuntu'
              SERVER: $HOST_ADDRESS
-             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S docker build --compress=true --force-rm=true -t octoniusapp/octonius:libreoffice-server ./libreoffice-server && sudo -S docker login --username $DOCKER_ID --password $DOCKER_PASSWORD && docker push $LIBREOFFICE_IMAGE_NAME && sudo -S ./stop-octonius-acc.sh && sudo -S ./deploy-octonius-acc.sh'           
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S docker build --compress=true --force-rm=true -t octoniusapp/octonius:libreoffice-server ./libreoffice-server && sudo -S docker login --username $DOCKER_ID --password $DOCKER_PASSWORD && docker push octoniusapp/octonius:libreoffice-server && sudo -S ./stop-octonius-acc.sh && sudo -S ./deploy-octonius-acc.sh'           
     - step:
        name: Build production server
        trigger: manual
@@ -184,7 +184,7 @@ pipelines:
            variables:
              SSH_USER: 'ubuntu'
              SERVER: $HOST_ADDRESS
-             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S docker build --compress=true --force-rm=true -t octoniusapp/octonius-prod:libreoffice-server ./libreoffice-server && sudo -S docker login --username $DOCKER_ID --password $DOCKER_PASSWORD && docker push $LIBREOFFICE_IMAGE_NAME'           
+             COMMAND: 'cd /home/ubuntu/octonius; echo $HOST_PASSWORD | sudo -S docker build --compress=true --force-rm=true -t octoniusapp/octonius-prod:libreoffice-server ./libreoffice-server && sudo -S docker login --username $DOCKER_ID --password $DOCKER_PASSWORD && docker push octoniusapp/octonius-prod:libreoffice-server'           
 
 definitions:
    services:
