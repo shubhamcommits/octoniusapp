@@ -162,7 +162,7 @@ pipelines:
         script:
           - pipe: atlassian/scp-deploy:1.2.1
             variables:
-              SSH_USER: 'ubuntu'
+              USER: 'ubuntu'
               SERVER: $HOST_ADDRESS
               REMOTE_PATH: '/home/ubuntu/octonius/libreoffice-server'
               LOCAL_PATH: 'services/libreoffice-server'
