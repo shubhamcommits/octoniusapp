@@ -158,11 +158,15 @@ pipelines:
   custom:
     build_libre_office_server:
     - step:
-        name: Test Pipeline
-        services:
-          - docker
-        script: 
-          - ls    
+        name: Copy Files
+        script:
+          - pipe: atlassian/scp-deploy:1.2.1
+            variables:
+              SSH_USER: 'ubuntu'
+              SERVER: $HOST_ADDRESS
+              REMOTE_PATH: '/home/ubuntu/octonius/libreoffice-server'
+              LOCAL_PATH: 'services/libreoffice-server'
+              DEBUG: 'true'
     - step:
        name: Build and Deploy stating server
        trigger: manual
