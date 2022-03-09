@@ -704,6 +704,8 @@ export class PostService {
       .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
+      .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar' })
+      .populate({ path: 'task.shuttles._shuttle_section',select:'_id title'})
       .populate('performance_task._assigned_to', this.userFields)
       .populate({ path: 'permissions._members', select: this.userFields })
       .lean();
@@ -2138,7 +2140,7 @@ export class PostService {
       .populate({ path: '_posted_by', select: this.userFields })
       .populate({ path: '_assigned_to', select: this.userFields })
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
       .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
