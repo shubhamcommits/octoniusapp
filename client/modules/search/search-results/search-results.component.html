@@ -4,10 +4,6 @@
     <span class="octo-search-category" *ngIf="type=='post' || type=='task'">{{ data?.title }}</span>
     <span class="octo-search-category" *ngIf="type=='file'">{{ data?.original_name }}</span>
 
-    <a *ngIf="type=='post' || type=='task'" [href]="generatePostURL()" target="_blank">
-      <span class="material-icons">open_in_new</span>
-    </a>
-
     <a *ngIf="type=='file' && data?.type === 'file' || data?.type === undefined" [href]="generateFileURL()" target="_blank">
       <span class="material-icons">open_in_new</span>
     </a>
@@ -16,13 +12,16 @@
       routerLink="/document/{{data?._id}}" [queryParams]="{ group: data?._group?._id || data?._group }">
       <span class="material-icons">open_in_new</span>
     </a>
+
+    <a *ngIf="type=='post' || type=='task'" [href]="generatePostURL()" target="_blank">
+      <span class="material-icons">open_in_new</span>
+    </a>
   </div>
 
   <div class="mb-2">
     <strong i18n="@@searchResult.tags">Tags: </strong>
 
-      <span *ngFor="let tag of data?.tags" class="label">{{ tag }}</span>
-
+    <span *ngFor="let tag of data?.tags" class="label">{{ tag }}</span>
   </div>
 
   <div class="mb-2">
