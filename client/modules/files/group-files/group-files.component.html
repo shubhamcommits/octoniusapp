@@ -173,7 +173,7 @@
                           <a mat-menu-item *ngIf="(file?.type == 'file' && isOfficeFile(file?.original_name)) || file?.type === 'campaign'"
                               href="{{filesBaseUrl}}/{{file?.modified_name}}?authToken={{authToken}}">
                             <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">file_download</i>
-                            <span i18n="@@groupFiles.copyLink">Download</span>
+                            <span i18n="@@groupFiles.download">Download</span>
                           </a>
 
                           <a mat-menu-item (click)="copyToClipboard(file)" *ngIf="file?.canEdit">
