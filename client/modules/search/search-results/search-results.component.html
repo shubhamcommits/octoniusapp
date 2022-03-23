@@ -22,7 +22,7 @@
       <span class="material-icons">open_in_new</span>
     </a>
 
-    <a *ngIf="type=='post' || type=='task'" (click)="generatePostURL()" target="_blank">
+    <a *ngIf="type=='post' || type=='task'" [href]="generatePostURL()" target="_blank">
       <span class="material-icons">open_in_new</span>
     </a>
   </div>
@@ -78,7 +78,7 @@
 
     {{ data?.first_name }} {{ data?.last_name }}
 
-    <a (click)="generateUserURL(data._id)" target="_blank">
+    <a [href]="generateUserURL(data._id)" target="_blank">
       <span class="material-icons">badge</span>
     </a>
   </div>
