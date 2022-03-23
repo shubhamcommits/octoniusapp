@@ -3,12 +3,7 @@
   <div class="mb-2 mt-2">
     <span class="octo-search-category" *ngIf="type=='post' || type=='task'">{{ data?.title }}</span>
 
-    <span class="octo-search-category" *ngIf="type=='file' && (data?.type == 'file' || data?.type == undefined) && (isOfficeFile(data?.original_name) || data?.type === 'campaign')">
-      <a *ngIf="" (click)="openOfficeDoc(data?._id)" target="_blank">{{ data?.original_name }}</a>
-    </span>
-    <span class="octo-search-category" *ngIf="type=='file' && (data?.type == 'file' || data?.type == undefined) && !isOfficeFile(data?.original_name) && data?.type != 'campaign'">
-      {{ data?.original_name }}
-    </span>
+    <span class="octo-search-category" *ngIf="type=='file'">{{ data?.original_name }}</span>
 
     &nbsp;
 
