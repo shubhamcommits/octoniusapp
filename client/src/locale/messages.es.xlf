@@ -7964,7 +7964,7 @@
       </trans-unit>
       <trans-unit id="searchHeader.files" datatype="html">
         <source>FILES</source>
-        <target state="translated">Caché y minify archivos CSS/JS</target>
+        <target state="translated">ARCHIVOS</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
           <context context-type="linenumber">152</context>
