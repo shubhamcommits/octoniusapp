@@ -3,6 +3,8 @@ import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { LibreofficeService } from 'src/shared/services/libreoffice-service/libreoffice.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-search-results',
@@ -22,6 +24,8 @@ export class SearchResultsComponent implements OnChanges {
   constructor(
       @Inject(LOCALE_ID) public locale: string,
       public storageService: StorageService,
+      public utilityService: UtilityService,
+      private libreofficeService: LibreofficeService,
       private injector: Injector
     ) { }
 
@@ -120,5 +124,36 @@ export class SearchResultsComponent implements OnChanges {
 
   generateFileURL() {
     return environment.UTILITIES_FILES_UPLOADS + '/' + this.data.modified_name + '?authToken=Bearer ' + this.storageService.getLocalData('authToken')['token'];
+  }
+
+  getFileExtension(fileName: string) {
+    let file = fileName.split(".");
+    let fileType = file[file.length-1].toLowerCase();
+    if (fileType == 'mp4') {
+      fileType = 'mov';
+    }
+    return fileType;
+  }
+
+  isOfficeFile(fileName: string) {
+    const officeExtensions = ['ott', 'odm', 'doc', 'docx', 'xls', 'xlsx', 'ods', 'ots', 'odt', 'xst', 'odg', 'otg', 'odp', 'ppt', 'otp', 'pot', 'odf', 'odc', 'odb'];
+    const fileExtension = this.getFileExtension(fileName);
+    return officeExtensions.includes(fileExtension);
+  }
+
+  async openOfficeDoc(fileId: string) {
+    window.open(await this.getLibreOfficeURL(fileId), "_blank");
+  }
+
+  async getLibreOfficeURL(fileId: string) {
+    // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
+    let wopiClientURL = '';
+    await this.libreofficeService.getLibreofficeUrl().then(res => {
+        const authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
+        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${authToken}`;
+      }).catch(error => {
+        this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
+      });
+    return wopiClientURL;
   }
 }

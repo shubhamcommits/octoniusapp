@@ -33,6 +33,10 @@
 
       </li>
 
+      <li *ngIf="groupData && !myWorkplace" class="nav-item mr-3">
+       <span class="groupname muted"> {{ groupData.group_name | truncatetext:20 }}</span>
+      </li>
+
       <li class="nav-item" *ngIf="myWorkplace || !groupData" >
         <a [ngClass]="activeState == 'myspace_inbox'?'nav-link active-nav':'nav-link'"
             (click)="changeState('myspace_inbox')"
