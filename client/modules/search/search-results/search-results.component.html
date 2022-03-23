@@ -4,7 +4,7 @@
     <span class="octo-search-category" *ngIf="type=='post' || type=='task'">{{ data?.title }}</span>
     <!--
     <span class="octo-search-category" *ngIf="type=='file' && (isOfficeFile(data?.original_name) || data?.type === 'campaign')">
-      <a *ngIf="" [href]="openOfficeDoc(data?._id)" target="_blank">{{ data?.original_name }}</a>
+      <a *ngIf="" (click)="openOfficeDoc(data?._id)" target="_blank">{{ data?.original_name }}</a>
     </span>
     <span class="octo-search-category" *ngIf="type=='file' && !isOfficeFile(data?.original_name) && data?.type != 'campaign'">
       {{ data?.original_name }}
@@ -14,13 +14,13 @@
 
     &nbsp;
 
-    <a *ngIf="type=='file' && (data?.type == 'file' || data?.type == undefined) && isOfficeFile(data?.original_name)" [href]="openOfficeDoc(data?._id)" target="_blank">
+    <a *ngIf="type=='file' && (data?.type == 'file' || data?.type == undefined) && isOfficeFile(data?.original_name)" (click)="openOfficeDoc(data?._id)" target="_blank">
       <span class="material-icons">open_in_new</span>
     </a>
 
     &nbsp;
 
-    <a *ngIf="type=='file' && (data?.type == 'file' || data?.type == undefined)" [href]="generateFileURL()" target="_blank">
+    <a *ngIf="type=='file' && (data?.type == 'file' || data?.type == undefined)" (click)="generateFileURL()" target="_blank">
       <span class="material-icons">file_download</span>
     </a>
 
@@ -29,7 +29,7 @@
       <span class="material-icons">open_in_new</span>
     </a>
 
-    <a *ngIf="type=='post' || type=='task'" [href]="generatePostURL()" target="_blank">
+    <a *ngIf="type=='post' || type=='task'" (click)="generatePostURL()" target="_blank">
       <span class="material-icons">open_in_new</span>
     </a>
   </div>
@@ -85,7 +85,7 @@
 
     {{ data?.first_name }} {{ data?.last_name }}
 
-    <a [href]="generateUserURL(data._id)" target="_blank">
+    <a (click)="generateUserURL(data._id)" target="_blank">
       <span class="material-icons">badge</span>
     </a>
   </div>
