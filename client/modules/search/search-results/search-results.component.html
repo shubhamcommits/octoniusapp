@@ -2,22 +2,18 @@
 <div *ngIf="data && (type=='post' || type=='task' || type=='file')" style="text-align: left;">
   <div class="mb-2 mt-2">
     <span class="octo-search-category" *ngIf="type=='post' || type=='task'">{{ data?.title }}</span>
-    <span class="octo-search-category" *ngIf="type=='file' && (isOfficeFile(data?.original_name) || data?.type === 'campaign')">
-      <a *ngIf="" [href]="openOfficeDoc(data?._id)" target="_blank">{{ data?.original_name }}</a>
-    </span>
-    <span class="octo-search-category" *ngIf="type=='file' && !isOfficeFile(data?.original_name) && data?.type != 'campaign'">
-      {{ data?.original_name }}
-    </span>
+
+    <span class="octo-search-category" *ngIf="type=='file'">{{ data?.original_name }}</span>
 
     &nbsp;
 
-    <a *ngIf="type=='file' && data?.type === 'file' || data?.type === undefined" [href]="openOfficeDoc(data?._id)" target="_blank">
+    <a *ngIf="type=='file' && (data?.type == 'file' || data?.type == undefined) && isOfficeFile(data?.original_name)" (click)="openOfficeDoc(data?._id)" target="_blank" style="cursor: pointer;">
       <span class="material-icons">open_in_new</span>
     </a>
 
     &nbsp;
 
-    <a *ngIf="type=='file' && data?.type === 'file' || data?.type === undefined" [href]="generateFileURL()" target="_blank">
+    <a *ngIf="type=='file' && (data?.type == 'file' || data?.type == undefined)" [href]="generateFileURL()" target="_blank" style="cursor: pointer;">
       <span class="material-icons">file_download</span>
     </a>
 
