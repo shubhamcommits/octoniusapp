@@ -29,7 +29,7 @@
     </ng-container>
 
     <div *ngIf="!(isLoading$ | async)">
-      <div class="container" *ngFor="let domain of allowedDomains; trackBy: utilityService.trackByIndex;">
+      <div class="container" *ngFor="let domain of allowedDomains">
           <div class="row">
               <div class="col-md-6">
                   <b>{{ domain }}</b>

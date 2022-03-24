@@ -30,7 +30,7 @@
             <i class="material-icons-outlined">star_outline</i>
           </li>
 
-          <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
+          <li *ngFor="let group of userGroups">
             <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
                 [queryParams]="{ group: group?._id, myWorkplace: false  }">
                 <app-secured-image

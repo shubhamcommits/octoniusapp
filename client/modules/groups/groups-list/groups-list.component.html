@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    
+
     <div class="row">
         <ng-container *ngIf="userData && workspaceData && userData?.role != 'guest'">
             <app-create-group class="col-md-3" [userData]="userData" [workspaceData]="workspaceData"
@@ -10,10 +10,10 @@
 
     <!-- STARTS USER GROUPS -->
     <div class="media-body">
-        
-        
+
+
     <div class="row">
-      <ng-container *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
+      <ng-container *ngFor="let group of userGroups">
           <div class="cards-list">
               <div *ngIf="group.group_name !== 'private'" class="card img-fluid"
                   [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
@@ -23,22 +23,22 @@
                       [styleClass]="'card-img-top'"></app-secured-image>
 
 
-                 
+
                   <div class="card-img-overlay">
                     <span class="badge badge-members">{{ (group?._members.length + group?._admins.length) || 0 }}
                         <span i18n="@@groupList.members">Members</span></span>
-                    
+
                     <a *ngIf="group?.type == 'agora'" class="btn btn-light btn-public"><i
                             class="material-icons">account_balance</i></a>
                     <a *ngIf="group?.type == 'smart'" class="btn btn-info btn-smart"><i
                             class="material-icons">fingerprint</i></a>
-  
+
                       <div class="title-overlay">
                         <a>
                             <h2 class="card-title">{{group?.group_name}}</h2>
                         </a>
-                      </div>  
-                      
+                      </div>
+
                   </div>
               </div>
           </div>
@@ -50,7 +50,7 @@
     <!--
     <app-infinite-scroll (scrolled)="onScroll()">
         <div class="row">
-            <ng-container *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
+            <ng-container *ngFor="let group of userGroups">
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div *ngIf="group.group_name !== 'private'" class=" card"
                         [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
@@ -81,13 +81,13 @@
     <div *ngIf="agoraGroups.length>0 && userData.role != 'guest'">
       <h2 class="section-title" i18n="@@groupList.agora">AGORA</h2>
       <div class="row">
-        <ng-container *ngFor="let group of agoraGroups; trackBy: utilityService.trackByIndex">
+        <ng-container *ngFor="let group of agoraGroups">
             <div class="cards-list">
                 <div *ngIf="group.group_name !== 'private'" class="card img-fluid">
-                   
+
                     <app-secured-image [imgURL]="group?.group_avatar" [service]="'group'"
                         [styleClass]="'card-img-top'"></app-secured-image>
-                     
+
 
                     <div class="card-img-overlay">
                         <span class="badge badge-members">{{ (group?._members.length + group?._admins.length) || 0 }} <span i18n="@@groupList.members">Members</span></span>
@@ -115,7 +115,7 @@
     <app-infinite-scroll (scrolled)="onAgoraScroll()" *ngIf="agoraGroups.length>0 && userData.role != 'guest'">
         <h2 class="section-title" i18n="@@groupList.agora">AGORA</h2>
         <div class="row">
-            <ng-container *ngFor="let group of agoraGroups; trackBy: utilityService.trackByIndex">
+            <ng-container *ngFor="let group of agoraGroups">
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div *ngIf="group.group_name !== 'private'" class=" card">
                         <span class="badge badge-members">{{ (group?._members.length + group?._admins.length) || 0 }} <span i18n="@@groupList.members">Members</span></span>
