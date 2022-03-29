@@ -282,7 +282,7 @@ export class PostService {
       filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-_id')
         .limit((numLikes && numLikes > 0) ? numLikes : 5)
-        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions')
+        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions created_date')
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         //.populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
@@ -300,7 +300,7 @@ export class PostService {
       filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-_id')
         .limit((numLikes && numLikes > 0) ? numLikes : 5)
-        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions')
+        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions created_date')
         //.populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
@@ -318,7 +318,7 @@ export class PostService {
     else if (type === 'task')
       filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-task.due_to')
-        .select('title type permissions task approval_flow_launched tags _group')
+        .select('title type permissions task approval_flow_launched tags _group created_date')
         //.populate({ path: '_group', select: this.groupFields })
         //.populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
@@ -334,7 +334,7 @@ export class PostService {
     else if (type == 'pinned')
       filteredPosts = posts
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-created_date')
-        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions')
+        .select('title type permissions task approval_flow_launched tags _group comments_count content _content_mentions created_date')
         //.populate({ path: '_group', select: this.groupFields })
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
@@ -392,8 +392,8 @@ export class PostService {
           { path: '_group', select: this.groupFields },
           { path: '_posted_by', select: this.userFields },
           { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' },
-        { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
-        { path: 'permissions._members', select: this.userFields }
+          { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
+          { path: 'permissions._members', select: this.userFields }
         ])
       } else {
         post = await Post.populate(post, [
@@ -401,7 +401,7 @@ export class PostService {
           { path: '_group', select: this.groupFields },
           { path: '_posted_by', select: this.userFields },
           { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' },
-        { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
+          { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
           { path: 'permissions._members', select: this.userFields }
         ])
       }
@@ -1552,7 +1552,7 @@ export class PostService {
       .limit(5)
       .populate('_assigned_to', 'first_name last_name')
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .populate('_group', 'group_name')
       .populate({ path: 'permissions._members', select: this.userFields })
       .lean();
@@ -2044,7 +2044,7 @@ export class PostService {
       .select('_id _group task')
       .populate('_assigned_to', this.userFields)
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .lean();
 
     return posts;
