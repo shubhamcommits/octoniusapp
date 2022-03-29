@@ -19,9 +19,6 @@ export class PostViewComponent implements OnInit {
   // Post Files baseURL
   fileBaseUrl = environment.UTILITIES_POSTS_UPLOADS;
 
-  // Date Object for undefined dates
-  date = Date.now()
-
   // Post as the Input from component
   @Input('post') post: any;
 

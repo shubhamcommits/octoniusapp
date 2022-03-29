@@ -1,6 +1,7 @@
 import { Notification, User, File, Workspace } from "../models";
 import { Readable } from 'stream';
 import { helperFunctions, axios } from '../../utils';
+import moment from "moment";
 
 /*  ===============================
  *  -- NOTIFICATIONS Service --
@@ -22,7 +23,8 @@ export class NotificationsService {
                     _origin_comment: comment._id,
                     _origin_post: comment._post,
                     message: 'mentioned you on',
-                    type: 'mention'
+                    type: 'mention',
+                    created_date: moment().format()
                 });
             });
         } catch (err) {
@@ -59,7 +61,8 @@ export class NotificationsService {
                     _owner: user,
                     _origin_post: postId,
                     message: 'assigned you on',
-                    type: 'assignment'
+                    type: 'assignment',
+                    created_date: moment().format()
                 });
             });
         } catch (err) {
@@ -95,7 +98,8 @@ export class NotificationsService {
                     _owner: user,
                     _origin_post: postId,
                     message: 'mentioned you on',
-                    type: 'mention'
+                    type: 'mention',
+                    created_date: moment().format()
                 })
             })
         } catch (err) {
@@ -141,7 +145,8 @@ export class NotificationsService {
                     _owner: user,
                     _origin_folio: file,
                     message: 'mentioned you on',
-                    type: 'mention_folio'
+                    type: 'mention_folio',
+                    created_date: moment().format()
                 });
             });
         } catch (err) {
@@ -177,7 +182,8 @@ export class NotificationsService {
                     _owner: user,
                     _origin_post: postId,
                     message: 'assigned you on',
-                    type: 'assignment'
+                    type: 'assignment',
+                    created_date: moment().format()
                 });
             });
         } catch (err) {
@@ -197,7 +203,8 @@ export class NotificationsService {
                 _owner: assigneeId,
                 _origin_post: postId,
                 message: 'assigned you on',
-                type: 'assignment'
+                type: 'assignment',
+                created_date: moment().format()
             });
         } catch (err) {
             throw err;
@@ -217,7 +224,8 @@ export class NotificationsService {
                     _owner: owner,
                     _origin_post: postId,
                     message: status,
-                    type: status
+                    type: status,
+                    created_date: moment().format()
                 });
                 await helperFunctions.sendNotificationsFeedFromService(owner, io);
             } else {
@@ -231,7 +239,8 @@ export class NotificationsService {
                         _owner: user,
                         _origin_post: postId,
                         message: status,
-                        type: status
+                        type: status,
+                        created_date: moment().format()
                     });
                     await helperFunctions.sendNotificationsFeedFromService(user?._id, io);
                 });
@@ -253,7 +262,8 @@ export class NotificationsService {
                 _origin_comment: comment._id,
                 _origin_post: postId,
                 message: 'commented on',
-                type: 'comment'
+                type: 'comment',
+                created_date: moment().format()
             });
         } catch (err) {
             throw err;
@@ -272,7 +282,8 @@ export class NotificationsService {
                 _origin_comment: comment._id,
                 _origin_post: comment._post,
                 message: 'liked your comment on',
-                type: 'like_comment'
+                type: 'like_comment',
+                created_date: moment().format()
             });
         } catch (err) {
             throw err;
@@ -289,7 +300,8 @@ export class NotificationsService {
                 _owner: posted_by,
                 _origin_post: postId,
                 message: 'follows',
-                type: 'follow'
+                type: 'follow',
+                created_date: moment().format()
             });
         } catch (err) {
             throw err;
@@ -303,7 +315,8 @@ export class NotificationsService {
                 _owner: owner,
                 _origin_post: postId,
                 message: 'likes',
-                type: 'likes'
+                type: 'likes',
+                created_date: moment().format()
             });
         } catch (err) {
             throw err;
@@ -330,7 +343,8 @@ export class NotificationsService {
                     _origin_post: postId,
                     _origin_group: groupId,
                     message: 'posted',
-                    type: 'new-post'
+                    type: 'new-post',
+                    created_date: moment().format()
                 });
 
                 await helperFunctions.sendNotificationsFeedFromService(user, io, true);
@@ -467,7 +481,8 @@ export class NotificationsService {
                 _owner: userId,
                 _origin_group: groupId,
                 message: 'added you to',
-                type: 'join-group'
+                type: 'join-group',
+                created_date: moment().format()
             });
 
             await helperFunctions.sendNotificationsFeedFromService(userId, io, true);
@@ -488,7 +503,8 @@ export class NotificationsService {
                 _owner: userId,
                 _origin_group: groupId,
                 message: 'removed you from',
-                type: 'leave-group'
+                type: 'leave-group',
+                created_date: moment().format()
             });
 
             await helperFunctions.sendNotificationsFeedFromService(userId, io, true);
@@ -510,7 +526,8 @@ export class NotificationsService {
                     _owner: assigned._id,
                     _origin_post: item._id,
                     message: 'launched the approval flow',
-                    type: 'launch-approval-flow'
+                    type: 'launch-approval-flow',
+                    created_date: moment().format()
                 });
 
                 if (item.approval_due_date) {
@@ -519,7 +536,8 @@ export class NotificationsService {
                         _owner: assigned._id,
                         _origin_post: item._id,
                         message: 'launched the approval flow',
-                        type: 'launch-approval-flow-due-date'
+                        type: 'launch-approval-flow-due-date',
+                        created_date: moment().format()
                     });
                 }
             } else {
@@ -528,7 +546,8 @@ export class NotificationsService {
                     _owner: assigned._id,
                     _origin_folio: item._id,
                     message: 'launched the approval flow',
-                    type: 'launch-approval-flow'
+                    type: 'launch-approval-flow',
+                    created_date: moment().format()
                 });
 
                 if (item.approval_due_date) {
@@ -537,7 +556,8 @@ export class NotificationsService {
                         _owner: assigned._id,
                         _origin_folio: item._id,
                         message: 'launched the approval flow',
-                        type: 'launch-approval-flow-due-date'
+                        type: 'launch-approval-flow-due-date',
+                        created_date: moment().format()
                     });
                 }
             }
@@ -576,7 +596,8 @@ export class NotificationsService {
                     _owner: assigned._id,
                     _origin_post: item._id,
                     message: 'rejected the item',
-                    type: 'reject-item'
+                    type: 'reject-item',
+                    created_date: moment().format()
                 });
             } else {
                 await Notification.create({
@@ -584,7 +605,8 @@ export class NotificationsService {
                     _owner: assigned._id,
                     _origin_folio: item._id,
                     message: 'rejected the item',
-                    type: 'reject-item'
+                    type: 'reject-item',
+                    created_date: moment().format()
                 });
             }
 
@@ -618,14 +640,16 @@ export class NotificationsService {
                     _owner: assigned._id,
                     _origin_post: item._id,
                     message: 'the item has been approved by all assignees',
-                    type: 'approved-item'
+                    type: 'approved-item',
+                    created_date: moment().format()
                 });
             } else {
                 await Notification.create({
                     _owner: assigned._id,
                     _origin_folio: item._id,
                     message: 'the item has been approved by all assignees',
-                    type: 'approved-item'
+                    type: 'approved-item',
+                    created_date: moment().format()
                 });
             }
 
