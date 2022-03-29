@@ -35,7 +35,8 @@ const fs = require('fs');
             _commented_by: userId,
             _post: postId,
             _story: storyId,
-            files: comment.files
+            files: comment.files,
+            created_date: moment().format()
           };
 
           // Create comment
@@ -166,8 +167,8 @@ const fs = require('fs');
               $set: {
                 content: comment.content,
                 _content_mentions: comment._content_mentions,
-                files: comment.files,
-                created_date: moment.utc().format()
+                files: comment.files//,
+                //created_date: moment.utc().format()
               }
             }, {
               new: true

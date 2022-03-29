@@ -78,7 +78,7 @@ export class CommentSectionComponent implements OnInit {
     let commentData = {
       _id: null,
       content: content,
-      created_date: moment().format("YYYY-MM-DD"),
+      created_date: moment().format(),
       likes_count: 0,
       _liked_by: [],
       _commented_by:{

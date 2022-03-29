@@ -34,7 +34,7 @@ export class PostCommentComponent implements OnInit {
     },
     files: [],
     _content_mentions: [],
-    created_date: moment().format("YYYY-MM-DD")
+    created_date: moment().format()
   }
 
   // Remove Comment Event Emitter
