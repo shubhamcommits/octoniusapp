@@ -17,7 +17,7 @@
             <div>
                 <h6>{{post?._posted_by?.first_name || 'Deleted'}} {{post?._posted_by?.last_name || 'User'}} <br>
                     <span class="small lightgray date">
-                        {{ (post?.created_date | date : 'medium') || ( this.date | date: 'medium') }}</span>
+                        {{ (post?.created_date | date : 'medium') }}</span>
                 </h6>
 
                 <div *ngIf="isGlobal==true" class="grouplabel">{{ post?._group.group_name }}</div>

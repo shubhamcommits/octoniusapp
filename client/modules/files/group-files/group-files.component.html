@@ -71,7 +71,7 @@
         <!--<app-infinite-scroll (scrolled)="onScroll()">-->
           <!-- Folder details start -->
           <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
-              *ngFor="let folder of folders; let index = index; trackBy: utilityService.trackByIndex;">
+              *ngFor="let folder of folders">
 
               <a class="mt-0" style="cursor: pointer" (click)="openFolder(folder?._id)">
                   <img src="assets/images/add-folder-icon.png"
@@ -127,7 +127,7 @@
 
           <!-- File Details Starts -->
           <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
-              *ngFor="let file of files; let index = index; trackBy: utilityService.trackByIndex;">
+              *ngFor="let file of files">
 
               <a *ngIf="file?.type === 'file' && !isOfficeFile(file?.original_name)" class="mt-0" target="_blank"
                 href="{{filesBaseUrl}}/{{file?.modified_name}}?authToken={{authToken}}">

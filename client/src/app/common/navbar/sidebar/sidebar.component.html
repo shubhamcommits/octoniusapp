@@ -31,7 +31,7 @@
                 </a>
 
                 <ul class="collapse list-unstyled show" id="pageSubmenu">
-                    <li *ngFor="let group of userGroups; trackBy: utilityService.trackByIndex">
+                    <li *ngFor="let group of userGroups">
                         <a (click)="changeState('groups_activity')" [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
                             [queryParams]="{ group: group?._id, myWorkplace: false  }" routerLinkActive="active">
 

@@ -18,7 +18,7 @@
 
         <!-- Iterate over all the skills present for a particular user starts -->
         <ul class="skills">
-            <li *ngFor="let skill of userData?.skills; let i = index; trackBy: utilityService.trackByIndex;">
+            <li *ngFor="let skill of userData?.skills; let i = index;">
                 {{skill}}
                 <button type="button" name="button" class="btn btn-link" (click)="removeSkill(skill, i)">
                     <i *ngIf="currentUser" class="material-icons" matTooltipPosition="above" matTooltip="Delete this skill">

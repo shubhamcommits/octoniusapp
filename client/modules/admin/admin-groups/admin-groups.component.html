@@ -23,7 +23,7 @@
                     <!-- ACTIVE GROUPS START -->
                     <app-infinite-scroll (scrolled)="onActiveScroll()">
                       <div class="media card-tile user-list"
-                          *ngFor="let group of activeGroups; let index = index; trackBy: utilityService.trackByIndex;">
+                          *ngFor="let group of activeGroups">
 
                           <!-- Avatar Image of the member -->
                           <app-secured-image
@@ -64,7 +64,7 @@
                     <!-- ARCHIVED GROUPS START -->
                     <app-infinite-scroll (scrolled)="onArchivedScroll()">
                       <div class="media card-tile user-list"
-                          *ngFor="let group of archivedGroups; let index = index; trackBy: utilityService.trackByIndex;">
+                          *ngFor="let group of archivedGroups">
 
                           <!-- Avatar Image of the member -->
                           <app-secured-image
