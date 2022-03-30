@@ -983,11 +983,13 @@ export class GroupController {
                 new: true
             });
 
+            /*
             await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/join-group`, {
                 userId: userId,
                 groupId: group._id,
                 added_by: userId
             });
+            */
 
             return res.status(200).json({
                 message: `User added to group successfully!`,
