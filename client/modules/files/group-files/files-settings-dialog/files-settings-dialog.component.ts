@@ -38,12 +38,12 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 
       // Save the settings
       this.utilityService.asyncNotification($localize`:@@filesSettingsDialog.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
-        new Promise((resolve, reject)=>{
+        new Promise((resolve, reject) => {
           if (selected.source.name === 'files_for_admins') {
             this.groupService.saveSettings(this.groupData?._id, {files_for_admins: selected.checked})
               .then(()=> {
-                this.groupData.files_for_admins = selected.checked;
                 this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
                 resolve(this.utilityService.resolveAsyncPromise($localize`:@@filesSettingsDialog.settingsSaved:Settings saved to your group!`));
               })
               .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@filesSettingsDialog.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
