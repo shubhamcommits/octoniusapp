@@ -277,11 +277,11 @@ export class FolioEditorComponent implements AfterViewInit {
       });
 
       let groupData: any = this.userData?._groups[groupIndex];
-      let canEdit = await this.utilityService.canUserDoFileAction(this.fileData, groupData, this.userData, 'edit') && (!groupData?.files_for_admins || this.isAdminUser(groupData));
+      const isAdmin = this.isAdminUser(groupData);
+      let canEdit = await this.utilityService.canUserDoFileAction(this.fileData, groupData, this.userData, 'edit') && (!groupData?.files_for_admins || isAdmin);
 
-      this.readOnly = this.readOnly || groupIndex < 0 || !canEdit;
+      this.readOnly = this.readOnly || (groupIndex < 0 && !isAdmin) || !canEdit;
     }
-
     this.initEditor();
     this.initializeFolio(this.folio, this.quill);
   }
