@@ -118,311 +118,228 @@ import { ApprovalActionsComponent } from './approvals/approval-actions/approval-
 import { ApprovalsHistoryComponent } from './approvals/approvals-history/approvals-history.component';
 
 @NgModule({
-  declarations: [
-    AttachFilesComponent,
-    AttachCloudFilesComponent,
-    CropImageComponent,
-    DatePickerComponent,
-    EmailInputComponent,
-    LoadingSpinnerComponent,
-    ComponentSearchBarComponent,
-    SectionSeparatorComponent,
-    SecuredImageComponent,
-    ComponentSearchInputBoxComponent,
-    QuillEditorComponent,
-    TimePickerComponent,
-    PostViewComponent,
-    PostActionsComponent,
-    LikePostComponent,
-    IdeaActionsComponent,
-    CommentOnPostComponent,
-    FollowPostComponent,
-    PostUtilsComponent,
-
-    // Safe Pipe
-    SafePipe,
-    TruncateTextPipe,
-
-    SelectAssigneeComponent,
-
-    TaskStatusComponent,
-
-    ChangeColumnComponent,
-
-    TagsComponent,
-
-    InfiniteScrollComponent,
-
-    ProgressBarComponent,
-
-    SelectMemberComponent,
-
-    ActivityFeedComponent,
-
-    SendPulseComponent,
-
-    ActivityFiltersComponent,
-
-    ProjectStatusComponent,
-
-    GroupInformationComponent,
-
-    GroupTaskProgressComponent,
-
-    NewsPillComponent,
-
-    GroupActivityFeedComponent,
-
-    GroupPostboxComponent,
-
-    GroupPostSelectionComponent,
-
-    GroupCreatePostComponent,
-
-    TaskSmartCardComponent,
-
-    AgendaSmartCardComponent,
-
-    GroupUpdateInformationComponent,
-
-    PostCommentComponent,
-
-    CommentSectionComponent,
-
-    LikeCommentComponent,
-
-    PreviewFilesDialogComponent,
-
-    InlineInputComponent,
-
-    NorthStarComponent,
-    NorthStarStatsComponent,
-
-    GroupCreatePostDialogComponent,
-
-    WorkStatisticsCardComponent,
-    WorkloadCardComponent,
-    VelocityCardComponent,
-    PulseCardComponent,
-    PeopleDirectoryCardComponent,
-    OrganizationalStructureCardComponent,
-    EngagementCardComponent,
-    GlobalPerformanceCardComponent,
-    KpiPerformanceCardComponent,
-    ProjectStatisticsComponent,
-    ProjectBudgetComponent,
-    MembersWorkloadCardComponent,
-    SectionStatusCardComponent,
-    CustomFieldStatisticsCardComponent,
-    CustomFieldTableCardComponent,
-
-    NewTaskComponent,
-
-    SubtasksComponent,
-
-    TaskActionsComponent,
-    ShuttleTaskComponent,
-
-    MultipleAssignmentsComponent,
-
-    HighlightDirective,
-    FilterPipe,
-
-    AssigneeAvatarComponent,
-    CommentListComponent,
-    MemberListMenuComponent,
-    MemberDialogComponent,
-    UserUpdateProfileDialogComponent,
-    UserUpdateUserInformationDialogComponent,
-    UserUpdateUserPersonalInformationDialogComponent,
-    ProjectBudgetDialogComponent,
-    CustomToolTipComponent,
-    ToolTipRendererDirective,
-    WidgetSelectorDialogComponent,
-    CustomFieldsTableSettingsDialogComponent,
-    ColorPickerDialogComponent,
-    SheetComponent,
-    FileDetailsDialogComponent,
-    ApprovalActionsComponent,
-    ApprovalsHistoryComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ImageCropperModule,
-    RouterModule,
-
-    // ANGULAR BOOTSTRAP DATE PICKER MODULE
-    NgbDatepickerModule,
-
-    // ANGULAR BOOTSTRAP TIME PICKER MODULE
-    NgbTimepickerModule,
-
-    // Infinite Scroll Module
-    InfiniteScrollModule,
-
-    // Preloading Routes Module
-    // QuicklinkModule,
-
-    // ANGULAR BOOTSTRAP MODAL MODULE
-    NgbModalModule,
-
-    // MAT SIDE MODULE
-    // MatSidenavModule,
-
-    // Angular Material Dialog
-    // MatDialogModule,
-
-    NgxDocViewerModule,
-
-    // MatSelectModule,
-    // MatDatepickerModule,
-    // MatNativeDateModule,
-    MomentDateModule,
-    // MatSlideToggleModule,
-    ChartsModule,
-    ResizableModule,
-    // MatMenuModule,
-    // MatBadgeModule,
-    // MatPaginatorModule,
-    // MatExpansionModule,
-    // MatTooltipModule,
-
-    // Angular Material Module
-    MaterialModule,
-
-    // Chart Module
-    ChartModule
-  ],
-  exports: [
-    AttachFilesComponent,
-    AttachCloudFilesComponent,
-    CropImageComponent,
-    ComponentSearchBarComponent,
-    ComponentSearchInputBoxComponent,
-    DatePickerComponent,
-    EmailInputComponent,
-    LoadingSpinnerComponent,
-    PostViewComponent,
-    TagsComponent,
-    SectionSeparatorComponent,
-    SecuredImageComponent,
-    SelectAssigneeComponent,
-    QuillEditorComponent,
-    TimePickerComponent,
-    TaskStatusComponent,
-    ChangeColumnComponent,
-    InfiniteScrollModule,
-    // QuicklinkModule,
-    InfiniteScrollComponent,
-    ProgressBarComponent,
-    SelectMemberComponent,
-    SendPulseComponent,
-    ActivityFiltersComponent,
-    ProjectStatusComponent,
-
-    GroupInformationComponent,
-
-    GroupTaskProgressComponent,
-
-    NewsPillComponent,
-
-    GroupActivityFeedComponent,
-
-    GroupPostboxComponent,
-
-    GroupPostSelectionComponent,
-
-    GroupCreatePostComponent,
-
-    ActivityFeedComponent,
-
-    TaskSmartCardComponent,
-
-    AgendaSmartCardComponent,
-
-    NgbModalModule,
-
-    LikeCommentComponent,
-
-    MatSidenavModule,
-    InlineInputComponent,
-    GroupCreatePostDialogComponent,
-    TruncateTextPipe,
-    SafePipe,
-    ChartsModule,
-
-    WorkStatisticsCardComponent,
-    WorkloadCardComponent,
-    VelocityCardComponent,
-    PulseCardComponent,
-    PeopleDirectoryCardComponent,
-    OrganizationalStructureCardComponent,
-    EngagementCardComponent,
-    GlobalPerformanceCardComponent,
-    KpiPerformanceCardComponent,
-    ProjectStatisticsComponent,
-    ProjectBudgetComponent,
-    MembersWorkloadCardComponent,
-    SectionStatusCardComponent,
-    CustomFieldStatisticsCardComponent,
-    CustomFieldTableCardComponent,
-
-    NewTaskComponent,
-
-    SubtasksComponent,
-
-    TaskActionsComponent,
-    ShuttleTaskComponent,
-
-    MultipleAssignmentsComponent,
-    AssigneeAvatarComponent,
-    CommentListComponent,
-    MemberListMenuComponent,
-    MemberDialogComponent,
-    UserUpdateUserInformationDialogComponent,
-    UserUpdateProfileDialogComponent,
-    UserUpdateUserPersonalInformationDialogComponent,
-    ProjectBudgetDialogComponent,
-    MatTooltipModule,
-    CustomToolTipComponent,
-    WidgetSelectorDialogComponent,
-    CustomFieldsTableSettingsDialogComponent,
-    ColorPickerDialogComponent,
-
-    FileDetailsDialogComponent,
-
-    // Sheet Component
-    SheetComponent,
-
-    // Material Module
-    MaterialModule,
-
-    CommentSectionComponent,
-    ApprovalActionsComponent,
-    ApprovalsHistoryComponent
-  ],
-  providers: [
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
-    ThemeService,
-    DatePipe
-  ],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
-  ],
-  entryComponents: [
-    PreviewFilesDialogComponent,
-    GroupCreatePostDialogComponent,
-    MemberDialogComponent,
-    UserUpdateProfileDialogComponent,
-    UserUpdateUserInformationDialogComponent,
-    UserUpdateUserPersonalInformationDialogComponent,
-    ProjectBudgetDialogComponent,
-    CustomToolTipComponent,
-    WidgetSelectorDialogComponent,
-    CustomFieldsTableSettingsDialogComponent,
-    ColorPickerDialogComponent,
-    FileDetailsDialogComponent
-  ]
+    declarations: [
+        AttachFilesComponent,
+        AttachCloudFilesComponent,
+        CropImageComponent,
+        DatePickerComponent,
+        EmailInputComponent,
+        LoadingSpinnerComponent,
+        ComponentSearchBarComponent,
+        SectionSeparatorComponent,
+        SecuredImageComponent,
+        ComponentSearchInputBoxComponent,
+        QuillEditorComponent,
+        TimePickerComponent,
+        PostViewComponent,
+        PostActionsComponent,
+        LikePostComponent,
+        IdeaActionsComponent,
+        CommentOnPostComponent,
+        FollowPostComponent,
+        PostUtilsComponent,
+        // Safe Pipe
+        SafePipe,
+        TruncateTextPipe,
+        SelectAssigneeComponent,
+        TaskStatusComponent,
+        ChangeColumnComponent,
+        TagsComponent,
+        InfiniteScrollComponent,
+        ProgressBarComponent,
+        SelectMemberComponent,
+        ActivityFeedComponent,
+        SendPulseComponent,
+        ActivityFiltersComponent,
+        ProjectStatusComponent,
+        GroupInformationComponent,
+        GroupTaskProgressComponent,
+        NewsPillComponent,
+        GroupActivityFeedComponent,
+        GroupPostboxComponent,
+        GroupPostSelectionComponent,
+        GroupCreatePostComponent,
+        TaskSmartCardComponent,
+        AgendaSmartCardComponent,
+        GroupUpdateInformationComponent,
+        PostCommentComponent,
+        CommentSectionComponent,
+        LikeCommentComponent,
+        PreviewFilesDialogComponent,
+        InlineInputComponent,
+        NorthStarComponent,
+        NorthStarStatsComponent,
+        GroupCreatePostDialogComponent,
+        WorkStatisticsCardComponent,
+        WorkloadCardComponent,
+        VelocityCardComponent,
+        PulseCardComponent,
+        PeopleDirectoryCardComponent,
+        OrganizationalStructureCardComponent,
+        EngagementCardComponent,
+        GlobalPerformanceCardComponent,
+        KpiPerformanceCardComponent,
+        ProjectStatisticsComponent,
+        ProjectBudgetComponent,
+        MembersWorkloadCardComponent,
+        SectionStatusCardComponent,
+        CustomFieldStatisticsCardComponent,
+        CustomFieldTableCardComponent,
+        NewTaskComponent,
+        SubtasksComponent,
+        TaskActionsComponent,
+        ShuttleTaskComponent,
+        MultipleAssignmentsComponent,
+        HighlightDirective,
+        FilterPipe,
+        AssigneeAvatarComponent,
+        CommentListComponent,
+        MemberListMenuComponent,
+        MemberDialogComponent,
+        UserUpdateProfileDialogComponent,
+        UserUpdateUserInformationDialogComponent,
+        UserUpdateUserPersonalInformationDialogComponent,
+        ProjectBudgetDialogComponent,
+        CustomToolTipComponent,
+        ToolTipRendererDirective,
+        WidgetSelectorDialogComponent,
+        CustomFieldsTableSettingsDialogComponent,
+        ColorPickerDialogComponent,
+        SheetComponent,
+        FileDetailsDialogComponent,
+        ApprovalActionsComponent,
+        ApprovalsHistoryComponent
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ImageCropperModule,
+        RouterModule,
+        // ANGULAR BOOTSTRAP DATE PICKER MODULE
+        NgbDatepickerModule,
+        // ANGULAR BOOTSTRAP TIME PICKER MODULE
+        NgbTimepickerModule,
+        // Infinite Scroll Module
+        InfiniteScrollModule,
+        // Preloading Routes Module
+        // QuicklinkModule,
+        // ANGULAR BOOTSTRAP MODAL MODULE
+        NgbModalModule,
+        // MAT SIDE MODULE
+        // MatSidenavModule,
+        // Angular Material Dialog
+        // MatDialogModule,
+        NgxDocViewerModule,
+        // MatSelectModule,
+        // MatDatepickerModule,
+        // MatNativeDateModule,
+        MomentDateModule,
+        // MatSlideToggleModule,
+        ChartsModule,
+        ResizableModule,
+        // MatMenuModule,
+        // MatBadgeModule,
+        // MatPaginatorModule,
+        // MatExpansionModule,
+        // MatTooltipModule,
+        // Angular Material Module
+        MaterialModule,
+        // Chart Module
+        ChartModule
+    ],
+    exports: [
+        AttachFilesComponent,
+        AttachCloudFilesComponent,
+        CropImageComponent,
+        ComponentSearchBarComponent,
+        ComponentSearchInputBoxComponent,
+        DatePickerComponent,
+        EmailInputComponent,
+        LoadingSpinnerComponent,
+        PostViewComponent,
+        TagsComponent,
+        SectionSeparatorComponent,
+        SecuredImageComponent,
+        SelectAssigneeComponent,
+        QuillEditorComponent,
+        TimePickerComponent,
+        TaskStatusComponent,
+        ChangeColumnComponent,
+        InfiniteScrollModule,
+        // QuicklinkModule,
+        InfiniteScrollComponent,
+        ProgressBarComponent,
+        SelectMemberComponent,
+        SendPulseComponent,
+        ActivityFiltersComponent,
+        ProjectStatusComponent,
+        GroupInformationComponent,
+        GroupTaskProgressComponent,
+        NewsPillComponent,
+        GroupActivityFeedComponent,
+        GroupPostboxComponent,
+        GroupPostSelectionComponent,
+        GroupCreatePostComponent,
+        ActivityFeedComponent,
+        TaskSmartCardComponent,
+        AgendaSmartCardComponent,
+        NgbModalModule,
+        LikeCommentComponent,
+        MatSidenavModule,
+        InlineInputComponent,
+        GroupCreatePostDialogComponent,
+        TruncateTextPipe,
+        SafePipe,
+        ChartsModule,
+        WorkStatisticsCardComponent,
+        WorkloadCardComponent,
+        VelocityCardComponent,
+        PulseCardComponent,
+        PeopleDirectoryCardComponent,
+        OrganizationalStructureCardComponent,
+        EngagementCardComponent,
+        GlobalPerformanceCardComponent,
+        KpiPerformanceCardComponent,
+        ProjectStatisticsComponent,
+        ProjectBudgetComponent,
+        MembersWorkloadCardComponent,
+        SectionStatusCardComponent,
+        CustomFieldStatisticsCardComponent,
+        CustomFieldTableCardComponent,
+        NewTaskComponent,
+        SubtasksComponent,
+        TaskActionsComponent,
+        ShuttleTaskComponent,
+        MultipleAssignmentsComponent,
+        AssigneeAvatarComponent,
+        CommentListComponent,
+        MemberListMenuComponent,
+        MemberDialogComponent,
+        UserUpdateUserInformationDialogComponent,
+        UserUpdateProfileDialogComponent,
+        UserUpdateUserPersonalInformationDialogComponent,
+        ProjectBudgetDialogComponent,
+        MatTooltipModule,
+        CustomToolTipComponent,
+        WidgetSelectorDialogComponent,
+        CustomFieldsTableSettingsDialogComponent,
+        ColorPickerDialogComponent,
+        FileDetailsDialogComponent,
+        // Sheet Component
+        SheetComponent,
+        // Material Module
+        MaterialModule,
+        CommentSectionComponent,
+        ApprovalActionsComponent,
+        ApprovalsHistoryComponent
+    ],
+    providers: [
+        { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
+        ThemeService,
+        DatePipe
+    ],
+    schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+    ]
 })
 export class SharedModule { }

@@ -28,44 +28,41 @@ import { UserProfileCustomFieldsComponent } from './user-profile/user-profile-cu
 
 
 @NgModule({
-  declarations: [
-    UserHeaderComponent,
-    UserProfileComponent,
-    UserCloudsComponent,
-    UserInformationComponent,
-    UserProfessionalInformationComponent,
-    UserSkillsComponent,
-    UserAvailableCloudsComponent,
-    UserConnectedCloudsComponent,
-    UserWorkloadComponent,
-    UserWorkloadCalendarComponent,
-    UserAvailabilityDayDialogComponent,
-    UserPasswordUpdateComponent,
-    UserProfileCustomFieldsComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    GoogleCloudModule,
-    SlackCloudModule,
-    TeamModule,
-    ZapModule,
-    UserRoutingModule,
-    MatSelectModule,
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory
-    })
-  ],
-  providers: [
-    UserService
-  ],
-  exports: [
-    UserAvailabilityDayDialogComponent
-  ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  entryComponents: [
-    UserAvailabilityDayDialogComponent
-  ]
+    declarations: [
+        UserHeaderComponent,
+        UserProfileComponent,
+        UserCloudsComponent,
+        UserInformationComponent,
+        UserProfessionalInformationComponent,
+        UserSkillsComponent,
+        UserAvailableCloudsComponent,
+        UserConnectedCloudsComponent,
+        UserWorkloadComponent,
+        UserWorkloadCalendarComponent,
+        UserAvailabilityDayDialogComponent,
+        UserPasswordUpdateComponent,
+        UserProfileCustomFieldsComponent
+    ],
+    imports: [
+        CommonModule,
+        SharedModule,
+        GoogleCloudModule,
+        SlackCloudModule,
+        TeamModule,
+        ZapModule,
+        UserRoutingModule,
+        MatSelectModule,
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory
+        })
+    ],
+    providers: [
+        UserService
+    ],
+    exports: [
+        UserAvailabilityDayDialogComponent
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class UserModule { }
