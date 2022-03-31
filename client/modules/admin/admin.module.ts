@@ -30,37 +30,32 @@ import { WorkplaceIntegrationsDialogComponent } from './admin-general/workplace-
 
 
 @NgModule({
-  declarations: [
-    AdminGeneralComponent,
-    AdminMembersComponent,
-    AdminGroupsComponent,
-    AdminBillingComponent,
-    AdminHeaderComponent,
-    WorkplaceInformationComponent,
-    WorkplaceAddDomainComponent,
-    WorkplaceInviteUserComponent,
-    StripePaymentComponent,
-    StartSubscriptionComponent,
-    TransferOwnershipComponent,
-    WorkplaceProfileCustomFieldsComponent,
-    ProfileCustomFieldsDialogComponent,
-    WorkspaceRolesInformationDialogComponent,
-    WorkplaceIntegrationsComponent,
-    WorkplaceIntegrationsDialogComponent
-  ],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    FormsModule,
-    SharedModule,
-    MatDialogModule,
-    MatTabsModule
-  ],
-  providers:[WorkspaceService, AdminService, ActivateBillingGuard],
-  entryComponents: [
-    ProfileCustomFieldsDialogComponent,
-    WorkspaceRolesInformationDialogComponent,
-    WorkplaceIntegrationsDialogComponent
-  ]
+    declarations: [
+        AdminGeneralComponent,
+        AdminMembersComponent,
+        AdminGroupsComponent,
+        AdminBillingComponent,
+        AdminHeaderComponent,
+        WorkplaceInformationComponent,
+        WorkplaceAddDomainComponent,
+        WorkplaceInviteUserComponent,
+        StripePaymentComponent,
+        StartSubscriptionComponent,
+        TransferOwnershipComponent,
+        WorkplaceProfileCustomFieldsComponent,
+        ProfileCustomFieldsDialogComponent,
+        WorkspaceRolesInformationDialogComponent,
+        WorkplaceIntegrationsComponent,
+        WorkplaceIntegrationsDialogComponent
+    ],
+    imports: [
+        CommonModule,
+        AdminRoutingModule,
+        FormsModule,
+        SharedModule,
+        MatDialogModule,
+        MatTabsModule
+    ],
+    providers: [WorkspaceService, AdminService, ActivateBillingGuard]
 })
 export class AdminModule { }
