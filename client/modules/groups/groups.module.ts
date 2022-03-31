@@ -94,118 +94,86 @@ import { FilesCustomFieldsDialogComponent } from './group/files-custom-fields-di
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
  */
 @NgModule({
-  declarations: [
-    GroupRAGDialogComponent,
-    ColumnProjectSectionComponent,
-    // Groups List Component
-    GroupsListComponent,
-
-    // Create Group Component
-    CreateGroupComponent,
-
-    // // Group Smart Admin Component
-    GroupSmartAdminComponent,
-
-    // Group Members Component
-    GroupMembersComponent,
-
-    // Group Component
-    GroupComponent,
-
-    // GroupHeaderComponent,
-
-    GroupAdminComponent,
-
-    GroupActivityComponent,
-
-    DeleteGroupComponent,
-
-    GroupKanbanBoardsComponent,
-    GroupTasksListViewComponent,
-    GroupKanbanArchivedBoardsComponent,
-
-    CreateColumnComponent,
-    CreateSectionComponent,
-
-    BoardBarComponent,
-
-    EditColumnComponent,
-
-    GroupPostComponent,
-
-    InviteUserComponent,
-
-    GroupTasksViewsComponent,
-    CustomFieldsDialogComponent,
-    FilesCustomFieldsDialogComponent,
-    AdvancedFilterDialogComponent,
-    DoneTasksListViewComponent,
-    DoneTasksKanbanViewComponent,
-
-    GroupDashboardComponent,
-
-    TasksTableComponent,
-
-    AutomationFlowsDialogComponent,
-    AutomationFlowDetailsDialogComponent,
-
-    GroupCalendarViewComponent,
-
-    GanttViewComponent,
-    CreateProjectColumnDialogComponent,
-    ShowCustomFieldsColumnDialogComponent,
-    KanbanTaskCardComponent,
-    GroupReportsComponent,
-    PermissionDialogComponent
-  ],
-  imports: [
-    CommonModule,
-    GroupsRoutingModule,
-    SharedModule,
-    // FORMS MODULE
-    FormsModule,
-    DragDropModule,
-    // Angular Material Buttons
-    MatButtonModule,
-    // Angular Material Menu Module
-    MatMenuModule,
-    // MomentModule
-    MatChipsModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatExpansionModule,
-    MatTableModule,
-    MatSortModule,
-    MatDatepickerModule,
-    ResizableModule,
-
-    Calendar.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory
-    })
-  ],
-  providers: [
-    GroupsService,
-    GroupService,
-    PostService,
-    CommentService,
-    FlowService,
-    DatePipe
-  ],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
-  ],
-  entryComponents: [
-    CustomFieldsDialogComponent,
-    FilesCustomFieldsDialogComponent,
-    AdvancedFilterDialogComponent,
-    AutomationFlowsDialogComponent,
-    AutomationFlowDetailsDialogComponent,
-    CreateProjectColumnDialogComponent,
-    ShowCustomFieldsColumnDialogComponent,
-    GroupRAGDialogComponent,
-    PermissionDialogComponent
-  ]
+    declarations: [
+        GroupRAGDialogComponent,
+        ColumnProjectSectionComponent,
+        // Groups List Component
+        GroupsListComponent,
+        // Create Group Component
+        CreateGroupComponent,
+        // // Group Smart Admin Component
+        GroupSmartAdminComponent,
+        // Group Members Component
+        GroupMembersComponent,
+        // Group Component
+        GroupComponent,
+        // GroupHeaderComponent,
+        GroupAdminComponent,
+        GroupActivityComponent,
+        DeleteGroupComponent,
+        GroupKanbanBoardsComponent,
+        GroupTasksListViewComponent,
+        GroupKanbanArchivedBoardsComponent,
+        CreateColumnComponent,
+        CreateSectionComponent,
+        BoardBarComponent,
+        EditColumnComponent,
+        GroupPostComponent,
+        InviteUserComponent,
+        GroupTasksViewsComponent,
+        CustomFieldsDialogComponent,
+        FilesCustomFieldsDialogComponent,
+        AdvancedFilterDialogComponent,
+        DoneTasksListViewComponent,
+        DoneTasksKanbanViewComponent,
+        GroupDashboardComponent,
+        TasksTableComponent,
+        AutomationFlowsDialogComponent,
+        AutomationFlowDetailsDialogComponent,
+        GroupCalendarViewComponent,
+        GanttViewComponent,
+        CreateProjectColumnDialogComponent,
+        ShowCustomFieldsColumnDialogComponent,
+        KanbanTaskCardComponent,
+        GroupReportsComponent,
+        PermissionDialogComponent
+    ],
+    imports: [
+        CommonModule,
+        GroupsRoutingModule,
+        SharedModule,
+        // FORMS MODULE
+        FormsModule,
+        DragDropModule,
+        // Angular Material Buttons
+        MatButtonModule,
+        // Angular Material Menu Module
+        MatMenuModule,
+        // MomentModule
+        MatChipsModule,
+        MatDialogModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatExpansionModule,
+        MatTableModule,
+        MatSortModule,
+        MatDatepickerModule,
+        ResizableModule,
+        Calendar.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory
+        })
+    ],
+    providers: [
+        GroupsService,
+        GroupService,
+        PostService,
+        CommentService,
+        FlowService,
+        DatePipe
+    ],
+    schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+    ]
 })
 export class GroupsModule { }
