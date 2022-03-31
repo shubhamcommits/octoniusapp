@@ -8,7 +8,7 @@ export class FilesService {
     userFields: any = 'first_name last_name profile_pic role email';
 
     // Select Group Fileds on population
-    groupFields: any = 'group_name group_avatar workspace_name enabled_rights rags _admins';
+    groupFields: any = 'group_name group_avatar workspace_name files_for_admins enabled_rights rags _admins';
 
     // Select Folder Fields on population
     folderFields: any = 'folder_name';

@@ -198,7 +198,7 @@ export class Auths {
         if (item?.approval_flow_launched) {
           return false;
         }
-    
+
         if (userData?.role == 'admin' || userData?.role == 'owner' || createdBy || isGroupManager) {
           return true;
         } else {
@@ -225,7 +225,7 @@ export class Auths {
             }
           }
     
-          return !item._group?.enabled_rights || canDoRagAction;
+          return (!item._group?.enabled_rights || canDoRagAction) && (!item?._group?.files_for_admins || isGroupManager);
         }
     }
 
