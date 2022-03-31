@@ -14,7 +14,7 @@ const GroupSchema = new Schema({
         default: 'assets/images/icon-new-group.svg'
     },
     archived_group: {
-        type: Schema.Types.Boolean,
+        Boolean,
         required: true,
         default: false,
     },
@@ -40,15 +40,15 @@ const GroupSchema = new Schema({
         of: Number
     },
     enabled_rights: {
-        type: Schema.Types.Boolean,
+        Boolean,
         default: false,
     },
     enabled_campaign: {
-        type: Schema.Types.Boolean,
+        Boolean,
         default: false,
     },
     keep_pinned_open: {
-        type: Schema.Types.Boolean,
+        Boolean,
         default: false,
     },
     rags: [
@@ -61,11 +61,11 @@ const GroupSchema = new Schema({
         }
     ],
     project_type: {
-        type: Schema.Types.Boolean,
+        Boolean,
         default: false,
     },
     enable_allocation: {
-        type: Schema.Types.Boolean,
+        Boolean,
         default: false,
     },
     project_status: {
@@ -73,7 +73,7 @@ const GroupSchema = new Schema({
         enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
     },
     shuttle_type: {
-        type: Schema.Types.Boolean,
+        Boolean,
         default: false,
     },
     _shuttle_section: {
@@ -97,7 +97,7 @@ const GroupSchema = new Schema({
         default: null
     }],
     files_for_admins: {
-        type: Schema.Types.Boolean,
+        Boolean,
         default: false,
     },
     type: {
