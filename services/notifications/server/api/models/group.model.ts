@@ -14,7 +14,7 @@ const GroupSchema = new Schema({
         default: 'assets/images/icon-new-group.svg'
     },
     archived_group: {
-        Boolean,
+        type: Boolean,
         required: true,
         default: false,
     },
@@ -40,15 +40,15 @@ const GroupSchema = new Schema({
         of: Number
     },
     enabled_rights: {
-        Boolean,
+        type: Boolean,
         default: false,
     },
     enabled_campaign: {
-        Boolean,
+        type: Boolean,
         default: false,
     },
     keep_pinned_open: {
-        Boolean,
+        type: Boolean,
         default: false,
     },
     rags: [
@@ -61,11 +61,11 @@ const GroupSchema = new Schema({
         }
     ],
     project_type: {
-        Boolean,
+        type: Boolean,
         default: false,
     },
     enable_allocation: {
-        Boolean,
+        type: Boolean,
         default: false,
     },
     project_status: {
@@ -73,7 +73,7 @@ const GroupSchema = new Schema({
         enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
     },
     shuttle_type: {
-        Boolean,
+        type: Boolean,
         default: false,
     },
     _shuttle_section: {
@@ -97,7 +97,7 @@ const GroupSchema = new Schema({
         default: null
     }],
     files_for_admins: {
-        Boolean,
+        type: Boolean,
         default: false,
     },
     type: {
@@ -131,6 +131,147 @@ const GroupSchema = new Schema({
     share_files: {
         type: Boolean,
         default: false,
+    },
+    members_count: {
+        type: Number,
+        default: 0
+    },
+    selected_widgets: {
+        type: [String],
+        default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'ENGAGEMENT', 'KPI_PERFORMANCE', 'RESOURCE_MANAGEMENT', 'CF_TABLE']
+    },
+    resource_management_allocation: {
+        type: Boolean,
+        default: true,
+    },
+    custom_fields_table_widget: {
+        selectTypeCFs: {
+            type: [String]
+        },
+        inputTypeCFs: {
+            type: [String]
+        }
+    },
+    custom_fields: {
+        type: [{
+            name: {
+                type: String,
+                required: true
+            },
+            title: {
+                type: String,
+                required: true
+            },
+            input_type: {
+                type: Boolean,
+                default: false
+            },
+            input_type_number: {
+                type: Boolean,
+                default: false
+            },
+            input_type_text: {
+                type: Boolean,
+                default: false
+            },
+            input_type_date: {
+                type: Boolean,
+                default: false
+            },
+            values: {
+                type: [String],
+                required: true,
+                default: []
+            },
+            display_in_kanban_card: {
+                type: Boolean,
+                default: false
+            },
+            badge_color: {
+                type: String,
+                required: true,
+                default: '#e4edf8'
+            }
+        }]
+    },
+    files_custom_fields: {
+        type: [{
+            name: {
+                type: String,
+                required: true
+            },
+            title: {
+                type: String,
+                required: true
+            },
+            input_type: {
+                type: Boolean,
+                default: false
+            },
+            input_type_number: {
+                type: Boolean,
+                default: false
+            },
+            input_type_text: {
+                type: Boolean,
+                default: false
+            },
+            input_type_date: {
+                type: Boolean,
+                default: false
+            },
+            values: {
+                type: [String],
+                required: true,
+                default: []
+            },
+            display_in_kanban_card: {
+                type: Boolean,
+                default: false
+            },
+            badge_color: {
+                type: String,
+                required: true,
+                default: '#e4edf8'
+            }
+        }]
+    },
+    records: {
+        pulses: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
+            },
+            description: {
+                type: String,
+                required: true,
+                default: ''
+            }
+        }],
+        status: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format()
+            },
+            project_status: {
+                type: String,
+                enum: ['ON TRACK', 'NOT STARTED', 'IN DANGER', 'ACHIEVED']
+            }
+        }],
+        done_tasks_count: [{
+            date: {
+                type: Date,
+                required: true,
+                default: moment().format('YYYY-MM-DD')
+            },
+            count: {
+                type: Number,
+                required: true,
+                default: 0
+            }
+        }]
     }
 });
 
