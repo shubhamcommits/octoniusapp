@@ -66,7 +66,7 @@
     "ng2-charts": "^2.2.3",
     "ngx-doc-viewer": "^1.2.0",
     "ngx-image-cropper": "^6.1.0",
-    "ngx-infinite-scroll": "^8.0.1",
+    "ngx-infinite-scroll": "^13.0.1",
     "ngx-ui-loader": "^11.0.0",
     "pdf-lib": "^1.17.1",
     "process": "^0.11.10",
