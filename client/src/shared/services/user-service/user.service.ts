@@ -394,4 +394,16 @@ export class UserService {
       customFieldValue: customFieldValue
     }).toPromise();
   }
+
+  /**
+   * This function is used to fetch the needed user´s information from LDAP
+   */
+  ldapUserInfo(workspaceId: string, email: string) {
+    return this._http.get(this.INTEGRATIONS_API_URL + `/ldap/ldapUserInfo`, {
+      params: {
+        workspaceId: workspaceId,
+        email: email
+      }
+    }).toPromise();
+  }
 }

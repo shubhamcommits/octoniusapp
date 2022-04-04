@@ -1,5 +1,4 @@
 import { SlackService } from "./slack.service";
-// import { TeamService } from './team.service';
 import { TeamService } from "./team.service";
 /*  ==========================
  *  -- SERVICE EXPORTS --
@@ -7,8 +6,6 @@ import { TeamService } from "./team.service";
  * */
 export {
     
-    TeamService as TeamService ,
-
-    SlackService as SlackService,
-    
+    TeamService as TeamService,
+    SlackService as SlackService
 }
