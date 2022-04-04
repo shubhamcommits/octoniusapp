@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
-import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
+import { ImageCroppedEvent, ImageCropperComponent, ImageTransform } from 'ngx-image-cropper';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -16,14 +16,19 @@ export class CropImageComponent implements OnInit {
   // OUTPUT IMAGE EMITTER
   @Output('outputImage') outputImage = new EventEmitter();
 
+  // IMAGE CROPPER COMPONENT
+  @ViewChild(ImageCropperComponent) imageCropper: ImageCropperComponent;
+
   // INPUT IMAGE EVENT
   imageChangedEvent: Event;
 
   // CROPPED IMAGE
   croppedImage: any = '';
 
-  // IMAGE CROPPER COMPONENT
-  @ViewChild(ImageCropperComponent) imageCropper: ImageCropperComponent;
+  canvasRotation = 0;
+  transform: ImageTransform = {};
+  translateH = 0;
+  translateV = 0;
 
   ngOnInit() {
   }
@@ -47,7 +52,7 @@ export class CropImageComponent implements OnInit {
    */
   async imageCropped(event: ImageCroppedEvent) {
 
-    this.croppedImage = event.file;
+    this.croppedImage = event.base64;
 
     // Convert the event Blob to File
     this.croppedImage = new File([this.croppedImage], this.imageChangedEvent.target['files'][0]['name'], { type: this.imageChangedEvent.target['files'][0]['type'] });
@@ -80,13 +85,15 @@ export class CropImageComponent implements OnInit {
     this.utilityService.stopBackgroundLoader();
   }
 
-
   /**
    * This function rotates then image to the left
    */
   rotateLeft() {
     this.utilityService.startBackgroundLoader();
-    this.imageCropper.rotateLeft();
+    setTimeout(() => { // Use timeout because rotating image is a heavy operation and will block the ui thread
+      this.canvasRotation--;
+      this.flipAfterRotate();
+    });
   }
 
   /**
@@ -94,24 +101,65 @@ export class CropImageComponent implements OnInit {
    */
   rotateRight() {
     this.utilityService.startBackgroundLoader();
-    this.imageCropper.rotateRight();
+    setTimeout(() => {
+      this.canvasRotation++;
+      this.flipAfterRotate();
+    });
+  }
+
+  private flipAfterRotate() {
+    const flippedH = this.transform.flipH;
+    const flippedV = this.transform.flipV;
+    this.transform = {
+      ...this.transform,
+      flipH: flippedV,
+      flipV: flippedH
+    };
+    this.translateH = 0;
+    this.translateV = 0;
   }
 
   /**
    * This function flips the image horizontally
    */
   flipHorizontal() {
-    this.utilityService.startBackgroundLoader();
-    this.imageCropper.flipHorizontal();
+    this.transform = {
+      ...this.transform,
+      flipH: !this.transform.flipH
+    };
   }
 
   /**
    * This function flips the image vertically
    */
   flipVertical() {
+    this.transform = {
+      ...this.transform,
+      flipV: !this.transform.flipV
+    };
+  }
+
+  /*
+  rotateLeft() {
+    this.utilityService.startBackgroundLoader();
+    this.imageCropper.rotateLeft();
+  }
+
+  rotateRight() {
+    this.utilityService.startBackgroundLoader();
+    this.imageCropper.rotateRight();
+  }
+
+  flipHorizontal() {
+    this.utilityService.startBackgroundLoader();
+    this.imageCropper.flipHorizontal();
+  }
+
+  flipVertical() {
     this.utilityService.startBackgroundLoader();
     this.imageCropper.flipVertical();
   }
+  */
 
   /**
    * This function is resposible for converting a data URI to Blob

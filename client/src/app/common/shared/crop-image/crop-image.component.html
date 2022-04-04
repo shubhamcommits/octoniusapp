@@ -11,17 +11,24 @@
 <div class="container">
 
     <!-- IMAGE CROPPER TOOL STARTS -->
-    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" [aspectRatio]="1 / 1"
+    <image-cropper  format="png,jpeg,webp,bmp,ico" outputType="file"
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="false"
+        [aspectRatio]="1 / 1"
         [resizeToWidth]="300"
         [cropperMinWidth]="300"
         [onlyScaleDown]="false"
-        [roundCropper]="false" format="png,jpeg,webp,bmp,ico" outputType="file" (imageCropped)="imageCropped($event)"
-        (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
+        [roundCropper]="false"
+        (imageCropped)="imageCropped($event)"
+        (imageLoaded)="imageLoaded()"
+        (cropperReady)="cropperReady()"
+        (loadImageFailed)="loadImageFailed()">
     </image-cropper>
     <!-- IMAGE CROPPER TOOL ENDS -->
 
     <!-- TOOLS MENU STARTS -->
-    <!-- <div class="container menu" *ngIf="imageChangedEvent">
+    <!--
+    <div class="container menu" *ngIf="imageChangedEvent">
         <button class="btn btn-md btn-primary" (click)="rotateLeft()">
             <i class="material-icons"> rotate_left </i>
             Rotate Left</button>
@@ -34,7 +41,8 @@
         <button class="btn btn-md btn-primary" (click)="flipVertical()">
             <i class="material-icons"> swap_vert </i>
             Flip Vertically</button>
-    </div> -->
+    </div>
+    -->
     <!-- TOOLS MENU ENDS -->
 </div>
 <!-- IMAGE CROPPER AND TOOLS ENDS -->
