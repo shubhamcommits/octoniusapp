@@ -2,7 +2,6 @@ import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { Auth } from "../api/models";
 import { Request, Response, NextFunction } from 'express';
 import { sendError } from ".";
-import * as CryptoJS from 'crypto-js';
 
 export class Auths {
 
@@ -128,14 +127,5 @@ export class Auths {
                 token: token
             })
         })
-    }
-
-    /**
-     * This function decrypts the password and returns with a promise
-     * @param plainPassword 
-     * @param hash 
-     */
-    decryptData(key, data : string) {
-        return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
     }
 }
