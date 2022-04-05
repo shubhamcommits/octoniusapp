@@ -14,7 +14,7 @@ routes.get('/ldapUserInfo', auths.verifyToken, auths.isLoggedIn, async (req, res
 
     let result = "";
 
-    // Find user by user _id
+    // Find workspace by workspace _id
     const workspace = await Workspace.findById(workspaceId).select('integrations');
 
     //Slack connected or not checking
