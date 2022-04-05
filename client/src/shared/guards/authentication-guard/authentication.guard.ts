@@ -77,21 +77,23 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild, CanLo
    * This function is responsible for joining a user to all the socket groups of which he is part
    */
   joinSocketRoom(userData: any) {
-    userData._groups.forEach(groupId => {
+    if (userData && userData._groups) {
+      userData._groups.forEach(groupId => {
 
-      // Socket Service Instance
-      let socketService = this.injector.get(SocketService);
+        // Socket Service Instance
+        let socketService = this.injector.get(SocketService);
 
-      // Room Name Object
-      let room = {
-        workspace: userData.workspace_name,
-        group: groupId
-      }
+        // Room Name Object
+        let room = {
+          workspace: userData.workspace_name,
+          group: groupId
+        }
 
-      // Join the each group socket room
-      this.emitJoinGroup(socketService, room)
+        // Join the each group socket room
+        this.emitJoinGroup(socketService, room)
 
-    });
+      });
+    }
   }
 
   /**

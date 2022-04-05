@@ -1,6 +1,9 @@
 import { Component, OnInit, Injector, Inject, Input } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from 'src/shared/services/user-service/user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -11,11 +14,17 @@ export class UserProfileComponent implements OnInit {
 
   constructor(
     private injector: Injector,
-    private router: ActivatedRoute
+    private router: ActivatedRoute,
+    public dialog: MatDialog,
+    private utilityService: UtilityService,
+    private userService: UserService
   ) { }
 
   // User Data Variable
-  userData: Object;
+  userData: any;
+
+  // Workspace Data Variable
+  workspaceData: any;
 
   // Public functions class member
   publicFunctions = new PublicFunctions(this.injector);
@@ -44,9 +53,25 @@ export class UserProfileComponent implements OnInit {
       this.userData = await this.publicFunctions.getCurrentUser();
       this.isCurrentUser = true;
     }
+
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
   }
-  onUpdateUserEmitter(updatedUserData){
+
+  onUpdateUserEmitter(updatedUserData) {
     this.userData = updatedUserData;
+  }
+
+  async getUserInformation() {
+    this.utilityService.getConfirmDialogAlert($localize`:@@userProfile.areYouSure:Are you sure?`, $localize`:@@userProfile.byDoingLDAPSync:By doing this, your user information will be synchronized with LDAP!`)
+      .then(async (res) => {
+        if (res.value) {
+          const accountData = await this.publicFunctions.getCurrentAccount();
+          this.userService.ldapUserInfo(this.workspaceData._id, accountData?.email).then(res => {
+console.log(res);
+          });
+        }
+    });
   }
 
 }

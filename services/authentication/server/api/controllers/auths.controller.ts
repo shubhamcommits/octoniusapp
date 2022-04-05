@@ -510,16 +510,29 @@ export class AuthsController {
             if (workplaceLDAPIntegrations && workplaceLDAPIntegrations.is_ldap_connected) {
                 ldapUser = await ldapAuthService.auth(email, password, workplaceLDAPIntegrations);
             }
-            
-            if (!workplaceLDAPIntegrations || !workplaceLDAPIntegrations.is_ldap_connected || !ldapUser) {
-                // Plain password received from the req.body
-                const plainPassword = password;
 
-                // Decrypting Password
-                const passDecrypted: any = await passwordHelper.decryptPassword(plainPassword, account['password']);
+            // Decrypting Password
+            const passDecrypted: any = await passwordHelper.decryptPassword(password, account['password']);
 
-                // If we are unable to decrypt the password from the server
-                if (!passDecrypted.password) {
+            // If we are unable to decrypt the password from the server
+            if (!passDecrypted.password) {
+                if (workplaceLDAPIntegrations && workplaceLDAPIntegrations.is_ldap_connected && ldapUser) {
+                    // Update octonius pwd with LDAP pwd
+                    const passEncrypted: any = await passwordHelper.encryptPassword(password);
+
+                    // If we are unable to encrypt the password and store into the server
+                    if (!passEncrypted.password) {
+                        return sendError(res, new Error('Unable to encrypt the password to the server'), 'Unable to encrypt the password to the server, please try with a different password!', 401);
+                    }
+
+                    account = await Account.findByIdAndUpdate({
+                            _id: account._id
+                        }, {
+                            $set: { password: passEncrypted.password }
+                        }, {
+                            new: true
+                        }).populate('_workspaces', '_id workspace_name workspace_avatar integrations').lean();
+                } else {
                     return sendError(res, new Error('Unable to decrypt the password from the server'), 'Please enter a valid email or password!', 401);
                 }
             }

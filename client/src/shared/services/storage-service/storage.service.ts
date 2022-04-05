@@ -25,7 +25,7 @@ export class StorageService {
    * Following CryptoJS Standard functions
    * @param data
    */
-  encryptData(key, data: string){
+  encryptData(key, data: string) {
     return CryptoJS.AES.encrypt(data, key).toString();
   }
 
@@ -35,7 +35,7 @@ export class StorageService {
    * Returns JSON Data
    * @param data
    */
-  decryptData(key, data : string){
+  decryptData(key, data : string) {
     return JSON.parse(CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8));
   }
 

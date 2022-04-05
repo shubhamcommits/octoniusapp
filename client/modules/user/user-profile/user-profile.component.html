@@ -3,6 +3,22 @@
 
         <div class="col-md-4">
             <app-user-information [userData]="userData" [currentUser]="isCurrentUser"  (updateData)="onUpdateUserEmitter($event)"></app-user-information>
+
+            <!-- LDAP Integration STARTS -->
+            <div class="sidecontent" *ngIf="workspaceData?.integrations?.is_ldap_connected">
+              <div class="card sideinnercard">
+                <div class="card-block">
+                  <h6 class="card-title">
+                    <b i18n="@@userProfile.fetchInfo"> <i class="material-icons">cable</i> Fetch Information from LDAP </b>
+                  </h6>
+
+                  <div style="margin-top: 20px;">
+                    <button class="btn btn-primary" (click)="getUserInformation()" i18n="@@workspaceAddDomain.syncLDAP">Sync LDAP</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- LDAP Integration ENDS -->
         </div>
 
         <div class="col-md-8">

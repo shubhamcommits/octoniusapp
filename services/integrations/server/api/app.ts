@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import { developmentConfig, productionConfig } from '../configs';
-import { integrationRoutes, slackRoutes, teamsRoutes , zapierRoutes} from './routes';
+import { integrationRoutes, ldapRoutes, slackRoutes, teamsRoutes , zapierRoutes} from './routes';
 import  bodyParser from 'body-parser';
 
 // Defining new Express application
@@ -82,6 +82,7 @@ app.use('/api', integrationRoutes);
 app.use('/api/slack', slackRoutes);
 app.use('/api/teams', teamsRoutes);
 app.use('/api/zapier', zapierRoutes);
+app.use('/api/ldap', ldapRoutes);
 
 // Invalid routes handling middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
