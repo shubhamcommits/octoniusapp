@@ -13,6 +13,19 @@
   <!-- CSS only -->
   <link rel="stylesheet" type="text/css" href="assets/libs/bootstrap.4.5.2.min.css" />
 
+  <!-- MODIFYING THE BUILDED SCRIPTS -->
+  <script>
+    if (typeof module === 'object') {
+      window.module = module;
+      module = undefined;
+    }
+  </script>
+  <script>
+    if (window.module) {
+      module = window.module;
+    }
+  </script>
+
   <!-- Load environment variables -->
   <script src="assets/env.js"></script>
 
@@ -34,19 +47,6 @@
   <!-- Stripe library starts -->
   <script src="https://js.stripe.com/v3/"></script>
   <!-- Stripe library ends -->
-
-  <!-- MODIFYING THE BUILDED SCRIPTS -->
-  <script>
-    if (typeof module === 'object') {
-      window.module = module;
-      module = undefined;
-    }
-  </script>
-  <script>
-    if (window.module) {
-      module = window.module;
-    }
-  </script>
 
   <!-- Chatra starts -->
   <script>
