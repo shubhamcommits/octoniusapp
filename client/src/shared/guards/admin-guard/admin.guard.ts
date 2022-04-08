@@ -21,7 +21,7 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
 
       const workspaceData = this.storageService.getLocalData('workspaceData');
       const userData = this.storageService.getLocalData('userData');
-      const role = userData['role'].trim();
+      const role = (userData['role']) ? userData['role'].trim() : '';
       const allowDecentralizedRoles = workspaceData.allow_decentralized_roles || false;
       if (role == 'owner' || role == 'admin' || role == 'manager' || allowDecentralizedRoles) {
         return true;
