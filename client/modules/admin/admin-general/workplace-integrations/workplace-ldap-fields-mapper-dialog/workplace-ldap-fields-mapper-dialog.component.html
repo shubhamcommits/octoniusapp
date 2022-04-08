@@ -1,0 +1,53 @@
+<div class="integrationsDialog" *ngIf="workplaceData">
+  <mat-dialog-actions class="d-flex justify-content-end" align="end">
+    <i mat-dialog-close class="material-icons" (click)="onCloseDialog()" style="cursor: pointer">close</i>
+  </mat-dialog-actions>
+
+  <h2 mat-dialog-title class="text-center">
+    <span class="badge badge-cf">
+      <i class="material-icons">cable</i>
+    </span>
+    <span i18n="@@workplaceLdapFieldsMapperDialog.mapFields">Map Fields</span>
+  </h2>
+
+  <div class="description text-center">
+    <p i18n="@@workplaceLdapFieldsMapperDialog.mapFieldsDescription" class="text-descr">
+      Map LDAP fields with Octonius users' properties.
+    </p>
+  </div>
+
+  <div class="content">
+    <div class="integration">
+      <div class="integration-properties">
+        <div class="form-group row" *ngFor="let ldapPropertyName of ldapPropertiesNames; let j=index">
+          <div class="col-md-1">
+            <input [checked]="ldapPropertiesToMap.indexOf(ldapPropertyName)>=0" class="" type="checkbox" (click)="selectProperty(ldapPropertyName)">
+          </div>
+          <div class="col-md-5">
+            <span>{{ ldapPropertyName }}</span>
+            <!--&nbsp; <span class="material-icons-outlined">settings_ethernet</span> &nbsp;-->
+            &nbsp; <span class="material-icons-outlined">sync_alt</span> &nbsp;
+            <span class="muted">{{ getOctoniusProperty(ldapPropertyName) }}</span>
+          </div>
+          <div class="col-md-5" *ngIf="isGlobal">
+            <mat-select ngDefaultControl
+                [(value)]="mapSelectedProperties[ldapPropertyName]"
+                (selectionChange)="changePropertyValue($event, ldapPropertyName)"
+                appearance="fill">
+              <!-- <mat-select-trigger>{{ getOctoniusProperty(ldapPropertyName) }}</mat-select-trigger> -->
+              <mat-option *ngFor="let profileCF of profileCustomFields; let j=index" [value]="profileCF.name">{{ profileCF.title }}</mat-option>
+            </mat-select>
+          </div>
+          <div class="col-md-5" *ngIf="!isGlobal && userLdapData">
+            <span>{{ userLdapData[ldapPropertyName] | truncatetext: 30 }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px; text-align: center;">
+      <button class="col-md-4 btn btn-primary" (click)="mapProperties()" i18n="@@workplaceLdapFieldsMapperDialog.map">
+        Map
+      </button>
+    </div>
+</div>

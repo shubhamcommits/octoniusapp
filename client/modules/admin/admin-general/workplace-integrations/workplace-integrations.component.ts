@@ -4,6 +4,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { WorkplaceIntegrationsDialogComponent } from './workplace-integrations-dialog/workplace-integrations-dialog.component';
+import { WorkplaceLdapFieldsMapperDialogComponent } from './workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
 
 @Component({
   selector: 'app-workplace-integrations',
@@ -35,7 +36,7 @@ export class WorkplaceIntegrationsComponent implements OnInit {
   ngOnInit() {
   }
 
-  openWorkplaceIntegrationsDialog(workspaceId: string) {
+  openWorkplaceIntegrationsDialog() {
     const data = {
     }
     const dialogRef = this.dialog.open(WorkplaceIntegrationsDialogComponent, {
@@ -46,19 +47,47 @@ export class WorkplaceIntegrationsComponent implements OnInit {
       data: data
     });
 
-    /*
-    const datesSavedEventSubs = dialogRef.componentInstance.datesSavedEvent.subscribe((data) => {
-      this.selectedDays = [];
-      data.forEach(day => {
-        day.date = moment(day.date).format('YYYY-MM-DD');
-        this.bookedDays.push(day);
-      });
-
-      this.refresh.next();
+    const datesSavedEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
     });
-    */
-    dialogRef.afterClosed().subscribe(result => {
-      //datesSavedEventSubs.unsubscribe();
+
+    dialogRef.afterClosed().subscribe(async result => {
+      datesSavedEventSubs.unsubscribe();
+    });
+  }
+
+  async getUserInformation() {
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
+    const accountData = await this.publicFunctions.getCurrentAccount();
+    this.workspaceService.ldapUserInfoProperties(this.workspaceData._id, accountData?.email, true).then(res => {
+      this.openLDAPFieldsMapDialog(res['ldapPropertiesNames']);
+      //setTimeout(() => {
+      this.utilityService.updateIsLoadingSpinnerSource(false);
+      //}, 10000);
+    }).catch(error => {
+      this.utilityService.updateIsLoadingSpinnerSource(false);
+    });
+  }
+
+  openLDAPFieldsMapDialog(ldapPropertiesNames: any) {
+    const data = {
+      ldapPropertiesNames: ldapPropertiesNames,
+      isGlobal: true
+    }
+    const dialogRef = this.dialog.open(WorkplaceLdapFieldsMapperDialogComponent, {
+      width: '50%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: data
+    });
+
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
+
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      closeEventSubs.unsubscribe();
     });
   }
 }

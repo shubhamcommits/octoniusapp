@@ -108,6 +108,10 @@ export class UtilityService {
   private storyDataSource = new BehaviorSubject<any>({});
   storyData = this.storyDataSource.asObservable();
 
+  // isLoadingSpinner behaviou subject maintains the state for loading spinner
+  public isLoadingSpinnerSource = new BehaviorSubject(false);
+  isLoadingSpinner = this.isLoadingSpinnerSource.asObservable();
+
   /**
    * This function checks whether the input string is a vaild email or not
    * @param email
@@ -728,5 +732,13 @@ export class UtilityService {
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const data: Blob = new Blob([excelBuffer], {type: EXCEL_TYPE});
     fileSaver.saveAs(data, fileName + '_export_' + moment(moment().utc(), "YYYY-MM-DD") + EXCEL_EXTENSION);
+  }
+
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param status
+   */
+  public updateIsLoadingSpinnerSource(status: boolean){
+    this.isLoadingSpinnerSource.next(status);
   }
 }

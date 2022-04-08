@@ -29,8 +29,8 @@ export class UserProfileCustomFieldsComponent implements OnInit {
   @Input('currentUser') currentUser: boolean = false;
 
 
-  customFields = [];
-  selectedCFValues = [];
+  customFields: any = [];
+  selectedCFValues: any = [];
 
   // Public Functions class
   public publicFunctions = new PublicFunctions(this.injector);
@@ -42,7 +42,6 @@ export class UserProfileCustomFieldsComponent implements OnInit {
     this.workspaceService.getProfileCustomFields(this.userData._workspace).then((res) => {
       if (res['workspace']['profile_custom_fields']) {
         res['workspace']['profile_custom_fields'].forEach(field => {
-          this.customFields.push(field);
 
           if (!this.userData.profile_custom_fields) {
             this.userData.profile_custom_fields = new Map<string, string>();
@@ -54,6 +53,13 @@ export class UserProfileCustomFieldsComponent implements OnInit {
           } else {
             this.selectedCFValues[field.name] = this.userData.profile_custom_fields[field.name];
           }
+
+          const ldapFieldValue = this.selectedCFValues[field.name];
+          if (ldapFieldValue && field.values.findIndex(value => value == ldapFieldValue) < 0) {
+            field.values.push(ldapFieldValue);
+          }
+
+          this.customFields.push(field);
         });
       }
     });
@@ -108,5 +114,9 @@ export class UserProfileCustomFieldsComponent implements OnInit {
           );
         });
       });
+  }
+
+  isValueInOptions(cfValues, selectedValue) {
+    return cfValues.findIndex(value => value == selectedValue) >= 0;
   }
 }

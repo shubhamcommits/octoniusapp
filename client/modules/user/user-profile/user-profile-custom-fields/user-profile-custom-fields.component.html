@@ -9,6 +9,7 @@
       <!-- Iterate over all the skills present for a particular user starts -->
       <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
         <p class="col">{{ cf.title }}</p>
+
         <mat-select ngDefaultControl
             *ngIf="currentUser"
             [(value)]="selectedCFValues[cf.name]"

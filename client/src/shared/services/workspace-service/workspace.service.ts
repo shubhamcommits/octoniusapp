@@ -13,6 +13,7 @@ import { UtilityService } from '../utility-service/utility.service';
 export class WorkspaceService {
 
   BASE_API_URL = environment.WORKSPACE_BASE_API_URL;
+  INTEGRATIONS_API_URL = environment.INTEGRATIONS_BASE_API_URL;
 
   constructor(
     private _http: HttpClient,
@@ -316,5 +317,30 @@ export class WorkspaceService {
     });
 
     this.utilityService.saveAsExcelFile(members, name);
+  }
+
+  /**
+   * This function is used to fetch the needed user´s information from LDAP
+   */
+  ldapUserInfoProperties(workspaceId: string, email: string, global: boolean) {
+    return this._http.get(this.INTEGRATIONS_API_URL + `/ldap/${workspaceId}/ldapUserInfoProperties`, {
+      params: {
+        email: email,
+        global: global
+      }
+    }).toPromise();
+  }
+
+  /**
+   * This function is used to fetch the needed user´s information from LDAP
+   */
+   ldapWorkspaceUsersInfo(workspaceId: string, email: string, ldapPropertiesToMap: any, mapSelectedProperties: any, global: boolean) {
+    return this._http.put(this.INTEGRATIONS_API_URL + `/ldap/${workspaceId}/ldapWorkspaceUsersInfo`, {
+      workspaceId: workspaceId,
+      email: email,
+      ldapPropertiesToMap: ldapPropertiesToMap,
+      mapSelectedProperties: mapSelectedProperties,
+      global: global
+    }).toPromise();
   }
 }

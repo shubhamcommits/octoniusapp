@@ -27,6 +27,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { WorkspaceRolesInformationDialogComponent } from './admin-general/workspace-roles-information-dialog/workspace-roles-information-dialog.component';
 import { WorkplaceIntegrationsComponent } from './admin-general/workplace-integrations/workplace-integrations.component';
 import { WorkplaceIntegrationsDialogComponent } from './admin-general/workplace-integrations/workplace-integrations-dialog/workplace-integrations-dialog.component';
+import { WorkplaceLdapFieldsMapperDialogComponent } from './admin-general/workplace-integrations/workplace-ldap-fields-mapper-dialog/workplace-ldap-fields-mapper-dialog.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { WorkplaceIntegrationsDialogComponent } from './admin-general/workplace-
         ProfileCustomFieldsDialogComponent,
         WorkspaceRolesInformationDialogComponent,
         WorkplaceIntegrationsComponent,
-        WorkplaceIntegrationsDialogComponent
+        WorkplaceIntegrationsDialogComponent,
+        WorkplaceLdapFieldsMapperDialogComponent
     ],
     imports: [
         CommonModule,

@@ -53,6 +53,10 @@ const workspaceSchema = new Schema({
         type: Boolean,
         default: false
     },
+    ldapPropertiesMap: {
+        type: Map,
+        of: String
+    },
     profile_custom_fields: {
         type: [{
             name: {

@@ -5,7 +5,7 @@
             <app-user-information [userData]="userData" [currentUser]="isCurrentUser"  (updateData)="onUpdateUserEmitter($event)"></app-user-information>
 
             <!-- LDAP Integration STARTS -->
-            <div class="sidecontent" *ngIf="workspaceData?.integrations?.is_ldap_connected">
+            <div class="sidecontent" *ngIf="isCurrentUser && workspaceData?.integrations?.is_ldap_connected && workspaceData?.ldapPropertiesMap">
               <div class="card sideinnercard">
                 <div class="card-block">
                   <h6 class="card-title">
@@ -32,3 +32,9 @@
         </div>
     </div>
 </div>
+
+<!-- Loading Spinner Starts -->
+<ng-container *ngIf="isLoading$">
+  <app-loading-spinner class="media"></app-loading-spinner>
+</ng-container>
+<!-- Loading Spinner Ends -->
