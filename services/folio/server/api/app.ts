@@ -13,8 +13,7 @@ const app = express();
 // Load configuration based on the environment states
 if (process.env.NODE_ENV !== 'production') {
     developmentConfig();
-}
-else {
+} else {
     productionConfig();
 }
 
@@ -27,8 +26,8 @@ app.use(cors());
 // Adding The 'body-parser' middleware only handles JSON and urlencoded data
 app.use(express.json())
 // body parsers
-app.use(bodyParser.json({limit:'60mb'}));
-app.use(bodyParser.urlencoded({limit: '60mb',parameterLimit: 100000, extended: true }));
+app.use(bodyParser.json({ limit:'60mb' }));
+app.use(bodyParser.urlencoded({ limit: '60mb', parameterLimit: 100000, extended: true }));
 
 // Use Morgan middleware for logging every request status on console
 app.use(morgan('dev'));
@@ -88,7 +87,6 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
         }
     });
 });
-
 
 // Compressing the Application
 app.use(compression());

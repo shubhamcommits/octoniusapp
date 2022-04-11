@@ -28,12 +28,13 @@
                 <div class="field" *ngFor="let field of customFields">
                     <div class="title">
                         <i class="material-icons" style="color: #005FD5">label</i>
-                        {{ field.title }}
+                        {{ field.title }}
                         <i class="material-icons" *ngIf="field.name != 'priority'"
                             (click)="removeCustomField(field)"
                             style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
                     </div>
-                    <div class="values">
+
+                    <div class="values" *ngIf="!field.user_type">
                         <span class="badge" *ngFor="let value of field.values">
                             {{ value }}
                             <i class="material-icons" *ngIf="field.name != 'priority'"
@@ -46,6 +47,10 @@
                                 (keyup.enter)="addValue(field, $event)"/>
                         </div>
                     </div>
+
+                    <div class="values" *ngIf="field.user_type" i18n="@@profileCFDialog.isAnUserCF">
+                      Is an User Custom Field
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,6 +60,17 @@
              </button>
              <div class="add-field" *ngIf="showNewCustomField">
                  <input class="form-control" type="text" placeholder="Enter field name" [(ngModel)]="newCustomFieldTitle" (keyup.enter)="createCustomField()">
+
+                 <br/>
+
+                 <input type="checkbox" name="inputType" [(ngModel)]="newCustomFieldUserType">
+                 <label class="onoffswitch-label" style="margin-left: 10px; margin-right: 10px;" for="inputType" i18n="@@groupCFDialog.inputValue">User Field</label>
+
+                 <br/>
+
+                 <input type="checkbox" name="inputType" [(ngModel)]="hideInBusinessCard">
+                 <label class="onoffswitch-label" style="margin-left: 10px; margin-right: 10px;" for="inputType" i18n="@@groupCFDialog.inputValue">Hide in Business Card</label>
+
                  <div class="actions">
                      <button class="col-md-4 btn btn-primary" (click)="createCustomField()" i18n="@@profileCFDialog.save">
                          Save

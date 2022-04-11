@@ -119,31 +119,31 @@ export class LoungeService {
   }
 
   confirmAssistance(storyId: string) {
-    return this._http.put(this.baseUrl + `/stories/${storyId}/confirmEvent`, {}).toPromise();
+    return this._http.put(this.baseUrl + `/stories/${storyId}/confirmEvent`, {}).toPromise();
   }
 
   rejectAssistance(storyId: string) {
-    return this._http.put(this.baseUrl + `/stories/${storyId}/rejectEvent`, {}).toPromise();
+    return this._http.put(this.baseUrl + `/stories/${storyId}/rejectEvent`, {}).toPromise();
   }
 
   doubtAssistance(storyId: string) {
-    return this._http.put(this.baseUrl + `/stories/${storyId}/doubtEvent`, {}).toPromise();
+    return this._http.put(this.baseUrl + `/stories/${storyId}/doubtEvent`, {}).toPromise();
   }
 
   likeStory(storyId: string) {
-    return this._http.put(this.baseUrl + `/stories/${storyId}/like`, {}).toPromise();
+    return this._http.put(this.baseUrl + `/stories/${storyId}/like`, {}).toPromise();
   }
 
   unlikeStory(storyId: string) {
-    return this._http.put(this.baseUrl + `/stories/${storyId}/unlike`, {}).toPromise();
+    return this._http.put(this.baseUrl + `/stories/${storyId}/unlike`, {}).toPromise();
   }
 
   followStory(storyId: string) {
-    return this._http.put(this.baseUrl + `/stories/${storyId}/follow`, {}).toPromise();
+    return this._http.put(this.baseUrl + `/stories/${storyId}/follow`, {}).toPromise();
   }
 
   unfollowStory(storyId: string) {
-    return this._http.put(this.baseUrl + `/stories/${storyId}/unfollow`, {}).toPromise();
+    return this._http.put(this.baseUrl + `/stories/${storyId}/unfollow`, {}).toPromise();
   }
 
   getRecentStories(workspaceId: string) {
@@ -151,7 +151,7 @@ export class LoungeService {
   }
 
   addReader(storyId: string) {
-    return this._http.put(this.baseUrl + `/stories/${storyId}/addReader`, {}).toPromise();
+    return this._http.put(this.baseUrl + `/stories/${storyId}/addReader`, {}).toPromise();
   }
 
   getAttendingEvents(workspaceId: string) {

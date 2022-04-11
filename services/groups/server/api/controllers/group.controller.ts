@@ -1940,6 +1940,7 @@ export class GroupController {
                             $addToSet: { _groups: groupId }
                         });
 
+                        /*
                         if (!groupDoc || !groupDoc._members || !groupDoc._admins
                                 || !groupDoc._members.includes(user._id)
                                 || !groupDoc._admins.includes(user._id)) {
@@ -1949,6 +1950,7 @@ export class GroupController {
                                 added_by: req['userId']
                             });
                         }
+                        */
 
                         // Send join group confirmation email
                         axios.post(`${process.env.MANAGEMENT_URL}/api/mail/group-joined`, {

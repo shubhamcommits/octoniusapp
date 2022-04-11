@@ -9,8 +9,18 @@
         Manage integrations with third party applications.
       </p>
 
-      <div style="margin-top: 20px;">
-        <button class="btn btn-primary" (click)="openWorkplaceIntegrationsDialog(workspaceData?._id)" i18n="@@workspaceAddDomain.manageIntegrations">Manage Integrations</button>
+      <div style="margin-top: 10px;">
+        <button class="btn btn-primary" (click)="openWorkplaceIntegrationsDialog()" i18n="@@workspaceAddDomain.manageIntegrations">Manage Integrations</button>
+      </div>
+    </div>
+
+    <div class="card-block" style="margin-top: 20px;" *ngIf="workspaceData?.integrations?.is_ldap_connected">
+      <p>
+        <b i18n="@@workspaceAddDomain.fetchInfo">Fetch Information from LDAP </b>
+      </p>
+
+      <div style="margin-top: 10px;">
+        <button class="btn btn-primary" (click)="getUserInformation()" i18n="@@workspaceAddDomain.syncLDAP">Sync LDAP</button>
       </div>
     </div>
   </div>

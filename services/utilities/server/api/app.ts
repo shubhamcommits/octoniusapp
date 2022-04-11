@@ -8,8 +8,6 @@ import { developmentConfig, productionConfig } from '../configs';
 import { fileHandlerRoutes, filesRoutes, foldersRoutes, foldersPermissionsRoutes, filesPermissionsRoutes, libreofficeRoutes } from './routes';
 import fileUpload from 'express-fileupload';
 
-//var rawBodyParser = require('raw-body-parser');
-
 // Defining new Express application
 const app = express();
 
@@ -23,17 +21,15 @@ if (process.env.NODE_ENV !== 'production') {
 // Initiliazing Database Connection
 require('../db');
 
+// cors middleware for orign and Headers
+app.use(cors());
+
 // Adding The 'body-parser' middleware only handles JSON and urlencoded data
 app.use(express.json())
 // body parsers
+app.use(bodyParser.raw({ limit: '60mb' }));
 app.use(bodyParser.json({ limit:'60mb' }));
 app.use(bodyParser.urlencoded({ limit: '60mb', parameterLimit: 100000, extended: true }));
-app.use(bodyParser.raw({ limit: '60mb' }));
-
-//app.use(rawBodyParser());
-
-// cors middleware for orign and Headers
-app.use(cors());
 
 // Use Morgan middleware for logging every request status on console
 app.use(morgan('dev'));
@@ -53,6 +49,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
+
+// Handle POST requests that come in formatted as JSON
+app.use(express.json());
 
 // Handling GZIPPED ROUTES
 const encodeResToGzip = (contentType: any) => {
@@ -88,7 +87,6 @@ app.all('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Correct REST naming
-// app.use('/api/auths', authRoutes)
 app.use('/api/files', filesRoutes)
 app.use('/api/folders', foldersRoutes)
 app.use('/api/files/permissions', filesPermissionsRoutes)

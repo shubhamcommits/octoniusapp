@@ -134,6 +134,10 @@ export class ComponentSearchInputBoxComponent implements OnInit {
             }
 
             if(this.type === 'workspaceMembers') {
+              if (JSON.stringify(this.workspaceData) == JSON.stringify({})) {
+                this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+              }
+
               this.itemList = this.workspaceData.members.filter( member => {
                 let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase()
                 return item.includes(this.itemValue.toLowerCase());

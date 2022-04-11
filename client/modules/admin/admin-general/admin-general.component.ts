@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, AfterContentChecked, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
@@ -6,6 +6,7 @@ import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
+import { SubSink } from 'subsink';
 import { WorkspaceRolesInformationDialogComponent } from './workspace-roles-information-dialog/workspace-roles-information-dialog.component';
 
 @Component({
@@ -13,7 +14,7 @@ import { WorkspaceRolesInformationDialogComponent } from './workspace-roles-info
   templateUrl: './admin-general.component.html',
   styleUrls: ['./admin-general.component.scss']
 })
-export class AdminGeneralComponent implements OnInit {
+export class AdminGeneralComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   workspaceData: Object;
 
@@ -23,9 +24,14 @@ export class AdminGeneralComponent implements OnInit {
 
   publicFunctions = new PublicFunctions(this.injector);
 
+  isLoading$;
+
+  // UNSUBSCRIBE THE DATA
+  private subSink = new SubSink();
+
   constructor(
     private workspaceService: WorkspaceService,
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private storageService: StorageService,
     private authService: AuthService,
     private router: Router,
@@ -46,7 +52,14 @@ export class AdminGeneralComponent implements OnInit {
     this.allowDecentralizedRoles = this.workspaceData['allow_decentralized_roles'];
   }
 
-  ngAfterViewChecked(): void {
+  ngAfterContentChecked() {
+    this.subSink.add(this.utilityService.isLoadingSpinner.subscribe((res) => {
+      this.isLoading$ = res;
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subSink.unsubscribe();
   }
 
   removeWorkspace(workspaceId) {

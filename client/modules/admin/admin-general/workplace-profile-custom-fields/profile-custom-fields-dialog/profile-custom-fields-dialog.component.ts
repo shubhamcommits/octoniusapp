@@ -14,6 +14,8 @@ export class ProfileCustomFieldsDialogComponent implements OnInit {
 
   showNewCustomField = false;
   newCustomFieldTitle = '';
+  newCustomFieldUserType = false;
+  hideInBusinessCard = false;
 
   workspaceData;
 
@@ -53,9 +55,10 @@ export class ProfileCustomFieldsDialogComponent implements OnInit {
         const newCF = {
           name: this.newCustomFieldTitle.toLowerCase(),
           title: this.titleCase(this.newCustomFieldTitle),
+          user_type: this.newCustomFieldUserType,
+          hide_in_business_card: this.hideInBusinessCard,
           values: []
         };
-
 
         // Save the new field
         await this.workspaceService.saveNewCustomField(newCF, this.workspaceData._id).then((res) => {

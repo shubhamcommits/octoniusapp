@@ -27,7 +27,7 @@
                 <div class="field" *ngFor="let field of customFields">
                     <div class="title">
                         <i class="material-icons" style="color: #005FD5">label</i>
-                        {{ field.title }}
+                        {{ field.title }}
                         <i class="material-icons" *ngIf="field.name != 'priority'"
                             (click)="removeCustomField(field)"
                             style="color: red; cursor: pointer; margin-left: 20px;">highlight_off</i>
