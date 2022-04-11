@@ -112,7 +112,6 @@ export class LdapController {
                 }
             }).select('integrations');
 
-
             const integrations = workspace['integrations'];
 
             //Slack connected or not checking
@@ -125,7 +124,6 @@ export class LdapController {
                         console.error(err);
                     }
 
-                    const domain = email.toString().split('@')[1];
                     let opts = {};
                     if (global) {
                         const domain = email.toString().split('@')[1];
@@ -171,29 +169,44 @@ export class LdapController {
                                     }
                                     //(Object.keys(mapSelectedProperties)).forEach(property => {
                                     ldapPropertiesToMap.forEach(async property => {
-                                        let managerMail;
-                                        if (property == 'manager' && ldapUser[property].toLowerCase().startsWith('cn=')) {
+                                        /*
+                                        //let managerMail;
+                                        // if (property == 'manager' && ldapUser[property] && ldapUser[property].toLowerCase().startsWith('cn=')) {
+                                        if (property == 'mail' && ldapUser[property]) {
                                             let opts2 = {
                                                 filter: ldapUser[property],
                                                 scope: 'sub',
                                                 attributes: ['mail']
                                             }
-                                            
+
                                             client.search(integrations.ldap_search_base, opts2, (err2, res2) => {
+                                                if (err2) {
+                                                    sendError(res, err2);
+                                                }
+                                                
                                                 res2.on('searchEntry', function (entry2) {
-                                                    console.log(entry2.object);
                                                     managerMail = entry2.object;
+                                                });
+                        
+                                                res2.on("error", (err3) => {
+                                                    sendError(res, err3);
                                                 });
                                             });
 
-                                            if (managerMail) {
-                                                ldapUser[property] = await User.findOne({
+                                            //if (managerMail) {
+                                                const userOctonius = await User.findOne({
                                                     $and: [
                                                         { _workspace: workspaceId },
-                                                        { email: managerMail.mail }
+                                                        { email: ldapUser[property] }
+                                                        //{ email: managerMail.mail }
                                                     ]}).select('_id').lean();
-                                            }
+
+                                                ldapUser[property] = userOctonius._id;
+                                            //}
+console.log(ldapUser[property]);
+console.log(userOctonius);
                                         }
+                                        */
                                         userProfileCustomFields[mapSelectedProperties[property]] = ldapUser[property];
                                     });
 

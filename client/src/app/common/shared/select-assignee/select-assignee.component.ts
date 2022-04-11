@@ -19,6 +19,9 @@ export class SelectAssigneeComponent implements OnInit {
   // Group Id Input
   @Input('groupId') groupId: any;
 
+  // Workspace Id Input
+  @Input('workspaceData') workspaceData: any;
+
   // Type as the input from component 'event' or 'task'
   @Input('type') type: any;
 
@@ -98,6 +101,10 @@ export class SelectAssigneeComponent implements OnInit {
       // Emit the output as the taskAssignee
       this.member.emit(this.eventMembersMap)
 
+    } else if (this.type == 'workspaceMembers') {
+      this.userData = memberMap;
+      // Emit the output as the taskAssignee
+      this.member.emit(this.userData)
     }
 
   }

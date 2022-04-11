@@ -28,6 +28,7 @@ export class UserProfileCustomFieldsComponent implements OnInit {
   // Is current user variable
   @Input('currentUser') currentUser: boolean = false;
 
+  @Input() workspaceData;
 
   customFields: any = [];
   selectedCFValues: any = [];
@@ -41,7 +42,7 @@ export class UserProfileCustomFieldsComponent implements OnInit {
 
     this.workspaceService.getProfileCustomFields(this.userData._workspace).then((res) => {
       if (res['workspace']['profile_custom_fields']) {
-        res['workspace']['profile_custom_fields'].forEach(field => {
+        res['workspace']['profile_custom_fields'].forEach(async field => {
 
           if (!this.userData.profile_custom_fields) {
             this.userData.profile_custom_fields = new Map<string, string>();
@@ -51,7 +52,11 @@ export class UserProfileCustomFieldsComponent implements OnInit {
             this.userData.profile_custom_fields[field.name] = '';
             this.selectedCFValues[field.name] = '';
           } else {
-            this.selectedCFValues[field.name] = this.userData.profile_custom_fields[field.name];
+            if (!field.user_type) {
+              this.selectedCFValues[field.name] = this.userData.profile_custom_fields[field.name];
+            } else {
+              this.selectedCFValues[field.name] = await this.publicFunctions.getOtherUser(this.userData.profile_custom_fields[field.name]);
+            }
           }
 
           const ldapFieldValue = this.selectedCFValues[field.name];
@@ -70,12 +75,16 @@ export class UserProfileCustomFieldsComponent implements OnInit {
     this.saveCustomField(customFieldName, customFieldValue);
   }
 
-  saveCustomField(customFieldName: string, customFieldValue: string) {
+  saveCustomField(customFieldName: string, customFieldValue: any) {
     this.utilityService.asyncNotification($localize`:@@userProfileCF.pleaseWaitWeUpdateContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
       this.userService.saveCustomField(this.userData._id, customFieldName, customFieldValue)
         .then(async (res) => {
-          this.selectedCFValues[customFieldName] = customFieldValue;
-          this.userData.profile_custom_fields[customFieldName] = customFieldValue;
+
+          const field = this.customFields[this.customFields.findIndex(cf => cf.name == customFieldName)];
+          if (field && !field.user_type) {
+            this.selectedCFValues[customFieldName] = customFieldValue;
+            this.userData.profile_custom_fields[customFieldName] = customFieldValue;
+          }
 
           this.autoUpdateGroups();
 
@@ -118,5 +127,10 @@ export class UserProfileCustomFieldsComponent implements OnInit {
 
   isValueInOptions(cfValues, selectedValue) {
     return cfValues.findIndex(value => value == selectedValue) >= 0;
+  }
+
+  selectUser(customFieldName, user) {
+    this.selectedCFValues[customFieldName] = user;
+    this.saveCustomField(customFieldName, user._id);
   }
 }

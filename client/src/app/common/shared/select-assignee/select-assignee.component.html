@@ -33,5 +33,23 @@
         (member)="getMemberDetails($event)">
     </app-component-search-input-box>
 </section>
-
 <!-- Assignee section for events ends -->
+
+<!-- Assignee section for tasks starts -->
+<section [id]="userData?._id" *ngIf="type === 'workspaceMembers'">
+  <app-secured-image *ngIf="userData"
+      [imgURL]="userData?.profile_pic"
+      [service]="'user'"
+      [styleClass]="'feed-avatar'"></app-secured-image>
+  <p *ngIf="userData"> {{userData?.first_name}} {{ userData?.last_name }}</p>
+
+  <app-component-search-input-box style="position: initial;"
+      *ngIf="showBar"
+      [placeholder]="'Select...'"
+      [workspaceId]="userData._workspace"
+      [userData]="userData"
+      [type]="type"
+      (member)="getMemberDetails($event)">
+  </app-component-search-input-box>
+</section>
+<!-- Assignee section for tasks ends -->

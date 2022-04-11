@@ -62,7 +62,6 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
     }
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-
   }
 
   ngAfterContentChecked() {

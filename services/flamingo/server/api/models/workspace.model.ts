@@ -71,6 +71,14 @@ const workspaceSchema = new Schema({
                 type: [String],
                 required: true,
                 default: []
+            },
+            user_type: {
+                type: Boolean,
+                default: false
+            },
+            hide_in_business_card: {
+                type: Boolean,
+                default: false
             }
         }]
     },

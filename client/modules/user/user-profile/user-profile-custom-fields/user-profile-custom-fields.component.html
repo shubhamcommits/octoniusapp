@@ -10,19 +10,27 @@
       <div *ngFor="let cf of customFields" class="d-flex custom-field justify-content-start mb-3 row">
         <p class="col">{{ cf.title }}</p>
 
-        <mat-select ngDefaultControl
-            *ngIf="currentUser"
-            [(value)]="selectedCFValues[cf.name]"
-            (selectionChange)="onCustomFieldChange($event, cf.name)"
-            appearance="fill"
-            class="col">
-            <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
-            <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
-        </mat-select>
+        <div *ngIf="!cf.user_type" class="col">
+          <mat-select ngDefaultControl
+              *ngIf="currentUser"
+              [(value)]="selectedCFValues[cf.name]"
+              (selectionChange)="onCustomFieldChange($event, cf.name)"
+              appearance="fill" class="col">
+              <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
+              <mat-option *ngFor="let val of cf.values" [value]="val">{{ val }}</mat-option>
+          </mat-select>
 
+          <span *ngIf="!currentUser">{{ selectedCFValues[cf.name] }}</span>
+        </div>
 
-        <span *ngIf="!currentUser">{{ selectedCFValues[cf.name] }}</span>
-
+        <div *ngIf="cf.user_type" class="col">
+          <app-select-assignee
+            [userData]="selectedCFValues[cf.name]"
+            [workspaceData]="workspaceData"
+            [showBar]="currentUser"
+            type="workspaceMembers"
+            (member)="selectUser(cf.name, $event)"></app-select-assignee>
+        </div>
         <!-- Clean field starts -->
         <i (click)="saveCustomField(cf.name, null);" class="material-icons muted mr-5" style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
         <!-- Clean field ends -->
