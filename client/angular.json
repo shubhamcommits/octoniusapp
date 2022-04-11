@@ -70,7 +70,7 @@
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true,
-            "i18nMissingTranslation": "ignore"
+            "i18nMissingTranslation": "warning"
           },
           "configurations": {
             "production": {
