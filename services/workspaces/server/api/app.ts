@@ -4,9 +4,9 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import compression from 'compression';
-import fileUpload from 'express-fileupload';
 import { developmentConfig, productionConfig } from '../configs';
 import { domainRoutes, loungesRoutes, memberRoutes, mgmtRoutes, workspaceRoutes, storiesRoutes } from './routes';
+import fileUpload from 'express-fileupload';
 
 // Defining new Express application
 const app = express();
@@ -14,22 +14,21 @@ const app = express();
 // Load configuration based on the environment states
 if (process.env.NODE_ENV !== 'production') {
     developmentConfig();
-}
-else {
+} else {
     productionConfig();
 }
 
 // Initiliazing Database Connection
 require('../db');
 
+// cors middleware for orign and Headers
+app.use(cors());
+
 // Adding The 'body-parser' middleware only handles JSON and urlencoded data
 app.use(express.json())
 // body parsers
-app.use(bodyParser.json({limit:'60mb'}));
-app.use(bodyParser.urlencoded({limit: '60mb',parameterLimit: 100000, extended: true }));
-
-// cors middleware for orign and Headers
-app.use(cors());
+app.use(bodyParser.json({ limit:'60mb' }));
+app.use(bodyParser.urlencoded({ limit: '60mb', parameterLimit: 100000, extended: true }));
 
 // Use Morgan middleware for logging every request status on console
 app.use(morgan('dev'));
@@ -70,7 +69,7 @@ app.get("*.css", encodeResToGzip('text/css'));
 // Set file upload middleware
 app.use(fileUpload({
     limits: {
-        fileSize: 1024 * 1024 * 1024
+        fileSize: 1024 * 1024 * 1024 * 1024
     },
     abortOnLimit: true
 }));
