@@ -22,13 +22,13 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Initiliazing Database Connection
 require('../db');
-
-// Adding The 'body-parser' middleware only handles JSON and urlencoded data
-app.use(express.json())
 // body parsers
 app.use(bodyParser.raw({ limit: '60mb' }));
 app.use(bodyParser.json({ limit:'60mb' }));
 app.use(bodyParser.urlencoded({ limit: '60mb', parameterLimit: 100000, extended: true }));
+
+// Adding The 'body-parser' middleware only handles JSON and urlencoded data
+app.use(express.json())
 
 //app.use(rawBodyParser());
 
