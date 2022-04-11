@@ -88,7 +88,6 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
     });
 });
 
-
 // Compressing the Application
 app.use(compression());
 
