@@ -26,6 +26,7 @@ app.use(cors());
 
 // Adding The 'body-parser' middleware only handles JSON and urlencoded data
 app.use(express.json())
+
 // body parsers
 app.use(bodyParser.raw({ limit: '60mb' }));
 app.use(bodyParser.json({ limit:'60mb' }));
@@ -51,7 +52,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // Handle POST requests that come in formatted as JSON
-app.use(express.json());
+//app.use(express.json());
 
 // Handling GZIPPED ROUTES
 const encodeResToGzip = (contentType: any) => {
