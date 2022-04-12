@@ -46,6 +46,9 @@ import { UserService } from 'src/shared/services/user-service/user.service';
       this.isGlobal = this.data.isGlobal;
       this.userLdapData = this.data.userLdapData;
 
+      if (!this.workplaceData.ldap_user_properties_cf) {
+        this.workplaceData.ldap_user_properties_cf = [];
+      }
       //this.profileCustomFields = Object.keys(this.workplaceData?.profile_custom_fields);
       this.profileCustomFields = this.workplaceData?.profile_custom_fields;
       const ldapPropertiesMap = this.workplaceData?.ldapPropertiesMap;
@@ -58,7 +61,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
       }
     }
 
-    getOctoniusProperty(ldapProperty) {
+    getOctoniusProperty(ldapProperty) {
       //const index = (this.profileCustomFields) ? this.profileCustomFields.findIndex(cf => cf.title == ldapProperty) : -1;
       //return (index >= 0) ? this.profileCustomFields[index].name : "";
       return this.mapSelectedProperties.get(ldapProperty);
@@ -71,6 +74,16 @@ import { UserService } from 'src/shared/services/user-service/user.service';
         this.ldapPropertiesToMap.splice(index, 1);
       } else {
         this.ldapPropertiesToMap.push(ldapProperty);
+      }
+    }
+
+    isUserProperty(ldapProperty: string) {
+      let index = this.workplaceData?.ldap_user_properties_cf.findIndex(prop => prop == ldapProperty)
+      let isSetToMap = index >= 0;
+      if (isSetToMap) {
+        this.workplaceData?.ldap_user_properties_cf.splice(index, 1);
+      } else {
+        this.workplaceData?.ldap_user_properties_cf.push(ldapProperty);
       }
     }
 
@@ -94,7 +107,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 
             this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitMappingProperties:Please wait we are mapping the new properties...`,
               new Promise((resolve, reject) => {
-                  this.workspaceService.ldapWorkspaceUsersInfo(this.workplaceData?._id, this.userData?.email, this.ldapPropertiesToMap, this.mapSelectedProperties, this.isGlobal).then(res => {
+                  this.workspaceService.ldapWorkspaceUsersInfo(this.workplaceData?._id, this.userData?.email, this.ldapPropertiesToMap, this.mapSelectedProperties, this.workplaceData?.ldap_user_properties_cf, this.isGlobal).then(res => {
                     this.userData = res['user'];
                     this.publicFunctions.sendUpdatesToUserData(this.userData);
                     this.utilityService.updateIsLoadingSpinnerSource(false);

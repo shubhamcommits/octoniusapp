@@ -100,6 +100,7 @@ export class LdapController {
         // Find the custom field in a workspace and remove the value
         const ldapPropertiesToMap = req.body['ldapPropertiesToMap'];
         const mapSelectedProperties = req.body['mapSelectedProperties'];
+        const userProperties = req.body['userProperties'];
         const email = req.body['email'];
         const global = req.body['global'];
 
@@ -108,7 +109,8 @@ export class LdapController {
             // Find workspace by workspace _id
             const workspace = await Workspace.findByIdAndUpdate(workspaceId, {
                 $set: {
-                    ldapPropertiesMap: mapSelectedProperties
+                    ldapPropertiesMap: mapSelectedProperties,
+                    ldap_user_properties_cf: userProperties
                 }
             }).select('integrations');
 
@@ -169,6 +171,17 @@ export class LdapController {
                                     }
                                     //(Object.keys(mapSelectedProperties)).forEach(property => {
                                     ldapPropertiesToMap.forEach(async property => {
+                                        if (userProperties.findIndex(userProperty => userProperty == property) >= 0) {
+                                            const userOctonius = await User.findOne({
+                                                $and: [
+                                                    { _workspace: workspaceId },
+                                                    { email: ldapUser[property] }
+                                                ]}).select('_id').lean();
+
+                                            if (userOctonius) {
+                                                ldapUser[property] = userOctonius._id;
+                                            }
+                                        }
                                         /*
                                         //let managerMail;
                                         // if (property == 'manager' && ldapUser[property] && ldapUser[property].toLowerCase().startsWith('cn=')) {
