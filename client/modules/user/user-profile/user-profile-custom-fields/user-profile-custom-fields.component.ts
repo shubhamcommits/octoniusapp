@@ -64,7 +64,9 @@ export class UserProfileCustomFieldsComponent implements OnInit {
             field.values.push(ldapFieldValue);
           }
 
-          this.customFields.push(field);
+          if (this.currentUser || ['owner', 'admin', 'manager'].includes(this.userData?.role) || !field.hide_in_business_card) {
+            this.customFields.push(field);
+          }
         });
       }
     });
