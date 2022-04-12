@@ -334,12 +334,13 @@ export class WorkspaceService {
   /**
    * This function is used to fetch the needed user´s information from LDAP
    */
-   ldapWorkspaceUsersInfo(workspaceId: string, email: string, ldapPropertiesToMap: any, mapSelectedProperties: any, global: boolean) {
+   ldapWorkspaceUsersInfo(workspaceId: string, email: string, ldapPropertiesToMap: any, mapSelectedProperties: any, userProperties: any, global: boolean) {
     return this._http.put(this.INTEGRATIONS_API_URL + `/ldap/${workspaceId}/ldapWorkspaceUsersInfo`, {
       workspaceId: workspaceId,
       email: email,
       ldapPropertiesToMap: ldapPropertiesToMap,
       mapSelectedProperties: mapSelectedProperties,
+      userProperties: userProperties,
       global: global
     }).toPromise();
   }

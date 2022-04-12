@@ -23,13 +23,12 @@
           <div class="col-md-1">
             <input [checked]="ldapPropertiesToMap.indexOf(ldapPropertyName)>=0" class="" type="checkbox" (click)="selectProperty(ldapPropertyName)">
           </div>
-          <div class="col-md-5">
+          <div class="col-md-4">
             <span>{{ ldapPropertyName }}</span>
-            <!--&nbsp; <span class="material-icons-outlined">settings_ethernet</span> &nbsp;-->
             &nbsp; <span class="material-icons-outlined">sync_alt</span> &nbsp;
             <span class="muted">{{ getOctoniusProperty(ldapPropertyName) }}</span>
           </div>
-          <div class="col-md-5" *ngIf="isGlobal">
+          <div class="col-md-4" *ngIf="isGlobal">
             <mat-select ngDefaultControl
                 [(value)]="mapSelectedProperties[ldapPropertyName]"
                 (selectionChange)="changePropertyValue($event, ldapPropertyName)"
@@ -38,7 +37,11 @@
               <mat-option *ngFor="let profileCF of profileCustomFields; let j=index" [value]="profileCF.name">{{ profileCF.title }}</mat-option>
             </mat-select>
           </div>
-          <div class="col-md-5" *ngIf="!isGlobal && userLdapData">
+          <div class="col-md-3">
+            <input [checked]="workplaceData?.ldap_user_properties_cf?.indexOf(ldapPropertyName)>=0" class="" type="checkbox" (click)="isUserProperty(ldapPropertyName)" [disabled]="!isGlobal">
+            &nbsp; <span i18n="@@workplaceLdapFieldsMapperDialog.isUserEmail">Is User E-Mail</span>
+          </div>
+          <div class="col-md-4" *ngIf="!isGlobal && userLdapData">
             <span>{{ userLdapData[ldapPropertyName] | truncatetext: 30 }}</span>
           </div>
         </div>
