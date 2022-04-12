@@ -132,13 +132,11 @@ export class LdapController {
                         opts = {
                             filter: `(mail=*@${domain})`,
                             scope: 'sub'
-                            //attributes: ['*']
                         };
                     } else {
                         opts = {
                             filter: `(mail=${email})`,
                             scope: 'sub'
-                            //attributes: ['*']
                         };
                     }
 
@@ -165,71 +163,53 @@ export class LdapController {
                                     ]}).select('_id profile_custom_fields').lean();
 
                                 if (user) {
+                                    octoniusUserNoGlobal = await User.findById(user._id);
+
+                                    if (!octoniusUserNoGlobal['profile_custom_fields']) {
+                                        octoniusUserNoGlobal['profile_custom_fields'] = new Map<string, string>();
+                                    }
+
                                     let userProfileCustomFields: any = user['profile_custom_fields'];
                                     if (!userProfileCustomFields) {
                                         userProfileCustomFields = {};
                                     }
-                                    //(Object.keys(mapSelectedProperties)).forEach(property => {
-                                    ldapPropertiesToMap.forEach(async property => {
-                                        if (userProperties.findIndex(userProperty => userProperty == property) >= 0) {
-                                            const userOctonius = await User.findOne({
-                                                $and: [
-                                                    { _workspace: workspaceId },
-                                                    { email: ldapUser[property] }
-                                                ]}).select('_id').lean();
 
-                                            if (userOctonius) {
-                                                ldapUser[property] = userOctonius._id;
-                                            }
-                                        }
-                                        /*
-                                        //let managerMail;
-                                        // if (property == 'manager' && ldapUser[property] && ldapUser[property].toLowerCase().startsWith('cn=')) {
-                                        if (property == 'mail' && ldapUser[property]) {
-                                            let opts2 = {
-                                                filter: ldapUser[property],
-                                                scope: 'sub',
-                                                attributes: ['mail']
-                                            }
-
-                                            client.search(integrations.ldap_search_base, opts2, (err2, res2) => {
-                                                if (err2) {
-                                                    sendError(res, err2);
-                                                }
-                                                
-                                                res2.on('searchEntry', function (entry2) {
-                                                    managerMail = entry2.object;
-                                                });
-                        
-                                                res2.on("error", (err3) => {
-                                                    sendError(res, err3);
-                                                });
-                                            });
-
-                                            //if (managerMail) {
+                                    if (ldapPropertiesToMap) {
+                                        for (let i = 0; i < ldapPropertiesToMap.length; i++) {
+                                            const property = ldapPropertiesToMap[i];
+                                            if (userProperties.findIndex(userProperty => userProperty == property) >= 0) {
                                                 const userOctonius = await User.findOne({
                                                     $and: [
                                                         { _workspace: workspaceId },
                                                         { email: ldapUser[property] }
-                                                        //{ email: managerMail.mail }
                                                     ]}).select('_id').lean();
 
-                                                ldapUser[property] = userOctonius._id;
-                                            //}
-console.log(ldapUser[property]);
-console.log(userOctonius);
+                                                if (userOctonius) {
+                                                    octoniusUserNoGlobal['profile_custom_fields'].set(mapSelectedProperties[property], userOctonius._id);
+                                            
+                                                    // Find the post and update the custom field
+                                                    octoniusUserNoGlobal = await User.findByIdAndUpdate({
+                                                        _id: user._id
+                                                    }, {
+                                                        $set: { "profile_custom_fields": octoniusUserNoGlobal['profile_custom_fields'] }
+                                                    }), {
+                                                        new: true
+                                                    };
+                                                }
+                                            } else if (mapSelectedProperties[property]) {
+                                                octoniusUserNoGlobal['profile_custom_fields'].set(mapSelectedProperties[property], ldapUser[property]);
+                                        
+                                                // Find the post and update the custom field
+                                                octoniusUserNoGlobal = await User.findByIdAndUpdate({
+                                                    _id: user._id
+                                                }, {
+                                                    $set: { "profile_custom_fields": octoniusUserNoGlobal['profile_custom_fields'] }
+                                                }), {
+                                                    new: true
+                                                };
+                                            }
                                         }
-                                        */
-                                        userProfileCustomFields[mapSelectedProperties[property]] = ldapUser[property];
-                                    });
-
-                                    octoniusUserNoGlobal = await User.findByIdAndUpdate({
-                                            _id: user._id
-                                        }, {
-                                            $set: { "profile_custom_fields": userProfileCustomFields }
-                                        }), {
-                                            new: true
-                                        };
+                                    }
                                 }
                             });
 
