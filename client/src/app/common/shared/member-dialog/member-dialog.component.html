@@ -85,7 +85,14 @@
                   <ul class="skills">
                       <li *ngFor="let pf of currentWorkspace?.profile_custom_fields">
                         <span>{{ pf.title }}: &nbsp;</span>
-                        <span *ngIf="userData.profile_custom_fields[pf.name]">{{ userData.profile_custom_fields[pf.name] }}</span>
+                        <span *ngIf="userData.profile_custom_fields[pf.name] && !pf.user_type">{{ userData.profile_custom_fields[pf.name] }}</span>
+                        <span *ngIf="userData.profile_custom_fields[pf.name] && pf.user_type">
+                          <app-select-assignee
+                            [userData]="userData.profile_custom_fields[pf.name]"
+                            [workspaceData]="currentWorkspace"
+                            [showBar]="false"
+                            type="workspaceMembers"></app-select-assignee>
+                        </span>
                       </li>
                   </ul>
                   <!-- Iterate over all the profile fields present for a particular workspace ends -->

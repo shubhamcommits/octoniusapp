@@ -60,9 +60,14 @@ export class SearchResultsComponent implements OnChanges {
         const customFieldsKeys = Object.keys(this.data?.profile_custom_fields);
         this.customFields = [];
         if (this.data._workspace && this.data._workspace.profile_custom_fields) {
-          this.data._workspace.profile_custom_fields.forEach(cf => {
+          this.data._workspace.profile_custom_fields.forEach(async cf => {
             const index = (customFieldsKeys) ? customFieldsKeys.findIndex(key => key == cf.name) : -1;
-            if (index >= 0 && this.data?.profile_custom_fields[cf.name] && this.data?.profile_custom_fields[cf.name] != '') {
+            if (index >= 0 && this.data?.profile_custom_fields[cf.name]
+                && this.data?.profile_custom_fields[cf.name] != ''
+                && (!cf.hide_in_business_card || ['owner', 'admin', 'manager'].includes(this.data?.role))) {
+              if (cf.user_type) {
+                this.data.profile_custom_fields[cf.name] = await this.publicFunctions.getOtherUser(this.data.profile_custom_fields[cf.name]);
+              }
               this.customFields.push(cf);
             }
           });
@@ -155,5 +160,9 @@ export class SearchResultsComponent implements OnChanges {
         this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
       });
     return wopiClientURL;
+  }
+
+  openFullscreenModal(userId: string) {
+    this.utilityService.openFullscreenModal(userId);
   }
 }

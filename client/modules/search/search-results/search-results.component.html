@@ -78,7 +78,8 @@
 
     {{ data?.first_name }} {{ data?.last_name }}
 
-    <a [href]="generateUserURL(data._id)" target="_blank">
+    <!--<a [href]="generateUserURL(data._id)" target="_blank">-->
+    <a (click)="openFullscreenModal(data._id)" style="cursor: pointer;">
       <span class="material-icons">badge</span>
     </a>
   </div>
@@ -102,7 +103,8 @@
     <strong i18n="@@searchResult.customFields">Custom Fields: </strong>
 
     <div *ngFor="let cf of customFields" class="label" style="background: #48CDC1;">
-      <span *ngIf="data?.profile_custom_fields && data?.profile_custom_fields[cf.name]">{{ cf.title }}: {{ data?.profile_custom_fields[cf.name] }}</span>
+      <span *ngIf="data?.profile_custom_fields && data?.profile_custom_fields[cf.name] && !cf.user_type">{{ cf.title }}: {{ data?.profile_custom_fields[cf.name] }}</span>
+      <span *ngIf="data?.profile_custom_fields && data?.profile_custom_fields[cf.name] && cf.user_type">{{ cf.title }}: {{ data?.profile_custom_fields[cf.name].first_name + ' ' + data?.profile_custom_fields[cf.name].last_name }} </span>
     </div>
   </div>
 </div>
