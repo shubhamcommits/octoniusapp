@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
-import { ImageCroppedEvent, ImageCropperComponent, ImageTransform } from 'ngx-image-cropper';
+import { base64ToFile, ImageCroppedEvent, ImageCropperComponent, ImageTransform } from 'ngx-image-cropper';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
@@ -55,7 +55,7 @@ export class CropImageComponent implements OnInit {
     this.croppedImage = event.base64;
 
     // Convert the event Blob to File
-    this.croppedImage = new File([this.croppedImage], this.imageChangedEvent.target['files'][0]['name'], { type: this.imageChangedEvent.target['files'][0]['type'] });
+    this.croppedImage = new File([base64ToFile(this.croppedImage)], this.imageChangedEvent.target['files'][0]['name'], { type: this.imageChangedEvent.target['files'][0]['type'] });
 
     // Emit the image
     this.outputImage.emit(this.croppedImage);
