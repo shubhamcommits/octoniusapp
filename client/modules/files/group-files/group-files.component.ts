@@ -1017,4 +1017,8 @@ export class GroupFilesComponent implements OnInit {
       });
     return wopiClientURL;
   }
+
+  openFullscreenModal(userId: string) {
+    this.utilityService.openFullscreenModal(userId);
+  }
 }

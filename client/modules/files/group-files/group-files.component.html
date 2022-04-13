@@ -81,9 +81,7 @@
 
               <div class="media-body">
                   <div class="float-right" *ngIf="folder?.folder_name != '../'">
-                      <app-secured-image
-                          routerLink="/dashboard/user/profile"
-                          [queryParams]="{ userId: folder?._created_by?._id || folder?._created_by?._id }"
+                      <app-secured-image (click)="openFullscreenModal(folder?._created_by?._id)"
                           [imgURL]="folder?._created_by?.profile_pic"
                           [service]="'user'"
                           [styleClass]="'mr-3 feed-avatar'">
@@ -159,9 +157,7 @@
 
               <div class="media-body">
                   <div class="float-right">
-                      <app-secured-image
-                          routerLink="/dashboard/user/profile"
-                          [queryParams]="{ userId: file?._posted_by?._id || file?._created_by?._id }"
+                      <app-secured-image (click)="openFullscreenModal(file?._posted_by?._id)"
                           [imgURL]="file?._posted_by?.profile_pic"
                           [service]="'user'"
                           [styleClass]="'feed-avatar'">
