@@ -205,8 +205,8 @@ export class StoryActionsBarComponent implements OnInit, OnChanges {
     this.onShowCommentsActionEvent.emit(this.showComments);
   }
 
-  formateDate(date){
-    return moment(moment.utc(date), "MMM dd, yyyy HH:mm").toDate();
+  formateDate(date) {
+    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 
   /**

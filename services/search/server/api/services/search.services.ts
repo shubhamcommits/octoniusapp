@@ -364,13 +364,15 @@ export class SearchService {
     let from_date;
     let to_date;
     if (advancedFilters.from_date) {
+console.log(moment(advancedFilters.from_date).startOf('day').format());
       from_date = moment(advancedFilters.from_date).startOf('day').format();
     } else {
       from_date = moment().subtract(40, 'years').format();
     }
 
     if (advancedFilters.to_date) {
-      to_date = moment(advancedFilters.to_date).startOf('day').format();
+console.log(moment(advancedFilters.to_date).endOf('day').format());
+      to_date = moment(advancedFilters.to_date).endOf('day').format();
     } else {
       to_date = moment().add(1, 'days').format();
     }

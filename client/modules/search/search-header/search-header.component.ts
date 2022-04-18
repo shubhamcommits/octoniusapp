@@ -240,17 +240,17 @@ export class SearchHeaderComponent implements OnInit {
    */
   getDate(dateObject: any, property: string) {
     if (property == 'from') {
-      this.advancedFilters.from_date = dateObject.toDate();
+      this.advancedFilters.from_date = (dateObject) ? dateObject.toDate() : '';
     }
 
     if (property == 'to') {
-      this.advancedFilters.to_date = dateObject.toDate();
+      this.advancedFilters.to_date = (dateObject) ? dateObject.toDate() : '';
     }
 
     this.search();
   }
 
-  formateDate(date){
-    return moment(moment.utc(date), "YYYY-MM-DD").toDate();
+  formateDate(date) {
+    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 }
