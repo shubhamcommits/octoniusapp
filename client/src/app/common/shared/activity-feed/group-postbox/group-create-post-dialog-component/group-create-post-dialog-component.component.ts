@@ -155,8 +155,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }
   }
 
-  formateDate(date){
-    return moment(moment.utc(date), "YYYY-MM-DD").toDate();
+  formateDate(date) {
+    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 
   async initPostData() {

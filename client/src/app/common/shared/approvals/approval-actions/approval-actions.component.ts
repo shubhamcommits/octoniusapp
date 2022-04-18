@@ -333,7 +333,7 @@ export class ApprovalActionsComponent implements OnChanges, OnInit {
     return true
   }
 
-  formateDate(date){
-    return moment(moment.utc(date), "YYYY-MM-DD").toDate();
+  formateDate(date) {
+    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
   }
 }
