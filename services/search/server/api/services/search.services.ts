@@ -370,7 +370,7 @@ export class SearchService {
     }
 
     if (advancedFilters.to_date) {
-      to_date = moment(advancedFilters.to_date).endOf('day').format();
+      to_date = moment(advancedFilters.to_date).add(1, 'days').format();
     } else {
       to_date = moment().add(1, 'days').format();
     }
