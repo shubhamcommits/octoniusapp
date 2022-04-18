@@ -40,13 +40,15 @@ export class LdapController {
                         const domain = email.toString().split('@')[1];
                         opts = {
                             filter: `(mail=*@${domain})`,
-                            scope: 'sub'
+                            scope: 'sub',
+                            timeLimit: 6000
                             //attributes: ['*']
                         };
                     } else {
                         opts = {
                             filter: `(mail=${email})`,
-                            scope: 'sub'
+                            scope: 'sub',
+                            timeLimit: 6000
                             //attributes: ['*']
                         };
                     }
@@ -131,12 +133,14 @@ export class LdapController {
                         const domain = email.toString().split('@')[1];
                         opts = {
                             filter: `(mail=*@${domain})`,
-                            scope: 'sub'
+                            scope: 'sub',
+                            timeLimit: 6000
                         };
                     } else {
                         opts = {
                             filter: `(mail=${email})`,
-                            scope: 'sub'
+                            scope: 'sub',
+                            timeLimit: 6000
                         };
                     }
 

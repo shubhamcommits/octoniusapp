@@ -9,9 +9,12 @@
       <li class="nav-item mr-3 d-none d-sm-block">
 
         <!-- Group Avatar starts -->
-        <app-secured-image *ngIf="groupData && !myWorkplace" [imgURL]="groupData?.group_avatar" [service]="'group'"
+        <app-secured-image *ngIf="groupData && !myWorkplace && isAdmin" [imgURL]="groupData?.group_avatar" [service]="'group'"
           [tooltip]="'Change group avatar'" [placement]="'right'" [styleClass]="'mr-3 feed-avatar'"
           (click)="openDetails(content)"></app-secured-image>
+
+        <app-secured-image *ngIf="groupData && !myWorkplace && !isAdmin" [imgURL]="groupData?.group_avatar" [service]="'group'"
+          [placement]="'right'" [styleClass]="'mr-3 feed-avatar'"></app-secured-image>
         <!-- Group Avatar ends -->
 
         <!-- My workplace avatar starts -->
