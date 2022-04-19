@@ -103,7 +103,7 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
   }
 
   formateDate(date) {
-    return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
+    return (date) ? moment(moment.utc(date), "MMM D, YYYY").toDate() : '';
   }
 
   // Check if the data provided is not empty{}
