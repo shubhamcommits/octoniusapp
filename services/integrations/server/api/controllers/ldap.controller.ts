@@ -35,23 +35,24 @@ export class LdapController {
                         console.error(err);
                     }
 
-                    let opts = {};
-                    if (global == 'true') {
-                        const domain = email.toString().split('@')[1];
-                        opts = {
-                            filter: `(mail=*@${domain})`,
-                            scope: 'sub',
-                            timeLimit: 6000
-                            //attributes: ['*']
-                        };
-                    } else {
-                        opts = {
-                            filter: `(mail=${email})`,
-                            scope: 'sub',
-                            timeLimit: 6000
-                            //attributes: ['*']
-                        };
-                    }
+                    //let opts = {};
+                    //if (global == 'true') {
+                    //    const domain = email.toString().split('@')[1];
+                    //    opts = {
+                    //        filter: `(mail=*@${domain})`,
+                    //        scope: 'sub',
+                    //        timeLimit: 6000,
+                    //        sizeLimit: 1
+                    //        //attributes: ['*']
+                    //    };
+                    //} else {
+                    let opts = {
+                        filter: `(mail=${email})`,
+                        scope: 'sub',
+                        timeLimit: 6000
+                        //attributes: ['*']
+                    };
+                    //}
 
                     client.search(integrations.ldap_search_base, opts, (err, searchRes) => {
                         if (err) {
@@ -134,13 +135,15 @@ export class LdapController {
                         opts = {
                             filter: `(mail=*@${domain})`,
                             scope: 'sub',
-                            timeLimit: 6000
+                            timeLimit: 6000,
+                            sizeLimit: 100000
                         };
                     } else {
                         opts = {
                             filter: `(mail=${email})`,
                             scope: 'sub',
-                            timeLimit: 6000
+                            timeLimit: 6000,
+                            sizeLimit: 100000
                         };
                     }
 
