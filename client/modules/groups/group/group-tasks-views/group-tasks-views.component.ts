@@ -486,7 +486,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         let post = section.tasks[j];
         let task: any = {
           title: post.title || '',
-          posted_by: (post._posted_by.first_name + ' ' + post._posted_by.last_name) || '',
+          posted_by: (post && post._posted_by) ? (post?._posted_by?.first_name + ' ' + post?._posted_by?.last_name) : '',
           created_date: post.created_date || '',
           tags: post.tags || '',
           status: post.task.status || '',
@@ -508,7 +508,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         let assignedTo = '';
         if (post.task._assigned_to && post.task._assigned_to.length > 0) {
           post.task._assigned_to.forEach(user => {
-            assignedTo += user.first_name + ' ' + user.last_name + '; ';
+            if (user) {
+              assignedTo += user?.first_name + ' ' + user?.last_name + '; ';
+            }
           });
 
           task.assigned_to = assignedTo;
