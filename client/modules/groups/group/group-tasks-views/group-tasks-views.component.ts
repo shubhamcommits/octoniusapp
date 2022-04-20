@@ -524,8 +524,10 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         if (post.task.isNorthStar && post.task.northStar) {
           task.northStar_targetValue = post.task.northStar.target_value || 0;
           let sum = 0;
-          for (let k = 0; k < post.task.values.length; k++) {
-              sum += post.task.values[k];
+          if (post.task.northStar.values) {
+            for (let k = 0; k < post.task.northStar.values.length; k++) {
+              sum += post.task.northStar.values[k];
+            }
           }
           task.northStar_currentValue = sum;
           task.northStar_type = post.task.northStar.type;
