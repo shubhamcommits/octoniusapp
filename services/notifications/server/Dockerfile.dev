@@ -1,16 +1,18 @@
+### STAGE 1: Build ###
+
 # Pull the Node image from Docker Hub
 FROM node:14-slim
 
-# Setting Working Directory
+# Create app directory
 WORKDIR /usr/app
 
-# Copying only package.json
+# Copy package.json to the WORKDIR
 COPY package*.json ./
 
-# Install Dependencies
+# Install dependencies
 RUN npm install
 
-# Copy rest of the code to container
+# Copy all the files from local folder to the container WORKDIR
 COPY . .
 
 # Build into standard javascript modules
@@ -18,7 +20,8 @@ COPY . .
 
 #RUN mv ./node_modules/ /usr/ && rm -rf *.ts && mv /usr/node_modules ./
 
-EXPOSE 4200
+# Expose the port
+EXPOSE 9000
 
-# Run the Angular app
+# Start the Server
 CMD ["npm", "run", "dev"]

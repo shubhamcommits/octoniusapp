@@ -1,0 +1,305 @@
+version: "3.7"
+
+services:
+
+  approval-server:
+    container_name: approval-server
+    build:
+      context: ./services/approval/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 15000:15000
+    environment:
+      - NODE_ENV=development
+      - PORT=15000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
+  auths-server:
+    container_name: auths-server
+    build:
+      context: ./services/authentication/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
+  flamingo-server:
+    container_name: flamingo-server
+    build:
+      context: ./services/flamingo/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 14000:14000
+    environment:
+      - NODE_ENV=development
+      - PORT=14000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
+  folio-server:
+    container_name: folio-server
+    build:
+      context: ./services/folio/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 11000:11000
+    environment:
+      - NODE_ENV=development
+      - PORT=11000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
+  groups-server:
+    container_name: groups-server
+    build:
+      context: ./services/groups/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 4000:4000
+    environment:
+      - NODE_ENV=development
+      - PORT=4000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
+  integrations-server:
+    container_name: integrations-server
+    build:
+      context: ./services/integrations/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 13000:13000
+    environment:
+      - NODE_ENV=development
+      - PORT=13000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      - TEAMS_BOT_URL=https://connect.octonius.com
+      - SLACK_CLIENT_ID=2561616476.1145669381443
+      - SLACK_CLIENT_SECRET=acaf1f9b8e2c2607124c74ea9273a2ed
+      - SLACK_BOT_ACCESS_TOKEN=xoxb-2561616476-1145480914898-bFLn6YJrfzbJ9jvCTU34uNuu
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
+  notifications-server:
+    container_name: notifications-server
+    build:
+      context: ./services/notifications/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 9000:9000
+    environment:
+      - NODE_ENV=development
+      - PORT=9000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
+  posts-server:
+    container_name: posts-server
+    build:
+      context: ./services/posts/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 8000:8000
+    environment:
+      - NODE_ENV=development
+      - PORT=8000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
+  search-server:
+    container_name: search-server
+    build:
+      context: ./services/search/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 12000:12000
+    environment:
+      - NODE_ENV=development
+      - PORT=12000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
+  users-server:
+    container_name: users-server
+    build:
+      context: ./services/users/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 7000:7000
+    environment:
+      - NODE_ENV=development
+      - PORT=7000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
+  utilities-server:
+    container_name: utilities-server
+    build:
+      context: ./services/utilities/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 10000:10000
+    environment:
+      - NODE_ENV=development
+      - PORT=10000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      #- LIBREOFFICE_DOMAIN=${LIBREOFFICE_DOMAIN}
+      #- LIBREOFFICE_PROTOCOL=${LIBREOFFICE_PROTOCOL}
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
+  workspaces-server:
+    container_name: workspaces-server
+    build:
+      context: ./services/workspaces/server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 5000:5000
+    environment:
+      - NODE_ENV=development
+      - PORT=5000
+      - HOST=0.0.0.0
+      - JWT_KEY=asfsaf12safas23fsafa12sf
+      - DB_URL=mongodb://mongodb:27017/octonius
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - HEADER_EXTERNAL_KEY=HEADERIDSHAREDFOROCTONIUS
+      - PROTOCOL=http
+      - DOMAIN=localhost
+      - MANAGEMENT_URL=https://management.octonius.com
+    networks:
+      - octonius
+
+  client:
+    container_name: client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      -  4200:4200
+    networks:
+      -  octonius
+    depends_on:
+      - approval-server
+      - auths-server
+      - groups-server
+      - workspaces-server
+      - users-server
+      - posts-server
+      - notifications-server
+      - utilities-server
+      - folio-server
+      - search-server
+      - flamingo-server
+    stdin_open: true
+    tty: true
+
+networks:
+  octonius:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
