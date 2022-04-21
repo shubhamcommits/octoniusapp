@@ -1,0 +1,19 @@
+.content-box {
+  background: #FFFFFF;
+  border: 1px solid #E4EDF8;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 12px;
+
+  p.box-title {
+      font-family: Nunito;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 22px;
+      color: #242d3a;
+      // padding-bottom: 10px;
+      // padding-top: 10px;
+      margin-bottom: 12px !important;
+  }
+}

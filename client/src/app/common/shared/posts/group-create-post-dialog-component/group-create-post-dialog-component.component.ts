@@ -47,19 +47,11 @@ export class GroupCreatePostDialogComponent implements OnInit {
   canEdit: boolean = true;
   canView: boolean = true;
 
-  // postEditor: any;
-
   // Content Mentions Variables keeps a track of mentioned members
   _content_mentions: any = [];
 
   // Tags Object
   tags: any = [];
-
-  // Public Functions class object
-  publicFunctions = new PublicFunctions(this.injector);
-
-  // IsLoading behaviou subject maintains the state for loading spinner
-  public isLoading$ = new BehaviorSubject(false);
 
   // Variable to enable or disable save button
   contentChanged = false;
@@ -104,13 +96,19 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   lastAssignedBy: any;
 
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   flows = [];
 
   newComment;
 
   myWorkplace = this.router.snapshot.queryParamMap.has('myWorkplace') ? this.router.snapshot.queryParamMap.get('myWorkplace') : false;
+
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
+
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
+
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
 
   constructor(
     private postService: PostService,
@@ -249,18 +247,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   /**
-   * This function checks the task board if a particular task is overdue or not
-   * @param taskPost
-   * And applies the respective ng-class
-   *
-   * -----Tip:- Don't make the date functions asynchronous-----
-   *
-   */
-  checkOverdue(taskPost: any) {
-    return this.publicFunctions.checkOverdue(taskPost);
-  }
-
-  /**
    * This function is mapped with the event change of @variable - title
    * Show update detail option if title has been changed
    * @param event - new title value
@@ -285,62 +271,27 @@ export class GroupCreatePostDialogComponent implements OnInit {
   }
 
   /**
-   * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
-   * @param dateObject
+   * This function is responsible for receiving the start date from @module <app-post-dates></app-post-dates>
+   * @param timeObject
    */
-  getDate(dateObject: any, property: string) {
-
-    if (property === 'start_date') {
-      this.startDate = dateObject.toDate();
-      this.updateDate(dateObject.toDate(), property);
-    }
-    if (property === 'due_date') {
-      this.dueDate = dateObject.toDate();
-      this.updateDate(dateObject.toDate(), property);
-    }
+   getStartDate(dateObject: any) {
+    this.startDate = dateObject;
   }
 
   /**
-   * This function is responsible to update the date if the date is valid.
-   * @param date
-   * @param property
+   * This function is responsible for receiving the due date from @module <app-post-dates></app-post-dates>
+   * @param timeObject
    */
-  async updateDate(date, property) {
-    await this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      if (property === 'due_date') {
-            this.postService.changeTaskDueDate(this.postData?._id, date?moment(date).format('YYYY-MM-DD'):null)
-            .then((res) => {
-              this.postData = res['post'];
-              this.dueDate = moment(this.postData?.task?.due_to);
-              // Resolve with success
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.dateUpdated:Date updated!`));
-            })
-            .catch(() => {
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
-            });
-
-      } else if(property === 'start_date') {
-          this.postService.saveTaskDates(this.postData?._id, date?moment(date).format('YYYY-MM-DD'):null, property)
-            .then((res) => {
-              this.postData = res['post'];
-              this.startDate = moment(this.postData?.task?.start_date);
-              // Resolve with success
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupCreatePostDialog.dateUpdated:Date updated!`));
-            })
-            .catch(() => {
-              reject(this.utilityService.rejectAsyncPromise($localize`:@@groupCreatePostDialog.unableToUpdateDetails:Unable to update the details, please try again!`));
-            });
-      }
-    }));
+   getDueDate(dateObject: any) {
+    this.dueDate = dateObject;
   }
 
   /**
-   * This function is responsible for receiving the time from @module <app-time-picker></app-time-picker>
+   * This function is responsible for receiving the time from @module <app-post-dates></app-post-dates>
    * @param timeObject
    */
   getTime(timeObject: any) {
     this.dueTime = timeObject;
-
     this.updateDetails();
   }
 

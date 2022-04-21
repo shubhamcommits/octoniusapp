@@ -224,82 +224,14 @@
         <!-- Shuttle Task ends -->
 
         <!-- Dates starts -->
-        <div class="content-box" *ngIf="postData && postData?.type === 'task' || postData?.type === 'event'">
-          <p *ngIf="groupData && groupData.project_type && !postData?.task?.is_milestone"
-            class="box-title" i18n="@@groupCreatePostDialog.startDate">Start date</p>
-
-          <div *ngIf="groupData && postData && postData?.type === 'task' && groupData.project_type && !postData?.task?.is_milestone">
-            <!-- Date Picker starts -->
-            <app-date-picker (date)="getDate($event, 'start_date')"
-              [selectedDate]="formateDate(postData?.task.start_date)"
-              [upperLimit]="formateDate(postData?.task.due_to)"
-              [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')"
-              [canEdit]="canEdit">
-            </app-date-picker>
-            <!--Date Picker ends -->
-
-            <!-- Clean field starts -->
-            <i *ngIf="canEdit" (click)="updateDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
-            <!-- Clean field ends -->
-          </div>
-          <div *ngIf="postData && postData?.type === 'event'" class="btn-group">
-            <!-- Date Picker starts -->
-            <app-date-picker (date)="getDate($event, 'start_date')"
-              [selectedDate]="postData?.event.start_date"
-              [upperLimit]="postData?.event.due_to"
-              [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')"
-              [canEdit]="canEdit">
-            </app-date-picker>
-            <!--Date Picker ends -->
-          </div>
-
-          <!-- Time Picker starts -->
-          <app-time-picker class="ml-1" *ngIf="postData && postData?.type === 'event'"
-            [time]="this.dueTime"
-            [canEdit]="canEdit"
-            (time)="getTime($event)">
-          </app-time-picker>
-          <!-- Time Picker ends -->
-
-          <p class="box-title" i18n="@@groupCreatePostDialog.dueDate">Due date</p>
-
-          <div *ngIf="postData && postData?.type === 'task'">
-            <!-- Date Picker starts -->
-            <app-date-picker
-              (date)="getDate($event, 'due_date')"
-              [selectedDate]="formateDate(postData?.task.due_to)"
-              [lowerLimit]=" (postData?.task?.is_milestone)? '' : formateDate(postData?.task.start_date)"
-              [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')"
-              [canEdit]="canEdit">
-            </app-date-picker>
-            <!--Date Picker ends -->
-
-            <!-- Clean field starts -->
-            <i *ngIf="canEdit" (click)="updateDate(null, 'due_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
-            <!-- Clean field ends -->
-          </div>
-          <div *ngIf="postData && postData?.type === 'event'" class="btn-group">
-            <!-- Date Picker starts -->
-            <app-date-picker
-              (date)="getDate($event, 'due_date')"
-              [selectedDate]="postData?.event.due_to"
-              [lowerLimit]="postData?.event.start_date"
-              [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')"
-              [canEdit]="canEdit">
-            </app-date-picker>
-            <!--Date Picker ends -->
-          </div>
-
-          <!-- Time Picker starts -->
-          <app-time-picker
-              class="ml-1"
-              *ngIf="postData && postData?.type === 'event'"
-              [time]="this.dueTime"
-              (time)="getTime($event)"
-              [canEdit]="canEdit">
-          </app-time-picker>
-          <!-- Time Picker ends -->
-        </div>
+        <app-post-dates
+          [userData]="userData"
+          [postData]="postData"
+          [groupData]="groupData"
+          [canEdit]="canEdit"
+          (startDateEvent)="getStartDate($event)"
+          (dueDateEvent)="getDueDate($event)"
+          (timeEvent)="getTime($event)"></app-post-dates>
         <!-- Dates ends -->
 
         <!-- Assignee Modal starts -->
