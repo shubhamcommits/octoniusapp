@@ -17,7 +17,6 @@ export class ManagementService {
                 return_url: return_url,
                 API_KEY: mgmtApiPrivateKey
             });
-
         } catch (err) {
          throw (err);
         }
@@ -31,7 +30,6 @@ export class ManagementService {
                 return_url: return_url,
                 API_KEY: mgmtApiPrivateKey
             });
-
         } catch (err) {
             throw (err);
         }
@@ -45,7 +43,6 @@ export class ManagementService {
                 },
                 
             });
-
         } catch (err) {
             throw (err);
         }
@@ -57,12 +54,26 @@ export class ManagementService {
      */
     getBillingStatus(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-billing-status/${workspaceId}`, {
-                params: {
-                    API_KEY: mgmtApiPrivateKey
-                },
-                
-            })
+            // Add this this if/else to use octonius in local without running mgmt portal
+            // mgmt would be needed for some functionalities, but basic work can be done
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'You have a in a DEVELOPMENT environment',
+                            status: true,
+                            onPremise: false
+                        }
+                    });
+                  });
+            } else {
+                return axios.get(this.MANAGEMENT_BASE_API_URL + `/billings/get-billing-status/${workspaceId}`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    },
+                    
+                });
+            }
         } catch (err) {
             throw (err);
         }
@@ -80,8 +91,7 @@ export class ManagementService {
                     API_KEY: mgmtApiPrivateKey
                 },
                 
-            })
-
+            });
         } catch (err) {
             throw (err);
         }
@@ -97,8 +107,7 @@ export class ManagementService {
                     API_KEY: mgmtApiPrivateKey
                 },
                 
-            })
-
+            });
         } catch (err) {
             throw (err);
         }   
@@ -114,8 +123,7 @@ export class ManagementService {
                     API_KEY: mgmtApiPrivateKey
                 },
                 
-            })
-
+            });
         } catch (err) {
             throw (err);
         }
@@ -131,8 +139,7 @@ export class ManagementService {
                     API_KEY: mgmtApiPrivateKey
                 },
                 
-            })
-
+            });
         } catch (err) {
             throw (err);
         }
@@ -140,13 +147,26 @@ export class ManagementService {
 
     isInTryOut(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return axios.get(`${this.MANAGEMENT_BASE_API_URL}/billings/${workspaceId}/inTryOut`, {
-                params: {
-                    API_KEY: mgmtApiPrivateKey
-                },
-                
-            });
-
+            // Add this this if/else to use octonius in local without running mgmt portal
+            // mgmt would be needed for some functionalities, but basic work can be done
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'succesfully retrieved the subscription',
+                            status: false,
+                            time_remaining: 100
+                        }
+                    });
+                });
+            } else {
+                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/billings/${workspaceId}/inTryOut`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    },
+                    
+                });
+            }
         } catch (err) {
             throw (err);
         }
@@ -166,7 +186,6 @@ export class ManagementService {
                 },
                 
             });
-
         } catch (err) {
             throw (err);
         }
@@ -184,7 +203,6 @@ export class ManagementService {
                 },
                 
             });
-
         } catch (err) {
             throw (err);
         }
@@ -199,10 +217,8 @@ export class ManagementService {
             return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/excelImport`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
-                },
-                
+                }
             });
-
         } catch (err) {
             throw (err);
         }
@@ -217,10 +233,8 @@ export class ManagementService {
             return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/shuttle`, {
                 params: {
                     API_KEY: mgmtApiPrivateKey
-                },
-                
+                }
             });
-
         } catch (err) {
             throw (err);
         }
