@@ -107,6 +107,7 @@
         </div>
         <!-- Campaign Module -->
 
+        <!-- Enable Task Shuttle -->
         <div class="mt-5 mb-5 pt-3" *ngIf="shuttleTasksModuleAvailable">
           <mat-slide-toggle color="primary"
               [checked]="groupData.shuttle_type"
@@ -129,6 +130,7 @@
             </mat-select>
           </mat-form-field>
         </div>
+        <!-- Enable Task Shuttle -->
 
         <!-- Switch to Agora/Normal -->
         <div class="mt-5 mb-5 pt-3" *ngIf="groupData?.group_name != 'Global'">
@@ -139,6 +141,19 @@
               [(ngModel)]="switchAgora">
             <h6><b i18n="@@groupAdmin.convertAgora">Convert Group To Agora</b></h6>
             <p class="card-text" i18n="@@groupAdmin.switchAgoraDescription"> This will switch the group type to Agora and all members of the workplace will be able to see it.</p>
+          </mat-slide-toggle><br>
+        </div>
+        <!-- Switch to Agora/Normal -->
+
+        <!-- Switch to Agora/Normal -->
+        <div class="mt-5 mb-5 pt-3">
+          <mat-slide-toggle color="primary"
+              [checked]="freezeDates"
+              [name]="'freeze_dates'"
+              (change)="saveSettings($event)"
+              [(ngModel)]="freezeDates">
+            <h6><b i18n="@@groupAdmin.freezeDueDate">FREEZE Date change for other members?</b></h6>
+            <p class="card-text" i18n="@@groupAdmin.freezeDueDateDescription"> When this is ON, only GM and task creator will be able to change the dates of a task.</p>
           </mat-slide-toggle><br>
         </div>
         <!-- Switch to Agora/Normal -->

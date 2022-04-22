@@ -39,6 +39,8 @@ export class GroupAdminComponent implements OnInit {
 
   switchAgora: boolean = false;
 
+  freezeDates: boolean = false;
+
   shuttleTasksModuleAvailable: boolean = false;
 
   enableAllocation: boolean = false;
@@ -66,6 +68,7 @@ export class GroupAdminComponent implements OnInit {
     this.enabledShuttleType = this.groupData.shuttle_type;
     this.enabledCampaign = this.groupData.enabled_campaign
     this.switchAgora = this.groupData.type == 'agora';
+    this.freezeDates = this.groupData.freeze_dates;
 
     // Fetch Current User
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -174,13 +177,13 @@ export class GroupAdminComponent implements OnInit {
 
         if(selected.source.name === 'enabled_campaign'){
           this.groupService.saveSettings(this.groupId, {enabled_campaign: selected.checked})
-          .then(()=> {
-            this.enabledCampaign = selected.checked;
-            this.groupData.enabled_campaign = selected.checked;
-            this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-            resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
-          })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+            .then(()=> {
+              this.enabledCampaign = selected.checked;
+              this.groupData.enabled_campaign = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
+            })
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
         }
 
         if(selected.source.name === 'switch-agora'){
@@ -192,6 +195,17 @@ export class GroupAdminComponent implements OnInit {
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
             })
             .catch((err) => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
+        }
+
+        if(selected.source.name === 'freeze_dates') {
+          this.groupService.saveSettings(this.groupId, {freeze_dates: selected.checked})
+            .then(()=> {
+              this.freezeDates = selected.checked;
+              this.groupData.freeze_dates = selected.checked;
+              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
+            })
+            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
         }
       }));
   }

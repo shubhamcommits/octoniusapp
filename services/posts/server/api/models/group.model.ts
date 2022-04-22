@@ -47,6 +47,10 @@ const GroupSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    freeze_dates: {
+        type: Boolean,
+        default: false,
+    },
     keep_pinned_open: {
         type: Boolean,
         default: false,

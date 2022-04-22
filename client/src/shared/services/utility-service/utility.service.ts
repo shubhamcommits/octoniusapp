@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { GroupCreatePostDialogComponent } from 'src/app/common/shared/activity-feed/group-postbox/group-create-post-dialog-component/group-create-post-dialog-component.component';
+import { GroupCreatePostDialogComponent } from 'src/app/common/shared/posts/group-create-post-dialog-component/group-create-post-dialog-component.component';
 import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
 import { PostService } from '../post-service/post.service';
 import { ColumnService } from '../column-service/column.service';
