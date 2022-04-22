@@ -16,24 +16,6 @@
     <i *ngIf="canEditDates" (click)="updateDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
     <!-- Clean field ends -->
   </div>
-  <div *ngIf="postData && postData?.type === 'event'" class="btn-group">
-    <!-- Date Picker starts -->
-    <app-date-picker (date)="getDate($event, 'start_date')"
-      [selectedDate]="postData?.event.start_date"
-      [upperLimit]="postData?.event.due_to"
-      [styleClass]="'input-date due'"
-      [canEdit]="canEditDates">
-    </app-date-picker>
-    <!--Date Picker ends -->
-  </div>
-
-  <!-- Time Picker starts -->
-  <app-time-picker class="ml-1" *ngIf="postData && postData?.type === 'event'"
-    [time]="this.dueTime"
-    [canEdit]="canEditDates"
-    (time)="getTime($event)">
-  </app-time-picker>
-  <!-- Time Picker ends -->
 
   <p class="box-title" i18n="@@groupCreatePostDialog.dueDate">Due date</p>
 
@@ -57,8 +39,7 @@
     <app-date-picker
       (date)="getDate($event, 'due_date')"
       [selectedDate]="postData?.event.due_to"
-      [lowerLimit]="postData?.event.start_date"
-      [styleClass]="'input-date ' +  (checkOverdue() === true ? 'overdue' : 'due')"
+      [styleClass]="'input-date due'"
       [canEdit]="canEditDates">
     </app-date-picker>
     <!--Date Picker ends -->
