@@ -7,13 +7,13 @@
     <app-date-picker (date)="getDate($event, 'start_date')"
       [selectedDate]="formateDate(postData?.task.start_date)"
       [upperLimit]="formateDate(postData?.task.due_to)"
-      [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')"
-      [canEdit]="(canEdit && !groupData?.freeze_dates) || (canEdit && groupData?.freeze_dates && isGroupManager)">
+      [styleClass]="'btn-group input-date due'"
+      [canEdit]="canEditDates">
     </app-date-picker>
     <!--Date Picker ends -->
 
     <!-- Clean field starts -->
-    <i *ngIf="(canEdit && !groupData?.freeze_dates) || (canEdit && groupData?.freeze_dates && isGroupManager)" (click)="updateDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <i *ngIf="canEditDates" (click)="updateDate(null, 'start_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
     <!-- Clean field ends -->
   </div>
   <div *ngIf="postData && postData?.type === 'event'" class="btn-group">
@@ -21,8 +21,8 @@
     <app-date-picker (date)="getDate($event, 'start_date')"
       [selectedDate]="postData?.event.start_date"
       [upperLimit]="postData?.event.due_to"
-      [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')"
-      [canEdit]="(canEdit && !groupData?.freeze_dates) || (canEdit && groupData?.freeze_dates && isGroupManager)">
+      [styleClass]="'input-date due'"
+      [canEdit]="canEditDates">
     </app-date-picker>
     <!--Date Picker ends -->
   </div>
@@ -30,7 +30,7 @@
   <!-- Time Picker starts -->
   <app-time-picker class="ml-1" *ngIf="postData && postData?.type === 'event'"
     [time]="this.dueTime"
-    [canEdit]="(canEdit && !groupData?.freeze_dates) || (canEdit && groupData?.freeze_dates && isGroupManager)"
+    [canEdit]="canEditDates"
     (time)="getTime($event)">
   </app-time-picker>
   <!-- Time Picker ends -->
@@ -42,14 +42,14 @@
     <app-date-picker
       (date)="getDate($event, 'due_date')"
       [selectedDate]="formateDate(postData?.task.due_to)"
-      [lowerLimit]=" (postData?.task?.is_milestone)? '' : formateDate(postData?.task.start_date)"
-      [styleClass]="'btn-group input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')"
-      [canEdit]="(canEdit && !groupData?.freeze_dates) || (canEdit && groupData?.freeze_dates && isGroupManager)">
+      [lowerLimit]=" (postData?.task?.is_milestone) ? '' : formateDate(postData?.task.start_date)"
+      [styleClass]="'btn-group input-date ' +  (checkOverdue() === true ? 'overdue' : 'due')"
+      [canEdit]="canEditDates">
     </app-date-picker>
     <!--Date Picker ends -->
 
     <!-- Clean field starts -->
-    <i *ngIf="(canEdit && !groupData?.freeze_dates) || (canEdit && groupData?.freeze_dates && isGroupManager)" (click)="updateDate(null, 'due_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
+    <i *ngIf="canEditDates" (click)="updateDate(null, 'due_date')" class="material-icons muted" style="cursor: pointer; font-size: 14px;">remove_circle_outline</i>
     <!-- Clean field ends -->
   </div>
   <div *ngIf="postData && postData?.type === 'event'" class="btn-group">
@@ -58,8 +58,8 @@
       (date)="getDate($event, 'due_date')"
       [selectedDate]="postData?.event.due_to"
       [lowerLimit]="postData?.event.start_date"
-      [styleClass]="'input-date ' +  (checkOverdue(postData?.task) === true ? 'overdue' : 'due')"
-      [canEdit]="(canEdit && !groupData?.freeze_dates) || (canEdit && groupData?.freeze_dates && isGroupManager)">
+      [styleClass]="'input-date ' +  (checkOverdue() === true ? 'overdue' : 'due')"
+      [canEdit]="canEditDates">
     </app-date-picker>
     <!--Date Picker ends -->
   </div>
@@ -70,7 +70,7 @@
       *ngIf="postData && postData?.type === 'event'"
       [time]="this.dueTime"
       (time)="getTime($event)"
-      [canEdit]="(canEdit && !groupData?.freeze_dates) || (canEdit && groupData?.freeze_dates && isGroupManager)">
+      [canEdit]="canEditDates">
   </app-time-picker>
   <!-- Time Picker ends -->
 </div>
