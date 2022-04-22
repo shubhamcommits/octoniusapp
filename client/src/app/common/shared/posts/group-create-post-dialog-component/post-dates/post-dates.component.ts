@@ -28,7 +28,7 @@ export class PostDatesComponent implements OnInit, OnChanges {
     minute: 30
   };
 
-  isGroupManager: boolean = false;
+  canEditDates: boolean = false;
 
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
@@ -41,7 +41,6 @@ export class PostDatesComponent implements OnInit, OnChanges {
     private injector: Injector) { }
 
   ngOnInit() {
-
     if (this.postData?.type === 'task') {
       // Set the due date variable for task
       if ((this.postData?.task.due_to && this.postData?.task.due_to != null)
@@ -74,10 +73,22 @@ export class PostDatesComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges() {
-    this.isGroupManager = (this.groupData && this.groupData._admins) ? (this.groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == this.userData?._id) >= 0) : false;
+  async ngOnChanges() {
+    this.canEditDates = await this.canUserEditDates();
   }
 
+  canUserEditDates() {
+    const isGroupManager = (this.groupData && this.groupData._admins)
+      ? (this.groupData?._admins.findIndex((admin: any) => (admin?._id || admin) == this.userData?._id) >= 0)
+      : false;
+    const isPostOwner = (this.postData && this.postData?._posted_by && this.postData?._posted_by?._id)
+      ? this.postData?._posted_by?._id == this.userData?._id
+      : ((this.postData?._posted_by && this.postData?._posted_by == this.userData?._id)
+        ? true
+        : false);
+
+    return (this.canEdit && !this.groupData?.freeze_dates) || (this.canEdit && this.groupData?.freeze_dates && (isGroupManager || isPostOwner));
+  }
 
   formateDate(date) {
     return (date) ? moment(moment.utc(date), "YYYY-MM-DD").toDate() : '';
@@ -91,8 +102,8 @@ export class PostDatesComponent implements OnInit, OnChanges {
    * -----Tip:- Don't make the date functions asynchronous-----
    *
    */
-  checkOverdue(taskPost: any) {
-    return this.publicFunctions.checkOverdue(taskPost);
+  checkOverdue() {
+    return this.publicFunctions.checkOverdue(this.postData);
   }
 
   /**
