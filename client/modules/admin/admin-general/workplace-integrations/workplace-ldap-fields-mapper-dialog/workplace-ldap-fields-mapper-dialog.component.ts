@@ -100,7 +100,8 @@ import { UserService } from 'src/shared/services/user-service/user.service';
     }
 
     mapProperties() {
-      this.utilityService.getConfirmDialogAlert($localize`:@@workplaceLdapFieldsMapperDialog.areYouSure:Are you sure?`, $localize`:@@workplaceLdapFieldsMapperDialog.byDoingLDAPSync:By doing this, all users' information will be synchronized with LDAP!`)
+      if (this.ldapPropertiesToMap && this.ldapPropertiesToMap.length > 0) {
+        this.utilityService.getConfirmDialogAlert($localize`:@@workplaceLdapFieldsMapperDialog.areYouSure:Are you sure?`, $localize`:@@workplaceLdapFieldsMapperDialog.byDoingLDAPSync:By doing this, all users' information will be synchronized with LDAP!`)
         .then(async (resp) => {
           if (resp.value) {
             this.utilityService.updateIsLoadingSpinnerSource(true);
@@ -120,5 +121,6 @@ import { UserService } from 'src/shared/services/user-service/user.service';
             }));
           }
       });
+      }
   }
 }

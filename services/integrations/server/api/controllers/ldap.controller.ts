@@ -70,16 +70,18 @@ export class LdapController {
                         searchRes.on("end", (retVal) => {
                             client.unbind();
                             client.destroy();
+
+                            const emptyReturn: string[] = [];
                             
                             if (global == 'true') {
                                 //res.send(Object.keys(searchList[0]));
                                 res.status(200).json({
-                                    ldapPropertiesNames: Object.keys(searchList[0])
+                                    ldapPropertiesNames: (searchList && searchList[0]) ? Object.keys(searchList[0]) : emptyReturn
                                 });
                             } else {
                                 //res.send(searchList[0]);
                                 res.status(200).json({
-                                    userLdapData: searchList[0]
+                                    userLdapData: (searchList && searchList[0]) ? searchList[0] : emptyReturn
                                 });
                             }
                         });   // searchRes.on("end",...)
