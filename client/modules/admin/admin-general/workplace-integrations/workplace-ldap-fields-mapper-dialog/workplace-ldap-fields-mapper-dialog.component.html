@@ -18,7 +18,7 @@
 
   <div class="content">
     <div class="integration">
-      <div class="integration-properties">
+      <div *ngIf="ldapPropertiesNames" class="integration-properties">
         <div class="form-group row" *ngFor="let ldapPropertyName of ldapPropertiesNames; let j=index">
           <div class="col-md-1">
             <input [checked]="ldapPropertiesToMap.indexOf(ldapPropertyName)>=0" class="" type="checkbox" (click)="selectProperty(ldapPropertyName)">
@@ -49,7 +49,7 @@
     </div>
 
     <div style="margin-top: 20px; text-align: center;">
-      <button class="col-md-4 btn btn-primary" (click)="mapProperties()" i18n="@@workplaceLdapFieldsMapperDialog.map">
+      <button class="col-md-4 btn btn-primary" [disabled]="!ldapPropertiesNames || ldapPropertiesToMap.length <= 0" (click)="mapProperties()" i18n="@@workplaceLdapFieldsMapperDialog.map">
         Map
       </button>
     </div>
