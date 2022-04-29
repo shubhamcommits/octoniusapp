@@ -99,7 +99,8 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
       userLdapData: userLdapData
     }
     const dialogRef = this.dialog.open(WorkplaceLdapFieldsMapperDialogComponent, {
-      width: '50%',
+      width: '65%',
+      height: '85%',
       disableClose: true,
       hasBackdrop: true,
       data: data
