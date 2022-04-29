@@ -41,7 +41,7 @@ export class LdapController {
                     //    opts = {
                     //        filter: `(mail=*@${domain})`,
                     //        scope: 'sub',
-                    //        timeLimit: 6000,
+                    //        timeLimit: 60000,
                     //        sizeLimit: 1
                     //        //attributes: ['*']
                     //    };
@@ -49,7 +49,7 @@ export class LdapController {
                     let opts = {
                         filter: `(mail=${email})`,
                         scope: 'sub',
-                        timeLimit: 6000
+                        timeLimit: 60000
                         //attributes: ['*']
                     };
                     //}
@@ -137,14 +137,14 @@ export class LdapController {
                         opts = {
                             filter: `(mail=*@${domain})`,
                             scope: 'sub',
-                            timeLimit: 6000,
+                            timeLimit: 60000,
                             sizeLimit: 100000
                         };
                     } else {
                         opts = {
                             filter: `(mail=${email})`,
                             scope: 'sub',
-                            timeLimit: 6000,
+                            timeLimit: 60000,
                             sizeLimit: 100000
                         };
                     }
