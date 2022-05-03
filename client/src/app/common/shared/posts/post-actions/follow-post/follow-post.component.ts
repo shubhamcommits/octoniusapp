@@ -8,8 +8,6 @@ import { PostService } from 'src/shared/services/post-service/post.service';
 })
 export class FollowPostComponent implements OnInit, OnChanges {
 
-  constructor(private _injector: Injector) { }
-
   // Post Data
   @Input('post') post: any;
 
@@ -21,11 +19,13 @@ export class FollowPostComponent implements OnInit, OnChanges {
 
   isFollowedByUser: boolean = false;
 
+  constructor(private _injector: Injector) { }
+
   ngOnInit() {
   }
 
   ngOnChanges() {
-    this.isFollowedByUser = (this.post.hasOwnProperty('_followers') && this.post._followers.findIndex(follower => (follower?._id || follower) === this.userData._id)>=0)
+    this.isFollowedByUser = (this.post.hasOwnProperty('_followers') && this.post._followers.findIndex(follower => (follower?._id || follower) === this.userData?._id)>=0)
       ? true : false;
   }
 

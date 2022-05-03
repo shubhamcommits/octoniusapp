@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injector, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, Injector, EventEmitter, Output, OnChanges } from '@angular/core';
 import { PostService } from 'src/shared/services/post-service/post.service';
 
 @Component({
@@ -6,11 +6,7 @@ import { PostService } from 'src/shared/services/post-service/post.service';
   templateUrl: './like-post.component.html',
   styleUrls: ['./like-post.component.scss']
 })
-export class LikePostComponent implements OnInit {
-
-  constructor(
-    private _Injector: Injector
-  ) { }
+export class LikePostComponent implements OnInit, OnChanges {
 
   // Post Data
   @Input('post') post: any;
@@ -21,7 +17,18 @@ export class LikePostComponent implements OnInit {
   @Output() postLiked = new EventEmitter();
   @Output() postUnLiked = new EventEmitter();
 
+  isLikedByUser: boolean = false;
+
+  constructor(
+    private _Injector: Injector
+  ) { }
+
   ngOnInit() {
+  }
+
+  ngOnChanges() {
+    this.isLikedByUser = (this.post.hasOwnProperty('_liked_by') && this.post._liked_by.findIndex(like => (like?._id || like) === this.userData?._id)>=0)
+      ? true : false;
   }
 
   /**
@@ -101,18 +108,5 @@ export class LikePostComponent implements OnInit {
         reject()
       })
     })
-  }
-
-  /**
-   * Check if the post is liked by the currently loggedIn user
-   */
-  isLikedByUser() {
-    if (this.post.hasOwnProperty('_liked_by')) {
-      if (this.post._liked_by.includes(this.userData?._id))
-        return true;
-      else
-        return false
-    }
-
   }
 }
