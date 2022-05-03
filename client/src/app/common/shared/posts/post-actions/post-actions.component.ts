@@ -57,7 +57,6 @@ export class PostActionsComponent implements OnInit {
   @Output() closeModalEvent = new EventEmitter();
 
   async ngOnInit() {
-console.log(this.post._liked_by);
     await this.post._liked_by.forEach(user => {
       if(user._id) {
         this.likedByUsers.push((user['first_name'] || 'Deleted') + ' ' + (user['last_name'] || 'User'));
