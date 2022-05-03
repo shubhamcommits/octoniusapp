@@ -42,6 +42,8 @@ export class LikePostComponent implements OnInit, OnChanges {
     // Increment the likes count by 1
     this.post.likes_count += 1
 
+    this.isLikedByUser = true;
+
     this.postLiked.emit(this.userData._id);
 
     // Call the Service Function to like a post
@@ -82,6 +84,8 @@ export class LikePostComponent implements OnInit, OnChanges {
 
     // Decrement the likes count by 1
     this.post.likes_count -= 1
+
+    this.isLikedByUser = false;
 
     this.postUnLiked.emit(this.userData);
 
