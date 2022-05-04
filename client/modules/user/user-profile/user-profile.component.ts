@@ -83,7 +83,11 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
 
     const accountData = await this.publicFunctions.getCurrentAccount();
     this.workspaceService.ldapUserInfoProperties(this.workspaceData._id, accountData?.email, false).then(res => {
-      this.openLDAPFieldsMapDialog(res['userLdapData']);
+      if (res['userLdapData'] && res['userLdapData'].length > 0) {
+        this.openLDAPFieldsMapDialog(res['userLdapData']);
+      } else {
+        this.utilityService.errorNotification($localize`:@@userProfile.userNoExists:Your user doesn't exists in LDAP!`);
+      }
       //setTimeout(() => {
       this.utilityService.updateIsLoadingSpinnerSource(false);
       //}, 10000);
