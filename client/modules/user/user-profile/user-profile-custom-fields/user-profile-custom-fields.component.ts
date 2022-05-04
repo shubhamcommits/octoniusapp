@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injector } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -11,16 +11,7 @@ import { GroupsService } from 'src/shared/services/groups-service/groups.service
   templateUrl: './user-profile-custom-fields.component.html',
   styleUrls: ['./user-profile-custom-fields.component.scss'],
 })
-export class UserProfileCustomFieldsComponent implements OnInit {
-
-  constructor(
-    public utilityService: UtilityService,
-    public userService: UserService,
-    public groupService: GroupService,
-    public groupsService: GroupsService,
-    public workspaceService: WorkspaceService,
-    public injector: Injector
-  ) { }
+export class UserProfileCustomFieldsComponent implements OnInit, OnChanges {
 
   // User Data Object
   @Input('userData') userData: any = {};
@@ -36,7 +27,20 @@ export class UserProfileCustomFieldsComponent implements OnInit {
   // Public Functions class
   public publicFunctions = new PublicFunctions(this.injector);
 
+  constructor(
+    public utilityService: UtilityService,
+    public userService: UserService,
+    public groupService: GroupService,
+    public groupsService: GroupsService,
+    public workspaceService: WorkspaceService,
+    public injector: Injector
+  ) { }
+
   ngOnInit() {
+
+  }
+
+  ngOnChanges() {
     this.customFields = [];
     this.selectedCFValues = [];
 

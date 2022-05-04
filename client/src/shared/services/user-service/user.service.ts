@@ -394,4 +394,12 @@ export class UserService {
       customFieldValue: customFieldValue
     }).toPromise();
   }
+
+  saveCustomFieldsFromLDAP(userId: string, workspaceId: string, customFieldsMap: any) {
+    // Call the HTTP Request
+    return this._http.put(this.BASE_API_URL + `/${userId}/saveCustomFieldsFromLDAP`, {
+      workspaceId: workspaceId,
+      customFieldsMap: customFieldsMap
+    }).toPromise();
+  }
 }

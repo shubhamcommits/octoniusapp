@@ -137,6 +137,9 @@ routes.put('/:userId/saveSelectedWidgets', user.saveSelectedWidgets);
 // PUT - Change custom field value
 routes.put('/:userId/customField', user.saveCustomField);
 
+// PUT - Change custom field value
+routes.put('/:userId/saveCustomFieldsFromLDAP', user.saveCustomFieldsFromLDAP);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================

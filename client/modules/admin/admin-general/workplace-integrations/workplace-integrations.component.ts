@@ -83,7 +83,7 @@ export class WorkplaceIntegrationsComponent implements OnInit {
       data: data
     });
 
-    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
+    const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
 
     });
 

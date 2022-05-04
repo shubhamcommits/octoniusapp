@@ -14,14 +14,6 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
 })
 export class UserProfileComponent implements OnInit, AfterContentChecked, OnDestroy {
 
-  constructor(
-    private injector: Injector,
-    private router: ActivatedRoute,
-    public dialog: MatDialog,
-    private utilityService: UtilityService,
-    private workspaceService: WorkspaceService
-  ) { }
-
   // User Data Variable
   userData: any;
 
@@ -38,6 +30,14 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
 
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();
+
+  constructor(
+    private injector: Injector,
+    private router: ActivatedRoute,
+    public dialog: MatDialog,
+    private utilityService: UtilityService,
+    private workspaceService: WorkspaceService
+  ) { }
 
   async ngOnInit() {
 
