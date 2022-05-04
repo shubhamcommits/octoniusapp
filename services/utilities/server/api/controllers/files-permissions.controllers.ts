@@ -103,7 +103,6 @@ export class FilesPermissionsControllers {
             
             let file: any;
 
-            //file = await File.create(file);
             file = await File.findByIdAndUpdate(
                 { _id: fileId },
                 {
@@ -140,7 +139,6 @@ export class FilesPermissionsControllers {
             
             let file: any;
 
-            //file = await File.create(file);
             file = await File.findByIdAndUpdate(
                 { _id: fileId },
                 {
@@ -177,7 +175,6 @@ export class FilesPermissionsControllers {
             
             let file: any;
 
-            //file = await File.create(file);
             file = await File.findByIdAndUpdate(
                 { _id: fileId },
                 {
@@ -215,7 +212,6 @@ export class FilesPermissionsControllers {
             
             let file: any;
 
-            //file = await File.create(file);
             file = await File.findByIdAndUpdate(
                 { _id: fileId },
                 {

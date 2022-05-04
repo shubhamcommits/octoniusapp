@@ -114,12 +114,7 @@ export class NotificationsService {
     async newFolioMentions(file: string, actor: string, owner: string) {
         try {
 
-            let fileData: any = await File.findById(file).select('_group')
-                /*
-                .populate([
-                    { path: '_group', select: 'group_name group_avatar workspace_name' },
-                ])*/
-                ;
+            let fileData: any = await File.findById(file).select('_group');
 
             // Let usersStream
             let userStream: any;
