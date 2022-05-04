@@ -111,13 +111,20 @@ export class LdapController {
         try {
             // Find workspace by workspace _id
             const workspace = await Workspace.findByIdAndUpdate(workspaceId, {
-                $set: {
-                    ldapPropertiesMap: mapSelectedProperties
-                    //ldap_user_properties_cf: userProperties
-                }
-            }).select('integrations');
+                    $set: {
+                        ldapPropertiesMap: mapSelectedProperties
+                        //ldap_user_properties_cf: userProperties
+                    }
+                })
+                .populate({
+                    path: 'members',
+                    select: 'first_name last_name profile_pic role email active'
+                })
+                .lean();
+
             res.status(200).json({
-                message: "Properties Mapped"
+                message: "Properties to Map Saved",
+                workspace: workspace
             });
             /* We comment this seccion until we get ready to do global map for all users,
                 and find out the issue with timeLimit

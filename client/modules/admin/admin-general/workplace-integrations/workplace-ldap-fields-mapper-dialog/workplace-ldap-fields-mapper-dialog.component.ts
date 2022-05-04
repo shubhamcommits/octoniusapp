@@ -119,13 +119,13 @@ import { UserService } from 'src/shared/services/user-service/user.service';
                 }
               }
 
-              this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitMappingProperties:Please wait we are mapping the new properties...`,
+              this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitSavingProperties:Please wait we are saving the properties...`,
                 new Promise((resolve, reject) => {
                     this.userService.saveCustomFieldsFromLDAP(this.userData?._id, this.workplaceData?._id, this.userData.profile_custom_fields).then(res => {
                       this.userData = res['user'];
                       this.publicFunctions.sendUpdatesToUserData(this.userData);
                       this.utilityService.updateIsLoadingSpinnerSource(false);
-                      resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.settingsSaved:Properties Mapped & Users Updated!`));
+                      resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.userSaved:User Saved!`));
                       this.onCloseDialog();
                     }).catch(err => {
                       this.utilityService.updateIsLoadingSpinnerSource(false);
@@ -136,10 +136,10 @@ import { UserService } from 'src/shared/services/user-service/user.service';
               this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitMappingProperties:Please wait we are mapping the new properties...`,
                 new Promise((resolve, reject) => {
                     this.workspaceService.ldapWorkspaceUsersInfo(this.workplaceData?._id, this.mapSelectedProperties/*, this.userData?.email, this.ldapPropertiesToMap, this.workplaceData?.ldap_user_properties_cf, this.isGlobal*/).then(res => {
-                      //this.userData = res['user'];
-                      //this.publicFunctions.sendUpdatesToUserData(this.userData);
+                      this.workplaceData = res['workspace'];
+                      this.publicFunctions.sendUpdatesToWorkspaceData(this.workplaceData);
                       this.utilityService.updateIsLoadingSpinnerSource(false);
-                      resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.settingsSaved:Properties Mapped & Users Updated!`));
+                      resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.propertiesSaved:Properties to Map Saved!`));
                       this.onCloseDialog();
                     }).catch(err => {
                       this.utilityService.updateIsLoadingSpinnerSource(false);
