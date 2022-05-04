@@ -696,441 +696,441 @@ export class UsersControllers {
         }
     }
 
-  /**
-   * This function is responsible for retreiving the user´s most frequent groups
-   * @param { userId }req 
-   * @param res 
-   */
-  async getRecentGroups(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { params: { userId } } = req;
-
-      if (!userId) {
-        return res.status(400).json({
-          message: 'Please provide the userId!'
-        })
-      }
-
-      const user = await User.findOne({_id: userId})
-        .select("_id stats")
-        .populate({
-            path: 'stats.groups._group'
-        })
-        .lean();
-
-      if (user['stats'] && user['stats']['groups']) {
-        user['stats']['groups'].sort(function(a, b) {
-          return b.count - a.count;
-        });
-
-        user['stats']['groups'] = user['stats']['groups'].slice(0, 3);
-      }
-
-      // Send the status 200 response
-      return res.status(200).json({
-        message: `User found!`,
-        user: user
-      });
-    } catch (err) {
-      return sendError(res, err, 'Internal Server Error!', 500);
-    }
-  }
-
-  /**
-  * This function is responsible for changing the role of the other user
-  * @param req 
-  * @param res 
-  * @param next 
-  */
-  async incrementGroupVisit(req: Request, res: Response, next: NextFunction) {
-
-    const { userId, groupId } = req.body;
-
-    try {
-
-      let user: any = await User.findOne({
-        $and: [
-            { _id: userId },
-            { active: true },
-            {'stats.groups._group': groupId }
-        ]
-      }).select('_id');
-
-      // Find the user and update their respective role
-      if (!user) {
-        user = await User.findOneAndUpdate({
-            _id: userId,
-            'stats.groups._group': {$ne: groupId }
-            }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
-            )
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
-            .populate({
-                path: 'stats.favorite_groups',
-                select: '_id group_name group_avatar'
-            })
-            .populate({
-                path: '_account',
-                select: '_id email _workspaces first_name last_name created_date'
-            });
-      } else {
-        user = await User.findOneAndUpdate({
-            _id: userId,
-            'stats.groups._group': groupId 
-            }, { $inc: { 'stats.groups.$.count': 1 }
-            })
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
-            .populate({
-                path: 'stats.favorite_groups',
-                select: '_id group_name group_avatar'
-            })
-            .populate({
-                path: '_account',
-                select: '_id email _workspaces first_name last_name created_date'
-            });
-      }
-      // Send status 200 response
-      return res.status(200).json({
-          message: `User Stats has been updated`,
-          user: user
-      });
-
-    } catch (err) {
-        return sendError(res, err, 'Internal Server Error!', 500);
-    }
-  }
-
-  /**
-   * This function is responsible for retreiving the user´s favorite groups
-   * @param { userId }req 
-   * @param res 
-   */
-  async getFavoriteGroups(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { params: { userId } } = req;
-
-      if (!userId) {
-        return res.status(400).json({
-          message: 'Please provide the userId!'
-        })
-      }
-
-      const user = await User.findOne({_id: userId})
-        .select("_id stats integrations")
-        .populate({
-            path: 'stats.favorite_groups',
-            select: '_id group_name group_avatar'
-        })
-        .lean();
-
-      if (user['stats'] && user['stats']['favorite_groups']) {
-        user['stats']['favorite_groups'].sort(function(a, b) {
-          return b.group_name - a.group_name;
-        });
-      }
-
-      // Send the status 200 response
-      return res.status(200).json({
-        message: `User found!`,
-        user: user
-      });
-    } catch (err) {
-      return sendError(res, err, 'Internal Server Error!', 500);
-    }
-  }
-
-  /**
-  * This function is responsible for adding/removing a group from user´s favorites
-  * @param req 
-  * @param res 
-  * @param next 
-  */
-  async addFavoriteGroup(req: Request, res: Response, next: NextFunction) {
-
-    const { userId, groupId, isFavoriteGroup } = req.body;
-
-    try {
-
-        let update = {};
-        if (isFavoriteGroup) {
-            update = { $push: { 'stats.favorite_groups': groupId}};
-        } else {
-            update = { $pull: { 'stats.favorite_groups': groupId}};
-        }
-
-        // Find the user and update their respective role
-        let user = await User.findOneAndUpdate({
-                _id: userId
-            }, update)
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
-            .populate({
-                path: 'stats.favorite_groups',
-                select: '_id group_name group_avatar'
-            })
-            .populate({
-                path: '_account',
-                select: '_id email _workspaces first_name last_name created_date'
-            });
-
-        if (user['stats'] && user['stats']['favorite_groups']) {
-            user['stats']['favorite_groups'].sort(function(a, b) {
-                return b.group_name - a.group_name;
-            });
-        }
-
-        // Send status 200 response
-        return res.status(200).json({
-            message: `User Stats has been updated`,
-            user: user
-        });
-
-    } catch (err) {
-        return sendError(res, err, 'Internal Server Error!', 500);
-    }
-  }
-
-  async removeUser(req: Request, res: Response, next: NextFunction) {
-    try {
-        const { userId } = req.params;
+    /**
+     * This function is responsible for retreiving the user´s most frequent groups
+     * @param { userId }req 
+     * @param res 
+     */
+    async getRecentGroups(req: Request, res: Response, next: NextFunction) {
+        try {
+        const { params: { userId } } = req;
 
         if (!userId) {
-            return sendError(res, new Error('Please provide the userId property!'), 'Please provide the userId property!', 500);
-        }
-
-        // Find if the user is owner of a workspace, in this case we will not delete him unless we remove the workspace
-        const workspace = await Workspace.findOne({ _owner: userId });
-
-        if (workspace) {
-            return sendError(res, new Error('Could not delete the user. User is owner of a workspace!'), 'Could not delete the user. User is owner of a workspace!', 404);
-        }
-
-        // remove user
-        const user = await User.findByIdAndDelete(userId).select('_account _workspace integrations');
-        const workspaceId = user._workspace;
-
-        const usersCount: number = await User.find({ $and: [
-            { active: true },
-            { _workspace: workspaceId }
-        ] }).countDocuments();
-
-        // Remove user from groups
-        await Group.updateMany({
-                _members: userId
-            }, {
-                $pull: {
-                    _members: userId
-                }
-            });
-        await Group.updateMany({
-                _admins: userId
-            }, {
-                $pull: {
-                    _admins: userId
-                }
-            });
-
-        // Remove user from workspaces
-        const workspaceUpdated = await Workspace.findByIdAndUpdate(
-                workspaceId
-            , {
-                $pull: {
-                    _members: userId
-                }
-            });
-
-        const accountId = user?._account?._id || user?._account;
-        if (accountId) {
-            // Count the number of workspces for the account
-            let accountUpdate = await Account.findById(accountId);
-            const numWorkspaces = accountUpdate._workspaces.length;
-
-            if (numWorkspaces < 2) {
-                // If account only has one workspace, the account is removed
-                accountUpdate = await Account.findByIdAndDelete(accountId);
-            } else {
-                // If account has more than one workspaces, the workspace is removed from the account
-                accountUpdate = await Account.findByIdAndUpdate({
-                        _id: accountId
-                    }, {
-                        $pull: {
-                            _workspaces: workspaceId
-                        }
-                    });
-            }
-        }
-
-        // Send new workspace to the mgmt portal
-        // Count all the groups present inside the workspace
-        const groupsCount: number = await Group.find({ $and: [
-            { group_name: { $ne: 'personal' } },
-            { _workspace: workspaceId }
-        ]}).countDocuments();
-
-        // Count all the users present inside the workspace
-        const guestsCount: number = await User.find({ $and: [
-            { active: true },
-            { _workspace: workspaceId },
-            { role: 'guest'}
-        ] }).countDocuments();
-
-        let workspaceMgmt = {
-            _id: workspaceId,
-            company_name: workspaceUpdated.company_name,
-            workspace_name: workspaceUpdated.workspace_name,
-            owner_email: workspaceUpdated.owner_email,
-            owner_first_name: workspaceUpdated.owner_first_name,
-            owner_last_name: workspaceUpdated.owner_last_name,
-            _owner_remote_id: workspaceUpdated._owner,
-            environment: process.env.DOMAIN,
-            num_members: usersCount,
-            num_invited_users: guestsCount,
-            num_groups: groupsCount,
-            created_date: workspaceUpdated.created_date,
-            access_code: workspaceUpdated.access_code,
-            management_private_api_key: workspaceUpdated.management_private_api_key
-        }
-
-        axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
-            API_KEY: workspaceUpdated.management_private_api_key,
-            workspaceData: workspaceMgmt
-        });
-
-        axios.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {
-            data: {
-                API_KEY: workspaceUpdated.management_private_api_key,
-                workspaceId: workspaceId,
-            }
-        });
-
-        // Send the status 200 response 
-        return res.status(200).json({
-            message: 'User deleted.'
-        });
-    } catch (err) {
-        return sendError(res, err, 'Internal Server Error!', 500);
-    }
-  }
-
-  async saveIconSidebarByDefault(req: Request, res: Response, next: NextFunction) {
-
-    const { iconsSidebar, userId } = req.body;
-    try {
-
-        let user: any = await User.findOneAndUpdate({
-            _id: userId
-            }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
-            .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
-            .populate({
-                path: 'stats.favorite_groups',
-                select: '_id group_name group_avatar'
+            return res.status(400).json({
+            message: 'Please provide the userId!'
             })
-            .populate({
-                path: '_account',
-                select: '_id email _workspaces first_name last_name created_date'
-            });
-
-        if (user['stats'] && user['stats']['favorite_groups']) {
-            user['stats']['favorite_groups'].sort(function(a, b) {
-              return b.group_name - a.group_name;
-            });
         }
 
-      // Send status 200 response
-      return res.status(200).json({
-          message: `User Stats has been updated`,
-          user: user
-      });
+        const user = await User.findOne({_id: userId})
+            .select("_id stats")
+            .populate({
+                path: 'stats.groups._group'
+            })
+            .lean();
 
-    } catch (err) {
+        if (user['stats'] && user['stats']['groups']) {
+            user['stats']['groups'].sort(function(a, b) {
+            return b.count - a.count;
+            });
+
+            user['stats']['groups'] = user['stats']['groups'].slice(0, 3);
+        }
+
+        // Send the status 200 response
+        return res.status(200).json({
+            message: `User found!`,
+            user: user
+        });
+        } catch (err) {
         return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
-  }
 
-  async getOutOfOfficeDays(req: Request, res: Response, next: NextFunction) {
+    /**
+     * This function is responsible for changing the role of the other user
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async incrementGroupVisit(req: Request, res: Response, next: NextFunction) {
 
-    const userId = req['userId'];
-    try {
+        const { userId, groupId } = req.body;
 
-      let user: any = await User.findOne({
-          _id: userId
-        })
-        .select('_id out_of_office integrations');
-
-      // Send status 200 response
-      return res.status(200).json({
-          message: `User out of the office days`,
-          user: user
-      });
-
-    } catch (err) {
-        return sendError(res, err, 'Internal Server Error!', 500);
-    }
-  }
-
-  async saveOutOfOfficeDays(req: Request, res: Response, next: NextFunction) {
-
-    const { days, action } = req.body;
-    const userId = req['userId'];
-    
-    try {
-
+        try {
 
         let user: any = await User.findOne({
-          _id: userId
-        });
+            $and: [
+                { _id: userId },
+                { active: true },
+                {'stats.groups._group': groupId }
+            ]
+        }).select('_id');
 
-        if (action == 'add') {
-            days.forEach(day => {
-                const index = user.out_of_office.findIndex(outOfficeDay => moment(outOfficeDay.date,"YYYY-MM-DD").isSame(moment(day.date).format("YYYY-MM-DD"), 'day'));
-                if (index < 0) {
-                    day.date = moment(day.date).format('YYYY-MM-DD');
-                    user.out_of_office.push(day);
-                }
-            });
-        } else if (action == 'remove') {
-            days.forEach(day => {
-                const index = user.out_of_office.findIndex(outOfficeDay => moment(moment.utc(outOfficeDay.date).format('YYYY-MM-DD')).isSame(moment(moment(day.date).format('YYYY-MM-DD')), 'day'));
-                if (index >= 0) {
-                    user.out_of_office.splice(index, 1);
-                }
-            });
+        // Find the user and update their respective role
+        if (!user) {
+            user = await User.findOneAndUpdate({
+                _id: userId,
+                'stats.groups._group': {$ne: groupId }
+                }, { $push: { 'stats.groups': { _group: groupId, count: 1 }}}
+                )
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
+        } else {
+            user = await User.findOneAndUpdate({
+                _id: userId,
+                'stats.groups._group': groupId 
+                }, { $inc: { 'stats.groups.$.count': 1 }
+                })
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
         }
-        
-
-        user.save();
-        
         // Send status 200 response
         return res.status(200).json({
             message: `User Stats has been updated`,
             user: user
         });
 
-    } catch (err) {
-        return sendError(res, err, 'Internal Server Error!', 500);
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
     }
-  }
 
-  /**
-   * Save the widgets selected for the global dashboard.
-   */
-  async saveSelectedWidgets(req: Request, res: Response, next: NextFunction) {
-      const { userId } = req.params;
-      const { selectedWidgets } = req.body;
+    /**
+     * This function is responsible for retreiving the user´s favorite groups
+     * @param { userId }req 
+     * @param res 
+     */
+    async getFavoriteGroups(req: Request, res: Response, next: NextFunction) {
+        try {
+        const { params: { userId } } = req;
 
-      try {
-          const user = await User.findByIdAndUpdate(userId, {
-              $set: { 'selected_widgets': selectedWidgets }
-          }).select('selected_widgets').lean();
+        if (!userId) {
+            return res.status(400).json({
+            message: 'Please provide the userId!'
+            })
+        }
 
-          return res.status(200).json({
-              message: 'User updated!',
-              user: user
-          });
-      } catch (error) {
-          return sendError(res, error, 'Internal Server Error!', 500);
-      }
-  };
+        const user = await User.findOne({_id: userId})
+            .select("_id stats integrations")
+            .populate({
+                path: 'stats.favorite_groups',
+                select: '_id group_name group_avatar'
+            })
+            .lean();
 
-  async saveCustomField(req: Request, res: Response, next: NextFunction) {
+        if (user['stats'] && user['stats']['favorite_groups']) {
+            user['stats']['favorite_groups'].sort(function(a, b) {
+            return b.group_name - a.group_name;
+            });
+        }
+
+        // Send the status 200 response
+        return res.status(200).json({
+            message: `User found!`,
+            user: user
+        });
+        } catch (err) {
+        return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * This function is responsible for adding/removing a group from user´s favorites
+     * @param req 
+     * @param res 
+     * @param next 
+     */
+    async addFavoriteGroup(req: Request, res: Response, next: NextFunction) {
+
+        const { userId, groupId, isFavoriteGroup } = req.body;
+
+        try {
+
+            let update = {};
+            if (isFavoriteGroup) {
+                update = { $push: { 'stats.favorite_groups': groupId}};
+            } else {
+                update = { $pull: { 'stats.favorite_groups': groupId}};
+            }
+
+            // Find the user and update their respective role
+            let user = await User.findOneAndUpdate({
+                    _id: userId
+                }, update)
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
+
+            if (user['stats'] && user['stats']['favorite_groups']) {
+                user['stats']['favorite_groups'].sort(function(a, b) {
+                    return b.group_name - a.group_name;
+                });
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: `User Stats has been updated`,
+                user: user
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async removeUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId } = req.params;
+
+            if (!userId) {
+                return sendError(res, new Error('Please provide the userId property!'), 'Please provide the userId property!', 500);
+            }
+
+            // Find if the user is owner of a workspace, in this case we will not delete him unless we remove the workspace
+            const workspace = await Workspace.findOne({ _owner: userId });
+
+            if (workspace) {
+                return sendError(res, new Error('Could not delete the user. User is owner of a workspace!'), 'Could not delete the user. User is owner of a workspace!', 404);
+            }
+
+            // remove user
+            const user = await User.findByIdAndDelete(userId).select('_account _workspace integrations');
+            const workspaceId = user._workspace;
+
+            const usersCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId }
+            ] }).countDocuments();
+
+            // Remove user from groups
+            await Group.updateMany({
+                    _members: userId
+                }, {
+                    $pull: {
+                        _members: userId
+                    }
+                });
+            await Group.updateMany({
+                    _admins: userId
+                }, {
+                    $pull: {
+                        _admins: userId
+                    }
+                });
+
+            // Remove user from workspaces
+            const workspaceUpdated = await Workspace.findByIdAndUpdate(
+                    workspaceId
+                , {
+                    $pull: {
+                        _members: userId
+                    }
+                });
+
+            const accountId = user?._account?._id || user?._account;
+            if (accountId) {
+                // Count the number of workspces for the account
+                let accountUpdate = await Account.findById(accountId);
+                const numWorkspaces = accountUpdate._workspaces.length;
+
+                if (numWorkspaces < 2) {
+                    // If account only has one workspace, the account is removed
+                    accountUpdate = await Account.findByIdAndDelete(accountId);
+                } else {
+                    // If account has more than one workspaces, the workspace is removed from the account
+                    accountUpdate = await Account.findByIdAndUpdate({
+                            _id: accountId
+                        }, {
+                            $pull: {
+                                _workspaces: workspaceId
+                            }
+                        });
+                }
+            }
+
+            // Send new workspace to the mgmt portal
+            // Count all the groups present inside the workspace
+            const groupsCount: number = await Group.find({ $and: [
+                { group_name: { $ne: 'personal' } },
+                { _workspace: workspaceId }
+            ]}).countDocuments();
+
+            // Count all the users present inside the workspace
+            const guestsCount: number = await User.find({ $and: [
+                { active: true },
+                { _workspace: workspaceId },
+                { role: 'guest'}
+            ] }).countDocuments();
+
+            let workspaceMgmt = {
+                _id: workspaceId,
+                company_name: workspaceUpdated.company_name,
+                workspace_name: workspaceUpdated.workspace_name,
+                owner_email: workspaceUpdated.owner_email,
+                owner_first_name: workspaceUpdated.owner_first_name,
+                owner_last_name: workspaceUpdated.owner_last_name,
+                _owner_remote_id: workspaceUpdated._owner,
+                environment: process.env.DOMAIN,
+                num_members: usersCount,
+                num_invited_users: guestsCount,
+                num_groups: groupsCount,
+                created_date: workspaceUpdated.created_date,
+                access_code: workspaceUpdated.access_code,
+                management_private_api_key: workspaceUpdated.management_private_api_key
+            }
+
+            axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
+                API_KEY: workspaceUpdated.management_private_api_key,
+                workspaceData: workspaceMgmt
+            });
+
+            axios.delete(`${process.env.MANAGEMENT_URL}/api/user/${userId}`, {
+                data: {
+                    API_KEY: workspaceUpdated.management_private_api_key,
+                    workspaceId: workspaceId,
+                }
+            });
+
+            // Send the status 200 response 
+            return res.status(200).json({
+                message: 'User deleted.'
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async saveIconSidebarByDefault(req: Request, res: Response, next: NextFunction) {
+
+        const { iconsSidebar, userId } = req.body;
+        try {
+
+            let user: any = await User.findOneAndUpdate({
+                _id: userId
+                }, { $set: { 'stats.default_icons_sidebar': iconsSidebar }})
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                });
+
+            if (user['stats'] && user['stats']['favorite_groups']) {
+                user['stats']['favorite_groups'].sort(function(a, b) {
+                return b.group_name - a.group_name;
+                });
+            }
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: `User Stats has been updated`,
+            user: user
+        });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getOutOfOfficeDays(req: Request, res: Response, next: NextFunction) {
+
+        const userId = req['userId'];
+        try {
+
+        let user: any = await User.findOne({
+            _id: userId
+            })
+            .select('_id out_of_office integrations');
+
+        // Send status 200 response
+        return res.status(200).json({
+            message: `User out of the office days`,
+            user: user
+        });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async saveOutOfOfficeDays(req: Request, res: Response, next: NextFunction) {
+
+        const { days, action } = req.body;
+        const userId = req['userId'];
+        
+        try {
+
+
+            let user: any = await User.findOne({
+            _id: userId
+            });
+
+            if (action == 'add') {
+                days.forEach(day => {
+                    const index = user.out_of_office.findIndex(outOfficeDay => moment(outOfficeDay.date,"YYYY-MM-DD").isSame(moment(day.date).format("YYYY-MM-DD"), 'day'));
+                    if (index < 0) {
+                        day.date = moment(day.date).format('YYYY-MM-DD');
+                        user.out_of_office.push(day);
+                    }
+                });
+            } else if (action == 'remove') {
+                days.forEach(day => {
+                    const index = user.out_of_office.findIndex(outOfficeDay => moment(moment.utc(outOfficeDay.date).format('YYYY-MM-DD')).isSame(moment(moment(day.date).format('YYYY-MM-DD')), 'day'));
+                    if (index >= 0) {
+                        user.out_of_office.splice(index, 1);
+                    }
+                });
+            }
+            
+
+            user.save();
+            
+            // Send status 200 response
+            return res.status(200).json({
+                message: `User Stats has been updated`,
+                user: user
+            });
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    /**
+     * Save the widgets selected for the global dashboard.
+     */
+    async saveSelectedWidgets(req: Request, res: Response, next: NextFunction) {
+        const { userId } = req.params;
+        const { selectedWidgets } = req.body;
+
+        try {
+            const user = await User.findByIdAndUpdate(userId, {
+                $set: { 'selected_widgets': selectedWidgets }
+            }).select('selected_widgets').lean();
+
+            return res.status(200).json({
+                message: 'User updated!',
+                user: user
+            });
+        } catch (error) {
+            return sendError(res, error, 'Internal Server Error!', 500);
+        }
+    };
+
+    async saveCustomField(req: Request, res: Response, next: NextFunction) {
 
         // Fetch the groupId
         const { userId } = req.params;
@@ -1151,9 +1151,9 @@ export class UsersControllers {
             _id: userId
         }, {
             $set: { "profile_custom_fields": user['profile_custom_fields'] }
-        }), {
+        }, {
             new: true
-        };
+        });
 
         // user.custom_fields[customFieldName] = customFieldValue;
 
@@ -1162,5 +1162,69 @@ export class UsersControllers {
             message: 'Custom Field updated!',
             user: user
         });
-  }
+    }
+
+    async saveCustomFieldsFromLDAP(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const { userId } = req.params;
+
+        // Fetch the customFieldsMap & workspaceId from fileHandler middleware
+        const customFieldsMap = req.body['customFieldsMap'];
+        const workspaceId = req.body['workspaceId'];
+
+        try {
+            let user = await User.findByIdAndUpdate({
+                    _id: userId
+                }, {
+                    $set: { "profile_custom_fields": customFieldsMap }
+                }, {
+                    new: true
+                }).lean();
+
+            const workspace = await Workspace.findById(workspaceId).select('profile_custom_fields').lean();
+
+            const userCFNames = Object.keys(customFieldsMap);
+
+            for (let i = 0; i < userCFNames.length; i++) {
+                const property = userCFNames[i];
+
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                const index = workspace.profile_custom_fields ? workspace.profile_custom_fields.findIndex(userProperty => userProperty.name == property) : -1;
+                if ( index >= 0 && workspace.profile_custom_fields[index] && workspace.profile_custom_fields[index].user_type
+                        && re.test(String(customFieldsMap[property]).toLowerCase())) {
+
+                    const userOctonius = await User.findOne({
+                        $and: [
+                            { _workspace: workspaceId },
+                            { email: customFieldsMap[property] }
+                        ]}).select('_id').lean();
+
+                    if (userOctonius) {
+
+                        if (!user['profile_custom_fields']) {
+                            user['profile_custom_fields'] = new Map<string, string>();
+                        }
+                        user['profile_custom_fields'][property] = userOctonius._id;
+
+                        user = await User.findByIdAndUpdate({
+                                _id: userId
+                            }, {
+                                $set: { "profile_custom_fields": user['profile_custom_fields'] }
+                            }, {
+                                new: true
+                            }).lean();
+                    }
+                }
+            }
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Custom Field updated!',
+                user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);           
+        }
+    }
 }

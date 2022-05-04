@@ -1,8 +1,6 @@
 import { Component, OnInit, Inject, Injector, Output, EventEmitter } from '@angular/core';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
-import { SubSink } from 'subsink';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
@@ -34,6 +32,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
         private injector: Injector,
         private utilityService: UtilityService,
         private workspaceService: WorkspaceService,
+        private userService: UserService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private mdDialogRef: MatDialogRef<WorkplaceLdapFieldsMapperDialogComponent>
         ) { }
@@ -46,16 +45,16 @@ import { UserService } from 'src/shared/services/user-service/user.service';
       this.isGlobal = this.data.isGlobal;
       this.userLdapData = this.data.userLdapData;
 
-      if (!this.workplaceData.ldap_user_properties_cf) {
-        this.workplaceData.ldap_user_properties_cf = [];
-      }
+      // if (!this.workplaceData.ldap_user_properties_cf) {
+      //   this.workplaceData.ldap_user_properties_cf = [];
+      // }
       //this.profileCustomFields = Object.keys(this.workplaceData?.profile_custom_fields);
       this.profileCustomFields = this.workplaceData?.profile_custom_fields;
       const ldapPropertiesMap = this.workplaceData?.ldapPropertiesMap;
       if (ldapPropertiesMap) {
         Object.keys(ldapPropertiesMap).forEach(property => {
           this.ldapPropertiesToMap.push(property);
-          this.mapSelectedProperties[property];
+          //this.mapSelectedProperties[property];
           this.mapSelectedProperties.set(property, ldapPropertiesMap[property]);
         });
       }
@@ -77,6 +76,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
       }
     }
 
+    /*
     isUserProperty(ldapProperty: string) {
       let index = this.workplaceData?.ldap_user_properties_cf.findIndex(prop => prop == ldapProperty)
       let isSetToMap = index >= 0;
@@ -86,6 +86,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
         this.workplaceData?.ldap_user_properties_cf.push(ldapProperty);
       }
     }
+    */
 
     changePropertyValue($event, ldapPropertyName: string) {
       let index = this.ldapPropertiesToMap.findIndex(prop => prop == ldapPropertyName);
@@ -106,21 +107,52 @@ import { UserService } from 'src/shared/services/user-service/user.service';
           if (resp.value) {
             this.utilityService.updateIsLoadingSpinnerSource(true);
 
-            this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitMappingProperties:Please wait we are mapping the new properties...`,
-              new Promise((resolve, reject) => {
-                  this.workspaceService.ldapWorkspaceUsersInfo(this.workplaceData?._id, this.userData?.email, this.ldapPropertiesToMap, this.mapSelectedProperties, this.workplaceData?.ldap_user_properties_cf, this.isGlobal).then(res => {
-                    this.userData = res['user'];
-                    this.publicFunctions.sendUpdatesToUserData(this.userData);
-                    this.utilityService.updateIsLoadingSpinnerSource(false);
-                    resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.settingsSaved:Properties Mapped & Users Updated!`));
-                    this.onCloseDialog();
-                  }).catch(err => {
-                    this.utilityService.updateIsLoadingSpinnerSource(false);
-                    reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.unableToSave:Unable to save the settings, please try again!`));
-                  });
-            }));
+            if (!this.isGlobal) {
+              for (let i = 0; i < this.ldapPropertiesToMap.length; i++) {
+                const property = this.ldapPropertiesToMap[i];
+                if (!this.userData.profile_custom_fields) {
+                  this.userData.profile_custom_fields = new Map<string, string>();
+                }
+
+                if (this.isNotEmptyProperty(property) && this.isNotEmptyProperty(this.userLdapData[property]) && this.isNotEmptyProperty(this.getOctoniusProperty(property))) {
+                  this.userData.profile_custom_fields[this.getOctoniusProperty(property)] = this.userLdapData[property];
+                }
+              }
+
+              this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitSavingProperties:Please wait we are saving the properties...`,
+                new Promise((resolve, reject) => {
+                    this.userService.saveCustomFieldsFromLDAP(this.userData?._id, this.workplaceData?._id, this.userData.profile_custom_fields).then(res => {
+                      this.userData = res['user'];
+                      this.publicFunctions.sendUpdatesToUserData(this.userData);
+                      this.utilityService.updateIsLoadingSpinnerSource(false);
+                      resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.userSaved:User Saved!`));
+                      this.onCloseDialog();
+                    }).catch(err => {
+                      this.utilityService.updateIsLoadingSpinnerSource(false);
+                      reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.unableToSave:Unable to save the settings, please try again!`));
+                    });
+              }));
+            } else {
+              this.utilityService.asyncNotification($localize`:@@workplaceLdapFieldsMapperDialog.pleaseWaitMappingProperties:Please wait we are mapping the new properties...`,
+                new Promise((resolve, reject) => {
+                    this.workspaceService.ldapWorkspaceUsersInfo(this.workplaceData?._id, this.mapSelectedProperties/*, this.userData?.email, this.ldapPropertiesToMap, this.workplaceData?.ldap_user_properties_cf, this.isGlobal*/).then(res => {
+                      this.workplaceData = res['workspace'];
+                      this.publicFunctions.sendUpdatesToWorkspaceData(this.workplaceData);
+                      this.utilityService.updateIsLoadingSpinnerSource(false);
+                      resolve(this.utilityService.resolveAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.propertiesSaved:Properties to Map Saved!`));
+                      this.onCloseDialog();
+                    }).catch(err => {
+                      this.utilityService.updateIsLoadingSpinnerSource(false);
+                      reject(this.utilityService.rejectAsyncPromise($localize`:@@workplaceLdapFieldsMapperDialog.unableToSave:Unable to save the settings, please try again!`));
+                    });
+              }));
+            }
           }
       });
-      }
+    }
+  }
+
+  isNotEmptyProperty(property: string) {
+    return (property && property != undefined && property != null && property != 'undefined' && property != 'null' && property != '');
   }
 }

@@ -74,7 +74,6 @@ export class LdapController {
                             const emptyReturn: string[] = [];
                             
                             if (global == 'true') {
-                                //res.send(Object.keys(searchList[0]));
                                 res.status(200).json({
                                     ldapPropertiesNames: (searchList && searchList[0]) ? Object.keys(searchList[0]) : emptyReturn
                                 });
@@ -103,25 +102,37 @@ export class LdapController {
         const { workspaceId } = req.params;
 
         // Find the custom field in a workspace and remove the value
-        const ldapPropertiesToMap = req.body['ldapPropertiesToMap'];
+        // const ldapPropertiesToMap = req.body['ldapPropertiesToMap'];
         const mapSelectedProperties = req.body['mapSelectedProperties'];
-        const userProperties = req.body['userProperties'];
-        const email = req.body['email'];
-        const global = req.body['global'];
+        // const userProperties = req.body['userProperties'];
+        //const email = req.body['email'];
+        //const global = req.body['global'];
 
         try {
-            let searchList = [];
             // Find workspace by workspace _id
             const workspace = await Workspace.findByIdAndUpdate(workspaceId, {
-                $set: {
-                    ldapPropertiesMap: mapSelectedProperties,
-                    ldap_user_properties_cf: userProperties
-                }
-            }).select('integrations');
+                    $set: {
+                        ldapPropertiesMap: mapSelectedProperties
+                        //ldap_user_properties_cf: userProperties
+                    }
+                })
+                .populate({
+                    path: 'members',
+                    select: 'first_name last_name profile_pic role email active'
+                })
+                .lean();
+
+            res.status(200).json({
+                message: "Properties to Map Saved",
+                workspace: workspace
+            });
+            /* We comment this seccion until we get ready to do global map for all users,
+                and find out the issue with timeLimit
 
             const integrations = workspace['integrations'];
 
-            //Slack connected or not checking
+            let searchList = [];
+            //LDAP connected or not checking
             const isLdapConnected = integrations.is_ldap_connected || false;
             if (isLdapConnected && email && integrations) {
 
@@ -196,7 +207,7 @@ export class LdapController {
                                                 if (userOctonius) {
                                                     octoniusUserNoGlobal['profile_custom_fields'].set(mapSelectedProperties[property], userOctonius._id);
                                             
-                                                    // Find the post and update the custom field
+                                                    // Find the user and update the custom field
                                                     octoniusUserNoGlobal = await User.findByIdAndUpdate({
                                                         _id: user._id
                                                     }, {
@@ -207,8 +218,8 @@ export class LdapController {
                                                 }
                                             } else if (mapSelectedProperties[property]) {
                                                 octoniusUserNoGlobal['profile_custom_fields'].set(mapSelectedProperties[property], ldapUser[property]);
-                                        
-                                                // Find the post and update the custom field
+
+                                                // Find the user and update the custom field
                                                 octoniusUserNoGlobal = await User.findByIdAndUpdate({
                                                     _id: user._id
                                                 }, {
@@ -233,6 +244,7 @@ export class LdapController {
                     });   // client.search
                 });
             }
+            */
         } catch(err) {
             sendError(res, err);
         }

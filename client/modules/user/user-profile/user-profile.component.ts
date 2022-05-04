@@ -14,14 +14,6 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
 })
 export class UserProfileComponent implements OnInit, AfterContentChecked, OnDestroy {
 
-  constructor(
-    private injector: Injector,
-    private router: ActivatedRoute,
-    public dialog: MatDialog,
-    private utilityService: UtilityService,
-    private workspaceService: WorkspaceService
-  ) { }
-
   // User Data Variable
   userData: any;
 
@@ -38,6 +30,14 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
 
   // UNSUBSCRIBE THE DATA
   private subSink = new SubSink();
+
+  constructor(
+    private injector: Injector,
+    private router: ActivatedRoute,
+    public dialog: MatDialog,
+    private utilityService: UtilityService,
+    private workspaceService: WorkspaceService
+  ) { }
 
   async ngOnInit() {
 
@@ -83,7 +83,11 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
 
     const accountData = await this.publicFunctions.getCurrentAccount();
     this.workspaceService.ldapUserInfoProperties(this.workspaceData._id, accountData?.email, false).then(res => {
-      this.openLDAPFieldsMapDialog(res['userLdapData']);
+      if (res['userLdapData'] && res['userLdapData'].length > 0) {
+        this.openLDAPFieldsMapDialog(res['userLdapData']);
+      } else {
+        this.utilityService.errorNotification($localize`:@@userProfile.userNoExists:Your user doesn't exists in LDAP!`);
+      }
       //setTimeout(() => {
       this.utilityService.updateIsLoadingSpinnerSource(false);
       //}, 10000);

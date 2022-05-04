@@ -37,10 +37,12 @@
               <mat-option *ngFor="let profileCF of profileCustomFields; let j=index" [value]="profileCF.name">{{ profileCF.title }}</mat-option>
             </mat-select>
           </div>
+          <!--
           <div class="col-md-3">
             <input [checked]="workplaceData?.ldap_user_properties_cf?.indexOf(ldapPropertyName)>=0" class="" type="checkbox" (click)="isUserProperty(ldapPropertyName)" [disabled]="!isGlobal">
             &nbsp; <span i18n="@@workplaceLdapFieldsMapperDialog.isUserEmail">Is User E-Mail</span>
           </div>
+          -->
           <div class="col-md-4" *ngIf="!isGlobal && userLdapData">
             <span>{{ userLdapData[ldapPropertyName] | truncatetext: 30 }}</span>
           </div>
@@ -49,8 +51,11 @@
     </div>
 
     <div style="margin-top: 20px; text-align: center;">
-      <button class="col-md-4 btn btn-primary" [disabled]="!ldapPropertiesNames || ldapPropertiesToMap.length <= 0" (click)="mapProperties()" i18n="@@workplaceLdapFieldsMapperDialog.map">
+      <button *ngIf="!isGlobal" class="col-md-4 btn btn-primary" [disabled]="!ldapPropertiesNames || ldapPropertiesToMap.length <= 0" (click)="mapProperties()" i18n="@@workplaceLdapFieldsMapperDialog.map">
         Map
+      </button>
+      <button *ngIf="isGlobal" class="col-md-4 btn btn-primary" [disabled]="!ldapPropertiesNames || ldapPropertiesToMap.length <= 0" (click)="mapProperties()" i18n="@@workplaceLdapFieldsMapperDialog.saveMapping">
+        Save Mapping
       </button>
     </div>
 </div>
