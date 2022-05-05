@@ -2525,10 +2525,6 @@
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
           <context context-type="linenumber">630</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">1066</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitCreatingFolio" datatype="html">
         <source>Please wait while we are creating a new folio</source>
@@ -2644,6 +2640,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.ts</context>
           <context context-type="linenumber">160</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupFiles.pleaseWaitUploadingNewVersion" datatype="html">
+        <source>Please wait we are uploading your new version...</source>
+        <target state="translated">Espere, estamos cargando su nueva versión...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
+          <context context-type="linenumber">1066</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNewFile.new" datatype="html">

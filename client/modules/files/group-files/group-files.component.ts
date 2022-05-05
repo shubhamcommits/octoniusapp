@@ -1063,7 +1063,7 @@ export class GroupFilesComponent implements OnInit {
       fileData.mime_type = file.type
 
       // Call the HTTP Request Asynschronously
-      this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitUploadingFile:Please wait we are uploading your new version...`,
+      this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitUploadingNewVersion:Please wait we are uploading your new version...`,
         new Promise((resolve, reject) => {
           this.filesService.addFile(fileData, file)
             .then((res) => {
