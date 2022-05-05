@@ -1039,4 +1039,43 @@ export class GroupFilesComponent implements OnInit {
   async openDocument(file: any) {
     window.open(this.groupfilesBaseUrl + '/' + file?._id + '?authToken=' + this.authToken, "_blank");
   }
+
+  /**
+   * This function is responsible for uploading the files to the server
+   * @param files
+   */
+   uploadNewVersion(files: FileList, parentFileId: string) {
+    // Start the loading spinner
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
+    // File Data variable
+    const fileData: any = {
+      _group: this.groupId,
+      _posted_by: this.userData?._id,
+      type: 'file',
+      _parent: parentFileId
+    }
+
+    // Loop through each file and begin the process of uploading
+    Array.prototype.forEach.call(files, (file: File) => {
+
+      // Adding Mime Type of the file uploaded
+      fileData.mime_type = file.type
+
+      // Call the HTTP Request Asynschronously
+      this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitUploadingFile:Please wait we are uploading your new version...`,
+        new Promise((resolve, reject) => {
+          this.filesService.addFile(fileData, file)
+            .then((res) => {
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.fileUploaded:File has been uploaded!`))
+            })
+            .catch(() => {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unexpectedErrorUploading:Unexpected error occurred while uploading, please try again!`))
+            });
+        }));
+    });
+
+    // Stop the loading spinner
+    this.utilityService.updateIsLoadingSpinnerSource(false);
+  }
 }

@@ -3,7 +3,7 @@
   (click)="file.click()">
     <i class="material-icons-outlined mr-2">upload_file</i>
     <span i18n="@@fileVersions.newVersion">New Version</span>
-    <input #file type="file" placeholder="File" multiple (change)="fileInput(file.files)" style="display: none;" />
+    <input #file type="file" placeholder="File" (change)="fileInput(file.files)" style="display: none;" />
 </button>
 
 <div class="versions-list">
