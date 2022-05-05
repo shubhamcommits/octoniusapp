@@ -22,13 +22,13 @@ export class FilesService {
     let formData = new FormData();
 
     // Adding File Data
-    formData.append('fileData', JSON.stringify(fileData))
+    formData.append('fileData', JSON.stringify(fileData));
 
     // Appending file
     if(fileToUpload)
-        formData.append('file', fileToUpload, fileToUpload['name'])
+        formData.append('file', fileToUpload, fileToUpload['name']);
 
-    return this._http.post(this.baseURL + `/files/groups`, formData).toPromise()
+    return this._http.post(this.baseURL + `/files/groups`, formData).toPromise();
   }
 
   /**
@@ -221,5 +221,9 @@ export class FilesService {
       customFieldName: customFieldName,
       customFieldValue: customFieldValue
     }).toPromise();
+  }
+
+  getFileVersions(fileId: string) {
+    return this._http.get(this.baseURL + `/files/${fileId}/fileVersions`, {}).toPromise();
   }
 }

@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { sendError } from "../senderror";
 import { File, Flamingo } from '../../api/models';
+import moment from 'moment';
 
 const fs = require("fs");
 
@@ -10,7 +11,7 @@ const fs = require("fs");
  * @param res 
  * @param next 
  */
-const groupFileHandler = async (req: Request, res: Response, next: NextFunction) => {
+ const groupFileHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
 
     // Fetch the File Name From the request
@@ -18,6 +19,72 @@ const groupFileHandler = async (req: Request, res: Response, next: NextFunction)
 
     // Redirect the Response to the Groups Microservice
     return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${file}`)
+
+  } catch (err) {
+    return sendError(res, err, 'Internal Server Error!', 500);
+  }
+}
+
+const groupsFilesHandler = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+
+    // Fetch the File Name From the request
+    let { params: { fileId } } = req;
+
+    let file: any = await File.findById({ _id: fileId });
+
+    if (!file._parent) {
+      let fileVersions: any = await File.find({
+          $and: [
+            { _parent: fileId }
+          ]
+        });
+      if (fileVersions && fileVersions.length > 0) {
+        fileVersions?.sort((f1, f2) => {
+          if (f1.created_date && f2.created_date) {
+            if (moment.utc(f1.created_date).isBefore(f2.created_date)) {
+              return 1;
+            } else {
+              return -1;
+            }
+          } else {
+            if (f1.created_date && !f2.created_date) {
+              return 1;
+            } else if (!f1.created_date && f2.created_date) {
+              return -1;
+            }
+          }
+        });
+
+        fs.readFile(`${process.env.FILE_UPLOAD_FOLDER}${fileVersions[0].modified_name}`, (err,data) => {
+          if (err) {
+            res.writeHead(404);
+            res.end(JSON.stringify(err));
+            return;
+          }
+          //res.writeHead(200);
+          res.status(200).end(data);
+        });
+
+        return;
+
+        //return res.status(301).redirect(`${process.env.FILE_UPLOAD_FOLDER}${fileVersions[0].modified_name}`);
+      }
+    }
+
+    // Redirect the Response to the Groups Microservice
+    //return res.status(301).redirect(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`);
+    fs.readFile(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`, (err,data) => {
+      if (err) {
+        res.writeHead(404);
+        res.end(JSON.stringify(err));
+        return;
+      }
+
+      //res.writeHead(200);
+      return res.status(200).end(data);
+    });
+    return;
 
   } catch (err) {
     return sendError(res, err, 'Internal Server Error!', 500);
@@ -111,18 +178,20 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
   const { fileId } = req.params;
   let deletedFile: any = await File.findById({ _id: fileId });
   
-  if (req.body.fileName && req.body.fileName != '' && (deletedFile.type == 'file' || deletedFile.type == 'campaign')) {
-    // Delete the file accordingly and handle request
-    fs.unlink(process.env.FILE_UPLOAD_FOLDER + req.body.fileName, (error) => {
-      if (error) {
-        req.body.fileName = null;
-        return res.status(500).json({
-          status: '500',
-          message: 'file upload error',
-          error: error
-        });
-      }
-    });
+  if (req.body.fileName && req.body.fileName != '' && deletedFile && (deletedFile.type == 'file' || deletedFile.type == 'campaign')) {
+    if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + req.body.fileName)) {
+      // Delete the file accordingly and handle request
+      fs.unlink(process.env.FILE_UPLOAD_FOLDER + req.body.fileName, (error) => {
+        if (error) {
+          req.body.fileName = null;
+          return res.status(500).json({
+            status: '500',
+            message: 'Error deleting file: ' + req.body.fileName,
+            error: error
+          });
+        }
+      });
+    }
   }
 
   // Delete the imgs from the questions of flamingos
@@ -135,19 +204,48 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
     if (flamingo) {
       flamingo._questions.forEach(async question => {
         if (question.image_url && question.image_url != '') {
-          // Delete the file accordingly and handle request
-          fs.unlink(process.env.FILE_UPLOAD_FOLDER + question.image_url, (error) => {
-            if (error) {
-              return res.status(500).json({
-                status: '500',
-                message: 'file upload error',
-                error: error
-              });
-            }
-          });
+          if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + question.image_url)) {
+            // Delete the file accordingly and handle request
+            fs.unlink(process.env.FILE_UPLOAD_FOLDER + question.image_url, (error) => {
+              if (error) {
+                return res.status(500).json({
+                  status: '500',
+                  message: 'Error deleting image of flamingo: ' + question.image_url,
+                  error: error
+                });
+              }
+            });
+          }
         }
       });
     }
+  }
+
+  let fileVersions;
+  let countVersions;
+  if (deletedFile && deletedFile._parent) {
+    countVersions = await File.find({ _parent: deletedFile._parent }).countDocuments();
+  }
+  
+  if ((countVersions && countVersions <= 1) || !deletedFile._parent) {
+    fileVersions = await File.find({ _parent: fileId });
+  }
+
+  if (fileVersions) {
+    fileVersions.forEach(file => {
+      if (fs.existsSync(process.env.FILE_UPLOAD_FOLDER + file.modified_name)) {
+        // Delete the file version accordingly and handle request
+        fs.unlink(process.env.FILE_UPLOAD_FOLDER + file.modified_name, (error) => {
+          if (error) {
+            return res.status(500).json({
+              status: '500',
+              message: 'Error deleting version of the file: ' + file.modified_name ,
+              error: error
+            });
+          }
+        });
+      }
+    });
   }
 
   // Pass the middleware// Pass the middleware
@@ -155,4 +253,4 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
 
 }
 
-export { groupFileHandler, groupFileUploader, groupFileDelete }
+export { groupFileHandler, groupFileUploader, groupFileDelete, groupsFilesHandler }

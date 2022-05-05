@@ -71,6 +71,7 @@ export const environment = {
   UTILITIES_BASE_URL: 'http://localhost:80/utilities',
   UTILITIES_BASE_API_URL: 'http://localhost:80/api/utilities',
   UTILITIES_GROUPS_UPLOADS: 'http://localhost:80/uploads/groups',
+  UTILITIES_GROUP_FILES_UPLOADS: `http://localhost:80/uploads/groupsFiles`,
   UTILITIES_POSTS_UPLOADS: 'http://localhost:80/uploads/posts',
   UTILITIES_USERS_UPLOADS: 'http://localhost:80/uploads/users',
   UTILITIES_WORKSPACES_UPLOADS: 'http://localhost:80/uploads/workspaces',

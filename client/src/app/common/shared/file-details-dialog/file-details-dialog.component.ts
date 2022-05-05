@@ -20,6 +20,7 @@ export class FileDetailsDialogComponent implements OnInit {
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
+  @Output() allVersionsDeletedEmitter = new EventEmitter();
 
   fileData: any;
   userData: any;
@@ -266,5 +267,11 @@ export class FileDetailsDialogComponent implements OnInit {
   async onApprovalFlowLaunchedEmiter(fileData: any) {
     this.fileData = fileData;
     this.canEdit = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'edit');
+  }
+
+  allVersionsDeleted() {
+    this.allVersionsDeletedEmitter.emit(this.fileData?._id);
+    // Close the modal
+    this.mdDialogRef.close();
   }
 }

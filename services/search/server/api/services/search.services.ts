@@ -394,8 +394,9 @@ export class SearchService {
           { _posted_by: { $in: advancedFilters.owners } },
           { tags: { $in: advancedFilters.tags } },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
-          { created_date: { $gte: from_date, $lte: to_date } }
-        ]    
+          { created_date: { $gte: from_date, $lte: to_date }},
+          { _parent: null }
+        ]
       };
     } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
         && advancedFilters.tags && advancedFilters.tags.length > 0
@@ -414,7 +415,8 @@ export class SearchService {
           },
           { tags: { $in: advancedFilters.tags } },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
@@ -434,7 +436,8 @@ export class SearchService {
           },
           { _posted_by: { $in: advancedFilters.owners } },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
@@ -454,7 +457,8 @@ export class SearchService {
           },
           { _posted_by: { $in: advancedFilters.owners } },
           { tags: { $in: advancedFilters.tags } },
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
@@ -473,7 +477,8 @@ export class SearchService {
             ]
           },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     } else if (advancedFilters.owners && advancedFilters.owners.length > 0
@@ -492,7 +497,8 @@ export class SearchService {
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
@@ -511,7 +517,8 @@ export class SearchService {
             ]
           },
           { tags: { $in: advancedFilters.tags } },
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     } else {
@@ -527,7 +534,8 @@ export class SearchService {
               // { custom_fields: { $regex: queryText, $options: 'i' }},
             ]
           },
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     }

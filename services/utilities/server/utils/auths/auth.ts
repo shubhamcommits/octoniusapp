@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { Auth } from "../../api/models";
 import { Request, Response, NextFunction } from 'express';
 import { sendError } from "../senderror";
-
+import { File } from '../../api/models';
 export class Auths {
 
     /**
@@ -190,7 +190,7 @@ export class Auths {
         }
     }
 
-    canUserDoFileAction(item: any, userData: any) {
+    async canUserEditFileAction(item: any, userData: any, parentFileId?: string) {
         const isGroupManager = (item._group && item._group._admins) ? (item._group?._admins.findIndex((admin: any) => (admin?._id || admin) == userData?._id) >= 0) : false;
         let createdBy = (item?._posted_by ) ? (item?._posted_by?._id == userData?._id) : false;
         createdBy = (!createdBy && item?._created_by) ? (item?._created_by?._id == userData?._id) : createdBy;
@@ -218,10 +218,31 @@ export class Auths {
                   canDoRagAction = true;
                 }
               });
+            } else if (parentFileId) {
+                const parentFile: any = await File.populate(File.findById(parentFileId), [
+                    { path: '_group', select: 'rags' },
+                    { path: 'permissions._members', select: '_id' }
+                ]);
+
+                if (parentFile?.permissions && parentFile?.permissions?.length > 0) {
+                    parentFile.permissions.forEach(permission => {
+                      const groupRagIndex = (parentFile._group?.rags) ? parentFile._group?.rags?.findIndex(groupRag => permission.rags.includes(groupRag.rag_tag)) : -1;
+                      let groupRag;
+                      if (groupRagIndex >= 0) {
+                        groupRag = parentFile._group?.rags[groupRagIndex];
+                      }
+          
+                      const userRagIndex = (groupRag && groupRag._members) ? groupRag._members.findIndex(ragMember => (ragMember?._id || ragMember) == userData?._id) : -1;
+                      const userPermissionIndex = (permission && permission._members) ? permission._members.findIndex(permissionMember => (permissionMember?._id || permissionMember) == userData?._id) : -1;
+                      if ((userRagIndex >= 0 || userPermissionIndex >= 0) && permission.right == 'edit') {
+                        canDoRagAction = true;
+                      }
+                    });
+                  }
             } else if (item?._folder || item?._parent) {
-              canDoRagAction = this.checkParentFolderRagAction(item?._folder || item?._parent, item._group, userData);
+                canDoRagAction = this.checkParentFolderRagAction(item?._folder || item?._parent, item._group, userData);
             } else {
-              canDoRagAction = true;
+                canDoRagAction = true;
             }
           }
     

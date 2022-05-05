@@ -88,6 +88,7 @@ export const environment = {
   UTILITIES_BASE_URL: `${url.protocol}://${url.domain}:10000`,
   UTILITIES_BASE_API_URL: `${url.protocol}://${url.domain}:10000/api`,
   UTILITIES_GROUPS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/groups`,
+  UTILITIES_GROUP_FILES_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/groupsFiles`,
   UTILITIES_FILES_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/files`,
   UTILITIES_POSTS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/posts`,
   UTILITIES_USERS_UPLOADS: `${url.protocol}://${url.domain}:10000/uploads/users`,

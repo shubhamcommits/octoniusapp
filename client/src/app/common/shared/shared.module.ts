@@ -117,6 +117,8 @@ import { FileDetailsDialogComponent } from './file-details-dialog/file-details-d
 import { ApprovalActionsComponent } from './approvals/approval-actions/approval-actions.component';
 import { ApprovalsHistoryComponent } from './approvals/approvals-history/approvals-history.component';
 import { PostDatesComponent } from './posts/group-create-post-dialog-component/post-dates/post-dates.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { FileVersionsComponent } from './file-versions/file-versions.component';
 
 @NgModule({
     declarations: [
@@ -210,7 +212,8 @@ import { PostDatesComponent } from './posts/group-create-post-dialog-component/p
         FileDetailsDialogComponent,
         ApprovalActionsComponent,
         ApprovalsHistoryComponent,
-        PostDatesComponent
+        PostDatesComponent,
+        FileVersionsComponent
     ],
     imports: [
         CommonModule,
@@ -239,7 +242,7 @@ import { PostDatesComponent } from './posts/group-create-post-dialog-component/p
         // MatSlideToggleModule,
         ChartsModule,
         ResizableModule,
-        // MatMenuModule,
+        MatMenuModule,
         // MatBadgeModule,
         // MatPaginatorModule,
         // MatExpansionModule,
@@ -334,7 +337,8 @@ import { PostDatesComponent } from './posts/group-create-post-dialog-component/p
         CommentSectionComponent,
         ApprovalActionsComponent,
         ApprovalsHistoryComponent,
-        PostDatesComponent
+        PostDatesComponent,
+        FileVersionsComponent
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

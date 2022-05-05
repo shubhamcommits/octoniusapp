@@ -91,7 +91,7 @@
 
                       <mat-menu #menu="matMenu">
                           <a mat-menu-item (click)="copyFolderLinkToClipboard(folder)" *ngIf="folder?.canEdit">
-                            <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
+                            <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
                             <span i18n="@@groupFiles.copyLink">Copy Link</span>
                           </a>
 
@@ -127,15 +127,15 @@
           <div class="media card-tile user-list" style="border-bottom: 1px solid #e4edf8;"
               *ngFor="let file of files">
 
-              <a *ngIf="file?.type === 'file' && !isOfficeFile(file?.original_name)" class="mt-0" target="_blank"
-                href="{{filesBaseUrl}}/{{file?.modified_name}}?authToken={{authToken}}">
+              <a *ngIf="file?.type === 'file' && !isOfficeFile(file?.original_name)" class="mt-0" style="cursor: pointer"
+                    (click)="openDocument(file)">
                   <img [src]="getFileIcon(file?.original_name)"
                     onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                   {{file?.original_name}}
               </a>
 
               <a *ngIf="(file?.type == 'file' && isOfficeFile(file?.original_name)) || file?.type === 'campaign'"
-                (click)="openOfficeDoc(file?._id)" class="mt-0" style="cursor: pointer;">
+                (click)="openOfficeDoc(file)" class="mt-0" style="cursor: pointer;">
                   <img [src]="getFileIcon(file?.original_name)"
                     onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                   <span *ngIf="file?.type=='campaign'"><b i18n="@@groupFiles.campaignFile">Campaign File: </b></span>{{file?.original_name}}
@@ -167,20 +167,20 @@
 
                       <mat-menu #menu="matMenu">
                           <a mat-menu-item *ngIf="(file?.type == 'file' && isOfficeFile(file?.original_name)) || file?.type === 'campaign'"
-                              href="{{filesBaseUrl}}/{{file?.modified_name}}?authToken={{authToken}}">
-                            <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">file_download</i>
+                              (click)="openDocument(file)" style="cursor: pointer">
+                            <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">file_download</i>
                             <span i18n="@@groupFiles.download">Download</span>
                           </a>
 
                           <a mat-menu-item (click)="copyToClipboard(file)" *ngIf="file?.canEdit">
-                            <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
+                            <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
                             <span i18n="@@groupFiles.copyLink">Copy Link</span>
                           </a>
 
                           <div *ngIf="(file?.type == 'folio' || file?.type == 'flamingo') && file?.canEdit">
                             <!--
                             <a mat-menu-item [matMenuTriggerFor]="transferMenu" (mouseover)="saveTransferAction('copy')">
-                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">content_copy</i>
                               Copy to Group
                             </a>
                             -->
@@ -214,25 +214,25 @@
                             <span i18n="@@groupFiles.copyFlamingo">Copy Flamingo</span>
                           </a>
 
-                          <a *ngIf="file?.type === 'file'" mat-menu-item (click)="openViewFileDialog(filesBaseUrl + '/' + file?.modified_name)">
-                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                          <a *ngIf="file?.type === 'file'" mat-menu-item (click)="openViewFileDialog(file)" style="cursor: pointer">
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                               <span i18n="@@groupFiles.view">View</span>
                           </a>
 
                           <a *ngIf="file?.type === 'folio'" mat-menu-item
                             routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id, myWorkplace: myWorkplace, readOnly: !file?.canEdit }">
                             <!--(click)="openViewFolioDialog(file?._id)"-->
-                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                               <span i18n="@@groupFiles.view">View</span>
                           </a>
 
                           <a mat-menu-item (click)="openFileDetailsDialog(file)">
-                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">info</i>
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">info</i>
                               <span i18n="@@groupFiles.details">Details</span>
                           </a>
 
                           <a *ngIf="file?.type == 'folio' || (file?.type == 'file' && getFileExtension(file?.original_name) == 'pdf')" mat-menu-item (click)="exportToPDF(file)">
-                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">picture_as_pdf</i>
+                              <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">picture_as_pdf</i>
                               <span i18n="@@groupFiles.exportToPDF">Export To PDF</span>
                           </a>
 

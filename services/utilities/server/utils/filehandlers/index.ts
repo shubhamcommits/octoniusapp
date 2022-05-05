@@ -1,5 +1,6 @@
 import { flamingoFileHandler } from "./flamingo.filehandler";
 import { groupFileHandler } from "./group.filehandler";
+import { groupsFilesHandler } from "./group.filehandler";
 import { postFileHandler } from "./post.filehandler";
 import { userFileHandler } from "./user.filehandler";
 import { workspaceFileHandler } from "./workspace.filehandler";
@@ -23,6 +24,9 @@ export {
   workspaceFileHandler as workspaceFileHandler,
 
   // FLAMINGO
-  flamingoFileHandler as flamingoFileHandler
+  flamingoFileHandler as flamingoFileHandler,
+
+  // groupsFilesHandler
+  groupsFilesHandler as groupsFilesHandler
 
 }

@@ -57,6 +57,7 @@ Quill.register('modules/clipboard', QuillClipboard, true)
 // Environments
 import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-quill-editor',
@@ -93,7 +94,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   workspaceData: any;
 
   // Uploads url for Files
-  filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
+  filesBaseUrl = environment.UTILITIES_GROUP_FILES_UPLOADS;
 
   // Public Functions class
   public publicFunctions = new PublicFunctions(this.Injector);
@@ -256,7 +257,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
     }
 
     return {
-      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      allowedChars: /^[A-Za-z\sÅÄÖåäö0123456789]*$/,
       mentionDenotationChars: ["@", "#"],
       source: async (searchTerm, renderList, mentionChar) => {
 
@@ -265,7 +266,6 @@ export class QuillEditorComponent implements OnInit, OnChanges {
 
         // If User types "@" then trigger the list for user mentioning
         if (mentionChar === "@") {
-
           // Initialise values with list of members
           values = await this.suggestMembers(searchTerm)
 
@@ -277,7 +277,6 @@ export class QuillEditorComponent implements OnInit, OnChanges {
 
           // If User types "#" then trigger the list for files mentioning
         } else if (mentionChar === "#") {
-
           // Initialise values with list of files
           values = await this.suggestFiles(searchTerm)
         }
@@ -287,11 +286,11 @@ export class QuillEditorComponent implements OnInit, OnChanges {
           renderList(values, searchTerm);
         } else {
           const matches = [];
-          for (let i = 0; i < values.length; i++)
-            if (
-              ~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())
-            )
+          for (let i = 0; i < values.length; i++) {
+            if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) {
               matches.push(values[i]);
+            }
+          }
           renderList(matches, searchTerm);
         }
       }
@@ -367,8 +366,8 @@ export class QuillEditorComponent implements OnInit, OnChanges {
           ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
           : (file.type == "flamingo")
             ? `<a href="/document/flamingo/${file._id}?group=${file._group._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-            : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`,
-    }))
+            : `<a href="${this.filesBaseUrl}/${file._id}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+    }));
 
     return Array.from(new Set([...filesList, ...googleFilesList]));
   }

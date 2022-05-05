@@ -3,6 +3,7 @@ import { Auths } from '../../utils/auths';
 import { sendError } from "../../utils/senderror";
 import { FilesService } from "../services";
 import { User } from "../models";
+import moment from "moment";
 
 let http = require('http');
 let https = require('https');
@@ -85,21 +86,52 @@ export class LibreofficeControllers {
         }
         
         try {
-            // Get File on the basis of the fileId
-            const file = await filesService.getOne(fileId);
+            const  file = await filesService.getOne(fileId);
 
             if (!file) {
                 return sendError(res, new Error('File not found.'), 'File not found.', 400);
             }
-            
-            const user = await User.findById({ _id: userId }).lean();
+
+            // Get last version of the file on the basis of the fileId
+            let fileLastVersion;
+            const fileVersions = await filesService.getFileVersions(fileId);
+            if (fileVersions && fileVersions.length > 0) {
+                fileVersions?.sort((f1, f2) => {
+                    if (f1.created_date && f2.created_date) {
+                        if (moment.utc(f1.created_date).isBefore(f2.created_date)) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    } else {
+                        if (f1.created_date && !f2.created_date) {
+                            return 1;
+                        } else if (!f1.created_date && f2.created_date) {
+                            return -1;
+                        }
+                    }
+                });
+                fileLastVersion = fileVersions[0];
+            } else {
+                fileLastVersion = file;
+            }
+
+            if (!fileLastVersion) {
+                return sendError(res, new Error('File not found.'), 'File not found.', 400);
+            }
 
             // calculate if user can edit file based on RAD
-            const canEdit = await authsHelper.canUserDoFileAction(file, user);
+            const user = await User.findById({ _id: userId }).lean();
+            let canEdit;
+            if (fileLastVersion._parent || fileLastVersion?._id == fileId) {
+                canEdit = await authsHelper.canUserEditFileAction(fileLastVersion, user, (fileLastVersion._parent._id || fileLastVersion._parent));
+            } else {
+                canEdit = false;
+            }
             
             return res.json({
-                BaseFileName: file.original_name,
-                OwnerId: file._posted_by._id || file._posted_by,
+                BaseFileName: fileLastVersion.original_name,
+                OwnerId: fileLastVersion._posted_by._id || fileLastVersion._posted_by,
                 UserId: user._id || '',
                 UserFriendlyName: user.first_name + ' ' + user.last_name,
                 UserExtraInfo: {

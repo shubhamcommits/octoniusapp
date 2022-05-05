@@ -35,6 +35,9 @@ routes.get('/search', files.search);
 // GET - Get details of a file on the basis of fileId
 routes.get('/:fileId', files.getOne);
 
+// GET - Get all the versions of a file on the basis of fileId
+routes.get('/:fileId/fileVersions', files.getFileVersions);
+
 // PUT - Edit details of a file on the basis of fileId
 routes.put('/:fileId', files.edit);
 

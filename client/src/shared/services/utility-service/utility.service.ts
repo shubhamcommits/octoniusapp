@@ -13,6 +13,7 @@ import { PermissionDialogComponent } from 'modules/groups/group/permission-dialo
 import * as XLSX from 'xlsx';
 import * as fileSaver from 'file-saver';
 import moment from 'moment';
+import { FilesService } from '../files-service/files.service';
 
 @Injectable({
   providedIn: 'root'
@@ -740,5 +741,29 @@ export class UtilityService {
    */
   public updateIsLoadingSpinnerSource(status: boolean){
     this.isLoadingSpinnerSource.next(status);
+  }
+
+  async getFileLastVersion(file: any) {
+    let fileVersions;
+    let filesService = this.injector.get(FilesService);
+    await filesService.getFileVersions(file?._id).then(async res => {
+      fileVersions = res['fileVersions'];
+      fileVersions?.sort((f1, f2) => {
+        if (f1.created_date && f2.created_date) {
+          if (moment.utc(f1.created_date).isBefore(f2.created_date)) {
+            return 1;
+          } else {
+            return -1;
+          }
+        } else {
+          if (f1.created_date && !f2.created_date) {
+            return 1;
+          } else if (!f1.created_date && f2.created_date) {
+            return -1;
+          }
+        }
+      });
+    });
+    return (fileVersions && fileVersions.length > 0) ? fileVersions[0] : file;
   }
 }
