@@ -5,14 +5,10 @@ import { LibreofficeService } from 'src/shared/services/libreoffice-service/libr
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { ApprovalPDFSignaturesService } from 'src/shared/services/approval-pdf-signatures-service/approval-pdf-signatures.service';
-import { SubSink } from 'subsink';
-import moment from 'moment';
-
-import { saveAs } from "file-saver";
-import { PDFDocument } from 'pdf-lib';
-
 import { FilesService } from 'src/shared/services/files-service/files.service';
 import { ActivatedRoute } from '@angular/router';
+import { SubSink } from 'subsink';
+import moment from 'moment';
 
 @Component({
   selector: 'app-file-versions',
@@ -22,7 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class FileVersionsComponent implements OnInit {
 
-  @Input() fileId;
+  @Input() fileData;
   @Input() userData;
   @Input() currentGroupId;
   @Input() canEdit;
@@ -65,7 +61,7 @@ export class FileVersionsComponent implements OnInit {
     }
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
 
-    this.filesService.getFileVersions(this.fileId).then(async res => {
+    this.filesService.getFileVersions(this.fileData?._id).then(async res => {
       this.fileVersions = res['fileVersions'];
       await this.sortVersions();
     });
@@ -138,34 +134,6 @@ export class FileVersionsComponent implements OnInit {
     return wopiClientURL;
   }
 
-  async exportToPDF(fileData: any) {
-    this.utilityService.updateIsLoadingSpinnerSource(true);
-
-    if (fileData.mime_type.includes('pdf')) {
-      this.modifyPdf(fileData);
-    }
-  }
-
-  async modifyPdf(fileData: any) {
-    const token = this.storageService.getLocalData('authToken')['token'];
-    const url = this.filesBaseUrl + '/' + fileData?.modified_name + '?authToken=Bearer ' + token;
-    const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
-    const pdfDoc = await PDFDocument.load(existingPdfBytes);
-
-    let pdfBytes;
-    if (fileData
-        && fileData.approval_active && fileData.approval_flow_launched
-        && fileData.approval_flow && fileData.approval_flow.length > 0) {
-      pdfBytes = await this.approvalPDFSignaturesService.addSignaturePage(fileData, pdfDoc, token);
-    } else {
-      pdfBytes = await pdfDoc.save();
-    }
-
-    saveAs(new Blob([pdfBytes], { type: "application/pdf" }), fileData?.original_name);
-
-    this.utilityService.updateIsLoadingSpinnerSource(false);
-  }
-
   /**
    * Call function to delete file or a folder
    * @param itemId
@@ -209,7 +177,7 @@ export class FileVersionsComponent implements OnInit {
       _group: this.currentGroupId,
       _posted_by: this.userData?._id,
       type: 'file',
-      _parent: this.fileId
+      _parent: this.fileData._id
     }
 
     // Loop through each file and begin the process of uploading
@@ -228,6 +196,14 @@ export class FileVersionsComponent implements OnInit {
         new Promise((resolve, reject) => {
           this.filesService.addFile(fileData, file)
             .then((res) => {
+              if (!this.fileVersions) {
+                this.fileVersions = [];
+              }
+
+              if (this.fileVersions.length == 0) {
+                this.fileVersions.unshift(this.fileData);
+              }
+
               this.fileVersions.unshift(res['file']);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@fileVersions.fileUploaded:File has been uploaded!`))
             })
