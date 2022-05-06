@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
 import moment from 'moment/moment';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { UserService } from "src/shared/services/user-service/user.service";
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -227,13 +227,18 @@ export class PublicFunctions {
 
         let groupData = await this.getCurrentGroupFromService();
 
+        if (JSON.stringify(groupData) == JSON.stringify({})) {
+          const router = this.injector.get(ActivatedRoute);
+          const groupId = router.snapshot.queryParamMap.get('group');
+          groupData = await this.getCurrentGroupDetails(groupId);
+        }
+
         this.sendUpdatesToGroupData(groupData);
 
         return groupData || {}
     }
 
     async getCurrentGroupFromService() {
-
         return new Promise((resolve) => {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.currentGroupData.subscribe((res) => {
@@ -241,9 +246,8 @@ export class PublicFunctions {
                     resolve(res);
                 else
                     resolve({}) ;
-            })
-            )
-        })
+            }));
+        });
     }
 
     async sendUpdatesToGroupData(groupData: Object) {
@@ -257,9 +261,8 @@ export class PublicFunctions {
             this.subSink.add(utilityService.routerStateData.subscribe((res) => {
                 if (JSON.stringify(res) != JSON.stringify({}))
                     resolve(res)
-            })
-            )
-        })
+            }));
+        });
     }
 
     sendUpdatesToRouterState(routerStateData: Object) {

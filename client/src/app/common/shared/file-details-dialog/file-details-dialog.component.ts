@@ -84,6 +84,10 @@ export class FileDetailsDialogComponent implements OnInit {
     this.userData = this.data.userData;
     this.groupData = this.data.groupData;
 
+    if (!this.groupData) {
+      this.groupData = await this.publicFunctions.getCurrentGroup();
+    }
+
     await this.initFileData();
 
     this.canEdit = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'edit');
