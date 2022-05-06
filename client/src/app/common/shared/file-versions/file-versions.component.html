@@ -8,20 +8,30 @@
 
 <div class="versions-list">
   <div class="version" *ngFor="let file of fileVersions; let index = index">
+
+    <img [src]="getFileIcon(file?.original_name)"
+          onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
+
+    <span i18n="@@fileVersions.version">Version</span>
+
+    {{ (fileVersions?.length - index) }}
+
+    <span i18n="@@fileVersions.at">at</span>
+
     <a *ngIf="file?.type === 'file' && !isOfficeFile(file?.original_name)" class="mt-0" target="_blank"
       href="{{filesBaseUrl}}/{{file?.modified_name}}?authToken={{authToken}}">
-        <img [src]="getFileIcon(file?.original_name)"
-          onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
         {{ file?.created_date | date: 'MMM dd, yyyy HH:mm' }}
     </a>
 
     <a *ngIf="(file?.type == 'file' && isOfficeFile(file?.original_name)) || file?.type === 'campaign'"
       (click)="openOfficeDoc(file?._id)" class="mt-0" style="cursor: pointer;">
-        <img [src]="getFileIcon(file?.original_name)"
-          onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
         <span *ngIf="file?.type=='campaign'"><b i18n="@@fileVersions.campaignFile">Campaign File: </b></span>
         {{ file?.created_date | date: 'MMM dd, yyyy HH:mm' }}
     </a>
+
+    <span i18n="@@fileVersions.by">by</span>
+
+    {{ file?._posted_by?.first_name }}&nbsp;{{ file?._posted_by?.last_name }}
 
     <div class="media-body">
       <div class="float-right">

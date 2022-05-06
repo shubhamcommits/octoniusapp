@@ -12103,11 +12103,11 @@
         <target state="translated">Espere, estamos actualizando el contenido...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">192</context>
+          <context context-type="linenumber">196</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">221</context>
+          <context context-type="linenumber">225</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.detailsUpdated" datatype="html">
@@ -12115,11 +12115,11 @@
         <target state="translated">¡Detalles actualizados!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">199</context>
+          <context context-type="linenumber">203</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">227</context>
+          <context context-type="linenumber">231</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.unableToUpdateDetails" datatype="html">
@@ -12127,11 +12127,11 @@
         <target state="translated">No se pueden actualizar los detalles. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">202</context>
+          <context context-type="linenumber">206</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">230</context>
+          <context context-type="linenumber">234</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.pleaseWaitWeAreDeleting" datatype="html">
@@ -12139,7 +12139,7 @@
         <target state="translated">Espere, estamos eliminando el fichero...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">240</context>
+          <context context-type="linenumber">244</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.fileDeleted" datatype="html">
@@ -12147,7 +12147,7 @@
         <target state="translated">¡Fichero eliminado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">248</context>
+          <context context-type="linenumber">252</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.unableToDeleteFile" datatype="html">
@@ -12155,7 +12155,7 @@
         <target state="translated">No se puede eliminar el archivo, inténtelo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">250</context>
+          <context context-type="linenumber">254</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.newVersion" datatype="html">
@@ -12166,12 +12166,36 @@
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="fileVersions.version" datatype="html">
+        <source>Version</source>
+        <target state="translated">Versión</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fileVersions.at" datatype="html">
+        <source>at</source>
+        <target state="translated">a</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="fileVersions.campaignFile" datatype="html">
         <source>Campaign File: </source>
         <target state="translated">Fichero de Campaña</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fileVersions.by" datatype="html">
+        <source>by</source>
+        <target state="translated">por</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.html</context>
+          <context context-type="linenumber">32</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.download" datatype="html">
@@ -12179,7 +12203,7 @@
         <target state="translated">Descargar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.html</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.delete" datatype="html">
@@ -12187,7 +12211,7 @@
         <target state="translated">Eliminar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.html</context>
-          <context context-type="linenumber">39</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.errorRetrievingLOOLUrl" datatype="html">
@@ -12195,7 +12219,7 @@
         <target state="translated">No es posible recuperar la URL completa de Office Online</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">136</context>
+          <context context-type="linenumber">132</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.pleaseWaitDeleting" datatype="html">
@@ -12203,7 +12227,7 @@
         <target state="translated">Espere, estamos eliminando ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">179</context>
+          <context context-type="linenumber">147</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.versionDeleted" datatype="html">
@@ -12211,7 +12235,7 @@
         <target state="translated">¡Versión Eliminada!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">190</context>
+          <context context-type="linenumber">158</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.unableToDeleteVersion" datatype="html">
@@ -12219,7 +12243,7 @@
         <target state="translated">No se puede eliminar la versión, inténtalo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">192</context>
+          <context context-type="linenumber">160</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.pleaseWaitUploadingFile" datatype="html">
@@ -12227,7 +12251,7 @@
         <target state="translated">Espere, estamos subiendo su nueva versión...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">227</context>
+          <context context-type="linenumber">195</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.fileUploaded" datatype="html">
@@ -12235,7 +12259,7 @@
         <target state="translated">¡Fichero subido!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">232</context>
+          <context context-type="linenumber">208</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.unexpectedErrorUploading" datatype="html">
@@ -12243,7 +12267,7 @@
         <target state="translated">Ocurrió un error inesperado durante la carga, ¡inténtalo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">235</context>
+          <context context-type="linenumber">211</context>
         </context-group>
       </trans-unit>
       <trans-unit id="inlineInput.pleaseWaitUpdatingContent" datatype="html">
