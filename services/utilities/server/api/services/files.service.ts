@@ -56,7 +56,7 @@ export class FilesService {
         // Create the new File
         file = await File.create(file);
 
-        // Si es la primera version del fichero, añadimos una version nueva
+        // If it is the first version of the file, add a new version
         if (!fileData._parent) {
             await File.create({
                 _group: fileData._group,
@@ -68,6 +68,27 @@ export class FilesService {
                 _folder: (fileData._folder && fileData._folder != '') ? fileData._folder : null,
                 _parent: file._id
             });
+        } else {
+            // In case the file is old (previous to versions) we count the number of versions and if there is no versions we add a 1st version
+            let numVersions = await File.find({
+                $and: [
+                    { _parent: fileData._parent }
+                ]
+            }).countDocuments();
+
+            if (numVersions <= 1) {
+                const parentFile: any =  await File.findById({ _id: fileData._parent }).lean();
+                await File.create({
+                    _group: parentFile._group,
+                    _posted_by: parentFile._posted_by,
+                    original_name: parentFile.original_name,
+                    modified_name: parentFile.modified_name,
+                    type: parentFile.type,
+                    mime_type: parentFile.mime_type,
+                    _folder: parentFile._folder,
+                    _parent: parentFile._id
+                });
+            }
         }
 
         // Populate File Properties
