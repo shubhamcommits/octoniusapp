@@ -63,6 +63,13 @@ export class FileVersionsComponent implements OnInit {
 
     this.filesService.getFileVersions(this.fileData?._id).then(async res => {
       this.fileVersions = res['fileVersions'];
+      if (!this.fileVersions) {
+        this.fileVersions = [];
+      }
+
+      if (this.fileVersions.length == 0) {
+        this.fileVersions.unshift(this.fileData);
+      }
       await this.sortVersions();
     });
   }
