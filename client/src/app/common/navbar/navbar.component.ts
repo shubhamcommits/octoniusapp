@@ -246,22 +246,34 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   initLanguages() {
+
+    if (environment.production && this.userData.locale && this.userData.locale != this.locale) {
+      this.selectLanguage(this.userData.locale);
+    }
+
     this.languages.push({ name: $localize`:@@navbar.spanish:Spanish`, code: 'es'});
     this.languages.push({ name: $localize`:@@navbar.english:English`, code: 'en'});
     this.languages.push({ name: $localize`:@@navbar.english:German`, code: 'de'});
   }
 
   selectLanguage(language: any) {
+    this.userService.saveLocale(language.code).then(res => {
 
-    let redirect_uri = environment.clientUrl;
-    if (environment.production) {
-      redirect_uri += '/' + language.code;
-    }
+      this.userData = res['user'];
+      this.publicFunctions.sendUpdatesToUserData(this.userData);
 
-    redirect_uri += this._router.url;
+      localStorage.setItem('locale', language.code);
 
-    if (this.locale != language.code) {
-      window.location.href = redirect_uri;
-    }
+      let redirect_uri = environment.clientUrl;
+      if (environment.production) {
+        redirect_uri += '/' + language.code;
+      }
+
+      redirect_uri += this._router.url;
+
+      if (this.locale != language.code) {
+        window.location.href = redirect_uri;
+      }
+    });
   }
 }

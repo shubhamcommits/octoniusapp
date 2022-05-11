@@ -339,6 +339,17 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       filesList = await this.publicFunctions.searchFiles(null, searchTerm, 'true', this.workspaceId);
     }
 
+    // Map the users list
+    filesList = filesList.map((file: any) => ({
+      id: file._id,
+      value:
+        (file.type == 'folio')
+          ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+          : (file.type == "flamingo")
+            ? `<a href="/document/flamingo/${file._id}?group=${file._group._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            : `<a href="${this.filesBaseUrl}/${file._id}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+    }));
+
     let googleFilesList: any = [];
 
     // Fetch Access Token
@@ -358,18 +369,29 @@ export class QuillEditorComponent implements OnInit, OnChanges {
         }))
     }
 
-    // Map the users list
-    filesList = filesList.map((file: any) => ({
-      id: file._id,
-      value:
-        (file.type == 'folio')
-          ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-          : (file.type == "flamingo")
-            ? `<a href="/document/flamingo/${file._id}?group=${file._group._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-            : `<a href="${this.filesBaseUrl}/${file._id}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
-    }));
+    let boxFilesList: any = [];
 
-    return Array.from(new Set([...filesList, ...googleFilesList]));
+    // Fetch Access Token
+    if (storageService.existData('boxUser') && this.workspaceData?.integrations?.is_box_connected) {
+      const boxUser: any = storageService.getLocalData('boxUser');
+
+      // Fetch the access token from the storage
+      let boxAccessToken = boxUser['accessToken'];
+
+      // Get Box file list
+      boxFilesList = await this.publicFunctions.searchBoxFiles(searchTerm, boxAccessToken, this.workspaceData?.integrations) || []
+
+      // Box File List
+      if (boxFilesList.length > 0) {
+        boxFilesList = boxFilesList
+            .filter(file => file && file.shared_link && file.shared_link.url)
+            .map((file: any) => ({
+                id: 'boxfile',
+                value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
+              }));
+      }
+
+    return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
   }
 
   /**

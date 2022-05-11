@@ -402,4 +402,10 @@ export class UserService {
       customFieldsMap: customFieldsMap
     }).toPromise();
   }
+
+  saveLocale(localeCode: string) {
+    return this._http.put(this.BASE_API_URL + `/locale`, {
+      localeCode: localeCode
+    }).toPromise();
+  }
 }

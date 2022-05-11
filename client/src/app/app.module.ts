@@ -41,7 +41,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 // ANGULAR MODULES
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, LOCALE_ID } from '@angular/core';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -173,8 +173,12 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
       multi: true
     },
     { provide: HTTP_INTERCEPTORS, useClass: ManageHttpInterceptor, multi: true },
-    //{ provide: LOCALE_ID, useValue: 'en-US' }
+    //{ provide: LOCALE_ID, useValue: getCurentLocale() }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function getCurentLocale(): string {
+  return localStorage.getItem('locale') || 'en';
+}

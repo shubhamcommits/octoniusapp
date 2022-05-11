@@ -140,6 +140,9 @@ routes.put('/:userId/customField', user.saveCustomField);
 // PUT - Change custom field value
 routes.put('/:userId/saveCustomFieldsFromLDAP', user.saveCustomFieldsFromLDAP);
 
+// PUT - Change custom field value
+routes.put('/locale', user.saveLocale);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
