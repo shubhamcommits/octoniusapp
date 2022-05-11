@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Injector, LOCALE_ID, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
@@ -30,6 +30,7 @@ export class ConnectBoxCloudComponent implements OnInit {
   private subSink = new SubSink();
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     private boxService: BoxCloudService,
     private storageService: StorageService,
     private utilityService: UtilityService,
@@ -68,7 +69,10 @@ export class ConnectBoxCloudComponent implements OnInit {
   async signInToBox() {
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
-    const redirect_uri = environment.clientUrl + this.router.url;
+    let redirect_uri = environment.clientUrl;
+    if (environment.production) {
+      redirect_uri += '/' + this.locale + this.router.url;
+    }
 
     // Open up the SignIn Window in order to authorize the box user
     let boxSignInUrl: any = await this.publicFunctions.authorizeBoxSignIn(this.workspaceData?._id, redirect_uri);
