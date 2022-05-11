@@ -161,6 +161,16 @@ const workspaceSchema = new Schema({
         },
         ldap_search_base: {
             type: String
+        },
+        is_box_connected: {
+            type: Boolean,
+            default: false
+        },
+        box_client_id: {
+            type: String
+        },
+        box_client_secret_key: {
+            type: String
         }
     }
 });

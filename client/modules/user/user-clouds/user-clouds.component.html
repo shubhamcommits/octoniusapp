@@ -2,12 +2,24 @@
     <div class="row main-actvity" *ngIf="userData">
 
         <div class="col-md-4">
-           <app-user-available-clouds [userData]="userData" (googleUser)="initiliazeGoogleUser($event)"></app-user-available-clouds>
+           <app-user-available-clouds
+            [userData]="userData"
+            (googleUser)="initiliazeGoogleUser($event)"
+            (boxUser)="initiliazeBoxUser($event)"></app-user-available-clouds>
         </div>
 
         <div class="col-md-8">
-            <img *ngIf="!googleAuthSuccessful && !slackAuthSuccessful" src="assets/images/empty-clouds.svg">
-            <app-user-connected-clouds [googleUser]="googleUser" [slackAuthSuccessful]="slackAuthSuccessful" *ngIf="googleUser || slackAuthSuccessful"></app-user-connected-clouds>
+            <img *ngIf="!googleAuthSuccessful && !slackAuthSuccessful && !boxAuthSuccessful" src="assets/images/empty-clouds.svg">
+            <app-user-connected-clouds *ngIf="googleUser || slackAuthSuccessful || boxAuthSuccessful"
+              [googleUser]="googleUser"
+              [boxUser]="boxUser"
+              [slackAuthSuccessful]="slackAuthSuccessful"></app-user-connected-clouds>
         </div>
     </div>
 </div>
+
+<!-- LOADING SPINNER STARTS -->
+<ng-container *ngIf="isLoading$">
+  <app-loading-spinner></app-loading-spinner>
+</ng-container>
+<!-- LOADING SPINNER ENDS -->

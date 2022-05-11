@@ -57,8 +57,7 @@
         <li>
             <!-- USER PROFILE BADGE STARTS -->
             <a class="nav-link" *ngIf="this.userData"
-                [routerLink]="['/dashboard', 'user', 'profile']"
-                [queryParams]="{ userId: userData?._id}" >
+                [routerLink]="['/dashboard', 'user', 'profile']">
                 <app-secured-image
                   [imgURL]="userData?.profile_pic"
                   [service]="'user'"

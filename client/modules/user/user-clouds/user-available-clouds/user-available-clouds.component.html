@@ -8,6 +8,8 @@
             <br />
             <app-connect-slack *ngIf="workspaceData?.integrations?.is_slack_connected" [userData]="userData"></app-connect-slack>
             <br />
+            <app-connect-box-cloud *ngIf="workspaceData?.integrations?.is_box_connected" (boxUser)="emitBoxUser($event)"></app-connect-box-cloud>
+            <br />
             <!--
             <div class="row">
                 <div class="col-md-6">
@@ -26,17 +28,6 @@
                 <div class="col-md-6">
                     <p class="card-text">
                         <strong class="float-left">One Drive</strong>
-                    </p>
-                </div>
-                <div class="col-md-6 push-right">
-                    <button class="btn btn-primary btn-sm">Connect</button>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="card-text">
-                        <strong class="float-left">Box</strong>
                     </p>
                 </div>
                 <div class="col-md-6 push-right">

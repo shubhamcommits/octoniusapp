@@ -33,7 +33,6 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
 
   constructor(
     private injector: Injector,
-    private router: ActivatedRoute,
     public dialog: MatDialog,
     private utilityService: UtilityService,
     private workspaceService: WorkspaceService
@@ -46,20 +45,8 @@ export class UserProfileComponent implements OnInit, AfterContentChecked, OnDest
       state: 'user-account'
     });
 
-    const userId = this.router.snapshot.queryParams['userId'];
-    if (userId) {
-      await this.publicFunctions.getOtherUser(userId).then((res) => {
-        if(JSON.stringify(res) != JSON.stringify({})){
-          this.userData = res;
-        }
-
-        // Instantiate the current user value
-        this.isCurrentUser = (userId == this.userData['_id']);
-      });
-    } else {
-      this.userData = await this.publicFunctions.getCurrentUser();
-      this.isCurrentUser = true;
-    }
+    this.userData = await this.publicFunctions.getCurrentUser();
+    this.isCurrentUser = true;
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
   }

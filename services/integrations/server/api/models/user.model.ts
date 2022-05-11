@@ -155,6 +155,12 @@ const UserSchema = new Schema({
                 default: null
             }
         },
+        box: {
+            token: {
+                type: String,
+                default: null
+            }
+        },
         is_slack_connected: {
             type: Boolean,
             default: null

@@ -123,6 +123,33 @@
       </div>
     </div>
     <!-- SLACK INTEGRATION ENDS -->
+
+    <!-- BOX INTEGRATION STARTS -->
+    <div class="integration">
+      <div class="mt-2 mb-2 pt-3">
+        <mat-slide-toggle color="primary"
+            [checked]="workplaceData?.integrations?.is_box_connected"
+            [name]="'enabled_box'"
+            [(ngModel)]="workplaceData.integrations.is_box_connected">
+          <h6><b i18n="@@workspaceIntegrationsDialog.enableBoxIntegrations">Enable Box Integrations</b></h6>
+        </mat-slide-toggle>
+
+        <br/>
+        <p class="card-text" i18n="@@workspaceIntegrationsDialog.enableBoxIntegrationsDescription">This will allow the users to synchronize with their box drive.</p>
+        <br/>
+
+        <div class="integration-properties" *ngIf="workplaceData?.integrations?.is_box_connected">
+          <div class="form-group">
+            <label for="box_client_id" i18n="@@workspaceIntegrationsDialog.clientId">Client ID:</label>
+            <input type="text" class="form-control" name="box_client_id" [(ngModel)]="workplaceData.integrations.box_client_id" placeholder="Please provide the Box Client ID">
+            <br/>
+            <label for="box_secret_key" i18n="@@workspaceIntegrationsDialog.secretKey">Secret Key:</label>
+            <input type="text" class="form-control" name="box_secret_key" [(ngModel)]="workplaceData.integrations.box_client_secret_key" placeholder="Please provide the Box Secret Key">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- BOX INTEGRATION ENDS -->
   </div>
 
   <div style="margin-top: 20px; text-align: center;">

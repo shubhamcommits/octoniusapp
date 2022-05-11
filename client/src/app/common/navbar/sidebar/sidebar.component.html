@@ -70,7 +70,6 @@
                 <!-- USER PROFILE BADGE STARTS -->
                 <a class="nav-link" *ngIf="this.userData"
                   [routerLink]="['/dashboard', 'user', 'profile']"
-                  [queryParams]="{ userId: userData?._id}"
                   routerLinkActive="active"
                   (click)="changeState('profile')">
                     <app-secured-image

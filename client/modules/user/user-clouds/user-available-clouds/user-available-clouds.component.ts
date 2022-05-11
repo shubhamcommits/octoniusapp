@@ -3,6 +3,7 @@ import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { GoogleCloudService } from './google-cloud/services/google-cloud.service';
+import { BoxCloudService } from './box-cloud/services/box-cloud.service';
 
 @Component({
   selector: 'app-user-available-clouds',
@@ -16,6 +17,8 @@ export class UserAvailableCloudsComponent implements OnInit {
 
   @Output('googleUser') googleUser = new EventEmitter();
 
+  @Output('boxUser') boxUser = new EventEmitter();
+
   workspaceData: any;
 
   public publicFunctions = new PublicFunctions(this.injector);
@@ -23,6 +26,7 @@ export class UserAvailableCloudsComponent implements OnInit {
   constructor(
     private injector: Injector,
     private googleCloudService: GoogleCloudService,
+    private boxCloudService: BoxCloudService,
     private storageService: StorageService,
     private userService: UserService
   ) { }
@@ -48,9 +52,19 @@ export class UserAvailableCloudsComponent implements OnInit {
           console.log('Error occurred, while authenticating for Slack', err);
         });
     }
+
+    if (!this.workspaceData?.integrations?.is_box_connected && this.storageService.existData('boxUser')) {
+      localStorage.removeItem('boxUser');
+      sessionStorage.clear();
+      this.boxCloudService.boxAuthSuccessfulBehavior.next(false);
+    }
   }
 
   emitGoogleUser(googleUser: any) {
     this.googleUser.emit(googleUser)
+  }
+
+  emitBoxUser(boxUser: any) {
+    this.boxUser.emit(boxUser)
   }
 }

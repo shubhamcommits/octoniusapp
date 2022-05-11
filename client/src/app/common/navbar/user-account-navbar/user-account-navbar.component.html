@@ -16,16 +16,18 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/dashboard', 'user', 'profile']"
-            [queryParams]="{ userId: userData?._id }" routerLinkActive="active"
+        <a class="nav-link"
+            [routerLink]="['/dashboard', 'user', 'profile']"
+            routerLinkActive="active"
             [ngClass]="activeState == 'profile'?'nav-link active-nav':'nav-link'" (click)="changeState('profile')">
               <span i18n="@@userAccountNavbar.profile">Profile</span>
               <span class="sr-only">(current)</span>
         </a>
       </li>
       <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/dashboard', 'user', 'clouds']"
-              [queryParams]="{ userId: userData?._id }" routerLinkActive="active"
+          <a class="nav-link"
+              [routerLink]="['/dashboard', 'user', 'clouds']"
+              routerLinkActive="active"
               [ngClass]="activeState == 'clouds'?'nav-link active-nav':'nav-link'"
               (click)="changeState('clouds')">
                 <span i18n="@@userAccountNavbar.integrations">Integrations</span>
@@ -33,8 +35,9 @@
           </a>
       </li>
       <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/dashboard', 'user', 'workload']"
-              [queryParams]="{ userId: userData?._id }" routerLinkActive="active"
+          <a class="nav-link"
+              [routerLink]="['/dashboard', 'user', 'workload']"
+              routerLinkActive="active"
               [ngClass]="activeState == 'workload'?'nav-link active-nav':'nav-link'"
               (click)="changeState('workload')">
                 <span i18n="@@userAccountNavbar.timeOff">Time off</span>

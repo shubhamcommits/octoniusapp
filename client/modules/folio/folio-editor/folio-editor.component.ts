@@ -754,8 +754,31 @@ export class FolioEditorComponent implements AfterViewInit {
         }))
     }
 
+    let boxFilesList: any = [];
+
+    // Fetch Access Token
+    if (storageService.existData('boxUser') && this.workspaceData?.integrations?.is_box_connected) {
+      const boxUser: any = storageService.getLocalData('boxUser');
+
+      // Fetch the access token from the storage
+      let boxAccessToken = boxUser['accessToken'];
+
+      // Get Box file list
+      boxFilesList = await this.publicFunctions.searchBoxFiles(searchTerm, boxAccessToken, this.workspaceData?.integrations) || []
+
+      // Box File List
+      if (boxFilesList.length > 0) {
+        boxFilesList = boxFilesList
+            .filter(file => file && file.shared_link && file.shared_link.url)
+            .map((file: any) => ({
+                id: 'boxfile',
+                value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
+              }));
+      }
+    }
+
     // Return the Array without duplicates
-    return Array.from(new Set([...filesList, ...googleFilesList]));
+    return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
   }
 
   /**

@@ -1,7 +1,6 @@
 import { Account, Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper, axios } from '../../utils';
-import http from 'axios';
 import moment from 'moment';
 
 /*  ===================

@@ -19,6 +19,7 @@ import { FoldersService } from 'src/shared/services/folders-service/folders.serv
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
+import { BoxCloudService } from './user/user-clouds/user-available-clouds/box-cloud/services/box-cloud.service';
 
 // Google API Variable
 declare const gapi: any;
@@ -931,6 +932,177 @@ export class PublicFunctions {
     }
 
     /**
+     * This function is responsible for fetching the box drive files from connected box drive
+     * @param searchTerm
+     * @param accessToken
+     * @returns
+     */
+    searchBoxFiles(searchTerm: string, accessToken: string, integrations: any) {
+      return new Promise((resolve) => {
+          let boxService = this.injector.get(BoxCloudService);
+          boxService.getBoxFiles(searchTerm, accessToken, integrations)
+              .then((res) => {
+                resolve(res['entries']);
+              })
+              .catch(() => resolve([]))
+      });
+    }
+
+    /**
+     * This function opens up the window to signin to google and connect the account
+     */
+    async authorizeBoxSignIn(workspaceId: string, redirect_uri: string) {
+        return new Promise(async (resolve) => {
+            let boxService = this.injector.get(BoxCloudService);
+            await boxService.authorizeBoxSignIn(workspaceId, redirect_uri)
+                .then((res: any) => resolve(res.authorize_url))
+                .catch(() => resolve(null));
+        });
+    }
+
+    /**
+     * This function handles the box signin result and connect the account to octonius server
+     * @param boxSignInResult
+     */
+    async handleBoxSignIn(boxCode?: string) {
+
+        // StorageService Instance
+        let storageService = this.injector.get(StorageService);
+
+        // Box Service Instance
+        let boxService = this.injector.get(BoxCloudService);
+
+        let utilityService = this.injector.get(UtilityService);
+
+        // Access token variable
+        let access_token: any = null;
+
+        // Refresh token variable
+        let refresh_token: any = null;
+
+        const workspaceData: any = await this.getCurrentWorkspace();
+
+        let boxUser = storageService.getLocalData('boxUser');
+        // If its a default refresh in the background
+        if (!boxCode || (boxUser || JSON.stringify(boxUser) != JSON.stringify({}))) {
+
+            // Fetch the refresh token
+            refresh_token = (boxUser) ? boxUser['refreshToken'] : await this.getRefreshBoxTokenFromUser();
+
+            // Token Results
+            let tokenResults: any = {
+                access_token: ''
+            }
+
+            // Assign the access_token from the refresh token
+            if (refresh_token != null && refresh_token != undefined) {
+                tokenResults = await this.getBoxAccessToken(refresh_token, workspaceData?.integrations)
+            }
+
+            // Set the access_token
+            access_token = tokenResults.access_token
+        }
+
+        // Check for default state
+        if (boxCode && (!boxUser || JSON.stringify(boxUser) == JSON.stringify({}))) {
+
+            // Fetch the Google Drive Token Object
+            let tokenResults: any = await this.getBoxDriveTokenFromAuthResult(boxCode, workspaceData?.integrations);
+
+            // Set the access_token
+            access_token = tokenResults.access_token;
+
+            // Set the refresh token
+            refresh_token = tokenResults.refresh_token;
+
+            //boxTokenUser = tokenResults.user;
+        }
+
+        if (access_token != null && refresh_token != null/* && boxTokenUser != null*/) {
+
+            // Retrieve the refresh_token and save it to our server
+            let userDetails: any = await this.saveRefreshBoxTokenToUser(refresh_token);
+
+            // Update the user details with updated token
+            await this.sendUpdatesToUserData(userDetails.user);
+
+            const user: any = await boxService.getBoxUserDetails(access_token, workspaceData?.integrations);
+
+            boxUser = {
+              'user': user,
+              'refreshToken': refresh_token,
+              'accessToken': access_token
+            };
+
+            // Store the box user locally and serialise object in order to store box data locally
+            storageService.setLocalData('boxUser', JSON.stringify(boxUser));
+
+            // Change the observable state
+            boxService.boxAuthSuccessfulBehavior.next(true)
+
+            utilityService.updateIsLoadingSpinnerSource(false);
+
+            // Return box user details
+            return boxUser;
+        }
+
+        utilityService.updateIsLoadingSpinnerSource(false);
+
+        // Return box user details
+        return {}
+    }
+
+    /**
+     * This functions calls the refresh token service function
+     */
+    async getRefreshBoxTokenFromUser() {
+        let boxCloudService = this.injector.get(BoxCloudService)
+        return new Promise(async (resolve) => {
+            await boxCloudService.getRefreshTokenFromUserData()
+                .then((res) => resolve(res['boxToken']))
+        });
+    }
+
+    /**
+     * This function saves the refresh token to user's profile
+     * @param token
+     */
+    async saveRefreshBoxTokenToUser(token: string) {
+        let boxCloudService = this.injector.get(BoxCloudService)
+        return new Promise(async (resolve) => {
+            await boxCloudService.saveRefreshTokenToUser(token)
+                .then((res) => resolve(res))
+        })
+    }
+
+    /**
+     * This function fetches the access token stored in the user's profile
+     * @param refreshToken
+     */
+    async getBoxAccessToken(refreshToken: string, integrations: any) {
+        let boxCloudService = this.injector.get(BoxCloudService)
+        return new Promise(async (resolve) => {
+            await boxCloudService.getAccessToken(refreshToken, integrations)
+                .then((res) => resolve(res))
+        })
+    }
+
+    /**
+     * This function is responsible for fetching the authorization code from google auth results
+     * @param code
+     * @param access_token
+     */
+    async getBoxDriveTokenFromAuthResult(boxCode: string, integrations: any) {
+      let boxService = this.injector.get(BoxCloudService)
+      return new Promise(async (resolve) => {
+          await boxService.getBoxDriveTokenFromAuthResult(boxCode, integrations)
+              .then((res) => {
+                resolve(res)
+              })
+      });
+    }
+
+    /**
      * This function is responsible for editing a post
      * @param postId
      * @param postData
@@ -1283,7 +1455,7 @@ export class PublicFunctions {
         if (!googleSignInResult) {
 
             // Fetch the refresh token
-            refresh_token = (storageService.existData('googleUser')) ? storageService.getLocalData('googleUser')['refreshToken'] : await this.getRefreshTokenFromUser()
+            refresh_token = (storageService.existData('googleUser')) ? storageService.getLocalData('googleUser')['refreshToken'] : await this.getRefreshGoogleTokenFromUser()
 
             // Token Results
             let tokenResults: any = {
@@ -1292,7 +1464,7 @@ export class PublicFunctions {
 
             // Assign the access_token from the refresh token
             if (refresh_token != null && refresh_token != undefined)
-                tokenResults = await this.getAccessToken(refresh_token, workspaceData?.integrations)
+                tokenResults = await this.getGoogleAccessToken(refresh_token, workspaceData?.integrations)
 
             // Set the access_token
             access_token = tokenResults.access_token
@@ -1315,7 +1487,7 @@ export class PublicFunctions {
         if (access_token != null && refresh_token != null) {
 
             // Retrieve the refresh_token and save it to our server
-            let userDetails: any = await this.saveRefreshTokenToUser(refresh_token)
+            let userDetails: any = await this.saveRefreshGoogleTokenToUser(refresh_token)
 
             // Update the user details with updated token
             await this.sendUpdatesToUserData(userDetails.user)
@@ -1344,7 +1516,7 @@ export class PublicFunctions {
     /**
      * This functions calls the refresh token service function
      */
-    async getRefreshTokenFromUser() {
+    async getRefreshGoogleTokenFromUser() {
         let googleService = this.injector.get(GoogleCloudService)
         return new Promise(async (resolve) => {
             await googleService.getRefreshTokenFromUserData()
@@ -1356,7 +1528,7 @@ export class PublicFunctions {
      * This function saves the refresh token to user's profile
      * @param token
      */
-    async saveRefreshTokenToUser(token: string) {
+    async saveRefreshGoogleTokenToUser(token: string) {
         let googleService = this.injector.get(GoogleCloudService)
         return new Promise(async (resolve) => {
             await googleService.saveRefreshTokenToUser(token)
@@ -1368,7 +1540,7 @@ export class PublicFunctions {
      * This function fetches the access token stored in the user's profile
      * @param refreshToken
      */
-    async getAccessToken(refreshToken: string, integrations: any) {
+    async getGoogleAccessToken(refreshToken: string, integrations: any) {
         let googleService = this.injector.get(GoogleCloudService)
         return new Promise(async (resolve) => {
             await googleService.getAccessToken(refreshToken, integrations)
