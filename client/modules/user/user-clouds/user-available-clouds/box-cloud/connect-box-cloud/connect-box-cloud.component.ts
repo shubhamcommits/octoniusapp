@@ -71,8 +71,10 @@ export class ConnectBoxCloudComponent implements OnInit {
 
     let redirect_uri = environment.clientUrl;
     if (environment.production) {
-      redirect_uri += '/' + this.locale + this.router.url;
+      redirect_uri += '/' + this.locale;
     }
+
+    redirect_uri += this.router.url;
 
     // Open up the SignIn Window in order to authorize the box user
     let boxSignInUrl: any = await this.publicFunctions.authorizeBoxSignIn(this.workspaceData?._id, redirect_uri);

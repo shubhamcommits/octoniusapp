@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injector, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy, LOCALE_ID, Inject } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -24,6 +24,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('search') search: ElementRef;
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     private userService: UserService,
     private utilityService: UtilityService,
     private storageService: StorageService,
@@ -58,6 +59,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   isUserAccountNavbar$ = new BehaviorSubject(false);
 
   userGroups: any = [];
+
+  languages: any = [];
 
   iconsSidebar = false;
   isDocumentPage = false;
@@ -138,6 +141,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
     this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
+
+    this.initLanguages();
 
     // Fetch current user from the service
     this.subSink.add(this.utilityService.currentUserData.subscribe(async (res) => {
@@ -238,5 +243,25 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   existsElement(element: any) {
     return (element) && (JSON.stringify(element) != JSON.stringify({}));
+  }
+
+  initLanguages() {
+    this.languages.push({ name: $localize`:@@navbar.spanish:Spanish`, code: 'es'});
+    this.languages.push({ name: $localize`:@@navbar.english:English`, code: 'en'});
+    this.languages.push({ name: $localize`:@@navbar.english:German`, code: 'de'});
+  }
+
+  selectLanguage(language: any) {
+
+    let redirect_uri = environment.clientUrl;
+    if (environment.production) {
+      redirect_uri += '/' + language.code;
+    }
+
+    redirect_uri += this._router.url;
+
+    if (this.locale != language.code) {
+      window.location.href = redirect_uri;
+    }
   }
 }
