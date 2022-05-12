@@ -119,6 +119,7 @@ import { ApprovalsHistoryComponent } from './approvals/approvals-history/approva
 import { PostDatesComponent } from './posts/group-create-post-dialog-component/post-dates/post-dates.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { FileVersionsComponent } from './file-versions/file-versions.component';
+import { SelectLanguageComponent } from './select-language/select-language.component';
 
 @NgModule({
     declarations: [
@@ -150,6 +151,7 @@ import { FileVersionsComponent } from './file-versions/file-versions.component';
         TagsComponent,
         InfiniteScrollComponent,
         ProgressBarComponent,
+        SelectLanguageComponent,
         SelectMemberComponent,
         ActivityFeedComponent,
         SendPulseComponent,
@@ -274,6 +276,7 @@ import { FileVersionsComponent } from './file-versions/file-versions.component';
         // QuicklinkModule,
         InfiniteScrollComponent,
         ProgressBarComponent,
+        SelectLanguageComponent,
         SelectMemberComponent,
         SendPulseComponent,
         ActivityFiltersComponent,

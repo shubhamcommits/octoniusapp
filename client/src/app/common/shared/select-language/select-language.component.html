@@ -1,0 +1,10 @@
+<a class="nav-link" [matMenuTriggerFor]="languageMenu">
+  <span class="material-icons">language</span>
+</a>
+
+<mat-menu #languageMenu="matMenu">
+  <button mat-menu-item *ngFor="let language of languages" (click)="selectLanguage(language.code)">
+    <img class="mr-3 feed-avatar flag" src="/assets/images/flags/{{ language.code }}.svg" />
+    {{ language.name }}
+  </button>
+</mat-menu>

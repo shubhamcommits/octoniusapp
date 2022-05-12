@@ -40,17 +40,8 @@
           <ul class="navbar-nav search-nav">
             <!-- LANGUAGE SELECT starts -->
             <li class="nav-item">
-              <a class="nav-link" [matMenuTriggerFor]="languageMenu">
-                <span class="material-icons">language</span>
-              </a>
+              <app-select-language [userData]="userData"></app-select-language>
             </li>
-
-            <mat-menu #languageMenu="matMenu">
-              <button mat-menu-item *ngFor="let language of languages" (click)="selectLanguage(language.code)">
-                <img class="mr-3 feed-avatar flag" src="/assets/images/flags/{{ language.code }}.svg" />
-                {{ language.name }}
-              </button>
-            </mat-menu>
             <!-- LANGUAGE SELECT ends -->
 
             <!-- SEARCH starts -->

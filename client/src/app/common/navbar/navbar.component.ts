@@ -23,16 +23,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('search') search: ElementRef;
 
-  constructor(
-    @Inject(LOCALE_ID) public locale: string,
-    private userService: UserService,
-    private utilityService: UtilityService,
-    private storageService: StorageService,
-    public dialog: MatDialog,
-    private injector: Injector,
-    private _router: Router
-  ) { }
-
   // CURRENT USER DATA
   userData: any;
 
@@ -42,7 +32,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   storyData: any;
 
   // Public Functions Object
-  public publicFunctions = new PublicFunctions(this.injector)
+  public publicFunctions = new PublicFunctions(this.injector);
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_USERS_UPLOADS
@@ -60,8 +50,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   userGroups: any = [];
 
-  languages: any = [];
-
   iconsSidebar = false;
   isDocumentPage = false;
 
@@ -71,37 +59,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     unreadNotifications: []
   }
 
-  myAuthCheck() {
-    return this.storageService.existData('authToken');
-  }
-
-  nextGroupNavbarState() {
-    this.isUserAccountNavbar$.next(false);
-    this.isAdminNavbar$.next(false);
-    this.isWorkNavbar$.next(false);
-    this.isGroupNavbar$.next(true);
-  }
-
-  nextCommonNavbarState() {
-    this.isUserAccountNavbar$.next(false);
-    this.isGroupNavbar$.next(false);
-    this.isWorkNavbar$.next(false);
-    this.isAdminNavbar$.next(true);
-  }
-
-  nextWorkNavbar() {
-    this.isUserAccountNavbar$.next(false);
-    this.isAdminNavbar$.next(false);
-    this.isGroupNavbar$.next(false);
-    this.isWorkNavbar$.next(true);
-  }
-
-  nextUserAccountNavbarState() {
-    this.isUserAccountNavbar$.next(true);
-    this.isAdminNavbar$.next(false);
-    this.isGroupNavbar$.next(false);
-    this.isWorkNavbar$.next(false);
-  }
+  constructor(
+    private userService: UserService,
+    private utilityService: UtilityService,
+    private storageService: StorageService,
+    public dialog: MatDialog,
+    private injector: Injector,
+    private _router: Router
+  ) { }
 
   ngAfterContentChecked() {
     this.subSink.add(this.utilityService.routerStateData.subscribe((res) => {
@@ -141,8 +106,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
     this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
-
-    this.initLanguages();
 
     // Fetch current user from the service
     this.subSink.add(this.utilityService.currentUserData.subscribe(async (res) => {
@@ -198,6 +161,38 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subSink.unsubscribe()
   }
 
+  myAuthCheck() {
+    return this.storageService.existData('authToken');
+  }
+
+  nextGroupNavbarState() {
+    this.isUserAccountNavbar$.next(false);
+    this.isAdminNavbar$.next(false);
+    this.isWorkNavbar$.next(false);
+    this.isGroupNavbar$.next(true);
+  }
+
+  nextCommonNavbarState() {
+    this.isUserAccountNavbar$.next(false);
+    this.isGroupNavbar$.next(false);
+    this.isWorkNavbar$.next(false);
+    this.isAdminNavbar$.next(true);
+  }
+
+  nextWorkNavbar() {
+    this.isUserAccountNavbar$.next(false);
+    this.isAdminNavbar$.next(false);
+    this.isGroupNavbar$.next(false);
+    this.isWorkNavbar$.next(true);
+  }
+
+  nextUserAccountNavbarState() {
+    this.isUserAccountNavbar$.next(true);
+    this.isAdminNavbar$.next(false);
+    this.isGroupNavbar$.next(false);
+    this.isWorkNavbar$.next(false);
+  }
+
   /**
    * This function fetches the user details, makes a GET request to the server
    */
@@ -243,36 +238,5 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   existsElement(element: any) {
     return (element) && (JSON.stringify(element) != JSON.stringify({}));
-  }
-
-  initLanguages() {
-    if (environment.production && this.userData.stats && this.userData.stats.locale && this.userData.stats.locale != this.locale) {
-      this.selectLanguage(this.userData.stats.locale);
-    }
-
-    this.languages.push({ name: $localize`:@@navbar.german:German`, code: 'de'});
-    this.languages.push({ name: $localize`:@@navbar.english:English`, code: 'en'});
-    this.languages.push({ name: $localize`:@@navbar.spanish:Spanish`, code: 'es'});
-  }
-
-  selectLanguage(languageCode: any) {
-    this.userService.saveLocale(languageCode).then(res => {
-
-      this.userData = res['user'];
-      this.publicFunctions.sendUpdatesToUserData(this.userData);
-
-      localStorage.setItem('locale', languageCode);
-
-      let redirect_uri = environment.clientUrl;
-      if (environment.production) {
-        redirect_uri += '/' + languageCode;
-      }
-
-      redirect_uri += this._router.url;
-
-      if (this.locale != languageCode) {
-        window.location.href = redirect_uri;
-      }
-    });
   }
 }
