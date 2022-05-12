@@ -7706,11 +7706,18 @@
           <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="userInformation.language" datatype="html">
+        <source>Language:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/user/user-information/user-information.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="userInformation.deleteAccount" datatype="html">
         <source> Delete Account </source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/user/user-information/user-information.component.html</context>
-          <context context-type="linenumber">26,28</context>
+          <context context-type="linenumber">33,35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userInformation.areYouSure" datatype="html">
@@ -8656,28 +8663,7 @@
         <source>Error occurred while fetching your profile details</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/navbar.component.ts</context>
-          <context context-type="linenumber">213</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="navbar.german" datatype="html">
-        <source>German</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/navbar.component.ts</context>
-          <context context-type="linenumber">255</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="navbar.english" datatype="html">
-        <source>English</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/navbar.component.ts</context>
-          <context context-type="linenumber">256</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="navbar.spanish" datatype="html">
-        <source>Spanish</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/navbar/navbar.component.ts</context>
-          <context context-type="linenumber">257</context>
+          <context context-type="linenumber">208</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pushNotifications.recentNotifications" datatype="html">
@@ -12375,6 +12361,27 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/select-assignee/select-assignee.component.html</context>
           <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="selectLanguage.german" datatype="html">
+        <source>German</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/select-language/select-language.component.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="selectLanguage.english" datatype="html">
+        <source>English</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/select-language/select-language.component.ts</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="selectLanguage.spanish" datatype="html">
+        <source>Spanish</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/select-language/select-language.component.ts</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sheet.userViewSettings" datatype="html">
