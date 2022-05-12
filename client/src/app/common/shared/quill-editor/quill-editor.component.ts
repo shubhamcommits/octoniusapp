@@ -390,6 +390,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
                 value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
               }));
       }
+    }
 
     return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
   }
