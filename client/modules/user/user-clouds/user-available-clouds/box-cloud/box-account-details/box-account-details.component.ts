@@ -23,6 +23,9 @@ export class BoxAccountDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.boxDriveUsed = Math.round(
+      (this.boxUser?.user.space_used / this.boxUser?.user.space_amount) * 100
+    );
   }
 
   async disconnectBoxAccount() {
