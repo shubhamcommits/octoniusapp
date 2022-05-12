@@ -246,7 +246,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   initLanguages() {
-
+console.log(this.userData.locale);
+console.log(this.locale);
     if (environment.production && this.userData.locale && this.userData.locale != this.locale) {
       this.selectLanguage(this.userData.locale);
     }
@@ -256,22 +257,22 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.languages.push({ name: $localize`:@@navbar.english:German`, code: 'de'});
   }
 
-  selectLanguage(language: any) {
-    this.userService.saveLocale(language.code).then(res => {
+  selectLanguage(languageCode: any) {
+    this.userService.saveLocale(languageCode).then(res => {
 
       this.userData = res['user'];
       this.publicFunctions.sendUpdatesToUserData(this.userData);
 
-      localStorage.setItem('locale', language.code);
+      localStorage.setItem('locale', languageCode);
 
       let redirect_uri = environment.clientUrl;
       if (environment.production) {
-        redirect_uri += '/' + language.code;
+        redirect_uri += '/' + languageCode;
       }
 
       redirect_uri += this._router.url;
 
-      if (this.locale != language.code) {
+      if (this.locale != languageCode) {
         window.location.href = redirect_uri;
       }
     });
