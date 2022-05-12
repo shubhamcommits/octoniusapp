@@ -252,7 +252,7 @@ console.log(this.locale);
       this.selectLanguage(this.userData.locale);
     }
 
-    this.languages.push({ name: $localize`:@@navbar.english:German`, code: 'de'});
+    this.languages.push({ name: $localize`:@@navbar.german:German`, code: 'de'});
     this.languages.push({ name: $localize`:@@navbar.english:English`, code: 'en'});
     this.languages.push({ name: $localize`:@@navbar.spanish:Spanish`, code: 'es'});
   }
