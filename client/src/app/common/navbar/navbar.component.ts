@@ -246,8 +246,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   initLanguages() {
-console.log(this.userData.stats.locale);
-console.log(this.locale);
     if (environment.production && this.userData.stats && this.userData.stats.locale && this.userData.stats.locale != this.locale) {
       this.selectLanguage(this.userData.stats.locale);
     }
