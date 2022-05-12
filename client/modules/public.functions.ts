@@ -30,11 +30,18 @@ declare const google: any;
 })
 export class PublicFunctions {
 
+    private subSink = new SubSink();
+
     constructor(
         private injector: Injector
     ) { }
 
-    private subSink = new SubSink();
+    /**
+     * This function unsubscribes the data from the observables
+     */
+    ngOnDestroy(): void {
+        this.subSink.unsubscribe();
+    }
 
     public async getCurrentUser(readOnly?: boolean) {
         let userData: any = await this.getUserDetailsFromService();
@@ -918,6 +925,171 @@ export class PublicFunctions {
     }
 
     /**
+     * GOOGLE DRIVE INTEGRATION STARTS
+     */
+
+    /**
+     * This function opens up the window to signin to google and connect the account
+     */
+    async authorizeGoogleSignIn(integrations: any) {
+      return new Promise(async (resolve) => {
+          await gapi.auth.authorize({
+              'client_id': integrations.google_client_id,
+              'scope': environment.GOOGLE_SCOPE,
+              'immediate': false,
+              'access_type': 'offline',
+              'approval_prompt': 'force',
+              'response_type': 'token code',
+              'grant_type': 'authorization_code'
+            })
+              .then((res: any) => resolve(res))
+              .catch(() => resolve(null))
+      })
+  }
+
+  /**
+   * This function handles the google signin result and connect the account to octonius server
+   * @param googleSignInResult
+   */
+  async handleGoogleSignIn(googleSignInResult?: any) {
+
+      // StorageService Instance
+      let storageService = this.injector.get(StorageService)
+
+      // Google Service Instance
+      let googleService = this.injector.get(GoogleCloudService)
+
+      // Access token variable
+      let access_token: any = null
+
+      // Refresh token variable
+      let refresh_token: any = null;
+
+      const workspaceData: any = await this.getCurrentWorkspace();
+
+      // If its a default refresh in the background
+      if (!googleSignInResult) {
+
+          // Fetch the refresh token
+          refresh_token = (storageService.existData('googleUser')) ? storageService.getLocalData('googleUser')['refreshToken'] : await this.getRefreshGoogleTokenFromUser()
+
+          // Token Results
+          let tokenResults: any = {
+              access_token: ''
+          }
+
+          // Assign the access_token from the refresh token
+          if (refresh_token != null && refresh_token != undefined)
+              tokenResults = await this.getGoogleAccessToken(refresh_token, workspaceData?.integrations)
+
+          // Set the access_token
+          access_token = tokenResults.access_token
+
+      }
+
+      // Check for default state
+      if (googleSignInResult && !googleSignInResult.error && googleSignInResult.access_token) {
+
+          // Fetch the Google Drive Token Object
+          let tokenResults: any = await this.getGoogleDriveTokenFromAuthResult(googleSignInResult.code, googleSignInResult.access_token, workspaceData?.integrations)
+
+          // Set the access_token
+          access_token = tokenResults.access_token
+
+          // Set the refresh token
+          refresh_token = tokenResults.refresh_token
+      }
+
+      if (access_token != null && refresh_token != null) {
+
+          // Retrieve the refresh_token and save it to our server
+          let userDetails: any = await this.saveRefreshGoogleTokenToUser(refresh_token)
+
+          // Update the user details with updated token
+          await this.sendUpdatesToUserData(userDetails.user)
+
+          // Fetch the google user details
+          let googleUserDetails = await this.getGoogleUserDetails(access_token)
+
+          // Store the google user locally and serialise object in order to store google data locally
+          storageService.setLocalData('googleUser', JSON.stringify({
+              'userData': googleUserDetails,
+              'refreshToken': refresh_token,
+              'accessToken': access_token
+          }))
+
+          // Change the observable state
+          googleService.googleAuthSuccessfulBehavior.next(true)
+
+          // Return google user details
+          return googleUserDetails
+      }
+
+      // Return google user details
+      return {}
+  }
+
+  /**
+   * This functions calls the refresh token service function
+   */
+  async getRefreshGoogleTokenFromUser() {
+      let googleService = this.injector.get(GoogleCloudService)
+      return new Promise(async (resolve) => {
+          await googleService.getRefreshTokenFromUserData()
+              .then((res) => resolve(res['gDriveToken']))
+      })
+  }
+
+  /**
+   * This function saves the refresh token to user's profile
+   * @param token
+   */
+  async saveRefreshGoogleTokenToUser(token: string) {
+      let googleService = this.injector.get(GoogleCloudService)
+      return new Promise(async (resolve) => {
+          await googleService.saveRefreshTokenToUser(token)
+              .then((res) => resolve(res))
+      })
+  }
+
+  /**
+   * This function fetches the access token stored in the user's profile
+   * @param refreshToken
+   */
+  async getGoogleAccessToken(refreshToken: string, integrations: any) {
+      let googleService = this.injector.get(GoogleCloudService)
+      return new Promise(async (resolve) => {
+          await googleService.getAccessToken(refreshToken, integrations)
+              .then((res) => resolve(res))
+      })
+  }
+
+  /**
+   * This function is responsible for fetching the authorization code from google auth results
+   * @param code
+   * @param access_token
+   */
+  async getGoogleDriveTokenFromAuthResult(code: string, access_token: string, integrations: any) {
+      let googleService = this.injector.get(GoogleCloudService)
+      return new Promise(async (resolve) => {
+          await googleService.getGoogleDriveTokenFromAuthResult(code, access_token, integrations)
+              .then((res) => resolve(res))
+      })
+  }
+
+  /**
+   * This function is responsible for fetching the google user details
+   * @param accessToken
+   */
+  async getGoogleUserDetails(accessToken: string) {
+      let googleService = this.injector.get(GoogleCloudService)
+      return new Promise(async (resolve) => {
+          await googleService.getGoogleUserDetails(accessToken)
+              .then((res) => resolve(res))
+      })
+  }
+
+    /**
      * This function is responsible for fetching the google drive files from connected google drive
      * @param searchTerm
      * @param accessToken
@@ -932,21 +1104,13 @@ export class PublicFunctions {
     }
 
     /**
-     * This function is responsible for fetching the box drive files from connected box drive
-     * @param searchTerm
-     * @param accessToken
-     * @returns
+     * GOOGLE DRIVE INTEGRATION ENDS
      */
-    searchBoxFiles(searchTerm: string, accessToken: string, integrations: any) {
-      return new Promise((resolve) => {
-          let boxService = this.injector.get(BoxCloudService);
-          boxService.getBoxFiles(searchTerm, accessToken, integrations)
-              .then((res) => {
-                resolve(res['entries']);
-              })
-              .catch(() => resolve([]))
-      });
-    }
+
+
+    /**
+     * BOX INTEGRATION STARTS
+     */
 
     /**
      * This function opens up the window to signin to google and connect the account
@@ -1101,6 +1265,27 @@ export class PublicFunctions {
               })
       });
     }
+
+    /**
+     * This function is responsible for fetching the box drive files from connected box drive
+     * @param searchTerm
+     * @param accessToken
+     * @returns
+     */
+    searchBoxFiles(searchTerm: string, accessToken: string, integrations: any) {
+      return new Promise((resolve) => {
+          let boxService = this.injector.get(BoxCloudService);
+          boxService.getBoxFiles(searchTerm, accessToken, integrations)
+              .then((res) => {
+                resolve(res['entries']);
+              })
+              .catch(() => resolve([]))
+      });
+    }
+
+    /**
+     * BOX INTEGRATION ENDS
+     */
 
     /**
      * This function is responsible for editing a post
@@ -1410,174 +1595,6 @@ export class PublicFunctions {
                 throw (err);
             })
         })
-    }
-
-    /**
-     * This function opens up the window to signin to google and connect the account
-     */
-    async authorizeGoogleSignIn(integrations: any) {
-        return new Promise(async (resolve) => {
-            await gapi.auth.authorize({
-                'client_id': integrations.google_client_id,
-                'scope': environment.GOOGLE_SCOPE,
-                'immediate': false,
-                'access_type': 'offline',
-                'approval_prompt': 'force',
-                'response_type': 'token code',
-                'grant_type': 'authorization_code'
-              })
-                .then((res: any) => resolve(res))
-                .catch(() => resolve(null))
-        })
-    }
-
-    /**
-     * This function handles the google signin result and connect the account to octonius server
-     * @param googleSignInResult
-     */
-    async handleGoogleSignIn(googleSignInResult?: any) {
-
-        // StorageService Instance
-        let storageService = this.injector.get(StorageService)
-
-        // Google Service Instance
-        let googleService = this.injector.get(GoogleCloudService)
-
-        // Access token variable
-        let access_token: any = null
-
-        // Refresh token variable
-        let refresh_token: any = null;
-
-        const workspaceData: any = await this.getCurrentWorkspace();
-
-        // If its a default refresh in the background
-        if (!googleSignInResult) {
-
-            // Fetch the refresh token
-            refresh_token = (storageService.existData('googleUser')) ? storageService.getLocalData('googleUser')['refreshToken'] : await this.getRefreshGoogleTokenFromUser()
-
-            // Token Results
-            let tokenResults: any = {
-                access_token: ''
-            }
-
-            // Assign the access_token from the refresh token
-            if (refresh_token != null && refresh_token != undefined)
-                tokenResults = await this.getGoogleAccessToken(refresh_token, workspaceData?.integrations)
-
-            // Set the access_token
-            access_token = tokenResults.access_token
-
-        }
-
-        // Check for default state
-        if (googleSignInResult && !googleSignInResult.error && googleSignInResult.access_token) {
-
-            // Fetch the Google Drive Token Object
-            let tokenResults: any = await this.getGoogleDriveTokenFromAuthResult(googleSignInResult.code, googleSignInResult.access_token, workspaceData?.integrations)
-
-            // Set the access_token
-            access_token = tokenResults.access_token
-
-            // Set the refresh token
-            refresh_token = tokenResults.refresh_token
-        }
-
-        if (access_token != null && refresh_token != null) {
-
-            // Retrieve the refresh_token and save it to our server
-            let userDetails: any = await this.saveRefreshGoogleTokenToUser(refresh_token)
-
-            // Update the user details with updated token
-            await this.sendUpdatesToUserData(userDetails.user)
-
-            // Fetch the google user details
-            let googleUserDetails = await this.getGoogleUserDetails(access_token)
-
-            // Store the google user locally and serialise object in order to store google data locally
-            storageService.setLocalData('googleUser', JSON.stringify({
-                'userData': googleUserDetails,
-                'refreshToken': refresh_token,
-                'accessToken': access_token
-            }))
-
-            // Change the observable state
-            googleService.googleAuthSuccessfulBehavior.next(true)
-
-            // Return google user details
-            return googleUserDetails
-        }
-
-        // Return google user details
-        return {}
-    }
-
-    /**
-     * This functions calls the refresh token service function
-     */
-    async getRefreshGoogleTokenFromUser() {
-        let googleService = this.injector.get(GoogleCloudService)
-        return new Promise(async (resolve) => {
-            await googleService.getRefreshTokenFromUserData()
-                .then((res) => resolve(res['gDriveToken']))
-        })
-    }
-
-    /**
-     * This function saves the refresh token to user's profile
-     * @param token
-     */
-    async saveRefreshGoogleTokenToUser(token: string) {
-        let googleService = this.injector.get(GoogleCloudService)
-        return new Promise(async (resolve) => {
-            await googleService.saveRefreshTokenToUser(token)
-                .then((res) => resolve(res))
-        })
-    }
-
-    /**
-     * This function fetches the access token stored in the user's profile
-     * @param refreshToken
-     */
-    async getGoogleAccessToken(refreshToken: string, integrations: any) {
-        let googleService = this.injector.get(GoogleCloudService)
-        return new Promise(async (resolve) => {
-            await googleService.getAccessToken(refreshToken, integrations)
-                .then((res) => resolve(res))
-        })
-    }
-
-    /**
-     * This function is responsible for fetching the authorization code from google auth results
-     * @param code
-     * @param access_token
-     */
-    async getGoogleDriveTokenFromAuthResult(code: string, access_token: string, integrations: any) {
-        let googleService = this.injector.get(GoogleCloudService)
-        return new Promise(async (resolve) => {
-            await googleService.getGoogleDriveTokenFromAuthResult(code, access_token, integrations)
-                .then((res) => resolve(res))
-        })
-    }
-
-    /**
-     * This function is responsible for fetching the google user details
-     * @param accessToken
-     */
-    async getGoogleUserDetails(accessToken: string) {
-        let googleService = this.injector.get(GoogleCloudService)
-        return new Promise(async (resolve) => {
-            await googleService.getGoogleUserDetails(accessToken)
-                .then((res) => resolve(res))
-        })
-    }
-
-    /**
-     * This function unsubscribes the data from the observables
-     */
-    ngOnDestroy(): void {
-        this.subSink.unsubscribe();
     }
 
     executedAutomationFlowsPropertiesFront(flows: any[], post: any, groupId: string, isCreationTaskTrigger?: boolean, shuttleIndex?: number) {
