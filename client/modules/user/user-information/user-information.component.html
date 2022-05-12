@@ -20,6 +20,13 @@
                 <span id="userData_company_name"> {{ userData?.company_name }} </span></p>
             <p class="card-text"><strong i18n="@@userInformation.role">Role:</strong>
                 {{ userData?.role }}</p>
+            <!-- LANGUAGE SELECT starts -->
+            <p>
+              <strong i18n="@@userInformation.language">Language:</strong>
+              <app-select-language [userData]="userData"></app-select-language>
+            </p>
+            <!-- LANGUAGE SELECT ends -->
+
             <button *ngIf="currentUser && userData.role !='owner'"
                 type="button" name="button"
                 class="btn btn-link" (click)="removeUser(userData._id)"

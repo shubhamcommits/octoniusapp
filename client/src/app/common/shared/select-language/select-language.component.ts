@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
-import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-select-language',
@@ -30,7 +29,11 @@ export class SelectLanguageComponent implements OnInit {
     private _router: Router
     ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    if (!this.userData) {
+      this.userData = await this.publicFunctions.getCurrentUser();
+    }
+
     this.initLanguages();
   }
 
@@ -39,9 +42,9 @@ export class SelectLanguageComponent implements OnInit {
       this.selectLanguage(this.userData.stats.locale);
     }
 
-    this.languages.push({ name: $localize`:@@navbar.german:German`, code: 'de'});
-    this.languages.push({ name: $localize`:@@navbar.english:English`, code: 'en'});
-    this.languages.push({ name: $localize`:@@navbar.spanish:Spanish`, code: 'es'});
+    this.languages.push({ name: $localize`:@@selectLanguage.german:German`, code: 'de'});
+    this.languages.push({ name: $localize`:@@selectLanguage.english:English`, code: 'en'});
+    this.languages.push({ name: $localize`:@@selectLanguage.spanish:Spanish`, code: 'es'});
   }
 
   selectLanguage(languageCode: any) {
