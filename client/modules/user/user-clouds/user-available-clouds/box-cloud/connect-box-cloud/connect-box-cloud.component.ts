@@ -24,7 +24,7 @@ export class ConnectBoxCloudComponent implements OnInit {
   boxCode = this.activatedRoute.snapshot.queryParamMap.get("code");
 
   // Public Functions
-  private publicFunctions = new PublicFunctions(this.injector)
+  private publicFunctions = new PublicFunctions(this.injector);
 
   // Subsink
   private subSink = new SubSink();

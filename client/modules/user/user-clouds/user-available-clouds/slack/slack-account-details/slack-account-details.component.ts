@@ -35,16 +35,12 @@ export class SlackAccountDetailsComponent implements OnInit {
 
   disconnectSlackAccount() {
     this.userService.disconnectSlack(this.userData._id)
-      .subscribe((res) => {
-        if (!res.connect) {
-          this.userData.integrations.is_slack_connected = false;
-          this.userService.updateUser(this.userData);
-          this.publicFunctions.sendUpdatesToUserData(this.userData);
-          this.slackAuthSuccessful = false;
-          this.userService.slackDisconnected().emit(true);
-        }
-      }),
-      ((err) => {
+      .then((res) => {
+        this.userData.integrations.is_slack_connected = false;
+        this.publicFunctions.sendUpdatesToUserData(this.userData);
+        this.slackAuthSuccessful = false;
+        this.userService.slackDisconnected().emit(true);
+      }).catch((err) => {
         console.log('Error occurred, while authenticating for Slack', err);
       });
   }

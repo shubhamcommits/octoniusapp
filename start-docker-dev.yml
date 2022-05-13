@@ -131,8 +131,6 @@ services:
       - PROTOCOL=http
       - DOMAIN=localhost
       - TEAMS_BOT_URL=https://connect.octonius.com
-      - SLACK_CLIENT_ID=2561616476.1145669381443
-      - SLACK_CLIENT_SECRET=acaf1f9b8e2c2607124c74ea9273a2ed
       - SLACK_BOT_ACCESS_TOKEN=xoxb-2561616476-1145480914898-bFLn6YJrfzbJ9jvCTU34uNuu
       - MANAGEMENT_URL=https://management.octonius.com
     networks:

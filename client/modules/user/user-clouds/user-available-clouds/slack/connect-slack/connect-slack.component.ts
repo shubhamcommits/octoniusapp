@@ -14,6 +14,8 @@ export class ConnectSlackComponent implements OnInit {
 
   @Input() userData:any;
 
+  workspaceData: any;
+
   slackAuthSuccessful: Boolean;
 
   public publicFunctions = new PublicFunctions(this.injector);
@@ -26,6 +28,8 @@ export class ConnectSlackComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.userService.slackDisconnected().subscribe(event => {
       setTimeout(() => {
@@ -100,7 +104,7 @@ export class ConnectSlackComponent implements OnInit {
       .then((result) => {
         if (result.value) {
           localStorage.setItem("slackAuth", "connected");
-          window.location.href = environment.slack_redirect_url;
+          window.location.href = environment.slack_redirect_url + '?client_id=' + this.workspaceData.integrations.slack_client_id + '&scope=commands,incoming-webhook';
         }
       });
   }

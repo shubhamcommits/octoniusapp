@@ -174,8 +174,8 @@ export class UserService {
   /**
    * This function is responsible for diconnecting the slack oA
    */
-  disconnectSlack(user: Object): Observable<any> {
-    return this._http.delete(this.INTEGRATIONS_API_URL + `/slack/disconnect-slack/${user}`);
+  disconnectSlack(user: Object): any {
+    return this._http.delete(this.INTEGRATIONS_API_URL + `/slack/disconnect-slack/${user}`).toPromise();
   }
 
    /**
