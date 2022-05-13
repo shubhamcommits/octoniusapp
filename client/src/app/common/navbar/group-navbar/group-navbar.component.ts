@@ -105,7 +105,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
     if (this.groupId) {
       // Fetch current group
-      this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
+      this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
     }
 
     if (this.groupData) {

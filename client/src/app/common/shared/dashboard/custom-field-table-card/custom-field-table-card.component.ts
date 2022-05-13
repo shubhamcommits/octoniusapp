@@ -45,7 +45,7 @@ export class CustomFieldTableCardComponent implements OnChanges, OnInit {
   }
 
   async initData() {
-    this.groupData = await this.publicFunctions.getCurrentGroup();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
     this.customFields = this.groupData?.custom_fields;
 
     this.selectTypeCFs = this.groupData?.custom_fields_table_widget?.selectTypeCFs;

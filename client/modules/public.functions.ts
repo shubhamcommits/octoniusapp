@@ -91,7 +91,7 @@ export class PublicFunctions {
         return new Promise((resolve, reject) => {
             const userService = this.injector.get(UserService);
             this.subSink.add(userService.getUser()
-                .pipe(retry(3))
+                .pipe(retry(1))
                 .subscribe((res) => resolve(res['user']), (err) => reject(err))
             )
         })
@@ -101,7 +101,7 @@ export class PublicFunctions {
         return new Promise((resolve, reject) => {
             const userService = this.injector.get(UserService);
             this.subSink.add(userService.getOtherUser(userId)
-                .pipe(retry(3))
+                .pipe(retry(1))
                 .subscribe((res) => resolve(res['user']), (err) => reject(err))
             )
         })
@@ -147,7 +147,7 @@ export class PublicFunctions {
         return new Promise((resolve, reject) => {
             const userService = this.injector.get(UserService);
             this.subSink.add(userService.getAccount()
-                .pipe(retry(3))
+                .pipe(retry(1))
                 .subscribe((res) => resolve(res['account']), (err) => reject(err))
             )
         })
@@ -196,7 +196,7 @@ export class PublicFunctions {
             const utilityService = this.injector.get(UtilityService);
 
             this.subSink.add(workspaceService.getWorkspace(userData['_workspace'])
-                .pipe(retry(3))
+                .pipe(retry(1))
                 .subscribe((res) => { resolve(res['workspace']) },
                     (err) => {
                         console.log('Error occurred while fetching the workspace details!', err);
@@ -231,36 +231,79 @@ export class PublicFunctions {
         })
     }
 
-    public async getCurrentGroup() {
+    public async getCurrentGroupDetails() {
 
-        let groupData = await this.getCurrentGroupFromService();
+        let groupData = {};
 
-        if (JSON.stringify(groupData) == JSON.stringify({})) {
-          const router = this.injector.get(ActivatedRoute);
-          const groupId = router.snapshot.queryParamMap.get('group');
-          groupData = await this.getCurrentGroupDetails(groupId);
+        groupData = await this.getCurrentGroupFromService();
+
+        if (JSON.stringify(groupData) == JSON.stringify({}) || JSON.stringify(groupData) == JSON.stringify(undefined)) {
+          groupData = await this.getGroupDetailsFromHTTP();
+        }
+
+        if (JSON.stringify(groupData) == JSON.stringify({}) || JSON.stringify(groupData) == JSON.stringify(undefined)) {
+          groupData = await this.getGroupDetailsFromStorage();
         }
 
         this.sendUpdatesToGroupData(groupData);
 
-        return groupData || {}
+        return groupData || {};
     }
 
     async getCurrentGroupFromService() {
         return new Promise((resolve) => {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.currentGroupData.subscribe((res) => {
-                if (JSON.stringify(res) != JSON.stringify({}))
-                    resolve(res);
-                else
-                    resolve({}) ;
+                resolve(res);
             }));
         });
     }
 
+    async getGroupDetailsFromStorage() {
+        const storageService = this.injector.get(StorageService);
+        return (storageService.existData('groupData') === null) ? {} : storageService.getLocalData('groupData');
+    }
+
+    async getGroupDetailsFromHTTP() {
+        return new Promise(async (resolve, reject) => {
+            const router = this.injector.get(ActivatedRoute);
+            const groupId = router.snapshot.queryParamMap.get('group');
+
+            const groupData = await this.getGroupDetails(groupId);
+            resolve(groupData);
+        })
+    }
+
+    /**
+     * This function fetches the group details
+     * @param groupId
+     */
+    public async getGroupDetails(groupId: string) {
+        return new Promise((resolve, reject) => {
+            let groupService = this.injector.get(GroupService);
+            groupService.getGroup(groupId)
+                .then((res) => {
+                  if (res) {
+                    resolve(res['group']);
+                  }
+                })
+                .catch((err) => {
+                    this.sendError(new Error($localize`:@@publicFunctions.unableToFetchGroupDetails:Unable to fetch the group details, please try again!`))
+                    reject(err)
+                })
+        })
+    }
+
     async sendUpdatesToGroupData(groupData: Object) {
+        const storageService = this.injector.get(StorageService);
         const utilityService = this.injector.get(UtilityService);
         utilityService.updateGroupData(groupData);
+        storageService.setLocalData('groupData', JSON.stringify(groupData));
+    }
+
+    isPersonalNavigation(groupData: Object, userData: Object) {
+      return ((groupData) && (groupData['group_name'] === 'personal') && (groupData['_id'] == userData['_private_group']))
+          ? true : false;
     }
 
     getRouterStateFromService() {
@@ -324,47 +367,6 @@ export class PublicFunctions {
     sendUpdatesToStoryData(storyData: Object) {
         const utilityService = this.injector.get(UtilityService);
         utilityService.updateStoryData(storyData);
-    }
-
-    /**
-     * This function fetches the group details
-     * @param groupId
-     */
-    public async getCurrentGroupDetails(groupId: string) {
-
-       let groupData: any = await this.getCurrentGroupFromService();
-       if (JSON.stringify(groupData) == JSON.stringify({})){
-         groupData = await this.getGroupDetails(groupId);
-       } else {
-           if(groupId != groupData._id){
-            groupData = await this.getGroupDetails(groupId);
-           }
-       }
-
-       this.sendUpdatesToGroupData(groupData);
-
-       return groupData || {};
-    }
-
-
-    /**
-     * This function fetches the group details
-     * @param groupId
-     */
-    public async getGroupDetails(groupId: string) {
-        return new Promise((resolve, reject) => {
-            let groupService = this.injector.get(GroupService);
-            groupService.getGroup(groupId)
-                .then((res) => {
-                  if (res) {
-                    resolve(res['group']);
-                  }
-                })
-                .catch((err) => {
-                    this.sendError(new Error($localize`:@@publicFunctions.unableToFetchGroupDetails:Unable to fetch the group details, please try again!`))
-                    reject(err)
-                })
-        })
     }
 
     /**
@@ -1352,7 +1354,7 @@ export class PublicFunctions {
             columnService.getAllColumns(groupId)
                 .then((res) => {
 
-                    if (res == null) {
+                    if (res == null) {
                         resolve([]);
                     }
 
@@ -1380,7 +1382,7 @@ export class PublicFunctions {
             columnService.getAllArchivedColumns(groupId)
                 .then((res) => {
 
-                    if (res == null) {
+                    if (res == null) {
                         resolve([]);
                     }
 
@@ -1792,7 +1794,7 @@ export class PublicFunctions {
     }
 
     async getCurrentGroupMembers() {
-        const groupData = await this.getCurrentGroup();
+        const groupData = await this.getCurrentGroupDetails();
         let groupMembers = [];
         if (groupData['_admins'].length > 0) {
             groupData['_admins'].forEach(element => {

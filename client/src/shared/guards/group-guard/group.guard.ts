@@ -44,7 +44,7 @@ export class GroupGuard implements CanActivate  {
     let userData = (this.storageService.existData('userData') === null) ? {} : this.storageService.getLocalData('userData');
 
     let currentGroup;
-    currentGroup = await this.publicFunctions.getCurrentGroupDetails(currentGroupId);
+    currentGroup = await this.publicFunctions.getGroupDetails(currentGroupId);
 
     if (currentGroup.archived_group) {
       this.utilityService.warningNotification($localize`:@@groupGuard.oopsGroupDoesNotExist:Oops seems like the group don\'t exist!`);

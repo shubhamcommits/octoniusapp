@@ -48,7 +48,7 @@ export class MembersWorkloadCardComponent implements OnInit {
     this.isLoading$.next(true);
 
     this.userData = await this.publicFunctions.getCurrentUser();
-    this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
+    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
 
     await this.initTable();
 

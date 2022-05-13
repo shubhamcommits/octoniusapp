@@ -85,7 +85,7 @@ export class FileDetailsDialogComponent implements OnInit {
     this.groupData = this.data.groupData;
 
     if (!this.groupData) {
-      this.groupData = await this.publicFunctions.getCurrentGroup();
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
     }
 
     await this.initFileData();

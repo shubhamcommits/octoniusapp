@@ -137,7 +137,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
+    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
 
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
       this.flows = res['flows'];

@@ -25,7 +25,7 @@ export class SectionStatusCardComponent implements OnInit {
   async ngOnInit() {
 
     // Fetch current group details
-    this.groupData = await this.publicFunctions.getCurrentGroup();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one

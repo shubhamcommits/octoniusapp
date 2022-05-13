@@ -31,7 +31,7 @@ export class ActivityFiltersComponent implements OnInit {
 
   async ngOnInit() {
     if (!this.groupData) {
-      this.groupData = await this.publicFunctions.getCurrentGroup();
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
     }
     this.groupMembers = await this.publicFunctions.getCurrentGroupMembers();
     this.userData = await this.publicFunctions.getCurrentUser();

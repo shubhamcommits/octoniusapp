@@ -261,7 +261,7 @@ export class GroupActivityFeedComponent implements OnInit {
 
     // Fetch the group data from HTTP Request
     if (this.groupId != null || this.groupId != undefined) {
-      this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
+      this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
     }
   }
 
