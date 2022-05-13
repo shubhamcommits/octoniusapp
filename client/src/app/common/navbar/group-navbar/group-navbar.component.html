@@ -44,7 +44,6 @@
         <a [ngClass]="activeState == 'myspace_inbox'?'nav-link active-nav':'nav-link'"
             (click)="changeState('myspace_inbox')"
             routerLink="/dashboard/myspace/inbox"
-            [queryParams]="{myWorkplace: true }"
             routerLinkActive="active" i18n="@@groupNavbar.inbox">
               Inbox
           </a>
@@ -53,7 +52,6 @@
         <a [ngClass]="activeState == 'myspace_tasks'?'nav-link active-nav':'nav-link'"
             (click)="changeState('myspace_tasks')"
             routerLink="/dashboard/myspace/tasks"
-            [queryParams]="{myWorkplace: true }"
             routerLinkActive="active" i18n="@@groupNavbar.tasks">
               Tasks
         </a>
@@ -61,7 +59,7 @@
       <li class="nav-item" *ngIf="myWorkplace">
         <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_activity')" routerLink="/dashboard/work/groups/activity"
-            [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
+            [queryParams]="{ group: userData?._private_group }"
             routerLinkActive="active">
               <span class="dot dot-notes"></span>
               <span i18n="@@groupNavbar.notes"> Notes</span>
@@ -71,7 +69,7 @@
         <a [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_tasks')"
             routerLink="/dashboard/work/groups/tasks"
-            [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
+            [queryParams]="{ group: userData?._private_group }"
             routerLinkActive="active">
               <span class="dot dot-personal-tasks"></span>
               <span i18n="@@groupNavbar.personalTasks"> Personal Tasks</span>
@@ -81,7 +79,7 @@
         <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_files')"
             routerLink="/dashboard/work/groups/files"
-            [queryParams]="{ group: userData?._private_group, myWorkplace: true }"
+            [queryParams]="{ group: userData?._private_group }"
             routerLinkActive="active">
               <span class="dot dot-personal-files"></span>
               <span i18n="@@groupNavbar.personalFiles"> Personal Files</span>
@@ -92,7 +90,7 @@
         <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_activity')"
             routerLink="/dashboard/work/groups/activity"
-            [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
+            [queryParams]="{ group: groupData?._id }"
             routerLinkActive="active" i18n="@@groupNavbar.activity">
               Activity
         </a>
@@ -101,7 +99,7 @@
           <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_tasks')"
               routerLink="/dashboard/work/groups/tasks"
-              [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
+              [queryParams]="{ group: groupData?._id }"
               routerLinkActive="active"
               i18n="@@groupNavbar.tasks">
                 Tasks
@@ -111,7 +109,7 @@
           <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_files')"
               routerLink="/dashboard/work/groups/files"
-              [queryParams]="{ group: groupData?._id, myWorkplace: myWorkplace }"
+              [queryParams]="{ group: groupData?._id }"
               routerLinkActive="active"
               i18n="@@groupNavbar.files">
                 Files

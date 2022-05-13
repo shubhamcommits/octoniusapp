@@ -80,13 +80,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    // Fetch current group from the service
-    await this.subSink.add(this.utilityService.currentGroupData.subscribe(async (res) => {
-      if (JSON.stringify(res) !== JSON.stringify({})) {
-        // Assign the GroupData
-        this.groupData = res;
-      }
-    }));
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     this.currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
 
@@ -111,10 +105,10 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
      * Adding the property of tasks in every column
      */
     if (this.columns) {
-      if (this.groupData.enabled_rights) {
+      if (this.groupData?.enabled_rights) {
         await this.filterRAGSections();
       } else {
-        this.columns.forEach(column => {
+        this.columns?.forEach(column => {
           column.canEdit = true;
         });
       }

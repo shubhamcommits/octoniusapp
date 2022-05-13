@@ -142,7 +142,7 @@
               </a>
 
               <a *ngIf="file?.type === 'folio'" class="mt-0"
-                routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id, myWorkplace: myWorkplace, readOnly: !file?.canEdit }">
+                routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id, readOnly: !file?.canEdit }">
                   <img src="assets/images/icon_folio.svg"
                     onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                   {{file?.original_name}}
@@ -220,7 +220,7 @@
                           </a>
 
                           <a *ngIf="file?.type === 'folio'" mat-menu-item
-                            routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id, myWorkplace: myWorkplace, readOnly: !file?.canEdit }">
+                            routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id, readOnly: !file?.canEdit }">
                             <!--(click)="openViewFolioDialog(file?._id)"-->
                               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                               <span i18n="@@groupFiles.view">View</span>

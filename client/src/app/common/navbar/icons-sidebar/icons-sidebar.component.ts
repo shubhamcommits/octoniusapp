@@ -105,4 +105,13 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
     this.iconsSidebar = !this.iconsSidebar;
     this.sidebarChange.emit();
   }
+
+  async changeState(state:string) {
+    this.utilityService.handleActiveStateTopNavBar().emit(state);
+  }
+
+  changeToPersonalGroup() {
+    this.publicFunctions.sendUpdatesToGroupData({});
+    this.router.navigate(['/dashboard', 'myspace', 'inbox']);
+  }
 }

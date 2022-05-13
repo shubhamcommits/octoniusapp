@@ -68,14 +68,6 @@ export class GroupFilesComponent implements OnInit {
   // Folders Array variable
   forms: any = [];
 
-  // IsLoading behaviou subject maintains the state for loading spinner
-  public isLoading$ = new BehaviorSubject(false);
-
-  // Create subsink class to unsubscribe the observables
-  public subSink = new SubSink();
-
-  myWorkplace = this.router.snapshot.queryParamMap.has('myWorkplace') ? this.router.snapshot.queryParamMap.get('myWorkplace') : false
-
   editFolderTitle = false;
   currentFolder: any;
   folderOriginalName = '';
@@ -110,6 +102,12 @@ export class GroupFilesComponent implements OnInit {
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
+
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
+
+  // Create subsink class to unsubscribe the observables
+  public subSink = new SubSink();
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
@@ -452,7 +450,7 @@ export class GroupFilesComponent implements OnInit {
             this.filesService.transferToGroup(itemId, groupId, false)
               .then((res) => {
                 // Redirect to the new group files page
-                this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId, myWorkplace: false } });
+                this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId } });
                 resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folioMoved:👍 Folio Moved!`));
               })
               .catch((error) => {

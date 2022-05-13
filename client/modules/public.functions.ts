@@ -302,8 +302,10 @@ export class PublicFunctions {
     }
 
     isPersonalNavigation(groupData: Object, userData: Object) {
-      return ((groupData) && (groupData['group_name'] === 'personal') && (groupData['_id'] == userData['_private_group']))
-          ? true : false;
+      return (groupData)
+        ?((groupData['group_name'] === 'personal') && (groupData['_id'] == (userData['_private_group']._id || userData['_private_group'])))
+          ? true : false
+        : true;
     }
 
     getRouterStateFromService() {

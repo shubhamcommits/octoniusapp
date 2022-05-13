@@ -65,8 +65,6 @@ export class FileDetailsDialogComponent implements OnInit {
 
   newComment;
 
-  myWorkplace = this.router.snapshot.queryParamMap.has('myWorkplace') ? this.router.snapshot.queryParamMap.get('myWorkplace') : false;
-
   constructor(
     private filesService: FilesService,
     private groupService: GroupService,

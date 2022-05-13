@@ -1,6 +1,6 @@
 <div *ngIf="today_task_count == 0 && overdueTasks.length == 0" class="smart-card" style="padding: 10px;">
 
-  <a (click)="changeState('myspace_tasks')" routerLink="/dashboard/myspace/tasks" [queryParams]="{myWorkplace: true }" routerLinkActive="active">
+  <a (click)="changeState('myspace_tasks')" routerLink="/dashboard/myspace/tasks" routerLinkActive="active">
 
     <div class="row" style="margin: 0 0 20px;">
       <div class="card-title mt-1" i18n="@@taskSmartCard.tasks">

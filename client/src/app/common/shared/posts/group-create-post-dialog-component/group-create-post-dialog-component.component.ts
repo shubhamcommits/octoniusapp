@@ -100,7 +100,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   newComment;
 
-  myWorkplace = this.router.snapshot.queryParamMap.has('myWorkplace') ? this.router.snapshot.queryParamMap.get('myWorkplace') : false;
+  myWorkplace = false;
 
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
@@ -138,6 +138,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+
+    this.myWorkplace = this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
 
     this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
       this.flows = res['flows'];

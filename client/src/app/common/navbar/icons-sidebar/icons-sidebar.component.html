@@ -7,20 +7,16 @@
   </button>
   <!-- MENU BUTTON ENDS -->
 
-      <a [routerLink]="['/dashboard', 'myspace', 'inbox']" routerLinkActive="router-link-active">
-          <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
+      <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="cursor: pointer;">
+        <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
       </a>
-
-
-
-
   </div>
 
   <div class="menu-options">
       <ul class="list-unstyled components">
           <li>
-              <a [routerLink]="['/dashboard', 'myspace', 'inbox']">
-                  <i class="material-icons-outlined">home</i>
+              <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="cursor: pointer;">
+                <i class="material-icons-outlined">home</i>
               </a>
           </li>
           <li> <hr class="divider-line"></li>
@@ -31,8 +27,8 @@
           </li>
 
           <li *ngFor="let group of userGroups">
-            <a [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
-                [queryParams]="{ group: group?._id, myWorkplace: false  }">
+            <a (click)="changeState('groups_activity')" [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
+                [queryParams]="{ group: group?._id }">
                 <app-secured-image
                     [imgURL]="group?.group_avatar"
                     [service]="'group'"
@@ -44,12 +40,11 @@
         <li>
           <a routerLinkActive="active" routerLink="/dashboard/work/groups/all" class="explore-work">
             <i class="material-icons-outlined carret">groups</i>
-
           </a>
         </li>
         <li> <hr class="divider-line"></li>
         <li *ngIf="this.userData?.role === 'admin' || this.userData?.role === 'owner'">
-            <a class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
+            <a (click)="changeState('general')" class="nav-link" [routerLink]="['/dashboard', 'admin', 'general']" routerLinkActive="active">
               <i class="material-icons">settings</i>
             </a>
         </li>
@@ -57,7 +52,8 @@
         <li>
             <!-- USER PROFILE BADGE STARTS -->
             <a class="nav-link" *ngIf="this.userData"
-                [routerLink]="['/dashboard', 'user', 'profile']">
+                [routerLink]="['/dashboard', 'user', 'profile']"
+                (click)="changeState('profile')">
                 <app-secured-image
                   [imgURL]="userData?.profile_pic"
                   [service]="'user'"

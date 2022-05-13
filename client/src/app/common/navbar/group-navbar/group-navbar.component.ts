@@ -75,7 +75,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
         this.routerFromEvent = res;
         await this.ngOnInit();
       }
-    }))
+    }));
 
     // Check for all the settings
     this.initiateSettings()
@@ -106,6 +106,9 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     if (this.groupId) {
       // Fetch current group
       this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+    } else {
+      // is personal group
+      this.groupData = await this.publicFunctions.getGroupDetails(this.userData?._private_group?._id || this.userData?._private_group);
     }
 
     if (this.groupData) {
@@ -114,7 +117,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     }
 
     // My Workplace variable check
-    this.myWorkplace = this.isPersonalNavigation();
+    this.myWorkplace = this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
 
     this.isFavoriteGroup = this.checkIsFavoriteGroup();
 
@@ -158,15 +161,6 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
       size: 'md',
       centered: true
     });
-  }
-
-  isPersonalNavigation() {
-    return (this.groupId)
-      ? this.groupData.group_name === 'personal'
-        ? (this.groupData?._id == this.userData._private_group)
-          ? true : false
-        : false
-      : true;
   }
 
   checkIsFavoriteGroup() {
