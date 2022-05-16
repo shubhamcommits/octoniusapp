@@ -65,9 +65,6 @@ export class IntegrationsService {
       // StorageService Instance
       let storageService = this.injector.get(StorageService)
 
-      // Google Service Instance
-      let googleService = this.injector.get(GoogleCloudService)
-
       // Access token variable
       let access_token: any = null
 
@@ -241,6 +238,8 @@ console.log("4444: ", userData);
 
     async getGoogleUserDetailsFromStorage() {
         const storageService = this.injector.get(StorageService);
+console.log(storageService.existData('googleUser'));
+console.log(storageService.getLocalData('googleUser'));
         return (storageService.existData('googleUser') === null) ? {} : storageService.getLocalData('googleUser');
     }
 
