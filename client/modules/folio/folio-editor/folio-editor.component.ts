@@ -36,6 +36,7 @@ import * as ShareDB from "sharedb/lib/client";
 import { pdfExporter } from "quill-to-pdf";
 import * as quillToWord from "quill-to-word";
 import { saveAs } from "file-saver";
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 
 // Register the Types of the Sharedb
 ShareDB.types.register(require('rich-text').type);
@@ -148,6 +149,7 @@ export class FolioEditorComponent implements AfterViewInit {
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
+    private integrationsService: IntegrationsService,
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
     private folioService: FolioService,
@@ -744,7 +746,7 @@ export class FolioEditorComponent implements AfterViewInit {
       let accessToken = storageService.getLocalData('googleUser')['accessToken']
 
       // Get Google file list
-      googleFilesList = await this.publicFunctions.searchGoogleFiles(searchTerm, accessToken) || []
+      googleFilesList = await this.integrationsService.searchGoogleFiles(searchTerm, accessToken) || []
 
       // Google File List
       if (googleFilesList.length > 0)
@@ -764,7 +766,7 @@ export class FolioEditorComponent implements AfterViewInit {
       let boxAccessToken = boxUser['accessToken'];
 
       // Get Box file list
-      boxFilesList = await this.publicFunctions.searchBoxFiles(searchTerm, boxAccessToken, this.workspaceData?.integrations) || []
+      boxFilesList = await this.integrationsService.searchBoxFiles(searchTerm, boxAccessToken, this.workspaceData?.integrations) || []
 
       // Box File List
       if (boxFilesList.length > 0) {

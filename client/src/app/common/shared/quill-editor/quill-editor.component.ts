@@ -58,6 +58,7 @@ Quill.register('modules/clipboard', QuillClipboard, true)
 import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 
 @Component({
   selector: 'app-quill-editor',
@@ -100,6 +101,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   public publicFunctions = new PublicFunctions(this.Injector);
 
   constructor(
+    private integrationsService: IntegrationsService,
     private Injector: Injector
   ) {
 
@@ -359,7 +361,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       let accessToken = storageService.getLocalData('googleUser')['accessToken']
 
       // Get Google file list
-      googleFilesList = await this.publicFunctions.searchGoogleFiles(searchTerm, accessToken) || []
+      googleFilesList = await this.integrationsService.searchGoogleFiles(searchTerm, accessToken) || []
 
       // Google File List
       if (googleFilesList.length > 0)
@@ -379,7 +381,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       let boxAccessToken = boxUser['accessToken'];
 
       // Get Box file list
-      boxFilesList = await this.publicFunctions.searchBoxFiles(searchTerm, boxAccessToken, this.workspaceData?.integrations) || []
+      boxFilesList = await this.integrationsService.searchBoxFiles(searchTerm, boxAccessToken, this.workspaceData?.integrations) || []
 
       // Box File List
       if (boxFilesList.length > 0) {

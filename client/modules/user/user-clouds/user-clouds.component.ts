@@ -1,5 +1,6 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -32,6 +33,7 @@ export class UserCloudsComponent implements OnInit {
   public isLoading$;
 
   constructor(
+    private integrationsService: IntegrationsService,
     public injector: Injector,
     public userService: UserService,
     public utilityService: UtilityService
@@ -52,9 +54,9 @@ export class UserCloudsComponent implements OnInit {
 
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    this.boxUser = await this.publicFunctions.getCurrentBoxUser();
+    this.boxUser = await this.integrationsService.getCurrentBoxUser();
 
-    this.googleUser = await this.publicFunctions.getCurrentGoogleUser();
+    this.googleUser = await this.integrationsService.getCurrentGoogleUser();
 
     this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false;
 

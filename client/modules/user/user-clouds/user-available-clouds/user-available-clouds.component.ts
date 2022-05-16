@@ -4,6 +4,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { GoogleCloudService } from './google-cloud/services/google-cloud.service';
 import { BoxCloudService } from './box-cloud/services/box-cloud.service';
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 
 @Component({
   selector: 'app-user-available-clouds',
@@ -24,9 +25,10 @@ export class UserAvailableCloudsComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private injector: Injector,
+    private integrationsService: IntegrationsService,
     private storageService: StorageService,
-    private userService: UserService
+    private userService: UserService,
+    private injector: Injector
   ) { }
 
   async ngOnInit() {
@@ -35,7 +37,7 @@ export class UserAvailableCloudsComponent implements OnInit {
     if (!this.workspaceData?.integrations?.is_google_connected && this.storageService.existData('googleUser')) {
       localStorage.removeItem('googleUser');
       sessionStorage.clear();
-      this.publicFunctions.sendUpdatesToGoogleUserData({});
+      this.integrationsService.sendUpdatesToGoogleUserData({});
     }
 
     if (!this.workspaceData?.integrations?.is_slack_connected && this.userData?.integrations?.is_slack_connected) {
@@ -54,7 +56,7 @@ export class UserAvailableCloudsComponent implements OnInit {
     if (!this.workspaceData?.integrations?.is_box_connected && this.storageService.existData('boxUser')) {
       localStorage.removeItem('boxUser');
       sessionStorage.clear();
-      this.publicFunctions.sendUpdatesToBoxUserData({});
+      this.integrationsService.sendUpdatesToBoxUserData({});
     }
   }
 

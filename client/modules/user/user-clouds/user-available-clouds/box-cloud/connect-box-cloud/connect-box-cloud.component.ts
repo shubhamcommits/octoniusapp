@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, Injector, LOCALE_ID, OnInit, Output } 
 import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 
@@ -29,6 +30,7 @@ export class ConnectBoxCloudComponent implements OnInit {
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
+    private integrationsService: IntegrationsService,
     private utilityService: UtilityService,
     private activatedRoute: ActivatedRoute,
     private injector: Injector,
@@ -41,11 +43,11 @@ export class ConnectBoxCloudComponent implements OnInit {
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    this.boxUserDetails = await this.publicFunctions.getCurrentBoxUser();
+    this.boxUserDetails = await this.integrationsService.getCurrentBoxUser();
 
     if (this.boxCode && !this.boxUserDetails) {
       // Call the handle box signin function
-      this.boxUserDetails = await this.publicFunctions.handleBoxSignIn(this.boxCode);
+      this.boxUserDetails = await this.integrationsService.handleBoxSignIn(this.boxCode);
 
       // Emit Box User details to parent components
       this.boxUser.emit(this.boxUserDetails);
@@ -72,7 +74,7 @@ export class ConnectBoxCloudComponent implements OnInit {
     redirect_uri += this.router.url;
 
     // Open up the SignIn Window in order to authorize the box user
-    let boxSignInUrl: any = await this.publicFunctions.authorizeBoxSignIn(this.workspaceData?._id, redirect_uri);
+    let boxSignInUrl: any = await this.integrationsService.authorizeBoxSignIn(this.workspaceData?._id, redirect_uri);
 
     if (boxSignInUrl) {
       window.location.href = boxSignInUrl;

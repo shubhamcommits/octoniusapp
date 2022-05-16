@@ -1,5 +1,6 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { BoxCloudService } from '../services/box-cloud.service';
 
@@ -17,6 +18,7 @@ export class BoxAccountDetailsComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    private integrationsService: IntegrationsService,
     private utilityService: UtilityService,
     private boxCloudService: BoxCloudService,
     private injector: Injector
@@ -39,7 +41,7 @@ export class BoxAccountDetailsComponent implements OnInit {
         localStorage.removeItem('boxUser');
         sessionStorage.clear();
         this.boxUser = undefined;
-        this.publicFunctions.sendUpdatesToBoxUserData({});
+        this.integrationsService.sendUpdatesToBoxUserData({});
         this.utilityService.updateIsLoadingSpinnerSource(false);
       });
   }

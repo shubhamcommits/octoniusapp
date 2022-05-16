@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 
@@ -24,6 +25,7 @@ export class ConnectGoogleCloudComponent implements OnInit {
   private subSink = new SubSink();
 
   constructor(
+    private integrationsService: IntegrationsService,
     private utilityService: UtilityService,
     private injector: Injector
   ) { }
@@ -32,7 +34,7 @@ export class ConnectGoogleCloudComponent implements OnInit {
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    this.googleUserDetails = await this.publicFunctions.getCurrentGoogleUser();
+    this.googleUserDetails = await this.integrationsService.getCurrentGoogleUser();
   }
 
   ngOnDestroy() {
@@ -45,11 +47,11 @@ export class ConnectGoogleCloudComponent implements OnInit {
   async signInToGoogle() {
 
     // Open up the SignIn Window in order to authorize the google user
-    let googleSignInResult: any = await this.publicFunctions.authorizeGoogleSignIn(this.workspaceData?.integrations);
+    let googleSignInResult: any = await this.integrationsService.authorizeGoogleSignIn(this.workspaceData?.integrations);
 
     if (googleSignInResult != null) {
       // Call the handle google signin function
-      let googleUserDetails = await this.publicFunctions.handleGoogleSignIn(googleSignInResult)
+      let googleUserDetails = await this.integrationsService.handleGoogleSignIn(googleSignInResult)
 
       // Emit Google User details to parent components
       this.googleUser.emit(googleUserDetails)

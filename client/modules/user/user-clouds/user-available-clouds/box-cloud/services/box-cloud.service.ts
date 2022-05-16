@@ -58,7 +58,6 @@ export class BoxCloudService {
   }
 
   getBoxUserDetails(accessToken: string) {
-console.log(accessToken);
     return this._httpBackend.get(`https://api.box.com/2.0/users/me`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`

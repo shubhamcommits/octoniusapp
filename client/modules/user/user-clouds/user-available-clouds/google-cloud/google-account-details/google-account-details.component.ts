@@ -1,5 +1,6 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GoogleCloudService } from '../services/google-cloud.service';
@@ -18,6 +19,7 @@ export class GoogleAccountDetailsComponent implements OnInit {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
+    private integrationsService: IntegrationsService,
     private utilityService: UtilityService,
     private googleCloudService: GoogleCloudService,
     private injector: Injector
@@ -38,7 +40,7 @@ export class GoogleAccountDetailsComponent implements OnInit {
         localStorage.removeItem('googleUser');
         sessionStorage.clear();
         this.googleUser = undefined;
-        this.publicFunctions.sendUpdatesToGoogleUserData({});
+        this.integrationsService.sendUpdatesToGoogleUserData({});
         this.utilityService.updateIsLoadingSpinnerSource(false);
       });
   }
