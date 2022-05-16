@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnInit } from '@angular/core';
+import { PublicFunctions } from 'modules/public.functions';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GoogleCloudService } from '../services/google-cloud.service';
 
 @Component({
@@ -9,18 +11,23 @@ import { GoogleCloudService } from '../services/google-cloud.service';
 })
 export class GoogleAccountDetailsComponent implements OnInit {
 
-  constructor(
-    private googleCloudService: GoogleCloudService
-  ) { }
-
   @Input('googleUser') googleUser: any;
 
   googleDriveUsed = 0;
 
+  public publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private utilityService: UtilityService,
+    private googleCloudService: GoogleCloudService,
+    private injector: Injector
+  ) { }
+
   ngOnInit() {
-    if (JSON.stringify(this.googleUser) != JSON.stringify("{}") && this.googleUser.storageQuota.limit) {
+    if (this.googleUser && JSON.stringify(this.googleUser) != JSON.stringify("{}")
+        && this.googleUser?.storageQuota && this.googleUser?.storageQuota?.limit) {
       this.googleDriveUsed = Math.round(
-        (this.googleUser.storageQuota.usage / this.googleUser.storageQuota.limit) * 100
+        (this.googleUser?.storageQuota?.usage / this.googleUser?.storageQuota?.limit) * 100
       );
     }
   }
@@ -31,8 +38,12 @@ export class GoogleAccountDetailsComponent implements OnInit {
         localStorage.removeItem('googleUser');
         sessionStorage.clear();
         this.googleUser = undefined;
-        this.googleCloudService.googleAuthSuccessfulBehavior.next(false);
+        this.publicFunctions.sendUpdatesToGoogleUserData({});
+        this.utilityService.updateIsLoadingSpinnerSource(false);
       });
   }
 
+  googleUserExists() {
+    return this.utilityService.objectExists(this.googleUser);
+  }
 }

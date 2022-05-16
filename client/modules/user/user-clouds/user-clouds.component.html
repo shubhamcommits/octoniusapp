@@ -9,7 +9,7 @@
         </div>
 
         <div class="col-md-8">
-            <img *ngIf="!googleAuthSuccessful && !slackAuthSuccessful && !boxAuthSuccessful" src="assets/images/empty-clouds.svg">
+            <img *ngIf="!objectDataExists(googleUser) && !slackAuthSuccessful && !objectDataExists(boxUser)" src="assets/images/empty-clouds.svg">
             <app-user-connected-clouds *ngIf="googleUser || slackAuthSuccessful || boxUser"
               [googleUser]="googleUser"
               [boxUser]="boxUser"

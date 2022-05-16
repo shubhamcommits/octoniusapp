@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
-import { GoogleCloudService } from '../services/google-cloud.service';
 
 @Component({
   selector: 'app-connect-google-cloud',
@@ -13,7 +13,7 @@ export class ConnectGoogleCloudComponent implements OnInit {
   // Google User Output Emitter
   @Output('googleUser') googleUser = new EventEmitter();
 
-  googleAuthSuccessful: any;
+  googleUserDetails;
 
   workspaceData: any;
 
@@ -24,7 +24,7 @@ export class ConnectGoogleCloudComponent implements OnInit {
   private subSink = new SubSink();
 
   constructor(
-    private googleService: GoogleCloudService,
+    private utilityService: UtilityService,
     private injector: Injector
   ) { }
 
@@ -32,8 +32,11 @@ export class ConnectGoogleCloudComponent implements OnInit {
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    // Subscribe to google authentication state
-    this.subSink.add(this.googleService.googleAuthSuccessful.subscribe(auth => this.googleAuthSuccessful = auth))
+    this.googleUserDetails = await this.publicFunctions.getCurrentGoogleUser();
+  }
+
+  ngOnDestroy() {
+    this.subSink.unsubscribe()
   }
 
   /**
@@ -53,8 +56,7 @@ export class ConnectGoogleCloudComponent implements OnInit {
     }
   }
 
-  ngOnDestroy() {
-    this.subSink.unsubscribe()
+  googleUserExists() {
+    return this.utilityService.objectExists(this.googleUserDetails);
   }
-
 }

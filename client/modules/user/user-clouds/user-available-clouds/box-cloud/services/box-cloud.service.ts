@@ -12,14 +12,16 @@ export class BoxCloudService {
   // Integrations Base API Url
   INTEGRATIONS_API_URL = environment.INTEGRATIONS_BASE_API_URL;
 
-  // Box Auth Behaviour Subject
-  public boxAuthSuccessfulBehavior = new BehaviorSubject(false)
-
-  // Box Auth Observable
-  boxAuthSuccessful = this.boxAuthSuccessfulBehavior.asObservable()
-
   // Http Backend
   _httpBackend: HttpClient
+
+  /**
+  * Both of the variables listed down below are used to share the data through this common service among different components in the app
+  * @constant boxUserDataSource
+  * @constant currentBoxUserData
+  */
+  private boxUserDataSource = new BehaviorSubject<any>({});
+  currentBoxUserData = this.boxUserDataSource.asObservable();
 
   constructor(
     private _http: HttpClient,
@@ -55,7 +57,8 @@ export class BoxCloudService {
     }).toPromise();
   }
 
-  getBoxUserDetails(accessToken: string, integrations: any) {
+  getBoxUserDetails(accessToken: string) {
+console.log(accessToken);
     return this._httpBackend.get(`https://api.box.com/2.0/users/me`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
@@ -117,5 +120,13 @@ export class BoxCloudService {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).toPromise();
+  }
+
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param boxUserData
+   */
+  public updateBoxUserDataService(boxUserData: any){
+    this.boxUserDataSource.next(boxUserData);
   }
 }

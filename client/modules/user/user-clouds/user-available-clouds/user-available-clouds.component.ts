@@ -25,8 +25,6 @@ export class UserAvailableCloudsComponent implements OnInit {
 
   constructor(
     private injector: Injector,
-    private googleCloudService: GoogleCloudService,
-    private boxCloudService: BoxCloudService,
     private storageService: StorageService,
     private userService: UserService
   ) { }
@@ -37,7 +35,7 @@ export class UserAvailableCloudsComponent implements OnInit {
     if (!this.workspaceData?.integrations?.is_google_connected && this.storageService.existData('googleUser')) {
       localStorage.removeItem('googleUser');
       sessionStorage.clear();
-      this.googleCloudService.googleAuthSuccessfulBehavior.next(false);
+      this.publicFunctions.sendUpdatesToGoogleUserData({});
     }
 
     if (!this.workspaceData?.integrations?.is_slack_connected && this.userData?.integrations?.is_slack_connected) {
@@ -56,7 +54,7 @@ export class UserAvailableCloudsComponent implements OnInit {
     if (!this.workspaceData?.integrations?.is_box_connected && this.storageService.existData('boxUser')) {
       localStorage.removeItem('boxUser');
       sessionStorage.clear();
-      this.boxCloudService.boxAuthSuccessfulBehavior.next(false);
+      this.publicFunctions.sendUpdatesToBoxUserData({});
     }
   }
 

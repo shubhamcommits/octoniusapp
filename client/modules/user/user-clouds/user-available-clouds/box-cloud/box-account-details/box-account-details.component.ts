@@ -18,14 +18,16 @@ export class BoxAccountDetailsComponent implements OnInit {
 
   constructor(
     private utilityService: UtilityService,
-    private injector: Injector,
-    private boxCloudService: BoxCloudService
+    private boxCloudService: BoxCloudService,
+    private injector: Injector
   ) { }
 
   ngOnInit() {
-    this.boxDriveUsed = Math.round(
-      (this.boxUser?.user.space_used / this.boxUser?.user.space_amount) * 100
-    );
+    if (this.boxUser && this.boxUser?.user && this.boxUser?.user) {
+      this.boxDriveUsed = Math.round(
+        (this.boxUser?.user?.space_used / this.boxUser?.user?.space_amount) * 100
+      );
+    }
   }
 
   async disconnectBoxAccount() {
@@ -37,9 +39,12 @@ export class BoxAccountDetailsComponent implements OnInit {
         localStorage.removeItem('boxUser');
         sessionStorage.clear();
         this.boxUser = undefined;
-        this.boxCloudService.boxAuthSuccessfulBehavior.next(false);
+        this.publicFunctions.sendUpdatesToBoxUserData({});
         this.utilityService.updateIsLoadingSpinnerSource(false);
       });
   }
 
+  boxUserExists() {
+    return this.utilityService.objectExists(this.boxUser);
+  }
 }

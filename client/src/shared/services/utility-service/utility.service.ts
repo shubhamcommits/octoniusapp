@@ -766,4 +766,8 @@ export class UtilityService {
     });
     return (fileVersions && fileVersions.length > 0) ? fileVersions[0] : file;
   }
+
+  objectExists(objectData: Object) {
+    return objectData && JSON.stringify(objectData) != JSON.stringify({});
+  }
 }

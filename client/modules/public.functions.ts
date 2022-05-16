@@ -1023,7 +1023,7 @@ export class PublicFunctions {
           }))
 
           // Change the observable state
-          googleService.googleAuthSuccessfulBehavior.next(true)
+          this.sendUpdatesToGoogleUserData({});
 
           // Return google user details
           return googleUserDetails
@@ -1105,6 +1105,59 @@ export class PublicFunctions {
                 .then((res) => resolve(res['items']))
                 .catch(() => resolve([]))
         })
+    }
+
+    public async getCurrentGoogleUser() {
+      let userData: any = await this.getGoogleUserDetailsFromService();
+
+      if (JSON.stringify(userData) == JSON.stringify({})) {
+        userData = await this.getGoogleUserDetailsFromStorage();
+      }
+
+      if (JSON.stringify(userData) == JSON.stringify({})) {
+        userData = await this.getGoogleUserDetailsFromHTTP().catch(err => {
+          userData = {};
+        });
+      }
+
+      this.sendUpdatesToGoogleUserData(userData);
+
+      return userData || {};
+    }
+
+    async getGoogleUserDetailsFromService() {
+        return new Promise((resolve) => {
+            const googleCloudService = this.injector.get(GoogleCloudService);
+            this.subSink.add(googleCloudService.currentGoogleUserData.subscribe((res) => {
+                resolve(res)
+            }));
+        });
+    }
+
+    async getGoogleUserDetailsFromStorage() {
+        const storageService = this.injector.get(StorageService);
+        return (storageService.existData('googleUser') === null) ? {} : storageService.getLocalData('googleUser');
+    }
+
+    async getGoogleUserDetailsFromHTTP() {
+
+        return new Promise(async (resolve, reject) => {
+          const googleCloudService = this.injector.get(GoogleCloudService);
+            const userData = await this.getCurrentUser();
+            if (userData && userData?.integrations
+                && userData?.integrations?.gdrive && userData?.integrations?.gdrive?.token) {
+              googleCloudService.getGoogleUserDetails(userData?.integrations?.gdrive?.token)
+                .then((res) => resolve(res['user']))
+                .catch(err => resolve({}));
+            }
+        });
+    }
+
+    async sendUpdatesToGoogleUserData(googleUserData: Object) {
+        const storageService = this.injector.get(StorageService);
+        const googleCloudService = this.injector.get(GoogleCloudService);
+        googleCloudService.updateGoogleUserDataService(googleUserData);
+        storageService.setLocalData('googleUser', JSON.stringify(googleUserData))
     }
 
     /**
@@ -1194,7 +1247,7 @@ export class PublicFunctions {
             // Update the user details with updated token
             await this.sendUpdatesToUserData(userDetails.user);
 
-            const user: any = await boxService.getBoxUserDetails(access_token, workspaceData?.integrations);
+            const user: any = await boxService.getBoxUserDetails(access_token);
 
             boxUser = {
               'user': user,
@@ -1206,7 +1259,7 @@ export class PublicFunctions {
             storageService.setLocalData('boxUser', JSON.stringify(boxUser));
 
             // Change the observable state
-            boxService.boxAuthSuccessfulBehavior.next(true)
+            this.sendUpdatesToBoxUserData(boxUser);
 
             utilityService.updateIsLoadingSpinnerSource(false);
 
@@ -1285,6 +1338,63 @@ export class PublicFunctions {
               })
               .catch(() => resolve([]))
       });
+    }
+
+    public async getCurrentBoxUser() {
+      let userData: any = await this.getBoxUserDetailsFromService();
+
+      if (JSON.stringify(userData) == JSON.stringify({})) {
+        userData = await this.getBoxUserDetailsFromStorage();
+      }
+
+      if (JSON.stringify(userData) == JSON.stringify({})) {
+        userData = await this.getBoxUserDetailsFromHTTP().catch(err => {
+console.log(err);
+          userData = {};
+        });
+      }
+console.log(userData);
+      this.sendUpdatesToBoxUserData(userData);
+
+      return userData || {};
+    }
+
+    async getBoxUserDetailsFromService() {
+        return new Promise((resolve) => {
+            const boxCloudService = this.injector.get(BoxCloudService);
+            this.subSink.add(boxCloudService.currentBoxUserData.subscribe((res) => {
+                resolve(res)
+            }));
+        });
+    }
+
+    async getBoxUserDetailsFromStorage() {
+        const storageService = this.injector.get(StorageService);
+        return (storageService.existData('boxUser') === null) ? {} : storageService.getLocalData('boxUser');
+    }
+
+    async getBoxUserDetailsFromHTTP() {
+
+        return new Promise(async (resolve, reject) => {
+            const boxCloudService = this.injector.get(BoxCloudService);
+            const userData = await this.getCurrentUser();
+            if (userData && userData?.integrations
+                && userData?.integrations?.box && userData?.integrations?.box?.token) {
+              boxCloudService.getBoxUserDetails(userData?.integrations?.box?.token)
+                .then((res) => resolve(res['user']))
+                .catch(err => {
+console.log(err);
+                  return resolve({})
+                });
+            }
+        });
+    }
+
+    async sendUpdatesToBoxUserData(boxUserData: Object) {
+        const storageService = this.injector.get(StorageService);
+        const boxCloudService = this.injector.get(BoxCloudService);
+        boxCloudService.updateBoxUserDataService(boxUserData);
+        storageService.setLocalData('boxUser', JSON.stringify(boxUserData))
     }
 
     /**

@@ -1,4 +1,4 @@
-<div class="card-tile" *ngIf="boxUser">
+<div class="card-tile" *ngIf="boxUserExists()">
     <div class="card-title">
         <h2 class="float-left">
             <strong i18n="@@boxAccountDetails.box">Box</strong>
@@ -13,7 +13,7 @@
             <div>
                 <h2>{{boxUser?.user?.name}}</h2>
                 <h4>{{boxUser?.user?.login}}</h4>
-                <ul class="nav" *ngIf="boxUser?.user.space_amount && boxUser?.user.space_used">
+                <ul class="nav" *ngIf="boxUser?.user && boxUser?.user?.space_amount && boxUser?.user.space_used">
                     <li class="nav-item">
                         <a class="nav-link active">
                             <span i18n="@@googleAccountDetails.driveUsage">Drive Usage</span>
