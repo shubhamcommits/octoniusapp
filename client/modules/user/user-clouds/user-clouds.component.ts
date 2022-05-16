@@ -63,9 +63,7 @@ export class UserCloudsComponent implements OnInit {
     this.userService.slackConnected().subscribe(event => {
       this.slackAuthSuccessful = true;
     });
-console.log(this.slackAuthSuccessful);
-console.log(this.googleUser);
-console.log(this.boxUser);
+console.log("user-clouds: ", this.googleUser);
     this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 

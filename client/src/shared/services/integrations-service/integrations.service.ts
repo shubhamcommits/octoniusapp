@@ -214,19 +214,19 @@ export class IntegrationsService {
 
     public async getCurrentGoogleUser() {
       let userData: any = await this.getGoogleUserDetailsFromService();
-
+console.log("1111: ", userData);
       if (JSON.stringify(userData) == JSON.stringify({})) {
         userData = await this.getGoogleUserDetailsFromStorage();
       }
-
+console.log("2222: ", userData);
       if (JSON.stringify(userData) == JSON.stringify({})) {
         userData = await this.getGoogleUserDetailsFromHTTP().catch(err => {
           userData = {};
         });
       }
-
+console.log("3333: ", userData);
       this.sendUpdatesToGoogleUserData(userData);
-
+console.log("4444: ", userData);
       return userData || {};
     }
 
@@ -454,11 +454,10 @@ export class IntegrationsService {
 
       if (JSON.stringify(userData) == JSON.stringify({})) {
         userData = await this.getBoxUserDetailsFromHTTP().catch(err => {
-console.log(err);
           userData = {};
         });
       }
-console.log(userData);
+
       this.sendUpdatesToBoxUserData(userData);
 
       return userData || {};
@@ -488,7 +487,6 @@ console.log(userData);
               boxCloudService.getBoxUserDetails(userData?.integrations?.box?.token)
                 .then((res) => resolve(res['user']))
                 .catch(err => {
-console.log(err);
                   return resolve({})
                 });
             }
