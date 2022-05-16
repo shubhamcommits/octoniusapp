@@ -117,15 +117,14 @@ export class IntegrationsService {
           // Fetch the google user details
           let googleUserDetails = await this.getGoogleUserDetails(access_token)
 
-          // Store the google user locally and serialise object in order to store google data locally
-          storageService.setLocalData('googleUser', JSON.stringify({
-              'userData': googleUserDetails,
-              'refreshToken': refresh_token,
-              'accessToken': access_token
-          }))
+          let googleUser = {
+            'userData': googleUserDetails,
+            'refreshToken': refresh_token,
+            'accessToken': access_token
+          };
 
           // Change the observable state
-          this.sendUpdatesToGoogleUserData({});
+          this.sendUpdatesToGoogleUserData(googleUser);
 
           // Return google user details
           return googleUserDetails
