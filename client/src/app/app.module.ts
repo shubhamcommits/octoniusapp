@@ -68,15 +68,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
  * 6. !===== THIRD PARTY MODULES & SERVICES =====!
  */
 // import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxUiLoaderModule } from 'ngx-ui-loader';
 // import { ChartsModule, ThemeService } from 'ng2-charts';
 
 /**
  * 7. !===== ERROR HANDLERS =====!
  */
-import { ngxUiLoaderConfig } from 'src/assets/config/ngx-ui-loader.config';
-
-
 
 /**
  * 8. !===== CONFIG VARIABLES =====!
@@ -131,9 +127,6 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
 
     // ANGULAR TOOLTIP MODULE
     // NgbTooltipModule,
-
-    // NGX UI LOADER MODULE
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     MatSidenavModule,
     // SHARED MODULES
     // SharedModule,

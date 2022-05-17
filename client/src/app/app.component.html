@@ -1,6 +1,4 @@
 <app-navbar *ngIf="isAuth && !isMobile"></app-navbar>
 <app-mobile-navbar *ngIf="isAuth && isMobile"></app-mobile-navbar>
 
-<router-outlet *ngIf="!isAuth">
-  <ngx-ui-loader></ngx-ui-loader>
-</router-outlet>
+<router-outlet *ngIf="!isAuth"></router-outlet>

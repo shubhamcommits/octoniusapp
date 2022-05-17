@@ -1,7 +1,6 @@
 import { Injectable, EventEmitter, Injector } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { GroupCreatePostDialogComponent } from 'src/app/common/shared/posts/group-create-post-dialog-component/group-create-post-dialog-component.component';
@@ -22,7 +21,6 @@ export class UtilityService {
 
   constructor(
     private modalService: NgbModal,
-    private ngxUiLoaderService: NgxUiLoaderService,
     public dialog: MatDialog,
     private injector: Injector
     ) { }
@@ -454,45 +452,6 @@ export class UtilityService {
    */
   public updateRouterStateData(routerStateData: any){
     this.routerStateDataSource.next(routerStateData);
-  }
-
-  /**
-   * This function starts the foreground loader of master loader
-   * @param taskId
-   */
-  public startForegroundLoader(taskId?: string){
-    return this.ngxUiLoaderService.start(taskId);
-  }
-
-  /**
-   * This function stops the foreground loader of master loader
-   * @param taskId
-   */
-  public stopForegroundLoader(taskId?: string){
-    return this.ngxUiLoaderService.stop(taskId);
-  }
-
-  /**
-   * This function starts the background loader of master loader
-   * @param taskId - optional
-   */
-  public startBackgroundLoader(taskId?: string){
-    this.ngxUiLoaderService.startBackground(taskId);
-  }
-
-  /**
-   * This function stops the background loader of master loader
-   * @param taskId
-   */
-  public stopBackgroundLoader(taskId?: string){
-    this.ngxUiLoaderService.stopBackground(taskId);
-  }
-
-  /**
-   * This function stops all the foreground and background loader of master loader
-   */
-  public stopAllLoader(){
-    this.ngxUiLoaderService.stopAll();
   }
 
   /**
