@@ -32,7 +32,6 @@ export class IntegrationsService {
         this.subSink.unsubscribe();
     }
 
-
     /**
      * GOOGLE DRIVE INTEGRATION STARTS
      */
@@ -209,20 +208,21 @@ export class IntegrationsService {
     }
 
     public async getCurrentGoogleUser() {
+      let utilityService = this.injector.get(UtilityService);
       let userData: any = await this.getGoogleUserDetailsFromService();
-console.log("1111: ", userData);
-      if (JSON.stringify(userData) == JSON.stringify({})) {
+
+      if (!utilityService.objectExists(userData)) {
         userData = await this.getGoogleUserDetailsFromStorage();
       }
-console.log("2222: ", userData);
-      if (JSON.stringify(userData) == JSON.stringify({})) {
+
+      if (!utilityService.objectExists(userData)) {
         userData = await this.getGoogleUserDetailsFromHTTP().catch(err => {
           userData = {};
         });
       }
-console.log("3333: ", userData);
+
       this.sendUpdatesToGoogleUserData(userData);
-console.log("4444: ", userData);
+
       return userData || {};
     }
 
@@ -237,8 +237,6 @@ console.log("4444: ", userData);
 
     async getGoogleUserDetailsFromStorage() {
         const storageService = this.injector.get(StorageService);
-console.log(storageService.existData('googleUser'));
-console.log(storageService.getLocalData('googleUser'));
         return (storageService.existData('googleUser') === null) ? {} : storageService.getLocalData('googleUser');
     }
 
@@ -262,7 +260,6 @@ console.log(storageService.getLocalData('googleUser'));
         googleCloudService.updateGoogleUserDataService(googleUserData);
         storageService.setLocalData('googleUser', JSON.stringify(googleUserData))
     }
-
     /**
      * GOOGLE DRIVE INTEGRATION ENDS
      */
@@ -290,13 +287,14 @@ console.log(storageService.getLocalData('googleUser'));
      */
     async handleBoxSignIn(boxCode?: string) {
 
+      let utilityService = this.injector.get(UtilityService);
+
+      try {
         // StorageService Instance
         let storageService = this.injector.get(StorageService);
 
         // Box Service Instance
-        let boxService = this.injector.get(BoxCloudService);
-
-        let utilityService = this.injector.get(UtilityService);
+        let boxCloudService = this.injector.get(BoxCloudService);
 
         // Access token variable
         let access_token: any = null;
@@ -308,7 +306,7 @@ console.log(storageService.getLocalData('googleUser'));
 
         let boxUser = storageService.getLocalData('boxUser');
         // If its a default refresh in the background
-        if (!boxCode || (boxUser || JSON.stringify(boxUser) != JSON.stringify({}))) {
+        if (!boxCode || utilityService.objectExists(boxUser)) {
 
             // Fetch the refresh token
             refresh_token = (boxUser) ? boxUser['refreshToken'] : await this.getRefreshBoxTokenFromUser();
@@ -320,15 +318,12 @@ console.log(storageService.getLocalData('googleUser'));
 
             // Assign the access_token from the refresh token
             if (refresh_token != null && refresh_token != undefined) {
-                tokenResults = await this.getBoxAccessToken(refresh_token, workspaceData?.integrations)
+                tokenResults = await this.refreshAccessToken(refresh_token, workspaceData?.integrations);
             }
 
             // Set the access_token
             access_token = tokenResults.access_token
-        }
-
-        // Check for default state
-        if (boxCode && (!boxUser || JSON.stringify(boxUser) == JSON.stringify({}))) {
+        } else {
 
             // Fetch the Google Drive Token Object
             let tokenResults: any = await this.getBoxDriveTokenFromAuthResult(boxCode, workspaceData?.integrations);
@@ -338,11 +333,9 @@ console.log(storageService.getLocalData('googleUser'));
 
             // Set the refresh token
             refresh_token = tokenResults.refresh_token;
-
-            //boxTokenUser = tokenResults.user;
         }
 
-        if (access_token != null && refresh_token != null/* && boxTokenUser != null*/) {
+        if (access_token != null && refresh_token != null) {
 
             // Retrieve the refresh_token and save it to our server
             let userDetails: any = await this.saveRefreshBoxTokenToUser(refresh_token);
@@ -350,7 +343,7 @@ console.log(storageService.getLocalData('googleUser'));
             // Update the user details with updated token
             await this.publicFunctions.sendUpdatesToUserData(userDetails.user);
 
-            const user: any = await boxService.getBoxUserDetails(access_token);
+            const user: any = await boxCloudService.getBoxUserDetails(access_token, workspaceData?._id);
 
             boxUser = {
               'user': user,
@@ -370,10 +363,15 @@ console.log(storageService.getLocalData('googleUser'));
             return boxUser;
         }
 
-        utilityService.updateIsLoadingSpinnerSource(false);
+        storageService.removeLocalData('connectingBox');
 
-        // Return box user details
-        return {}
+        utilityService.updateIsLoadingSpinnerSource(false);
+      } catch(error) {
+        utilityService.updateIsLoadingSpinnerSource(false);
+      }
+
+      // Return box user details
+      return {}
     }
 
     /**
@@ -383,7 +381,7 @@ console.log(storageService.getLocalData('googleUser'));
         let boxCloudService = this.injector.get(BoxCloudService)
         return new Promise(async (resolve) => {
             await boxCloudService.getRefreshTokenFromUserData()
-                .then((res) => resolve(res['boxToken']))
+                .then((res) => resolve(res['boxToken']));
         });
     }
 
@@ -395,7 +393,7 @@ console.log(storageService.getLocalData('googleUser'));
         let boxCloudService = this.injector.get(BoxCloudService)
         return new Promise(async (resolve) => {
             await boxCloudService.saveRefreshTokenToUser(token)
-                .then((res) => resolve(res))
+                .then((res) => resolve(res));
         })
     }
 
@@ -403,10 +401,10 @@ console.log(storageService.getLocalData('googleUser'));
      * This function fetches the access token stored in the user's profile
      * @param refreshToken
      */
-    async getBoxAccessToken(refreshToken: string, integrations: any) {
+    async refreshAccessToken(refreshToken: string, integrations: any) {
         let boxCloudService = this.injector.get(BoxCloudService)
         return new Promise(async (resolve) => {
-            await boxCloudService.getAccessToken(refreshToken, integrations)
+            await boxCloudService.refreshAccessToken(refreshToken, integrations)
                 .then((res) => resolve(res))
         })
     }
@@ -423,6 +421,7 @@ console.log(storageService.getLocalData('googleUser'));
               .then((res) => {
                 resolve(res)
               })
+              .catch(() => resolve({}))
       });
     }
 
@@ -443,15 +442,16 @@ console.log(storageService.getLocalData('googleUser'));
       });
     }
 
-    public async getCurrentBoxUser() {
+    public async getCurrentBoxUser(workspaceId: string) {
+      let utilityService = this.injector.get(UtilityService);
       let userData: any = await this.getBoxUserDetailsFromService();
 
-      if (JSON.stringify(userData) == JSON.stringify({})) {
+      if (!utilityService.objectExists(userData)) {
         userData = await this.getBoxUserDetailsFromStorage();
       }
 
-      if (JSON.stringify(userData) == JSON.stringify({})) {
-        userData = await this.getBoxUserDetailsFromHTTP().catch(err => {
+      if (!utilityService.objectExists(userData)) {
+        userData = await this.getBoxUserDetailsFromHTTP(workspaceId).catch(err => {
           userData = {};
         });
       }
@@ -475,14 +475,14 @@ console.log(storageService.getLocalData('googleUser'));
         return (storageService.existData('boxUser') === null) ? {} : storageService.getLocalData('boxUser');
     }
 
-    async getBoxUserDetailsFromHTTP() {
+    async getBoxUserDetailsFromHTTP(workspaceId: string) {
 
         return new Promise(async (resolve, reject) => {
             const boxCloudService = this.injector.get(BoxCloudService);
             const userData = await this.publicFunctions.getCurrentUser();
             if (userData && userData?.integrations
                 && userData?.integrations?.box && userData?.integrations?.box?.token) {
-              boxCloudService.getBoxUserDetails(userData?.integrations?.box?.token)
+              boxCloudService.getBoxUserDetails(userData?.integrations?.box?.token, workspaceId)
                 .then((res) => resolve(res['user']))
                 .catch(err => {
                   return resolve({})
@@ -497,7 +497,6 @@ console.log(storageService.getLocalData('googleUser'));
         boxCloudService.updateBoxUserDataService(boxUserData);
         storageService.setLocalData('boxUser', JSON.stringify(boxUserData))
     }
-
     /**
      * BOX INTEGRATION ENDS
      */

@@ -26,6 +26,8 @@ routes.get('/token', box.getBoxToken);
 
 routes.post('/token', box.addBoxToken);
 
+routes.get('/boxUser', box.getBoxUser);
+
 routes.post('/revokeToken', box.disconnectBoxCloud);
 
 /*  ===================

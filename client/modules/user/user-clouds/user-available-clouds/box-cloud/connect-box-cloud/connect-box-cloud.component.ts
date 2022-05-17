@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
 
@@ -33,6 +34,7 @@ export class ConnectBoxCloudComponent implements OnInit {
     private integrationsService: IntegrationsService,
     private utilityService: UtilityService,
     private activatedRoute: ActivatedRoute,
+    private storageService: StorageService,
     private injector: Injector,
     private router: Router
   ) { }
@@ -43,9 +45,11 @@ export class ConnectBoxCloudComponent implements OnInit {
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    this.boxUserDetails = await this.integrationsService.getCurrentBoxUser();
+    this.boxUserDetails = await this.integrationsService.getCurrentBoxUser(this.workspaceData?._id);
 
-    if (this.boxCode && !this.boxUserDetails) {
+    const connectingBox = this.storageService.existData('connectingBox') ? this.storageService.getLocalData('connectingBox') : false;
+
+    if (this.boxCode && !this.utilityService.objectExists(this.boxUserDetails) && connectingBox) {
       // Call the handle box signin function
       this.boxUserDetails = await this.integrationsService.handleBoxSignIn(this.boxCode);
 
@@ -64,23 +68,30 @@ export class ConnectBoxCloudComponent implements OnInit {
    * This function is responsible for connecting the box acount to the main octonius server
    */
   async signInToBox() {
-    this.utilityService.updateIsLoadingSpinnerSource(true);
+    this.utilityService.getConfirmDialogAlert($localize`:@@connectBoxCloud.doYouAllow:Do you allow?`, $localize`:@@connectBoxCloud.octoniusFoBoxRequestingPermission:Octonius for Box is requesting permission to use your Octonius account.`, $localize`:@@connectBoxCloud.allow:Allow`)
+      .then(async (result) => {
+        if (result.value) {
+          this.utilityService.updateIsLoadingSpinnerSource(true);
 
-    let redirect_uri = environment.clientUrl;
-    if (environment.production) {
-      redirect_uri += '/' + this.locale;
-    }
+          this.storageService.setLocalData('connectingBox', JSON.stringify(true));
 
-    redirect_uri += this.router.url;
+          let redirect_uri = environment.clientUrl;
+          if (environment.production) {
+            redirect_uri += '/' + this.locale;
+          }
 
-    // Open up the SignIn Window in order to authorize the box user
-    let boxSignInUrl: any = await this.integrationsService.authorizeBoxSignIn(this.workspaceData?._id, redirect_uri);
+          redirect_uri += this.router.url;
 
-    if (boxSignInUrl) {
-      window.location.href = boxSignInUrl;
-    } else {
-      console.log("error: no url returned")
-    }
+          // Open up the SignIn Window in order to authorize the box user
+          let boxSignInUrl: any = await this.integrationsService.authorizeBoxSignIn(this.workspaceData?._id, redirect_uri);
+
+          if (boxSignInUrl) {
+            window.location.href = boxSignInUrl;
+          } else {
+            console.log("error: no url returned")
+          }
+        }
+      });
   }
 
   /**

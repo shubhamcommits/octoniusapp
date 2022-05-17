@@ -54,7 +54,7 @@ export class UserCloudsComponent implements OnInit {
 
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    this.boxUser = await this.integrationsService.getCurrentBoxUser();
+    this.boxUser = await this.integrationsService.getCurrentBoxUser(this.userData?._workspace?._id || this.userData?._workspace);
 
     this.googleUser = await this.integrationsService.getCurrentGoogleUser();
 
@@ -63,7 +63,7 @@ export class UserCloudsComponent implements OnInit {
     this.userService.slackConnected().subscribe(event => {
       this.slackAuthSuccessful = true;
     });
-console.log("user-clouds: ", this.googleUser);
+
     this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 

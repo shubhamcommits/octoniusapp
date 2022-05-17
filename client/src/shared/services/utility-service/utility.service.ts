@@ -197,7 +197,9 @@ export class UtilityService {
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true
-    })
+    });
+
+    this.updateIsLoadingSpinnerSource(false);
 
     return Toast.fire({
       icon: 'error',

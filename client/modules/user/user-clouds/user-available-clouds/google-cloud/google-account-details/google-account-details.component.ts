@@ -1,7 +1,6 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
-import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GoogleCloudService } from '../services/google-cloud.service';
 

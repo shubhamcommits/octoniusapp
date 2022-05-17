@@ -122,6 +122,42 @@ export class BoxControllers {
     }
 
     /**
+     * This function is responsible for retrieving the box token for the particular user
+     * @param { userId }req 
+     * @param res 
+     */
+    async getBoxUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req['userId'];
+            const { query: { accessToken, workspaceId }} = req;
+            
+            const workspace: any = await Workspace.findOne({ _id: workspaceId }).select('integrations');
+
+            // If user not found
+            if (!workspace) {
+                return sendError(res, new Error('Unable to find the workspace, either workspaceId is invalid or you have made an unauthorized request!'), 'Unable to find the workspace, either workspaceId is invalid or you have made an unauthorized request!', 404);
+            }
+
+            // Initialize the SDK with your app credentials
+            var sdk = new BoxSDK({
+                clientID: workspace.integrations.box_client_id,
+                clientSecret: workspace.integrations.box_client_secret_key
+            });
+
+            var client = sdk.getBasicClient(accessToken);
+
+            client.users.get(client.CURRENT_USER_ID).then(currentUser => {
+                // Send status 200 response
+                return res.status(200).json({
+                    user: currentUser
+                });
+            }).catch(err => sendError(res, err));
+        } catch (err) {
+            return sendError(res, err);
+        }
+    }
+
+    /**
      * This function is responsible for disconnecting the box cloud
      */
     disconnectBoxCloud(req: Request, res: Response, next: NextFunction) {

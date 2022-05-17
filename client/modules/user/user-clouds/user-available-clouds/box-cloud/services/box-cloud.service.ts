@@ -57,19 +57,27 @@ export class BoxCloudService {
     }).toPromise();
   }
 
-  getBoxUserDetails(accessToken: string) {
+  getBoxUserDetails(accessToken: string, workspaceId: string) {
+    return this._http.get(this.INTEGRATIONS_API_URL + `/box/boxUser`, {
+      params: {
+        accessToken: accessToken,
+        workspaceId: workspaceId
+      }
+    }).toPromise();
+    /*
     return this._httpBackend.get(`https://api.box.com/2.0/users/me`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
       }).toPromise();
+    */
   }
 
   /**
    * This function fetches the access token from the box server
    * @param refreshToken
    */
-  getAccessToken(refreshToken: string, integrations: any) {
+  refreshAccessToken(refreshToken: string, integrations: any) {
     return this._httpBackend.post('https://api.box.com/oauth2/token', {
         client_id: integrations.box_client_id,
         client_secret: integrations.box_client_secret_key,
@@ -77,7 +85,7 @@ export class BoxCloudService {
         refresh_token: refreshToken
       }, {
         headers: {
-          'Authorization': `Bearer ${refreshToken}`,
+          //'Authorization': `Bearer ${refreshToken}`,
           'Content-Type': 'application/json'
         }
       }).toPromise()
