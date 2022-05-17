@@ -6,7 +6,6 @@
     "email": "dev@octonius.com"
   },
   "version": "1.0.0",
-  "main": "main.js",
   "build": {
     "directories": {
       "output": "release/"
@@ -25,10 +24,6 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "app:linux": "ng build --configuration production --localize --base-href ./ && electron-builder build --linux",
-    "app:mac": "ng build --configuration production --localize --base-href ./ && electron-builder build --mac",
-    "app:windows": "ng build --configuration production --localize --base-href ./ && electron-builder build --windows",
-    "electron": "ng build --configuration production --localize --base-href ./ && electron .",
     "postinstall": "ngcc",
     "i18n:extract": "ng xi18n --output-path src/locale"
   },
@@ -101,8 +96,6 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
-    "electron": "^18.0.1",
-    "electron-builder": "^22.13.1",
     "gzipper": "^3.4.2",
     "jasmine-core": "~3.8.0",
     "jasmine-spec-reporter": "~5.0.0",
