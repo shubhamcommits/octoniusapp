@@ -42,7 +42,8 @@ case $( "${UNAME}" | tr '[:upper:]' '[:lower:]') in
     # Installing pm2 globally on Linux
     if [ "$packageManager" == "npm" ]
 
-    then    
+    then
+        sudo $packageManager cache clean --force
         sudo $packageManager -g install pm2 --force
 
     else
@@ -57,7 +58,8 @@ case $( "${UNAME}" | tr '[:upper:]' '[:lower:]') in
     # Installing pm2 globally on MacOS
     if [ "$packageManager" == "npm" ]
 
-    then    
+    then
+        sudo $packageManager cache clean --force
         sudo $packageManager -g install pm2 --force
 
     else
@@ -72,7 +74,8 @@ case $( "${UNAME}" | tr '[:upper:]' '[:lower:]') in
     # Installing pm2 globally on Windows
     if [ "$packageManager" == "npm" ]
 
-    then    
+    then
+        $packageManager cache clean --force    
         $packageManager -g install pm2 --force
 
     else
