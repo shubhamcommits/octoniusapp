@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { GroupCreatePostDialogComponent } from 'src/app/common/shared/posts/group-create-post-dialog-component/group-create-post-dialog-component.component';
+import { GroupCreatePostDialogComponent } from 'src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component';
 import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
 import { PostService } from '../post-service/post.service';
 import { ColumnService } from '../column-service/column.service';

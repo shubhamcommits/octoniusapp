@@ -98,9 +98,11 @@ export class MultipleAssignmentsComponent implements OnChanges, OnInit {
         this.utilityService.asyncNotification($localize`:@@multipleAssignments.pleaseWaitWeAreUpdatingContents:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
           this.postService.removeAssigneeFromPost(this.post._id, assigneeId)
             .then((res) => {
+              this.post = res['post'];
               const index = this.assigned_to.findIndex((assignee) => assignee._id == assigneeId);
               this.assigned_to.splice(index, 1);
 
+              this.assigneeRemovedEmiter.emit({ post: this.post });
               // Resolve with success
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@multipleAssignments.assigneeRemoved:Assignee removed!`));
             })

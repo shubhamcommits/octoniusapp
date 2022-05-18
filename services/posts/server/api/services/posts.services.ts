@@ -26,8 +26,8 @@ export class PostService {
 
   /**
    * This service is responsible for fetching recent 5 posts based on the @lastPostId and @groupId
-   * @param groupId 
-   * @param lastPostId 
+   * @param groupId
+   * @param lastPostId
    */
   async getPosts(groupId: any, pinned: boolean, type?: any, lastPostId?: any, filters?: any) {
 
@@ -38,7 +38,7 @@ export class PostService {
 
       let pinnedQuery = {};
       if (pinned) {
-        pinnedQuery = 
+        pinnedQuery =
           { pin_to_top: true }
       } else {
         pinnedQuery = {
@@ -48,7 +48,7 @@ export class PostService {
           ]
         }
       }
-      
+
       let postedByFilter = {};
       let tagsFilter = {};
       // let numLikesFilter = {};
@@ -69,7 +69,7 @@ export class PostService {
       }
 
       const numLikes = (filters && filters.numLikes) ? +(filters.numLikes) : 0;
-      
+
       // Fetch posts on the basis of the params @lastPostId
       if (lastPostId) {
 
@@ -235,7 +235,7 @@ export class PostService {
         }
       }
 
-      // Return set of posts 
+      // Return set of posts
       return posts;
 
     } catch (err) {
@@ -258,7 +258,7 @@ export class PostService {
           ]
         }), 'task');
 
-      // Return set of posts 
+      // Return set of posts
       return posts;
 
     } catch (err) {
@@ -270,7 +270,7 @@ export class PostService {
 
   /**
    * This is the helper function which returns the filtered posts
-   * @param posts 
+   * @param posts
    */
   filterGroupPosts(posts: any, type?: string, numLikes?: number) {
 
@@ -354,7 +354,7 @@ export class PostService {
 
   /**
    * This function is used to populate a post with all the possible properties
-   * @param post 
+   * @param post
    */
   async populatePostProperties(post: any) {
     if (post.type === 'task') {
@@ -369,7 +369,12 @@ export class PostService {
         { path: 'task._parent_task', select: '_id title _assigned_to' },
         { path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar shuttle_type _shuttle_section' },
         { path: 'task.shuttles._shuttle_section', select: '_id title' },
-        { path: 'permissions._members', select: this.userFields }
+        { path: 'permissions._members', select: this.userFields },
+        { path: 'logs._actor', select: this.userFields },
+        { path: 'logs._new_section', select: '_id title' },
+        { path: 'logs._assignee', select: this.userFields },
+        { path: 'logs._group', select: this.groupFields },
+        { path: 'logs._task', select: '_id title' }
       ]);
 
     } else if (post.type === 'performance_task') {
@@ -381,7 +386,12 @@ export class PostService {
         { path: '_posted_by', select: this.userFields },
         { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' },
         { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
-        { path: 'permissions._members', select: this.userFields }
+        { path: 'permissions._members', select: this.userFields },
+        { path: 'logs._actor', select: this.userFields },
+        { path: 'logs._new_section', select: '_id title' },
+        { path: 'logs._assignee', select: this.userFields },
+        { path: 'logs._group', select: this.groupFields },
+        { path: 'logs._task', select: '_id title' }
       ]);
 
     } else if (post.type === 'event') {
@@ -402,7 +412,12 @@ export class PostService {
           { path: '_posted_by', select: this.userFields },
           { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' },
           { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
-          { path: 'permissions._members', select: this.userFields }
+          { path: 'permissions._members', select: this.userFields },
+          { path: 'logs._actor', select: this.userFields },
+          { path: 'logs._new_section', select: '_id title' },
+          { path: 'logs._assignee', select: this.userFields },
+          { path: 'logs._group', select: this.groupFields },
+          { path: 'logs._task', select: '_id title' }
         ])
       }
 
@@ -415,7 +430,12 @@ export class PostService {
         { path: '_posted_by', select: this.userFields },
         { path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' },
         { path: 'approval_history._actor', select: '_id first_name last_name profile_pic' },
-        { path: 'permissions._members', select: this.userFields }
+        { path: 'permissions._members', select: this.userFields },
+        { path: 'logs._actor', select: this.userFields },
+        { path: 'logs._new_section', select: '_id title' },
+        { path: 'logs._assignee', select: this.userFields },
+        { path: 'logs._group', select: this.groupFields },
+        { path: 'logs._task', select: '_id title' }
       ]);
     }
 
@@ -425,7 +445,7 @@ export class PostService {
 
   /**
    * This function is responsible for sending the related real time notifications to the user(s)
-   * @param post 
+   * @param post
    */
   async sendNotifications(post: any) {
 
@@ -491,7 +511,7 @@ export class PostService {
 
   /**
    * This function is responsible for sending the related real time notifications to the user(s)
-   * @param post 
+   * @param post
    */
   async sendNewPostNotification(post: any) {
     return await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-post`, {
@@ -503,7 +523,7 @@ export class PostService {
 
   /**
    * This function is responsible for adding a new post
-   * @param { title, content, type, _posted_by, _group, _content_mentions } postData 
+   * @param { title, content, type, _posted_by, _group, _content_mentions } postData
    */
   async addPost(postData: any, userId: string) {
     try {
@@ -513,6 +533,7 @@ export class PostService {
       // Create new post
       let post: any = await Post.create(postData);
 
+      /*
       // save record of ussignment
       if (post.type == 'event' && post._assigned_to && post._assigned_to.length > 0) {
 
@@ -535,6 +556,21 @@ export class PostService {
           })
         });
       }
+      */
+
+      post = await Post.findOneAndUpdate({
+          _id: post._id
+        }, {
+          $push: {
+            "logs": {
+              action: 'created',
+              action_date: moment().format(),
+              _actor: userId
+            }
+          }
+        }, {
+          new: true
+        });
 
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
@@ -559,14 +595,14 @@ export class PostService {
 
   /**
    * This function is responsible for editing a post
-   * @param post 
-   * @param postId 
+   * @param post
+   * @param postId
    */
-  async editPost(post: any, postId: string) {
+  async editPost(post: any, postId: string, userId: string, logAction: string) {
     try {
 
       // Parse the String to JSON Object
-      
+
       post = JSON.parse(post)
       const files = post.files;
 
@@ -658,7 +694,7 @@ export class PostService {
               new: true
             });
         }
-        
+
         post = await Post.findOneAndUpdate({
             _id: postId
           }, {
@@ -667,6 +703,20 @@ export class PostService {
             new: true
           });
       }
+
+      post = await Post.findOneAndUpdate({
+          _id: postId
+        }, {
+          $push: {
+            "logs": {
+              action: logAction,
+              action_date: moment().format(),
+              _actor: userId
+            }
+          }
+        }, {
+          new: true
+        });
 
       // populate the assigned_to property of this document
       post = await this.populatePostProperties(post);
@@ -697,17 +747,22 @@ export class PostService {
 
     // Find the Post By ID
     post = await Post.findOne({ _id: postId })
-      .populate('_group', this.groupFields)
-      .populate('_posted_by', this.userFields)
-      .populate('_assigned_to', this.userFields)
+      .populate({ path: '_group', select: this.groupFields })
+      .populate({ path: '_posted_by', select: this.userFields })
+      .populate({ path: '_assigned_to', select: this.userFields })
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
       .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
       .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
       .populate({ path: 'task.shuttles._shuttle_group', select: '_id group_name group_avatar' })
-      .populate({ path: 'task.shuttles._shuttle_section',select:'_id title'})
-      .populate('performance_task._assigned_to', this.userFields)
+      .populate({ path: 'task.shuttles._shuttle_section',select:'_id title' })
+      .populate({ path: 'performance_task._assigned_to', select: this.userFields })
       .populate({ path: 'permissions._members', select: this.userFields })
+      .populate({ path: 'logs._actor', select: this.userFields })
+      .populate({ path: 'logs._new_section', select: '_id title' })
+      .populate({ path: 'logs._assignee', select: this.userFields })
+      .populate({ path: 'logs._group', select: this.groupFields })
+      .populate({ path: 'logs._task', select: '_id title' })
       .lean();
 
     // Return the post
@@ -771,7 +826,7 @@ export class PostService {
 
         await Post.updateMany({
           'task._dependent_child': postId
-        }, { 
+        }, {
           $pull: { 'task._dependent_child': userId }
         }, {
             multi: true
@@ -843,7 +898,7 @@ export class PostService {
         { new: true }
       )
       .lean();
-    
+
     await http.post(`${process.env.NOTIFICATIONS_SERVER_API}/new-like-post`, {
       postId: post._id,
       posted_by: post['_posted_by'],
@@ -854,7 +909,7 @@ export class PostService {
       user: userId
     });
 
-    // Find the User 
+    // Find the User
     const user = await User.findOne
       (
         { _id: userId }
@@ -884,7 +939,7 @@ export class PostService {
       )
       .lean();
 
-    // Find the User 
+    // Find the User
     const user = await User.findOne
       (
         { _id: userId }
@@ -922,7 +977,7 @@ export class PostService {
       follower: userId
     }).catch(err => sendErr(err, new Error(err), 'Internal Server Error!', 500));
 
-    // Find the User 
+    // Find the User
     const user = await User.findOne
       (
         { _id: userId }
@@ -952,7 +1007,7 @@ export class PostService {
       )
       .lean();
 
-    // Find the User 
+    // Find the User
     const user = await User.findOne
       (
         { _id: userId }
@@ -970,8 +1025,8 @@ export class PostService {
 
   /**
    * This function is responsible for changing the task assignee
-   * @param postId 
-   * @param assigneeId 
+   * @param postId
+   * @param assigneeId
    */
   async removeAssignee(postId: string, assigneeId: string, userId: string) {
 
@@ -990,16 +1045,17 @@ export class PostService {
         _id: postId
       }, {
         $push: {
-          "records.assignments": {
-            date: moment().format(),
-            type: 'unassign',
-            _assigned_to: assigneeId,
-            _assigned_from: userId
+          "logs": {
+            action: 'removed_assignee',
+            action_date: moment().format(),
+            _actor: userId,
+            _assignee: assigneeId
           }
         }
       }, {
         new: true
-      })
+      });
+
 
       // Populate the post properties
       post = await this.populatePostProperties(post);
@@ -1014,8 +1070,8 @@ export class PostService {
 
   /**
    * This function is responsible for changing the task assignee
-   * @param postId 
-   * @param assigneeId 
+   * @param postId
+   * @param assigneeId
    */
   async addAssignee(postId: string, assigneeId: string, userId: string) {
 
@@ -1035,16 +1091,16 @@ export class PostService {
         _id: postId
       }, {
         $push: {
-          "records.assignments": {
-            date: moment().format(),
-            type: 'assign',
-            _assigned_to: assigneeId,
-            _assigned_from: userId
+          "logs": {
+            action: 'assigned_to',
+            action_date: moment().format(),
+            _actor: userId,
+            _assignee: assigneeId
           }
         }
       }, {
         new: true
-      })
+      });
 
       // Populate the post properties
       post = await this.populatePostProperties(post);
@@ -1066,8 +1122,8 @@ export class PostService {
 
   /**
    * This function is responsible for changing the task assignee
-   * @param postId 
-   * @param assigneeId 
+   * @param postId
+   * @param assigneeId
    */
   async changeTaskAssignee(postId: string, assigneeId: string, userId: string) {
 
@@ -1087,16 +1143,16 @@ export class PostService {
         _id: postId
       }, {
         $push: {
-          "records.assignments": {
-            date: moment().format(),
-            type: 'assign',
-            _assigned_to: assigneeId,
-            _assigned_from: userId
+          "logs": {
+            action: 'assigned_to',
+            action_date: moment().format(),
+            _actor: userId,
+            _assignee: assigneeId
           }
         }
       }, {
         new: true
-      })
+      });
 
       // Populate the post properties
       post = await this.populatePostProperties(post)
@@ -1121,17 +1177,32 @@ export class PostService {
    * @param postId
    * @param date_due_to
    */
-  async changeTaskDueDate(postId: string, date_due_to: string) {
+  async changeTaskDueDate(postId: string, userId: string, date_due_to: string) {
     try {
       // Get post data
-      
+
       var post: any = await Post.findOneAndUpdate({
         _id: postId
       }, {
         "task.due_to": date_due_to ? moment(date_due_to).hours(12).format('YYYY-MM-DD') : null,
       }, {
         new: true
-      })
+      });
+
+      post = await Post.findOneAndUpdate({
+        _id: post._id
+      }, {
+        $push: {
+          "logs": {
+            action: 'new_due_date',
+            action_date: moment().format(),
+            _actor: userId,
+            new_date: date_due_to ? moment(date_due_to).hours(12).format('YYYY-MM-DD') : null
+          }
+        }
+      }, {
+        new: true
+      });
 
       // Populate the post properties
       post = await this.populatePostProperties(post)
@@ -1150,8 +1221,8 @@ export class PostService {
    * @param date_field
    * @param newDate
    */
-  async changeTaskDate(postId: string, date_field: string, newDate: Date) {
-    
+  async changeTaskDate(postId: string, userId: string, date_field: string, newDate: Date) {
+
     try {
       let field = {};
       if (date_field === 'start_date') {
@@ -1163,7 +1234,24 @@ export class PostService {
         _id: postId
       }, field, {
         new: true
-      })
+      });
+
+      if (date_field === 'start_date') {
+        post = await Post.findOneAndUpdate({
+          _id: post._id
+        }, {
+          $push: {
+            "logs": {
+              action: 'new_start_date',
+              action_date: moment().format(),
+              _actor: userId,
+              new_date: newDate ? moment(newDate).hours(12).format('YYYY-MM-DD') : null
+            }
+          }
+        }, {
+          new: true
+        });
+      }
 
       // Populate the post properties
       post = await this.populatePostProperties(post)
@@ -1195,15 +1283,16 @@ export class PostService {
           "task.status": status ? status : 'to do'
         },
         $push: {
-          "records.status": {
-            date: moment().format(),
-            status: status,
-            _user: userId
+          "logs": {
+            action: 'change_status',
+            action_date: moment().format(),
+            _actor: userId,
+            new_status: status ? status : 'to do'
           }
         }
       }, {
         new: true
-      })
+      });
 
       // Populate the post properties
       post = await this.populatePostProperties(post);
@@ -1257,15 +1346,16 @@ export class PostService {
           "task._column": columnId,
         },
         $push: {
-          "records.column": {
-            date: moment().format(),
-            _column: columnId,
-            _user: userId
+          "logs": {
+            action: 'change_section',
+            action_date: moment().format(),
+            _actor: userId,
+            _new_section: columnId
           }
         }
       }, {
         new: true
-      })
+      });
 
       // Populate the post properties
       post = await this.populatePostProperties(post)
@@ -1280,7 +1370,7 @@ export class PostService {
 
   /**
    * This function is used to retrieve this month's tasks
-   * @param userId 
+   * @param userId
    */
   async getThisMonthTasks(userId) {
     try {
@@ -1327,7 +1417,7 @@ export class PostService {
 
   /**
    * This function is used to get first 10 tasks for this week
-   * @param userId 
+   * @param userId
    */
   async getThisWeekTasks(userId) {
     try {
@@ -1375,8 +1465,8 @@ export class PostService {
 
   /**
    * This function is used to get next 5 tasks for this week
-   * @param userId 
-   * @param lastTaskId 
+   * @param userId
+   * @param lastTaskId
    */
   async getNextTasks(userId, lastTaskId) {
     try {
@@ -1405,7 +1495,7 @@ export class PostService {
         .populate('_posted_by', 'first_name last_name profile_pic')
         .populate('_assigned_to', 'first_name last_name profile_pic')
         .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: 'permissions._members', select: this.userFields })
@@ -1425,7 +1515,7 @@ export class PostService {
 
   /**
    * This function is used to get this month's events
-   * @param userId 
+   * @param userId
    */
   async getThisMonthsEvents(userId) {
     try {
@@ -1453,7 +1543,7 @@ export class PostService {
       }).sort('event.due_to')
       .populate('_assigned_to', 'first_name last_name')
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .populate('_group', 'group_name')
       .populate({ path: 'permissions._members', select: this.userFields }).lean();
 
@@ -1472,7 +1562,7 @@ export class PostService {
 
   /**
    * This function is used to get first 10 events for this week
-   * @param userId 
+   * @param userId
    */
   async getThisWeekEvents(userId) {
     try {
@@ -1501,7 +1591,7 @@ export class PostService {
       .limit(10)
       .populate('_assigned_to', 'first_name last_name')
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+      .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .populate('_group', 'group_name')
       .populate({ path: 'permissions._members', select: this.userFields })
       .lean();
@@ -1521,8 +1611,8 @@ export class PostService {
 
   /**
    * This function is used to get next 5 events for this week
-   * @param userId 
-   * @param lastEventId 
+   * @param userId
+   * @param lastEventId
    */
   async getNextEvents(userId, lastEventId) {
     try {
@@ -1572,7 +1662,7 @@ export class PostService {
 
   /**
    * Fetch posts for recent activity
-   * @param userId 
+   * @param userId
    */
   async getRecentActivity(userId: any) {
     try {
@@ -1597,8 +1687,8 @@ export class PostService {
 
   /**
    * Fetch next 5 recent activity posts
-   * @param userId 
-   * @param lastPostId 
+   * @param userId
+   * @param lastPostId
    */
   async getNextRecentActivity(userId: any, lastPostId: any) {
     try {
@@ -1626,7 +1716,7 @@ export class PostService {
 
   /**
    * Fetch recent groups
-   * @param userId 
+   * @param userId
    */
   async getRecentGroups(userId: any) {
     try {
@@ -1661,7 +1751,7 @@ export class PostService {
     }
   }
 
-  async changeCustomFieldValue(postId: string, customFieldName: any, customFieldValue: any) {
+  async changeCustomFieldValue(postId: string, userId: string, customFieldName: any, customFieldTitle: any, customFieldValue: any) {
     try {
       const task = await Post.findById(postId);
 
@@ -1675,6 +1765,22 @@ export class PostService {
         _id: postId
       }, {
         $set: { "task.custom_fields": task['task']['custom_fields'] }
+      });
+
+      post = await Post.findOneAndUpdate({
+        _id: post._id
+      }, {
+        $push: {
+          "logs": {
+            action: 'change_cf',
+            action_date: moment().format(),
+            _actor: userId,
+            cf_title: customFieldTitle,
+            cf_value: customFieldValue
+          }
+        }
+      }, {
+        new: true
       });
 
       return await this.populatePostProperties(post);
@@ -2036,8 +2142,8 @@ export class PostService {
         ]
       };
     }
-    
-    
+
+
     // Fetch the tasks posts
     posts = await Post.find(query)
       .sort('-task.due_to')
@@ -2078,7 +2184,7 @@ export class PostService {
         .populate('_posted_by', this.userFields)
         .populate('_assigned_to', this.userFields)
         .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: 'permissions._members', select: this.userFields })
@@ -2096,7 +2202,7 @@ export class PostService {
         .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
-            .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
+        .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
         .populate({ path: 'task._parent_task', select: '_id title _assigned_to' })
         .populate({ path: 'task._shuttle_group', select: '_id group_name shuttle_type _shuttle_section' })
         .populate({ path: '_followers', select: this.userFields, options: { limit: 10 } })
@@ -2106,7 +2212,7 @@ export class PostService {
 
     return posts;
   }
-  
+
   async getGroupPostsResults(groupId: any, numDays: any) {
 
     const comparingDate = moment().local().subtract(+numDays, 'days').format('YYYY-MM-DD');
@@ -2169,12 +2275,11 @@ export class PostService {
         _group: groupId,
         'task._column': columnId,
         $push: {
-          "records.group_change": {
-            date: moment().format(),
-            _fromGroup: oldGroupId,
-            _toGroup: groupId,
-            type: 'move',
-            _user: userId
+          "logs": {
+            action: 'moved_to',
+            action_date: moment().format(),
+            _actor: userId,
+            _group: groupId
           }
         }
       }
@@ -2182,12 +2287,11 @@ export class PostService {
       update = {
         _group: groupId,
         $push: {
-          "records.group_change": {
-            date: moment().format(),
-            _fromGroup: oldGroupId,
-            _toGroup: groupId,
-            type: 'move',
-            _user: userId
+          "logs": {
+            action: 'moved_to',
+            action_date: moment().format(),
+            _actor: userId,
+            _group: groupId
           }
         }
       }
@@ -2213,12 +2317,11 @@ export class PostService {
       }, {
         _group: groupId,
         $push: {
-          "records.group_change": {
-            date: moment().format(),
-            _fromGroup: oldGroupId,
-            _toGroup: groupId,
-            type: 'move',
-            _user: userId
+          "logs": {
+            action: 'moved_to',
+            action_date: moment().format(),
+            _actor: userId,
+            _group: groupId
           }
         }
       }).select('_id').lean();
@@ -2250,13 +2353,10 @@ export class PostService {
 
       delete newPost._id;
       delete newPost.permissions;
-      delete newPost.records;
+      delete newPost.logs;
       delete newPost.comments;
       if (newPost.task && newPost.task.custom_fields) {
         delete newPost.task.custom_fields;
-      }
-      if (newPost.records && newPost.records.assignments) {
-        delete newPost.records.assignments;
       }
 
       newPost._group = groupId;
@@ -2313,12 +2413,11 @@ export class PostService {
           _id: newPost._id
         }, {
           $push: {
-            "records.group_change": {
-              date: moment().format(),
-              _fromGroup: oldGroupId,
-              _toGroup: groupId,
-              type: 'copy',
-              _user: userId
+            "logs": {
+              action: 'copy_to',
+              action_date: moment().format(),
+              _actor: userId,
+              _group: groupId
             }
           }
         }, {
@@ -2349,8 +2448,8 @@ export class PostService {
   /**
    * This function fetches the 10 possible parent tasks
    * @param query
-   * @param groupId 
-   * @param currentPostId 
+   * @param groupId
+   * @param currentPostId
    */
   async searchPossibleParents(groupId, currentPostId, query, field) {
 
@@ -2409,7 +2508,7 @@ export class PostService {
         }
       }
 
-      // Return set of posts 
+      // Return set of posts
       return posts;
 
     } catch (err) {
@@ -2418,7 +2517,7 @@ export class PostService {
     }
   }
 
-  async setParentTask(postId: string, parentTaskId: string) {
+  async setParentTask(postId: string, userId: string, parentTaskId: string) {
 
     try {
       // Update the post
@@ -2429,7 +2528,22 @@ export class PostService {
         $unset: { 'task._column': '' }
       }, {
         new: true
-      })
+      });
+
+      post = await Post.findOneAndUpdate({
+        _id: postId
+      }, {
+        $push: {
+          "logs": {
+            action: 'set_parent',
+            action_date: moment().format(),
+            _actor: userId,
+            _task: parentTaskId
+          }
+        }
+      }, {
+        new: true
+      });
 
       // populate the properties of this document
       post = await this.populatePostProperties(post);
@@ -2444,14 +2558,22 @@ export class PostService {
     }
   }
 
-  async setDependencyTask(postId: string, dependecyTaskId: string) {
+  async setDependencyTask(postId: string, userId: string, dependecyTaskId: string) {
 
     try {
 
       let dependentPost = await Post.findOneAndUpdate({
         _id: postId
       }, {
-        $push: { "task._dependency_task": dependecyTaskId }
+        $push: {
+          "task._dependency_task": dependecyTaskId,
+          "logs": {
+            action: 'make_dependent',
+            action_date: moment().format(),
+            _actor: userId,
+            _task: dependecyTaskId
+          }
+        }
       }, {
         new: true
       })
@@ -2459,7 +2581,15 @@ export class PostService {
       let dependencyPost = await Post.findOneAndUpdate({
         _id: dependecyTaskId
       }, {
-        $push: { "task._dependent_child": postId }
+        $push: {
+          "task._dependent_child": postId,
+          "logs": {
+            action: 'make_dependency',
+            action_date: moment().format(),
+            _actor: userId,
+            _task: postId
+          }
+        }
       }, {
         new: true
       })
@@ -2479,7 +2609,7 @@ export class PostService {
     }
   }
 
-  async removeDependencyTask(postId: string, dependecyTaskId: string) {
+  async removeDependencyTask(postId: string, userId: string, dependecyTaskId: string) {
 
     try {
 
@@ -2488,25 +2618,43 @@ export class PostService {
         _id: dependecyTaskId
       }, {
         $pull: {
-           "task._dependent_child": postId 
-        }},
+           "task._dependent_child": postId
+        },
+        $push: {
+          "logs": {
+            action: 'remove_dependency',
+            action_date: moment().format(),
+            _actor: userId,
+            _task: postId
+          }
+        }
+      },
         {
           new: true
         }
       );
-      
+
 
       let dependentPost = await Post.findByIdAndUpdate({
         _id: postId
       }, {
         $pull: {
-           "task._dependency_task": dependecyTaskId 
-        }},
+           "task._dependency_task": dependecyTaskId
+        },
+        $push: {
+          "logs": {
+            action: 'remove_dependent',
+            action_date: moment().format(),
+            _actor: userId,
+            _task: dependecyTaskId
+          }
+        }
+      },
         {
           new: true
         }
       );
-  
+
 
       // populate the properties of this document
       dependentPost = await this.populatePostProperties(dependentPost);
@@ -2530,20 +2678,17 @@ export class PostService {
 
       delete newPost._id;
       delete newPost.permissions;
-      delete newPost.records;
+      delete newPost.logs;
       delete newPost.comments;
       if (newPost.task && newPost.task.custom_fields) {
         delete newPost.task.custom_fields;
-      }
-      if (newPost.records && newPost.records.assignments) {
-        delete newPost.records.assignments;
       }
 
       newPost._assigned_to = [assigneeId];
       newPost.task.status = 'to do';
       newPost.comments_count = 0;
       newPost.created_date = moment().format();
-      
+
       if (parentId) {
         newPost.task._parent_task = parentId;
       }
@@ -2600,7 +2745,7 @@ export class PostService {
           this.cloneToAssignee(task._id, assigneeId, newPost._id);
         });
       }
-      
+
       // Return Post Object
       return newPost;
 
@@ -2610,7 +2755,7 @@ export class PostService {
       throw (err);
     }
   }
-  
+
   /**
    * This service is responsible for fetching templates based on the @groupId
    * @param groupId
@@ -2632,7 +2777,7 @@ export class PostService {
         }).select('_id task.template_name')
         .sort('-task.template_name');
 
-      // Return set of posts 
+      // Return set of posts
       return posts;
 
     } catch (err) {
@@ -2655,16 +2800,13 @@ export class PostService {
       // Delete unneeded fields
       delete template._id;
       delete template.permissions;
-      delete template.records;
+      delete template.logs;
       delete template.comments;
       delete template.task._column;
       delete template.task.due_date;
       delete template.task.start_date;
       if (template.task && template.task.custom_fields) {
         delete template.task.custom_fields;
-      }
-      if (template.records && template.records.assignments) {
-        delete template.records.assignments;
       }
 
       template._group = groupId;
@@ -2799,7 +2941,7 @@ export class PostService {
           })
         }
       })
-      
+
       if (template.files) {
         // Start adding the files from the template
         let files = template.files;
@@ -2850,7 +2992,7 @@ export class PostService {
             { 'task._parent_task': newPostId }
           ]
         });
-        
+
         // Create new subtasks
         (await this.getSubtasks(templatePostId)).forEach(task => {
           this.copyToGroup(task._id, template._group._id || template._group, '', null, null, newPostId, true);
@@ -2873,7 +3015,7 @@ export class PostService {
    * @param date_field
    * @param newDate
    */
-  async saveAllocation(postId: string, allocation: number) {
+  async saveAllocation(postId: string, userId: string, allocation: number) {
 
     try {
       // Get post data
@@ -2884,6 +3026,23 @@ export class PostService {
       }, {
         new: true
       });
+
+      post = await Post.findByIdAndUpdate({
+        _id: postId
+      }, {
+        $push: {
+          "logs": {
+            action: 'save_allocation',
+            action_date: moment().format(),
+            _actor: userId,
+            allocation: allocation
+          }
+        }
+      },
+        {
+          new: true
+        }
+      );
 
       // Populate the post properties
       post = await this.populatePostProperties(post);
@@ -2927,7 +3086,7 @@ export class PostService {
       if (vote > 0) {
         post = await Post.findOneAndUpdate(
           {_id: postId },
-          { 
+          {
             $pull: { 'task.idea.negative_votes': userId },
             $addToSet: { 'task.idea.positive_votes': userId }
           },
@@ -2957,12 +3116,12 @@ export class PostService {
 
   /**
    * Execute the actions from the automator
-   * 
-   * @param actions 
-   * @param post 
-   * @param userId 
-   * @param groupId 
-   * @param isChildStatusTrigger 
+   *
+   * @param actions
+   * @param post
+   * @param userId
+   * @param groupId
+   * @param isChildStatusTrigger
    */
   executeActionFlow(actions: any[], post: any, userId: string, groupId: string, isChildStatusTrigger: boolean) {
     actions.forEach(async action => {
@@ -2986,9 +3145,9 @@ export class PostService {
                 break;
             case 'Custom Field':
                   if (isChildStatusTrigger && post.task._parent_task) {
-                    post = await this.changeCustomFieldValue(post.task._parent_task._id || post.task._parent_task, action.custom_field.name, action.custom_field.value);
+                    post = await this.changeCustomFieldValue(post.task._parent_task._id || post.task._parent_task, userId, action.custom_field.name, action.custom_field.title, action.custom_field.value);
                   } else {
-                    post = await this.changeCustomFieldValue(post._id, action.custom_field.name, action.custom_field.value);
+                    post = await this.changeCustomFieldValue(post._id, userId, action.custom_field.name, action.custom_field.title, action.custom_field.value);
                   }
                 break;
             case 'Move to':
@@ -3023,7 +3182,7 @@ export class PostService {
                 break;
             case 'Shuttle task':
                 if (shuttleIndex < 0) {
-                  post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group);  
+                  post = await this.selectShuttleGroup(post._id, action?._shuttle_group?._id || action?._shuttle_group);
                 }
                 break;
             default:
@@ -3035,10 +3194,10 @@ export class PostService {
 
   /**
    * Execute the actions from the automator
-   * 
-   * @param postId 
-   * @param userId 
-   * @param trigger 
+   *
+   * @param postId
+   * @param userId
+   * @param trigger
    */
   async triggerToZap(postId: string, userId: string, trigger: string) {
     const post = await Post.findById(postId)
@@ -3058,7 +3217,7 @@ export class PostService {
           section: post?.task?._column?.title,
           assigneeEmail: user?.email,
           assigneeName: user?.full_name,
-          postByEmail: post?._posted_by?.email, 
+          postByEmail: post?._posted_by?.email,
           postByName:post?._posted_by?.full_name,
       }
 
@@ -3074,7 +3233,7 @@ export class PostService {
     let post = await Post.findByIdAndUpdate({
             _id: postId
         }, {
-            $set: { 
+            $set: {
               'task.shuttle_type': shuttleType,
               "task.shuttles.$[shuttle]._shuttle_section": shuttleSectionId
             }

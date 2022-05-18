@@ -52,7 +52,12 @@ const fs = require('fs');
               _id: postId
             }, {
                 $push: {
-                  comments: newComment._id
+                  comments: newComment._id,
+                  "logs": {
+                    action: 'commented',
+                    action_date: moment().format(),
+                    _actor: userId
+                  }
                 },
                 $inc: {
                   comments_count: 1
@@ -372,6 +377,13 @@ const fs = require('fs');
               }, {
                 $pull: {
                   comments: comment._id
+                },
+                $push: {
+                  "logs": {
+                    action: 'comment_removed',
+                    action_date: moment().format(),
+                    _actor: userId
+                  }
                 },
                 $inc: {
                   comments_count: -1

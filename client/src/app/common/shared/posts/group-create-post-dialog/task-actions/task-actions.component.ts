@@ -9,7 +9,7 @@ import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChang
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
-import { GroupCreatePostDialogComponent } from '../group-create-post-dialog-component.component';
+import { GroupCreatePostDialogComponent } from '../group-create-post-dialog.component';
 
 @Component({
   selector: 'app-task-actions',

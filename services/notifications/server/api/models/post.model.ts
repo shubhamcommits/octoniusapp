@@ -178,6 +178,59 @@ const PostSchema = new Schema({
             }
         }
     ],
+    logs: [
+        {
+            action: {
+                type: String,
+                required: true,
+                enum: ['created', 'change_content', 'change_status', 'change_section', 'assigned_to', 'removed_assignee', 'new_due_date', 'new_start_date', 'commented', 'new_tag', 'remove_tag', 'change_cf', 'copy_to', 'moved_to', 'make_dependency', 'make_dependent', 'remove_dependency', 'remove_dependent', 'make_ns', 'make_no_ns', 'update_ns', 'make_idea', 'make_no_idea', 'make_milestone', 'make_no_milestone', 'set_parent', 'save_allocation']
+            },
+            _actor: {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            action_date: {
+                type: Date,
+                default: moment().format()
+            },
+            new_status: {
+                type: String
+            },
+            _new_section: {
+                type: Schema.Types.ObjectId,
+                ref: 'Column'
+            },
+            _assignee: {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            },
+            new_date: {
+                type: Date,
+                default: moment().format()
+            },
+            tag: {
+                type: String
+            },
+            cf_title: {
+                type: String
+            },
+            cf_value: {
+                type: String
+            },
+            _group: {
+                type: Schema.Types.ObjectId,
+                ref: 'Group'
+            },
+            _task: {
+                type: Schema.Types.ObjectId,
+                ref: 'Post'
+            },
+            allocation: {
+                type: Number
+            }
+        }
+    ],
 
     // TASK
     task: {
@@ -338,86 +391,6 @@ const PostSchema = new Schema({
             type: String,
             default: null
         }
-    },
-    records: {
-        status: [{
-            date: {
-                type: Date,
-                required: true,
-                default: moment().format()
-            },
-            status: {
-                type: String,
-                enum: ['to do', 'in progress', 'done']
-            },
-            _user: {
-                type: Schema.Types.ObjectId,
-                ref: 'User'
-            }
-        }],
-        column: [{
-            date: {
-                type: Date,
-                required: true,
-                default: moment().format()
-            },
-            title: {
-                type: String,
-                required: true,
-                default: 'to do'
-            },
-            _user: {
-                type: Schema.Types.ObjectId,
-                required: true,
-                ref: 'User'
-            }
-        }],
-        group_change: [{
-            date: {
-                type: Date,
-                required: true,
-                default: moment().format()
-            },
-            _fromGroup: {
-                type: Schema.Types.ObjectId,
-                required: true,
-                ref: 'Group'
-            },
-            _toGroup: {
-                type: Schema.Types.ObjectId,
-                required: true,
-                ref: 'Group'
-            },
-            type: {
-                type: String,
-                required: true,
-                default: 'copy'
-            },
-            _user: {
-                type: Schema.Types.ObjectId,
-                required: true,
-                ref: 'User'
-            }
-        }],
-        assignments: [{
-            date: {
-                type: Date,
-                required: true,
-                default: moment().format()
-            },
-            type: {
-                type: String,
-                enum: ['assign', 'unassign']
-            },
-            _assigned_to: {
-                type: Schema.Types.ObjectId,
-                ref: 'User'
-            },
-            _assigned_from: {
-                type: Schema.Types.ObjectId,
-                ref: 'User'
-            }
-        }]
     }
 });
 

@@ -12,9 +12,9 @@ import { FlowService } from 'src/shared/services/flow-service/flow.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-group-create-post-dialog-component',
-  templateUrl: './group-create-post-dialog-component.component.html',
-  styleUrls: ['./group-create-post-dialog-component.component.scss']
+  selector: 'app-group-create-post-dialog',
+  templateUrl: './group-create-post-dialog.component.html',
+  styleUrls: ['./group-create-post-dialog.component.scss']
 })
 export class GroupCreatePostDialogComponent implements OnInit {
 
@@ -116,7 +116,6 @@ export class GroupCreatePostDialogComponent implements OnInit {
     private utilityService: UtilityService,
     private flowService: FlowService,
     private injector: Injector,
-    private router: ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mdDialogRef: MatDialogRef<GroupCreatePostDialogComponent>
     ) {}
@@ -193,7 +192,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
         this.startDate = moment(this.postData?.task.start_date);
       }
 
-      this.setAssignedBy(this.postData);
+      this.setAssignedBy();
 
       this.customFields = [];
       this.selectedCFValues = [];
@@ -351,19 +350,19 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.updateDetails();
   }
 
-  onCustomFieldChange(event: Event, customFieldName: string) {
+  onCustomFieldChange(event: Event, customFieldName: string, customFieldTitle: string) {
     const customFieldValue = event['value'];
-    this.saveCustomField(customFieldName, customFieldValue);
+    this.saveCustomField(customFieldName, customFieldTitle, customFieldValue);
   }
 
-  saveInputCustomField(event: Event, customFieldName: string) {
+  saveInputCustomField(event: Event, customFieldName: string, customFieldTitle: string) {
     const customFieldValue = event.target['value'];
-    this.saveCustomField(customFieldName, customFieldValue);
+    this.saveCustomField(customFieldName, customFieldTitle, customFieldValue);
   }
 
-  saveCustomField(customFieldName: string, customFieldValue: string) {
+  saveCustomField(customFieldName: string, customFieldTitle: string, customFieldValue: string) {
     this.utilityService.asyncNotification($localize`:@@groupCreatePostDialog.plesaeWaitWeAreUpdaing:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.saveCustomField(this.postData?._id, customFieldName, customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable)
+      this.postService.saveCustomField(this.postData?._id, customFieldName, customFieldTitle, customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable)
         .then(async (res) => {
           this.selectedCFValues[customFieldName] = customFieldValue;
           this.postData.task.custom_fields[customFieldName] = customFieldValue;
@@ -379,7 +378,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
     }));
   }
 
-  async updateDetails() {
+  async updateDetails(logAction?: string) {
     // Prepare the normal  object
 
     if(this.quillData && this.quillData?.mention){
@@ -448,6 +447,7 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
     // Append Post Data
     formData.append('post', JSON.stringify(post));
+    formData.append('logAction', logAction);
 
     // Append all the file attachments
     if (this.files && this.files.length != 0) {
@@ -507,18 +507,23 @@ export class GroupCreatePostDialogComponent implements OnInit {
 
   async onAssigned(res) {
     this.postData = res['post'];
-    this.setAssignedBy(this.postData);
+    this.setAssignedBy();
 
     if (this.postData?.type === 'task') {
       this.postData = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, this.postData, this.groupId, false, this.shuttleIndex);
     }
   }
 
-  async setAssignedBy(post) {
+  async setAssignedBy() {
 
-    if (this.postData?.records && this.postData?.records.assignments && this.postData?.records.assignments.length > 0) {
-      this.postData.records.assignments = this.postData?.records.assignments.sort((a1, a2) => (moment(a1.date).isBefore(a2.date)) ? 1 : -1);
-      this.lastAssignedBy = await this.publicFunctions.getOtherUser(this.postData?.records.assignments[0]._assigned_from);
+    if (this.postData?.logs && this.postData?.logs?.length > 0) {
+      const logs = this.postData?.logs
+        .filter(log => (log.action == 'assigned_to' || log.action == 'removed_assignee') && log?._actor)
+        .sort((l1, l2) => (moment(l1.action_date).isBefore(l2.action_date)) ? 1 : -1);
+
+        if (logs[0]) {
+        this.lastAssignedBy = await this.publicFunctions.getOtherUser(logs[0]._actor?._id);
+      }
     }
   }
 
@@ -563,12 +568,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
   transformToMileStone(data:any){
 
     this.postData.task.is_milestone = data;
-    this.updateDetails();
+    const makeMilestoneLogAction = (this.postData.task.is_milestone) ? 'make_milestone' : 'make_no_milestone';
+    this.updateDetails(makeMilestoneLogAction);
   }
 
   transformToIdea(data:any){
     this.postData.task.is_idea = data;
-    this.updateDetails();
+    const makeIdeaLogAction = (this.postData.task.is_idea) ? 'make_idea' : 'make_no_idea';
+    this.updateDetails(makeIdeaLogAction);
   }
 
   async setShuttleGroup(data: any) {
@@ -590,14 +597,14 @@ export class GroupCreatePostDialogComponent implements OnInit {
       type: 'Currency $',
       status: 'ON TRACK'
     };
-
-    this.updateDetails();
+    const makeNSLogAction = (this.postData.task.isNorthStar) ? 'make_ns' : 'make_no_ns';
+    this.updateDetails(makeNSLogAction);
   }
 
   saveNorthStar(newNorthStar) {
     this.postData.task.northStar = newNorthStar;
 
-    this.updateDetails();
+    this.updateDetails('update_ns');
   }
 
   prepareToAddSubtasks() {
@@ -678,8 +685,8 @@ export class GroupCreatePostDialogComponent implements OnInit {
    * This function is responsible for receiving the date from @module <app-date-picker></app-date-picker>
    * @param dateObject
    */
-   getCFDate(dateObject: any, cfName: string) {
-    this.saveCustomField(cfName, dateObject.toDate());
+   getCFDate(dateObject: any, cfName: string, cfTitle: string) {
+    this.saveCustomField(cfName, cfTitle, dateObject.toDate());
   }
 
   onAssigneeEmitter(itemData: any) {

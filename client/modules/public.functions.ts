@@ -960,12 +960,10 @@ export class PublicFunctions {
         return new Promise((resolve, reject) => {
             postService.get(postId)
                 .then((res) => {
-
                     // Resolve with success
                     resolve(res['post'])
                 })
                 .catch((err) => {
-
                     // Catch the error and reject the promise
                     reject(err)
                 })

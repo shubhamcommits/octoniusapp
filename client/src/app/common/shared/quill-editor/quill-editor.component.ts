@@ -467,7 +467,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
    * @param contents of type Delta
    */
   setContents(quill: Quill, contents: any) {
-    quill.setContents(contents);
+    quill?.setContents(contents);
   }
 
   /**
