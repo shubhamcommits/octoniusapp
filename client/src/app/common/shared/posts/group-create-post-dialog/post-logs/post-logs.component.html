@@ -13,7 +13,7 @@
 
     <span *ngIf="log?.action === 'created'" class="approval-created ml-2" i18n="@@postLogs.created">Created this item</span>
     <span *ngIf="log?.action === 'commented'" class="approval-created ml-2" i18n="@@postLogs.commented">Commented this item</span>
-    <span *ngIf="log?.action === 'comment_removed'" class="approval-created ml-2" i18n="@@postLogs.commented">Removed a comment on this item</span>
+    <span *ngIf="log?.action === 'comment_removed'" class="approval-created ml-2" i18n="@@postLogs.removedComment">Removed a comment on this item</span>
     <span *ngIf="log?.action === 'change_content'" class="approval-deleted ml-2" i18n="@@postLogs.changedContent">Changed the content of item</span>
     <span *ngIf="log?.action === 'make_ns'" class="approval-deleted ml-2" i18n="@@postLogs.makeNS">Changed the item to a North Star</span>
     <span *ngIf="log?.action === 'make_no_ns'" class="approval-deleted ml-2" i18n="@@postLogs.makeNoNS">Changed the item to a normal task</span>
