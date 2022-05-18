@@ -380,7 +380,7 @@ export class GroupController {
         try {
 
             const { workspaceId, userId } = req.query;
-
+            
             // If either workspaceId or userId is null or not provided then we throw BAD REQUEST 
             if (!workspaceId || !userId) {
                 return res.status(400).json({

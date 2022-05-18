@@ -8170,12 +8170,20 @@
           <context context-type="linenumber">130</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="searchHeader.userGroup" datatype="html">
+        <source>User's Group</source>
+        <target state="translated">Grupos del Usuario</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
+          <context context-type="linenumber">138</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="searchHeader.clear" datatype="html">
         <source> Clear </source>
         <target state="translated">Limpiar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">138,140</context>
+          <context context-type="linenumber">147,149</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.close" datatype="html">
@@ -8183,7 +8191,7 @@
         <target state="translated">Cerrar</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">142,144</context>
+          <context context-type="linenumber">151,153</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.files" datatype="html">
@@ -8191,7 +8199,7 @@
         <target state="translated">ARCHIVOS</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">152</context>
+          <context context-type="linenumber">161</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.posts" datatype="html">
@@ -8199,7 +8207,7 @@
         <target state="translated">PUBLICACIONES</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">159</context>
+          <context context-type="linenumber">168</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.tasks" datatype="html">
@@ -8207,7 +8215,7 @@
         <target state="translated">TAREAS</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">166</context>
+          <context context-type="linenumber">175</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.users" datatype="html">
@@ -8215,7 +8223,7 @@
         <target state="translated">USUARIOS</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">173</context>
+          <context context-type="linenumber">182</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.tags" datatype="html">

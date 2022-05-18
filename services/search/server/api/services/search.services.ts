@@ -184,6 +184,10 @@ export class SearchService {
       .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .sort({ created_date: -1 })
       .lean();
+    
+    if (advancedFilters.group) {
+      posts = posts.filter(post => post?._group && post?._group?._id == advancedFilters?.group);
+    }
 
     // Search on the comments
     let comments = await Comment.find({
@@ -313,11 +317,16 @@ export class SearchService {
 
     let posts = await Post.find(query)
       .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
-      .populate({ path: '_group', select: 'custom_fields' })
+      .populate({ path: '_group', select: '_id group_name custom_fields' })
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
       .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .sort({ created_date: -1 })
       .lean();
+    
+    if (advancedFilters.group) {
+      posts = posts.filter(post => post?._group && post?._group?._id == advancedFilters?.group);
+    }
+  
 
     // Search on the comments
     let comments = await Comment.find({
@@ -387,8 +396,7 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
@@ -409,8 +417,7 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { tags: { $in: advancedFilters.tags } },
@@ -430,8 +437,7 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
@@ -451,8 +457,7 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
@@ -472,8 +477,7 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
@@ -492,8 +496,7 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
@@ -512,8 +515,7 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { tags: { $in: advancedFilters.tags } },
@@ -530,8 +532,7 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { created_date: { $gte: from_date, $lte: to_date } },
@@ -540,12 +541,18 @@ export class SearchService {
       };
     }
 
-    return await File.find(query)
+    let files = await File.find(query)
       .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
       .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-      .populate({ path: '_group', select: 'custom_fields' })
+      .populate({ path: '_group', select: '_id group_name custom_fields' })
       .sort({ created_date: -1 })
       .lean();
+
+    if (advancedFilters.group) {
+      files = files.filter(file => file?._group && file?._group?._id == advancedFilters?.group);
+    }
+
+    return files;
   }
 }

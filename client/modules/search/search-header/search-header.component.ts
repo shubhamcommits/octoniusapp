@@ -18,11 +18,12 @@ export class SearchHeaderComponent implements OnInit {
 
   selected: any;
 
-  searchQuery: string;
+  searchQuery: string = '';
 
   selectedType: string;
 
   workplaceData: any;
+  userData: any;
 
   showAdvancedFilters: boolean = false;
 
@@ -33,8 +34,11 @@ export class SearchHeaderComponent implements OnInit {
     skills: [],
     tags: [],
     from_date: null,
-    to_date: null
+    to_date: null,
+    group: null
   };
+
+  userGroups: any;
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);
@@ -47,6 +51,10 @@ export class SearchHeaderComponent implements OnInit {
   async ngOnInit() {
 
     this.workplaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    this.userData = await this.publicFunctions.getCurrentUser()
+
+    this.userGroups = await this.publicFunctions.getUserGroups(this.workplaceData?._id, this.userData?._id);
   }
 
   search() {
@@ -57,13 +65,14 @@ export class SearchHeaderComponent implements OnInit {
     this.selected = null;
     this.selectedType = null;
 
-    if ((this.searchQuery =='' || this.searchQuery == " ")
+    if ((!this.searchQuery || this.searchQuery == '' || this.searchQuery == " ")
         && this.advancedFilters.owners.length == 0
         && this.advancedFilters.skills.length == 0
         && this.advancedFilters.tags.length == 0
         && (this.advancedFilters.metadata == '' || this.advancedFilters.metadata == ' ')
         && !this.advancedFilters.from_date
-        && !this.advancedFilters.to_date) {
+        && !this.advancedFilters.to_date
+        && !this.advancedFilters.group) {
       return;
     }
 
@@ -173,6 +182,9 @@ export class SearchHeaderComponent implements OnInit {
     this.advancedFilters.metadata = '';
     this.advancedFilters.skills = [];
     this.advancedFilters.tags = [];
+    this.advancedFilters.from_date = null,
+    this.advancedFilters.to_date = null,
+    this.advancedFilters.group = null;
 
     this.search();
   }
@@ -207,6 +219,12 @@ export class SearchHeaderComponent implements OnInit {
     this.search();
   }
 
+  selectGroup(event: any) {
+    this.advancedFilters.group = event.value;
+
+    this.search();
+  }
+
   removeMemberSearch(memberId: string) {
     const index = (this.advancedFilters && this.advancedFilters.owners) ? this.advancedFilters.owners.findIndex(member => member._id == memberId) : -1;
     if (index >=0) {
@@ -226,7 +244,8 @@ export class SearchHeaderComponent implements OnInit {
       skills: [],
       tags: [],
       from_date: null,
-      to_date: null
+      to_date: null,
+      group: null
     };
     this.searchedPosts = [];
     this.searchedTasks = [];
