@@ -230,6 +230,8 @@ export class SearchHeaderComponent implements OnInit {
   }
 
   selectGroup(event: any) {
+    this.advancedFilters.cfName = '';
+    this.advancedFilters.cfValue = '';
     this.advancedFilters.group = event.value;
     const index = (this.userGroups) ? this.userGroups.findIndex(group => group._id == this.advancedFilters.group) : -1;
     if (index > -1) {
@@ -245,6 +247,7 @@ export class SearchHeaderComponent implements OnInit {
 
   selectCFName(event: any) {
     this.advancedFilters.cfName = event.value;
+    this.advancedFilters.cfValue = '';
     const index = (this.customFields) ? this.customFields.findIndex(cf => cf.name == this.advancedFilters.cfName) : -1;
     if (index >= 0) {
       this.selectedCustomField = this.customFields[index];
