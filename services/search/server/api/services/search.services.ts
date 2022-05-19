@@ -14,7 +14,7 @@ export class SearchService {
     try {
       const user = await User.findOne({ _id: req.userId }).lean();
 
-      let query = req.params.query;
+      let query = req.query.textQuery;
 
       if (!query || query == undefined || query == 'undefined') {
         query = '';
@@ -189,6 +189,12 @@ export class SearchService {
       posts = posts.filter(post => post?._group && post?._group?._id == advancedFilters?.group);
     }
 
+    if (advancedFilters.cfName && advancedFilters.cfValue && advancedFilters.cfName != '' && advancedFilters.cfValue != '') {
+      posts = posts.filter(post => post?.custom_fields
+        && post?.custom_fields[advancedFilters.cfName]
+        && post?.custom_fields[advancedFilters.cfName] == advancedFilters?.cfValue);
+    }
+
     // Search on the comments
     let comments = await Comment.find({
         $and: [
@@ -326,6 +332,12 @@ export class SearchService {
     if (advancedFilters.group) {
       posts = posts.filter(post => post?._group && post?._group?._id == advancedFilters?.group);
     }
+
+    if (advancedFilters.cfName && advancedFilters.cfValue && advancedFilters.cfName != '' && advancedFilters.cfValue != '') {
+      posts = posts.filter(post => post?.custom_fields
+        && post?.custom_fields[advancedFilters.cfName]
+        && post?.custom_fields[advancedFilters.cfName] == advancedFilters?.cfValue);
+    }
   
 
     // Search on the comments
@@ -444,7 +456,7 @@ export class SearchService {
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
           { created_date: { $gte: from_date, $lte: to_date } },
           { _parent: null }
-        ]    
+        ]
       };
     } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
         && advancedFilters.tags && advancedFilters.tags.length > 0
@@ -551,6 +563,12 @@ export class SearchService {
 
     if (advancedFilters.group) {
       files = files.filter(file => file?._group && file?._group?._id == advancedFilters?.group);
+    }
+
+    if (advancedFilters.cfName && advancedFilters.cfValue && advancedFilters.cfName != '' && advancedFilters.cfValue != '') {
+      files = files.filter(file => file?.custom_fields
+        && file?.custom_fields[advancedFilters.cfName]
+        && file?.custom_fields[advancedFilters.cfName] == advancedFilters?.cfValue);
     }
 
     return files;
