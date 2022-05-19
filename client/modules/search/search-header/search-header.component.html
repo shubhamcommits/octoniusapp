@@ -143,7 +143,7 @@
       </div>
     </div>
 
-    <div class="advanced-filters" *ngIf="(advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task') && advancedFilters.group && customFields.length > 0">
+    <div class="advanced-filters" *ngIf="(advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task') && advancedFilters.group && customFields && customFields?.length > 0">
       <div class="filter-label" i18n="@@searchHeader.customFields">Custom Fields</div>
       <div class="filter-cell">
         <mat-select [(value)]="advancedFilters.cfName" (selectionChange)="selectCFName($event)" appearance="fill" style="width: 20%;">
@@ -152,7 +152,7 @@
       </div>
     </div>
 
-    <div class="advanced-filters" *ngIf="(advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task') && advancedFilters.group && customFields.length > 0">
+    <div class="advanced-filters" *ngIf="(advancedFilters.type == 'file' || advancedFilters.type == 'post' || advancedFilters.type == 'task') && advancedFilters.group && customFields && customFields?.length > 0">
       <div class="filter-label"></div>
       <div class="filter-cell" *ngIf="selectedCustomField">
         <mat-select *ngIf="!selectedCustomField.input_type && !selectedCustomField.input_type_number && !selectedCustomField.input_type_text && !selectedCustomField.input_type_date"
