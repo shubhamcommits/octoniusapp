@@ -9,7 +9,6 @@ import moment from 'moment';
 // ShareDB Client
 import { BehaviorSubject } from 'rxjs';
 import { FlowService } from 'src/shared/services/flow-service/flow.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-group-create-post-dialog',
@@ -129,6 +128,10 @@ export class GroupCreatePostDialogComponent implements OnInit {
     this.groupId = this.data.groupId;
     this.columns = this.data.columns;
     this.isIdeaModuleAvailable = this.data.isIdeaModuleAvailable;
+
+    if (!this.groupId) {
+      this.groupId = (this.postData._group._id || this.postData._group);
+    }
 
     this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
 
