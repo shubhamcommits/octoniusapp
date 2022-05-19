@@ -20,6 +20,7 @@ export class FileDetailsDialogComponent implements OnInit {
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
+  @Output() allVersionsDeletedEmitter = new EventEmitter();
 
   fileData: any;
   userData: any;
@@ -64,8 +65,6 @@ export class FileDetailsDialogComponent implements OnInit {
 
   newComment;
 
-  myWorkplace = this.router.snapshot.queryParamMap.has('myWorkplace') ? this.router.snapshot.queryParamMap.get('myWorkplace') : false;
-
   constructor(
     private filesService: FilesService,
     private groupService: GroupService,
@@ -82,6 +81,10 @@ export class FileDetailsDialogComponent implements OnInit {
     this.fileData = this.data.fileData;
     this.userData = this.data.userData;
     this.groupData = this.data.groupData;
+
+    if (!this.groupData) {
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    }
 
     await this.initFileData();
 
@@ -266,5 +269,11 @@ export class FileDetailsDialogComponent implements OnInit {
   async onApprovalFlowLaunchedEmiter(fileData: any) {
     this.fileData = fileData;
     this.canEdit = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'edit');
+  }
+
+  allVersionsDeleted() {
+    this.allVersionsDeletedEmitter.emit(this.fileData?._id);
+    // Close the modal
+    this.mdDialogRef.close();
   }
 }

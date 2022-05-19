@@ -100,13 +100,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
           this.authService.signout().toPromise()
             .then((res) => {
               this.storageService.clear();
-              this.publicFunctions.sendUpdatesToRouterState({})
-              this.publicFunctions.sendUpdatesToGroupData({})
-              this.publicFunctions.sendUpdatesToUserData({})
-              this.publicFunctions.sendUpdatesToAccountData({})
-              this.publicFunctions.sendUpdatesToWorkspaceData({})
+              this.publicFunctions.sendUpdatesToRouterState({});
+              this.publicFunctions.sendUpdatesToGroupData({});
+              this.publicFunctions.sendUpdatesToUserData({});
+              this.publicFunctions.sendUpdatesToAccountData({});
+              this.publicFunctions.sendUpdatesToWorkspaceData({});
               this.socketService.disconnectSocket();
-              this.router.navigate(['/'])
+              this.router.navigate(['/']);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@sidebar.successfullyLogOut:Successfully Logged out!`));
             }).catch((err) => {
               console.log('Error occurred while logging out!', err);
@@ -134,4 +134,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.utilityService.handleActiveStateTopNavBar().emit(state);
   }
 
+  changeToPersonalGroup() {
+    this.publicFunctions.sendUpdatesToGroupData({});
+    this.router.navigate(['/dashboard', 'myspace', 'inbox']);
+  }
 }

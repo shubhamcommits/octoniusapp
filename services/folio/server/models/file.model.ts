@@ -18,6 +18,10 @@ const FileSchema = new Schema({
         required: false,
         enum: ['file', 'folio' , 'flamingo', 'campaign']
     },
+    _parent: {
+        type: Schema.Types.ObjectId,
+        ref: 'File'
+    },
     mime_type: {
         type: String,
         default: null

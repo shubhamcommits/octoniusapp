@@ -32,7 +32,7 @@ export class KanbanTaskCardComponent {
 
   async ngOnInit() {
     this.userData = await this.publicFunctions.getCurrentUser();
-    this.groupData = await this.publicFunctions.getCurrentGroup();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
   }
 
   /**

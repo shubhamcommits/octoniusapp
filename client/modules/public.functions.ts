@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { retry } from 'rxjs/internal/operators/retry';
 import { SubSink } from 'subsink';
 import moment from 'moment/moment';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { UserService } from "src/shared/services/user-service/user.service";
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
@@ -13,27 +13,28 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { ColumnService } from 'src/shared/services/column-service/column.service';
 import { FilesService } from 'src/shared/services/files-service/files.service';
-import { GoogleCloudService } from 'modules/user/user-clouds/user-available-clouds/google-cloud/services/google-cloud.service';
-import { environment } from 'src/environments/environment';
 import { FoldersService } from 'src/shared/services/folders-service/folders.service';
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
-
-// Google API Variable
-declare const gapi: any;
-declare const google: any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublicFunctions {
 
+    private subSink = new SubSink();
+
     constructor(
         private injector: Injector
     ) { }
 
-    private subSink = new SubSink();
+    /**
+     * This function unsubscribes the data from the observables
+     */
+    ngOnDestroy(): void {
+        this.subSink.unsubscribe();
+    }
 
     public async getCurrentUser(readOnly?: boolean) {
         let userData: any = await this.getUserDetailsFromService();
@@ -83,7 +84,7 @@ export class PublicFunctions {
         return new Promise((resolve, reject) => {
             const userService = this.injector.get(UserService);
             this.subSink.add(userService.getUser()
-                .pipe(retry(3))
+                .pipe(retry(1))
                 .subscribe((res) => resolve(res['user']), (err) => reject(err))
             )
         })
@@ -93,7 +94,7 @@ export class PublicFunctions {
         return new Promise((resolve, reject) => {
             const userService = this.injector.get(UserService);
             this.subSink.add(userService.getOtherUser(userId)
-                .pipe(retry(3))
+                .pipe(retry(1))
                 .subscribe((res) => resolve(res['user']), (err) => reject(err))
             )
         })
@@ -139,7 +140,7 @@ export class PublicFunctions {
         return new Promise((resolve, reject) => {
             const userService = this.injector.get(UserService);
             this.subSink.add(userService.getAccount()
-                .pipe(retry(3))
+                .pipe(retry(1))
                 .subscribe((res) => resolve(res['account']), (err) => reject(err))
             )
         })
@@ -188,7 +189,7 @@ export class PublicFunctions {
             const utilityService = this.injector.get(UtilityService);
 
             this.subSink.add(workspaceService.getWorkspace(userData['_workspace'])
-                .pipe(retry(3))
+                .pipe(retry(1))
                 .subscribe((res) => { resolve(res['workspace']) },
                     (err) => {
                         console.log('Error occurred while fetching the workspace details!', err);
@@ -223,32 +224,81 @@ export class PublicFunctions {
         })
     }
 
-    public async getCurrentGroup() {
+    public async getCurrentGroupDetails() {
 
-        let groupData = await this.getCurrentGroupFromService();
+        let groupData = {};
+
+        groupData = await this.getCurrentGroupFromService();
+
+        if (JSON.stringify(groupData) == JSON.stringify({}) || JSON.stringify(groupData) == JSON.stringify(undefined)) {
+          groupData = await this.getGroupDetailsFromHTTP();
+        }
+
+        if (JSON.stringify(groupData) == JSON.stringify({}) || JSON.stringify(groupData) == JSON.stringify(undefined)) {
+          groupData = await this.getGroupDetailsFromStorage();
+        }
 
         this.sendUpdatesToGroupData(groupData);
 
-        return groupData || {}
+        return groupData || {};
     }
 
     async getCurrentGroupFromService() {
-
         return new Promise((resolve) => {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.currentGroupData.subscribe((res) => {
-                if (JSON.stringify(res) != JSON.stringify({}))
-                    resolve(res);
-                else
-                    resolve({}) ;
-            })
-            )
+                resolve(res);
+            }));
+        });
+    }
+
+    async getGroupDetailsFromStorage() {
+        const storageService = this.injector.get(StorageService);
+        return (storageService.existData('groupData') === null) ? {} : storageService.getLocalData('groupData');
+    }
+
+    async getGroupDetailsFromHTTP() {
+        return new Promise(async (resolve, reject) => {
+            const router = this.injector.get(ActivatedRoute);
+            const groupId = router.snapshot.queryParamMap.get('group');
+
+            const groupData = await this.getGroupDetails(groupId);
+            resolve(groupData);
+        })
+    }
+
+    /**
+     * This function fetches the group details
+     * @param groupId
+     */
+    public async getGroupDetails(groupId: string) {
+        return new Promise((resolve, reject) => {
+            let groupService = this.injector.get(GroupService);
+            groupService.getGroup(groupId)
+                .then((res) => {
+                  if (res) {
+                    resolve(res['group']);
+                  }
+                })
+                .catch((err) => {
+                    this.sendError(new Error($localize`:@@publicFunctions.unableToFetchGroupDetails:Unable to fetch the group details, please try again!`))
+                    reject(err)
+                })
         })
     }
 
     async sendUpdatesToGroupData(groupData: Object) {
+        const storageService = this.injector.get(StorageService);
         const utilityService = this.injector.get(UtilityService);
         utilityService.updateGroupData(groupData);
+        storageService.setLocalData('groupData', JSON.stringify(groupData));
+    }
+
+    isPersonalNavigation(groupData: Object, userData: Object) {
+      return (groupData)
+        ?((groupData['group_name'] === 'personal') && (groupData['_id'] == (userData['_private_group']._id || userData['_private_group'])))
+          ? true : false
+        : true;
     }
 
     getRouterStateFromService() {
@@ -257,9 +307,8 @@ export class PublicFunctions {
             this.subSink.add(utilityService.routerStateData.subscribe((res) => {
                 if (JSON.stringify(res) != JSON.stringify({}))
                     resolve(res)
-            })
-            )
-        })
+            }));
+        });
     }
 
     sendUpdatesToRouterState(routerStateData: Object) {
@@ -313,47 +362,6 @@ export class PublicFunctions {
     sendUpdatesToStoryData(storyData: Object) {
         const utilityService = this.injector.get(UtilityService);
         utilityService.updateStoryData(storyData);
-    }
-
-    /**
-     * This function fetches the group details
-     * @param groupId
-     */
-    public async getCurrentGroupDetails(groupId: string) {
-
-       let groupData: any = await this.getCurrentGroupFromService();
-       if (JSON.stringify(groupData) == JSON.stringify({})){
-         groupData = await this.getGroupDetails(groupId);
-       } else {
-           if(groupId != groupData._id){
-            groupData = await this.getGroupDetails(groupId);
-           }
-       }
-
-       this.sendUpdatesToGroupData(groupData);
-
-       return groupData || {};
-    }
-
-
-    /**
-     * This function fetches the group details
-     * @param groupId
-     */
-    public async getGroupDetails(groupId: string) {
-        return new Promise((resolve, reject) => {
-            let groupService = this.injector.get(GroupService);
-            groupService.getGroup(groupId)
-                .then((res) => {
-                  if (res) {
-                    resolve(res['group']);
-                  }
-                })
-                .catch((err) => {
-                    this.sendError(new Error($localize`:@@publicFunctions.unableToFetchGroupDetails:Unable to fetch the group details, please try again!`))
-                    reject(err)
-                })
-        })
     }
 
     /**
@@ -914,20 +922,6 @@ export class PublicFunctions {
     }
 
     /**
-     * This function is responsible for fetching the google drive files from connected google drive
-     * @param searchTerm
-     * @param accessToken
-     */
-    searchGoogleFiles(searchTerm: string, accessToken: string) {
-        return new Promise((resolve) => {
-            let googleService = this.injector.get(GoogleCloudService)
-            googleService.getGoogleFiles(searchTerm, accessToken)
-                .then((res) => resolve(res['items']))
-                .catch(() => resolve([]))
-        })
-    }
-
-    /**
      * This function is responsible for editing a post
      * @param postId
      * @param postData
@@ -966,12 +960,10 @@ export class PublicFunctions {
         return new Promise((resolve, reject) => {
             postService.get(postId)
                 .then((res) => {
-
                     // Resolve with success
                     resolve(res['post'])
                 })
                 .catch((err) => {
-
                     // Catch the error and reject the promise
                     reject(err)
                 })
@@ -992,7 +984,7 @@ export class PublicFunctions {
             columnService.getAllColumns(groupId)
                 .then((res) => {
 
-                    if (res == null) {
+                    if (res == null) {
                         resolve([]);
                     }
 
@@ -1020,7 +1012,7 @@ export class PublicFunctions {
             columnService.getAllArchivedColumns(groupId)
                 .then((res) => {
 
-                    if (res == null) {
+                    if (res == null) {
                         resolve([]);
                     }
 
@@ -1237,174 +1229,6 @@ export class PublicFunctions {
         })
     }
 
-    /**
-     * This function opens up the window to signin to google and connect the account
-     */
-    async authorizeGoogleSignIn(integrations: any) {
-        return new Promise(async (resolve) => {
-            await gapi.auth.authorize({
-                'client_id': integrations.google_client_id,
-                'scope': environment.GOOGLE_SCOPE,
-                'immediate': false,
-                'access_type': 'offline',
-                'approval_prompt': 'force',
-                'response_type': 'token code',
-                'grant_type': 'authorization_code'
-              })
-                .then((res: any) => resolve(res))
-                .catch(() => resolve(null))
-        })
-    }
-
-    /**
-     * This function handles the google signin result and connect the account to octonius server
-     * @param googleSignInResult
-     */
-    async handleGoogleSignIn(googleSignInResult?: any) {
-
-        // StorageService Instance
-        let storageService = this.injector.get(StorageService)
-
-        // Google Service Instance
-        let googleService = this.injector.get(GoogleCloudService)
-
-        // Access token variable
-        let access_token: any = null
-
-        // Refresh token variable
-        let refresh_token: any = null;
-
-        const workspaceData: any = await this.getCurrentWorkspace();
-
-        // If its a default refresh in the background
-        if (!googleSignInResult) {
-
-            // Fetch the refresh token
-            refresh_token = (storageService.existData('googleUser')) ? storageService.getLocalData('googleUser')['refreshToken'] : await this.getRefreshTokenFromUser()
-
-            // Token Results
-            let tokenResults: any = {
-                access_token: ''
-            }
-
-            // Assign the access_token from the refresh token
-            if (refresh_token != null && refresh_token != undefined)
-                tokenResults = await this.getAccessToken(refresh_token, workspaceData?.integrations)
-
-            // Set the access_token
-            access_token = tokenResults.access_token
-
-        }
-
-        // Check for default state
-        if (googleSignInResult && !googleSignInResult.error && googleSignInResult.access_token) {
-
-            // Fetch the Google Drive Token Object
-            let tokenResults: any = await this.getGoogleDriveTokenFromAuthResult(googleSignInResult.code, googleSignInResult.access_token, workspaceData?.integrations)
-
-            // Set the access_token
-            access_token = tokenResults.access_token
-
-            // Set the refresh token
-            refresh_token = tokenResults.refresh_token
-        }
-
-        if (access_token != null && refresh_token != null) {
-
-            // Retrieve the refresh_token and save it to our server
-            let userDetails: any = await this.saveRefreshTokenToUser(refresh_token)
-
-            // Update the user details with updated token
-            await this.sendUpdatesToUserData(userDetails.user)
-
-            // Fetch the google user details
-            let googleUserDetails = await this.getGoogleUserDetails(access_token)
-
-            // Store the google user locally and serialise object in order to store google data locally
-            storageService.setLocalData('googleUser', JSON.stringify({
-                'userData': googleUserDetails,
-                'refreshToken': refresh_token,
-                'accessToken': access_token
-            }))
-
-            // Change the observable state
-            googleService.googleAuthSuccessfulBehavior.next(true)
-
-            // Return google user details
-            return googleUserDetails
-        }
-
-        // Return google user details
-        return {}
-    }
-
-    /**
-     * This functions calls the refresh token service function
-     */
-    async getRefreshTokenFromUser() {
-        let googleService = this.injector.get(GoogleCloudService)
-        return new Promise(async (resolve) => {
-            await googleService.getRefreshTokenFromUserData()
-                .then((res) => resolve(res['gDriveToken']))
-        })
-    }
-
-    /**
-     * This function saves the refresh token to user's profile
-     * @param token
-     */
-    async saveRefreshTokenToUser(token: string) {
-        let googleService = this.injector.get(GoogleCloudService)
-        return new Promise(async (resolve) => {
-            await googleService.saveRefreshTokenToUser(token)
-                .then((res) => resolve(res))
-        })
-    }
-
-    /**
-     * This function fetches the access token stored in the user's profile
-     * @param refreshToken
-     */
-    async getAccessToken(refreshToken: string, integrations: any) {
-        let googleService = this.injector.get(GoogleCloudService)
-        return new Promise(async (resolve) => {
-            await googleService.getAccessToken(refreshToken, integrations)
-                .then((res) => resolve(res))
-        })
-    }
-
-    /**
-     * This function is responsible for fetching the authorization code from google auth results
-     * @param code
-     * @param access_token
-     */
-    async getGoogleDriveTokenFromAuthResult(code: string, access_token: string, integrations: any) {
-        let googleService = this.injector.get(GoogleCloudService)
-        return new Promise(async (resolve) => {
-            await googleService.getGoogleDriveTokenFromAuthResult(code, access_token, integrations)
-                .then((res) => resolve(res))
-        })
-    }
-
-    /**
-     * This function is responsible for fetching the google user details
-     * @param accessToken
-     */
-    async getGoogleUserDetails(accessToken: string) {
-        let googleService = this.injector.get(GoogleCloudService)
-        return new Promise(async (resolve) => {
-            await googleService.getGoogleUserDetails(accessToken)
-                .then((res) => resolve(res))
-        })
-    }
-
-    /**
-     * This function unsubscribes the data from the observables
-     */
-    ngOnDestroy(): void {
-        this.subSink.unsubscribe();
-    }
-
     executedAutomationFlowsPropertiesFront(flows: any[], post: any, groupId: string, isCreationTaskTrigger?: boolean, shuttleIndex?: number) {
         if (flows && flows.length > 0) {
           let doTrigger = true;
@@ -1600,7 +1424,7 @@ export class PublicFunctions {
     }
 
     async getCurrentGroupMembers() {
-        const groupData = await this.getCurrentGroup();
+        const groupData = await this.getCurrentGroupDetails();
         let groupMembers = [];
         if (groupData['_admins'].length > 0) {
             groupData['_admins'].forEach(element => {

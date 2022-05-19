@@ -18,11 +18,12 @@ export class SearchHeaderComponent implements OnInit {
 
   selected: any;
 
-  searchQuery: string;
+  searchQuery: string = '';
 
   selectedType: string;
 
   workplaceData: any;
+  userData: any;
 
   showAdvancedFilters: boolean = false;
 
@@ -33,8 +34,16 @@ export class SearchHeaderComponent implements OnInit {
     skills: [],
     tags: [],
     from_date: null,
-    to_date: null
+    to_date: null,
+    group: null,
+    cfName: '',
+    cfValue: ''
   };
+
+  userGroups: any;
+
+  customFields = [];
+  selectedCustomField;
 
   // Public Functions Object
   public publicFunctions = new PublicFunctions(this.injector);
@@ -47,6 +56,10 @@ export class SearchHeaderComponent implements OnInit {
   async ngOnInit() {
 
     this.workplaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    this.userData = await this.publicFunctions.getCurrentUser()
+
+    this.userGroups = await this.publicFunctions.getUserGroups(this.workplaceData?._id, this.userData?._id);
   }
 
   search() {
@@ -57,13 +70,15 @@ export class SearchHeaderComponent implements OnInit {
     this.selected = null;
     this.selectedType = null;
 
-    if ((this.searchQuery =='' || this.searchQuery == " ")
+    if ((!this.searchQuery || this.searchQuery == '' || this.searchQuery == " ")
         && this.advancedFilters.owners.length == 0
         && this.advancedFilters.skills.length == 0
         && this.advancedFilters.tags.length == 0
         && (this.advancedFilters.metadata == '' || this.advancedFilters.metadata == ' ')
         && !this.advancedFilters.from_date
-        && !this.advancedFilters.to_date) {
+        && !this.advancedFilters.to_date
+        && !this.advancedFilters.group
+        && (this.advancedFilters.cfName == '' || this.advancedFilters.cfValue == ' ')) {
       return;
     }
 
@@ -98,7 +113,7 @@ export class SearchHeaderComponent implements OnInit {
         }
       });
     } catch (error) {
-
+      this.publicFunctions.sendError(error);
     }
   }
   /**
@@ -119,7 +134,7 @@ export class SearchHeaderComponent implements OnInit {
         }
       });
     } catch (error) {
-
+      this.publicFunctions.sendError(error);
     }
   }
   /**
@@ -140,7 +155,7 @@ export class SearchHeaderComponent implements OnInit {
         }
       })
     } catch (error) {
-
+      this.publicFunctions.sendError(error);
     }
   }
   /**
@@ -161,7 +176,7 @@ export class SearchHeaderComponent implements OnInit {
         }
       });
     } catch (error) {
-
+      this.publicFunctions.sendError(error);
     }
   }
   /**
@@ -173,6 +188,13 @@ export class SearchHeaderComponent implements OnInit {
     this.advancedFilters.metadata = '';
     this.advancedFilters.skills = [];
     this.advancedFilters.tags = [];
+    this.advancedFilters.from_date = null,
+    this.advancedFilters.to_date = null,
+    this.advancedFilters.group = null;
+    this.advancedFilters.cfName = '';
+    this.advancedFilters.cfValue = '';
+    this.customFields = [];
+    this.selectedCustomField = null;
 
     this.search();
   }
@@ -207,6 +229,37 @@ export class SearchHeaderComponent implements OnInit {
     this.search();
   }
 
+  selectGroup(event: any) {
+    this.advancedFilters.cfName = '';
+    this.advancedFilters.cfValue = '';
+    this.advancedFilters.group = event.value;
+    const index = (this.userGroups) ? this.userGroups.findIndex(group => group._id == this.advancedFilters.group) : -1;
+    if (index > -1) {
+      const group = this.userGroups[index];
+      if (this.advancedFilters.type == 'file') {
+        this.customFields = group.files_custom_fields;
+      } else if (this.advancedFilters.type == 'post' || this.advancedFilters.type == 'task') {
+        this.customFields = group.custom_fields;
+      }
+    }
+    this.search();
+  }
+
+  selectCFName(event: any) {
+    this.advancedFilters.cfName = event.value;
+    this.advancedFilters.cfValue = '';
+    const index = (this.customFields) ? this.customFields.findIndex(cf => cf.name == this.advancedFilters.cfName) : -1;
+    if (index >= 0) {
+      this.selectedCustomField = this.customFields[index];
+    }
+  }
+
+  selectCFValue(event: any) {
+    this.advancedFilters.cfValue = event.value;
+
+    this.search();
+  }
+
   removeMemberSearch(memberId: string) {
     const index = (this.advancedFilters && this.advancedFilters.owners) ? this.advancedFilters.owners.findIndex(member => member._id == memberId) : -1;
     if (index >=0) {
@@ -226,12 +279,17 @@ export class SearchHeaderComponent implements OnInit {
       skills: [],
       tags: [],
       from_date: null,
-      to_date: null
+      to_date: null,
+      group: null,
+      cfName: '',
+      cfValue: ''
     };
     this.searchedPosts = [];
     this.searchedTasks = [];
     this.searchedUsers = [];
     this.searchedFiles = [];
+    this.customFields = [];
+    this.selectedCustomField = null;
   }
 
   /**

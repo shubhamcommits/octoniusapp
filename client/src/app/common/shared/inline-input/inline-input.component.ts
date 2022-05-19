@@ -67,6 +67,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
   @Input() groupId: string;
   @Input() options: [string];
   @Input() customFieldName='';
+  @Input() customFieldTitle='';
   @Input() customFieldInputType = false;
 
   // Post Event Emitter - Emits the post to the other components
@@ -206,7 +207,7 @@ export class InlineInputComponent implements ControlValueAccessor, OnChanges, On
     this.domainObject.task.custom_fields[this.customFieldName] = this.customFieldValue;
 
     this.utilityService.asyncNotification($localize`:@@inlineInput.pleaseWaitUpdatingContent:Please wait we are updating the contents...`, new Promise((resolve, reject) => {
-      this.postService.saveCustomField(this.domainObject._id, this.customFieldName, this.customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable)
+      this.postService.saveCustomField(this.domainObject._id, this.customFieldName, this.customFieldTitle, this.customFieldValue, this.groupId, this.isShuttleTasksModuleAvailable)
         .then((res) => {
           // Emit the post to other components
           this.post.emit({post: res['post'], cfTrigger: {name: this.customFieldName, value: this.customFieldValue}});

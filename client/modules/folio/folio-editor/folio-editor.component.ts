@@ -36,6 +36,7 @@ import * as ShareDB from "sharedb/lib/client";
 import { pdfExporter } from "quill-to-pdf";
 import * as quillToWord from "quill-to-word";
 import { saveAs } from "file-saver";
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 
 // Register the Types of the Sharedb
 ShareDB.types.register(require('rich-text').type);
@@ -148,6 +149,7 @@ export class FolioEditorComponent implements AfterViewInit {
 
   constructor(
     @Inject(LOCALE_ID) public locale: string,
+    private integrationsService: IntegrationsService,
     private _Injector: Injector,
     private _ActivatedRoute: ActivatedRoute,
     private folioService: FolioService,
@@ -658,7 +660,7 @@ export class FolioEditorComponent implements AfterViewInit {
 
   metionModule() {
     return {
-      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      allowedChars: /^[A-Za-z\sÅÄÖåäö0123456789]*$/,
       mentionDenotationChars: ["@", "#"],
       source: async (searchTerm, renderList, mentionChar) => {
         // Value of the mention list
@@ -732,7 +734,7 @@ export class FolioEditorComponent implements AfterViewInit {
           ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
           : (file.type == "flamingo")
             ? `<a href="/document/flamingo/${file._id}?group=${file._group._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-            : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`,
+            : `<a href="${this.filesBaseUrl}/${file._id}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
     }));
 
     let googleFilesList: any = [];
@@ -744,7 +746,7 @@ export class FolioEditorComponent implements AfterViewInit {
       let accessToken = storageService.getLocalData('googleUser')['accessToken']
 
       // Get Google file list
-      googleFilesList = await this.publicFunctions.searchGoogleFiles(searchTerm, accessToken) || []
+      googleFilesList = await this.integrationsService.searchGoogleFiles(searchTerm, accessToken) || []
 
       // Google File List
       if (googleFilesList.length > 0)
@@ -754,8 +756,31 @@ export class FolioEditorComponent implements AfterViewInit {
         }))
     }
 
+    let boxFilesList: any = [];
+
+    // Fetch Access Token
+    if (storageService.existData('boxUser') && this.workspaceData?.integrations?.is_box_connected) {
+      const boxUser: any = storageService.getLocalData('boxUser');
+
+      // Fetch the access token from the storage
+      let boxAccessToken = boxUser['accessToken'];
+
+      // Get Box file list
+      boxFilesList = await this.integrationsService.searchBoxFiles(searchTerm, boxAccessToken, this.workspaceData?.integrations) || []
+
+      // Box File List
+      if (boxFilesList.length > 0) {
+        boxFilesList = boxFilesList
+            .filter(file => file && file.shared_link && file.shared_link.url)
+            .map((file: any) => ({
+                id: 'boxfile',
+                value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
+              }));
+      }
+    }
+
     // Return the Array without duplicates
-    return Array.from(new Set([...filesList, ...googleFilesList]));
+    return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
   }
 
   /**

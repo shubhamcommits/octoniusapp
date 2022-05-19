@@ -181,9 +181,9 @@ export class RecentActivityComponent implements OnInit {
     const groupId = (group._id) ? group._id : group;
     // Set the Value of element selection box to be the url of the post
     if (postType === 'task') {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, myWorkplace: false, postId: postId } });
+      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, postId: postId } });
     } else {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, myWorkplace: false, postId: postId } });
+      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, postId: postId } });
     }
   }
 
@@ -195,10 +195,10 @@ export class RecentActivityComponent implements OnInit {
   viewApprovalNotification(notification: any) {
     if (notification?._origin_post && notification?._origin_post?.type == 'task') {
       const groupId = notification?._origin_post?._group._id || notification?._origin_post?._group;
-      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, myWorkplace: false, postId: notification?._origin_post?._id } });
+      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, postId: notification?._origin_post?._id } });
     } else if (notification?._origin_folio) {
       const groupId = notification?._origin_folio?._group._id || notification?._origin_folio?._group;
-      this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId, myWorkplace: false, itemId: notification?._origin_folio?._id } });
+      this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId, itemId: notification?._origin_folio?._id } });
     }
   }
 
@@ -209,7 +209,7 @@ export class RecentActivityComponent implements OnInit {
    */
   viewPost(postId: string, group: any) {
     const groupId = (group._id) ? group._id : group;
-    this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, myWorkplace: false, postId: postId } });
+    this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, postId: postId } });
   }
 
   selectedDefaultTab() {

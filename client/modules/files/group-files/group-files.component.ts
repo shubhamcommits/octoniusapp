@@ -45,6 +45,8 @@ export class GroupFilesComponent implements OnInit {
   // Base Url of the files uploads
   filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
 
+  groupfilesBaseUrl = environment.UTILITIES_GROUP_FILES_UPLOADS;
+
   // Client Url of the global application
   clientUrl = environment.clientUrl;
 
@@ -65,14 +67,6 @@ export class GroupFilesComponent implements OnInit {
 
   // Folders Array variable
   forms: any = [];
-
-  // IsLoading behaviou subject maintains the state for loading spinner
-  public isLoading$ = new BehaviorSubject(false);
-
-  // Create subsink class to unsubscribe the observables
-  public subSink = new SubSink();
-
-  myWorkplace = this.router.snapshot.queryParamMap.has('myWorkplace') ? this.router.snapshot.queryParamMap.get('myWorkplace') : false
 
   editFolderTitle = false;
   currentFolder: any;
@@ -109,6 +103,12 @@ export class GroupFilesComponent implements OnInit {
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
+
+  // Create subsink class to unsubscribe the observables
+  public subSink = new SubSink();
+
   constructor(
     @Inject(LOCALE_ID) public locale: string,
     public utilityService: UtilityService,
@@ -130,7 +130,7 @@ export class GroupFilesComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetch the current group
-    this.groupData = await this.publicFunctions.getCurrentGroup();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     this.isAdmin = this.isAdminUser();
 
@@ -289,7 +289,7 @@ export class GroupFilesComponent implements OnInit {
                   this.delete.emit(res['folder']);
 
                   // Remove the folder from the list
-                  this.files = this.files.filter(file => file._id !== itemId);
+                  this.folders = this.folders.filter(folder => folder._id !== itemId);
 
                   resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folderDeleted:Folder deleted!`));
                 }).catch((err) => {
@@ -301,12 +301,12 @@ export class GroupFilesComponent implements OnInit {
       });
   }
 
-  openViewFileDialog(fileUrl: string) {
+  async openViewFileDialog(file: any) {
     const dialogRef = this.dialog.open(PreviewFilesDialogComponent, {
       width: '90%',
       height: '90%',
       data: {
-        url: fileUrl
+        url: this.groupfilesBaseUrl + '/' + file?._id
       }
     });
   }
@@ -384,10 +384,11 @@ export class GroupFilesComponent implements OnInit {
     } else if (file?.type == 'flamingo') {
       url += '/document/flamingo/' + file?._id + '?group=' + this.groupId;
     } else if (file?.type == 'file') {
-      if (this.isOfficeFile(file.original_name)) {
-        url = await this.getLibreOfficeURL(file._id);
+      const lastFileVersion: any = await this.utilityService.getFileLastVersion(file);
+      if (this.isOfficeFile(lastFileVersion?.original_name)) {
+        url = await this.getLibreOfficeURL(lastFileVersion);
       } else {
-        url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
+        url = this.groupfilesBaseUrl + '/' + file?._id + '?authToken=' + this.authToken;
       }
     }
 
@@ -449,7 +450,7 @@ export class GroupFilesComponent implements OnInit {
             this.filesService.transferToGroup(itemId, groupId, false)
               .then((res) => {
                 // Redirect to the new group files page
-                this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId, myWorkplace: false } });
+                this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId } });
                 resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folioMoved:👍 Folio Moved!`));
               })
               .catch((error) => {
@@ -783,8 +784,13 @@ export class GroupFilesComponent implements OnInit {
         }
       });
 
+      const allVersionsDeletedEventSubs = dialogRef.componentInstance.allVersionsDeletedEmitter.subscribe((data) => {
+        this.files = this.files.filter(file => file._id !== data);
+      });
+
       dialogRef.afterClosed().subscribe(result => {
         closeEventSubs.unsubscribe();
+        allVersionsDeletedEventSubs.unsubscribe();
       });
     }
   }
@@ -998,27 +1004,76 @@ export class GroupFilesComponent implements OnInit {
     return shareDBConnection.get("documents", folioId);
   }
 
-  async openOfficeDoc(fileId: string) {
+  async openOfficeDoc(file: any) {
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    window.open(await this.getLibreOfficeURL(fileId), "_blank");
+    const lastFileVersion: any = await this.utilityService.getFileLastVersion(file);
+
+    if (this.isOfficeFile(lastFileVersion?.original_name)) {
+      window.open(await this.getLibreOfficeURL(lastFileVersion), "_blank");
+    } else {
+      this.openDocument(lastFileVersion);
+    }
 
     this.isLoading$.next(false);
   }
 
-  async getLibreOfficeURL(fileId: string) {
+  async getLibreOfficeURL(file: any) {
     // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
     let wopiClientURL = '';
     await this.libreofficeService.getLibreofficeUrl().then(res => {
-        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${fileId}?authToken=${this.authToken}`;
+        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${file?._id}?authToken=${this.authToken}`;
       }).catch(error => {
         this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
       });
     return wopiClientURL;
   }
 
-  openFullscreenModal(userId: string) {
+  openFullscreenModal(userId: string) {
     this.utilityService.openFullscreenModal(userId);
+  }
+
+  async openDocument(file: any) {
+    window.open(this.groupfilesBaseUrl + '/' + file?._id + '?authToken=' + this.authToken, "_blank");
+  }
+
+  /**
+   * This function is responsible for uploading the files to the server
+   * @param files
+   */
+   uploadNewVersion(files: FileList, parentFileId: string) {
+    // Start the loading spinner
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
+    // File Data variable
+    const fileData: any = {
+      _group: this.groupId,
+      _posted_by: this.userData?._id,
+      type: 'file',
+      _parent: parentFileId
+    }
+
+    // Loop through each file and begin the process of uploading
+    Array.prototype.forEach.call(files, (file: File) => {
+
+      // Adding Mime Type of the file uploaded
+      fileData.mime_type = file.type
+
+      // Call the HTTP Request Asynschronously
+      this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitUploadingNewVersion:Please wait we are uploading your new version...`,
+        new Promise((resolve, reject) => {
+          this.filesService.addFile(fileData, file)
+            .then((res) => {
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.fileUploaded:File has been uploaded!`))
+            })
+            .catch(() => {
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@groupFiles.unexpectedErrorUploading:Unexpected error occurred while uploading, please try again!`))
+            });
+        }));
+    });
+
+    // Stop the loading spinner
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 }

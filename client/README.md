@@ -73,8 +73,6 @@
 
 *   `src/shared` folder is the one which includes `config`, `error-handlers`, `guards`, `services`, and, `utilities`.
 
-*   `src/shared/config` contains configuration for [socket.io](https://github.com/rodgc/ngx-socket-io) and [ngx-ui-loader](https://github.com/t-ho/ngx-ui-loader).
-
 *   `src/shared/error-handlers` contains the global error handling of both client and server side to ensure that app doesn't breaks.
 
 *   `src/shared/guards` contains `admin-guard`(which ensures, that only admin user shall have global access to all the routes of the application), `authentication-guard`(which ensures, that current user is authenticated and is using valid authentication token), and `routing-guard`(which ensures, that if the application is visited and user is authenticated then it should be routed to default route - we should make it more functional like adding a couple of more usecases).

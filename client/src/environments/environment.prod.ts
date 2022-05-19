@@ -16,7 +16,7 @@ export const environment = {
   domain: url['domain'],
 
   //slack redirect url for authentication
-  slack_redirect_url:`https://slack.com/oauth/v2/authorize?client_id=${window["env"]["SLACK_CLIENT_ID"]}&scope=commands,incoming-webhook`,
+  slack_redirect_url:`https://slack.com/oauth/v2/authorize`,
 
   // Browser Storage Key
   storageKey: `storageKey@20xx`,
@@ -82,6 +82,7 @@ export const environment = {
   UTILITIES_BASE_API_URL: `${window["env"]["protocol"]}://${window["env"]["domain"]}/api/utilities`,
   UTILITIES_GROUPS_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/groups`,
   UTILITIES_FILES_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/files`,
+  UTILITIES_GROUP_FILES_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/groupsFiles`,
   UTILITIES_POSTS_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/posts`,
   UTILITIES_USERS_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/users`,
   UTILITIES_WORKSPACES_UPLOADS: `${window["env"]["protocol"]}://${window["env"]["domain"]}/uploads/workspaces`,

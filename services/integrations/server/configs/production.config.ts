@@ -28,9 +28,9 @@ function prodConfigInit() {
   process.env.FILE_UPLOAD_FOLDER = process.env.FILE_UPLOAD_FOLDER || path.join(__dirname, '../uploads/');
 
   // Slack Keys
-  process.env.SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID
-  process.env.SLACK_CLIENT_SECRET = process.env.SLACK_CLIENT_SECRET
   process.env.SLACK_BOT_ACCESS_TOKEN = process.env.SLACK_BOT_ACCESS_TOKEN
+
+  // Teams bot url
   process.env.TEAMS_BOT_URL = process.env.TEAMS_BOT_URL || 'https://connect.octonius.com'
 
   // External Key

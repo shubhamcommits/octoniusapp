@@ -36,7 +36,8 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
           is_google_connected: false,
           is_azure_ad_connected: false,
           is_ldap_connected: false,
-          is_slack_connected: false
+          is_slack_connected: false,
+          is_box_connected: false
         }
         this.publicFunctions.sendUpdatesToWorkspaceData(this.workplaceData);
       }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, Injector, Input, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, OnDestroy, LOCALE_ID, Inject } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchHeaderComponent } from 'modules/search/search-header/search-header.component';
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 
 
 @Component({
@@ -23,15 +24,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('search') search: ElementRef;
 
-  constructor(
-    private userService: UserService,
-    private utilityService: UtilityService,
-    private storageService: StorageService,
-    public dialog: MatDialog,
-    private injector: Injector,
-    private _router: Router
-  ) { }
-
   // CURRENT USER DATA
   userData: any;
 
@@ -41,7 +33,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   storyData: any;
 
   // Public Functions Object
-  public publicFunctions = new PublicFunctions(this.injector)
+  public publicFunctions = new PublicFunctions(this.injector);
 
   // BASE URL OF THE APPLICATION
   baseUrl = environment.UTILITIES_USERS_UPLOADS
@@ -68,37 +60,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     unreadNotifications: []
   }
 
-  myAuthCheck() {
-    return this.storageService.existData('authToken');
-  }
-
-  nextGroupNavbarState() {
-    this.isUserAccountNavbar$.next(false);
-    this.isAdminNavbar$.next(false);
-    this.isWorkNavbar$.next(false);
-    this.isGroupNavbar$.next(true);
-  }
-
-  nextCommonNavbarState() {
-    this.isUserAccountNavbar$.next(false);
-    this.isGroupNavbar$.next(false);
-    this.isWorkNavbar$.next(false);
-    this.isAdminNavbar$.next(true);
-  }
-
-  nextWorkNavbar() {
-    this.isUserAccountNavbar$.next(false);
-    this.isAdminNavbar$.next(false);
-    this.isGroupNavbar$.next(false);
-    this.isWorkNavbar$.next(true);
-  }
-
-  nextUserAccountNavbarState() {
-    this.isUserAccountNavbar$.next(true);
-    this.isAdminNavbar$.next(false);
-    this.isGroupNavbar$.next(false);
-    this.isWorkNavbar$.next(false);
-  }
+  constructor(
+    private integrationsService: IntegrationsService,
+    private userService: UserService,
+    private utilityService: UtilityService,
+    private storageService: StorageService,
+    public dialog: MatDialog,
+    private injector: Injector,
+    private _router: Router
+  ) { }
 
   ngAfterContentChecked() {
     this.subSink.add(this.utilityService.routerStateData.subscribe((res) => {
@@ -172,11 +142,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (this.userData?.integrations?.gdrive?.token) {
-      await this.publicFunctions.handleGoogleSignIn()
+      await this.integrationsService.handleGoogleSignIn()
 
       // This function is responsible for keep the cloud connected and refreshes the token in every 30mins(limit is 50 mins)
       setInterval(async () => {
-        await this.publicFunctions.handleGoogleSignIn()
+        await this.integrationsService.handleGoogleSignIn()
       }, 1800000);
     }
   }
@@ -191,6 +161,38 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   ngOnDestroy(): void {
     this.subSink.unsubscribe()
+  }
+
+  myAuthCheck() {
+    return this.storageService.existData('authToken');
+  }
+
+  nextGroupNavbarState() {
+    this.isUserAccountNavbar$.next(false);
+    this.isAdminNavbar$.next(false);
+    this.isWorkNavbar$.next(false);
+    this.isGroupNavbar$.next(true);
+  }
+
+  nextCommonNavbarState() {
+    this.isUserAccountNavbar$.next(false);
+    this.isGroupNavbar$.next(false);
+    this.isWorkNavbar$.next(false);
+    this.isAdminNavbar$.next(true);
+  }
+
+  nextWorkNavbar() {
+    this.isUserAccountNavbar$.next(false);
+    this.isAdminNavbar$.next(false);
+    this.isGroupNavbar$.next(false);
+    this.isWorkNavbar$.next(true);
+  }
+
+  nextUserAccountNavbarState() {
+    this.isUserAccountNavbar$.next(true);
+    this.isAdminNavbar$.next(false);
+    this.isGroupNavbar$.next(false);
+    this.isWorkNavbar$.next(false);
   }
 
   /**

@@ -3,8 +3,6 @@
         <div class="postboxheader card-title">
             <div class="d-none d-sm-block">
               <app-secured-image
-                [routerLink]="['/dashboard', 'user', 'profile']"
-                [queryParams]="{ userId: userData?._id}"
                 [imgURL]="userData?.profile_pic"
                 [service]="'user'"
                 [styleClass]="'feed-avatar'"></app-secured-image>

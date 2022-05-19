@@ -44,7 +44,7 @@ export class GroupPostComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetch Current Group
-    this.groupData = await this.publicFunctions.getCurrentGroup();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);

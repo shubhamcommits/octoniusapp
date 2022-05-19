@@ -82,13 +82,11 @@ export class OfficeHeaderComponent implements OnInit {
    * This function is responsible for taking the user back to their previous locations
    */
   goBackToFiles() {
-    const myWorkplace = this._ActivatedRoute.snapshot.queryParamMap.has('myWorkplace') ? this._ActivatedRoute.snapshot.queryParamMap.get('myWorkplace') : false;
     this.router.navigate(
       ['/dashboard', 'work', 'groups', 'files'],
       { queryParams: {
         group: this.file._group._id || this.file._group,
-        folder: this.file?._folder?._id || this.file?._folder,
-        myWorkplace: myWorkplace
+        folder: this.file?._folder?._id || this.file?._folder
       }}
     );
 

@@ -997,7 +997,7 @@ class table_column_tool_TableColumnTool {
     const containerRect = parent.getBoundingClientRect();
     const tableViewRect = this.table.parentNode.getBoundingClientRect();
     this.domNode = document.createElement('div');
-    this.domNode.classList.add('qlbt-col-tool');
+    this.domNode?.classList.add('qlbt-col-tool');
     this.updateToolCells();
     parent.appendChild(this.domNode);
     css(this.domNode, {
@@ -1010,9 +1010,9 @@ class table_column_tool_TableColumnTool {
 
   createToolCell() {
     const toolCell = document.createElement('div');
-    toolCell.classList.add('qlbt-col-tool-cell');
+    toolCell?.classList.add('qlbt-col-tool-cell');
     const resizeHolder = document.createElement('div');
-    resizeHolder.classList.add('qlbt-col-tool-cell-holder');
+    resizeHolder?.classList.add('qlbt-col-tool-cell-holder');
     css(toolCell, {
       'height': "".concat(COL_TOOL_CELL_HEIGHT, "px")
     });
@@ -1105,7 +1105,7 @@ class table_column_tool_TableColumnTool {
         delta = 0;
         width0 = 0;
         dragging = false;
-        $holder.classList.remove('dragging');
+        $holder?.classList.remove('dragging');
       }
 
       document.removeEventListener('mousemove', handleDrag, false);
@@ -1138,7 +1138,7 @@ class table_column_tool_TableColumnTool {
       dragging = true;
       x0 = e.clientX;
       width0 = cellRect.width;
-      $holder.classList.add('dragging');
+      $holder?.classList.add('dragging');
     };
 
     $holder.addEventListener('mousedown', handleMousedown, false);
@@ -2133,8 +2133,8 @@ class table_selection_TableSelection {
     let parent = this.quill.root.parentNode;
     LINE_POSITIONS.forEach(direction => {
       this[direction] = document.createElement('div');
-      this[direction].classList.add('qlbt-selection-line');
-      this[direction].classList.add('qlbt-selection-line-' + direction);
+      this[direction]?.classList.add('qlbt-selection-line');
+      this[direction]?.classList.add('qlbt-selection-line-' + direction);
       css(this[direction], {
         position: 'absolute',
         display: 'none',
@@ -2548,7 +2548,7 @@ class table_operation_menu_TableOperationMenu {
       top
     } = _ref;
     this.domNode = document.createElement('div');
-    this.domNode.classList.add('qlbt-operation-menu');
+    this.domNode?.classList.add('qlbt-operation-menu');
     css(this.domNode, {
       position: 'absolute',
       left: "".concat(left, "px"),
@@ -2577,14 +2577,14 @@ class table_operation_menu_TableOperationMenu {
 
     function dividingCreator() {
       const dividing = document.createElement('div');
-      dividing.classList.add('qlbt-operation-menu-dividing');
+      dividing?.classList.add('qlbt-operation-menu-dividing');
       return dividing;
     } // create subtitle for menu
 
 
     function subTitleCreator(title) {
       const subTitle = document.createElement('div');
-      subTitle.classList.add('qlbt-operation-menu-subtitle');
+      subTitle?.classList.add('qlbt-operation-menu-subtitle');
       subTitle.innerText = title;
       return subTitle;
     }
@@ -2593,7 +2593,7 @@ class table_operation_menu_TableOperationMenu {
   colorsItemCreator(colors) {
     const self = this;
     const node = document.createElement('div');
-    node.classList.add('qlbt-operation-color-picker');
+    node?.classList.add('qlbt-operation-color-picker');
     colors.forEach(color => {
       let colorBox = colorBoxCreator(color);
       node.appendChild(colorBox);
@@ -2601,7 +2601,7 @@ class table_operation_menu_TableOperationMenu {
 
     function colorBoxCreator(color) {
       const box = document.createElement('div');
-      box.classList.add('qlbt-operation-color-picker-item');
+      box?.classList.add('qlbt-operation-color-picker-item');
       box.setAttribute('data-color', color);
       box.style.backgroundColor = color;
       box.addEventListener('click', function () {
@@ -2626,12 +2626,12 @@ class table_operation_menu_TableOperationMenu {
       handler
     } = _ref2;
     const node = document.createElement('div');
-    node.classList.add('qlbt-operation-menu-item');
+    node?.classList.add('qlbt-operation-menu-item');
     const iconSpan = document.createElement('span');
-    iconSpan.classList.add('qlbt-operation-menu-icon');
+    iconSpan?.classList.add('qlbt-operation-menu-icon');
     iconSpan.innerHTML = iconSrc;
     const textSpan = document.createElement('span');
-    textSpan.classList.add('qlbt-operation-menu-text');
+    textSpan?.classList.add('qlbt-operation-menu-text');
     textSpan.innerText = text;
     node.appendChild(iconSpan);
     node.appendChild(textSpan);
@@ -2907,7 +2907,7 @@ class quill_better_table_BetterTable extends Module {
       const path = getEventComposedPath(evt);
       if (!path || path.length <= 0) return;
       const tableNode = path.filter(node => {
-        return node.tagName && node.tagName.toUpperCase() === 'TABLE' && node.classList.contains('quill-better-table');
+        return node.tagName && node.tagName.toUpperCase() === 'TABLE' && node?.classList.contains('quill-better-table');
       })[0];
 
       if (tableNode) {
@@ -2929,7 +2929,7 @@ class quill_better_table_BetterTable extends Module {
       const path = getEventComposedPath(evt);
       if (!path || path.length <= 0) return;
       const tableNode = path.filter(node => {
-        return node.tagName && node.tagName.toUpperCase() === 'TABLE' && node.classList.contains('quill-better-table');
+        return node.tagName && node.tagName.toUpperCase() === 'TABLE' && node?.classList.contains('quill-better-table');
       })[0];
       const rowNode = path.filter(node => {
         return node.tagName && node.tagName.toUpperCase() === 'TR' && node.getAttribute('data-row');

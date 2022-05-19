@@ -22,16 +22,13 @@ export class GroupActivityFeedComponent implements OnInit {
   // Fetch groupId from router snapshot or as an input parameter
   @Input('groupId') groupId = this.router.snapshot.queryParamMap.get('group');
 
-  // My Workplace variable check
-  myWorkplace: boolean = this.router.snapshot.queryParamMap.has('myWorkplace')
-    ? (this.router.snapshot.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-    : false
-
   // Global Feed Variable check
   globalFeed: boolean = (this.router.snapshot.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true
 
   // Current Group Data
   groupData: any;
+
+  myWorkplace = false;
 
   isProjectType = false;
 
@@ -80,15 +77,10 @@ export class GroupActivityFeedComponent implements OnInit {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
         // Fetch groupId from router snapshot or as an input parameter
-        this.groupId = this._router.routerState.snapshot.root.queryParamMap.get('group')
-
-        // My Workplace variable check
-        this.myWorkplace = this._router.routerState.snapshot.root.queryParamMap.has('myWorkplace')
-          ? (this._router.routerState.snapshot.root.queryParamMap.get('myWorkplace') == ('false') ? (false) : (true))
-          : false
+        this.groupId = this._router.routerState.snapshot.root.queryParamMap.get('group');
 
         // Global Feed Variable check
-        this.globalFeed = (this._router.routerState.snapshot.root.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true
+        this.globalFeed = (this._router.routerState.snapshot.root.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true;
 
         this.posts = [];
 
@@ -105,14 +97,21 @@ export class GroupActivityFeedComponent implements OnInit {
     // Start the loading spinner
     this.isLoading$.next(true);
 
+    // Fetch current group from the service
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+
+    // Fetch current user details
+    this.userData = await this.publicFunctions.getCurrentUser();
+
     this.publicFunctions.getAllColumns(this.groupId).then(data => this.columns = data);
 
+    this.myWorkplace = await this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
     // If my workplace is true, hence we don't have the group header therefore fetch the group details via calling HTTP Request
-    if (this.myWorkplace === true)
-      this.fetchCurrentGroupData()
+    if (this.myWorkplace === true) {
+      this.fetchCurrentGroupData();
+    }
 
     if (this.myWorkplace === false) {
-
       // Posted Added in Group Socket
       this.subSink.add(this.enableAddPostInGroupSocket(this.socketService))
 
@@ -124,22 +123,10 @@ export class GroupActivityFeedComponent implements OnInit {
     }
 
     // Utility Service Instance
-    let utilityService = this.injector.get(UtilityService)
+    let utilityService = this.injector.get(UtilityService);
 
-    // Fetch current group from the service
-    this.subSink.add(utilityService.currentGroupData.subscribe((res) => {
-      if (JSON.stringify(res) != JSON.stringify({})) {
-
-        // Assign the GroupData
-        this.groupData = res
-
-        this.isProjectType = this.groupData.project_type;
-        this.keepPinnedOpen = this.groupData.keep_pinned_open;
-      }
-    }))
-
-    // Fetch current user details
-    this.userData = await this.publicFunctions.getCurrentUser();
+    this.isProjectType = this.groupData.project_type;
+    this.keepPinnedOpen = this.groupData.keep_pinned_open;
 
     // Fetch the first 5 posts from the server
     await this.fetchPosts(this.groupId);
@@ -261,7 +248,7 @@ export class GroupActivityFeedComponent implements OnInit {
 
     // Fetch the group data from HTTP Request
     if (this.groupId != null || this.groupId != undefined) {
-      this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
+      this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
     }
   }
 

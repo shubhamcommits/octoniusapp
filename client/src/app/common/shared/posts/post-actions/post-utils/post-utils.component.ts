@@ -119,9 +119,9 @@ export class PostUtilsComponent implements OnInit {
     }
     // Set the Value of element selection box to be the url of the post
     if (this.post.type === 'task') {
-      selBox.value = url + '/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + this.post._id;
+      selBox.value = url + '/dashboard/work/groups/tasks?group=' + group + '&postId=' + this.post._id;
     } else {
-      selBox.value = url + '/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + this.post._id;
+      selBox.value = url + '/dashboard/work/groups/activity?group=' + group + '&postId=' + this.post._id;
     }
     // Append the element to the DOM
     document.body.appendChild(selBox);
@@ -215,9 +215,9 @@ export class PostUtilsComponent implements OnInit {
       const groupId = data.groupId;
       // Set the Value of element selection box to be the url of the post
       if (post.type === 'task') {
-        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
+        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, postId: post._id } });
       } else {
-        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
+        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, postId: post._id } });
       }
     }
   }

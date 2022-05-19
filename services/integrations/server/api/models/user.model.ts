@@ -142,6 +142,11 @@ const UserSchema = new Schema({
         default_icons_sidebar: {
             type: Boolean,
             default: false
+        },
+        locale: {
+            type: String,
+            default: 'en',
+            enum: ['es', 'en', 'de']
         }
     },
     _private_group: {
@@ -150,6 +155,12 @@ const UserSchema = new Schema({
     },
     integrations: {
         gdrive: {
+            token: {
+                type: String,
+                default: null
+            }
+        },
+        box: {
             token: {
                 type: String,
                 default: null

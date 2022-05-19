@@ -103,7 +103,6 @@ export class FoldersPermissionsControllers {
             
             let folder: any;
 
-            //file = await File.create(file);
             folder = await Folder.findByIdAndUpdate(
                 { _id: folderId },
                 {
@@ -140,7 +139,6 @@ export class FoldersPermissionsControllers {
             
             let folder: any;
 
-            //file = await File.create(file);
             folder = await Folder.findByIdAndUpdate(
                 { _id: folderId },
                 {
@@ -177,7 +175,6 @@ export class FoldersPermissionsControllers {
             
             let folder: any;
 
-            //file = await File.create(file);
             folder = await Folder.findByIdAndUpdate(
                 { _id: folderId },
                 {
@@ -215,7 +212,6 @@ export class FoldersPermissionsControllers {
             
             let folder: any;
 
-            //file = await File.create(file);
             folder = await Folder.findByIdAndUpdate(
                 { _id: folderId },
                 {

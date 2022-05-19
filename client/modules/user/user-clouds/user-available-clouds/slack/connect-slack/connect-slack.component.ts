@@ -4,6 +4,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
+import { StorageService } from 'src/shared/services/storage-service/storage.service';
 
 @Component({
   selector: 'app-connect-slack',
@@ -14,18 +15,25 @@ export class ConnectSlackComponent implements OnInit {
 
   @Input() userData:any;
 
+  workspaceData: any;
+
   slackAuthSuccessful: Boolean;
+
+  slackCode = this.activatedRoute.snapshot.queryParamMap.get("code");
 
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
     public utilityService: UtilityService,
+    private storageService: StorageService,
     public userService: UserService,
     private injector: Injector,
-    private router: ActivatedRoute
+    private activatedRoute: ActivatedRoute
   ) { }
 
   async ngOnInit() {
+
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.userService.slackDisconnected().subscribe(event => {
       setTimeout(() => {
@@ -39,46 +47,32 @@ export class ConnectSlackComponent implements OnInit {
     }
     this.slackAuthSuccessful = (this.userData && this.userData.integrations && this.userData.integrations.is_slack_connected) ? true : false
 
-   if(!this.slackAuthSuccessful){
-      this.router.queryParams.subscribe(params => {
-        if (params['code']) {
-          try {
-            this.utilityService.asyncNotification($localize`:@@connectSlack.pleaseWaitAuthenticatinSlack:Please wait, while we are authenticating the slack...`, new Promise((resolve, reject) => {
-              this.userService.slackAuth(params['code'], this.userData)
-              .subscribe((res) => {
-                  // Resolve the promise
-                  setTimeout(() => {
-                    this.updateUserData(res);
-                  }, 1000);
+    const connectingSlack = this.storageService.existData('connectingSlack') ? this.storageService.getLocalData('connectingSlack') : false;
 
-                  resolve(this.utilityService.resolveAsyncPromise($localize`:@@connectSlack.authenticatedSuccessfully:Authenticated Successfully!`))
-
-                }),
-                ((err) => {
-                  console.log('Error occurred, while authenticating for Slack', err);
-                  reject(this.utilityService.rejectAsyncPromise($localize`:@@connectSlack.oppsErrorWhileAuthenticatinoSlack:Oops, an error occurred while authenticating for Slack, please try again!`))
-                });
-            }));
-          }
-          catch (err) {
-            console.log('There\'s some unexpected error occurred, please try again!', err);
-            this.utilityService.errorNotification($localize`:@@connectSlack.unexpectedErrorOccured:There\'s some unexpected error occurred, please try again!`);
-          }
-        }
-      });
+    if(!this.slackAuthSuccessful && this.slackCode && connectingSlack) {
+        this.utilityService.asyncNotification($localize`:@@connectSlack.pleaseWaitAuthenticatinSlack:Please wait, while we are authenticating the slack...`, new Promise((resolve, reject) => {
+          this.userService.slackAuth(this.slackCode, this.userData)
+          .then((res) => {
+              // Resolve the promise
+              this.updateUserData(res);
+              resolve(this.utilityService.resolveAsyncPromise($localize`:@@connectSlack.authenticatedSuccessfully:Authenticated Successfully!`));
+            }).catch((err) => {
+              console.log('Error occurred, while authenticating for Slack', err);
+              reject(this.utilityService.rejectAsyncPromise($localize`:@@connectSlack.oppsErrorWhileAuthenticatinoSlack:Oops, an error occurred while authenticating for Slack, please try again!`));
+          });
+      }));
     }
   }
 
-
-/**
+  /**
    * This function is responsible to update user slack connection status.
    */
   async updateUserData(newUserData){
     await this.userService.updateUser(newUserData);
     await this.publicFunctions.sendUpdatesToUserData(this.userData);
     this.slackAuthSuccessful = true;
+    this.storageService.removeLocalData('connectingSlack');
     this.userService.slackConnected().emit(true);
-
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -99,8 +93,9 @@ export class ConnectSlackComponent implements OnInit {
     this.utilityService.getConfirmDialogAlert($localize`:@@connectSlack.doYouAllow:Do you allow?`, $localize`:@@connectSlack.octoniusForSlackRequestingPermission:Octonius for Slack is requesting permission to use your Octonius account.`, $localize`:@@connectSlack.allow:Allow`)
       .then((result) => {
         if (result.value) {
+          this.storageService.setLocalData('connectingSlack', JSON.stringify(true));
           localStorage.setItem("slackAuth", "connected");
-          window.location.href = environment.slack_redirect_url;
+          window.location.href = environment.slack_redirect_url + '?client_id=' + this.workspaceData.integrations.slack_client_id + '&scope=commands,incoming-webhook';
         }
       });
   }

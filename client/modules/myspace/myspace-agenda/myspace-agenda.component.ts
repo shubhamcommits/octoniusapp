@@ -43,7 +43,7 @@ export class MyspaceAgendaComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetch the current group
-    this.groupData = await this.publicFunctions.getCurrentGroup();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     this.todayTimelineEvents = await this.getTodayTimelineEvents();
     this.thisWeekTimelineEvents = await this.getThisWeekTimelineEvents();

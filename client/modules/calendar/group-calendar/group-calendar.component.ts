@@ -111,7 +111,7 @@ export class GroupCalendarComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetch the current group
-    this.groupData = await this.publicFunctions.getCurrentGroup();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     this.loadTimeline();
   }

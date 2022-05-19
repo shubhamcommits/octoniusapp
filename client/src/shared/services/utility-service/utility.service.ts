@@ -1,10 +1,9 @@
 import { Injectable, EventEmitter, Injector } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { GroupCreatePostDialogComponent } from 'src/app/common/shared/posts/group-create-post-dialog-component/group-create-post-dialog-component.component';
+import { GroupCreatePostDialogComponent } from 'src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component';
 import { MemberDialogComponent } from 'src/app/common/shared/member-dialog/member-dialog.component';
 import { PostService } from '../post-service/post.service';
 import { ColumnService } from '../column-service/column.service';
@@ -13,6 +12,7 @@ import { PermissionDialogComponent } from 'modules/groups/group/permission-dialo
 import * as XLSX from 'xlsx';
 import * as fileSaver from 'file-saver';
 import moment from 'moment';
+import { FilesService } from '../files-service/files.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,6 @@ export class UtilityService {
 
   constructor(
     private modalService: NgbModal,
-    private ngxUiLoaderService: NgxUiLoaderService,
     public dialog: MatDialog,
     private injector: Injector
     ) { }
@@ -196,7 +195,9 @@ export class UtilityService {
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true
-    })
+    });
+
+    this.updateIsLoadingSpinnerSource(false);
 
     return Toast.fire({
       icon: 'error',
@@ -454,45 +455,6 @@ export class UtilityService {
   }
 
   /**
-   * This function starts the foreground loader of master loader
-   * @param taskId
-   */
-  public startForegroundLoader(taskId?: string){
-    return this.ngxUiLoaderService.start(taskId);
-  }
-
-  /**
-   * This function stops the foreground loader of master loader
-   * @param taskId
-   */
-  public stopForegroundLoader(taskId?: string){
-    return this.ngxUiLoaderService.stop(taskId);
-  }
-
-  /**
-   * This function starts the background loader of master loader
-   * @param taskId - optional
-   */
-  public startBackgroundLoader(taskId?: string){
-    this.ngxUiLoaderService.startBackground(taskId);
-  }
-
-  /**
-   * This function stops the background loader of master loader
-   * @param taskId
-   */
-  public stopBackgroundLoader(taskId?: string){
-    this.ngxUiLoaderService.stopBackground(taskId);
-  }
-
-  /**
-   * This function stops all the foreground and background loader of master loader
-   */
-  public stopAllLoader(){
-    this.ngxUiLoaderService.stopAll();
-  }
-
-  /**
    * This function is resposible for showing a confirm dialog, with a function attached to the "Confirm"-button
    * and by passing a parameter, we can execute something else for "Cancel
    */
@@ -740,5 +702,33 @@ export class UtilityService {
    */
   public updateIsLoadingSpinnerSource(status: boolean){
     this.isLoadingSpinnerSource.next(status);
+  }
+
+  async getFileLastVersion(file: any) {
+    let fileVersions;
+    let filesService = this.injector.get(FilesService);
+    await filesService.getFileVersions(file?._id).then(async res => {
+      fileVersions = res['fileVersions'];
+      fileVersions?.sort((f1, f2) => {
+        if (f1.created_date && f2.created_date) {
+          if (moment.utc(f1.created_date).isBefore(f2.created_date)) {
+            return 1;
+          } else {
+            return -1;
+          }
+        } else {
+          if (f1.created_date && !f2.created_date) {
+            return 1;
+          } else if (!f1.created_date && f2.created_date) {
+            return -1;
+          }
+        }
+      });
+    });
+    return (fileVersions && fileVersions.length > 0) ? fileVersions[0] : file;
+  }
+
+  objectExists(objectData: Object) {
+    return objectData && JSON.stringify(objectData) != JSON.stringify({});
   }
 }

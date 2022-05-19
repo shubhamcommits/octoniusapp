@@ -55,26 +55,45 @@
             </button>
         </div>
 
-        <!-- COMMENTS -->
-        <!--
-        <app-comment-list
-          [postId]="fileData?._id"
-          [userData]="userData"
-          [groupId]="fileData?._group?._id || fileData?._group"
-          [length]="fileData?.comments?.length"
-          [newComment]="newComment"></app-comment-list>
-        -->
+        <div class="content-box" *ngIf="(fileData?.type === 'file' || fileData?.type === 'campaign') || (fileData?.approval_active && fileData?.approval_history && fileData?.approval_history?.length > 0)">
+          <!-- TABS STARTS -->
+          <mat-tab-group mat-align-tabs="start">
+            <!-- EVENTS STARTS-->
+            <mat-tab label="" *ngIf="fileData?.type === 'file' || fileData?.type === 'campaign'">
+              <ng-template mat-tab-label>
+                <!--<i class="material-icons">manage_history</i>-->
+                <span i18n="@@fileDetailsDialog.versions">Versions</span>
+              </ng-template>
 
+              <app-file-versions [userData]="userData"
+                [fileData]="fileData"
+                [currentGroupId]="groupData?._id"
+                [canDelete]="fileData?.canDelete"
+                [canView]="canView"
+                [canEdit]="canEdit"
+                (allVersionsDeletedEmitter)="allVersionsDeleted()"></app-file-versions>
+            </mat-tab>
+            <!-- EVENTS ENDS-->
 
-        <!-- APPROVALS HISTORY STARTS -->
-        <div class="content-box" *ngIf="fileData?.approval_active && fileData?.approval_history && fileData?.approval_history?.length > 0">
-          <app-approvals-history
-            [groupId]="groupData._id"
-            [userData]="userData"
-            [itemData]="fileData"
-            [type]="'file'"></app-approvals-history>
+            <!-- APPROVALS STARTS-->
+            <mat-tab label="" *ngIf="fileData?.approval_active && fileData?.approval_history && fileData?.approval_history?.length > 0">
+              <ng-template mat-tab-label>
+                <!--<i class="material-icons">approval</i>-->
+                <span i18n="@@fileDetailsDialog.approvalsHistory">Approvals History</span>
+              </ng-template>
+
+              <!-- APPROVALS HISTORY STARTS -->
+              <app-approvals-history
+                [groupId]="groupData._id"
+                [userData]="userData"
+                [itemData]="fileData"
+                [type]="'file'"></app-approvals-history>
+              <!-- APPROVALS HISTORY ENDS -->
+            </mat-tab>
+            <!-- APPROVALS ENDS-->
+          </mat-tab-group>
+          <!-- TABS ENDS -->
         </div>
-        <!-- APPROVALS HISTORY ENDS -->
     </div>
 
     <!-- Top Right Section starts -->

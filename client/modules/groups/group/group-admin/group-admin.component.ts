@@ -60,7 +60,7 @@ export class GroupAdminComponent implements OnInit {
   async ngOnInit() {
 
     // Fetch current group from the service
-    this.groupData = await this.publicFunctions.getCurrentGroup();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     // Fetch the setting status
     this.enabledRights = this.groupData.enabled_rights;
@@ -231,7 +231,7 @@ export class GroupAdminComponent implements OnInit {
       data: { groupData: this.groupData }
     });
     const sub = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
-      this.groupData = await this.publicFunctions.getCurrentGroup();
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
     });
     dialogRef.afterClosed().subscribe(result => {
       sub.unsubscribe();

@@ -1,13 +1,11 @@
+import { Group, Column, Auth, User, Workspace } from '../models';
+import { Auths, sendError } from '../../utils';
+import { SlackService } from "../service";
 import e, { Response, Request, NextFunction } from "express";
+import FormData from 'form-data';
+import axios from "axios";
 import jwt from "jsonwebtoken";
 import moment from 'moment/moment'
-import { Group, Column, Auth, User } from '../models';
-import { Auths, sendError } from '../../utils';
-import FormData from 'form-data';
-// import { validateId } from "../../utils/helperFunctions";
-import axios from "axios";
-import { SlackService } from "../service";
-
 
 /*  ===============================
  *  -- Slack CONTROLLERS --
@@ -581,14 +579,17 @@ export class SlackController {
      * @param res 
      * @param next 
      */
-    async authSlack(req: Request , res: Response, next: NextFunction){
+    async authSlack(req: Request , res: Response, next: NextFunction) {
+
+        const workspace: any = await Workspace.findById(req.body.user._workspace._id || req.body.user._workspace)
+            .select("integrations").lean();
         
         // validate the code and get the slack user data
         const responce = await axios.get('https://slack.com/api/oauth.v2.access', {
             params: {
                 code: req.body.code,
-                client_id: process.env.SLACK_CLIENT_ID,
-                client_secret: process.env.SLACK_CLIENT_SECRET
+                client_id: workspace.integrations.slack_client_id,
+                client_secret: workspace.integrations.slack_client_secret_key
             }
         });
         
@@ -673,7 +674,9 @@ export class SlackController {
                     }
                 }, { new: true });
         
-            res.status(200).json({message:"Diconnected Successfully"});
+            res.status(200).json({
+                message:"Diconnected Successfully"
+            });
 
         } catch (err){
             res.status(400).json({message:"Can not disconnet",error:err});

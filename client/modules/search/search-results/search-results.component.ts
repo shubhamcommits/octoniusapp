@@ -113,9 +113,9 @@ export class SearchResultsComponent implements OnChanges {
     }
 
     if (this.data.type === 'task') {
-      return url + '/dashboard/work/groups/tasks?group=' + group + '&myWorkplace=false&postId=' + this.data._id;
+      return url + '/dashboard/work/groups/tasks?group=' + group + '&postId=' + this.data._id;
     } else {
-      return url + '/dashboard/work/groups/activity?group=' + group + '&myWorkplace=false&postId=' + this.data._id;
+      return url + '/dashboard/work/groups/activity?group=' + group + '&postId=' + this.data._id;
     }
   }
 

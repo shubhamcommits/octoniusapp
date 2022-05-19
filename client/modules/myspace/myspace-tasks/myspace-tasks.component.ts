@@ -26,8 +26,6 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
 
   userData: any;
 
-  groupData: any;
-
   post: any;
 
   // Public Functions
@@ -45,9 +43,6 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
 
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
-
-    // Fetch the current group
-    this.groupData = await this.publicFunctions.getCurrentGroup();
 
     await this.loadTasks();
     this.overdueAndTodayTasks = this.sortTasksByPriority(this.overdueTasks.concat(this.todayTasks));
@@ -72,8 +67,6 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
     this.markOverdueTasks();
   }
 
-
-
   filterRAGTasks(tasks) {
     let tasksTmp = [];
 
@@ -81,11 +74,11 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
       // Filtering other tasks
       tasks.forEach(async task => {
         if (task?.permissions && task?.permissions?.length > 0) {
-          const canEdit = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'edit');
+          const canEdit = await this.utilityService.canUserDoTaskAction(task, this.userData?._private_group, this.userData, 'edit');
           let canView = false;
           if (!canEdit) {
-            const hide = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'hide');
-            canView = await this.utilityService.canUserDoTaskAction(task, this.groupData, this.userData, 'view') || !hide;
+            const hide = await this.utilityService.canUserDoTaskAction(task, this.userData?._private_group, this.userData, 'hide');
+            canView = await this.utilityService.canUserDoTaskAction(task, this.userData?._private_group, this.userData, 'view') || !hide;
           }
 
           if (canEdit || canView) {
@@ -205,10 +198,10 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
 
     // Open the Modal
     let dialogRef;
-    const canOpen = !this.groupData?.enabled_rights || this.post?.canView || this.post?.canEdit;
+    const canOpen = !this.userData?._private_group?.enabled_rights || this.post?.canView || this.post?.canEdit;
     if (this.post.type === 'task' && !this.post.task._parent_task) {
       await this.publicFunctions.getAllColumns(this.post._group._id).then(data => this.columns = data);
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.userData?._private_group?._id, this.isIdeaModuleAvailable, canOpen, this.columns);
     } else {
       // for subtasks it is not returning the parent information, so need to make a workaround
       if (this.post.task._parent_task && !this.post.task._parent_task._id) {
@@ -216,7 +209,7 @@ export class MyspaceTasksComponent implements OnInit, OnDestroy {
             this.post.task._parent_task = post;
           });
       }
-      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
+      dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.userData?._private_group?._id, this.isIdeaModuleAvailable, canOpen);
     }
 
     if (dialogRef) {

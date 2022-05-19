@@ -945,6 +945,19 @@ export class WorkspaceController {
                 }
             }
 
+            if (!settingsData?.integrations?.is_box_connected) {
+                // Delete the google connectivity from all users
+                if (workspace && workspace?.integrations && workspace?.integrations?.is_box_connected){
+                    await User.updateMany({
+                        _workspace: workspaceId
+                    }, {
+                        $set: { 
+                            'integrations.box': null
+                        }
+                    });
+                }
+            }
+
             // Find the workspace and update their respective workspace settings
             workspace = await Workspace.findByIdAndUpdate({
                     _id: workspaceId

@@ -12,6 +12,7 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 import moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchHeaderComponent } from 'modules/search/search-header/search-header.component';
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 
 @Component({
   selector: 'app-mobile-navbar',
@@ -61,6 +62,7 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   constructor(
+    private integrationsService: IntegrationsService,
     private userService: UserService,
     private utilityService: UtilityService,
     private storageService: StorageService,
@@ -118,11 +120,11 @@ export class MobileNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (this.userData?.integrations?.gdrive?.token) {
-      await this.publicFunctions.handleGoogleSignIn()
+      await this.integrationsService.handleGoogleSignIn()
 
       // This function is responsible for keep the cloud connected and refreshes the token in every 30mins(limit is 50 mins)
       setInterval(async () => {
-        await this.publicFunctions.handleGoogleSignIn()
+        await this.integrationsService.handleGoogleSignIn()
       }, 1800000);
     }
   }

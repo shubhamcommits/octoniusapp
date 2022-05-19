@@ -15,6 +15,7 @@ import { UserConnectedCloudsComponent } from './user-clouds/user-connected-cloud
 import { GoogleCloudModule } from './user-clouds/user-available-clouds/google-cloud/google-cloud.module';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { SlackCloudModule } from './user-clouds/user-available-clouds/slack/slack.module';
+import { BoxCloudModule } from './user-clouds/user-available-clouds/box-cloud/box-cloud.module';
 import { TeamModule } from './user-clouds/user-available-clouds/team/team.module';
 import { ZapModule } from './user-clouds/user-available-clouds/zapier/zapier.module';
 import { UserWorkloadComponent } from './user-workload/user-workload.component';
@@ -47,6 +48,7 @@ import { UserProfileCustomFieldsComponent } from './user-profile/user-profile-cu
         CommonModule,
         SharedModule,
         GoogleCloudModule,
+        BoxCloudModule,
         SlackCloudModule,
         TeamModule,
         ZapModule,

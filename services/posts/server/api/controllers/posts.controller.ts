@@ -78,10 +78,11 @@ export class PostController {
     async edit(req: Request, res: Response, next: NextFunction) {
 
         // Post Object From request
-        const { body: { post }, params: { postId } } = req;
+        const { body: { post, logAction }, params: { postId } } = req;
+        const userId = req['userId'];
 
         // Call service function to edit
-        const updatedPost = await postService.editPost(post, postId)
+        const updatedPost = await postService.editPost(post, postId, userId, logAction)
             .catch((err) => {
                 if (err == null) {
                     return sendErr(res, null, 'User not allowed to edit this post!', 403);
@@ -118,7 +119,6 @@ export class PostController {
             return sendErr(res, new Error(error), 'Internal Server Error', 500);
         }
     }
-
 
     /**
      * This function is responsible for removing a post
@@ -619,9 +619,10 @@ export class PostController {
 
         // Fetch Data from request
         const { params: { postId }, body: { date_due_to } } = req;
+        const userId = req['userId'];
 
         // Call Service function to change the assignee
-        const post = await postService.changeTaskDueDate(postId, date_due_to)
+        const post = await postService.changeTaskDueDate(postId, userId, date_due_to)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             })
@@ -643,11 +644,12 @@ export class PostController {
 
         // Fetch Data from request
         const { params: { postId }, body: { date_due_to, start_date, s_days, e_days, group_id } } = req;
+        const userId = req['userId'];
 
         try {
             async function update(p_Id, d_date, s_date , s_day, e_day, rec){
                 if (s_day != 0){
-                    var post = await postService.changeTaskDate(p_Id,'start_date',s_date)
+                    var post = await postService.changeTaskDate(p_Id, userId,'start_date',s_date)
                     .catch((err) => {
                         return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                     })
@@ -655,7 +657,7 @@ export class PostController {
                 }
                 
                 if (e_day != 0){
-                    var post = await postService.changeTaskDueDate(p_Id, d_date)
+                    var post = await postService.changeTaskDueDate(p_Id, userId, d_date)
                     .catch((err) => {
                         return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
                     })
@@ -701,9 +703,10 @@ export class PostController {
 
         // Fetch Data from request
         const { params: { postId }, body: { newDate, date_field } } = req;
+        const userId = req['userId'];
 
         // Call Service function to change the assignee
-        const post = await postService.changeTaskDate(postId, date_field, newDate)
+        const post = await postService.changeTaskDate(postId, userId, date_field, newDate)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             })
@@ -887,10 +890,11 @@ export class PostController {
         // Fetch the newCustomField from fileHandler middleware
         const customFieldValue = req.body['customFieldValue'];
         const customFieldName = req.body['customFieldName'];
+        const customFieldTitle = req.body['customFieldTitle'];
         const groupId = req.body['groupId'];
         const isShuttleTasksModuleAvailable = req.body['isShuttleTasksModuleAvailable'];
 
-        const post = await this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldValue, userId, isShuttleTasksModuleAvailable)
+        const post = await this.callChangeCustomFieldValueService(groupId, postId, customFieldName, customFieldTitle, customFieldValue, userId, isShuttleTasksModuleAvailable)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             });
@@ -902,8 +906,8 @@ export class PostController {
         });
     }
 
-    async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfValue: string, userId: string, isShuttleTasksModuleAvailable: boolean) {
-        let post = await postService.changeCustomFieldValue(postId, cfName, cfValue);
+    async callChangeCustomFieldValueService(groupId: string, postId: string, cfName: string, cfTitle: string, cfValue: string, userId: string, isShuttleTasksModuleAvailable: boolean) {
+        let post = await postService.changeCustomFieldValue(postId, userId, cfName, cfTitle, cfValue);
 
         post.task.custom_fields[cfName] = cfValue;
 
@@ -1198,9 +1202,10 @@ export class PostController {
 
         // Post Object From request
         const { body: { parentTaskId }, params: { postId } } = req;
+        const userId = req['userId'];
 
         // Call service function to edit
-        const updatedPost = await postService.setParentTask(postId, parentTaskId)
+        const updatedPost = await postService.setParentTask(postId, userId, parentTaskId)
             .catch((err) => {
                 if (err == null) {
                     sendErr(res, null, 'User not allowed to edit this post!', 403);
@@ -1225,9 +1230,10 @@ export class PostController {
 
         // Post Object From request
         const { body: { dependencyTaskId }, params: { postId } } = req;
+        const userId = req['userId'];
 
         // Call service function to edit
-        const updatedPost = await postService.setDependencyTask(postId, dependencyTaskId)
+        const updatedPost = await postService.setDependencyTask(postId, userId, dependencyTaskId)
             .catch((err) => {
                 if (err == null) {
                     sendErr(res, null, 'User not allowed to edit this post!', 403);
@@ -1252,9 +1258,10 @@ export class PostController {
 
         // Post Object From request
         const { body: { dependencyTaskId }, params: { postId } } = req;
+        const userId = req['userId'];
 
         // Call service function to edit
-        const updatedPost = await postService.removeDependencyTask(postId, dependencyTaskId)
+        const updatedPost = await postService.removeDependencyTask(postId, userId, dependencyTaskId)
             .catch((err) => {
                 if (err == null) {
                     return sendErr(res, null, 'User not allowed to edit this post!', 403);
@@ -1579,9 +1586,10 @@ export class PostController {
 
         // Fetch Data from request
         const { params: { postId }, body: { allocation } } = req;
+        const userId = req['userId'];
 
         // Call Service function to change the assignee
-        const post = await postService.saveAllocation(postId, +allocation)
+        const post = await postService.saveAllocation(postId, userId, +allocation)
             .catch((err) => {
                 return sendErr(res, new Error(err), 'Bad Request, please check into error stack!', 400);
             })

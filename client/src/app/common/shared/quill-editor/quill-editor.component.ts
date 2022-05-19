@@ -57,6 +57,8 @@ Quill.register('modules/clipboard', QuillClipboard, true)
 // Environments
 import { environment } from 'src/environments/environment';
 import { StorageService } from 'src/shared/services/storage-service/storage.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 
 @Component({
   selector: 'app-quill-editor',
@@ -93,12 +95,13 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   workspaceData: any;
 
   // Uploads url for Files
-  filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
+  filesBaseUrl = environment.UTILITIES_GROUP_FILES_UPLOADS;
 
   // Public Functions class
   public publicFunctions = new PublicFunctions(this.Injector);
 
   constructor(
+    private integrationsService: IntegrationsService,
     private Injector: Injector
   ) {
 
@@ -256,7 +259,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
     }
 
     return {
-      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      allowedChars: /^[A-Za-z\sÅÄÖåäö0123456789]*$/,
       mentionDenotationChars: ["@", "#"],
       source: async (searchTerm, renderList, mentionChar) => {
 
@@ -265,7 +268,6 @@ export class QuillEditorComponent implements OnInit, OnChanges {
 
         // If User types "@" then trigger the list for user mentioning
         if (mentionChar === "@") {
-
           // Initialise values with list of members
           values = await this.suggestMembers(searchTerm)
 
@@ -277,7 +279,6 @@ export class QuillEditorComponent implements OnInit, OnChanges {
 
           // If User types "#" then trigger the list for files mentioning
         } else if (mentionChar === "#") {
-
           // Initialise values with list of files
           values = await this.suggestFiles(searchTerm)
         }
@@ -287,11 +288,11 @@ export class QuillEditorComponent implements OnInit, OnChanges {
           renderList(values, searchTerm);
         } else {
           const matches = [];
-          for (let i = 0; i < values.length; i++)
-            if (
-              ~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())
-            )
+          for (let i = 0; i < values.length; i++) {
+            if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) {
               matches.push(values[i]);
+            }
+          }
           renderList(matches, searchTerm);
         }
       }
@@ -340,6 +341,17 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       filesList = await this.publicFunctions.searchFiles(null, searchTerm, 'true', this.workspaceId);
     }
 
+    // Map the users list
+    filesList = filesList.map((file: any) => ({
+      id: file._id,
+      value:
+        (file.type == 'folio')
+          ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+          : (file.type == "flamingo")
+            ? `<a href="/document/flamingo/${file._id}?group=${file._group._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            : `<a href="${this.filesBaseUrl}/${file._id}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+    }));
+
     let googleFilesList: any = [];
 
     // Fetch Access Token
@@ -349,7 +361,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       let accessToken = storageService.getLocalData('googleUser')['accessToken']
 
       // Get Google file list
-      googleFilesList = await this.publicFunctions.searchGoogleFiles(searchTerm, accessToken) || []
+      googleFilesList = await this.integrationsService.searchGoogleFiles(searchTerm, accessToken) || []
 
       // Google File List
       if (googleFilesList.length > 0)
@@ -359,18 +371,30 @@ export class QuillEditorComponent implements OnInit, OnChanges {
         }))
     }
 
-    // Map the users list
-    filesList = filesList.map((file: any) => ({
-      id: file._id,
-      value:
-        (file.type == 'folio')
-          ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-          : (file.type == "flamingo")
-            ? `<a href="/document/flamingo/${file._id}?group=${file._group._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-            : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`,
-    }))
+    let boxFilesList: any = [];
 
-    return Array.from(new Set([...filesList, ...googleFilesList]));
+    // Fetch Access Token
+    if (storageService.existData('boxUser') && this.workspaceData?.integrations?.is_box_connected) {
+      const boxUser: any = storageService.getLocalData('boxUser');
+
+      // Fetch the access token from the storage
+      let boxAccessToken = boxUser['accessToken'];
+
+      // Get Box file list
+      boxFilesList = await this.integrationsService.searchBoxFiles(searchTerm, boxAccessToken, this.workspaceData?.integrations) || []
+
+      // Box File List
+      if (boxFilesList.length > 0) {
+        boxFilesList = boxFilesList
+            .filter(file => file && file.shared_link && file.shared_link.url)
+            .map((file: any) => ({
+                id: 'boxfile',
+                value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
+              }));
+      }
+    }
+
+    return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
   }
 
   /**
@@ -443,7 +467,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
    * @param contents of type Delta
    */
   setContents(quill: Quill, contents: any) {
-    quill.setContents(contents);
+    quill?.setContents(contents);
   }
 
   /**

@@ -49,8 +49,8 @@ import { GroupUpdateInformationComponent } from './activity-feed/group-informati
 import { CommentSectionComponent } from './comments/comment-section/comment-section.component';
 import { PostCommentComponent } from './comments/post-comment/post-comment.component';
 import { LikeCommentComponent } from './comments/post-comment/like-comment/like-comment.component';
-import { NorthStarComponent } from './posts/group-create-post-dialog-component/north-star/north-star.component';
-import { NorthStarStatsComponent } from './posts/group-create-post-dialog-component/north-star/stats/north-star-stats.component';
+import { NorthStarComponent } from './posts/group-create-post-dialog/north-star/north-star.component';
+import { NorthStarStatsComponent } from './posts/group-create-post-dialog/north-star/stats/north-star-stats.component';
 
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -59,7 +59,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PreviewFilesDialogComponent } from './preview-files-dialog/preview-files-dialog.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { InlineInputComponent } from './inline-input/inline-input.component';
-import { GroupCreatePostDialogComponent } from './posts/group-create-post-dialog-component/group-create-post-dialog-component.component';
+import { GroupCreatePostDialogComponent } from './posts/group-create-post-dialog/group-create-post-dialog.component';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import { TruncateTextPipe } from 'src/shared/pipes/truncate-text.pipe';
 import { ChartsModule, ThemeService } from 'ng2-charts';
@@ -76,8 +76,8 @@ import { OrganizationalStructureCardComponent } from './dashboard/organizational
 import { EngagementCardComponent } from './dashboard/engagement-card/engagement-card.component';
 import { GlobalPerformanceCardComponent } from './dashboard/global-performance-card/global-performance-card.component';
 import { NewTaskComponent } from './posts/new-task/new-task.component';
-import { SubtasksComponent } from './posts/group-create-post-dialog-component/subtasks/subtasks.component';
-import { TaskActionsComponent } from './posts/group-create-post-dialog-component/task-actions/task-actions.component';
+import { SubtasksComponent } from './posts/group-create-post-dialog/subtasks/subtasks.component';
+import { TaskActionsComponent } from './posts/group-create-post-dialog/task-actions/task-actions.component';
 import { MultipleAssignmentsComponent } from './posts/multiple-assignments/multiple-assignments.component';
 import { HighlightDirective } from './posts/multiple-assignments/highlight.directive';
 import { FilterPipe } from './posts/multiple-assignments/filter.pipe';
@@ -112,11 +112,15 @@ import { ChartModule } from 'modules/chart/chart.module';
 import { CustomFieldStatisticsCardComponent } from './dashboard/custom-field-statistics-card/custom-field-statistics-card.component';
 import { CustomFieldTableCardComponent } from './dashboard/custom-field-table-card/custom-field-table-card.component';
 import { CustomFieldsTableSettingsDialogComponent } from './dashboard/custom-field-table-card/custom-fields-table-settings-dialog/custom-fields-table-settings-dialog.component';
-import { ShuttleTaskComponent } from './posts/group-create-post-dialog-component/shuttle-task/shuttle-task.component';
+import { ShuttleTaskComponent } from './posts/group-create-post-dialog/shuttle-task/shuttle-task.component';
 import { FileDetailsDialogComponent } from './file-details-dialog/file-details-dialog.component';
 import { ApprovalActionsComponent } from './approvals/approval-actions/approval-actions.component';
 import { ApprovalsHistoryComponent } from './approvals/approvals-history/approvals-history.component';
-import { PostDatesComponent } from './posts/group-create-post-dialog-component/post-dates/post-dates.component';
+import { PostDatesComponent } from './posts/group-create-post-dialog/post-dates/post-dates.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { FileVersionsComponent } from './file-versions/file-versions.component';
+import { SelectLanguageComponent } from './select-language/select-language.component';
+import { PostLogsComponent } from './posts/group-create-post-dialog/post-logs/post-logs.component';
 
 @NgModule({
     declarations: [
@@ -148,6 +152,7 @@ import { PostDatesComponent } from './posts/group-create-post-dialog-component/p
         TagsComponent,
         InfiniteScrollComponent,
         ProgressBarComponent,
+        SelectLanguageComponent,
         SelectMemberComponent,
         ActivityFeedComponent,
         SendPulseComponent,
@@ -210,7 +215,9 @@ import { PostDatesComponent } from './posts/group-create-post-dialog-component/p
         FileDetailsDialogComponent,
         ApprovalActionsComponent,
         ApprovalsHistoryComponent,
-        PostDatesComponent
+        PostDatesComponent,
+        FileVersionsComponent,
+        PostLogsComponent
     ],
     imports: [
         CommonModule,
@@ -239,7 +246,7 @@ import { PostDatesComponent } from './posts/group-create-post-dialog-component/p
         // MatSlideToggleModule,
         ChartsModule,
         ResizableModule,
-        // MatMenuModule,
+        MatMenuModule,
         // MatBadgeModule,
         // MatPaginatorModule,
         // MatExpansionModule,
@@ -271,6 +278,7 @@ import { PostDatesComponent } from './posts/group-create-post-dialog-component/p
         // QuicklinkModule,
         InfiniteScrollComponent,
         ProgressBarComponent,
+        SelectLanguageComponent,
         SelectMemberComponent,
         SendPulseComponent,
         ActivityFiltersComponent,
@@ -334,7 +342,9 @@ import { PostDatesComponent } from './posts/group-create-post-dialog-component/p
         CommentSectionComponent,
         ApprovalActionsComponent,
         ApprovalsHistoryComponent,
-        PostDatesComponent
+        PostDatesComponent,
+        FileVersionsComponent,
+        PostLogsComponent
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

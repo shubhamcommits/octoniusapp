@@ -51,7 +51,7 @@ export class GroupSmartAdminComponent implements OnInit {
     };
 
     // Fetch current group from the service
-    this.group = await this.publicFunctions.getCurrentGroup();
+    this.group = await this.publicFunctions.getCurrentGroupDetails();
 
     if (this.group) {
       this.getCurrentSettings();

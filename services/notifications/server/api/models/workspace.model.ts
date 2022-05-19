@@ -136,6 +136,12 @@ const workspaceSchema = new Schema({
             type: Boolean,
             default: false
         },
+        slack_client_id: {
+            type: String
+        },
+        slack_client_secret_key: {
+            type: String
+        },
         is_azure_ad_connected: {
             type: Boolean,
             default: false
@@ -160,6 +166,16 @@ const workspaceSchema = new Schema({
             type: String
         },
         ldap_search_base: {
+            type: String
+        },
+        is_box_connected: {
+            type: Boolean,
+            default: false
+        },
+        box_client_id: {
+            type: String
+        },
+        box_client_secret_key: {
             type: String
         }
     }

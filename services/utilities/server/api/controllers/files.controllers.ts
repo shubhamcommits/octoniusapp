@@ -90,7 +90,6 @@ export class FilesControllers {
      */
     async getOne(req: Request, res: Response, next: NextFunction) {
         try {
-
             // Fetch the fileId from the request
             let { fileId } = req.params
 
@@ -107,6 +106,31 @@ export class FilesControllers {
             return res.status(200).json({
                 message: 'File details retrieved!',
                 file: file
+            })
+
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    }
+
+    async getFileVersions(req: Request, res: Response, next: NextFunction) {
+        try {
+            // Fetch the fileId from the request
+            let { fileId } = req.params
+
+            // If fileId is not found, then throw the error
+            if (!fileId)
+                return res.status(400).json({
+                    message: 'Please pass the fileId in the request params'
+                })
+
+            // Get File on the basis of the fileId
+            let fileVersions = await filesService.getFileVersions(fileId)
+
+            // Send Status 200 response
+            return res.status(200).json({
+                message: 'File versions retrieved!',
+                fileVersions: fileVersions
             })
 
         } catch (err) {

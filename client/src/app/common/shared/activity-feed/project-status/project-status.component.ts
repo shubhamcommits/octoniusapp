@@ -27,7 +27,7 @@ export class ProjectStatusComponent implements OnInit {
   async ngOnInit() {
     // Create Group Service Instance
     let currentGroup;
-    currentGroup = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
+    currentGroup = await this.publicFunctions.getGroupDetails(this.groupId);
     this.status = currentGroup['project_status'];
     this.setStatusClass(this.status);
   }

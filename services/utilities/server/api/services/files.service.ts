@@ -49,11 +49,47 @@ export class FilesService {
             modified_name: fileData.modified_name,
             type: fileData.type,
             mime_type: fileData.mime_type,
-            _folder: (fileData._folder && fileData._folder != '') ? fileData._folder : null
+            _folder: (fileData._folder && fileData._folder != '') ? fileData._folder : null,
+            _parent: fileData._parent
         }
 
         // Create the new File
         file = await File.create(file);
+
+        // If it is the first version of the file, add a new version
+        if (!fileData._parent) {
+            await File.create({
+                _group: fileData._group,
+                _posted_by: fileData._posted_by,
+                original_name: fileData.original_name,
+                modified_name: fileData.modified_name,
+                type: fileData.type,
+                mime_type: fileData.mime_type,
+                _folder: (fileData._folder && fileData._folder != '') ? fileData._folder : null,
+                _parent: file._id
+            });
+        } else {
+            // In case the file is old (previous to versions) we count the number of versions and if there is no versions we add a 1st version
+            let numVersions = await File.find({
+                $and: [
+                    { _parent: fileData._parent }
+                ]
+            }).countDocuments();
+
+            if (numVersions <= 1) {
+                const parentFile: any =  await File.findById({ _id: fileData._parent }).lean();
+                await File.create({
+                    _group: parentFile._group,
+                    _posted_by: parentFile._posted_by,
+                    original_name: parentFile.original_name,
+                    modified_name: parentFile.modified_name,
+                    type: parentFile.type,
+                    mime_type: parentFile.mime_type,
+                    _folder: parentFile._folder,
+                    _parent: parentFile._id
+                });
+            }
+        }
 
         // Populate File Properties
         file = this.populateFileProperties(file);
@@ -78,6 +114,25 @@ export class FilesService {
 
             // Return file
             return file;
+        }
+    }
+
+    /**
+     * This function is responsible for fetching files details
+     * @param fileId 
+     */
+    async getFileVersions(fileId: string) {
+
+        if (fileId) {
+
+            // Find the file by Id
+            let files: any = await File.find({ _parent: fileId });
+
+            // Populate File Properties
+            files = this.populateFileProperties(files);
+
+            // Return file
+            return files;
         }
     }
 
@@ -121,7 +176,8 @@ export class FilesService {
                     $and: [
                         { _group: groupId },
                         { _folder: folderId },
-                        { _id: { $lt: lastFileId } }
+                        { _id: { $lt: lastFileId } },
+                        { _parent: null }
                     ]
                 };
             } else {
@@ -129,7 +185,8 @@ export class FilesService {
                     $and: [
                         { _group: groupId },
                         { _folder: { $eq: null } },
-                        { _id: { $lt: lastFileId } }
+                        { _id: { $lt: lastFileId } },
+                        { _parent: null }
                     ]
                 };
             }
@@ -151,14 +208,16 @@ export class FilesService {
                 query = {
                     $and: [
                         { _group: groupId },
-                        { _folder: folderId }
+                        { _folder: folderId },
+                        { _parent: null }
                     ]
                 };
             } else {
                 query = {
                     $and: [
                         { _group: groupId },
-                        { _folder: { $eq: null } }
+                        { _folder: { $eq: null } },
+                        { _parent: null }
                     ]
                 };
             }
@@ -199,7 +258,8 @@ export class FilesService {
                     $and: [
                         { _group: groupId },
                         { _folder: folderId },
-                        { created_date:  { $gte: todayStartDay, $lte: todayEndDay }}
+                        { created_date:  { $gte: todayStartDay, $lte: todayEndDay }},
+                        { _parent: null }
                     ]
                 };
             } else {
@@ -207,7 +267,8 @@ export class FilesService {
                     $and: [
                         { _group: groupId },
                         { created_date:  { $gte: todayStartDay, $lte: todayEndDay }},
-                        { _folder: null }
+                        { _folder: null },
+                        { _parent: null }
                     ]
                 };
             }
@@ -219,7 +280,8 @@ export class FilesService {
                     $and: [
                         { _group: groupId },
                         { _folder: folderId },
-                        { created_date:  { $gte: todayMinus7DaysForFiles, $lte: todayForFiles }}
+                        { created_date:  { $gte: todayMinus7DaysForFiles, $lte: todayForFiles }},
+                        { _parent: null }
                     ]
                 };
             } else {
@@ -227,7 +289,8 @@ export class FilesService {
                     $and: [
                         { _group: groupId },
                         { created_date:  { $gte: todayMinus7DaysForFiles, $lte: todayForFiles }},
-                        { _folder: null }
+                        { _folder: null },
+                        { _parent: null }
                     ]
                 };
             }
@@ -239,7 +302,8 @@ export class FilesService {
                     $and: [
                         { _group: groupId },
                         { _folder: folderId },
-                        { created_date:  { $gte: todayMinus7DaysForFiles, $lte: todayForFiles }}
+                        { created_date:  { $gte: todayMinus7DaysForFiles, $lte: todayForFiles }},
+                        { _parent: null }
                     ]
                 };
             } else {
@@ -247,7 +311,8 @@ export class FilesService {
                     $and: [
                         { _group: groupId },
                         { created_date:  { $gte: todayMinus7DaysForFiles, $lte: todayForFiles }},
-                        { _folder: null }
+                        { _folder: null },
+                        { _parent: null }
                     ]
                 };
             }
@@ -257,7 +322,8 @@ export class FilesService {
                     $and: [
                         { _group: groupId },
                         { _folder: folderId },
-                        { _posted_by:  filterData }
+                        { _posted_by:  filterData },
+                        { _parent: null }
                     ]
                 };
             } else {
@@ -265,7 +331,8 @@ export class FilesService {
                     $and: [
                         { _group: groupId },
                         { _posted_by:  filterData },
-                        { _folder: null }
+                        { _folder: null },
+                        { _parent: null }
                     ]
                 };
             }
@@ -277,14 +344,16 @@ export class FilesService {
                 query = {
                     $and: [
                         { _group: groupId },
-                        { _folder: folderId }
+                        { _folder: folderId },
+                        { _parent: null }
                     ]
                 };
             } else {
                 query = {
                     $and: [
                         { _group: groupId },
-                        { _folder: null }
+                        { _folder: null },
+                        { _parent: null }
                     ]
                 };
             }
@@ -319,14 +388,16 @@ export class FilesService {
                 query = {
                     $and: [
                         { _group: groupId },
-                        { _folder: folderId }
+                        { _folder: folderId },
+                        { _parent: null }
                     ]
                 };
             } else {
                 query = {
                     $and: [
                         { _group: groupId },
-                        { _folder: null }
+                        { _folder: null },
+                        { _parent: null }
                     ]
                 };
             }
@@ -361,14 +432,15 @@ export class FilesService {
 
         // Fetch files on the basis of the params @lastPostId
         files = await File.find({
-            _group: { "$in": groupsIdArray },
-            $or: [
-                { original_name: { $regex: new RegExp(query, 'i') }},
-                { description: { $regex: new RegExp(query, 'i') }},
-                { tags: { $regex: new RegExp(query, 'i') }},
-                //{ custom_fields: { $regex: new RegExp(query, 'i') }},
-            ]
-        })
+                _group: { "$in": groupsIdArray },
+                _parent: null,
+                $or: [
+                    { original_name: { $regex: new RegExp(query, 'i') }},
+                    { description: { $regex: new RegExp(query, 'i') }},
+                    { tags: { $regex: new RegExp(query, 'i') }},
+                    //{ custom_fields: { $regex: new RegExp(query, 'i') }}
+                ]
+            })
             .sort('-_id')
             //.limit(5)
             .populate([
@@ -418,6 +490,21 @@ export class FilesService {
                         });
                     });
                 }
+            }
+
+            if (deletedFile && deletedFile._parent) {
+                let numVersions;
+                numVersions = await File.find({
+                    $and: [
+                        { _parent: deletedFile._parent }
+                    ]
+                }).countDocuments();
+
+                if (numVersions && numVersions <= 1) {
+                    await File.findByIdAndDelete(deletedFile._parent);
+                }
+            } else {
+                await File.deleteMany({ _parent: fileId });
             }
 
             await File.findByIdAndDelete(fileId);

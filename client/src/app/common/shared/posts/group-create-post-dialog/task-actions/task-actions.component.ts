@@ -9,7 +9,7 @@ import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChang
 import { PostService } from 'src/shared/services/post-service/post.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
-import { GroupCreatePostDialogComponent } from '../group-create-post-dialog-component.component';
+import { GroupCreatePostDialogComponent } from '../group-create-post-dialog.component';
 
 @Component({
   selector: 'app-task-actions',
@@ -300,9 +300,9 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
 
       // Set the Value of element selection box to be the url of the post
       if (post.type === 'task') {
-        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
+        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, postId: post._id } });
       } else {
-        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, myWorkplace: false, postId: post._id } });
+        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, postId: post._id } });
       }
     }
   }

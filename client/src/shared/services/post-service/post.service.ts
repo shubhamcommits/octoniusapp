@@ -316,10 +316,11 @@ export class PostService {
    * This function is used to save a custom field value
    * @param postId
    */
-  saveCustomField(postId: string, customFieldName: string, customFieldValue: string, groupId: string, isShuttleTasksModuleAvailable: boolean) {
+  saveCustomField(postId: string, customFieldName: string, customFieldTitle: string, customFieldValue: string, groupId: string, isShuttleTasksModuleAvailable: boolean) {
     // Call the HTTP Request
     return this._http.put(this.baseURL + `/${postId}/customField`, {
       customFieldName: customFieldName,
+      customFieldTitle: customFieldTitle,
       customFieldValue: customFieldValue,
       groupId: groupId,
       isShuttleTasksModuleAvailable: isShuttleTasksModuleAvailable

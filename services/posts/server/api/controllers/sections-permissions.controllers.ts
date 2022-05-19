@@ -103,7 +103,6 @@ export class SectionsPermissionsControllers {
             
             let section: any;
 
-            //file = await File.create(file);
             section = await Column.findByIdAndUpdate(
                 { _id: sectionId },
                 {
@@ -140,7 +139,6 @@ export class SectionsPermissionsControllers {
             
             let section: any;
 
-            //file = await File.create(file);
             section = await Column.findByIdAndUpdate(
                 { _id: sectionId },
                 {
@@ -177,7 +175,6 @@ export class SectionsPermissionsControllers {
             
             let section: any;
 
-            //file = await File.create(file);
             section = await Column.findByIdAndUpdate(
                 { _id: sectionId },
                 {
@@ -215,7 +212,6 @@ export class SectionsPermissionsControllers {
             
             let section: any;
 
-            //file = await File.create(file);
             section = await Column.findByIdAndUpdate(
                 { _id: sectionId },
                 {

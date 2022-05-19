@@ -127,7 +127,7 @@ export class GroupCreatePostComponent implements OnInit {
   flows = [];
 
   async ngOnInit() {
-    this.groupData = await this.publicFunctions.getCurrentGroupDetails(this.groupId);
+    this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
 
     /*
     this.hotKeyService.add(new Hotkey(['meta+return', 'meta+enter'], (event: KeyboardEvent, combo: string): boolean => {

@@ -6,5 +6,4 @@
     window["env"]["domain"] = "";
     window["env"]["websocket"] = "";
     window["env"]["mgmt_portal_domain"] = "";
-    window["env"]["SLACK_CLIENT_ID"] = "";
   })(this);

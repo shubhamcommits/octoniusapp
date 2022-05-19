@@ -75,7 +75,7 @@ export class GanttViewComponent implements OnInit, AfterViewInit {
   async ngOnInit() {
 
     // Fetch the current group
-    this.groupData = await this.publicFunctions.getCurrentGroup();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     await this.parsedTasks(this.tasks);
     this.datesToShow.start = await this.min_date(this.tasksDataList);

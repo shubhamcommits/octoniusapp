@@ -1,9 +1,15 @@
-<div class="col-md-8">
-    <app-google-account-details *ngIf="googleUser && workspaceData?.integrations?.is_google_connected" [googleUser]="googleUser"></app-google-account-details>
+<div class="col-md-8" *ngIf="googleUser && workspaceData?.integrations?.is_google_connected">
+  <app-google-account-details *ngIf="googleUser && workspaceData?.integrations?.is_google_connected" [googleUser]="googleUser"></app-google-account-details>
 </div>
-<div class="col-md-8">
-    <app-slack-account-details *ngIf="slackAuthSuccessful && workspaceData?.integrations?.is_google_connected" [slackAuthSuccessful]="slackAuthSuccessful"></app-slack-account-details>
+
+<div class="col-md-8" *ngIf="boxUser && workspaceData?.integrations?.is_box_connected">
+  <app-box-account-details *ngIf="boxUser && workspaceData?.integrations?.is_box_connected" [boxUser]="boxUser"></app-box-account-details>
 </div>
+
+<div class="col-md-8" *ngIf="slackAuthSuccessful && workspaceData?.integrations?.is_slack_connected">
+    <app-slack-account-details *ngIf="slackAuthSuccessful && workspaceData?.integrations?.is_slack_connected" [slackAuthSuccessful]="slackAuthSuccessful"></app-slack-account-details>
+</div>
+
 <div class="col-md-8">
     <app-team-account-details></app-team-account-details>
 </div>

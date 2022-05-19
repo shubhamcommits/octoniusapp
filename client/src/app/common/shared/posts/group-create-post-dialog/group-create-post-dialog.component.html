@@ -5,7 +5,7 @@
       </a>
   </div>
 </mat-dialog-actions>
-<div class="post-dialog-content">
+<div class="post-dialog-content" *ngIf="postData">
     <div class="post-content">
         <div class="content-box">
             <div class="modal-header">
@@ -24,7 +24,7 @@
 
                 <i class="material-icons-outlined ml-2" *ngIf="isIdeaModuleAvailable && postData?.task?.is_idea" style="color: #FBB732;">emoji_objects</i>
 
-                <app-post-utils *ngIf="postData && groupData && userData"
+                <app-post-utils *ngIf="groupData && userData"
                     [post]="postData"
                     [userData]="userData"
                     [groupData]="groupData"
@@ -37,7 +37,7 @@
 
             <!-- Post Content starts -->
             <app-quill-editor
-                *ngIf="canEdit && postData"
+                *ngIf="canEdit"
                 [editorId]="'postbox-editor'"
                 [toolbar]="true"
                 [readOnly]="false"
@@ -47,7 +47,7 @@
             </app-quill-editor>
 
             <app-quill-editor
-                *ngIf="!canEdit && postData"
+                *ngIf="!canEdit"
                 [editorId]="'postbox-editor'"
                 [toolbar]="false"
                 [readOnly]="true"
@@ -67,7 +67,7 @@
 
             <!-- <div class="clearfix"></div> -->
 
-            <app-post-actions *ngIf="postData"
+            <app-post-actions
                 [post]="postData"
                 [userData]="userData"
                 [fullscreen]="true"
@@ -83,11 +83,11 @@
         <div class="clearfix save-content">
             <button *ngIf="canEdit" [disabled]="!contentChanged"
               class="btn float-right btn-primary btn-md"
-              (click)="updateDetails()" i18n="@@groupCreatePostDialog.save">
+              (click)="updateDetails('change_content')" i18n="@@groupCreatePostDialog.save">
                 Save
             </button>
 
-            <button *ngIf="postData && !showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
+            <button *ngIf="!showSubtasks && !postData?.task?._parent_task && postData?.type === 'task' && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id) && canEdit"
               class="btn float-left btn-warning btn-md"
               (click)="prepareToAddSubtasks()"
               i18n="@@groupCreatePostDialog.addSubtask">
@@ -95,38 +95,85 @@
             </button>
         </div>
 
-        <div class="content-box" *ngIf="postData && showSubtasks && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id)">
-          <app-subtasks
-            [subtasks]="subtasks"
-            [groupData]="groupData"
-            [userData]="userData"
-            [parentId]="postData?._id"
-            (openSubtaskEmitter)="onOpenSubtask($event)"></app-subtasks>
+        <div class="content-box" *ngIf="(showSubtasks && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id))
+            || (postData?.comments_count > 0) || (postData?.task?.isNorthStar) || (postData?.logs && postData?.logs?.length > 0)
+            || (postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0)">
+          <!-- TABS STARTS -->
+          <mat-tab-group mat-align-tabs="start">
+            <!-- subtasks STARTS-->
+            <mat-tab label="" *ngIf="showSubtasks && (!postData?.task?.shuttle_type || groupData?._id == postData?._group?._id)">
+              <ng-template mat-tab-label>
+                <!--<i class="material-icons">manage_history</i>-->
+                <span i18n="@@groupCreatePostDialog.subtasks">Subtasks</span>
+              </ng-template>
+
+              <app-subtasks
+                [subtasks]="subtasks"
+                [groupData]="groupData"
+                [userData]="userData"
+                [parentId]="postData?._id"
+                (openSubtaskEmitter)="onOpenSubtask($event)"></app-subtasks>
+            </mat-tab>
+            <!-- subtasks ENDS-->
+
+            <!-- comment-list STARTS-->
+            <mat-tab label="" *ngIf="postData?.comments_count > 0">
+              <ng-template mat-tab-label>
+                <!--<i class="material-icons">approval</i>-->
+                <span i18n="@@groupCreatePostDialog.comments">Comments</span>
+              </ng-template>
+
+              <app-comment-list
+                [postId]="postData?._id"
+                [userData]="userData"
+                [groupId]="postData?._group?._id || postData?._group"
+                [length]="postData?.comments_count"
+                [newComment]="newComment"></app-comment-list>
+            </mat-tab>
+            <!-- comment-list ENDS-->
+
+            <!-- north-star-stats STARTS-->
+            <mat-tab label="" *ngIf="postData?.task?.isNorthStar">
+              <ng-template mat-tab-label>
+                <!--<i class="material-icons">approval</i>-->
+                <span i18n="@@groupCreatePostDialog.northStarStats">North Star Stats</span>
+              </ng-template>
+
+              <app-north-star-stats
+                [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
+                [northStar]="postData?.task?.northStar">
+              </app-north-star-stats>
+            </mat-tab>
+            <!-- north-star-stats ENDS-->
+
+            <!-- APPROVALS HISTORY STARTS-->
+            <mat-tab label="" *ngIf="postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0">
+              <ng-template mat-tab-label>
+                <!--<i class="material-icons">approval</i>-->
+                <span i18n="@@groupCreatePostDialog.approvalsHistory">Approvals History</span>
+              </ng-template>
+
+              <app-approvals-history
+                [groupId]="groupData?._id"
+                [userData]="userData"
+                [itemData]="postData"
+                [type]="'post'"></app-approvals-history>
+            </mat-tab>
+            <!-- APPROVALS HISTORY ENDS-->
+
+            <!-- TASK CHANGES HISTORY STARTS-->
+            <mat-tab label="" *ngIf="postData?.logs && postData?.logs?.length > 0">
+              <ng-template mat-tab-label>
+                <!--<i class="material-icons">approval</i>-->
+                <span i18n="@@groupCreatePostDialog.taskLog">Task Log</span>
+              </ng-template>
+
+              <app-post-logs [logs]="postData?.logs"></app-post-logs>
+            </mat-tab>
+            <!-- TASK CHANGES HISTORY ENDS-->
+          </mat-tab-group>
+          <!-- TABS ENDS -->
         </div>
-
-        <app-north-star-stats *ngIf="postData && postData?.task?.isNorthStar"
-          [isNorthStar]="(postData?.task?.isNorthStar) ? true : false"
-          [northStar]="postData?.task?.northStar">
-        </app-north-star-stats>
-
-        <!-- COMMENTS -->
-        <app-comment-list *ngIf="postData"
-          [postId]="postData?._id"
-          [userData]="userData"
-          [groupId]="postData?._group?._id || postData?._group"
-          [length]="postData?.comments_count"
-          [newComment]="newComment"></app-comment-list>
-
-        <!-- APPROVALS HISTORY STARTS -->
-        <div class="content-box" *ngIf="postData && postData?.type === 'task' && postData?.approval_active && postData?.approval_history && postData?.approval_history?.length > 0">
-          <app-approvals-history
-            [groupId]="groupData?._id"
-            [userData]="userData"
-            [itemData]="postData"
-            [type]="'post'"></app-approvals-history>
-        </div>
-        <!-- APPROVALS HISTORY ENDS -->
-
     </div>
 
     <!-- Top Right Section starts -->
@@ -244,7 +291,8 @@
               [userData]="userData"
               [post]="postData"
               [type]="'post'"
-              (assigneeAddedEmiter)="onAssigned($event)">
+              (assigneeAddedEmiter)="onAssigned($event)"
+              (assigneeRemovedEmiter)="onAssigned($event)">
             </app-multiple-assignments>
 
             <div *ngIf="lastAssignedBy" id="avatar-assignee">
@@ -303,7 +351,7 @@
                 <mat-select ngDefaultControl *ngIf="!cf.input_type"
                     [(value)]="selectedCFValues[cf.name]"
                     [disabled]="!canEdit"
-                    (selectionChange)="onCustomFieldChange($event, cf.name)"
+                    (selectionChange)="onCustomFieldChange($event, cf.name, cf.title)"
                     appearance="fill"
                     class="col">
                     <mat-select-trigger>{{ selectedCFValues[cf.name] }}</mat-select-trigger>
@@ -314,14 +362,14 @@
                   <input type="text" [name]="cf.name" [(ngModel)]="selectedCFValues[cf.name]"
                       [disabled]="!canEdit"
                       class="col" style="width: 94px;" [value]="selectedCFValues[cf.name]"
-                      (keyup.enter)="saveInputCustomField($event, cf.name)" />
-                  <i *ngIf="canEdit" (click)="saveCustomField(cf.name, selectedCFValues[cf.name]);" class="material-icons muted mr-5"
+                      (keyup.enter)="saveInputCustomField($event, cf.name, cf.title)" />
+                  <i *ngIf="canEdit" (click)="saveCustomField(cf.name, cf.title, selectedCFValues[cf.name]);" class="material-icons muted mr-5"
                     style="cursor: pointer; font-size: 14px; margin-left: 10px;color: #0bc6a0;">save</i>
                 </div>
 
                 <div *ngIf="cf.input_type && cf.input_type_date" >
                   <!-- Date Picker starts -->
-                  <app-date-picker (date)="getCFDate($event, cf.name)"
+                  <app-date-picker (date)="getCFDate($event, cf.name, cf.title)"
                     [selectedDate]="formateDate(selectedCFValues[cf.name])"
                     [styleClass]="'btn-group input-date'"
                     [canEdit]="canEdit">
@@ -330,7 +378,7 @@
                 </div>
 
                 <!-- Clean field starts -->
-                <i *ngIf="canEdit" (click)="saveCustomField(cf.name, null);"
+                <i *ngIf="canEdit" (click)="saveCustomField(cf.name, cf.title, null);"
                   class="material-icons muted mr-5"
                   style="cursor: pointer; font-size: 14px; margin-left: 10px;">remove_circle_outline</i>
                 <!-- Clean field ends -->

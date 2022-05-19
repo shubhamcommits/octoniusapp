@@ -32,7 +32,7 @@ export class NorthStarPageComponent implements OnInit {
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetch the current group
-    this.groupData = await this.publicFunctions.getCurrentGroup();
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     await this.getUserNorthStarTasks(this.userData);
 

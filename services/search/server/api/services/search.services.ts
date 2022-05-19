@@ -14,7 +14,7 @@ export class SearchService {
     try {
       const user = await User.findOne({ _id: req.userId }).lean();
 
-      let query = req.params.query;
+      let query = req.query.textQuery;
 
       if (!query || query == undefined || query == 'undefined') {
         query = '';
@@ -184,6 +184,16 @@ export class SearchService {
       .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .sort({ created_date: -1 })
       .lean();
+    
+    if (advancedFilters.group) {
+      posts = posts.filter(post => post?._group && post?._group?._id == advancedFilters?.group);
+    }
+
+    if (advancedFilters.cfName && advancedFilters.cfValue && advancedFilters.cfName != '' && advancedFilters.cfValue != '') {
+      posts = posts.filter(post => post?.custom_fields
+        && post?.custom_fields[advancedFilters.cfName]
+        && post?.custom_fields[advancedFilters.cfName] == advancedFilters?.cfValue);
+    }
 
     // Search on the comments
     let comments = await Comment.find({
@@ -313,11 +323,22 @@ export class SearchService {
 
     let posts = await Post.find(query)
       .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
-      .populate({ path: '_group', select: 'custom_fields' })
+      .populate({ path: '_group', select: '_id group_name custom_fields' })
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
       .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
       .sort({ created_date: -1 })
       .lean();
+    
+    if (advancedFilters.group) {
+      posts = posts.filter(post => post?._group && post?._group?._id == advancedFilters?.group);
+    }
+
+    if (advancedFilters.cfName && advancedFilters.cfValue && advancedFilters.cfName != '' && advancedFilters.cfValue != '') {
+      posts = posts.filter(post => post?.custom_fields
+        && post?.custom_fields[advancedFilters.cfName]
+        && post?.custom_fields[advancedFilters.cfName] == advancedFilters?.cfValue);
+    }
+  
 
     // Search on the comments
     let comments = await Comment.find({
@@ -387,15 +408,15 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
           { tags: { $in: advancedFilters.tags } },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
-          { created_date: { $gte: from_date, $lte: to_date } }
-        ]    
+          { created_date: { $gte: from_date, $lte: to_date }},
+          { _parent: null }
+        ]
       };
     } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
         && advancedFilters.tags && advancedFilters.tags.length > 0
@@ -408,13 +429,13 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { tags: { $in: advancedFilters.tags } },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
@@ -428,14 +449,14 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
-          { created_date: { $gte: from_date, $lte: to_date } }
-        ]    
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
+        ]
       };
     } else if ((advancedFilters.owners && advancedFilters.owners.length > 0)
         && advancedFilters.tags && advancedFilters.tags.length > 0
@@ -448,13 +469,13 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
           { tags: { $in: advancedFilters.tags } },
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
@@ -468,12 +489,12 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { description: { $regex: advancedFilters.metadata, $options: 'i' }},
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     } else if (advancedFilters.owners && advancedFilters.owners.length > 0
@@ -487,12 +508,12 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { _posted_by: { $in: advancedFilters.owners } },
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     } else if ((!advancedFilters.owners || advancedFilters.owners.length == 0)
@@ -506,12 +527,12 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
           { tags: { $in: advancedFilters.tags } },
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     } else {
@@ -523,21 +544,33 @@ export class SearchService {
               { original_name: { $regex: queryText, $options: 'i' } },
               { modified_name: { $regex: queryText, $options: 'i' } },
               { tags: { $regex: queryText, $options: 'i' }},
-              { description: { $regex: queryText, $options: 'i' }},
-              // { custom_fields: { $regex: queryText, $options: 'i' }},
+              { description: { $regex: queryText, $options: 'i' }}
             ]
           },
-          { created_date: { $gte: from_date, $lte: to_date } }
+          { created_date: { $gte: from_date, $lte: to_date } },
+          { _parent: null }
         ]    
       };
     }
 
-    return await File.find(query)
+    let files = await File.find(query)
       .populate({ path: '_posted_by', select: '_id first_name last_name profile_pic' })
       .populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
       .populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
-      .populate({ path: '_group', select: 'custom_fields' })
+      .populate({ path: '_group', select: '_id group_name custom_fields' })
       .sort({ created_date: -1 })
       .lean();
+
+    if (advancedFilters.group) {
+      files = files.filter(file => file?._group && file?._group?._id == advancedFilters?.group);
+    }
+
+    if (advancedFilters.cfName && advancedFilters.cfValue && advancedFilters.cfName != '' && advancedFilters.cfValue != '') {
+      files = files.filter(file => file?.custom_fields
+        && file?.custom_fields[advancedFilters.cfName]
+        && file?.custom_fields[advancedFilters.cfName] == advancedFilters?.cfValue);
+    }
+
+    return files;
   }
 }

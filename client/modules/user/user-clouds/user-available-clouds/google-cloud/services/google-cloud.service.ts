@@ -13,13 +13,15 @@ export class GoogleCloudService {
   BASE_API_URL = environment.USER_BASE_API_URL
 
   // Http Backend
-  _httpBackend: HttpClient
+  _httpBackend: HttpClient;
 
-  // Google Auth Behaviour Subject
-  public googleAuthSuccessfulBehavior = new BehaviorSubject(false)
-
-  // Google Auth Observable
-  googleAuthSuccessful = this.googleAuthSuccessfulBehavior.asObservable()
+  /**
+  * Both of the variables listed down below are used to share the data through this common service among different components in the app
+  * @constant googleUserDataSource
+  * @constant currentGoogleUserData
+  */
+  private googleUserDataSource = new BehaviorSubject<any>({});
+  currentGoogleUserData = this.googleUserDataSource.asObservable();
 
   constructor(
     private _http: HttpClient,
@@ -182,6 +184,11 @@ export class GoogleCloudService {
     }).toPromise()
   }
 
+  /**
+   * Used to emit the next value of observable so that where this is subscribed, will get the updated value
+   * @param googleUserData
+   */
+  public updateGoogleUserDataService(googleUserData: any){
+    this.googleUserDataSource.next(googleUserData);
+  }
 }
-
-

@@ -137,8 +137,8 @@ export class UserService {
   /**
    * This function is responsible for verifying the slack oAuth
    */
-  slackAuth(code: string, user: Object): Observable<any> {
-    return this._http.post(this.INTEGRATIONS_API_URL + `/slack/slack-auth`, { code, user });
+  slackAuth(code: string, user: Object) {
+    return this._http.post(this.INTEGRATIONS_API_URL + `/slack/slack-auth`, { code, user }).toPromise();
   }
 
    /**
@@ -174,8 +174,8 @@ export class UserService {
   /**
    * This function is responsible for diconnecting the slack oA
    */
-  disconnectSlack(user: Object): Observable<any> {
-    return this._http.delete(this.INTEGRATIONS_API_URL + `/slack/disconnect-slack/${user}`);
+  disconnectSlack(user: Object): any {
+    return this._http.delete(this.INTEGRATIONS_API_URL + `/slack/disconnect-slack/${user}`).toPromise();
   }
 
    /**
@@ -400,6 +400,12 @@ export class UserService {
     return this._http.put(this.BASE_API_URL + `/${userId}/saveCustomFieldsFromLDAP`, {
       workspaceId: workspaceId,
       customFieldsMap: customFieldsMap
+    }).toPromise();
+  }
+
+  saveLocale(localeCode: string) {
+    return this._http.put(this.BASE_API_URL + `/locale`, {
+      localeCode: localeCode
     }).toPromise();
   }
 }

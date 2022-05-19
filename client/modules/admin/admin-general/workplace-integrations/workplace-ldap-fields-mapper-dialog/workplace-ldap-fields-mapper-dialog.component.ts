@@ -102,7 +102,13 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 
     mapProperties() {
       if (this.ldapPropertiesToMap && this.ldapPropertiesToMap.length > 0) {
-        this.utilityService.getConfirmDialogAlert($localize`:@@workplaceLdapFieldsMapperDialog.areYouSure:Are you sure?`, $localize`:@@workplaceLdapFieldsMapperDialog.byDoingLDAPSync:By doing this, all users' information will be synchronized with LDAP!`)
+        let text = '';
+        if (!this.isGlobal) {
+          text = $localize`:@@workplaceLdapFieldsMapperDialog.byDoingLDAPSync:By doing this, user's information will be synchronized with LDAP!`
+        } else {
+          text = $localize`:@@workplaceLdapFieldsMapperDialog.byDoingLDAPFields:By doing this, you will select the fields to map with LDAP!`
+        }
+        this.utilityService.getConfirmDialogAlert($localize`:@@workplaceLdapFieldsMapperDialog.areYouSure:Are you sure?`, text)
         .then(async (resp) => {
           if (resp.value) {
             this.utilityService.updateIsLoadingSpinnerSource(true);

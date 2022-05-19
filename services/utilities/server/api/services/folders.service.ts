@@ -82,7 +82,6 @@ export class FoldersService {
 
             // Delete all the folders present in a folder
             filesStream.on('data', async (file) => {
-                //await File.findByIdAndRemove(file._id)
                 await filesService.delete(file._id)
             });
 

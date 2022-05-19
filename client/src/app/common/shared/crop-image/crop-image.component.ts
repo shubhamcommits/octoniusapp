@@ -38,10 +38,6 @@ export class CropImageComponent implements OnInit {
    * @param event
    */
   async fileChangeEvent(event: Event) {
-
-    // START LOADING THE IMAGE
-    this.utilityService.startBackgroundLoader();
-
     this.imageChangedEvent = event;
   }
 
@@ -66,8 +62,6 @@ export class CropImageComponent implements OnInit {
    */
   imageLoaded() {
 
-    // SHOW CROPPER AND STOP LOADING PROCESS
-    this.utilityService.stopBackgroundLoader();
   }
 
   /**
@@ -82,14 +76,12 @@ export class CropImageComponent implements OnInit {
    */
   loadImageFailed() {
     this.utilityService.errorNotification($localize`:@@cropImage.oopsFormatNotSupported:Oops, seems like the format is not supported, kindly use .png, .gif, or .jpg format images!`);
-    this.utilityService.stopBackgroundLoader();
   }
 
   /**
    * This function rotates then image to the left
    */
   rotateLeft() {
-    this.utilityService.startBackgroundLoader();
     setTimeout(() => { // Use timeout because rotating image is a heavy operation and will block the ui thread
       this.canvasRotation--;
       this.flipAfterRotate();
@@ -100,7 +92,6 @@ export class CropImageComponent implements OnInit {
    * This function rotates the image to the right
    */
   rotateRight() {
-    this.utilityService.startBackgroundLoader();
     setTimeout(() => {
       this.canvasRotation++;
       this.flipAfterRotate();
@@ -141,22 +132,18 @@ export class CropImageComponent implements OnInit {
 
   /*
   rotateLeft() {
-    this.utilityService.startBackgroundLoader();
     this.imageCropper.rotateLeft();
   }
 
   rotateRight() {
-    this.utilityService.startBackgroundLoader();
     this.imageCropper.rotateRight();
   }
 
   flipHorizontal() {
-    this.utilityService.startBackgroundLoader();
     this.imageCropper.flipHorizontal();
   }
 
   flipVertical() {
-    this.utilityService.startBackgroundLoader();
     this.imageCropper.flipVertical();
   }
   */
@@ -204,7 +191,6 @@ export class CropImageComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.utilityService.stopAllLoader();
   }
 
 }

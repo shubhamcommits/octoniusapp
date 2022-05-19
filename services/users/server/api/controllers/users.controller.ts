@@ -1,7 +1,6 @@
 import { Account, Group, User, Workspace } from '../models';
 import { Response, Request, NextFunction } from 'express';
 import { sendError,PasswordHelper, axios } from '../../utils';
-import http from 'axios';
 import moment from 'moment';
 
 /*  ===================
@@ -1221,6 +1220,41 @@ export class UsersControllers {
             // Send status 200 response
             return res.status(200).json({
                 message: 'Custom Field updated!',
+                user: user
+            });
+        } catch (err) {
+            return sendError(res, err, 'Internal Server Error!', 500);           
+        }
+    }
+
+    async saveLocale(req: Request, res: Response, next: NextFunction) {
+
+        // Fetch the groupId
+        const localeCode = req.body['localeCode'];
+        const userId = req['userId'];
+
+        try {
+            let user = await User.findByIdAndUpdate({
+                    _id: userId
+                }, {
+                    $set: { "stats.locale": localeCode }
+                }, {
+                    new: true
+                })
+                .select('_id active email first_name last_name profile_pic workspace_name bio company_join_date current_position role phone_number skills mobile_number company_name _workspace _groups _private_group stats integrations profile_custom_fields')
+                .populate({
+                    path: 'stats.favorite_groups',
+                    select: '_id group_name group_avatar'
+                })
+                .populate({
+                    path: '_account',
+                    select: '_id email _workspaces first_name last_name created_date'
+                })
+                .lean();
+
+            // Send status 200 response
+            return res.status(200).json({
+                message: 'Locale updated!',
                 user: user
             });
         } catch (err) {
