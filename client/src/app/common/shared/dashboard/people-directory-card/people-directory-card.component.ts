@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnInit } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import moment from 'moment';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
@@ -9,6 +9,8 @@ import { WorkspaceService } from 'src/shared/services/workspace-service/workspac
   styleUrls: ['./people-directory-card.component.scss']
 })
 export class PeopleDirectoryCardComponent implements OnInit {
+
+@Input() isDashboard = true;
 
   // Current Workspace Data
   workspaceData: any

@@ -33,6 +33,17 @@ const routes: Routes = [
       state: 'lounge'
     }
   },
+
+  // Organization Module
+  {
+    path: 'organization',
+    loadChildren: () => import('modules/organization/organization.module')
+      .then((module) => module.OrganizationModule),
+    data: {
+      preload: false,
+      state: 'organization'
+    }
+  },
 ];
 
 @NgModule({

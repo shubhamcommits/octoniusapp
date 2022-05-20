@@ -71,11 +71,15 @@ export class WidgetSelectorDialogComponent implements OnInit {
       code: 'VELOCITY',
       name: $localize`:@@widgetSelectorDialog.velocityOverTime:Velocity over time`,
       img: 'assets/images/widgets/widget-velocity.png'
-    }, {
+    },
+    /*
+    {
       code: 'PULSE',
       name: $localize`:@@widgetSelectorDialog.pulse:Pulse`,
       img: 'assets/images/widgets/widget-pulse.png'
-    }, {
+    },
+    */
+    {
       code: 'PEOPLE_DIRECTORY',
       name: $localize`:@@widgetSelectorDialog.peopleDirectory:People directory`,
       img: 'assets/images/widgets/widget-people.png'

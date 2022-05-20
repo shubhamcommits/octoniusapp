@@ -56,7 +56,7 @@ export class DashboardPageComponent implements OnInit {
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
     if (!this.userData.selected_widgets) {
-      this.userData.selected_widgets = ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'PULSE', 'PEOPLE_DIRECTORY', 'ORGANIZATIONAL_STRUCTURE', 'WORK_STATISTICS_NORTH_STAR', 'ENGAGEMENT', 'KPI_PERFORMANCE'];
+      this.userData.selected_widgets = ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY'/*, 'PULSE'*/, 'PEOPLE_DIRECTORY', 'ORGANIZATIONAL_STRUCTURE', 'WORK_STATISTICS_NORTH_STAR', 'ENGAGEMENT', 'KPI_PERFORMANCE'];
     }
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
