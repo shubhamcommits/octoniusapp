@@ -10184,6 +10184,22 @@
           <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="workNavbar.peopleDirectory" datatype="html">
+        <source>People Directory</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
+          <context context-type="linenumber">151</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workNavbar.organizationChart" datatype="html">
+        <source>Organization Chart</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
+          <context context-type="linenumber">152</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="pageNotFound.oops" datatype="html">
         <source>Oops!</source>
         <target state="translated">Hoppla!</target>
