@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { OrganizationChartComponent } from './organization-chart/organization-chart.component';
 import { OrganizationComponent } from './organization/organization.component';
-import { PeopleDirectorySearchResultsComponent } from './people-directory/people-directory-search-results/people-directory-search-results.component';
 import { PeopleDirectoryComponent } from './people-directory/people-directory.component';
 
 const routes: Routes = [
@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   /*
   {
-    path: 'chart', component: OrganizationComponent
+    path: 'chart', component: OrganizationChartComponent
   }
   */
 ];

@@ -8,6 +8,7 @@ import { OrganizationComponent } from './organization/organization.component';
 import { OrganizationSearchResultsComponent } from './organization/organization-search-results/organization-search-results.component';
 import { PeopleDirectoryComponent } from './people-directory/people-directory.component';
 import { PeopleDirectorySearchResultsComponent } from './people-directory/people-directory-search-results/people-directory-search-results.component';
+import { OrganizationChartComponent } from './organization-chart/organization-chart.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { PeopleDirectorySearchResultsComponent } from './people-directory/people
     OrganizationComponent,
     OrganizationSearchResultsComponent,
     PeopleDirectoryComponent,
-    PeopleDirectorySearchResultsComponent
+    PeopleDirectorySearchResultsComponent,
+    OrganizationChartComponent
   ],
   imports: [
     CommonModule,

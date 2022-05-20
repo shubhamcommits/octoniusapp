@@ -36,6 +36,7 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
 
   isWorkNavbar$ = new BehaviorSubject(false);
   isLoungeNavbar$ = new BehaviorSubject(false);
+  isPeopleDirectoryNavbar$ = new BehaviorSubject(false);
 
   editTitle: boolean = false;
   loungeData: any;
@@ -79,6 +80,9 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
         else if (this.routerState == 'lounge') {
           this.nextLoungeNavbar();
         }
+        else if (this.routerState == 'people-directory' || this.routerState == 'people-directory-chart') {
+          this.nextPeopleDirectoryNavbar();
+        }
       }
 
       // Subscribe to the change in lounge data from the socket server
@@ -103,12 +107,20 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
 
   nextWorkNavbar() {
     this.isLoungeNavbar$.next(false);
+    this.isPeopleDirectoryNavbar$.next(false);
     this.isWorkNavbar$.next(true);
   }
 
   nextLoungeNavbar() {
     this.isWorkNavbar$.next(false);
+    this.isPeopleDirectoryNavbar$.next(false);
     this.isLoungeNavbar$.next(true);
+  }
+
+  nextPeopleDirectoryNavbar() {
+    this.isWorkNavbar$.next(false);
+    this.isLoungeNavbar$.next(false);
+    this.isPeopleDirectoryNavbar$.next(true);
   }
 
   canSeeDashboard() {

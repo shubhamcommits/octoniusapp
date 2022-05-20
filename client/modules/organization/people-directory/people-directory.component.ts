@@ -47,7 +47,7 @@ export class PeopleDirectoryComponent implements OnInit, AfterContentChecked {
 
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
-      state: 'work'
+      state: 'people-directory'
     });
 
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();

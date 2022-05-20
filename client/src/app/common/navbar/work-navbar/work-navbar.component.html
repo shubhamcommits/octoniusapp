@@ -134,3 +134,21 @@
   </li>
   <!-- Story Title ends -->
 </ul>
+
+<ul class="nav mr-auto" *ngIf="isPeopleDirectoryNavbar$ | async">
+  <!-- Back Route starts -->
+  <li class="nav-item d-none d-md-block">
+    <a class="nav-link"
+        routerLink="/dashboard/work/organization"
+        routerLinkActive="active">
+      <i class="material-icons">arrow_back</i>
+    </a>
+  </li>
+  <!-- Back Page Route ends -->
+
+  <li style="margin-top: 20px;">
+    {{ workspaceData?.company_name }}
+    <span *ngIf="routerState == 'people-directory'" i18n="@@workNavbar.peopleDirectory">People Directory</span>
+    <span *ngIf="routerState == 'people-directory-chart'" i18n="@@workNavbar.organizationChart">Organization Chart</span>
+  </li>
+</ul>
