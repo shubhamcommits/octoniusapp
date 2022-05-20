@@ -6423,15 +6423,15 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.ts</context>
-          <context context-type="linenumber">373</context>
+          <context context-type="linenumber">376</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.ts</context>
-          <context context-type="linenumber">481</context>
+          <context context-type="linenumber">484</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.ts</context>
-          <context context-type="linenumber">540</context>
+          <context context-type="linenumber">543</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.unableToUpdateDetails" datatype="html">
@@ -6447,15 +6447,15 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.ts</context>
-          <context context-type="linenumber">376</context>
+          <context context-type="linenumber">379</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.ts</context>
-          <context context-type="linenumber">484</context>
+          <context context-type="linenumber">487</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.ts</context>
-          <context context-type="linenumber">543</context>
+          <context context-type="linenumber">546</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-dates/post-dates.component.ts</context>
@@ -7443,15 +7443,15 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.ts</context>
-          <context context-type="linenumber">364</context>
+          <context context-type="linenumber">367</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.ts</context>
-          <context context-type="linenumber">473</context>
+          <context context-type="linenumber">476</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.ts</context>
-          <context context-type="linenumber">534</context>
+          <context context-type="linenumber">537</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-dates/post-dates.component.ts</context>
@@ -7930,6 +7930,250 @@
           <context context-type="linenumber">338</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="searchResult.role" datatype="html">
+        <source>Role: </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization-search-results/organization-search-results.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="searchResult.email" datatype="html">
+        <source>E-Mail: </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization-search-results/organization-search-results.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="searchResult.phone" datatype="html">
+        <source>Phone Number: </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization-search-results/organization-search-results.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="searchResult.mobile" datatype="html">
+        <source>Mobile Number: </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization-search-results/organization-search-results.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="searchResult.currentPosition" datatype="html">
+        <source>Current Position: </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization-search-results/organization-search-results.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
+          <context context-type="linenumber">91</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="searchResult.company" datatype="html">
+        <source>Company: </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization-search-results/organization-search-results.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
+          <context context-type="linenumber">92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="searchResult.joined" datatype="html">
+        <source>Joined on: </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization-search-results/organization-search-results.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="searchResult.bio" datatype="html">
+        <source>Bio: </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization-search-results/organization-search-results.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
+          <context context-type="linenumber">95</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="searchResult.skills" datatype="html">
+        <source>Skills: </source>
+        <target state="translated">Kenntnisse: </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization-search-results/organization-search-results.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
+          <context context-type="linenumber">98</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="searchResult.customFields" datatype="html">
+        <source>Custom Fields: </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization-search-results/organization-search-results.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
+          <context context-type="linenumber">103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.skill" datatype="html">
+        <source>Skill</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.customFields" datatype="html">
+        <source>Custom Fields</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.clear" datatype="html">
+        <source> Clear </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">69,71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.close" datatype="html">
+        <source> Close </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">73,75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.users" datatype="html">
+        <source>USERS</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">84</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="organization.peopleDirectory" datatype="html">
+        <source>People Directory</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization/organization.component.html</context>
+          <context context-type="linenumber">102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="peopleDirectorySearchResults.role" datatype="html">
+        <source>Role: </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/people-directory/people-directory-search-results/people-directory-search-results.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="peopleDirectorySearchResults.work" datatype="html">
+        <source>Work Manager</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/people-directory/people-directory-search-results/people-directory-search-results.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="peopleDirectory.skill" datatype="html">
+        <source>Skill</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/people-directory/people-directory.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="peopleDirectory.customFields" datatype="html">
+        <source>Custom Fields</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/people-directory/people-directory.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="peopleDirectory.clear" datatype="html">
+        <source> Clear </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/people-directory/people-directory.component.html</context>
+          <context context-type="linenumber">67,69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="peopleDirectory.close" datatype="html">
+        <source> Close </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/people-directory/people-directory.component.html</context>
+          <context context-type="linenumber">71,73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="peopleDirectory.searchForPeople" datatype="html">
+        <source> Search for people inside your organization. </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/people-directory/people-directory.component.html</context>
+          <context context-type="linenumber">84,86</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="peopleDirectory.purposeOfPeopleDirectory" datatype="html">
+        <source> The purpose of <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span style=&quot;color: #2AA578;&quot;&gt;"/>People Directory<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> is to help you find colleagues and make it easier to connect with them. </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/people-directory/people-directory.component.html</context>
+          <context context-type="linenumber">88,90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="peopleDirectory.searchForthings" datatype="html">
+        <source> Search for things like: name, job title, department, skills... </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/people-directory/people-directory.component.html</context>
+          <context context-type="linenumber">92,94</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="publicFunctions.errorOccuredWhileFetchingWorkspaceDetails" datatype="html">
         <source>Error occurred while fetching the workspace details, please try again!</source>
         <target state="translated">Beim Abrufen der Arbeitsbereichsdetails ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
@@ -8178,12 +8422,20 @@
           <context context-type="linenumber">138</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="searchHeader.customFields" datatype="html">
+        <source>Custom Fields</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
+          <context context-type="linenumber">147</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="searchHeader.clear" datatype="html">
         <source> Clear </source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">147,149</context>
+          <context context-type="linenumber">170,172</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.close" datatype="html">
@@ -8191,7 +8443,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">151,153</context>
+          <context context-type="linenumber">174,176</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.files" datatype="html">
@@ -8199,7 +8451,7 @@
         <target state="translated">DATEIEN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">161</context>
+          <context context-type="linenumber">184</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.posts" datatype="html">
@@ -8207,7 +8459,7 @@
         <target state="translated">POSTS</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">168</context>
+          <context context-type="linenumber">191</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.tasks" datatype="html">
@@ -8215,7 +8467,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">175</context>
+          <context context-type="linenumber">198</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.users" datatype="html">
@@ -8223,7 +8475,7 @@
         <target state="translated">BENUTZER</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-header/search-header.component.html</context>
-          <context context-type="linenumber">182</context>
+          <context context-type="linenumber">205</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchResult.tags" datatype="html">
@@ -8248,90 +8500,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
           <context context-type="linenumber">42</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="searchResult.customFields" datatype="html">
-        <source>Custom Fields: </source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">60</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">103</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="searchResult.role" datatype="html">
-        <source>Role: </source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">87</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="searchResult.email" datatype="html">
-        <source>E-Mail: </source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">88</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="searchResult.phone" datatype="html">
-        <source>Phone Number: </source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">89</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="searchResult.mobile" datatype="html">
-        <source>Mobile Number: </source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">90</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="searchResult.currentPosition" datatype="html">
-        <source>Current Position: </source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">91</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="searchResult.company" datatype="html">
-        <source>Company: </source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">92</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="searchResult.joined" datatype="html">
-        <source>Joined on: </source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">93</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="searchResult.bio" datatype="html">
-        <source>Bio: </source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">95</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="searchResult.skills" datatype="html">
-        <source>Skills: </source>
-        <target state="translated">Kenntnisse: </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/search/search-results/search-results.component.html</context>
-          <context context-type="linenumber">98</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boxAccountDetails.box" datatype="html">
@@ -9127,7 +9295,7 @@
         <target state="translated">Projekte</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/work/dashboard-page/dashboard-page.component.html</context>
-          <context context-type="linenumber">92</context>
+          <context context-type="linenumber">94</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workDahsboardPage.last7Days" datatype="html">
@@ -10006,6 +10174,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
           <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="workNavbar.organization" datatype="html">
+        <source>Organization</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/navbar/work-navbar/work-navbar.component.html</context>
+          <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pageNotFound.oops" datatype="html">
@@ -11646,12 +11822,20 @@
           <context context-type="linenumber">3,5</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="peopleDirectoryCard.stats" datatype="html">
+        <source> Stats </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
+          <context context-type="linenumber">6,8</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="peopleDirectoryCard.users" datatype="html">
         <source>users</source>
         <target state="translated">Benutzer</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.globalManagers" datatype="html">
@@ -11659,7 +11843,7 @@
         <target state="translated">globale Manager</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.groupManagers" datatype="html">
@@ -11667,7 +11851,7 @@
         <target state="translated">gruppenleiter</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.members" datatype="html">
@@ -11675,7 +11859,7 @@
         <target state="translated">Mitglieder</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="peopleDirectoryCard.guests" datatype="html">
@@ -11683,7 +11867,7 @@
         <target state="translated">Gäste</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/people-directory-card/people-directory-card.component.html</context>
-          <context context-type="linenumber">37</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pulseCard.pulse" datatype="html">
@@ -11843,7 +12027,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">92</context>
+          <context context-type="linenumber">96</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.resourceManagement" datatype="html">
@@ -11862,20 +12046,12 @@
           <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="widgetSelectorDialog.pulse" datatype="html">
-        <source>Pulse</source>
-        <target state="translated">Pulse</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">76</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="widgetSelectorDialog.peopleDirectory" datatype="html">
         <source>People directory</source>
         <target state="translated">Personenverzeichnis</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">80</context>
+          <context context-type="linenumber">84</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.organizationalStructure" datatype="html">
@@ -11883,7 +12059,7 @@
         <target state="translated">Organisatorische Struktur</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.workStatisticsNorthStars" datatype="html">
@@ -11891,7 +12067,7 @@
         <target state="translated">Arbeitsstatistik North Stars</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">88</context>
+          <context context-type="linenumber">92</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.kpiPerformance" datatype="html">
@@ -11899,11 +12075,11 @@
         <target state="translated">KPI-Leistung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">96</context>
+          <context context-type="linenumber">100</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">129</context>
+          <context context-type="linenumber">133</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.pleaseWaitWeSavingSettings" datatype="html">
@@ -11911,7 +12087,7 @@
         <target state="translated">Bitte warten Sie, wir speichern die neue Einstellung...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">173</context>
+          <context context-type="linenumber">177</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.settingsSavedGroup" datatype="html">
@@ -11919,7 +12095,7 @@
         <target state="translated">Einstellungen in Ihrer Gruppe gespeichert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">178</context>
+          <context context-type="linenumber">182</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.unableToSaveSettings" datatype="html">
@@ -11927,7 +12103,7 @@
         <target state="translated">Die Einstellungen können nicht in Ihrer Gruppe gespeichert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">180</context>
+          <context context-type="linenumber">184</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.pleaseWaitWeSavingWidgets" datatype="html">
@@ -11935,7 +12111,7 @@
         <target state="translated">Bitte warten Sie, wir speichern die Widgets...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">187</context>
+          <context context-type="linenumber">191</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.groupUpdated" datatype="html">
@@ -11943,7 +12119,7 @@
         <target state="translated">Gruppe aktualisiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">198</context>
+          <context context-type="linenumber">202</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.unableToUpdateGroup" datatype="html">
@@ -11951,7 +12127,7 @@
         <target state="translated">Die Gruppe kann nicht aktualisiert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">201</context>
+          <context context-type="linenumber">205</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.userUpdated" datatype="html">
@@ -11959,7 +12135,7 @@
         <target state="translated">Benutzer aktualisiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">215</context>
+          <context context-type="linenumber">219</context>
         </context-group>
       </trans-unit>
       <trans-unit id="widgetSelectorDialog.unableToUpdateUser" datatype="html">
@@ -11967,7 +12143,7 @@
         <target state="translated">Der Benutzer kann nicht aktualisiert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/dashboard/widget-selector-dialog/widget-selector-dialog.component.ts</context>
-          <context context-type="linenumber">218</context>
+          <context context-type="linenumber">222</context>
         </context-group>
       </trans-unit>
       <trans-unit id="workStatisticsCard.workStatistics" datatype="html">
@@ -12598,8 +12774,8 @@
           <context context-type="linenumber">153</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="groupCreatePostDialog.taskLog" datatype="html">
-        <source>Task Log</source>
+      <trans-unit id="groupCreatePostDialog.changeLog" datatype="html">
+        <source>Change Log</source>
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.html</context>
@@ -12691,7 +12867,7 @@
         <target state="translated">Bitte warten wir den Beitrag löschen...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.ts</context>
-          <context context-type="linenumber">553</context>
+          <context context-type="linenumber">556</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.postDeleted" datatype="html">
@@ -12699,7 +12875,7 @@
         <target state="translated">Beitrag gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.ts</context>
-          <context context-type="linenumber">561</context>
+          <context context-type="linenumber">564</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCreatePostDialog.unableToDeletePost" datatype="html">
@@ -12707,7 +12883,7 @@
         <target state="translated">Beitrag kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/group-create-post-dialog.component.ts</context>
-          <context context-type="linenumber">563</context>
+          <context context-type="linenumber">566</context>
         </context-group>
       </trans-unit>
       <trans-unit id="northStar.northStar" datatype="html">
