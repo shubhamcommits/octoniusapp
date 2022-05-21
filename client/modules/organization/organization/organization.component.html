@@ -77,22 +77,11 @@
   </div>
 
   <div class="media-body">
-    <div *ngIf="searchedUsers && searchedUsers.length > 0" class="results row" style="overflow: hidden;">
-      <div class="col-md-4" style="border-right: 2px solid #E4EDF8;">
-        <p *ngIf="searchedUsers.length > 0" class="octo-search-category">
-          <span class="material-icons">supervisor_account</span>
-          <span i18n="@@organization.users">USERS</span>
-        </p>
-        <a *ngFor="let user of searchedUsers"
-          (click)="selectedUser=user" class="octo-search-results">{{ user.first_name }} {{ user.last_name }}</a>
-      </div>
-
-      <div class="col-md-8">
-        <app-organization-search-results *ngIf="selectedUser" [data]="selectedUser"></app-organization-search-results>
-      </div>
+    <div *ngIf="searchedUsers && searchedUsers.length > 0 && !isLoading$" class="results row" style="overflow: hidden;">
+      <app-people-directory-search-results [searchedUsers]="searchedUsers" style="width: 90%;"></app-people-directory-search-results>
     </div>
 
-    <div *ngIf="!searchedUsers || searchedUsers.length == 0" class="row cards-list" style="margin-top: 50px;">
+    <div *ngIf="(!searchedUsers || searchedUsers.length == 0) && !isLoading$" class="row cards-list" style="margin-top: 50px;">
       <div class="card">
         <div class="img-fluid" [routerLink]="['/dashboard', 'work', 'organization', 'directory']">
           <img src="assets/images/people_directory.png" alt="" class="card-img-top">
@@ -118,9 +107,16 @@
         </div>
       </div>
       -->
+
       <!-- People Directory Card Starts -->
-      <app-people-directory-card [isDashboard]="false" class="card"></app-people-directory-card>
+      <app-people-directory-card [isDashboard]="false" class="card" style="cursor: auto;"></app-people-directory-card>
       <!-- People Directory Card Ends -->
     </div>
   </div>
+
+  <!-- Loading Spinner Starts -->
+  <ng-container *ngIf="isLoading$">
+    <app-loading-spinner></app-loading-spinner>
+  </ng-container>
+  <!-- Loading Spinner Ends -->
 </div>

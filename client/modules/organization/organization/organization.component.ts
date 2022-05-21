@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, AfterContentChecked } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
 import { SearchService } from 'src/shared/services/search-service/search.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -9,7 +9,7 @@ import { SubSink } from 'subsink';
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.scss']
 })
-export class OrganizationComponent implements OnInit {
+export class OrganizationComponent implements OnInit, AfterContentChecked {
 
   workspaceData;
 
@@ -24,6 +24,8 @@ export class OrganizationComponent implements OnInit {
   selectedCustomField;
   searchedUsers = [];
   selectedUser;
+
+  isLoading$;
 
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
@@ -41,6 +43,8 @@ export class OrganizationComponent implements OnInit {
 
   async ngOnInit() {
 
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
     // Send Updates to router state
     this.publicFunctions.sendUpdatesToRouterState({
       state: 'work'
@@ -49,13 +53,24 @@ export class OrganizationComponent implements OnInit {
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
     this.customFields = (this.workspaceData && this.workspaceData?.profile_custom_fields) ? this.workspaceData?.profile_custom_fields : [];
+
+    this.utilityService.updateIsLoadingSpinnerSource(false);
+  }
+
+  ngAfterContentChecked() {
+    this.subSink.add(this.utilityService.isLoadingSpinner.subscribe((res) => {
+      this.isLoading$ = res;
+    }));
   }
 
   ngOnDestroy(){
-
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   search() {
+
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
     this.searchedUsers = [];
     this.selectedUser = null;
 
@@ -80,9 +95,13 @@ export class OrganizationComponent implements OnInit {
             this.searchedUsers.push(user);
           });
         }
-      })
+
+        this.utilityService.updateIsLoadingSpinnerSource(false);
+      });
     } catch (error) {
       this.publicFunctions.sendError(error);
+
+      this.utilityService.updateIsLoadingSpinnerSource(false);
     }
   }
   /**
@@ -90,12 +109,18 @@ export class OrganizationComponent implements OnInit {
    */
 
   addNewSkill(skill) {
+
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
     this.advancedFilters?.skills?.push(skill);
 
     this.search();
   }
 
   removeSkill(index) {
+
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
     this.advancedFilters?.skills?.splice(index, 1);
 
     this.search();
@@ -124,6 +149,9 @@ export class OrganizationComponent implements OnInit {
   }
 
   selectCFValue(event: any) {
+
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
     this.advancedFilters.cfValue = event.value;
 
     this.search();
