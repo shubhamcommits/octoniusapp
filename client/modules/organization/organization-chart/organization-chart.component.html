@@ -1,7 +1,30 @@
 <div class="container-fluid" style="margin-top: 30px;margin-left: 20px;">
+  <div class="row">
+    <div class="advanced-filters" *ngIf="isManager && posibleManagerCF && posibleManagerCF?.length > 0">
+      <div class="filter-label" i18n="@@organizationChart.selectManagerCF">Select the Manager Custom Field</div>
+      <div class="filter-cell">
+        <mat-select [(value)]="selectedManagerField" (selectionChange)="selectManagerField($event)" appearance="fill">
+          <mat-option [value]="cf.name" *ngFor="let cf of posibleManagerCF">{{ cf.title }}</mat-option>
+        </mat-select>
+      </div>
+    </div>
+  </div>
   <div class="media-body">
-    <div class="row">
-      TESTING
+    <div *ngFor="let level of levels; let index = index" class="level" [ngClass]="(levels[index + 1]) ? 'has-next-level' : ''">
+      <app-chart-person
+        *ngFor="let user of level?.members"
+        [person]="user"
+        [selected]="levels && levels[index + 1] && user._id == levels[index + 1].managerId"
+        (nextLevelMembersEmitter)="newManagerSelected($event, index)"></app-chart-person>
+
+      <div *ngIf="index > 0 && isManager" class="box muted" (click)="addMember(level?.managerId, index)">
+        <div>
+          <i class="material-icons">add_circle</i>
+        </div>
+        <div style="margin-top: 20px;">
+          <span i18n="@@organizationChart.addPeople">Add people</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>

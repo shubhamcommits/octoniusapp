@@ -83,6 +83,9 @@ const workspaceSchema = new Schema({
             }
         }]
     },
+    manager_custom_field: {
+        type: String
+    },
     invited_users: [{
         email: {
             type: String,

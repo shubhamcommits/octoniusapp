@@ -1,0 +1,24 @@
+<div class="box">
+  <!-- Avatar Image of the member -->
+  <div class="user-image">
+    <app-secured-image *ngIf="person?.active"
+        (click)="openFullscreenModal(person?._id)"
+        [imgURL]="person?.profile_pic"
+        [service]="'user'"
+        [styleClass]="'feed-avatar-small'"></app-secured-image>
+  </div>
+  <!-- Avatar Image of the member -->
+  <div>
+    <div>
+      {{ person?.first_name }} {{ person?.last_name }}
+    </div>
+    <div class="position muted">
+      {{ person?.current_position }}
+    </div>
+  </div>
+
+  <div class="actions badge" [ngClass]="(selected) ? 'selected' : 'no-selected'" (click)="selectManager()">
+    {{ person?.nextLevelMembers?.length || 0 }}
+    <i class="material-icons">arrow_drop_down</i>
+  </div>
+</div>

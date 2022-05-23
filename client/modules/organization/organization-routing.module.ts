@@ -10,12 +10,10 @@ const routes: Routes = [
   },
   {
     path: 'directory', component: PeopleDirectoryComponent
-  }
-  /*,
+  },
   {
     path: 'chart', component: OrganizationChartComponent
   }
-  */
 ];
 
 @NgModule({

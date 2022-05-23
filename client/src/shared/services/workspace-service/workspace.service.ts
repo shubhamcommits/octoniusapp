@@ -344,4 +344,16 @@ export class WorkspaceService {
       // global: global
     }).toPromise();
   }
+
+  getOrganizationChartFirstLevel(workspaceId: string) {
+    return this._http.get(this.BASE_API_URL + `/${workspaceId}/organizationChartFirstLevel`, {}).toPromise();
+  }
+
+  getOrganizationChartNextLevel(workspaceId: string, selectedManager: string) {
+    return this._http.get(this.BASE_API_URL + `/${workspaceId}/organizationChartNextLevel`, {
+      params: {
+        selectedManager: selectedManager
+      }
+    }).toPromise();
+  }
 }

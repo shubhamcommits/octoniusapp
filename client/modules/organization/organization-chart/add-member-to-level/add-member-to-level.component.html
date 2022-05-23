@@ -1,0 +1,25 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="advanced-filters">
+      <div class="filter-label" i18n="@@addMemberToLevel.selectMemberToLevel">Select the Member to Add to the Level</div>
+      <div class="filter-cell">
+        <mat-select [(value)]="selectedMember" (selectionChange)="selectMember($event)" appearance="fill">
+          <mat-option [value]="member" *ngFor="let member of members">
+            <app-secured-image *ngIf="member?.active"
+              [imgURL]="member?.profile_pic"
+              [service]="'user'"
+              [styleClass]="'feed-avatar-small'"></app-secured-image>
+
+            <span>{{ member?.first_name }} {{ member?.last_name }}</span>
+            <span class="muted">{{ member?.current_position }}</span>
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <button class="col-md-4 btn btn-danger"
+        (click)="closeDialog()" i18n="@@editLounge.cancel">Cancel</button>
+  </div>
+</div>

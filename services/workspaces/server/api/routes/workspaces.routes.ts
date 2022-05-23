@@ -127,6 +127,12 @@ routes.get('/:workspaceId/shuttleGroups', workspaces.getShuttleGroups);
 // PUT - Save settings
 routes.put('/:workspaceId/settings', workspaces.saveSettings);
 
+// GET - Get a list of the members without manager
+routes.get('/:workspaceId/organizationChartFirstLevel', workspaces.getOrganizationChartFirstLevel);
+
+// GET - Get a list of the members with an specific manager
+routes.get('/:workspaceId/organizationChartNextLevel', workspaces.getOrganizationChartNextLevel);
+
 /*  ===================
  *  -- EXPORT ROUTES --
  *  ===================
