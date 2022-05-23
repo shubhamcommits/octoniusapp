@@ -31,6 +31,7 @@
   line-height: 0px;
   width: 142px;
   cursor: pointer;
+  overflow: initial;
 }
 
 .advanced-filters {
@@ -47,4 +48,30 @@
 .filter-cell {
   display: flex;
   width: 50%;
+}
+
+.mat-menu-panel {
+  max-width: none !important;
+}
+
+.users-card {
+  padding: 10px 10px 0px 10px;
+  border: none;
+}
+
+.members-list {
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+
+  .members-list-item {
+    position: relative;
+    display: block;
+    padding: 2px 15px 3px 0px;
+    background-color: #fff;
+    // border: 1px solid rgba(0, 0, 0, 0.125);
+    cursor: pointer;
+  }
 }

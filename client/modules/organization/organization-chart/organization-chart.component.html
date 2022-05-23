@@ -17,7 +17,8 @@
         [selected]="levels && levels[index + 1] && user._id == levels[index + 1].managerId"
         (nextLevelMembersEmitter)="newManagerSelected($event, index)"></app-chart-person>
 
-      <div *ngIf="index > 0 && isManager" class="box muted" (click)="addMember(level?.managerId, index)">
+      <div *ngIf="index > 0 && isManager" class="box muted"
+          mat-menu-item [matMenuTriggerFor]="cloneTaskSearchMenu" (click)="selectPossibleMember(level?.managerId)">
         <div>
           <i class="material-icons">add_circle</i>
         </div>
@@ -25,6 +26,23 @@
           <span i18n="@@organizationChart.addPeople">Add people</span>
         </div>
       </div>
+      <mat-menu #cloneTaskSearchMenu="matMenu" class="user-filter-menu">
+        <div style="padding: 10px;">
+            <div class="users-card">
+                <div class="form-group" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                  <input type="email" class="form-control" id="search-text" aria-describedby="search-text"
+                    [(ngModel)]="searchText" placeholder="Search member" autofocus>
+                </div>
+                <ul class="members-list">
+                  <li appHighlight class="members-list-item" *ngFor="let member of possibleMembers | appFilter: searchText"
+                      (click)="getMemberDetails(member, level?.managerId, index)" [searchedWord]="searchText" [content]="member">
+                    {{ member.first_name }} {{ member.last_name }}
+                  </li>
+                </ul>
+            </div>
+        </div>
+      </mat-menu>
     </div>
   </div>
 </div>
+

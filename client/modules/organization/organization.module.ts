@@ -9,8 +9,8 @@ import { PeopleDirectoryComponent } from './people-directory/people-directory.co
 import { PeopleDirectorySearchResultsComponent } from './people-directory-search-results/people-directory-search-results.component';
 import { OrganizationChartComponent } from './organization-chart/organization-chart.component';
 import { ChartPersonComponent } from './organization-chart/chart-person/chart-person.component';
-import { AddMemberToLevelComponent } from './organization-chart/add-member-to-level/add-member-to-level.component';
-
+import { FilterPipe } from './organization-chart/filter.pipe';
+import { HighlightDirective } from './organization-chart/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,8 @@ import { AddMemberToLevelComponent } from './organization-chart/add-member-to-le
     PeopleDirectorySearchResultsComponent,
     OrganizationChartComponent,
     ChartPersonComponent,
-    AddMemberToLevelComponent
+    FilterPipe,
+    HighlightDirective
   ],
   imports: [
     CommonModule,
@@ -28,7 +29,6 @@ import { AddMemberToLevelComponent } from './organization-chart/add-member-to-le
     SharedModule
   ],
   exports: [
-    AddMemberToLevelComponent
   ]
 })
 export class OrganizationModule { }

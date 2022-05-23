@@ -1,10 +1,10 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
+import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { SubSink } from 'subsink';
-import { AddMemberToLevelComponent } from './add-member-to-level/add-member-to-level.component';
 
 @Component({
   selector: 'app-organization-chart',
@@ -23,6 +23,9 @@ export class OrganizationChartComponent implements OnInit {
 
   isManager = false;
 
+  searchText = '';
+  possibleMembers = [];
+
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -33,6 +36,7 @@ export class OrganizationChartComponent implements OnInit {
   public subSink = new SubSink();
 
   constructor(
+    private userService: UserService,
     private workspaceService: WorkspaceService,
     private injector: Injector,
     public dialog: MatDialog
@@ -95,28 +99,24 @@ export class OrganizationChartComponent implements OnInit {
     }
   }
 
-  addMember(managerId: string, levelIndex: any) {
-    const managersIds = this.levels.map(level => level.managerId);
-    const data = {
-      managerId: managerId,
-      members: (this.levels && this.levels[0]) ? this.levels[0]?.members.filter(member => !managersIds.includes(member._id)) : []
-    };
+  selectPossibleMember(managerId: string) {
+    this.possibleMembers = (this.workspaceData && this.workspaceData?.members) ? this.workspaceData?.members?.filter(member => member._id != managerId) : [];
+  }
 
-    const dialogRef = this.dialog.open(AddMemberToLevelComponent, {
-      hasBackdrop: true,
-      data: data
-    });
-
-    const memberAddedEventSubs = dialogRef.componentInstance.memberAddedEmitter.subscribe(async (data) => {
-      const index = (this.levels[0]?.members) ? this.levels[0]?.members.findIndex(member => member._id == data._id) : -1;
-      if (index >= 0) {
-        this.levels[0]?.members.splice(index, 1);
-      }
-      this.levels[levelIndex]?.members?.push(data);
-    });
-
-    dialogRef.afterClosed().subscribe(async result => {
-      memberAddedEventSubs.unsubscribe();
-    });
+  getMemberDetails(selectedMember: any, managerId: string, levelIndex: any) {
+      this.utilityService.asyncNotification($localize`:@@organizationChart.pleaseWaitsavingSettings:Please wait, we are saving the new setting...`,
+      new Promise((resolve, reject)=>{
+        this.userService.saveCustomField(selectedMember._id, this.workspaceData?.manager_custom_field, managerId)
+          .then(()=> {
+            selectedMember.nextLevelMembers = [];
+            const index = (this.levels[0]?.members) ? this.levels[0]?.members.findIndex(member => member._id == selectedMember._id) : -1;
+            if (index >= 0) {
+              this.levels[0]?.members.splice(index, 1);
+            }
+            this.levels[levelIndex]?.members?.push(selectedMember);
+            resolve(this.utilityService.resolveAsyncPromise($localize`:@@organizationChart.settingsSaved:Settings saved!`));
+          })
+          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@organizationChart.unableToSaveGroupSettings:Unable to save the settings, please try again!`)));
+      }));
   }
 }

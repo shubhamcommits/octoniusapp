@@ -1003,7 +1003,10 @@ export class WorkspaceController {
             
             // Finding groups for the user of which they are a part of
             let members = await User.find({
-                    _workspace: workspaceId
+                    $and: [
+                        { _workspace: workspaceId, },
+                        { active: true }
+                    ]
                 })
                 .sort('first_name')
                 .lean() || [];
@@ -1047,7 +1050,10 @@ export class WorkspaceController {
             
             // Finding groups for the user of which they are a part of
             let members = await User.find({
-                    _workspace: workspaceId
+                    $and: [
+                        { _workspace: workspaceId, },
+                        { active: true }
+                    ]
                 })
                 .sort('first_name')
                 .lean() || [];
