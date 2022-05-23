@@ -7101,10 +7101,6 @@
           <context context-type="sourcefile">modules/lounge/lounge/edit-lounge/edit-lounge.component.html</context>
           <context context-type="linenumber">24</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/organization-chart/add-member-to-level/add-member-to-level.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="editLounge.save" datatype="html">
         <source>Save</source>
@@ -7934,38 +7930,6 @@
           <context context-type="linenumber">338</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="addMemberToLevel.selectMemberToLevel" datatype="html">
-        <source>Select the Member to Add to the Level</source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/organization-chart/add-member-to-level/add-member-to-level.component.html</context>
-          <context context-type="linenumber">4</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="addMemberToLevel.pleaseWaitsavingSettings" datatype="html">
-        <source>Please wait, we are saving the new setting...</source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/organization-chart/add-member-to-level/add-member-to-level.component.ts</context>
-          <context context-type="linenumber">55</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="addMemberToLevel.settingsSaved" datatype="html">
-        <source>Settings saved!</source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/organization-chart/add-member-to-level/add-member-to-level.component.ts</context>
-          <context context-type="linenumber">62</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="addMemberToLevel.unableToSaveGroupSettings" datatype="html">
-        <source>Unable to save the settings, please try again!</source>
-        <target state="needs-translation"/>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/organization-chart/add-member-to-level/add-member-to-level.component.ts</context>
-          <context context-type="linenumber">64</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="organizationChart.selectManagerCF" datatype="html">
         <source>Select the Manager Custom Field</source>
         <target state="needs-translation"/>
@@ -7979,7 +7943,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.html</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationChart.pleaseWaitsavingSettings" datatype="html">
@@ -7987,7 +7951,11 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">74</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
+          <context context-type="linenumber">107</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationChart.settingsSaved" datatype="html">
@@ -7995,7 +7963,11 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">81</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
+          <context context-type="linenumber">117</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationChart.unableToSaveGroupSettings" datatype="html">
@@ -8003,7 +7975,11 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">83</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
+          <context context-type="linenumber">119</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organization.skill" datatype="html">
