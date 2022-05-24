@@ -7024,51 +7024,81 @@
           <context context-type="linenumber">338</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="organizationChart.selectManagerCF" datatype="html">
+      <trans-unit id="chartSettingsDialog.chartSettings" datatype="html">
+        <source>Chart Settings</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/chart-settings-dialog/chart-settings-dialog.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="chartSettingsDialog.chartSettingsDescription" datatype="html">
+        <source> Manage the settings for the chart. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/chart-settings-dialog/chart-settings-dialog.component.html</context>
+          <context context-type="linenumber">17,19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="chartSettingsDialog.selectManagerCF" datatype="html">
         <source>Select the Manager Custom Field</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.html</context>
-          <context context-type="linenumber">4</context>
+          <context context-type="sourcefile">modules/organization/organization-chart/chart-settings-dialog/chart-settings-dialog.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="chartSettingsDialog.close" datatype="html">
+        <source> Close </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/chart-settings-dialog/chart-settings-dialog.component.html</context>
+          <context context-type="linenumber">43,45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="chartSettingsDialog.pleaseWaitsavingSettings" datatype="html">
+        <source>Please wait, we are saving the new setting...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/chart-settings-dialog/chart-settings-dialog.component.ts</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="chartSettingsDialog.settingsSaved" datatype="html">
+        <source>Settings saved!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/chart-settings-dialog/chart-settings-dialog.component.ts</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="chartSettingsDialog.unableToSaveGroupSettings" datatype="html">
+        <source>Unable to save the settings, please try again!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/chart-settings-dialog/chart-settings-dialog.component.ts</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationChart.addPeople" datatype="html">
         <source>Add people</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.html</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationChart.pleaseWaitsavingSettings" datatype="html">
         <source>Please wait, we are saving the new setting...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">78</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">107</context>
+          <context context-type="linenumber">92</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationChart.settingsSaved" datatype="html">
         <source>Settings saved!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">85</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">117</context>
+          <context context-type="linenumber">102</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationChart.unableToSaveGroupSettings" datatype="html">
         <source>Unable to save the settings, please try again!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">87</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">104</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organization.skill" datatype="html">
