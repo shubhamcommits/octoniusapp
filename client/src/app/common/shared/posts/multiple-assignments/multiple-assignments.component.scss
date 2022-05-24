@@ -74,6 +74,12 @@
   flex-direction: column;
   padding-left: 0;
   margin-bottom: 0;
+  max-height: 300px;
+  overflow: scroll;
+  white-space: nowrap;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   .assignee-list-item {
     position: relative;
@@ -83,4 +89,8 @@
     // border: 1px solid rgba(0, 0, 0, 0.125);
     cursor: pointer;
   }
+}
+
+.assignee-list::-webkit-scrollbar {
+  display: none;
 }

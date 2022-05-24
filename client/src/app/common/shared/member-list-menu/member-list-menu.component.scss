@@ -4,7 +4,7 @@
     border-radius: 10px;
     margin-bottom: 10px;
     padding: 12px;
-  
+
     .box-title {
       font-family: Nunito;
       font-style: normal;
@@ -14,14 +14,14 @@
       color: #242d3a;
       margin-bottom: 12px !important;
     }
-  
+
     .set-parent {
       font-family: Roboto, "Helvetica Neue", sans-serif;
       font-size: 14px;
       font-weight: 400;
       margin-left: 15px;
     }
-  
+
     .input-search {
       width: 120px;
       height: 38px;
@@ -34,7 +34,7 @@
       border-bottom: 1px solid #000000;
       margin-left: 15px;
     }
-  
+
     .results{
       width: max-content;
       padding: 0;
@@ -42,7 +42,7 @@
       z-index: 1000;
       background: #fff !important;
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 6px 9px rgba(0, 0, 0, 0.2);
-  
+
       .task-item {
         padding: 0;
         align-items: center;
@@ -52,21 +52,21 @@
         background: #ffffff;
         border: 1px solid #E4EDF8;
         margin-bottom: 5px !important;
-  
+
         .media-body {
           padding: 5px 10px;;
-  
+
           .full-name-text {
             font-size: 12px;
             line-height: 18px;
           }
         }
-  
+
         &:hover {
           cursor: pointer;
           background-color: #F3F4F6;
         }
-  
+
         p {
           font-size: 14px !important;
         }
@@ -111,3 +111,29 @@ ul {
   background: rgba(0, 0, 0, 0.001) !important;
 }
 
+.assignee-list {
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+  max-height: 300px;
+  overflow: scroll;
+  white-space: nowrap;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  .assignee-list-item {
+    position: relative;
+    display: block;
+    padding: 2px 15px 3px 0px;
+    background-color: #fff;
+    // border: 1px solid rgba(0, 0, 0, 0.125);
+    cursor: pointer;
+  }
+}
+
+.assignee-list::-webkit-scrollbar {
+  display: none;
+}

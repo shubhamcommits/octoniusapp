@@ -49,6 +49,12 @@
   flex-direction: column;
   padding-left: 0;
   margin-bottom: 0;
+  max-height: 300px;
+  overflow: scroll;
+  white-space: nowrap;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   .members-list-item {
     position: relative;
@@ -58,4 +64,8 @@
     // border: 1px solid rgba(0, 0, 0, 0.125);
     cursor: pointer;
   }
+}
+
+.members-list::-webkit-scrollbar {
+  display: none;
 }

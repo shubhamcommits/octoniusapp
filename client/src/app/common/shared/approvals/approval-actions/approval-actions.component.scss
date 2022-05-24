@@ -84,6 +84,12 @@
   flex-direction: column;
   padding-left: 0;
   margin-bottom: 0;
+  max-height: 300px;
+  overflow: scroll;
+  white-space: nowrap;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
   .assignee-list-item {
     position: relative;
@@ -95,13 +101,13 @@
   }
 }
 
+.assignee-list::-webkit-scrollbar {
+  display: none;
+}
+
 .assignee-row {
   display: flex;
   justify-content: space-between;
-
-  .assignee {
-
-  }
 
   .action {
     line-height: 35px;
