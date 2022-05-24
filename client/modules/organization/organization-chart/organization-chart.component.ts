@@ -89,20 +89,33 @@ export class OrganizationChartComponent implements OnInit {
   }
 
   getMemberDetails(selectedMember: any, managerId: string, levelIndex: any) {
-      this.utilityService.asyncNotification($localize`:@@organizationChart.pleaseWaitsavingSettings:Please wait, we are saving the new setting...`,
+    this.utilityService.asyncNotification($localize`:@@organizationChart.pleaseWaitsavingSettings:Please wait, we are saving the new setting...`,
       new Promise((resolve, reject)=>{
         this.userService.saveCustomField(selectedMember._id, this.workspaceData?.manager_custom_field, managerId)
           .then(()=> {
             selectedMember.nextLevelMembers = [];
-            const index = (this.levels[0]?.members) ? this.levels[0]?.members.findIndex(member => member._id == selectedMember._id) : -1;
-            if (index >= 0) {
-              this.levels[0]?.members.splice(index, 1);
+            if (this.levels) {
+              this.levels.forEach((level, index) => {
+                const memberIndex = (level?.members) ? level?.members.findIndex(member => member._id == selectedMember._id) : -1;
+                if (memberIndex >= 0) {
+                  this.levels[index]?.members.splice(memberIndex, 1);
+                }
+              });
             }
             this.levels[levelIndex]?.members?.push(selectedMember);
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@organizationChart.settingsSaved:Settings saved!`));
           })
           .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@organizationChart.unableToSaveGroupSettings:Unable to save the settings, please try again!`)));
       }));
+  }
+
+  removeFromManager(user: any, levelIndex: any) {
+    const index = (this.levels[levelIndex]?.members) ? this.levels[levelIndex]?.members.findIndex(member => member._id == user._id) : -1;
+    if (index >= 0) {
+      this.levels[levelIndex]?.members.splice(index, 1);
+    }
+    this.levels[0]?.members?.push(user);
+
   }
 
   openCardSettingsDialog() {

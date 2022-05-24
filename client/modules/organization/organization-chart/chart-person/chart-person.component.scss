@@ -1,12 +1,7 @@
 .box {
   position: relative;
   display: inline-block;
-  background: #FFFFFF;
-  border: 1px solid #E4EDF8;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
-  border-radius: 8px;
   text-align: center;
-  padding: 10px;
   margin: 30px 10px 10px 10px;
   height: 100px;
   min-height: 100px;
@@ -14,8 +9,20 @@
   width: 142px;
 
   .user-image {
-    margin-top: -30px;
-    margin-bottom: 10px;
+    margin-top: -25px;
+    left: 30%;
+    position: absolute;
+  }
+
+  .box-content {
+    background: #FFFFFF;
+    border: 1px solid #E4EDF8;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14);
+    border-radius: 8px;
+    padding: 35px 10px 10px 10px;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
   }
 
   .position {
@@ -24,11 +31,22 @@
     width: 85%;
   }
 
+  .no-actions-badge {
+    position: absolute;
+    bottom: -10px;
+    left: 57px;
+    display: block;
+    font-weight: 700!important;
+    font-size: 12px;
+    border-radius: 15px;
+    padding: 10px !important;
+    cursor: pointer;
+  }
+
   .actions {
     position: absolute;
     bottom: -15px;
     left: 43px;
-    cursor: pointer;
   }
 
   .badge {
@@ -49,5 +67,25 @@
     font-weight: 300 !important;
     background-color: #E4EDF8;
     color: #000000;
+  }
+}
+
+.mat-menu-item {
+  display: inline !important;
+  line-height: 25px !important;
+  padding: 0 !important;
+  margin: 20px;
+}
+
+.mat-menu-panel {
+  max-width: none !important;
+  min-height: none !important;
+}
+
+.actions-list {
+  max-width: none !important;
+
+  .actions {
+    padding: 10px !important;
   }
 }

@@ -8,7 +8,7 @@
         [styleClass]="'feed-avatar-small'"></app-secured-image>
   </div>
   <!-- Avatar Image of the member -->
-  <div>
+  <div class="box-content" (click)="selectManager()">
     <div>
       {{ person?.first_name }} {{ person?.last_name }}
     </div>
@@ -17,8 +17,18 @@
     </div>
   </div>
 
-  <div class="actions badge" [ngClass]="(selected) ? 'selected' : 'no-selected'" (click)="selectManager()">
+  <div *ngIf="level > 0" class="actions badge" [ngClass]="(selected) ? 'selected' : 'no-selected'">
     {{ person?.nextLevelMembers?.length || 0 }}
-    <i class="material-icons">arrow_drop_down</i>
+    <i [matMenuTriggerFor]="actionsMenu" class="material-icons" style="cursor: pointer;">arrow_drop_down</i>
+    <mat-menu #actionsMenu="matMenu" class="actions-list">
+      <a mat-menu-item (click)="removeFromManager()" *ngIf="level > 0">
+        <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete_forever</i>
+        <span i18n="@@chartPerson.removeManager">Remove Manager</span>
+      </a>
+    </mat-menu>
+  </div>
+
+  <div *ngIf="level == 0" (click)="selectManager()" class="no-actions-badge" [ngClass]="(selected) ? 'selected' : 'no-selected'">
+    {{ person?.nextLevelMembers?.length || 0 }}
   </div>
 </div>
