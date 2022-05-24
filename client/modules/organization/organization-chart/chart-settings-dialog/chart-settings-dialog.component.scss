@@ -1,0 +1,38 @@
+.integrationsDialog {
+    // text-align: center;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.text-descr{
+    display: flex;
+}
+
+.description{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.advanced-filters {
+  margin: 10px 0px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.filter-label {
+  display: flex;
+  width: 50%;
+}
+.filter-cell {
+  display: flex;
+  width: 40%;
+}
+
+.content-box {
+  margin: 20px 0;
+  padding: 12px;
+  text-align: center;
+}

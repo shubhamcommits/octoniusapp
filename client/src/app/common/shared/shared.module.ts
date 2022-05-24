@@ -79,8 +79,7 @@ import { NewTaskComponent } from './posts/new-task/new-task.component';
 import { SubtasksComponent } from './posts/group-create-post-dialog/subtasks/subtasks.component';
 import { TaskActionsComponent } from './posts/group-create-post-dialog/task-actions/task-actions.component';
 import { MultipleAssignmentsComponent } from './posts/multiple-assignments/multiple-assignments.component';
-import { HighlightDirective } from './posts/multiple-assignments/highlight.directive';
-import { FilterPipe } from './posts/multiple-assignments/filter.pipe';
+import { FilterPipe } from '../../../shared/pipes/filter.pipe';
 import { AssigneeAvatarComponent } from './assignee-avatar/assignee-avatar.component';
 import { CommentListComponent } from './comments/comment-list/comment-list.component';
 import { MemberListMenuComponent } from './member-list-menu/member-list-menu.component';
@@ -121,6 +120,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { FileVersionsComponent } from './file-versions/file-versions.component';
 import { SelectLanguageComponent } from './select-language/select-language.component';
 import { PostLogsComponent } from './posts/group-create-post-dialog/post-logs/post-logs.component';
+import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
 
 @NgModule({
     declarations: [
@@ -344,7 +344,9 @@ import { PostLogsComponent } from './posts/group-create-post-dialog/post-logs/po
         ApprovalsHistoryComponent,
         PostDatesComponent,
         FileVersionsComponent,
-        PostLogsComponent
+        PostLogsComponent,
+        HighlightDirective,
+        FilterPipe
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

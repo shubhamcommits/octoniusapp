@@ -1,13 +1,6 @@
 <div class="container-fluid" style="margin-top: 30px;margin-left: 20px;">
   <div class="row">
-    <div class="advanced-filters" *ngIf="isManager && posibleManagerCF && posibleManagerCF?.length > 0">
-      <div class="filter-label" i18n="@@organizationChart.selectManagerCF">Select the Manager Custom Field</div>
-      <div class="filter-cell">
-        <mat-select [(value)]="selectedManagerField" (selectionChange)="selectManagerField($event)" appearance="fill">
-          <mat-option [value]="cf.name" *ngFor="let cf of posibleManagerCF">{{ cf.title }}</mat-option>
-        </mat-select>
-      </div>
-    </div>
+    <i *ngIf="isManager" (click)="openCardSettingsDialog()" class="material-icons" style="cursor: pointer;">settings</i>
   </div>
   <div class="media-body">
     <div *ngFor="let level of levels; let index = index" class="level" [ngClass]="(levels[index + 1]) ? 'has-next-level' : ''">
@@ -18,7 +11,7 @@
         (nextLevelMembersEmitter)="newManagerSelected($event, index)"></app-chart-person>
 
       <div *ngIf="index > 0 && isManager" class="box muted"
-          mat-menu-item [matMenuTriggerFor]="cloneTaskSearchMenu" (click)="selectPossibleMember(level?.managerId)">
+          mat-menu-item [matMenuTriggerFor]="membersSearchMenu" (click)="selectPossibleMember(level?.managerId)">
         <div>
           <i class="material-icons">add_circle</i>
         </div>
@@ -26,7 +19,7 @@
           <span i18n="@@organizationChart.addPeople">Add people</span>
         </div>
       </div>
-      <mat-menu #cloneTaskSearchMenu="matMenu" class="user-filter-menu">
+      <mat-menu #membersSearchMenu="matMenu" class="user-filter-menu">
         <div style="padding: 10px;">
             <div class="users-card">
                 <div class="form-group" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">

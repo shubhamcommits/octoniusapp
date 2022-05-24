@@ -9,8 +9,7 @@ import { PeopleDirectoryComponent } from './people-directory/people-directory.co
 import { PeopleDirectorySearchResultsComponent } from './people-directory-search-results/people-directory-search-results.component';
 import { OrganizationChartComponent } from './organization-chart/organization-chart.component';
 import { ChartPersonComponent } from './organization-chart/chart-person/chart-person.component';
-import { FilterPipe } from './organization-chart/filter.pipe';
-import { HighlightDirective } from './organization-chart/highlight.directive';
+import { ChartSettingsDialogComponent } from './organization-chart/chart-settings-dialog/chart-settings-dialog.component';
 
 @NgModule({
   declarations: [
@@ -19,8 +18,7 @@ import { HighlightDirective } from './organization-chart/highlight.directive';
     PeopleDirectorySearchResultsComponent,
     OrganizationChartComponent,
     ChartPersonComponent,
-    FilterPipe,
-    HighlightDirective
+    ChartSettingsDialogComponent
   ],
   imports: [
     CommonModule,

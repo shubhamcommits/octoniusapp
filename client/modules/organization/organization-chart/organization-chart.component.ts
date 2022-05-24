@@ -5,6 +5,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { WorkspaceService } from 'src/shared/services/workspace-service/workspace.service';
 import { SubSink } from 'subsink';
+import { ChartSettingsDialogComponent } from './chart-settings-dialog/chart-settings-dialog.component';
 
 @Component({
   selector: 'app-organization-chart',
@@ -18,7 +19,6 @@ export class OrganizationChartComponent implements OnInit {
   userData;
   workspaceData;
 
-  posibleManagerCF = [];
   selectedManagerField;
 
   isManager = false;
@@ -56,7 +56,6 @@ export class OrganizationChartComponent implements OnInit {
 
     this.getOrganizationChartFirstLevel();
 
-    this.posibleManagerCF = (this.workspaceData?.profile_custom_fields) ? this.workspaceData?.profile_custom_fields?.filter(cf =>  cf.user_type) : [];
     this.selectedManagerField = this.workspaceData?.manager_custom_field;
   }
 
@@ -72,20 +71,6 @@ export class OrganizationChartComponent implements OnInit {
         });
       }
     });
-  }
-
-  selectManagerField(cfSelected) {
-    this.utilityService.asyncNotification($localize`:@@organizationChart.pleaseWaitsavingSettings:Please wait, we are saving the new setting...`,
-    new Promise((resolve, reject)=>{
-      this.workspaceService.saveSettings(this.workspaceData?._id, { manager_custom_field: cfSelected.value })
-        .then(()=> {
-          this.selectedManagerField = cfSelected.value;
-          this.workspaceData.manager_custom_field = cfSelected.value;
-          this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@organizationChart.settingsSaved:Settings saved!`));
-        })
-        .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@organizationChart.unableToSaveGroupSettings:Unable to save the settings, please try again!`)));
-    }));
   }
 
   newManagerSelected(data: any, levelIndex: any) {
@@ -118,5 +103,23 @@ export class OrganizationChartComponent implements OnInit {
           })
           .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@organizationChart.unableToSaveGroupSettings:Unable to save the settings, please try again!`)));
       }));
+  }
+
+  openCardSettingsDialog() {
+    const dialogRef = this.dialog.open(ChartSettingsDialogComponent, {
+      width: '45%',
+      //height: '65%',
+      disableClose: true,
+      hasBackdrop: true,
+      data: { workspaceData: this.workspaceData }
+    });
+
+    const sub = dialogRef.componentInstance.closeEvent.subscribe(async () => {
+      this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      sub.unsubscribe();
+    });
   }
 }
