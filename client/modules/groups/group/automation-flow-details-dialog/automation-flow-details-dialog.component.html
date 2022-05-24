@@ -138,11 +138,11 @@
             </div>
 
             <div class="add-step">
-              <i class="material-icons-outlined" *ngIf="!newTrigger" (click)="newTrigger = !newTrigger" style="cursor: pointer;">add</i>
+              <i class="material-icons-outlined" *ngIf="!step.newTrigger" (click)="step.newTrigger = !step.newTrigger" style="cursor: pointer;">add</i>
             </div>
           </div>
 
-          <div class="step-element" *ngIf="!step.trigger || newTrigger">
+          <div class="step-element" *ngIf="!step.trigger || step.newTrigger">
             <span i18n="@@groupAutomationFlowDetailsDialog.when">WHEN</span>
             <!-- TRIGGER OPTIONS SECTION -->
             <button mat-menu-item [matMenuTriggerFor]="triggerMenu"i18n="@@groupAutomationFlowDetailsDialog.selectTrigger">
@@ -266,10 +266,10 @@
               </div>
             </div>
 
-            <div class="add-step"> <i class="material-icons-outlined" *ngIf="!newAction" (click)="newAction = !newAction" style="cursor: pointer;">add</i></div>
+            <div class="add-step"> <i class="material-icons-outlined" *ngIf="!step.newAction" (click)="step.newAction = !step.newAction" style="cursor: pointer;">add</i></div>
           </div>
 
-          <div class="step-element" *ngIf="!step.action || newAction">
+          <div class="step-element" *ngIf="!step.action || step.newAction">
             <span i18n="@@groupAutomationFlowDetailsDialog.then">THEN</span>
             <!-- ACTION OPTIONS SECTION -->
             <button mat-menu-item [matMenuTriggerFor]="actionMenu" i18n="@@groupAutomationFlowDetailsDialog.selectAction">

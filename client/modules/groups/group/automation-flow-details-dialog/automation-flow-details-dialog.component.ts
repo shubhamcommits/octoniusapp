@@ -129,6 +129,8 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.flowSteps = [];
     if (steps) {
       steps.forEach(step => {
+        step.newTrigger = false;
+        step.newAction = false;
         this.flowSteps.push(step);
       });
 
@@ -186,7 +188,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     if (!this.flowSteps[stepIndex].trigger) {
       this.flowSteps[stepIndex].trigger = [];
     }
-    this.flowSteps[stepIndex].trigger.push({ name: trigger });
+    this.flowSteps[stepIndex].trigger.push({ name: trigger });
 
     this.newTrigger = false;
   }
@@ -195,7 +197,7 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     if (!this.flowSteps[stepIndex].action) {
       this.flowSteps[stepIndex].action = [];
     }
-    this.flowSteps[stepIndex].action.push({ name: action });
+    this.flowSteps[stepIndex].action.push({ name: action });
 
     this.newAction = false;
   }
