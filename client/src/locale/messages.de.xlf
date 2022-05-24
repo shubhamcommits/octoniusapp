@@ -7930,6 +7930,38 @@
           <context context-type="linenumber">338</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="chartPerson.removeManager" datatype="html">
+        <source>Remove Manager</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/chart-person/chart-person.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="chartPerson.pleaseWaitsavingSettings" datatype="html">
+        <source>Please wait, we are saving the new setting...</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/chart-person/chart-person.component.ts</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="chartPerson.settingsSaved" datatype="html">
+        <source>Settings saved!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/chart-person/chart-person.component.ts</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="chartPerson.unableToSaveGroupSettings" datatype="html">
+        <source>Unable to save the settings, please try again!</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/organization/organization-chart/chart-person/chart-person.component.ts</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="chartSettingsDialog.chartSettings" datatype="html">
         <source>Chart Settings</source>
         <target state="needs-translation"/>
@@ -7991,7 +8023,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.html</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationChart.pleaseWaitsavingSettings" datatype="html">
@@ -8007,7 +8039,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">102</context>
+          <context context-type="linenumber">106</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationChart.unableToSaveGroupSettings" datatype="html">
@@ -8015,7 +8047,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">104</context>
+          <context context-type="linenumber">108</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organization.skill" datatype="html">
