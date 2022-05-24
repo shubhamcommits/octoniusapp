@@ -77,6 +77,7 @@ export class OrganizationComponent implements OnInit, AfterContentChecked {
     if ((!this.searchQuery || this.searchQuery == '' || this.searchQuery == " ")
         && this.advancedFilters.skills.length == 0
         && (this.advancedFilters.cfName == '' || this.advancedFilters.cfValue == ' ')) {
+      this.utilityService.updateIsLoadingSpinnerSource(false);
       return;
     }
 
