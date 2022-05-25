@@ -231,11 +231,11 @@ export class PublicFunctions {
         groupData = await this.getCurrentGroupFromService();
 
         if (JSON.stringify(groupData) == JSON.stringify({}) || JSON.stringify(groupData) == JSON.stringify(undefined)) {
-          groupData = await this.getGroupDetailsFromHTTP();
+          groupData = await this.getGroupDetailsFromStorage();
         }
 
         if (JSON.stringify(groupData) == JSON.stringify({}) || JSON.stringify(groupData) == JSON.stringify(undefined)) {
-          groupData = await this.getGroupDetailsFromStorage();
+          groupData = await this.getGroupDetailsFromHTTP();
         }
 
         this.sendUpdatesToGroupData(groupData);

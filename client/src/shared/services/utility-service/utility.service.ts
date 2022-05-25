@@ -729,6 +729,6 @@ export class UtilityService {
   }
 
   objectExists(objectData: Object) {
-    return objectData && JSON.stringify(objectData) != JSON.stringify({});
+    return (objectData && JSON.stringify(objectData) != JSON.stringify({}) && JSON.stringify(objectData) != JSON.stringify(undefined));
   }
 }

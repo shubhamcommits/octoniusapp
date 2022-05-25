@@ -53,6 +53,10 @@ export class GroupSettingsComponent implements OnInit {
     this.switchAgora = this.groupData.type == 'agora';
     this.freezeDates = this.groupData.freeze_dates;
 
+    if (!this.utilityService.objectExists(this.groupData)) {
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    }
+
     this.groupSections = await this.publicFunctions.getAllColumns(this.groupData?._id);
   }
 

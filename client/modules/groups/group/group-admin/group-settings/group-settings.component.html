@@ -72,9 +72,9 @@
           </p>
         </mat-slide-toggle>
 
-        <br *ngIf="groupData?.shuttle_type" /><br *ngIf="groupData?.shuttle_type" />
+        <br *ngIf="groupData?.shuttle_type" /><br *ngIf="groupData?.shuttle_type && shuttleTasksModuleAvailable && groupSections" />
 
-        <mat-form-field appearance="fill" style="margin-left: 40px;" *ngIf="groupData?.shuttle_type">
+        <mat-form-field appearance="fill" style="margin-left: 40px;" *ngIf="groupData?.shuttle_type && shuttleTasksModuleAvailable && groupSections">
           <mat-select
               (selectionChange)="selectShuttleSection($event.value)"
               [(value)]="groupData._shuttle_section">
