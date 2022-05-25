@@ -3855,7 +3855,7 @@
         <target state="translated">Espere, estamos actualizando el contenido ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
-          <context context-type="linenumber">110</context>
+          <context context-type="linenumber">107</context>
         </context-group>
       </trans-unit>
       <trans-unit id="automationFlowDetailsDialog.flowNameUpdated" datatype="html">
@@ -3863,7 +3863,7 @@
         <target state="translated">¡Nombre de flujo actualizado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
-          <context context-type="linenumber">116</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit>
       <trans-unit id="automationFlowDetailsDialog.unableToUpdateFlowName" datatype="html">
@@ -3871,7 +3871,7 @@
         <target state="translated">No se puede actualizar el nombre del flujo, inténtelo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
-          <context context-type="linenumber">118</context>
+          <context context-type="linenumber">115</context>
         </context-group>
       </trans-unit>
       <trans-unit id="automationFlowDetailsDialog.pleaseWaitDeletingStep" datatype="html">
@@ -3879,7 +3879,7 @@
         <target state="translated">Espere, estamos eliminando el paso de flujo ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
-          <context context-type="linenumber">165</context>
+          <context context-type="linenumber">164</context>
         </context-group>
       </trans-unit>
       <trans-unit id="automationFlowDetailsDialog.stepDeleted" datatype="html">
@@ -3887,7 +3887,7 @@
         <target state="translated">¡Paso eliminado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
-          <context context-type="linenumber">174</context>
+          <context context-type="linenumber">173</context>
         </context-group>
       </trans-unit>
       <trans-unit id="automationFlowDetailsDialog.unableToDeleteStep" datatype="html">
@@ -3895,7 +3895,7 @@
         <target state="translated">No se puede eliminar el paso. Vuelve a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
-          <context context-type="linenumber">176</context>
+          <context context-type="linenumber">175</context>
         </context-group>
       </trans-unit>
       <trans-unit id="automationFlowDetailsDialog.pleaseWaitUpdatingStep" datatype="html">
@@ -3903,7 +3903,7 @@
         <target state="translated">Espere, estamos actualizando el paso ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
-          <context context-type="linenumber">301</context>
+          <context context-type="linenumber">300</context>
         </context-group>
       </trans-unit>
       <trans-unit id="automationFlowDetailsDialog.stepSaved" datatype="html">
@@ -3911,7 +3911,7 @@
         <target state="translated">¡Paso guardado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
-          <context context-type="linenumber">305</context>
+          <context context-type="linenumber">304</context>
         </context-group>
       </trans-unit>
       <trans-unit id="automationFlowDetailsDialog.unableToSaveStep" datatype="html">
@@ -3919,7 +3919,7 @@
         <target state="translated">No se puede guardar el paso, inténtelo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
-          <context context-type="linenumber">307</context>
+          <context context-type="linenumber">306</context>
         </context-group>
       </trans-unit>
       <trans-unit id="automationFlowDetailsDialog.pleaseWaitDeletingFlow" datatype="html">
@@ -3927,7 +3927,7 @@
         <target state="translated">Espere, estamos eliminando el flujo ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
-          <context context-type="linenumber">320</context>
+          <context context-type="linenumber">319</context>
         </context-group>
       </trans-unit>
       <trans-unit id="automationFlowDetailsDialog.flowDeleted" datatype="html">
@@ -3935,7 +3935,7 @@
         <target state="translated">¡Flujo eliminado!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
-          <context context-type="linenumber">328</context>
+          <context context-type="linenumber">327</context>
         </context-group>
       </trans-unit>
       <trans-unit id="automationFlowDetailsDialog.unableToDeleteFlow" datatype="html">
@@ -3943,7 +3943,7 @@
         <target state="translated">No se puede eliminar el flujo, inténtelo de nuevo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/automation-flow-details-dialog/automation-flow-details-dialog.component.ts</context>
-          <context context-type="linenumber">330</context>
+          <context context-type="linenumber">329</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupAutomationFlowsDialog.automator" datatype="html">
@@ -4430,148 +4430,12 @@
           <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="groupAdmin.shareFiles" datatype="html">
-        <source>Share files with the organization</source>
-        <target state="translated">Compartir archivos con la organización</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">58</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.makesAllFilesAccessible" datatype="html">
-        <source>This option makes all the files from this group accessible to the entire organization</source>
-        <target state="translated">Esta opción hace que todos los archivos de este grupo sean accesibles para toda la organización</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">59</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.enableRAG" datatype="html">
-        <source>Enable restricted access groups</source>
-        <target state="translated">Habilitar grupos de acceso restringido</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">69</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.RAGAllowAdminsToChose" datatype="html">
-        <source>RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.</source>
-        <target state="translated">RAG es la opción para crear grupos especiales de usuarios dentro de un grupo, con el fin de darles un control detallado sobre algo.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/>Si desea que solo un determinado grupo de usuarios vea una tarea, o edite una sección del tablero, o vea / edite / elimine un archivo, etc.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">70</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.manageRAG" datatype="html">
-        <source>Manage RAG</source>
-        <target state="translated">Gestionar RAG</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">71</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.enableProjectFeatures" datatype="html">
-        <source>Enable Project Features</source>
-        <target state="translated">Habilitar las características del proyecto</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">81</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.enableAdvancedProjectFunctionalities" datatype="html">
-        <source> This will enable all advanced project related funtionalities like: timeline, project planning etc.</source>
-        <target state="translated"> Esto permitirá todas las funcionalidades avanzadas relacionadas con el proyecto como: cronograma, planificación del proyecto, etc.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">82</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.enableTaskAllocation" datatype="html">
-        <source>Enable Tasks Allocation</source>
-        <target state="translated">Activar la asignación de tareas</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">92</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.enableAllocationsFeaturesOnTasks" datatype="html">
-        <source> This will enable allocation features on the tasks and resource management.</source>
-        <target state="translated"> Esto permitirá la asignación de funciones en las tareas y la gestión de recursos.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">93</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.enableCampaignFeature" datatype="html">
-        <source>Enable Campaign Features?</source>
-        <target state="translated">¿Habilitar las funciones de la campaña?</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">104</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.enableAllCampaign" datatype="html">
-        <source> This will enable all the campaign related functionalities.</source>
-        <target state="translated"> Esto permitirá todas las funcionalidades relacionadas con la campaña.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">105</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.enableTaskShuttle" datatype="html">
-        <source>Enable Task Shuttle</source>
-        <target state="translated">Activar la lanzadera de tareas</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">117</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.taskShuttleAllowYourGroup" datatype="html">
-        <source>Task Shuttle allows your group to receive tasks from other groups. Select the section that will receive all Shuttle Tasks.</source>
-        <target state="translated">Task Shuttle permite a su grupo recibir tareas de otros grupos. Seleccione la sección que recibirá todas las tareas de Shuttle.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">119</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.convertAgora" datatype="html">
-        <source>Convert Group To Agora</source>
-        <target state="translated">Convertir Grupo a Ágora</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">142</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.switchAgoraDescription" datatype="html">
-        <source> This will switch the group type to Agora and all members of the workplace will be able to see it.</source>
-        <target state="translated">Esto cambiará el tipo de grupo a Ágora y todos los miembros del lugar de trabajo podrán verlo.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">143</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.freezeDueDate" datatype="html">
-        <source>FREEZE Date change for other members?</source>
-        <target state="translated">¿FREEZE cambio de fecha para otros miembros?</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">155</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.freezeDueDateDescription" datatype="html">
-        <source> When this is ON, only GM and task creator will be able to change the dates of a task.</source>
-        <target state="translated">Cuando está ON, solo el GM y el creador de la tarea podrán cambiar las fechas de una tarea.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.html</context>
-          <context context-type="linenumber">156</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="groupAdmin.pleaseWaitAddingUserToGroup" datatype="html">
         <source>Please wait we are adding the new user to your group...</source>
         <target state="translated">Espere, estamos agregando el nuevo usuario a su grupo ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">111</context>
+          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.addedToGroup" datatype="html">
@@ -4579,7 +4443,7 @@
         <target state="translated">¡<x id="PH" equiv-text="member.first_name"/> agregado a tu grupo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">114</context>
+          <context context-type="linenumber">84</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.unableToAdd" datatype="html">
@@ -4587,99 +4451,7 @@
         <target state="translated">No se puede agregar a <x id="PH" equiv-text="member.first_name"/> a su grupo. Vuelva a intentarlo.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">115</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.pleaseWaitsavingSettings" datatype="html">
-        <source>Please wait we are saving the new setting...</source>
-        <target state="translated">Espere, estamos guardando la nueva configuración ...</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">122</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">215</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.settingsSaved" datatype="html">
-        <source>Settings saved to your group!</source>
-        <target state="translated">¡Ajustes guardados en tu grupo!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">129</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">140</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">151</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">162</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">173</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">184</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">195</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">206</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">220</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="groupAdmin.unableToSaveGroupSettings" datatype="html">
-        <source>Unable to save the settings to your group, please try again!</source>
-        <target state="translated">No se puede guardar la configuración en su grupo, ¡inténtelo de nuevo!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">131</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">142</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">153</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">164</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">175</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">186</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">197</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">208</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">222</context>
+          <context context-type="linenumber">85</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupRAGDialog.boarAccessRights" datatype="html">
@@ -4776,6 +4548,330 @@
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-rag-dialog/group-rag-dialog.component.ts</context>
           <context context-type="linenumber">92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupBackgroundImageDetails.updateYourGroupImage" datatype="html">
+        <source>Update your background group image</source>
+        <target state="translated">Actualice su imagen de fondo</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-background-image-details/group-background-image-details.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupBackgroundImageDetails.updateYourImage" datatype="html">
+        <source>Update your Image!</source>
+        <target state="translated">Suba su Imagen!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-background-image-details/group-background-image-details.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupBackgroundImageDetails.pleaseWaitWhileWeUpdate" datatype="html">
+        <source>Please wait while we are updating the group...</source>
+        <target state="translated">Espere mientras actualizamos el grupo ...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-background-image-details/group-background-image-details.component.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupBackgroundImageDetails.groupUpdated" datatype="html">
+        <source>Group Updated!</source>
+        <target state="translated">¡Grupo actualizado!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-background-image-details/group-background-image-details.component.ts</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupBackgroundImageDetails.unableToUpdate" datatype="html">
+        <source>Unable to update the group!</source>
+        <target state="translated">No se puede actualizar el grupo.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-background-image-details/group-background-image-details.component.ts</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.shareFiles" datatype="html">
+        <source>Share files with the organization</source>
+        <target state="translated">Compara ficheros con la organización</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.makesAllFilesAccessible" datatype="html">
+        <source>This option makes all the files from this group accessible to the entire organization</source>
+        <target state="translated">Esta opción hace que todos los archivos de este grupo sean accesibles para toda la organización</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.enableRAG" datatype="html">
+        <source>Enable restricted access groups</source>
+        <target state="translated">Habilitar grupos de acceso restringido (RAG)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.RAGAllowAdminsToChose" datatype="html">
+        <source>RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.</source>
+        <target state="translated">RAG es la opción para crear grupos especiales de usuarios dentro de un grupo, para darles un control detallado sobre algo.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br&gt;"/> Si desea que solo un determinado grupo de usuarios vea una tarea, edite una sección del tablero, vea, edite o elimine un archivo, etc.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.manageRAG" datatype="html">
+        <source>Manage RAG</source>
+        <target state="translated">Gestionar RAG</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.enableProjectFeatures" datatype="html">
+        <source>Enable Project Features</source>
+        <target state="translated">Habilitar Funcionalidades de Proyecto</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.enableAdvancedProjectFunctionalities" datatype="html">
+        <source> This will enable all advanced project related functionalities like: timeline, project planning etc.</source>
+        <target state="translated">Esto habilitará todas las funciones avanzadas relacionadas con el proyecto, como: línea de tiempo, planificación de proyectos, etc.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.enableTaskAllocation" datatype="html">
+        <source>Enable Tasks Allocation</source>
+        <target state="translated">Habilitar Asignación de Tareas</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.enableAllocationsFeaturesOnTasks" datatype="html">
+        <source> This will enable allocation features on the tasks and resource management.</source>
+        <target state="translated">Esto habilitará las funciones de asignación en las tareas y la gestión de recursos.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.enableCampaignFeature" datatype="html">
+        <source>Enable Campaign Features?</source>
+        <target state="translated">¿Habilitar funciones de campaña?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.enableAllCampaign" datatype="html">
+        <source> This will enable all the campaign related functionalities.</source>
+        <target state="translated">Esto habilitará todas las funcionalidades relacionadas con la campaña.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.enableTaskShuttle" datatype="html">
+        <source>Enable Task Shuttle</source>
+        <target state="translated">Habilitar Task Shuttle</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.taskShuttleAllowYourGroup" datatype="html">
+        <source>Task Shuttle allows your group to receive tasks from other groups. Select the section that will receive all Shuttle Tasks.</source>
+        <target state="translated">Task Shuttle le permite a su grupo recibir tareas de otros grupos. Seleccione la sección que recibirá todas las tareas de transporte.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.convertAgora" datatype="html">
+        <source>Convert Group To Agora</source>
+        <target state="translated">Convetir Grupo a Agora</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.switchAgoraDescription" datatype="html">
+        <source> This will switch the group type to Agora and all members of the workplace will be able to see it.</source>
+        <target state="translated">Esto cambiará el tipo de grupo a Ágora y todos los miembros del lugar de trabajo podrán verlo.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">95</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.freezeDueDate" datatype="html">
+        <source>FREEZE Date change for other members?</source>
+        <target state="translated">¿CONGELAR Cambio de fecha para otros miembros?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">107</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.freezeDueDateDescription" datatype="html">
+        <source> When this is ON, only GM and task creator will be able to change the dates of a task.</source>
+        <target state="translated">Cuando está ACTIVADO, solo el GM y el creador de la tarea podrán cambiar las fechas de una tarea.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.backgroundImage" datatype="html">
+        <source>Select an image to be used as background in the group.</source>
+        <target state="translated">Seleccione una imagen para usarla como fondo en el grupo.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">115</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.selectImageº" datatype="html">
+        <source> Select Image </source>
+        <target state="translated">Seleccionar Imagen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">118,120</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.backgroundColor" datatype="html">
+        <source>Select a color to be used as background in the group.</source>
+        <target state="translated">Seleccione un color para usar como fondo en el grupo.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">137</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.selectColor" datatype="html">
+        <source>Select Color</source>
+        <target state="translated">Seleccionar Color</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.html</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.pleaseWaitsavingSettings" datatype="html">
+        <source>Please wait we are saving the new setting...</source>
+        <target state="translated">Espere, estamos guardando la nueva configuración ...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">116</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">132</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">225</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.settingsSaved" datatype="html">
+        <source>Settings saved to your group!</source>
+        <target state="translated">¡Ajustes guardados en tu grupo!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">122</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">139</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">150</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">161</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">172</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">183</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">194</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">205</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">216</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">230</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="groupSettings.unableToSaveGroupSettings" datatype="html">
+        <source>Unable to save the settings to your group, please try again!</source>
+        <target state="translated">No se puede guardar la configuración en su grupo, ¡inténtelo de nuevo!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">86</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">125</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">141</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">152</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">163</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">174</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">185</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">196</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">207</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">218</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
+          <context context-type="linenumber">232</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSmartAdmin.groupRules" datatype="html">
@@ -10025,7 +10121,7 @@
         <target state="translated">Espere, estamos guardando la información...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.ts</context>
-          <context context-type="linenumber">178</context>
+          <context context-type="linenumber">176</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.groupSavedFavorite" datatype="html">
@@ -10033,7 +10129,7 @@
         <target state="translated">¡Grupo guardado como favorito!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.ts</context>
-          <context context-type="linenumber">187</context>
+          <context context-type="linenumber">185</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.unableToSaveAsFavorite" datatype="html">
@@ -10041,7 +10137,7 @@
         <target state="translated">No se puede guardar el grupo como favorito, ¡inténtalo de nuevo!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.ts</context>
-          <context context-type="linenumber">190</context>
+          <context context-type="linenumber">188</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.pleaseWaitWhileWeLogYouOut" datatype="html">
@@ -15027,7 +15123,7 @@
         <target state="translated">No tiene derechos para acceder a la publicación. ¡Contacta con el Gerente!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/services/utility-service/utility.service.ts</context>
-          <context context-type="linenumber">361</context>
+          <context context-type="linenumber">368</context>
         </context-group>
       </trans-unit>
       <trans-unit id="utilityService.areYouSure" datatype="html">
