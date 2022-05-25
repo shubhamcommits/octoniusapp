@@ -168,7 +168,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         }
         canOpen = canView || canEdit;
       }
-      this.utilityService.openCreatePostFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
+      this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
     }
   }
 

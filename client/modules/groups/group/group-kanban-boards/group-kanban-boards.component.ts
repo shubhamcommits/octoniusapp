@@ -490,7 +490,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
    */
   openFullscreenModal(postData: any): void {
     const canOpen = !this.groupData?.enabled_rights || postData?.canView || postData?.canEdit;
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(postData._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
+    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(postData._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
     if (dialogRef) {
       const deleteEventSubs = dialogRef.componentInstance.deleteEvent.subscribe((data) => {
         this.onDeleteEvent(data);

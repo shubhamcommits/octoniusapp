@@ -329,9 +329,16 @@ export class UtilityService {
   }
 
   /**
+   * This function removes/dismiss all the modals that are opened
+   */
+  async closeAllModals(){
+    return this.modalService.dismissAll();
+  }
+
+  /**
    * This function is responsible for opening a fullscreen dialog to edit a task
    */
-  openCreatePostFullscreenModal(postId: string, groupId: string, isIdeaModuleAvailable: boolean, canOpen: boolean, columns?: any) {
+  openPostDetailsFullscreenModal(postId: string, groupId: string, isIdeaModuleAvailable: boolean, canOpen: boolean, columns?: any) {
     let dialogOpen;
 
     // !groupData?.enabled_rights || postData?.canView || postData?.canEdit
@@ -361,13 +368,6 @@ export class UtilityService {
       this.warningNotification($localize`:@@utilityService.noRightToOpenPost:You does not have rights to access the post. Contact with the Manager!`);
     }
     return dialogOpen;
-  }
-
-  /**
-   * This function removes/dismiss all the modals that are opened
-   */
-  async closeAllModals(){
-    return this.modalService.dismissAll();
   }
 
   /**

@@ -150,9 +150,9 @@ export class GroupActivityFeedComponent implements OnInit {
 
       let dialogRef;
       if (post['type'] === 'task') {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
+        dialogRef = this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
       } else {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
+        dialogRef = this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
       }
 
       if (dialogRef) {

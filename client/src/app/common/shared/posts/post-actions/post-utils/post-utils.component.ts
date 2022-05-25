@@ -81,7 +81,7 @@ export class PostUtilsComponent implements OnInit {
    */
   openFullscreenModal(): void {
     const canOpen = !this.groupData?.enabled_rights || this.post?.canView || this.post?.canEdit;
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
+    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
 
     if (dialogRef) {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
