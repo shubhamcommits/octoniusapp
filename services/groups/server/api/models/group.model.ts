@@ -148,6 +148,12 @@ const GroupSchema = new Schema({
         type: Boolean,
         default: true,
     },
+    background_color: {
+        type: String
+    },
+    background_image: {
+        type: String
+    },
     custom_fields_table_widget: {
         selectTypeCFs: {
             type: [String]

@@ -1,0 +1,26 @@
+<!-- GROUP DETAIL MODAL STARTS -->
+
+<!-- GROUP HEADER STARTS -->
+<div class="modal-header">
+    <h4 class="modal-title" i18n="@@groupBackgroundImageDetails.updateYourGroupImage">Update your background group image</h4>
+</div>
+<!-- GROUP HEADER ENDS -->
+
+<!-- GROUP MODAL CHANGE IMAGE STARTS -->
+<div class="modal-body">
+    <div class="form-group">
+        <app-secured-image
+          [imgURL]="groupData?.background_image"
+          [service]="'group'"></app-secured-image>
+        <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
+    </div>
+</div>
+<!-- GROUP MODAL CHANGE IMAGE ENDS -->
+
+<!-- GROUP FOOTER STARTS -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="updateImage()" i18n="@@groupBackgroundImageDetails.updateYourImage">Update your Image!</button>
+</div>
+<!-- GROUP FOOTER ENDS -->
+
+<!-- GROUP DETAIL MODAL ENDS -->

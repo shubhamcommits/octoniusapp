@@ -5,11 +5,11 @@ import { GroupService } from 'src/shared/services/group-service/group.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
-  selector: 'app-group-image-details',
-  templateUrl: './group-image-details.component.html',
-  styleUrls: ['./group-image-details.component.scss']
+  selector: 'app-group-background-image-details',
+  templateUrl: './group-background-image-details.component.html',
+  styleUrls: ['./group-background-image-details.component.scss']
 })
-export class GroupImageDetailsComponent implements OnInit {
+export class GroupBackgroundImageDetailsComponent implements OnInit {
 
   constructor(
     private injector: Injector
@@ -23,9 +23,6 @@ export class GroupImageDetailsComponent implements OnInit {
 
   // Cropped Image of the Input Image File
   croppedImage: File;
-
-  // Unsubscribe the Data
-  private subSink = new SubSink();
 
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
@@ -47,22 +44,19 @@ export class GroupImageDetailsComponent implements OnInit {
     let groupService = this.injector.get(GroupService)
     let utilityService = this.injector.get(UtilityService)
 
-    utilityService.asyncNotification($localize`:@@groupImageDetails.pleaseWaitWhileWeUpdate:Please wait while we are updating the group avatar...`,
+    utilityService.asyncNotification($localize`:@@groupBackgroundImageDetails.pleaseWaitWhileWeUpdate:Please wait while we are updating the group...`,
       new Promise((resolve, reject) => {
 
-        groupService.updateGroupImage(this.groupData._id, this.croppedImage, (this.groupData._workspace._id || this.groupData._workspace))
-        .then((res)=>{
+          groupService.updateGroupImage(this.groupData._id, this.croppedImage, (this.groupData._workspace._id || this.groupData._workspace), true).then((res)=>{
 
-          this.groupData.group_avatar = res['group']['group_avatar'];
-
-          this.publicFunctions.sendUpdatesToGroupData(this.groupData)
-
-          resolve(utilityService.resolveAsyncPromise($localize`:@@groupImageDetails.groupAvatarUpdated:Group Avatar Updated!`))
-        })
-        .catch(()=>{
-          reject(utilityService.rejectAsyncPromise($localize`:@@groupImageDetails.unableToUpdateAvatar:Unable to update the group avatar!`))
-        })
-
-      }))
+            this.groupData.background_image = res['group']['background_image'];
+            this.publicFunctions.sendUpdatesToGroupData(this.groupData)
+            resolve(utilityService.resolveAsyncPromise($localize`:@@groupBackgroundImageDetails.groupUpdated:Group Updated!`))
+            window.location.reload();
+          })
+          .catch(()=>{
+            reject(utilityService.rejectAsyncPromise($localize`:@@groupBackgroundImageDetails.unableToUpdate:Unable to update the group!`))
+          });
+      }));
   }
 }

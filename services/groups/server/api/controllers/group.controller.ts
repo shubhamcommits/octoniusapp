@@ -858,24 +858,55 @@ export class GroupController {
 
         // Fetch the groupId
         const { groupId } = req.params;
+        const isBackbroundImage = req.body.fileData.isBackbroundImage
 
         // Fetch the fileName from fileHandler middleware
         const fileName = req['fileName'];
 
         try {
 
+            let update = {};
+            if (isBackbroundImage) {
+                update = {
+                    background_image: fileName
+                };
+            } else {
+                update = {
+                    group_avatar: fileName
+                };
+            }
+
             // Find the group and update their respective group avatar
             const group = await Group.findByIdAndUpdate({
                 _id: groupId
-            }, {
-                group_avatar: fileName
-            }, {
+            }, update, {
                 new: true
-            }).select('group_name group_avatar');
+            }).populate({
+                path: '_members',
+                select: '_id',
+                options: {
+                    count: true
+                },
+                match: {
+                    active: true
+                }
+            })
+            .populate({
+                path: '_admins',
+                select: '_id',
+                options: {
+                    count: true
+                },
+                match: {
+                    active: true
+                }
+            })
+            .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+            .lean();
 
             // Send status 200 response
             return res.status(200).json({
-                message: 'Group avatar updated!',
+                message: 'Group updated!',
                 group: group
             });
         } catch (err) {

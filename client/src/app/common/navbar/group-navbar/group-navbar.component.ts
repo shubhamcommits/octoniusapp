@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy, Injector, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
-import { ActivatedRoute, Router } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { SubSink } from 'subsink';
-import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 
 @Component({

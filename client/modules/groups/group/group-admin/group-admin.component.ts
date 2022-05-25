@@ -3,8 +3,6 @@ import { PublicFunctions } from 'modules/public.functions';
 import { ActivatedRoute } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { GroupService } from 'src/shared/services/group-service/group.service';
-import { MatDialog } from '@angular/material/dialog';
-import { GroupRAGDialogComponent } from './group-rag-dialog/group-rag-dialog.component';
 
 @Component({
   selector: 'app-group-admin',
@@ -28,24 +26,7 @@ export class GroupAdminComponent implements OnInit {
   // Current Workspace Data
   workspaceData: any = {};
 
-  enabledRights: boolean = false;
-
-  enabledProjectType: boolean = false;
-
-  enabledShuttleType: boolean = false;
-
-  // Campaign Status
-  enabledCampaign: boolean;
-
-  switchAgora: boolean = false;
-
-  freezeDates: boolean = false;
-
   shuttleTasksModuleAvailable: boolean = false;
-
-  enableAllocation: boolean = false;
-
-  groupSections: any = [];
 
   // Campaign Module Available
   campaignModuleAvailable: boolean = false
@@ -54,7 +35,6 @@ export class GroupAdminComponent implements OnInit {
     private injector: Injector,
     private utilityService: UtilityService,
     private groupService: GroupService,
-    public dialog: MatDialog,
     private router: ActivatedRoute) { }
 
   async ngOnInit() {
@@ -62,21 +42,11 @@ export class GroupAdminComponent implements OnInit {
     // Fetch current group from the service
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
-    // Fetch the setting status
-    this.enabledRights = this.groupData.enabled_rights;
-    this.enabledProjectType = this.groupData.project_type;
-    this.enabledShuttleType = this.groupData.shuttle_type;
-    this.enabledCampaign = this.groupData.enabled_campaign
-    this.switchAgora = this.groupData.type == 'agora';
-    this.freezeDates = this.groupData.freeze_dates;
-
     // Fetch Current User
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetch Current Workspace
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
-
-    this.groupSections = await this.publicFunctions.getAllColumns(this.groupId);
 
     this.shuttleTasksModuleAvailable = await this.publicFunctions.isShuttleTasksModuleAvailable()
 
@@ -114,131 +84,5 @@ export class GroupAdminComponent implements OnInit {
       .then(()=> resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.addedToGroup:${member.first_name} added to your group!`)))
       .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToAdd:Unable to add ${member.first_name} to your group, please try again!`)))
     }))
-  }
-
-  saveSettings(selected) {
-
-    // Save the settings
-    this.utilityService.asyncNotification($localize`:@@groupAdmin.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
-      new Promise((resolve, reject)=>{
-        if (selected.source.name === 'share_files') {
-          this.groupService.saveSettings(this.groupId, {share_files: selected.checked})
-            .then(()=> {
-              this.groupData.share_files = selected.checked;
-              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
-            })
-            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
-        }
-
-        if (selected.source.name === 'enabled_rights') {
-          this.groupService.saveSettings(this.groupId, {enabled_rights: selected.checked})
-            .then(()=> {
-              this.enabledRights = selected.checked;
-              this.groupData.enabled_rights = selected.checked;
-              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
-            })
-            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
-        }
-
-        if (selected.source.name === 'enabled_project_type') {
-          this.groupService.saveSettings(this.groupId, {project_type: selected.checked})
-            .then(()=> {
-              this.enabledProjectType = selected.checked;
-              this.groupData.project_type = selected.checked;
-              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
-            })
-            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
-        }
-
-        if (selected.source.name === 'enabled_shuttle_type') {
-          this.groupService.saveSettings(this.groupId, {shuttle_type: selected.checked})
-            .then(()=> {
-              this.enabledShuttleType = selected.checked;
-              this.groupData.shuttle_type = selected.checked;
-              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
-            })
-            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
-        }
-
-        if (selected.source.name === 'enable_allocation') {
-          this.groupService.saveSettings(this.groupId, {enable_allocation: selected.checked})
-            .then(()=> {
-              this.enableAllocation = selected.checked;
-              this.groupData.enable_allocation = selected.checked;
-              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
-            })
-            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
-        }
-
-        if(selected.source.name === 'enabled_campaign'){
-          this.groupService.saveSettings(this.groupId, {enabled_campaign: selected.checked})
-            .then(()=> {
-              this.enabledCampaign = selected.checked;
-              this.groupData.enabled_campaign = selected.checked;
-              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
-            })
-            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
-        }
-
-        if(selected.source.name === 'switch-agora'){
-          this.groupService.saveSettings(this.groupId, { type: (selected.checked) ? 'agora' : 'normal' })
-            .then(()=> {
-              this.switchAgora = selected.checked;
-              this.groupData.type = (selected.checked) ? 'agora' : 'normal';
-              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
-            })
-            .catch((err) => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
-        }
-
-        if(selected.source.name === 'freeze_dates') {
-          this.groupService.saveSettings(this.groupId, {freeze_dates: selected.checked})
-            .then(()=> {
-              this.freezeDates = selected.checked;
-              this.groupData.freeze_dates = selected.checked;
-              this.publicFunctions.sendUpdatesToGroupData(this.groupData);
-              resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
-            })
-            .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
-        }
-      }));
-  }
-
-  selectShuttleSection(column: any) {
-
-    this.utilityService.asyncNotification($localize`:@@groupAdmin.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
-      new Promise((resolve, reject)=>{
-        this.groupService.selectShuttleSection(this.groupId, column)
-        .then((res)=> {
-          this.publicFunctions.sendUpdatesToGroupData(res['group']);
-          resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupAdmin.settingsSaved:Settings saved to your group!`));
-        })
-        .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupAdmin.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
-      }));
-  }
-
-  openRAGModal(groupId){
-    const dialogRef = this.dialog.open(GroupRAGDialogComponent, {
-      width: '100%',
-      height: '100%',
-      disableClose: true,
-      data: { groupData: this.groupData }
-    });
-    const sub = dialogRef.componentInstance.closeEvent.subscribe(async (data) => {
-      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      sub.unsubscribe();
-    });
-  }
-
-  convertAgora($event) {
-
   }
 }
