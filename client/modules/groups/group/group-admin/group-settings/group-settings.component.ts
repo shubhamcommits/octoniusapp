@@ -120,7 +120,7 @@ export class GroupSettingsComponent implements OnInit {
             this.groupData.background_color = color;
             this.publicFunctions.sendUpdatesToGroupData(this.groupData);
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupSettings.settingsSaved:Settings saved to your group!`));
-            //window.location.reload();
+            window.location.reload();
           })
           .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@groupSettings.unableToSaveGroupSettings:Unable to save the settings to your group, please try again!`)))
       }));
