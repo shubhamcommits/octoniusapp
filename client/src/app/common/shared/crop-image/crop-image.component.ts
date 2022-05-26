@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild, Input } from '@angular/core';
 import { base64ToFile, ImageCroppedEvent, ImageCropperComponent, ImageTransform } from 'ngx-image-cropper';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
@@ -9,9 +9,8 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 })
 export class CropImageComponent implements OnInit {
 
-  constructor(
-    private utilityService: UtilityService
-  ) { }
+  @Input() resizeToWidth = 0;
+  @Input() cropperMinWidth = 0;
 
   // OUTPUT IMAGE EMITTER
   @Output('outputImage') outputImage = new EventEmitter();
@@ -29,6 +28,10 @@ export class CropImageComponent implements OnInit {
   transform: ImageTransform = {};
   translateH = 0;
   translateV = 0;
+
+  constructor(
+    private utilityService: UtilityService
+  ) { }
 
   ngOnInit() {
   }

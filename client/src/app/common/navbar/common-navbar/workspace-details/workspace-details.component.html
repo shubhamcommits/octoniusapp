@@ -12,7 +12,7 @@
         <app-secured-image *ngIf="workspaceData"
           [imgURL]="workspaceData?.workspace_avatar"
           [service]="'workspace'"></app-secured-image>
-        <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
+        <app-crop-image class="container" [resizeToWidth]="300" [cropperMinWidth]="300" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>
 </div>
 <!-- WORKSPACE MODAL CHANGE IMAGE ENDS -->
