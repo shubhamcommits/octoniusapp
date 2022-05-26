@@ -287,22 +287,23 @@ export class TaskActionsComponent implements OnChanges, OnInit, AfterViewInit, O
       });
   }
 
-  onTransferPost(data) {
+  async onTransferPost(data) {
     const post = data.post;
     const isCopy = data.isCopy;
 
     if (!isCopy) {
       // redirect the user to the post
       const groupId = data.groupId;
+      const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+      this.publicFunctions.sendUpdatesToGroupData(newGroup);
 
       // Close the modal
       this.mdDialogRef.close();
-
       // Set the Value of element selection box to be the url of the post
       if (post.type === 'task') {
-        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, postId: post._id } });
+        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { postId: post._id } });
       } else {
-        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, postId: post._id } });
+        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: post._id } });
       }
     }
   }

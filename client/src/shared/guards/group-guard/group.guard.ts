@@ -17,6 +17,8 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 })
 export class GroupGuard implements CanActivate  {
 
+  private publicFunctions = new PublicFunctions(this.injector);
+
   constructor(
     private groupService: GroupService,
     private utilityService: UtilityService,
@@ -24,27 +26,21 @@ export class GroupGuard implements CanActivate  {
     private router: Router,
     private injector: Injector,
   ) {
-
   }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<boolean> {
-    const currentGroup = state.root.queryParamMap.get('group');
-
-    return this.checkUserGroups(currentGroup) && this.checkGroupAdmins(currentGroup, state);
+  ) {
+    return this.checkUserGroups() && this.checkGroupAdmins(state);
   }
 
-  private publicFunctions = new PublicFunctions(this.injector);
 
+  async checkUserGroups() {
 
-  async checkUserGroups(currentGroupId) {
+    const currentGroup: any = await this.publicFunctions.getCurrentGroupDetails();
 
     let userData = (this.storageService.existData('userData') === null) ? {} : this.storageService.getLocalData('userData');
-
-    let currentGroup;
-    currentGroup = await this.publicFunctions.getGroupDetails(currentGroupId);
 
     if (currentGroup.archived_group) {
       this.utilityService.warningNotification($localize`:@@groupGuard.oopsGroupDoesNotExist:Oops seems like the group don\'t exist!`);
@@ -54,9 +50,9 @@ export class GroupGuard implements CanActivate  {
 
     const groupMembersIndex = currentGroup._members.findIndex((member: any) => member._id == userData._id);
     const groupAdminsIndex = currentGroup._admins.findIndex((admin: any) => admin._id == userData._id);
-    const userGroupsIndex = userData._groups.findIndex((group: any) => group == currentGroupId);
+    const userGroupsIndex = userData._groups.findIndex((group: any) => group == currentGroup?._id);
 
-    if (groupMembersIndex >= 0 || groupAdminsIndex >= 0 || userGroupsIndex >= 0 || userData._private_group == currentGroupId) {
+    if (groupMembersIndex >= 0 || groupAdminsIndex >= 0 || userGroupsIndex >= 0 || userData._private_group == currentGroup?._id) {
       return true;
     } else {
       this.utilityService.warningNotification($localize`:@@groupGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);
@@ -65,9 +61,11 @@ export class GroupGuard implements CanActivate  {
     }
   }
 
-  checkGroupAdmins(currentGroup, state): Observable<boolean> {
+  async checkGroupAdmins(state) {
 
     let userId = '';
+
+    const currentGroup: any = await this.publicFunctions.getCurrentGroupDetails();
 
     this.utilityService.currentUserData.subscribe((res) => {
       if(res && JSON.stringify(res) != JSON.stringify({})){
@@ -75,14 +73,14 @@ export class GroupGuard implements CanActivate  {
       }
     });
 
-    return this.groupService.getGroupObservale(currentGroup).pipe(map((res) => {
-      if (res['group']['_admins'].findIndex((admin: any) => admin._id == userId) < 0 && this.isGroupManagerURL(state)) {
-        this.utilityService.warningNotification($localize`:@@groupGuard.oopsNoPermissionForSection:Oops seems like you don\'t have the permission to access the section, kindly contact your superior to provide you the proper admin rights!`);
-        this.router.navigate(['dashboard', 'work', 'groups', 'activity'], {queryParams: { group: currentGroup }});
-        return false;
-      }
-      return true;
-    }))
+    if (currentGroup?._admins?.findIndex((admin: any) => admin._id == userId) < 0 && this.isGroupManagerURL(state)) {
+      const newGroup = await this.publicFunctions.getGroupDetails(currentGroup?._id);
+      this.publicFunctions.sendUpdatesToGroupData(newGroup);
+      this.utilityService.warningNotification($localize`:@@groupGuard.oopsNoPermissionForSection:Oops seems like you don\'t have the permission to access the section, kindly contact your superior to provide you the proper admin rights!`);
+      this.router.navigate(['dashboard', 'work', 'groups', 'activity']);
+      return false;
+    }
+    return true;
   }
 
   isGroupManagerURL(state): boolean {

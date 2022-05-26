@@ -346,9 +346,9 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       id: file._id,
       value:
         (file.type == 'folio')
-          ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+          ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
           : (file.type == "flamingo")
-            ? `<a href="/document/flamingo/${file._id}?group=${file._group._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
             : `<a href="${this.filesBaseUrl}/${file._id}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
     }));
 

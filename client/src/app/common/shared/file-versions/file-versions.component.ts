@@ -29,6 +29,8 @@ export class FileVersionsComponent implements OnInit {
 
   fileVersions;
 
+  groupData;
+
   authToken: string;
 
   shareDBSocket;
@@ -55,9 +57,10 @@ export class FileVersionsComponent implements OnInit {
     private injector: Injector
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     if (!this.currentGroupId) {
-      this.currentGroupId = this.router.snapshot.queryParamMap.get('group');
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+      this.currentGroupId = this.groupData?._id;
     }
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
 

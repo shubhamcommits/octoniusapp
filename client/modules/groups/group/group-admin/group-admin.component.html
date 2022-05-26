@@ -22,7 +22,7 @@
         <!-- Search member component starts -->
         <app-component-search-input-box *ngIf="userData && checkDataExist(userData)"
             [placeholder]="'Search member to add'"
-            [groupId]="groupId" [workspaceId]="userData._workspace" [userData]="userData" [type]="'group'"
+            [groupId]="groupData?._id" [workspaceId]="userData._workspace" [userData]="userData" [type]="'group'"
             (member)="addNewUser($event)" class="search-member-admin">
         </app-component-search-input-box>
         <!-- Search member component ends -->
@@ -52,8 +52,8 @@
     [campaignModuleAvailable]="campaignModuleAvailable"></app-group-settings>
 
   <!-- Delete Group Component starts -->
-  <app-delete-group *ngIf="groupId && groupId != null && groupId != undefined"
-    [groupId]="groupId" [numMembers]="groupData?._members?.length + groupData?._admins?.length">
+  <app-delete-group *ngIf="groupData && groupData?._id && groupData?._members && groupData?._admins"
+    [groupId]="groupData?._id" [numMembers]="groupData?._members?.length + groupData?._admins?.length">
   </app-delete-group>
   <!-- Delete Group Component ends -->
 

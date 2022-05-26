@@ -32,21 +32,24 @@ export class FolioGuard implements CanActivate  {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-    const currentGroupId = state.root.queryParamMap.get('group');
     const readOnly = (state.root.queryParamMap.get('readOnly') == 'true') ? true : false;
 
-    let currentGroup;
-    await this.groupService.getGroup(currentGroupId).then(res => {
-      currentGroup = res['group'];
-    });
-
-    if (!currentGroup?.enabled_rights && readOnly) {
-      return true;
-    }
+    // Public Functions Instance
+    let publicFunctions = this.injector.get(PublicFunctions);
 
     let userData = await this.publicFunctions.getCurrentUser();
     const fileId = next['_urlSegment'].segments[1].path;
     let file: any = await this.publicFunctions.getFile(fileId);
+
+    let currentGroup: any = await publicFunctions.getCurrentGroupDetails();
+
+    if (!this.utilityService.objectExists(currentGroup)) {
+      currentGroup = await publicFunctions.getGroupDetails(file?._group?._id || file?._group);
+    }
+
+    if (!currentGroup?.enabled_rights && readOnly) {
+      return true;
+    }
 
     const isAdmin = await this.isAdminUser(currentGroup, userData);
 

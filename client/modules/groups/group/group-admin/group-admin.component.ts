@@ -17,9 +17,6 @@ export class GroupAdminComponent implements OnInit {
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
 
-  // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.queryParamMap.get('group');
-
   // Current Group Data
   groupData: any = {}
 
@@ -60,7 +57,7 @@ export class GroupAdminComponent implements OnInit {
   }
 
   addNewUser(member: any){
-    this.onAddNewUser(this.groupId, member)
+    this.onAddNewUser(this.groupData?._id, member)
 
     if(member.role === 'member')
       this.groupData._members.push(member)

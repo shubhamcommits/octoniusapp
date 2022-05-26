@@ -102,7 +102,7 @@
                         [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
                         [task]="task"
                         [isIdeaModuleAvailable]="isIdeaModuleAvailable"
-                        [groupId]="groupId">
+                        [groupId]="groupData?._id">
                       <div *cdkDragPlaceholder></div>
                     </app-kanban-task-card>
                     <!-- TASK DETAILS ENDS -->
@@ -215,7 +215,7 @@
                       [isDelay]="isDelay(task?.task?.due_to, column?.due_date)"
                       [task]="task"
                       [isIdeaModuleAvailable]="isIdeaModuleAvailable"
-                      [groupId]="groupId">
+                      [groupId]="groupData?._id">
                     </app-kanban-task-card>
                     <!-- TASK DETAILS ENDS -->
                 </div>

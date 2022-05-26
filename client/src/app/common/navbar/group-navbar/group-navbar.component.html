@@ -59,7 +59,6 @@
       <li class="nav-item" *ngIf="myWorkplace">
         <a [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_activity')" routerLink="/dashboard/work/groups/activity"
-            [queryParams]="{ group: userData?._private_group }"
             routerLinkActive="active">
               <span class="dot dot-notes"></span>
               <span i18n="@@groupNavbar.notes"> Notes</span>
@@ -69,7 +68,6 @@
         <a [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_tasks')"
             routerLink="/dashboard/work/groups/tasks"
-            [queryParams]="{ group: userData?._private_group }"
             routerLinkActive="active">
               <span class="dot dot-personal-tasks"></span>
               <span i18n="@@groupNavbar.personalTasks"> Personal Tasks</span>
@@ -79,7 +77,6 @@
         <a [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_files')"
             routerLink="/dashboard/work/groups/files"
-            [queryParams]="{ group: userData?._private_group }"
             routerLinkActive="active">
               <span class="dot dot-personal-files"></span>
               <span i18n="@@groupNavbar.personalFiles"> Personal Files</span>
@@ -90,7 +87,6 @@
         <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_activity'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_activity')"
             routerLink="/dashboard/work/groups/activity"
-            [queryParams]="{ group: groupData?._id }"
             routerLinkActive="active" i18n="@@groupNavbar.activity">
               Activity
         </a>
@@ -99,7 +95,6 @@
           <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_tasks'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_tasks')"
               routerLink="/dashboard/work/groups/tasks"
-              [queryParams]="{ group: groupData?._id }"
               routerLinkActive="active"
               i18n="@@groupNavbar.tasks">
                 Tasks
@@ -109,7 +104,6 @@
           <a *ngIf="!myWorkplace" [ngClass]="activeState == 'groups_files'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_files')"
               routerLink="/dashboard/work/groups/files"
-              [queryParams]="{ group: groupData?._id }"
               routerLinkActive="active"
               i18n="@@groupNavbar.files">
                 Files
@@ -120,7 +114,6 @@
           <a [ngClass]="activeState == 'groups_members'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_members')"
               routerLink="/dashboard/work/groups/members"
-              [queryParams]="{ group: groupData?._id }"
               routerLinkActive="active"
               i18n="@@groupNavbar.members">
                 Members
@@ -131,7 +124,6 @@
           <a [ngClass]="activeState == 'groups_dashboard'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_dashboard')"
               routerLink="/dashboard/work/groups/dashboard"
-              [queryParams]="{ group: groupData?._id }"
               routerLinkActive="active"
               i18n="@@groupNavbar.dashboard">
                 Dashboard
@@ -143,7 +135,6 @@
         <a [ngClass]="activeState == 'groups_reports'?'nav-link active-nav':'nav-link'"
             (click)="changeState('groups_reports')"
             routerLink="/dashboard/work/groups/reports"
-            [queryParams]="{ group: groupData?._id }"
             routerLinkActive="active"
             i18n="@@groupNavbar.reports">
               Reports
@@ -155,7 +146,6 @@
           <a [ngClass]="activeState == 'groups_admin'?'nav-link active-nav':'nav-link'"
               (click)="changeState('groups_admin')"
               routerLink="/dashboard/work/groups/admin"
-              [queryParams]="{ group: groupData?._id }"
               routerLinkActive="active"
               i18n="@@groupNavbar.admin">
                 Admin

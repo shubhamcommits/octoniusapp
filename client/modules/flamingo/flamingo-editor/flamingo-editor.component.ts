@@ -20,10 +20,9 @@ export class FlamingoEditorComponent implements OnInit {
 
   fileId: string;
 
-  // GroupID Variable
-  groupId: any;
-
   workspaceId: any;
+
+  groupData;
 
   activeQuestionIndex = 0;
 
@@ -56,7 +55,7 @@ export class FlamingoEditorComponent implements OnInit {
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.params['id'];
 
-    this.groupId = this._ActivatedRoute.snapshot.queryParamMap.get('group');
+    this.groupData = this.publicFunctions.getCurrentGroupDetails();
 
     // Fetch the current user
     const userData = await this.publicFunctions.getCurrentUser();

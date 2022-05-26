@@ -261,9 +261,12 @@ export class PublicFunctions {
         return new Promise(async (resolve, reject) => {
             const router = this.injector.get(ActivatedRoute);
             const groupId = router.snapshot.queryParamMap.get('group');
-
-            const groupData = await this.getGroupDetails(groupId);
-            resolve(groupData);
+            if (groupId) {
+              const groupData = await this.getGroupDetails(groupId);
+              resolve(groupData);
+            } else {
+              resolve({});
+            }
         })
     }
 

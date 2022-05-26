@@ -12,18 +12,6 @@ import { StorageService } from 'src/shared/services/storage-service/storage.serv
 })
 export class GroupReportsComponent implements OnInit {
 
-  constructor(
-    private router: ActivatedRoute,
-    private injector: Injector,
-    private storageService: StorageService
-  ) { }
-
-  // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.queryParamMap.get('group')
-
-  // Public Functions
-  public publicFunctions = new PublicFunctions(this.injector)
-
   // Campaign File
   campaignFile: any
 
@@ -45,8 +33,19 @@ export class GroupReportsComponent implements OnInit {
   // User Data Object
   userData: any
 
+  groupData: any;
+
   // Current user member check
   isCurrentUserMember = false
+
+  // Public Functions
+  public publicFunctions = new PublicFunctions(this.injector)
+
+  constructor(
+    private router: ActivatedRoute,
+    private injector: Injector,
+    private storageService: StorageService
+  ) { }
 
   async ngOnInit() {
 
@@ -54,7 +53,9 @@ export class GroupReportsComponent implements OnInit {
     this.isLoading$.next(true)
 
     // Fetch Current User
-    this.userData = await this.publicFunctions.getCurrentUser()
+    this.userData = await this.publicFunctions.getCurrentUser();
+
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     // Current User Member check update
     this.isCurrentUserMember = (this.userData.role === 'member') ? true : false
@@ -63,7 +64,7 @@ export class GroupReportsComponent implements OnInit {
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`
 
     // Fetch all campaign files
-    this.files = await this.publicFunctions.getCampaignFiles(this.groupId)
+    this.files = await this.publicFunctions.getCampaignFiles(this.groupData?._id)
 
     // Pickup the latest campaign file
     if (this.files.length > 0) {

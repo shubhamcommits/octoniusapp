@@ -39,9 +39,6 @@ export class GroupTasksListViewComponent implements OnChanges {
   // Today's date object
   today = moment().local().startOf('day').format('YYYY-MM-DD');
 
-  // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.queryParamMap.get('group');
-
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
@@ -108,7 +105,7 @@ export class GroupTasksListViewComponent implements OnChanges {
     else {
 
       // Create the Column asynchronously
-      this.createNewSection(this.groupId, section.title);
+      this.createNewSection(this.groupData?._id, section.title);
     }
 
   }

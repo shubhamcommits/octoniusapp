@@ -36,9 +36,6 @@ export class GroupFilesComponent implements OnInit {
   // Delete Event Emitter - Emits delete event
   @Output('delete') delete = new EventEmitter();
 
-  // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.queryParamMap.get('group');
-
   // Base Url of the users uploads
   userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
@@ -141,14 +138,14 @@ export class GroupFilesComponent implements OnInit {
       await this.openFolder(folderId);
     }
 
-    if (this.groupData && this.groupData._workspace && this.groupId && this.userData) {
+    if (this.groupData && this.groupData._workspace && this.groupData?._id && this.userData) {
       this.workspaceId = this.groupData._workspace;
 
       // Fetches the user groups from the server
       await this.publicFunctions.getAllUserGroups(this.groupData._workspace, this.userData._id)
         .then((groups: any) => {
 
-          groups.splice(groups.findIndex(group => group._id == this.groupId), 1);
+          groups.splice(groups.findIndex(group => group._id == this.groupData?._id), 1);
 
           this.userGroups = groups;
 
@@ -169,7 +166,7 @@ export class GroupFilesComponent implements OnInit {
      * Obtain the custom fields
      */
      this.customFields = [];
-     await this.groupService.getGroupFilesCustomFields(this.groupId).then((res) => {
+     await this.groupService.getGroupFilesCustomFields(this.groupData?._id).then((res) => {
        if (res['group']['files_custom_fields']) {
          res['group']['files_custom_fields'].forEach(field => {
            this.customFields.push(field);
@@ -189,7 +186,7 @@ export class GroupFilesComponent implements OnInit {
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe(async (res)=>{
 
-        this.files = await this.publicFunctions.searchFiles(this.groupId, res);
+        this.files = await this.publicFunctions.searchFiles(this.groupData?._id, res);
         this.files = await this.filterRAGFiles(this.files);
       }));
   }
@@ -234,7 +231,7 @@ export class GroupFilesComponent implements OnInit {
       // Start the loading spinner
       this.isLoading$.next(true);
 
-      let files: any = await this.publicFunctions.getFiles(this.groupId, this.lastFileId);
+      let files: any = await this.publicFunctions.getFiles(this.groupData?._id, this.lastFileId);
       files = await this.filterRAGFiles(files);
 
       if(files) {
@@ -317,7 +314,7 @@ export class GroupFilesComponent implements OnInit {
       height: '90%',
       data: {
         id: folioId,
-        group: this.groupId
+        group: this.groupData?._id
       }
     });
   }
@@ -380,9 +377,9 @@ export class GroupFilesComponent implements OnInit {
       url += '/' + this.locale;
     }
     if (file?.type == 'folio') {
-      url += '/document/' + file?._id + '?group=' + this.groupId + '&readOnly=true';
+      url += '/document/' + file?._id + '?readOnly=true';
     } else if (file?.type == 'flamingo') {
-      url += '/document/flamingo/' + file?._id + '?group=' + this.groupId;
+      url += '/document/flamingo/' + file?._id;
     } else if (file?.type == 'file') {
       const lastFileVersion: any = await this.utilityService.getFileLastVersion(file);
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
@@ -448,9 +445,11 @@ export class GroupFilesComponent implements OnInit {
         if (res.value) {
           await this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitMovingFolio:Please wait we are moving the item...`, new Promise((resolve, reject) => {
             this.filesService.transferToGroup(itemId, groupId, false)
-              .then((res) => {
+              .then(async (res) => {
+                const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+                this.publicFunctions.sendUpdatesToGroupData(newGroup);
                 // Redirect to the new group files page
-                this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId } });
+                this._router.navigate(['/dashboard', 'work', 'groups', 'files']);
                 resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folioMoved:👍 Folio Moved!`));
               })
               .catch((error) => {
@@ -486,7 +485,7 @@ export class GroupFilesComponent implements OnInit {
         });
 
       // Fetch the uploaded files from the server
-      this.folders = await this.publicFunctions.getFolders(this.groupId, folderId);
+      this.folders = await this.publicFunctions.getFolders(this.groupData?._id, folderId);
       const parentFolder = {
         _id: this.currentFolder?._parent || 'root',
         folder_name: '../',
@@ -497,7 +496,7 @@ export class GroupFilesComponent implements OnInit {
       await this.initFolders();
 
       // Fetch the uploaded files from the server
-      this.files = await this.publicFunctions.getFiles(this.groupId, folderId);
+      this.files = await this.publicFunctions.getFiles(this.groupData?._id, folderId);
 
       // Set the lastFileId for scroll
       this.lastFileId = this.files[this.files.length - 1]?._id;
@@ -547,12 +546,12 @@ export class GroupFilesComponent implements OnInit {
   async initRootFolder() {
 
     // Fetch the uploaded files from the server
-    this.folders = await this.publicFunctions.getFolders(this.groupId);
+    this.folders = await this.publicFunctions.getFolders(this.groupData?._id);
 
     await this.initFolders();
 
     // Fetch the uploaded files from the server
-    this.files = await this.publicFunctions.getFiles(this.groupId, null);
+    this.files = await this.publicFunctions.getFiles(this.groupData?._id, null);
 
     if (this.files) {
       // Set the lastFileId for scroll
@@ -599,7 +598,7 @@ export class GroupFilesComponent implements OnInit {
       // Loop through each file and begin the process of uploading
       Array.prototype.forEach.call(files, (file: File) => {
         let fileData = {
-          _group: this.groupId,
+          _group: this.groupData?._id,
           _folder: (this.currentFolder) ? this.currentFolder._id : null,
           _posted_by: this.userData._id,
           type: 'file',
@@ -821,7 +820,7 @@ export class GroupFilesComponent implements OnInit {
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    let files: any = await this.publicFunctions.getFilteredFiles(this.groupId, (this.currentFolder?._id || ''), filter.bit, filter.data);
+    let files: any = await this.publicFunctions.getFilteredFiles(this.groupData?._id, (this.currentFolder?._id || ''), filter.bit, filter.data);
     this.files = await this.filterRAGFiles(files);
 
     if (this.sortingBit && this.sortingBit != '') {
@@ -1048,7 +1047,7 @@ export class GroupFilesComponent implements OnInit {
 
     // File Data variable
     const fileData: any = {
-      _group: this.groupId,
+      _group: this.groupData?._id,
       _posted_by: this.userData?._id,
       type: 'file',
       _parent: parentFileId

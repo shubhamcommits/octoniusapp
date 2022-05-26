@@ -39,9 +39,6 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   // Base URL of the uploads
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
-  // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.queryParamMap.get('group');
-
   // Today's date object
   today = moment().startOf('day').format('YYYY-MM-DD');
 
@@ -65,7 +62,11 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   ) { }
 
   async ngOnInit() {
-    this.flowService.getGroupAutomationFlows(this.groupId).then(res => {
+    if (!this.utilityService.objectExists(this.groupData)) {
+      this.groupData =  await this.publicFunctions.getCurrentGroupDetails();
+    }
+
+    this.flowService.getGroupAutomationFlows(this.groupData?._id).then(res => {
       this.flows = res['flows'];
     });
 
@@ -223,7 +224,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       } else {
         var post: any = event.previousContainer.data[event.previousIndex];
 
-        const shuttleIndex = (post && post.task && post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupId) : -1;
+        const shuttleIndex = (post && post.task && post.task.shuttles) ? post.task.shuttles.findIndex(shuttle => (shuttle._shuttle_group._id || shuttle._shuttle_group) == this.groupData?._id) : -1;
         // Update the task column when changed with dropping events to reflect back in the task view modal
         if (post?.task?.shuttle_type && (shuttleIndex >= 0)) {
           post.task.shuttles[shuttleIndex]._shuttle_section = event.container.id;
@@ -278,7 +279,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
     // If not found, then push the element
     else {
       // Create the Column asynchronously
-      await this.createNewColumn(this.groupId, column.title);
+      await this.createNewColumn(this.groupData?._id, column.title);
     }
 
   }
@@ -448,12 +449,12 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
   async moveTaskToNewColumn(task: any, oldColumnId: string, columnId: string, shuttleIndex: number) {
 
     if (task?.task?.shuttle_type && shuttleIndex >= 0) {
-      await this.publicFunctions.changeTaskShuttleSection(task?._id, this.groupId, columnId);
+      await this.publicFunctions.changeTaskShuttleSection(task?._id, this.groupData?._id, columnId);
     } else {
-      await this.publicFunctions.changeTaskColumn(task._id, columnId, this.userData._id, this.groupId);
+      await this.publicFunctions.changeTaskColumn(task._id, columnId, this.userData._id, this.groupData?._id);
     }
 
-    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, task, this.groupId, false, shuttleIndex);
+    task = await this.publicFunctions.executedAutomationFlowsPropertiesFront(this.flows, task, this.groupData?._id, false, shuttleIndex);
 
     // Prepare Event
     let columnEvent = {

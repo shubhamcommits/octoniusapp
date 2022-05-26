@@ -19,9 +19,6 @@ export class GroupActivityFeedComponent implements OnInit {
 
   @Input() isIdeaModuleAvailable;
 
-  // Fetch groupId from router snapshot or as an input parameter
-  @Input('groupId') groupId = this.router.snapshot.queryParamMap.get('group');
-
   // Global Feed Variable check
   globalFeed: boolean = (this.router.snapshot.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true
 
@@ -76,8 +73,6 @@ export class GroupActivityFeedComponent implements OnInit {
     this.subSink.add(this._router.events.subscribe(async (e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
-        // Fetch groupId from router snapshot or as an input parameter
-        this.groupId = this._router.routerState.snapshot.root.queryParamMap.get('group');
 
         // Global Feed Variable check
         this.globalFeed = (this._router.routerState.snapshot.root.url.findIndex((segment) => segment.path == 'inbox') == -1) ? false : true;
@@ -103,13 +98,13 @@ export class GroupActivityFeedComponent implements OnInit {
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    this.publicFunctions.getAllColumns(this.groupId).then(data => this.columns = data);
+    this.publicFunctions.getAllColumns(this.groupData?._id).then(data => this.columns = data);
 
     this.myWorkplace = await this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
     // If my workplace is true, hence we don't have the group header therefore fetch the group details via calling HTTP Request
-    if (this.myWorkplace === true) {
-      this.fetchCurrentGroupData();
-    }
+    //if (this.myWorkplace === true) {
+    //  this.fetchCurrentGroupData();
+    //}
 
     if (this.myWorkplace === false) {
       // Posted Added in Group Socket
@@ -129,7 +124,7 @@ export class GroupActivityFeedComponent implements OnInit {
     this.keepPinnedOpen = this.groupData.keep_pinned_open;
 
     // Fetch the first 5 posts from the server
-    await this.fetchPosts(this.groupId);
+    await this.fetchPosts(this.groupData?._id);
 
     // pinned/unpinned posts
     await this.fetchPinnedPosts();
@@ -191,7 +186,7 @@ export class GroupActivityFeedComponent implements OnInit {
     postData.workspace = this.userData.workspace_name;
 
     // Adding group property
-    postData.group = this.groupId;
+    postData.group = this.groupData?._id;
 
     // Emit the postAdded socket to the entire room
     this.subSink.add(this.socketService.onEmit('postAdded', postData)
@@ -244,13 +239,15 @@ export class GroupActivityFeedComponent implements OnInit {
   /**
    * This function fetches current group data
    */
+  /*
   async fetchCurrentGroupData() {
 
     // Fetch the group data from HTTP Request
-    if (this.groupId != null || this.groupId != undefined) {
-      this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
+    if (this.groupData?._id != null || this.groupData?._id != undefined) {
+      this.groupData = await this.publicFunctions.getGroupDetails(this.groupData?._id);
     }
   }
+  */
 
   /**
    * This function is responsible for emitting the post object to other components
@@ -304,7 +301,7 @@ export class GroupActivityFeedComponent implements OnInit {
     this.isLoading$.next(true);
 
     // Fetch the posts on scroll load
-    await this.fetchPosts(this.groupId);
+    await this.fetchPosts(this.groupData?._id);
 
     // pinned/unpinned posts
     await this.fetchPinnedPosts();
@@ -377,7 +374,7 @@ export class GroupActivityFeedComponent implements OnInit {
   }
 
   async fetchPinnedPosts() {
-    await this.postService.getPosts(this.groupId, 'pinned', true, null, { tags: this.filters['tags'], users: this.filters['users'] }).then(res => {
+    await this.postService.getPosts(this.groupData?._id, 'pinned', true, null, { tags: this.filters['tags'], users: this.filters['users'] }).then(res => {
       this.pinnedPosts = res['posts'];
 
       this.pinnedPosts = this.pinnedPosts.filter(async post => {
@@ -403,7 +400,7 @@ export class GroupActivityFeedComponent implements OnInit {
 
       // Fetch the posts on scroll load
       if (!this.globalFeed)
-        await this.fetchPosts(this.groupId, this.lastPostId)
+        await this.fetchPosts(this.groupData?._id, this.lastPostId)
 
       // Stop the loading spinner
       this.isLoading$.next(false);
@@ -444,7 +441,7 @@ export class GroupActivityFeedComponent implements OnInit {
     // Fetch the posts
     this.posts = [];
     let postsTmp: any = [];
-    postsTmp = await this.publicFunctions.getPosts(this.groupId, 'normal', false, null, this.filters);
+    postsTmp = await this.publicFunctions.getPosts(this.groupData?._id, 'normal', false, null, this.filters);
     postsTmp.forEach(post => {
       this.posts.push(post);
     });
@@ -480,7 +477,7 @@ export class GroupActivityFeedComponent implements OnInit {
     utilityService.asyncNotification($localize`:@@groupActivityFeed.pleaseWaitsavingSettings:Please wait we are saving the new setting...`,
       new Promise((resolve, reject)=>{
         if(selected.source.name === 'keep_pinned_open'){
-          groupService.saveSettings(this.groupId, {keep_pinned_open: selected.checked})
+          groupService.saveSettings(this.groupData?._id, {keep_pinned_open: selected.checked})
           .then(()=> {
             this.keepPinnedOpen = selected.checked;
             this.groupData.keep_pinned_open = selected.checked;
