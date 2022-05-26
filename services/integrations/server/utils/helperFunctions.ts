@@ -72,7 +72,7 @@ async function taskAssigned(data:any){
         group_id:groupId,
         post_id: data.postId,
         content: '\n ',
-        btn_title:`view ${postData.type}`,
+        btn_title:`view`,
         itemUrl: itemUrl
     }
 
@@ -109,7 +109,7 @@ async function statusChanged(data:any) {
         content: '\n ',
         group_id: groupId,
         post_id: data.postId,
-        btn_title:`view ${postData.type}`,
+        btn_title:`view`,
         itemUrl: itemUrl
     }
 
@@ -179,7 +179,7 @@ async function followPost(data:any) {
         content: '\n ',
         group_id: groupId,
         post_id: data.postId,
-        btn_title:`view ${postData.type}`,
+        btn_title:`view`,
         itemUrl: itemUrl
     }
 
@@ -223,7 +223,7 @@ async function likePost(data:any) {
         content: '\n ',
         group_id: postObject['_group'],
         post_id: data.postId,
-        btn_title:`view ${postData.type}`,
+        btn_title:`view`,
         itemUrl: itemUrl
     }
 
@@ -268,7 +268,7 @@ async function likeComment(data:any) {
         content: '\n ',
         groupId: groupId,
         post_id: data.postId,
-        btn_title:`view ${postData.type}`,
+        btn_title:`view`,
         itemUrl: itemUrl
     }
 
@@ -302,7 +302,7 @@ async function postMention(data:any) {
         group_id: groupId,
         post_id: data.postId,
         content: '\n ',
-        btn_title:`view ${postData.type}`,
+        btn_title:`view`,
         itemUrl: itemUrl
     }
 
