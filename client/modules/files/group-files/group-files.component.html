@@ -231,7 +231,7 @@
                               <span i18n="@@groupFiles.details">Details</span>
                           </a>
 
-                          <a mat-menu-item (click)="fileNewVersion.click()">
+                          <a mat-menu-item (click)="fileNewVersion.click()" *ngIf="isFilesVersionsModuleAvailable">
                               <i class="material-icons-outlined mr-2" style="margin-right: .7rem;">upload_file</i>
                               <span i18n="@@groupFiles.newVersion">New Version</span>
                               <input #fileNewVersion type="file" placeholder="File" multiple (change)="uploadNewVersion(fileNewVersion.files, file._id)" style="display: none;" />

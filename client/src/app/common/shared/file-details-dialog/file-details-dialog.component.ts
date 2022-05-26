@@ -43,12 +43,6 @@ export class FileDetailsDialogComponent implements OnInit {
   // Tags Object
   tags: any = [];
 
-  // IsLoading behaviou subject maintains the state for loading spinner
-  public isLoading$ = new BehaviorSubject(false);
-
-  // Public Functions class object
-  publicFunctions = new PublicFunctions(this.injector);
-
   // Variable to enable or disable save button
   contentChanged = false;
 
@@ -61,9 +55,17 @@ export class FileDetailsDialogComponent implements OnInit {
   // Comments Array
   comments: any = [];
 
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   newComment;
+
+  isFilesVersionsModuleAvailable = false;
+
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
+
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
+
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   constructor(
     private filesService: FilesService,
@@ -81,6 +83,7 @@ export class FileDetailsDialogComponent implements OnInit {
     this.fileData = this.data.fileData;
     this.userData = this.data.userData;
     this.groupData = this.data.groupData;
+    this.isFilesVersionsModuleAvailable = this.data.isFilesVersionsModuleAvailable;
 
     if (!this.groupData) {
       this.groupData = await this.publicFunctions.getCurrentGroupDetails();

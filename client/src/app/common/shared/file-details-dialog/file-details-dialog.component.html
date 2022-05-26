@@ -55,11 +55,11 @@
             </button>
         </div>
 
-        <div class="content-box" *ngIf="(fileData?.type === 'file' || fileData?.type === 'campaign') || (fileData?.approval_active && fileData?.approval_history && fileData?.approval_history?.length > 0)">
+        <div class="content-box" *ngIf="(isFilesVersionsModuleAvailable && (fileData?.type === 'file' || fileData?.type === 'campaign')) || (fileData?.approval_active && fileData?.approval_history && fileData?.approval_history?.length > 0)">
           <!-- TABS STARTS -->
           <mat-tab-group mat-align-tabs="start">
             <!-- EVENTS STARTS-->
-            <mat-tab label="" *ngIf="fileData?.type === 'file' || fileData?.type === 'campaign'">
+            <mat-tab label="" *ngIf="isFilesVersionsModuleAvailable && (fileData?.type === 'file' || fileData?.type === 'campaign')">
               <ng-template mat-tab-label>
                 <!--<i class="material-icons">manage_history</i>-->
                 <span i18n="@@fileDetailsDialog.versions">Versions</span>

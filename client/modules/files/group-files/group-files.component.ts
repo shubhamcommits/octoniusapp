@@ -97,6 +97,8 @@ export class GroupFilesComponent implements OnInit {
 
   isAdmin = true;
 
+  isFilesVersionsModuleAvailable = false;
+
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -128,6 +130,8 @@ export class GroupFilesComponent implements OnInit {
 
     // Fetch the current group
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+
+    this.isFilesVersionsModuleAvailable = await this.publicFunctions.isFilesVersionsModuleAvailable();
 
     this.isAdmin = this.isAdminUser();
 
@@ -770,7 +774,8 @@ export class GroupFilesComponent implements OnInit {
       data: {
         fileData: file,
         groupData: this.groupData,
-        userData: this.userData
+        userData: this.userData,
+        isFilesVersionsModuleAvailable: this.isFilesVersionsModuleAvailable
       }
     });
 
