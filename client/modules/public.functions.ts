@@ -1472,19 +1472,6 @@ export class PublicFunctions {
         });
     }
 
-    async checkExcelImportStatus(workspaceId: string, mgmtApiPrivateKey: string) {
-      const managementPortalService = this.injector.get(ManagementPortalService);
-      return managementPortalService.getExcelImportStatus(workspaceId, mgmtApiPrivateKey).then(
-        (res) => {
-          if ( !res || !res['status'] ) {
-            return false;
-          }
-          return true;
-        }).catch((err) => {
-          return false;
-        });
-    }
-
     /**
      * This method returns the highest date of the posts passed by parameter
      * @param posts
@@ -1516,6 +1503,20 @@ export class PublicFunctions {
         const workspace: any = await this.getCurrentWorkspace()
         const managementPortalService = this.injector.get(ManagementPortalService);
         return managementPortalService.isExcelModuleAvailable(workspace?._id, workspace?.management_private_api_key).then(
+          (res) => {
+            if ( !res || !res['status'] ) {
+              return false;
+            }
+            return true;
+          }).catch((err) => {
+            return false;
+          });
+      }
+
+      async isFilesVersionsModuleAvailable() {
+        const workspace: any = await this.getCurrentWorkspace();
+        const managementPortalService = this.injector.get(ManagementPortalService);
+        return managementPortalService.isFilesVersionsModuleAvailable(workspace?._id, workspace?.management_private_api_key).then(
           (res) => {
             if ( !res || !res['status'] ) {
               return false;

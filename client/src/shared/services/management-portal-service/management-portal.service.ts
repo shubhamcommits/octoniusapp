@@ -138,18 +138,6 @@ export class ManagementPortalService {
   }
 
   /**
-   * This function is responsible for check if the workspace has excel import active
-   * @param workspaceId
-   */
-  getExcelImportStatus(workspaceId: string, mgmtApiPrivateKey: string) {
-    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/excelImport`, {
-      params: {
-        mgmtApiPrivateKey: mgmtApiPrivateKey
-      }
-    }).toPromise();
-  }
-
-  /**
    * This function is responsible for check if the workspace has shuttle module active
    * @param workspaceId
    */
@@ -167,6 +155,18 @@ export class ManagementPortalService {
    */
   isExcelModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
     return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/excelImport`, {
+      params: {
+        mgmtApiPrivateKey: mgmtApiPrivateKey
+      }
+    }).toPromise();
+  }
+
+  /**
+   * This function is responsible for check if the workspace has excel module active
+   * @param workspaceId
+   */
+   isFilesVersionsModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
+    return this._http.get(`${this.WORKSPACE_BASE_API_URL}/${workspaceId}/filesVersions`, {
       params: {
         mgmtApiPrivateKey: mgmtApiPrivateKey
       }

@@ -100,6 +100,9 @@ routes.get('/:workspaceId/excelImport', mgmt.getExcelImportStatus);
 // GET - obtain if the shuttle module is availability in the workspace
 routes.get('/:workspaceId/shuttle', mgmt.isShuttleTasksModuleAvailable);
 
+// GET - obtain if the shuttle module is availability in the workspace
+routes.get('/:workspaceId/filesVersions', mgmt.isFilesVersionsModuleAvailable);
+
 /**
  * Profile Custom Fields
  */
