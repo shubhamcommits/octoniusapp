@@ -56,7 +56,7 @@
   <!-- Lounge Page Route ends -->
 
   <!-- Organization Page Route starts -->
-  <li class="nav-item d-none d-md-block">
+  <li class="nav-item d-none d-md-block" *ngIf="isOrganizationModuleAvailable">
     <a class="nav-link"
         routerLink="/dashboard/work/organization"
         routerLinkActive="active">

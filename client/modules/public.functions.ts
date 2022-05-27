@@ -1511,9 +1511,13 @@ export class PublicFunctions {
           }).catch((err) => {
             return false;
           });
-      }
+    }
 
-      async isFilesVersionsModuleAvailable() {
+      /**
+     * This function is responsible for fetching the status of the Files Versions module
+     * @returns status
+     */
+    async isFilesVersionsModuleAvailable() {
         const workspace: any = await this.getCurrentWorkspace();
         const managementPortalService = this.injector.get(ManagementPortalService);
         return managementPortalService.isFilesVersionsModuleAvailable(workspace?._id, workspace?.management_private_api_key).then(
@@ -1525,13 +1529,31 @@ export class PublicFunctions {
           }).catch((err) => {
             return false;
           });
-      }
+    }
+
+      /**
+     * This function is responsible for fetching the status of the Organization module
+     * @returns status
+     */
+    async isOrganizationModuleAvailable() {
+        const workspace: any = await this.getCurrentWorkspace();
+        const managementPortalService = this.injector.get(ManagementPortalService);
+        return managementPortalService.isOrganizationModuleAvailable(workspace?._id, workspace?.management_private_api_key).then(
+          (res) => {
+            if ( !res || !res['status'] ) {
+              return false;
+            }
+            return true;
+          }).catch((err) => {
+            return false;
+          });
+    }
 
 
      /* Helper function fetching the worksapace groups
      * @param workspaceId - current workspaceId
      */
-     getAllGroupsList(workspaceId: string) {
+    getAllGroupsList(workspaceId: string) {
         return new Promise((resolve, reject) => {
 
             // Create groups service instance

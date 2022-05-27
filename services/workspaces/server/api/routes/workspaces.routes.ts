@@ -103,6 +103,9 @@ routes.get('/:workspaceId/shuttle', mgmt.isShuttleTasksModuleAvailable);
 // GET - obtain if the shuttle module is availability in the workspace
 routes.get('/:workspaceId/filesVersions', mgmt.isFilesVersionsModuleAvailable);
 
+// GET - obtain if the shuttle module is availability in the workspace
+routes.get('/:workspaceId/organization', mgmt.isOrganizationModuleAvailable);
+
 /**
  * Profile Custom Fields
  */
