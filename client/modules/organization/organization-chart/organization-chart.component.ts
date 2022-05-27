@@ -85,7 +85,7 @@ export class OrganizationChartComponent implements OnInit {
   }
 
   selectPossibleMember(managerId: string) {
-    this.possibleMembers = (this.workspaceData && this.workspaceData?.members) ? this.workspaceData?.members?.filter(member => member._id != managerId) : [];
+    this.possibleMembers = (this.workspaceData && this.workspaceData?.members) ? this.workspaceData?.members?.filter(member => member._id != managerId && member.active) : [];
   }
 
   getMemberDetails(selectedMember: any, managerId: string, levelIndex: any) {
