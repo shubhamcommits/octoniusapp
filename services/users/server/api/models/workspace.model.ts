@@ -180,6 +180,19 @@ const workspaceSchema = new Schema({
         },
         box_client_secret_key: {
             type: String
+        },
+        is_onedrive_connected: {
+            type: Boolean,
+            default: false
+        },
+        onedrive_client_id: {
+            type: String
+        },
+        onedrive_client_secret_key: {
+            type: String
+        },
+        onedrive_tenant_id: {
+            type: String
         }
     }
 });

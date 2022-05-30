@@ -161,6 +161,12 @@ const UserSchema = new Schema({
                 default: null
             }
         },
+        onedrive: {
+            token: {
+                type: String,
+                default: null
+            }
+        },
         is_slack_connected: {
             type: Boolean,
             default: null
