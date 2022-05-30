@@ -6,7 +6,6 @@ import { StorageService } from '../storage-service/storage.service';
 import { UtilityService } from '../utility-service/utility.service';
 import { PublicFunctions } from 'modules/public.functions';
 import { BoxCloudService } from 'modules/user/user-clouds/user-available-clouds/box-cloud/services/box-cloud.service';
-import { OneDriveCloudService } from 'modules/user/user-clouds/user-available-clouds/onedrive-cloud/services/onedrive-cloud.service';
 
 // Google API Variable
 declare const gapi: any;
