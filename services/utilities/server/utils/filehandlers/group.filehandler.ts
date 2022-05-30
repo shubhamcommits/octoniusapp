@@ -34,11 +34,8 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
     let file: any = await File.findById({ _id: fileId });
 
     if (!file._parent) {
-      let fileVersions: any = await File.find({
-          $and: [
-            { _parent: fileId }
-          ]
-        });
+      let fileVersions: any = await File.find({ _parent: fileId });
+
       if (fileVersions && fileVersions.length > 0) {
         fileVersions?.sort((f1, f2) => {
           if (f1.created_date && f2.created_date) {
@@ -56,34 +53,14 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
           }
         });
 
-        fs.readFile(`${process.env.FILE_UPLOAD_FOLDER}${fileVersions[0].modified_name}`, (err,data) => {
-          if (err) {
-            res.writeHead(404);
-            res.end(JSON.stringify(err));
-            return;
-          }
-          //res.writeHead(200);
-          res.status(200).end(data);
-        });
-
-        return;
-
-        //return res.status(301).redirect(`${process.env.FILE_UPLOAD_FOLDER}${fileVersions[0].modified_name}`);
+        const fileURL = `${process.env.FILE_UPLOAD_FOLDER}${fileVersions[0].modified_name}`;
+        res.download(fileURL);
       }
+    } else {
+      // Redirect the Response to the Groups Microservice
+      const fileURL = `${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`;
+      res.download(fileURL);
     }
-
-    // Redirect the Response to the Groups Microservice
-    //return res.status(301).redirect(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`);
-    fs.readFile(`${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`, (err,data) => {
-      if (err) {
-        res.writeHead(404);
-        res.end(JSON.stringify(err));
-        return;
-      }
-
-      //res.writeHead(200);
-      return res.status(200).end(data);
-    });
     return;
 
   } catch (err) {

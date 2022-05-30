@@ -166,7 +166,7 @@
                       <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
 
                       <mat-menu #menu="matMenu">
-                          <a mat-menu-item *ngIf="(file?.type == 'file' && isOfficeFile(file?.original_name)) || file?.type === 'campaign'"
+                          <a mat-menu-item *ngIf="file?.type == 'file'"
                               (click)="openDocument(file)" style="cursor: pointer">
                             <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">file_download</i>
                             <span i18n="@@groupFiles.download">Download</span>
