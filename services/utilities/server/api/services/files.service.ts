@@ -89,6 +89,15 @@ export class FilesService {
                     _parent: parentFile._id
                 });
             }
+
+            // Update the parent modified_name, so it will point to the last version
+            await File.findByIdAndUpdate({
+                _id: fileData._parent
+              }, {
+                $set: { "modified_name": fileData.modified_name }
+              }, {
+                  new: true
+              });
         }
 
         // Populate File Properties
@@ -596,6 +605,13 @@ export class FilesService {
                 {
                     _group: groupId,
                     _folder: folderId
+                });
+
+            // Update versions
+            await File.updateMany({
+                    _parent: fileId
+                }, {
+                    $set: { _group: groupId }
                 });
 
             // Populate File Properties

@@ -42,7 +42,7 @@ export class GroupFilesComponent implements OnInit {
   // Base Url of the files uploads
   filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
 
-  groupfilesBaseUrl = environment.UTILITIES_GROUP_FILES_UPLOADS;
+  utilitiesBaseAPIUrl = environment.UTILITIES_BASE_API_URL;
 
   // Client Url of the global application
   clientUrl = environment.clientUrl;
@@ -171,7 +171,7 @@ export class GroupFilesComponent implements OnInit {
      */
      this.customFields = [];
      await this.groupService.getGroupFilesCustomFields(this.groupData?._id).then((res) => {
-       if (res['group']['files_custom_fields']) {
+       if (res && res['group']['files_custom_fields']) {
          res['group']['files_custom_fields'].forEach(field => {
            this.customFields.push(field);
          });
@@ -307,7 +307,7 @@ export class GroupFilesComponent implements OnInit {
       width: '90%',
       height: '90%',
       data: {
-        url: this.groupfilesBaseUrl + '/' + file?._id
+        url: this.filesBaseUrl + '/' + file?.modified_name
       }
     });
   }
@@ -389,7 +389,7 @@ export class GroupFilesComponent implements OnInit {
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
         url = await this.getLibreOfficeURL(lastFileVersion);
       } else {
-        url = this.groupfilesBaseUrl + '/' + file?._id + '?authToken=' + this.authToken;
+        url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
       }
     }
 
@@ -788,6 +788,11 @@ export class GroupFilesComponent implements OnInit {
         }
       });
 
+      const newVersionEventSubs = dialogRef.componentInstance.newVersionEvent.subscribe((data) => {
+        const index = (this.files) ? this.files.findIndex(f => f._id == (data?._parent?._id || data?._parent)) : -1;
+        this.files[index].modified_name = data.modified_name
+      });
+
       const allVersionsDeletedEventSubs = dialogRef.componentInstance.allVersionsDeletedEmitter.subscribe((data) => {
         this.files = this.files.filter(file => file._id !== data);
       });
@@ -795,6 +800,7 @@ export class GroupFilesComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         closeEventSubs.unsubscribe();
         allVersionsDeletedEventSubs.unsubscribe();
+        newVersionEventSubs.unsubscribe();
       });
     }
   }
@@ -1027,7 +1033,7 @@ export class GroupFilesComponent implements OnInit {
     // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
     let wopiClientURL = '';
     await this.libreofficeService.getLibreofficeUrl().then(res => {
-        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${file?._id}?authToken=${this.authToken}`;
+        wopiClientURL = res['url'] + 'WOPISrc=' + `${this.utilitiesBaseAPIUrl}/libreoffice/wopi/files/${file?._id}?authToken=${this.authToken}`;
       }).catch(error => {
         this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
       });
@@ -1039,16 +1045,24 @@ export class GroupFilesComponent implements OnInit {
   }
 
   async openDocument(file: any) {
-    window.open(this.groupfilesBaseUrl + '/' + file?._id + '?authToken=' + this.authToken, "_blank");
+    // Start the loading spinner
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
+    window.open(this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken, "_blank");
+
+    // Stop the loading spinner
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   /**
    * This function is responsible for uploading the files to the server
    * @param files
    */
-   uploadNewVersion(files: FileList, parentFileId: string) {
+   uploadNewVersion(files: FileList, file: any) {
     // Start the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(true);
+
+    const parentFileId = (file._parent) ? file._parent._id : file._id;
 
     // File Data variable
     const fileData: any = {
@@ -1059,16 +1073,18 @@ export class GroupFilesComponent implements OnInit {
     }
 
     // Loop through each file and begin the process of uploading
-    Array.prototype.forEach.call(files, (file: File) => {
+    Array.prototype.forEach.call(files, (uploadFile: File) => {
 
       // Adding Mime Type of the file uploaded
-      fileData.mime_type = file.type
+      fileData.mime_type = uploadFile.type
 
       // Call the HTTP Request Asynschronously
       this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitUploadingNewVersion:Please wait we are uploading your new version...`,
         new Promise((resolve, reject) => {
-          this.filesService.addFile(fileData, file)
+          this.filesService.addFile(fileData, uploadFile)
             .then((res) => {
+              const index = (this.files) ? this.files.findIndex(f => f._id == file?._id) : -1;
+              this.files[index].modified_name = res['file'].modified_name
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.fileUploaded:File has been uploaded!`))
             })
             .catch(() => {

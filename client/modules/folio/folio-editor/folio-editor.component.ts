@@ -103,6 +103,8 @@ export class FolioEditorComponent implements AfterViewInit {
   // User Data Variable
   userData: any;
 
+  groupData: any;
+
   // ShareDB Variable
   shareDBSocket: any;
 
@@ -126,9 +128,6 @@ export class FolioEditorComponent implements AfterViewInit {
 
   // Folio ID Variable
   folioId = this._ActivatedRoute.snapshot.paramMap.get("id");
-
-  // GroupId variable
-  groupId = this._ActivatedRoute.snapshot.queryParamMap.get("group");
 
   // Read Only State of the folio
   readOnly = true;
@@ -154,7 +153,8 @@ export class FolioEditorComponent implements AfterViewInit {
     private _ActivatedRoute: ActivatedRoute,
     private folioService: FolioService,
     private filesService: FilesService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private storageService: StorageService
   ) {
     this.folioService.follioSubject.subscribe(data => {
       if (data) {
@@ -273,14 +273,23 @@ export class FolioEditorComponent implements AfterViewInit {
     if (!this.readOnly) {
       this.userData = await this.publicFunctions.getCurrentUser();
 
+      /*
       // check if the user is part of the group of the folio
       const groupIndex = await this.userData?._groups?.findIndex((group) => {
         return (group._id || group) == this.groupId;
       });
 
       let groupData: any = this.userData?._groups[groupIndex];
-      const isAdmin = this.isAdminUser(groupData);
-      let canEdit = await this.utilityService.canUserDoFileAction(this.fileData, groupData, this.userData, 'edit') && (!groupData?.files_for_admins || isAdmin);
+      */
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+
+      // check if the user is part of the group of the folio
+      const groupIndex = await this.userData?._groups?.findIndex((group) => {
+        return (group._id || group) == this.groupData?._id;
+      });
+
+      const isAdmin = this.isAdminUser(this.groupData);
+      let canEdit = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'edit') && (!this.groupData?.files_for_admins || isAdmin);
 
       this.readOnly = this.readOnly || (groupIndex < 0 && !isAdmin) || !canEdit;
     }
@@ -669,7 +678,7 @@ export class FolioEditorComponent implements AfterViewInit {
         // If User types "@" then trigger the list for user mentioning
         if (mentionChar === "@") {
           // Initialise values with list of members
-          values = await this.suggestMembers(this.groupId, searchTerm);
+          values = await this.suggestMembers(this.groupData?._id, searchTerm);
 
           // Adding All Object to mention all the members
           values.unshift({
@@ -679,7 +688,7 @@ export class FolioEditorComponent implements AfterViewInit {
           // If User types "#" then trigger the list for files mentioning
         } else if (mentionChar === "#") {
           // Initialise values with list of files
-          values = await this.suggestFiles(this.groupId, searchTerm);
+          values = await this.suggestFiles(this.groupData?._id, searchTerm);
         }
 
         // If searchTerm length is 0, then show the full list
@@ -734,7 +743,7 @@ export class FolioEditorComponent implements AfterViewInit {
           ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
           : (file.type == "flamingo")
             ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-            : `<a href="${this.filesBaseUrl}/${file._id}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            : `<a href="${this.filesBaseUrl}/${file?.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
     }));
 
     let googleFilesList: any = [];

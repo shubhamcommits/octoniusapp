@@ -25,6 +25,7 @@ export class FileVersionsComponent implements OnInit {
   @Input() canView;
   @Input() canDelete;
 
+  @Output() newVersionEvent = new EventEmitter();
   @Output() allVersionsDeletedEmitter = new EventEmitter();
 
   fileVersions;
@@ -215,6 +216,8 @@ export class FileVersionsComponent implements OnInit {
               }
 
               this.fileVersions.unshift(res['file']);
+
+              this.newVersionEvent.emit(res['file']);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@fileVersions.fileUploaded:File has been uploaded!`))
             })
             .catch(() => {

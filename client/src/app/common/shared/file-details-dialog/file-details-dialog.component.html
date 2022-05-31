@@ -71,6 +71,7 @@
                 [canDelete]="fileData?.canDelete"
                 [canView]="canView"
                 [canEdit]="canEdit"
+                (newVersionEvent)="newVersionUploaded($event)"
                 (allVersionsDeletedEmitter)="allVersionsDeleted()"></app-file-versions>
             </mat-tab>
             <!-- EVENTS ENDS-->

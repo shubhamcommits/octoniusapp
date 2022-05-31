@@ -1,6 +1,6 @@
 import express from 'express';
 import { Auths } from '../../utils/auths';
-import { flamingoFileHandler, groupFileHandler, postFileHandler, userFileHandler, workspaceFileHandler, groupsFilesHandler } from '../../utils/filehandlers';
+import { flamingoFileHandler, groupFileHandler, postFileHandler, userFileHandler, workspaceFileHandler/*, groupsFilesHandler*/ } from '../../utils/filehandlers';
 
 const routes = express.Router();
 
@@ -28,7 +28,8 @@ routes.get('/workspaces/:file', workspaceFileHandler);
 // GET - Handles the file added in the flamingo forms
 routes.get('/flamingo/:file', flamingoFileHandler);
 
-routes.get('/groupsFiles/:fileId', groupsFilesHandler);
+// GET - Download the last version of a file
+//routes.get('/groupsFiles/:fileId', groupsFilesHandler);
 
 
 /*  ===================

@@ -166,8 +166,8 @@
                       <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
 
                       <mat-menu #menu="matMenu">
-                          <a mat-menu-item *ngIf="file?.type == 'file'"
-                              (click)="openDocument(file)" style="cursor: pointer">
+                          <a mat-menu-item *ngIf="file?.type == 'file'" style="cursor: pointer"
+                              (click)="openDocument(file)">
                             <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">file_download</i>
                             <span i18n="@@groupFiles.download">Download</span>
                           </a>
@@ -214,7 +214,7 @@
                             <span i18n="@@groupFiles.copyFlamingo">Copy Flamingo</span>
                           </a>
 
-                          <a *ngIf="file?.type === 'file'" mat-menu-item (click)="openViewFileDialog(file)" style="cursor: pointer">
+                          <a *ngIf="file?.type === 'file' && !isOfficeFile(file?.original_name)" mat-menu-item (click)="openViewFileDialog(file)" style="cursor: pointer">
                               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                               <span i18n="@@groupFiles.view">View</span>
                           </a>
@@ -234,7 +234,7 @@
                           <a mat-menu-item (click)="fileNewVersion.click()" *ngIf="isFilesVersionsModuleAvailable">
                               <i class="material-icons-outlined mr-2" style="margin-right: .7rem;">upload_file</i>
                               <span i18n="@@groupFiles.newVersion">New Version</span>
-                              <input #fileNewVersion type="file" placeholder="File" multiple (change)="uploadNewVersion(fileNewVersion.files, file._id)" style="display: none;" />
+                              <input #fileNewVersion type="file" placeholder="File" multiple (change)="uploadNewVersion(fileNewVersion.files, file)" style="display: none;" />
                           </a>
 
                           <a *ngIf="file?.type == 'folio' || (file?.type == 'file' && getFileExtension(file?.original_name) == 'pdf')" mat-menu-item (click)="exportToPDF(file)">

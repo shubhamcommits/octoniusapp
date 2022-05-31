@@ -95,7 +95,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   workspaceData: any;
 
   // Uploads url for Files
-  filesBaseUrl = environment.UTILITIES_GROUP_FILES_UPLOADS;
+  filesBaseUrl = environment.UTILITIES_BASE_API_URL;
 
   // Public Functions class
   public publicFunctions = new PublicFunctions(this.Injector);
@@ -349,7 +349,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
           ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
           : (file.type == "flamingo")
             ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-            : `<a href="${this.filesBaseUrl}/${file._id}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
     }));
 
     let googleFilesList: any = [];

@@ -19,6 +19,7 @@ export class FileDetailsDialogComponent implements OnInit {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
+  @Output() newVersionEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
   @Output() allVersionsDeletedEmitter = new EventEmitter();
 
@@ -80,6 +81,7 @@ export class FileDetailsDialogComponent implements OnInit {
   async ngOnInit() {
     // Start the loading spinner
     this.isLoading$.next(true);
+
     this.fileData = this.data.fileData;
     this.userData = this.data.userData;
     this.groupData = this.data.groupData;
@@ -272,6 +274,10 @@ export class FileDetailsDialogComponent implements OnInit {
   async onApprovalFlowLaunchedEmiter(fileData: any) {
     this.fileData = fileData;
     this.canEdit = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'edit');
+  }
+
+  newVersionUploaded(data: any) {
+    this.newVersionEvent.emit(data);
   }
 
   allVersionsDeleted() {
