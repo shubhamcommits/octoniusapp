@@ -122,16 +122,19 @@ export class LibreofficeControllers {
 
             // calculate if user can edit file based on RAD
             const user = await User.findById({ _id: userId }).lean();
+console.log(fileLastVersion?._posted_by);
+console.log(fileLastVersion?._parent);
+console.log(user);
             let canEdit;
             if (fileLastVersion._parent || fileLastVersion?._id == fileId) {
-                canEdit = await authsHelper.canUserEditFileAction(fileLastVersion, user, (fileLastVersion._parent._id || fileLastVersion._parent));
+                canEdit = await authsHelper.canUserEditFileAction(fileLastVersion, user, fileId);
             } else {
                 canEdit = false;
             }
             
             return res.json({
                 BaseFileName: fileLastVersion.original_name,
-                OwnerId: fileLastVersion._posted_by._id || fileLastVersion._posted_by,
+                OwnerId: fileLastVersion?._posted_by?._id || fileLastVersion?._posted_by,
                 UserId: user._id || '',
                 UserFriendlyName: user.first_name + ' ' + user.last_name,
                 UserExtraInfo: {

@@ -52,13 +52,16 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
             }
           }
         });
-
+console.log(fileVersions);
         const fileURL = `${process.env.FILE_UPLOAD_FOLDER}${fileVersions[0].modified_name}`;
+console.log(fileURL);
         res.download(fileURL);
       }
     } else {
+console.log(file);
       // Redirect the Response to the Groups Microservice
       const fileURL = `${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`;
+console.log(fileURL);
       res.download(fileURL);
     }
     return;
