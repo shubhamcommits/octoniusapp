@@ -15,8 +15,8 @@
         <!-- Heading of the component ends -->
 
         <!-- Group New File starts -->
-        <app-group-new-file *ngIf="groupId && userData && checkDataExist(userData) && groupData && checkDataExist(groupData) && (!groupData?.files_for_admins || isAdmin)"
-          [groupId]="groupId" [userData]="userData" [folderId]="currentFolder?._id" [workspaceId]="workspaceId" [groupData]="groupData"
+        <app-group-new-file *ngIf="userData && checkDataExist(userData) && groupData && checkDataExist(groupData) && groupData?._id && (!groupData?.files_for_admins || isAdmin)"
+          [groupId]="groupData?._id" [userData]="userData" [folderId]="currentFolder?._id" [workspaceId]="workspaceId" [groupData]="groupData"
           (file)="getFile($event)" (folder)="getFolder($event)">
         </app-group-new-file>
         <!-- Group New File ends -->
@@ -142,14 +142,14 @@
               </a>
 
               <a *ngIf="file?.type === 'folio'" class="mt-0"
-                routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id, readOnly: !file?.canEdit }">
+                routerLink="/document/{{file?._id}}" [queryParams]="{ readOnly: !file?.canEdit }">
                   <img src="assets/images/icon_folio.svg"
                     onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                   {{file?.original_name}}
               </a>
 
               <a *ngIf="file?.type === 'flamingo'" class="mt-0"
-                [routerLink]="['/document/flamingo', file?._id]" [queryParams]="{ group: file?._group?._id}">
+                [routerLink]="['/document/flamingo', file?._id]">
                   <img src="assets/images/icon_flamingo.svg"
                     onerror="this.src='assets/images/icon_file.svg'" class="file-type mt-3 mr-1" style="vertical-align: bottom;">
                   {{file?.original_name}}
@@ -166,8 +166,8 @@
                       <i class="material-icons-outlined ml-2" [matMenuTriggerFor]="menu" style="cursor: pointer;">more_horiz</i>
 
                       <mat-menu #menu="matMenu">
-                          <a mat-menu-item *ngIf="(file?.type == 'file' && isOfficeFile(file?.original_name)) || file?.type === 'campaign'"
-                              (click)="openDocument(file)" style="cursor: pointer">
+                          <a mat-menu-item *ngIf="file?.type == 'file'" style="cursor: pointer"
+                              (click)="openDocument(file)">
                             <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">file_download</i>
                             <span i18n="@@groupFiles.download">Download</span>
                           </a>
@@ -214,13 +214,13 @@
                             <span i18n="@@groupFiles.copyFlamingo">Copy Flamingo</span>
                           </a>
 
-                          <a *ngIf="file?.type === 'file'" mat-menu-item (click)="openViewFileDialog(file)" style="cursor: pointer">
+                          <a *ngIf="file?.type === 'file' && !isOfficeFile(file?.original_name)" mat-menu-item (click)="openViewFileDialog(file)" style="cursor: pointer">
                               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                               <span i18n="@@groupFiles.view">View</span>
                           </a>
 
                           <a *ngIf="file?.type === 'folio'" mat-menu-item
-                            routerLink="/document/{{file?._id}}" [queryParams]="{ group: file?._group?._id, readOnly: !file?.canEdit }">
+                            routerLink="/document/{{file?._id}}" [queryParams]="{ readOnly: !file?.canEdit }">
                             <!--(click)="openViewFolioDialog(file?._id)"-->
                               <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">visibility</i>
                               <span i18n="@@groupFiles.view">View</span>
@@ -231,10 +231,10 @@
                               <span i18n="@@groupFiles.details">Details</span>
                           </a>
 
-                          <a mat-menu-item (click)="fileNewVersion.click()">
+                          <a mat-menu-item (click)="fileNewVersion.click()" *ngIf="isFilesVersionsModuleAvailable">
                               <i class="material-icons-outlined mr-2" style="margin-right: .7rem;">upload_file</i>
                               <span i18n="@@groupFiles.newVersion">New Version</span>
-                              <input #fileNewVersion type="file" placeholder="File" multiple (change)="uploadNewVersion(fileNewVersion.files, file._id)" style="display: none;" />
+                              <input #fileNewVersion type="file" placeholder="File" multiple (change)="uploadNewVersion(fileNewVersion.files, file)" style="display: none;" />
                           </a>
 
                           <a *ngIf="file?.type == 'folio' || (file?.type == 'file' && getFileExtension(file?.original_name) == 'pdf')" mat-menu-item (click)="exportToPDF(file)">

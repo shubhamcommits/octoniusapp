@@ -29,7 +29,6 @@ export class FlamingoGuard implements CanActivate  {
     state: RouterStateSnapshot
   ) {
 
-    const currentGroupId = state.root.queryParamMap.get('group');
     const fileId = next['_urlSegment']?.segments[2].path;
 
     // Public Functions Instance
@@ -54,10 +53,11 @@ export class FlamingoGuard implements CanActivate  {
 
         const currentUser = await publicFunctions.getCurrentUser();
 
-        let currentGroup;
-        await this.groupService.getGroup(currentGroupId).then(res => {
-          currentGroup = res['group'];
-        });
+        let currentGroup: any = await publicFunctions.getCurrentGroupDetails();
+
+        if (!this.utilityService.objectExists(currentGroup)) {
+          currentGroup = await publicFunctions.getGroupDetails(file?._group?._id || file?._group);
+        }
 
         const canEdit = await this.utilityService.canUserDoFileAction(file, currentGroup, currentUser, 'edit');
         let canView = false;
@@ -66,7 +66,7 @@ export class FlamingoGuard implements CanActivate  {
           canView = await this.utilityService.canUserDoFileAction(file, currentGroup, currentUser, 'view') || !hide;
         }
 
-        if (canEdit || canView || currentUser._private_group == currentGroupId) {
+        if (canEdit || canView || currentUser._private_group == currentGroup?._id) {
           return true;
         } else {
           this.utilityService.warningNotification($localize`:@@flamingoGuard.oopsNoPermissionForGroup:Oops seems like you don\'t have the permission to access the group, kindly contact your superior to provide you the proper access!`);

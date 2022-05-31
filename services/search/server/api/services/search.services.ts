@@ -79,10 +79,18 @@ export class SearchService {
       };
     }
 
-    return await User.find(query)
+    let users = await User.find(query)
       .sort({first_name: -1})
       .populate({ path: '_workspace', select: 'profile_custom_fields' })
       .lean();
+
+    if (advancedFilters.cfName && advancedFilters.cfValue && advancedFilters.cfName != '' && advancedFilters.cfValue != '') {
+      users = users.filter(user => user?.profile_custom_fields
+        && user?.profile_custom_fields[advancedFilters.cfName]
+        && user?.profile_custom_fields[advancedFilters.cfName] == advancedFilters?.cfValue);
+    }
+
+    return users;
   }
 
   async createPostQuery(userGroups, queryText, advancedFilters) {

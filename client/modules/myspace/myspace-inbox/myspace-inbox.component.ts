@@ -47,6 +47,8 @@ export class MyspaceInboxComponent implements OnInit, OnDestroy {
 
     const workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
+    this.publicFunctions.sendUpdatesToGroupData({});
+
     this.managementPortalService.isInTryOut(workspaceData['_id'], workspaceData['management_private_api_key']).then(res => {
       if ((this.userData?.role == 'admin' || this.userData?.role == 'owner')
           && res['status']) {

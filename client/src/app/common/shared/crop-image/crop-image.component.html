@@ -15,8 +15,8 @@
         [imageChangedEvent]="imageChangedEvent"
         [maintainAspectRatio]="false"
         [aspectRatio]="1 / 1"
-        [resizeToWidth]="300"
-        [cropperMinWidth]="300"
+        [resizeToWidth]="resizeToWidth"
+        [cropperMinWidth]="cropperMinWidth"
         [onlyScaleDown]="false"
         [roundCropper]="false"
         (imageCropped)="imageCropped($event)"
@@ -24,6 +24,8 @@
         (cropperReady)="cropperReady()"
         (loadImageFailed)="loadImageFailed()">
     </image-cropper>
+    <!--
+    -->
     <!-- IMAGE CROPPER TOOL ENDS -->
 
     <!-- TOOLS MENU STARTS -->

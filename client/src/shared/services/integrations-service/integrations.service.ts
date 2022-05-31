@@ -250,6 +250,8 @@ export class IntegrationsService {
               googleCloudService.getGoogleUserDetails(userData?.integrations?.gdrive?.token)
                 .then((res) => resolve(res['user']))
                 .catch(err => resolve({}));
+            } else {
+              resolve({});
             }
         });
     }
@@ -318,7 +320,7 @@ export class IntegrationsService {
 
             // Assign the access_token from the refresh token
             if (refresh_token != null && refresh_token != undefined) {
-                tokenResults = await this.refreshAccessToken(refresh_token, workspaceData?.integrations);
+                tokenResults = await this.refreshBoxAccessToken(refresh_token, workspaceData?.integrations);
             }
 
             // Set the access_token
@@ -401,7 +403,7 @@ export class IntegrationsService {
      * This function fetches the access token stored in the user's profile
      * @param refreshToken
      */
-    async refreshAccessToken(refreshToken: string, integrations: any) {
+    async refreshBoxAccessToken(refreshToken: string, integrations: any) {
         let boxCloudService = this.injector.get(BoxCloudService)
         return new Promise(async (resolve) => {
             await boxCloudService.refreshAccessToken(refreshToken, integrations)
@@ -483,10 +485,14 @@ export class IntegrationsService {
             if (userData && userData?.integrations
                 && userData?.integrations?.box && userData?.integrations?.box?.token) {
               boxCloudService.getBoxUserDetails(userData?.integrations?.box?.token, workspaceId)
-                .then((res) => resolve(res['user']))
+                .then((res) => {
+                  resolve(res['user'])
+                })
                 .catch(err => {
                   return resolve({})
                 });
+            } else {
+              resolve({});
             }
         });
     }

@@ -1,0 +1,43 @@
+<div class="container-fluid" style="margin-top: 30px;margin-left: 20px;">
+  <div class="row">
+    <i *ngIf="isManager" (click)="openCardSettingsDialog()" class="material-icons" style="cursor: pointer;">settings</i>
+  </div>
+  <div class="media-body">
+    <div *ngFor="let level of levels; let index = index" class="level" [ngClass]="(levels[index + 1]) ? 'has-next-level' : ''">
+      <app-chart-person
+        *ngFor="let user of level?.members"
+        [person]="user"
+        [selected]="levels && levels[index + 1] && user._id == levels[index + 1].managerId"
+        [level]="index"
+        (nextLevelMembersEmitter)="newManagerSelected($event, index)"
+        (removeFromManagerEmitter)="removeFromManager(user, index)"></app-chart-person>
+
+      <div *ngIf="index > 0 && isManager" class="box muted"
+          [matMenuTriggerFor]="membersSearchMenu" (click)="selectPossibleMember(level?.managerId)">
+        <div>
+          <i class="material-icons">add_circle</i>
+        </div>
+        <div style="margin-top: 20px;">
+          <span i18n="@@organizationChart.addPeople">Add people</span>
+        </div>
+      </div>
+      <mat-menu #membersSearchMenu="matMenu" class="user-filter-menu">
+        <div style="padding: 10px;">
+            <div class="users-card">
+                <div class="form-group" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                  <input type="email" class="form-control" id="search-text" aria-describedby="search-text"
+                    [(ngModel)]="searchText" placeholder="Search member" autofocus>
+                </div>
+                <ul class="members-list">
+                  <li appHighlight class="members-list-item" *ngFor="let member of possibleMembers | appFilter: searchText"
+                      (click)="getMemberDetails(member, level?.managerId, index); searchText = ''" [searchedWord]="searchText" [content]="member">
+                    {{ member.first_name }} {{ member.last_name }}
+                  </li>
+                </ul>
+            </div>
+        </div>
+      </mat-menu>
+    </div>
+  </div>
+</div>
+

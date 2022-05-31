@@ -231,11 +231,11 @@ export class PublicFunctions {
         groupData = await this.getCurrentGroupFromService();
 
         if (JSON.stringify(groupData) == JSON.stringify({}) || JSON.stringify(groupData) == JSON.stringify(undefined)) {
-          groupData = await this.getGroupDetailsFromHTTP();
+          groupData = await this.getGroupDetailsFromStorage();
         }
 
         if (JSON.stringify(groupData) == JSON.stringify({}) || JSON.stringify(groupData) == JSON.stringify(undefined)) {
-          groupData = await this.getGroupDetailsFromStorage();
+          groupData = await this.getGroupDetailsFromHTTP();
         }
 
         this.sendUpdatesToGroupData(groupData);
@@ -261,9 +261,12 @@ export class PublicFunctions {
         return new Promise(async (resolve, reject) => {
             const router = this.injector.get(ActivatedRoute);
             const groupId = router.snapshot.queryParamMap.get('group');
-
-            const groupData = await this.getGroupDetails(groupId);
-            resolve(groupData);
+            if (groupId) {
+              const groupData = await this.getGroupDetails(groupId);
+              resolve(groupData);
+            } else {
+              resolve({});
+            }
         })
     }
 
@@ -1469,19 +1472,6 @@ export class PublicFunctions {
         });
     }
 
-    async checkExcelImportStatus(workspaceId: string, mgmtApiPrivateKey: string) {
-      const managementPortalService = this.injector.get(ManagementPortalService);
-      return managementPortalService.getExcelImportStatus(workspaceId, mgmtApiPrivateKey).then(
-        (res) => {
-          if ( !res || !res['status'] ) {
-            return false;
-          }
-          return true;
-        }).catch((err) => {
-          return false;
-        });
-    }
-
     /**
      * This method returns the highest date of the posts passed by parameter
      * @param posts
@@ -1521,13 +1511,49 @@ export class PublicFunctions {
           }).catch((err) => {
             return false;
           });
-      }
+    }
+
+      /**
+     * This function is responsible for fetching the status of the Files Versions module
+     * @returns status
+     */
+    async isFilesVersionsModuleAvailable() {
+        const workspace: any = await this.getCurrentWorkspace();
+        const managementPortalService = this.injector.get(ManagementPortalService);
+        return managementPortalService.isFilesVersionsModuleAvailable(workspace?._id, workspace?.management_private_api_key).then(
+          (res) => {
+            if ( !res || !res['status'] ) {
+              return false;
+            }
+            return true;
+          }).catch((err) => {
+            return false;
+          });
+    }
+
+      /**
+     * This function is responsible for fetching the status of the Organization module
+     * @returns status
+     */
+    async isOrganizationModuleAvailable() {
+        const workspace: any = await this.getCurrentWorkspace();
+        const managementPortalService = this.injector.get(ManagementPortalService);
+        return managementPortalService.isOrganizationModuleAvailable(workspace?._id, workspace?.management_private_api_key).then(
+          (res) => {
+            if ( !res || !res['status'] ) {
+              return false;
+            }
+            return true;
+          }).catch((err) => {
+            return false;
+          });
+    }
 
 
      /* Helper function fetching the worksapace groups
      * @param workspaceId - current workspaceId
      */
-     getAllGroupsList(workspaceId: string) {
+    getAllGroupsList(workspaceId: string) {
         return new Promise((resolve, reject) => {
 
             // Create groups service instance

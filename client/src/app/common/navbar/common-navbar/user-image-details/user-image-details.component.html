@@ -12,7 +12,7 @@
         <app-secured-image *ngIf="userData"
           [imgURL]="userData?.profile_pic"
           [service]="'user'"></app-secured-image>
-        <app-crop-image class="container" (outputImage)="getCroppedImage($event)"></app-crop-image>
+        <app-crop-image class="container" [resizeToWidth]="300" [cropperMinWidth]="300" (outputImage)="getCroppedImage($event)"></app-crop-image>
     </div>
 </div>
 <!-- USER MODAL CHANGE IMAGE ENDS -->

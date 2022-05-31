@@ -1,11 +1,10 @@
 import { Component, OnInit, Injector, AfterContentChecked, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
-import { Location } from '@angular/common'
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
 import { SubSink } from 'subsink';
 import { BehaviorSubject } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { LoungeService } from 'src/shared/services/lounge-service/lounge.service';
 
 @Component({
@@ -15,19 +14,11 @@ import { LoungeService } from 'src/shared/services/lounge-service/lounge.service
 })
 export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentChecked, OnDestroy {
 
-  constructor(
-    private utilityService: UtilityService,
-    private router: Router,
-    private injector: Injector,
-    private loungeService: LoungeService
-  ) { }
-
   // USER DATA
   userData: any;
   isUserManager: boolean = true;
 
-  // BASE URL OF THE APPLICATION
-  baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
+  isOrganizationModuleAvailable: boolean = false;
 
   // WORKSPACE DATA
   workspaceData: any;
@@ -36,17 +27,28 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
 
   isWorkNavbar$ = new BehaviorSubject(false);
   isLoungeNavbar$ = new BehaviorSubject(false);
+  isPeopleDirectoryNavbar$ = new BehaviorSubject(false);
 
   editTitle: boolean = false;
   loungeData: any;
   storyData: any;
   storyOriginalName = '';
 
+  // BASE URL OF THE APPLICATION
+  baseUrl = environment.UTILITIES_WORKSPACES_UPLOADS;
+
   // SUBSINK
   private subSink = new SubSink();
 
   // PUBLIC FUNCTIONS
   private publicFunctions = new PublicFunctions(this.injector);
+
+  constructor(
+    private utilityService: UtilityService,
+    private router: Router,
+    private injector: Injector,
+    private loungeService: LoungeService
+  ) { }
 
   async ngOnInit() {
 
@@ -56,6 +58,8 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
         this.workspaceData = res;
       }
     }));
+
+    this.isOrganizationModuleAvailable = await this.publicFunctions.isOrganizationModuleAvailable();
 
     // FETCH THE USER DETAILS EITHER FROM SHARED SERVICE, STORED LOCAL DATA OR FROM SERVER USING PUBLIC FUNCTIONS
     this.userData = await this.publicFunctions.getCurrentUser();
@@ -78,6 +82,9 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
         }
         else if (this.routerState == 'lounge') {
           this.nextLoungeNavbar();
+        }
+        else if (this.routerState == 'people-directory' || this.routerState == 'people-directory-chart') {
+          this.nextPeopleDirectoryNavbar();
         }
       }
 
@@ -103,12 +110,20 @@ export class WorkNavbarComponent implements OnInit, OnChanges, AfterContentCheck
 
   nextWorkNavbar() {
     this.isLoungeNavbar$.next(false);
+    this.isPeopleDirectoryNavbar$.next(false);
     this.isWorkNavbar$.next(true);
   }
 
   nextLoungeNavbar() {
     this.isWorkNavbar$.next(false);
+    this.isPeopleDirectoryNavbar$.next(false);
     this.isLoungeNavbar$.next(true);
+  }
+
+  nextPeopleDirectoryNavbar() {
+    this.isWorkNavbar$.next(false);
+    this.isLoungeNavbar$.next(false);
+    this.isPeopleDirectoryNavbar$.next(true);
   }
 
   canSeeDashboard() {

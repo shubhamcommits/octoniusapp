@@ -5,6 +5,7 @@ import { UserService } from 'src/shared/services/user-service/user.service';
 import { GoogleCloudService } from './google-cloud/services/google-cloud.service';
 import { BoxCloudService } from './box-cloud/services/box-cloud.service';
 import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 
 @Component({
   selector: 'app-user-available-clouds',
@@ -28,6 +29,7 @@ export class UserAvailableCloudsComponent implements OnInit {
     private integrationsService: IntegrationsService,
     private storageService: StorageService,
     private userService: UserService,
+    private utilityService: UtilityService,
     private injector: Injector
   ) { }
 
@@ -58,6 +60,8 @@ export class UserAvailableCloudsComponent implements OnInit {
       sessionStorage.clear();
       this.integrationsService.sendUpdatesToBoxUserData({});
     }
+
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   emitGoogleUser(googleUser: any) {

@@ -61,7 +61,7 @@ export class WorkspaceController {
             })
                 .populate({
                     path: 'members',
-                    select: 'first_name last_name profile_pic role email active',
+                    select: 'first_name last_name profile_pic current_position role email active',
                     /*
                     options: {
                         limit: 10
@@ -983,6 +983,97 @@ export class WorkspaceController {
             });
         } catch (err) {
             return sendError(res, err, 'Internal Server Error!', 500);
+        }
+    };
+
+    async getOrganizationChartFirstLevel(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { workspaceId } = req.params;
+
+            // If either workspaceId or userId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId) {
+                return res.status(400).json({
+                    message: 'Please provide a workspaceId!'
+                });
+            }
+
+            const workspace = await Workspace.findById({ _id: workspaceId })
+                .select('_id manager_custom_field').lean();
+            
+            // Finding groups for the user of which they are a part of
+            let members = await User.find({
+                    $and: [
+                        { _workspace: workspaceId, },
+                        { active: true }
+                    ]
+                })
+                .sort('first_name')
+                .lean() || [];
+
+            if (workspace.manager_custom_field) {
+                members = members.filter(user => !user?.profile_custom_fields
+                    || !user?.profile_custom_fields[workspace.manager_custom_field]
+                    || user?.profile_custom_fields[workspace.manager_custom_field] == null);
+            }
+
+            // If there are no groups then we send error response
+            if (!members) {
+                return sendError(res, new Error('Oops, no members found!'), 'Members not found, Invalid workspaceId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `${members.length} members found.`,
+                members: members
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    async getOrganizationChartNextLevel(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const { workspaceId } = req.params;
+            const { selectedManager } = req.query;
+
+            // If either workspaceId or userId is null or not provided then we throw BAD REQUEST 
+            if (!workspaceId || !selectedManager) {
+                return res.status(400).json({
+                    message: 'Please provide both workspaceId and selectedManager!'
+                });
+            }
+
+            const workspace = await Workspace.findById({ _id: workspaceId })
+                .select('_id manager_custom_field').lean();
+            
+            // Finding groups for the user of which they are a part of
+            let members = await User.find({
+                    $and: [
+                        { _workspace: workspaceId, },
+                        { active: true }
+                    ]
+                })
+                .sort('first_name')
+                .lean() || [];
+
+            members = members.filter(user => user?.profile_custom_fields
+                && user?.profile_custom_fields[workspace.manager_custom_field]
+                && user?.profile_custom_fields[workspace.manager_custom_field] == selectedManager);
+
+            // If there are no groups then we send error response
+            if (!members) {
+                return sendError(res, new Error('Oops, no members found!'), 'Members not found, Invalid workspaceId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: `${members.length} members found.`,
+                members: members
+            });
+        } catch (err) {
+            return sendError(res, err);
         }
     };
 }

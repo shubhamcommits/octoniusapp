@@ -124,14 +124,14 @@ export class LibreofficeControllers {
             const user = await User.findById({ _id: userId }).lean();
             let canEdit;
             if (fileLastVersion._parent || fileLastVersion?._id == fileId) {
-                canEdit = await authsHelper.canUserEditFileAction(fileLastVersion, user, (fileLastVersion._parent._id || fileLastVersion._parent));
+                canEdit = await authsHelper.canUserEditFileAction(fileLastVersion, user, fileId);
             } else {
                 canEdit = false;
             }
             
             return res.json({
                 BaseFileName: fileLastVersion.original_name,
-                OwnerId: fileLastVersion._posted_by._id || fileLastVersion._posted_by,
+                OwnerId: fileLastVersion?._posted_by?._id || fileLastVersion?._posted_by,
                 UserId: user._id || '',
                 UserFriendlyName: user.first_name + ' ' + user.last_name,
                 UserExtraInfo: {

@@ -7,7 +7,7 @@
   </button>
   <!-- MENU BUTTON ENDS -->
 
-      <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="cursor: pointer;">
+      <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
         <img src="assets/images/white_logo.svg" alt="" class="octonius-logo">
       </a>
   </div>
@@ -15,7 +15,7 @@
   <div class="menu-options">
       <ul class="list-unstyled components">
           <li>
-              <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active" style="cursor: pointer;">
+              <a (click)="changeToPersonalGroup()" routerLinkActive="router-link-active">
                 <i class="material-icons-outlined">home</i>
               </a>
           </li>
@@ -27,8 +27,7 @@
           </li>
 
           <li *ngFor="let group of userGroups">
-            <a (click)="changeState('groups_activity')" [routerLink]="['/dashboard', 'work', 'groups', 'activity']"
-                [queryParams]="{ group: group?._id }">
+            <a (click)="goToGroup(group?._id, 'groups_activity')">
                 <app-secured-image
                     [imgURL]="group?.group_avatar"
                     [service]="'group'"

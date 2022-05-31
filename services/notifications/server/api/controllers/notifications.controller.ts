@@ -264,10 +264,11 @@ export class NotificationsController {
                         if (assignedTo._id !== userId) {
                             await helperFunctions.sendNotificationsFeedFromService(assignedTo._id, io, true);
                             await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
-                                userid: assignedTo._id,
+                                //userid: assignedTo._id,
+                                userid: userId,
                                 postId,
                                 assigned_to: assignedTo,
-                                userId,
+                                //userId,
                                 type: "STATUSCHANGED"
                             });
                         }
@@ -279,10 +280,11 @@ export class NotificationsController {
                 await notificationService.taskStatusChanged(postId, status, userId, assigned_to, posted_by, req.body.io);
                 await helperFunctions.sendNotificationsFeedFromService(posted_by?._id, io, true);
                 await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
-                    userid: posted_by._id,
+                    //userid: posted_by._id,
+                    userid: userId,
                     postId,
                     assigned_to,
-                    userId,
+                    //userId,
                     type: "STATUSCHANGED"
                 });
             }
@@ -293,10 +295,11 @@ export class NotificationsController {
                     await notificationService.taskStatusChanged(postId, status, userId, null, followers, req.body.io);
                     await helperFunctions.sendNotificationsFeedFromService(follower, io, true);
                     await axios.post(`${process.env.INTEGRATION_SERVER_API}/notify`, {
-                        userid: follower,
+                        //userid: follower,
+                        userid: userId,
                         postId,
                         follower,
-                        userId,
+                        //userId,
                         type: "STATUSCHANGED"
                     });
                 }

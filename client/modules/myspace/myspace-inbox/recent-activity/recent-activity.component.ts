@@ -176,29 +176,35 @@ export class RecentActivityComponent implements OnInit {
    * @param postType - post type
    * @param group - group Id
    */
-  viewNotification(postId: string, postType: string, group: any) {
+  async viewNotification(postId: string, postType: string, groupId: string) {
     // redirect the user to the post
-    const groupId = (group._id) ? group._id : group;
+    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+    this.publicFunctions.sendUpdatesToGroupData(newGroup);
     // Set the Value of element selection box to be the url of the post
     if (postType === 'task') {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, postId: postId } });
+      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { postId: postId } });
     } else {
-      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, postId: postId } });
+      this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: postId } });
     }
   }
 
-  viewFolioNotification(folioId: string, group: any) {
-    const groupId = (group._id) ? group._id : group;
-    this._router.navigate(['/document', folioId], { queryParams: { group: groupId } });
+  async viewFolioNotification(folioId: string, groupId: string) {
+    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+    this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    this._router.navigate(['/document', folioId]);
   }
 
-  viewApprovalNotification(notification: any) {
+  async viewApprovalNotification(notification: any) {
     if (notification?._origin_post && notification?._origin_post?.type == 'task') {
       const groupId = notification?._origin_post?._group._id || notification?._origin_post?._group;
-      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, postId: notification?._origin_post?._id } });
+      const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+      this.publicFunctions.sendUpdatesToGroupData(newGroup);
+      this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { postId: notification?._origin_post?._id } });
     } else if (notification?._origin_folio) {
       const groupId = notification?._origin_folio?._group._id || notification?._origin_folio?._group;
-      this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId, itemId: notification?._origin_folio?._id } });
+      const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+      this.publicFunctions.sendUpdatesToGroupData(newGroup);
+      this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { itemId: notification?._origin_folio?._id } });
     }
   }
 
@@ -207,9 +213,11 @@ export class RecentActivityComponent implements OnInit {
    * @param postId - userId of the current user
    * @param group - group Id
    */
-  viewPost(postId: string, group: any) {
+  async viewPost(postId: string, group: any) {
     const groupId = (group._id) ? group._id : group;
-    this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, postId: postId } });
+    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+    this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: postId } });
   }
 
   selectedDefaultTab() {

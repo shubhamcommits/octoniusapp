@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { PublicFunctions } from 'modules/public.functions';
-import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
-import { UserService } from 'src/shared/services/user-service/user.service';
-import { SubSink } from 'subsink';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-group',
@@ -11,25 +9,17 @@ import { SubSink } from 'subsink';
 })
 export class GroupComponent implements OnInit, OnDestroy {
 
-  groupId;
+  groupData;
+
+  UTILITIES_GROUPS_UPLOADS = environment.UTILITIES_GROUPS_UPLOADS;
+  backgroundImageUrl = '';
 
   // Public Functions Object
   publicFunctions = new PublicFunctions(this.injector);
 
-  // UNSUBSCRIBE THE DATA
-  private subSink = new SubSink();
-
   constructor(
-    private injector: Injector,
-    private routeStateService: RouteStateService
+    private injector: Injector
   ) {
-
-
-    this.subSink.add(this.routeStateService?.pathParams.subscribe(async (res) => {
-      if (res && res.queryParams) {
-        this.groupId = res.queryParams.group;
-      }
-    }));
   }
 
   async ngOnInit() {
@@ -39,26 +29,17 @@ export class GroupComponent implements OnInit, OnDestroy {
       state: 'group'
     });
 
-    // const userService = this.injector.get(UserService);
+    this.groupData =await this.publicFunctions.getCurrentGroupDetails();
 
-    // const userData = await this.publicFunctions.getCurrentUser();
-
-    /*
-    if (userData && this.groupId) {
-      userService.increaseGroupVisit(userData._id, this.groupId).then(res => {
-        if (res) {
-          this.publicFunctions.sendUpdatesToUserData(res['user']);
-        }
-      });
+    if (this.groupData && this.groupData?.background_image) {
+      this.backgroundImageUrl = this.UTILITIES_GROUPS_UPLOADS + '/' + this.groupData?.background_image.replace(/\s/g, '%20') + '?noAuth=true';
     }
-    */
   }
 
   /**
    * This function unsubscribes all the observables as soon as the component is destroyed
    */
   ngOnDestroy(): void {
-    this.subSink.unsubscribe();
   }
 
 }

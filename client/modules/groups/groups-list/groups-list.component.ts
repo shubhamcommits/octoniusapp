@@ -13,11 +13,6 @@ import { Router } from '@angular/router';
 })
 export class GroupsListComponent implements OnInit {
 
-  constructor(
-    public injector: Injector,
-    private router: Router
-  ) { }
-
   // Base Url
   baseUrl = environment.UTILITIES_GROUPS_UPLOADS;
 
@@ -58,6 +53,11 @@ export class GroupsListComponent implements OnInit {
 
   // Utility Service
   public utilityService = this.injector.get(UtilityService);
+
+  constructor(
+    public injector: Injector,
+    private router: Router
+  ) { }
 
   async ngOnInit() {
 
@@ -102,6 +102,10 @@ export class GroupsListComponent implements OnInit {
     // Stops the spinner and return the value with ngOnInit
     this.isLoading$.next(false);
     this.isLoadingAgora$.next(false);
+  }
+
+  ngOnDestroy() {
+    this.isLoading$.complete()
   }
 
   public async onScroll() {
@@ -182,14 +186,12 @@ export class GroupsListComponent implements OnInit {
   }
 
   async joinGroup(groupId: any) {
-    await this.publicFunctions.joinAgora(groupId, this.userData._id).then((res) => {
-      this.router.navigateByUrl('/dashboard/work/groups/activity?group=' + groupId);
+    await this.publicFunctions.joinAgora(groupId, this.userData._id).then(async (res) => {
+      const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+      this.publicFunctions.sendUpdatesToGroupData(newGroup);
+      this.router.navigateByUrl('/dashboard/work/groups/activity');
     });
 
-  }
-
-  ngOnDestroy() {
-    this.isLoading$.complete()
   }
 
   /**
@@ -212,5 +214,11 @@ export class GroupsListComponent implements OnInit {
     else
       return 0
 
+  }
+
+  async goToGroup(groupId: string) {
+    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+    this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
   }
 }

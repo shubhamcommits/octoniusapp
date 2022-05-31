@@ -1,6 +1,6 @@
 import express from 'express';
 import { FilesControllers } from '../controllers/files.controllers';
-import { groupFileUploader, groupFileDelete } from '../../utils/filehandlers/group.filehandler';
+import { groupFileUploader, groupFileDelete } from '../../utils/filehandlers';
 import { Auths } from '../../utils/auths';
 
 // Files Class Object

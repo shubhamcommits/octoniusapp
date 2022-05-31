@@ -101,7 +101,7 @@ const UserSchema = new Schema({
     }],
     selected_widgets: {
         type: [String],
-        default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY', 'PULSE', 'PEOPLE_DIRECTORY', 'ORGANIZATIONAL_STRUCTURE', 'WORK_STATISTICS_NORTH_STAR', 'ENGAGEMENT', 'KPI_PERFORMANCE']
+        default: ['WORK_STATISTICS', 'WORKLOAD', 'VELOCITY'/*, 'PULSE'*/, 'PEOPLE_DIRECTORY', 'ORGANIZATIONAL_STRUCTURE', 'WORK_STATISTICS_NORTH_STAR', 'ENGAGEMENT', 'KPI_PERFORMANCE']
     },
     stats: {
         lastTaskView: {
@@ -156,6 +156,12 @@ const UserSchema = new Schema({
             }
         },
         box: {
+            token: {
+                type: String,
+                default: null
+            }
+        },
+        onedrive: {
             token: {
                 type: String,
                 default: null

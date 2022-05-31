@@ -13,7 +13,7 @@
             <!-- Group Information ends -->
 
             <!-- Task Progress Count starts -->
-            <app-group-task-progress *ngIf="groupId && globalFeed == false" [groupId]="groupId"
+            <app-group-task-progress *ngIf="groupData && groupData?._id && globalFeed == false" [groupId]="groupData?._id"
                 [myWorkplace]="myWorkplace"></app-group-task-progress>
             <!-- Task Progress Count ends -->
 
@@ -23,7 +23,7 @@
               <!-- Send pulse ends -->
 
             <!-- Send pulse starts
-            <app-send-pulse *ngIf="groupId && myWorkplace === false && globalFeed == false" [groupId]="groupId">
+            <app-send-pulse *ngIf="groupData && groupData?._id &&  && myWorkplace === false && globalFeed == false" [groupId]="groupData?._id">
             </app-send-pulse>
             Send pulse ends -->
 
@@ -46,7 +46,7 @@
 
             <!-- Group activity postbox starts -->
             <app-group-postbox *ngIf="userData && checkDataExist(userData) && this.globalFeed == false"
-                [userData]="userData" [groupId]="groupId" (post)="getPost($event)" (edited)="editedPost($event)"></app-group-postbox>
+                [userData]="userData" [groupId]="groupData?._id" (post)="getPost($event)" (edited)="editedPost($event)"></app-group-postbox>
             <!-- Group activity postbox ends -->
 
             <!-- Activity posts section starts -->

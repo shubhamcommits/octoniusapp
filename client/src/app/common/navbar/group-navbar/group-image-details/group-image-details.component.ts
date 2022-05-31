@@ -50,7 +50,7 @@ export class GroupImageDetailsComponent implements OnInit {
     utilityService.asyncNotification($localize`:@@groupImageDetails.pleaseWaitWhileWeUpdate:Please wait while we are updating the group avatar...`,
       new Promise((resolve, reject) => {
 
-        groupService.updateGroupAvatar(this.groupData._id, this.croppedImage, (this.groupData._workspace._id || this.groupData._workspace))
+        groupService.updateGroupImage(this.groupData._id, this.croppedImage, (this.groupData._workspace._id || this.groupData._workspace))
         .then((res)=>{
 
           this.groupData.group_avatar = res['group']['group_avatar'];
@@ -64,9 +64,5 @@ export class GroupImageDetailsComponent implements OnInit {
         })
 
       }))
-  }
-
-  getGroupAvatarURL(fileName: string) {
-    return this.baseUrl + '/' + fileName;
   }
 }

@@ -89,6 +89,8 @@ import { ShowCustomFieldsColumnDialogComponent } from './group/group-kanban-boar
 import { GroupKanbanArchivedBoardsComponent } from './group/group-kanban-archived-boards/group-kanban-archived-boards.component';
 import { PermissionDialogComponent } from './group/permission-dialog/permission-dialog.component';
 import { FilesCustomFieldsDialogComponent } from './group/files-custom-fields-dialog/files-custom-fields-dialog.component';
+import { GroupSettingsComponent } from './group/group-admin/group-settings/group-settings.component';
+import { GroupBackgroundImageDetailsComponent } from './group/group-admin/group-settings/group-background-image-details/group-background-image-details.component';
 
 /**
  * 4. !===== DECLARATIONS, IMPORTS, EXPORTS, & PROVIDERS =====!
@@ -136,7 +138,9 @@ import { FilesCustomFieldsDialogComponent } from './group/files-custom-fields-di
         ShowCustomFieldsColumnDialogComponent,
         KanbanTaskCardComponent,
         GroupReportsComponent,
-        PermissionDialogComponent
+        PermissionDialogComponent,
+        GroupSettingsComponent,
+        GroupBackgroundImageDetailsComponent
     ],
     imports: [
         CommonModule,

@@ -53,15 +53,17 @@
       <!-- Velocity Card Ends -->
     </div>
 
+    <!-- Pulse Card Starts -->
+    <!--
     <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('PULSE')">
-      <!-- Pulse Card Starts -->
       <app-pulse-card [period]="period" [filteringGroups]="filteringGroups"></app-pulse-card>
-      <!-- Pulse Card Ends -->
     </div>
+    -->
+    <!-- Pulse Card Ends -->
 
     <div class="col-md-3 box" *ngIf="userData?.selected_widgets?.includes('PEOPLE_DIRECTORY')">
       <!-- People Directory Card Starts -->
-      <app-people-directory-card></app-people-directory-card>
+      <app-people-directory-card [isDashboard]="true"></app-people-directory-card>
       <!-- People Directory Card Ends -->
     </div>
 

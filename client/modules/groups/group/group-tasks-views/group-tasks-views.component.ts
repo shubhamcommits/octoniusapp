@@ -35,8 +35,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
   filteringBit:String = 'none'
   filteringData: any;
-  // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.queryParamMap.get('group');
 
   unchangedColumns: any;
 
@@ -99,7 +97,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     /**
      * Here we fetch all the columns available in a group, and if null we initialise them with the default one
      */
-    this.columns = await this.publicFunctions.getAllColumns(this.groupId);
+    this.columns = await this.publicFunctions.getAllColumns(this.groupData?._id);
 
     /**
      * Adding the property of tasks in every column
@@ -119,10 +117,10 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     }
 
     // Fetch all the tasks posts from the server
-    this.tasks = await this.publicFunctions.getPosts(this.groupId, 'task');
+    this.tasks = await this.publicFunctions.getPosts(this.groupData?._id, 'task');
 
     if (this.groupData.shuttle_type && this.isShuttleTasksModuleAvailable) {
-      const shuttleTasks = await this.publicFunctions.getShuttleTasks(this.groupId);
+      const shuttleTasks = await this.publicFunctions.getShuttleTasks(this.groupData?._id);
       this.tasks = this.tasks.concat(shuttleTasks);
     }
 
@@ -146,7 +144,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
      * Obtain the custom fields
      */
     this.customFields = [];
-    await this.groupService.getGroupCustomFields(this.groupId).then((res) => {
+    await this.groupService.getGroupCustomFields(this.groupData?._id).then((res) => {
       if (res['group']['custom_fields']) {
         res['group']['custom_fields'].forEach(field => {
           this.customFields.push(field);
@@ -168,7 +166,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         }
         canOpen = canView || canEdit;
       }
-      this.utilityService.openCreatePostFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
+      this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
     }
   }
 

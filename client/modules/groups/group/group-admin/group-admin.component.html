@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="groupData">
 
   <!-- Group presentation -->
   <div class="card-tile">
@@ -22,7 +22,7 @@
         <!-- Search member component starts -->
         <app-component-search-input-box *ngIf="userData && checkDataExist(userData)"
             [placeholder]="'Search member to add'"
-            [groupId]="groupId" [workspaceId]="userData._workspace" [userData]="userData" [type]="'group'"
+            [groupId]="groupData?._id" [workspaceId]="userData._workspace" [userData]="userData" [type]="'group'"
             (member)="addNewUser($event)" class="search-member-admin">
         </app-component-search-input-box>
         <!-- Search member component ends -->
@@ -34,11 +34,11 @@
 
 
   <!-- Smart admin content -->
-  <app-group-smart-admin *ngIf="groupData && groupData?.group_name?.toLowerCase() != 'global'" [group]="groupData">
+  <app-group-smart-admin *ngIf="groupData?.group_name?.toLowerCase() != 'global'" [group]="groupData">
   </app-group-smart-admin>
 
    <!-- Invite guest -->
-   <app-invite-user *ngIf="groupData && workspaceData && groupData?.group_name?.toLowerCase() != 'global'"
+   <app-invite-user *ngIf="workspaceData && groupData?.group_name?.toLowerCase() != 'global'"
     [workspaceData]="workspaceData"
     [groupData]="groupData"
     [userData]="userData">
@@ -46,124 +46,14 @@
 
 
   <!-- Settings -->
-  <div class="card-tile">
-    <div class="card-block">
-        <h6><b>Settings</b></h6>
-
-        <div class="mt-5 mb-5 pt-3">
-          <mat-slide-toggle color="primary"
-              [checked]="groupData.share_files"
-              [name]="'share_files'"
-              (change)="saveSettings($event)">
-            <h6><b i18n="@@groupAdmin.shareFiles">Share files with the organization</b></h6>
-            <p class="card-text" i18n="@@groupAdmin.makesAllFilesAccessible">This option makes all the files from this group accessible to the entire organization</p>
-          </mat-slide-toggle>
-        </div>
-
-        <div class="mt-5 mb-5 pt-3">
-          <mat-slide-toggle color="primary"
-              [checked]="groupData.enabled_rights"
-              [name]="'enabled_rights'"
-              (change)="saveSettings($event)"
-              [(ngModel)]="enabledRights">
-            <h6><b i18n="@@groupAdmin.enableRAG">Enable restricted access groups</b></h6>
-            <p class="card-text" i18n="@@groupAdmin.RAGAllowAdminsToChose">RAG is the option for creating special bulks of users inside a group, in order to give them fine-grained control over something.<br> If you want only a certain group of users to see a task, or to edit a board section, or view/edit/delete a file etc.</p>
-            <button button class="btn btn-primary btn-sm" (click)="openRAGModal(groupId)" *ngIf="enabledRights" i18n="@@groupAdmin.manageRAG">Manage RAG</button>
-          </mat-slide-toggle><br>
-        </div>
-
-        <div class="mt-5 mb-5 pt-3">
-          <mat-slide-toggle color="primary"
-              [checked]="groupData.project_type"
-              [name]="'enabled_project_type'"
-              (change)="saveSettings($event)"
-              [(ngModel)]="enabledProjectType">
-            <h6><b i18n="@@groupAdmin.enableProjectFeatures">Enable Project Features</b></h6>
-            <p class="card-text" i18n="@@groupAdmin.enableAdvancedProjectFunctionalities"> This will enable all advanced project related funtionalities like: timeline, project planning etc.</p>
-          </mat-slide-toggle><br>
-        </div>
-
-        <div class="mt-5 mb-5 pt-3">
-          <mat-slide-toggle color="primary"
-              [checked]="groupData.enable_allocation"
-              [name]="'enable_allocation'"
-              (change)="saveSettings($event)"
-              [(ngModel)]="enableAllocation">
-            <h6><b i18n="@@groupAdmin.enableTaskAllocation">Enable Tasks Allocation</b></h6>
-            <p class="card-text" i18n="@@groupAdmin.enableAllocationsFeaturesOnTasks"> This will enable allocation features on the tasks and resource management.</p>
-          </mat-slide-toggle><br>
-        </div>
-
-        <!-- Campaign Module -->
-        <div class="mt-5 mb-5 pt-3" *ngIf="campaignModuleAvailable">
-          <mat-slide-toggle color="primary"
-              [checked]="groupData.enabled_campaign"
-              [name]="'enabled_campaign'"
-              (change)="saveSettings($event)"
-              [(ngModel)]="enabledCampaign">
-            <h6><b i18n="@@groupAdmin.enableCampaignFeature">Enable Campaign Features?</b></h6>
-            <p class="card-text" i18n="@@groupAdmin.enableAllCampaign"> This will enable all the campaign related functionalities.</p>
-          </mat-slide-toggle><br>
-        </div>
-        <!-- Campaign Module -->
-
-        <!-- Enable Task Shuttle -->
-        <div class="mt-5 mb-5 pt-3" *ngIf="shuttleTasksModuleAvailable">
-          <mat-slide-toggle color="primary"
-              [checked]="groupData.shuttle_type"
-              [name]="'enabled_shuttle_type'"
-              (change)="saveSettings($event)"
-              [(ngModel)]="enabledShuttleType">
-            <h6><b i18n="@@groupAdmin.enableTaskShuttle">Enable Task Shuttle</b></h6>
-            <p class="card-text"> <img src="assets/images/icon-task-shuttle.svg" style="width: 32px">
-              <span i18n="@@groupAdmin.taskShuttleAllowYourGroup">Task Shuttle allows your group to receive tasks from other groups. Select the section that will receive all Shuttle Tasks.</span>
-            </p>
-          </mat-slide-toggle>
-
-          <br *ngIf="groupData?.shuttle_type" /><br *ngIf="groupData?.shuttle_type" />
-
-          <mat-form-field appearance="fill" style="margin-left: 40px;" *ngIf="groupData?.shuttle_type">
-            <mat-select
-                (selectionChange)="selectShuttleSection($event.value)"
-                [(value)]="groupData._shuttle_section">
-              <mat-option *ngFor="let section of groupSections; let j=index" [value]="section._id">{{ section.title }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <!-- Enable Task Shuttle -->
-
-        <!-- Switch to Agora/Normal -->
-        <div class="mt-5 mb-5 pt-3" *ngIf="groupData?.group_name != 'Global'">
-          <mat-slide-toggle color="primary"
-              [checked]="switchAgora"
-              [name]="'switch-agora'"
-              (change)="saveSettings($event)"
-              [(ngModel)]="switchAgora">
-            <h6><b i18n="@@groupAdmin.convertAgora">Convert Group To Agora</b></h6>
-            <p class="card-text" i18n="@@groupAdmin.switchAgoraDescription"> This will switch the group type to Agora and all members of the workplace will be able to see it.</p>
-          </mat-slide-toggle><br>
-        </div>
-        <!-- Switch to Agora/Normal -->
-
-        <!-- Switch to Agora/Normal -->
-        <div class="mt-5 mb-5 pt-3">
-          <mat-slide-toggle color="primary"
-              [checked]="freezeDates"
-              [name]="'freeze_dates'"
-              (change)="saveSettings($event)"
-              [(ngModel)]="freezeDates">
-            <h6><b i18n="@@groupAdmin.freezeDueDate">FREEZE Date change for other members?</b></h6>
-            <p class="card-text" i18n="@@groupAdmin.freezeDueDateDescription"> When this is ON, only GM and task creator will be able to change the dates of a task.</p>
-          </mat-slide-toggle><br>
-        </div>
-        <!-- Switch to Agora/Normal -->
-    </div>
-
-  </div>
+  <app-group-settings
+    [groupData]="groupData"
+    [shuttleTasksModuleAvailable]="shuttleTasksModuleAvailable"
+    [campaignModuleAvailable]="campaignModuleAvailable"></app-group-settings>
 
   <!-- Delete Group Component starts -->
-  <app-delete-group *ngIf="groupData && groupId && groupId != null && groupId != undefined"
-    [groupId]="groupId" [numMembers]="groupData?._members?.length + groupData?._admins?.length">
+  <app-delete-group *ngIf="groupData && groupData?._id && groupData?._members && groupData?._admins"
+    [groupId]="groupData?._id" [numMembers]="groupData?._members?.length + groupData?._admins?.length">
   </app-delete-group>
   <!-- Delete Group Component ends -->
 

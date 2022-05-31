@@ -25,9 +25,12 @@ export class FileVersionsComponent implements OnInit {
   @Input() canView;
   @Input() canDelete;
 
+  @Output() newVersionEvent = new EventEmitter();
   @Output() allVersionsDeletedEmitter = new EventEmitter();
 
   fileVersions;
+
+  groupData;
 
   authToken: string;
 
@@ -55,9 +58,10 @@ export class FileVersionsComponent implements OnInit {
     private injector: Injector
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     if (!this.currentGroupId) {
-      this.currentGroupId = this.router.snapshot.queryParamMap.get('group');
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+      this.currentGroupId = this.groupData?._id;
     }
     this.authToken = `Bearer ${this.storageService.getLocalData('authToken')['token']}`;
 
@@ -212,6 +216,8 @@ export class FileVersionsComponent implements OnInit {
               }
 
               this.fileVersions.unshift(res['file']);
+
+              this.newVersionEvent.emit(res['file']);
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@fileVersions.fileUploaded:File has been uploaded!`))
             })
             .catch(() => {

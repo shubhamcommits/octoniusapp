@@ -17,8 +17,8 @@ export class FolioHeaderComponent implements OnInit {
 
   uploadedFiles: Array<File> = []
 
-  // GroupID Variable
-  groupId: any;
+  // GroupData Variable
+  groupData: any;
 
   // ReadOnly Variable
   readOnly = true;
@@ -54,8 +54,8 @@ export class FolioHeaderComponent implements OnInit {
 
   async ngOnInit() {
 
-    // Set the groupId
-    this.groupId = this._ActivatedRoute.snapshot.queryParamMap.get('group')
+    // Set the groupData
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     // Set the readOnly
     this.readOnly = this._ActivatedRoute.snapshot.queryParamMap.get('readOnly') == 'true' || false
@@ -64,7 +64,7 @@ export class FolioHeaderComponent implements OnInit {
 
     if (this.userData && JSON.stringify(this.userData) != JSON.stringify({})) {
       // check if the user is part of the group of the folio
-      const groupIndex = await this.userData?._groups?.findIndex(group => { return (group._id || group) == this.groupId });
+      const groupIndex = await this.userData?._groups?.findIndex(group => { return (group._id || group) == this.groupData?._id });
     }
 
     // Set the fileId variable
@@ -89,11 +89,12 @@ export class FolioHeaderComponent implements OnInit {
   /**
    * This function is responsible for taking the user back to their previous locations
    */
-  goBackToFiles() {
+  async goBackToFiles() {
+    const newGroup = await this.publicFunctions.getGroupDetails(this.file?._group?._id || this.file?._group);
+    this.publicFunctions.sendUpdatesToGroupData(newGroup);
     this.router.navigate(
       ['/dashboard', 'work', 'groups', 'files'],
       { queryParams: {
-        group: this.groupId,
         folder: this.file?._folder?._id || this.file?._folder
       }}
     );

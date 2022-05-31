@@ -1,7 +1,10 @@
 <div class="smart-card" style="padding: 10px;">
     <div class="row" style="margin: 0 0 20px; justify-content: space-between;">
-      <div class="card-title mt-1" i18n="@@peopleDirectoryCard.peopleDirectory">
+      <div *ngIf="isDashboard" class="card-title mt-1" i18n="@@peopleDirectoryCard.peopleDirectory">
         People directory
+      </div>
+      <div *ngIf="!isDashboard" class="card-title mt-1" i18n="@@peopleDirectoryCard.stats">
+        Stats
       </div>
       <div class="icon">
         <i class="material-icons-outlined mr-2">contacts</i>

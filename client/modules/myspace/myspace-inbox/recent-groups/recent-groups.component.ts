@@ -37,7 +37,9 @@ export class RecentGroupsComponent implements OnInit {
     });
   }
 
-  goToGroup(groupId: string) {
-    this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], {queryParams: { group: groupId }});
+  async goToGroup(groupId: string) {
+    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+    this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    this._router.navigate(['/dashboard', 'work', 'groups', 'activity']);
   }
 }

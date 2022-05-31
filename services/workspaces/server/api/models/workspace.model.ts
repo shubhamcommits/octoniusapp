@@ -83,6 +83,9 @@ const workspaceSchema = new Schema({
             }
         }]
     },
+    manager_custom_field: {
+        type: String
+    },
     invited_users: [{
         email: {
             type: String,
@@ -166,6 +169,19 @@ const workspaceSchema = new Schema({
             type: String
         },
         box_client_secret_key: {
+            type: String
+        },
+        is_onedrive_connected: {
+            type: Boolean,
+            default: false
+        },
+        onedrive_client_id: {
+            type: String
+        },
+        onedrive_client_secret_key: {
+            type: String
+        },
+        onedrive_tenant_id: {
             type: String
         }
     }

@@ -100,6 +100,12 @@ routes.get('/:workspaceId/excelImport', mgmt.getExcelImportStatus);
 // GET - obtain if the shuttle module is availability in the workspace
 routes.get('/:workspaceId/shuttle', mgmt.isShuttleTasksModuleAvailable);
 
+// GET - obtain if the shuttle module is availability in the workspace
+routes.get('/:workspaceId/filesVersions', mgmt.isFilesVersionsModuleAvailable);
+
+// GET - obtain if the shuttle module is availability in the workspace
+routes.get('/:workspaceId/organization', mgmt.isOrganizationModuleAvailable);
+
 /**
  * Profile Custom Fields
  */
@@ -126,6 +132,12 @@ routes.get('/:workspaceId/shuttleGroups', workspaces.getShuttleGroups);
 
 // PUT - Save settings
 routes.put('/:workspaceId/settings', workspaces.saveSettings);
+
+// GET - Get a list of the members without manager
+routes.get('/:workspaceId/organizationChartFirstLevel', workspaces.getOrganizationChartFirstLevel);
+
+// GET - Get a list of the members with an specific manager
+routes.get('/:workspaceId/organizationChartNextLevel', workspaces.getOrganizationChartNextLevel);
 
 /*  ===================
  *  -- EXPORT ROUTES --

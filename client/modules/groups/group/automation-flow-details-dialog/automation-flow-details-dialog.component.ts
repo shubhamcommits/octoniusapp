@@ -32,9 +32,6 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
   customFieldOptions = [];
   shuttleGroups = [];
 
-  newTrigger = false;
-  newAction = false;
-
   baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   userData: any;
@@ -129,6 +126,8 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     this.flowSteps = [];
     if (steps) {
       steps.forEach(step => {
+        step.newTrigger = false;
+        step.newAction = false;
         this.flowSteps.push(step);
       });
 
@@ -186,18 +185,18 @@ export class AutomationFlowDetailsDialogComponent implements OnInit, OnDestroy {
     if (!this.flowSteps[stepIndex].trigger) {
       this.flowSteps[stepIndex].trigger = [];
     }
-    this.flowSteps[stepIndex].trigger.push({ name: trigger });
+    this.flowSteps[stepIndex].trigger.push({ name: trigger });
 
-    this.newTrigger = false;
+    this.flowSteps[stepIndex].newTrigger = false;
   }
 
   selectAction(action: string, stepIndex: number) {
     if (!this.flowSteps[stepIndex].action) {
       this.flowSteps[stepIndex].action = [];
     }
-    this.flowSteps[stepIndex].action.push({ name: action });
+    this.flowSteps[stepIndex].action.push({ name: action });
 
-    this.newAction = false;
+    this.flowSteps[stepIndex].newAction = false;
   }
 
   getMember(event: any, type: string, stepIndex: number, index: number) {

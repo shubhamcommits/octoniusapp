@@ -194,7 +194,7 @@
 
             <!-- upload image template start -->
             <ng-template #content let-modal>
-                <app-question-image-details [groupId]="groupId" [flamingoId]="flamingo._id"
+                <app-question-image-details [groupId]="groupData?._id" [flamingoId]="flamingo._id"
                     [activeQuestion]="activeQuestion" [workspaceId]="workspaceId"
                     (uploadImageEmitter)='onUploadImageEmitter($event)'>
                 </app-question-image-details>

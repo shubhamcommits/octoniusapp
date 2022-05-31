@@ -78,7 +78,7 @@ export class GroupNewFileComponent implements OnChanges, OnDestroy {
     this.enabledCampaign = this.groupData.enabled_campaign
 
     // Campaign Module Status
-    this.campaignModuleAvailable = await this.publicFunctions.isCampaignModuleAvailable()
+    this.campaignModuleAvailable = await this.publicFunctions.isCampaignModuleAvailable();
   }
 
   ngOnDestroy() {

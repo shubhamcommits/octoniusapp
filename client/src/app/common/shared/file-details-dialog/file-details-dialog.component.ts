@@ -19,6 +19,7 @@ export class FileDetailsDialogComponent implements OnInit {
 
   // Close Event Emitter - Emits when closing dialog
   @Output() closeEvent = new EventEmitter();
+  @Output() newVersionEvent = new EventEmitter();
   @Output() deleteEvent = new EventEmitter();
   @Output() allVersionsDeletedEmitter = new EventEmitter();
 
@@ -43,12 +44,6 @@ export class FileDetailsDialogComponent implements OnInit {
   // Tags Object
   tags: any = [];
 
-  // IsLoading behaviou subject maintains the state for loading spinner
-  public isLoading$ = new BehaviorSubject(false);
-
-  // Public Functions class object
-  publicFunctions = new PublicFunctions(this.injector);
-
   // Variable to enable or disable save button
   contentChanged = false;
 
@@ -61,9 +56,17 @@ export class FileDetailsDialogComponent implements OnInit {
   // Comments Array
   comments: any = [];
 
-  baseUrl = environment.UTILITIES_USERS_UPLOADS;
-
   newComment;
+
+  isFilesVersionsModuleAvailable = false;
+
+  // IsLoading behaviou subject maintains the state for loading spinner
+  public isLoading$ = new BehaviorSubject(false);
+
+  // Public Functions class object
+  publicFunctions = new PublicFunctions(this.injector);
+
+  baseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   constructor(
     private filesService: FilesService,
@@ -78,9 +81,11 @@ export class FileDetailsDialogComponent implements OnInit {
   async ngOnInit() {
     // Start the loading spinner
     this.isLoading$.next(true);
+
     this.fileData = this.data.fileData;
     this.userData = this.data.userData;
     this.groupData = this.data.groupData;
+    this.isFilesVersionsModuleAvailable = this.data.isFilesVersionsModuleAvailable;
 
     if (!this.groupData) {
       this.groupData = await this.publicFunctions.getCurrentGroupDetails();
@@ -269,6 +274,10 @@ export class FileDetailsDialogComponent implements OnInit {
   async onApprovalFlowLaunchedEmiter(fileData: any) {
     this.fileData = fileData;
     this.canEdit = await this.utilityService.canUserDoFileAction(this.fileData, this.groupData, this.userData, 'edit');
+  }
+
+  newVersionUploaded(data: any) {
+    this.newVersionEvent.emit(data);
   }
 
   allVersionsDeleted() {

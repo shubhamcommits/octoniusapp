@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy, Injector, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PublicFunctions } from 'modules/public.functions';
-import { ActivatedRoute, Router } from '@angular/router';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { SubSink } from 'subsink';
-import { SocketService } from 'src/shared/services/socket-service/socket.service';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
 
 @Component({
@@ -20,8 +18,6 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   // @Input() routerFromEvent: any;
 
   isAdmin: boolean = false;
-
-  groupId: any;
 
   routerFromEvent: any;
   // baseUrl for uploads
@@ -71,7 +67,6 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
 
     this.subSink.add(this.routeStateService?.pathParams.subscribe(async (res) => {
       if (res) {
-        this.groupId = res.queryParams.group;
         this.routerFromEvent = res;
         await this.ngOnInit();
       }
@@ -103,12 +98,19 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     );
     */
 
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    /*
     if (this.groupId) {
       // Fetch current group
       this.groupData = await this.publicFunctions.getGroupDetails(this.groupId);
     } else {
       // is personal group
       this.groupData = await this.publicFunctions.getGroupDetails(this.userData?._private_group?._id || this.userData?._private_group);
+    }
+    */
+    if (!this.utilityService.objectExists(this.groupData)) {
+      this.groupData = await this.publicFunctions.getGroupDetails(this.userData?._private_group?._id || this.userData?._private_group);
+      this.publicFunctions.sendUpdatesToGroupData(this.groupData);
     }
 
     if (this.groupData) {
@@ -166,7 +168,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
   checkIsFavoriteGroup() {
     let groupIndex = -1;
     if (this.userData && this.userData.stats && this.userData.stats.favorite_groups) {
-      groupIndex = this.userData.stats.favorite_groups.findIndex(group => (group._id || group) == this.groupId);
+      groupIndex = this.userData.stats.favorite_groups.findIndex(group => (group._id || group) == this.groupData?._id);
     }
     return groupIndex >= 0;
   }
@@ -178,7 +180,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     utilityService.asyncNotification($localize`:@@groupNavbar.pleaseWaitWeAreSaving:Please wait we are saving the information...`,
       new Promise((resolve, reject) => {
         // Call HTTP Request to change the request
-        this.userService.saveFavoriteGroup(this.userData._id, this.groupId, !this.isFavoriteGroup)
+        this.userService.saveFavoriteGroup(this.userData._id, this.groupData?._id, !this.isFavoriteGroup)
           .then((res) => {
             this.isFavoriteGroup = !this.isFavoriteGroup;
             this.userData = res['user'];

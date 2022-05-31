@@ -36,16 +36,13 @@ export class GroupFilesComponent implements OnInit {
   // Delete Event Emitter - Emits delete event
   @Output('delete') delete = new EventEmitter();
 
-  // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.queryParamMap.get('group');
-
   // Base Url of the users uploads
   userBaseUrl = environment.UTILITIES_USERS_UPLOADS;
 
   // Base Url of the files uploads
   filesBaseUrl = environment.UTILITIES_FILES_UPLOADS;
 
-  groupfilesBaseUrl = environment.UTILITIES_GROUP_FILES_UPLOADS;
+  utilitiesBaseAPIUrl = environment.UTILITIES_BASE_API_URL;
 
   // Client Url of the global application
   clientUrl = environment.clientUrl;
@@ -100,6 +97,8 @@ export class GroupFilesComponent implements OnInit {
 
   isAdmin = true;
 
+  isFilesVersionsModuleAvailable = false;
+
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -132,6 +131,8 @@ export class GroupFilesComponent implements OnInit {
     // Fetch the current group
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
+    this.isFilesVersionsModuleAvailable = await this.publicFunctions.isFilesVersionsModuleAvailable();
+
     this.isAdmin = this.isAdminUser();
 
     const folderId = await this.router.snapshot.queryParamMap.has('folder') ? this.router.snapshot.queryParamMap.get('folder') : false
@@ -141,14 +142,14 @@ export class GroupFilesComponent implements OnInit {
       await this.openFolder(folderId);
     }
 
-    if (this.groupData && this.groupData._workspace && this.groupId && this.userData) {
+    if (this.groupData && this.groupData._workspace && this.groupData?._id && this.userData) {
       this.workspaceId = this.groupData._workspace;
 
       // Fetches the user groups from the server
       await this.publicFunctions.getAllUserGroups(this.groupData._workspace, this.userData._id)
         .then((groups: any) => {
 
-          groups.splice(groups.findIndex(group => group._id == this.groupId), 1);
+          groups.splice(groups.findIndex(group => group._id == this.groupData?._id), 1);
 
           this.userGroups = groups;
 
@@ -169,8 +170,8 @@ export class GroupFilesComponent implements OnInit {
      * Obtain the custom fields
      */
      this.customFields = [];
-     await this.groupService.getGroupFilesCustomFields(this.groupId).then((res) => {
-       if (res['group']['files_custom_fields']) {
+     await this.groupService.getGroupFilesCustomFields(this.groupData?._id).then((res) => {
+       if (res && res['group']['files_custom_fields']) {
          res['group']['files_custom_fields'].forEach(field => {
            this.customFields.push(field);
          });
@@ -189,7 +190,7 @@ export class GroupFilesComponent implements OnInit {
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe(async (res)=>{
 
-        this.files = await this.publicFunctions.searchFiles(this.groupId, res);
+        this.files = await this.publicFunctions.searchFiles(this.groupData?._id, res);
         this.files = await this.filterRAGFiles(this.files);
       }));
   }
@@ -234,7 +235,7 @@ export class GroupFilesComponent implements OnInit {
       // Start the loading spinner
       this.isLoading$.next(true);
 
-      let files: any = await this.publicFunctions.getFiles(this.groupId, this.lastFileId);
+      let files: any = await this.publicFunctions.getFiles(this.groupData?._id, this.lastFileId);
       files = await this.filterRAGFiles(files);
 
       if(files) {
@@ -306,7 +307,7 @@ export class GroupFilesComponent implements OnInit {
       width: '90%',
       height: '90%',
       data: {
-        url: this.groupfilesBaseUrl + '/' + file?._id
+        url: this.filesBaseUrl + '/' + file?.modified_name
       }
     });
   }
@@ -317,7 +318,7 @@ export class GroupFilesComponent implements OnInit {
       height: '90%',
       data: {
         id: folioId,
-        group: this.groupId
+        group: this.groupData?._id
       }
     });
   }
@@ -380,15 +381,15 @@ export class GroupFilesComponent implements OnInit {
       url += '/' + this.locale;
     }
     if (file?.type == 'folio') {
-      url += '/document/' + file?._id + '?group=' + this.groupId + '&readOnly=true';
+      url += '/document/' + file?._id + '?readOnly=true';
     } else if (file?.type == 'flamingo') {
-      url += '/document/flamingo/' + file?._id + '?group=' + this.groupId;
+      url += '/document/flamingo/' + file?._id;
     } else if (file?.type == 'file') {
       const lastFileVersion: any = await this.utilityService.getFileLastVersion(file);
       if (this.isOfficeFile(lastFileVersion?.original_name)) {
         url = await this.getLibreOfficeURL(lastFileVersion);
       } else {
-        url = this.groupfilesBaseUrl + '/' + file?._id + '?authToken=' + this.authToken;
+        url = this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken;
       }
     }
 
@@ -448,9 +449,11 @@ export class GroupFilesComponent implements OnInit {
         if (res.value) {
           await this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitMovingFolio:Please wait we are moving the item...`, new Promise((resolve, reject) => {
             this.filesService.transferToGroup(itemId, groupId, false)
-              .then((res) => {
+              .then(async (res) => {
+                const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+                this.publicFunctions.sendUpdatesToGroupData(newGroup);
                 // Redirect to the new group files page
-                this._router.navigate(['/dashboard', 'work', 'groups', 'files'], { queryParams: { group: groupId } });
+                this._router.navigate(['/dashboard', 'work', 'groups', 'files']);
                 resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.folioMoved:👍 Folio Moved!`));
               })
               .catch((error) => {
@@ -486,7 +489,7 @@ export class GroupFilesComponent implements OnInit {
         });
 
       // Fetch the uploaded files from the server
-      this.folders = await this.publicFunctions.getFolders(this.groupId, folderId);
+      this.folders = await this.publicFunctions.getFolders(this.groupData?._id, folderId);
       const parentFolder = {
         _id: this.currentFolder?._parent || 'root',
         folder_name: '../',
@@ -497,7 +500,7 @@ export class GroupFilesComponent implements OnInit {
       await this.initFolders();
 
       // Fetch the uploaded files from the server
-      this.files = await this.publicFunctions.getFiles(this.groupId, folderId);
+      this.files = await this.publicFunctions.getFiles(this.groupData?._id, folderId);
 
       // Set the lastFileId for scroll
       this.lastFileId = this.files[this.files.length - 1]?._id;
@@ -547,12 +550,12 @@ export class GroupFilesComponent implements OnInit {
   async initRootFolder() {
 
     // Fetch the uploaded files from the server
-    this.folders = await this.publicFunctions.getFolders(this.groupId);
+    this.folders = await this.publicFunctions.getFolders(this.groupData?._id);
 
     await this.initFolders();
 
     // Fetch the uploaded files from the server
-    this.files = await this.publicFunctions.getFiles(this.groupId, null);
+    this.files = await this.publicFunctions.getFiles(this.groupData?._id, null);
 
     if (this.files) {
       // Set the lastFileId for scroll
@@ -599,7 +602,7 @@ export class GroupFilesComponent implements OnInit {
       // Loop through each file and begin the process of uploading
       Array.prototype.forEach.call(files, (file: File) => {
         let fileData = {
-          _group: this.groupId,
+          _group: this.groupData?._id,
           _folder: (this.currentFolder) ? this.currentFolder._id : null,
           _posted_by: this.userData._id,
           type: 'file',
@@ -771,7 +774,8 @@ export class GroupFilesComponent implements OnInit {
       data: {
         fileData: file,
         groupData: this.groupData,
-        userData: this.userData
+        userData: this.userData,
+        isFilesVersionsModuleAvailable: this.isFilesVersionsModuleAvailable
       }
     });
 
@@ -784,6 +788,11 @@ export class GroupFilesComponent implements OnInit {
         }
       });
 
+      const newVersionEventSubs = dialogRef.componentInstance.newVersionEvent.subscribe((data) => {
+        const index = (this.files) ? this.files.findIndex(f => f._id == (data?._parent?._id || data?._parent)) : -1;
+        this.files[index].modified_name = data.modified_name
+      });
+
       const allVersionsDeletedEventSubs = dialogRef.componentInstance.allVersionsDeletedEmitter.subscribe((data) => {
         this.files = this.files.filter(file => file._id !== data);
       });
@@ -791,6 +800,7 @@ export class GroupFilesComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         closeEventSubs.unsubscribe();
         allVersionsDeletedEventSubs.unsubscribe();
+        newVersionEventSubs.unsubscribe();
       });
     }
   }
@@ -821,7 +831,7 @@ export class GroupFilesComponent implements OnInit {
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    let files: any = await this.publicFunctions.getFilteredFiles(this.groupId, (this.currentFolder?._id || ''), filter.bit, filter.data);
+    let files: any = await this.publicFunctions.getFilteredFiles(this.groupData?._id, (this.currentFolder?._id || ''), filter.bit, filter.data);
     this.files = await this.filterRAGFiles(files);
 
     if (this.sortingBit && this.sortingBit != '') {
@@ -1023,7 +1033,7 @@ export class GroupFilesComponent implements OnInit {
     // wopiClientURL = https://<WOPI client URL>:<port>/browser/<hash>/cool.html?WOPISrc=https://<WOPI host URL>/<...>/wopi/files/<id>
     let wopiClientURL = '';
     await this.libreofficeService.getLibreofficeUrl().then(res => {
-        wopiClientURL = res['url'] + 'WOPISrc=' + `${environment.UTILITIES_BASE_API_URL}/libreoffice/wopi/files/${file?._id}?authToken=${this.authToken}`;
+        wopiClientURL = res['url'] + 'WOPISrc=' + `${this.utilitiesBaseAPIUrl}/libreoffice/wopi/files/${file?._id}?authToken=${this.authToken}`;
       }).catch(error => {
         this.utilityService.errorNotification($localize`:@@groupFiles.errorRetrievingLOOLUrl:Not possible to retrieve the complete Office Online url`);
       });
@@ -1035,36 +1045,46 @@ export class GroupFilesComponent implements OnInit {
   }
 
   async openDocument(file: any) {
-    window.open(this.groupfilesBaseUrl + '/' + file?._id + '?authToken=' + this.authToken, "_blank");
+    // Start the loading spinner
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
+    window.open(this.filesBaseUrl + '/' + file?.modified_name + '?authToken=' + this.authToken, "_blank");
+
+    // Stop the loading spinner
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   /**
    * This function is responsible for uploading the files to the server
    * @param files
    */
-   uploadNewVersion(files: FileList, parentFileId: string) {
+   uploadNewVersion(files: FileList, file: any) {
     // Start the loading spinner
     this.utilityService.updateIsLoadingSpinnerSource(true);
 
+    const parentFileId = (file._parent) ? file._parent._id : file._id;
+
     // File Data variable
     const fileData: any = {
-      _group: this.groupId,
+      _group: this.groupData?._id,
       _posted_by: this.userData?._id,
       type: 'file',
       _parent: parentFileId
     }
 
     // Loop through each file and begin the process of uploading
-    Array.prototype.forEach.call(files, (file: File) => {
+    Array.prototype.forEach.call(files, (uploadFile: File) => {
 
       // Adding Mime Type of the file uploaded
-      fileData.mime_type = file.type
+      fileData.mime_type = uploadFile.type
 
       // Call the HTTP Request Asynschronously
       this.utilityService.asyncNotification($localize`:@@groupFiles.pleaseWaitUploadingNewVersion:Please wait we are uploading your new version...`,
         new Promise((resolve, reject) => {
-          this.filesService.addFile(fileData, file)
+          this.filesService.addFile(fileData, uploadFile)
             .then((res) => {
+              const index = (this.files) ? this.files.findIndex(f => f._id == file?._id) : -1;
+              this.files[index].modified_name = res['file'].modified_name
               resolve(this.utilityService.resolveAsyncPromise($localize`:@@groupFiles.fileUploaded:File has been uploaded!`))
             })
             .catch(() => {

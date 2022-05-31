@@ -180,12 +180,23 @@ export class ManagementService {
      */
     getFlamingoStatus(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/flamingo`, {
-                params: {
-                    API_KEY: mgmtApiPrivateKey
-                },
-                
-            });
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'Flamingo availability is true',
+                            status: true
+                        }
+                    });
+                });
+            } else {
+                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/flamingo`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    },
+                    
+                });
+            }
         } catch (err) {
             throw (err);
         }
@@ -197,12 +208,23 @@ export class ManagementService {
      */
     getIdeaStatus(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/idea`, {
-                params: {
-                    API_KEY: mgmtApiPrivateKey
-                },
-                
-            });
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'Idea availability is true',
+                            status: true
+                        }
+                    });
+                });
+            } else {
+                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/idea`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    },
+                    
+                });
+            }
         } catch (err) {
             throw (err);
         }
@@ -214,27 +236,103 @@ export class ManagementService {
      */
     getExcelImportStatus(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/excelImport`, {
-                params: {
-                    API_KEY: mgmtApiPrivateKey
-                }
-            });
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'Excel Import module availability is true',
+                            status: true
+                        }
+                    });
+                });
+            } else {
+                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/excelImport`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    }
+                });
+            }
         } catch (err) {
             throw (err);
         }
     }
 
     /**
-     * This function is responsible for check if the workspace has shuttel tasks mofule active
+     * This function is responsible for check if the workspace has shuttel tasks module active
      * @param workspaceId
      */
      isShuttleTasksModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
         try {
-            return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/shuttle`, {
-                params: {
-                    API_KEY: mgmtApiPrivateKey
-                }
-            });
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'Shuttle Tasks module availability is true',
+                            status: true
+                        }
+                    });
+                });
+            } else {
+                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/shuttle`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    }
+                });
+            }
+        } catch (err) {
+            throw (err);
+        }
+    }
+
+    /**
+     * This function is responsible for check if the workspace has files versions module active
+     * @param workspaceId
+     */
+     isFilesVersionsModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
+        try {
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'Files Versions module availability is true',
+                            status: true
+                        }
+                    });
+                });
+            } else {
+                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/filesVersions`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    }
+                });
+            }
+        } catch (err) {
+            throw (err);
+        }
+    }
+
+    /**
+     * This function is responsible for check if the workspace has organization module active
+     * @param workspaceId
+     */
+     isOrganizationModuleAvailable(workspaceId: string, mgmtApiPrivateKey: string) {
+        try {
+            if (process.env.NODE_ENV == 'development') {
+                return new Promise((resolve, reject) => {
+                    resolve({
+                        data: {
+                            message: 'Organization module availability is true',
+                            status: true
+                        }
+                    });
+                });
+            } else {
+                return axios.get(`${this.MANAGEMENT_BASE_API_URL}/workspace/${workspaceId}/organization`, {
+                    params: {
+                        API_KEY: mgmtApiPrivateKey
+                    }
+                });
+            }
         } catch (err) {
             throw (err);
         }

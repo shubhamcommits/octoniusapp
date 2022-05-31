@@ -193,7 +193,7 @@ export class SearchHeaderComponent implements OnInit {
     this.advancedFilters.group = null;
     this.advancedFilters.cfName = '';
     this.advancedFilters.cfValue = '';
-    this.customFields = [];
+    this.customFields = (this.advancedFilters.type == 'user' && this.workplaceData && this.workplaceData?.profile_custom_fields) ? this.workplaceData?.profile_custom_fields : [];
     this.selectedCustomField = null;
 
     this.search();

@@ -18,8 +18,8 @@ import * as fileSaver from 'file-saver';
 export class FlamingoHeaderComponent implements OnInit {
 
   activeState: any = 'create_form';
-  // GroupID Variable
-  groupId: any;
+
+  groupData: any;
 
   // showHeader variable
   showHeader: any;
@@ -52,8 +52,8 @@ export class FlamingoHeaderComponent implements OnInit {
 
     this.showHeader = this.router.url.includes('preview') || this.router.url.includes('answer');
 
-    // Set the groupId
-    this.groupId = this._ActivatedRoute.snapshot.queryParamMap.get('group');
+    // Set the groupData
+    this.groupData = this.publicFunctions.getCurrentGroupDetails();
 
     // Set the fileId variable
     this.fileId = this._ActivatedRoute.snapshot.firstChild.paramMap.get('id')
@@ -77,12 +77,13 @@ export class FlamingoHeaderComponent implements OnInit {
   /**
    * This function is responsible for taking the user back to their previous locations
    */
-  goBackToFiles() {
+  async goBackToFiles() {
+    const newGroup = await this.publicFunctions.getGroupDetails(this.file?._group?._id || this.file?._group);
+    this.publicFunctions.sendUpdatesToGroupData(newGroup);
     this.router.navigate(
       ['/dashboard', 'work', 'groups', 'files'],
       {
         queryParams: {
-          group: this.groupId,
           folder: this.file?._folder?._id || this.file?._folder
         }
       }

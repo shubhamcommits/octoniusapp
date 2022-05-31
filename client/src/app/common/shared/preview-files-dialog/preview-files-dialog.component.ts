@@ -27,8 +27,7 @@ export class PreviewFilesDialogComponent implements OnInit {
       }
       this.fileUrl = url
           + '/document/' + this.data.id
-          + '?group=' + this.data.group
-          + '&readOnly=true';
+          + '?readOnly=true';
     } else if (this.data.url !== undefined) {
       this.fileUrl = this.data.url + '?authToken=Bearer ' + this.storageService.getLocalData('authToken')['token'];
     }

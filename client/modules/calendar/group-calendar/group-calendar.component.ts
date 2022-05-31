@@ -30,9 +30,6 @@ export class GroupCalendarComponent implements OnInit {
   // Modal Content
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
-  // Fetch groupId from router snapshot
-  groupId = this.router.snapshot.queryParamMap.get('group');
-
   // Public Functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -105,20 +102,20 @@ export class GroupCalendarComponent implements OnInit {
 
   async ngOnInit() {
 
-    this.publicFunctions.getAllColumns(this.groupId).then(data => this.columns = data);
-
     // Fetch the current user
     this.userData = await this.publicFunctions.getCurrentUser();
 
     // Fetch the current group
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
+    this.publicFunctions.getAllColumns(this.groupData?._id).then(data => this.columns = data);
+
     this.loadTimeline();
   }
 
   async loadTimeline() {
     // Fetch Posts from the server
-    this.posts = await this.publicFunctions.getCalendarPosts(moment(this.viewDate).year(), moment(this.viewDate).month(), this.groupId);
+    this.posts = await this.publicFunctions.getCalendarPosts(moment(this.viewDate).year(), moment(this.viewDate).month(), this.groupData?._id);
 
     // Timeline array
     this.timeline = [...this.posts.events, ...this.posts.tasks];
@@ -234,14 +231,14 @@ export class GroupCalendarComponent implements OnInit {
     if (this.post) {
       const canOpen = !this.groupData?.enabled_rights || this.post?.canView || this.post?.canEdit;
       if (this.post.type === 'task' && !this.post.task._parent_task) {
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
+        dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
       } else {
         if (this.post.task._parent_task && !this.post.task._parent_task._id) {
           this.publicFunctions.getPost(this.post.task._parent_task).then(post => {
             this.post.task._parent_task = post;
           });
         }
-        dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
+        dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
       }
     }
 

@@ -106,6 +106,13 @@ export class IconsSidebarComponent implements OnInit, OnDestroy {
     this.sidebarChange.emit();
   }
 
+  async goToGroup(groupId: string, state: string) {
+    this.changeState(state);
+    const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+    this.publicFunctions.sendUpdatesToGroupData(newGroup);
+    this.router.navigate(['/dashboard', 'work', 'groups', 'activity']);
+  }
+
   async changeState(state:string) {
     this.utilityService.handleActiveStateTopNavBar().emit(state);
   }

@@ -28,6 +28,7 @@ routes.get('/workspaces/:file', workspaceFileHandler);
 // GET - Handles the file added in the flamingo forms
 routes.get('/flamingo/:file', flamingoFileHandler);
 
+// GET - Download the last version of a file
 routes.get('/groupsFiles/:fileId', groupsFilesHandler);
 
 

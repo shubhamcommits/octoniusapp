@@ -95,13 +95,14 @@ export class QuillEditorComponent implements OnInit, OnChanges {
   workspaceData: any;
 
   // Uploads url for Files
-  filesBaseUrl = environment.UTILITIES_GROUP_FILES_UPLOADS;
+  filesBaseUrl = environment.UTILITIES_BASE_API_URL;
 
   // Public Functions class
   public publicFunctions = new PublicFunctions(this.Injector);
 
   constructor(
     private integrationsService: IntegrationsService,
+    private utilityService: UtilityService,
     private Injector: Injector
   ) {
 
@@ -346,10 +347,10 @@ export class QuillEditorComponent implements OnInit, OnChanges {
       id: file._id,
       value:
         (file.type == 'folio')
-          ? `<a href="/document/${file._id}?group=${file._group._id}&readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+          ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
           : (file.type == "flamingo")
-            ? `<a href="/document/flamingo/${file._id}?group=${file._group._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-            : `<a href="${this.filesBaseUrl}/${file._id}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+            : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
     }));
 
     let googleFilesList: any = [];
@@ -357,18 +358,23 @@ export class QuillEditorComponent implements OnInit, OnChanges {
     // Fetch Access Token
     if (storageService.existData('googleUser') && this.workspaceData?.integrations?.is_google_connected) {
 
-      // Fetch the access token from the storage
-      let accessToken = storageService.getLocalData('googleUser')['accessToken']
+      let googleUser: any = storageService.getLocalData('googleUser');
 
-      // Get Google file list
-      googleFilesList = await this.integrationsService.searchGoogleFiles(searchTerm, accessToken) || []
+      if (this.utilityService.objectExists(googleUser)) {
+        // Fetch the access token from the storage
+        let accessToken = googleUser['accessToken']
 
-      // Google File List
-      if (googleFilesList.length > 0)
-        googleFilesList = googleFilesList.map((file: any) => ({
-          id: '5b9649d1f5acc923a497d1da',
-          value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
-        }))
+        // Get Google file list
+        googleFilesList = await this.integrationsService.searchGoogleFiles(searchTerm, accessToken) || []
+
+        // Google File List
+        if (googleFilesList.length > 0) {
+          googleFilesList = googleFilesList.map((file: any) => ({
+            id: '5b9649d1f5acc923a497d1da',
+            value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
+          }));
+        }
+      }
     }
 
     let boxFilesList: any = [];
@@ -377,20 +383,22 @@ export class QuillEditorComponent implements OnInit, OnChanges {
     if (storageService.existData('boxUser') && this.workspaceData?.integrations?.is_box_connected) {
       const boxUser: any = storageService.getLocalData('boxUser');
 
-      // Fetch the access token from the storage
-      let boxAccessToken = boxUser['accessToken'];
+      if (this.utilityService.objectExists(boxUser)) {
+        // Fetch the access token from the storage
+        let boxAccessToken = boxUser['accessToken'];
 
-      // Get Box file list
-      boxFilesList = await this.integrationsService.searchBoxFiles(searchTerm, boxAccessToken, this.workspaceData?.integrations) || []
+        // Get Box file list
+        boxFilesList = await this.integrationsService.searchBoxFiles(searchTerm, boxAccessToken, this.workspaceData?.integrations) || []
 
-      // Box File List
-      if (boxFilesList.length > 0) {
-        boxFilesList = boxFilesList
-            .filter(file => file && file.shared_link && file.shared_link.url)
-            .map((file: any) => ({
-                id: 'boxfile',
-                value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
-              }));
+        // Box File List
+        if (boxFilesList.length > 0) {
+          boxFilesList = boxFilesList
+              .filter(file => file && file.shared_link && file.shared_link.url)
+              .map((file: any) => ({
+                  id: 'boxfile',
+                  value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
+                }));
+        }
       }
     }
 

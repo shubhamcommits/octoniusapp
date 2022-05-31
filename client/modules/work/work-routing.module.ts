@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NorthStarPageComponent } from './north-star-page/north-star-page.component';
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 import { AdminGuard } from 'src/shared/guards/admin-guard/admin.guard';
+import { OrganizationModuleAvailableGuard } from 'src/shared/guards/organization-module-available-guard/organization-module-available.guard';
 
 const routes: Routes = [
 
@@ -32,6 +33,18 @@ const routes: Routes = [
       preload: false,
       state: 'lounge'
     }
+  },
+
+  // Organization Module
+  {
+    path: 'organization',
+    loadChildren: () => import('modules/organization/organization.module')
+      .then((module) => module.OrganizationModule),
+    data: {
+      preload: false,
+      state: 'organization'
+    },
+    canActivate: [OrganizationModuleAvailableGuard]
   },
 ];
 

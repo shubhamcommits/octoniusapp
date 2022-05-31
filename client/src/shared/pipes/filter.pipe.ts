@@ -20,7 +20,8 @@ export class FilterPipe implements PipeTransform {
 
     return items.filter(it => {
       return it.first_name.toLocaleLowerCase().includes(searchText)
-        || it.last_name.toLocaleLowerCase().includes(searchText);
+        || it.last_name.toLocaleLowerCase().includes(searchText)
+        || ((it.first_name + ' ' + it.last_name).toLocaleLowerCase().includes(searchText));
     });
   }
 }

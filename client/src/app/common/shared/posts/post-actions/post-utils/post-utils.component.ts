@@ -81,7 +81,7 @@ export class PostUtilsComponent implements OnInit {
    */
   openFullscreenModal(): void {
     const canOpen = !this.groupData?.enabled_rights || this.post?.canView || this.post?.canEdit;
-    const dialogRef = this.utilityService.openCreatePostFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
+    const dialogRef = this.utilityService.openPostDetailsFullscreenModal(this.post._id, this.groupData._id, this.isIdeaModuleAvailable, canOpen);
 
     if (dialogRef) {
       const closeEventSubs = dialogRef.componentInstance.closeEvent.subscribe((data) => {
@@ -119,9 +119,9 @@ export class PostUtilsComponent implements OnInit {
     }
     // Set the Value of element selection box to be the url of the post
     if (this.post.type === 'task') {
-      selBox.value = url + '/dashboard/work/groups/tasks?group=' + group + '&postId=' + this.post._id;
+      selBox.value = url + '/dashboard/work/groups/tasks?postId=' + this.post._id;
     } else {
-      selBox.value = url + '/dashboard/work/groups/activity?group=' + group + '&postId=' + this.post._id;
+      selBox.value = url + '/dashboard/work/groups/activity?postId=' + this.post._id;
     }
     // Append the element to the DOM
     document.body.appendChild(selBox);
@@ -205,7 +205,7 @@ export class PostUtilsComponent implements OnInit {
       });
   }
 
-  onTransferPost(data) {
+  async onTransferPost(data) {
 
     const post = data.post;
     const isCopy = data.isCopy;
@@ -213,11 +213,13 @@ export class PostUtilsComponent implements OnInit {
     if (!isCopy) {
       // redirect the user to the post
       const groupId = data.groupId;
+      const newGroup = await this.publicFunctions.getGroupDetails(groupId);
+      this.publicFunctions.sendUpdatesToGroupData(newGroup);
       // Set the Value of element selection box to be the url of the post
       if (post.type === 'task') {
-        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { group: groupId, postId: post._id } });
+        this._router.navigate(['/dashboard', 'work', 'groups', 'tasks'], { queryParams: { postId: post._id } });
       } else {
-        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { group: groupId, postId: post._id } });
+        this._router.navigate(['/dashboard', 'work', 'groups', 'activity'], { queryParams: { postId: post._id } });
       }
     }
   }

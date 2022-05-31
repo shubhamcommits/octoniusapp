@@ -62,8 +62,8 @@ async function taskAssigned(data:any){
     const groupId = postData['_group'];
 
     const itemUrl = (postData.type == 'task')
-        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&postId=${postData._id}`
-        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&postId=${postData._id}`;
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?postId=${postData._id}`;
      
     const notificationObject = {
         name: assigneFromFullName,
@@ -72,7 +72,7 @@ async function taskAssigned(data:any){
         group_id:groupId,
         post_id: data.postId,
         content: '\n ',
-        btn_title:`view ${postData.type}`,
+        btn_title:`view`,
         itemUrl: itemUrl
     }
 
@@ -99,8 +99,8 @@ async function statusChanged(data:any) {
     }
 
     const itemUrl = (postData.type == 'task')
-        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&postId=${postData._id}`
-        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&postId=${postData._id}`;
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?postId=${postData._id}`;
 
     const notificationObject = {
         name: userFullName,
@@ -109,7 +109,7 @@ async function statusChanged(data:any) {
         content: '\n ',
         group_id: groupId,
         post_id: data.postId,
-        btn_title:`view ${postData.type}`,
+        btn_title:`view`,
         itemUrl: itemUrl
     }
 
@@ -131,8 +131,8 @@ async function commented(data:any) {
     const userProfilePic = userData['profile_pic'];
 
     const itemUrl = (postData.type == 'task')
-        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&postId=${postData._id}`
-        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&postId=${postData._id}`;
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?postId=${postData._id}`;
     
     const notificationObject = {
         name: userFullName,
@@ -169,8 +169,8 @@ async function followPost(data:any) {
     const profile_img = userData['profile_pic'];
 
     const itemUrl = (postData.type == 'task')
-        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&postId=${postData._id}`
-        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&postId=${postData._id}`;
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?postId=${postData._id}`;
 
     const notificationObject = {
         name: followerName,
@@ -179,7 +179,7 @@ async function followPost(data:any) {
         content: '\n ',
         group_id: groupId,
         post_id: data.postId,
-        btn_title:`view ${postData.type}`,
+        btn_title:`view`,
         itemUrl: itemUrl
     }
 
@@ -213,8 +213,8 @@ async function likePost(data:any) {
     const userObject = userData.toObject();
 
     const itemUrl = (postData.type == 'task')
-        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${postObject['_group']}&postId=${postData._id}`
-        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${postObject['_group']}&postId=${postData._id}`;
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?postId=${postData._id}`;
 
     const notificationObject = {
         name: userObject['full_name'],
@@ -223,7 +223,7 @@ async function likePost(data:any) {
         content: '\n ',
         group_id: postObject['_group'],
         post_id: data.postId,
-        btn_title:`view ${postData.type}`,
+        btn_title:`view`,
         itemUrl: itemUrl
     }
 
@@ -258,8 +258,8 @@ async function likeComment(data:any) {
     const profile_pic = userData['profile_pic'];
 
     const itemUrl = (postData.type == 'task')
-        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&postId=${postData._id}`
-        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&postId=${postData._id}`;
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?postId=${postData._id}`;
     
     const notificationObject = {
         name: userFullName,
@@ -268,7 +268,7 @@ async function likeComment(data:any) {
         content: '\n ',
         groupId: groupId,
         post_id: data.postId,
-        btn_title:`view ${postData.type}`,
+        btn_title:`view`,
         itemUrl: itemUrl
     }
 
@@ -292,8 +292,8 @@ async function postMention(data:any) {
     const groupId = postData['_group'];
 
     const itemUrl = (postData.type == 'task')
-        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&postId=${postData._id}`
-        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&postId=${postData._id}`;
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?postId=${postData._id}`;
      
     const notificationObject = {
         name: assigneFromFullName,
@@ -302,7 +302,7 @@ async function postMention(data:any) {
         group_id: groupId,
         post_id: data.postId,
         content: '\n ',
-        btn_title:`view ${postData.type}`,
+        btn_title:`view`,
         itemUrl: itemUrl
     }
 
@@ -333,8 +333,8 @@ async function commentMention(data:any) {
     const postTitle = postData['title'];
 
     const itemUrl = (postData.type == 'task')
-        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${groupId}&postId=${postData._id}`
-        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?group=${groupId}&postId=${postData._id}`;
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?postId=${postData._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/activity?postId=${postData._id}`;
 
     const notificationObject = {
         name: commented_by,
@@ -372,8 +372,8 @@ async function launchedApprovalFlow(data:any) {
 
     const itemTitle = item.title || item.original_name;
     const itemUrl = (item.type == 'task')
-        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${item._group._id}&postId=${item._id}`
-        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/files?group=${item._group._id}&itemId=${item._id}`;
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?postId=${item._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/files?itemId=${item._id}`;
 
     const notificationObject = {
         name: postedBy.first_name + ' ' + postedBy.last_name,
@@ -410,8 +410,8 @@ async function rejectedItem(data:any) {
 
     const itemTitle = item.title || item.original_name;
     const itemUrl = (item.type == 'task')
-        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${item._group._id}&postId=${item._id}`
-        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/files?group=${item._group._id}&itemId=${item._id}`;
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?postId=${item._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/files?itemId=${item._id}`;
 
     const notificationObject = {
         name: rejectedBy.first_name + ' ' + rejectedBy.last_name,
@@ -440,8 +440,8 @@ async function itemApproved(data:any) {
 
     const itemTitle = item.title || item.original_name;
     const itemUrl = (item.type == 'task')
-        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?group=${item._group._id}&postId=${item._id}`
-        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/files?group=${item._group._id}&itemId=${item._id}`;
+        ? `${process.env.CLIENT_SERVER}/dashboard/work/groups/tasks?postId=${item._id}`
+        : `${process.env.CLIENT_SERVER}/dashboard/work/groups/files?itemId=${item._id}`;
 
     const notificationObject = {
         name: userData.first_name + ' ' + userData.last_name,

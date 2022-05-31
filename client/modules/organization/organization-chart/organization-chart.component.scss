@@ -1,0 +1,71 @@
+.media-body {
+  width: 100%;
+  height: 200px;
+}
+
+.level {
+  height: 100%;
+  overflow: scroll;
+  white-space: nowrap;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.has-next-level {
+  border-bottom: 1px solid #005FD5;
+}
+
+.level::-webkit-scrollbar {
+  display: none;
+}
+
+.box {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  padding: 25px 10px 10px 10px;
+  margin: 30px 10px 10px 10px;
+  height: 100px;
+  min-height: 100px;
+  line-height: 0px;
+  width: 142px;
+  cursor: pointer;
+  overflow: initial;
+}
+
+.mat-menu-panel {
+  max-width: none !important;
+}
+
+.users-card {
+  padding: 10px 10px 0px 10px;
+  border: none;
+}
+
+.members-list {
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+  max-height: 300px;
+  overflow: scroll;
+  white-space: nowrap;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  .members-list-item {
+    position: relative;
+    display: block;
+    padding: 2px 15px 3px 0px;
+    background-color: #fff;
+    // border: 1px solid rgba(0, 0, 0, 0.125);
+    cursor: pointer;
+  }
+}
+
+.members-list::-webkit-scrollbar {
+  display: none;
+}

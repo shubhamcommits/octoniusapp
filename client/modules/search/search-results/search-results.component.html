@@ -18,7 +18,7 @@
     </a>
 
     <a *ngIf="type=='file' && data?.type === 'folio'" target="_blank"
-      routerLink="/document/{{data?._id}}" [queryParams]="{ group: data?._group?._id || data?._group }">
+      routerLink="/document/{{data?._id}}">
       <span class="material-icons">open_in_new</span>
     </a>
 
