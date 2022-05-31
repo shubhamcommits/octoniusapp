@@ -122,9 +122,6 @@ export class LibreofficeControllers {
 
             // calculate if user can edit file based on RAD
             const user = await User.findById({ _id: userId }).lean();
-console.log(fileLastVersion?._posted_by);
-console.log(fileLastVersion?._parent);
-console.log(user);
             let canEdit;
             if (fileLastVersion._parent || fileLastVersion?._id == fileId) {
                 canEdit = await authsHelper.canUserEditFileAction(fileLastVersion, user, fileId);
