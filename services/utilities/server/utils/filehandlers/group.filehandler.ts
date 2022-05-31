@@ -25,7 +25,14 @@ const fs = require("fs");
   }
 }
 
-/*
+/**
+ * @deprecated
+ * 
+ * @param req 
+ * @param res 
+ * @param next 
+ * @returns 
+ */
 const groupsFilesHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
 
@@ -54,14 +61,11 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
           }
         });
 
-        const fileURL = `${process.env.FILE_UPLOAD_FOLDER}${fileVersions[0].modified_name}`;
-        res.download(fileURL);
+        return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${fileVersions[0].modified_name}`)
       }
     } else {
-
       // Redirect the Response to the Groups Microservice
-      const fileURL = `${process.env.FILE_UPLOAD_FOLDER}${file.modified_name}`;
-      res.download(fileURL);
+      return res.status(301).redirect(`${process.env.GROUPS_SERVER}/uploads/${file.modified_name}`)
     }
     return;
 
@@ -69,7 +73,6 @@ const groupsFilesHandler = async (req: Request, res: Response, next: NextFunctio
     return sendError(res, err, 'Internal Server Error!', 500);
   }
 }
-*/
 
 /**
  * This function is the boiler plate for file handler mechanism for files
@@ -233,4 +236,4 @@ const groupFileDelete = async (req: Request, res: Response, next: NextFunction) 
 
 }
 
-export { groupFileHandler, groupFileUploader, groupFileDelete/*, groupsFilesHandler*/ }
+export { groupFileHandler, groupFileUploader, groupFileDelete, groupsFilesHandler }
