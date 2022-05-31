@@ -6,7 +6,7 @@ import { Response, Request, NextFunction } from "express";
  * @param res 
  * @param next 
  */
-const groupFileHandler = (req: Request, res: Response, next: NextFunction) => {
+const groupUploadFileHandler = (req: Request, res: Response, next: NextFunction) => {
 
     if (!req.files) {
         next();
@@ -52,4 +52,4 @@ const groupFileHandler = (req: Request, res: Response, next: NextFunction) => {
 
 }
 
-export { groupFileHandler }
+export { groupUploadFileHandler }
