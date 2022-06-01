@@ -476,10 +476,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
       for (let j = 0; j < section.tasks.length; j++) {
         let post = section.tasks[j];
+
         let task: any = {
           title: post.title || '',
           posted_by: (post && post._posted_by) ? (post?._posted_by?.first_name + ' ' + post?._posted_by?.last_name) : '',
-          created_date: post.created_date || '',
+          created_date: (post?.created_date) ? moment.utc(post?.created_date).format("MMM D, YYYY HH:mm") : '',
           tags: post.tags || '',
           status: post.task.status || '',
         };
@@ -498,8 +499,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         }
 
         let assignedTo = '';
-        if (post.task._assigned_to && post.task._assigned_to.length > 0) {
-          post.task._assigned_to.forEach(user => {
+        if (post._assigned_to && post._assigned_to.length > 0) {
+          post._assigned_to.forEach(user => {
             if (user) {
               assignedTo += user?.first_name + ' ' + user?.last_name + '; ';
             }
@@ -509,8 +510,9 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         }
 
         if (this.isIdeaModuleAvailable && post.task.is_idea && post.task.idea) {
-          task.idea_positive = post.task.idea.positive_votes || 0;
-          task.idea_negative = post.task.idea.negative_votes || 0;
+          task.idea_positive = post?.task?.idea?.positive_votes?.length || 0;
+          task.idea_negative = post?.task?.idea?.negative_votes?.length || 0;
+          task.idea_count = task.idea_positive - task.idea_negative;
         }
 
         if (post.task.isNorthStar && post.task.northStar) {
