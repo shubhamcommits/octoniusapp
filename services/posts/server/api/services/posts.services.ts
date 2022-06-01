@@ -320,7 +320,7 @@ export class PostService {
         .sort((numLikes && numLikes > 0) ? '-likes_count' : '-task.due_to')
         .select('title type permissions task approval_flow_launched tags _group created_date')
         //.populate({ path: '_group', select: this.groupFields })
-        //.populate({ path: '_posted_by', select: this.userFields })
+        .populate({ path: '_posted_by', select: this.userFields })
         .populate({ path: '_assigned_to', select: this.userFields })
         //.populate({ path: 'approval_flow._assigned_to', select: '_id first_name last_name profile_pic email' })
         //.populate({ path: 'approval_history._actor', select: '_id first_name last_name profile_pic' })
