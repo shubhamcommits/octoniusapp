@@ -270,7 +270,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
         // If User types "@" then trigger the list for user mentioning
         if (mentionChar === "@") {
           // Initialise values with list of members
-          values = await this.suggestMembers(searchTerm)
+          values = await this.publicFunctions.suggestMembers(searchTerm, this.groupId, this.workspaceData);
 
           // Adding All Object to mention all the members
           values.unshift({
@@ -281,7 +281,7 @@ export class QuillEditorComponent implements OnInit, OnChanges {
           // If User types "#" then trigger the list for files mentioning
         } else if (mentionChar === "#") {
           // Initialise values with list of files
-          values = await this.suggestFiles(searchTerm)
+          values = await this.publicFunctions.suggestFiles(searchTerm, this.groupId, this.workspaceData);
         }
 
         // If searchTerm length is 0, then show the full list
@@ -298,111 +298,6 @@ export class QuillEditorComponent implements OnInit, OnChanges {
         }
       }
     }
-  }
-
-  /**
-   * This function is responsible for fetching the group members list
-   * @param groupId
-   * @param searchTerm
-   */
-  async suggestMembers(searchTerm: string) {
-
-    // Fetch the users list from the server
-    let usersList: any = [];
-    if (this.groupId) {
-      usersList = await this.publicFunctions.searchGroupMembers(this.groupId, searchTerm)
-    } else if (this.workspaceId) {
-      usersList = await this.publicFunctions.searchWorkspaceMembers(this.workspaceId, searchTerm);
-    }
-    // Map the users list
-    usersList = usersList['users'].map((user) => ({
-      id: user._id,
-      value: user.first_name + " " + user.last_name
-    }))
-
-    // Return the Array without duplicates
-    return Array.from(new Set(usersList))
-  }
-
-  /**
-   * This function is responsible for fetching the files list
-   * @param groupId
-   * @param searchTerm
-   */
-  async suggestFiles(searchTerm: string) {
-
-    // Storage Service Instance
-    let storageService = this.Injector.get(StorageService);
-
-    // Fetch the users list from the server
-    let filesList: any = [];
-    if (this.groupId) {
-      filesList = await this.publicFunctions.searchFiles(this.groupId, searchTerm, 'true');
-    } else if (this.workspaceId) {
-      filesList = await this.publicFunctions.searchFiles(null, searchTerm, 'true', this.workspaceId);
-    }
-
-    // Map the users list
-    filesList = filesList.map((file: any) => ({
-      id: file._id,
-      value:
-        (file.type == 'folio')
-          ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
-          : (file.type == "flamingo")
-            ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
-            : `<a href="${this.filesBaseUrl}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
-    }));
-
-    let googleFilesList: any = [];
-
-    // Fetch Access Token
-    if (storageService.existData('googleUser') && this.workspaceData?.integrations?.is_google_connected) {
-
-      let googleUser: any = storageService.getLocalData('googleUser');
-
-      if (this.utilityService.objectExists(googleUser)) {
-        // Fetch the access token from the storage
-        let accessToken = googleUser['accessToken']
-
-        // Get Google file list
-        googleFilesList = await this.integrationsService.searchGoogleFiles(searchTerm, accessToken) || []
-
-        // Google File List
-        if (googleFilesList.length > 0) {
-          googleFilesList = googleFilesList.map((file: any) => ({
-            id: '5b9649d1f5acc923a497d1da',
-            value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
-          }));
-        }
-      }
-    }
-
-    let boxFilesList: any = [];
-
-    // Fetch Access Token
-    if (storageService.existData('boxUser') && this.workspaceData?.integrations?.is_box_connected) {
-      const boxUser: any = storageService.getLocalData('boxUser');
-
-      if (this.utilityService.objectExists(boxUser)) {
-        // Fetch the access token from the storage
-        let boxAccessToken = boxUser['accessToken'];
-
-        // Get Box file list
-        boxFilesList = await this.integrationsService.searchBoxFiles(searchTerm, boxAccessToken, this.workspaceData?.integrations) || []
-
-        // Box File List
-        if (boxFilesList.length > 0) {
-          boxFilesList = boxFilesList
-              .filter(file => file && file.shared_link && file.shared_link.url)
-              .map((file: any) => ({
-                  id: 'boxfile',
-                  value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
-                }));
-        }
-      }
-    }
-
-    return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
   }
 
   /**

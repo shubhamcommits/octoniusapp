@@ -17,6 +17,8 @@ import { FoldersService } from 'src/shared/services/folders-service/folders.serv
 import { ManagementPortalService } from 'src/shared/services/management-portal-service/management-portal.service';
 import { AuthService } from 'src/shared/services/auth-service/auth.service';
 import { FlamingoService } from 'src/shared/services/flamingo-service/flamingo.service';
+import { environment } from 'src/environments/environment';
+import { IntegrationsService } from 'src/shared/services/integrations-service/integrations.service';
 
 @Injectable({
   providedIn: 'root'
@@ -1894,5 +1896,113 @@ export class PublicFunctions {
             }
           })
       });
+    }
+
+    /**
+     * This function is responsible for fetching the group members list
+     * @param searchTerm: string
+     * @param groupId: string
+     * @param workspaceData: any
+     */
+    async suggestMembers(searchTerm: string, groupId: string, workspaceData: any) {
+
+      // Fetch the users list from the server
+      let usersList: any = [];
+      if (groupId) {
+        usersList = await this.searchGroupMembers(groupId, searchTerm)
+      } else {
+        usersList = await this.searchWorkspaceMembers(workspaceData?._id, searchTerm);
+      }
+      // Map the users list
+      usersList = usersList['users'].map((user) => ({
+        id: user._id,
+        value: user.first_name + " " + user.last_name
+      }))
+
+      // Return the Array without duplicates
+      return Array.from(new Set(usersList))
+    }
+
+    /**
+     * This function is responsible for fetching the files list
+     * @param searchTerm: string
+     * @param groupId: string
+     * @param workspaceData: any
+     */
+    async suggestFiles(searchTerm: string, groupId: string, workspaceData: any) {
+      // Storage Service Instance
+      let storageService = this.injector.get(StorageService);
+      let utilityService = this.injector.get(UtilityService);
+      let integrationsService = this.injector.get(IntegrationsService);
+
+      // Fetch the users list from the server
+      let filesList: any = [];
+      if (groupId) {
+        filesList = await this.searchFiles(groupId, searchTerm, 'true');
+      } else {
+        filesList = await this.searchFiles(null, searchTerm, 'true', workspaceData._id);
+      }
+
+      // Map the users list
+      filesList = filesList.map((file: any) => ({
+        id: file._id,
+        value:
+          (file.type == 'folio')
+            ? `<a href="/document/${file._id}?readOnly=true" style="color: inherit" target="_blank">${file.original_name}</a>`
+            : (file.type == "flamingo")
+              ? `<a href="/document/flamingo/${file._id}" style="color: inherit" target="_blank">${file.original_name}</a>`
+              : `<a href="${environment.UTILITIES_BASE_API_URL}/${file.modified_name}?authToken=Bearer ${storageService.getLocalData("authToken")["token"]}" style="color: inherit" target="_blank">${file.original_name}</a>`
+      }));
+
+      let googleFilesList: any = [];
+
+      // Fetch Access Token
+      if (storageService.existData('googleUser') && workspaceData?.integrations?.is_google_connected) {
+
+        let googleUser: any = storageService.getLocalData('googleUser');
+
+        if (utilityService.objectExists(googleUser)) {
+          // Fetch the access token from the storage
+          let accessToken = googleUser['accessToken']
+
+          // Get Google file list
+          googleFilesList = await integrationsService.searchGoogleFiles(searchTerm, accessToken) || []
+
+          // Google File List
+          if (googleFilesList.length > 0) {
+            googleFilesList = googleFilesList.map((file: any) => ({
+              id: '5b9649d1f5acc923a497d1da',
+              value: '<a style="color:inherit;" target="_blank" href="' + file.embedLink + '"' + '>' + file.title + '</a>'
+            }));
+          }
+        }
+      }
+
+      let boxFilesList: any = [];
+
+      // Fetch Access Token
+      if (storageService.existData('boxUser') && workspaceData?.integrations?.is_box_connected) {
+        const boxUser: any = storageService.getLocalData('boxUser');
+
+        if (utilityService.objectExists(boxUser)) {
+          // Fetch the access token from the storage
+          let boxAccessToken = boxUser['accessToken'];
+
+          // Get Box file list
+          boxFilesList = await integrationsService.searchBoxFiles(searchTerm, boxAccessToken, workspaceData?.integrations) || []
+
+          // Box File List
+          if (boxFilesList.length > 0) {
+            boxFilesList = boxFilesList
+                .filter(file => file && file.shared_link && file.shared_link.url)
+                .map((file: any) => ({
+                    id: 'boxfile',
+                    value: '<a style="color:inherit;" target="_blank" href="' + file.shared_link.url + '"' + '>' + file.name + '</a>'
+                  }));
+          }
+        }
+      }
+
+      return Array.from(new Set([...filesList, ...googleFilesList, ...boxFilesList]));
     }
 }

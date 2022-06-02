@@ -92,46 +92,16 @@ export class GroupActivityFeedComponent implements OnInit {
     // Start the loading spinner
     this.isLoading$.next(true);
 
-    // Fetch current group from the service
-    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
-
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
 
-    this.publicFunctions.getAllColumns(this.groupData?._id).then(data => this.columns = data);
-
-    this.myWorkplace = await this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
-    // If my workplace is true, hence we don't have the group header therefore fetch the group details via calling HTTP Request
-    //if (this.myWorkplace === true) {
-    //  this.fetchCurrentGroupData();
-    //}
-
-    if (this.myWorkplace === false) {
-      // Posted Added in Group Socket
-      this.subSink.add(this.enableAddPostInGroupSocket(this.socketService))
-
-      // Post Edited in Group Socket
-      this.subSink.add(this.enableEditPostInGroupSocket(this.socketService))
-
-      // Post Deleted in Group Socket
-      this.subSink.add(this.enableDeletePostInGroupSocket(this.socketService))
-    }
-
-    // Utility Service Instance
-    let utilityService = this.injector.get(UtilityService);
-
-    this.isProjectType = this.groupData.project_type;
-    this.keepPinnedOpen = this.groupData.keep_pinned_open;
-
-    // Fetch the first 5 posts from the server
-    await this.fetchPosts(this.groupData?._id);
-
-    // pinned/unpinned posts
-    await this.fetchPinnedPosts();
-
     if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
       const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
-      const post = await this.publicFunctions.getPost(postId);
+      const post: any = await this.publicFunctions.getPost(postId);
+
+      this.groupData = await this.publicFunctions.getGroupDetails(post?._group?._id || post?._group);
+      this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
       let canOpen = true;
       if (this.groupData?.enabled_rights) {
         const canEdit = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'edit');
@@ -159,6 +129,37 @@ export class GroupActivityFeedComponent implements OnInit {
         });
       }
     }
+
+    // Fetch current group from the service
+    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+
+    this.publicFunctions.getAllColumns(this.groupData?._id).then(data => this.columns = data);
+
+    this.myWorkplace = await this.publicFunctions.isPersonalNavigation(this.groupData, this.userData);
+    // If my workplace is true, hence we don't have the group header therefore fetch the group details via calling HTTP Request
+    //if (this.myWorkplace === true) {
+    //  this.fetchCurrentGroupData();
+    //}
+
+    if (this.myWorkplace === false) {
+      // Posted Added in Group Socket
+      this.subSink.add(this.enableAddPostInGroupSocket(this.socketService))
+
+      // Post Edited in Group Socket
+      this.subSink.add(this.enableEditPostInGroupSocket(this.socketService))
+
+      // Post Deleted in Group Socket
+      this.subSink.add(this.enableDeletePostInGroupSocket(this.socketService))
+    }
+
+    this.isProjectType = this.groupData.project_type;
+    this.keepPinnedOpen = this.groupData.keep_pinned_open;
+
+    // Fetch the first 5 posts from the server
+    await this.fetchPosts(this.groupData?._id);
+
+    // pinned/unpinned posts
+    await this.fetchPinnedPosts();
 
     // Return the function via stopping the loader
     return this.isLoading$.next(false);

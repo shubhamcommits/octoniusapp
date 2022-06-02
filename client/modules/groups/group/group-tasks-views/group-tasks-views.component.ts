@@ -78,6 +78,27 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     // Fetch current user details
     this.userData = await this.publicFunctions.getCurrentUser();
 
+    if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
+      const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
+
+      let post: any = await this.publicFunctions.getPost(postId);
+
+      this.groupData = await this.publicFunctions.getGroupDetails(post?._group?._id || post?._group);
+      this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+
+      let canOpen = true;
+      if (this.groupData?.enabled_rights) {
+        const canEdit = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'edit');
+        let canView = false;
+        if (!canEdit) {
+          const hide = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'hide');
+          canView = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'view') || !hide;
+        }
+        canOpen = canView || canEdit;
+      }
+      this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
+    }
+
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
 
     this.currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
@@ -151,23 +172,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         });
       }
     });
-
-    if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
-      const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
-      let post;
-      let canOpen = true;
-      if (this.groupData?.enabled_rights) {
-        post = await this.publicFunctions.getPost(postId);
-        const canEdit = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'edit');
-        let canView = false;
-        if (!canEdit) {
-          const hide = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'hide');
-          canView = await this.utilityService.canUserDoTaskAction(post, this.groupData, this.userData, 'view') || !hide;
-        }
-        canOpen = canView || canEdit;
-      }
-      this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
-    }
   }
 
   async onChangeViewEmitter(view: string) {
