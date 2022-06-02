@@ -23,17 +23,12 @@ export class GroupService {
     return this.getGroupObservale(groupId).toPromise();
   }
 
-  getGroupObservale(groupId: string/*, readOnly?: boolean*/) {
-    /*
-    if (readOnly) {
-      return this._http.get(this.baseURL + `/${groupId}`, {
-        params: {
-          readOnly: readOnly
-        }
-      });
-    }
-    */
+  getGroupObservale(groupId: string) {
     return this._http.get(this.baseURL + `/${groupId}`);
+  }
+
+  getGroupByPostId(postId: string) {
+    return this._http.get(this.baseURL + `/${postId}/byPost`).toPromise();
   }
 
   /**
