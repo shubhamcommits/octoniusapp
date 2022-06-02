@@ -5,6 +5,7 @@ import { UtilityService } from 'src/shared/services/utility-service/utility.serv
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { SubSink } from 'subsink';
 import { RouteStateService } from 'src/shared/services/router-service/route-state.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-group-navbar',
@@ -60,6 +61,7 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     private injector: Injector,
     private utilityService: UtilityService,
     private routeStateService: RouteStateService,
+    private _router: Router,
   ) {
     this.publicFunctions.getCurrentUser().then(user => {
       this.userData = user;
@@ -98,7 +100,14 @@ export class GroupNavbarComponent implements OnInit, OnDestroy {
     );
     */
 
-    this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    if (this._router.routerState.snapshot.root.queryParamMap.has('postId')) {
+      const postId = this._router.routerState.snapshot.root.queryParamMap.get('postId');
+      this.groupData = await this.publicFunctions.getGroupDetailsByPostId(postId);
+      this.publicFunctions.sendUpdatesToGroupData(this.groupData);
+    } else {
+      this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+    }
+
     /*
     if (this.groupId) {
       // Fetch current group

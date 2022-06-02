@@ -96,6 +96,11 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         }
         canOpen = canView || canEdit;
       }
+
+      if (canOpen) {
+        this.columns = await this.publicFunctions.getAllColumns(this.groupData?._id);
+      }
+
       this.utilityService.openPostDetailsFullscreenModal(postId, this.groupData._id, this.isIdeaModuleAvailable, canOpen, this.columns);
     }
 

@@ -548,6 +548,53 @@ export class GroupController {
     };
 
     /**
+     * This function fetches the group details corresponding to the @constant postId 
+     * @param req - @constant postId
+     */
+    async getByPost(req: Request, res: Response) {
+        try {
+
+            const { postId } = req.params;
+
+            const post: any = await Post.findOne({_id: postId}).select('_group').lean();
+
+            // Find the Group based on the groupId
+            var group = await Group.findOne({
+                _id: post._group
+            })
+                .populate({
+                    path: '_members',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({
+                    path: '_admins',
+                    select: 'first_name last_name profile_pic active role email created_date custom_fields_to_show share_files',
+                    match: {
+                        active: true
+                    }
+                })
+                .populate({ path: 'rags._members', select: 'first_name last_name profile_pic role email' })
+                .lean();
+
+            // Check if group already exist with the same groupId
+            if (!group) {
+                return sendError(res, new Error('Oops, group not found!'), 'Group not found, Invalid groupId!', 404);
+            }
+
+            // Send the status 200 response
+            return res.status(200).json({
+                message: 'Group found!',
+                group
+            });
+        } catch (err) {
+            return sendError(res, err);
+        }
+    };
+
+    /**
      * This function creates the new group in workspace
      * @param req - @constant group_name, @constant workspace_name, @constant workspaceId, @constant userId
      * 

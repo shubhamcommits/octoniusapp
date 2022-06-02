@@ -288,8 +288,24 @@ export class PublicFunctions {
                 .catch((err) => {
                     this.sendError(new Error($localize`:@@publicFunctions.unableToFetchGroupDetails:Unable to fetch the group details, please try again!`))
                     reject(err)
-                })
-        })
+                });
+        });
+    }
+
+    async getGroupDetailsByPostId(postId: string) {
+      return new Promise((resolve, reject) => {
+        let groupService = this.injector.get(GroupService);
+        groupService.getGroupByPostId(postId)
+          .then((res) => {
+            if (res) {
+              resolve(res['group']);
+            }
+          })
+          .catch((err) => {
+              this.sendError(new Error($localize`:@@publicFunctions.unableToFetchGroupDetails:Unable to fetch the group details, please try again!`))
+              reject(err)
+          });
+      });
     }
 
     async sendUpdatesToGroupData(groupData: Object) {
