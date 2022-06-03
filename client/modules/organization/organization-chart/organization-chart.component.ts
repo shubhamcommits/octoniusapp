@@ -51,24 +51,32 @@ export class OrganizationChartComponent implements OnInit {
 
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    this.selectedManagerField = this.workspaceData?.manager_custom_field;
 
     this.isManager = this.userData.role == 'manager' || this.userData.role == 'admin' || this.userData.role == 'owner';
 
-    this.getOrganizationChartFirstLevel();
-
-    this.selectedManagerField = this.workspaceData?.manager_custom_field;
+    await this.getInitOrganizationChart();
   }
 
   ngOnDestroy(){
 
   }
 
-  getOrganizationChartFirstLevel() {
+  getInitOrganizationChart() {
     this.workspaceService.getOrganizationChartFirstLevel(this.workspaceData._id).then(res => {
       if (res['members']) {
         this.levels.push({
           members: res['members']
         });
+
+        if (this.levels[0].members.length == 1) {
+          this.workspaceService.getOrganizationChartNextLevel(this.workspaceData?._id, this.levels[0].members[0]?._id).then(res => {
+            this.newManagerSelected({
+              managerId: this.levels[0].members[0]?._id,
+              nextLevelMembers: res['members']
+            }, 0);
+          });
+        }
       }
     });
   }
@@ -95,17 +103,42 @@ export class OrganizationChartComponent implements OnInit {
           .then(()=> {
             selectedMember.nextLevelMembers = [];
             if (this.levels) {
+              let levelIndex = -1;
+              let managerIndex = -1;
+              let memberIndex = -1;
               this.levels.forEach((level, index) => {
-                const memberIndex = (level?.members) ? level?.members.findIndex(member => member._id == selectedMember._id) : -1;
-                if (memberIndex >= 0) {
-                  this.levels[index]?.members.splice(memberIndex, 1);
+                if (level && level?.members && memberIndex < 0 && managerIndex < 0) {
+                  managerIndex = (level?.members) ? level?.members.findIndex(member => member._id == selectedMember._id) : -1;
+
+                  if (managerIndex >= 0) {
+                    levelIndex = index;
+                  } else {
+                    level.members.forEach((manager, index2) => {
+                      if (memberIndex < 0) {
+                        memberIndex = (manager?.nextLevelMembers) ? manager?.nextLevelMembers.findIndex(member => member._id == selectedMember._id) : -1;
+
+                        if (memberIndex >= 0) {
+                          levelIndex = index;
+                          managerIndex = index2;
+                        }
+                      }
+                    });
+                  }
                 }
               });
+
+              if (levelIndex >= 0 && managerIndex >= 0 && memberIndex >= 0) {
+                this.levels[levelIndex]?.members[managerIndex]?.nextLevelMembers?.splice(memberIndex, 1);
+              } else if (levelIndex >= 0 && managerIndex >= 0) {
+                this.levels[levelIndex]?.members?.splice(managerIndex, 1);
+              }
             }
             this.levels[levelIndex]?.members?.push(selectedMember);
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@organizationChart.settingsSaved:Settings saved!`));
           })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@organizationChart.unableToSaveGroupSettings:Unable to save the settings, please try again!`)));
+          .catch((err) => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@organizationChart.unableToSaveGroupSettings:Unable to save the settings, please try again!`));
+          });
       }));
   }
 

@@ -15,6 +15,7 @@ export class ChartPersonComponent implements OnInit {
   @Input() person;
   @Input() selected = false;
   @Input() level = 0;
+  @Input() isManager = false;
 
   @Output() nextLevelMembersEmitter = new EventEmitter();
   @Output() removeFromManagerEmitter = new EventEmitter();

@@ -9,6 +9,7 @@
         [person]="user"
         [selected]="levels && levels[index + 1] && user._id == levels[index + 1].managerId"
         [level]="index"
+        [isManager]="isManager"
         (nextLevelMembersEmitter)="newManagerSelected($event, index)"
         (removeFromManagerEmitter)="removeFromManager(user, index)"></app-chart-person>
 

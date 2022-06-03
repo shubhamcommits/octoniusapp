@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div *ngIf="level > 0" class="actions badge" [ngClass]="(selected) ? 'selected' : 'no-selected'">
+  <div *ngIf="level > 0 && isManager" class="actions badge" [ngClass]="(selected) ? 'selected' : 'no-selected'">
     {{ person?.nextLevelMembers?.length || 0 }}
     <i [matMenuTriggerFor]="actionsMenu" class="material-icons" style="cursor: pointer;">arrow_drop_down</i>
     <mat-menu #actionsMenu="matMenu" class="actions-list">
@@ -28,7 +28,7 @@
     </mat-menu>
   </div>
 
-  <div *ngIf="level == 0" (click)="selectManager()" class="no-actions-badge" [ngClass]="(selected) ? 'selected' : 'no-selected'">
+  <div *ngIf="level == 0 || !isManager" (click)="selectManager()" class="no-actions-badge" [ngClass]="(selected) ? 'selected' : 'no-selected'">
     {{ person?.nextLevelMembers?.length || 0 }}
   </div>
 </div>
