@@ -107,22 +107,30 @@ export class OrganizationChartComponent implements OnInit {
               let managerIndex = -1;
               let memberIndex = -1;
               this.levels.forEach((level, index) => {
-                if (level && level?.members && memberIndex < 0) {
-                  level.members.forEach((manager, index2) => {
-                    if (memberIndex < 0) {
-                      memberIndex = (manager?.nextLevelMembers) ? manager?.nextLevelMembers.findIndex(member => member._id == selectedMember._id) : -1;
+                if (level && level?.members && memberIndex < 0 && managerIndex < 0) {
+                  managerIndex = (level?.members) ? level?.members.findIndex(member => member._id == selectedMember._id) : -1;
 
-                      if (memberIndex >= 0) {
-                        levelIndex = index;
-                        managerIndex = index2;
+                  if (managerIndex >= 0) {
+                    levelIndex = index;
+                  } else {
+                    level.members.forEach((manager, index2) => {
+                      if (memberIndex < 0) {
+                        memberIndex = (manager?.nextLevelMembers) ? manager?.nextLevelMembers.findIndex(member => member._id == selectedMember._id) : -1;
+
+                        if (memberIndex >= 0) {
+                          levelIndex = index;
+                          managerIndex = index2;
+                        }
                       }
-                    }
-                  });
+                    });
+                  }
                 }
               });
 
               if (levelIndex >= 0 && managerIndex >= 0 && memberIndex >= 0) {
                 this.levels[levelIndex]?.members[managerIndex]?.nextLevelMembers?.splice(memberIndex, 1);
+              } else if (levelIndex >= 0 && managerIndex >= 0) {
+                this.levels[levelIndex]?.members?.splice(managerIndex, 1);
               }
             }
             this.levels[levelIndex]?.members?.push(selectedMember);
