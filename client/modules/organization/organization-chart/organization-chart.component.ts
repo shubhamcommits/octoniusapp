@@ -95,17 +95,34 @@ export class OrganizationChartComponent implements OnInit {
           .then(()=> {
             selectedMember.nextLevelMembers = [];
             if (this.levels) {
+              let levelIndex = -1;
+              let managerIndex = -1;
+              let memberIndex = -1;
               this.levels.forEach((level, index) => {
-                const memberIndex = (level?.members) ? level?.members.findIndex(member => member._id == selectedMember._id) : -1;
-                if (memberIndex >= 0) {
-                  this.levels[index]?.members.splice(memberIndex, 1);
+                if (level && level?.members && memberIndex < 0) {
+                  level.members.forEach((manager, index2) => {
+                    if (memberIndex < 0) {
+                      memberIndex = (manager?.nextLevelMembers) ? manager?.nextLevelMembers.findIndex(member => member._id == selectedMember._id) : -1;
+
+                      if (memberIndex >= 0) {
+                        levelIndex = index;
+                        managerIndex = index2;
+                      }
+                    }
+                  });
                 }
               });
+
+              if (levelIndex >= 0 && managerIndex >= 0 && memberIndex >= 0) {
+                this.levels[levelIndex]?.members[managerIndex]?.nextLevelMembers?.splice(memberIndex, 1);
+              }
             }
             this.levels[levelIndex]?.members?.push(selectedMember);
             resolve(this.utilityService.resolveAsyncPromise($localize`:@@organizationChart.settingsSaved:Settings saved!`));
           })
-          .catch(() => reject(this.utilityService.rejectAsyncPromise($localize`:@@organizationChart.unableToSaveGroupSettings:Unable to save the settings, please try again!`)));
+          .catch((err) => {
+            reject(this.utilityService.rejectAsyncPromise($localize`:@@organizationChart.unableToSaveGroupSettings:Unable to save the settings, please try again!`));
+          });
       }));
   }
 
