@@ -19,7 +19,7 @@
 
   <div *ngIf="level > 0" class="actions badge" [ngClass]="(selected) ? 'selected' : 'no-selected'">
     {{ person?.nextLevelMembers?.length || 0 }}
-    <i [matMenuTriggerFor]="actionsMenu" class="material-icons" style="cursor: pointer;">arrow_drop_down</i>
+    <i *ngIf="isManager" [matMenuTriggerFor]="actionsMenu" class="material-icons" style="cursor: pointer;">arrow_drop_down</i>
     <mat-menu #actionsMenu="matMenu" class="actions-list">
       <a mat-menu-item (click)="removeFromManager()" *ngIf="level > 0">
         <i class="material-icons-outlined ml-2" style="margin-right: .7rem;">delete_forever</i>
