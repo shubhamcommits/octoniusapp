@@ -51,24 +51,32 @@ export class OrganizationChartComponent implements OnInit {
 
     this.userData = await this.publicFunctions.getCurrentUser();
     this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+    this.selectedManagerField = this.workspaceData?.manager_custom_field;
 
     this.isManager = this.userData.role == 'manager' || this.userData.role == 'admin' || this.userData.role == 'owner';
 
-    this.getOrganizationChartFirstLevel();
-
-    this.selectedManagerField = this.workspaceData?.manager_custom_field;
+    await this.getInitOrganizationChart();
   }
 
   ngOnDestroy(){
 
   }
 
-  getOrganizationChartFirstLevel() {
+  getInitOrganizationChart() {
     this.workspaceService.getOrganizationChartFirstLevel(this.workspaceData._id).then(res => {
       if (res['members']) {
         this.levels.push({
           members: res['members']
         });
+
+        if (this.levels[0].members.length == 1) {
+          this.workspaceService.getOrganizationChartNextLevel(this.workspaceData?._id, this.levels[0].members[0]?._id).then(res => {
+            this.newManagerSelected({
+              managerId: this.levels[0].members[0]?._id,
+              nextLevelMembers: res['members']
+            }, 0);
+          });
+        }
       }
     });
   }
