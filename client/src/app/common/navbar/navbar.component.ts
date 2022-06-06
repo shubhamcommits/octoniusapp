@@ -61,6 +61,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     private integrationsService: IntegrationsService,
     private userService: UserService,
     private utilityService: UtilityService,
@@ -105,18 +106,20 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // FETCH THE USER DETAILS FROM THE SERVER
     this.userData = await this.getCurrentUser();
-    // this.userData = await this.publicFunctions.getCurrentUser();
-    this.userGroups = this.userData['stats']['favorite_groups'];
-    this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
 
-    // Fetch current user from the service
-    this.subSink.add(this.utilityService.currentUserData.subscribe(async (res) => {
-      if (JSON.stringify(res) != JSON.stringify({})) {
+    if (environment.production && this.userData && this.utilityService.objectExists(this.userData)
+        && this.userData?.stats && this.userData?.stats?.locale && this.userData?.stats?.locale != this.locale) {
+      this.selectLanguage(this.userData?.stats?.locale);
+    }
 
-        // Assign the GroupData
-        this.userData = res;
-      }
-    }))
+    // Call the HTTP API to fetch the current workspace details
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
+
+    // SENDING THE UPDATE THROUGH SERVICE TO UPDATE THE USER & WORKSPACE DETAILS AT ALL COMPONENTS
+    if (this.userData && this.workspaceData) {
+      this.publicFunctions.sendUpdatesToUserData(this.userData)
+      this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
+    }
 
     this.subSink.add(this._router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
@@ -124,22 +127,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }));
 
-    // Call the HTTP API to fetch the current workspace details
-    this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
-
-    // IF WE FIND THAT THE GET REQUEST HAS FAILED, THEN WE USE LOCAL DATA TO INTIALISE THE userData
-    if (JSON.stringify(this.userData) === JSON.stringify({}))
-      this.userData = this.publicFunctions.getUserDetailsFromStorage();
-
-    // IF WE FIND THAT THE GET REQUEST HAS FAILED, THEN WE USE LOCAL DATA TO INTIALISE THE workspaceData
-    if (JSON.stringify(this.workspaceData) === JSON.stringify({}))
-      this.workspaceData = this.publicFunctions.getWorkspaceDetailsFromStorage();
-
-    // SENDING THE UPDATE THROUGH SERVICE TO UPDATE THE USER & WORKSPACE DETAILS AT ALL COMPONENTS
-    if (this.userData && this.workspaceData) {
-      this.publicFunctions.sendUpdatesToUserData(this.userData)
-      this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
-    }
+    // this.userData = await this.publicFunctions.getCurrentUser();
+    this.userGroups = this.userData['stats']['favorite_groups'];
+    this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
 
     if (this.userData?.integrations?.gdrive?.token) {
       await this.integrationsService.handleGoogleSignIn()
@@ -238,7 +228,24 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     return !this.isDocumentPage;
   }
 
-  existsElement(element: any) {
-    return (element) && (JSON.stringify(element) != JSON.stringify({}));
+  selectLanguage(languageCode: any) {
+    this.userService.saveLocale(languageCode).then(res => {
+
+      this.userData = res['user'];
+      this.publicFunctions.sendUpdatesToUserData(this.userData);
+
+      localStorage.setItem('locale', languageCode);
+
+      let redirect_uri = environment.clientUrl;
+      if (environment.production) {
+        redirect_uri += '/' + languageCode;
+      }
+
+      redirect_uri += this._router.url;
+
+      if (this.locale != languageCode) {
+        window.location.href = redirect_uri;
+      }
+    });
   }
 }

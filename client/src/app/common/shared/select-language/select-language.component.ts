@@ -38,10 +38,6 @@ export class SelectLanguageComponent implements OnInit {
   }
 
   initLanguages() {
-    if (environment.production && this.userData.stats && this.userData.stats.locale && this.userData.stats.locale != this.locale) {
-      this.selectLanguage(this.userData.stats.locale);
-    }
-
     this.languages.push({ name: $localize`:@@selectLanguage.german:German`, code: 'de'});
     this.languages.push({ name: $localize`:@@selectLanguage.english:English`, code: 'en'});
     this.languages.push({ name: $localize`:@@selectLanguage.spanish:Spanish`, code: 'es'});

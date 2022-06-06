@@ -40,12 +40,13 @@ export class PublicFunctions {
 
     public async getCurrentUser(readOnly?: boolean) {
         let userData: any = await this.getUserDetailsFromService();
+        const utilityService = this.injector.get(UtilityService);
 
-        if (JSON.stringify(userData) == JSON.stringify({})) {
+        if (!utilityService.objectExists(userData)) {
             userData = await this.getUserDetailsFromStorage();
         }
 
-        if (JSON.stringify(userData) == JSON.stringify({})) {
+        if (!utilityService.objectExists(userData)) {
           if (!readOnly) {
             userData = await this.getUserDetailsFromHTTP().catch(err => {
               userData = {};
@@ -111,12 +112,15 @@ export class PublicFunctions {
 
     public async getCurrentAccount() {
         let accountData: any = await this.getAccountDetailsFromService();
+        const utilityService = this.injector.get(UtilityService);
 
-        if (JSON.stringify(accountData) == JSON.stringify({}))
+        if (!utilityService.objectExists(accountData)) {
           accountData = await this.getAccountDetailsFromStorage();
+        }
 
-        if (JSON.stringify(accountData) == JSON.stringify({}))
+        if (!utilityService.objectExists(accountData)) {
           accountData = await this.getAccountDetailsFromHTTP();
+        }
 
         this.sendUpdatesToAccountData(accountData);
 
@@ -158,11 +162,15 @@ export class PublicFunctions {
     public async getCurrentWorkspace() {
         let worspaceData = await this.getWorkspaceDetailsFromService();
 
-        if (JSON.stringify(worspaceData) == JSON.stringify({}) || JSON.stringify(worspaceData) == JSON.stringify(undefined))
-            worspaceData = await this.getWorkspaceDetailsFromStorage();
+        const utilityService = this.injector.get(UtilityService);
 
-        if (JSON.stringify(worspaceData) == JSON.stringify({}) || JSON.stringify(worspaceData) == JSON.stringify(undefined))
+        if (!utilityService.objectExists(worspaceData)) {
+            worspaceData = await this.getWorkspaceDetailsFromStorage();
+        }
+
+        if (!utilityService.objectExists(worspaceData)) {
             worspaceData = await this.getWorkspaceDetailsFromHTTP();
+        }
 
         this.sendUpdatesToWorkspaceData(worspaceData);
 
@@ -231,12 +239,13 @@ export class PublicFunctions {
         let groupData = {};
 
         groupData = await this.getCurrentGroupFromService();
+        const utilityService = this.injector.get(UtilityService);
 
-        if (JSON.stringify(groupData) == JSON.stringify({}) || JSON.stringify(groupData) == JSON.stringify(undefined)) {
+        if (!utilityService.objectExists(groupData)) {
           groupData = await this.getGroupDetailsFromStorage();
         }
 
-        if (JSON.stringify(groupData) == JSON.stringify({}) || JSON.stringify(groupData) == JSON.stringify(undefined)) {
+        if (!utilityService.objectExists(groupData)) {
           groupData = await this.getGroupDetailsFromHTTP();
         }
 
@@ -326,8 +335,9 @@ export class PublicFunctions {
         return new Promise((resolve) => {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.routerStateData.subscribe((res) => {
-                if (JSON.stringify(res) != JSON.stringify({}))
-                    resolve(res)
+              if (!utilityService.objectExists(res)) {
+                resolve(res)
+              }
             }));
         });
     }
@@ -357,8 +367,9 @@ export class PublicFunctions {
         return new Promise((resolve) => {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.loungeData.subscribe((res) => {
-                if (JSON.stringify(res) != JSON.stringify({}))
-                    resolve(res)
+                if (!utilityService.objectExists(res)) {
+                  resolve(res)
+                }
             })
             )
         })
@@ -373,10 +384,11 @@ export class PublicFunctions {
         return new Promise((resolve) => {
             const utilityService = this.injector.get(UtilityService);
             this.subSink.add(utilityService.storyData.subscribe((res) => {
-                if (JSON.stringify(res) != JSON.stringify({}))
-                    resolve(res)
+              if (!utilityService.objectExists(res)) {
+                  resolve(res)
+              }
             })
-            )
+          )
         })
     }
 
