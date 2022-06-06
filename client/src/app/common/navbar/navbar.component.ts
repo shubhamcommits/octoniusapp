@@ -112,18 +112,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectLanguage(this.userData?.stats?.locale);
     }
 
-    // this.userData = await this.publicFunctions.getCurrentUser();
-    this.userGroups = this.userData['stats']['favorite_groups'];
-    this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
+    // Call the HTTP API to fetch the current workspace details
+    this.workspaceData = await this.publicFunctions.getCurrentWorkspace();
 
-    // Fetch current user from the service
-    this.subSink.add(this.utilityService.currentUserData.subscribe(async (res) => {
-      if (JSON.stringify(res) != JSON.stringify({})) {
-
-        // Assign the GroupData
-        this.userData = res;
-      }
-    }))
+    // SENDING THE UPDATE THROUGH SERVICE TO UPDATE THE USER & WORKSPACE DETAILS AT ALL COMPONENTS
+    if (this.userData && this.workspaceData) {
+      this.publicFunctions.sendUpdatesToUserData(this.userData)
+      this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
+    }
 
     this.subSink.add(this._router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
@@ -131,22 +127,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }));
 
-    // Call the HTTP API to fetch the current workspace details
-    this.workspaceData = await this.publicFunctions.getWorkspaceDetailsFromHTTP();
-
-    // IF WE FIND THAT THE GET REQUEST HAS FAILED, THEN WE USE LOCAL DATA TO INTIALISE THE userData
-    if (JSON.stringify(this.userData) === JSON.stringify({}))
-      this.userData = this.publicFunctions.getUserDetailsFromStorage();
-
-    // IF WE FIND THAT THE GET REQUEST HAS FAILED, THEN WE USE LOCAL DATA TO INTIALISE THE workspaceData
-    if (JSON.stringify(this.workspaceData) === JSON.stringify({}))
-      this.workspaceData = this.publicFunctions.getWorkspaceDetailsFromStorage();
-
-    // SENDING THE UPDATE THROUGH SERVICE TO UPDATE THE USER & WORKSPACE DETAILS AT ALL COMPONENTS
-    if (this.userData && this.workspaceData) {
-      this.publicFunctions.sendUpdatesToUserData(this.userData)
-      this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData)
-    }
+    // this.userData = await this.publicFunctions.getCurrentUser();
+    this.userGroups = this.userData['stats']['favorite_groups'];
+    this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
 
     if (this.userData?.integrations?.gdrive?.token) {
       await this.integrationsService.handleGoogleSignIn()
