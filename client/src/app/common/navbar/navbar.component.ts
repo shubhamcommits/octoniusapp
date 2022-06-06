@@ -61,6 +61,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   constructor(
+    @Inject(LOCALE_ID) public locale: string,
     private integrationsService: IntegrationsService,
     private userService: UserService,
     private utilityService: UtilityService,
@@ -105,6 +106,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // FETCH THE USER DETAILS FROM THE SERVER
     this.userData = await this.getCurrentUser();
+
+    if (environment.production && this.userData && this.utilityService.objectExists(this.userData)
+        && this.userData?.stats && this.userData?.stats?.locale && this.userData?.stats?.locale != this.locale) {
+      this.selectLanguage(this.userData?.stats?.locale);
+    }
+
     // this.userData = await this.publicFunctions.getCurrentUser();
     this.userGroups = this.userData['stats']['favorite_groups'];
     this.iconsSidebar = this.userData['stats']['default_icons_sidebar'] || false;
@@ -238,7 +245,24 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     return !this.isDocumentPage;
   }
 
-  existsElement(element: any) {
-    return (element) && (JSON.stringify(element) != JSON.stringify({}));
+  selectLanguage(languageCode: any) {
+    this.userService.saveLocale(languageCode).then(res => {
+
+      this.userData = res['user'];
+      this.publicFunctions.sendUpdatesToUserData(this.userData);
+
+      localStorage.setItem('locale', languageCode);
+
+      let redirect_uri = environment.clientUrl;
+      if (environment.production) {
+        redirect_uri += '/' + languageCode;
+      }
+
+      redirect_uri += this._router.url;
+
+      if (this.locale != languageCode) {
+        window.location.href = redirect_uri;
+      }
+    });
   }
 }
