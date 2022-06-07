@@ -200,7 +200,7 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
       this.tasks.reverse();
     }
 
-    //this.utilityService.updateIsLoadingSpinnerSource(false);
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   loadCustomFieldsToShow() {

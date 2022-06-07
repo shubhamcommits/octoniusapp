@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector, AfterContentChecked } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { SubSink } from 'subsink';
@@ -15,7 +15,7 @@ import * as fileSaver from 'file-saver';
   templateUrl: './group-tasks-views.component.html',
   styleUrls: ['./group-tasks-views.component.scss']
 })
-export class GroupTasksViewsComponent implements OnInit, OnDestroy {
+export class GroupTasksViewsComponent implements OnInit, OnDestroy, AfterContentChecked {
 
   viewType = 'kanban';
 
@@ -25,6 +25,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   tasks: any = [];
   userData: any;
   customFields: any = [];
+
+  isAdmin = false;
 
   sortingBit:String = 'none';
   sortingData: any;
@@ -39,7 +41,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   unchangedColumns: any;
 
   // IsLoading behaviou subject maintains the state for loading spinner
-  public isLoading$ = new BehaviorSubject(false);
+  isLoading$;
 
   // Subsink Object
   subSink = new SubSink();
@@ -48,21 +50,27 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
   public publicFunctions = new PublicFunctions(this.injector);
 
   constructor(
-    private router: ActivatedRoute,
     public utilityService: UtilityService,
     private groupService: GroupService,
+    private router: ActivatedRoute,
     private _router: Router,
     private injector: Injector) { }
 
 
   async ngOnInit() {
     // Start the loading spinner
-    this.isLoading$.next(true);
+    this.utilityService.updateIsLoadingSpinnerSource(true);
 
     await this.initView();
 
     // Return the function via stopping the loader
-    return this.isLoading$.next(false);
+    //this.utilityService.updateIsLoadingSpinnerSource(false);
+  }
+
+  ngAfterContentChecked() {
+    this.subSink.add(this.utilityService.isLoadingSpinner.subscribe((res) => {
+      this.isLoading$ = res;
+    }));
   }
 
   /**
@@ -70,7 +78,6 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.subSink.unsubscribe();
-    this.isLoading$.complete();
   }
 
   async initView() {
@@ -105,6 +112,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     }
 
     this.groupData = await this.publicFunctions.getCurrentGroupDetails();
+
+    this.isAdmin = this.isAdminUser();
 
     this.currentWorkspace = await this.publicFunctions.getCurrentWorkspace();
 
@@ -177,11 +186,13 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
         });
       }
     });
+
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   async onChangeViewEmitter(view: string) {
     // Start the loading spinner
-    this.isLoading$.next(true);
+    this.utilityService.updateIsLoadingSpinnerSource(true);
 
     if (view != 'archived') {
       this.userData.stats.lastTaskView = view;
@@ -200,7 +211,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     }
 
     // Return the function via stopping the loader
-    return this.isLoading$.next(false);
+    return this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   async onSortTaskEmitter(sort: any){
@@ -256,12 +267,12 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
 
   async onTaskClonned(data) {
     // Start the loading spinner
-    this.isLoading$.next(true);
+    this.utilityService.updateIsLoadingSpinnerSource(true);
 
     await this.initView();
 
     // Return the function via stopping the loader
-    return this.isLoading$.next(false);
+    return this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   async newSectionAdded(column: any) {
@@ -476,6 +487,8 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     } else {
       this.columns = this.unchangedColumns.columns;
     }
+
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   async onExportToEmitter(exportType: any) {
@@ -541,5 +554,7 @@ export class GroupTasksViewsComponent implements OnInit, OnDestroy {
     }
 
     this.groupService.exportTasksToFile(exportType, exportTasks, this.groupData?.group_name + '_tasks');
+
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 }

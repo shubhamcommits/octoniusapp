@@ -228,7 +228,7 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
       });
     }
 
-    //this.utilityService.updateIsLoadingSpinnerSource(false);
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   /**

@@ -1,10 +1,10 @@
-<div *ngIf="!(isLoading$ | async)" class="root">
+<div class="root">
 
   <app-board-bar *ngIf="groupData"
       [groupData]="groupData"
       [sections]="columns"
       [userData]="userData"
-      [isAdmin]="isAdminUser()"
+      [isAdmin]="isAdmin"
       [customFields]="customFields"
       [viewType]="viewType"
       [isIdeaModuleAvailable]="isIdeaModuleAvailable"
@@ -35,7 +35,7 @@
       [sections]="columns"
       [tasks]="tasks"
       [customFields]="customFields"
-      [isAdmin]="isAdminUser()"
+      [isAdmin]="isAdmin"
       [isIdeaModuleAvailable]="isIdeaModuleAvailable"
       [isShuttleTasksModuleAvailable]="isShuttleTasksModuleAvailable"
       [sortingBit]="sortingBit"
@@ -72,7 +72,7 @@
 </div>
 
 <!-- Loading Spinner Starts -->
-<ng-container *ngIf="isLoading$ | async">
+<ng-container *ngIf="isLoading$">
     <app-loading-spinner class="media"></app-loading-spinner>
 </ng-container>
 <!-- Loading Spinner Ends -->

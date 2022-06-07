@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
+import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { AutomationFlowsDialogComponent } from '../../automation-flows-dialog/automation-flows-dialog.component';
 import { CustomFieldsDialogComponent } from '../../custom-fields-dialog/custom-fields-dialog.component';
 import { AdvancedFilterDialogComponent } from './advanced-filter-dialog/advanced-filter-dialog.component';
@@ -11,11 +12,6 @@ import { AdvancedFilterDialogComponent } from './advanced-filter-dialog/advanced
   styleUrls: ['./board-bar.component.scss']
 })
 export class BoardBarComponent implements OnInit {
-
-  constructor(
-    public dialog: MatDialog,
-    private injector: Injector
-  ) { }
 
   // GroupData Variable
   @Input() groupData: any;
@@ -54,6 +50,12 @@ export class BoardBarComponent implements OnInit {
   groupMembers:any = [];
   shuttleGroups:any = [];
 
+  constructor(
+    private utilityService: UtilityService,
+    public dialog: MatDialog,
+    private injector: Injector
+  ) { }
+
   async ngOnInit() {
     this.groupMembers = await this.publicFunctions.getCurrentGroupMembers();
     this.shuttleGroups = await this.publicFunctions.getShuttleGroups(this.groupData?._workspace, this.groupData?._id);
@@ -64,6 +66,8 @@ export class BoardBarComponent implements OnInit {
   }
 
   sortTasks(bit: string, cf?: any) {
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
     if (bit == this.sortby) {
       if (cf && this.cfSort && cf.title != this.cfSort.title) {
         this.reverse = false;
@@ -91,6 +95,8 @@ export class BoardBarComponent implements OnInit {
   }
 
   filterTask(bit: string, cf?: any) {
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
     this.filterfor = bit;
     this.cfFilter = (cf) ? cf : {};
     const obj = { bit: bit, data: this.cfFilter || '' }
@@ -153,6 +159,8 @@ export class BoardBarComponent implements OnInit {
   }
 
   exportTo(exportType: string) {
+    this.utilityService.updateIsLoadingSpinnerSource(true);
+
     this.exportToEmitter.emit(exportType);
   }
 }
