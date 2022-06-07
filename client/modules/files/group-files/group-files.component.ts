@@ -339,10 +339,10 @@ export class GroupFilesComponent implements OnInit {
     }
     const currentFolderId = await this.router.snapshot.queryParamMap.has('folder') ? this.router.snapshot.queryParamMap.get('folder') : false;
     if (!currentFolderId) {
-      url += this._router.url + '&folder=' + folder?._id;
+      url += this._router.url + '?folder=' + folder?._id;
     } else {
-      let urlSplit = this._router.url.split('&folder=');
-      url += urlSplit[0] + '&folder=' + folder?._id;
+      let urlSplit = this._router.url.split('?folder=');
+      url += urlSplit[0] + '?folder=' + folder?._id;
     }
 
     selBox.value = url;

@@ -90,6 +90,11 @@
           <span i18n="@@groupBoardBar.sort.dueDate">Due Date</span>
         </a>
 
+        <a mat-menu-item (click)="sortTasks('creation_date')"
+          [ngStyle]="{'color' : (sortby==='creation_date') ? '#005fd5' : 'black'}">
+          <span i18n="@@groupBoardBar.sort.creationDate">Creation Date</span>
+        </a>
+
         <a mat-menu-item (click)="sortTasks('tags')" [ngStyle]="{'color' : (sortby==='tags') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.tags">Tags</span>
         </a>
@@ -99,7 +104,7 @@
         </a>
 
         <a mat-menu-item (click)="sortTasks('ideas')" *ngIf="isIdeaModuleAvailable"
-          [ngStyle]="{'color' : (sortby==='due_date') ? '#005fd5' : 'black'}">
+          [ngStyle]="{'color' : (sortby==='ideas') ? '#005fd5' : 'black'}">
           <span i18n="@@groupBoardBar.sort.ideas">Ideas</span>
         </a>
 

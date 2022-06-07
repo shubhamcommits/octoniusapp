@@ -700,7 +700,7 @@ export class UtilityService {
    * Used to emit the next value of observable so that where this is subscribed, will get the updated value
    * @param status
    */
-  public updateIsLoadingSpinnerSource(status: boolean){
+  public updateIsLoadingSpinnerSource(status: boolean) {
     this.isLoadingSpinnerSource.next(status);
   }
 

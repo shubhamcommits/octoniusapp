@@ -122,6 +122,23 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
           }
         }
       });
+    } else if (this.sortingBit == 'creation_date') {
+        this.tasks.sort((t1, t2) => {
+          if (t1.created_date && t2.created_date) {
+            if (moment.utc(t1.created_date).isBefore(t2.created_date)) {
+              return this.sortingBit == 'creation_date' ? -1 : 1;
+            } else {
+              return this.sortingBit == 'creation_date' ? 1 : -1;
+            }
+          } else {
+            if (t1.created_date && !t2.created_date) {
+              return -1;
+            } else if (!t1.created_date && t2.created_date) {
+              return 1;
+            }
+          }
+
+        });
     } else if (this.sortingBit == 'custom_field' && this.tasks) {
         if (this.sortingData && this.sortingData.name == 'priority') {
           this.tasks.sort((t1, t2) => {
@@ -182,6 +199,8 @@ export class TasksTableComponent implements OnChanges, AfterViewInit {
     } else if ((this.sortingBit == 'reverse' || this.sortingBit == 'inverse') && this.tasks) {
       this.tasks.reverse();
     }
+
+    this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   loadCustomFieldsToShow() {
