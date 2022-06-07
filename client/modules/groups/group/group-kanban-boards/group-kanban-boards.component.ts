@@ -127,6 +127,27 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         })
         this.columns[index].tasks = task;
       }
+    } else if (this.sortingBit == 'creation_date') {
+      for (let index = 0; index < this.columns.length; index++) {
+        let task = this.columns[index].tasks;
+        task.sort((t1, t2) => {
+          if (t1.created_date && t2.created_date) {
+            if (moment.utc(t1.created_date).isBefore(t2.created_date)) {
+              return this.sortingBit == 'creation_date' ? -1 : 1;
+            } else {
+              return this.sortingBit == 'creation_date' ? 1 : -1;
+            }
+          } else {
+            if (t1.created_date && !t2.created_date) {
+              return -1;
+            } else if (!t1.created_date && t2.created_date) {
+              return 1;
+            }
+          }
+
+        })
+        this.columns[index].tasks = task;
+      }
     } else if (this.sortingBit == 'custom_field') {
       for (let index = 0; index < this.columns.length; index++) {
         let task = this.columns[index].tasks;
@@ -206,6 +227,8 @@ export class GroupKanbanBoardsComponent implements OnInit, OnChanges, AfterViewI
         column.tasks.reverse();
       });
     }
+
+    //this.utilityService.updateIsLoadingSpinnerSource(false);
   }
 
   /**
