@@ -511,17 +511,14 @@ export class UtilityService {
   /**
    * This function is responsible for opening a fullscreen dialog to see the member profile
    */
-  openFullscreenModal(userId: string): void {
+  openMeberBusinessCard(userId: string): void {
     const data =
       {
-        userId: userId,
-        // userData: userData,
-        // groupId: groupId
+        userId: userId
       };
 
     this.dialog.open(MemberDialogComponent, {
       width: '50%',
-      //height: '75%',
       hasBackdrop: true,
       data: data
     });

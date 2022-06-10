@@ -186,6 +186,6 @@ export class MembersWorkloadCardComponent implements OnInit {
    * This function is responsible for opening a fullscreen dialog to see the member profile
    */
   openFullscreenModal(userId: string): void {
-    this.utilityService.openFullscreenModal(userId);
+    this.utilityService.openMeberBusinessCard(userId);
   }
 }

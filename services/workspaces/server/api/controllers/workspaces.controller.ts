@@ -1047,9 +1047,9 @@ export class WorkspaceController {
             const { selectedManager } = req.query;
 
             // If either workspaceId or userId is null or not provided then we throw BAD REQUEST 
-            if (!workspaceId || !selectedManager) {
+            if (!workspaceId) {
                 return res.status(400).json({
-                    message: 'Please provide both workspaceId and selectedManager!'
+                    message: 'Please provide a workspaceId!'
                 });
             }
 
@@ -1066,9 +1066,15 @@ export class WorkspaceController {
                 .sort('first_name')
                 .lean() || [];
 
-            members = members.filter(user => user?.profile_custom_fields
-                && user?.profile_custom_fields[workspace.manager_custom_field]
-                && user?.profile_custom_fields[workspace.manager_custom_field] == selectedManager);
+            if (selectedManager && selectedManager != '') {
+                members = members.filter(user => user?.profile_custom_fields
+                    && user?.profile_custom_fields[workspace.manager_custom_field]
+                    && user?.profile_custom_fields[workspace.manager_custom_field] == selectedManager);
+            } else {
+                members = members.filter(user => !user?.profile_custom_fields
+                    || !user?.profile_custom_fields[workspace.manager_custom_field]
+                    || user?.profile_custom_fields[workspace.manager_custom_field] == null);
+            }
 
             // If there are no groups then we send error response
             if (!members) {

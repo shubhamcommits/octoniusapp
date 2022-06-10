@@ -1,5 +1,6 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { PublicFunctions } from 'modules/public.functions';
 import { UserService } from 'src/shared/services/user-service/user.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
@@ -26,6 +27,9 @@ export class OrganizationChartComponent implements OnInit {
   searchText = '';
   possibleMembers = [];
 
+  selectedUser;
+  selectedUserManager;
+
   // Public functions
   public publicFunctions = new PublicFunctions(this.injector);
 
@@ -38,6 +42,7 @@ export class OrganizationChartComponent implements OnInit {
   constructor(
     private userService: UserService,
     private workspaceService: WorkspaceService,
+    private router: Router,
     private injector: Injector,
     public dialog: MatDialog
   ) { }
@@ -55,30 +60,56 @@ export class OrganizationChartComponent implements OnInit {
 
     this.isManager = this.userData.role == 'manager' || this.userData.role == 'admin' || this.userData.role == 'owner';
 
-    await this.getInitOrganizationChart();
+    if (this.router.routerState.snapshot.root.queryParamMap.has('userId')) {
+      this.levels = [];
+      
+      const userId = this.router.routerState.snapshot.root.queryParamMap.get('userId');
+
+      this.selectedUser = await this.publicFunctions.getOtherUser(userId);
+      if (this.utilityService.objectExists(this.selectedUser) && this.selectedUser?.profile_custom_fields
+          && this.selectedUser?.profile_custom_fields[this.selectedManagerField]) {
+        this.selectedUserManager = await this.publicFunctions.getOtherUser(this.selectedUser?.profile_custom_fields[this.selectedManagerField]);
+      }
+    }
+
+    await this.initOrganizationChart();
   }
 
-  ngOnDestroy(){
+  async initOrganizationChart() {
+    this.levels = [];
 
-  }
-
-  getInitOrganizationChart() {
-    this.workspaceService.getOrganizationChartFirstLevel(this.workspaceData._id).then(res => {
-      if (res['members']) {
+    if (this.utilityService.objectExists(this.selectedUser) && this.utilityService.objectExists(this.selectedUserManager)) {
+      await this.workspaceService.getOrganizationChartNextLevel(this.workspaceData?._id, this.selectedUserManager?.profile_custom_fields[this.selectedManagerField]).then(res => {
         this.levels.push({
+          managerId: this.selectedUserManager?.profile_custom_fields[this.selectedManagerField],
           members: res['members']
         });
+      });
 
-        if (this.levels[0].members.length == 1) {
-          this.workspaceService.getOrganizationChartNextLevel(this.workspaceData?._id, this.levels[0].members[0]?._id).then(res => {
-            this.newManagerSelected({
-              managerId: this.levels[0].members[0]?._id,
-              nextLevelMembers: res['members']
-            }, 0);
+      await this.workspaceService.getOrganizationChartNextLevel(this.workspaceData?._id, this.selectedUserManager?._id).then(res => {
+        this.newManagerSelected({
+                managerId: this.selectedUserManager?._id,
+                nextLevelMembers: res['members']
+        }, 0);
+      });
+    } else {
+      await this.workspaceService.getOrganizationChartFirstLevel(this.workspaceData._id).then(res => {
+        if (res['members']) {
+          this.levels.push({
+            members: res['members']
           });
+
+          if (this.levels[0].members.length == 1) {
+            this.workspaceService.getOrganizationChartNextLevel(this.workspaceData?._id, this.levels[0].members[0]?._id).then(res => {
+              this.newManagerSelected({
+                managerId: this.levels[0].members[0]?._id,
+                nextLevelMembers: res['members']
+              }, 0);
+            });
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   newManagerSelected(data: any, levelIndex: any) {
@@ -154,7 +185,6 @@ export class OrganizationChartComponent implements OnInit {
   openCardSettingsDialog() {
     const dialogRef = this.dialog.open(ChartSettingsDialogComponent, {
       width: '45%',
-      //height: '65%',
       disableClose: true,
       hasBackdrop: true,
       data: { workspaceData: this.workspaceData }
@@ -166,6 +196,18 @@ export class OrganizationChartComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       sub.unsubscribe();
+    });
+  }
+
+  async selectParentLevel(managerId: string) {
+    const manager: any = await this.publicFunctions.getOtherUser(managerId);
+    this.workspaceService.getOrganizationChartNextLevel(this.workspaceData?._id, manager?.profile_custom_fields[this.selectedManagerField]).then(res => {
+      if (res['members'] && res['members'].length > 0) {
+        this.levels.unshift({
+          managerId: manager?.profile_custom_fields[this.selectedManagerField],
+          members: res['members']
+        });
+      }
     });
   }
 }

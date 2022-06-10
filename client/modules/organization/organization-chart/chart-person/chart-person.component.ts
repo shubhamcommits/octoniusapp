@@ -50,11 +50,11 @@ export class ChartPersonComponent implements OnInit {
   }
 
   openFullscreenModal(userId: string) {
-    this.utilityService.openFullscreenModal(userId);
+    this.utilityService.openMeberBusinessCard(userId);
   }
 
   selectManager() {
-    if (this.workspaceData && this.workspaceData?.manager_custom_field) {
+    if (this.workspaceData && this.workspaceData?.manager_custom_field && !this.selected) {
       this.nextLevelMembersEmitter.emit({
         managerId: this.person?._id,
         nextLevelMembers: this.person?.nextLevelMembers
