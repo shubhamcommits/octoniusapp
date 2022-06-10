@@ -346,7 +346,10 @@ export class AuthsController {
                             }
                         }, {
                             new: true
-                        })
+                        }).populate({
+                            path: 'members',
+                            select: 'first_name last_name profile_pic current_position role email active'
+                        }).lean();
     
                         // Error updating the Workspace and removing the user email
                         if (!workspace) {

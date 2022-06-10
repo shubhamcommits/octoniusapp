@@ -139,8 +139,12 @@ export class ComponentSearchInputBoxComponent implements OnInit {
               }
 
               this.itemList = this.workspaceData.members.filter( member => {
-                let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase()
-                return item.includes(this.itemValue.toLowerCase());
+                if (member && member.first_name && member.last_name) {
+                  let item = member.first_name.toLowerCase() + ' ' + member.last_name.toLowerCase();
+                  return item.includes(this.itemValue.toLowerCase());
+                } else {
+                  return false;
+                }
               });
               this.itemList.forEach(item => {
                 const index = (this.ragMemberList) ? this.ragMemberList.findIndex(member => member._id == item._id) : -1;

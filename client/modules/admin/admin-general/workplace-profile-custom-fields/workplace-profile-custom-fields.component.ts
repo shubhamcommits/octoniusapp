@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PublicFunctions } from 'modules/public.functions';
 import { AdminService } from 'src/shared/services/admin-service/admin.service';
 import { UtilityService } from 'src/shared/services/utility-service/utility.service';
 import { ProfileCustomFieldsDialogComponent } from './profile-custom-fields-dialog/profile-custom-fields-dialog.component';
@@ -16,8 +17,12 @@ export class WorkplaceProfileCustomFieldsComponent implements OnInit {
 
   isValidEmail = false;
 
+  // Public functions class member
+  publicFunctions = new PublicFunctions(this.injector);
+  
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private injector: Injector,
   ) { }
 
   ngOnInit() {
@@ -31,7 +36,8 @@ export class WorkplaceProfileCustomFieldsComponent implements OnInit {
       data: { workspaceData: this.workspaceData }
     });
     const sub = dialogRef.componentInstance.customFieldsEvent.subscribe((data) => {
-      // this.customFieldEmitter.emit(data);
+      this.workspaceData.profile_custom_fields = data;
+      this.publicFunctions.sendUpdatesToWorkspaceData(this.workspaceData);
     });
     dialogRef.afterClosed().subscribe(result => {
       sub.unsubscribe();

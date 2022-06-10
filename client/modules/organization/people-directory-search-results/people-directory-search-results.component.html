@@ -17,6 +17,7 @@
               <span i18n="@@peopleDirectorySearchResults.role">Role: </span>
               <span *ngIf="member?.role == 'manager'" i18n="@@peopleDirectorySearchResults.work">Work Manager</span>
               <span *ngIf="member?.role != 'manager'">{{ member?.role }}</span>
+              &nbsp;
               <a href="mailto:{{member?.email}}" style="text-transform: lowercase;">{{member?.email}}</a>
             </p>
         </div>
