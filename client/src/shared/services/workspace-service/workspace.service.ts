@@ -352,7 +352,7 @@ export class WorkspaceService {
   getOrganizationChartNextLevel(workspaceId: string, selectedManager: string) {
     return this._http.get(this.BASE_API_URL + `/${workspaceId}/organizationChartNextLevel`, {
       params: {
-        selectedManager: selectedManager
+        selectedManager: (selectedManager) ? selectedManager : ''
       }
     }).toPromise();
   }

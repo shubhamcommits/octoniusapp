@@ -1,8 +1,14 @@
 <div class="container-fluid" style="margin-top: 30px;margin-left: 20px;">
-  <div class="row">
-    <i *ngIf="isManager" (click)="openCardSettingsDialog()" class="material-icons" style="cursor: pointer;">settings</i>
+  
+  <div class="row float-right">
+    <i *ngIf="isManager" (click)="openCardSettingsDialog()" class="material-icons" style="cursor: pointer; margin-right: 45px;">settings</i>
   </div>
+
   <div class="media-body">
+    <div *ngIf="levels && levels[0] && levels[0].managerId" class="has-next-level">
+      <i class="material-icons" style="cursor: pointer; margin: 20px 65px;" (click)="selectParentLevel(levels[0].managerId)">more_horiz</i>
+    </div>
+
     <div *ngFor="let level of levels; let index = index" class="level" [ngClass]="(levels[index + 1]) ? 'has-next-level' : ''">
       <app-chart-person
         *ngFor="let user of level?.members"
@@ -18,7 +24,7 @@
         <div>
           <i class="material-icons">add_circle</i>
         </div>
-        <div style="margin-top: 20px;">
+        <div style="margin: 4px 10px;">
           <span i18n="@@organizationChart.addPeople">Add people</span>
         </div>
       </div>

@@ -24,7 +24,7 @@
 
 
                   <div class="card-img-overlay">
-                    <span class="badge badge-members">{{ (group?._members.length + group?._admins.length) || 0 }}
+                    <span class="badge badge-members">{{ (group?._members?.length + group?._admins?.length) || 0 }}
                         <span i18n="@@groupList.members">Members</span></span>
 
                     <a *ngIf="group?.type == 'agora'" class="btn btn-light btn-public"><i
@@ -75,7 +75,7 @@
     <!-- INFINITE SCROLL ENDS FOR USER GROUPS -->
 
     <!-- STARTS NOT JOINED AGORA GROUPS -->
-    <div *ngIf="agoraGroups.length>0 && userData.role != 'guest'">
+    <div *ngIf="agoraGroups?.length>0 && userData.role != 'guest'">
       <h2 class="section-title" i18n="@@groupList.agora">AGORA</h2>
       <div class="row">
         <ng-container *ngFor="let group of agoraGroups">
@@ -87,7 +87,7 @@
 
 
                     <div class="card-img-overlay">
-                        <span class="badge badge-members">{{ (group?._members.length + group?._admins.length) || 0 }} <span i18n="@@groupList.members">Members</span></span>
+                        <span class="badge badge-members">{{ (group?._members?.length + group?._admins?.length) || 0 }} <span i18n="@@groupList.members">Members</span></span>
                         <a *ngIf="group?.type == 'agora'" class="btn btn-warning btn-public"
                             (click)="joinGroup(group._id)" i18n="@@groupList.join">JOIN</a>
 

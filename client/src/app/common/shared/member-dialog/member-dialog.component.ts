@@ -1,5 +1,5 @@
 import { Component, Inject, Injector, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PublicFunctions } from 'modules/public.functions';
 import { environment } from 'src/environments/environment';
 
@@ -25,6 +25,7 @@ export class MemberDialogComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private mdDialogRef: MatDialogRef<MemberDialogComponent>,
     private injector: Injector,
   ) { }
 
@@ -66,6 +67,10 @@ export class MemberDialogComponent implements OnInit {
         }
       });
     }
+  }
+
+  closeDialog() {
+    this.mdDialogRef.close();
   }
 
 }

@@ -1041,7 +1041,7 @@ export class GroupFilesComponent implements OnInit {
   }
 
   openFullscreenModal(userId: string) {
-    this.utilityService.openFullscreenModal(userId);
+    this.utilityService.openMeberBusinessCard(userId);
   }
 
   async openDocument(file: any) {

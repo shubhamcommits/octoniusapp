@@ -10,7 +10,7 @@
   <div class="content">
     <div class="container">
       <div class="row inner-content" *ngIf="userData">
-          <div class="col-md-4">
+          <div class="col-md-5">
               <div class="card-block">
                   <app-secured-image
                     [imgURL]="userData?.profile_pic"
@@ -21,26 +21,55 @@
                     <b>{{ userData?.first_name }} {{ userData?.last_name }}</b>
                   </h6>
                   <p class="card-text blue job-title">
-                    <span id="userData_current_position"> {{ userData?.current_position}} </span></p>
+                    <span id="userData_current_position"> {{ userData?.current_position}} </span>
+                  </p>
 
                   <hr />
 
-                  <p class="card-text blue"><strong i18n="@@memberDialog.email">Email:</strong>
-                      {{ userData?.email}} </p>
-                  <p class="card-text blue"><strong i18n="@@memberDialog.phone">Phone:</strong>
-                      <span id="userData_phone_number"> {{ userData?.phone_number }} </span></p>
-                  <p class="card-text blue"><strong i18n="@@memberDialog.mobile">Mobile:</strong>
-                      <span id="userData_mobile_number"> {{ userData?.mobile_number }}</span></p>
-                  <p class="card-text blue"><strong i18n="@@memberDialog.company">Company:</strong>
-                      <span id="userData_company_name"> {{ userData?.company_name }} </span></p>
-                  <p class="card-text blue"><strong i18n="@@memberDialog.role">Role:</strong>
-                      {{ userData?.role }}</p>
-                      <p class="card-text blue"><strong i18n="@@memberDialog.joined">Joined:</strong>
-                      <span id="userData_company_join_date"> {{ userData?.company_join_date | date: 'longDate' }} </span></p>
+                  <p class="card-text blue">
+                    <strong i18n="@@memberDialog.email">Email:</strong>
+                    {{ userData?.email}} 
+                  </p>
+                  <p class="card-text blue">
+                    <strong i18n="@@memberDialog.phone">Phone:</strong>
+                    <span id="userData_phone_number"> {{ userData?.phone_number }} </span>
+                  </p>
+                  <p class="card-text blue">
+                    <strong i18n="@@memberDialog.mobile">Mobile:</strong>
+                    <span id="userData_mobile_number"> {{ userData?.mobile_number }}</span>
+                  </p>
+                  <p class="card-text blue">
+                    <strong i18n="@@memberDialog.company">Company:</strong>
+                    <span id="userData_company_name"> {{ userData?.company_name }} </span>
+                  </p>
+                  <p class="card-text blue">
+                    <strong i18n="@@memberDialog.role">Role:</strong>
+                    {{ userData?.role }}
+                  </p>
+                  <p class="card-text blue">
+                    <strong i18n="@@memberDialog.joined">Joined:</strong>
+                    <span id="userData_company_join_date"> {{ userData?.company_join_date | date: 'longDate' }} </span>
+                  </p>
+                  
+                  <hr />
+                  
+                  <!--
+                  <a *ngIf="currentWorkspace && currentWorkspace?.manager_custom_field && userData?.profile_custom_fields && userData?.profile_custom_fields[currentWorkspace?.manager_custom_field]"
+                    (click)="closeDialog()"
+                    [routerLink]="['/dashboard', 'work', 'organization', 'chart']" [queryParams]="{userId: userData?._id}" routerLinkActive="active">
+                      <span i18n="@@memberDialog.openChart">Open on Organization Chart</span>
+                  </a>
+                  -->
+                  <button *ngIf="currentWorkspace && currentWorkspace?.manager_custom_field && userData?.profile_custom_fields && userData?.profile_custom_fields[currentWorkspace?.manager_custom_field]"
+                      (click)="closeDialog()" class="btn btn-md btn-primary"
+                      [routerLink]="['/dashboard', 'work', 'organization', 'chart']" [queryParams]="{userId: userData?._id}" routerLinkActive="active"
+                      i18n="@@memberDialog.openChart">
+                    Open on <br /> Organization Chart
+                  </button>
               </div>
           </div>
 
-          <div class="col-md-8">
+          <div class="col-md-7">
             <div class="card-tile" *ngIf="userData && userData?.bio && userData?.bio != ''">
               <div class="card-block">
                 <p class="card-text"><strong i18n="@@memberDialog.biography">Biography:</strong></p>

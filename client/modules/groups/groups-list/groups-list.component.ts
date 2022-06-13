@@ -92,11 +92,11 @@ export class GroupsListComponent implements OnInit {
       })
 
     // Calculates the lastGroupId based on the userGroups
-    if (this.userGroups.length > 0)
-      this.lastGroupId = this.userGroups[(this.userGroups.length - 1)]['_id'];
+    if (this.userGroups && this.userGroups.length > 0)
+      this.lastGroupId = this.userGroups[(this.userGroups?.length - 1)]['_id'];
 
-    if (this.agoraGroups.length > 0) {
-      this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups.length - 1]['_id'];
+    if (this.agoraGroups && this.agoraGroups.length > 0) {
+      this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups?.length - 1]['_id'];
     }
 
     // Stops the spinner and return the value with ngOnInit
@@ -150,7 +150,7 @@ export class GroupsListComponent implements OnInit {
         })
 
         // Updating lastGroupId with the lastest fetched data
-        this.lastGroupId = this.userGroups[this.userGroups.length - 1]['_id'];
+        this.lastGroupId = this.userGroups[this.userGroups?.length - 1]['_id'];
       }
 
     }
@@ -171,8 +171,8 @@ export class GroupsListComponent implements OnInit {
       this.agoraGroups = groups;
     })
 
-    if (this.moreAgora && this.agoraGroups.length > 0) {
-      this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups.length - 1]['_id'];
+    if (this.moreAgora && this.agoraGroups && this.agoraGroups.length > 0) {
+      this.lastAgoraGroupId = this.agoraGroups[this.agoraGroups?.length - 1]['_id'];
 
     }
 

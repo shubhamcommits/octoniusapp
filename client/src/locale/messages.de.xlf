@@ -199,8 +199,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="transferOwnership.transferOwnership" datatype="html">
-        <source>Transfer Ownership</source>
-        <target state="translated">Eigentum übertragen</target>
+        <source>Transfer Ownership </source>
+        <target state="needs-adaptation">Eigentum übertragen</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/admin/admin-general/transfer-ownership/transfer-ownership.component.html</context>
           <context context-type="linenumber">6</context>
@@ -1935,7 +1936,7 @@
         <target state="translated">Bearbeiten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
-          <context context-type="linenumber">78</context>
+          <context context-type="linenumber">75</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCalendar.edited" datatype="html">
@@ -1943,7 +1944,7 @@
         <target state="translated">Bearbeitet</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
-          <context context-type="linenumber">80</context>
+          <context context-type="linenumber">77</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCalendar.delete" datatype="html">
@@ -1951,7 +1952,7 @@
         <target state="translated">Löschen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
-          <context context-type="linenumber">85</context>
+          <context context-type="linenumber">82</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCalendar.deleted" datatype="html">
@@ -1959,7 +1960,7 @@
         <target state="translated">Gelöscht</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
-          <context context-type="linenumber">88</context>
+          <context context-type="linenumber">85</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCalendar.droppedResized" datatype="html">
@@ -1967,7 +1968,7 @@
         <target state="translated">Fallengelassen oder Größe geändert</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
-          <context context-type="linenumber">225</context>
+          <context context-type="linenumber">222</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupCalendar.newEvent" datatype="html">
@@ -1975,7 +1976,7 @@
         <target state="translated">Neue Veranstaltung</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/calendar/group-calendar/group-calendar.component.ts</context>
-          <context context-type="linenumber">267</context>
+          <context context-type="linenumber">264</context>
         </context-group>
       </trans-unit>
       <trans-unit id="genericGraph.graphSettings" datatype="html">
@@ -2395,7 +2396,7 @@
         <target state="translated">Die Verbindung zum Server konnte nicht hergestellt werden, bitte versuchen Sie es später noch einmal!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">162</context>
+          <context context-type="linenumber">163</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitDeleting" datatype="html">
@@ -2403,7 +2404,7 @@
         <target state="translated">Bitte warten Sie, wir löschen gerade...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">271</context>
+          <context context-type="linenumber">272</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.fileDeleted" datatype="html">
@@ -2411,7 +2412,7 @@
         <target state="translated">Datei gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">281</context>
+          <context context-type="linenumber">282</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.unableToDeleteFile" datatype="html">
@@ -2419,7 +2420,7 @@
         <target state="translated">Die Datei kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">283</context>
+          <context context-type="linenumber">284</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.folderDeleted" datatype="html">
@@ -2427,7 +2428,7 @@
         <target state="translated">Ordner gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">294</context>
+          <context context-type="linenumber">295</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.unableToDeleteFolder" datatype="html">
@@ -2435,7 +2436,7 @@
         <target state="translated">Ordner kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">296</context>
+          <context context-type="linenumber">297</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.copiedToClipboard" datatype="html">
@@ -2443,11 +2444,11 @@
         <target state="translated">In Zwischenablage kopiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">362</context>
+          <context context-type="linenumber">363</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">410</context>
+          <context context-type="linenumber">411</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.areYouSure" datatype="html">
@@ -2455,11 +2456,11 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">429</context>
+          <context context-type="linenumber">430</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">446</context>
+          <context context-type="linenumber">447</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.doingThisItemWillBeCopied" datatype="html">
@@ -2467,7 +2468,7 @@
         <target state="translated">Auf diese Weise wird der Artikel in die ausgewählte Gruppe kopiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">429</context>
+          <context context-type="linenumber">430</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitCopyingFolio" datatype="html">
@@ -2475,7 +2476,7 @@
         <target state="translated">Bitte warten Sie, wir kopieren das Folio...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">432</context>
+          <context context-type="linenumber">433</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.folioCopied" datatype="html">
@@ -2483,7 +2484,7 @@
         <target state="translated">👍 Folio kopiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">434</context>
+          <context context-type="linenumber">435</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.errorCopyingFolio" datatype="html">
@@ -2491,7 +2492,7 @@
         <target state="translated">Fehler beim Kopieren des Folios!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">437</context>
+          <context context-type="linenumber">438</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.doingThisItemWillBeMoved" datatype="html">
@@ -2499,7 +2500,7 @@
         <target state="translated">Dadurch wird der Artikel in die ausgewählte Gruppe verschoben!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">446</context>
+          <context context-type="linenumber">447</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitMovingFolio" datatype="html">
@@ -2507,7 +2508,7 @@
         <target state="translated">Bitte warten Sie, wir verschieben den Artikel...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">449</context>
+          <context context-type="linenumber">450</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.folioMoved" datatype="html">
@@ -2515,7 +2516,7 @@
         <target state="translated">👍 Folio verschoben!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">454</context>
+          <context context-type="linenumber">457</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.errorMovingFolio" datatype="html">
@@ -2523,7 +2524,7 @@
         <target state="translated">Fehler beim Verschieben des Folios!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">457</context>
+          <context context-type="linenumber">460</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.changeFolderTitle" datatype="html">
@@ -2531,7 +2532,7 @@
         <target state="translated">Ordnertitel geändert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">525</context>
+          <context context-type="linenumber">528</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.errorChangingFolderTitle" datatype="html">
@@ -2539,7 +2540,7 @@
         <target state="translated">Fehler beim Ändern des Ordnertitels!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">528</context>
+          <context context-type="linenumber">531</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.noAuthorize" datatype="html">
@@ -2547,7 +2548,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">616</context>
+          <context context-type="linenumber">619</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitUploadingFile" datatype="html">
@@ -2555,7 +2556,7 @@
         <target state="translated">Bitte warten Sie, wir laden Ihre Datei hoch - <x id="PH" equiv-text="file['name']"/> ...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">628</context>
+          <context context-type="linenumber">631</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitCreatingFolio" datatype="html">
@@ -2563,7 +2564,7 @@
         <target state="translated">Bitte warten Sie, während wir ein neues Folio erstellen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">628</context>
+          <context context-type="linenumber">631</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.fileUploaded" datatype="html">
@@ -2571,11 +2572,11 @@
         <target state="translated">Datei wurde hochgeladen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">635</context>
+          <context context-type="linenumber">638</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">1068</context>
+          <context context-type="linenumber">1088</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.newFileUploaded" datatype="html">
@@ -2583,7 +2584,7 @@
         <target state="translated">Neue Datei wurde hochgeladen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">636</context>
+          <context context-type="linenumber">639</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.unexpectedErrorUploading" datatype="html">
@@ -2591,11 +2592,11 @@
         <target state="translated">Beim Hochladen ist ein unerwarteter Fehler aufgetreten, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">640</context>
+          <context context-type="linenumber">643</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">1071</context>
+          <context context-type="linenumber">1091</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitMovingItem" datatype="html">
@@ -2603,7 +2604,7 @@
         <target state="translated">Bitte warten Sie, wir verschieben den Artikel...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">658</context>
+          <context context-type="linenumber">661</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.fileMoved" datatype="html">
@@ -2611,7 +2612,7 @@
         <target state="translated">Datei verschoben!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">665</context>
+          <context context-type="linenumber">668</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.unableToMoveFile" datatype="html">
@@ -2619,7 +2620,7 @@
         <target state="translated">Die Datei kann nicht verschoben werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">667</context>
+          <context context-type="linenumber">670</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.folderMoved" datatype="html">
@@ -2627,7 +2628,7 @@
         <target state="translated">👍 Ordner verschoben!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">675</context>
+          <context context-type="linenumber">678</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.unableToMoveFolder" datatype="html">
@@ -2635,7 +2636,7 @@
         <target state="translated">Der Ordner kann nicht verschoben werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">677</context>
+          <context context-type="linenumber">680</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.pleaseWaitDuplicateFile" datatype="html">
@@ -2643,7 +2644,7 @@
         <target state="translated">Bitte warten Sie, wir duplizieren die Datei...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">686</context>
+          <context context-type="linenumber">689</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.flamingoDuplicated" datatype="html">
@@ -2651,7 +2652,7 @@
         <target state="translated">Flamingo dupliziert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">692</context>
+          <context context-type="linenumber">695</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.unableToDuplicateFlamingo" datatype="html">
@@ -2659,7 +2660,7 @@
         <target state="translated">Der Flamingo kann nicht dupliziert werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">694</context>
+          <context context-type="linenumber">697</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupFiles.errorRetrievingLOOLUrl" datatype="html">
@@ -2667,7 +2668,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">1028</context>
+          <context context-type="linenumber">1038</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/search/search-results/search-results.component.ts</context>
@@ -2679,7 +2680,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/files/group-files/group-files.component.ts</context>
-          <context context-type="linenumber">1064</context>
+          <context context-type="linenumber">1082</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNewFile.new" datatype="html">
@@ -3183,7 +3184,7 @@
         <target state="translated">Bitte warten Sie, während wir eine neue Frage erstellen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.ts</context>
-          <context context-type="linenumber">225</context>
+          <context context-type="linenumber">224</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoEditor.questionCreated" datatype="html">
@@ -3191,7 +3192,7 @@
         <target state="translated">Frage wurde erstellt und zu Flamingo hinzugefügt</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.ts</context>
-          <context context-type="linenumber">233</context>
+          <context context-type="linenumber">232</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoEditor.unexpectedErrorCreatingQuestion" datatype="html">
@@ -3199,7 +3200,7 @@
         <target state="translated">Beim Erstellen der Frage ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.ts</context>
-          <context context-type="linenumber">237</context>
+          <context context-type="linenumber">236</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoEditor.pleaseWaitDeletingQuestion" datatype="html">
@@ -3207,7 +3208,7 @@
         <target state="translated">Bitte warten Sie, während wir die Frage löschen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.ts</context>
-          <context context-type="linenumber">348</context>
+          <context context-type="linenumber">347</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoEditor.questionDeleted" datatype="html">
@@ -3215,7 +3216,7 @@
         <target state="translated">Frage wurde gelöscht und aus Flamingo entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.ts</context>
-          <context context-type="linenumber">366</context>
+          <context context-type="linenumber">365</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoEditor.unexpectedErrorDeletingQuestion" datatype="html">
@@ -3223,7 +3224,7 @@
         <target state="translated">Beim Löschen der Frage ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.ts</context>
-          <context context-type="linenumber">370</context>
+          <context context-type="linenumber">369</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoEditor.pleaseWaitUpdatingQuestion" datatype="html">
@@ -3231,7 +3232,7 @@
         <target state="translated">Bitte warten Sie, während wir die Frage aktualisieren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.ts</context>
-          <context context-type="linenumber">389</context>
+          <context context-type="linenumber">388</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoEditor.questionUpdated" datatype="html">
@@ -3239,7 +3240,7 @@
         <target state="translated">Frage wurde aktualisiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.ts</context>
-          <context context-type="linenumber">394</context>
+          <context context-type="linenumber">393</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoEditor.unexpectedErrorUpdatingQuestion" datatype="html">
@@ -3247,7 +3248,7 @@
         <target state="translated">Beim Aktualisieren von Frage ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-editor/flamingo-editor.component.ts</context>
-          <context context-type="linenumber">398</context>
+          <context context-type="linenumber">397</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoQuestionImageDetails.uploadQuestionImage" datatype="html">
@@ -3327,7 +3328,7 @@
         <target state="translated">Neuer Flamingo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/flamingo/flamingo-header/flamingo-header.component.ts</context>
-          <context context-type="linenumber">136</context>
+          <context context-type="linenumber">137</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoPreview.previous" datatype="html">
@@ -3555,19 +3556,19 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">450</context>
+          <context context-type="linenumber">459</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">514</context>
+          <context context-type="linenumber">523</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">524</context>
+          <context context-type="linenumber">533</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">611</context>
+          <context context-type="linenumber">620</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.commentCompletelyRemoved" datatype="html">
@@ -3575,7 +3576,7 @@
         <target state="translated">Dadurch wird der Kommentar komplett entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">450</context>
+          <context context-type="linenumber">459</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.pleaseWaitDeletingComment" datatype="html">
@@ -3583,7 +3584,7 @@
         <target state="translated">Bitte warten wir den Kommentar löschen...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">453</context>
+          <context context-type="linenumber">462</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.commentDeleted" datatype="html">
@@ -3591,7 +3592,7 @@
         <target state="translated">Kommentar gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">465</context>
+          <context context-type="linenumber">474</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.unableDeleteComment" datatype="html">
@@ -3599,7 +3600,7 @@
         <target state="translated">Kommentar kann nicht gelöscht werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">467</context>
+          <context context-type="linenumber">476</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.noContentSelected" datatype="html">
@@ -3607,7 +3608,7 @@
         <target state="translated">Es ist kein Inhalt ausgewählt</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">514</context>
+          <context context-type="linenumber">523</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.pleaseEnterComment" datatype="html">
@@ -3615,7 +3616,7 @@
         <target state="translated">Bitte geben Sie den Kommentar ein</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">524</context>
+          <context context-type="linenumber">533</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.contentCompletelyRemoved" datatype="html">
@@ -3623,7 +3624,7 @@
         <target state="translated">Dadurch wird der Inhalt des Folios vollständig entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">611</context>
+          <context context-type="linenumber">620</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.pleaseWaitDeletingContent" datatype="html">
@@ -3631,7 +3632,7 @@
         <target state="translated">Bitte warten Sie, wir löschen den Inhalt...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">614</context>
+          <context context-type="linenumber">623</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.contentDeleted" datatype="html">
@@ -3639,7 +3640,7 @@
         <target state="translated">Inhalt des Folios gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">617</context>
+          <context context-type="linenumber">626</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.unableDeleteContent" datatype="html">
@@ -3647,7 +3648,7 @@
         <target state="translated">Der Inhalt des Folios kann nicht gelöscht werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">619</context>
+          <context context-type="linenumber">628</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.copiedToClipboard" datatype="html">
@@ -3655,7 +3656,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">923</context>
+          <context context-type="linenumber">847</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioEditor.unableUpdateFolio" datatype="html">
@@ -3663,11 +3664,11 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">930</context>
+          <context context-type="linenumber">854</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-editor/folio-editor.component.ts</context>
-          <context context-type="linenumber">938</context>
+          <context context-type="linenumber">862</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioHeader.newFolio" datatype="html">
@@ -3679,7 +3680,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
-          <context context-type="linenumber">151</context>
+          <context context-type="linenumber">152</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioHeader.pleaseWaitRenamingFolio" datatype="html">
@@ -3687,7 +3688,7 @@
         <target state="translated">Bitte warten Sie, wir benennen das Folio um...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">121</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioHeader.folioRenamed" datatype="html">
@@ -3695,7 +3696,7 @@
         <target state="translated">Folio wurde umbenannt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
-          <context context-type="linenumber">124</context>
+          <context context-type="linenumber">125</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioHeader.unexpectedErrorRenaming" datatype="html">
@@ -3703,7 +3704,7 @@
         <target state="translated">Beim Umbenennen des Folios ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
-          <context context-type="linenumber">127</context>
+          <context context-type="linenumber">128</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioHeader.pleaseWaitTransformingFile" datatype="html">
@@ -3711,7 +3712,7 @@
         <target state="translated">Bitte warten Sie, wir transformieren die Datei...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
-          <context context-type="linenumber">187</context>
+          <context context-type="linenumber">188</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioHeader.newFolioTransformed" datatype="html">
@@ -3719,7 +3720,7 @@
         <target state="translated">Neues Folio wurde umgewandelt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
-          <context context-type="linenumber">199</context>
+          <context context-type="linenumber">200</context>
         </context-group>
       </trans-unit>
       <trans-unit id="folioHeader.unexpectedErrorUploading" datatype="html">
@@ -3727,7 +3728,7 @@
         <target state="translated">Beim Hochladen ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/folio/folio-header/folio-header.component.ts</context>
-          <context context-type="linenumber">203</context>
+          <context context-type="linenumber">204</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupAutomationFlowDetailsDialog.letsAddSomeSteps" datatype="html">
@@ -4355,7 +4356,7 @@
         <target state="translated">Gruppe entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/delete-group/delete-group.component.ts</context>
-          <context context-type="linenumber">60</context>
+          <context context-type="linenumber">61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteGroup.unableToDeleteGroup" datatype="html">
@@ -4363,7 +4364,7 @@
         <target state="translated">Die Gruppe kann nicht aktiviert werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/delete-group/delete-group.component.ts</context>
-          <context context-type="linenumber">66</context>
+          <context context-type="linenumber">67</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteGroup.areYouSure" datatype="html">
@@ -4371,7 +4372,7 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/delete-group/delete-group.component.ts</context>
-          <context context-type="linenumber">82</context>
+          <context context-type="linenumber">83</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteGroup.thisActionWillArchiveGroup" datatype="html">
@@ -4379,7 +4380,7 @@
         <target state="translated">Mit dieser Aktion wird die Gruppe archiviert.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/delete-group/delete-group.component.ts</context>
-          <context context-type="linenumber">82</context>
+          <context context-type="linenumber">83</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteGroup.pleaseWaitArchivingGroup" datatype="html">
@@ -4387,7 +4388,7 @@
         <target state="translated">Bitte warten Sie, während wir die Gruppe archivieren</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/delete-group/delete-group.component.ts</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteGroup.groupArchived" datatype="html">
@@ -4395,7 +4396,7 @@
         <target state="translated">Gruppe archiviert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/delete-group/delete-group.component.ts</context>
-          <context context-type="linenumber">96</context>
+          <context context-type="linenumber">98</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteGroup.unableToArchiveGroup" datatype="html">
@@ -4403,7 +4404,7 @@
         <target state="translated">Die Gruppe kann nicht archiviert werden, bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/delete-group/delete-group.component.ts</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="linenumber">105</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.group" datatype="html">
@@ -4435,7 +4436,7 @@
         <target state="translated">Bitte warten Sie, wir fügen den neuen Benutzer Ihrer Gruppe hinzu...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">81</context>
+          <context context-type="linenumber">78</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.addedToGroup" datatype="html">
@@ -4443,7 +4444,7 @@
         <target state="translated"><x id="PH" equiv-text="member.first_name"/> zu deiner Gruppe hinzugefügt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupAdmin.unableToAdd" datatype="html">
@@ -4451,7 +4452,7 @@
         <target state="translated"><x id="PH" equiv-text="member.first_name"/> konnte nicht zu Ihrer Gruppe hinzugefügt werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-admin.component.ts</context>
-          <context context-type="linenumber">85</context>
+          <context context-type="linenumber">82</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupRAGDialog.boarAccessRights" datatype="html">
@@ -4763,19 +4764,19 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">77</context>
+          <context context-type="linenumber">81</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">116</context>
+          <context context-type="linenumber">120</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">132</context>
+          <context context-type="linenumber">136</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">225</context>
+          <context context-type="linenumber">229</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.settingsSaved" datatype="html">
@@ -4783,47 +4784,47 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">83</context>
+          <context context-type="linenumber">87</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">122</context>
+          <context context-type="linenumber">126</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">139</context>
+          <context context-type="linenumber">143</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">150</context>
+          <context context-type="linenumber">154</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">161</context>
+          <context context-type="linenumber">165</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">172</context>
+          <context context-type="linenumber">176</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">183</context>
+          <context context-type="linenumber">187</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">194</context>
+          <context context-type="linenumber">198</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">205</context>
+          <context context-type="linenumber">209</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">216</context>
+          <context context-type="linenumber">220</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">230</context>
+          <context context-type="linenumber">234</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSettings.unableToSaveGroupSettings" datatype="html">
@@ -4831,47 +4832,47 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">86</context>
+          <context context-type="linenumber">90</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">125</context>
+          <context context-type="linenumber">129</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">141</context>
+          <context context-type="linenumber">145</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">152</context>
+          <context context-type="linenumber">156</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">163</context>
+          <context context-type="linenumber">167</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">174</context>
+          <context context-type="linenumber">178</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">185</context>
+          <context context-type="linenumber">189</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">196</context>
+          <context context-type="linenumber">200</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">207</context>
+          <context context-type="linenumber">211</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">218</context>
+          <context context-type="linenumber">222</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-admin/group-settings/group-settings.component.ts</context>
-          <context context-type="linenumber">232</context>
+          <context context-type="linenumber">236</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupSmartAdmin.groupRules" datatype="html">
@@ -5518,12 +5519,20 @@
           <context context-type="linenumber">90</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="groupBoardBar.sort.creationDate" datatype="html">
+        <source>Creation Date</source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
+          <context context-type="linenumber">95</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="groupBoardBar.sort.tags" datatype="html">
         <source>Tags</source>
         <target state="translated">Schlagwörter</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">94</context>
+          <context context-type="linenumber">99</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.sort.status" datatype="html">
@@ -5531,7 +5540,7 @@
         <target state="translated">Status</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">98</context>
+          <context context-type="linenumber">103</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.sort.ideas" datatype="html">
@@ -5539,7 +5548,7 @@
         <target state="translated">Ideen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="linenumber">108</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.sort.customField" datatype="html">
@@ -5547,7 +5556,7 @@
         <target state="translated">Benutzerdefinierte Feld</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">108</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.none" datatype="html">
@@ -5555,7 +5564,7 @@
         <target state="translated">Nichts</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">125</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.myTasks" datatype="html">
@@ -5563,7 +5572,7 @@
         <target state="translated">Meine Aufgaben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">125</context>
+          <context context-type="linenumber">130</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.dueDate" datatype="html">
@@ -5571,7 +5580,7 @@
         <target state="translated">Fälligkeitsdatum</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">146</context>
+          <context context-type="linenumber">151</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.beforeToday" datatype="html">
@@ -5579,7 +5588,7 @@
         <target state="translated">Vor heute</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">168</context>
+          <context context-type="linenumber">173</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.today" datatype="html">
@@ -5587,7 +5596,7 @@
         <target state="translated">Heute</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">172</context>
+          <context context-type="linenumber">177</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.tomorrow" datatype="html">
@@ -5595,7 +5604,7 @@
         <target state="translated">Morgen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">176</context>
+          <context context-type="linenumber">181</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.thisWeek" datatype="html">
@@ -5603,7 +5612,7 @@
         <target state="translated">Diese Woche</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">180</context>
+          <context context-type="linenumber">185</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.nextWeek" datatype="html">
@@ -5611,7 +5620,7 @@
         <target state="translated">Nächste Woche</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">184</context>
+          <context context-type="linenumber">189</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.next14Days" datatype="html">
@@ -5619,7 +5628,7 @@
         <target state="translated">Nächste 14 Tage</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">188</context>
+          <context context-type="linenumber">193</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.ideas" datatype="html">
@@ -5627,7 +5636,7 @@
         <target state="translated">Ideen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">197</context>
+          <context context-type="linenumber">202</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.filter.advancedFilters" datatype="html">
@@ -5635,7 +5644,7 @@
         <target state="translated">Erweiterte Filter</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">202</context>
+          <context context-type="linenumber">207</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupBoardBar.export" datatype="html">
@@ -5643,7 +5652,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.html</context>
-          <context context-type="linenumber">210</context>
+          <context context-type="linenumber">215</context>
         </context-group>
       </trans-unit>
       <trans-unit id="boardBar.filterTaskFor" datatype="html">
@@ -5651,7 +5660,7 @@
         <target state="translated">Filteraufgabe für</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/board-bar/board-bar.component.ts</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="columnProjectSection.planned" datatype="html">
@@ -5935,7 +5944,7 @@
         <target state="translated">Bitte warten Sie, wir speichern die Abschnittsreihenfolge...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">249</context>
+          <context context-type="linenumber">273</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.orderSaved" datatype="html">
@@ -5943,7 +5952,7 @@
         <target state="translated">Auftrag gespeichert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">256</context>
+          <context context-type="linenumber">280</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.unableToSaveOrderOfSections" datatype="html">
@@ -5951,7 +5960,7 @@
         <target state="translated">Die Reihenfolge der Abschnitte kann derzeit nicht gespeichert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">259</context>
+          <context context-type="linenumber">283</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.sectionWithSameNameExist" datatype="html">
@@ -5959,7 +5968,7 @@
         <target state="translated">Abschnitt mit gleichem Titel existiert bereits, bitte versuchen Sie es mit einem anderen Namen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">275</context>
+          <context context-type="linenumber">299</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.pleaseWaitWeCreateSection" datatype="html">
@@ -5967,7 +5976,7 @@
         <target state="translated">Bitte warten Sie, wir erstellen einen neuen Abschnitt...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">301</context>
+          <context context-type="linenumber">325</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.newSectionCreated" datatype="html">
@@ -5975,7 +5984,7 @@
         <target state="translated">Neuer Abschnitt erstellt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">311</context>
+          <context context-type="linenumber">335</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.unableToCreateSection" datatype="html">
@@ -5983,7 +5992,7 @@
         <target state="translated">Der Abschnitt kann derzeit nicht erstellt werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">314</context>
+          <context context-type="linenumber">338</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.sectionWithSameTitleExists" datatype="html">
@@ -5991,7 +6000,7 @@
         <target state="translated">Abschnitt mit gleichem Titel existiert bereits, bitte versuchen Sie es mit einem anderen Namen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">331</context>
+          <context context-type="linenumber">355</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.pleaseWaitWeRenameSection" datatype="html">
@@ -5999,7 +6008,7 @@
         <target state="translated">Bitte warten Sie, wir benennen Ihren Bereich um</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">342</context>
+          <context context-type="linenumber">366</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.sectionRenamed" datatype="html">
@@ -6007,7 +6016,7 @@
         <target state="translated">Abschnitt umbenannt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">345</context>
+          <context context-type="linenumber">369</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.unableToRenameSection" datatype="html">
@@ -6015,7 +6024,7 @@
         <target state="translated">Der Abschnitt kann derzeit nicht umbenannt werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">348</context>
+          <context context-type="linenumber">372</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.areYouSure" datatype="html">
@@ -6023,11 +6032,11 @@
         <target state="translated">Sind Sie sicher?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">361</context>
+          <context context-type="linenumber">385</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">409</context>
+          <context context-type="linenumber">433</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.byDoingThisTasksWillBeDeleted" datatype="html">
@@ -6035,7 +6044,7 @@
         <target state="translated">Dadurch werden alle Aufgaben aus diesem Abschnitt gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">361</context>
+          <context context-type="linenumber">385</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.pleaseWaitWeRemovingSection" datatype="html">
@@ -6043,7 +6052,7 @@
         <target state="translated">Bitte warten Sie, wir entfernen Ihren Abschnitt...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">366</context>
+          <context context-type="linenumber">390</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.sectionRemoved" datatype="html">
@@ -6051,7 +6060,7 @@
         <target state="translated">Abschnitt entfernt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">374</context>
+          <context context-type="linenumber">398</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.unableToRemoveSection" datatype="html">
@@ -6059,7 +6068,7 @@
         <target state="translated">Der Abschnitt kann derzeit nicht entfernt werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">377</context>
+          <context context-type="linenumber">401</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.byDoingThisTasksWillBeArchived" datatype="html">
@@ -6067,7 +6076,7 @@
         <target state="translated">Dadurch werden alle Aufgaben aus diesem Abschnitt archiviert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">409</context>
+          <context context-type="linenumber">433</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.pleaseWaitWeArchivingSection" datatype="html">
@@ -6075,7 +6084,7 @@
         <target state="translated">Bitte warten Sie, wir archivieren Ihren Bereich...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">416</context>
+          <context context-type="linenumber">440</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.sectionArchived" datatype="html">
@@ -6083,7 +6092,7 @@
         <target state="translated">Abschnitt archiviert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">422</context>
+          <context context-type="linenumber">446</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.unableToArchiveSection" datatype="html">
@@ -6091,7 +6100,7 @@
         <target state="translated">Der Abschnitt kann derzeit nicht archiviert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">425</context>
+          <context context-type="linenumber">449</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.pleaseWaitWeCreateProject" datatype="html">
@@ -6099,7 +6108,7 @@
         <target state="translated">Bitte warten Sie, wir erstellen ein Projekt aus Ihrem Bereich...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">660</context>
+          <context context-type="linenumber">684</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.sectionTypeChanged" datatype="html">
@@ -6107,7 +6116,7 @@
         <target state="translated">Abschnittstyp geändert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">664</context>
+          <context context-type="linenumber">688</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupKanbanBoards.unableToChangeSectionType" datatype="html">
@@ -6115,7 +6124,7 @@
         <target state="translated">Der Abschnittstyp kann derzeit nicht geändert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-kanban-boards/group-kanban-boards.component.ts</context>
-          <context context-type="linenumber">668</context>
+          <context context-type="linenumber">692</context>
         </context-group>
       </trans-unit>
       <trans-unit id="showCustomFieldsColumnDialog.cfToShow" datatype="html">
@@ -6275,7 +6284,7 @@
         <target state="translated">Abschnitt mit gleichem Titel existiert bereits, bitte versuchen Sie es mit einem anderen Namen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/group-tasks-list-view.component.ts</context>
-          <context context-type="linenumber">104</context>
+          <context context-type="linenumber">101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTable.pleaseWaitWeCreateSection" datatype="html">
@@ -6283,7 +6292,7 @@
         <target state="translated">Bitte warten Sie, wir erstellen einen neuen Abschnitt...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/group-tasks-list-view.component.ts</context>
-          <context context-type="linenumber">125</context>
+          <context context-type="linenumber">122</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTable.newSectionCreated" datatype="html">
@@ -6291,7 +6300,7 @@
         <target state="translated">Neuer Abschnitt erstellt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/group-tasks-list-view.component.ts</context>
-          <context context-type="linenumber">136</context>
+          <context context-type="linenumber">133</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskTable.unableToCreateSection" datatype="html">
@@ -6299,7 +6308,7 @@
         <target state="translated">Der Abschnitt kann derzeit nicht erstellt werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/group-tasks-list-view.component.ts</context>
-          <context context-type="linenumber">139</context>
+          <context context-type="linenumber">136</context>
         </context-group>
       </trans-unit>
       <trans-unit id="asksTableView.title" datatype="html">
@@ -6363,7 +6372,7 @@
         <target state="translated">Diese Sektion ist bereits vorhanden!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/group/group-tasks-list-view/tasks-table/tasks-table.component.ts</context>
-          <context context-type="linenumber">317</context>
+          <context context-type="linenumber">336</context>
         </context-group>
       </trans-unit>
       <trans-unit id="permissionDialog.permissions" datatype="html">
@@ -6731,11 +6740,11 @@
         <target state="translated">Mitglieder</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">28</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
-          <context context-type="linenumber">93</context>
+          <context context-type="linenumber">90</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupList.agora" datatype="html">
@@ -6743,7 +6752,7 @@
         <target state="translated">AGORA</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
-          <context context-type="linenumber">82</context>
+          <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupList.join" datatype="html">
@@ -6751,7 +6760,7 @@
         <target state="translated">TRETEN SIE</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/groups/groups-list/groups-list.component.html</context>
-          <context context-type="linenumber">95</context>
+          <context context-type="linenumber">92</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupList.unableToConnectToServer" datatype="html">
@@ -8039,7 +8048,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/chart-person/chart-person.component.ts</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="chartPerson.settingsSaved" datatype="html">
@@ -8047,7 +8056,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/chart-person/chart-person.component.ts</context>
-          <context context-type="linenumber">70</context>
+          <context context-type="linenumber">71</context>
         </context-group>
       </trans-unit>
       <trans-unit id="chartPerson.unableToSaveGroupSettings" datatype="html">
@@ -8055,7 +8064,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/chart-person/chart-person.component.ts</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="chartSettingsDialog.chartSettings" datatype="html">
@@ -8119,7 +8128,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationChart.pleaseWaitsavingSettings" datatype="html">
@@ -8127,7 +8136,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">92</context>
+          <context context-type="linenumber">131</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationChart.settingsSaved" datatype="html">
@@ -8135,7 +8144,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">106</context>
+          <context context-type="linenumber">168</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizationChart.unableToSaveGroupSettings" datatype="html">
@@ -8143,7 +8152,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/organization/organization-chart/organization-chart.component.ts</context>
-          <context context-type="linenumber">108</context>
+          <context context-type="linenumber">171</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organization.skill" datatype="html">
@@ -8271,7 +8280,11 @@
         <target state="translated">Beim Abrufen der Arbeitsbereichsdetails ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">196</context>
+          <context context-type="linenumber">206</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/public.functions.ts</context>
+          <context context-type="linenumber">229</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.errorOccuredWhileFetchingWorkspaceMembers" datatype="html">
@@ -8279,7 +8292,7 @@
         <target state="translated">Beim Abrufen der Workspace-Mitglieder ist ein Fehler aufgetreten! Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">221</context>
+          <context context-type="linenumber">246</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.unableToFetchGroupDetails" datatype="html">
@@ -8287,7 +8300,11 @@
         <target state="translated">Die Gruppendetails können nicht abgerufen werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">284</context>
+          <context context-type="linenumber">313</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">modules/public.functions.ts</context>
+          <context context-type="linenumber">329</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.pleaseWaitWeChangeTaskAssignee" datatype="html">
@@ -8295,7 +8312,7 @@
         <target state="translated">Bitte warten, wir wechseln den Verantwortlichen…</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1042</context>
+          <context context-type="linenumber">1090</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.taskAssigned" datatype="html">
@@ -8303,7 +8320,7 @@
         <target state="translated">Aufgabe <x id="PH" equiv-text="res['post']['task']['_assigned_to']['first_name']"/> zugewiesen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1048</context>
+          <context context-type="linenumber">1096</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.unableToAssign" datatype="html">
@@ -8311,7 +8328,7 @@
         <target state="translated">Der neue Verantwortliche kann nicht zugewiesen werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1051</context>
+          <context context-type="linenumber">1099</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.pleaseWaitChangingTaskDueDate" datatype="html">
@@ -8319,7 +8336,7 @@
         <target state="translated">Bitte warten Sie, wir ändern das Fälligkeitsdatum der Aufgabe...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1070</context>
+          <context context-type="linenumber">1118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.taskDueDAteChanged" datatype="html">
@@ -8327,7 +8344,7 @@
         <target state="translated">Das Fälligkeitsdatum der Aufgabe wurde auf <x id="PH" equiv-text="moment(dueDate).format('YYYY-MM-DD')"/> geändert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1076</context>
+          <context context-type="linenumber">1124</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.unableToChangeDueDate" datatype="html">
@@ -8335,7 +8352,7 @@
         <target state="translated">Das Fälligkeitsdatum kann nicht geändert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1079</context>
+          <context context-type="linenumber">1127</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.pleaseWaitWeAreMovingTaskToSection" datatype="html">
@@ -8343,7 +8360,7 @@
         <target state="translated">Bitte warten Sie, wir verschieben die Aufgabe in einen neuen Abschnitt...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1114</context>
+          <context context-type="linenumber">1162</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.tasksMoved" datatype="html">
@@ -8351,7 +8368,7 @@
         <target state="translated">Aufgabe verschoben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1120</context>
+          <context context-type="linenumber">1168</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.unableToMoveTask" datatype="html">
@@ -8359,7 +8376,7 @@
         <target state="translated">Die Aufgabe kann nicht verschoben werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1123</context>
+          <context context-type="linenumber">1171</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.plesaeWaitWeAreUpdaing" datatype="html">
@@ -8367,7 +8384,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1160</context>
+          <context context-type="linenumber">1208</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.detailsUpdated" datatype="html">
@@ -8375,7 +8392,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1164</context>
+          <context context-type="linenumber">1212</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.unableToUpdateDetails" datatype="html">
@@ -8383,7 +8400,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1167</context>
+          <context context-type="linenumber">1215</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.joiningGroup" datatype="html">
@@ -8391,7 +8408,7 @@
         <target state="translated">Gruppe beitreten...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1212</context>
+          <context context-type="linenumber">1260</context>
         </context-group>
       </trans-unit>
       <trans-unit id="publicFunctions.successfullyJoinedGroup" datatype="html">
@@ -8399,7 +8416,7 @@
         <target state="translated">Gruppe erfolgreich beigetreten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">modules/public.functions.ts</context>
-          <context context-type="linenumber">1214</context>
+          <context context-type="linenumber">1262</context>
         </context-group>
       </trans-unit>
       <trans-unit id="searchHeader.type" datatype="html">
@@ -9575,8 +9592,9 @@
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.carousel.slide-number" datatype="html">
-        <source> Slide <x id="INTERPOLATION" equiv-text="nteract with ca"/> of <x id="INTERPOLATION_1" equiv-text="'arrow left' an"/> </source>
+        <source> Slide <x id="INTERPOLATION" equiv-text="eract with caro"/> of <x id="INTERPOLATION_1" equiv-text="rrow left' and"/> </source>
         <target state="needs-adaptation"> Dia {cused$ = neu Be} von {privat _pau} </target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/carousel/carousel.ts</context>
           <context context-type="linenumber">151,158</context>
@@ -9596,7 +9614,7 @@
         <target state="translated">Weiter</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/carousel/carousel.ts</context>
-          <context context-type="linenumber">202</context>
+          <context context-type="linenumber">202,204</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.datepicker.select-month" datatype="html">
@@ -9652,7 +9670,7 @@
         <target state="translated">""</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/pagination/pagination.ts</context>
-          <context context-type="linenumber">249,250</context>
+          <context context-type="linenumber">249,251</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.pagination.previous" datatype="html">
@@ -9668,7 +9686,7 @@
         <target state="translated">»</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/pagination/pagination.ts</context>
-          <context context-type="linenumber">290,292</context>
+          <context context-type="linenumber">291,292</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.pagination.last" datatype="html">
@@ -9692,7 +9710,7 @@
         <target state="translated">Zurück</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/pagination/pagination.ts</context>
-          <context context-type="linenumber">340,341</context>
+          <context context-type="linenumber">340,342</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.pagination.next-aria" datatype="html">
@@ -9708,12 +9726,13 @@
         <target state="translated">Letzte</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/pagination/pagination.ts</context>
-          <context context-type="linenumber">373,374</context>
+          <context context-type="linenumber">374</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.progressbar.value" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="s types based o"/></source>
+        <source><x id="INTERPOLATION" equiv-text="types based on"/></source>
         <target state="needs-adaptation">{(): Zahl { re}</target>
+        <note from="XLIFF Sync" annotates="general" priority="1">Source text has changed. Please review the translation.</note>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/progressbar/progressbar.ts</context>
           <context context-type="linenumber">65,67</context>
@@ -9748,7 +9767,7 @@
         <target state="translated">Minuten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
-          <context context-type="linenumber">195,198</context>
+          <context context-type="linenumber">197,198</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.increment-hours" datatype="html">
@@ -9756,7 +9775,7 @@
         <target state="translated">Forøgelse af timer</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
-          <context context-type="linenumber">210,213</context>
+          <context context-type="linenumber">212,213</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.decrement-hours" datatype="html">
@@ -9772,7 +9791,7 @@
         <target state="translated">Forøgelsesminutter</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
-          <context context-type="linenumber">258,259</context>
+          <context context-type="linenumber">259,260</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.decrement-minutes" datatype="html">
@@ -9780,7 +9799,7 @@
         <target state="translated">Decrement minutter</target>
         <context-group purpose="location">
           <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
-          <context context-type="linenumber">278,280</context>
+          <context context-type="linenumber">279,283</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ngb.timepicker.SS" datatype="html">
@@ -10041,7 +10060,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">104,106</context>
+          <context context-type="linenumber">99,101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.notes" datatype="html">
@@ -10049,7 +10068,7 @@
         <target state="translated">Notizen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.personalTasks" datatype="html">
@@ -10057,7 +10076,7 @@
         <target state="translated">Meine Aufgaben</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">75</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.personalFiles" datatype="html">
@@ -10065,7 +10084,7 @@
         <target state="translated">Persönliche Dateien</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">85</context>
+          <context context-type="linenumber">82</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.activity" datatype="html">
@@ -10073,7 +10092,7 @@
         <target state="translated"> Aktivität </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">94,96</context>
+          <context context-type="linenumber">90,92</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.files" datatype="html">
@@ -10081,7 +10100,7 @@
         <target state="translated"> Dateien </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">114,116</context>
+          <context context-type="linenumber">108,110</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.members" datatype="html">
@@ -10089,7 +10108,7 @@
         <target state="translated"> Mitglieder </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">125,127</context>
+          <context context-type="linenumber">118,120</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.dashboard" datatype="html">
@@ -10097,7 +10116,7 @@
         <target state="translated"> Dashboard </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">136,138</context>
+          <context context-type="linenumber">128,130</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.reports" datatype="html">
@@ -10105,7 +10124,7 @@
         <target state="translated">Berichte</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">148,150</context>
+          <context context-type="linenumber">139,141</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.admin" datatype="html">
@@ -10113,7 +10132,7 @@
         <target state="translated"> Verwaltung </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.html</context>
-          <context context-type="linenumber">160,162</context>
+          <context context-type="linenumber">150,152</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.pleaseWaitWeAreSaving" datatype="html">
@@ -10121,7 +10140,7 @@
         <target state="translated">Bitte warten Sie, wir speichern die Informationen...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.ts</context>
-          <context context-type="linenumber">176</context>
+          <context context-type="linenumber">189</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.groupSavedFavorite" datatype="html">
@@ -10129,7 +10148,7 @@
         <target state="translated">Gruppe als Favorit gespeichert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.ts</context>
-          <context context-type="linenumber">185</context>
+          <context context-type="linenumber">198</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupNavbar.unableToSaveAsFavorite" datatype="html">
@@ -10137,7 +10156,7 @@
         <target state="translated">Die Gruppe kann nicht als Favorit gespeichert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/group-navbar/group-navbar.component.ts</context>
-          <context context-type="linenumber">188</context>
+          <context context-type="linenumber">201</context>
         </context-group>
       </trans-unit>
       <trans-unit id="iconsSidebar.pleaseWaitWhileWeLogYouOut" datatype="html">
@@ -10181,7 +10200,7 @@
         <target state="translated">Beim Abrufen Ihrer Profildetails ist ein Fehler aufgetreten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/navbar.component.ts</context>
-          <context context-type="linenumber">210</context>
+          <context context-type="linenumber">200</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pushNotifications.recentNotifications" datatype="html">
@@ -10233,7 +10252,7 @@
         <target state="translated">Workplace</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.administration" datatype="html">
@@ -10241,7 +10260,7 @@
         <target state="translated">Administration</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">62</context>
+          <context context-type="linenumber">61</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.myAccount" datatype="html">
@@ -10249,7 +10268,7 @@
         <target state="translated">Mein Konto</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">77</context>
+          <context context-type="linenumber">76</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.signOut" datatype="html">
@@ -10257,7 +10276,7 @@
         <target state="translated">Abmelden</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/navbar/sidebar/sidebar.component.html</context>
-          <context context-type="linenumber">89</context>
+          <context context-type="linenumber">88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sidebar.pleaseWaitWhileLogOut" datatype="html">
@@ -10525,7 +10544,7 @@
         <target state="translated">Bitte warten Sie, wir speichern die neue Einstellung...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.ts</context>
-          <context context-type="linenumber">480</context>
+          <context context-type="linenumber">478</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupActivityFeed.settingsSaved" datatype="html">
@@ -10533,7 +10552,7 @@
         <target state="translated">Einstellungen in Ihrer Gruppe gespeichert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.ts</context>
-          <context context-type="linenumber">488</context>
+          <context context-type="linenumber">486</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupActivityFeed.unableToSaveGroupSettings" datatype="html">
@@ -10541,7 +10560,7 @@
         <target state="translated">Die Einstellungen können nicht in Ihrer Gruppe gespeichert werden. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/activity-feed/group-activity-feed/group-activity-feed.component.ts</context>
-          <context context-type="linenumber">490</context>
+          <context context-type="linenumber">488</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupInformation.personalWorkspace" datatype="html">
@@ -11681,7 +11700,7 @@
         <target state="translated">Hoppla, das Format wird anscheinend nicht unterstützt. Bitte verwenden Sie Bilder im .png-, .gif- oder .jpg-Format!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/crop-image/crop-image.component.ts</context>
-          <context context-type="linenumber">78</context>
+          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cfStatisticsCard.tasksInProgress" datatype="html">
@@ -12523,7 +12542,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.html</context>
-          <context context-type="linenumber">82</context>
+          <context context-type="linenumber">83</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.fileInformation" datatype="html">
@@ -12531,7 +12550,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.html</context>
-          <context context-type="linenumber">104</context>
+          <context context-type="linenumber">105</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.fileInformationDescription" datatype="html">
@@ -12539,7 +12558,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.html</context>
-          <context context-type="linenumber">108</context>
+          <context context-type="linenumber">109</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.created" datatype="html">
@@ -12547,7 +12566,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.html</context>
-          <context context-type="linenumber">117</context>
+          <context context-type="linenumber">118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.on" datatype="html">
@@ -12555,7 +12574,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.html</context>
-          <context context-type="linenumber">130</context>
+          <context context-type="linenumber">131</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.tags" datatype="html">
@@ -12563,7 +12582,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.html</context>
-          <context context-type="linenumber">138</context>
+          <context context-type="linenumber">139</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.customFields" datatype="html">
@@ -12571,7 +12590,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.html</context>
-          <context context-type="linenumber">151</context>
+          <context context-type="linenumber">152</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.plesaeWaitWeAreUpdaing" datatype="html">
@@ -12579,11 +12598,11 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">194</context>
+          <context context-type="linenumber">199</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">223</context>
+          <context context-type="linenumber">228</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.detailsUpdated" datatype="html">
@@ -12591,11 +12610,11 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">201</context>
+          <context context-type="linenumber">206</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">229</context>
+          <context context-type="linenumber">234</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.unableToUpdateDetails" datatype="html">
@@ -12603,11 +12622,11 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">204</context>
+          <context context-type="linenumber">209</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">232</context>
+          <context context-type="linenumber">237</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.pleaseWaitWeAreDeleting" datatype="html">
@@ -12615,7 +12634,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">242</context>
+          <context context-type="linenumber">247</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.fileDeleted" datatype="html">
@@ -12623,7 +12642,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">250</context>
+          <context context-type="linenumber">255</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileDetailsDialog.unableToDeleteFile" datatype="html">
@@ -12631,7 +12650,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-details-dialog/file-details-dialog.component.ts</context>
-          <context context-type="linenumber">252</context>
+          <context context-type="linenumber">257</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.newVersion" datatype="html">
@@ -12707,7 +12726,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">139</context>
+          <context context-type="linenumber">143</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.pleaseWaitDeleting" datatype="html">
@@ -12715,7 +12734,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">154</context>
+          <context context-type="linenumber">158</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.versionDeleted" datatype="html">
@@ -12723,7 +12742,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">165</context>
+          <context context-type="linenumber">169</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.unableToDeleteVersion" datatype="html">
@@ -12731,7 +12750,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">167</context>
+          <context context-type="linenumber">171</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.pleaseWaitUploadingFile" datatype="html">
@@ -12739,7 +12758,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">202</context>
+          <context context-type="linenumber">206</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.fileUploaded" datatype="html">
@@ -12747,7 +12766,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">215</context>
+          <context context-type="linenumber">221</context>
         </context-group>
       </trans-unit>
       <trans-unit id="fileVersions.unexpectedErrorUploading" datatype="html">
@@ -12755,7 +12774,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/file-versions/file-versions.component.ts</context>
-          <context context-type="linenumber">218</context>
+          <context context-type="linenumber">224</context>
         </context-group>
       </trans-unit>
       <trans-unit id="inlineInput.pleaseWaitUpdatingContent" datatype="html">
@@ -12835,7 +12854,7 @@
         <target state="translated">E-Mail:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-dialog/member-dialog.component.html</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="memberDialog.phone" datatype="html">
@@ -12843,7 +12862,7 @@
         <target state="translated">Telefon:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-dialog/member-dialog.component.html</context>
-          <context context-type="linenumber">30</context>
+          <context context-type="linenumber">34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="memberDialog.mobile" datatype="html">
@@ -12851,7 +12870,7 @@
         <target state="translated">Mobil:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-dialog/member-dialog.component.html</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="memberDialog.company" datatype="html">
@@ -12859,7 +12878,7 @@
         <target state="translated">Firma:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-dialog/member-dialog.component.html</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="memberDialog.role" datatype="html">
@@ -12867,7 +12886,7 @@
         <target state="translated">Rolle:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-dialog/member-dialog.component.html</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="memberDialog.joined" datatype="html">
@@ -12875,7 +12894,15 @@
         <target state="translated">Beitrittsdatum:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-dialog/member-dialog.component.html</context>
-          <context context-type="linenumber">38</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="memberDialog.openChart" datatype="html">
+        <source> Open on <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> Organization Chart </source>
+        <target state="needs-translation"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/shared/member-dialog/member-dialog.component.html</context>
+          <context context-type="linenumber">66,68</context>
         </context-group>
       </trans-unit>
       <trans-unit id="memberDialog.biography" datatype="html">
@@ -12883,7 +12910,7 @@
         <target state="translated">Info:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-dialog/member-dialog.component.html</context>
-          <context context-type="linenumber">46</context>
+          <context context-type="linenumber">75</context>
         </context-group>
       </trans-unit>
       <trans-unit id="memberDialog.skills" datatype="html">
@@ -12891,7 +12918,7 @@
         <target state="translated">Fähigkeiten</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-dialog/member-dialog.component.html</context>
-          <context context-type="linenumber">57</context>
+          <context context-type="linenumber">86</context>
         </context-group>
       </trans-unit>
       <trans-unit id="memberDialog.profileFields" datatype="html">
@@ -12899,7 +12926,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/member-dialog/member-dialog.component.html</context>
-          <context context-type="linenumber">80</context>
+          <context context-type="linenumber">109</context>
         </context-group>
       </trans-unit>
       <trans-unit id="memberListMenu.users" datatype="html">
@@ -13251,7 +13278,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">12</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.created" datatype="html">
@@ -13259,7 +13286,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.commented" datatype="html">
@@ -13267,7 +13294,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">15</context>
+          <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.removedComment" datatype="html">
@@ -13275,7 +13302,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">16</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.changedContent" datatype="html">
@@ -13283,7 +13310,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeNS" datatype="html">
@@ -13291,7 +13318,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeNoNS" datatype="html">
@@ -13299,7 +13326,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.updateNS" datatype="html">
@@ -13307,7 +13334,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeIdea" datatype="html">
@@ -13315,7 +13342,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeNoIdea" datatype="html">
@@ -13323,7 +13350,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeMilestone" datatype="html">
@@ -13331,7 +13358,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.makeNoMilestone" datatype="html">
@@ -13339,7 +13366,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.changedStatus" datatype="html">
@@ -13347,7 +13374,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.movedToSection" datatype="html">
@@ -13355,7 +13382,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.assigned" datatype="html">
@@ -13363,7 +13390,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.unassigned" datatype="html">
@@ -13371,7 +13398,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.dueDate" datatype="html">
@@ -13379,7 +13406,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.startDate" datatype="html">
@@ -13387,7 +13414,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">30</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.addedTag" datatype="html">
@@ -13395,7 +13422,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">32</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.removedTag" datatype="html">
@@ -13403,7 +13430,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.changedCF" datatype="html">
@@ -13411,7 +13438,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="linenumber">34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.cfTo" datatype="html">
@@ -13419,7 +13446,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.copiedTo" datatype="html">
@@ -13427,7 +13454,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.movedTo" datatype="html">
@@ -13435,7 +13462,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.dependencyOf" datatype="html">
@@ -13443,7 +13470,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">37</context>
+          <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.dependentOf" datatype="html">
@@ -13451,7 +13478,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">38</context>
+          <context context-type="linenumber">39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.removeDependencyOf" datatype="html">
@@ -13459,7 +13486,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">39</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.removeDependentOf" datatype="html">
@@ -13467,7 +13494,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">40</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.setParent" datatype="html">
@@ -13475,7 +13502,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.saveAllocation" datatype="html">
@@ -13483,7 +13510,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="postLogs.on" datatype="html">
@@ -13491,7 +13518,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/post-logs/post-logs.component.html</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="shuttleTask.taskShuttle" datatype="html">
@@ -13735,27 +13762,27 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">340</context>
+          <context context-type="linenumber">341</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">359</context>
+          <context context-type="linenumber">360</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">404</context>
+          <context context-type="linenumber">405</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">435</context>
+          <context context-type="linenumber">436</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">452</context>
+          <context context-type="linenumber">453</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">466</context>
+          <context context-type="linenumber">467</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskWillBeCopied" datatype="html">
@@ -13827,7 +13854,7 @@
         <target state="translated">Dadurch ändert die Aufgabe ihre übergeordnete Aufgabe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">340</context>
+          <context context-type="linenumber">341</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskWillBeChangeToDependencyTask" datatype="html">
@@ -13835,7 +13862,7 @@
         <target state="translated">Dadurch ändert die Aufgabe ihre Abhängigkeitsaufgabe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">359</context>
+          <context context-type="linenumber">360</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskWillBeRemoveItsDependencyTask" datatype="html">
@@ -13843,7 +13870,7 @@
         <target state="translated">Dadurch entfernt die Aufgabe ihre Abhängigkeitsaufgabe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">404</context>
+          <context context-type="linenumber">405</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskWillChangeContentTemplate" datatype="html">
@@ -13851,7 +13878,7 @@
         <target state="translated">Dadurch ändert die Aufgabe den Inhalt der Vorlage!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">435</context>
+          <context context-type="linenumber">436</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitUpdetingTemplate" datatype="html">
@@ -13859,7 +13886,7 @@
         <target state="translated">Bitte warten Sie, während wir die Vorlage für Sie aktualisieren...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">438</context>
+          <context context-type="linenumber">439</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.templateUpdated" datatype="html">
@@ -13867,7 +13894,7 @@
         <target state="translated">Vorlage aktualisiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">445</context>
+          <context context-type="linenumber">446</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unexpectedErrorOccuredWhileUpdatingTemplate" datatype="html">
@@ -13875,7 +13902,7 @@
         <target state="translated">Beim Aktualisieren der Vorlage ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">447</context>
+          <context context-type="linenumber">448</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.templateWillBeDeleted" datatype="html">
@@ -13883,7 +13910,7 @@
         <target state="translated">Dadurch wird die Vorlage gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">452</context>
+          <context context-type="linenumber">453</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitDeletingTemplate" datatype="html">
@@ -13891,7 +13918,7 @@
         <target state="translated">Bitte warten Sie, während wir die Vorlage für Sie löschen...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">455</context>
+          <context context-type="linenumber">456</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.templateDeleted" datatype="html">
@@ -13899,7 +13926,7 @@
         <target state="translated">Vorlage gelöscht!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">459</context>
+          <context context-type="linenumber">460</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unexpectedErrorOccuredWhileDeletingTemplate" datatype="html">
@@ -13907,7 +13934,7 @@
         <target state="translated">Beim Löschen der Vorlage ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">461</context>
+          <context context-type="linenumber">462</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskWillBeChanged" datatype="html">
@@ -13915,7 +13942,7 @@
         <target state="translated">Dadurch ändert die Aufgabe den Inhalt der Aufgabe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">466</context>
+          <context context-type="linenumber">467</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitUpdatingTask" datatype="html">
@@ -13923,7 +13950,7 @@
         <target state="translated">Bitte warten Sie, während wir die Aufgabe für Sie aktualisieren...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">469</context>
+          <context context-type="linenumber">470</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskUpdated" datatype="html">
@@ -13931,7 +13958,7 @@
         <target state="translated">Aufgabe aktualisiert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">473</context>
+          <context context-type="linenumber">474</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unexpectedErrorOccuredWhileUpdatingTask" datatype="html">
@@ -13939,7 +13966,7 @@
         <target state="translated">Beim Aktualisieren der Aufgabe ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">475</context>
+          <context context-type="linenumber">476</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.createTemplate" datatype="html">
@@ -13947,7 +13974,7 @@
         <target state="translated">Vorlage erstellen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">488</context>
+          <context context-type="linenumber">489</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitCreatingTemplate" datatype="html">
@@ -13955,7 +13982,7 @@
         <target state="translated">Bitte warten Sie, während wir die Vorlage für Sie erstellen...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">490</context>
+          <context context-type="linenumber">491</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.templateCreated" datatype="html">
@@ -13963,7 +13990,7 @@
         <target state="translated">Vorlage erstellt!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">495</context>
+          <context context-type="linenumber">496</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.unexpectedErrorOccuredWhileCreatingTemplate" datatype="html">
@@ -13971,7 +13998,7 @@
         <target state="translated">Beim Erstellen der Vorlage ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">497</context>
+          <context context-type="linenumber">498</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.templateNameCannotBeEmpty" datatype="html">
@@ -13979,7 +14006,7 @@
         <target state="translated">Vorlagenname darf nicht leer sein!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">500</context>
+          <context context-type="linenumber">501</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.tryToAddName" datatype="html">
@@ -13987,7 +14014,7 @@
         <target state="translated">Versuchen Sie, einen Namen hinzuzufügen</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">513</context>
+          <context context-type="linenumber">514</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.pleaseWaitWeAreSavingTask" datatype="html">
@@ -13995,11 +14022,11 @@
         <target state="translated">Bitte warten, wir speichern die Aufgabe...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">530</context>
+          <context context-type="linenumber">531</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">565</context>
+          <context context-type="linenumber">566</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.taskSave" datatype="html">
@@ -14007,11 +14034,11 @@
         <target state="translated">👍 Aufgabe gespeichert!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">535</context>
+          <context context-type="linenumber">536</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">577</context>
+          <context context-type="linenumber">578</context>
         </context-group>
       </trans-unit>
       <trans-unit id="taskActions.errorWhileSavingTask" datatype="html">
@@ -14019,11 +14046,11 @@
         <target state="translated">Fehler beim Speichern der Aufgabe!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">538</context>
+          <context context-type="linenumber">539</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/posts/group-create-post-dialog/task-actions/task-actions.component.ts</context>
-          <context context-type="linenumber">580</context>
+          <context context-type="linenumber">581</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multipleAssignments.unassigned" datatype="html">
@@ -14655,7 +14682,7 @@
         <target state="translated">Schreib was tolles...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/quill-editor/quill-editor.component.ts</context>
-          <context context-type="linenumber">411</context>
+          <context context-type="linenumber">314</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectedAssignee.unassigned" datatype="html">
@@ -14687,7 +14714,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/select-language/select-language.component.ts</context>
-          <context context-type="linenumber">45</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectLanguage.english" datatype="html">
@@ -14695,7 +14722,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/select-language/select-language.component.ts</context>
-          <context context-type="linenumber">46</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectLanguage.spanish" datatype="html">
@@ -14703,7 +14730,7 @@
         <target state="needs-translation"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/shared/select-language/select-language.component.ts</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sheet.userViewSettings" datatype="html">
@@ -15005,6 +15032,10 @@
           <context context-type="sourcefile">src/shared/guards/admin-guard/admin.guard.ts</context>
           <context context-type="linenumber">29</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/shared/guards/organization-module-available-guard/organization-module-available.guard.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="denyNavigationGuard.accessRestricted" datatype="html">
         <source>Access restricted</source>
@@ -15039,7 +15070,7 @@
         <target state="translated">Hoppla, anscheinend ist in Ihrem Abonnement kein Flamingo-Modul verfügbar!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/flamingo-guard/flamingo.guard.ts</context>
-          <context context-type="linenumber">46</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="flamingoGuard.oopsNoPermissionForGroup" datatype="html">
@@ -15063,7 +15094,7 @@
         <target state="translated">Hoppla, Sie haben anscheinend nicht die Berechtigung, auf die Gruppe zuzugreifen. Bitte wenden Sie sich an Ihren Vorgesetzten, um Ihnen den richtigen Zugriff zu gewähren!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/folio-guard/folio.guard.ts</context>
-          <context context-type="linenumber">63</context>
+          <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupGuard.oopsGroupDoesNotExist" datatype="html">
@@ -15071,7 +15102,7 @@
         <target state="translated">Hoppla, die Gruppe scheint nicht zu existieren!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/group-guard/group.guard.ts</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupGuard.oopsNoPermissionForGroup" datatype="html">
@@ -15079,7 +15110,7 @@
         <target state="translated">Hoppla, Sie haben anscheinend nicht die Berechtigung, auf die Gruppe zuzugreifen. Bitte wenden Sie sich an Ihren Vorgesetzten, um Ihnen den richtigen Zugriff zu gewähren!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/group-guard/group.guard.ts</context>
-          <context context-type="linenumber">62</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="groupGuard.oopsNoPermissionForSection" datatype="html">
@@ -15087,7 +15118,7 @@
         <target state="translated">Hoppla, Sie haben anscheinend nicht die Berechtigung, auf den Abschnitt zuzugreifen. Bitte wenden Sie sich an Ihren Vorgesetzten, um Ihnen die richtigen Administratorrechte zu erteilen!</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/shared/guards/group-guard/group.guard.ts</context>
-          <context context-type="linenumber">80</context>
+          <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
       <trans-unit id="socketService.notification" datatype="html">

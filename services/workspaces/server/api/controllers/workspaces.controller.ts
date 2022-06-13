@@ -321,48 +321,50 @@ export class WorkspaceController {
             // Generate new token and logs the auth record
             let token = await auths.generateToken(userUpdate, workspaceUpdate.workspace_name);
 
-            // Send new workspace confirmation email
-            axios.post(`${process.env.MANAGEMENT_URL}/api/mail/new-workspace`, {
-                API_KEY: workspace.management_private_api_key,
-                workspace: workspaceUpdate
-            });
+            if (process.env.NODE_ENV == 'production') {
+                // Send new workspace confirmation email
+                axios.post(`${process.env.MANAGEMENT_URL}/api/mail/new-workspace`, {
+                    API_KEY: workspace.management_private_api_key,
+                    workspace: workspaceUpdate
+                });
 
-            // Send new workspace and user to the mgmt portal
-            let workspaceMgmt = {
-                _id: workspace._id,
-                company_name: newWorkspace.company_name,
-                workspace_name: newWorkspace.workspace_name,
-                owner_email: accountData.email,
-                owner_first_name: accountData.first_name,
-                owner_last_name: accountData.last_name,
-                _owner_remote_id: user._id,
-                environment: process.env.DOMAIN,
-                num_members: 1,
-                num_invited_users: 0,
-                num_groups: 1,
-                created_date: workspace.created_date,
-                access_code: workspace.access_code,
-                management_private_api_key: workspace.management_private_api_key,
-            }
-            let userMgmt = {
-                _id: user._id,
-                _account_id: accountData._id,
-                active: user.active,
-                email: accountData.email,
-                password: accountData.password,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                _remote_workspace_id: workspace._id,
-                workspace_name: workspace.workspace_name,
-                environment: process.env.DOMAIN,
-                created_date: user.created_date
-            }
+                // Send new workspace and user to the mgmt portal
+                let workspaceMgmt = {
+                    _id: workspace._id,
+                    company_name: newWorkspace.company_name,
+                    workspace_name: newWorkspace.workspace_name,
+                    owner_email: accountData.email,
+                    owner_first_name: accountData.first_name,
+                    owner_last_name: accountData.last_name,
+                    _owner_remote_id: user._id,
+                    environment: process.env.DOMAIN,
+                    num_members: 1,
+                    num_invited_users: 0,
+                    num_groups: 1,
+                    created_date: workspace.created_date,
+                    access_code: workspace.access_code,
+                    management_private_api_key: workspace.management_private_api_key,
+                }
+                let userMgmt = {
+                    _id: user._id,
+                    _account_id: accountData._id,
+                    active: user.active,
+                    email: accountData.email,
+                    password: accountData.password,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    _remote_workspace_id: workspace._id,
+                    workspace_name: workspace.workspace_name,
+                    environment: process.env.DOMAIN,
+                    created_date: user.created_date
+                }
 
-            axios.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
-                API_KEY: workspace.management_private_api_key,
-                workspaceData: workspaceMgmt,
-                userData: userMgmt,
-            })
+                axios.post(`${process.env.MANAGEMENT_URL}/api/workspace/add`, {
+                    API_KEY: workspace.management_private_api_key,
+                    workspaceData: workspaceMgmt,
+                    userData: userMgmt,
+                })
+            }
 
             // Send the status 200 response
             return res.status(200).json({
@@ -445,54 +447,58 @@ export class WorkspaceController {
                         $set: { workspace_name: workspaceData.workspace_name }
                     });
 
-                // Send the update to mgmt portal
-                axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/updateName`, {
+                if (process.env.NODE_ENV == 'production') {
+                    // Send the update to mgmt portal
+                    axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/updateName`, {
+                        API_KEY: updatedWorkspace.management_private_api_key,
+                        workspaceName: updatedWorkspace.workspace_name
+                    }).then().catch(err => console.log(err));
+                }
+            }
+
+            if (process.env.NODE_ENV == 'production') {
+                // Count all the users present inside the workspace
+                const usersCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: workspaceId }
+                ] }).countDocuments();
+                
+                // Send workspace to the mgmt portal
+                // Count all the groups present inside the workspace
+                const groupsCount: number = await Group.find({ $and: [
+                    { group_name: { $ne: 'personal' } },
+                    { _workspace: workspaceId }
+                ]}).countDocuments();
+
+                // Count all the users present inside the workspace
+                const guestsCount: number = await User.find({ $and: [
+                    { active: true },
+                    { _workspace: workspaceId },
+                    { role: 'guest'}
+                ] }).countDocuments();
+
+                let workspaceMgmt = {
+                    _id: workspaceId,
+                    company_name: updatedWorkspace.company_name,
+                    workspace_name: updatedWorkspace.workspace_name,
+                    owner_email: updatedWorkspace.owner_email,
+                    owner_first_name: updatedWorkspace.owner_first_name,
+                    owner_last_name: updatedWorkspace.owner_last_name,
+                    _owner_remote_id: updatedWorkspace._owner._id || updatedWorkspace._owner,
+                    environment: process.env.DOMAIN,
+                    num_members: usersCount,
+                    num_invited_users: guestsCount,
+                    num_groups: groupsCount,
+                    created_date: updatedWorkspace.created_date,
+                    access_code: updatedWorkspace.access_code,
+                    management_private_api_key: updatedWorkspace.management_private_api_key
+                }
+                axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
                     API_KEY: updatedWorkspace.management_private_api_key,
-                    workspaceName: updatedWorkspace.workspace_name
+                    workspaceData: workspaceMgmt
                 }).then().catch(err => console.log(err));
             }
 
-            // Count all the users present inside the workspace
-            const usersCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: workspaceId }
-            ] }).countDocuments();
-            
-            // Send workspace to the mgmt portal
-            // Count all the groups present inside the workspace
-            const groupsCount: number = await Group.find({ $and: [
-                { group_name: { $ne: 'personal' } },
-                { _workspace: workspaceId }
-            ]}).countDocuments();
-
-            // Count all the users present inside the workspace
-            const guestsCount: number = await User.find({ $and: [
-                { active: true },
-                { _workspace: workspaceId },
-                { role: 'guest'}
-            ] }).countDocuments();
-
-            let workspaceMgmt = {
-                _id: workspaceId,
-                company_name: updatedWorkspace.company_name,
-                workspace_name: updatedWorkspace.workspace_name,
-                owner_email: updatedWorkspace.owner_email,
-                owner_first_name: updatedWorkspace.owner_first_name,
-                owner_last_name: updatedWorkspace.owner_last_name,
-                _owner_remote_id: updatedWorkspace._owner._id || updatedWorkspace._owner,
-                environment: process.env.DOMAIN,
-                num_members: usersCount,
-                num_invited_users: guestsCount,
-                num_groups: groupsCount,
-                created_date: updatedWorkspace.created_date,
-                access_code: updatedWorkspace.access_code,
-                management_private_api_key: updatedWorkspace.management_private_api_key
-            }
-            axios.put(`${process.env.MANAGEMENT_URL}/api/workspace/${workspaceId}/update`, {
-                API_KEY: updatedWorkspace.management_private_api_key,
-                workspaceData: workspaceMgmt
-            }).then().catch(err => console.log(err));
-                
             // Send Status 200 response
             return res.status(200).json({
                 message: 'Workspace updated Success',
@@ -661,13 +667,15 @@ export class WorkspaceController {
                 await usersService.inviteUserToJoin(user.email, user.workspaceId, user.type, user.groupId)
             }
 
-            // Send signup invite to user
-            axios.post(`${process.env.MANAGEMENT_URL}/api/mail/invite-user`, {
-                API_KEY: workspace.management_private_api_key,
-                data: {
-                    user: user
-                }
-            });
+            if (process.env.NODE_ENV == 'production') {
+                // Send signup invite to user
+                axios.post(`${process.env.MANAGEMENT_URL}/api/mail/invite-user`, {
+                    API_KEY: workspace.management_private_api_key,
+                    data: {
+                        user: user
+                    }
+                });
+            }
 
             return res.status(200).json({
                 message: 'User has been invited!'
@@ -1039,9 +1047,9 @@ export class WorkspaceController {
             const { selectedManager } = req.query;
 
             // If either workspaceId or userId is null or not provided then we throw BAD REQUEST 
-            if (!workspaceId || !selectedManager) {
+            if (!workspaceId) {
                 return res.status(400).json({
-                    message: 'Please provide both workspaceId and selectedManager!'
+                    message: 'Please provide a workspaceId!'
                 });
             }
 
@@ -1058,9 +1066,15 @@ export class WorkspaceController {
                 .sort('first_name')
                 .lean() || [];
 
-            members = members.filter(user => user?.profile_custom_fields
-                && user?.profile_custom_fields[workspace.manager_custom_field]
-                && user?.profile_custom_fields[workspace.manager_custom_field] == selectedManager);
+            if (selectedManager && selectedManager != '') {
+                members = members.filter(user => user?.profile_custom_fields
+                    && user?.profile_custom_fields[workspace.manager_custom_field]
+                    && user?.profile_custom_fields[workspace.manager_custom_field] == selectedManager);
+            } else {
+                members = members.filter(user => !user?.profile_custom_fields
+                    || !user?.profile_custom_fields[workspace.manager_custom_field]
+                    || user?.profile_custom_fields[workspace.manager_custom_field] == null);
+            }
 
             // If there are no groups then we send error response
             if (!members) {

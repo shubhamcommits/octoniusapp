@@ -56,6 +56,6 @@ export class PeopleDirectorySearchResultsComponent implements OnChanges {
   }
 
   openFullscreenModal(userId: string) {
-    this.utilityService.openFullscreenModal(userId);
+    this.utilityService.openMeberBusinessCard(userId);
   }
 }
