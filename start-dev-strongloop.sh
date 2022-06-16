@@ -68,7 +68,7 @@ fi
         echo -e "\n \t Starting $service Service..."
 
         # Start the process and push it to background
-        slc start "$packageManager run dev" --name "$service-server" --wait-ready
+        slc start
 
         # Wait for process to get completed
         wait
