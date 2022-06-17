@@ -2,10 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import { NgbTimepickerModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { SafePipe } from 'src/shared/pipes/safe.pipe';
 
@@ -224,33 +221,13 @@ import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
         FormsModule,
         ImageCropperModule,
         RouterModule,
-        // ANGULAR BOOTSTRAP DATE PICKER MODULE
-        NgbDatepickerModule,
-        // ANGULAR BOOTSTRAP TIME PICKER MODULE
-        NgbTimepickerModule,
         // Infinite Scroll Module
         InfiniteScrollModule,
-        // Preloading Routes Module
-        // QuicklinkModule,
-        // ANGULAR BOOTSTRAP MODAL MODULE
-        NgbModalModule,
-        // MAT SIDE MODULE
-        // MatSidenavModule,
-        // Angular Material Dialog
-        // MatDialogModule,
         NgxDocViewerModule,
-        // MatSelectModule,
-        // MatDatepickerModule,
-        // MatNativeDateModule,
         MomentDateModule,
-        // MatSlideToggleModule,
         ChartsModule,
         ResizableModule,
         MatMenuModule,
-        // MatBadgeModule,
-        // MatPaginatorModule,
-        // MatExpansionModule,
-        // MatTooltipModule,
         // Angular Material Module
         MaterialModule,
         // Chart Module
@@ -275,7 +252,6 @@ import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
         TaskStatusComponent,
         ChangeColumnComponent,
         InfiniteScrollModule,
-        // QuicklinkModule,
         InfiniteScrollComponent,
         ProgressBarComponent,
         SelectLanguageComponent,
@@ -293,7 +269,6 @@ import { HighlightDirective } from 'src/shared/pipes/highlight.directive';
         ActivityFeedComponent,
         TaskSmartCardComponent,
         AgendaSmartCardComponent,
-        NgbModalModule,
         LikeCommentComponent,
         MatSidenavModule,
         InlineInputComponent,

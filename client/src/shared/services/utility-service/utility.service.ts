@@ -324,14 +324,14 @@ export class UtilityService {
    * @param content - content to be displayed in the modal
    * @param config - config of the modal which you want to pass
    */
-  openModal(content, config?){
+  openModal(content, config?) {
     return this.modalService.open(content, config);
   }
 
   /**
    * This function removes/dismiss all the modals that are opened
    */
-  async closeAllModals(){
+  async closeAllModals() {
     return this.modalService.dismissAll();
   }
 

@@ -54,16 +54,5 @@ export class AdminHeaderComponent implements OnInit {
     })
 
   }
-
-  /**
-    * This function opens up the task content in a new modal, and takes #content in the ng-template inside HTML layout
-    * @param content
-    */
-  async openWorkspaceDetails(content) {
-    this.utilityService.openModal(content, {
-      size: 'xl',
-      centered: true
-    });
-  }
 }
 

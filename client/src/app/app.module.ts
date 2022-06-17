@@ -67,8 +67,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 /**
  * 6. !===== THIRD PARTY MODULES & SERVICES =====!
  */
-// import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-// import { ChartsModule, ThemeService } from 'ng2-charts';
 
 /**
  * 7. !===== ERROR HANDLERS =====!
